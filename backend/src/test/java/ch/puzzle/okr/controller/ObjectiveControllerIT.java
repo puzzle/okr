@@ -65,7 +65,7 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true,"archived":false}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
@@ -79,9 +79,9 @@ class ObjectiveControllerIT {
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription(DESCRIPTION)
             .withModifiedOn(LocalDateTime.MAX).build();
     private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L, "GJ 22/23-Q2",
-            DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true);
+            DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true, false);
     private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, "GJ 22/23-Q2",
-            DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true);
+            DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true, false);
 
     @Autowired
     private MockMvc mvc;
@@ -119,7 +119,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "GJ 22/23-Q2",
-                "Just be faster", State.DRAFT, null, null, true);
+                "Just be faster", State.DRAFT, null, null, true, false);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
@@ -144,7 +144,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", EVERYTHING_FINE_DESCRIPTION,
-                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
+                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true, false);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withTitle(TITLE).build();
 
@@ -162,7 +162,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnImUsed() throws Exception {
         ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2",
-                EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
+                EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true, false);
         Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle(TITLE)
                 .build();

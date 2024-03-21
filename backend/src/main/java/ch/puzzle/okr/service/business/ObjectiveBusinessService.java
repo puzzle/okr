@@ -38,6 +38,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         this.completedBusinessService = completedBusinessService;
     }
 
+    public List<Objective> getAllObjectives() {
+        return objectivePersistenceService.findAll();
+    }
+
     public Objective getEntityById(Long id) {
         validator.validateOnGet(id);
         return objectivePersistenceService.findById(id);
@@ -55,6 +59,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
+        objective.setArchived(false);
         String not = " ";
         if (isImUsed(objective, savedObjective)) {
             objective.setQuarter(savedObjective.getQuarter());
@@ -87,6 +92,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     public Objective createEntity(Objective objective, AuthorizationUser authorizationUser) {
         objective.setCreatedBy(authorizationUser.user());
         objective.setCreatedOn(LocalDateTime.now());
+        objective.setArchived(false);
         validator.validateOnCreate(objective);
         return objectivePersistenceService.save(objective);
     }
@@ -120,5 +126,11 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         keyResultBusinessService.getAllKeyResultsByObjective(id)
                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);
+    }
+
+    public void archiveEntity(Long id) {
+        Objective savedObjective = objectivePersistenceService.findById(id);
+        savedObjective.setArchived(true);
+        objectivePersistenceService.save(savedObjective);
     }
 }

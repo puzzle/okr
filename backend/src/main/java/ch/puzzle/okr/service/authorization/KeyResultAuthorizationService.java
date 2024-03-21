@@ -22,6 +22,17 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
     }
 
     @Override
+    public KeyResult getEntityById(Long id) {
+        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        hasRoleReadById(id, authorizationUser);
+        KeyResult keyResult = getBusinessService().getEntityById(id);
+        if (!keyResult.getObjective().isArchived()) {
+            keyResult.setWriteable(isWriteable(keyResult, authorizationUser));
+        }
+        return keyResult;
+    }
+
+    @Override
     protected void hasRoleReadById(Long id, AuthorizationUser authorizationUser) {
         getAuthorizationService().hasRoleReadByKeyResultId(id, authorizationUser);
     }
@@ -45,7 +56,9 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
         AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
         getAuthorizationService().hasRoleReadByKeyResultId(keyResultId, authorizationUser);
         List<CheckIn> checkIns = getBusinessService().getAllCheckInsByKeyResult(keyResultId);
-        setRoleCreateOrUpdateCheckIn(checkIns, authorizationUser);
+        if (!checkIns.get(0).getKeyResult().getObjective().isArchived()) {
+            setRoleCreateOrUpdateCheckIn(checkIns, authorizationUser);
+        }
         return checkIns;
     }
 

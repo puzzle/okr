@@ -1,13 +1,11 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.ErrorKey;
-import ch.puzzle.okr.exception.OkrResponseStatusException;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +18,13 @@ public class QuarterBusinessService {
     private static final Logger logger = LoggerFactory.getLogger(QuarterBusinessService.class);
 
     private final QuarterPersistenceService quarterPersistenceService;
+    private final ObjectiveBusinessService objectiveBusinessService;
     private final QuarterValidationService validator;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-            QuarterValidationService validator) {
+            ObjectiveBusinessService objectiveBusinessService, QuarterValidationService validator) {
         this.quarterPersistenceService = quarterPersistenceService;
+        this.objectiveBusinessService = objectiveBusinessService;
         this.validator = validator;
     }
 
@@ -36,7 +36,9 @@ public class QuarterBusinessService {
     public List<Quarter> getQuarters() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
         Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
+        Quarter archive = quarterPersistenceService.findByLabel("Archiv");
         mostCurrentQuarterList.add(0, backlog);
+        mostCurrentQuarterList.add(archive);
         return mostCurrentQuarterList;
     }
 
@@ -66,10 +68,25 @@ public class QuarterBusinessService {
                 .build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
+        handleQuarterArchive();
     }
 
     public YearMonth getCurrentYearMonth() {
         return YearMonth.now();
+    }
+
+    private void handleQuarterArchive() {
+        List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
+        Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
+        mostCurrentQuarterList.add(backlog);
+        List<Objective> allObjectives = objectiveBusinessService.getAllObjectives();
+
+        allObjectives.forEach(objective -> {
+            if (!mostCurrentQuarterList.contains(objective.getQuarter())) {
+                objectiveBusinessService.archiveEntity(objective.getId());
+            }
+        });
+        logger.info("Update archived Objectives");
     }
 
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month

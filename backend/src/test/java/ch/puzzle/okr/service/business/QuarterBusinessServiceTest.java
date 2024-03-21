@@ -8,16 +8,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,6 +81,9 @@ class QuarterBusinessServiceTest {
 
     @Test
     void shouldGenerateCorrectQuarter() {
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", "GJ xx/yy-Qzz");
+
         Quarter quarterStandard = Quarter.Builder.builder().withId(null).withLabel("GJ 30/31-Q1")
                 .withStartDate(LocalDate.of(2030, 7, 1)).withEndDate(LocalDate.of(2030, 9, 30)).build();
 
@@ -97,6 +98,23 @@ class QuarterBusinessServiceTest {
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 9));
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService).save(quarterAfterMidYear);
+    }
+
+    @Test
+    void shouldGetQuartersBasedOnStart() {
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 5);
+        Map<Integer, Integer> startMay = quarterBusinessService.generateQuarters();
+        assertEquals(startMay,
+                Map.ofEntries(Map.entry(1, 3), Map.entry(2, 4), Map.entry(3, 4), Map.entry(4, 4), Map.entry(5, 1),
+                        Map.entry(6, 1), Map.entry(7, 1), Map.entry(8, 2), Map.entry(9, 2), Map.entry(10, 2),
+                        Map.entry(11, 3), Map.entry(12, 3)));
+
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 10);
+        Map<Integer, Integer> startOctober = quarterBusinessService.generateQuarters();
+        assertEquals(startOctober,
+                Map.ofEntries(Map.entry(1, 2), Map.entry(2, 2), Map.entry(3, 2), Map.entry(4, 3), Map.entry(5, 3),
+                        Map.entry(6, 3), Map.entry(7, 4), Map.entry(8, 4), Map.entry(9, 4), Map.entry(10, 1),
+                        Map.entry(11, 1), Map.entry(12, 1)));
     }
 
     @Test

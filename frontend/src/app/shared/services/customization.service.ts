@@ -18,6 +18,10 @@ export class CustomizationService {
     });
   }
 
+  public getCurrentConfig() {
+    return this.currentConfig;
+  }
+
   private updateCustomizations(config: CustomizationConfig) {
     this.setTitle(config.title);
     this.setFavicon(config.favicon);
@@ -31,6 +35,10 @@ export class CustomizationService {
       return;
     }
 
+    if (!this.document) {
+      return;
+    }
+
     this.document.getElementById('favicon')?.setAttribute('href', favicon);
   }
 
@@ -38,6 +46,11 @@ export class CustomizationService {
     if (!title || this.currentConfig?.title === title) {
       return;
     }
+
+    if (!this.document) {
+      return;
+    }
+
     this.document.querySelector('title')!.innerHTML = title;
   }
 
@@ -56,6 +69,10 @@ export class CustomizationService {
 
   private setStyles(customStylesMap: CustomStyles | undefined) {
     if (!customStylesMap) {
+      return;
+    }
+
+    if (!this.document) {
       return;
     }
 

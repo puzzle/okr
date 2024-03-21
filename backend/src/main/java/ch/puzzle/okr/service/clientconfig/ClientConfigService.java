@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.clientcustomization;
+package ch.puzzle.okr.service.clientconfig;
 
 import ch.puzzle.okr.dto.ClientConfigDto;
 import org.springframework.beans.factory.annotation.Value;

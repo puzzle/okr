@@ -1,7 +1,7 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ClientConfigDto;
-import ch.puzzle.okr.service.clientcustomization.ClientConfigService;
+import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.clientcustomization;
+package ch.puzzle.okr.service.clientconfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

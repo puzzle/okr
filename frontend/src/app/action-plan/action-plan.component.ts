@@ -85,7 +85,7 @@ export class ActionPlanComponent implements AfterViewInit {
   }
 
   changeActionText(event: any, index: number) {
-    const actions = this.control.getValue()!;
+    const actions = Object.values(this.control.getValue()!);
     actions[index] = { ...actions[index], action: event.target.value! };
     this.control.next(actions);
   }

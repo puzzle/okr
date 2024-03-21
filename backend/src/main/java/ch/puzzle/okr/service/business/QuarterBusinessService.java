@@ -1,7 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.ErrorKey;
-import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
@@ -110,7 +108,9 @@ public class QuarterBusinessService {
         int nextQuarter = quarters.get(yearMonthToGenerate.getMonthValue());
 
         // If we are in the last month of a quarter, generate the next quarter
-        if (Math.abs(nextQuarter - currentQuarter) > 1) {
+        // If the quarter 4 months in the future and the current are exactly 2 apart, this is the case
+        // 1 -> 3, 2 -> 4, 3 -> 1, 4 -> 2
+        if (Math.abs(nextQuarter - currentQuarter) == 2) {
             String label = createQuarterLabel(yearMonthToGenerate, nextQuarter);
             generateQuarter(yearMonthToGenerate.atDay(1).atStartOfDay(), label);
         }

@@ -5,7 +5,10 @@ import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -79,6 +82,16 @@ class QuarterBusinessServiceTest {
         assertNull(quarterList.get(0).getEndDate());
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 4, 5, 7, 8, 10, 11 })
+    void shouldNotGenerateQuarterIfNotLastMonth(int month) {
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
+
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
+        quarterBusinessService.scheduledGenerationQuarters();
+        verify(quarterPersistenceService, never()).save(any());
+    }
+
     @Test
     void shouldGenerateCorrectQuarter() {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
@@ -100,21 +113,37 @@ class QuarterBusinessServiceTest {
         verify(quarterPersistenceService).save(quarterAfterMidYear);
     }
 
-    @Test
-    void shouldGetQuartersBasedOnStart() {
-        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 5);
-        Map<Integer, Integer> startMay = quarterBusinessService.generateQuarters();
-        assertEquals(startMay,
-                Map.ofEntries(Map.entry(1, 3), Map.entry(2, 4), Map.entry(3, 4), Map.entry(4, 4), Map.entry(5, 1),
-                        Map.entry(6, 1), Map.entry(7, 1), Map.entry(8, 2), Map.entry(9, 2), Map.entry(10, 2),
-                        Map.entry(11, 3), Map.entry(12, 3)));
-
-        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 10);
-        Map<Integer, Integer> startOctober = quarterBusinessService.generateQuarters();
-        assertEquals(startOctober,
-                Map.ofEntries(Map.entry(1, 2), Map.entry(2, 2), Map.entry(3, 2), Map.entry(4, 3), Map.entry(5, 3),
-                        Map.entry(6, 3), Map.entry(7, 4), Map.entry(8, 4), Map.entry(9, 4), Map.entry(10, 1),
-                        Map.entry(11, 1), Map.entry(12, 1)));
+    @ParameterizedTest(name = "With start month {0} month {1} should be in quarter {2}")
+    @CsvSource(textBlock = """
+                5,1,3
+                5,2,4
+                5,3,4
+                5,4,4
+                5,5,1
+                5,6,1
+                5,7,1
+                5,8,2
+                5,9,2
+                5,10,2
+                5,11,3
+                5,12,3
+                10,1,2
+                10,2,2
+                10,3,2
+                10,4,3
+                10,5,3
+                10,6,3
+                10,7,4
+                10,8,4
+                10,9,4
+                10,10,1
+                10,11,1
+                10,12,1
+            """)
+    void shouldGetQuartersBasedOnStart(String start, String month, String quarter) {
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", Integer.valueOf(start));
+        Map<Integer, Integer> quarters = quarterBusinessService.generateQuarters();
+        assertEquals(Integer.valueOf(quarter), quarters.get(Integer.valueOf(month)));
     }
 
     @Test

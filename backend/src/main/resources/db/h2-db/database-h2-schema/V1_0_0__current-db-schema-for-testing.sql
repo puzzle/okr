@@ -58,6 +58,7 @@ create table if not exists objective
     state          text         not null,
     modified_by_id bigint,
     created_on     timestamp    not null,
+    archived       boolean      not null,
     primary key (id),
     constraint fk_objective_created_by_person
         foreign key (created_by_id) references person,
@@ -169,6 +170,10 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        O.TITLE             AS "OBJECTIVE_TITLE",
        O.STATE             AS "OBJECTIVE_STATE",
        O.CREATED_ON        AS "OBJECTIVE_CREATED_ON",
+       CASE
+           WHEN O.TITLE IS NOT NULL THEN O.ARCHIVED
+           ELSE FALSE
+           END                 AS "OBJECTIVE_ARCHIVED",
        COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
        KR.TITLE            AS "KEY_RESULT_TITLE",
        KR.KEY_RESULT_TYPE  AS "KEY_RESULT_TYPE",

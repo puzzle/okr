@@ -51,6 +51,8 @@ public class Objective implements WriteableInterface {
     @ManyToOne
     private User modifiedBy;
 
+    private boolean archived;
+
     private transient boolean writeable;
 
     public Objective() {
@@ -68,6 +70,7 @@ public class Objective implements WriteableInterface {
         setState(builder.state);
         setCreatedOn(builder.createdOn);
         setModifiedBy(builder.modifiedBy);
+        setArchived(builder.archived);
     }
 
     public Long getId() {
@@ -150,6 +153,14 @@ public class Objective implements WriteableInterface {
         this.modifiedBy = modifiedBy;
     }
 
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
     @Override
     public boolean isWriteable() {
         return writeable;
@@ -162,10 +173,10 @@ public class Objective implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
-                + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
-                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
-                + modifiedBy + ", writeable=" + writeable + '\'' + '}';
+        return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", state=" + state
+                + ", description='" + description + '\'' + ", team=" + team + ", quarter=" + quarter + ", createdBy="
+                + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", modifiedBy=" + modifiedBy
+                + ", archived=" + archived + ", writeable=" + writeable + '}';
     }
 
     @Override
@@ -180,13 +191,14 @@ public class Objective implements WriteableInterface {
                 && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter)
                 && Objects.equals(description, objective.description)
                 && Objects.equals(modifiedOn, objective.modifiedOn) && state == objective.state
-                && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy);
+                && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy)
+                && Objects.equals(archived, objective.archived);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, title, createdBy, team, quarter, description, modifiedOn, state, createdOn,
-                modifiedBy);
+        return Objects.hash(id, version, title, state, description, team, quarter, createdBy, createdOn, modifiedOn,
+                modifiedBy, archived);
     }
 
     public static final class Builder {
@@ -201,6 +213,7 @@ public class Objective implements WriteableInterface {
         private State state;
         private LocalDateTime createdOn;
         private User modifiedBy;
+        private boolean archived;
 
         private Builder() {
         }
@@ -261,6 +274,11 @@ public class Objective implements WriteableInterface {
 
         public Builder withModifiedBy(User modifiedBy) {
             this.modifiedBy = modifiedBy;
+            return this;
+        }
+
+        public Builder withArchived(boolean archived) {
+            this.archived = archived;
             return this;
         }
 

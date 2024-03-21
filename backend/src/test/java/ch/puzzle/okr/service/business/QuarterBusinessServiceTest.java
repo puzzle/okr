@@ -1,6 +1,9 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.junit.jupiter.api.Test;
@@ -14,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Stream;
@@ -28,6 +32,9 @@ class QuarterBusinessServiceTest {
 
     @Mock
     QuarterValidationService quarterValidationService;
+
+    @Mock
+    ObjectiveBusinessService objectiveBusinessService;
 
     @InjectMocks
     @Spy
@@ -76,7 +83,7 @@ class QuarterBusinessServiceTest {
         when(quarterPersistenceService.findByLabel("Backlog")).thenReturn(backlogQuarter);
 
         quarterList = quarterBusinessService.getQuarters();
-        assertEquals(3, quarterList.size());
+        assertEquals(4, quarterList.size());
         assertEquals("Backlog", quarterList.get(0).getLabel());
         assertNull(quarterList.get(0).getStartDate());
         assertNull(quarterList.get(0).getEndDate());

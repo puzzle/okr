@@ -9,6 +9,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
 
@@ -28,7 +29,9 @@ public class OverviewAuthorizationService {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);
-        setRoleCreateOrUpdateTeam(overviews, authorizationUser);
+        if (Objects.isNull(quarterId) || quarterId != 998) {
+            setRoleCreateOrUpdateTeam(overviews, authorizationUser);
+        }
         return overviews;
     }
 

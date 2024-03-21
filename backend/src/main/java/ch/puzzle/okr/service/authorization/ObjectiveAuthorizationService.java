@@ -20,6 +20,17 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
     }
 
     @Override
+    public Objective getEntityById(Long id) {
+        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        hasRoleReadById(id, authorizationUser);
+        Objective objective = getBusinessService().getEntityById(id);
+        if (!objective.isArchived()) {
+            objective.setWriteable(isWriteable(objective, authorizationUser));
+        }
+        return objective;
+    }
+
+    @Override
     protected void hasRoleReadById(Long id, AuthorizationUser authorizationUser) {
         getAuthorizationService().hasRoleReadByObjectiveId(id, authorizationUser);
     }

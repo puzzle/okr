@@ -50,28 +50,28 @@ values (4, 1, '/BBT'),
        (6, 1, 'LoremIpsum');
 
 insert into objective (id, version, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
-                              modified_by_id, created_on)
+                              modified_by_id, created_on, archived)
 values (4, 1, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture that kills the competition.', 1, 2, 5,
-        'ONGOING', null, '2023-07-25 08:17:51.309958'),
+        'ONGOING', null, '2023-07-25 08:17:51.309958', false),
        (3,1,
         'Die Konkurenz nimmt stark zu, um weiterhin einen angenehmen Markt bearbeiten zu können, wollen wir die Kundenzufriedenheit steigern. ',
         '2023-07-25 08:13:48.768262', 84, 'Wir wollen die Kundenzufriedenheit steigern', 1, 2, 5, 'ONGOING', null,
-        '2023-07-25 08:13:48.768262'),
+        '2023-07-25 08:13:48.768262', false),
        (6,1, '', '2023-07-25 08:26:46.982010', 25,
         'Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.', 1, 2, 4, 'ONGOING', null,
-        '2023-07-25 08:26:46.982010'),
+        '2023-07-25 08:26:46.982010', false),
        (5,1, 'Damit wir nicht alle anderen Entwickler stören wollen wir so leise wie möglich arbeiten',
         '2023-07-25 08:20:36.894258', 65, 'Wir wollen das leiseste Team bei Puzzle sein', 1, 2, 4, 'ONGOING', null,
-        '2023-07-25 08:20:36.894258'),
+        '2023-07-25 08:20:36.894258', false),
        (9, 1,'', '2023-07-25 08:39:45.752126', 88,
         'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:45.752126'),
+        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:45.752126', false),
        (10,1, '', '2023-07-25 08:39:45.772126', 88,
         'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.', 1, 2, 6, 'ONGOING',
-        null, '2023-07-25 08:39:45.772126'),
+        null, '2023-07-25 08:39:45.772126', false),
        (8,1, '', '2023-07-25 08:39:28.175703', 40,
         'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
-        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703');
+        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703', false);
 
 insert into key_result (id, version, baseline, description, modified_on, stretch_goal, title, created_by_id,
                         objective_id, owner_id, key_result_type, created_on, unit, commit_zone, target_zone, stretch_zone)

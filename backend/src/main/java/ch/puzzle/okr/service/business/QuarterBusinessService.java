@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
@@ -21,6 +22,7 @@ public class QuarterBusinessService {
     private static final Logger logger = LoggerFactory.getLogger(QuarterBusinessService.class);
 
     private final QuarterPersistenceService quarterPersistenceService;
+    private final ObjectiveBusinessService objectiveBusinessService;
     private final QuarterValidationService validator;
 
     @Value("${okr.quarter.business.year.start}")
@@ -30,8 +32,9 @@ public class QuarterBusinessService {
     private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-            QuarterValidationService validator) {
+            ObjectiveBusinessService objectiveBusinessService, QuarterValidationService validator) {
         this.quarterPersistenceService = quarterPersistenceService;
+        this.objectiveBusinessService = objectiveBusinessService;
         this.validator = validator;
     }
 
@@ -43,7 +46,9 @@ public class QuarterBusinessService {
     public List<Quarter> getQuarters() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
         Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
+        Quarter archive = quarterPersistenceService.findByLabel("Archiv");
         mostCurrentQuarterList.add(0, backlog);
+        mostCurrentQuarterList.add(archive);
         return mostCurrentQuarterList;
     }
 
@@ -81,6 +86,7 @@ public class QuarterBusinessService {
                 .withEndDate(yearMonth.plusMonths(2).atEndOfMonth()).build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
+        handleQuarterArchive();
     }
 
     private boolean inLastMonthOfQuarter(int currentQuarter, int nextQuarter) {
@@ -103,6 +109,20 @@ public class QuarterBusinessService {
             quarters.put(monthIndexZeroBased + 1, quarterZeroBased + 1);
         }
         return quarters;
+    }
+
+    private void handleQuarterArchive() {
+        List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
+        Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
+        mostCurrentQuarterList.add(backlog);
+        List<Objective> allObjectives = objectiveBusinessService.getAllObjectives();
+
+        allObjectives.forEach(objective -> {
+            if (!mostCurrentQuarterList.contains(objective.getQuarter())) {
+                objectiveBusinessService.archiveEntity(objective.getId());
+            }
+        });
+        logger.info("Update archived Objectives");
     }
 
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month

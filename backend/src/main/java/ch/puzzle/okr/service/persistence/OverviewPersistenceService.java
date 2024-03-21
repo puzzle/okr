@@ -15,6 +15,7 @@ public class OverviewPersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(OverviewPersistenceService.class);
     private static final String SELECT_OVERVIEW = "SELECT o FROM Overview o WHERE o.quarterId=:quarterId";
+    private static final String SELECT_ARCHIVE = "SELECT o FROM Overview o WHERE o.objectiveArchived=true";
 
     private final EntityManager entityManager;
     private final AuthorizationCriteria<Overview> authorizationCriteria;
@@ -32,6 +33,16 @@ public class OverviewPersistenceService {
         logger.debug("select overview by quarterId={} and teamIds={}: {}", quarterId, teamIds, queryString);
         TypedQuery<Overview> typedQuery = entityManager.createQuery(queryString, Overview.class);
         typedQuery.setParameter("quarterId", quarterId);
+        authorizationCriteria.setParameters(typedQuery, teamIds, objectiveQuery, authorizationUser);
+        return typedQuery.getResultList();
+    }
+
+    public List<Overview> getArchiveOverview(List<Long> teamIds, String objectiveQuery,
+            AuthorizationUser authorizationUser) {
+        String queryString = SELECT_ARCHIVE
+                + authorizationCriteria.appendOverview(teamIds, objectiveQuery, authorizationUser);
+        logger.debug("select overview by teamIds={}: {}", teamIds, queryString);
+        TypedQuery<Overview> typedQuery = entityManager.createQuery(queryString, Overview.class);
         authorizationCriteria.setParameters(typedQuery, teamIds, objectiveQuery, authorizationUser);
         return typedQuery.getResultList();
     }

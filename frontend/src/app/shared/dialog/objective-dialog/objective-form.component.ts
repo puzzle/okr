@@ -87,7 +87,7 @@ export class ObjectiveFormComponent implements OnInit {
       : of(this.getDefaultObjective());
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
-      this.quarters = quarters;
+      this.quarters = quarters.filter((quarter) => quarter.label !== 'Archiv');
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
 
@@ -98,6 +98,7 @@ export class ObjectiveFormComponent implements OnInit {
 
       this.state = objective.state;
       this.version = objective.version;
+      this.quarters$ = of(this.quarters);
       this.teams$.subscribe((value) => {
         this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
       });

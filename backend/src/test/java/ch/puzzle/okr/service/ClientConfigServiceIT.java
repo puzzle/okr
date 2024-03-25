@@ -10,10 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringIntegrationTest
-@SpringBootTest(properties = {
-        "okr.clientcustomization.customstyles.okr-topbar-background-color=#affe00",
-        "okr.clientcustomization.customstyles.okr-other-css-style=rgba(50,60,70,0.5)",
-})
+@SpringBootTest(properties = { "okr.clientcustomization.customstyles.okr-topbar-background-color=#affe00",
+        "okr.clientcustomization.customstyles.okr-other-css-style=rgba(50,60,70,0.5)", })
 class ClientConfigServiceIT {
 
     @Autowired

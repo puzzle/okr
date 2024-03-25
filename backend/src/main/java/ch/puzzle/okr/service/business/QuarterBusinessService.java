@@ -1,19 +1,20 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.ErrorKey;
-import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.temporal.IsoFields;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class QuarterBusinessService {
@@ -21,6 +22,12 @@ public class QuarterBusinessService {
 
     private final QuarterPersistenceService quarterPersistenceService;
     private final QuarterValidationService validator;
+
+    @Value("${okr.quarter.business.year.start}")
+    private int quarterStart;
+
+    @Value("${okr.quarter.label.format}")
+    private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
             QuarterValidationService validator) {
@@ -53,17 +60,22 @@ public class QuarterBusinessService {
         return String.format(format, number);
     }
 
-    private String createQuarterLabel(YearMonth yearMonth) {
-        // generation of quarter is two quarter in advance therefore the current quarter of the year corresponds with
-        // the business quarter we want to generate
-        return String.format("GJ %s/%s-Q%x", shortenYear(yearMonth.getYear()), shortenYear(yearMonth.getYear() + 1),
-                yearMonth.get(IsoFields.QUARTER_OF_YEAR));
+    private String createQuarterLabel(YearMonth startOfQuarter, int quarter) {
+        // Get Start of current business year
+        // Subtract months based on the quarter we are in
+        // i.e. quarter=2, subtract (2 - 1) * 3 = 3 Months to get start
+        int yearStart = startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
+        int yearEnd = yearStart + 1;
+
+        return StringUtils.replaceEach(quarterFormat, new String[] { "xxxx", "yyyy", "xx", "yy", "zz" },
+                new String[] { String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
+                        shortenYear(yearEnd), String.valueOf(quarter) });
     }
 
-    private void generateQuarter(YearMonth yearMonth) {
-        Quarter quarter = Quarter.Builder.builder().withLabel(createQuarterLabel(yearMonth))
-                .withStartDate(yearMonth.plusMonths(4).atDay(1)).withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
-                .build();
+    private void generateQuarter(LocalDateTime start, String label) {
+        YearMonth yearMonth = YearMonth.from(start);
+        Quarter quarter = Quarter.Builder.builder().withLabel(label).withStartDate(start.toLocalDate())
+                .withEndDate(yearMonth.plusMonths(2).atEndOfMonth()).build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }
@@ -72,12 +84,37 @@ public class QuarterBusinessService {
         return YearMonth.now();
     }
 
+    public Map<Integer, Integer> generateQuarters() {
+        Map<Integer, Integer> quarters = new HashMap<>();
+        int quarterIndex = quarterStart - 1;
+        for (int i = 0; i < 12; i++) {
+            // Get the index of the current month based on quarterStart
+            int monthIndex = (i + quarterIndex) % 12;
+            // Get the quarter (three months), +1 since we don't want to start with 0
+            int quarter = (i / 3) + 1;
+            // Return the real month
+            quarters.put(monthIndex + 1, quarter);
+        }
+
+        return quarters;
+    }
+
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
-        YearMonth yearMonth = getCurrentYearMonth();
-        if (yearMonth.getMonthValue() % 3 == 0) {
+        Map<Integer, Integer> quarters = generateQuarters();
+        YearMonth currentYearMonth = getCurrentYearMonth();
+        YearMonth yearMonthToGenerate = currentYearMonth.plusMonths(4);
+
+        int currentQuarter = quarters.get(currentYearMonth.getMonthValue());
+        int nextQuarter = quarters.get(yearMonthToGenerate.getMonthValue());
+
+        // If we are in the last month of a quarter, generate the next quarter
+        // If the quarter 4 months in the future and the current are exactly 2 apart, this is the case
+        // 1 -> 3, 2 -> 4, 3 -> 1, 4 -> 2
+        if (Math.abs(nextQuarter - currentQuarter) == 2) {
             logger.info("Generated quarters on last day of month");
-            generateQuarter(yearMonth);
+            String label = createQuarterLabel(yearMonthToGenerate, nextQuarter);
+            generateQuarter(yearMonthToGenerate.atDay(1).atStartOfDay(), label);
         }
     }
 }

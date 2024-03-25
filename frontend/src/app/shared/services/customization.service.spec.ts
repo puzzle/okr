@@ -59,15 +59,15 @@ describe('CustomizationService', () => {
       querySelector: (selector: string) => {
         return {
           set innerHTML(value: string) {
-            callRecorder.add(`${selector}-innerHTML`, arguments);
+            callRecorder.add(`${selector}.innerHTML`, arguments);
           },
           get style() {
             return {
               setProperty: function () {
-                callRecorder.add(`${selector}.style-setProperty`, arguments);
+                callRecorder.add(`${selector}.style.setProperty`, arguments);
               },
               removeProperty: function () {
-                callRecorder.add(`${selector}.style-removeProperty`, arguments);
+                callRecorder.add(`${selector}.style.removeProperty`, arguments);
               },
             };
           },
@@ -84,16 +84,16 @@ describe('CustomizationService', () => {
     expect(currentConfig?.favicon).toBe(body.favicon);
     expect(currentConfig?.customStyles['cssVar1']).toBe(body.customStyles['cssVar1']);
 
-    expect(callRecorder.getCallCount('title-innerHTML')).toBe(1);
+    expect(callRecorder.getCallCount('title.innerHTML')).toBe(1);
     expect(callRecorder.getCallCount('favicon-setAttribute')).toBe(1);
-    expect(callRecorder.getCallCount('html.style-setProperty')).toBe(1);
-    expect(callRecorder.getCallCount('html.style-removeProperty')).toBe(0);
+    expect(callRecorder.getCallCount('html.style.setProperty')).toBe(1);
+    expect(callRecorder.getCallCount('html.style.removeProperty')).toBe(0);
 
-    expect(callRecorder.getCallByIdx('title-innerHTML', 0)[0]).toBe('title');
+    expect(callRecorder.getCallByIdx('title.innerHTML', 0)[0]).toBe('title');
     expect(callRecorder.getCallByIdx('favicon-setAttribute', 0)[0]).toBe('href');
     expect(callRecorder.getCallByIdx('favicon-setAttribute', 0)[1]).toBe('favicon');
-    expect(callRecorder.getCallByIdx('html.style-setProperty', 0)[0]).toBe('--cssVar1');
-    expect(callRecorder.getCallByIdx('html.style-setProperty', 0)[1]).toBe('foo');
+    expect(callRecorder.getCallByIdx('html.style.setProperty', 0)[0]).toBe('--cssVar1');
+    expect(callRecorder.getCallByIdx('html.style.setProperty', 0)[1]).toBe('foo');
   });
 
   it('should update if config changed afterwards', () => {
@@ -115,15 +115,15 @@ describe('CustomizationService', () => {
     expect(currentConfig?.customStyles['cssVarNew']).toBe(bodySecond.customStyles['cssVarNew']);
     expect(currentConfig?.customStyles['cssVar1']).toBe(undefined);
 
-    expect(callRecorder.getCallCount('title-innerHTML')).toBe(2);
+    expect(callRecorder.getCallCount('title.innerHTML')).toBe(2);
     expect(callRecorder.getCallCount('favicon-setAttribute')).toBe(2);
-    expect(callRecorder.getCallCount('html.style-setProperty')).toBe(2);
-    expect(callRecorder.getCallCount('html.style-removeProperty')).toBe(1);
+    expect(callRecorder.getCallCount('html.style.setProperty')).toBe(2);
+    expect(callRecorder.getCallCount('html.style.removeProperty')).toBe(1);
 
-    expect(callRecorder.getCallByIdx('title-innerHTML', 1)[0]).toBe('title-second');
+    expect(callRecorder.getCallByIdx('title.innerHTML', 1)[0]).toBe('title-second');
     expect(callRecorder.getCallByIdx('favicon-setAttribute', 1)[0]).toBe('href');
     expect(callRecorder.getCallByIdx('favicon-setAttribute', 1)[1]).toBe('favicon-second');
-    expect(callRecorder.getCallByIdx('html.style-setProperty', 1)[0]).toBe('--cssVarNew');
-    expect(callRecorder.getCallByIdx('html.style-setProperty', 1)[1]).toBe('bar');
+    expect(callRecorder.getCallByIdx('html.style.setProperty', 1)[0]).toBe('--cssVarNew');
+    expect(callRecorder.getCallByIdx('html.style.setProperty', 1)[1]).toBe('bar');
   });
 });

@@ -15,6 +15,7 @@ public class ClientConfigService {
 
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
     private String clientId;
+
     private final ClientCustomizationProperties clientCustomizationProperties;
 
     public ClientConfigService(ClientCustomizationProperties clientCustomizationProperties) {

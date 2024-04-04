@@ -101,4 +101,12 @@ public class AlignmentValidationService
                     List.of("alignedObjectiveId", model.getAlignedObjective().getId()));
         }
     }
+
+    public void validateOnAlignmentGet(Long quarterId, List<Long> teamFilter) {
+        if (quarterId == null) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET, "quarterId");
+        } else if (teamFilter == null || teamFilter.isEmpty()) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET, "teamFilter");
+        }
+    }
 }

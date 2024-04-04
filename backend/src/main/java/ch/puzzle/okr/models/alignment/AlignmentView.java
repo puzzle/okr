@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import org.hibernate.annotations.Immutable;
 
+import java.util.Objects;
+
 @Entity
 @Immutable
 public class AlignmentView {
@@ -124,6 +126,27 @@ public class AlignmentView {
 
     public void setRefType(String refType) {
         this.refType = refType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        AlignmentView that = (AlignmentView) o;
+        return Objects.equals(uniqueId, that.uniqueId) && Objects.equals(id, that.id)
+                && Objects.equals(title, that.title) && Objects.equals(teamId, that.teamId)
+                && Objects.equals(teamName, that.teamName) && Objects.equals(quarterId, that.quarterId)
+                && Objects.equals(state, that.state) && Objects.equals(objectType, that.objectType)
+                && Objects.equals(connectionItem, that.connectionItem) && Objects.equals(refId, that.refId)
+                && Objects.equals(refType, that.refType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uniqueId, id, title, teamId, teamName, quarterId, state, objectType, connectionItem, refId,
+                refType);
     }
 
     @Override

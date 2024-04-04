@@ -5,10 +5,12 @@ import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.alignment.Alignment;
+import ch.puzzle.okr.models.alignment.AlignmentView;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
+import ch.puzzle.okr.service.persistence.AlignmentViewPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.AlignmentValidationService;
@@ -24,15 +26,18 @@ public class AlignmentBusinessService {
     private final AlignmentValidationService alignmentValidationService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final KeyResultPersistenceService keyResultPersistenceService;
+    private final AlignmentViewPersistenceService alignmentViewPersistenceService;
 
     public AlignmentBusinessService(AlignmentPersistenceService alignmentPersistenceService,
             AlignmentValidationService alignmentValidationService,
             ObjectivePersistenceService objectivePersistenceService,
-            KeyResultPersistenceService keyResultPersistenceService) {
+            KeyResultPersistenceService keyResultPersistenceService,
+            AlignmentViewPersistenceService alignmentViewPersistenceService) {
         this.alignmentPersistenceService = alignmentPersistenceService;
         this.alignmentValidationService = alignmentValidationService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.keyResultPersistenceService = keyResultPersistenceService;
+        this.alignmentViewPersistenceService = alignmentViewPersistenceService;
     }
 
     public AlignedEntityDto getTargetIdByAlignedObjectiveId(Long alignedObjectiveId) {
@@ -144,5 +149,16 @@ public class AlignmentBusinessService {
     private void validateAndDeleteAlignmentById(Long alignmentId) {
         alignmentValidationService.validateOnDelete(alignmentId);
         alignmentPersistenceService.deleteById(alignmentId);
+    }
+
+    public List<AlignmentView> getAlignmentsByFilters(Long quarterFilter, List<Long> teamFilter,
+            String objectiveFilter) {
+        alignmentValidationService.validateOnAlignmentGet(quarterFilter, teamFilter);
+
+        List<AlignmentView> alignmentViewList = alignmentViewPersistenceService
+                .getAlignmentViewListByQuarterId(quarterFilter);
+
+        return alignmentViewList;
+
     }
 }

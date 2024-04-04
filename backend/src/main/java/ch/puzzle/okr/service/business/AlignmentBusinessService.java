@@ -14,10 +14,14 @@ import ch.puzzle.okr.service.persistence.AlignmentViewPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.AlignmentValidationService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AlignmentBusinessService {
@@ -38,6 +42,10 @@ public class AlignmentBusinessService {
         this.objectivePersistenceService = objectivePersistenceService;
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.alignmentViewPersistenceService = alignmentViewPersistenceService;
+    }
+
+    protected record DividedAlignmentViewLists(List<AlignmentView> correctAlignments,
+            List<AlignmentView> wrongAlignments) {
     }
 
     public AlignedEntityDto getTargetIdByAlignedObjectiveId(Long alignedObjectiveId) {
@@ -157,8 +165,28 @@ public class AlignmentBusinessService {
 
         List<AlignmentView> alignmentViewList = alignmentViewPersistenceService
                 .getAlignmentViewListByQuarterId(quarterFilter);
+        DividedAlignmentViewLists dividedAlignmentViewLists = filterAlignmentViews(alignmentViewList, teamFilter,
+                objectiveFilter);
 
         return alignmentViewList;
 
+    }
+
+    protected DividedAlignmentViewLists filterAlignmentViews(List<AlignmentView> alignmentViewList,
+            List<Long> teamFilter, String objectiveFilter) {
+        List<AlignmentView> filteredList = alignmentViewList.stream()
+                .filter(alignmentView -> teamFilter.contains(alignmentView.getTeamId())).toList();
+
+        boolean isObjectiveFilterDefined = StringUtils.isNotBlank(objectiveFilter);
+        if (isObjectiveFilterDefined) {
+            filteredList = filteredList.stream()
+                    .filter(alignmentView -> Objects.equals(alignmentView.getObjectType(), "objective")
+                            && alignmentView.getTitle().toLowerCase().contains(objectiveFilter.toLowerCase()))
+                    .toList();
+        }
+        List<AlignmentView> correctAlignments = filteredList;
+        List<AlignmentView> wrongAlignments = alignmentViewList.stream()
+                .filter(alignmentView -> !correctAlignments.contains(alignmentView)).toList();
+        return new DividedAlignmentViewLists(correctAlignments, wrongAlignments);
     }
 }

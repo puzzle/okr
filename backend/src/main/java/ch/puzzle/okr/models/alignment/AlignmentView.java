@@ -11,7 +11,7 @@ import java.util.Objects;
 public class AlignmentView {
 
     @Id
-    private Long uniqueId;
+    private String uniqueId;
     private Long id;
     private String title;
     private Long teamId;
@@ -40,11 +40,11 @@ public class AlignmentView {
         setRefType(builder.refType);
     }
 
-    public Long getUniqueId() {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(Long uniqueId) {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -151,14 +151,14 @@ public class AlignmentView {
 
     @Override
     public String toString() {
-        return "AlignmentView{" + "uniqueId=" + uniqueId + ", id=" + id + ", title='" + title + '\'' + ", teamId="
-                + teamId + ", teamName='" + teamName + '\'' + ", quarterId=" + quarterId + ", state='" + state + '\''
-                + ", objectType='" + objectType + '\'' + ", connectionItem='" + connectionItem + '\'' + ", refId="
-                + refId + ", refType='" + refType + '\'' + '}';
+        return "AlignmentView{" + "uniqueId='" + uniqueId + '\'' + ", id=" + id + ", title='" + title + '\''
+                + ", teamId=" + teamId + ", teamName='" + teamName + '\'' + ", quarterId=" + quarterId + ", state='"
+                + state + '\'' + ", objectType='" + objectType + '\'' + ", connectionItem='" + connectionItem + '\''
+                + ", refId=" + refId + ", refType='" + refType + '\'' + '}';
     }
 
     public static final class Builder {
-        private Long uniqueId;
+        private String uniqueId;
         private Long id;
         private String title;
         private Long teamId;
@@ -173,7 +173,7 @@ public class AlignmentView {
         public Builder() {
         }
 
-        public Builder withUniqueId(Long val) {
+        public Builder withUniqueId(String val) {
             uniqueId = val;
             return this;
         }

@@ -13,3 +13,46 @@
 .puzzle-logo {
   filter: invert(38%) sepia(31%) saturate(216%) hue-rotate(167deg) brightness(96%) contrast(85%);
 }
+
+.active {
+  border-left: #909090 1px solid;
+  border-top: #909090 1px solid;
+  border-right: #909090 1px solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: white;
+  color: black;
+}
+
+.non-active {
+  color: #9c9c9c;
+  border-bottom: #909090 1px solid;
+}
+
+.tab-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 39px;
+  margin-bottom: 16px;
+}
+
+.buffer {
+  border-bottom: #909090 1px solid;
+}
+
+.tabfocus {
+  outline: none;
+  &:focus-visible {
+    border-radius: 5px;
+    border: 2px solid #1a4e83;
+  }
+}
+
+.overview {
+  width: 87px;
+}
+
+.diagram {
+  width: 100px;
+}

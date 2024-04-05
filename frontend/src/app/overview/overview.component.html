@@ -43,6 +43,6 @@
   </div>
 
   <ng-template #diagram>
-    <h1>Test</h1>
+    <app-diagram [alignmentData]="(alignmentData$ | async) || emptyAlignmentList"></app-diagram>
   </ng-template>
 </div>

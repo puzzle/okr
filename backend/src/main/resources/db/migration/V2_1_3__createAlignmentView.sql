@@ -1,7 +1,7 @@
 DROP VIEW IF EXISTS alignment_view;
 CREATE VIEW alignment_view AS
 SELECT
-    concat(oa.id, coalesce(a.target_objective_id, a.target_key_result_id),'S',a.alignment_type) as unique_id,
+    concat(oa.id, coalesce(a.target_objective_id, a.target_key_result_id),'S','objective',a.alignment_type) as unique_id,
     oa.id as id,
     oa.title as title,
     ott.id as team_id,
@@ -19,7 +19,7 @@ FROM alignment a
 UNION
 
 SELECT
-    concat(ot.id, a.aligned_objective_id,'T','objective') as unique_id,
+    concat(ot.id, a.aligned_objective_id,'T','objective','objective') as unique_id,
     ot.id as id,
     ot.title as title,
     ott.id as team_id,
@@ -38,7 +38,7 @@ where alignment_type = 'objective'
 UNION
 
 SELECT
-    concat(krt.id, a.aligned_objective_id,'T','keyResult') as unique_id,
+    concat(krt.id, a.aligned_objective_id,'T','keyResult','keyResult') as unique_id,
     krt.id as id,
     krt.title as title,
     ott.id as team_id,

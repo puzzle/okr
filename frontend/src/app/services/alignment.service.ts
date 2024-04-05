@@ -17,6 +17,6 @@ export class AlignmentService {
       objectiveQuery: objectiveQuery,
     });
 
-    return this.httpClient.get<AlignmentLists>(`/api/v2/alignments/alignments`, { params: params });
+    return this.httpClient.get<AlignmentLists>(`/api/v2/alignments/alignmentLists`, { params: params });
   }
 }

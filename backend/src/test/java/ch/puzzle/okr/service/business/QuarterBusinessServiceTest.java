@@ -92,6 +92,16 @@ class QuarterBusinessServiceTest {
         verify(quarterPersistenceService, never()).save(any());
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = { 3, 6, 9, 12 })
+    void shouldGenerateQuarterIfLastMonth(int month) {
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
+
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
+        quarterBusinessService.scheduledGenerationQuarters();
+        verify(quarterPersistenceService, times(1)).save(any());
+    }
+
     private static Stream<Arguments> generateQuarterParams() {
         return Stream.of(Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 3), "GJ 30/31-Q1"),
                 Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 9), "GJ 30/31-Q3"),
@@ -108,8 +118,11 @@ class QuarterBusinessServiceTest {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", quarterStart);
         ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", quarterFormat);
 
-        LocalDate expectedStart = currentYearMonth.plusMonths(4).atDay(1);
-        LocalDate expectedEnd = currentYearMonth.plusMonths(6).atEndOfMonth();
+        int monthsToNextQuarterStart = 4;
+        LocalDate expectedStart = currentYearMonth.plusMonths(monthsToNextQuarterStart).atDay(1);
+
+        int monthsToNextQuarterEnd = 6;
+        LocalDate expectedEnd = currentYearMonth.plusMonths(monthsToNextQuarterEnd).atEndOfMonth();
 
         Quarter expectedQuarter = Quarter.Builder.builder().withId(null).withLabel(expectedLabel)
                 .withStartDate(expectedStart).withEndDate(expectedEnd).build();

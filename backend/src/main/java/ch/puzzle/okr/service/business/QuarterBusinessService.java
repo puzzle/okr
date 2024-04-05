@@ -61,15 +61,18 @@ public class QuarterBusinessService {
     }
 
     private String createQuarterLabel(YearMonth startOfQuarter, int quarter) {
-        // Get Start of current business year
-        // Subtract months based on the quarter we are in
-        // i.e. quarter=2, subtract (2 - 1) * 3 = 3 Months to get start
-        int yearStart = startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
+        int yearStart = getStartOfBusinessYear(startOfQuarter, quarter);
         int yearEnd = yearStart + 1;
 
         return StringUtils.replaceEach(quarterFormat, new String[] { "xxxx", "yyyy", "xx", "yy", "zz" },
                 new String[] { String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
                         shortenYear(yearEnd), String.valueOf(quarter) });
+    }
+
+    private int getStartOfBusinessYear(YearMonth startOfQuarter, int quarter) {
+        // Subtract the amount of months, based on the quarter we are in
+        // i.e. quarter=2, subtract (2 - 1) * 3 = 3 Months to get start
+        return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
     private void generateQuarter(LocalDateTime start, String label) {
@@ -80,22 +83,25 @@ public class QuarterBusinessService {
         quarterPersistenceService.save(quarter);
     }
 
-    public YearMonth getCurrentYearMonth() {
+    private boolean inLastMonthOfQuarter(int currentQuarter, int nextQuarter) {
+        // If the quarter 4 months in the future and the current are exactly 2 apart,
+        // we are in the final month of the current quarter. This works for all 4 cases:
+        // 1 -> 3 | 2 -> 4 | 3 -> 1 | 4 -> 2
+        return Math.abs(nextQuarter - currentQuarter) == 2;
+    }
+
+    YearMonth getCurrentYearMonth() {
         return YearMonth.now();
     }
 
-    public Map<Integer, Integer> generateQuarters() {
+    Map<Integer, Integer> generateQuarters() {
         Map<Integer, Integer> quarters = new HashMap<>();
-        int quarterIndex = quarterStart - 1;
+        int quarterIndexZeroBased = quarterStart - 1;
         for (int i = 0; i < 12; i++) {
-            // Get the index of the current month based on quarterStart
-            int monthIndex = (i + quarterIndex) % 12;
-            // Get the quarter (three months), +1 since we don't want to start with 0
-            int quarter = (i / 3) + 1;
-            // Return the real month
-            quarters.put(monthIndex + 1, quarter);
+            int monthIndexZeroBased = (i + quarterIndexZeroBased) % 12;
+            int quarterZeroBased = i / 3;
+            quarters.put(monthIndexZeroBased + 1, quarterZeroBased + 1);
         }
-
         return quarters;
     }
 
@@ -103,18 +109,16 @@ public class QuarterBusinessService {
     public void scheduledGenerationQuarters() {
         Map<Integer, Integer> quarters = generateQuarters();
         YearMonth currentYearMonth = getCurrentYearMonth();
-        YearMonth yearMonthToGenerate = currentYearMonth.plusMonths(4);
+        YearMonth nextQuarterYearMonth = currentYearMonth.plusMonths(4);
 
         int currentQuarter = quarters.get(currentYearMonth.getMonthValue());
-        int nextQuarter = quarters.get(yearMonthToGenerate.getMonthValue());
+        int nextQuarter = quarters.get(nextQuarterYearMonth.getMonthValue());
 
         // If we are in the last month of a quarter, generate the next quarter
-        // If the quarter 4 months in the future and the current are exactly 2 apart, this is the case
-        // 1 -> 3, 2 -> 4, 3 -> 1, 4 -> 2
-        if (Math.abs(nextQuarter - currentQuarter) == 2) {
+        if (inLastMonthOfQuarter(currentQuarter, nextQuarter)) {
             logger.info("Generated quarters on last day of month");
-            String label = createQuarterLabel(yearMonthToGenerate, nextQuarter);
-            generateQuarter(yearMonthToGenerate.atDay(1).atStartOfDay(), label);
+            String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
+            generateQuarter(nextQuarterYearMonth.atDay(1).atStartOfDay(), label);
         }
     }
 }

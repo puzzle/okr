@@ -28,6 +28,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   overviewPadding: Subject<number> = new Subject();
+  isOverview: boolean = true;
 
   backgroundLogoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
 
@@ -99,5 +100,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
+  }
+
+  switchPage(input: string) {
+    if (input == 'diagram') {
+      this.isOverview = false;
+    } else {
+      this.isOverview = true;
+      this.loadOverviewWithParams();
+    }
   }
 }

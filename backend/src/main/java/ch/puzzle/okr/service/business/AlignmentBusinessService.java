@@ -1,6 +1,9 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.dto.alignment.AlignmentConnectionDto;
+import ch.puzzle.okr.dto.alignment.AlignmentLists;
+import ch.puzzle.okr.dto.alignment.AlignmentObjectDto;
 import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -159,17 +162,62 @@ public class AlignmentBusinessService {
         alignmentPersistenceService.deleteById(alignmentId);
     }
 
-    public List<AlignmentView> getAlignmentsByFilters(Long quarterFilter, List<Long> teamFilter,
-            String objectiveFilter) {
+    public AlignmentLists getAlignmentsByFilters(Long quarterFilter, List<Long> teamFilter, String objectiveFilter) {
         alignmentValidationService.validateOnAlignmentGet(quarterFilter, teamFilter);
+
+        List<AlignmentView> targetAlignmentList = new ArrayList<>();
+        List<AlignmentConnectionDto> alignmentConnectionDtoList = new ArrayList<>();
+        List<AlignmentObjectDto> alignmentObjectDtoList = new ArrayList<>();
 
         List<AlignmentView> alignmentViewList = alignmentViewPersistenceService
                 .getAlignmentViewListByQuarterId(quarterFilter);
         DividedAlignmentViewLists dividedAlignmentViewLists = filterAlignmentViews(alignmentViewList, teamFilter,
                 objectiveFilter);
 
-        return alignmentViewList;
+        List<AlignmentView> correctAlignments = dividedAlignmentViewLists.correctAlignments();
+        List<AlignmentView> wrongAlignments = dividedAlignmentViewLists.wrongAlignments();
 
+        // If counterpart of the correct Alignment is in wrongAlignmentList, take it back
+        correctAlignments.forEach(alignment -> {
+            Optional<AlignmentView> matchingObject = wrongAlignments.stream()
+                    .filter(view -> Objects.equals(view.getId(), alignment.getRefId())
+                            && Objects.equals(view.getObjectType(), alignment.getRefType())
+                            && Objects.equals(view.getRefId(), alignment.getId()))
+                    .findFirst();
+
+            if (matchingObject.isPresent()) {
+                AlignmentView alignmentView = matchingObject.get();
+                targetAlignmentList.add(alignmentView);
+            }
+        });
+
+        // Create a new list because correctAlignments has a fixed length and targetAlignmentList can't be added
+        List<AlignmentView> finalList = new ArrayList<>(correctAlignments);
+        if (!targetAlignmentList.isEmpty()) {
+            finalList.addAll(targetAlignmentList);
+        }
+
+        // Create ConnectionDtoList for every connection
+        finalList.forEach(alignmentView -> {
+            if (Objects.equals(alignmentView.getConnectionItem(), "source")) {
+                if (Objects.equals(alignmentView.getRefType(), "objective")) {
+                    alignmentConnectionDtoList
+                            .add(new AlignmentConnectionDto(alignmentView.getId(), alignmentView.getRefId(), null));
+                } else {
+                    alignmentConnectionDtoList
+                            .add(new AlignmentConnectionDto(alignmentView.getId(), null, alignmentView.getRefId()));
+                }
+            }
+        });
+
+        finalList.forEach(alignmentView -> alignmentObjectDtoList
+                .add(new AlignmentObjectDto(alignmentView.getId(), alignmentView.getTitle(),
+                        alignmentView.getTeamName(), alignmentView.getState(), alignmentView.getObjectType())));
+
+        // Remove duplicated items
+        List<AlignmentObjectDto> alignmentObjectDtos = alignmentObjectDtoList.stream().distinct().toList();
+
+        return new AlignmentLists(alignmentObjectDtos, alignmentConnectionDtoList);
     }
 
     protected DividedAlignmentViewLists filterAlignmentViews(List<AlignmentView> alignmentViewList,

@@ -165,24 +165,55 @@ public class AlignmentBusinessService {
     public AlignmentLists getAlignmentsByFilters(Long quarterFilter, List<Long> teamFilter, String objectiveFilter) {
         alignmentValidationService.validateOnAlignmentGet(quarterFilter, teamFilter);
 
-        List<AlignmentView> targetAlignmentList = new ArrayList<>();
-        List<AlignmentConnectionDto> alignmentConnectionDtoList = new ArrayList<>();
-        List<AlignmentObjectDto> alignmentObjectDtoList = new ArrayList<>();
-
         List<AlignmentView> alignmentViewList = alignmentViewPersistenceService
                 .getAlignmentViewListByQuarterId(quarterFilter);
         DividedAlignmentViewLists dividedAlignmentViewLists = filterAlignmentViews(alignmentViewList, teamFilter,
                 objectiveFilter);
 
-        List<AlignmentView> correctAlignments = dividedAlignmentViewLists.correctAlignments();
-        List<AlignmentView> wrongAlignments = dividedAlignmentViewLists.wrongAlignments();
+        List<AlignmentView> finalList = getAlignmentCounterpart(dividedAlignmentViewLists);
+
+        return generateAlignmentLists(finalList);
+    }
+
+    protected AlignmentLists generateAlignmentLists(List<AlignmentView> alignmentViewList) {
+        List<AlignmentConnectionDto> alignmentConnectionDtoList = new ArrayList<>();
+        List<AlignmentObjectDto> alignmentObjectDtoList = new ArrayList<>();
+
+        // Create ConnectionDtoList for every connection
+        alignmentViewList.forEach(alignmentView -> {
+            if (Objects.equals(alignmentView.getConnectionItem(), "source")) {
+                if (Objects.equals(alignmentView.getRefType(), "objective")) {
+                    alignmentConnectionDtoList
+                            .add(new AlignmentConnectionDto(alignmentView.getId(), alignmentView.getRefId(), null));
+                } else {
+                    alignmentConnectionDtoList
+                            .add(new AlignmentConnectionDto(alignmentView.getId(), null, alignmentView.getRefId()));
+                }
+            }
+        });
+
+        alignmentViewList.forEach(alignmentView -> alignmentObjectDtoList
+                .add(new AlignmentObjectDto(alignmentView.getId(), alignmentView.getTitle(),
+                        alignmentView.getTeamName(), alignmentView.getState(), alignmentView.getObjectType())));
+
+        // Remove duplicated items
+        List<AlignmentObjectDto> alignmentObjectDtos = alignmentObjectDtoList.stream().distinct().toList();
+
+        return new AlignmentLists(alignmentObjectDtos, alignmentConnectionDtoList);
+    }
+
+    protected List<AlignmentView> getAlignmentCounterpart(DividedAlignmentViewLists alignmentViewLists) {
+        List<AlignmentView> correctAlignments = alignmentViewLists.correctAlignments();
+        List<AlignmentView> wrongAlignments = alignmentViewLists.wrongAlignments();
+        List<AlignmentView> targetAlignmentList = new ArrayList<>();
 
         // If counterpart of the correct Alignment is in wrongAlignmentList, take it back
         correctAlignments.forEach(alignment -> {
             Optional<AlignmentView> matchingObject = wrongAlignments.stream()
                     .filter(view -> Objects.equals(view.getId(), alignment.getRefId())
                             && Objects.equals(view.getObjectType(), alignment.getRefType())
-                            && Objects.equals(view.getRefId(), alignment.getId()))
+                            && Objects.equals(view.getRefId(), alignment.getId())
+                            && !Objects.equals(view.getConnectionItem(), alignment.getConnectionItem()))
                     .findFirst();
 
             if (matchingObject.isPresent()) {
@@ -196,28 +227,7 @@ public class AlignmentBusinessService {
         if (!targetAlignmentList.isEmpty()) {
             finalList.addAll(targetAlignmentList);
         }
-
-        // Create ConnectionDtoList for every connection
-        finalList.forEach(alignmentView -> {
-            if (Objects.equals(alignmentView.getConnectionItem(), "source")) {
-                if (Objects.equals(alignmentView.getRefType(), "objective")) {
-                    alignmentConnectionDtoList
-                            .add(new AlignmentConnectionDto(alignmentView.getId(), alignmentView.getRefId(), null));
-                } else {
-                    alignmentConnectionDtoList
-                            .add(new AlignmentConnectionDto(alignmentView.getId(), null, alignmentView.getRefId()));
-                }
-            }
-        });
-
-        finalList.forEach(alignmentView -> alignmentObjectDtoList
-                .add(new AlignmentObjectDto(alignmentView.getId(), alignmentView.getTitle(),
-                        alignmentView.getTeamName(), alignmentView.getState(), alignmentView.getObjectType())));
-
-        // Remove duplicated items
-        List<AlignmentObjectDto> alignmentObjectDtos = alignmentObjectDtoList.stream().distinct().toList();
-
-        return new AlignmentLists(alignmentObjectDtos, alignmentConnectionDtoList);
+        return finalList;
     }
 
     protected DividedAlignmentViewLists filterAlignmentViews(List<AlignmentView> alignmentViewList,

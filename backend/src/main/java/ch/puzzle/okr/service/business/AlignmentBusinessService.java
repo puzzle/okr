@@ -212,7 +212,8 @@ public class AlignmentBusinessService {
             Optional<AlignmentView> matchingObject = wrongAlignments.stream()
                     .filter(view -> Objects.equals(view.getId(), alignment.getRefId())
                             && Objects.equals(view.getObjectType(), alignment.getRefType())
-                            && Objects.equals(view.getRefId(), alignment.getId()))
+                            && Objects.equals(view.getRefId(), alignment.getId())
+                            && Objects.equals(view.getRefType(), alignment.getObjectType()))
                     .findFirst();
 
             if (matchingObject.isPresent()) {

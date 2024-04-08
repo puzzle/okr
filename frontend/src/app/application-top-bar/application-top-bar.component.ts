@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, map, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
@@ -15,7 +15,7 @@ import { isMobileDevice } from '../shared/common';
   styleUrls: ['./application-top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApplicationTopBarComponent implements OnInit {
+export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   username: ReplaySubject<string> = new ReplaySubject();
   menuIsOpen = false;
 
@@ -23,6 +23,7 @@ export class ApplicationTopBarComponent implements OnInit {
   hasAdminAccess!: ReplaySubject<boolean>;
   logoSrc$ = new BehaviorSubject<String>('assets/images/okr-logo.svg');
   private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
+  private subscription?: Subscription;
 
   constructor(
     private oauthService: OAuthService,
@@ -33,19 +34,21 @@ export class ApplicationTopBarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.configService.config$
-      .pipe(
-        map((config) => {
-          if (config.logo) {
-            this.logoSrc$.next(config.logo);
-          }
-        }),
-      )
-      .subscribe();
+    this.subscription = this.configService.config$.subscribe({
+      next: (config) => {
+        if (config.logo) {
+          this.logoSrc$.next(config.logo);
+        }
+      },
+    });
 
     if (this.oauthService.hasValidIdToken()) {
       this.username.next(this.oauthService.getIdentityClaims()['name']);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 
   logOut() {

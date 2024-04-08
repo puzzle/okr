@@ -40,3 +40,20 @@ For generating the coverage of our frontend specs (jest), you can use following 
 
 This generates the coverage, you can see it in `frontend/coverage/lcov-report/index.html`.
 Open the html file in browser and you get a beautiful overview
+
+## Cypress Tests
+
+- local setup
+  - start local Docker `docker-compose up`
+  - start local Server: `OkrApplication-E2E`
+  - start local Client: `npm run start`
+- run selected Tests
+  - npm run `npm run cypress:open`
+  - in Cypress App, select `E2E Testing` and `Chrome` as Browser
+- run all tests
+  - npm run `npm run cypress:run`
+  - in Cypress App, select `E2E Testing` and `Chrome` as Browser
+- in case of failing Tests:
+  - stop and restart local Server
+  - stop and restart local Client
+  - re-run Cypress Tests

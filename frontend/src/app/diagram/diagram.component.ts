@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { BehaviorSubject, forkJoin, map } from 'rxjs';
 import { AlignmentLists } from '../shared/types/model/AlignmentLists';
 import cytoscape from 'cytoscape';
@@ -20,19 +20,23 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { calculateCurrentPercentage } from '../shared/common';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
   styleUrl: './diagram.component.scss',
 })
-export class DiagramComponent implements AfterViewInit {
+export class DiagramComponent implements AfterViewInit, OnDestroy {
   private alignmentData$ = new BehaviorSubject<AlignmentLists>({} as AlignmentLists);
   cy!: cytoscape.Core;
   diagramData: any[] = [];
   noDiagramData: boolean = true;
 
-  constructor(private keyResultService: KeyresultService) {}
+  constructor(
+    private keyResultService: KeyresultService,
+    private router: Router,
+  ) {}
 
   @Input()
   get alignmentData(): BehaviorSubject<AlignmentLists> {
@@ -48,6 +52,14 @@ export class DiagramComponent implements AfterViewInit {
       this.diagramData = [];
       this.prepareDiagramData(alignmentData);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.cy) {
+      this.cy.edges().remove();
+      this.cy.nodes().remove();
+      this.cy.removeAllListeners();
+    }
   }
 
   generateDiagram(): void {
@@ -89,6 +101,30 @@ export class DiagramComponent implements AfterViewInit {
       layout: {
         name: 'cose',
       },
+    });
+
+    this.cy.on('tap', 'node', (evt: cytoscape.EventObject) => {
+      let node = evt.target;
+      node.style({
+        'border-width': 0,
+      });
+
+      let type: string = node.id().charAt(0) == 'O' ? 'objective' : 'keyresult';
+      this.router.navigate([type.toLowerCase(), node.id().substring(2)]);
+    });
+
+    this.cy.on('mouseover', 'node', (evt: cytoscape.EventObject) => {
+      let node = evt.target;
+      node.style({
+        'border-color': '#1E5A96',
+        'border-width': 2,
+      });
+    });
+
+    this.cy.on('mouseout', 'node', (evt: cytoscape.EventObject) => {
+      evt.target.style({
+        'border-width': 0,
+      });
     });
   }
 

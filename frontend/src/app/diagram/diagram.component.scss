@@ -3,3 +3,7 @@
   width: calc(100vw - 60px);
   height: calc(100vh - 300px);
 }
+
+.puzzle-logo {
+  filter: invert(38%) sepia(31%) saturate(216%) hue-rotate(167deg) brightness(96%) contrast(85%);
+}

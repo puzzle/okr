@@ -21,7 +21,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
 
   @Input()
   hasAdminAccess!: ReplaySubject<boolean>;
-  logoSrc$ = new BehaviorSubject<String>('assets/images/okr-logo.svg');
+  logoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
   private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
   private subscription?: Subscription;
 

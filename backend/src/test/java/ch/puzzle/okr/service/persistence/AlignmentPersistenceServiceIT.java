@@ -243,13 +243,13 @@ class AlignmentPersistenceServiceIT {
     }
 
     private void assertAlignment(ObjectiveAlignment objectiveAlignment) {
-        assertEquals(1L, objectiveAlignment.getId());
+        assertEquals(4L, objectiveAlignment.getId());
         assertEquals(3L, objectiveAlignment.getAlignmentTarget().getId());
-        assertEquals(4L, objectiveAlignment.getAlignedObjective().getId());
+        assertEquals(8L, objectiveAlignment.getAlignedObjective().getId());
     }
 
     private void assertAlignment(KeyResultAlignment keyResultAlignment) {
-        assertEquals(2L, keyResultAlignment.getId());
+        assertEquals(1L, keyResultAlignment.getId());
         assertEquals(8L, keyResultAlignment.getAlignmentTarget().getId());
         assertEquals(9L, keyResultAlignment.getAlignedObjective().getId());
     }

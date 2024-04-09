@@ -38,7 +38,9 @@ export class QuarterFilterComponent implements OnInit {
         this.changeDisplayedQuarter();
 
         if (quarterQuery === undefined) {
-          this.refreshDataService.quarterFilterReady.next();
+          this.router
+            .navigate([], { queryParams: { quarter: this.quarterId } })
+            .then(() => this.refreshDataService.quarterFilterReady.next());
         }
       }
       const quarterLabel = quarters.find((e) => e.id == this.currentQuarterId)?.label || '';

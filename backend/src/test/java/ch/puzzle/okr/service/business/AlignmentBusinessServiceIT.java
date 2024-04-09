@@ -96,7 +96,7 @@ class AlignmentBusinessServiceIT {
     }
 
     @Test
-    void shouldReturnEmptyAlignmentDataWhenAlignments() {
+    void shouldReturnEmptyAlignmentDataWhenNoAlignments() {
         AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(3L, List.of(5L, 6L), "");
 
         assertEquals(0, alignmentLists.alignmentObjectDtoList().size());

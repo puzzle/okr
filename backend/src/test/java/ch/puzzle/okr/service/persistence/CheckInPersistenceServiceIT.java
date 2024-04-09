@@ -108,7 +108,7 @@ class CheckInPersistenceServiceIT {
     void getAllCheckInShouldReturnListOfAllCheckIns() {
         List<CheckIn> checkIns = checkInPersistenceService.findAll();
 
-        assertEquals(19, checkIns.size());
+        assertEquals(20, checkIns.size());
     }
 
     @Test

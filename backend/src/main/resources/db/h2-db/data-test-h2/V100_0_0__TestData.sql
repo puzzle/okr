@@ -149,20 +149,18 @@ values  (1,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
         (40,1,'','2024-04-04 14:10:33.377726','','2024-04-04 14:10:33.377739',30000,1,41,7,'metric',null);
 
 insert into alignment (id, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id, version) values
-       (1, 4, 'objective', null, 3, 1),
-       (2, 9, 'keyResult', 8, null, 1),
-       (3, 4, 'objective', null, 6, 0),
-       (4, 3, 'objective', null, 6, 0),
-       (5, 8, 'objective', null, 3, 0),
-       (6, 9, 'keyResult', 8, null, 0),
-       (7, 10, 'keyResult', 5, null, 0),
-       (8, 5, 'keyResult', 4, null, 0),
-       (9, 6, 'keyResult', 3, null, 0),
-       (10, 41, 'objective', null, 40, 0),
-       (11, 42, 'objective', null, 40, 0),
-       (12, 43, 'keyResult', 40, null, 0),
-       (13, 44, 'objective', null, 42, 0),
-       (14, 45, 'keyResult', 41, null, 0);
+       (1, 9, 'keyResult', 8, null, 1),
+       (2, 4, 'objective', null, 6, 0),
+       (3, 3, 'objective', null, 6, 0),
+       (4, 8, 'objective', null, 3, 0),
+       (5, 10, 'keyResult', 5, null, 0),
+       (6, 5, 'keyResult', 4, null, 0),
+       (7, 6, 'keyResult', 3, null, 0),
+       (8, 41, 'objective', null, 40, 0),
+       (9, 42, 'objective', null, 40, 0),
+       (10, 43, 'keyResult', 40, null, 0),
+       (11, 44, 'objective', null, 42, 0),
+       (12, 45, 'keyResult', 41, null, 0);
 
 insert into completed (id, version, objective_id, comment) values
        (1,1, 4, 'Das hat geklappt'),

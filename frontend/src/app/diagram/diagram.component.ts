@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
-import { BehaviorSubject, forkJoin, map } from 'rxjs';
+import { forkJoin, map, Observable, Subject } from 'rxjs';
 import { AlignmentLists } from '../shared/types/model/AlignmentLists';
 import cytoscape from 'cytoscape';
 import {
@@ -28,10 +28,10 @@ import { Router } from '@angular/router';
   styleUrl: './diagram.component.scss',
 })
 export class DiagramComponent implements AfterViewInit, OnDestroy {
-  private alignmentData$ = new BehaviorSubject<AlignmentLists>({} as AlignmentLists);
+  private alignmentData$ = new Subject<AlignmentLists>();
   cy!: cytoscape.Core;
   diagramData: any[] = [];
-  noDiagramData: boolean = true;
+  emptyDiagramData: boolean = false;
 
   constructor(
     private keyResultService: KeyresultService,
@@ -39,7 +39,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   @Input()
-  get alignmentData(): BehaviorSubject<AlignmentLists> {
+  get alignmentData(): Subject<AlignmentLists> {
     return this.alignmentData$;
   }
 
@@ -50,16 +50,13 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.alignmentData.subscribe((alignmentData: AlignmentLists): void => {
       this.diagramData = [];
+      this.cleanUpDiagram();
       this.prepareDiagramData(alignmentData);
     });
   }
 
   ngOnDestroy() {
-    if (this.cy) {
-      this.cy.edges().remove();
-      this.cy.nodes().remove();
-      this.cy.removeAllListeners();
-    }
+    this.cleanUpDiagram();
   }
 
   generateDiagram(): void {
@@ -130,10 +127,9 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   prepareDiagramData(alignmentData: AlignmentLists): void {
     if (alignmentData.alignmentObjectDtoList.length == 0) {
-      this.diagramData = [];
-      this.noDiagramData = true;
+      this.emptyDiagramData = true;
     } else {
-      this.noDiagramData = false;
+      this.emptyDiagramData = false;
       this.generateElements(alignmentData);
     }
   }
@@ -143,17 +139,22 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     let diagramElements: any[] = [];
     alignmentData.alignmentObjectDtoList.forEach((alignmentObject) => {
       if (alignmentObject.objectType == 'objective') {
-        let objectiveTitle = this.replaceUmlauts(alignmentObject.objectTitle);
-        let teamTitle = this.replaceUmlauts(alignmentObject.objectTeamName);
-        let element = {
-          data: {
-            id: 'Ob' + alignmentObject.objectId,
-          },
-          style: {
-            'background-image': this.generateObjectiveSVG(objectiveTitle, teamTitle, alignmentObject.objectState!),
-          },
-        };
-        diagramElements.push(element);
+        let observable = new Observable((observer) => {
+          let objectiveTitle = this.replaceUmlauts(alignmentObject.objectTitle);
+          let teamTitle = this.replaceUmlauts(alignmentObject.objectTeamName);
+          let element = {
+            data: {
+              id: 'Ob' + alignmentObject.objectId,
+            },
+            style: {
+              'background-image': this.generateObjectiveSVG(objectiveTitle, teamTitle, alignmentObject.objectState!),
+            },
+          };
+          diagramElements.push(element);
+          observer.next(element);
+          observer.complete();
+        });
+        observableArray.push(observable);
       } else {
         let observable = this.keyResultService.getFullKeyResult(alignmentObject.objectId).pipe(
           map((keyResult: KeyResult) => {
@@ -274,6 +275,14 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
         return generateKeyResultSVG(title, teamName, getStretchIcon, '#1E5A96', 'white');
       default:
         return generateNeutralKeyResultSVG(title, teamName);
+    }
+  }
+
+  cleanUpDiagram() {
+    if (this.cy) {
+      this.cy.edges().remove();
+      this.cy.nodes().remove();
+      this.cy.removeAllListeners();
     }
   }
 }

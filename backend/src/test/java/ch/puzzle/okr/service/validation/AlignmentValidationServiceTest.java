@@ -54,6 +54,7 @@ class AlignmentValidationServiceTest {
             .withTargetObjective(objective1).build();
     KeyResultAlignment keyResultAlignment = KeyResultAlignment.Builder.builder().withId(6L)
             .withAlignedObjective(objective3).withTargetKeyResult(metricKeyResult).build();
+    List<Long> emptyLongList = List.of();
 
     @BeforeEach
     void setUp() {
@@ -424,4 +425,40 @@ class AlignmentValidationServiceTest {
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Alignment"))), exception.getErrors());
     }
 
+    @Test
+    void validateOnAlignmentGetShouldBeSuccessfulWhenQuarterIdAndTeamFilterSet() {
+        validator.validateOnAlignmentGet(2L, List.of(4L, 5L));
+
+        verify(validator, times(1)).validateOnAlignmentGet(2L, List.of(4L, 5L));
+    }
+
+    @Test
+    void validateOnAlignmentGetShouldThrowExceptionWhenQuarterIdIsNull() {
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnAlignmentGet(null, emptyLongList));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertEquals("ATTRIBUTE_NOT_SET", exception.getReason());
+        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("quarterId"))), exception.getErrors());
+    }
+
+    @Test
+    void validateOnAlignmentGetShouldThrowExceptionWhenTeamFilterIsNull() {
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnAlignmentGet(2L, null));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertEquals("ATTRIBUTE_NOT_SET", exception.getReason());
+        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("teamFilter"))), exception.getErrors());
+    }
+
+    @Test
+    void validateOnAlignmentGetShouldThrowExceptionWhenTeamFilterIsEmpty() {
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnAlignmentGet(2L, emptyLongList));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertEquals("ATTRIBUTE_NOT_SET", exception.getReason());
+        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("teamFilter"))), exception.getErrors());
+    }
 }

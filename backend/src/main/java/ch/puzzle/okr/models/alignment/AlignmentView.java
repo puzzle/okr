@@ -170,7 +170,11 @@ public class AlignmentView {
         private Long refId;
         private String refType;
 
-        public Builder() {
+        private Builder() {
+        }
+
+        public static AlignmentView.Builder builder() {
+            return new AlignmentView.Builder();
         }
 
         public Builder withUniqueId(String val) {

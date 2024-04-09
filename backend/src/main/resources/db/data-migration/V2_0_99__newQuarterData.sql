@@ -34,13 +34,13 @@ values (19, 1, 'Lorem Ipsum sit amet diri guru humu saguri alam apmach helum di 
         'Wing Wang Tala Tala Ting Tang', 1, 7, 6, 'DRAFT', null, '2023-10-02 09:08:40.000000'),
        (21, 1, 'Lorem Ipsum sit amet diri guru humu saguri alam apmach helum di gau', '2023-10-02 13:07:09.000000',
         'Ting Tang Wala Wala Bing Bang', 1, 7, 6, 'DRAFT', null, '2023-10-02 09:07:39.000000'),
-       (40,1,'', '2024-04-04 13:45:13.000000','Wir wollen eine gute Mitarbeiterzufriedenheit.', 1, 1, 5, 'ONGOING', null,'2024-04-04 13:44:52.000000'),
-       (41,1,'','2024-04-04 13:59:06.511620','Das Projekt generiert 10000 CHF Umsatz',1,1,5,'ONGOING',null,'2024-04-04 13:59:06.523496'),
-       (42,1,'','2024-04-04 13:59:40.835896','Die Lehrlinge sollen Freude haben',1,1,4,'ONGOING',null,'2024-04-04 13:59:40.848992'),
-       (43,1,'','2024-04-04 14:00:05.586152','Der Firmenumsatz steigt',1,1,5,'ONGOING',null,'2024-04-04 14:00:05.588509'),
-       (44,1,'','2024-04-04 14:00:28.221906','Die Members sollen gerne zur Arbeit kommen',1,1,6,'ONGOING',null,'2024-04-04 14:00:28.229058'),
-       (45,1,'','2024-04-04 14:00:47.659884','Unsere Designer äussern sich zufrieden',1,1,8,'ONGOING',null,'2024-04-04 14:00:47.664414'),
-       (46,1,'','2024-04-04 14:00:57.485887','Unsere Designer kommen gerne zur Arbeit',1,1,8,'ONGOING',null,'2024-04-04 14:00:57.494192');
+       (40,1,'', '2024-04-04 13:45:13.000000','Wir wollen eine gute Mitarbeiterzufriedenheit.', 1, 9, 5, 'ONGOING', null,'2024-04-04 13:44:52.000000'),
+       (41,1,'','2024-04-04 13:59:06.511620','Das Projekt generiert 10000 CHF Umsatz',1,9,5,'ONGOING',null,'2024-04-04 13:59:06.523496'),
+       (42,1,'','2024-04-04 13:59:40.835896','Die Lehrlinge sollen Freude haben',1,9,4,'ONGOING',null,'2024-04-04 13:59:40.848992'),
+       (43,1,'','2024-04-04 14:00:05.586152','Der Firmenumsatz steigt',1,9,5,'ONGOING',null,'2024-04-04 14:00:05.588509'),
+       (44,1,'','2024-04-04 14:00:28.221906','Die Members sollen gerne zur Arbeit kommen',1,9,6,'ONGOING',null,'2024-04-04 14:00:28.229058'),
+       (45,1,'','2024-04-04 14:00:47.659884','Unsere Designer äussern sich zufrieden',1,9,8,'ONGOING',null,'2024-04-04 14:00:47.664414'),
+       (46,1,'','2024-04-04 14:00:57.485887','Unsere Designer kommen gerne zur Arbeit',1,9,8,'ONGOING',null,'2024-04-04 14:00:57.494192');
 
 insert into key_result (id, version, baseline, description, modified_on, stretch_goal, title, created_by_id,
                         objective_id, owner_id, unit, key_result_type, created_on, commit_zone, target_zone,

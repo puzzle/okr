@@ -493,7 +493,7 @@ class AlignmentBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyCorrectListWhenNoMatchingObjectiveSearch() {
+    void shouldCorrectFilterWhenNoMatchingObjectiveSearch() {
         AlignmentBusinessService.DividedAlignmentViewLists dividedAlignmentViewLists = alignmentBusinessService
                 .filterAlignmentViews(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4),
                         List.of(4L, 6L, 5L), "verk");

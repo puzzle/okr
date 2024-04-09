@@ -2,15 +2,18 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.dto.alignment.AlignmentLists;
 import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.alignment.Alignment;
+import ch.puzzle.okr.models.alignment.AlignmentView;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
+import ch.puzzle.okr.service.persistence.AlignmentViewPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.AlignmentValidationService;
@@ -37,6 +40,8 @@ class AlignmentBusinessServiceTest {
     @Mock
     AlignmentPersistenceService alignmentPersistenceService;
     @Mock
+    AlignmentViewPersistenceService alignmentViewPersistenceService;
+    @Mock
     AlignmentValidationService validator;
     @InjectMocks
     private AlignmentBusinessService alignmentBusinessService;
@@ -59,6 +64,23 @@ class AlignmentBusinessServiceTest {
             .withAlignedObjective(objective2).withTargetObjective(objective1).build();
     KeyResultAlignment keyResultAlignment = KeyResultAlignment.Builder.builder().withId(6L)
             .withAlignedObjective(objective3).withTargetKeyResult(metricKeyResult).build();
+
+    AlignmentView alignmentView1 = AlignmentView.Builder.builder().withUniqueId("45TkeyResultkeyResult").withId(4L)
+            .withTitle("Antwortzeit für Supportanfragen um 33% verkürzen.").withTeamId(5L).withTeamName("Puzzle ITC")
+            .withQuarterId(2L).withObjectType("keyResult").withConnectionItem("target").withRefId(5L)
+            .withRefType("objective").build();
+    AlignmentView alignmentView2 = AlignmentView.Builder.builder().withUniqueId("54SobjectivekeyResult").withId(5L)
+            .withTitle("Wir wollen das leiseste Team bei Puzzle sein.").withTeamId(4L).withTeamName("/BBT")
+            .withQuarterId(2L).withObjectType("objective").withConnectionItem("source").withRefId(4L)
+            .withRefType("keyResult").build();
+    AlignmentView alignmentView3 = AlignmentView.Builder.builder().withUniqueId("4041Tobjectiveobjective").withId(40L)
+            .withTitle("Wir wollen eine gute Mitarbeiterzufriedenheit.").withTeamId(6L).withTeamName("LoremIpsum")
+            .withQuarterId(2L).withObjectType("objective").withConnectionItem("target").withRefId(41L)
+            .withRefType("objective").build();
+    AlignmentView alignmentView4 = AlignmentView.Builder.builder().withUniqueId("4140Sobjectiveobjective").withId(41L)
+            .withTitle("Das Projekt generiert 10000 CHF Umsatz").withTeamId(6L).withTeamName("LoremIpsum")
+            .withQuarterId(2L).withObjectType("objective").withConnectionItem("source").withRefId(40L)
+            .withRefType("objective").build();
 
     @Test
     void shouldGetTargetAlignmentIdObjective() {
@@ -260,5 +282,227 @@ class AlignmentBusinessServiceTest {
 
         // assert
         verify(alignmentPersistenceService, times(1)).deleteById(keyResultAlignment.getId());
+    }
+
+    @Test
+    void shouldReturnCorrectAlignmentData() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(4L), "");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(1, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
+        assertEquals(5L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
+        assertEquals(4L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
+        assertEquals(5L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
+        assertEquals(4L, alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
+    }
+
+    @Test
+    void shouldReturnCorrectAlignmentDataWithMultipleTeamFilter() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(4L, 6L), "");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(2, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(4, alignmentLists.alignmentObjectDtoList().size());
+        assertEquals(5L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
+        assertEquals(40L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
+        assertEquals(5L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
+        assertEquals(4L, alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
+        assertEquals(41L, alignmentLists.alignmentConnectionDtoList().get(1).alignedObjectiveId());
+        assertEquals(40L, alignmentLists.alignmentConnectionDtoList().get(1).targetObjectiveId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(1).targetKeyResultId());
+    }
+
+    @Test
+    void shouldReturnCorrectAlignmentDataWhenTeamFilterHasLimitedMatch() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(4L), "");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(1, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
+        assertEquals(5L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
+        assertEquals(4L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
+        assertEquals(5L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
+        assertEquals(4L, alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentDataWhenNoMatchingTeam() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(12L), "");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
+    }
+
+    @Test
+    void shouldReturnCorrectAlignmentDataWithObjectiveSearch() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(4L, 5L, 6L),
+                "leise");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(1, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
+        assertEquals(5L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
+        assertEquals(4L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
+        assertEquals(5L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
+        assertEquals(4L, alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentDataWhenNoMatchingObjectiveFromObjectiveSearch() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(4L, 5L, 6L),
+                "Supportanfragen");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentDataWhenNoMatchingObjectiveSearch() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(4L, 5L, 6L),
+                "wird nicht vorkommen");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentDataWhenNoAlignmentViews() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L)).thenReturn(List.of());
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(4L, 5L, 6L), "");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
+    }
+
+    @Test
+    void shouldReturnCorrectAlignmentListsWithComplexAlignments() {
+        AlignmentView alignmentView1 = AlignmentView.Builder.builder().withUniqueId("36TkeyResultkeyResult").withId(3L)
+                .withTitle("Steigern der URS um 25%").withTeamId(5L).withTeamName("Puzzle ITC").withQuarterId(2L)
+                .withObjectType("keyResult").withConnectionItem("target").withRefId(6L).withRefType("objective")
+                .build();
+        AlignmentView alignmentView2 = AlignmentView.Builder.builder().withUniqueId("63SobjectivekeyResult").withId(6L)
+                .withTitle("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.")
+                .withTeamId(4L).withTeamName("/BBT").withQuarterId(2L).withObjectType("objective")
+                .withConnectionItem("source").withRefId(3L).withRefType("keyResult").build();
+        AlignmentView alignmentView3 = AlignmentView.Builder.builder().withUniqueId("63Tobjectiveobjective").withId(6L)
+                .withTitle("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.")
+                .withTeamId(4L).withTeamName("/BBT").withQuarterId(2L).withObjectType("objective")
+                .withConnectionItem("target").withRefId(3L).withRefType("objective").build();
+        AlignmentView alignmentView4 = AlignmentView.Builder.builder().withUniqueId("36Sobjectiveobjective").withId(3L)
+                .withTitle("Wir wollen die Kundenzufriedenheit steigern").withTeamId(4L).withTeamName("/BBT")
+                .withQuarterId(2L).withObjectType("objective").withConnectionItem("source").withRefId(6L)
+                .withRefType("objective").build();
+
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, List.of(5L), "");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        assertEquals(1, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
+        assertEquals(3L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
+        assertEquals("keyResult", alignmentLists.alignmentObjectDtoList().get(0).objectType());
+        assertEquals(6L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
+        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(1).objectType());
+        assertEquals(6L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
+        assertEquals(3L, alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
+    }
+
+    @Test
+    void shouldCorrectFilterAlignmentViewListsWithAllCorrectData() {
+        AlignmentBusinessService.DividedAlignmentViewLists dividedAlignmentViewLists = alignmentBusinessService
+                .filterAlignmentViews(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4),
+                        List.of(4L, 6L, 5L), "");
+
+        assertEquals(4, dividedAlignmentViewLists.correctAlignments().size());
+        assertEquals(0, dividedAlignmentViewLists.wrongAlignments().size());
+        assertEquals(4, dividedAlignmentViewLists.correctAlignments().get(0).getId());
+        assertEquals(5, dividedAlignmentViewLists.correctAlignments().get(1).getId());
+        assertEquals(40, dividedAlignmentViewLists.correctAlignments().get(2).getId());
+        assertEquals(41, dividedAlignmentViewLists.correctAlignments().get(3).getId());
+    }
+
+    @Test
+    void shouldCorrectFilterAlignmentViewListsWithLimitedTeamFilter() {
+        AlignmentBusinessService.DividedAlignmentViewLists dividedAlignmentViewLists = alignmentBusinessService
+                .filterAlignmentViews(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4),
+                        List.of(6L), "");
+
+        assertEquals(2, dividedAlignmentViewLists.correctAlignments().size());
+        assertEquals(2, dividedAlignmentViewLists.wrongAlignments().size());
+        assertEquals(40, dividedAlignmentViewLists.correctAlignments().get(0).getId());
+        assertEquals(41, dividedAlignmentViewLists.correctAlignments().get(1).getId());
+        assertEquals(4, dividedAlignmentViewLists.wrongAlignments().get(0).getId());
+        assertEquals(5, dividedAlignmentViewLists.wrongAlignments().get(1).getId());
+    }
+
+    @Test
+    void shouldCorrectFilterAlignmentViewListsWithObjectiveSearch() {
+        AlignmentBusinessService.DividedAlignmentViewLists dividedAlignmentViewLists = alignmentBusinessService
+                .filterAlignmentViews(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4),
+                        List.of(4L, 6L, 5L), "leise");
+
+        assertEquals(1, dividedAlignmentViewLists.correctAlignments().size());
+        assertEquals(3, dividedAlignmentViewLists.wrongAlignments().size());
+        assertEquals(5, dividedAlignmentViewLists.correctAlignments().get(0).getId());
+        assertEquals(4, dividedAlignmentViewLists.wrongAlignments().get(0).getId());
+        assertEquals(40, dividedAlignmentViewLists.wrongAlignments().get(1).getId());
+        assertEquals(41, dividedAlignmentViewLists.wrongAlignments().get(2).getId());
+    }
+
+    @Test
+    void shouldReturnEmptyCorrectListWhenNoMatchingObjectiveSearch() {
+        AlignmentBusinessService.DividedAlignmentViewLists dividedAlignmentViewLists = alignmentBusinessService
+                .filterAlignmentViews(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4),
+                        List.of(4L, 6L, 5L), "verk");
+
+        assertEquals(0, dividedAlignmentViewLists.correctAlignments().size());
+        assertEquals(4, dividedAlignmentViewLists.wrongAlignments().size());
+        assertEquals(4, dividedAlignmentViewLists.wrongAlignments().get(0).getId());
+        assertEquals(5, dividedAlignmentViewLists.wrongAlignments().get(1).getId());
+        assertEquals(40, dividedAlignmentViewLists.wrongAlignments().get(2).getId());
+        assertEquals(41, dividedAlignmentViewLists.wrongAlignments().get(3).getId());
     }
 }

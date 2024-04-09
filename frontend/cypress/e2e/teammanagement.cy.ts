@@ -177,7 +177,7 @@ describe('Team management tests', () => {
 
         // save
         cy.getByTestId('invite').click();
-        cy.contains('Die Members wurden erfolgreich eingeladen');
+        cy.contains('Die Members wurden erfolgreich registriert');
         cy.contains(firstNameClaudia);
         cy.contains(firstNameStefan);
       });

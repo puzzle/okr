@@ -82,7 +82,7 @@
     },
     "USERS": {
       "PUT": "Der Member wurde erfolgreich aktualisiert.",
-      "POST": "Die Members wurden erfolgreich eingeladen"
+      "POST": "Die Members wurden erfolgreich registriert"
     }
   },
   "DIALOG_ERRORS": {

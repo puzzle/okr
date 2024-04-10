@@ -18,6 +18,9 @@ import { Action } from './types/model/Action';
 import { OrganisationState } from './types/enums/OrganisationState';
 import { Organisation } from './types/model/Organisation';
 import { Dashboard } from './types/model/Dashboard';
+import { AlignmentObject } from './types/model/AlignmentObject';
+import { AlignmentConnection } from './types/model/AlignmentConnection';
+import { AlignmentLists } from './types/model/AlignmentLists';
 import { AlignmentPossibilityObject } from './types/model/AlignmentPossibilityObject';
 import { AlignmentPossibility } from './types/model/AlignmentPossibility';
 
@@ -630,4 +633,58 @@ export const alignmentPossibility2: AlignmentPossibility = {
   teamId: 2,
   teamName: 'We are cube',
   alignmentObjects: [alignmentObject1],
+};
+
+export const alignmentObject1: AlignmentObject = {
+  objectId: 1,
+  objectTitle: 'Title 1',
+  objectTeamName: 'Example Team',
+  objectState: 'ONGOING',
+  objectType: 'objective',
+};
+
+export const alignmentObject2: AlignmentObject = {
+  objectId: 2,
+  objectTitle: 'Title 2',
+  objectTeamName: 'Example Team',
+  objectState: 'DRAFT',
+  objectType: 'objective',
+};
+
+export const alignmentObject3: AlignmentObject = {
+  objectId: 3,
+  objectTitle: 'Title 3',
+  objectTeamName: 'Example Team',
+  objectState: 'DRAFT',
+  objectType: 'objective',
+};
+
+export const alignmentObjectKeyResult: AlignmentObject = {
+  objectId: 102,
+  objectTitle: 'Title 1',
+  objectTeamName: 'Example Team',
+  objectState: null,
+  objectType: 'keyResult',
+};
+
+export const alignmentConnection: AlignmentConnection = {
+  alignedObjectiveId: 1,
+  targetObjectiveId: 2,
+  targetKeyResultId: null,
+};
+
+export const alignmentConnectionKeyResult: AlignmentConnection = {
+  alignedObjectiveId: 3,
+  targetObjectiveId: null,
+  targetKeyResultId: 102,
+};
+
+export const alignmentLists: AlignmentLists = {
+  alignmentObjectDtoList: [alignmentObject1, alignmentObject2],
+  alignmentConnectionDtoList: [alignmentConnection],
+};
+
+export const alignmentListsKeyResult: AlignmentLists = {
+  alignmentObjectDtoList: [alignmentObject3, alignmentObjectKeyResult],
+  alignmentConnectionDtoList: [alignmentConnectionKeyResult],
 };

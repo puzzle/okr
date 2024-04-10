@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuarterFilterComponent } from './quarter-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OverviewService } from '../shared/services/overview.service';
@@ -8,7 +8,6 @@ import { Quarter } from '../shared/types/model/Quarter';
 import { QuarterService } from '../shared/services/quarter.service';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -75,7 +74,8 @@ describe('QuarterFilterComponent', () => {
     fixture.detectChanges();
     expect(component.quarterId).toBe(quarters[2].id);
     expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
-    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
+    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
+    expect(router.url).toBe('/?quarter=' + quarters[2].id);
   });
 
   it('should set correct value in form according to route param', async () => {

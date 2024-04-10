@@ -140,8 +140,8 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     alignmentData.alignmentObjectDtoList.forEach((alignmentObject) => {
       if (alignmentObject.objectType == 'objective') {
         let observable = new Observable((observer) => {
-          let objectiveTitle = this.replaceUmlauts(alignmentObject.objectTitle);
-          let teamTitle = this.replaceUmlauts(alignmentObject.objectTeamName);
+          let objectiveTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
+          let teamTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
           let element = {
             data: {
               id: 'Ob' + alignmentObject.objectId,
@@ -174,8 +174,8 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
               } else {
                 keyResultState = undefined;
               }
-              let keyResultTitle = this.replaceUmlauts(alignmentObject.objectTitle);
-              let teamTitle = this.replaceUmlauts(alignmentObject.objectTeamName);
+              let keyResultTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
+              let teamTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
               let element = {
                 data: {
                   id: 'KR' + alignmentObject.objectId,
@@ -189,8 +189,8 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
               let ordinalKeyResult = keyResult as KeyResultOrdinal;
               let keyResultState: string | undefined = ordinalKeyResult.lastCheckIn?.value.toString();
 
-              let keyResultTitle = this.replaceUmlauts(alignmentObject.objectTitle);
-              let teamTitle = this.replaceUmlauts(alignmentObject.objectTeamName);
+              let keyResultTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
+              let teamTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
               let element = {
                 data: {
                   id: 'KR' + alignmentObject.objectId,
@@ -237,7 +237,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     this.generateDiagram();
   }
 
-  replaceUmlauts(text: string): string {
+  replaceNonAsciiCharacters(text: string): string {
     text = text.replace(/\u00c4/g, 'Ae');
     text = text.replace(/\u00e4/g, 'ae');
     text = text.replace(/\u00dc/g, 'Ue');

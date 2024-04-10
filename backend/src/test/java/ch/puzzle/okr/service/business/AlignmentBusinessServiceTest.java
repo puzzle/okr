@@ -17,6 +17,7 @@ import ch.puzzle.okr.service.persistence.AlignmentViewPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.AlignmentValidationService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -504,5 +505,50 @@ class AlignmentBusinessServiceTest {
         assertEquals(5, dividedAlignmentViewLists.wrongAlignments().get(1).getId());
         assertEquals(40, dividedAlignmentViewLists.wrongAlignments().get(2).getId());
         assertEquals(41, dividedAlignmentViewLists.wrongAlignments().get(3).getId());
+    }
+
+    @Test
+    void shouldThrowErrorWhenPersistenceServiceReturnsIncorrectData() {
+        AlignmentView alignmentView5 = AlignmentView.Builder.builder().withUniqueId("23TkeyResultkeyResult").withId(20L)
+                .withTitle("Dies hat kein Gegenstück").withTeamId(5L).withTeamName("Puzzle ITC").withQuarterId(2L)
+                .withObjectType("keyResult").withConnectionItem("target").withRefId(37L).withRefType("objective")
+                .build();
+        List<AlignmentView> finalList = List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4,
+                alignmentView5);
+
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(2L)).thenReturn(finalList);
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> alignmentBusinessService.getAlignmentsByFilters(2L, List.of(5L), ""));
+
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("ALIGNMENT_DATA_FAIL", List.of("alignmentData", "2", "[5]", "")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void shouldNotThrowErrorWhenSameAmountOfSourceAndTarget() {
+        List<AlignmentView> finalList = List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4);
+
+        assertDoesNotThrow(() -> alignmentBusinessService.validateFinalList(finalList, 2L, List.of(5L), ""));
+    }
+
+    @Test
+    void shouldThrowErrorWhenNotSameAmountOfSourceAndTarget() {
+        List<AlignmentView> finalList = List.of(alignmentView1, alignmentView2, alignmentView3);
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> alignmentBusinessService.validateFinalList(finalList, 2L, List.of(5L), ""));
+
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("ALIGNMENT_DATA_FAIL", List.of("alignmentData", "2", "[5]", "")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

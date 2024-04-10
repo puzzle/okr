@@ -8,6 +8,7 @@
       <div
         [style.cursor]="'pointer'"
         [ngClass]="{ active: isOverview, 'non-active': !isOverview }"
+        [attr.data-testId]="'overviewTab'"
         class="overview tab-title tabfocus"
         (click)="switchPage('overview')"
         (keydown.enter)="switchPage('overview')"
@@ -21,6 +22,7 @@
         class="diagram tab-title tabfocus"
         (click)="switchPage('diagram')"
         (keydown.enter)="switchPage('diagram')"
+        [attr.data-testId]="'diagramTab'"
         tabindex="0"
       >
         Diagramm

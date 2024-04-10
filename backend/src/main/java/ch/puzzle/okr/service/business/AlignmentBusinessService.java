@@ -172,7 +172,22 @@ public class AlignmentBusinessService {
 
         List<AlignmentView> finalList = getAlignmentCounterpart(dividedAlignmentViewLists);
 
+        validateFinalList(finalList, quarterFilter, teamFilter, objectiveFilter);
+
         return generateAlignmentLists(finalList);
+    }
+
+    protected void validateFinalList(List<AlignmentView> finalList, Long quarterFilter, List<Long> teamFilter,
+            String objectiveFilter) {
+        List<AlignmentView> sourceList = finalList.stream()
+                .filter(alignmentView -> Objects.equals(alignmentView.getConnectionItem(), "source")).toList();
+        List<AlignmentView> targetList = finalList.stream()
+                .filter(alignmentView -> Objects.equals(alignmentView.getConnectionItem(), "target")).toList();
+
+        if (sourceList.size() != targetList.size()) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALIGNMENT_DATA_FAIL,
+                    List.of("alignmentData", quarterFilter, teamFilter, objectiveFilter));
+        }
     }
 
     protected AlignmentLists generateAlignmentLists(List<AlignmentView> alignmentViewList) {

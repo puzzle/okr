@@ -96,6 +96,7 @@
     "ALIGNMENT_ALREADY_EXISTS": "Es existiert bereits ein Alignment ausgehend vom Objective mit der ID {1}."
     "TRIED_TO_DELETE_LAST_ADMIN": "Der letzte Administrator eines Teams kann nicht entfernt werden",
     "TRIED_TO_REMOVE_LAST_OKR_CHAMPION": "Der letzte OKR Champion kann nicht entfernt werden"
+    "ALIGNMENT_DATA_FAIL": "Es gab ein Problem bei der Zusammenstellung der Daten für das Diagramm mit den Filter Quartal: {1}, Team: {2} und ObjectiveQuery: {3}."
   },
   "SUCCESS": {
     "TEAM": {

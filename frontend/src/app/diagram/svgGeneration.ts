@@ -227,7 +227,7 @@ export function getFailIcon() {
 
 export function getCommitIcon() {
   return `
-<svg x="50px" y="8px" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg x="50px" y="4px" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_2896_20598)">
 <path d="M10.475 18.7407C15.3161 18.7407 19.2406 14.8162 19.2406 9.9751C19.2406 5.13398 15.3161 1.20947 10.475 1.20947C5.63386 1.20947 1.70935 5.13398 1.70935 9.9751C1.70935 14.8162 5.63386 18.7407 10.475 18.7407Z" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M7.55317 7.92959C7.3918 7.92959 7.26099 7.79878 7.26099 7.6374C7.26099 7.47603 7.3918 7.34521 7.55317 7.34521" stroke="black" stroke-width="1.25"/>

@@ -64,6 +64,8 @@ describe('OKR diagram e2e tests', () => {
       cy.focused().realPress('ArrowDown');
 
       cy.getByTestId('quarterFilter').should('contain', 'GJ 23/24-Q4');
+      cy.get('canvas').should('have.length', 3);
+
       cy.getByTestId('overviewTab').first().click();
 
       cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');

@@ -22,14 +22,18 @@ public class TenantConfigProvider {
             Environment env) {
         this.jwkSetUriTemplate = jwkSetUriTemplate;
         this.env = env;
-
         for (String tenantId : tenantIds) {
             tenantConfigs.put(tenantId,
-                    new TenantConfig(tenantId, getOkrChampionEmailsFromTenant(tenantId),
-                            jwkSetUriTemplate.replace("{tenantid}", tenantId),
-                            frontendClientIssuerUrl.replace("{tenantid}", tenantId),
-                            frontendClientId.replace("{tenantid}", tenantId), this.readDataSourceConfig(tenantId)));
+                    createTenantConfig(jwkSetUriTemplate, frontendClientIssuerUrl, frontendClientId, tenantId));
         }
+    }
+
+    private TenantConfig createTenantConfig(String jwkSetUriTemplate, String frontendClientIssuerUrl,
+            String frontendClientId, String tenantId) {
+        return new TenantConfig(tenantId, getOkrChampionEmailsFromTenant(tenantId),
+                jwkSetUriTemplate.replace("{tenantid}", tenantId),
+                frontendClientIssuerUrl.replace("{tenantid}", tenantId),
+                frontendClientId.replace("{tenantid}", tenantId), this.readDataSourceConfig(tenantId));
     }
 
     private String[] getOkrChampionEmailsFromTenant(String tenantId) {

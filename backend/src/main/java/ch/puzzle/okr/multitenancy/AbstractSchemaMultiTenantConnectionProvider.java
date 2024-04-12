@@ -30,13 +30,16 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
     public Connection getConnection(String tenantIdentifier) throws SQLException {
         Connection connection = super.getConnection(tenantIdentifier);
 
-        String schema = Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID) ? tenantIdentifier
-                : MessageFormat.format("okr_{0}", tenantIdentifier);
-
+        String schema = convertTenantIdToSchemaName(tenantIdentifier);
         logger.debug("Setting schema to {}", schema);
-        connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
 
+        connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
         return connection;
+    }
+
+    private static String convertTenantIdToSchemaName(String tenantIdentifier) {
+        return Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID) ? tenantIdentifier
+                : MessageFormat.format("okr_{0}", tenantIdentifier);
     }
 
     @Override
@@ -82,15 +85,19 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
     }
 
     private ConnectionProvider initConnectionProvider(Properties hibernateProperties) {
-        Map<String, Object> configProperties = new HashMap<>();
-        for (String key : hibernateProperties.stringPropertyNames()) {
-            String value = hibernateProperties.getProperty(key);
-            configProperties.put(key, value);
-        }
-
+        Map<String, Object> configProperties = convertPropertiesToMap(hibernateProperties);
         DriverManagerConnectionProviderImpl connectionProvider = new DriverManagerConnectionProviderImpl();
         connectionProvider.configure(configProperties);
         return connectionProvider;
+    }
+
+    private static Map<String, Object> convertPropertiesToMap(Properties properties) {
+        Map<String, Object> configProperties = new HashMap<>();
+        for (String key : properties.stringPropertyNames()) {
+            String value = properties.getProperty(key);
+            configProperties.put(key, value);
+        }
+        return configProperties;
     }
 
     protected abstract String getHibernatePropertiesFilePaths();

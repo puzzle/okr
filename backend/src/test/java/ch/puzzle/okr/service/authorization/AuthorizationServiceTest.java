@@ -11,6 +11,7 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.security.JwtHelper;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +46,8 @@ class AuthorizationServiceTest {
     AuthorizationRegistrationService authorizationRegistrationService;
     @Mock
     ObjectivePersistenceService objectivePersistenceService;
+    @Mock
+    JwtHelper jwtHelper;
 
     private final List<Team> adminTeams = List.of(Team.Builder.builder().withName("Team 1").withId(1L).build(),
             Team.Builder.builder().withName("Team 2").withId(2L).build());
@@ -93,6 +96,7 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         setSecurityContext(token);
 
+        when(jwtHelper.getUserFromJwt(any(Jwt.class))).thenReturn(user);
         when(authorizationRegistrationService.updateOrAddAuthorizationUser(user)).thenReturn(authorizationUser);
 
         assertNotNull(authorizationService.updateOrAddAuthorizationUser());

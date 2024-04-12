@@ -1,9 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,11 @@ class UserPersistenceServiceIT {
 
     @Autowired
     private UserPersistenceService userPersistenceService;
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant("pitc");
+    }
 
     @AfterEach
     void tearDown() {

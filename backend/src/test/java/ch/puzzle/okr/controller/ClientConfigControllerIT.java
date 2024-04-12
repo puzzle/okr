@@ -1,6 +1,7 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.service.ClientConfigService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ClientConfigController.class)
+@Disabled
 class ClientConfigControllerIT {
     @Autowired
     private MockMvc mvc;

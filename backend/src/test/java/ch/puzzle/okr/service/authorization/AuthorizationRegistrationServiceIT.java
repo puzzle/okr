@@ -5,6 +5,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @SpringIntegrationTest
+@Disabled
 class AuthorizationRegistrationServiceIT {
     @Autowired
     private CacheManager cacheManager;

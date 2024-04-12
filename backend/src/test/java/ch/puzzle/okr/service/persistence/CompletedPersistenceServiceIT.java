@@ -5,8 +5,10 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,6 +25,14 @@ class CompletedPersistenceServiceIT {
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
     private Completed createdCompleted;
+    private static final String WIR_HABEN_ES_GUT_GESCHAFFT = "Wir haben es gut geschafft";
+    public static final String GUTE_LERNENDE = "Gute Lernende";
+    public static final long OBJECTIVE_ID = 3L;
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
 
     private static Completed createCompleted(Long id) {
         return createCompleted(id, 1);
@@ -30,8 +40,8 @@ class CompletedPersistenceServiceIT {
 
     private static Completed createCompleted(Long id, int version) {
         return Completed.Builder.builder().withId(id).withVersion(version)
-                .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-                .withComment("Wir haben es gut geschafft").build();
+                .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(GUTE_LERNENDE).build())
+                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT).build();
     }
 
     private static final String COMPLETED = "Completed";
@@ -55,8 +65,9 @@ class CompletedPersistenceServiceIT {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
 
         assertNotNull(createdCompleted.getId());
-        assertEquals(createdCompleted.getComment(), createdCompleted.getComment());
-        assertEquals(createdCompleted.getObjective(), createdCompleted.getObjective());
+        assertEquals(WIR_HABEN_ES_GUT_GESCHAFFT, createdCompleted.getComment());
+        assertEquals(OBJECTIVE_ID, createdCompleted.getObjective().getId());
+        assertEquals(GUTE_LERNENDE, createdCompleted.getObjective().getTitle());
     }
 
     @Test

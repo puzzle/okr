@@ -1,9 +1,13 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,6 +45,16 @@ class OverviewPersistenceServiceIT {
 
     @Autowired
     private OverviewPersistenceService overviewPersistenceService;
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
+    @AfterEach
+    void tearDown() {
+        TenantContext.setCurrentTenant(null);
+    }
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenTeamIdsSet() {

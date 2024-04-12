@@ -44,6 +44,7 @@ class TeamPersistenceServiceIT {
         } finally {
             createdTeam = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

@@ -36,6 +36,7 @@ class UserPersistenceServiceIT {
             userPersistenceService.deleteById(createdUser.getId());
             createdUser = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

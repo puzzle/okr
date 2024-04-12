@@ -29,11 +29,6 @@ class CompletedPersistenceServiceIT {
     public static final String GUTE_LERNENDE = "Gute Lernende";
     public static final long OBJECTIVE_ID = 3L;
 
-    @BeforeEach
-    void setUp() {
-        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
-    }
-
     private static Completed createCompleted(Long id) {
         return createCompleted(id, 1);
     }
@@ -45,6 +40,11 @@ class CompletedPersistenceServiceIT {
     }
 
     private static final String COMPLETED = "Completed";
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
 
     @AfterEach
     void tearDown() {
@@ -58,6 +58,7 @@ class CompletedPersistenceServiceIT {
         } finally {
             createdCompleted = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

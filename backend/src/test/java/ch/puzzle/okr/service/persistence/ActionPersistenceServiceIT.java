@@ -57,6 +57,7 @@ class ActionPersistenceServiceIT {
         } finally {
             createdAction = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

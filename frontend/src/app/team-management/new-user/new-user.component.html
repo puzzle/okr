@@ -6,7 +6,7 @@
       }
       <input
         type="text"
-        class="value-field"
+        class="value-field dialog-form-field"
         formControlName="firstname"
         #firstInput
         [id]="'firstName-col_' + index"
@@ -28,7 +28,7 @@
         type="text"
         [id]="'lastname-col_' + index"
         [name]="'lastname-col_' + index"
-        class="value-field"
+        class="value-field dialog-form-field"
         formControlName="lastname"
       />
       <mat-error>
@@ -47,7 +47,7 @@
         type="email"
         [id]="'email-col_' + index"
         [name]="'email-col_' + index"
-        class="value-field"
+        class="value-field dialog-form-field"
         formControlName="email"
       />
       <mat-error>
@@ -62,7 +62,7 @@
     </div>
   </div>
   <div class="remove">
-    <div class="input-style equal-sized-col">
+    <div class="input-style equal-sized-col dialog-form-field">
       @if (index === 0) {
         <label [for]="'delete-col_' + index">&nbsp;</label>
       }

@@ -1,20 +1,20 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ApplicationTopBarComponent} from './application-top-bar.component';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService} from 'angular-oauth2-oidc';
-import {HttpClient, HttpHandler} from '@angular/common/http';
-import {MatMenuModule} from '@angular/material/menu';
-import {HarnessLoader} from '@angular/cdk/testing';
-import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
-import {MatMenuHarness} from '@angular/material/menu/testing';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {NavigationEnd, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {testUser} from '../../shared/testData';
-import {UserService} from '../../services/user.service';
-import {ConfigService} from '../../config.service';
+import { ApplicationTopBarComponent } from './application-top-bar.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { MatMenuModule } from '@angular/material/menu';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatMenuHarness } from '@angular/material/menu/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NavigationEnd, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { testUser } from '../../shared/testData';
+import { UserService } from '../../services/user.service';
+import { ConfigService } from '../../config.service';
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),

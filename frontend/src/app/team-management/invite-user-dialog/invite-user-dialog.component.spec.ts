@@ -1,18 +1,18 @@
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import {InviteUserDialogComponent} from './invite-user-dialog.component';
-import {MatDialogModule} from '@angular/material/dialog';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NewUserComponent} from '../new-user/new-user.component';
-import {PuzzleIconComponent} from '../../shared/custom/puzzle-icon/puzzle-icon.component';
-import {PuzzleIconButtonComponent} from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
-import {UserService} from '../../services/user.service';
-import {testUser} from '../../shared/testData';
-import {DialogRef} from '@angular/cdk/dialog';
-import {of} from 'rxjs';
-import {UniqueEmailValidator} from "../new-user/unique-mail.validator";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
+import { InviteUserDialogComponent } from './invite-user-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewUserComponent } from '../new-user/new-user.component';
+import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
+import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
+import { UserService } from '../../services/user.service';
+import { testUser } from '../../shared/testData';
+import { DialogRef } from '@angular/cdk/dialog';
+import { of } from 'rxjs';
+import { UniqueEmailValidator } from '../new-user/unique-mail.validator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('InviteUserDialogComponent', () => {
   let component: InviteUserDialogComponent;
@@ -24,7 +24,7 @@ describe('InviteUserDialogComponent', () => {
 
   const userServiceMock = {
     createUsers: jest.fn(),
-    getUsers: jest.fn()
+    getUsers: jest.fn(),
   };
 
   const dialogRefMock = {
@@ -33,7 +33,7 @@ describe('InviteUserDialogComponent', () => {
 
   const uniqueMailValidatorMock = {
     setAddedMails: jest.fn(),
-    validate: () => null
+    validate: () => null,
   };
 
   beforeEach(async () => {
@@ -46,8 +46,7 @@ describe('InviteUserDialogComponent', () => {
         { provide: UniqueEmailValidator, useValue: uniqueMailValidatorMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-  .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(InviteUserDialogComponent);
     component = fixture.componentInstance;

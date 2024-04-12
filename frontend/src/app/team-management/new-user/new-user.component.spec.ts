@@ -1,12 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {NewUserComponent} from './new-user.component';
-import {FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
-import {SharedModule} from '../../shared/shared.module';
-import {PuzzleIconButtonComponent} from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
-import {PuzzleIconComponent} from '../../shared/custom/puzzle-icon/puzzle-icon.component';
-import {CommonModule} from '@angular/common';
-import {NewUserForm} from "../../shared/types/model/NewUserForm";
+import { NewUserComponent } from './new-user.component';
+import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
+import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
+import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
+import { CommonModule } from '@angular/common';
+import { NewUserForm } from '../../shared/types/model/NewUserForm';
 
 describe('NewUserComponent', () => {
   let component: NewUserComponent;

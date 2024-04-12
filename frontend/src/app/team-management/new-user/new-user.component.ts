@@ -7,8 +7,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { NewUser } from '../../shared/types/model/NewUser';
-import { ControlContainer, NgForm, NgModel } from '@angular/forms';
+import {ControlContainer, FormControl, FormGroup, NgForm} from '@angular/forms';
+import {NewUserForm} from "../../shared/types/model/NewUserForm";
 
 @Component({
   selector: 'app-new-user',
@@ -22,7 +22,10 @@ export class NewUserComponent implements AfterViewInit {
   index!: number;
 
   @Input({ required: true })
-  user!: NewUser;
+  userFormGroup!: FormGroup<NewUserForm<FormControl>>;
+
+  @Input({ required: true })
+  triedToSubmit!: boolean;
 
   @Output()
   removeUser: EventEmitter<void> = new EventEmitter<void>();
@@ -33,11 +36,19 @@ export class NewUserComponent implements AfterViewInit {
     this.firstInput.nativeElement.focus();
   }
 
-  showError(control: NgModel) {
-    return control.invalid && (control.dirty || control.touched);
-  }
-
   remove() {
     this.removeUser.emit();
+  }
+
+  get firstname() {
+    return this.userFormGroup.controls.firstname;
+  }
+
+  get lastname() {
+    return this.userFormGroup.controls.lastname;
+  }
+
+  get email() {
+    return this.userFormGroup.controls.email;
   }
 }

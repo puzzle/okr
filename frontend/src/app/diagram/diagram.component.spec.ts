@@ -142,10 +142,10 @@ describe('DiagramComponent', () => {
 
   it('should replace correct non ascii characters', () => {
     let specialText: string =
-      'Die klügsten Schafe springen über den Zaun und rechnen 2², während die ängstlichen Mäuse sich in ihren Löchern verkriechen und das Gemüß folgend rechnen 3³. Östlich befindet sich Ägypten mit einem Überfluss an Sand.';
+      'Die klügsten Schafe springen über den Zaun und rechnen 2², während die ängstlichen Mäuse sich in ihren Löchern verkriechen und das Gemüß folgend rechnen 3³. Östlich befindet sich Ägypten mit einem Überfluss an Sand. </svg> " test';
 
     let correctedText: string =
-      'Die kluegsten Schafe springen ueber den Zaun und rechnen 2^2, waehrend die aengstlichen Maeuse sich in ihren Loechern verkriechen und das Gemuess folgend rechnen 3^3. Oestlich befindet sich Aegypten mit einem Ueberfluss an Sand.';
+      'Die kluegsten Schafe springen ueber den Zaun und rechnen 2^2, waehrend die aengstlichen Maeuse sich in ihren Loechern verkriechen und das Gemuess folgend rechnen 3^3. Oestlich befindet sich Aegypten mit einem Ueberfluss an Sand. &lt;/svg&gt; &quot; test';
 
     expect(component.replaceNonAsciiCharacters(specialText)).toEqual(correctedText);
   });

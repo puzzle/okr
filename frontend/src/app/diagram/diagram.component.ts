@@ -247,6 +247,12 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     text = text.replace(/\u00df/g, 'ss');
     text = text.replace(/\u00B2/g, '^2');
     text = text.replace(/\u00B3/g, '^3');
+    text = text.replace(/&/g, '&amp;');
+    text = text.replace(/</g, '&lt;');
+    text = text.replace(/>/g, '&gt;');
+    text = text.replace(/'/g, '&#039;');
+    text = text.replace(/"/g, '&quot;');
+
     return text;
   }
 

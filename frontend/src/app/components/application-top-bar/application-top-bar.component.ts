@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { filter, map, Observable, of, switchMap } from 'rxjs';
-import { ConfigService } from '../../config.service';
-import { NavigationEnd, Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { getFullNameFromUser } from '../../shared/types/model/User';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {filter, map, Observable, of, switchMap} from 'rxjs';
+import {ConfigService} from '../../config.service';
+import {NavigationEnd, Router} from '@angular/router';
+import {UserService} from '../../services/user.service';
+import {getFullNameFromUser} from '../../shared/types/model/User';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -55,11 +55,6 @@ export class ApplicationTopBarComponent implements OnInit {
     this.router.navigateByUrl(currentUrlTree).then(() => {
       this.oauthService.logOut();
     });
-  }
-
-  show() {
-    console.log(this.router.url);
-    return true;
   }
 
   private initTeamManagementVisible() {

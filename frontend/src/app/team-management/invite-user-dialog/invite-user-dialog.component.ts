@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { DialogRef } from '@angular/cdk/dialog';
 import { NewUserForm } from '../../shared/types/model/NewUserForm';
 import { UniqueEmailValidator } from '../new-user/unique-mail.validator';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-invite-user-dialog',
@@ -22,6 +23,9 @@ export class InviteUserDialogComponent {
     private readonly uniqueMailValidator: UniqueEmailValidator,
   ) {
     this.form = this.formBuilder.array([this.createUserFormGroup()]);
+    this.form.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.uniqueMailValidator.setAddedMails(this.extractAddedMails()));
   }
 
   registerUsers() {
@@ -45,13 +49,13 @@ export class InviteUserDialogComponent {
   }
 
   private createUserFormGroup() {
-    this.uniqueMailValidator.setAddedMails(this.extractAddedMails());
     return this.formBuilder.group({
       firstname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       lastname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       email: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(1),
+        Validators.email,
         this.uniqueMailValidator.validate.bind(this.uniqueMailValidator),
       ]),
     });
@@ -61,6 +65,8 @@ export class InviteUserDialogComponent {
     if (!this.form) {
       return [];
     }
-    return this.extractFormValue().map((u) => u.email);
+    return this.extractFormValue()
+      .map((u) => u.email)
+      .filter((mail) => !!mail);
   }
 }

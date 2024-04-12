@@ -55,7 +55,7 @@
           <span>Angabe benötigt</span>
         } @else if (email.errors?.["notUniqueMail"]) {
           <span>E-Mail existiert bereits</span>
-        } @else if (email.errors?.["email"]) {
+        } @else if (email.errors?.["email"] && triedToSubmit) {
           <span>E-Mail ungültig</span>
         }
       </mat-error>

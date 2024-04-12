@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {NewUser} from '../../shared/types/model/NewUser';
-import {FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators,} from '@angular/forms';
-import {UserService} from '../../services/user.service';
-import {DialogRef} from '@angular/cdk/dialog';
-import {NewUserForm} from "../../shared/types/model/NewUserForm";
-import {UniqueEmailValidator} from "../new-user/unique-mail.validator";
+import { Component } from '@angular/core';
+import { NewUser } from '../../shared/types/model/NewUser';
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { DialogRef } from '@angular/cdk/dialog';
+import { NewUserForm } from '../../shared/types/model/NewUserForm';
+import { UniqueEmailValidator } from '../new-user/unique-mail.validator';
 
 @Component({
   selector: 'app-invite-user-dialog',
@@ -12,7 +12,6 @@ import {UniqueEmailValidator} from "../new-user/unique-mail.validator";
   styleUrl: './invite-user-dialog.component.scss',
 })
 export class InviteUserDialogComponent {
-
   form: FormArray<FormGroup<NewUserForm<FormControl>>>;
   triedToSubmit = false;
 
@@ -20,7 +19,7 @@ export class InviteUserDialogComponent {
     private readonly userService: UserService,
     private readonly dialogRef: DialogRef,
     private readonly formBuilder: NonNullableFormBuilder,
-    private readonly uniqueMailValidator: UniqueEmailValidator
+    private readonly uniqueMailValidator: UniqueEmailValidator,
   ) {
     this.form = this.formBuilder.array([this.createUserFormGroup()]);
   }
@@ -53,15 +52,15 @@ export class InviteUserDialogComponent {
       email: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(1),
-        this.uniqueMailValidator.validate.bind(this.uniqueMailValidator)
+        this.uniqueMailValidator.validate.bind(this.uniqueMailValidator),
       ]),
-    })
+    });
   }
 
   private extractAddedMails() {
     if (!this.form) {
       return [];
     }
-    return this.extractFormValue().map(u => u.email);
+    return this.extractFormValue().map((u) => u.email);
   }
 }

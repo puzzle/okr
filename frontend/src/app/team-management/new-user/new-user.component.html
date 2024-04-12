@@ -13,7 +13,7 @@
         [name]="'firstName-col_' + index"
       />
       <mat-error>
-        @if (firstname.errors?.['required'] && triedToSubmit) {
+        @if (firstname.errors?.["required"] && triedToSubmit) {
           <span>Angabe benötigt</span>
         }
       </mat-error>
@@ -32,7 +32,7 @@
         formControlName="lastname"
       />
       <mat-error>
-        @if (lastname.errors?.['required'] && triedToSubmit) {
+        @if (lastname.errors?.["required"] && triedToSubmit) {
           <span>Angabe benötigt</span>
         }
       </mat-error>
@@ -51,13 +51,13 @@
         formControlName="email"
       />
       <mat-error>
-          @if (email.errors?.["required"] && triedToSubmit) {
-            <span>Angabe benötigt</span>
-          } @else if (email.errors?.["notUniqueMail"]) {
-            <span>E-Mail existiert bereits</span>
-          } @else if (email.errors?.["email"]) {
-            <span>E-Mail ungültig</span>
-          }
+        @if (email.errors?.["required"] && triedToSubmit) {
+          <span>Angabe benötigt</span>
+        } @else if (email.errors?.["notUniqueMail"]) {
+          <span>E-Mail existiert bereits</span>
+        } @else if (email.errors?.["email"]) {
+          <span>E-Mail ungültig</span>
+        }
       </mat-error>
     </div>
   </div>

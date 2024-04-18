@@ -144,7 +144,7 @@ jobs:
         with:
           build: npm i -D cypress
           install: false
-          wait-on: 'http://localhost:8080/config, http://pitc.okr.localhost:8544'
+          wait-on: 'http://localhost:8080/config, http://localhost:8544'
           wait-on-timeout: 120
           browser: chrome
           headed: true

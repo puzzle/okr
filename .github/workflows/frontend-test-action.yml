@@ -58,7 +58,7 @@ jobs:
         with:
           working-directory: frontend
           start: npm start
-          wait-on: 'http://pitc.okr.localhost:8080/config, http://pitc.okr.localhost:4200, http://pitc.okr.localhost:8544'
+          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:4200, http://pitc.okr.localhost:8544'
           wait-on-timeout: 120
           browser: chrome
           headed: true

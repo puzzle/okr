@@ -144,12 +144,12 @@ jobs:
         with:
           build: npm i -D cypress
           install: false
-          wait-on: 'http://localhost:8080/config, http://localhost:8544'
+          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544'
           wait-on-timeout: 120
           browser: chrome
           headed: true
           working-directory: frontend
-          config: baseUrl=http://localhost:8080
+          config: baseUrl=http://pitc.okr.localhost:8080
 
   upload-to-quay:
     runs-on: ubuntu-latest

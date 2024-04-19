@@ -11,6 +11,8 @@ services:
       POSTGRES_DB: okr
     ports:
       - 5432:5432
+    volumes:
+      - ./dataset:/docker-entrypoint-initdb.d
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.2

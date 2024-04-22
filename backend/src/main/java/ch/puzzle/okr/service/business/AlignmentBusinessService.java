@@ -165,6 +165,10 @@ public class AlignmentBusinessService {
     public AlignmentLists getAlignmentsByFilters(Long quarterFilter, List<Long> teamFilter, String objectiveFilter) {
         alignmentValidationService.validateOnAlignmentGet(quarterFilter, teamFilter);
 
+        if (teamFilter.isEmpty()) {
+            return new AlignmentLists(List.of(), List.of());
+        }
+
         List<AlignmentView> alignmentViewList = alignmentViewPersistenceService
                 .getAlignmentViewListByQuarterId(quarterFilter);
         DividedAlignmentViewLists dividedAlignmentViewLists = filterAlignmentViews(alignmentViewList, teamFilter,

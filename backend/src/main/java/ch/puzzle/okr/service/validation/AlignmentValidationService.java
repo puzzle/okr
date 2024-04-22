@@ -105,7 +105,7 @@ public class AlignmentValidationService
     public void validateOnAlignmentGet(Long quarterId, List<Long> teamFilter) {
         if (quarterId == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET, "quarterId");
-        } else if (teamFilter == null || teamFilter.isEmpty()) {
+        } else if (teamFilter == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET, "teamFilter");
         }
     }

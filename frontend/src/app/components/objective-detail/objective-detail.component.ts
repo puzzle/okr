@@ -58,8 +58,11 @@ export class ObjectiveDetailComponent {
       .subscribe((result) => {
         if (result?.openNew) {
           this.openAddKeyResultDialog();
+        } else if (result == '') {
+          return;
+        } else {
+          this.refreshDataService.markDataRefresh();
         }
-        this.refreshDataService.markDataRefresh();
       });
   }
 
@@ -78,6 +81,8 @@ export class ObjectiveDetailComponent {
         this.refreshDataService.markDataRefresh();
         if (result.delete) {
           this.backToOverview();
+        } else if (result == '') {
+          return;
         } else {
           this.loadObjective(this.objective$.value.id);
         }

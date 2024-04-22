@@ -104,10 +104,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   switchPage(input: string) {
-    if (input == 'diagram') {
+    if (input == 'diagram' && this.isOverview) {
       this.isOverview = false;
       this.loadOverviewWithParams();
-    } else {
+    } else if (input == 'overview' && !this.isOverview) {
       this.isOverview = true;
       this.loadOverviewWithParams();
     }

@@ -29,7 +29,10 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
     @Override
     public Connection getConnection(String tenantIdentifier) throws SQLException {
         Connection connection = super.getConnection(tenantIdentifier);
+        return getConnection(tenantIdentifier, connection);
+    }
 
+    protected Connection getConnection(String tenantIdentifier, Connection connection) throws SQLException {
         String schema = convertTenantIdToSchemaName(tenantIdentifier);
         logger.debug("Setting schema to {}", schema);
 
@@ -37,7 +40,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         return connection;
     }
 
-    private static String convertTenantIdToSchemaName(String tenantIdentifier) {
+    private String convertTenantIdToSchemaName(String tenantIdentifier) {
         return Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID) ? tenantIdentifier
                 : MessageFormat.format("okr_{0}", tenantIdentifier);
     }
@@ -91,7 +94,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         return connectionProvider;
     }
 
-    private static Map<String, Object> convertPropertiesToMap(Properties properties) {
+    private Map<String, Object> convertPropertiesToMap(Properties properties) {
         Map<String, Object> configProperties = new HashMap<>();
         for (String key : properties.stringPropertyNames()) {
             String value = properties.getProperty(key);

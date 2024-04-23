@@ -21,20 +21,20 @@ class ClientConfigServiceIT {
 
     @Test
     void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig() {
-        Map<String, String> configMap = clientConfigService.getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
+        ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
 
-        assertEquals("prod", configMap.get("activeProfile"));
-        assertEquals("http://localhost:8544/realms/pitc", configMap.get("issuer"));
-        assertEquals("pitc_okr_staging", configMap.get("clientId"));
+        assertEquals("prod", clientConfig.activeProfile());
+        assertEquals("http://localhost:8544/realms/pitc", clientConfig.issuer());
+        assertEquals("pitc_okr_staging", clientConfig.clientId());
     }
 
     @Test
     void getConfigBasedOnActiveEnv_validAlternativeSubdomain_returnsCorrectConfig() {
         ClientConfigDto clientConfig =  clientConfigService.getConfigBasedOnActiveEnv("acme.okr.puzzle.ch");
 
-        assertEquals("prod", clientConfig.get("activeProfile"));
-        assertEquals("http://localhost:8544/realms/pitc", clientConfig.get("issuer"));
-        assertEquals("acme_okr_staging", clientConfig.get("clientId"));
+        assertEquals("prod", clientConfig.activeProfile());
+        assertEquals("http://localhost:8544/realms/pitc", clientConfig.issuer());
+        assertEquals("acme_okr_staging", clientConfig.clientId());
     }
 
     @Test

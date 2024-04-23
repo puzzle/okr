@@ -45,7 +45,7 @@ class ClientConfigServiceIT {
 
     @Test
     void getClientConfig_withOtherValues_returnsRightValues() {
-        ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch");
+        ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
 
         assertEquals("prod", clientConfig.activeProfile());
         assertEquals("http://localhost:8544/realms/pitc", clientConfig.issuer());

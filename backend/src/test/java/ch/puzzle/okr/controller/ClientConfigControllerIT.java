@@ -1,7 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.service.ClientConfigService;
-import org.junit.jupiter.api.Disabled;
+import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ClientConfigController.class)
-@Disabled
 class ClientConfigControllerIT {
     @Autowired
     private MockMvc mvc;
@@ -31,6 +29,6 @@ class ClientConfigControllerIT {
     void shouldEmptyUsersCache() throws Exception {
         mvc.perform(get("/config").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-        verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
+        verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");;
     }
 }

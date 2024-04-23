@@ -308,7 +308,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.intercept('**/keyresults/*').as('getKeyResultsAfterSave');
       cy.getByTestId('add-check-in').first().click();
       cy.get('#old-value').should('not.exist');
-      cy.fillOutCheckInMetric(10, false, 'changeinfo', 'initiatives');
+      cy.fillOutCheckInMetric(10, 0, 'changeinfo', 'initiatives');
       cy.wait('@getKeyResultsAfterSave');
 
       cy.getByTestId('add-check-in').first().click();
@@ -352,8 +352,10 @@ function getCurrentDate() {
   let mm = today.getMonth() + 1; // Months start at 0!
   let dd = today.getDate();
 
-  if (dd < 10) dd = '0' + dd;
-  if (mm < 10) mm = '0' + mm;
+  let dd_str = '' + mm;
+  let mm_str = '' + dd;
+  if (dd < 10) dd_str = '0' + dd_str;
+  if (mm < 10) mm_str = '0' + mm_str;
 
-  return dd + '.' + mm + '.' + yyyy;
+  return dd_str + '.' + mm_str + '.' + yyyy;
 }

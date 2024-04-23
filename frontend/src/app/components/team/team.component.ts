@@ -5,7 +5,6 @@ import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/obj
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { Objective } from '../../shared/types/model/Objective';
 import { isMobileDevice } from '../../shared/common';
-// import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 
@@ -19,12 +18,12 @@ export class TeamComponent implements OnInit {
   @Input({ required: true })
   public overviewEntity!: OverviewEntity;
 
-  trackByObjectiveId: TrackByFunction<ObjectiveMin> = (index, objective) => objective.id;
-
   constructor(
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
   ) {}
+
+  trackByObjectiveId: TrackByFunction<ObjectiveMin> = (index, objective) => objective.id;
 
   ngOnInit(): void {}
 

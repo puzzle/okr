@@ -24,7 +24,7 @@ import { OAuthModule, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRadioModule } from '@angular/material/radio';
-import { ConfigService } from './config.service';
+import { ConfigService } from './services/config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { TeamComponent } from './components/team/team.component';
@@ -61,6 +61,7 @@ import { CheckInFormOrdinalComponent } from './components/checkin/check-in-form-
 import { CheckInFormComponent } from './components/checkin/check-in-form/check-in-form.component';
 import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { CustomizationService } from './services/customization.service';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -186,4 +187,6 @@ export const MY_FORMATS = {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly customizationService: CustomizationService) {}
+}

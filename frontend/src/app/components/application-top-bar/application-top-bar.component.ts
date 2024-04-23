@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { filter, map, Observable, of, switchMap } from 'rxjs';
-import { ConfigService } from '../../config.service';
+import { BehaviorSubject, filter, Observable, of, Subscription, switchMap } from 'rxjs';
+import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { getFullNameFromUser } from '../../shared/types/model/User';
@@ -12,10 +12,12 @@ import { getFullNameFromUser } from '../../shared/types/model/User';
   styleUrls: ['./application-top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApplicationTopBarComponent implements OnInit {
+export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   userFullName: string = '';
   menuIsOpen = false;
   teamManagementVisible$: Observable<boolean> | undefined;
+  logoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+  private subscription?: Subscription;
 
   constructor(
     private oauthService: OAuthService,
@@ -26,18 +28,27 @@ export class ApplicationTopBarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.configService.config$
-      .pipe(
-        map((config) => {
-          if (config.activeProfile === 'staging') {
-            document.getElementById('okrTopbar')!.style.backgroundColor = '#ab31ad';
-          }
-        }),
-      )
-      .subscribe();
+    this.subscription = this.configService.config$.subscribe({
+      next: (config) => {
+        if (config.logo) {
+          this.logoSrc$.next(config.logo);
+        }
+      },
+    });
 
     this.initUserFullName();
     this.initTeamManagementVisible();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+
+  logOut() {
+    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
+    this.router.navigateByUrl(currentUrlTree).then(() => {
+      this.oauthService.logOut();
+    });
   }
 
   private initUserFullName() {
@@ -47,13 +58,6 @@ export class ApplicationTopBarComponent implements OnInit {
         this.userFullName = getFullNameFromUser(this.userService.getCurrentUser());
         this.cd.markForCheck();
       }
-    });
-  }
-
-  logOut() {
-    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
-    this.router.navigateByUrl(currentUrlTree).then(() => {
-      this.oauthService.logOut();
     });
   }
 

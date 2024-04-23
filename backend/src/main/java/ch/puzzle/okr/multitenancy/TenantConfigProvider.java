@@ -10,30 +10,30 @@ import java.util.*;
 @Component
 public class TenantConfigProvider {
     private static final String EMAIL_DELIMITER = ",";
-
-    final String jwkSetUriTemplate;
     private final Map<String, TenantConfig> tenantConfigs = new HashMap<>();
     private final Environment env;
 
-    public TenantConfigProvider(final @Value("${okr.tenant-ids}") String[] tenantIds,
-            final @Value("${okr.security.oauth2.resourceserver.jwt.jwk-set-uri-template}") String jwkSetUriTemplate,
-            final @Value("${okr.security.oauth2.frontend.issuer-url-template}") String frontendClientIssuerUrl,
-            final @Value("${okr.security.oauth2.frontend.client-id-template}") String frontendClientId,
-            Environment env) {
-        this.jwkSetUriTemplate = jwkSetUriTemplate;
+    public TenantConfigProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {
         this.env = env;
         for (String tenantId : tenantIds) {
+            OauthConfig c = readOauthConfig(tenantId);
             tenantConfigs.put(tenantId,
-                    createTenantConfig(jwkSetUriTemplate, frontendClientIssuerUrl, frontendClientId, tenantId));
+                    createTenantConfig(c.jwkSetUri(), c.frontendClientIssuerUrl(), c.frontendClientId(), tenantId));
         }
+    }
+
+    private OauthConfig readOauthConfig(String tenantId) {
+        return new OauthConfig(
+                env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri",
+                        tenantId)),
+                env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.issuer-url", tenantId)),
+                env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.client-id", tenantId)));
     }
 
     private TenantConfig createTenantConfig(String jwkSetUriTemplate, String frontendClientIssuerUrl,
             String frontendClientId, String tenantId) {
-        return new TenantConfig(tenantId, getOkrChampionEmailsFromTenant(tenantId),
-                jwkSetUriTemplate.replace("{tenantid}", tenantId),
-                frontendClientIssuerUrl.replace("{tenantid}", tenantId),
-                frontendClientId.replace("{tenantid}", tenantId), this.readDataSourceConfig(tenantId));
+        return new TenantConfig(tenantId, getOkrChampionEmailsFromTenant(tenantId), jwkSetUriTemplate,
+                frontendClientIssuerUrl, frontendClientId, this.readDataSourceConfig(tenantId));
     }
 
     private String[] getOkrChampionEmailsFromTenant(String tenantId) {
@@ -46,7 +46,7 @@ public class TenantConfigProvider {
     }
 
     private DataSourceConfig readDataSourceConfig(String tenantId) {
-        return new DataSourceConfig(env.getProperty("okr.datasource.driver-class-name", tenantId),
+        return new DataSourceConfig(env.getProperty("okr.datasource.driver-class-name"),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.url", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.username", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.password", tenantId)),
@@ -67,5 +67,8 @@ public class TenantConfigProvider {
 
     public record DataSourceConfig(String driverClassName, String url, String name, String password, String schema) {
 
+    }
+
+    public record OauthConfig(String jwkSetUri, String frontendClientIssuerUrl, String frontendClientId) {
     }
 }

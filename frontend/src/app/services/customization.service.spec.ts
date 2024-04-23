@@ -1,7 +1,7 @@
 import { CustomizationService } from './customization.service';
-import { ConfigService } from '../../config.service';
 import { BehaviorSubject } from 'rxjs';
-import { ClientConfig } from '../types/model/ClientConfig';
+import { ClientConfig } from '../shared/types/model/ClientConfig';
+import { ConfigService } from './config.service';
 
 class CallRecorder {
   private calls: { [key: string]: any[] } = {};

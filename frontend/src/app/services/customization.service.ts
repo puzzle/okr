@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { ConfigService } from '../../config.service';
-import { CustomizationConfig, CustomStyles } from '../types/model/ClientConfig';
 import { DOCUMENT } from '@angular/common';
+import { CustomizationConfig, CustomStyles } from '../shared/types/model/ClientConfig';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',

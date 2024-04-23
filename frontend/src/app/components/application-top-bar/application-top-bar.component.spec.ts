@@ -14,7 +14,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { testUser } from '../../shared/testData';
 import { UserService } from '../../services/user.service';
-import { ConfigService } from '../../config.service';
+import { ConfigService } from '../../services/config.service';
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),

@@ -12,12 +12,7 @@
   z-index: 102;
   height: inherit;
   justify-content: space-between;
-  background-color: var(--okr-topbar-background-color);
-
-  img {
-    max-height: calc(100% - 16px);
-    width: auto;
-  }
+  background-color: $pz-dark-blue;
 }
 
 .topBarEntry {
@@ -34,7 +29,6 @@
   padding: 10px;
   border-radius: 8px;
   border: 1px solid transparent;
-  font-weight: normal;
 
   mat-icon {
     display: flex;

@@ -173,7 +173,7 @@ class KeyResultBusinessServiceIT {
                 changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
-        assertRecreatedKeyResult(changedKeyResult, createdKeyResultId);
+        assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
     @Test
@@ -189,7 +189,7 @@ class KeyResultBusinessServiceIT {
                 changedKeyResult, List.of(action1, action2));
         createdKeyResult = updatedKeyResult.keyResult();
 
-        assertRecreatedKeyResult(changedKeyResult, createdKeyResultId);
+        assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
         assertSameActions(List.of(action1, action2), updatedKeyResult);
     }
 
@@ -204,7 +204,7 @@ class KeyResultBusinessServiceIT {
                 changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
-        assertRecreatedKeyResult(changedKeyResult, createdKeyResultId);
+        assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
     @Test

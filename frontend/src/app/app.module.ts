@@ -61,6 +61,8 @@ import { CheckInFormOrdinalComponent } from './components/checkin/check-in-form-
 import { CheckInFormComponent } from './components/checkin/check-in-form/check-in-form.component';
 import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
+import { CustomizationService } from './shared/services/customization.service';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -177,4 +179,6 @@ export const MY_FORMATS = {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(customizationService: CustomizationService) {}
+}

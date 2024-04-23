@@ -5,7 +5,7 @@ import { ActionService } from '../../services/action.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { isMobileDevice } from '../../shared/common';
+import { isMobileDevice, trackByFn } from '../../shared/common';
 import { CONFIRM_DIALOG_WIDTH } from '../../shared/constantLibary';
 
 @Component({
@@ -156,4 +156,6 @@ export class ActionPlanComponent implements AfterViewInit {
   preventAddingNewItems(event: Event) {
     event.preventDefault();
   }
+
+  protected readonly trackByFn = trackByFn;
 }

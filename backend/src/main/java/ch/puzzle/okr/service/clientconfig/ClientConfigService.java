@@ -18,7 +18,8 @@ public class ClientConfigService {
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    public ClientConfigService(final ClientCustomizationProperties clientCustomizationProperties, final TenantConfigProvider tenantConfigProvider) {
+    public ClientConfigService(final ClientCustomizationProperties clientCustomizationProperties,
+            final TenantConfigProvider tenantConfigProvider) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.clientCustomizationProperties = clientCustomizationProperties;
     }
@@ -28,16 +29,12 @@ public class ClientConfigService {
 
         Optional<TenantConfigProvider.TenantConfig> tenantConfig = tenantConfigProvider.getTenantConfigById(subdomain);
         if (tenantConfig.isEmpty()) {
-            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant for subdomain:{0}", subdomain));
+            throw new EntityNotFoundException(
+                    MessageFormat.format("Could not find tenant for subdomain:{0}", subdomain));
         }
 
-        return new ClientConfigDto(
-                activeProfile,
-                tenantConfig.get().issuerUrl(),
-                tenantConfig.get().clientId(),
-                clientCustomizationProperties.getFavicon(),
-                clientCustomizationProperties.getLogo(),
-                clientCustomizationProperties.getTitle(),
-                clientCustomizationProperties.getCustomStyles());
+        return new ClientConfigDto(activeProfile, tenantConfig.get().issuerUrl(), tenantConfig.get().clientId(),
+                clientCustomizationProperties.getFavicon(), clientCustomizationProperties.getLogo(),
+                clientCustomizationProperties.getTitle(), clientCustomizationProperties.getCustomStyles());
     }
 }

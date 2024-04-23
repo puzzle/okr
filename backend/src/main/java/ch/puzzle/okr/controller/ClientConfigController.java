@@ -1,4 +1,5 @@
 package ch.puzzle.okr.controller;
+
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import jakarta.servlet.http.HttpServletRequest;

@@ -30,7 +30,7 @@ class ClientConfigServiceIT {
 
     @Test
     void getConfigBasedOnActiveEnv_validAlternativeSubdomain_returnsCorrectConfig() {
-        ClientConfigDto clientConfig =  clientConfigService.getConfigBasedOnActiveEnv("acme.okr.puzzle.ch");
+        ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv("acme.okr.puzzle.ch");
 
         assertEquals("prod", clientConfig.activeProfile());
         assertEquals("http://localhost:8544/realms/pitc", clientConfig.issuer());
@@ -54,7 +54,5 @@ class ClientConfigServiceIT {
         assertEquals("#affe00", clientConfig.customStyles().get("okr-topbar-background-color"));
         assertEquals("rgba(50,60,70,0.5)", clientConfig.customStyles().get("okr-other-css-style"));
     }
-
-
 
 }

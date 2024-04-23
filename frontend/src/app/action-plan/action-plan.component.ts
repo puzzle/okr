@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Action } from '../shared/types/model/Action';
 import { ActionService } from '../shared/services/action.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { isMobileDevice, trackByFn } from '../shared/common';
 import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 
@@ -13,11 +13,10 @@ import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
   templateUrl: './action-plan.component.html',
   styleUrls: ['./action-plan.component.scss'],
 })
-export class ActionPlanComponent implements AfterViewInit {
-  @Input() control: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([]);
+export class ActionPlanComponent {
+  @Input() control: BehaviorSubject<Action[] | null | any> = new BehaviorSubject<Action[] | null | any>([]);
   @Input() keyResultId!: number | null;
   activeItem: number = 0;
-  listSubscription!: Subscription;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
@@ -26,14 +25,6 @@ export class ActionPlanComponent implements AfterViewInit {
     private actionService: ActionService,
     public dialog: MatDialog,
   ) {}
-
-  ngAfterViewInit() {
-    this.listSubscription = this.listItems.changes.subscribe((_) => {
-      if (this.listItems.length > 0) {
-        this.listItems.toArray()[this.activeItem].nativeElement.focus();
-      }
-    });
-  }
 
   handleKeyDown(event: Event, currentIndex: number) {
     let newIndex = currentIndex;
@@ -47,12 +38,21 @@ export class ActionPlanComponent implements AfterViewInit {
       }
     }
     this.changeItemPosition(newIndex, currentIndex);
-    this.adjustPriorities();
+    this.listItems.get(this.activeItem)?.nativeElement.focus();
   }
 
   changeItemPosition(newIndex: number, currentIndex: number) {
-    moveItemInArray(this.control.getValue()!, currentIndex, newIndex);
     this.activeItem = newIndex;
+    let texts = Array.from(document.getElementsByClassName('action-input')).map((input: any) => input.value);
+    moveItemInArray(texts, currentIndex, newIndex);
+    let mappedArray = texts.map((text, index) => ({ action: text, priority: index, keyResultId: this.keyResultId }));
+    this.control.next(mappedArray);
+  }
+
+  setTexts() {
+    let texts = Array.from(document.getElementsByClassName('action-input')).map((input: any) => input.value);
+    let mappedArray = texts.map((text, index) => ({ action: text, priority: index, keyResultId: this.keyResultId }));
+    this.control.next(mappedArray);
   }
 
   increaseActiveItemWithTab() {
@@ -84,15 +84,9 @@ export class ActionPlanComponent implements AfterViewInit {
     this.activeItem = event.currentIndex;
   }
 
-  changeActionText(event: any, index: number) {
-    const actions = this.control.getValue()!;
-    actions[index] = { ...actions[index], action: event.target.value! };
-    this.control.next(actions);
-  }
-
   adjustPriorities() {
     const actions = this.control.getValue()!;
-    actions.forEach(function (action, index) {
+    actions.forEach(function (action: Action, index: number) {
       action.priority = index;
     });
     this.control.next(actions);

@@ -30,6 +30,5 @@ class ClientConfigControllerIT {
         mvc.perform(get("/config").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
-        ;
     }
 }

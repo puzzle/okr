@@ -14,7 +14,7 @@ import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
   styleUrls: ['./action-plan.component.scss'],
 })
 export class ActionPlanComponent {
-  @Input() control: BehaviorSubject<Action[] | null | any> = new BehaviorSubject<Action[] | null | any>([]);
+  @Input() control: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([]);
   @Input() keyResultId!: number | null;
   activeItem: number = 0;
 
@@ -43,7 +43,7 @@ export class ActionPlanComponent {
 
   changeItemPosition(newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
-    let currentActionPlan = this.control.getValue();
+    let currentActionPlan: Action[] = this.control.getValue()!;
     this.updateActionTexts(currentActionPlan);
     moveItemInArray(currentActionPlan, currentIndex, newIndex);
     currentActionPlan.forEach((action: Action, index: number) => (action.priority = index));

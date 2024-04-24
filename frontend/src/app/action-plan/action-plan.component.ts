@@ -43,16 +43,12 @@ export class ActionPlanComponent {
 
   changeItemPosition(newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
-    let texts = Array.from(document.getElementsByClassName('action-input')).map((input: any) => input.value);
-    moveItemInArray(texts, currentIndex, newIndex);
-    let mappedArray = texts.map((text, index) => ({ action: text, priority: index, keyResultId: this.keyResultId }));
-    this.control.next(mappedArray);
-  }
-
-  setTexts() {
-    let texts = Array.from(document.getElementsByClassName('action-input')).map((input: any) => input.value);
-    let mappedArray = texts.map((text, index) => ({ action: text, priority: index, keyResultId: this.keyResultId }));
-    this.control.next(mappedArray);
+    let currentActionPlan = this.control.getValue();
+    let texts = Array.from(this.listItems).map((input: any) => input.nativeElement.value);
+    currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
+    moveItemInArray(currentActionPlan, currentIndex, newIndex);
+    currentActionPlan.forEach((action: Action, index: number) => (action.priority = index));
+    this.control.next(currentActionPlan);
   }
 
   increaseActiveItemWithTab() {

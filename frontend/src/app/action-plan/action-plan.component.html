@@ -23,7 +23,6 @@
         #listItem
         (keydown.arrowDown)="handleKeyDown($event, i)"
         (keydown.arrowUp)="handleKeyDown($event, i)"
-        (input)="this.setTexts()"
         (focusin)="activeItem = i"
         class="action-input"
         [value]="action.action"

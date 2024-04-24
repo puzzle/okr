@@ -65,7 +65,7 @@ export class ObjectiveDetailComponent {
       .subscribe((result) => {
         if (result?.openNew) {
           this.openAddKeyResultDialog();
-        } else if (result == '') {
+        } else if (result == '' || result == undefined) {
           return;
         } else {
           this.refreshDataService.markDataRefresh();
@@ -89,7 +89,7 @@ export class ObjectiveDetailComponent {
       .subscribe((result) => {
         if (result.delete) {
           this.router.navigate(['']);
-        } else if (result == '') {
+        } else if (result == '' || result == undefined) {
           return;
         } else {
           this.loadObjective(this.objective$.value.id);

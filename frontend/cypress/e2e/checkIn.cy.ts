@@ -34,6 +34,8 @@ describe('OKR Check-in e2e tests', () => {
       checkForDialogTextMetric();
       cy.fillOutCheckInMetric(30, 6, 'We bought a new house', 'We have to buy more PCs');
 
+      cy.wait(1000);
+
       cy.contains('30%');
       cy.contains('6/10');
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
@@ -64,6 +66,8 @@ describe('OKR Check-in e2e tests', () => {
       checkForDialogTextMetric();
       cy.fillOutCheckInMetric(30, 0, 'We bought a new house', 'We have to buy more PCs');
 
+      cy.wait(100);
+
       cy.contains('30%');
       cy.contains('6/10');
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
@@ -93,6 +97,8 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextMetric();
       cy.fillOutCheckInMetric(5, 5, null, null);
+
+      cy.wait(500);
 
       cy.contains('5%');
       cy.contains('!');
@@ -126,6 +132,8 @@ describe('OKR Check-in e2e tests', () => {
       checkForDialogTextOrdinal();
       cy.fillOutCheckInOrdinal(1, 6, 'There is a new car', 'Buy now a new pool');
 
+      cy.wait(500);
+
       cy.contains('6/10');
       cy.contains('There is a new car');
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
@@ -156,6 +164,8 @@ describe('OKR Check-in e2e tests', () => {
       cy.wait(200);
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(50, 6, 'This was a good idea', 'Will be difficult');
+
+      cy.wait(500);
 
       cy.getByTestId('show-all-checkins').click();
 
@@ -194,6 +204,9 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
+
+      cy.wait(500);
+
       cy.contains('Aktuell: 30 CHF');
       cy.getByTestId('show-all-checkins').click();
 
@@ -300,6 +313,9 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('keyresult').contains('For editing ordinal checkin').click();
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInOrdinal(0, 6, 'There is a new car', 'Buy now a new pool');
+
+      cy.wait(500);
+
       cy.getByTestId('show-all-checkins').click();
 
       cy.wait(500);

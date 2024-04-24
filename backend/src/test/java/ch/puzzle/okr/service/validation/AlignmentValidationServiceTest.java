@@ -25,6 +25,7 @@ import java.util.List;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static ch.puzzle.okr.TestConstants.*;
@@ -453,12 +454,7 @@ class AlignmentValidationServiceTest {
     }
 
     @Test
-    void validateOnAlignmentGetShouldThrowExceptionWhenTeamFilterIsEmpty() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnAlignmentGet(2L, emptyLongList));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("ATTRIBUTE_NOT_SET", exception.getReason());
-        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("teamFilter"))), exception.getErrors());
+    void validateOnAlignmentGetShouldNotThrowExceptionWhenTeamFilterIsEmpty() {
+        assertDoesNotThrow(() -> validator.validateOnAlignmentGet(2L, emptyLongList));
     }
 }

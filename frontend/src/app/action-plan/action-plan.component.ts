@@ -44,11 +44,15 @@ export class ActionPlanComponent {
   changeItemPosition(newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
     let currentActionPlan = this.control.getValue();
-    let texts = Array.from(this.listItems).map((input: any) => input.nativeElement.value);
-    currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
+    this.updateActionTexts(currentActionPlan);
     moveItemInArray(currentActionPlan, currentIndex, newIndex);
     currentActionPlan.forEach((action: Action, index: number) => (action.priority = index));
     this.control.next(currentActionPlan);
+  }
+
+  updateActionTexts(currentActionPlan: any) {
+    let texts = Array.from(this.listItems).map((input: any) => input.nativeElement.value);
+    currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
   }
 
   increaseActiveItemWithTab() {

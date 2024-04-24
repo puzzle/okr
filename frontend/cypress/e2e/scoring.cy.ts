@@ -78,6 +78,7 @@ describe('Scoring component e2e tests', () => {
 
 function setupMetricKR(baseline: number, stretchgoal: number, value: number) {
   cy.createMetricKeyresult('Metric scoring keyresult', String(baseline), String(stretchgoal));
+  cy.wait(500);
   cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().click();
   cy.getByTestId('add-check-in').click();
   cy.getByTestId('check-in-metric-value').clear().type(String(value));

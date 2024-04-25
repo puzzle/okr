@@ -22,8 +22,8 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
 
     cy.get('.objective').first().getByTestId('three-dot-menu').click();
     cy.get('.mat-mdc-menu-content').contains('Objective duplizieren').click();
-    cy.fillOutObjective('A duplicated Objective for this tool', 'safe', '3');
-    cy.visit('/?quarter=3');
+    cy.fillOutObjective('A duplicated Objective for this tool', 'safe', '1');
+    cy.visit('/?quarter=1');
 
     let scoringBlock1 = cy
       .getByTestId('objective')

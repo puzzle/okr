@@ -145,7 +145,7 @@ class AlignmentBusinessServiceTest {
 
         Alignment returnAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objectiveAlignedObjective)
                 .withTargetObjective(objective1).build();
-        Alignment alignment = alignmentBusinessService.buildAlignmentModel(objectiveAlignedObjective);
+        Alignment alignment = alignmentBusinessService.buildAlignmentModel(objectiveAlignedObjective, 0);
 
         assertEquals(returnAlignment, alignment);
         assertTrue(alignment instanceof ObjectiveAlignment);
@@ -157,7 +157,7 @@ class AlignmentBusinessServiceTest {
 
         Alignment returnAlignment = KeyResultAlignment.Builder.builder().withAlignedObjective(keyResultAlignedObjective)
                 .withTargetKeyResult(metricKeyResult).build();
-        Alignment alignment = alignmentBusinessService.buildAlignmentModel(keyResultAlignedObjective);
+        Alignment alignment = alignmentBusinessService.buildAlignmentModel(keyResultAlignedObjective, 0);
 
         assertEquals(returnAlignment, alignment);
         assertTrue(alignment instanceof KeyResultAlignment);
@@ -166,7 +166,7 @@ class AlignmentBusinessServiceTest {
     @Test
     void shouldThrowErrorWhenAlignedEntityIdIsIncorrect() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> alignmentBusinessService.buildAlignmentModel(wrongAlignedObjective));
+                () -> alignmentBusinessService.buildAlignmentModel(wrongAlignedObjective, 0));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("alignedEntityId", "Hello")));
 

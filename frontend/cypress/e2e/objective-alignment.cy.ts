@@ -106,7 +106,7 @@ describe('OKR Objective Alignment e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#alignment').select('Bitte wählen');
+    cy.get('select#alignment').select('Kein Alignment');
     cy.getByTestId('safe').click();
 
     cy.getByTestId('objective')
@@ -123,7 +123,7 @@ describe('OKR Objective Alignment e2e tests', () => {
   });
 
   it(`Alignment Possibilites change when quarter change`, () => {
-    cy.visit('/?quarter=3');
+    cy.visit('/?quarter=1');
 
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('We can link later on this');
@@ -145,12 +145,12 @@ describe('OKR Objective Alignment e2e tests', () => {
       cy.get('select#alignment option:selected').should('not.contain.text', selectValue);
       cy.getByTestId('cancel').click();
 
-      cy.visit('/?quarter=4');
+      cy.visit('/?quarter=2');
 
       cy.getByTestId('add-objective').first().click();
       cy.getByTestId('title').first().clear().type('Quarter change objective');
 
-      cy.get('select#quarter').select('GJ 22/23-Q3');
+      cy.get('select#quarter').select('GJ 22/23-Q4');
       cy.getByTestId('title').first().clear().type('A new title');
       cy.get('select#alignment').select(1);
 

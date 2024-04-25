@@ -136,7 +136,7 @@ describe('ObjectiveDialogComponent', () => {
           { provide: TeamService, useValue: teamService },
         ],
       });
-      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of([]));
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -443,6 +443,10 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should load correct alignment possibilities', async () => {
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
+      fixture.detectChanges();
+      component.ngOnInit();
+
       let generatedPossibilities = [
         {
           objectiveId: null,
@@ -476,15 +480,15 @@ describe('ObjectiveDialogComponent', () => {
     it('should not load current Objective to alignment possibilities', async () => {
       matDataMock.objective.objectiveId = 1;
       component.objective = objectiveWithAlignment;
-      const routerHarness = await RouterTestingHarness.create();
-      await routerHarness.navigateByUrl('/?quarter=2');
       objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
+      fixture.detectChanges();
       component.ngOnInit();
 
       let generatedPossibilities = [
         {
           objectiveId: null,
-          objectiveTitle: 'Bitte wählen',
+          objectiveTitle: 'Kein Alignment',
           keyResultAlignmentsDtos: [],
         },
         {
@@ -509,6 +513,83 @@ describe('ObjectiveDialogComponent', () => {
         componentValue = value;
       });
       expect(componentValue).toStrictEqual(generatedPossibilities);
+    });
+
+    it('should load Kein Alignment to alignment possibilities when objective have an alignment', async () => {
+      component.objective = objective;
+      component.data.objective.objectiveId = 5;
+      objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
+      fixture.detectChanges();
+      component.ngOnInit();
+
+      let generatedPossibilities = [
+        {
+          objectiveId: null,
+          objectiveTitle: 'Kein Alignment',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1003,
+          objectiveTitle: 'O - Test Objective',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1005,
+          objectiveTitle: 'O - Company will grow',
+          keyResultAlignmentsDtos: [
+            {
+              keyResultId: 6,
+              keyResultTitle: 'K - New structure',
+            },
+          ],
+        },
+      ];
+
+      let componentValue = null;
+      component.alignmentPossibilities$.subscribe((value) => {
+        componentValue = value;
+      });
+      expect(componentValue).toStrictEqual(generatedPossibilities);
+    });
+
+    it('should load Kein Alignment to alignment possibilities when choosing one alignment', async () => {
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
+      objectiveService.getFullObjective.mockReturnValue(of(objective));
+      component.objective = objective;
+      component.data.objective.objectiveId = 5;
+      fixture.detectChanges();
+      component.ngOnInit();
+      component.changeFirstAlignmentPossibility();
+
+      let currentPossibilities = [
+        {
+          objectiveId: null,
+          objectiveTitle: 'Kein Alignment',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1003,
+          objectiveTitle: 'O - Test Objective',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1005,
+          objectiveTitle: 'O - Company will grow',
+          keyResultAlignmentsDtos: [
+            {
+              keyResultId: 6,
+              keyResultTitle: 'K - New structure',
+            },
+          ],
+        },
+      ];
+
+      let componentValue = null;
+      component.alignmentPossibilities$.subscribe((value) => {
+        componentValue = value;
+      });
+      expect(componentValue).toStrictEqual(currentPossibilities);
     });
 
     it('should call ObjectiveService when updating Alignments', async () => {

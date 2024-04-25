@@ -259,8 +259,8 @@ describe('OKR Check-in e2e tests', () => {
 
     it(`Should display confirm dialog when creating checkin on draft objective`, () => {
       cy.getByTestId('add-objective').first().click();
-      cy.fillOutObjective('draft objective title', 'safe-draft', '3');
-      cy.visit('/?quarter=3');
+      cy.fillOutObjective('draft objective title', 'safe-draft', '1');
+      cy.visit('/?quarter=1');
       cy.contains('draft objective title').first().parentsUntil('#objective-column').last().focus();
 
       cy.tabForwardUntil('[data-testId="add-keyResult"]');
@@ -290,8 +290,8 @@ describe('OKR Check-in e2e tests', () => {
 
     it(`Should not display last value div if last checkin is not present`, () => {
       cy.getByTestId('add-objective').first().click();
-      cy.fillOutObjective('new objective', 'safe', '3');
-      cy.visit('/?quarter=3');
+      cy.fillOutObjective('new objective', 'safe', '1');
+      cy.visit('/?quarter=1');
       cy.contains('new objective').first().parentsUntil('#objective-column').last().focus();
 
       cy.tabForwardUntil('[data-testId="add-keyResult"]');

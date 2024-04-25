@@ -12,8 +12,8 @@ describe('CRUD operations', () => {
   ].forEach(([objectiveTitle, buttonTestId, icon]) => {
     it(`Create objective, no keyresults`, () => {
       cy.getByTestId('add-objective').first().click();
-      cy.fillOutObjective(objectiveTitle, buttonTestId, '3');
-      cy.visit('/?quarter=3');
+      cy.fillOutObjective(objectiveTitle, buttonTestId, '1');
+      cy.visit('/?quarter=1');
       const objective = cy.contains(objectiveTitle).first().parentsUntil('#objective-column').last();
       objective.getByTestId('objective-state').should('have.attr', 'src', `assets/icons/${icon}`);
     });
@@ -25,7 +25,7 @@ describe('CRUD operations', () => {
   ].forEach(([objectiveTitle, buttonTestId, icon]) => {
     it(`Create objective, no keyresults`, () => {
       cy.getByTestId('add-objective').first().click();
-      cy.fillOutObjective(objectiveTitle, buttonTestId, '3', '', true);
+      cy.fillOutObjective(objectiveTitle, buttonTestId, '1', '', true);
       cy.contains('Key Result erfassen');
     });
   });
@@ -42,8 +42,8 @@ describe('CRUD operations', () => {
   it(`Create objective, cancel`, () => {
     const objectiveTitle = 'this is a canceled objective';
     cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective(objectiveTitle, 'cancel', '3');
-    cy.visit('/?quarter=3');
+    cy.fillOutObjective(objectiveTitle, 'cancel', '1');
+    cy.visit('/?quarter=1');
     cy.contains(objectiveTitle).should('not.exist');
   });
 

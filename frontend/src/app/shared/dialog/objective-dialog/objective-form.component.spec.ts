@@ -74,24 +74,6 @@ const mockActivatedRoute = {
   },
 };
 
-const alignmentPossibilities = [
-  {
-    objectiveId: 1003,
-    objectiveTitle: 'O - Test Objective',
-    keyResultAlignmentsDtos: [],
-  },
-  {
-    objectiveId: 1005,
-    objectiveTitle: 'O - Company will grow',
-    keyResultAlignmentsDtos: [
-      {
-        keyResultId: 6,
-        keyResultTitle: 'K - New structure',
-      },
-    ],
-  },
-];
-
 describe('ObjectiveDialogComponent', () => {
   let component: ObjectiveFormComponent;
   let fixture: ComponentFixture<ObjectiveFormComponent>;
@@ -430,12 +412,66 @@ describe('ObjectiveDialogComponent', () => {
       fixture.detectChanges();
       expect(component.allowedOption(quarter)).toBeTruthy();
     });
+  });
+
+  describe('AlignmentPossibilities', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          MatDialogModule,
+          MatIconModule,
+          MatFormFieldModule,
+          MatSelectModule,
+          ReactiveFormsModule,
+          MatInputModule,
+          NoopAnimationsModule,
+          MatCheckboxModule,
+          RouterTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: de,
+          }),
+        ],
+        declarations: [ObjectiveFormComponent, DialogHeaderComponent],
+        providers: [
+          { provide: MatDialogRef, useValue: dialogMock },
+          { provide: MAT_DIALOG_DATA, useValue: matDataMock },
+          { provide: ObjectiveService, useValue: objectiveService },
+          { provide: QuarterService, useValue: quarterService },
+          { provide: TeamService, useValue: teamService },
+        ],
+      });
+
+      let alignmentPossibilities = [
+        {
+          objectiveId: 1003,
+          objectiveTitle: 'O - Test Objective',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1005,
+          objectiveTitle: 'O - Company will grow',
+          keyResultAlignmentsDtos: [
+            {
+              keyResultId: 6,
+              keyResultTitle: 'K - New structure',
+            },
+          ],
+        },
+      ];
+
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
+      fixture = TestBed.createComponent(ObjectiveFormComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      loader = TestbedHarnessEnvironment.loader(fixture);
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
 
     it('should load correct alignment possibilities', async () => {
-      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
-      fixture.detectChanges();
-      component.ngOnInit();
-
       let generatedPossibilities = [
         {
           objectiveId: null,
@@ -470,7 +506,6 @@ describe('ObjectiveDialogComponent', () => {
       matDataMock.objective.objectiveId = 1;
       component.objective = objectiveWithAlignment;
       objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
-      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
       fixture.detectChanges();
       component.ngOnInit();
 
@@ -508,7 +543,6 @@ describe('ObjectiveDialogComponent', () => {
       component.objective = objective;
       component.data.objective.objectiveId = 5;
       objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
-      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
       fixture.detectChanges();
       component.ngOnInit();
 
@@ -543,7 +577,6 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should load Kein Alignment to alignment possibilities when choosing one alignment', async () => {
-      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
       objectiveService.getFullObjective.mockReturnValue(of(objective));
       component.objective = objective;
       component.data.objective.objectiveId = 5;
@@ -615,7 +648,7 @@ describe('ObjectiveDialogComponent', () => {
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
         ],
       });
-      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of([]));
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();

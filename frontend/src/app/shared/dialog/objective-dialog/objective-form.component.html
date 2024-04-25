@@ -73,6 +73,7 @@
               class="custom-select bg-white select-width"
               formControlName="alignment"
               id="alignment"
+              (change)="changeFirstAlignmentPossibility()"
               [attr.data-testId]="'alignmentSelect'"
             >
               <ng-container *ngFor="let alignment of alignmentPossibilities$ | async; let i = index">

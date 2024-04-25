@@ -240,18 +240,25 @@ export class ObjectiveFormComponent implements OnInit {
 
   generateAlignmentPossibilities(quarterId: number) {
     this.alignmentPossibilities$ = this.objectiveService.getAlignmentPossibilities(quarterId);
-    this.alignmentPossibilities$.subscribe((value) => {
+    this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
       if (this.objective?.id) {
-        value = value.filter((item) => !(item.objectiveId == this.objective!.id));
+        value = value.filter((item: AlignmentPossibility) => !(item.objectiveId == this.objective!.id));
       }
-      if (value.length == 0 || value[0].objectiveTitle != 'Bitte wählen') {
-        let noSelectOption: AlignmentPossibility = {
-          objectiveId: null,
-          objectiveTitle: 'Bitte wählen',
-          keyResultAlignmentsDtos: [],
-        };
-        value.unshift(noSelectOption);
+      let firstSelectOption = {
+        objectiveId: null,
+        objectiveTitle: 'Kein Alignment',
+        keyResultAlignmentsDtos: [],
+      };
+      if (value.length != 0) {
+        if (this.objective?.alignedEntityId) {
+          if (value[0].objectiveTitle == 'Bitte wählen') {
+            value.splice(0, 1);
+          }
+        } else {
+          firstSelectOption.objectiveTitle = 'Bitte wählen';
+        }
       }
+      value.unshift(firstSelectOption);
       this.alignmentPossibilities$ = of(value);
     });
   }
@@ -260,6 +267,16 @@ export class ObjectiveFormComponent implements OnInit {
     this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!);
     this.objectiveForm.patchValue({
       alignment: 'Onull',
+    });
+  }
+
+  changeFirstAlignmentPossibility() {
+    this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
+      let element: AlignmentPossibility = value[0];
+      element.objectiveTitle = 'Kein Alignment';
+      value.splice(0, 1);
+      value.unshift(element);
+      this.alignmentPossibilities$ = of(value);
     });
   }
 

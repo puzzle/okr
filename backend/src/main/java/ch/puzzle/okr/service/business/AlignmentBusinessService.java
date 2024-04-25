@@ -47,7 +47,7 @@ public class AlignmentBusinessService {
     }
 
     public void createEntity(Objective alignedObjective) {
-        Alignment alignment = buildAlignmentModel(alignedObjective);
+        Alignment alignment = buildAlignmentModel(alignedObjective, 0);
         alignmentValidationService.validateOnCreate(alignment);
         alignmentPersistenceService.save(alignment);
     }
@@ -56,7 +56,7 @@ public class AlignmentBusinessService {
         Alignment savedAlignment = alignmentPersistenceService.findByAlignedObjectiveId(objectiveId);
 
         if (savedAlignment == null) {
-            Alignment alignment = buildAlignmentModel(objective);
+            Alignment alignment = buildAlignmentModel(objective, 0);
             alignmentValidationService.validateOnCreate(alignment);
             alignmentPersistenceService.save(alignment);
         } else {
@@ -64,7 +64,8 @@ public class AlignmentBusinessService {
                 alignmentValidationService.validateOnDelete(savedAlignment.getId());
                 alignmentPersistenceService.deleteById(savedAlignment.getId());
             } else {
-                Alignment alignment = buildAlignmentModel(objective);
+                Alignment alignment = buildAlignmentModel(objective, savedAlignment.getVersion());
+
                 alignment.setId(savedAlignment.getId());
                 alignmentValidationService.validateOnUpdate(savedAlignment.getId(), alignment);
                 if (isAlignmentTypeChange(alignment, savedAlignment)) {
@@ -76,18 +77,17 @@ public class AlignmentBusinessService {
         }
     }
 
-    public Alignment buildAlignmentModel(Objective alignedObjective) {
+    public Alignment buildAlignmentModel(Objective alignedObjective, int version) {
         if (alignedObjective.getAlignedEntityId().startsWith("O")) {
             Objective targetObjective = objectivePersistenceService
                     .findById(Long.valueOf(alignedObjective.getAlignedEntityId().replace("O", "")));
             return ObjectiveAlignment.Builder.builder().withAlignedObjective(alignedObjective)
-                    .withTargetObjective(targetObjective).build();
+                    .withTargetObjective(targetObjective).withVersion(version).build();
         } else if (alignedObjective.getAlignedEntityId().startsWith("K")) {
             KeyResult targetKeyResult = keyResultPersistenceService
                     .findById(Long.valueOf(alignedObjective.getAlignedEntityId().replace("K", "")));
-
             return KeyResultAlignment.Builder.builder().withAlignedObjective(alignedObjective)
-                    .withTargetKeyResult(targetKeyResult).build();
+                    .withTargetKeyResult(targetKeyResult).withVersion(version).build();
         } else {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET,
                     List.of("alignedEntityId", alignedObjective.getAlignedEntityId()));

@@ -24,7 +24,7 @@
         (keydown.arrowDown)="handleKeyDown($event, i)"
         (keydown.arrowUp)="handleKeyDown($event, i)"
         (focusin)="activeItem = i"
-        (input)="updateActionTexts(this.control.value)"
+        (input)="updateActionTexts(this.control.value!)"
         class="action-input"
         [value]="action.action"
         [attr.data-testId]="'actionInput'"

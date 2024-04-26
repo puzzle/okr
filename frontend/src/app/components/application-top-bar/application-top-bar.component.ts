@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { map } from 'rxjs';
+import { filter, map, Observable, of, switchMap } from 'rxjs';
 import { ConfigService } from '../../config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
@@ -15,6 +15,7 @@ import { getFullNameFromUser } from '../../shared/types/model/User';
 export class ApplicationTopBarComponent implements OnInit {
   userFullName: string = '';
   menuIsOpen = false;
+  teamManagementVisible$: Observable<boolean> | undefined;
 
   constructor(
     private oauthService: OAuthService,
@@ -36,6 +37,7 @@ export class ApplicationTopBarComponent implements OnInit {
       .subscribe();
 
     this.initUserFullName();
+    this.initTeamManagementVisible();
   }
 
   private initUserFullName() {
@@ -53,5 +55,14 @@ export class ApplicationTopBarComponent implements OnInit {
     this.router.navigateByUrl(currentUrlTree).then(() => {
       this.oauthService.logOut();
     });
+  }
+
+  private initTeamManagementVisible() {
+    this.teamManagementVisible$ = this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      switchMap(() => {
+        return of(this.router.url.split('?')[0] === '/');
+      }),
+    );
   }
 }

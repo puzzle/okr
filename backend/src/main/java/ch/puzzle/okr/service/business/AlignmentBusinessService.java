@@ -34,17 +34,20 @@ public class AlignmentBusinessService {
     private final ObjectivePersistenceService objectivePersistenceService;
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final AlignmentViewPersistenceService alignmentViewPersistenceService;
+    private final QuarterBusinessService quarterBusinessService;
 
     public AlignmentBusinessService(AlignmentPersistenceService alignmentPersistenceService,
             AlignmentValidationService alignmentValidationService,
             ObjectivePersistenceService objectivePersistenceService,
             KeyResultPersistenceService keyResultPersistenceService,
-            AlignmentViewPersistenceService alignmentViewPersistenceService) {
+            AlignmentViewPersistenceService alignmentViewPersistenceService,
+            QuarterBusinessService quarterBusinessService) {
         this.alignmentPersistenceService = alignmentPersistenceService;
         this.alignmentValidationService = alignmentValidationService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.alignmentViewPersistenceService = alignmentViewPersistenceService;
+        this.quarterBusinessService = quarterBusinessService;
     }
 
     protected record DividedAlignmentViewLists(List<AlignmentView> correctAlignments,
@@ -163,6 +166,10 @@ public class AlignmentBusinessService {
     }
 
     public AlignmentLists getAlignmentsByFilters(Long quarterFilter, List<Long> teamFilter, String objectiveFilter) {
+        if (Objects.isNull(quarterFilter)) {
+            quarterFilter = quarterBusinessService.getCurrentQuarter().getId();
+        }
+        teamFilter = teamFilter == null ? List.of() : teamFilter;
         alignmentValidationService.validateOnAlignmentGet(quarterFilter, teamFilter);
 
         if (teamFilter.isEmpty()) {
@@ -175,7 +182,6 @@ public class AlignmentBusinessService {
                 objectiveFilter);
 
         List<AlignmentView> finalList = getAlignmentCounterpart(dividedAlignmentViewLists);
-
         validateFinalList(finalList, quarterFilter, teamFilter, objectiveFilter);
 
         return generateAlignmentLists(finalList);

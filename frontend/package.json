@@ -40,11 +40,11 @@
     "ngx-toastr": "^18.0.0",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
-    "zone.js": "0.14.3"
+    "zone.js": "0.14.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.0.6",
-    "@angular/cli": "~17.1.0",
+    "@angular-devkit/build-angular": "^17.3.6",
+    "@angular/cli": "~17.3.0",
     "@angular/compiler-cli": "^17.0.6",
     "@cypress/schematic": "^2.5.1",
     "@cypress/skip-test": "^2.6.1",

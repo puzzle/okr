@@ -1,8 +1,9 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultAlignmentsDto;
+import ch.puzzle.okr.dto.AlignmentDto;
+import ch.puzzle.okr.dto.AlignmentObjectDto;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -16,9 +17,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
@@ -52,26 +51,40 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         return objective;
     }
 
-    public List<ObjectiveAlignmentsDto> getAlignmentPossibilities(Long quarterId) {
+    public List<AlignmentDto> getAlignmentPossibilities(Long quarterId) {
         validator.validateOnGet(quarterId);
 
         List<Objective> objectivesByQuarter = objectivePersistenceService.findObjectiveByQuarterId(quarterId);
-        List<ObjectiveAlignmentsDto> objectiveAlignmentsDtos = new ArrayList<>();
+        List<AlignmentDto> alignmentDtoList = new ArrayList<>();
 
-        objectivesByQuarter.forEach(objective -> {
-            List<KeyResult> keyResults = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId());
-            List<KeyResultAlignmentsDto> keyResultAlignmentsDtos = new ArrayList<>();
-            keyResults.forEach(keyResult -> {
-                KeyResultAlignmentsDto keyResultAlignmentsDto = new KeyResultAlignmentsDto(keyResult.getId(),
-                        "K - " + keyResult.getTitle());
-                keyResultAlignmentsDtos.add(keyResultAlignmentsDto);
+        List<Team> teamList = new ArrayList<>();
+        objectivesByQuarter.forEach(objective -> teamList.add(objective.getTeam()));
+        Set<Team> set = new HashSet<>(teamList);
+        teamList.clear();
+        teamList.addAll(set);
+
+        teamList.forEach(team -> {
+            List<Objective> filteredObjectiveList = objectivesByQuarter.stream()
+                    .filter(objective -> objective.getTeam().equals(team)).toList();
+            List<AlignmentObjectDto> alignmentObjectDtos = new ArrayList<>();
+
+            filteredObjectiveList.forEach(objective -> {
+                AlignmentObjectDto objectiveDto = new AlignmentObjectDto(objective.getId(),
+                        "O - " + objective.getTitle(), "objective");
+                alignmentObjectDtos.add(objectiveDto);
+
+                List<KeyResult> keyResults = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId());
+                keyResults.forEach(keyResult -> {
+                    AlignmentObjectDto keyResultDto = new AlignmentObjectDto(keyResult.getId(),
+                            "KR - " + keyResult.getTitle(), "keyResult");
+                    alignmentObjectDtos.add(keyResultDto);
+                });
             });
-            ObjectiveAlignmentsDto objectiveAlignmentsDto = new ObjectiveAlignmentsDto(objective.getId(),
-                    "O - " + objective.getTitle(), keyResultAlignmentsDtos);
-            objectiveAlignmentsDtos.add(objectiveAlignmentsDto);
+            AlignmentDto alignmentDto = new AlignmentDto(team.getId(), team.getName(), alignmentObjectDtos);
+            alignmentDtoList.add(alignmentDto);
         });
 
-        return objectiveAlignmentsDtos;
+        return alignmentDtoList;
     }
 
     public List<Objective> getEntitiesByTeamId(Long id) {

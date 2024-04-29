@@ -1,7 +1,7 @@
 <section mat-dialog-title>
   <div *ngIf="this.data.action == 'duplicate'">
     <app-dialog-header
-      [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' duplizieren'"
+      [dialogTitle]="'Objective von ' + (this.currentTeam$ | async)?.name + ' duplizieren'"
     ></app-dialog-header>
   </div>
   <div *ngIf="this.data.action == 'releaseBacklog'">
@@ -10,11 +10,11 @@
   <div *ngIf="this.data.action != 'duplicate'">
     <app-dialog-header
       *ngIf="!data.objective.objectiveId"
-      [dialogTitle]="'Objective für ' + (this.currentTeam | async)?.name + ' erfassen'"
+      [dialogTitle]="'Objective für ' + (this.currentTeam$ | async)?.name + ' erfassen'"
     ></app-dialog-header>
     <app-dialog-header
       *ngIf="data.objective.objectiveId && this.data.action != 'releaseBacklog'"
-      [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' bearbeiten'"
+      [dialogTitle]="'Objective von ' + (this.currentTeam$ | async)?.name + ' bearbeiten'"
     ></app-dialog-header>
   </div>
 </section>
@@ -68,25 +68,27 @@
           </div>
 
           <div class="d-flex flex-column gap-2 col-6">
-            <label class="text-black" for="alignment">Bezug (optional)</label>
-            <select
-              class="custom-select bg-white select-width"
+            <label class="text-black">Bezug (optional)</label>
+            <input
+              #input
+              type="text"
               formControlName="alignment"
-              id="alignment"
-              (change)="changeFirstAlignmentPossibility()"
-              [attr.data-testId]="'alignmentSelect'"
-            >
-              <ng-container *ngFor="let alignment of alignmentPossibilities$ | async; let i = index">
-                <option [value]="'O' + alignment.objectiveId">
-                  {{ alignment.objectiveTitle }}
-                </option>
-                <ng-container *ngFor="let keyResult of alignment.keyResultAlignmentsDtos; let i = index">
-                  <option [value]="'K' + keyResult.keyResultId">
-                    {{ keyResult.keyResultTitle }}
-                  </option>
-                </ng-container>
-              </ng-container>
-            </select>
+              class="alignment-input"
+              placeholder="{{ filteredOptions.length == 0 ? 'Kein Alignment vorhanden' : 'Bezug wählen' }}"
+              [matAutocomplete]="auto"
+              (input)="filter()"
+              (focus)="filter(); input.select()"
+              [value]="displayedValue"
+            />
+            <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayWith">
+              @for (group of filteredOptions; track group) {
+                <mat-optgroup [label]="group.teamName">
+                  @for (alignmentObject of group.alignmentObjectDtos; track alignmentObject) {
+                    <mat-option [value]="alignmentObject">{{ alignmentObject.objectTitle }}</mat-option>
+                  }
+                </mat-optgroup>
+              }
+            </mat-autocomplete>
           </div>
         </div>
         <mat-checkbox

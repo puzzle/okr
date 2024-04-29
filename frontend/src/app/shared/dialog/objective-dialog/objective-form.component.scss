@@ -32,3 +32,18 @@
 .select-width {
   width: 92%;
 }
+
+.mat-mdc-option {
+  margin-bottom: 5px;
+}
+
+.alignment-input {
+  border: solid 1px #909090;
+  padding: 0.44rem 0.625rem 0.375rem 0.625rem;
+  cursor: pointer;
+  width: 92%;
+  height: 1.18rem;
+  box-sizing: content-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -6,6 +6,7 @@ import ch.puzzle.okr.dto.alignment.AlignmentLists;
 import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.AlignmentView;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
@@ -43,6 +44,8 @@ class AlignmentBusinessServiceTest {
     @Mock
     AlignmentViewPersistenceService alignmentViewPersistenceService;
     @Mock
+    QuarterBusinessService quarterBusinessService;
+    @Mock
     AlignmentValidationService validator;
     @InjectMocks
     private AlignmentBusinessService alignmentBusinessService;
@@ -65,6 +68,7 @@ class AlignmentBusinessServiceTest {
             .withAlignedObjective(objective2).withTargetObjective(objective1).build();
     KeyResultAlignment keyResultAlignment = KeyResultAlignment.Builder.builder().withId(6L)
             .withAlignedObjective(objective3).withTargetKeyResult(metricKeyResult).build();
+    Quarter quarter = Quarter.Builder.builder().withId(2L).withLabel("GJ 23/24-Q1").build();
 
     AlignmentView alignmentView1 = AlignmentView.Builder.builder().withUniqueId("45TkeyResultkeyResult").withId(4L)
             .withTitle("Antwortzeit für Supportanfragen um 33% verkürzen.").withTeamId(5L).withTeamName("Puzzle ITC")
@@ -353,6 +357,41 @@ class AlignmentBusinessServiceTest {
         verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
         assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());
         assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentDataWhenNoTeamFilterProvided() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, null, "");
+
+        verify(alignmentViewPersistenceService, times(0)).getAlignmentViewListByQuarterId(2L);
+        verify(validator, times(1)).validateOnAlignmentGet(2L, List.of());
+        assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentDataWhenNoQuarterFilterProvided() {
+        doNothing().when(validator).validateOnAlignmentGet(anyLong(), anyList());
+        when(alignmentViewPersistenceService.getAlignmentViewListByQuarterId(any()))
+                .thenReturn(List.of(alignmentView1, alignmentView2, alignmentView3, alignmentView4));
+        when(quarterBusinessService.getCurrentQuarter()).thenReturn(quarter);
+
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(null, List.of(4L, 6L), "");
+
+        verify(alignmentViewPersistenceService, times(1)).getAlignmentViewListByQuarterId(2L);
+        verify(quarterBusinessService, times(1)).getCurrentQuarter();
+        assertEquals(2, alignmentLists.alignmentConnectionDtoList().size());
+        assertEquals(4, alignmentLists.alignmentObjectDtoList().size());
+        assertEquals(5L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
+        assertEquals(40L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
+        assertEquals(5L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
+        assertEquals(4L, alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
+        assertEquals(41L, alignmentLists.alignmentConnectionDtoList().get(1).alignedObjectiveId());
+        assertEquals(40L, alignmentLists.alignmentConnectionDtoList().get(1).targetObjectiveId());
+        assertNull(alignmentLists.alignmentConnectionDtoList().get(1).targetKeyResultId());
     }
 
     @Test

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
@@ -17,6 +17,7 @@ import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
 import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
+import { AlignmentPossibilityObject } from '../../types/model/AlignmentPossibilityObject';
 
 @Component({
   selector: 'app-objective-form',
@@ -25,12 +26,14 @@ import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
+  @ViewChild('input') input!: ElementRef<HTMLInputElement>;
+  filteredOptions: AlignmentPossibility[] = [];
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     quarter: new FormControl<number>(0, [Validators.required]),
     team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
-    alignment: new FormControl<string>(''),
+    alignment: new FormControl<AlignmentPossibilityObject | null>(null),
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
@@ -39,7 +42,8 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   objective: Objective | null = null;
   teams$: Observable<Team[]> = of([]);
   alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
-  currentTeam: Subject<Team> = new Subject<Team>();
+  currentTeam$: Subject<Team> = new Subject<Team>();
+  currentTeam: Team | null = null;
   state: string | null = null;
   version!: number;
   protected readonly formInputCheck = formInputCheck;
@@ -67,6 +71,20 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   onSubmit(submitType: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
+
+    let alignmentEntity = value.alignment;
+    let alignment: string | null;
+
+    if (alignmentEntity) {
+      if (alignmentEntity.objectType == 'objective') {
+        alignment = 'O' + alignmentEntity.objectId;
+      } else {
+        alignment = 'K' + alignmentEntity.objectId;
+      }
+    } else {
+      alignment = null;
+    }
+
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       version: this.version,
@@ -75,7 +93,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       title: value.title,
       teamId: value.team,
       state: state,
-      alignedEntityId: value.alignment == 'Onull' ? null : value.alignment,
+      alignedEntityId: alignment,
     } as unknown as Objective;
 
     const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
@@ -106,16 +124,17 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
-        this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
+        let team: Team = value.filter((team: Team) => team.id == teamId)[0];
+        this.currentTeam$.next(team);
+        this.currentTeam = team;
       });
-      this.generateAlignmentPossibilities(quarterId);
+      this.generateAlignmentPossibilities(quarterId, objective, teamId!);
 
       this.objectiveForm.patchValue({
         title: objective.title,
         description: objective.description,
         team: teamId,
         quarter: quarterId,
-        alignment: objective.alignedEntityId ? objective.alignedEntityId : 'Onull',
       });
     });
   }
@@ -245,46 +264,82 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
     return '';
   }
-  generateAlignmentPossibilities(quarterId: number) {
+  generateAlignmentPossibilities(quarterId: number, objective: Objective | null, teamId: number | null) {
     this.alignmentPossibilities$ = this.objectiveService.getAlignmentPossibilities(quarterId);
     this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
-      if (this.objective?.id) {
-        value = value.filter((item: AlignmentPossibility) => !(item.objectiveId == this.objective!.id));
+      if (teamId) {
+        value = value.filter((item: AlignmentPossibility) => !(item.teamId == teamId));
       }
-      let firstSelectOption = {
-        objectiveId: null,
-        objectiveTitle: 'Kein Alignment',
-        keyResultAlignmentsDtos: [],
-      };
-      if (value.length != 0) {
-        if (this.objective?.alignedEntityId) {
-          if (value[0].objectiveTitle == 'Bitte wählen') {
-            value.splice(0, 1);
-          }
-        } else {
-          firstSelectOption.objectiveTitle = 'Bitte wählen';
+
+      if (objective) {
+        let alignment: string | null = objective.alignedEntityId;
+        if (alignment) {
+          let alignmentType: string = alignment.charAt(0);
+          let alignmentId: number = parseInt(alignment.substring(1));
+          alignmentType = alignmentType == 'O' ? 'objective' : 'keyResult';
+          let element: AlignmentPossibilityObject | null = this.findAlignmentObject(value, alignmentId, alignmentType);
+          this.objectiveForm.patchValue({
+            alignment: element,
+          });
         }
       }
-      value.unshift(firstSelectOption);
+
+      this.filteredOptions = value.slice();
       this.alignmentPossibilities$ = of(value);
     });
+  }
+
+  findAlignmentObject(
+    alignmentPossibilities: AlignmentPossibility[],
+    objectId: number,
+    objectType: string,
+  ): AlignmentPossibilityObject | null {
+    for (let possibility of alignmentPossibilities) {
+      let foundObject: AlignmentPossibilityObject | undefined = possibility.alignmentObjectDtos.find(
+        (alignmentObject: AlignmentPossibilityObject) =>
+          alignmentObject.objectId === objectId && alignmentObject.objectType === objectType,
+      );
+      if (foundObject) {
+        return foundObject;
+      }
+    }
+    return null;
   }
 
   updateAlignments() {
-    this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!);
+    this.input.nativeElement.value = '';
+    this.filteredOptions = [];
     this.objectiveForm.patchValue({
-      alignment: 'Onull',
+      alignment: null,
+    });
+    this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!, null, this.currentTeam!.id);
+  }
+
+  filter() {
+    let filterValue = this.input.nativeElement.value.toLowerCase();
+    this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
+      this.filteredOptions = value.filter((alignmentPossibility: AlignmentPossibility) => {
+        let teamMatch = alignmentPossibility.teamName.toLowerCase().includes(filterValue);
+        let objectMatch = alignmentPossibility.alignmentObjectDtos.some((obj) =>
+          obj.objectTitle.toLowerCase().includes(filterValue),
+        );
+        return teamMatch || objectMatch;
+      });
     });
   }
 
-  changeFirstAlignmentPossibility() {
-    this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
-      let element: AlignmentPossibility = value[0];
-      element.objectiveTitle = 'Kein Alignment';
-      value.splice(0, 1);
-      value.unshift(element);
-      this.alignmentPossibilities$ = of(value);
-    });
+  displayWith(value: any) {
+    if (value) {
+      return value.objectTitle;
+    }
+  }
+
+  get displayedValue(): string {
+    if (this.input) {
+      return this.input.nativeElement.value;
+    } else {
+      return '';
+    }
   }
 
   protected readonly getQuarterLabel = getQuarterLabel;

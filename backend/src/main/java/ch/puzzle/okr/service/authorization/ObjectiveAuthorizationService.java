@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
+import ch.puzzle.okr.dto.AlignmentDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
@@ -22,7 +22,7 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
         return getBusinessService().duplicateObjective(id, objective, authorizationUser);
     }
 
-    public List<ObjectiveAlignmentsDto> getAlignmentPossibilities(Long quarterId) {
+    public List<AlignmentDto> getAlignmentPossibilities(Long quarterId) {
         return getBusinessService().getAlignmentPossibilities(quarterId);
     }
 

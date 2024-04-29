@@ -1,8 +1,7 @@
+import { AlignmentPossibilityObject } from './AlignmentPossibilityObject';
+
 export interface AlignmentPossibility {
-  objectiveId: number | null;
-  objectiveTitle: string;
-  keyResultAlignmentsDtos: {
-    keyResultId: number;
-    keyResultTitle: string;
-  }[];
+  teamId: number;
+  teamName: string;
+  alignmentObjectDtos: AlignmentPossibilityObject[];
 }

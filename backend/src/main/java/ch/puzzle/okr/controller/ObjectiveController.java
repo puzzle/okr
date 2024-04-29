@@ -1,6 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
+import ch.puzzle.okr.dto.AlignmentDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
@@ -48,11 +48,11 @@ public class ObjectiveController {
     @Operation(summary = "Get Alignment possibilities", description = "Get all possibilities to create an Alignment")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Alignment possibilities for an Objective", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveAlignmentsDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = AlignmentDto.class)) }),
             @ApiResponse(responseCode = "401", description = "Not authorized to get Alignment possibilities", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find any possibilities to create an Alignment", content = @Content) })
     @GetMapping("/alignmentPossibilities/{quarterId}")
-    public ResponseEntity<List<ObjectiveAlignmentsDto>> getAlignmentPossibilities(
+    public ResponseEntity<List<AlignmentDto>> getAlignmentPossibilities(
             @Parameter(description = "The Quarter ID for getting Alignment possibilities.", required = true) @PathVariable Long quarterId) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectiveAuthorizationService.getAlignmentPossibilities(quarterId));

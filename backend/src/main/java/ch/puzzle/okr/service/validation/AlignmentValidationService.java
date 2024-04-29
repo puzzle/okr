@@ -21,12 +21,16 @@ public class AlignmentValidationService
 
     private final AlignmentPersistenceService alignmentPersistenceService;
     private final TeamPersistenceService teamPersistenceService;
+    private final QuarterValidationService quarterValidationService;
+    private final TeamValidationService teamValidationService;
 
-    public AlignmentValidationService(AlignmentPersistenceService alignmentPersistenceService,
-            TeamPersistenceService teamPersistenceService) {
+    public AlignmentValidationService(AlignmentPersistenceService alignmentPersistenceService, TeamPersistenceService teamPersistenceService,
+            QuarterValidationService quarterValidationService, TeamValidationService teamValidationService) {
         super(alignmentPersistenceService);
         this.alignmentPersistenceService = alignmentPersistenceService;
         this.teamPersistenceService = teamPersistenceService;
+        this.quarterValidationService = quarterValidationService;
+        this.teamValidationService = teamValidationService;
     }
 
     @Override
@@ -103,10 +107,17 @@ public class AlignmentValidationService
     }
 
     public void validateOnAlignmentGet(Long quarterId, List<Long> teamFilter) {
-        if (quarterId == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET, "quarterId");
-        } else if (teamFilter == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET, "teamFilter");
-        }
+        validateQuarter(quarterId);
+        teamFilter.forEach(this::validateTeam);
+    }
+
+    public void validateTeam(Long id) {
+        teamValidationService.validateOnGet(id);
+        teamValidationService.doesEntityExist(id);
+    }
+
+    public void validateQuarter(Long id) {
+        quarterValidationService.validateOnGet(id);
+        quarterValidationService.doesEntityExist(id);
     }
 }

@@ -113,9 +113,17 @@ class AlignmentBusinessServiceIT {
     }
 
     @Test
-    void shouldReturnEmptyAlignmentDataWhenNoMatchingQuarterFilter() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(311L, List.of(4L, 5L, 6L, 8L),
+    void shouldReturnCorrectAlignmentDataWhenEmptyQuarterFilter() {
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(null, List.of(4L, 5L, 6L, 8L),
                 "");
+
+        assertEquals(8, alignmentLists.alignmentObjectDtoList().size());
+        assertEquals(5, alignmentLists.alignmentConnectionDtoList().size());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentDataWhenEmptyTeamFilter() {
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, null, "");
 
         assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());

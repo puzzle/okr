@@ -25,7 +25,6 @@ import java.util.List;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static ch.puzzle.okr.TestConstants.*;
@@ -37,6 +36,10 @@ class AlignmentValidationServiceTest {
     AlignmentPersistenceService alignmentPersistenceService;
     @Mock
     TeamPersistenceService teamPersistenceService;
+    @Mock
+    QuarterValidationService quarterValidationService;
+    @Mock
+    TeamValidationService teamValidationService;
     @Spy
     @InjectMocks
     private AlignmentValidationService validator;
@@ -55,7 +58,9 @@ class AlignmentValidationServiceTest {
             .withTargetObjective(objective1).build();
     KeyResultAlignment keyResultAlignment = KeyResultAlignment.Builder.builder().withId(6L)
             .withAlignedObjective(objective3).withTargetKeyResult(metricKeyResult).build();
-    List<Long> emptyLongList = List.of();
+    Long quarterId = 1L;
+    Long teamId = 1L;
+    List<Long> teamIds = List.of(1L, 2L, 3L, 4L);
 
     @BeforeEach
     void setUp() {
@@ -427,34 +432,25 @@ class AlignmentValidationServiceTest {
     }
 
     @Test
-    void validateOnAlignmentGetShouldBeSuccessfulWhenQuarterIdAndTeamFilterSet() {
-        validator.validateOnAlignmentGet(2L, List.of(4L, 5L));
-
-        verify(validator, times(1)).validateOnAlignmentGet(2L, List.of(4L, 5L));
+    void validateOnGetShouldCallQuarterValidator() {
+        validator.validateQuarter(quarterId);
+        verify(quarterValidationService, times(1)).validateOnGet(quarterId);
+        verify(quarterValidationService, times(1)).doesEntityExist(quarterId);
     }
 
     @Test
-    void validateOnAlignmentGetShouldThrowExceptionWhenQuarterIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnAlignmentGet(null, emptyLongList));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("ATTRIBUTE_NOT_SET", exception.getReason());
-        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("quarterId"))), exception.getErrors());
+    void validateOnGetShouldCallTeamValidator() {
+        validator.validateTeam(teamId);
+        verify(teamValidationService, times(1)).validateOnGet(teamId);
+        verify(teamValidationService, times(1)).doesEntityExist(teamId);
     }
 
     @Test
-    void validateOnAlignmentGetShouldThrowExceptionWhenTeamFilterIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnAlignmentGet(2L, null));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("ATTRIBUTE_NOT_SET", exception.getReason());
-        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("teamFilter"))), exception.getErrors());
-    }
-
-    @Test
-    void validateOnAlignmentGetShouldNotThrowExceptionWhenTeamFilterIsEmpty() {
-        assertDoesNotThrow(() -> validator.validateOnAlignmentGet(2L, emptyLongList));
+    void validateOnGetShouldCallQuarterValidatorAndTeamValidator() {
+        validator.validateOnAlignmentGet(quarterId, teamIds);
+        verify(quarterValidationService, times(1)).validateOnGet(quarterId);
+        verify(quarterValidationService, times(1)).doesEntityExist(quarterId);
+        verify(teamValidationService, times(teamIds.size())).validateOnGet(anyLong());
+        verify(teamValidationService, times(teamIds.size())).doesEntityExist(anyLong());
     }
 }

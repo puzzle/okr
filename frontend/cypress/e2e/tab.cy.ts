@@ -1,5 +1,5 @@
 import * as users from '../fixtures/users.json';
-import { onlyOn } from '@cypress/skip-test';
+import {onlyOn} from '@cypress/skip-test';
 
 describe('Tab workflow tests', () => {
   beforeEach(() => {
@@ -128,7 +128,6 @@ describe('Tab workflow tests', () => {
 
     // Header from here
     it('Tab to help element and user menu', () => {
-      cy.tabForward();
       cy.focused().contains('Teamverwaltung');
       cy.tabForward();
       cy.focused().contains('Hilfe');
@@ -139,7 +138,6 @@ describe('Tab workflow tests', () => {
     it('Tab to user menu and log out', () => {
       cy.tabForward();
       cy.tabForward();
-      cy.tabForward();
       cy.focused().contains('Jaya Norris');
       cy.realPress('Enter');
       cy.focused().contains('Logout');
@@ -147,7 +145,6 @@ describe('Tab workflow tests', () => {
     });
 
     it('Tab to quarter-filter, objective-filter and team-filter', () => {
-      cy.tabForward();
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();

@@ -352,8 +352,8 @@ function getCurrentDate() {
   let mm = today.getMonth() + 1; // Months start at 0!
   let dd = today.getDate();
 
-  let dd_str = '' + mm;
-  let mm_str = '' + dd;
+  let dd_str = '' + dd;
+  let mm_str = '' + mm;
   if (dd < 10) dd_str = '0' + dd_str;
   if (mm < 10) mm_str = '0' + mm_str;
 

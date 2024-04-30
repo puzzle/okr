@@ -1,5 +1,5 @@
 import * as users from '../fixtures/users.json';
-import {onlyOn} from '@cypress/skip-test';
+import { onlyOn } from '@cypress/skip-test';
 
 describe('Tab workflow tests', () => {
   beforeEach(() => {

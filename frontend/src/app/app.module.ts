@@ -48,7 +48,7 @@ import { Router } from '@angular/router';
 import { KeyresultTypeComponent } from './components/keyresult-type/keyresult-type.component';
 import { ObjectiveFilterComponent } from './components/objective-filter/objective-filter.component';
 import { ActionPlanComponent } from './components/action-plan/action-plan.component';
-import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { SharedModule } from './shared/shared.module';
 import { OauthInterceptor } from './interceptors/oauth.interceptor';
 import { ErrorInterceptor } from './interceptors/error-interceptor.service';
@@ -157,6 +157,7 @@ export const MY_FORMATS = {
     CdkDrag,
     SharedModule,
     A11yModule,
+    CdkDragHandle,
   ],
   providers: [
     {

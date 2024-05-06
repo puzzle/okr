@@ -13,7 +13,7 @@ describe('OKR diagram e2e tests', () => {
       cy.get('h1:contains(Puzzle ITC)').should('have.length', 1);
       cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
       cy.contains('Overview');
-      cy.contains('Diagramm');
+      cy.contains('Network');
       cy.contains('An Objective for Testing');
 
       cy.getByTestId('diagramTab').first().click();
@@ -34,7 +34,7 @@ describe('OKR diagram e2e tests', () => {
       cy.get('h1:contains(Puzzle ITC)').should('have.length', 1);
       cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
       cy.contains('Overview');
-      cy.contains('Diagramm');
+      cy.contains('Network');
       cy.contains('An Objective for Testing');
       cy.getByTestId('quarterFilter').should('contain', 'GJ 24/25-Q1');
       cy.get('mat-chip:visible:contains("Puzzle ITC")')

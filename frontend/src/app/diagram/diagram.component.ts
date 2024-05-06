@@ -67,6 +67,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       zoom: 1,
       zoomingEnabled: true,
       userZoomingEnabled: true,
+      wheelSensitivity: 0.3,
 
       style: [
         {

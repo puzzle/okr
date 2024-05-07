@@ -52,7 +52,7 @@ $$
                 FROM quarter_meta qm
                 WHERE qm.quarter = CAST(quarter_digit AS integer);
 
-                SELECT CONCAT(last_year, end_month_day)
+                SELECT CONCAT(CAST(first_year AS integer) - year_offset, end_month_day)
                 INTO formatted_end_date
                 FROM quarter;
 

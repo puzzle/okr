@@ -230,11 +230,11 @@ $$
         -- next (future) quarter
         future_quarter_year = year_of_next_quarter_without_offset_correction(current_year, current_quarter);
         SELECT create_future_quarter_label(current_quarter, future_quarter_year, 1) INTO quarter_label;
-        RAISE NOTICE '%', quarter_label;
+        --RAISE NOTICE '%', quarter_label;
 
         -- current quarter
         SELECT create_current_quarter_label(current_quarter, current_year, 2) INTO quarter_label;
-        RAISE NOTICE '% *', quarter_label;
+        --RAISE NOTICE '% *', quarter_label;
 
         -- previous (past) quarters
         past_quarter = current_quarter;
@@ -243,7 +243,7 @@ $$
         FOR quarter_id IN 3..8 LOOP
                 past_quarter_year = year_of_previous_quarter_without_offset_correction(past_quarter_year, past_quarter);
                 SELECT quarter, year, label FROM create_past_quarter_label(past_quarter, past_quarter_year, quarter_id) AS (quarter integer, year integer, label text) INTO r;
-                RAISE NOTICE '%', r.label;
+                --RAISE NOTICE '%', r.label;
                 past_quarter = r.quarter;
                 past_quarter_year = r.year;
             END LOOP;

@@ -45,7 +45,7 @@ $$
                 INTO formatted_start_date
                 FROM quarter;
 
-                RAISE NOTICE 'Start date: %', formatted_start_date;
+                --RAISE NOTICE 'Start date: %', formatted_start_date;
 
                 SELECT qm.end_month_day
                 INTO end_month_day
@@ -56,7 +56,7 @@ $$
                 INTO formatted_end_date
                 FROM quarter;
 
-                RAISE NOTICE 'End date  : %', formatted_end_date;
+                --RAISE NOTICE 'End date  : %', formatted_end_date;
 
                 new_start_date := TO_DATE(formatted_start_date, 'YY-MM-DD');
                 new_end_date := TO_DATE(formatted_end_date, 'YY-MM-DD');

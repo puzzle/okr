@@ -28,14 +28,14 @@ $$
                     quarter_digit := substr(quarter_label, 2, 1);
 
                     new_label = FORMAT('GJ 20%s-Q%s', first_year, quarter_digit);
-                    RAISE NOTICE 'process % -> %', r.label, new_label;
+                    --RAISE NOTICE 'process % -> %', r.label, new_label;
 
                     UPDATE quarter q
                     SET label = new_label
                     WHERE q.id = r.id;
 
                 ELSE
-                    RAISE NOTICE 'skip %', r.label;
+                    --RAISE NOTICE 'skip %', r.label;
                 END IF;
             END LOOP;
     END

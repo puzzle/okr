@@ -23,7 +23,7 @@ public class AuthorizationRegistrationService {
         this.tenantConfigProvider = tenantConfigProvider;
     }
 
-    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#userFromToken.email")
+    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "T(ch.puzzle.okr.SpringCachingConfig).cacheKey(#userFromToken)")
     public AuthorizationUser updateOrAddAuthorizationUser(User userFromToken) {
         var userFromDB = userBusinessService.getOrCreateUser(userFromToken);
         updateChangeableFields(userFromToken, userFromDB);

@@ -17,6 +17,8 @@ public class AuthorizationRegistrationService {
     private final UserBusinessService userBusinessService;
     private final TenantConfigProvider tenantConfigProvider;
 
+    private final UserUpdateHelper helper = new UserUpdateHelper();
+
     public AuthorizationRegistrationService(UserBusinessService userBusinessService,
             TenantConfigProvider tenantConfigProvider) {
         this.userBusinessService = userBusinessService;
@@ -26,28 +28,42 @@ public class AuthorizationRegistrationService {
     @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "T(ch.puzzle.okr.SpringCachingConfig).cacheKey(#userFromToken)")
     public AuthorizationUser updateOrAddAuthorizationUser(User userFromToken) {
         var userFromDB = userBusinessService.getOrCreateUser(userFromToken);
-        updateChangeableFields(userFromToken, userFromDB);
-        return new AuthorizationUser(userFromDB);
+        var userFromDBWithTokenData = setFirstLastNameFromToken(userFromDB, userFromToken);
+        var userFromDBWithTokenAndPropertiesData = setOkrChampionFromProperties(userFromDBWithTokenData);
+        userBusinessService.saveUser(userFromDBWithTokenAndPropertiesData);
+        return new AuthorizationUser(userFromDBWithTokenAndPropertiesData);
     }
 
-    // firstname and lastname comes from JWT token and could be updated in keycloak.
-    // okr champion is set in application properties and should be updated as well
-    private void updateChangeableFields(User userFromToken, User userFromDB) {
-        userFromDB.setFirstname(userFromToken.getFirstname());
-        userFromDB.setLastname(userFromToken.getLastname());
-        setOkrChampionFromProperties(userFromDB);
-        userBusinessService.saveUser(userFromDB);
+    // firstname and lastname comes from JWT token
+    private User setFirstLastNameFromToken(User userFromDB, User userFromToken) {
+        return helper.setFirstLastNameFromToken(userFromDB, userFromToken);
     }
 
-    public void setOkrChampionFromProperties(User user) {
+    // okr champion is set in application properties
+    private User setOkrChampionFromProperties(User user) {
         TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider
                 .getTenantConfigById(TenantContext.getCurrentTenant())
                 .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
-        for (var mail : tenantConfig.okrChampionEmails()) {
-            if (mail.trim().equals(user.getEmail())) {
-                user.setOkrChampion(true);
-                return;
+
+        return helper.setOkrChampionFromProperties(user, tenantConfig);
+    }
+
+    public static class UserUpdateHelper {
+
+        public User setOkrChampionFromProperties(User user, TenantConfigProvider.TenantConfig tenantConfig) {
+            for (var mail : tenantConfig.okrChampionEmails()) {
+                if (mail.trim().equals(user.getEmail())) {
+                    user.setOkrChampion(true);
+                }
             }
+            return user;
+        }
+
+        public User setFirstLastNameFromToken(User userFromDB, User userFromToken) {
+            userFromDB.setFirstname(userFromToken.getFirstname());
+            userFromDB.setLastname(userFromToken.getLastname());
+            return userFromDB;
         }
     }
+
 }

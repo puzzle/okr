@@ -99,7 +99,7 @@ class AuthorizationRegistrationServiceIT {
         // arrange
         User user = User.Builder.builder() //
                 .withFirstname("Alice") //
-                .withLastname("Wunderland,") //
+                .withLastname("Wunderland") //
                 .withEmail("wunderland@puzzle.ch") // user.champion.emails from application-integration-test.properties
                 .build();
 

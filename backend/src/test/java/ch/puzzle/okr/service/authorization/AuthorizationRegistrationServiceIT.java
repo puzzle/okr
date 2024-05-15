@@ -17,7 +17,6 @@ import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 import static ch.puzzle.okr.TestHelper.defaultUser;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 @SpringIntegrationTest
 class AuthorizationRegistrationServiceIT {
     @Autowired
@@ -54,6 +53,7 @@ class AuthorizationRegistrationServiceIT {
         assertNotNull(cache.get(key, AuthorizationUser.class));
     }
 
+    @Disabled
     @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
     @Test
     void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
@@ -77,6 +77,7 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(userFromDB.get().getId());
     }
 
+    @Disabled
     @Test
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
@@ -100,6 +101,7 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(userFromDB.get().getId());
     }
 
+    @Disabled
     @Test
     void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
         // arrange

@@ -101,7 +101,6 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(userFromDB.get().getId());
     }
 
-    @Disabled
     @Test
     void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
         // arrange

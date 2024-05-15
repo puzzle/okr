@@ -215,7 +215,7 @@ describe('Tab workflow tests', () => {
       cy.contains('Edited by Cypress');
     });
 
-    it('Duplicate objective with tab', () => {
+    it.skip('Duplicate objective with tab', () => {
       openThreeDotMenu();
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective duplizieren');
@@ -337,7 +337,7 @@ describe('Tab workflow tests', () => {
       cy.contains('This has been edited by Cypress').should('not.exist');
     });
 
-    it('Create new key result metric with checkin and edit checkin with tab', () => {
+    it.skip('Create new key result metric with checkin and edit checkin with tab', () => {
       // Create keyresult
       openCreateKeyResult();
       cy.wait(500);

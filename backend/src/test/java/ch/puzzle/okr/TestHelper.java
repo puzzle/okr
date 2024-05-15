@@ -19,6 +19,8 @@ public class TestHelper {
     private TestHelper() {
     }
 
+    public static final String SCHEMA_PITC = "pitc";
+
     private static final String FIRSTNAME = "Bob";
     private static final String LASTNAME = "Kaufmann";
     private static final String EMAIL = "kaufmann@puzzle.ch";

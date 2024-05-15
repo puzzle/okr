@@ -12,7 +12,7 @@ export const environment = {
     clearHashAfterLogin: true,
     issuer: '',
     strictDiscoveryDocumentValidation: false,
-    redirectUri: 'http://localhost:4200',
+    redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}`,
     scope: 'openid profile',
     clientId: '',
     responseType: 'code',

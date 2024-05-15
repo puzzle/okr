@@ -5,8 +5,10 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,6 +52,11 @@ class ObjectivePersistenceServiceIT {
                 .withModifiedBy(User.Builder.builder().withId(1L).build()).build();
     }
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
     @AfterEach
     void tearDown() {
         try {
@@ -62,6 +69,7 @@ class ObjectivePersistenceServiceIT {
         } finally {
             createdObjective = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

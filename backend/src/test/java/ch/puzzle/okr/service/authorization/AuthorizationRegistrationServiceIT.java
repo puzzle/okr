@@ -1,19 +1,24 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import java.util.Optional;
+
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 import static ch.puzzle.okr.TestHelper.defaultUser;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @SpringIntegrationTest
 class AuthorizationRegistrationServiceIT {
@@ -26,73 +31,116 @@ class AuthorizationRegistrationServiceIT {
 
     private final User user = defaultUser(null);
 
+    private final String tenant = TestHelper.SCHEMA_PITC;
+    private final String key = tenant + "_" + user.getEmail();
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(tenant);
+    }
+
     @AfterEach
     void tearDown() {
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
         assertNotNull(cache);
         cache.clear();
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test
     void registerAuthorizationUserShouldAddAuthorizationUserToCache() {
+        // arrange
+        Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
+
+        // act
         authorizationRegistrationService.updateOrAddAuthorizationUser(user);
 
-        Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
+        // assert
         assertNotNull(cache);
-        assertNotNull(cache.get(user.getEmail(), AuthorizationUser.class));
+        assertNotNull(cache.get(key, AuthorizationUser.class));
+
+        // cleanup
+        userPersistenceService.deleteById(user.getId());
+    }
+
+    @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
+    @Test
+    void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
+        // arrange
+        User user = User.Builder.builder().withFirstname("Richard") //
+                .withLastname("Eberhard") //
+                .withEmail("richard.eberhard@puzzle.ch") // email not found in application-integration-test.properties
+                .build();
+
+        userPersistenceService.getOrCreateUser(user); // updates input user with id from DB !!!
+
+        // act
+        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(user);
+
+        // assert
+        assertFalse(processedUser.user().isOkrChampion());
+        Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+        assertFalse(userFromDB.get().isOkrChampion());
+
+        // cleanup
+        userPersistenceService.deleteById(userFromDB.get().getId());
+    }
+
+    /*
+     * Special test setup. - the user wunderland@puzzle.ch is an existing user in the H2 db (created via X_TestData.sql)
+     * - the user wunderland@puzzle.ch is also defined in application-integration-test.properties as user champion -
+     * with this combination we can test, that the user in the db (which has initial isOkrChampion == false) is after
+     * calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch exists before the
+     * test, we make no clean in db (we don't remove it)
+     */
+    @Test
+    @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
+    void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
+        // arrange
+        User user = User.Builder.builder() //
+                .withFirstname("Alice") //
+                .withLastname("Wunderland") //
+                .withEmail("wunderland@puzzle.ch") // user.champion.emails from application-integration-test.properties
+                .build();
+
+        userPersistenceService.getOrCreateUser(user); // updates input user with id from DB !!!
+
+        // act
+        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(user);
+
+        // assert
+        assertTrue(processedUser.user().isOkrChampion());
+        Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+        assertTrue(userFromDB.get().isOkrChampion());
     }
 
     @Test
-    void registerAuthorizationUser_shouldSetOkrChampionsCorrectly() {
-        var userRichard = User.Builder.builder().withFirstname("Richard").withLastname("Eberhard")
-                .withEmail("richard.eberhard@puzzle.ch").build();
-        var userMaria = User.Builder.builder().withFirstname("Maria").withLastname("Gerber")
-                .withEmail("maria.gerber@puzzle.ch").build();
-        var userAndrea = User.Builder.builder().withFirstname("Andrea").withLastname("Nydegger")
-                .withEmail("andrea.nydegger@puzzle.ch").build();
+    void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
+        // arrange
+        User user = User.Builder.builder() //
+                .withFirstname("Richard") //
+                .withLastname("Eberhard") //
+                .withEmail("richard.eberhard@puzzle.ch") //
+                .build();
+        userPersistenceService.save(user);
 
-        userPersistenceService.getOrCreateUser(userRichard);
-        userPersistenceService.getOrCreateUser(userMaria);
-        userPersistenceService.getOrCreateUser(userAndrea);
+        String firstNameFromToken = "Richu";
+        String lastNameFromToken = "von Gunten";
+        User userFromToken = User.Builder.builder() //
+                .withFirstname(firstNameFromToken) //
+                .withLastname(lastNameFromToken) //
+                .withEmail("richard.eberhard@puzzle.ch") //
+                .build();
 
-        setField(authorizationRegistrationService, "okrChampionEmails",
-                "maria.gerber@puzzle.ch, richard.eberhard@puzzle.ch");
+        // act
+        authorizationRegistrationService.updateOrAddAuthorizationUser(userFromToken);
 
-        authorizationRegistrationService.updateOrAddAuthorizationUser(userRichard);
-        authorizationRegistrationService.updateOrAddAuthorizationUser(userMaria);
-        authorizationRegistrationService.updateOrAddAuthorizationUser(userAndrea);
+        // assert
+        Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+        assertEquals(userFromDB.get().getFirstname(), firstNameFromToken);
+        assertEquals(userFromDB.get().getLastname(), lastNameFromToken);
 
-        var userRichardSaved = userPersistenceService.findByEmail(userRichard.getEmail());
-        var userMariaSaved = userPersistenceService.findByEmail(userMaria.getEmail());
-        var userAndreaSaved = userPersistenceService.findByEmail(userAndrea.getEmail());
-
-        assertTrue(userRichardSaved.get().isOkrChampion());
-        assertTrue(userMariaSaved.get().isOkrChampion());
-        assertFalse(userAndreaSaved.get().isOkrChampion());
-
-        userPersistenceService.deleteById(userRichardSaved.get().getId());
-        userPersistenceService.deleteById(userMariaSaved.get().getId());
-        userPersistenceService.deleteById(userAndreaSaved.get().getId());
-    }
-
-    @Test
-    void registerAuthorizationUser_shouldSetFirstnameAndLastname() {
-        var userRichard = User.Builder.builder().withFirstname("Richard").withLastname("Eberhard")
-                .withEmail("richard.eberhard@puzzle.ch").build();
-        userPersistenceService.save(userRichard);
-
-        var newFirstName = "Richu";
-        var newLastName = "von Gunten";
-        var userRichardCopy = User.Builder.builder().withFirstname(newFirstName).withLastname(newLastName)
-                .withEmail("richard.eberhard@puzzle.ch").build();
-        setField(authorizationRegistrationService, "okrChampionEmails", "");
-
-        authorizationRegistrationService.updateOrAddAuthorizationUser(userRichardCopy);
-
-        var userRichardSaved = userPersistenceService.findByEmail(userRichard.getEmail());
-        assertEquals(userRichardSaved.get().getFirstname(), newFirstName);
-        assertEquals(userRichardSaved.get().getLastname(), newLastName);
-
-        userPersistenceService.deleteById(userRichardSaved.get().getId());
+        // cleanup
+        userPersistenceService.deleteById(userFromDB.get().getId());
     }
 }

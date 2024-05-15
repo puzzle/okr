@@ -67,7 +67,8 @@ class AuthorizationRegistrationServiceIT {
     @Test
     void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
         // arrange
-        User user = User.Builder.builder().withFirstname("Richard") //
+        User user = User.Builder.builder() //
+                .withFirstname("Richard") //
                 .withLastname("Eberhard") //
                 .withEmail("richard.eberhard@puzzle.ch") // email not found in application-integration-test.properties
                 .build();
@@ -87,11 +88,11 @@ class AuthorizationRegistrationServiceIT {
     }
 
     /*
-     * Special test setup. - the user wunderland@puzzle.ch is an existing user in the H2 db (created via X_TestData.sql)
-     * - the user wunderland@puzzle.ch is also defined in application-integration-test.properties as user champion -
-     * with this combination we can test, that the user in the db (which has initial isOkrChampion == false) is after
-     * calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch exists before the
-     * test, we make no clean in db (we don't remove it)
+     * Special test setup. <pre> - the user wunderland@puzzle.ch is an existing user in the H2 db (created via
+     * X_TestData.sql) - the user wunderland@puzzle.ch is also defined in application-integration-test.properties as
+     * user champion - with this combination we can test, that the user in the db (which has initial isOkrChampion ==
+     * false) is after calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch
+     * exists before the test, we make no clean in db (we don't remove it) </pre>
      */
     @Test
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")

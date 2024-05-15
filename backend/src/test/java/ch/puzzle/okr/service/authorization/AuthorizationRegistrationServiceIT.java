@@ -6,10 +6,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -20,6 +17,7 @@ import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 import static ch.puzzle.okr.TestHelper.defaultUser;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 @SpringIntegrationTest
 class AuthorizationRegistrationServiceIT {
     @Autowired

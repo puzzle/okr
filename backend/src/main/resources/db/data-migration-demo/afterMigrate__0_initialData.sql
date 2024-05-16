@@ -10,6 +10,18 @@ truncate table team_organisation;
 truncate table organisation cascade;
 truncate table team cascade;
 
+-- fill quarter with dummy labels. correct labels are updated via callback sql scripts
+insert into quarter (id, label)
+values (1, '1'), -- last past quarter
+       (2, '2'),
+       (3, '3'),
+       (4, '4'),
+       (5, '5'),
+       (6, '6'), -- first past quarter
+       (7, '7'), -- current quarter
+       (8, '8'), -- future quarter
+       (999, 'Backlog');
+
 insert into person (id, email, firstname, lastname, username, version)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann', 1),
        (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice', 1),
@@ -17,38 +29,6 @@ values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann', 1),
        (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus', 1),
        (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco', 1),
        (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin', 1);
-
-DO
-$$
-    DECLARE
-        quarter_label text;
-        first_date    date;
-        last_date     date;
-    BEGIN
-        -- last quarter
-        select concat('GJ ', to_char(date_trunc('quarter', now())::date - 1, 'yyyy-q')) into quarter_label;
-        select date_trunc('quarter', date_trunc('quarter', now())::date - 1):: date into first_date;
-        select date_trunc('quarter', now())::date - 1 into last_date;
-        insert into quarter (id, label, start_date, end_date)
-        values (1, quarter_label, first_date, last_date);
-
-        -- current quarter
-        select concat('GJ ', to_char(date_trunc('quarter', now()), 'yyyy-q')) into quarter_label;
-        select date_trunc('quarter', now()):: date into first_date;
-        select date_trunc('quarter', date_trunc('quarter', now())::date + 93)::date - 1 into last_date;
-        insert into quarter (id, label, start_date, end_date)
-        values (2, quarter_label, first_date, last_date);
-
-        -- next quarter, archive, backlog
-        select concat('GJ ', to_char(date_trunc('quarter', now())::date + 93, 'yyyy-q')) into quarter_label;
-        select date_trunc('quarter', date_trunc('quarter', now())::date + 93)::date into first_date;
-        select date_trunc('quarter', date_trunc('quarter', now())::date + 186)::date - 1 into last_date;
-        insert into quarter (id, label, start_date, end_date)
-        values (3, quarter_label, first_date, last_date),
-               (998, 'Archive', null, null),
-               (999, 'Backlog', null, null);
-    END
-$$;
 
 insert into team (id, name, version)
 values (4, '/BBT', 1),
@@ -95,27 +75,27 @@ values (5, 3),
 
 insert into objective (id, description, modified_on, title, created_by_id, quarter_id, team_id, state, modified_by_id,
                        created_on, version)
-values (4, '', '2023-07-25 08:17:51.309958', 'Build a company culture that kills the competition.', 1, 2, 5, 'ONGOING',
+values (4, '', '2023-07-25 08:17:51.309958', 'Build a company culture that kills the competition.', 1, 7, 5, 'ONGOING',
         1, '2023-07-25 08:17:51.309958', 1),
        (3,
         'Die Konkurenz nimmt stark zu, um weiterhin einen angenehmen Markt bearbeiten zu können, wollen wir die Kundenzufriedenheit steigern. ',
-        '2023-07-25 08:13:48.768262', 'Wir wollen die Kundenzufriedenheit steigern', 1, 2, 5, 'ONGOING', 1,
+        '2023-07-25 08:13:48.768262', 'Wir wollen die Kundenzufriedenheit steigern', 1, 7, 5, 'ONGOING', 1,
         '2023-07-25 08:13:48.768262', 1),
        (6, '', '2023-07-25 08:26:46.982010',
-        'Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.', 1, 2, 4, 'ONGOING', 1,
+        'Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.', 1, 7, 4, 'ONGOING', 1,
         '2023-07-25 08:26:46.982010', 1),
        (5, 'Damit wir nicht alle anderen Entwickler stören wollen wir so leise wie möglich arbeiten',
-        '2023-07-25 08:20:36.894258', 'Wir wollen das leiseste Team bei Puzzle sein', 1, 2, 4, 'NOTSUCCESSFUL', 1,
+        '2023-07-25 08:20:36.894258', 'Wir wollen das leiseste Team bei Puzzle sein', 1, 7, 4, 'NOTSUCCESSFUL', 1,
         '2023-07-25 08:20:36.894258', 1),
        (9, '', '2023-07-25 08:39:45.752126',
         'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-        1, 2, 6, 'NOTSUCCESSFUL', 1, '2023-07-25 08:39:45.752126', 1),
+        1, 7, 6, 'NOTSUCCESSFUL', 1, '2023-07-25 08:39:45.752126', 1),
        (10, '', '2023-07-25 08:39:45.772126',
-        'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.', 1, 2, 6, 'SUCCESSFUL',
+        'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.', 1, 7, 6, 'SUCCESSFUL',
         1, '2023-07-25 08:39:45.772126', 1),
        (8, '', '2023-07-25 08:39:28.175703',
         'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
-        1, 2, 6, 'NOTSUCCESSFUL', 1, '2023-07-25 08:39:28.175703', 1);
+        1, 7, 6, 'NOTSUCCESSFUL', 1, '2023-07-25 08:39:28.175703', 1);
 
 insert into completed (id, version, objective_id, comment)
 values (1, 1, 5, 'Not successful because there were many events this month'),

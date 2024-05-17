@@ -46,6 +46,7 @@
       <input
         type="email"
         [id]="'email-col_' + index"
+        [attr.data-testId]="'email-col_' + index"
         [name]="'email-col_' + index"
         class="value-field dialog-form-field"
         formControlName="email"

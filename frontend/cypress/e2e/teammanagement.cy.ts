@@ -160,8 +160,10 @@ describe('Team management tests', () => {
 
         // test error messages
         fillOutNewUser('Robin', '', 'papierer');
+        cy.getByTestId('invite').click();
         cy.contains('Angabe benötigt');
         cy.contains('E-Mail ungültig');
+        cy.getByTestId('email-col_2').focus();
         cy.realType('@puzzle.ch');
         cy.contains('E-Mail ungültig').should('not.exist');
         cy.contains('E-Mail existiert bereits');

@@ -1,6 +1,8 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.service.ClientConfigService;
+import ch.puzzle.okr.dto.ClientConfigDto;
+import ch.puzzle.okr.service.clientconfig.ClientConfigService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,8 @@ public class ClientConfigController {
     }
 
     @GetMapping
-    public ResponseEntity<Map<String, String>> getConfig() {
-        return ResponseEntity.status(HttpStatus.OK).body(configService.getConfigBasedOnActiveEnv());
+    public ResponseEntity<ClientConfigDto> getConfig(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 }

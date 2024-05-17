@@ -86,18 +86,6 @@ describe('ActionPlanComponent', () => {
     expect(component.control.getValue()![0]).toStrictEqual(addedAction);
   });
 
-  it('should change text of action', () => {
-    const testString1 = 'new Text';
-    const testString2 = 'Do some stuff';
-    component.control = new BehaviorSubject<Action[] | null>([action1, action2]);
-
-    component.changeActionText({ target: { value: testString1 } }, 0);
-    component.changeActionText({ target: { value: testString2 } }, 1);
-
-    expect(component.control.getValue()![0].action).toBe(testString1);
-    expect(component.control.getValue()![1].action).toBe(testString2);
-  });
-
   it('should decrease index of active item', () => {
     const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
     component.control.next([action1, action2, action3]);

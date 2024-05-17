@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Unit;
@@ -13,6 +14,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -91,6 +93,7 @@ class KeyResultBusinessServiceIT {
 
     @BeforeEach
     void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
     }
 
@@ -173,7 +176,7 @@ class KeyResultBusinessServiceIT {
                 changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
-        assertRecreatedKeyResult(changedKeyResult, createdKeyResultId);
+        assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
     @Test
@@ -189,7 +192,7 @@ class KeyResultBusinessServiceIT {
                 changedKeyResult, List.of(action1, action2));
         createdKeyResult = updatedKeyResult.keyResult();
 
-        assertRecreatedKeyResult(changedKeyResult, createdKeyResultId);
+        assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
         assertSameActions(List.of(action1, action2), updatedKeyResult);
     }
 
@@ -204,7 +207,7 @@ class KeyResultBusinessServiceIT {
                 changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
-        assertRecreatedKeyResult(changedKeyResult, createdKeyResultId);
+        assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
     @Test

@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +24,7 @@ import { OAuthModule, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRadioModule } from '@angular/material/radio';
-import { ConfigService } from './config.service';
+import { ConfigService } from './services/config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { TeamComponent } from './components/team/team.component';
@@ -48,7 +48,7 @@ import { Router } from '@angular/router';
 import { KeyresultTypeComponent } from './components/keyresult-type/keyresult-type.component';
 import { ObjectiveFilterComponent } from './components/objective-filter/objective-filter.component';
 import { ActionPlanComponent } from './components/action-plan/action-plan.component';
-import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { SharedModule } from './shared/shared.module';
 import { OauthInterceptor } from './interceptors/oauth.interceptor';
 import { ErrorInterceptor } from './interceptors/error-interceptor.service';
@@ -61,11 +61,16 @@ import { CheckInFormOrdinalComponent } from './components/checkin/check-in-form-
 import { CheckInFormComponent } from './components/checkin/check-in-form/check-in-form.component';
 import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { CustomizationService } from './services/customization.service';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
     const config = await firstValueFrom(configService.config$);
-    oauthService.configure({ ...environment.oauth, issuer: config.issuer, clientId: config.clientId });
+    oauthService.configure({
+      ...environment.oauth,
+      issuer: config.issuer,
+      clientId: config.clientId,
+    });
   };
 }
 
@@ -156,6 +161,7 @@ export const MY_FORMATS = {
     CdkDrag,
     SharedModule,
     A11yModule,
+    CdkDragHandle,
   ],
   providers: [
     {
@@ -167,7 +173,12 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
-    { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initOauthFactory,
+      deps: [ConfigService, OAuthService, Injector],
+      multi: true,
+    },
     {
       provide: Router,
       useClass: CustomRouter,
@@ -177,4 +188,6 @@ export const MY_FORMATS = {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly customizationService: CustomizationService) {}
+}

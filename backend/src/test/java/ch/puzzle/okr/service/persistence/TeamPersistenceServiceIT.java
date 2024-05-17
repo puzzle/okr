@@ -4,8 +4,10 @@ import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +27,11 @@ class TeamPersistenceServiceIT {
     @Autowired
     private TeamPersistenceService teamPersistenceService;
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
     @AfterEach
     void tearDown() {
         try {
@@ -37,6 +44,7 @@ class TeamPersistenceServiceIT {
         } finally {
             createdTeam = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

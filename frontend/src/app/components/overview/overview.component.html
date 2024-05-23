@@ -28,21 +28,23 @@
     </div>
   </div>
 
-  <div *ngIf="isOverview; else diagram">
-    <app-team
+  <div>
+    <div [class.hidden]="!isOverview">
+      <app-team
 
-      *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
-      [overviewEntity]="overviewEntity"
-    >
-    </app-team>
-    <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
-      <p>Kein Team ausgewählt</p>
-      <img src="{{ this.backgroundLogoSrc$ | async }}" alt="Greyed out company logo" width="242" class="puzzle-logo" />
+        *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
+        [overviewEntity]="overviewEntity"
+      >
+      </app-team>
+      <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
+        <p>Kein Team ausgewählt</p>
+        <img src="{{ this.backgroundLogoSrc$ | async }}" alt="Greyed out company logo" width="242" class="puzzle-logo" />
+      </div>
+    </div>
+
+    <div [class.hidden]="isOverview">
+      <app-diagram [alignmentData]="(alignmentData$ | async) || emptyAlignmentList"></app-diagram>
     </div>
   </div>
-
-  <ng-template #diagram>
-    <app-diagram [alignmentData]="(alignmentData$ | async) || emptyAlignmentList"></app-diagram>
-  </ng-template>
 </div>
 <router-outlet></router-outlet>

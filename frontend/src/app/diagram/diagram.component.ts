@@ -32,6 +32,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   cy!: cytoscape.Core;
   diagramData: any[] = [];
   emptyDiagramData: boolean = false;
+  alignmentDataCache: AlignmentLists | null = null;
 
   constructor(
     private keyResultService: KeyresultService,
@@ -49,9 +50,12 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.alignmentData.subscribe((alignmentData: AlignmentLists): void => {
-      this.diagramData = [];
-      this.cleanUpDiagram();
-      this.prepareDiagramData(alignmentData);
+      if (JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData)) {
+        this.alignmentDataCache = alignmentData;
+        this.diagramData = [];
+        this.cleanUpDiagram();
+        this.prepareDiagramData(alignmentData);
+      }
     });
   }
 

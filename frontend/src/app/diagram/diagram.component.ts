@@ -6,14 +6,10 @@ import {
   generateKeyResultSVG,
   generateNeutralKeyResultSVG,
   generateObjectiveSVG,
-  getCommitIcon,
   getDraftIcon,
-  getFailIcon,
   getNotSuccessfulIcon,
   getOnGoingIcon,
-  getStretchIcon,
   getSuccessfulIcon,
-  getTargetIcon,
 } from './svgGeneration';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResult } from '../shared/types/model/KeyResult';
@@ -277,13 +273,13 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   generateKeyResultSVG(title: string, teamName: string, state: string | undefined): string {
     switch (state) {
       case 'FAIL':
-        return generateKeyResultSVG(title, teamName, getFailIcon, '#BA3838', 'white');
+        return generateKeyResultSVG(title, teamName, '#BA3838', 'white');
       case 'COMMIT':
-        return generateKeyResultSVG(title, teamName, getCommitIcon, '#FFD600', 'black');
+        return generateKeyResultSVG(title, teamName, '#FFD600', 'black');
       case 'TARGET':
-        return generateKeyResultSVG(title, teamName, getTargetIcon, '#1E8A29', 'black');
+        return generateKeyResultSVG(title, teamName, '#1E8A29', 'black');
       case 'STRETCH':
-        return generateKeyResultSVG(title, teamName, getStretchIcon, '#1E5A96', 'white');
+        return generateKeyResultSVG(title, teamName, '#1E5A96', 'white');
       default:
         return generateNeutralKeyResultSVG(title, teamName);
     }

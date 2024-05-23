@@ -57,15 +57,15 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         List<Objective> objectivesByQuarter = objectivePersistenceService.findObjectiveByQuarterId(quarterId);
         List<AlignmentDto> alignmentDtoList = new ArrayList<>();
 
-        List<Team> teamList = new ArrayList<>();
-        objectivesByQuarter.forEach(objective -> teamList.add(objective.getTeam()));
-        Set<Team> set = new HashSet<>(teamList);
-        teamList.clear();
-        teamList.addAll(set);
+        Set<Team> teamSet = new HashSet<>();
+        objectivesByQuarter.forEach(objective -> teamSet.add(objective.getTeam()));
+        List<Team> teamList = new ArrayList<>(teamSet.stream().sorted(Comparator.comparing(Team::getName)).toList());
 
         teamList.forEach(team -> {
             List<Objective> filteredObjectiveList = objectivesByQuarter.stream()
-                    .filter(objective -> objective.getTeam().equals(team)).toList();
+                    .filter(objective -> objective.getTeam().equals(team)).toList().stream()
+                    .sorted(Comparator.comparing(Objective::getTitle)).toList();
+
             List<AlignmentObjectDto> alignmentObjectDtos = new ArrayList<>();
 
             filteredObjectiveList.forEach(objective -> {
@@ -73,7 +73,9 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                         "O - " + objective.getTitle(), "objective");
                 alignmentObjectDtos.add(objectiveDto);
 
-                List<KeyResult> keyResults = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId());
+                List<KeyResult> keyResults = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId())
+                        .stream().sorted(Comparator.comparing(KeyResult::getTitle)).toList();
+
                 keyResults.forEach(keyResult -> {
                     AlignmentObjectDto keyResultDto = new AlignmentObjectDto(keyResult.getId(),
                             "KR - " + keyResult.getTitle(), "keyResult");

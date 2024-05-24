@@ -78,6 +78,7 @@
               [matAutocomplete]="auto"
               (input)="filter()"
               (focus)="filter(); input.select()"
+              (focusout)="scrollLeft()"
               [value]="displayedValue"
             />
             <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayWith">

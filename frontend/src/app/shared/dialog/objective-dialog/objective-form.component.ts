@@ -360,5 +360,9 @@ export class ObjectiveFormComponent implements OnInit {
     }
   }
 
+  scrollLeft() {
+    this.input.nativeElement.scrollLeft = 0;
+  }
+
   protected readonly getQuarterLabel = getQuarterLabel;
 }

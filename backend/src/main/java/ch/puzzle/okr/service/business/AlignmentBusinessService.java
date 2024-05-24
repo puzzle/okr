@@ -95,10 +95,8 @@ public class AlignmentBusinessService {
     }
 
     public boolean isAlignmentTypeChange(Alignment alignment, Alignment savedAlignment) {
-        if (alignment instanceof ObjectiveAlignment && savedAlignment instanceof KeyResultAlignment) {
-            return true;
-        } else
-            return alignment instanceof KeyResultAlignment && savedAlignment instanceof ObjectiveAlignment;
+        return (alignment instanceof ObjectiveAlignment && savedAlignment instanceof KeyResultAlignment)
+                || (alignment instanceof KeyResultAlignment && savedAlignment instanceof ObjectiveAlignment);
     }
 
     public void updateKeyResultIdOnIdChange(Long oldId, KeyResult keyResult) {

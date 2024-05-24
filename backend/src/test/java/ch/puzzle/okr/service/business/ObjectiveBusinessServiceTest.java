@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;

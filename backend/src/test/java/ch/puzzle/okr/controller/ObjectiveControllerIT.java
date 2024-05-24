@@ -1,8 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultAlignmentsDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
@@ -25,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

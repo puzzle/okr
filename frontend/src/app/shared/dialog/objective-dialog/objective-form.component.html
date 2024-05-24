@@ -68,7 +68,7 @@
             />
             <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayWith">
               @for (group of filteredOptions; track group) {
-                <mat-optgroup [label]="group.teamName">
+                <mat-optgroup [label]="group.teamName" style="font-weight: bold">
                   @for (alignmentObject of group.alignmentObjectDtos; track alignmentObject) {
                     <mat-option [value]="alignmentObject">{{ alignmentObject.objectTitle }}</mat-option>
                   }

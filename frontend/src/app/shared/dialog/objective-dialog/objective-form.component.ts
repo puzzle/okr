@@ -118,7 +118,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
       if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
-        quarterId = quarters[1].id;
+        quarterId = quarters[2].id;
       }
 
       this.state = objective.state;

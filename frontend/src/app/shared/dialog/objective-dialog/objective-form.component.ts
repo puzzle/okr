@@ -317,14 +317,38 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   filter() {
     let filterValue = this.input.nativeElement.value.toLowerCase();
-    this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
-      this.filteredOptions = value.filter((alignmentPossibility: AlignmentPossibility) => {
-        let teamMatch = alignmentPossibility.teamName.toLowerCase().includes(filterValue);
-        let objectMatch = alignmentPossibility.alignmentObjectDtos.some((obj) =>
-          obj.objectTitle.toLowerCase().includes(filterValue),
+    this.alignmentPossibilities$.subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
+      let filteredObjects: AlignmentPossibilityObject[] = alignmentPossibilities.flatMap(
+        (alignmentPossibility: AlignmentPossibility) =>
+          alignmentPossibility.alignmentObjectDtos.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+            alignmentPossibilityObject.objectTitle.toLowerCase().includes(filterValue),
+          ),
+      );
+
+      let matchingPossibilities: AlignmentPossibility[] = alignmentPossibilities.filter(
+        (possibility: AlignmentPossibility) =>
+          filteredObjects.some((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+            possibility.alignmentObjectDtos.includes(alignmentPossibilityObject),
+          ),
+      );
+
+      matchingPossibilities = [...new Set(matchingPossibilities)];
+
+      let optionList = matchingPossibilities.map((possibility: AlignmentPossibility) => ({
+        ...possibility,
+        alignmentObjectDtos: possibility.alignmentObjectDtos.filter(
+          (alignmentPossibilityObject: AlignmentPossibilityObject) =>
+            filteredObjects.includes(alignmentPossibilityObject),
+        ),
+      }));
+
+      if (optionList.length == 0) {
+        this.filteredOptions = alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
+          possibility.teamName.toLowerCase().includes(filterValue),
         );
-        return teamMatch || objectMatch;
-      });
+      } else {
+        this.filteredOptions = optionList;
+      }
     });
   }
 

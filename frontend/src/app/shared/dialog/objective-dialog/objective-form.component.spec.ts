@@ -9,7 +9,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../../services/objective.service';
-import { marketingTeamWriteable, objective, objectiveWithAlignment, quarter, quarterList } from '../../testData';
+import {
+    alignmentObject2, alignmentObject3,
+    marketingTeamWriteable,
+    objective,
+    objectiveWithAlignment,
+    quarter,
+    quarterList
+} from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -30,6 +37,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { ActivatedRoute } from '@angular/router';
+import { MatAutocomplete } from '@angular/material/autocomplete';
+import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
+import { ElementRef } from '@angular/core';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -99,6 +110,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
+          MatAutocomplete,
           NoopAnimationsModule,
           MatCheckboxModule,
           TranslateTestingModule.withTranslations({
@@ -132,18 +144,20 @@ describe('ObjectiveDialogComponent', () => {
     it.each([['DRAFT'], ['ONGOING']])(
       'onSubmit create',
       fakeAsync((state: string) => {
-        //Prepare data
-        let title: string = 'title';
-        let description: string = 'description';
-        let createKeyresults: boolean = true;
-        let quarter: number = 0;
-        let team: number = 0;
-        teamService.getAllTeams().subscribe((teams) => {
-          team = teams[0].id;
-        });
-        quarterService.getAllQuarters().subscribe((quarters) => {
-          quarter = quarters[1].id;
-        });
+        objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
+
+      //Prepare data
+      let title: string = 'title';
+      let description: string = 'description';
+      let createKeyresults: boolean = true;
+      let quarter: number = 0;
+      let team: number = 0;
+      teamService.getAllTeams().subscribe((teams) => {
+        team = teams[0].id;
+      });
+      quarterService.getAllQuarters().subscribe((quarters) => {
+        quarter = quarters[1].id;
+      });
 
         // Get input elements and set values
         const titleInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="title"]')).nativeElement;
@@ -201,7 +215,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 0,
         team: 0,
-        alignment: '',
+        alignment: null,
         createKeyResults: false,
       });
 
@@ -218,18 +232,18 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 0,
         teamId: 0,
         version: undefined,
-        alignedEntityId: '',
+        alignedEntityId: null,
       });
     });
 
-    it('should create objective with alignment', () => {
+    it('should create objective with alignment objective', () => {
       matDataMock.objective.objectiveId = undefined;
       component.objectiveForm.setValue({
         title: 'Test title with alignment',
         description: 'Test description',
         quarter: 0,
         team: 0,
-        alignment: 'K37',
+        alignment: alignmentObject2,
         createKeyResults: false,
       });
 
@@ -246,7 +260,35 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 0,
         teamId: 0,
         version: undefined,
-        alignedEntityId: 'K37',
+        alignedEntityId: 'O2',
+      });
+    });
+
+    it('should create objective with alignment keyResult', () => {
+      matDataMock.objective.objectiveId = undefined;
+      component.objectiveForm.setValue({
+        title: 'Test title with alignment',
+        description: 'Test description',
+        quarter: 0,
+        team: 0,
+        alignment: alignmentObject3,
+        createKeyResults: false,
+      });
+
+      objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
+      component.onSubmit('DRAFT');
+
+      fixture.detectChanges();
+
+      expect(objectiveService.createObjective).toHaveBeenCalledWith({
+        description: 'Test description',
+        id: undefined,
+        state: 'DRAFT',
+        title: 'Test title with alignment',
+        quarterId: 0,
+        teamId: 0,
+        version: undefined,
+        alignedEntityId: 'K1',
       });
     });
 
@@ -257,7 +299,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 1,
         team: 1,
-        alignment: '',
+        alignment: null,
         createKeyResults: false,
       });
 
@@ -274,7 +316,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 1,
         teamId: 1,
         version: undefined,
-        alignedEntityId: '',
+        alignedEntityId: null,
       });
     });
 
@@ -287,7 +329,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 1,
         team: 1,
-        alignment: 'K37',
+        alignment: alignmentObject3,
         createKeyResults: false,
       });
 
@@ -304,7 +346,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 1,
         teamId: 1,
         version: undefined,
-        alignedEntityId: 'K37',
+        alignedEntityId: 'K1',
       });
     });
 
@@ -339,6 +381,7 @@ describe('ObjectiveDialogComponent', () => {
       matDataMock.objective.objectiveId = 1;
       const routerHarness = await RouterTestingHarness.create();
       await routerHarness.navigateByUrl('/?quarter=2');
+      objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
       component.ngOnInit();
       const rawFormValue = component.objectiveForm.getRawValue();
@@ -346,7 +389,7 @@ describe('ObjectiveDialogComponent', () => {
       expect(rawFormValue.description).toBe(objectiveWithAlignment.description);
       expect(rawFormValue.team).toBe(objectiveWithAlignment.teamId);
       expect(rawFormValue.quarter).toBe(objectiveWithAlignment.quarterId);
-      expect(rawFormValue.alignment).toBe(objectiveWithAlignment.alignedEntityId);
+      expect(rawFormValue.alignment).toBe(alignmentObject2);
     });
 
     it('should return correct value if allowed to save to backlog', async () => {
@@ -436,6 +479,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
+          MatAutocomplete,
           NoopAnimationsModule,
           MatCheckboxModule,
           RouterTestingModule,
@@ -453,25 +497,6 @@ describe('ObjectiveDialogComponent', () => {
         ],
       });
 
-      let alignmentPossibilities = [
-        {
-          objectiveId: 1003,
-          objectiveTitle: 'O - Test Objective',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1005,
-          objectiveTitle: 'O - Company will grow',
-          keyResultAlignmentsDtos: [
-            {
-              keyResultId: 6,
-              keyResultTitle: 'K - New structure',
-            },
-          ],
-        },
-      ];
-
-      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -483,151 +508,150 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should load correct alignment possibilities', async () => {
-      let generatedPossibilities = [
-        {
-          objectiveId: null,
-          objectiveTitle: 'Bitte wählen',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1003,
-          objectiveTitle: 'O - Test Objective',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1005,
-          objectiveTitle: 'O - Company will grow',
-          keyResultAlignmentsDtos: [
-            {
-              keyResultId: 6,
-              keyResultTitle: 'K - New structure',
-            },
-          ],
-        },
-      ];
-
-      let componentValue = null;
+      objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
+      component.generateAlignmentPossibilities(3, null, null);
+      let alignmentPossibilities = null;
       component.alignmentPossibilities$.subscribe((value) => {
-        componentValue = value;
+        alignmentPossibilities = value;
       });
-      expect(componentValue).toStrictEqual(generatedPossibilities);
+
+      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.filteredOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
     });
 
-    it('should not load current Objective to alignment possibilities', async () => {
-      matDataMock.objective.objectiveId = 1;
-      component.objective = objectiveWithAlignment;
-      objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
+    it('should load not include current team in alignment possibilities', async () => {
+      objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
+      component.generateAlignmentPossibilities(3, null, 1);
+      let alignmentPossibilities = null;
+      component.alignmentPossibilities$.subscribe((value) => {
+        alignmentPossibilities = value;
+      });
+
+      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility2]);
+      expect(component.filteredOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
+    });
+
+    it('should load existing objective alignment to objectiveForm', async () => {
+      objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
+      component.generateAlignmentPossibilities(3, objectiveWithAlignment, null);
+      let alignmentPossibilities = null;
+      component.alignmentPossibilities$.subscribe((value) => {
+        alignmentPossibilities = value;
+      });
+
+      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.filteredOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentObject2);
+    });
+
+    it('should load existing keyResult alignment to objectiveForm', async () => {
+      objectiveWithAlignment.alignedEntityId = 'K1';
+      objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
+      component.generateAlignmentPossibilities(3, objectiveWithAlignment, null);
+      let alignmentPossibilities = null;
+      component.alignmentPossibilities$.subscribe((value) => {
+        alignmentPossibilities = value;
+      });
+
+      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.filteredOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentObject3);
+    });
+
+    it('should filter correct alignment possibilities', async () => {
+      // Search for one title
+      component.input.nativeElement.value = 'palm';
+      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.filter();
+      let modifiedAlignmentPossibility: AlignmentPossibility = {
+        teamId: 1,
+        teamName: 'Puzzle ITC',
+        alignmentObjectDtos: [alignmentObject3],
+      };
+      expect(component.filteredOptions$.getValue()).toEqual([modifiedAlignmentPossibility]);
+
+      // Search for team name
+      component.input.nativeElement.value = 'Puzzle IT';
+      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.filter();
+      modifiedAlignmentPossibility = {
+        teamId: 1,
+        teamName: 'Puzzle ITC',
+        alignmentObjectDtos: [alignmentObject2, alignmentObject3],
+      };
+      expect(component.filteredOptions$.getValue()).toEqual([modifiedAlignmentPossibility]);
+
+      // Search for two objects
+      component.input.nativeElement.value = 'we';
+      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.filter();
+      let modifiedAlignmentPossibilities = [
+        {
+          teamId: 1,
+          teamName: 'Puzzle ITC',
+          alignmentObjectDtos: [alignmentObject2, alignmentObject3],
+        },
+        {
+          teamId: 2,
+          teamName: 'We are cube',
+          alignmentObjectDtos: [alignmentObject1],
+        },
+      ];
+      expect(component.filteredOptions$.getValue()).toEqual(modifiedAlignmentPossibilities);
+
+      // No match
+      component.input.nativeElement.value = 'findus';
+      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.filter();
+      expect(component.filteredOptions$.getValue()).toEqual([]);
+    });
+
+    it('should find correct alignment object', () => {
+      // objective
+      let alignmentObject = component.findAlignmentObject(
+        [alignmentPossibility1, alignmentPossibility2],
+        1,
+        'objective',
+      );
+      expect(alignmentObject!.objectId).toEqual(1);
+      expect(alignmentObject!.objectTitle).toEqual('We want to increase the income');
+
+      // keyResult
+      alignmentObject = component.findAlignmentObject([alignmentPossibility1, alignmentPossibility2], 1, 'keyResult');
+      expect(alignmentObject!.objectId).toEqual(1);
+      expect(alignmentObject!.objectTitle).toEqual('We buy 3 palms');
+
+      // no match
+      alignmentObject = component.findAlignmentObject([alignmentPossibility1, alignmentPossibility2], 133, 'keyResult');
+      expect(alignmentObject).toEqual(null);
+    });
+
+    it('should display kein alignment vorhanden when no alignment possibility', () => {
+      component.filteredOptions$.next([alignmentPossibility1, alignmentPossibility2]);
       fixture.detectChanges();
-      component.ngOnInit();
+      expect(component.input.nativeElement.getAttribute('placeholder')).toEqual('Bezug wählen');
 
-      let generatedPossibilities = [
-        {
-          objectiveId: null,
-          objectiveTitle: 'Kein Alignment',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1003,
-          objectiveTitle: 'O - Test Objective',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1005,
-          objectiveTitle: 'O - Company will grow',
-          keyResultAlignmentsDtos: [
-            {
-              keyResultId: 6,
-              keyResultTitle: 'K - New structure',
-            },
-          ],
-        },
-      ];
-
-      let componentValue = null;
-      component.alignmentPossibilities$.subscribe((value) => {
-        componentValue = value;
-      });
-      expect(componentValue).toStrictEqual(generatedPossibilities);
-    });
-
-    it('should load Kein Alignment to alignment possibilities when objective have an alignment', async () => {
-      component.objective = objective;
-      component.data.objective.objectiveId = 5;
-      objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
+      component.filteredOptions$.next([]);
       fixture.detectChanges();
-      component.ngOnInit();
-
-      let generatedPossibilities = [
-        {
-          objectiveId: null,
-          objectiveTitle: 'Kein Alignment',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1003,
-          objectiveTitle: 'O - Test Objective',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1005,
-          objectiveTitle: 'O - Company will grow',
-          keyResultAlignmentsDtos: [
-            {
-              keyResultId: 6,
-              keyResultTitle: 'K - New structure',
-            },
-          ],
-        },
-      ];
-
-      let componentValue = null;
-      component.alignmentPossibilities$.subscribe((value) => {
-        componentValue = value;
-      });
-      expect(componentValue).toStrictEqual(generatedPossibilities);
+      expect(component.input.nativeElement.getAttribute('placeholder')).toEqual('Kein Alignment vorhanden');
     });
 
-    it('should load Kein Alignment to alignment possibilities when choosing one alignment', async () => {
-      objectiveService.getFullObjective.mockReturnValue(of(objective));
-      component.objective = objective;
-      component.data.objective.objectiveId = 5;
-      fixture.detectChanges();
-      component.ngOnInit();
-      component.changeFirstAlignmentPossibility();
-
-      let currentPossibilities = [
-        {
-          objectiveId: null,
-          objectiveTitle: 'Kein Alignment',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1003,
-          objectiveTitle: 'O - Test Objective',
-          keyResultAlignmentsDtos: [],
-        },
-        {
-          objectiveId: 1005,
-          objectiveTitle: 'O - Company will grow',
-          keyResultAlignmentsDtos: [
-            {
-              keyResultId: 6,
-              keyResultTitle: 'K - New structure',
-            },
-          ],
-        },
-      ];
-
-      let componentValue = null;
-      component.alignmentPossibilities$.subscribe((value) => {
-        componentValue = value;
-      });
-      expect(componentValue).toStrictEqual(currentPossibilities);
-    });
-
-    it('should call ObjectiveService when updating Alignments', async () => {
+    it('should update alignments on quarter change', () => {
+      objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.updateAlignments();
+      expect(component.input.nativeElement.value).toEqual('');
+      expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
       expect(objectiveService.getAlignmentPossibilities).toHaveBeenCalled();
+    });
+
+    it('should return correct displayedValue', () => {
+      component.input.nativeElement.value = 'O - Objective 1';
+      expect(component.displayedValue).toEqual('O - Objective 1');
+
+      component.input = new ElementRef(document.createElement('input'));
+      expect(component.displayedValue).toEqual('');
     });
   });
 
@@ -641,6 +665,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
+          MatAutocomplete,
           NoopAnimationsModule,
           MatCheckboxModule,
           TranslateTestingModule.withTranslations({

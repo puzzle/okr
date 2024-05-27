@@ -61,7 +61,7 @@
               formControlName="alignment"
               class="alignment-input"
               placeholder="{{
-                (this.filteredOptions | async)?.length == 0 ? 'Kein Alignment vorhanden' : 'Bezug wählen'
+                (this.filteredOptions$ | async)?.length == 0 ? 'Kein Alignment vorhanden' : 'Bezug wählen'
               }}"
               [matAutocomplete]="auto"
               (input)="filter()"
@@ -70,7 +70,7 @@
               [value]="displayedValue"
             />
             <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayWith">
-              @for (group of filteredOptions | async; track group) {
+              @for (group of filteredOptions$ | async; track group) {
                 <mat-optgroup [label]="group.teamName" style="font-weight: bold">
                   @for (alignmentObject of group.alignmentObjectDtos; track alignmentObject) {
                     <mat-option [value]="alignmentObject">{{ alignmentObject.objectTitle }}</mat-option>

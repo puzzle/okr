@@ -15,6 +15,27 @@ import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
+import { OrganisationState } from './types/enums/OrganisationState';
+import { Organisation } from './types/model/Organisation';
+import { Dashboard } from './types/model/Dashboard';
+import { AlignmentPossibilityObject } from './types/model/AlignmentPossibilityObject';
+import { AlignmentPossibility } from './types/model/AlignmentPossibility';
+
+export const organisationActive = {
+  id: 1,
+  version: 1,
+  orgName: 'org_bbt',
+  teams: [],
+  state: OrganisationState.ACTIVE,
+} as Organisation;
+
+export const organisationInActive = {
+  id: 1,
+  version: 1,
+  orgName: 'org_mobility',
+  teams: [],
+  state: OrganisationState.INACTIVE,
+} as Organisation;
 
 export const teamFormObject = {
   name: 'newTeamName',
@@ -332,7 +353,7 @@ export const objectiveWithAlignment: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.SUCCESSFUL,
   writeable: true,
-  alignedEntityId: 'O6',
+  alignedEntityId: 'O2',
 };
 
 export const objectiveWriteableFalse: Objective = {
@@ -579,4 +600,34 @@ export const keyResultActions: KeyResultMetric = {
   modifiedOn: new Date(),
   actionList: [action1, action2],
   writeable: true,
+};
+
+export const alignmentObject1: AlignmentPossibilityObject = {
+  objectId: 1,
+  objectTitle: 'We want to increase the income',
+  objectType: 'objective',
+};
+
+export const alignmentObject2: AlignmentPossibilityObject = {
+  objectId: 2,
+  objectTitle: 'Our office has more plants for we',
+  objectType: 'objective',
+};
+
+export const alignmentObject3: AlignmentPossibilityObject = {
+  objectId: 1,
+  objectTitle: 'We buy 3 palms',
+  objectType: 'keyResult',
+};
+
+export const alignmentPossibility1: AlignmentPossibility = {
+  teamId: 1,
+  teamName: 'Puzzle ITC',
+  alignmentObjectDtos: [alignmentObject2, alignmentObject3],
+};
+
+export const alignmentPossibility2: AlignmentPossibility = {
+  teamId: 2,
+  teamName: 'We are cube',
+  alignmentObjectDtos: [alignmentObject1],
 };

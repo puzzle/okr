@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.dto.AlignmentDto;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -16,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -51,16 +54,25 @@ class ObjectiveBusinessServiceTest {
     private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     private final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-    private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
-            .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
+    private final Objective fullObjectiveCreate = Objective.Builder.builder().withTitle("FullObjective1")
+            .withCreatedBy(user).withTeam(team1).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
-    private final Objective fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withCreatedBy(user)
-            .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
+    private final Objective fullObjective1 = Objective.Builder.builder().withId(1L).withTitle("FullObjective1")
+            .withCreatedBy(user).withTeam(team1).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
+    private final Objective fullObjective2 = Objective.Builder.builder().withId(2L).withTitle("FullObjective2")
+            .withCreatedBy(user).withTeam(team1).withQuarter(quarter).withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX).build();
+    private final Team team2 = Team.Builder.builder().withId(3L).withName("Puzzle ITC").build();
+    private final Objective fullObjective3 = Objective.Builder.builder().withId(3L).withTitle("FullObjective5")
+            .withCreatedBy(user).withTeam(team2).withQuarter(quarter).withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX).build();
+    private final KeyResult ordinalKeyResult2 = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
+            .withStretchZone("Wald").withId(6L).withTitle("Keyresult Ordinal 6").withObjective(fullObjective3).build();
     private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
             .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective1).build();
-    private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
-    private final List<Objective> objectiveList = List.of(objective1, fullObjective, fullObjective2);
+    private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult);
+    private final List<Objective> objectiveList = List.of(fullObjective1, fullObjective2);
 
     @Test
     void getOneObjective() {
@@ -219,7 +231,7 @@ class ObjectiveBusinessServiceTest {
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
                 .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
-        when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
+        when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjectiveCreate);
 
         Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
         assertNull(savedObjective.getId());
@@ -266,7 +278,7 @@ class ObjectiveBusinessServiceTest {
 
         objectiveBusinessService.deleteEntityById(1L);
 
-        verify(keyResultBusinessService, times(3)).deleteEntityById(5L);
+        verify(keyResultBusinessService, times(2)).deleteEntityById(5L);
         verify(objectiveBusinessService, times(1)).deleteEntityById(1L);
         verify(alignmentBusinessService, times(1)).deleteAlignmentByObjectiveId(1L);
     }
@@ -292,16 +304,105 @@ class ObjectiveBusinessServiceTest {
         when(objectivePersistenceService.findObjectiveByQuarterId(anyLong())).thenReturn(objectiveList);
         when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResultList);
 
-        List<ObjectiveAlignmentsDto> alignmentsDtos = objectiveBusinessService.getAlignmentPossibilities(5L);
+        List<AlignmentDto> alignmentsDtos = objectiveBusinessService.getAlignmentPossibilities(5L);
 
         verify(objectivePersistenceService, times(1)).findObjectiveByQuarterId(5L);
-        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(5L);
-        assertEquals("O - Objective 1", alignmentsDtos.get(0).objectiveTitle());
-        assertEquals(5, alignmentsDtos.get(0).objectiveId());
-        assertEquals("K - Keyresult Ordinal", alignmentsDtos.get(0).keyResultAlignmentsDtos().get(0).keyResultTitle());
-        assertEquals("O - FullObjective1", alignmentsDtos.get(1).objectiveTitle());
-        assertEquals("O - FullObjective2", alignmentsDtos.get(2).objectiveTitle());
-        assertEquals(List.of(), alignmentsDtos.get(2).keyResultAlignmentsDtos());
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(1L);
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(2L);
+        assertEquals("Team1", alignmentsDtos.get(0).teamName());
+        assertEquals(1, alignmentsDtos.get(0).teamId());
+        assertEquals(6, alignmentsDtos.get(0).alignmentObjectDtos().size());
+        assertEquals(1, alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectId());
+        assertEquals("O - FullObjective1", alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectTitle());
+        assertEquals("objective", alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectType());
+        assertEquals(5, alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectId());
+        assertEquals("KR - Keyresult Ordinal", alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectTitle());
+        assertEquals("keyResult", alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectType());
+        assertEquals(5, alignmentsDtos.get(0).alignmentObjectDtos().get(2).objectId());
+        assertEquals("KR - Keyresult Ordinal", alignmentsDtos.get(0).alignmentObjectDtos().get(2).objectTitle());
+        assertEquals("keyResult", alignmentsDtos.get(0).alignmentObjectDtos().get(2).objectType());
+        assertEquals(2, alignmentsDtos.get(0).alignmentObjectDtos().get(3).objectId());
+        assertEquals("O - FullObjective2", alignmentsDtos.get(0).alignmentObjectDtos().get(3).objectTitle());
+        assertEquals("objective", alignmentsDtos.get(0).alignmentObjectDtos().get(3).objectType());
+        assertEquals(5, alignmentsDtos.get(0).alignmentObjectDtos().get(4).objectId());
+        assertEquals("KR - Keyresult Ordinal", alignmentsDtos.get(0).alignmentObjectDtos().get(4).objectTitle());
+        assertEquals("keyResult", alignmentsDtos.get(0).alignmentObjectDtos().get(4).objectType());
+        assertEquals(5, alignmentsDtos.get(0).alignmentObjectDtos().get(5).objectId());
+        assertEquals("KR - Keyresult Ordinal", alignmentsDtos.get(0).alignmentObjectDtos().get(5).objectTitle());
+        assertEquals("keyResult", alignmentsDtos.get(0).alignmentObjectDtos().get(5).objectType());
+    }
 
+    @Test
+    void shouldReturnAlignmentPossibilitiesWithMultipleTeams() {
+        List<Objective> objectiveList = List.of(fullObjective1, fullObjective2, fullObjective3);
+        List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult2);
+
+        when(objectivePersistenceService.findObjectiveByQuarterId(anyLong())).thenReturn(objectiveList);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResultList);
+
+        List<AlignmentDto> alignmentsDtos = objectiveBusinessService.getAlignmentPossibilities(5L);
+
+        verify(objectivePersistenceService, times(1)).findObjectiveByQuarterId(5L);
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(1L);
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(2L);
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(3L);
+        assertEquals(2, alignmentsDtos.size());
+        assertEquals("Puzzle ITC", alignmentsDtos.get(0).teamName());
+        assertEquals(3, alignmentsDtos.get(0).teamId());
+        assertEquals(3, alignmentsDtos.get(0).alignmentObjectDtos().size());
+        assertEquals("Team1", alignmentsDtos.get(1).teamName());
+        assertEquals(1, alignmentsDtos.get(1).teamId());
+        assertEquals(6, alignmentsDtos.get(1).alignmentObjectDtos().size());
+        assertEquals(3, alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectId());
+        assertEquals("O - FullObjective5", alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectTitle());
+        assertEquals("objective", alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectType());
+        assertEquals(1, alignmentsDtos.get(1).alignmentObjectDtos().get(0).objectId());
+        assertEquals("O - FullObjective1", alignmentsDtos.get(1).alignmentObjectDtos().get(0).objectTitle());
+        assertEquals("objective", alignmentsDtos.get(1).alignmentObjectDtos().get(0).objectType());
+    }
+
+    @Test
+    void shouldReturnAlignmentPossibilitiesOnlyObjectives() {
+        when(objectivePersistenceService.findObjectiveByQuarterId(anyLong())).thenReturn(objectiveList);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(List.of());
+
+        List<AlignmentDto> alignmentsDtos = objectiveBusinessService.getAlignmentPossibilities(5L);
+
+        verify(objectivePersistenceService, times(1)).findObjectiveByQuarterId(5L);
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(1L);
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(2L);
+        assertEquals(2, alignmentsDtos.get(0).alignmentObjectDtos().size());
+        assertEquals(1, alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectId());
+        assertEquals("O - FullObjective1", alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectTitle());
+        assertEquals("objective", alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectType());
+        assertEquals(2, alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectId());
+        assertEquals("O - FullObjective2", alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectTitle());
+        assertEquals("objective", alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectType());
+    }
+
+    @Test
+    void shouldReturnEmptyAlignmentPossibilities() {
+        List<Objective> objectiveList = List.of();
+
+        when(objectivePersistenceService.findObjectiveByQuarterId(anyLong())).thenReturn(objectiveList);
+
+        List<AlignmentDto> alignmentsDtos = objectiveBusinessService.getAlignmentPossibilities(5L);
+
+        verify(objectivePersistenceService, times(1)).findObjectiveByQuarterId(5L);
+        verify(keyResultBusinessService, times(0)).getAllKeyResultsByObjective(anyLong());
+        assertEquals(0, alignmentsDtos.size());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenQuarterIdIsNull() {
+        Mockito.doThrow(new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "ATTRIBUTE_NULL")).when(validator)
+                .validateOnGet(null);
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> {
+            objectiveBusinessService.getAlignmentPossibilities(null);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("ATTRIBUTE_NULL", exception.getReason());
     }
 }

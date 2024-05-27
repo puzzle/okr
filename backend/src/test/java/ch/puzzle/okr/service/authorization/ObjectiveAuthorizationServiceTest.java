@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.dto.AlignmentDto;
+import ch.puzzle.okr.dto.AlignmentObjectDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
@@ -31,10 +33,11 @@ class ObjectiveAuthorizationServiceTest {
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
     private final Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-    private static final KeyResultAlignmentsDto keyResultAlignmentsDto1 = new KeyResultAlignmentsDto(3L, "KR Title 1");
-    private static final KeyResultAlignmentsDto keyResultAlignmentsDto2 = new KeyResultAlignmentsDto(6L, "KR Title 2");
-    private static final ObjectiveAlignmentsDto alignmentPossibilities = new ObjectiveAlignmentsDto(1L,
-            "This is my objective title", List.of(keyResultAlignmentsDto1, keyResultAlignmentsDto2));
+    private static final AlignmentObjectDto alignmentObject1 = new AlignmentObjectDto(3L, "KR Title 1", "keyResult");
+    private static final AlignmentObjectDto alignmentObject2 = new AlignmentObjectDto(1L, "Objective Title 1",
+            "objective");
+    private static final AlignmentDto alignmentPossibilities = new AlignmentDto(1L, "Puzzle ITC",
+            List.of(alignmentObject1, alignmentObject2));
 
     @Test
     void createEntityShouldReturnObjectiveWhenAuthorized() {
@@ -150,12 +153,21 @@ class ObjectiveAuthorizationServiceTest {
     void getAlignmentPossibilitiesShouldReturnListWhenAuthorized() {
         when(objectiveBusinessService.getAlignmentPossibilities(anyLong())).thenReturn(List.of(alignmentPossibilities));
 
-        List<ObjectiveAlignmentsDto> alignmentPossibilities = objectiveAuthorizationService.getAlignmentPossibilities(3L);
-        assertEquals("This is my objective title", alignmentPossibilities.get(0).objectiveTitle());
-        assertEquals(1, alignmentPossibilities.get(0).objectiveId());
-        assertEquals(3, alignmentPossibilities.get(0).keyResultAlignmentsDtos().get(0).keyResultId());
-        assertEquals("KR Title 1", alignmentPossibilities.get(0).keyResultAlignmentsDtos().get(0).keyResultTitle());
-        assertEquals(6, alignmentPossibilities.get(0).keyResultAlignmentsDtos().get(1).keyResultId());
-        assertEquals("KR Title 2", alignmentPossibilities.get(0).keyResultAlignmentsDtos().get(1).keyResultTitle());
+        List<AlignmentDto> alignmentPossibilities = objectiveAuthorizationService.getAlignmentPossibilities(3L);
+        assertEquals("Puzzle ITC", alignmentPossibilities.get(0).teamName());
+        assertEquals(1, alignmentPossibilities.get(0).teamId());
+        assertEquals(3, alignmentPossibilities.get(0).alignmentObjectDtos().get(0).objectId());
+        assertEquals("KR Title 1", alignmentPossibilities.get(0).alignmentObjectDtos().get(0).objectTitle());
+        assertEquals("keyResult", alignmentPossibilities.get(0).alignmentObjectDtos().get(0).objectType());
+        assertEquals(1, alignmentPossibilities.get(0).alignmentObjectDtos().get(1).objectId());
+        assertEquals("objective", alignmentPossibilities.get(0).alignmentObjectDtos().get(1).objectType());
+    }
+
+    @Test
+    void getAlignmentPossibilitiesShouldReturnEmptyListWhenNoAlignments() {
+        when(objectiveBusinessService.getAlignmentPossibilities(anyLong())).thenReturn(List.of());
+
+        List<AlignmentDto> alignmentPossibilities = objectiveAuthorizationService.getAlignmentPossibilities(3L);
+        assertEquals(0, alignmentPossibilities.size());
     }
 }

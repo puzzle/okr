@@ -261,4 +261,11 @@ class ObjectivePersistenceServiceIT {
         assertEquals(7, objectiveList.size());
         assertEquals("Wir wollen die Kundenzufriedenheit steigern", objectiveList.get(0).getTitle());
     }
+
+    @Test
+    void findObjectiveByQuarterIdShouldReturnEmptyListWhenQuarterDoesNotExist() {
+        List<Objective> objectives = objectivePersistenceService.findObjectiveByQuarterId(12345L);
+
+        assertEquals(0, objectives.size());
+    }
 }

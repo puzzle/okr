@@ -27,7 +27,7 @@ import { AlignmentPossibilityObject } from '../../types/model/AlignmentPossibili
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
-  filteredOptions: AlignmentPossibility[] = [];
+  filteredOptions: Subject<AlignmentPossibility[]> = new Subject<AlignmentPossibility[]>();
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
@@ -72,18 +72,10 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
 
-    let alignmentEntity = value.alignment;
-    let alignment: string | null;
-
-    if (alignmentEntity) {
-      if (alignmentEntity.objectType == 'objective') {
-        alignment = 'O' + alignmentEntity.objectId;
-      } else {
-        alignment = 'K' + alignmentEntity.objectId;
-      }
-    } else {
-      alignment = null;
-    }
+    let alignmentEntity: AlignmentPossibilityObject | null = value.alignment;
+    let alignment: string | null = alignmentEntity
+      ? (alignmentEntity.objectType == 'objective' ? 'O' : 'K') + alignmentEntity.objectId
+      : null;
 
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
@@ -284,7 +276,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.filteredOptions = value.slice();
+      this.filteredOptions.next(value.slice());
       this.alignmentPossibilities$ = of(value);
     });
   }
@@ -308,7 +300,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   updateAlignments() {
     this.input.nativeElement.value = '';
-    this.filteredOptions = [];
+    this.filteredOptions.next([]);
     this.objectiveForm.patchValue({
       alignment: null,
     });
@@ -343,11 +335,13 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       }));
 
       if (optionList.length == 0) {
-        this.filteredOptions = alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
-          possibility.teamName.toLowerCase().includes(filterValue),
+        this.filteredOptions.next(
+          alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
+            possibility.teamName.toLowerCase().includes(filterValue),
+          ),
         );
       } else {
-        this.filteredOptions = optionList;
+        this.filteredOptions.next(optionList);
       }
     });
   }

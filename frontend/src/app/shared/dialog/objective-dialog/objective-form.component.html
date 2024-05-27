@@ -64,6 +64,7 @@
                 (this.filteredOptions$ | async)?.length == 0 ? 'Kein Alignment vorhanden' : 'Bezug wählen'
               }}"
               [matAutocomplete]="auto"
+              [attr.data-testId]="'alignmentInput'"
               (input)="filter()"
               (focus)="filter(); input.select()"
               (focusout)="scrollLeft()"

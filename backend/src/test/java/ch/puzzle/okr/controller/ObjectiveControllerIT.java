@@ -1,5 +1,7 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.AlignmentDto;
+import ch.puzzle.okr.dto.AlignmentObjectDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
@@ -86,10 +88,11 @@ class ObjectiveControllerIT {
             DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true, "O5");
     private static final ObjectiveDto objectiveAlignmentDto = new ObjectiveDto(9L, 1, "Objective Alignment", 1L, 1L,
             "GJ 22/23-Q2", DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true, "O42");
-    private static final KeyResultAlignmentsDto keyResultAlignmentsDto1 = new KeyResultAlignmentsDto(3L, "KR Title 1");
-    private static final KeyResultAlignmentsDto keyResultAlignmentsDto2 = new KeyResultAlignmentsDto(6L, "KR Title 2");
-    private static final ObjectiveAlignmentsDto alignmentPossibilities = new ObjectiveAlignmentsDto(1L,
-            "This is my objective title", List.of(keyResultAlignmentsDto1, keyResultAlignmentsDto2));
+    private static final AlignmentObjectDto alignmentObject1 = new AlignmentObjectDto(3L, "KR Title 1", "keyResult");
+    private static final AlignmentObjectDto alignmentObject2 = new AlignmentObjectDto(1L, "Objective Title 1",
+            "objective");
+    private static final AlignmentDto alignmentPossibilities = new AlignmentDto(1L, "Puzzle ITC",
+            List.of(alignmentObject1, alignmentObject2));
 
     @Autowired
     private MockMvc mvc;
@@ -141,13 +144,14 @@ class ObjectiveControllerIT {
                 .willReturn(List.of(alignmentPossibilities));
 
         mvc.perform(get("/api/v2/objectives/alignmentPossibilities/5").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$[0].objectiveTitle", Is.is("This is my objective title")))
-                .andExpect(jsonPath("$[0].objectiveId", Is.is(1)))
-                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[0].keyResultId", Is.is(3)))
-                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[1].keyResultId", Is.is(6)))
-                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[0].keyResultTitle", Is.is("KR Title 1")))
-                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[1].keyResultTitle", Is.is("KR Title 2")));
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$[0].teamId", Is.is(1)))
+                .andExpect(jsonPath("$[0].teamName", Is.is("Puzzle ITC")))
+                .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectId", Is.is(3)))
+                .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectTitle", Is.is("KR Title 1")))
+                .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectType", Is.is("keyResult")))
+                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectId", Is.is(1)))
+                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectTitle", Is.is("Objective Title 1")))
+                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectType", Is.is("objective")));
 
         verify(objectiveAuthorizationService, times(1)).getAlignmentPossibilities(5L);
     }

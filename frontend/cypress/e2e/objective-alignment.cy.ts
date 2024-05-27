@@ -10,13 +10,10 @@ describe('OKR Objective Alignment e2e tests', () => {
     cy.getByTestId('add-objective').first().click();
 
     cy.getByTestId('title').first().clear().type('Objective with new alignment');
-    cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
-    cy.get('select#alignment')
-      .contains('K - Steigern der URS um 25%')
-      .then(($option) => {
-        const optionValue = $option.attr('value');
-        cy.get('select#alignment').select(optionValue!);
-      });
+    cy.getByTestId('alignmentInput').first().should('have.attr', 'placeholder', 'Bezug wählen');
+    cy.tabForwardUntil('[data-testId="alignmentInput"]');
+    cy.realPress('ArrowDown');
+    cy.realPress('Enter');
 
     cy.getByTestId('safe').click();
 
@@ -31,20 +28,18 @@ describe('OKR Objective Alignment e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#alignment option:selected').should('contain.text', 'K - Steigern der URS um 25%');
+    cy.getByTestId('alignmentInput')
+      .first()
+      .should('have.value', 'O - Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.');
   });
 
   it(`Update alignment of Objective`, () => {
     cy.getByTestId('add-objective').first().click();
 
     cy.getByTestId('title').first().clear().type('We change alignment of this Objective');
-    cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
-    cy.get('select#alignment')
-      .contains('K - Steigern der URS um 25%')
-      .then(($option) => {
-        const optionValue = $option.attr('value');
-        cy.get('select#alignment').select(optionValue!);
-      });
+    cy.tabForwardUntil('[data-testId="alignmentInput"]');
+    cy.realPress('ArrowDown');
+    cy.realPress('Enter');
     cy.getByTestId('safe').click();
 
     cy.contains('We change alignment of this Objective');
@@ -58,12 +53,11 @@ describe('OKR Objective Alignment e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#alignment')
-      .contains('K - Antwortzeit für Supportanfragen um 33% verkürzen.')
-      .then(($option) => {
-        const optionValue = $option.attr('value');
-        cy.get('select#alignment').select(optionValue!);
-      });
+    cy.tabForwardUntil('[data-testId="alignmentInput"]');
+    cy.realPress('Delete');
+    cy.realPress('ArrowDown');
+    cy.realPress('ArrowDown');
+    cy.realPress('Enter');
     cy.getByTestId('safe').click();
 
     cy.getByTestId('objective')
@@ -76,23 +70,18 @@ describe('OKR Objective Alignment e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#alignment option:selected').should(
-      'contain.text',
-      'K - Antwortzeit für Supportanfragen um 33% verkürzen.',
-    );
+    cy.getByTestId('alignmentInput')
+      .first()
+      .should('have.value', 'KR - Das BBT hilft den Membern 20% mehr beim Töggelen');
   });
 
   it(`Delete alignment of Objective`, () => {
     cy.getByTestId('add-objective').first().click();
 
     cy.getByTestId('title').first().clear().type('We delete the alignment');
-    cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
-    cy.get('select#alignment')
-      .contains('K - Steigern der URS um 25%')
-      .then(($option) => {
-        const optionValue = $option.attr('value');
-        cy.get('select#alignment').select(optionValue!);
-      });
+    cy.tabForwardUntil('[data-testId="alignmentInput"]');
+    cy.realPress('ArrowDown');
+    cy.realPress('Enter');
     cy.getByTestId('safe').click();
 
     cy.contains('We delete the alignment');
@@ -106,7 +95,9 @@ describe('OKR Objective Alignment e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#alignment').select('Kein Alignment');
+    cy.tabForwardUntil('[data-testId="alignmentInput"]');
+    cy.realPress('Delete');
+    cy.tabForward();
     cy.getByTestId('safe').click();
 
     cy.getByTestId('objective')
@@ -119,42 +110,92 @@ describe('OKR Objective Alignment e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
+    cy.getByTestId('alignmentInput').first().should('have.attr', 'placeholder', 'Bezug wählen');
   });
 
-  it(`Alignment Possibilites change when quarter change`, () => {
+  it(`Alignment Possibilities change when quarter change`, () => {
     cy.visit('/?quarter=1');
+
+    cy.get('mat-chip:visible:contains("Alle")').click();
+    cy.get('mat-chip:visible:contains("Alle")').click();
+    cy.get('mat-chip:visible:contains("/BBT")').click();
 
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('We can link later on this');
     cy.getByTestId('safe').click();
 
+    cy.get('mat-chip:visible:contains("Alle")').click();
+
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('There is my other alignment');
-    cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
+    cy.getByTestId('alignmentInput').first().should('have.attr', 'placeholder', 'Bezug wählen');
+    cy.tabForwardUntil('[data-testId="alignmentInput"]');
+    cy.realPress('ArrowDown');
+    cy.realPress('Enter');
 
-    cy.get('select#alignment').select(1);
+    cy.getByTestId('alignmentInput')
+      .first()
+      .invoke('val')
+      .then((val) => {
+        const selectValue = val;
+        cy.getByTestId('quarterSelect').select('GJ 23/24-Q1');
+        cy.getByTestId('title').first().clear().type('There is our other alignment');
 
-    cy.get('select#alignment option:selected').then(($select) => {
-      const selectValue = $select.text();
-      cy.getByTestId('quarterSelect').select('GJ 23/24-Q1');
-      cy.getByTestId('title').first().clear().type('There is our other alignment');
+        cy.tabForwardUntil('[data-testId="alignmentInput"]');
+        cy.realPress('ArrowDown');
+        cy.realPress('Enter');
 
-      cy.get('select#alignment').select(1);
+        cy.getByTestId('alignmentInput').first().should('not.have.value', selectValue);
 
-      cy.get('select#alignment option:selected').should('not.contain.text', selectValue);
-      cy.getByTestId('cancel').click();
+        cy.getByTestId('cancel').click();
 
-      cy.visit('/?quarter=2');
+        cy.visit('/?quarter=2');
 
-      cy.getByTestId('add-objective').first().click();
-      cy.getByTestId('title').first().clear().type('Quarter change objective');
+        cy.getByTestId('add-objective').first().click();
+        cy.getByTestId('title').first().clear().type('Quarter change objective');
 
-      cy.get('select#quarter').select('GJ 22/23-Q4');
-      cy.getByTestId('title').first().clear().type('A new title');
-      cy.get('select#alignment').select(1);
+        cy.get('select#quarter').select('GJ 22/23-Q4');
+        cy.getByTestId('title').first().clear().type('A new title');
+        cy.tabForwardUntil('[data-testId="alignmentInput"]');
+        cy.realPress('ArrowDown');
+        cy.realPress('Enter');
 
-      cy.get('select#alignment option:selected').should('contain.text', selectValue);
-    });
+        cy.getByTestId('alignmentInput').first().should('have.value', selectValue);
+      });
+  });
+
+  it(`Correct placeholder`, () => {
+    cy.getByTestId('add-objective').first().click();
+    cy.getByTestId('title').first().clear().type('This is an objective which we dont save');
+    cy.getByTestId('alignmentInput').first().should('have.attr', 'placeholder', 'Bezug wählen');
+
+    cy.getByTestId('quarterSelect').select('GJ 23/24-Q3');
+    cy.getByTestId('title').first().clear().type('We changed the quarter');
+
+    cy.getByTestId('alignmentInput').first().should('have.attr', 'placeholder', 'Kein Alignment vorhanden');
+  });
+
+  it(`Correct filtering`, () => {
+    cy.getByTestId('add-objective').first().click();
+    cy.getByTestId('title').first().clear().type('Die urs steigt');
+    cy.getByTestId('safe').click();
+
+    cy.scrollTo('top');
+    cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+    cy.get('mat-chip:visible:contains("/BBT")').click();
+    cy.getByTestId('add-objective').first().click();
+    cy.getByTestId('title').first().clear().type('Ein alignment objective');
+
+    cy.getByTestId('alignmentInput').clear().type('urs');
+    cy.realPress('ArrowDown');
+    cy.realPress('Enter');
+
+    cy.getByTestId('alignmentInput').first().should('have.value', 'O - Die urs steigt');
+
+    cy.getByTestId('alignmentInput').clear().type('urs');
+    cy.realPress('ArrowDown');
+    cy.realPress('ArrowDown');
+    cy.realPress('Enter');
+    cy.getByTestId('alignmentInput').first().should('have.value', 'KR - Steigern der URS um 25%');
   });
 });

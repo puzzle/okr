@@ -148,7 +148,7 @@ class AlignmentBusinessServiceTest {
         Alignment alignment = alignmentBusinessService.buildAlignmentModel(objectiveAlignedObjective, 0);
 
         assertEquals(returnAlignment, alignment);
-        assertTrue(alignment instanceof ObjectiveAlignment);
+        assertInstanceOf(ObjectiveAlignment.class, alignment);
     }
 
     @Test
@@ -160,7 +160,7 @@ class AlignmentBusinessServiceTest {
         Alignment alignment = alignmentBusinessService.buildAlignmentModel(keyResultAlignedObjective, 0);
 
         assertEquals(returnAlignment, alignment);
-        assertTrue(alignment instanceof KeyResultAlignment);
+        assertInstanceOf(KeyResultAlignment.class, alignment);
     }
 
     @Test

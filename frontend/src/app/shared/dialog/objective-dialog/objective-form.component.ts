@@ -4,7 +4,7 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../services/quarter.service';
-import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
@@ -26,7 +26,7 @@ import { AlignmentPossibilityObject } from '../../types/model/AlignmentPossibili
 })
 export class ObjectiveFormComponent implements OnInit {
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
-  filteredOptions: Subject<AlignmentPossibility[]> = new Subject<AlignmentPossibility[]>();
+  filteredOptions$: BehaviorSubject<AlignmentPossibility[]> = new BehaviorSubject<AlignmentPossibility[]>([]);
 
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
@@ -41,8 +41,7 @@ export class ObjectiveFormComponent implements OnInit {
   objective: Objective | null = null;
   teams$: Observable<Team[]> = of([]);
   alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
-  currentTeam$: Subject<Team> = new Subject<Team>();
-  currentTeam: Team | null = null;
+  currentTeam$: BehaviorSubject<Team | null> = new BehaviorSubject<Team | null>(null);
   state: string | null = null;
   version!: number;
   protected readonly formInputCheck = formInputCheck;
@@ -117,7 +116,6 @@ export class ObjectiveFormComponent implements OnInit {
       this.teams$.subscribe((value) => {
         let team: Team = value.filter((team: Team) => team.id == teamId)[0];
         this.currentTeam$.next(team);
-        this.currentTeam = team;
       });
       this.generateAlignmentPossibilities(quarterId, objective, teamId!);
 
@@ -270,7 +268,7 @@ export class ObjectiveFormComponent implements OnInit {
         }
       }
 
-      this.filteredOptions.next(value.slice());
+      this.filteredOptions$.next(value.slice());
       this.alignmentPossibilities$ = of(value);
     });
   }
@@ -294,11 +292,11 @@ export class ObjectiveFormComponent implements OnInit {
 
   updateAlignments() {
     this.input.nativeElement.value = '';
-    this.filteredOptions.next([]);
+    this.filteredOptions$.next([]);
     this.objectiveForm.patchValue({
       alignment: null,
     });
-    this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!, null, this.currentTeam!.id);
+    this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!, null, this.currentTeam$.getValue()!.id);
   }
 
   filter() {
@@ -329,13 +327,13 @@ export class ObjectiveFormComponent implements OnInit {
       }));
 
       if (optionList.length == 0) {
-        this.filteredOptions.next(
+        this.filteredOptions$.next(
           alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
             possibility.teamName.toLowerCase().includes(filterValue),
           ),
         );
       } else {
-        this.filteredOptions.next(optionList);
+        this.filteredOptions$.next(optionList);
       }
     });
   }

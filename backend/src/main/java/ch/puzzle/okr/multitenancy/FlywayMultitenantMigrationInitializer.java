@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FlywayMultitenantMigrationInitializer {
-    private final TenantConfigProvider tenantConfigProvider;
+    private final TenantConfigProviderInterface tenantConfigProvider;
     private final String[] scriptLocations;
 
     private final String defaultSchema = "okr_pitc";
 
-    public FlywayMultitenantMigrationInitializer(TenantConfigProvider tenantConfigProvider,
+    public FlywayMultitenantMigrationInitializer(TenantConfigProviderInterface tenantConfigProvider,
             final @Value("${spring.flyway.locations}") String[] scriptLocations) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.scriptLocations = scriptLocations;

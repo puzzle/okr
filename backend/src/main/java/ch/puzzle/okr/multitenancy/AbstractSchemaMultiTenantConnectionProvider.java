@@ -20,7 +20,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         extends AbstractMultiTenantConnectionProvider<String> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractSchemaMultiTenantConnectionProvider.class);
 
-    private final Map<String, ConnectionProvider> connectionProviderMap;
+    final Map<String, ConnectionProvider> connectionProviderMap;
 
     public AbstractSchemaMultiTenantConnectionProvider() {
         this.connectionProviderMap = new HashMap<>();
@@ -55,7 +55,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         return getConnectionProvider(tenantIdentifier);
     }
 
-    private ConnectionProvider getConnectionProvider(String tenantIdentifier) {
+    protected ConnectionProvider getConnectionProvider(String tenantIdentifier) {
         return Optional.ofNullable(tenantIdentifier).map(connectionProviderMap::get)
                 .orElseGet(() -> createNewConnectionProvider(tenantIdentifier));
     }
@@ -73,10 +73,9 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
                 .map(this::initConnectionProvider).orElse(null);
     }
 
-    private Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
+    protected Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
         try {
-            Properties properties = new Properties();
-            properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
+            Properties properties = getPropertiesFromFilePaths();
             if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
                 properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
             }
@@ -87,11 +86,21 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         }
     }
 
+    protected Properties getPropertiesFromFilePaths() throws IOException {
+        Properties properties = new Properties();
+        properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
+        return properties;
+    }
+
     private ConnectionProvider initConnectionProvider(Properties hibernateProperties) {
         Map<String, Object> configProperties = convertPropertiesToMap(hibernateProperties);
-        DriverManagerConnectionProviderImpl connectionProvider = new DriverManagerConnectionProviderImpl();
+        DriverManagerConnectionProviderImpl connectionProvider = getDriverManagerConnectionProviderImpl();
         connectionProvider.configure(configProperties);
         return connectionProvider;
+    }
+
+    protected DriverManagerConnectionProviderImpl getDriverManagerConnectionProviderImpl() {
+        return new DriverManagerConnectionProviderImpl();
     }
 
     private Map<String, Object> convertPropertiesToMap(Properties properties) {

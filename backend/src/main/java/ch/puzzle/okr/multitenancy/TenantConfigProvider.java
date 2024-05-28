@@ -8,7 +8,7 @@ import java.text.MessageFormat;
 import java.util.*;
 
 @Component
-public class TenantConfigProvider {
+public class TenantConfigProvider implements TenantConfigProviderInterface {
     private static final String EMAIL_DELIMITER = ",";
     private final Map<String, TenantConfig> tenantConfigs = new HashMap<>();
     private final Environment env;

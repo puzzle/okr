@@ -10,8 +10,6 @@ public class FlywayMultitenantMigrationInitializer {
     private final TenantConfigProviderInterface tenantConfigProvider;
     private final String[] scriptLocations;
 
-    private final String defaultSchema = "okr_pitc";
-
     public FlywayMultitenantMigrationInitializer(TenantConfigProviderInterface tenantConfigProvider,
             final @Value("${spring.flyway.locations}") String[] scriptLocations) {
         this.tenantConfigProvider = tenantConfigProvider;
@@ -25,9 +23,11 @@ public class FlywayMultitenantMigrationInitializer {
                     .map(TenantConfigProvider.TenantConfig::dataSourceConfig).orElseThrow(
                             () -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
 
-            Flyway tenantSchemaFlyway = Flyway.configure()
-                    .dataSource(dataSourceConfig.url(), dataSourceConfig.name(), dataSourceConfig.password())
-                    .locations(scriptLocations).baselineOnMigrate(Boolean.TRUE).schemas(dataSourceConfig.schema())
+            Flyway tenantSchemaFlyway = Flyway.configure() //
+                    .dataSource(dataSourceConfig.url(), dataSourceConfig.name(), dataSourceConfig.password()) //
+                    .locations(scriptLocations) //
+                    .baselineOnMigrate(Boolean.TRUE) //
+                    .schemas(dataSourceConfig.schema()) //
                     .load();
 
             tenantSchemaFlyway.migrate();

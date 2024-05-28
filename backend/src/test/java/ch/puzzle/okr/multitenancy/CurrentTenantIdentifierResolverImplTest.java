@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CurrentTenantIdentifierResolverImplTest {
 
-    @DisplayName("CurrentTenantIdentifier ss public")
+    @DisplayName("current TenantId is TenantId from TenantContext")
     @Test
-    void currentTenantIdentifierIsPublic() {
+    void currentTenantIdIsTenantIdFromTenantContext() {
         CurrentTenantIdentifierResolverImpl resolver = new CurrentTenantIdentifierResolverImpl();
         String tenantIdentifier = resolver.resolveCurrentTenantIdentifier();
-        assertEquals("public", tenantIdentifier);
+        assertEquals(TenantContext.getCurrentTenant(), tenantIdentifier);
     }
 
     @DisplayName("validateExistingCurrentSessions is true")

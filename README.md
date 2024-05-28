@@ -27,7 +27,7 @@ Path to folder from repository root `cd docker`
 Type `docker-compose up` in terminal to start up the docker container, `docker-compose down` to shut the container down.
 
 ## Users
-All users 
+All users PITC
 ```json
 {
   "gl": {
@@ -72,3 +72,25 @@ All users
   }
 }
 ```
+All users ACME
+```json
+{
+  "gl": {
+    "username": "gl-acme",
+    "password": "gl",
+    "name": "Jaya Norris"
+  },
+  "bl": {
+    "username": "bl-acme",
+    "password": "bl",
+    "name": "Esha Harris"
+  },
+  "member": {
+    "username": "member-acme",
+    "password": "member",
+    "name": "Abraham Woodard"
+  }
+}
+```
+
+

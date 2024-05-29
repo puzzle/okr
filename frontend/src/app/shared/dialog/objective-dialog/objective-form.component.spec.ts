@@ -53,9 +53,9 @@ let objectiveService = {
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
     return of([
+      { id: 199, startDate: null, endDate: null, label: 'Backlog' },
       { id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
       { id: 2, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
-      { id: 199, startDate: null, endDate: null, label: 'Backlog' },
     ]);
   },
 };
@@ -145,7 +145,7 @@ describe('ObjectiveDialogComponent', () => {
         team = teams[0].id;
       });
       quarterService.getAllQuarters().subscribe((quarters) => {
-        quarter = quarters[1].id;
+        quarter = quarters[2].id;
       });
 
       // Get input elements and set values
@@ -381,8 +381,8 @@ describe('ObjectiveDialogComponent', () => {
 
     it('should return correct value if allowed to save to backlog', async () => {
       component.quarters = quarterList;
-      const isBacklogQuarterSpy = jest.spyOn(component, 'isBacklogQuarter');
-      isBacklogQuarterSpy.mockReturnValue(false);
+      const isBacklogQuarterSpy = jest.spyOn(component, 'isNotBacklogQuarter');
+      isBacklogQuarterSpy.mockReturnValue(true);
 
       component.data.action = 'duplicate';
       fixture.detectChanges();
@@ -396,6 +396,7 @@ describe('ObjectiveDialogComponent', () => {
       expect(component.allowedToSaveBacklog()).toBeTruthy();
 
       component.state = 'ONGOING';
+      isBacklogQuarterSpy.mockReturnValue(false);
       fixture.detectChanges();
       expect(component.allowedToSaveBacklog()).toBeFalsy();
 
@@ -512,7 +513,7 @@ describe('ObjectiveDialogComponent', () => {
       expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
     });
 
-    it('should load not include current team in alignment possibilities', async () => {
+    it('should not include current team in alignment possibilities', async () => {
       objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.generateAlignmentPossibilities(3, null, 1);
       let alignmentPossibilities = null;
@@ -521,7 +522,7 @@ describe('ObjectiveDialogComponent', () => {
       });
 
       expect(alignmentPossibilities).toStrictEqual([alignmentPossibility2]);
-      expect(component.filteredOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.filteredOptions$.getValue()).toEqual([alignmentPossibility2]);
       expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
     });
 
@@ -679,6 +680,13 @@ describe('ObjectiveDialogComponent', () => {
       jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of([]));
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
+      component.data = {
+        objective: {
+          objectiveId: 1,
+          teamId: 1,
+        },
+        action: 'releaseBacklog',
+      };
       fixture.detectChanges();
       loader = TestbedHarnessEnvironment.loader(fixture);
     });
@@ -688,15 +696,7 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should set correct default value if objective is released in backlog', async () => {
-      component.data = {
-        objective: {
-          objectiveId: 1,
-          teamId: 1,
-        },
-        action: 'releaseBacklog',
-      };
-
-      const isBacklogQuarterSpy = jest.spyOn(component, 'isBacklogQuarter');
+      const isBacklogQuarterSpy = jest.spyOn(component, 'isNotBacklogQuarter');
       isBacklogQuarterSpy.mockReturnValue(false);
 
       const routerHarness = await RouterTestingHarness.create();

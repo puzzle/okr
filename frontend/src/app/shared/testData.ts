@@ -137,7 +137,7 @@ export const quarterBacklog: Quarter = {
   endDate: null,
 } as Quarter;
 
-export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
+export const quarterList: Quarter[] = [quarterBacklog, quarter1, quarter2];
 
 export const checkInMetric: CheckInMin = {
   id: 815,

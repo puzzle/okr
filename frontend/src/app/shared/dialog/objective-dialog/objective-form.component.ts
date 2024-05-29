@@ -38,7 +38,6 @@ export class ObjectiveFormComponent implements OnInit {
   });
   quarters$: Observable<Quarter[]> = of([]);
   quarters: Quarter[] = [];
-  objective: Objective | null = null;
   teams$: Observable<Team[]> = of([]);
   alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
   currentTeam$: BehaviorSubject<Team | null> = new BehaviorSubject<Team | null>(null);
@@ -102,20 +101,18 @@ export class ObjectiveFormComponent implements OnInit {
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
       this.quarters = quarters;
-      this.objective = objective;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[2].id)[0];
 
       let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
-      if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+      if (currentQuarter && !this.isNotBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
         quarterId = quarters[2].id;
       }
 
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
-        let team: Team = value.filter((team: Team) => team.id == teamId)[0];
-        this.currentTeam$.next(team);
+        this.currentTeam$.next(value.filter((team: Team) => team.id == teamId)[0]);
       });
       this.generateAlignmentPossibilities(quarterId, objective, teamId!);
 
@@ -216,12 +213,12 @@ export class ObjectiveFormComponent implements OnInit {
       (quarter) => quarter.id == this.objectiveForm.value.quarter,
     );
     if (currentQuarter) {
-      let isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
+      let isBacklogCurrent: boolean = this.isNotBacklogQuarter(currentQuarter.label);
       if (this.data.action == 'duplicate') return true;
       if (this.data.objective.objectiveId) {
-        return isBacklogCurrent ? this.state == 'DRAFT' : true;
+        return !isBacklogCurrent ? this.state == 'DRAFT' : true;
       } else {
-        return !isBacklogCurrent;
+        return isBacklogCurrent;
       }
     } else {
       return true;
@@ -244,7 +241,7 @@ export class ObjectiveFormComponent implements OnInit {
     }
   }
 
-  isBacklogQuarter(label: string) {
+  isNotBacklogQuarter(label: string) {
     return GJ_REGEX_PATTERN.test(label);
   }
 

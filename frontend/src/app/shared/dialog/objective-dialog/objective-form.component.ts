@@ -39,7 +39,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   quarters$: Observable<Quarter[]> = of([]);
   currentQuarter$: Observable<Quarter> = of();
   quarters: Quarter[] = [];
-  objective: Objective | null = null;
   teams$: Observable<Team[]> = of([]);
   alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
   currentTeam$: BehaviorSubject<Team | null> = new BehaviorSubject<Team | null>(null);
@@ -103,20 +102,18 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       : of(this.getDefaultObjective());
     forkJoin([objective$, this.quarters$, this.currentQuarter$]).subscribe(([objective, quarters, currentQuarter]) => {
       this.quarters = quarters;
-      this.objective = objective;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
       const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-      if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+      if (currentQuarter && !this.isNotBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
         quarterId = quarters[2].id;
       }
 
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
-        let team: Team = value.filter((team: Team) => team.id == teamId)[0];
-        this.currentTeam$.next(team);
+        this.currentTeam$.next(value.filter((team: Team) => team.id == teamId)[0]);
       });
       this.generateAlignmentPossibilities(quarterId, objective, teamId!);
 
@@ -203,12 +200,12 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       (quarter) => quarter.id == this.objectiveForm.value.quarter,
     );
     if (currentQuarter) {
-      let isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
+      let isBacklogCurrent: boolean = this.isNotBacklogQuarter(currentQuarter.label);
       if (this.data.action == 'duplicate') return true;
       if (this.data.objective.objectiveId) {
-        return isBacklogCurrent ? this.state == 'DRAFT' : true;
+        return !isBacklogCurrent ? this.state == 'DRAFT' : true;
       } else {
-        return !isBacklogCurrent;
+        return isBacklogCurrent;
       }
     } else {
       return true;
@@ -231,7 +228,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  isBacklogQuarter(label: string) {
+  isNotBacklogQuarter(label: string) {
     return GJ_REGEX_PATTERN.test(label);
   }
 

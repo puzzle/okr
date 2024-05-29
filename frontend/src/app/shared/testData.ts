@@ -119,7 +119,7 @@ export const quarter2: Quarter = new Quarter(2, 'GJ 22/23-Q3', new Date('2023-01
 
 export const quarterBacklog: Quarter = new Quarter(999, 'GJ 23/24-Q1', null, null);
 
-export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
+export const quarterList: Quarter[] = [quarterBacklog, quarter1, quarter2];
 
 export const checkInMetric: CheckInMin = {
   id: 815,

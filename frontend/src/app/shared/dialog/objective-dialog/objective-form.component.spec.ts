@@ -11,11 +11,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../services/objective.service';
 import {
-  alignmentObject1,
-  alignmentObject2,
-  alignmentObject3,
   alignmentPossibility1,
   alignmentPossibility2,
+  alignmentPossibilityObject1,
+  alignmentPossibilityObject2,
+  alignmentPossibilityObject3,
   objective,
   objectiveWithAlignment,
   quarter,
@@ -230,7 +230,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 0,
         team: 0,
-        alignment: alignmentObject2,
+        alignment: alignmentPossibilityObject2,
         createKeyResults: false,
       });
 
@@ -258,7 +258,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 0,
         team: 0,
-        alignment: alignmentObject3,
+        alignment: alignmentPossibilityObject3,
         createKeyResults: false,
       });
 
@@ -316,7 +316,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 1,
         team: 1,
-        alignment: alignmentObject3,
+        alignment: alignmentPossibilityObject3,
         createKeyResults: false,
       });
 
@@ -376,7 +376,7 @@ describe('ObjectiveDialogComponent', () => {
       expect(rawFormValue.description).toBe(objectiveWithAlignment.description);
       expect(rawFormValue.team).toBe(objectiveWithAlignment.teamId);
       expect(rawFormValue.quarter).toBe(objectiveWithAlignment.quarterId);
-      expect(rawFormValue.alignment).toBe(alignmentObject2);
+      expect(rawFormValue.alignment).toBe(alignmentPossibilityObject2);
     });
 
     it('should return correct value if allowed to save to backlog', async () => {
@@ -552,7 +552,7 @@ describe('ObjectiveDialogComponent', () => {
       let modifiedAlignmentPossibility: AlignmentPossibility = {
         teamId: 1,
         teamName: 'Puzzle ITC',
-        alignmentObjects: [alignmentObject3],
+        alignmentObjects: [alignmentPossibilityObject3],
       };
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([modifiedAlignmentPossibility]);
 
@@ -563,7 +563,7 @@ describe('ObjectiveDialogComponent', () => {
       modifiedAlignmentPossibility = {
         teamId: 1,
         teamName: 'Puzzle ITC',
-        alignmentObjects: [alignmentObject2, alignmentObject3],
+        alignmentObjects: [alignmentPossibilityObject2, alignmentPossibilityObject3],
       };
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([modifiedAlignmentPossibility]);
 
@@ -575,12 +575,12 @@ describe('ObjectiveDialogComponent', () => {
         {
           teamId: 1,
           teamName: 'Puzzle ITC',
-          alignmentObjects: [alignmentObject3],
+          alignmentObjects: [alignmentPossibilityObject3],
         },
         {
           teamId: 2,
           teamName: 'We are cube',
-          alignmentObjects: [alignmentObject1],
+          alignmentObjects: [alignmentPossibilityObject1],
         },
       ];
       expect(component.filteredAlignmentOptions$.getValue()).toEqual(modifiedAlignmentPossibilities);

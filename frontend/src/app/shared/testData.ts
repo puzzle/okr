@@ -636,19 +636,19 @@ export const keyResultActions: KeyResultMetric = {
   writeable: true,
 };
 
-export const alignmentObject1: AlignmentPossibilityObject = {
+export const alignmentPossibilityObject1: AlignmentPossibilityObject = {
   objectId: 1,
   objectTitle: 'We want to increase the income puzzle buy',
   objectType: 'objective',
 };
 
-export const alignmentObject2: AlignmentPossibilityObject = {
+export const alignmentPossibilityObject2: AlignmentPossibilityObject = {
   objectId: 2,
   objectTitle: 'Our office has more plants for',
   objectType: 'objective',
 };
 
-export const alignmentObject3: AlignmentPossibilityObject = {
+export const alignmentPossibilityObject3: AlignmentPossibilityObject = {
   objectId: 1,
   objectTitle: 'We buy 3 palms puzzle',
   objectType: 'keyResult',
@@ -657,13 +657,13 @@ export const alignmentObject3: AlignmentPossibilityObject = {
 export const alignmentPossibility1: AlignmentPossibility = {
   teamId: 1,
   teamName: 'Puzzle ITC',
-  alignmentObjects: [alignmentObject2, alignmentObject3],
+  alignmentObjects: [alignmentPossibilityObject2, alignmentPossibilityObject3],
 };
 
 export const alignmentPossibility2: AlignmentPossibility = {
   teamId: 2,
   teamName: 'We are cube',
-  alignmentObjects: [alignmentObject1],
+  alignmentObjects: [alignmentPossibilityObject1],
 };
 
 export const alignmentObject1: AlignmentObject = {

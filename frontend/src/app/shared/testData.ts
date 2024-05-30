@@ -635,13 +635,13 @@ export const keyResultActions: KeyResultMetric = {
 
 export const alignmentObject1: AlignmentPossibilityObject = {
   objectId: 1,
-  objectTitle: 'We want to increase the income',
+  objectTitle: 'We want to increase the income puzzle buy',
   objectType: 'objective',
 };
 
 export const alignmentObject2: AlignmentPossibilityObject = {
   objectId: 2,
-  objectTitle: 'Our office has more plants for we',
+  objectTitle: 'Our office has more plants for',
   objectType: 'objective',
 };
 

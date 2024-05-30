@@ -534,6 +534,13 @@ describe('ObjectiveDialogComponent', () => {
       expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
     });
 
+    it('should return team and objective with same text in alignment possibilities', async () => {
+      component.input.nativeElement.value = 'puzzle';
+      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.filter();
+      expect(component.filteredOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
+    });
+
     it('should load existing objective alignment to objectiveForm', async () => {
       objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.generateAlignmentPossibilities(3, objectiveWithAlignment, null);
@@ -585,14 +592,14 @@ describe('ObjectiveDialogComponent', () => {
       expect(component.filteredOptions$.getValue()).toEqual([modifiedAlignmentPossibility]);
 
       // Search for two objects
-      component.input.nativeElement.value = 'we';
+      component.input.nativeElement.value = 'buy';
       component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
       component.filter();
       let modifiedAlignmentPossibilities = [
         {
           teamId: 1,
           teamName: 'Puzzle ITC',
-          alignmentObjectDtos: [alignmentObject2, alignmentObject3],
+          alignmentObjectDtos: [alignmentObject3],
         },
         {
           teamId: 2,
@@ -617,7 +624,7 @@ describe('ObjectiveDialogComponent', () => {
         'objective',
       );
       expect(alignmentObject!.objectId).toEqual(1);
-      expect(alignmentObject!.objectTitle).toEqual('We want to increase the income');
+      expect(alignmentObject!.objectTitle).toEqual('We want to increase the income puzzle buy');
 
       // keyResult
       alignmentObject = component.findAlignmentObject([alignmentPossibility1, alignmentPossibility2], 1, 'keyResult');

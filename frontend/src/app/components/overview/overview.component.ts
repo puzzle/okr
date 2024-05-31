@@ -18,6 +18,7 @@ import { ConfigService } from '../../services/config.service';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { AlignmentService } from '../shared/services/alignment.service';
 import { AlignmentLists } from '../shared/types/model/AlignmentLists';
+import { AlignmentObject } from '../shared/types/model/AlignmentObject';
 
 @Component({
   selector: 'app-overview',
@@ -47,7 +48,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.loadOverviewWithParams());
+      .subscribe((reload: boolean | null | undefined) => this.loadOverviewWithParams(reload));
 
     combineLatest([
       refreshDataService.teamFilterReady.asObservable(),
@@ -78,7 +79,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadOverviewWithParams() {
+  loadOverviewWithParams(reload?: boolean | null) {
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
     const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
@@ -86,10 +87,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
     const objectiveQueryString = getQueryString(objectiveQuery);
-    this.loadOverview(quarterId, teamIds, objectiveQueryString);
+    this.loadOverview(quarterId, teamIds, objectiveQueryString, reload);
   }
 
-  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
+  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string, reload?: boolean | null) {
     if (this.isOverview) {
       this.overviewService
         .getOverview(quarterId, teamIds, objectiveQuery)
@@ -112,6 +113,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
           }),
         )
         .subscribe((alignmentLists) => {
+          if (reload != null) {
+            let kuchen: AlignmentObject = {
+              objectId: 0,
+              objectTitle: 'reload',
+              objectType: reload.toString(),
+              objectTeamName: '',
+              objectState: null,
+            };
+            alignmentLists.alignmentObjectDtoList.push(kuchen);
+          }
           this.alignmentData$.next(alignmentLists);
         });
     }

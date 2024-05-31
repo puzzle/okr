@@ -19,15 +19,16 @@ describe('OKR diagram e2e tests', () => {
       cy.getByTestId('diagramTab').first().click();
 
       cy.contains('Kein Alignment vorhanden');
-      cy.get('h1:contains(Puzzle ITC)').should('have.length', 0);
+      cy.get('h1:visible:contains(Puzzle ITC)').should('have.length', 0);
       cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
-      cy.getByTestId('objective').should('have.length', 0);
+      cy.getByTestId('objective').should('not.be.visible');
 
       cy.getByTestId('overviewTab').first().click();
 
       cy.get('h1:contains(Puzzle ITC)').should('have.length', 1);
       cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
       cy.contains('An Objective for Testing');
+      cy.getByTestId('objective').should('be.visible');
     });
 
     it('Can switch to diagram and the filter stay the same', () => {

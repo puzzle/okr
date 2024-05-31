@@ -87,7 +87,7 @@ export class ObjectiveDetailComponent {
       })
       .afterClosed()
       .subscribe((result) => {
-        if (result.delete) {
+        if (result && result.delete) {
           this.router.navigate(['']);
         } else if (result == '' || result == undefined) {
           return;

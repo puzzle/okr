@@ -17,6 +17,8 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { calculateCurrentPercentage } from '../shared/common';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { Router } from '@angular/router';
+import { AlignmentObject } from '../shared/types/model/AlignmentObject';
+import { AlignmentConnection } from '../shared/types/model/AlignmentConnection';
 
 @Component({
   selector: 'app-diagram',
@@ -24,7 +26,7 @@ import { Router } from '@angular/router';
   styleUrl: './diagram.component.scss',
 })
 export class DiagramComponent implements AfterViewInit, OnDestroy {
-  private alignmentData$ = new Subject<AlignmentLists>();
+  private alignmentData$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
   cy!: cytoscape.Core;
   diagramData: any[] = [];
   emptyDiagramData: boolean = false;
@@ -46,7 +48,18 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.alignmentData.subscribe((alignmentData: AlignmentLists): void => {
-      if (JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData)) {
+      let lastItem: AlignmentObject =
+        alignmentData.alignmentObjectDtoList[alignmentData.alignmentObjectDtoList.length - 1];
+
+      let shouldUpdate: boolean =
+        lastItem?.objectTitle === 'reload'
+          ? lastItem?.objectType === 'true'
+          : JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData);
+
+      if (shouldUpdate) {
+        if (lastItem?.objectTitle === 'reload') {
+          alignmentData.alignmentObjectDtoList.pop();
+        }
         this.alignmentDataCache = alignmentData;
         this.diagramData = [];
         this.cleanUpDiagram();
@@ -138,11 +151,11 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   generateElements(alignmentData: AlignmentLists): void {
     let observableArray: any[] = [];
     let diagramElements: any[] = [];
-    alignmentData.alignmentObjectDtoList.forEach((alignmentObject) => {
+    alignmentData.alignmentObjectDtoList.forEach((alignmentObject: AlignmentObject) => {
       if (alignmentObject.objectType == 'objective') {
-        let observable = new Observable((observer) => {
-          let objectiveTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
-          let teamTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
+        let observable: Observable<any> = new Observable((observer) => {
+          let objectiveTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
+          let teamTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
           let element = {
             data: {
               id: 'Ob' + alignmentObject.objectId,
@@ -157,11 +170,14 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
         });
         observableArray.push(observable);
       } else {
-        let observable = this.keyResultService.getFullKeyResult(alignmentObject.objectId).pipe(
+        let observable: Observable<void> = this.keyResultService.getFullKeyResult(alignmentObject.objectId).pipe(
           map((keyResult: KeyResult) => {
+            let keyResultTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
+            let teamTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
+
             if (keyResult.keyResultType == 'metric') {
-              let metricKeyResult = keyResult as KeyResultMetric;
-              let percentage = calculateCurrentPercentage(metricKeyResult);
+              let metricKeyResult: KeyResultMetric = keyResult as KeyResultMetric;
+              let percentage: number = calculateCurrentPercentage(metricKeyResult);
 
               let keyResultState: string | undefined;
               if (percentage < 30) {
@@ -175,8 +191,6 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
               } else {
                 keyResultState = undefined;
               }
-              let keyResultTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
-              let teamTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
               let element = {
                 data: {
                   id: 'KR' + alignmentObject.objectId,
@@ -187,11 +201,9 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
               };
               diagramElements.push(element);
             } else {
-              let ordinalKeyResult = keyResult as KeyResultOrdinal;
+              let ordinalKeyResult: KeyResultOrdinal = keyResult as KeyResultOrdinal;
               let keyResultState: string | undefined = ordinalKeyResult.lastCheckIn?.value.toString();
 
-              let keyResultTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
-              let teamTitle = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
               let element = {
                 data: {
                   id: 'KR' + alignmentObject.objectId,
@@ -215,7 +227,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   generateConnections(alignmentData: AlignmentLists, diagramElements: any[]): void {
     let edges: any[] = [];
-    alignmentData.alignmentConnectionDtoList.forEach((alignmentConnection) => {
+    alignmentData.alignmentConnectionDtoList.forEach((alignmentConnection: AlignmentConnection) => {
       if (alignmentConnection.targetKeyResultId == null) {
         let edge = {
           data: {

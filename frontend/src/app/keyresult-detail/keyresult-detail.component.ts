@@ -185,7 +185,7 @@ export class KeyresultDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result != '' && result != undefined) {
         this.loadKeyResult(this.keyResult$.getValue().id);
-        this.refreshDataService.markDataRefresh();
+        this.refreshDataService.markDataRefresh(true);
       }
     });
   }

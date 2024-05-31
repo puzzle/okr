@@ -79,7 +79,7 @@ export class ObjectiveDetailComponent {
       .afterClosed()
       .subscribe((result) => {
         this.refreshDataService.markDataRefresh();
-        if (result.delete) {
+        if (result && result.delete) {
           this.backToOverview();
         } else if (result == '' || result == undefined) {
           return;

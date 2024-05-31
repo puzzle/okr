@@ -31,6 +31,19 @@
           Member hinzufügen
         </span>
       </button>
+      <button
+        *ngIf="showInviteMember()"
+        (click)="inviteMember()"
+        [attr.data-testId]="'invite-member'"
+        class="align-new-icon"
+        color="primary"
+        mat-button
+      >
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Member registrieren
+        </span>
+      </button>
     </div>
     <div class="menu mx-2" *ngIf="selectedTeam$.value?.writeable">
       <app-puzzle-icon-button

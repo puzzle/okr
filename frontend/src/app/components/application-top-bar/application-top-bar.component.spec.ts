@@ -39,7 +39,7 @@ const configServiceMock = {
   config$: of({}),
 };
 
-describe('ApplicationHeaderComponent', () => {
+describe('ApplicationTopBarComponent', () => {
   let component: ApplicationTopBarComponent;
   let fixture: ComponentFixture<ApplicationTopBarComponent>;
   let loader: HarnessLoader;

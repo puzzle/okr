@@ -52,4 +52,10 @@ public class UserAuthorizationService {
                 OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
         return userBusinessService.setIsOkrChampion(user, isOkrChampion);
     }
+
+    public List<User> createUsers(List<User> userList) {
+        AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
+        return userBusinessService.createUsers(userList);
+    }
 }

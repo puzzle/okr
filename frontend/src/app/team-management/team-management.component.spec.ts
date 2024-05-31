@@ -21,6 +21,8 @@ import { MemberListTableComponent } from './member-list/member-list-table/member
 import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
+import { testUser, users } from '../shared/testData';
+import { UserService } from '../services/user.service';
 
 describe('TeamManagementComponent', () => {
   let component: TeamManagementComponent;
@@ -28,6 +30,11 @@ describe('TeamManagementComponent', () => {
 
   const activatedRouteMock = {
     paramMap: of({}),
+  };
+
+  const userServiceMock = {
+    getCurrentUser: () => of(testUser),
+    getUsers: () => of(users),
   };
 
   beforeEach(async () => {
@@ -59,7 +66,10 @@ describe('TeamManagementComponent', () => {
         MemberListTableComponent,
         MemberListMobileComponent,
       ],
-      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: UserService, useValue: userServiceMock },
+      ],
     }).compileComponents();
   });
 

@@ -91,7 +91,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         filter((confirm) => confirm),
         mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)),
       )
-      .subscribe(() => this.loadUser(user.id));
+      .subscribe(() => {
+        this.loadUser(user.id);
+        this.userService.reloadUsers();
+      });
   }
 
   updateTeamMembership(isAdmin: boolean, userTeam: UserTeam, user: User) {
@@ -127,9 +130,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   isOkrChampionChange(okrChampion: boolean, user: User) {
     this.userService.setIsOkrChampion(user, okrChampion).subscribe(() => {
       this.loadUser(user.id);
-      this.userService.reloadUsers();
       this.teamService.reloadTeams();
-      this.userService.reloadCurrentUser().subscribe();
     });
   }
 }

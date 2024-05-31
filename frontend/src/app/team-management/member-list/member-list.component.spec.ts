@@ -24,6 +24,7 @@ const userServiceMock = {
   getUsers: jest.fn(),
   reloadUsers: jest.fn(),
   reloadCurrentUser: jest.fn(),
+  getCurrentUser: jest.fn(),
 };
 
 const teamServiceMock = {
@@ -74,6 +75,7 @@ describe('MemberListComponent', () => {
 
     jest.spyOn(userServiceMock, 'getUsers').mockReturnValue(of([]));
     userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
+    userServiceMock.getCurrentUser.mockReturnValue(of(testUser));
   });
 
   afterEach(() => {

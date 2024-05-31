@@ -57,9 +57,11 @@ export class CheckInHistoryDialogComponent implements OnInit {
       maxHeight: dialogConfig.maxHeight,
       maxWidth: dialogConfig.maxWidth,
     });
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.loadCheckInHistory();
-      this.refreshDataService.markDataRefresh();
+      if (result != '' && result != undefined) {
+        this.refreshDataService.markDataRefresh(true);
+      }
     });
   }
 

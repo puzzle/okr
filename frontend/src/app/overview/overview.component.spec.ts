@@ -112,7 +112,7 @@ describe('OverviewComponent', () => {
       routerHarness.detectChanges();
       component.loadOverviewWithParams();
       expect(overviewService.getOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
-      expect(component.loadOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
+      expect(component.loadOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam, undefined);
     },
   );
 

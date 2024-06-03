@@ -34,6 +34,11 @@ public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private JwtIssuerValidator fromTenant(String tenant) {
         return this.tenantConfigProvider.getTenantConfigById(tenant).map(TenantConfigProvider.TenantConfig::issuerUrl)
-                .map(JwtIssuerValidator::new).orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
+                .map(this::createValidator).orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }
+
+    JwtIssuerValidator createValidator(String issuer) {
+        return new JwtIssuerValidator(issuer);
+    }
+
 }

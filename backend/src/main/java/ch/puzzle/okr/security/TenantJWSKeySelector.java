@@ -45,7 +45,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
                 .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }
 
-    private JWSKeySelector<SecurityContext> fromUri(String uri) {
+    JWSKeySelector<SecurityContext> fromUri(String uri) {
         try {
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(new URL(uri));
         } catch (Exception ex) {

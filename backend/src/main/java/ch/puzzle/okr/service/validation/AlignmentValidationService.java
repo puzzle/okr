@@ -24,8 +24,9 @@ public class AlignmentValidationService
     private final QuarterValidationService quarterValidationService;
     private final TeamValidationService teamValidationService;
 
-    public AlignmentValidationService(AlignmentPersistenceService alignmentPersistenceService, TeamPersistenceService teamPersistenceService,
-            QuarterValidationService quarterValidationService, TeamValidationService teamValidationService) {
+    public AlignmentValidationService(AlignmentPersistenceService alignmentPersistenceService,
+            TeamPersistenceService teamPersistenceService, QuarterValidationService quarterValidationService,
+            TeamValidationService teamValidationService) {
         super(alignmentPersistenceService);
         this.alignmentPersistenceService = alignmentPersistenceService;
         this.teamPersistenceService = teamPersistenceService;

@@ -297,9 +297,9 @@ export class ObjectiveFormComponent implements OnInit {
   }
 
   filter() {
-    let filterValue = this.input.nativeElement.value.toLowerCase();
+    let filterValue: string = this.input.nativeElement.value.toLowerCase();
     this.alignmentPossibilities$.subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
-      let matchingTeams = alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
+      let matchingTeams: AlignmentPossibility[] = alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
         possibility.teamName.toLowerCase().includes(filterValue),
       );
 
@@ -327,7 +327,7 @@ export class ObjectiveFormComponent implements OnInit {
         ),
       }));
 
-      let finalArray = matchingTeams.concat(optionList);
+      let finalArray: AlignmentPossibility[] = filterValue == '' ? matchingTeams : matchingTeams.concat(optionList);
       this.filteredOptions$.next([...new Set(finalArray)]);
     });
   }

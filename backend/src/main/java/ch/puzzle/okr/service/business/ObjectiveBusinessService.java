@@ -57,9 +57,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         List<Objective> objectivesByQuarter = objectivePersistenceService.findObjectiveByQuarterId(quarterId);
         List<AlignmentDto> alignmentDtoList = new ArrayList<>();
 
-        Set<Team> teamSet = new HashSet<>();
-        objectivesByQuarter.forEach(objective -> teamSet.add(objective.getTeam()));
-        List<Team> teamList = new ArrayList<>(teamSet.stream().sorted(Comparator.comparing(Team::getName)).toList());
+        List<Team> teamList = objectivesByQuarter.stream().map(Objective::getTeam).distinct()
+                .sorted(Comparator.comparing(Team::getName)).toList();
 
         teamList.forEach(team -> {
             List<Objective> filteredObjectiveList = objectivesByQuarter.stream()

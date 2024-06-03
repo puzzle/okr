@@ -31,13 +31,13 @@ public class JwtHelper {
     private final String email;
 
     public JwtHelper(TenantConfigProvider tenantConfigProvider,
-            @Value("${okr.jwt.claim.firstname}") final String firstname,
-            @Value("${okr.jwt.claim.lastname}") final String lastname,
-            @Value("${okr.jwt.claim.email}") final String email) {
+            @Value("${okr.jwt.claim.firstname}") final String tokenClaimsKeyFirstname,
+            @Value("${okr.jwt.claim.lastname}") final String tokenClaimsKeyLastname,
+            @Value("${okr.jwt.claim.email}") final String tokenClaimsKeyEmail) {
         this.tenantConfigProvider = tenantConfigProvider;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
+        this.firstname = tokenClaimsKeyFirstname;
+        this.lastname = tokenClaimsKeyLastname;
+        this.email = tokenClaimsKeyEmail;
     }
 
     public User getUserFromJwt(Jwt token) {
@@ -45,8 +45,11 @@ public class JwtHelper {
         logger.debug("claims {}", claims);
 
         try {
-            return User.Builder.builder().withFirstname(claims.get(firstname).toString())
-                    .withLastname(claims.get(lastname).toString()).withEmail(claims.get(email).toString()).build();
+            return User.Builder.builder() //
+                    .withFirstname(claims.get(firstname).toString()) //
+                    .withLastname(claims.get(lastname).toString()) //
+                    .withEmail(claims.get(email).toString()) //
+                    .build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.CONVERT_TOKEN, USER);

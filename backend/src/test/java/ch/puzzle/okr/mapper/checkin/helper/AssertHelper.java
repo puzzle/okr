@@ -30,11 +30,8 @@ public class AssertHelper {
         assertEquals(expected.initiatives(), actual.getInitiatives());
         assertEquals(expected.confidence(), actual.getConfidence());
         assertEquals(expected.keyResultId(), actual.getKeyResult().getId());
-
-        // TODO CreatedOn + ModifiedOn are set in Dto but not in Obj
-        // Assertions.assertEquals(checkInMetricDto.createdOn(), checkInMetric.getCreatedOn());
-        // Assertions.assertEquals(checkInMetricDto.modifiedOn(), checkInMetric.getModifiedOn());
-
+        assertEquals(expected.createdOn(), actual.getCreatedOn());
+        assertEquals(expected.modifiedOn(), actual.getModifiedOn());
         assertEquals(expected.value(), actual.getValue());
         assertFalse(actual.isWriteable()); // TODO: immer false?
     }
@@ -52,18 +49,15 @@ public class AssertHelper {
         assertEquals(expected.isWriteable(), actual.writeable());
     }
 
-    public static void assertCheckInOrdianal(CheckInOrdinalDto checkInOrdinalDto, CheckInOrdinal checkInOrdinal) {
+    public static void assertCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto, CheckInOrdinal checkInOrdinal) {
         assertEquals(checkInOrdinalDto.id(), checkInOrdinal.getId());
         assertEquals(checkInOrdinalDto.version(), checkInOrdinal.getVersion());
         assertEquals(checkInOrdinalDto.changeInfo(), checkInOrdinal.getChangeInfo());
         assertEquals(checkInOrdinalDto.initiatives(), checkInOrdinal.getInitiatives());
         assertEquals(checkInOrdinalDto.confidence(), checkInOrdinal.getConfidence());
         assertEquals(checkInOrdinalDto.keyResultId(), checkInOrdinal.getKeyResult().getId());
-
-        // TODO CreatedOn + ModifiedOn are set in Dto but not in Obj
-        // Assertions.assertEquals(checkInMetricDto.createdOn(), checkInMetric.getCreatedOn());
-        // Assertions.assertEquals(checkInMetricDto.modifiedOn(), checkInMetric.getModifiedOn());
-
+        assertEquals(checkInOrdinalDto.createdOn(), checkInOrdinal.getCreatedOn());
+        assertEquals(checkInOrdinalDto.modifiedOn(), checkInOrdinal.getModifiedOn());
         assertEquals(checkInOrdinalDto.value(), checkInOrdinal.getZone()); // TODO: API - rename value -> zone in dto
         assertFalse(checkInOrdinal.isWriteable()); // TODO: immer false?
     }

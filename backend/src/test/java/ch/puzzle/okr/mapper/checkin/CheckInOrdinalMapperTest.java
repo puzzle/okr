@@ -15,7 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static ch.puzzle.okr.mapper.checkin.helper.AssertHelper.assertCheckInOrdianal;
+import static ch.puzzle.okr.mapper.checkin.helper.AssertHelper.assertCheckInOrdinal;
 import static ch.puzzle.okr.mapper.checkin.helper.AssertHelper.assertCheckInOrdinalDto;
 import static ch.puzzle.okr.mapper.checkin.helper.TestDataDtoHelper.checkInOrdinalDto;
 import static ch.puzzle.okr.mapper.checkin.helper.TestDataHelper.checkInOrdinal;
@@ -67,7 +67,7 @@ public class CheckInOrdinalMapperTest {
 
         // assert
         assertNotNull(checkInOrdinal);
-        assertCheckInOrdianal(checkInOrdinalDto, checkInOrdinal);
+        assertCheckInOrdinal(checkInOrdinalDto, checkInOrdinal);
     }
 
 }

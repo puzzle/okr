@@ -38,7 +38,7 @@ import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import * as de from '../../../../assets/i18n/de.json';
 import { ActivatedRoute } from '@angular/router';
-import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
 import { ElementRef } from '@angular/core';
 
@@ -104,7 +104,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
-          MatAutocomplete,
+          MatAutocompleteModule,
           NoopAnimationsModule,
           MatCheckboxModule,
           RouterTestingModule,
@@ -472,7 +472,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
-          MatAutocomplete,
+          MatAutocompleteModule,
           NoopAnimationsModule,
           MatCheckboxModule,
           RouterTestingModule,
@@ -666,7 +666,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
-          MatAutocomplete,
+          MatAutocompleteModule,
           NoopAnimationsModule,
           MatCheckboxModule,
           RouterTestingModule,

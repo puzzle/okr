@@ -140,6 +140,6 @@ public class ObjectiveMapperTest {
         assertEquals(expected.state(), actual.getState());
         assertEquals(expected.createdOn(), actual.getCreatedOn());
         assertEquals(expected.modifiedOn(), actual.getModifiedOn());
-        assertFalse(actual.isWriteable()); // TODO immer false?
+        assertFalse(actual.isWriteable());
     }
 }

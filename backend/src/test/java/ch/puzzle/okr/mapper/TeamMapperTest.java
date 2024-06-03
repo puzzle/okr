@@ -65,7 +65,7 @@ public class TeamMapperTest {
         assertEquals(expected.id(), actual.getId());
         assertEquals(expected.version(), actual.getVersion());
         assertEquals(expected.name(), actual.getName());
-        assertFalse(actual.isWriteable()); // TODO immer false?
+        assertFalse(actual.isWriteable());
     }
 
 }

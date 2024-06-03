@@ -154,6 +154,6 @@ public class ActionMapperTest {
         assertEquals(expected.action(), actual.getAction());
         assertEquals(expected.priority(), actual.getPriority());
         assertEquals(expected.isChecked(), actual.isChecked());
-        assertFalse(actual.isWriteable()); // TODO immer false?
+        assertFalse(actual.isWriteable());
     }
 }

@@ -33,7 +33,7 @@ public class AssertHelper {
         assertEquals(expected.createdOn(), actual.getCreatedOn());
         assertEquals(expected.modifiedOn(), actual.getModifiedOn());
         assertEquals(expected.value(), actual.getValue());
-        assertFalse(actual.isWriteable()); // TODO: immer false?
+        assertFalse(actual.isWriteable());
     }
 
     public static void assertCheckInOrdinalDto(CheckInOrdinal expected, CheckInOrdinalDto actual) {
@@ -59,6 +59,6 @@ public class AssertHelper {
         assertEquals(checkInOrdinalDto.createdOn(), checkInOrdinal.getCreatedOn());
         assertEquals(checkInOrdinalDto.modifiedOn(), checkInOrdinal.getModifiedOn());
         assertEquals(checkInOrdinalDto.zone(), checkInOrdinal.getZone());
-        assertFalse(checkInOrdinal.isWriteable()); // TODO: immer false?
+        assertFalse(checkInOrdinal.isWriteable());
     }
 }

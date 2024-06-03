@@ -38,7 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute } from '@angular/router';
-import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
 import { ElementRef } from '@angular/core';
 
@@ -110,7 +110,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
-          MatAutocomplete,
+          MatAutocompleteModule,
           NoopAnimationsModule,
           MatCheckboxModule,
           TranslateTestingModule.withTranslations({
@@ -480,7 +480,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
-          MatAutocomplete,
+          MatAutocompleteModule,
           NoopAnimationsModule,
           MatCheckboxModule,
           RouterTestingModule,
@@ -673,7 +673,7 @@ describe('ObjectiveDialogComponent', () => {
           MatSelectModule,
           ReactiveFormsModule,
           MatInputModule,
-          MatAutocomplete,
+          MatAutocompleteModule,
           NoopAnimationsModule,
           MatCheckboxModule,
           TranslateTestingModule.withTranslations({

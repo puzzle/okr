@@ -79,6 +79,7 @@ public class KeyResultOrdinalMapper {
                 .withTitle(keyResultOrdinalDto.title()) //
                 .withDescription(keyResultOrdinalDto.description()) //
                 .withOwner(userBusinessService.getUserById(keyResultOrdinalDto.owner().id())) //
+                .withCreatedOn(keyResultOrdinalDto.createdOn()) //
                 .withModifiedOn(keyResultOrdinalDto.modifiedOn()) //
                 .build();
     }

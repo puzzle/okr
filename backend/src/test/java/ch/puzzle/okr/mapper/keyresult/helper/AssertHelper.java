@@ -66,7 +66,7 @@ public class AssertHelper {
         assertEquals(expected.unit(), actual.getUnit());
         assertOwner(expected.owner(), actual.getOwner());
         assertObjective(expected.objective(), actual.getObjective());
-        assertEquals(expected.createdOn(), actual.getCreatedOn()); // TODO actual == null
+        assertEquals(expected.createdOn(), actual.getCreatedOn());
         assertEquals(expected.modifiedOn(), actual.getModifiedOn());
     }
 
@@ -118,7 +118,7 @@ public class AssertHelper {
         assertEquals(expected.stretchZone(), actual.getStretchZone());
         assertOwner(expected.owner(), actual.getOwner());
         assertObjective(expected.objective(), actual.getObjective());
-        // assertEquals(expected.createdOn(), actual.getCreatedOn()); // TODO actual == null
+        assertEquals(expected.createdOn(), actual.getCreatedOn());
         assertEquals(expected.modifiedOn(), actual.getModifiedOn());
     }
 

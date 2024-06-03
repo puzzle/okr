@@ -154,14 +154,16 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     alignmentData.alignmentObjectDtoList.forEach((alignmentObject: AlignmentObject) => {
       if (alignmentObject.objectType == 'objective') {
         let observable: Observable<any> = new Observable((observer) => {
-          let objectiveTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
-          let teamTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
           let element = {
             data: {
               id: 'Ob' + alignmentObject.objectId,
             },
             style: {
-              'background-image': this.generateObjectiveSVG(objectiveTitle, teamTitle, alignmentObject.objectState!),
+              'background-image': this.generateObjectiveSVG(
+                alignmentObject.objectTitle,
+                alignmentObject.objectTeamName,
+                alignmentObject.objectState!,
+              ),
             },
           };
           diagramElements.push(element);
@@ -172,9 +174,6 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       } else {
         let observable: Observable<void> = this.keyResultService.getFullKeyResult(alignmentObject.objectId).pipe(
           map((keyResult: KeyResult) => {
-            let keyResultTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTitle);
-            let teamTitle: string = this.replaceNonAsciiCharacters(alignmentObject.objectTeamName);
-
             if (keyResult.keyResultType == 'metric') {
               let metricKeyResult: KeyResultMetric = keyResult as KeyResultMetric;
               let percentage: number = calculateCurrentPercentage(metricKeyResult);
@@ -196,7 +195,11 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
                   id: 'KR' + alignmentObject.objectId,
                 },
                 style: {
-                  'background-image': this.generateKeyResultSVG(keyResultTitle, teamTitle, keyResultState),
+                  'background-image': this.generateKeyResultSVG(
+                    alignmentObject.objectTitle,
+                    alignmentObject.objectTeamName,
+                    keyResultState,
+                  ),
                 },
               };
               diagramElements.push(element);
@@ -209,7 +212,11 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
                   id: 'KR' + alignmentObject.objectId,
                 },
                 style: {
-                  'background-image': this.generateKeyResultSVG(keyResultTitle, teamTitle, keyResultState),
+                  'background-image': this.generateKeyResultSVG(
+                    alignmentObject.objectTitle,
+                    alignmentObject.objectTeamName,
+                    keyResultState,
+                  ),
                 },
               };
               diagramElements.push(element);
@@ -248,25 +255,6 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     });
     this.diagramData = diagramElements.concat(edges);
     this.generateDiagram();
-  }
-
-  replaceNonAsciiCharacters(text: string): string {
-    text = text.replace(/\u00c4/g, 'Ae');
-    text = text.replace(/\u00e4/g, 'ae');
-    text = text.replace(/\u00dc/g, 'Ue');
-    text = text.replace(/\u00fc/g, 'ue');
-    text = text.replace(/\u00d6/g, 'Oe');
-    text = text.replace(/\u00f6/g, 'oe');
-    text = text.replace(/\u00df/g, 'ss');
-    text = text.replace(/\u00B2/g, '^2');
-    text = text.replace(/\u00B3/g, '^3');
-    text = text.replace(/&/g, '&amp;');
-    text = text.replace(/</g, '&lt;');
-    text = text.replace(/>/g, '&gt;');
-    text = text.replace(/'/g, '&#039;');
-    text = text.replace(/"/g, '&quot;');
-
-    return text;
   }
 
   generateObjectiveSVG(title: string, teamName: string, state: string): string {

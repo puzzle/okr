@@ -31,7 +31,7 @@ public class KeyResultMetricMapper {
         this.actionMapper = actionMapper;
     }
 
-    public KeyResultDto toKeyResultMetricDto(KeyResultMetric keyResult, List<Action> actionList) {
+    public KeyResultDto toDto(KeyResultMetric keyResult, List<Action> actionList) {
         KeyResultUserDto ownerDto = new KeyResultUserDto( //
                 keyResult.getOwner().getId(), //
                 keyResult.getOwner().getFirstname(), //

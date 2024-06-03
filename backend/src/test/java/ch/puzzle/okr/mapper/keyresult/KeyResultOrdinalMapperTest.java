@@ -72,8 +72,7 @@ public class KeyResultOrdinalMapperTest {
         List<Action> actions = List.of(action(keyResultOrdinal));
 
         // act
-        // TODO naming toKeyResultOrdinalDto() -> toDto()
-        KeyResultDto keyResultDto = keyResultOrdinalMapper.toKeyResultOrdinalDto(keyResultOrdinal, actions);
+        KeyResultDto keyResultDto = keyResultOrdinalMapper.toDto(keyResultOrdinal, actions);
         KeyResultOrdinalDto keyResultOrdinalDto = (KeyResultOrdinalDto) keyResultDto;
 
         // assert
@@ -89,8 +88,7 @@ public class KeyResultOrdinalMapperTest {
         List<Action> actions = List.of(action(keyResultOrdinal));
 
         // act
-        // TODO naming toKeyResultOrdinalDto() -> toDto()
-        KeyResultDto keyResultDto = keyResultOrdinalMapper.toKeyResultOrdinalDto(keyResultOrdinal, actions);
+        KeyResultDto keyResultDto = keyResultOrdinalMapper.toDto(keyResultOrdinal, actions);
         KeyResultOrdinalDto keyResultOrdinalDto = (KeyResultOrdinalDto) keyResultDto;
 
         // assert

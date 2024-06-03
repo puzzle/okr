@@ -71,8 +71,7 @@ public class KeyResultMetricMapperTest {
         List<Action> actions = List.of(action(keyResultMetric));
 
         // act
-        // TODO naming toKeyResultMetricDto() -> toDto()
-        KeyResultDto keyResultDto = keyResultMetricMapper.toKeyResultMetricDto(keyResultMetric, actions);
+        KeyResultDto keyResultDto = keyResultMetricMapper.toDto(keyResultMetric, actions);
         KeyResultMetricDto keyResultMetricDto = (KeyResultMetricDto) keyResultDto;
 
         // assert
@@ -88,8 +87,7 @@ public class KeyResultMetricMapperTest {
         List<Action> actions = List.of(action(keyResultMetric));
 
         // act
-        // TODO naming toKeyResultMetricDto() -> toDto()
-        KeyResultDto keyResultDto = keyResultMetricMapper.toKeyResultMetricDto(keyResultMetric, actions);
+        KeyResultDto keyResultDto = keyResultMetricMapper.toDto(keyResultMetric, actions);
         KeyResultMetricDto keyResultMetricDto = (KeyResultMetricDto) keyResultDto;
 
         // assert

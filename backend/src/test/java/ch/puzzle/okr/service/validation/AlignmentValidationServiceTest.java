@@ -4,11 +4,13 @@ import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
+import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,12 +33,18 @@ class AlignmentValidationServiceTest {
 
     @Mock
     AlignmentPersistenceService alignmentPersistenceService;
+    @Mock
+    TeamPersistenceService teamPersistenceService;
     @Spy
     @InjectMocks
     private AlignmentValidationService validator;
 
-    Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
-    Objective objective2 = Objective.Builder.builder().withId(8L).withTitle("Objective 2").withState(DRAFT).build();
+    Team team1 = Team.Builder.builder().withId(1L).withName("Puzzle ITC").build();
+    Team team2 = Team.Builder.builder().withId(2L).withName("BBT").build();
+    Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withTeam(team1)
+            .withState(DRAFT).build();
+    Objective objective2 = Objective.Builder.builder().withId(8L).withTitle("Objective 2").withTeam(team2)
+            .withState(DRAFT).build();
     Objective objective3 = Objective.Builder.builder().withId(10L).withTitle("Objective 3").withState(DRAFT).build();
     KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle("KR Title 1").build();
     ObjectiveAlignment objectiveALignment = ObjectiveAlignment.Builder.builder().withId(1L)
@@ -74,6 +82,8 @@ class AlignmentValidationServiceTest {
     @Test
      void validateOnCreateShouldBeSuccessfulWhenAlignmentIsValid() {
          when(alignmentPersistenceService.findByAlignedObjectiveId(anyLong())).thenReturn(null);
+        when(teamPersistenceService.findById(1L)).thenReturn(team1);
+        when(teamPersistenceService.findById(2L)).thenReturn(team2);
 
          validator.validateOnCreate(createAlignment);
 
@@ -166,8 +176,44 @@ class AlignmentValidationServiceTest {
     }
 
     @Test
+    void validateOnCreateShouldThrowExceptionWhenAlignmentIsInSameTeamObjective() {
+        when(teamPersistenceService.findById(2L)).thenReturn(team2);
+        Objective objective = objective1;
+        objective.setTeam(team2);
+        ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective)
+                .withTargetObjective(objective2).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(objectiveAlignment));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "2")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnCreateShouldThrowExceptionWhenAlignmentIsInSameTeamKeyResult() {
+        when(teamPersistenceService.findById(1L)).thenReturn(team1);
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1").withObjective(objective1).build();
+        KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(keyResultAlignment1));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
      void validateOnCreateShouldThrowExceptionWhenAlignedObjectiveAlreadyExists() {
         when(alignmentPersistenceService.findByAlignedObjectiveId(anyLong())).thenReturn(objectiveALignment);
+        when(teamPersistenceService.findById(1L)).thenReturn(team1);
+        when(teamPersistenceService.findById(2L)).thenReturn(team2);
 
          ObjectiveAlignment createAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1).withTargetObjective(objective2).build();
 
@@ -183,6 +229,9 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenAlignmentIsValid() {
+        when(teamPersistenceService.findById(1L)).thenReturn(team1);
+        when(teamPersistenceService.findById(2L)).thenReturn(team2);
+
         validator.validateOnUpdate(objectiveALignment.getId(), objectiveALignment);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(objectiveALignment);
@@ -268,6 +317,40 @@ class AlignmentValidationServiceTest {
                 () -> validator.validateOnUpdate(3L, objectiveAlignment));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_YOURSELF", List.of("targetObjectiveId", "8")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnUpdateShouldThrowExceptionWhenAlignmentIsInSameTeamObjective() {
+        when(teamPersistenceService.findById(2L)).thenReturn(team2);
+        Objective objective = objective1;
+        objective.setTeam(team2);
+        ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withId(3L)
+                .withAlignedObjective(objective).withTargetObjective(objective2).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUpdate(2L, objectiveAlignment));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "2")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnUpdateShouldThrowExceptionWhenAlignmentIsInSameTeamKeyResult() {
+        when(teamPersistenceService.findById(1L)).thenReturn(team1);
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1").withObjective(objective1).build();
+        KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withId(2L).withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUpdate(2L, keyResultAlignment1));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

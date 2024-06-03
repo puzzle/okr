@@ -48,7 +48,8 @@ export function generateObjectiveSVG(title: string, teamName: string, iconFuncti
 </svg>
 `;
 
-  return 'data:image/svg+xml;base64,' + btoa(svg);
+  let blob: Blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  return URL.createObjectURL(blob);
 }
 
 export function generateKeyResultSVG(title: string, teamName: string, backgroundColor: any, fontColor: any) {
@@ -97,7 +98,8 @@ export function generateKeyResultSVG(title: string, teamName: string, background
 </svg>
   `;
 
-  return 'data:image/svg+xml;base64,' + btoa(svg);
+  let blob: Blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  return URL.createObjectURL(blob);
 }
 
 export function generateNeutralKeyResultSVG(title: string, teamName: string) {
@@ -146,7 +148,8 @@ export function generateNeutralKeyResultSVG(title: string, teamName: string) {
 </svg>
   `;
 
-  return 'data:image/svg+xml;base64,' + btoa(svg);
+  let blob: Blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  return URL.createObjectURL(blob);
 }
 
 export function getDraftIcon() {

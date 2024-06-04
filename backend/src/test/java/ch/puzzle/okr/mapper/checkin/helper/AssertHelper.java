@@ -45,7 +45,7 @@ public class AssertHelper {
         assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
-        assertEquals(expected.getZone(), actual.zone());
+        assertEquals(expected.getZone(), actual.value());
         assertEquals(expected.isWriteable(), actual.writeable());
     }
 
@@ -58,7 +58,7 @@ public class AssertHelper {
         assertEquals(checkInOrdinalDto.keyResultId(), checkInOrdinal.getKeyResult().getId());
         assertEquals(checkInOrdinalDto.createdOn(), checkInOrdinal.getCreatedOn());
         assertEquals(checkInOrdinalDto.modifiedOn(), checkInOrdinal.getModifiedOn());
-        assertEquals(checkInOrdinalDto.zone(), checkInOrdinal.getZone());
+        assertEquals(checkInOrdinalDto.value(), checkInOrdinal.getZone());
         assertFalse(checkInOrdinal.isWriteable());
     }
 }

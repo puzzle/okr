@@ -42,7 +42,7 @@ public class CheckInTestHelpers {
     public static final String JSON_PATH_CREATED_ON = "$.createdOn";
 
     public static final String JSON_PATH_VALUE = "$.value";
-    public static final String JSON_PATH_ZONE = "$.zone";
+    public static final String JSON_PATH_ZONE = "$.value";
 
     /* Test entities */
     static final Objective objective = Objective.Builder.builder().withId(1L).build();

@@ -169,7 +169,8 @@ public class AlignmentBusinessService {
         if (Objects.isNull(quarterFilter)) {
             quarterFilter = quarterBusinessService.getCurrentQuarter().getId();
         }
-        teamFilter = teamFilter == null ? List.of() : teamFilter;
+
+        teamFilter = Objects.requireNonNullElse(teamFilter, List.of());
         alignmentValidationService.validateOnAlignmentGet(quarterFilter, teamFilter);
 
         if (teamFilter.isEmpty()) {
@@ -221,10 +222,7 @@ public class AlignmentBusinessService {
                 .add(new AlignmentObjectDto(alignmentView.getId(), alignmentView.getTitle(),
                         alignmentView.getTeamName(), alignmentView.getState(), alignmentView.getObjectType())));
 
-        // Remove duplicated items
-        List<AlignmentObjectDto> alignmentObjectDtos = alignmentObjectDtoList.stream().distinct().toList();
-
-        return new AlignmentLists(alignmentObjectDtos, alignmentConnectionDtoList);
+        return new AlignmentLists(alignmentObjectDtoList.stream().distinct().toList(), alignmentConnectionDtoList);
     }
 
     protected List<AlignmentView> getAlignmentCounterpart(DividedAlignmentViewLists alignmentViewLists) {

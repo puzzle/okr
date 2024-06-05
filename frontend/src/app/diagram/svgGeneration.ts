@@ -18,7 +18,7 @@ export function generateObjectiveSVG(title: string, teamName: string, iconFuncti
   <foreignObject x="30" y="25" width="100px" height="100px">
     <div xmlns="http://www.w3.org/1999/xhtml"
          style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
-      <p xmlns="http://www.w3.org/1999/xhtml">
+      <p xmlns="http://www.w3.org/1999/xhtml" lang="de">
         ${title}
       </p>
       <style>
@@ -33,6 +33,7 @@ export function generateObjectiveSVG(title: string, teamName: string, iconFuncti
           text-overflow: ellipsis;
           word-break: break-word;
           text-align: center;
+          hyphens: auto;
         }
       </style>
     </div>
@@ -68,7 +69,7 @@ export function generateKeyResultSVG(title: string, teamName: string, background
   <foreignObject x="18" y="12" width="80px" height="80px">
     <div xmlns="http://www.w3.org/1999/xhtml"
          style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
-      <p xmlns="http://www.w3.org/1999/xhtml">
+      <p xmlns="http://www.w3.org/1999/xhtml" lang="de">
         ${title}
       </p>
       <style>
@@ -83,6 +84,7 @@ export function generateKeyResultSVG(title: string, teamName: string, background
           text-overflow: ellipsis;
           word-break: break-word;
           text-align: center;
+          hyphens: auto;
         }
       </style>
     </div>
@@ -118,7 +120,7 @@ export function generateNeutralKeyResultSVG(title: string, teamName: string) {
   <foreignObject x="18" y="12" width="80px" height="80px">
     <div xmlns="http://www.w3.org/1999/xhtml"
          style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center">
-      <p xmlns="http://www.w3.org/1999/xhtml">
+      <p xmlns="http://www.w3.org/1999/xhtml" lang="de">
         ${title}
       </p>
       <style>
@@ -133,6 +135,7 @@ export function generateNeutralKeyResultSVG(title: string, teamName: string) {
           text-overflow: ellipsis;
           word-break: break-word;
           text-align: center;
+          hyphens: auto;
         }
       </style>
     </div>

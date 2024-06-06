@@ -56,36 +56,49 @@ public class AlignmentBusinessService {
         Alignment savedAlignment = alignmentPersistenceService.findByAlignedObjectiveId(objectiveId);
 
         if (savedAlignment == null) {
-            Alignment alignment = buildAlignmentModel(objective, 0);
-            alignmentValidationService.validateOnCreate(alignment);
-            alignmentPersistenceService.save(alignment);
+            createEntity(objective);
         } else {
-            if (objective.getAlignedEntityId() == null) {
-                alignmentValidationService.validateOnDelete(savedAlignment.getId());
-                alignmentPersistenceService.deleteById(savedAlignment.getId());
-            } else {
-                Alignment alignment = buildAlignmentModel(objective, savedAlignment.getVersion());
+            handleExistingAlignment(objective, savedAlignment);
+        }
+    }
 
-                alignment.setId(savedAlignment.getId());
-                alignmentValidationService.validateOnUpdate(savedAlignment.getId(), alignment);
-                if (isAlignmentTypeChange(alignment, savedAlignment)) {
-                    alignmentPersistenceService.recreateEntity(savedAlignment.getId(), alignment);
-                } else {
-                    alignmentPersistenceService.save(alignment);
-                }
-            }
+    private void handleExistingAlignment(Objective objective, Alignment savedAlignment) {
+        if (objective.getAlignedEntityId() == null) {
+            validateAndDeleteAlignmentById(savedAlignment.getId());
+        } else {
+            validateAndUpdateAlignment(objective, savedAlignment);
+        }
+    }
+
+    private void validateAndUpdateAlignment(Objective objective, Alignment savedAlignment) {
+        Alignment alignment = buildAlignmentModel(objective, savedAlignment.getVersion());
+
+        alignment.setId(savedAlignment.getId());
+        alignmentValidationService.validateOnUpdate(savedAlignment.getId(), alignment);
+        updateAlignment(savedAlignment, alignment);
+    }
+
+    private void updateAlignment(Alignment savedAlignment, Alignment alignment) {
+        if (isAlignmentTypeChange(alignment, savedAlignment)) {
+            alignmentPersistenceService.recreateEntity(savedAlignment.getId(), alignment);
+        } else {
+            alignmentPersistenceService.save(alignment);
         }
     }
 
     public Alignment buildAlignmentModel(Objective alignedObjective, int version) {
         if (alignedObjective.getAlignedEntityId().startsWith("O")) {
-            Objective targetObjective = objectivePersistenceService
-                    .findById(Long.valueOf(alignedObjective.getAlignedEntityId().replace("O", "")));
-            return ObjectiveAlignment.Builder.builder().withAlignedObjective(alignedObjective)
-                    .withTargetObjective(targetObjective).withVersion(version).build();
+            Long entityId = Long.valueOf(alignedObjective.getAlignedEntityId().replace("O", ""));
+
+            Objective targetObjective = objectivePersistenceService.findById(entityId);
+            return ObjectiveAlignment.Builder.builder() //
+                    .withAlignedObjective(alignedObjective) //
+                    .withTargetObjective(targetObjective) //
+                    .withVersion(version).build();
         } else if (alignedObjective.getAlignedEntityId().startsWith("K")) {
-            KeyResult targetKeyResult = keyResultPersistenceService
-                    .findById(Long.valueOf(alignedObjective.getAlignedEntityId().replace("K", "")));
+            Long entityId = Long.valueOf(alignedObjective.getAlignedEntityId().replace("K", ""));
+
+            KeyResult targetKeyResult = keyResultPersistenceService.findById(entityId);
             return KeyResultAlignment.Builder.builder().withAlignedObjective(alignedObjective)
                     .withTargetKeyResult(targetKeyResult).withVersion(version).build();
         } else {
@@ -99,9 +112,10 @@ public class AlignmentBusinessService {
                 || (alignment instanceof KeyResultAlignment && savedAlignment instanceof ObjectiveAlignment);
     }
 
-    public void updateKeyResultIdOnIdChange(Long oldId, KeyResult keyResult) {
-        List<KeyResultAlignment> alignments = alignmentPersistenceService.findByKeyResultAlignmentId(oldId);
-        alignments.forEach(alignment -> {
+    public void updateKeyResultIdOnIdChange(Long oldKeyResultId, KeyResult keyResult) {
+        List<KeyResultAlignment> keyResultAlignmentList = alignmentPersistenceService
+                .findByKeyResultAlignmentId(oldKeyResultId);
+        keyResultAlignmentList.forEach(alignment -> {
             alignment.setAlignmentTarget(keyResult);
             alignmentValidationService.validateOnUpdate(alignment.getId(), alignment);
             alignmentPersistenceService.save(alignment);
@@ -111,21 +125,23 @@ public class AlignmentBusinessService {
     public void deleteAlignmentByObjectiveId(Long objectiveId) {
         Alignment alignment = alignmentPersistenceService.findByAlignedObjectiveId(objectiveId);
         if (alignment != null) {
-            alignmentValidationService.validateOnDelete(alignment.getId());
-            alignmentPersistenceService.deleteById(alignment.getId());
+            validateAndDeleteAlignmentById(alignment.getId());
         }
-        List<ObjectiveAlignment> alignmentList = alignmentPersistenceService.findByObjectiveAlignmentId(objectiveId);
-        alignmentList.forEach(objectiveAlignment -> {
-            alignmentValidationService.validateOnDelete(objectiveAlignment.getId());
-            alignmentPersistenceService.deleteById(objectiveAlignment.getId());
-        });
+        List<ObjectiveAlignment> objectiveAlignmentList = alignmentPersistenceService
+                .findByObjectiveAlignmentId(objectiveId);
+        objectiveAlignmentList
+                .forEach(objectiveAlignment -> validateAndDeleteAlignmentById(objectiveAlignment.getId()));
     }
 
     public void deleteAlignmentByKeyResultId(Long keyResultId) {
-        List<KeyResultAlignment> alignmentList = alignmentPersistenceService.findByKeyResultAlignmentId(keyResultId);
-        alignmentList.forEach(keyResultAlignment -> {
-            alignmentValidationService.validateOnDelete(keyResultAlignment.getId());
-            alignmentPersistenceService.deleteById(keyResultAlignment.getId());
-        });
+        List<KeyResultAlignment> keyResultAlignmentList = alignmentPersistenceService
+                .findByKeyResultAlignmentId(keyResultId);
+        keyResultAlignmentList
+                .forEach(keyResultAlignment -> validateAndDeleteAlignmentById(keyResultAlignment.getId()));
+    }
+
+    private void validateAndDeleteAlignmentById(Long alignmentId) {
+        alignmentValidationService.validateOnDelete(alignmentId);
+        alignmentPersistenceService.deleteById(alignmentId);
     }
 }

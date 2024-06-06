@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static ch.puzzle.okr.TestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 class AlignmentValidationServiceTest {
@@ -39,7 +40,7 @@ class AlignmentValidationServiceTest {
     @InjectMocks
     private AlignmentValidationService validator;
 
-    Team team1 = Team.Builder.builder().withId(1L).withName("Puzzle ITC").build();
+    Team team1 = Team.Builder.builder().withId(1L).withName(TEAM_PUZZLE).build();
     Team team2 = Team.Builder.builder().withId(2L).withName("BBT").build();
     Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withTeam(team1)
             .withState(DRAFT).build();
@@ -61,43 +62,51 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnGetShouldBeSuccessfulWhenValidActionId() {
+        // act
         validator.validateOnGet(1L);
 
+        // assert
         verify(validator, times(1)).validateOnGet(1L);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
     @Test
     void validateOnGetShouldThrowExceptionIfIdIsNull() {
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
+        // assert
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Alignment"))), exception.getErrors());
     }
 
     @Test
-     void validateOnCreateShouldBeSuccessfulWhenAlignmentIsValid() {
-         when(alignmentPersistenceService.findByAlignedObjectiveId(anyLong())).thenReturn(null);
+    void validateOnCreateShouldBeSuccessfulWhenAlignmentIsValid() {
+        // arrange
+        when(alignmentPersistenceService.findByAlignedObjectiveId(anyLong())).thenReturn(null);
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         when(teamPersistenceService.findById(2L)).thenReturn(team2);
 
-         validator.validateOnCreate(createAlignment);
+        // act
+        validator.validateOnCreate(createAlignment);
 
-         verify(validator, times(1)).throwExceptionWhenModelIsNull(createAlignment);
-         verify(validator, times(1)).throwExceptionWhenIdIsNotNull(null);
-         verify(alignmentPersistenceService, times(1)).findByAlignedObjectiveId(8L);
-         verify(validator, times(1)).validate(createAlignment);
-     }
+        // assert
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(createAlignment);
+        verify(validator, times(1)).throwExceptionWhenIdIsNotNull(null);
+        verify(alignmentPersistenceService, times(1)).findByAlignedObjectiveId(8L);
+        verify(validator, times(1)).validate(createAlignment);
+    }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("MODEL_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("MODEL_NULL", List.of("Alignment"))), exception.getErrors());
@@ -105,11 +114,14 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
+        // arrange
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Alignment")));
+
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResultAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Alignment")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -117,14 +129,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAlignedObjectiveIsNull() {
+        // arrange
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withTargetObjective(objective2)
                 .build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("alignedObjectiveId")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("alignedObjectiveId")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -132,14 +146,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenTargetObjectiveIsNull() {
+        // arrange
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective2)
                 .build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetObjectiveId", "8")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetObjectiveId", "8")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -147,14 +163,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenTargetKeyResultIsNull() {
+        // arrange
         KeyResultAlignment wrongKeyResultAlignment = KeyResultAlignment.Builder.builder()
                 .withAlignedObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetKeyResultId", "8")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(wrongKeyResultAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetKeyResultId", "8")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -162,14 +180,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAlignedIdIsSameAsTargetId() {
+        // arrange
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective2)
                 .withTargetObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_YOURSELF", List.of("targetObjectiveId", "8")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_YOURSELF", List.of("targetObjectiveId", "8")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -177,17 +197,19 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAlignmentIsInSameTeamObjective() {
+        // arrange
         when(teamPersistenceService.findById(2L)).thenReturn(team2);
         Objective objective = objective1;
         objective.setTeam(team2);
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective)
                 .withTargetObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "2")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "2")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -195,45 +217,51 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAlignmentIsInSameTeamKeyResult() {
+        // arrange
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1").withObjective(objective1).build();
         KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResultAlignment1));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
-     void validateOnCreateShouldThrowExceptionWhenAlignedObjectiveAlreadyExists() {
+    void validateOnCreateShouldThrowExceptionWhenAlignedObjectiveAlreadyExists() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(anyLong())).thenReturn(objectiveALignment);
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         when(teamPersistenceService.findById(2L)).thenReturn(team2);
+        ObjectiveAlignment createAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1).withTargetObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ALIGNMENT_ALREADY_EXISTS", List.of("alignedObjectiveId", "5")));
 
-         ObjectiveAlignment createAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1).withTargetObjective(objective2).build();
+        // act
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(createAlignment));
 
-         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-         () -> validator.validateOnCreate(createAlignment));
-
-         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ALIGNMENT_ALREADY_EXISTS", List.of("alignedObjectiveId", "5")));
-
-         assertEquals(BAD_REQUEST, exception.getStatusCode());
-         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-     }
+        // assert
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
 
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenAlignmentIsValid() {
+        // arrange
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         when(teamPersistenceService.findById(2L)).thenReturn(team2);
 
+        // act
         validator.validateOnUpdate(objectiveALignment.getId(), objectiveALignment);
 
+        // assert
         verify(validator, times(1)).throwExceptionWhenModelIsNull(objectiveALignment);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(objectiveALignment.getId());
         verify(validator, times(1)).validate(objectiveALignment);
@@ -241,9 +269,11 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("MODEL_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("MODEL_NULL", List.of("Alignment"))), exception.getErrors());
@@ -251,13 +281,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
+        // arrange
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().build();
+
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, objectiveAlignment));
 
+        // assert
         verify(validator, times(1)).throwExceptionWhenModelIsNull(objectiveAlignment);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Alignment"))), exception.getErrors());
@@ -265,14 +298,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAlignedObjectiveIsNull() {
+        // arrange
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withId(3L)
                 .withTargetObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("alignedObjectiveId")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("alignedObjectiveId")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -280,14 +315,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenTargetObjectiveIsNull() {
+        // arrange
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withId(3L)
                 .withAlignedObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetObjectiveId", "8")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetObjectiveId", "8")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -295,14 +332,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenTargetKeyResultIsNull() {
+        // arrange
         KeyResultAlignment wrongKeyResultAlignment = KeyResultAlignment.Builder.builder().withId(3L)
                 .withAlignedObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetKeyResultId", "8")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, wrongKeyResultAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("targetKeyResultId", "8")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -310,14 +349,16 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAlignedIdIsSameAsTargetId() {
+        // arrange
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withId(3L)
                 .withAlignedObjective(objective2).withTargetObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_YOURSELF", List.of("targetObjectiveId", "8")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_YOURSELF", List.of("targetObjectiveId", "8")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -325,17 +366,19 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAlignmentIsInSameTeamObjective() {
+        // arrange
         when(teamPersistenceService.findById(2L)).thenReturn(team2);
         Objective objective = objective1;
         objective.setTeam(team2);
         ObjectiveAlignment objectiveAlignment = ObjectiveAlignment.Builder.builder().withId(3L)
                 .withAlignedObjective(objective).withTargetObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "2")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(2L, objectiveAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "2")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -343,15 +386,17 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAlignmentIsInSameTeamKeyResult() {
+        // arrange
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1").withObjective(objective1).build();
         KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withId(2L).withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(2L, keyResultAlignment1));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -359,18 +404,21 @@ class AlignmentValidationServiceTest {
 
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidAlignmentId() {
+        // act
         validator.validateOnDelete(3L);
 
+        // assert
         verify(validator, times(1)).throwExceptionWhenIdIsNull(3L);
     }
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfAlignmentIdIsNull() {
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnDelete(null));
 
+        // assert
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Alignment"))), exception.getErrors());

@@ -62,10 +62,13 @@ class AlignmentPersistenceServiceIT {
 
     @Test
     void saveAlignmentShouldSaveNewObjectiveAlignment() {
+        // arrange
         Alignment alignment = createObjectiveAlignment(null);
 
+        // act
         createdAlignment = alignmentPersistenceService.save(alignment);
 
+        // assert
         assertNotNull(createdAlignment.getId());
         assertEquals(5L, createdAlignment.getAlignedObjective().getId());
         assertEquals(4L, ((ObjectiveAlignment) createdAlignment).getAlignmentTarget().getId());
@@ -73,10 +76,13 @@ class AlignmentPersistenceServiceIT {
 
     @Test
     void saveAlignmentShouldSaveNewKeyResultAlignment() {
+        // arrange
         Alignment alignment = createKeyResultAlignment(null);
 
+        // act
         createdAlignment = alignmentPersistenceService.save(alignment);
 
+        // assert
         assertNotNull(createdAlignment.getId());
         assertEquals(5L, createdAlignment.getAlignedObjective().getId());
         assertEquals(8L, ((KeyResultAlignment) createdAlignment).getAlignmentTarget().getId());
@@ -84,27 +90,32 @@ class AlignmentPersistenceServiceIT {
 
     @Test
     void updateAlignmentShouldSaveKeyResultAlignment() {
+        // arrange
         createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
         Alignment updateAlignment = createKeyResultAlignment(createdAlignment.getId(), createdAlignment.getVersion());
         updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
 
+        // act
         Alignment updatedAlignment = alignmentPersistenceService.save(updateAlignment);
 
+        // assert
         assertEquals(createdAlignment.getId(), updatedAlignment.getId());
         assertEquals(createdAlignment.getVersion() + 1, updatedAlignment.getVersion());
     }
 
     @Test
     void updateAlignmentShouldThrowExceptionWhenAlreadyUpdated() {
+        // arrange
         createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
         Alignment updateAlignment = createKeyResultAlignment(createdAlignment.getId(), 0);
         updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(ALIGNMENT)));
 
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> alignmentPersistenceService.save(updateAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(ALIGNMENT)));
-
+        // assert
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -112,62 +123,59 @@ class AlignmentPersistenceServiceIT {
 
     @Test
     void findByAlignedObjectiveIdShouldReturnAlignmentModel() {
+        // act
         Alignment alignment = alignmentPersistenceService.findByAlignedObjectiveId(4L);
 
+        // assert
         assertNotNull(alignment);
         assertEquals(4, alignment.getAlignedObjective().getId());
     }
 
     @Test
     void findByKeyResultAlignmentIdShouldReturnListOfAlignments() {
+        // act
         List<KeyResultAlignment> alignments = alignmentPersistenceService.findByKeyResultAlignmentId(8L);
 
+        // assert
         assertEquals(1, alignments.size());
         assertAlignment(alignments.get(0));
     }
 
     @Test
     void findByObjectiveAlignmentIdShouldReturnListOfAlignments() {
+        // act
         List<ObjectiveAlignment> alignments = alignmentPersistenceService.findByObjectiveAlignmentId(3L);
 
+        // assert
         assertEquals(1, alignments.size());
         assertAlignment(alignments.get(0));
     }
 
     @Test
     void recreateEntityShouldUpdateAlignmentNoTypeChange() {
+        // arrange
         Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
         Objective objective2 = Objective.Builder.builder().withId(8L).withTitle("Objective 2").withState(DRAFT).build();
         Objective objective3 = Objective.Builder.builder().withId(4L)
                 .withTitle("Build a company culture that kills the competition.").build();
         ObjectiveAlignment objectiveALignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1)
                 .withTargetObjective(objective2).build();
-
         createdAlignment = alignmentPersistenceService.save(objectiveALignment);
         ObjectiveAlignment createObjectiveAlignment = (ObjectiveAlignment) createdAlignment;
         createObjectiveAlignment.setAlignmentTarget(objective3);
         Long alignmentId = createObjectiveAlignment.getId();
 
+        // act
         Alignment recreatedAlignment = alignmentPersistenceService.recreateEntity(createdAlignment.getId(),
                 createObjectiveAlignment);
-
         createObjectiveAlignment = (ObjectiveAlignment) recreatedAlignment;
 
+        // assert
         assertNotNull(recreatedAlignment.getId());
         assertEquals(4L, createObjectiveAlignment.getAlignmentTarget().getId());
         assertEquals("Build a company culture that kills the competition.",
                 createObjectiveAlignment.getAlignmentTarget().getTitle());
-
-        // Should delete the old Alignment
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> alignmentPersistenceService.findById(alignmentId));
-
-        List<ErrorDto> expectedErrors = List
-                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of(ALIGNMENT, alignmentId)));
-
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        shouldDeleteOldAlignment(alignmentId);
 
         // delete re-created Alignment in tearDown()
         createdAlignment = createObjectiveAlignment;
@@ -175,39 +183,29 @@ class AlignmentPersistenceServiceIT {
 
     @Test
     void recreateEntityShouldUpdateAlignmentWithTypeChange() {
+        // arrange
         Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
         Objective objective2 = Objective.Builder.builder().withId(8L).withTitle("Objective 2").withState(DRAFT).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withId(10L)
                 .withTitle("Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten").build();
         ObjectiveAlignment objectiveALignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1)
                 .withTargetObjective(objective2).build();
-
         createdAlignment = alignmentPersistenceService.save(objectiveALignment);
-
         KeyResultAlignment keyResultAlignment = KeyResultAlignment.Builder.builder().withId(createdAlignment.getId())
                 .withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+        Long alignmentId = createdAlignment.getId();
 
+        // act
         Alignment recreatedAlignment = alignmentPersistenceService.recreateEntity(keyResultAlignment.getId(),
                 keyResultAlignment);
-
         KeyResultAlignment returnedKeyResultAlignment = (KeyResultAlignment) recreatedAlignment;
 
+        // assert
         assertNotNull(recreatedAlignment.getId());
         assertEquals(createdAlignment.getAlignedObjective().getId(), recreatedAlignment.getAlignedObjective().getId());
         assertEquals("Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten",
                 returnedKeyResultAlignment.getAlignmentTarget().getTitle());
-
-        Long alignmentId = createdAlignment.getId();
-        // Should delete the old Alignment
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> alignmentPersistenceService.findById(alignmentId));
-
-        List<ErrorDto> expectedErrors = List
-                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of(ALIGNMENT, alignmentId)));
-
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        shouldDeleteOldAlignment(alignmentId);
 
         // delete re-created Alignment in tearDown()
         createdAlignment = returnedKeyResultAlignment;
@@ -221,6 +219,19 @@ class AlignmentPersistenceServiceIT {
         } else {
             throw new IllegalArgumentException("unsupported alignment type: " + alignment.getClass());
         }
+    }
+
+    private void shouldDeleteOldAlignment(Long alignmentId) {
+        // Should delete the old Alignment
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> alignmentPersistenceService.findById(alignmentId));
+
+        List<ErrorDto> expectedErrors = List
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of(ALIGNMENT, alignmentId)));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     private void assertAlignment(ObjectiveAlignment objectiveAlignment) {

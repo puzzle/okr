@@ -19,9 +19,9 @@ public class AlignmentView {
     private Long quarterId;
     private String state;
     private String objectType;
-    private String connectionItem;
-    private Long refId;
-    private String refType;
+    private String connectionRole;
+    private Long counterpartId;
+    private String counterpartType;
 
     public AlignmentView() {
     }
@@ -35,13 +35,9 @@ public class AlignmentView {
         setQuarterId(builder.quarterId);
         setState(builder.state);
         setObjectType(builder.objectType);
-        setConnectionItem(builder.connectionItem);
-        setRefId(builder.refId);
-        setRefType(builder.refType);
-    }
-
-    public String getUniqueId() {
-        return uniqueId;
+        setConnectionRole(builder.connectionRole);
+        setCounterpartId(builder.counterpartId);
+        setCounterpartType(builder.counterpartType);
     }
 
     public void setUniqueId(String uniqueId) {
@@ -104,28 +100,28 @@ public class AlignmentView {
         this.objectType = objectType;
     }
 
-    public String getConnectionItem() {
-        return connectionItem;
+    public String getConnectionRole() {
+        return connectionRole;
     }
 
-    public void setConnectionItem(String connectionItem) {
-        this.connectionItem = connectionItem;
+    public void setConnectionRole(String connectionItem) {
+        this.connectionRole = connectionItem;
     }
 
-    public Long getRefId() {
-        return refId;
+    public Long getCounterpartId() {
+        return counterpartId;
     }
 
-    public void setRefId(Long refId) {
-        this.refId = refId;
+    public void setCounterpartId(Long refId) {
+        this.counterpartId = refId;
     }
 
-    public String getRefType() {
-        return refType;
+    public String getCounterpartType() {
+        return counterpartType;
     }
 
-    public void setRefType(String refType) {
-        this.refType = refType;
+    public void setCounterpartType(String refType) {
+        this.counterpartType = refType;
     }
 
     @Override
@@ -139,22 +135,23 @@ public class AlignmentView {
                 && Objects.equals(title, that.title) && Objects.equals(teamId, that.teamId)
                 && Objects.equals(teamName, that.teamName) && Objects.equals(quarterId, that.quarterId)
                 && Objects.equals(state, that.state) && Objects.equals(objectType, that.objectType)
-                && Objects.equals(connectionItem, that.connectionItem) && Objects.equals(refId, that.refId)
-                && Objects.equals(refType, that.refType);
+                && Objects.equals(connectionRole, that.connectionRole)
+                && Objects.equals(counterpartId, that.counterpartId)
+                && Objects.equals(counterpartType, that.counterpartType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uniqueId, id, title, teamId, teamName, quarterId, state, objectType, connectionItem, refId,
-                refType);
+        return Objects.hash(uniqueId, id, title, teamId, teamName, quarterId, state, objectType, connectionRole,
+                counterpartId, counterpartType);
     }
 
     @Override
     public String toString() {
         return "AlignmentView{" + "uniqueId='" + uniqueId + '\'' + ", id=" + id + ", title='" + title + '\''
                 + ", teamId=" + teamId + ", teamName='" + teamName + '\'' + ", quarterId=" + quarterId + ", state='"
-                + state + '\'' + ", objectType='" + objectType + '\'' + ", connectionItem='" + connectionItem + '\''
-                + ", refId=" + refId + ", refType='" + refType + '\'' + '}';
+                + state + '\'' + ", objectType='" + objectType + '\'' + ", connectionItem='" + connectionRole + '\''
+                + ", refId=" + counterpartId + ", refType='" + counterpartType + '\'' + '}';
     }
 
     public static final class Builder {
@@ -166,9 +163,9 @@ public class AlignmentView {
         private Long quarterId;
         private String state;
         private String objectType;
-        private String connectionItem;
-        private Long refId;
-        private String refType;
+        private String connectionRole;
+        private Long counterpartId;
+        private String counterpartType;
 
         private Builder() {
         }
@@ -217,18 +214,18 @@ public class AlignmentView {
             return this;
         }
 
-        public Builder withConnectionItem(String val) {
-            connectionItem = val;
+        public Builder withConnectionRole(String val) {
+            connectionRole = val;
             return this;
         }
 
-        public Builder withRefId(Long val) {
-            refId = val;
+        public Builder withCounterpartId(Long val) {
+            counterpartId = val;
             return this;
         }
 
-        public Builder withRefType(String val) {
-            refType = val;
+        public Builder withCounterpartType(String val) {
+            counterpartType = val;
             return this;
         }
 

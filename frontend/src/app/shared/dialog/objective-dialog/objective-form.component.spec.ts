@@ -539,7 +539,7 @@ describe('ObjectiveDialogComponent', () => {
 
       expect(component.alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
-      expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentObject2);
+      expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentPossibilityObject2);
     });
 
     it('should load existing keyResult alignment to objectiveForm', async () => {
@@ -549,7 +549,7 @@ describe('ObjectiveDialogComponent', () => {
 
       expect(component.alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
-      expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentObject3);
+      expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentPossibilityObject3);
     });
 
     it('should filter correct alignment possibilities', async () => {

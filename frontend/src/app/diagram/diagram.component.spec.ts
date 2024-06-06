@@ -40,15 +40,15 @@ describe('DiagramComponent', () => {
   });
 
   it('should call generateElements if alignmentData is present', () => {
-    jest.spyOn(component, 'generateElements');
+    jest.spyOn(component, 'generateNodes');
 
     component.prepareDiagramData(alignmentLists);
-    expect(component.generateElements).toHaveBeenCalled();
-    expect(component.emptyDiagramData).toBeFalsy();
+    expect(component.generateNodes).toHaveBeenCalled();
+    expect(component.noAlignmentData).toBeFalsy();
   });
 
   it('should not call generateElements if alignmentData is empty', () => {
-    jest.spyOn(component, 'generateElements');
+    jest.spyOn(component, 'generateNodes');
 
     let alignmentLists: AlignmentLists = {
       alignmentObjectDtoList: [],
@@ -56,8 +56,8 @@ describe('DiagramComponent', () => {
     };
 
     component.prepareDiagramData(alignmentLists);
-    expect(component.generateElements).not.toHaveBeenCalled();
-    expect(component.emptyDiagramData).toBeTruthy();
+    expect(component.generateNodes).not.toHaveBeenCalled();
+    expect(component.noAlignmentData).toBeTruthy();
   });
 
   it('should call prepareDiagramData when Subject receives new data', () => {
@@ -102,7 +102,7 @@ describe('DiagramComponent', () => {
     let diagramElements: any[] = [element1, element2];
     let edges: any[] = [edge];
 
-    component.generateElements(alignmentLists);
+    component.generateNodes(alignmentLists);
 
     expect(component.generateConnections).toHaveBeenCalled();
     expect(component.generateDiagram).toHaveBeenCalled();
@@ -118,7 +118,7 @@ describe('DiagramComponent', () => {
 
     let diagramData: any[] = getReturnedAlignmentDataKeyResult();
 
-    component.generateElements(alignmentListsKeyResult);
+    component.generateNodes(alignmentListsKeyResult);
 
     expect(component.generateConnections).toHaveBeenCalled();
     expect(component.generateDiagram).toHaveBeenCalled();
@@ -134,7 +134,7 @@ describe('DiagramComponent', () => {
 
     let diagramData: any[] = getReturnedAlignmentDataKeyResult();
 
-    component.generateElements(alignmentListsKeyResult);
+    component.generateNodes(alignmentListsKeyResult);
 
     expect(component.generateConnections).toHaveBeenCalled();
     expect(component.generateDiagram).toHaveBeenCalled();

@@ -28,13 +28,12 @@ import { AlignmentObject } from '../shared/types/model/AlignmentObject';
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
-  alignmentData$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
+  alignmentLists$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
   emptyAlignmentList: AlignmentLists = { alignmentObjectDtoList: [], alignmentConnectionDtoList: [] } as AlignmentLists;
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   overviewPadding: Subject<number> = new Subject();
   isOverview: boolean = true;
-  service!: OverviewService | AlignmentService;
 
   backgroundLogoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
 
@@ -112,18 +111,18 @@ export class OverviewComponent implements OnInit, OnDestroy {
             return EMPTY;
           }),
         )
-        .subscribe((alignmentLists) => {
+        .subscribe((alignmentLists: AlignmentLists) => {
           if (reload != null) {
-            let kuchen: AlignmentObject = {
+            let alignmentObjectReload: AlignmentObject = {
               objectId: 0,
               objectTitle: 'reload',
               objectType: reload.toString(),
               objectTeamName: '',
               objectState: null,
             };
-            alignmentLists.alignmentObjectDtoList.push(kuchen);
+            alignmentLists.alignmentObjectDtoList.push(alignmentObjectReload);
           }
-          this.alignmentData$.next(alignmentLists);
+          this.alignmentLists$.next(alignmentLists);
         });
     }
   }

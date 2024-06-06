@@ -43,7 +43,7 @@
     </div>
 
     <div [class.hidden]="isOverview">
-      <app-diagram [alignmentData]="(alignmentData$ | async) || emptyAlignmentList"></app-diagram>
+      <app-diagram [alignmentData]="(alignmentLists$ | async) || emptyAlignmentList"></app-diagram>
     </div>
   </div>
 </div>

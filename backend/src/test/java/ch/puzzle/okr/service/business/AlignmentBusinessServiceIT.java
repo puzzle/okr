@@ -15,6 +15,8 @@ class AlignmentBusinessServiceIT {
     @Autowired
     private AlignmentBusinessService alignmentBusinessService;
 
+    private final String OBJECTIVE = "objective";
+
     @Test
     void shouldReturnCorrectAlignmentData() {
         AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(9L, List.of(5L, 6L), "");
@@ -22,7 +24,7 @@ class AlignmentBusinessServiceIT {
         assertEquals(6, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(4, alignmentLists.alignmentConnectionDtoList().size());
         assertEquals(40L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
-        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(0).objectType());
+        assertEquals(OBJECTIVE, alignmentLists.alignmentObjectDtoList().get(0).objectType());
         assertEquals(40L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
         assertEquals("keyResult", alignmentLists.alignmentObjectDtoList().get(1).objectType());
         assertEquals(41L, alignmentLists.alignmentObjectDtoList().get(2).objectId());
@@ -50,9 +52,9 @@ class AlignmentBusinessServiceIT {
         assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(1, alignmentLists.alignmentConnectionDtoList().size());
         assertEquals(44L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
-        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(0).objectType());
+        assertEquals(OBJECTIVE, alignmentLists.alignmentObjectDtoList().get(0).objectType());
         assertEquals(42L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
-        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(1).objectType());
+        assertEquals(OBJECTIVE, alignmentLists.alignmentObjectDtoList().get(1).objectType());
         assertEquals(44L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
         assertEquals(42L, alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
         assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
@@ -66,11 +68,11 @@ class AlignmentBusinessServiceIT {
         assertEquals(3, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(2, alignmentLists.alignmentConnectionDtoList().size());
         assertEquals(42L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
-        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(0).objectType());
+        assertEquals(OBJECTIVE, alignmentLists.alignmentObjectDtoList().get(0).objectType());
         assertEquals(40L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
-        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(1).objectType());
+        assertEquals(OBJECTIVE, alignmentLists.alignmentObjectDtoList().get(1).objectType());
         assertEquals(44L, alignmentLists.alignmentObjectDtoList().get(2).objectId());
-        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(2).objectType());
+        assertEquals(OBJECTIVE, alignmentLists.alignmentObjectDtoList().get(2).objectType());
         assertEquals(42L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());
         assertEquals(40L, alignmentLists.alignmentConnectionDtoList().get(0).targetObjectiveId());
         assertNull(alignmentLists.alignmentConnectionDtoList().get(0).targetKeyResultId());
@@ -87,7 +89,7 @@ class AlignmentBusinessServiceIT {
         assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(1, alignmentLists.alignmentConnectionDtoList().size());
         assertEquals(43L, alignmentLists.alignmentObjectDtoList().get(0).objectId());
-        assertEquals("objective", alignmentLists.alignmentObjectDtoList().get(0).objectType());
+        assertEquals(OBJECTIVE, alignmentLists.alignmentObjectDtoList().get(0).objectType());
         assertEquals(40L, alignmentLists.alignmentObjectDtoList().get(1).objectId());
         assertEquals("keyResult", alignmentLists.alignmentObjectDtoList().get(1).objectType());
         assertEquals(43L, alignmentLists.alignmentConnectionDtoList().get(0).alignedObjectiveId());

@@ -255,7 +255,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     this.alignmentPossibilities$ = this.objectiveService.getAlignmentPossibilities(quarterId);
     this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
       if (teamId) {
-        value = value.filter((item: AlignmentPossibility) => !(item.teamId == teamId));
+        value = value.filter((item: AlignmentPossibility) => item.teamId != teamId);
       }
 
       if (objective) {

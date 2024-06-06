@@ -29,7 +29,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   private alignmentData$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
   cy!: cytoscape.Core;
   diagramData: any[] = [];
-  emptyDiagramData: boolean = false;
+  noAlignmentData: boolean = false;
   alignmentDataCache: AlignmentLists | null = null;
 
   constructor(
@@ -46,18 +46,18 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     this.alignmentData$.next(alignmentData);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.alignmentData.subscribe((alignmentData: AlignmentLists): void => {
-      let lastItem: AlignmentObject =
+      let lastAlignmentItem: AlignmentObject =
         alignmentData.alignmentObjectDtoList[alignmentData.alignmentObjectDtoList.length - 1];
 
-      let shouldUpdate: boolean =
-        lastItem?.objectTitle === 'reload'
-          ? lastItem?.objectType === 'true'
+      let needsUpdate: boolean =
+        lastAlignmentItem?.objectTitle === 'reload'
+          ? lastAlignmentItem?.objectType === 'true'
           : JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData);
 
-      if (shouldUpdate) {
-        if (lastItem?.objectTitle === 'reload') {
+      if (needsUpdate) {
+        if (lastAlignmentItem?.objectTitle === 'reload') {
           alignmentData.alignmentObjectDtoList.pop();
         }
         this.alignmentDataCache = alignmentData;
@@ -68,7 +68,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.cleanUpDiagram();
   }
 
@@ -141,20 +141,20 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   prepareDiagramData(alignmentData: AlignmentLists): void {
     if (alignmentData.alignmentObjectDtoList.length == 0) {
-      this.emptyDiagramData = true;
+      this.noAlignmentData = true;
     } else {
-      this.emptyDiagramData = false;
-      this.generateElements(alignmentData);
+      this.noAlignmentData = false;
+      this.generateNodes(alignmentData);
     }
   }
 
-  generateElements(alignmentData: AlignmentLists): void {
+  generateNodes(alignmentData: AlignmentLists): void {
     let observableArray: any[] = [];
     let diagramElements: any[] = [];
     alignmentData.alignmentObjectDtoList.forEach((alignmentObject: AlignmentObject) => {
       if (alignmentObject.objectType == 'objective') {
         let observable: Observable<any> = new Observable((observer) => {
-          let element = {
+          let node = {
             data: {
               id: 'Ob' + alignmentObject.objectId,
             },
@@ -166,61 +166,26 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
               ),
             },
           };
-          diagramElements.push(element);
-          observer.next(element);
+          diagramElements.push(node);
+          observer.next(node);
           observer.complete();
         });
         observableArray.push(observable);
       } else {
         let observable: Observable<void> = this.keyResultService.getFullKeyResult(alignmentObject.objectId).pipe(
           map((keyResult: KeyResult) => {
+            let keyResultState: string | undefined;
+
             if (keyResult.keyResultType == 'metric') {
               let metricKeyResult: KeyResultMetric = keyResult as KeyResultMetric;
               let percentage: number = calculateCurrentPercentage(metricKeyResult);
-
-              let keyResultState: string | undefined;
-              if (percentage < 30) {
-                keyResultState = 'FAIL';
-              } else if (percentage < 70) {
-                keyResultState = 'COMMIT';
-              } else if (percentage < 100) {
-                keyResultState = 'TARGET';
-              } else if (percentage >= 100) {
-                keyResultState = 'STRETCH';
-              } else {
-                keyResultState = undefined;
-              }
-              let element = {
-                data: {
-                  id: 'KR' + alignmentObject.objectId,
-                },
-                style: {
-                  'background-image': this.generateKeyResultSVG(
-                    alignmentObject.objectTitle,
-                    alignmentObject.objectTeamName,
-                    keyResultState,
-                  ),
-                },
-              };
-              diagramElements.push(element);
+              keyResultState = this.generateMetricKeyResultState(percentage);
             } else {
               let ordinalKeyResult: KeyResultOrdinal = keyResult as KeyResultOrdinal;
-              let keyResultState: string | undefined = ordinalKeyResult.lastCheckIn?.value.toString();
-
-              let element = {
-                data: {
-                  id: 'KR' + alignmentObject.objectId,
-                },
-                style: {
-                  'background-image': this.generateKeyResultSVG(
-                    alignmentObject.objectTitle,
-                    alignmentObject.objectTeamName,
-                    keyResultState,
-                  ),
-                },
-              };
-              diagramElements.push(element);
+              keyResultState = ordinalKeyResult.lastCheckIn?.value.toString();
             }
+            let element = this.generateKeyResultElement(alignmentObject, keyResultState);
+            diagramElements.push(element);
           }),
         );
         observableArray.push(observable);
@@ -232,26 +197,50 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  generateMetricKeyResultState(percentage: number): string | undefined {
+    let keyResultState: string | undefined;
+    if (percentage < 30) {
+      keyResultState = 'FAIL';
+    } else if (percentage < 70) {
+      keyResultState = 'COMMIT';
+    } else if (percentage < 100) {
+      keyResultState = 'TARGET';
+    } else if (percentage >= 100) {
+      keyResultState = 'STRETCH';
+    } else {
+      keyResultState = undefined;
+    }
+    return keyResultState;
+  }
+
+  generateKeyResultElement(alignmentObject: AlignmentObject, keyResultState: string | undefined) {
+    return {
+      data: {
+        id: 'KR' + alignmentObject.objectId,
+      },
+      style: {
+        'background-image': this.generateKeyResultSVG(
+          alignmentObject.objectTitle,
+          alignmentObject.objectTeamName,
+          keyResultState,
+        ),
+      },
+    };
+  }
+
   generateConnections(alignmentData: AlignmentLists, diagramElements: any[]): void {
     let edges: any[] = [];
     alignmentData.alignmentConnectionDtoList.forEach((alignmentConnection: AlignmentConnection) => {
-      if (alignmentConnection.targetKeyResultId == null) {
-        let edge = {
-          data: {
-            source: 'Ob' + alignmentConnection.alignedObjectiveId,
-            target: 'Ob' + alignmentConnection.targetObjectiveId,
-          },
-        };
-        edges.push(edge);
-      } else {
-        let edge = {
-          data: {
-            source: 'Ob' + alignmentConnection.alignedObjectiveId,
-            target: 'KR' + alignmentConnection.targetKeyResultId,
-          },
-        };
-        edges.push(edge);
-      }
+      let edge = {
+        data: {
+          source: 'Ob' + alignmentConnection.alignedObjectiveId,
+          target:
+            alignmentConnection.targetKeyResultId == null
+              ? 'Ob' + alignmentConnection.targetObjectiveId
+              : 'KR' + alignmentConnection.targetKeyResultId,
+        },
+      };
+      edges.push(edge);
     });
     this.diagramData = diagramElements.concat(edges);
     this.generateDiagram();

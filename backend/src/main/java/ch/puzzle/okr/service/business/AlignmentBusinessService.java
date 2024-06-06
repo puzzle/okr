@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static ch.puzzle.okr.Constants.OBJECTIVE_LOWERCASE;
+
 @Service
 public class AlignmentBusinessService {
 
@@ -50,8 +52,8 @@ public class AlignmentBusinessService {
         this.quarterBusinessService = quarterBusinessService;
     }
 
-    protected record DividedAlignmentViewLists(List<AlignmentView> correctAlignments,
-            List<AlignmentView> wrongAlignments) {
+    protected record DividedAlignmentViewLists(List<AlignmentView> filterMatchingAlignments,
+            List<AlignmentView> nonMatchingAlignments) {
     }
 
     public AlignedEntityDto getTargetIdByAlignedObjectiveId(Long alignedObjectiveId) {
@@ -67,6 +69,10 @@ public class AlignmentBusinessService {
     }
 
     public void createEntity(Objective alignedObjective) {
+        validateOnCreateAndSaveAlignment(alignedObjective);
+    }
+
+    private void validateOnCreateAndSaveAlignment(Objective alignedObjective) {
         Alignment alignment = buildAlignmentModel(alignedObjective, 0);
         alignmentValidationService.validateOnCreate(alignment);
         alignmentPersistenceService.save(alignment);
@@ -74,36 +80,36 @@ public class AlignmentBusinessService {
 
     public void updateEntity(Long objectiveId, Objective objective) {
         Alignment savedAlignment = alignmentPersistenceService.findByAlignedObjectiveId(objectiveId);
-
         if (savedAlignment == null) {
-            createEntity(objective);
+            validateOnCreateAndSaveAlignment(objective);
         } else {
-            handleExistingAlignment(objective, savedAlignment);
+            if (objective.getAlignedEntity() == null) {
+                validateOnDeleteAndDeleteById(savedAlignment.getId());
+            } else {
+                Alignment alignment = buildAlignmentModel(objective, savedAlignment.getVersion());
+                validateOnUpdateAndRecreateOrSaveAlignment(alignment, savedAlignment);
+            }
         }
     }
 
-    private void handleExistingAlignment(Objective objective, Alignment savedAlignment) {
-        if (objective.getAlignedEntity() == null) {
-            validateAndDeleteAlignmentById(savedAlignment.getId());
-        } else {
-            validateAndUpdateAlignment(objective, savedAlignment);
-        }
-    }
-
-    private void validateAndUpdateAlignment(Objective objective, Alignment savedAlignment) {
-        Alignment alignment = buildAlignmentModel(objective, savedAlignment.getVersion());
-
-        alignment.setId(savedAlignment.getId());
-        alignmentValidationService.validateOnUpdate(savedAlignment.getId(), alignment);
-        updateAlignment(savedAlignment, alignment);
-    }
-
-    private void updateAlignment(Alignment savedAlignment, Alignment alignment) {
+    private void validateOnUpdateAndRecreateOrSaveAlignment(Alignment alignment, Alignment savedAlignment) {
         if (isAlignmentTypeChange(alignment, savedAlignment)) {
-            alignmentPersistenceService.recreateEntity(savedAlignment.getId(), alignment);
+            validateOnUpdateAndRecreateAlignment(savedAlignment.getId(), alignment);
         } else {
-            alignmentPersistenceService.save(alignment);
+            validateOnUpdateAndSaveAlignment(savedAlignment.getId(), alignment);
         }
+    }
+
+    private void validateOnUpdateAndRecreateAlignment(Long id, Alignment alignment) {
+        alignment.setId(id);
+        alignmentValidationService.validateOnUpdate(id, alignment);
+        alignmentPersistenceService.recreateEntity(id, alignment);
+    }
+
+    private void validateOnUpdateAndSaveAlignment(Long id, Alignment alignment) {
+        alignment.setId(id);
+        alignmentValidationService.validateOnUpdate(id, alignment);
+        alignmentPersistenceService.save(alignment);
     }
 
     public Alignment buildAlignmentModel(Objective alignedObjective, int version) {
@@ -119,8 +125,10 @@ public class AlignmentBusinessService {
             Long entityId = alignedObjective.getAlignedEntity().id();
 
             KeyResult targetKeyResult = keyResultPersistenceService.findById(entityId);
-            return KeyResultAlignment.Builder.builder().withAlignedObjective(alignedObjective)
-                    .withTargetKeyResult(targetKeyResult).withVersion(version).build();
+            return KeyResultAlignment.Builder.builder() //
+                    .withAlignedObjective(alignedObjective) //
+                    .withTargetKeyResult(targetKeyResult) //
+                    .withVersion(version).build();
         } else {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET,
                     List.of("alignedEntity", alignedObjective.getAlignedEntity()));
@@ -133,43 +141,42 @@ public class AlignmentBusinessService {
     }
 
     public void updateKeyResultIdOnIdChange(Long oldKeyResultId, KeyResult keyResult) {
-        List<KeyResultAlignment> keyResultAlignmentList = alignmentPersistenceService
-                .findByKeyResultAlignmentId(oldKeyResultId);
-        keyResultAlignmentList.forEach(alignment -> {
-            alignment.setAlignmentTarget(keyResult);
-            alignmentValidationService.validateOnUpdate(alignment.getId(), alignment);
-            alignmentPersistenceService.save(alignment);
-        });
+        alignmentPersistenceService.findByKeyResultAlignmentId(oldKeyResultId)
+                .forEach(alignment -> validateOnUpdateAndSaveAlignment(keyResult, alignment));
+    }
+
+    private void validateOnUpdateAndSaveAlignment(KeyResult keyResult, KeyResultAlignment alignment) {
+        alignment.setAlignmentTarget(keyResult);
+        alignmentValidationService.validateOnUpdate(alignment.getId(), alignment);
+        alignmentPersistenceService.save(alignment);
     }
 
     public void deleteAlignmentByObjectiveId(Long objectiveId) {
+        ensureAlignmentIdIsNotNull(objectiveId);
+        alignmentPersistenceService.findByObjectiveAlignmentId(objectiveId)
+                .forEach(objectiveAlignment -> validateOnDeleteAndDeleteById(objectiveAlignment.getId()));
+    }
+
+    private void ensureAlignmentIdIsNotNull(Long objectiveId) {
         Alignment alignment = alignmentPersistenceService.findByAlignedObjectiveId(objectiveId);
         if (alignment != null) {
-            validateAndDeleteAlignmentById(alignment.getId());
+            validateOnDeleteAndDeleteById(alignment.getId());
         }
-        List<ObjectiveAlignment> objectiveAlignmentList = alignmentPersistenceService
-                .findByObjectiveAlignmentId(objectiveId);
-        objectiveAlignmentList
-                .forEach(objectiveAlignment -> validateAndDeleteAlignmentById(objectiveAlignment.getId()));
+    }
+
+    private void validateOnDeleteAndDeleteById(Long id) {
+        alignmentValidationService.validateOnDelete(id);
+        alignmentPersistenceService.deleteById(id);
     }
 
     public void deleteAlignmentByKeyResultId(Long keyResultId) {
-        List<KeyResultAlignment> keyResultAlignmentList = alignmentPersistenceService
-                .findByKeyResultAlignmentId(keyResultId);
-        keyResultAlignmentList
-                .forEach(keyResultAlignment -> validateAndDeleteAlignmentById(keyResultAlignment.getId()));
+        alignmentPersistenceService.findByKeyResultAlignmentId(keyResultId)
+                .forEach(keyResultAlignment -> validateOnDeleteAndDeleteById(keyResultAlignment.getId()));
     }
 
-    private void validateAndDeleteAlignmentById(Long alignmentId) {
-        alignmentValidationService.validateOnDelete(alignmentId);
-        alignmentPersistenceService.deleteById(alignmentId);
-    }
-
-    public AlignmentLists getAlignmentsByFilters(Long quarterFilter, List<Long> teamFilter, String objectiveFilter) {
-        if (Objects.isNull(quarterFilter)) {
-            quarterFilter = quarterBusinessService.getCurrentQuarter().getId();
-        }
-
+    public AlignmentLists getAlignmentListsByFilters(Long quarterFilter, List<Long> teamFilter,
+            String objectiveFilter) {
+        quarterFilter = quarterFilter(quarterFilter);
         teamFilter = Objects.requireNonNullElse(teamFilter, List.of());
         alignmentValidationService.validateOnAlignmentGet(quarterFilter, teamFilter);
 
@@ -177,23 +184,38 @@ public class AlignmentBusinessService {
             return new AlignmentLists(List.of(), List.of());
         }
 
-        List<AlignmentView> alignmentViewList = alignmentViewPersistenceService
-                .getAlignmentViewListByQuarterId(quarterFilter);
-        DividedAlignmentViewLists dividedAlignmentViewLists = filterAlignmentViews(alignmentViewList, teamFilter,
+        List<AlignmentView> correctAlignmentViewList = correctAlignmentViewList(quarterFilter, teamFilter,
                 objectiveFilter);
-
-        List<AlignmentView> finalList = getAlignmentCounterpart(dividedAlignmentViewLists);
-        validateFinalList(finalList, quarterFilter, teamFilter, objectiveFilter);
-
-        return generateAlignmentLists(finalList);
+        sourceAndTargetListsEqualSameSize(correctAlignmentViewList, quarterFilter, teamFilter, objectiveFilter);
+        return generateAlignmentLists(correctAlignmentViewList);
     }
 
-    protected void validateFinalList(List<AlignmentView> finalList, Long quarterFilter, List<Long> teamFilter,
+    private Long quarterFilter(Long quarterFilter) {
+        if (Objects.isNull(quarterFilter)) {
+            return quarterBusinessService.getCurrentQuarter().getId();
+        }
+        return quarterFilter;
+    }
+
+    private List<AlignmentView> correctAlignmentViewList(Long quarterFilter, List<Long> teamFilter,
             String objectiveFilter) {
-        List<AlignmentView> sourceList = finalList.stream()
-                .filter(alignmentView -> Objects.equals(alignmentView.getConnectionItem(), "source")).toList();
-        List<AlignmentView> targetList = finalList.stream()
-                .filter(alignmentView -> Objects.equals(alignmentView.getConnectionItem(), "target")).toList();
+        List<AlignmentView> alignmentViewListByQuarter = alignmentViewPersistenceService
+                .getAlignmentViewListByQuarterId(quarterFilter);
+
+        DividedAlignmentViewLists dividedAlignmentViewLists = filterAndDivideAlignmentViews(alignmentViewListByQuarter,
+                teamFilter, objectiveFilter);
+        return getAlignmentCounterpart(dividedAlignmentViewLists);
+    }
+
+    protected void sourceAndTargetListsEqualSameSize(List<AlignmentView> finalList, Long quarterFilter,
+            List<Long> teamFilter, String objectiveFilter) {
+        List<AlignmentView> sourceList = finalList.stream() //
+                .filter(alignmentView -> Objects.equals(alignmentView.getConnectionRole(), "source")) //
+                .toList();
+
+        List<AlignmentView> targetList = finalList.stream() //
+                .filter(alignmentView -> Objects.equals(alignmentView.getConnectionRole(), "target")) //
+                .toList();
 
         if (sourceList.size() != targetList.size()) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALIGNMENT_DATA_FAIL,
@@ -202,72 +224,123 @@ public class AlignmentBusinessService {
     }
 
     protected AlignmentLists generateAlignmentLists(List<AlignmentView> alignmentViewList) {
-        List<AlignmentConnectionDto> alignmentConnectionDtoList = new ArrayList<>();
-        List<AlignmentObjectDto> alignmentObjectDtoList = new ArrayList<>();
+        List<AlignmentObjectDto> distictObjectDtoList = createDistinctAlignmentObjectDtoList(alignmentViewList);
+        List<AlignmentConnectionDto> alignmentConnectionDtoList = createAlignmentConnectionDtoListFromConnections(
+                alignmentViewList);
 
-        // Create ConnectionDtoList for every connection
+        return new AlignmentLists(distictObjectDtoList, alignmentConnectionDtoList);
+    }
+
+    private List<AlignmentObjectDto> createDistinctAlignmentObjectDtoList(List<AlignmentView> alignmentViewList) {
+        List<AlignmentObjectDto> alignmentObjectDtoList = new ArrayList<>();
+        alignmentViewList.forEach(alignmentView -> alignmentObjectDtoList.add(new AlignmentObjectDto( //
+                alignmentView.getId(), //
+                alignmentView.getTitle(), //
+                alignmentView.getTeamName(), //
+                alignmentView.getState(), //
+                alignmentView.getObjectType())));
+
+        return alignmentObjectDtoList.stream() //
+                .distinct() //
+                .toList();
+    }
+
+    private List<AlignmentConnectionDto> createAlignmentConnectionDtoListFromConnections(
+            List<AlignmentView> alignmentViewList) {
+        List<AlignmentConnectionDto> alignmentConnectionDtoList = new ArrayList<>();
         alignmentViewList.forEach(alignmentView -> {
-            if (Objects.equals(alignmentView.getConnectionItem(), "source")) {
-                if (Objects.equals(alignmentView.getRefType(), "objective")) {
-                    alignmentConnectionDtoList
-                            .add(new AlignmentConnectionDto(alignmentView.getId(), alignmentView.getRefId(), null));
+            if (Objects.equals(alignmentView.getConnectionRole(), "source")) {
+                if (Objects.equals(alignmentView.getCounterpartType(), OBJECTIVE_LOWERCASE)) {
+                    alignmentConnectionDtoList.add(new AlignmentConnectionDto( //
+                            alignmentView.getId(), alignmentView.getCounterpartId(), null));
                 } else {
-                    alignmentConnectionDtoList
-                            .add(new AlignmentConnectionDto(alignmentView.getId(), null, alignmentView.getRefId()));
+                    alignmentConnectionDtoList.add(new AlignmentConnectionDto( //
+                            alignmentView.getId(), null, alignmentView.getCounterpartId()));
                 }
             }
         });
-
-        alignmentViewList.forEach(alignmentView -> alignmentObjectDtoList
-                .add(new AlignmentObjectDto(alignmentView.getId(), alignmentView.getTitle(),
-                        alignmentView.getTeamName(), alignmentView.getState(), alignmentView.getObjectType())));
-
-        return new AlignmentLists(alignmentObjectDtoList.stream().distinct().toList(), alignmentConnectionDtoList);
+        return alignmentConnectionDtoList;
     }
 
     protected List<AlignmentView> getAlignmentCounterpart(DividedAlignmentViewLists alignmentViewLists) {
-        List<AlignmentView> correctAlignments = alignmentViewLists.correctAlignments();
-        List<AlignmentView> wrongAlignments = alignmentViewLists.wrongAlignments();
-        List<AlignmentView> targetAlignmentList = new ArrayList<>();
-
-        // If counterpart of the correct Alignment is in wrongAlignmentList, take it back
-        correctAlignments.forEach(alignment -> {
-            Optional<AlignmentView> matchingObject = wrongAlignments.stream()
-                    .filter(view -> Objects.equals(view.getId(), alignment.getRefId())
-                            && Objects.equals(view.getObjectType(), alignment.getRefType())
-                            && Objects.equals(view.getRefId(), alignment.getId())
-                            && Objects.equals(view.getRefType(), alignment.getObjectType()))
-                    .findFirst();
-
-            if (matchingObject.isPresent()) {
-                AlignmentView alignmentView = matchingObject.get();
-                targetAlignmentList.add(alignmentView);
-            }
-        });
-
-        // Create a new list because correctAlignments has a fixed length and targetAlignmentList can't be added
-        List<AlignmentView> finalList = new ArrayList<>(correctAlignments);
-        if (!targetAlignmentList.isEmpty()) {
-            finalList.addAll(targetAlignmentList);
-        }
-        return finalList;
+        List<AlignmentView> nonMatchingAlignments = alignmentViewLists.nonMatchingAlignments();
+        List<AlignmentView> filterMatchingAlignments = alignmentViewLists.filterMatchingAlignments();
+        List<AlignmentView> correctAlignmentViewList = correctAlignmentViewList(filterMatchingAlignments,
+                nonMatchingAlignments);
+        return createFinalAlignmentViewList(filterMatchingAlignments, correctAlignmentViewList);
     }
 
-    protected DividedAlignmentViewLists filterAlignmentViews(List<AlignmentView> alignmentViewList,
-            List<Long> teamFilter, String objectiveFilter) {
-        List<AlignmentView> filteredList = alignmentViewList.stream()
-                .filter(alignmentView -> teamFilter.contains(alignmentView.getTeamId())).toList();
+    private List<AlignmentView> correctAlignmentViewList(List<AlignmentView> filterMatchingAlignments,
+            List<AlignmentView> nonMatchingAlignments) {
+        List<AlignmentView> correctAlignmentViewList = new ArrayList<>();
+        filterMatchingAlignments.forEach(alignment -> {
+            Optional<AlignmentView> matchingObject = findMatchingAlignmentInList(nonMatchingAlignments, alignment);
+            matchingObject.map(correctAlignmentViewList::add);
+        });
+        return correctAlignmentViewList;
+    }
 
-        boolean isObjectiveFilterDefined = StringUtils.isNotBlank(objectiveFilter);
-        if (isObjectiveFilterDefined) {
-            filteredList = filteredList.stream()
-                    .filter(alignmentView -> Objects.equals(alignmentView.getObjectType(), "objective")
-                            && alignmentView.getTitle().toLowerCase().contains(objectiveFilter.toLowerCase()))
-                    .toList();
+    private Optional<AlignmentView> findMatchingAlignmentInList(List<AlignmentView> alignmentList,
+            AlignmentView alignment) {
+        return alignmentList.stream().filter(view -> isMatching(alignment, view)).findFirst();
+    }
+
+    private boolean isMatching(AlignmentView firstAlignment, AlignmentView secondAlignment) {
+        return Objects.equals(secondAlignment.getId(), firstAlignment.getCounterpartId())
+                && Objects.equals(secondAlignment.getObjectType(), firstAlignment.getCounterpartType())
+                && Objects.equals(secondAlignment.getCounterpartId(), firstAlignment.getId())
+                && Objects.equals(secondAlignment.getCounterpartType(), firstAlignment.getObjectType());
+    }
+
+    private List<AlignmentView> createFinalAlignmentViewList(List<AlignmentView> filterMatchingAlignments,
+            List<AlignmentView> correctAlignmentViewList) {
+        List<AlignmentView> finalAlignmentViewList = new ArrayList<>(filterMatchingAlignments);
+        if (!correctAlignmentViewList.isEmpty()) {
+            finalAlignmentViewList.addAll(correctAlignmentViewList);
         }
-        List<AlignmentView> correctAlignments = filteredList;
-        List<AlignmentView> wrongAlignments = alignmentViewList.stream()
-                .filter(alignmentView -> !correctAlignments.contains(alignmentView)).toList();
-        return new DividedAlignmentViewLists(correctAlignments, wrongAlignments);
+        return finalAlignmentViewList;
+    }
+
+    protected DividedAlignmentViewLists filterAndDivideAlignmentViews(List<AlignmentView> alignmentViewList,
+            List<Long> teamFilter, String objectiveFilter) {
+        List<AlignmentView> filterMatchingAlignments = filterAlignmentListByTeamAndObjective(alignmentViewList,
+                teamFilter, objectiveFilter);
+        List<AlignmentView> nonMatchingAlignments = filterNonMatchingAlignments(alignmentViewList,
+                filterMatchingAlignments);
+
+        return new DividedAlignmentViewLists(filterMatchingAlignments, nonMatchingAlignments);
+    }
+
+    private List<AlignmentView> filterAlignmentListByTeamAndObjective(List<AlignmentView> alignmentViewList,
+            List<Long> teamFilter, String objectiveFilter) {
+        List<AlignmentView> filteredList = filterByTeam(alignmentViewList, teamFilter);
+        if (StringUtils.isNotBlank(objectiveFilter)) {
+            filteredList = filterByObjective(filteredList, objectiveFilter);
+        }
+        return filteredList;
+    }
+
+    private List<AlignmentView> filterByTeam(List<AlignmentView> alignmentViewList, List<Long> teamFilter) {
+        return alignmentViewList.stream() //
+                .filter(alignmentView -> teamFilter.contains(alignmentView.getTeamId())) //
+                .toList();
+    }
+
+    private List<AlignmentView> filterByObjective(List<AlignmentView> filteredList, String objectiveFilter) {
+        return filteredList.stream() //
+                .filter(alignmentView -> isObjectiveAndMatchesFilter(alignmentView, objectiveFilter)) //
+                .toList();
+    }
+
+    private static boolean isObjectiveAndMatchesFilter(AlignmentView alignmentView, String objectiveFilter) {
+        return Objects.equals(alignmentView.getObjectType(), OBJECTIVE_LOWERCASE)
+                && alignmentView.getTitle().toLowerCase().contains(objectiveFilter.toLowerCase());
+    }
+
+    private List<AlignmentView> filterNonMatchingAlignments(List<AlignmentView> alignmentViewList,
+            List<AlignmentView> nonMatchingAlignments) {
+        return alignmentViewList.stream() //
+                .filter(alignmentView -> !nonMatchingAlignments.contains(alignmentView)) //
+                .toList();
     }
 }

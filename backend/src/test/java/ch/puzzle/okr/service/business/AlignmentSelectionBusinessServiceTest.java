@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static ch.puzzle.okr.TestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 class AlignmentSelectionBusinessServiceTest {
@@ -24,7 +25,7 @@ class AlignmentSelectionBusinessServiceTest {
 
     private static AlignmentSelection createAlignmentSelection() {
         return AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(9L, 15L))
-                .withTeamId(5L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 9").withQuarterId(2L)
+                .withTeamId(5L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 9").withQuarterId(2L)
                 .withQuarterLabel("GJ 23/24-Q1").withKeyResultTitle("Key Result 15").build();
     }
 

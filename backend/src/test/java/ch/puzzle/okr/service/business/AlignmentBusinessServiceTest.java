@@ -59,117 +59,153 @@ class AlignmentBusinessServiceTest {
 
     @Test
     void shouldGetTargetAlignmentIdObjective() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(5L)).thenReturn(objectiveALignment);
+
+        // act
         String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
+        // assert
         assertEquals("O8", targetId);
     }
 
     @Test
     void shouldReturnNullWhenNoAlignmentFound() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(5L)).thenReturn(null);
+
+        // act
         String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
-        assertNull(targetId);
+        // assert
         verify(validator, times(1)).validateOnGet(5L);
+        assertNull(targetId);
     }
 
     @Test
     void shouldGetTargetAlignmentIdKeyResult() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(5L)).thenReturn(keyResultAlignment);
+
+        // act
         String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
+        // assert
         assertEquals("K5", targetId);
     }
 
     @Test
     void shouldCreateNewAlignment() {
+        // arrange
         when(objectivePersistenceService.findById(8L)).thenReturn(objective1);
-
         Alignment returnAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objectiveAlignedObjective)
                 .withTargetObjective(objective1).build();
+
+        // act
         alignmentBusinessService.createEntity(objectiveAlignedObjective);
 
+        // assert
         verify(alignmentPersistenceService, times(1)).save(returnAlignment);
     }
 
     @Test
     void shouldUpdateEntityNewAlignment() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(8L)).thenReturn(null);
         when(objectivePersistenceService.findById(8L)).thenReturn(objective1);
-
         Alignment returnAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objectiveAlignedObjective)
                 .withTargetObjective(objective1).build();
+
+        // act
         alignmentBusinessService.updateEntity(8L, objectiveAlignedObjective);
 
+        // assert
         verify(alignmentPersistenceService, times(1)).save(returnAlignment);
     }
 
     @Test
     void shouldUpdateEntityDeleteAlignment() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(8L)).thenReturn(objectiveAlignment2);
 
+        // act
         alignmentBusinessService.updateEntity(8L, objective3);
 
+        // assert
         verify(alignmentPersistenceService, times(1)).deleteById(2L);
     }
 
     @Test
     void shouldUpdateEntityChangeTargetId() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(8L)).thenReturn(objectiveAlignment2);
         when(objectivePersistenceService.findById(8L)).thenReturn(objective1);
         Alignment returnAlignment = ObjectiveAlignment.Builder.builder().withId(2L).withAlignedObjective(objectiveAlignedObjective)
                 .withTargetObjective(objective1).build();
 
+        // act
         alignmentBusinessService.updateEntity(8L, objectiveAlignedObjective);
 
+        // assert
         verify(alignmentPersistenceService, times(1)).save(returnAlignment);
     }
 
     @Test
     void shouldUpdateEntityChangeObjectiveToKeyResult() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(8L)).thenReturn(objectiveAlignment2);
         when(keyResultPersistenceService.findById(5L)).thenReturn(metricKeyResult);
         Alignment returnAlignment = KeyResultAlignment.Builder.builder().withId(2L).withAlignedObjective(keyResultAlignedObjective)
                 .withTargetKeyResult(metricKeyResult).build();
 
+        // act
         alignmentBusinessService.updateEntity(8L, keyResultAlignedObjective);
 
+        // assert
         verify(alignmentPersistenceService, times(0)).save(returnAlignment);
         verify(alignmentPersistenceService, times(1)).recreateEntity(2L, returnAlignment);
     }
 
     @Test
     void shouldBuildAlignmentCorrectObjective() {
+        // arrange
         when(objectivePersistenceService.findById(8L)).thenReturn(objective1);
-
         Alignment returnAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objectiveAlignedObjective)
                 .withTargetObjective(objective1).build();
+
+        // act
         Alignment alignment = alignmentBusinessService.buildAlignmentModel(objectiveAlignedObjective, 0);
 
+        // assert
         assertEquals(returnAlignment, alignment);
         assertInstanceOf(ObjectiveAlignment.class, alignment);
     }
 
     @Test
     void shouldBuildAlignmentCorrectKeyResult() {
+        // arrange
         when(keyResultPersistenceService.findById(5L)).thenReturn(metricKeyResult);
-
         Alignment returnAlignment = KeyResultAlignment.Builder.builder().withAlignedObjective(keyResultAlignedObjective)
                 .withTargetKeyResult(metricKeyResult).build();
+
+        // act
         Alignment alignment = alignmentBusinessService.buildAlignmentModel(keyResultAlignedObjective, 0);
 
+        // assert
         assertEquals(returnAlignment, alignment);
         assertInstanceOf(KeyResultAlignment.class, alignment);
     }
 
     @Test
     void shouldThrowErrorWhenAlignedEntityIdIsIncorrect() {
+        // arrange
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("alignedEntityId", "Hello")));
+
+        // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> alignmentBusinessService.buildAlignmentModel(wrongAlignedObjective, 0));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("alignedEntityId", "Hello")));
-
+        // assert
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
@@ -185,30 +221,40 @@ class AlignmentBusinessServiceTest {
 
     @Test
     void shouldUpdateKeyResultIdOnChange() {
+        // arrange
         when(alignmentPersistenceService.findByKeyResultAlignmentId(1L)).thenReturn(List.of(keyResultAlignment));
 
+        // act
         alignmentBusinessService.updateKeyResultIdOnIdChange(1L, metricKeyResult);
         keyResultAlignment.setAlignmentTarget(metricKeyResult);
+
+        // assert
         verify(alignmentPersistenceService, times(1)).save(keyResultAlignment);
     }
 
     @Test
     void shouldDeleteByObjectiveId() {
+        // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(5L)).thenReturn(objectiveALignment);
         when(alignmentPersistenceService.findByObjectiveAlignmentId(5L)).thenReturn(List.of(objectiveAlignment2));
 
+        // act
         alignmentBusinessService.deleteAlignmentByObjectiveId(5L);
 
+        // assert
         verify(alignmentPersistenceService, times(1)).deleteById(objectiveALignment.getId());
         verify(alignmentPersistenceService, times(1)).deleteById(objectiveAlignment2.getId());
     }
 
     @Test
     void shouldDeleteByKeyResultId() {
+        // arrange
         when(alignmentPersistenceService.findByKeyResultAlignmentId(5L)).thenReturn(List.of(keyResultAlignment));
 
+        // act
         alignmentBusinessService.deleteAlignmentByKeyResultId(5L);
 
+        // assert
         verify(alignmentPersistenceService, times(1)).deleteById(keyResultAlignment.getId());
     }
 }

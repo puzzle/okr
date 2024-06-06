@@ -57,35 +57,43 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         List<Objective> objectivesByQuarter = objectivePersistenceService.findObjectiveByQuarterId(quarterId);
         List<AlignmentDto> alignmentDtoList = new ArrayList<>();
 
-        List<Team> teamList = objectivesByQuarter.stream().map(Objective::getTeam).distinct()
-                .sorted(Comparator.comparing(Team::getName)).toList();
+        List<Team> teamList = objectivesByQuarter.stream() //
+                .map(Objective::getTeam) //
+                .distinct() //
+                .sorted(Comparator.comparing(Team::getName)) //
+                .toList();
 
         teamList.forEach(team -> {
             List<Objective> filteredObjectiveList = objectivesByQuarter.stream()
-                    .filter(objective -> objective.getTeam().equals(team)).toList().stream()
+                    .filter(objective -> objective.getTeam().equals(team))
                     .sorted(Comparator.comparing(Objective::getTitle)).toList();
 
-            List<AlignmentObjectDto> alignmentObjectDtos = new ArrayList<>();
+            List<AlignmentObjectDto> alignmentObjectDtoList = generateAlignmentObjects(filteredObjectiveList);
 
-            filteredObjectiveList.forEach(objective -> {
-                AlignmentObjectDto objectiveDto = new AlignmentObjectDto(objective.getId(),
-                        "O - " + objective.getTitle(), "objective");
-                alignmentObjectDtos.add(objectiveDto);
-
-                List<KeyResult> keyResults = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId())
-                        .stream().sorted(Comparator.comparing(KeyResult::getTitle)).toList();
-
-                keyResults.forEach(keyResult -> {
-                    AlignmentObjectDto keyResultDto = new AlignmentObjectDto(keyResult.getId(),
-                            "KR - " + keyResult.getTitle(), "keyResult");
-                    alignmentObjectDtos.add(keyResultDto);
-                });
-            });
-            AlignmentDto alignmentDto = new AlignmentDto(team.getId(), team.getName(), alignmentObjectDtos);
+            AlignmentDto alignmentDto = new AlignmentDto(team.getId(), team.getName(), alignmentObjectDtoList);
             alignmentDtoList.add(alignmentDto);
         });
 
         return alignmentDtoList;
+    }
+
+    private List<AlignmentObjectDto> generateAlignmentObjects(List<Objective> filteredObjectiveList) {
+        List<AlignmentObjectDto> alignmentObjectDtoList = new ArrayList<>();
+        filteredObjectiveList.forEach(objective -> {
+            AlignmentObjectDto objectiveDto = new AlignmentObjectDto(objective.getId(), "O - " + objective.getTitle(),
+                    "objective");
+            alignmentObjectDtoList.add(objectiveDto);
+
+            List<KeyResult> keyResultList = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId())
+                    .stream().sorted(Comparator.comparing(KeyResult::getTitle)).toList();
+
+            keyResultList.forEach(keyResult -> {
+                AlignmentObjectDto keyResultDto = new AlignmentObjectDto(keyResult.getId(),
+                        "KR - " + keyResult.getTitle(), "keyResult");
+                alignmentObjectDtoList.add(keyResultDto);
+            });
+        });
+        return alignmentObjectDtoList;
     }
 
     public List<Objective> getEntitiesByTeamId(Long id) {

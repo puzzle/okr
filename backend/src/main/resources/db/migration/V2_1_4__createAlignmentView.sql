@@ -9,9 +9,9 @@ SELECT
     oa.quarter_id as quarter_id,
     oa.state as state,
     'objective' as object_type,
-    'source' as connection_item,
-    coalesce(a.target_objective_id, a.target_key_result_id) as ref_id,
-    a.alignment_type as ref_type
+    'source' as connection_role,
+    coalesce(a.target_objective_id, a.target_key_result_id) as counterpart_id,
+    a.alignment_type as counterpart_type
 FROM alignment a
     LEFT JOIN objective oa ON oa.id = a.aligned_objective_id
     LEFT JOIN team ott ON ott.id = oa.team_id
@@ -27,9 +27,9 @@ SELECT
     ot.quarter_id as quarter_id,
     ot.state as state,
     'objective' as object_type,
-    'target' as connection_item,
-    a.aligned_objective_id as ref_id,
-    'objective' as ref_type
+    'target' as connection_role,
+    a.aligned_objective_id as counterpart_id,
+    'objective' as counterpart_type
 FROM alignment a
          LEFT JOIN objective ot ON ot.id = a.target_objective_id
          LEFT JOIN team ott ON ott.id = ot.team_id
@@ -46,9 +46,9 @@ SELECT
     o.quarter_id as quarter_id,
     null as state,
     'keyResult' as object_type,
-    'target' as connection_item,
-    a.aligned_objective_id as ref_id,
-    'objective' as ref_type
+    'target' as connection_role,
+    a.aligned_objective_id as counterpart_id,
+    'objective' as counterpart_type
 FROM alignment a
          LEFT JOIN key_result krt ON krt.id = a.target_key_result_id
          LEFT JOIN objective o ON o.id = krt.objective_id

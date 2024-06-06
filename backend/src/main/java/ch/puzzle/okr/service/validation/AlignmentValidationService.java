@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
+import static ch.puzzle.okr.Constants.ALIGNED_OBJECTIVE_ID;
+
 @Service
 public class AlignmentValidationService
         extends ValidationBase<Alignment, Long, AlignmentRepository, AlignmentPersistenceService> {
@@ -58,7 +60,7 @@ public class AlignmentValidationService
     private void throwExceptionWhenAlignmentObjectIsNull(Alignment model) {
         if (model.getAlignedObjective() == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                    List.of("alignedObjectiveId"));
+                    List.of(ALIGNED_OBJECTIVE_ID));
         } else if (model instanceof ObjectiveAlignment objectiveAlignment) {
             if (objectiveAlignment.getAlignmentTarget() == null) {
                 throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
@@ -103,7 +105,7 @@ public class AlignmentValidationService
     private void throwExceptionWhenAlignmentWithAlignedObjectiveAlreadyExists(Alignment model) {
         if (this.alignmentPersistenceService.findByAlignedObjectiveId(model.getAlignedObjective().getId()) != null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALIGNMENT_ALREADY_EXISTS,
-                    List.of("alignedObjectiveId", model.getAlignedObjective().getId()));
+                    List.of(ALIGNED_OBJECTIVE_ID, model.getAlignedObjective().getId()));
         }
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static ch.puzzle.okr.TestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 class AlignmentSelectionBusinessServiceTest {

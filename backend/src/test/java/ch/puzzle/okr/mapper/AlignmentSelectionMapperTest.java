@@ -10,6 +10,7 @@ import java.util.List;
 import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ch.puzzle.okr.TestConstants.*;
 
 class AlignmentSelectionMapperTest {
     private final AlignmentSelectionMapper alignmentSelectionMapper = new AlignmentSelectionMapper();

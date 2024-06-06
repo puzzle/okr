@@ -22,6 +22,7 @@ import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static ch.puzzle.okr.TestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 class OverviewMapperTest {

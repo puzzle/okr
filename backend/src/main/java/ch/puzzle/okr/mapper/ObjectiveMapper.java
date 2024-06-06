@@ -19,6 +19,8 @@ public class ObjectiveMapper {
         this.quarterBusinessService = quarterBusinessService;
     }
 
+    // TODO: Adjust Unit Tests of ObjectiveMapper after merge of multitenancy-main
+
     public ObjectiveDto toDto(Objective objective) {
         return new ObjectiveDto(objective.getId(), objective.getVersion(), objective.getTitle(),
                 objective.getTeam().getId(), objective.getQuarter().getId(), objective.getQuarter().getLabel(),

@@ -33,6 +33,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static ch.puzzle.okr.TestConstants.*;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
@@ -44,8 +45,8 @@ class ObjectiveControllerIT {
     private static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
     private static final String TITLE = "Hunting";
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
-    private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
-    private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
+    private static final String URL_OBJECTIVE_5 = URL_BASE_OBJECTIVE + "/5";
+    private static final String URL_OBJECTIVE_10 = URL_BASE_OBJECTIVE + "/10";
     private static final String JSON = """
             {
                "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
@@ -66,7 +67,7 @@ class ObjectiveControllerIT {
                "description": "This is our description", "progress": 33.3
             }
             """;
-    private static final String RESPONSE_NEW_OBJECTIVE = """
+    private static final String JSON_RESPONSE_NEW_OBJECTIVE = """
             {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true,"alignedEntityId":null}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
@@ -91,7 +92,7 @@ class ObjectiveControllerIT {
     private static final AlignmentObjectDto alignmentObject1 = new AlignmentObjectDto(3L, "KR Title 1", "keyResult");
     private static final AlignmentObjectDto alignmentObject2 = new AlignmentObjectDto(1L, "Objective Title 1",
             "objective");
-    private static final AlignmentDto alignmentPossibilities = new AlignmentDto(1L, "Puzzle ITC",
+    private static final AlignmentDto alignmentPossibilities = new AlignmentDto(1L, TEAM_PUZZLE,
             List.of(alignmentObject1, alignmentObject2));
 
     @Autowired
@@ -123,7 +124,7 @@ class ObjectiveControllerIT {
     void getObjectiveByIdWithAlignmentId() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong())).willReturn(objectiveAlignment);
 
-        mvc.perform(get("/api/v2/objectives/9").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get(URL_BASE_OBJECTIVE + "/9").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(9)))
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is("Objective Alignment")))
                 .andExpect(jsonPath("$.alignedEntityId", Is.is("O42")));
@@ -143,9 +144,9 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.getAlignmentPossibilities(anyLong()))
                 .willReturn(List.of(alignmentPossibilities));
 
-        mvc.perform(get("/api/v2/objectives/alignmentPossibilities/5").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get(URL_BASE_OBJECTIVE + "/alignmentPossibilities/5").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$[0].teamId", Is.is(1)))
-                .andExpect(jsonPath("$[0].teamName", Is.is("Puzzle ITC")))
+                .andExpect(jsonPath("$[0].teamName", Is.is(TEAM_PUZZLE)))
                 .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectId", Is.is(3)))
                 .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectTitle", Is.is("KR Title 1")))
                 .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectType", Is.is("keyResult")))
@@ -167,7 +168,7 @@ class ObjectiveControllerIT {
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(CREATE_NEW_OBJECTIVE))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_OBJECTIVE));
+                .andExpect(MockMvcResultMatchers.content().string(JSON_RESPONSE_NEW_OBJECTIVE));
         verify(objectiveAuthorizationService, times(1)).createEntity(any());
     }
 
@@ -247,7 +248,7 @@ class ObjectiveControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found"))
                 .when(objectiveAuthorizationService).deleteEntityById(anyLong());
 
-        mvc.perform(delete("/api/v2/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc.perform(delete(URL_BASE_OBJECTIVE + "/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -257,7 +258,7 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 
-        mvc.perform(post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(URL_BASE_OBJECTIVE + "/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
                 .content(JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))

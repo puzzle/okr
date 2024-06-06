@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
-import { forkJoin, map, Observable, Subject } from 'rxjs';
+import { map, Observable, Subject, zip } from 'rxjs';
 import { AlignmentLists } from '../shared/types/model/AlignmentLists';
 import cytoscape from 'cytoscape';
 import {
@@ -227,7 +227,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    forkJoin(observableArray).subscribe(() => {
+    zip(observableArray).subscribe(() => {
       this.generateConnections(alignmentData, diagramElements);
     });
   }

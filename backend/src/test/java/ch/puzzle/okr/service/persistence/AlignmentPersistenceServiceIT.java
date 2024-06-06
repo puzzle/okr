@@ -28,6 +28,7 @@ class AlignmentPersistenceServiceIT {
     @Autowired
     private AlignmentPersistenceService alignmentPersistenceService;
     private Alignment createdAlignment;
+    private final String ALIGNMENT = "Alignment";
 
     private static ObjectiveAlignment createObjectiveAlignment(Long id) {
         return ObjectiveAlignment.Builder.builder().withId(id)
@@ -102,7 +103,7 @@ class AlignmentPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> alignmentPersistenceService.save(updateAlignment));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Alignment")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(ALIGNMENT)));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -114,7 +115,7 @@ class AlignmentPersistenceServiceIT {
         Alignment alignment = alignmentPersistenceService.findByAlignedObjectiveId(4L);
 
         assertNotNull(alignment);
-        assertEquals(alignment.getAlignedObjective().getId(), 4);
+        assertEquals(4, alignment.getAlignedObjective().getId());
     }
 
     @Test
@@ -162,7 +163,7 @@ class AlignmentPersistenceServiceIT {
                 () -> alignmentPersistenceService.findById(alignmentId));
 
         List<ErrorDto> expectedErrors = List
-                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", alignmentId)));
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of(ALIGNMENT, alignmentId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -202,7 +203,7 @@ class AlignmentPersistenceServiceIT {
                 () -> alignmentPersistenceService.findById(alignmentId));
 
         List<ErrorDto> expectedErrors = List
-                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", alignmentId)));
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of(ALIGNMENT, alignmentId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

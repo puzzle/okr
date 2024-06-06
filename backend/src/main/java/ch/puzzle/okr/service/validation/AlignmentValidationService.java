@@ -59,11 +59,11 @@ public class AlignmentValidationService
                 throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
                         List.of("targetObjectiveId", objectiveAlignment.getAlignedObjective().getId()));
             }
-        } else if (model instanceof KeyResultAlignment keyResultAlignment) {
-            if (keyResultAlignment.getAlignmentTarget() == null) {
-                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                        List.of("targetKeyResultId", keyResultAlignment.getAlignedObjective().getId()));
-            }
+        } else if (model instanceof KeyResultAlignment keyResultAlignment
+                && (keyResultAlignment.getAlignmentTarget() == null)) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
+                    List.of("targetKeyResultId", keyResultAlignment.getAlignedObjective().getId()));
+
         }
     }
 
@@ -85,12 +85,12 @@ public class AlignmentValidationService
     }
 
     private void throwExceptionWhenAlignedIdIsSameAsTargetId(Alignment model) {
-        if (model instanceof ObjectiveAlignment objectiveAlignment) {
-            if (Objects.equals(objectiveAlignment.getAlignedObjective().getId(),
-                    objectiveAlignment.getAlignmentTarget().getId())) {
-                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.NOT_LINK_YOURSELF,
-                        List.of("targetObjectiveId", objectiveAlignment.getAlignmentTarget().getId()));
-            }
+        if (model instanceof ObjectiveAlignment objectiveAlignment
+                && (Objects.equals(objectiveAlignment.getAlignedObjective().getId(),
+                        objectiveAlignment.getAlignmentTarget().getId()))) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.NOT_LINK_YOURSELF,
+                    List.of("targetObjectiveId", objectiveAlignment.getAlignmentTarget().getId()));
+
         }
     }
 

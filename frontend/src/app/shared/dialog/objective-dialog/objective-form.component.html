@@ -56,22 +56,22 @@
           <div class="d-flex flex-column gap-2 col-6">
             <label class="text-black">Bezug (optional)</label>
             <input
-              #input
+              #alignmentInput
               type="text"
               formControlName="alignment"
               class="alignment-input"
               placeholder="{{
-                (this.filteredOptions$ | async)?.length == 0 ? 'Kein Alignment vorhanden' : 'Bezug wählen'
+                (this.filteredAlignmentOptions$ | async)?.length == 0 ? 'Kein Alignment vorhanden' : 'Bezug wählen'
               }}"
               [matAutocomplete]="auto"
               [attr.data-testId]="'alignmentInput'"
               (input)="filter()"
-              (focus)="filter(); input.select()"
+              (focus)="filter(); alignmentInput.select()"
               (focusout)="scrollLeft()"
               [value]="displayedValue"
             />
             <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayWith">
-              @for (group of filteredOptions$ | async; track group) {
+              @for (group of filteredAlignmentOptions$ | async; track group) {
                 <mat-optgroup [label]="group.teamName" style="font-weight: bold">
                   @for (alignmentObject of group.alignmentObjectDtos; track alignmentObject) {
                     <mat-option [value]="alignmentObject">{{ alignmentObject.objectTitle }}</mat-option>

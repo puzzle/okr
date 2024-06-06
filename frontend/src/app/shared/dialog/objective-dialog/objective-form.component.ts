@@ -26,8 +26,7 @@ import { AlignmentPossibilityObject } from '../../types/model/AlignmentPossibili
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
-  @ViewChild('input') input!: ElementRef<HTMLInputElement>;
-  filteredOptions$: BehaviorSubject<AlignmentPossibility[]> = new BehaviorSubject<AlignmentPossibility[]>([]);
+  @ViewChild('alignmentInput') alignmentInput!: ElementRef<HTMLInputElement>;
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
@@ -41,6 +40,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
   alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
+  filteredAlignmentOptions$: BehaviorSubject<AlignmentPossibility[]> = new BehaviorSubject<AlignmentPossibility[]>([]);
   currentTeam$: BehaviorSubject<Team | null> = new BehaviorSubject<Team | null>(null);
   state: string | null = null;
   version!: number;
@@ -70,9 +70,9 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
 
-    let alignmentEntity: AlignmentPossibilityObject | null = value.alignment;
-    let alignment: string | null = alignmentEntity
-      ? (alignmentEntity.objectType == 'objective' ? 'O' : 'K') + alignmentEntity.objectId
+    let alignment: AlignmentPossibilityObject | null = value.alignment;
+    let alignmentEntity: string | null = alignment
+      ? (alignment.objectType == 'objective' ? 'O' : 'K') + alignment.objectId
       : null;
 
     let objectiveDTO: Objective = {
@@ -83,7 +83,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       title: value.title,
       teamId: value.team,
       state: state,
-      alignedEntityId: alignment,
+      alignedEntityId: alignmentEntity,
     } as unknown as Objective;
 
     const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
@@ -259,24 +259,28 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       }
 
       if (objective) {
-        let alignment: string | null = objective.alignedEntityId;
-        if (alignment) {
-          let alignmentType: string = alignment.charAt(0);
-          let alignmentId: number = parseInt(alignment.substring(1));
+        let alignmentEntity: string | null = objective.alignedEntityId;
+        if (alignmentEntity) {
+          let alignmentType: string = alignmentEntity.charAt(0);
+          let alignmentId: number = parseInt(alignmentEntity.substring(1));
           alignmentType = alignmentType == 'O' ? 'objective' : 'keyResult';
-          let element: AlignmentPossibilityObject | null = this.findAlignmentObject(value, alignmentId, alignmentType);
+          let alignmentPossibilityObject: AlignmentPossibilityObject | null = this.findAlignmentPossibilityObject(
+            value,
+            alignmentId,
+            alignmentType,
+          );
           this.objectiveForm.patchValue({
-            alignment: element,
+            alignment: alignmentPossibilityObject,
           });
         }
       }
 
-      this.filteredOptions$.next(value.slice());
+      this.filteredAlignmentOptions$.next(value.slice());
       this.alignmentPossibilities$ = of(value);
     });
   }
 
-  findAlignmentObject(
+  findAlignmentPossibilityObject(
     alignmentPossibilities: AlignmentPossibility[],
     objectId: number,
     objectType: string,
@@ -294,8 +298,8 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   updateAlignments() {
-    this.input.nativeElement.value = '';
-    this.filteredOptions$.next([]);
+    this.alignmentInput.nativeElement.value = '';
+    this.filteredAlignmentOptions$.next([]);
     this.objectiveForm.patchValue({
       alignment: null,
     });
@@ -303,7 +307,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   filter() {
-    let filterValue: string = this.input.nativeElement.value.toLowerCase();
+    let filterValue: string = this.alignmentInput.nativeElement.value.toLowerCase();
     this.alignmentPossibilities$.subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
       let matchingTeams: AlignmentPossibility[] = alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
         possibility.teamName.toLowerCase().includes(filterValue),
@@ -325,7 +329,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
       matchingPossibilities = [...new Set(matchingPossibilities)];
 
-      let optionList = matchingPossibilities.map((possibility: AlignmentPossibility) => ({
+      let alignmentOptionList = matchingPossibilities.map((possibility: AlignmentPossibility) => ({
         ...possibility,
         alignmentObjectDtos: possibility.alignmentObjectDtos.filter(
           (alignmentPossibilityObject: AlignmentPossibilityObject) =>
@@ -333,8 +337,9 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
         ),
       }));
 
-      let finalArray: AlignmentPossibility[] = filterValue == '' ? matchingTeams : matchingTeams.concat(optionList);
-      this.filteredOptions$.next([...new Set(finalArray)]);
+      let concatAlignmentOptionList: AlignmentPossibility[] =
+        filterValue == '' ? matchingTeams : matchingTeams.concat(alignmentOptionList);
+      this.filteredAlignmentOptions$.next([...new Set(concatAlignmentOptionList)]);
     });
   }
 
@@ -345,15 +350,15 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   get displayedValue(): string {
-    if (this.input) {
-      return this.input.nativeElement.value;
+    if (this.alignmentInput) {
+      return this.alignmentInput.nativeElement.value;
     } else {
       return '';
     }
   }
 
   scrollLeft() {
-    this.input.nativeElement.scrollLeft = 0;
+    this.alignmentInput.nativeElement.scrollLeft = 0;
   }
 
   protected readonly getQuarterLabel = getQuarterLabel;

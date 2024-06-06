@@ -33,10 +33,10 @@ public class AlignmentValidationService
     public void validateOnCreate(Alignment model) {
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
-        throwExceptionWhenAlignedObjectIsNull(model);
+        throwExceptionWhenAlignmentObjectIsNull(model);
         throwExceptionWhenAlignedIdIsSameAsTargetId(model);
         throwExceptionWhenAlignmentIsInSameTeam(model);
-        throwExceptionWhenAlignedObjectiveAlreadyExists(model);
+        throwExceptionWhenAlignmentWithAlignedObjectiveAlreadyExists(model);
         validate(model);
     }
 
@@ -44,13 +44,13 @@ public class AlignmentValidationService
     public void validateOnUpdate(Long id, Alignment model) {
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNull(model.getId());
-        throwExceptionWhenAlignedObjectIsNull(model);
+        throwExceptionWhenAlignmentObjectIsNull(model);
         throwExceptionWhenAlignedIdIsSameAsTargetId(model);
         throwExceptionWhenAlignmentIsInSameTeam(model);
         validate(model);
     }
 
-    private void throwExceptionWhenAlignedObjectIsNull(Alignment model) {
+    private void throwExceptionWhenAlignmentObjectIsNull(Alignment model) {
         if (model.getAlignedObjective() == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
                     List.of("alignedObjectiveId"));
@@ -68,19 +68,20 @@ public class AlignmentValidationService
     }
 
     private void throwExceptionWhenAlignmentIsInSameTeam(Alignment model) {
-        Team alignedTeam = teamPersistenceService.findById(model.getAlignedObjective().getTeam().getId());
-        Team targetTeam = null;
+        Team alignedObjectiveTeam = teamPersistenceService.findById(model.getAlignedObjective().getTeam().getId());
+        Team targetObjectTeam = null;
 
         if (model instanceof ObjectiveAlignment objectiveAlignment) {
-            targetTeam = teamPersistenceService.findById(objectiveAlignment.getAlignmentTarget().getTeam().getId());
+            targetObjectTeam = teamPersistenceService
+                    .findById(objectiveAlignment.getAlignmentTarget().getTeam().getId());
         } else if (model instanceof KeyResultAlignment keyResultAlignment) {
-            targetTeam = teamPersistenceService
+            targetObjectTeam = teamPersistenceService
                     .findById(keyResultAlignment.getAlignmentTarget().getObjective().getTeam().getId());
         }
 
-        if (alignedTeam.equals(targetTeam)) {
+        if (alignedObjectiveTeam.equals(targetObjectTeam)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.NOT_LINK_IN_SAME_TEAM,
-                    List.of("teamId", targetTeam.getId()));
+                    List.of("teamId", targetObjectTeam.getId()));
         }
     }
 
@@ -94,7 +95,7 @@ public class AlignmentValidationService
         }
     }
 
-    private void throwExceptionWhenAlignedObjectiveAlreadyExists(Alignment model) {
+    private void throwExceptionWhenAlignmentWithAlignedObjectiveAlreadyExists(Alignment model) {
         if (this.alignmentPersistenceService.findByAlignedObjectiveId(model.getAlignedObjective().getId()) != null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALIGNMENT_ALREADY_EXISTS,
                     List.of("alignedObjectiveId", model.getAlignedObjective().getId()));

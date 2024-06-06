@@ -19,7 +19,7 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnCorrectAlignmentData() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(9L, List.of(5L, 6L), "");
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(9L, List.of(5L, 6L), "");
 
         assertEquals(6, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(4, alignmentLists.alignmentConnectionDtoList().size());
@@ -47,7 +47,7 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnCorrectAlignmentDataWhenLimitedTeamMatching() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(9L, List.of(6L), "");
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(9L, List.of(6L), "");
 
         assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(1, alignmentLists.alignmentConnectionDtoList().size());
@@ -62,7 +62,7 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnCorrectAlignmentDataWithObjectiveSearch() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(9L, List.of(4L, 5L, 6L, 8L),
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(9L, List.of(4L, 5L, 6L, 8L),
                 "lehrling");
 
         assertEquals(3, alignmentLists.alignmentObjectDtoList().size());
@@ -83,7 +83,7 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnCorrectAlignmentDataWithKeyResultWhenMatchingObjectiveSearch() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(9L, List.of(4L, 5L, 6L, 8L),
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(9L, List.of(4L, 5L, 6L, 8L),
                 "firmenums");
 
         assertEquals(2, alignmentLists.alignmentObjectDtoList().size());
@@ -99,7 +99,7 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnEmptyAlignmentDataWhenNoAlignments() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(3L, List.of(5L, 6L), "");
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(3L, List.of(5L, 6L), "");
 
         assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());
@@ -107,7 +107,7 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnEmptyAlignmentDataWhenNoMatchingObjectiveSearch() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(9L, List.of(4L, 5L, 6L, 8L),
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(9L, List.of(4L, 5L, 6L, 8L),
                 "spass");
 
         assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
@@ -116,8 +116,8 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnCorrectAlignmentDataWhenEmptyQuarterFilter() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(null, List.of(4L, 5L, 6L, 8L),
-                "");
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(null,
+                List.of(4L, 5L, 6L, 8L), "");
 
         assertEquals(8, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(5, alignmentLists.alignmentConnectionDtoList().size());
@@ -125,7 +125,7 @@ class AlignmentBusinessServiceIT {
 
     @Test
     void shouldReturnEmptyAlignmentDataWhenEmptyTeamFilter() {
-        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentsByFilters(2L, null, "");
+        AlignmentLists alignmentLists = alignmentBusinessService.getAlignmentListsByFilters(2L, null, "");
 
         assertEquals(0, alignmentLists.alignmentObjectDtoList().size());
         assertEquals(0, alignmentLists.alignmentConnectionDtoList().size());

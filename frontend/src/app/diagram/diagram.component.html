@@ -1,6 +1,6 @@
-<div *ngIf="!emptyDiagramData" id="cy"></div>
+<div *ngIf="!noAlignmentData" id="cy"></div>
 
-<div *ngIf="emptyDiagramData" class="d-flex align-items-center flex-column pt-5 gap-5">
+<div *ngIf="noAlignmentData" class="d-flex align-items-center flex-column pt-5 gap-5">
   <p>Kein Alignment vorhanden</p>
   <img src="assets/images/puzzle-p.svg" alt="Puzzle Logo" width="242" class="puzzle-logo" />
 </div>

@@ -18,6 +18,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   overviewPadding: Subject<number> = new Subject();
+  isArchiveQuarter: boolean = false;
 
   constructor(
     private overviewService: OverviewService,
@@ -58,6 +59,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
+    this.isArchiveQuarter = quarterId == 998;
     const objectiveQueryString = getQueryString(objectiveQuery);
     this.loadOverview(quarterId, teamIds, objectiveQueryString);
   }

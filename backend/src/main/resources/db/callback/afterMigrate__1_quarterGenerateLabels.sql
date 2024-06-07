@@ -32,15 +32,16 @@ INSERT INTO quarter_meta(id, start_month, end_month, quarter, start_year_offset,
 VALUES (4, 10, 12, 4, 0, '-10-01', '-12-31');
 */
 
--- delete quarters outside [1..8, 999]
+-- delete quarters outside [1..8, 999, 998]
 DELETE FROM quarter
 WHERE id NOT BETWEEN 1 AND 8
-  AND id != 999;
+  AND id != 999
+  AND id != 998;
 
 -- "empty" label and start/end date of quarter table
 UPDATE quarter SET start_date = null;
 UPDATE quarter SET end_date = null;
-UPDATE quarter q SET label = 'label-' || q.id WHERE id < 999;
+UPDATE quarter q SET label = 'label-' || q.id WHERE id < 998;
 
 -- utility functions
 CREATE OR REPLACE FUNCTION next_quarter(current_quarter integer)

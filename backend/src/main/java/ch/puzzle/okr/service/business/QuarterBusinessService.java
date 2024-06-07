@@ -113,12 +113,10 @@ public class QuarterBusinessService {
 
     private void handleQuarterArchive() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
-        Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
-        mostCurrentQuarterList.add(backlog);
         List<Objective> allObjectives = objectiveBusinessService.getAllObjectives();
 
         allObjectives.forEach(objective -> {
-            if (!mostCurrentQuarterList.contains(objective.getQuarter())) {
+            if (!mostCurrentQuarterList.contains(objective.getQuarter()) && objective.getQuarter().getId() != 999) {
                 objectiveBusinessService.archiveEntity(objective.getId());
             }
         });

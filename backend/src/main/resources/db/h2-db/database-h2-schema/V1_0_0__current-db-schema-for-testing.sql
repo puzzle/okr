@@ -208,21 +208,6 @@ create table if not exists alignment
         foreign key (target_objective_id) references objective
 );
 
-DROP VIEW IF EXISTS ALIGNMENT_SELECTION;
-CREATE VIEW ALIGNMENT_SELECTION AS
-SELECT O.ID                AS "OBJECTIVE_ID",
-       O.TITLE             AS "OBJECTIVE_TITLE",
-       T.ID                AS "TEAM_ID",
-       T.NAME              AS "TEAM_NAME",
-       Q.ID                AS "QUARTER_ID",
-       Q.LABEL             AS "QUARTER_LABEL",
-       COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
-       KR.TITLE            AS "KEY_RESULT_TITLE"
-FROM OBJECTIVE O
-         LEFT JOIN TEAM T ON O.TEAM_ID = T.ID
-         LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
-         LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID;
-
 create table if not exists organisation
 (
     id       bigint       not null,

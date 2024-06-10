@@ -128,9 +128,12 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objectivePersistenceService.deleteById(id);
     }
 
+    @Transactional
     public void archiveEntity(Long id) {
         Objective savedObjective = objectivePersistenceService.findById(id);
-        savedObjective.setArchived(true);
-        objectivePersistenceService.save(savedObjective);
+        if (savedObjective != null) {
+            savedObjective.setArchived(true);
+            objectivePersistenceService.save(savedObjective);
+        }
     }
 }

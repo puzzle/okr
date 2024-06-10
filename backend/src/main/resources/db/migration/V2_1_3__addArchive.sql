@@ -31,7 +31,10 @@ SELECT tq.team_id          AS "team_id",
        o.title             AS "objective_title",
        o.state             AS "objective_state",
        o.created_on        AS "objective_created_on",
-       o.archived          AS "objective_archived",
+       CASE
+           WHEN o.archived IS NOT NULL THEN o.archived
+           ELSE FALSE
+           END             AS "objective_archived",
        coalesce(kr.id, -1) AS "key_result_id",
        kr.title            AS "key_result_title",
        kr.key_result_type  AS "key_result_type",

@@ -35,14 +35,8 @@ public class OverviewBusinessService {
             return List.of();
         }
 
-        List<Overview> overviews;
-        if (quarterId == 998) {
-            overviews = overviewPersistenceService.getArchiveOverview(teamIds, objectiveQuery, authorizationUser);
-            overviews.forEach(overview -> overview.setWriteable(false));
-        } else {
-            overviews = overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
-                    authorizationUser);
-        }
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
+                authorizationUser);
         return sortOverview(overviews, authorizationUser);
     }
 

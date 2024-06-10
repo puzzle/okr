@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static ch.puzzle.okr.Constants.BACKLOG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -384,7 +385,7 @@ class ObjectiveValidationServiceTest {
     @ParameterizedTest
     @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
     void validateOnCreateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel(BACKLOG).withStartDate(null)
                 .withEndDate(null).build();
 
         Objective invalidObjective = Objective.Builder.builder().withTitle("Invalid Objective").withCreatedBy(user)
@@ -403,7 +404,7 @@ class ObjectiveValidationServiceTest {
     @ParameterizedTest
     @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
     void validateOnUpdateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel(BACKLOG).withStartDate(null)
                 .withEndDate(null).build();
 
         Objective invalidObjective = Objective.Builder.builder().withId(1L).withTitle("Invalid Objective")
@@ -422,7 +423,7 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldPassWhenQuarterIsBacklogAndStateIsDraft() {
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel(BACKLOG).withStartDate(null)
                 .withEndDate(null).build();
 
         Objective validObjective = Objective.Builder.builder().withId(1L).withTitle("Invalid Objective")

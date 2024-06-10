@@ -71,7 +71,7 @@ public class ObjectiveValidationService
 
     private static void throwExceptionWhenNotDraftInBacklogQuarter(Objective model) {
         if (model.getQuarter().getStartDate() == null && model.getQuarter().getEndDate() == null
-                && model.getQuarter().getLabel().equals("Backlog") && (model.getState() != State.DRAFT)) {
+                && model.getQuarter().getLabel().equals(BACKLOG) && (model.getState() != State.DRAFT)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_MUST_BE_DRAFT,
                     List.of(OBJECTIVE, STATE_DRAFT, model.getState()));
         }

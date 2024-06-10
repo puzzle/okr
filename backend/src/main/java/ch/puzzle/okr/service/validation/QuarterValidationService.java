@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.BACKLOG;
+
 @Service
 public class QuarterValidationService
         extends ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
@@ -29,7 +31,7 @@ public class QuarterValidationService
     }
 
     public static void throwExceptionWhenStartEndDateQuarterIsNull(Quarter model) {
-        if (!model.getLabel().equals("Backlog")) {
+        if (!model.getLabel().equals(BACKLOG)) {
             if (model.getStartDate() == null) {
                 throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
                         List.of("StartDate", model.getLabel()));

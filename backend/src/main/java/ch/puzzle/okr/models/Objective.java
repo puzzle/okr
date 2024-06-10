@@ -173,10 +173,10 @@ public class Objective implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", state=" + state
-                + ", description='" + description + '\'' + ", team=" + team + ", quarter=" + quarter + ", createdBy="
-                + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", modifiedBy=" + modifiedBy
-                + ", archived=" + archived + ", writeable=" + writeable + '}';
+        return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
+                + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
+                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
+                + modifiedBy + ", archived=" + archived + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override

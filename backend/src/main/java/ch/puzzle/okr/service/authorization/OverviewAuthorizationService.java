@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static ch.puzzle.okr.Constants.ARCHIVE_QUARTER_ID;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
 
 @Service
@@ -29,7 +30,8 @@ public class OverviewAuthorizationService {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);
-        if (Objects.isNull(quarterId) || quarterId != 998) {
+        // TODO Search for 998 in all Flyway/SQL Scripts and check that it is everywhere considered
+        if (Objects.isNull(quarterId) || !quarterId.equals(ARCHIVE_QUARTER_ID)) {
             setRoleCreateOrUpdateTeam(overviews, authorizationUser);
         }
         return overviews;

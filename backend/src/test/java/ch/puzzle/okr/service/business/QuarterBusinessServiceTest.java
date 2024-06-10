@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static ch.puzzle.okr.Constants.BACKLOG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
@@ -81,13 +82,13 @@ class QuarterBusinessServiceTest {
                 .withStartDate(LocalDate.of(2022, 8, 1)).withEndDate(LocalDate.of(2022, 11, 30)).build();
         List<Quarter> quarterList = new ArrayList<>(Arrays.asList(realQuarter1, realQuarter2));
 
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").build();
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel(BACKLOG).build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
-        when(quarterPersistenceService.findByLabel("Backlog")).thenReturn(backlogQuarter);
+        when(quarterPersistenceService.findByLabel(BACKLOG)).thenReturn(backlogQuarter);
 
         quarterList = quarterBusinessService.getQuarters();
         assertEquals(4, quarterList.size());
-        assertEquals("Backlog", quarterList.get(0).getLabel());
+        assertEquals(BACKLOG, quarterList.get(0).getLabel());
         assertNull(quarterList.get(0).getStartDate());
         assertNull(quarterList.get(0).getEndDate());
     }

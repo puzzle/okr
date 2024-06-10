@@ -17,6 +17,9 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static ch.puzzle.okr.Constants.*;
 
 @Service
 public class QuarterBusinessService {
@@ -46,8 +49,8 @@ public class QuarterBusinessService {
 
     public List<Quarter> getQuarters() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
-        Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
-        Quarter archive = quarterPersistenceService.findByLabel("Archiv");
+        Quarter backlog = quarterPersistenceService.findByLabel(BACKLOG);
+        Quarter archive = quarterPersistenceService.findByLabel(ARCHIVE);
         mostCurrentQuarterList.add(0, backlog);
         mostCurrentQuarterList.add(archive);
         return mostCurrentQuarterList;
@@ -88,7 +91,7 @@ public class QuarterBusinessService {
                 .withEndDate(yearMonth.plusMonths(2).atEndOfMonth()).build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
-        handleQuarterArchive();
+        moveObjectsFromNonMostCurrentQuartersIntoArchive();
     }
 
     private boolean inLastMonthOfQuarter(int currentQuarter, int nextQuarter) {
@@ -114,12 +117,13 @@ public class QuarterBusinessService {
     }
 
     @Transactional
-    protected void handleQuarterArchive() {
+    protected void moveObjectsFromNonMostCurrentQuartersIntoArchive() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
         List<Objective> allObjectives = objectiveBusinessService.getAllObjectives();
 
         allObjectives.forEach(objective -> {
-            if (!mostCurrentQuarterList.contains(objective.getQuarter()) && objective.getQuarter().getId() != 999) {
+            if (!mostCurrentQuarterList.contains(objective.getQuarter())
+                    && !Objects.equals(objective.getQuarter().getId(), BACKLOG_QUARTER_ID)) {
                 objectiveBusinessService.archiveEntity(objective.getId());
             }
         });

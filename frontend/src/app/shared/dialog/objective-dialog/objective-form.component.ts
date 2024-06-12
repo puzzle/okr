@@ -39,7 +39,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   currentQuarter$: Observable<Quarter> = of();
   quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
-  alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
+  alignmentPossibilities: AlignmentPossibility[] = [];
   filteredAlignmentOptions$: BehaviorSubject<AlignmentPossibility[]> = new BehaviorSubject<AlignmentPossibility[]>([]);
   currentTeam$: BehaviorSubject<Team | null> = new BehaviorSubject<Team | null>(null);
   state: string | null = null;
@@ -252,10 +252,9 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     return '';
   }
   generateAlignmentPossibilities(quarterId: number, objective: Objective | null, teamId: number | null) {
-    this.alignmentPossibilities$ = this.objectiveService.getAlignmentPossibilities(quarterId);
-    this.alignmentPossibilities$.subscribe((value: AlignmentPossibility[]) => {
+    this.objectiveService.getAlignmentPossibilities(quarterId).subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
       if (teamId) {
-        value = value.filter((item: AlignmentPossibility) => item.teamId != teamId);
+        alignmentPossibilities = alignmentPossibilities.filter((item: AlignmentPossibility) => item.teamId != teamId);
       }
 
       if (objective) {
@@ -265,7 +264,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
           let alignmentId: number = parseInt(alignmentEntity.substring(1));
           alignmentType = alignmentType == 'O' ? 'objective' : 'keyResult';
           let alignmentPossibilityObject: AlignmentPossibilityObject | null = this.findAlignmentPossibilityObject(
-            value,
+            alignmentPossibilities,
             alignmentId,
             alignmentType,
           );
@@ -275,8 +274,8 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.filteredAlignmentOptions$.next(value.slice());
-      this.alignmentPossibilities$ = of(value);
+      this.filteredAlignmentOptions$.next(alignmentPossibilities.slice());
+      this.alignmentPossibilities = alignmentPossibilities;
     });
   }
 
@@ -308,39 +307,37 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   filter() {
     let filterValue: string = this.alignmentInput.nativeElement.value.toLowerCase();
-    this.alignmentPossibilities$.subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
-      let matchingTeams: AlignmentPossibility[] = alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
-        possibility.teamName.toLowerCase().includes(filterValue),
-      );
+    let matchingTeams: AlignmentPossibility[] = this.alignmentPossibilities.filter(
+      (possibility: AlignmentPossibility) => possibility.teamName.toLowerCase().includes(filterValue),
+    );
 
-      let filteredObjects: AlignmentPossibilityObject[] = alignmentPossibilities.flatMap(
-        (alignmentPossibility: AlignmentPossibility) =>
-          alignmentPossibility.alignmentObjectDtos.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
-            alignmentPossibilityObject.objectTitle.toLowerCase().includes(filterValue),
-          ),
-      );
-
-      let matchingPossibilities: AlignmentPossibility[] = alignmentPossibilities.filter(
-        (possibility: AlignmentPossibility) =>
-          filteredObjects.some((alignmentPossibilityObject: AlignmentPossibilityObject) =>
-            possibility.alignmentObjectDtos.includes(alignmentPossibilityObject),
-          ),
-      );
-
-      matchingPossibilities = [...new Set(matchingPossibilities)];
-
-      let alignmentOptionList = matchingPossibilities.map((possibility: AlignmentPossibility) => ({
-        ...possibility,
-        alignmentObjectDtos: possibility.alignmentObjectDtos.filter(
-          (alignmentPossibilityObject: AlignmentPossibilityObject) =>
-            filteredObjects.includes(alignmentPossibilityObject),
+    let filteredObjects: AlignmentPossibilityObject[] = this.alignmentPossibilities.flatMap(
+      (alignmentPossibility: AlignmentPossibility) =>
+        alignmentPossibility.alignmentObjectDtos.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+          alignmentPossibilityObject.objectTitle.toLowerCase().includes(filterValue),
         ),
-      }));
+    );
 
-      let concatAlignmentOptionList: AlignmentPossibility[] =
-        filterValue == '' ? matchingTeams : matchingTeams.concat(alignmentOptionList);
-      this.filteredAlignmentOptions$.next([...new Set(concatAlignmentOptionList)]);
-    });
+    let matchingPossibilities: AlignmentPossibility[] = this.alignmentPossibilities.filter(
+      (possibility: AlignmentPossibility) =>
+        filteredObjects.some((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+          possibility.alignmentObjectDtos.includes(alignmentPossibilityObject),
+        ),
+    );
+
+    matchingPossibilities = [...new Set(matchingPossibilities)];
+
+    let alignmentOptionList = matchingPossibilities.map((possibility: AlignmentPossibility) => ({
+      ...possibility,
+      alignmentObjectDtos: possibility.alignmentObjectDtos.filter(
+        (alignmentPossibilityObject: AlignmentPossibilityObject) =>
+          filteredObjects.includes(alignmentPossibilityObject),
+      ),
+    }));
+
+    let concatAlignmentOptionList: AlignmentPossibility[] =
+      filterValue == '' ? matchingTeams : matchingTeams.concat(alignmentOptionList);
+    this.filteredAlignmentOptions$.next([...new Set(concatAlignmentOptionList)]);
   }
 
   displayWith(value: any) {
@@ -349,7 +346,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  get displayedValue(): string {
+  displayedValue(): string {
     if (this.alignmentInput) {
       return this.alignmentInput.nativeElement.value;
     } else {

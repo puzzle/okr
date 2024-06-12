@@ -246,31 +246,33 @@ export class ObjectiveFormComponent implements OnInit {
   }
 
   generateAlignmentPossibilities(quarterId: number, objective: Objective | null, teamId: number | null) {
-    this.objectiveService.getAlignmentPossibilities(quarterId).subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
-      if (teamId) {
-        alignmentPossibilities = alignmentPossibilities.filter((item: AlignmentPossibility) => item.teamId != teamId);
-      }
-
-      if (objective) {
-        let alignmentEntity: string | null = objective.alignedEntityId;
-        if (alignmentEntity) {
-          let alignmentType: string = alignmentEntity.charAt(0);
-          let alignmentId: number = parseInt(alignmentEntity.substring(1));
-          alignmentType = alignmentType == 'O' ? 'objective' : 'keyResult';
-          let alignmentPossibilityObject: AlignmentPossibilityObject | null = this.findAlignmentPossibilityObject(
-            alignmentPossibilities,
-            alignmentId,
-            alignmentType,
-          );
-          this.objectiveForm.patchValue({
-            alignment: alignmentPossibilityObject,
-          });
+    this.objectiveService
+      .getAlignmentPossibilities(quarterId)
+      .subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
+        if (teamId) {
+          alignmentPossibilities = alignmentPossibilities.filter((item: AlignmentPossibility) => item.teamId != teamId);
         }
-      }
 
-      this.filteredAlignmentOptions$.next(alignmentPossibilities.slice());
-      this.alignmentPossibilities = alignmentPossibilities;
-    });
+        if (objective) {
+          let alignmentEntity: string | null = objective.alignedEntityId;
+          if (alignmentEntity) {
+            let alignmentType: string = alignmentEntity.charAt(0);
+            let alignmentId: number = parseInt(alignmentEntity.substring(1));
+            alignmentType = alignmentType == 'O' ? 'objective' : 'keyResult';
+            let alignmentPossibilityObject: AlignmentPossibilityObject | null = this.findAlignmentPossibilityObject(
+              alignmentPossibilities,
+              alignmentId,
+              alignmentType,
+            );
+            this.objectiveForm.patchValue({
+              alignment: alignmentPossibilityObject,
+            });
+          }
+        }
+
+        this.filteredAlignmentOptions$.next(alignmentPossibilities.slice());
+        this.alignmentPossibilities = alignmentPossibilities;
+      });
   }
 
   findAlignmentPossibilityObject(

@@ -503,12 +503,8 @@ describe('ObjectiveDialogComponent', () => {
     it('should load correct alignment possibilities', async () => {
       objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.generateAlignmentPossibilities(3, null, null);
-      let alignmentPossibilities = null;
-      component.alignmentPossibilities$.subscribe((value) => {
-        alignmentPossibilities = value;
-      });
 
-      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
     });
@@ -516,19 +512,15 @@ describe('ObjectiveDialogComponent', () => {
     it('should not include current team in alignment possibilities', async () => {
       objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.generateAlignmentPossibilities(3, null, 1);
-      let alignmentPossibilities = null;
-      component.alignmentPossibilities$.subscribe((value) => {
-        alignmentPossibilities = value;
-      });
 
-      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility2]);
+      expect(component.alignmentPossibilities).toStrictEqual([alignmentPossibility2]);
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility2]);
       expect(component.objectiveForm.getRawValue().alignment).toEqual(null);
     });
 
     it('should return team and objective with same text in alignment possibilities', async () => {
       component.alignmentInput.nativeElement.value = 'puzzle';
-      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.alignmentPossibilities = [alignmentPossibility1, alignmentPossibility2];
       component.filter();
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
     });
@@ -536,12 +528,8 @@ describe('ObjectiveDialogComponent', () => {
     it('should load existing objective alignment to objectiveForm', async () => {
       objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.generateAlignmentPossibilities(3, objectiveWithAlignment, null);
-      let alignmentPossibilities = null;
-      component.alignmentPossibilities$.subscribe((value) => {
-        alignmentPossibilities = value;
-      });
 
-      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentObject2);
     });
@@ -550,12 +538,8 @@ describe('ObjectiveDialogComponent', () => {
       objectiveWithAlignment.alignedEntityId = 'K1';
       objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.generateAlignmentPossibilities(3, objectiveWithAlignment, null);
-      let alignmentPossibilities = null;
-      component.alignmentPossibilities$.subscribe((value) => {
-        alignmentPossibilities = value;
-      });
 
-      expect(alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
+      expect(component.alignmentPossibilities).toStrictEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility1, alignmentPossibility2]);
       expect(component.objectiveForm.getRawValue().alignment).toEqual(alignmentObject3);
     });
@@ -563,7 +547,7 @@ describe('ObjectiveDialogComponent', () => {
     it('should filter correct alignment possibilities', async () => {
       // Search for one title
       component.alignmentInput.nativeElement.value = 'palm';
-      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.alignmentPossibilities = [alignmentPossibility1, alignmentPossibility2];
       component.filter();
       let modifiedAlignmentPossibility: AlignmentPossibility = {
         teamId: 1,
@@ -574,7 +558,7 @@ describe('ObjectiveDialogComponent', () => {
 
       // Search for team name
       component.alignmentInput.nativeElement.value = 'Puzzle IT';
-      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.alignmentPossibilities = [alignmentPossibility1, alignmentPossibility2];
       component.filter();
       modifiedAlignmentPossibility = {
         teamId: 1,
@@ -585,7 +569,7 @@ describe('ObjectiveDialogComponent', () => {
 
       // Search for two objects
       component.alignmentInput.nativeElement.value = 'buy';
-      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.alignmentPossibilities = [alignmentPossibility1, alignmentPossibility2];
       component.filter();
       let modifiedAlignmentPossibilities = [
         {
@@ -603,7 +587,7 @@ describe('ObjectiveDialogComponent', () => {
 
       // No match
       component.alignmentInput.nativeElement.value = 'findus';
-      component.alignmentPossibilities$ = of([alignmentPossibility1, alignmentPossibility2]);
+      component.alignmentPossibilities = [alignmentPossibility1, alignmentPossibility2];
       component.filter();
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([]);
     });
@@ -656,10 +640,10 @@ describe('ObjectiveDialogComponent', () => {
 
     it('should return correct displayedValue', () => {
       component.alignmentInput.nativeElement.value = 'O - Objective 1';
-      expect(component.displayedValue).toEqual('O - Objective 1');
+      expect(component.displayedValue()).toEqual('O - Objective 1');
 
       component.alignmentInput = new ElementRef(document.createElement('input'));
-      expect(component.displayedValue).toEqual('');
+      expect(component.displayedValue()).toEqual('');
     });
   });
 

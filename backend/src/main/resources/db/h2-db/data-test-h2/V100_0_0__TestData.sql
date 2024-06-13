@@ -74,7 +74,7 @@ values (4, 1, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture tha
         'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
         1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703', false),
        (998,1, '', '2023-07-25 08:39:28.175703', 40,
-        'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
+        'This objective is in backlog',
         1, 6, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703', true);
 
 insert into key_result (id, version, baseline, description, modified_on, stretch_goal, title, created_by_id,
@@ -94,7 +94,8 @@ values  (10,1, 465, '', '2023-07-25 08:23:02.273028', 60, 'Im Durchschnitt soll 
     (19,1, 50, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', '2023-07-25 08:42:56.407125', 1, 'nsetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At ', 1, 8, 1, 'metric', '2023-07-25 08:42:56.407125', 'PERCENT', null, null, null),
     (17,1, 525, 'asdf', '2023-07-25 08:41:52.844903', 20000000, 'vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', 1, 9, 1, 'metric', '2023-07-25 08:41:52.844903', 'PERCENT', null, null, null),
     (9,1, 100, '', '2023-07-25 08:48:45.825328', 80, 'Die Member des BBT reduzieren Ihre Lautstärke um 20%', 1, 5, 1, 'metric', '2023-07-25 08:48:45.825328', 'PERCENT', null, null, null),
-    (18,1, 0, 'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', '2023-07-25 08:42:24.779721', 1, 'Lorem', 1, 8, 1, 'metric', '2023-07-25 08:42:24.779721', 'PERCENT', null, null, null);
+    (18,1, 0, 'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', '2023-07-25 08:42:24.779721', 1, 'Lorem', 1, 8, 1, 'metric', '2023-07-25 08:42:24.779721', 'PERCENT', null, null, null),
+    (998,1, 0, 'Description is here', '2023-07-25 08:42:24.779721', 1, 'KeyResult in archive', 1, 998, 1, 'metric', '2023-07-25 08:42:24.779721', 'PERCENT', null, null, null);
 
 insert into check_in (id, version, change_info, created_on, initiatives, modified_on, value_metric, created_by_id, key_result_id, confidence, check_in_type, zone)
 values  (1,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam', '2023-07-25 08:44:13.865976', '', '2023-07-24 22:00:00.000000', 77, 1, 8, 5, 'metric', null),

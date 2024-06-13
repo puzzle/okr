@@ -51,12 +51,12 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       let lastAlignmentItem: AlignmentObject =
         alignmentData.alignmentObjectDtoList[alignmentData.alignmentObjectDtoList.length - 1];
 
-      let needsUpdate: boolean =
+      let diagramReloadRequired: boolean =
         lastAlignmentItem?.objectTitle === 'reload'
           ? lastAlignmentItem?.objectType === 'true'
           : JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData);
 
-      if (needsUpdate) {
+      if (diagramReloadRequired) {
         if (lastAlignmentItem?.objectTitle === 'reload') {
           alignmentData.alignmentObjectDtoList.pop();
         }

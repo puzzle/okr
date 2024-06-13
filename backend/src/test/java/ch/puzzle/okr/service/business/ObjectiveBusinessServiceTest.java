@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.dto.AlignmentDto;
 import ch.puzzle.okr.dto.AlignmentObjectDto;
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -92,6 +93,7 @@ class ObjectiveBusinessServiceTest {
             "keyResult");
     private final AlignmentDto alignmentDto = new AlignmentDto(1L, TEAM_1, List.of(alignmentObjectDto1,
             alignmentObjectDto2, alignmentObjectDto3, alignmentObjectDto4, alignmentObjectDto5, alignmentObjectDto6));
+    AlignedEntityDto alignedEntityDtoObjective = new AlignedEntityDto(53L, OBJECTIVE);
 
     @Test
     void getOneObjective() {
@@ -181,16 +183,17 @@ class ObjectiveBusinessServiceTest {
         // arrange
         Objective objective = spy(Objective.Builder.builder().withId(3L).withTitle("Received Objective").withTeam(team1)
                 .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
-                .withState(DRAFT).withAlignedEntityId("O53").build());
+                .withState(DRAFT).withAlignedEntity(alignedEntityDtoObjective).build());
         when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
-        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn("O41");
+        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any()))
+                .thenReturn(new AlignedEntityDto(41L, OBJECTIVE));
         when(objectivePersistenceService.save(any())).thenReturn(objective);
         doNothing().when(objective).setCreatedOn(any());
 
         // act
         Objective updatedObjective = objectiveBusinessService.updateEntity(objective.getId(), objective,
                 authorizationUser);
-        objective.setAlignedEntityId("O53");
+        objective.setAlignedEntity(alignedEntityDtoObjective);
 
         // assert
         verify(objectivePersistenceService, times(1)).save(objective);
@@ -205,7 +208,7 @@ class ObjectiveBusinessServiceTest {
         // arrange
         Objective objective = spy(Objective.Builder.builder().withId(3L).withTitle("Received Objective").withTeam(team1)
                 .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
-                .withState(DRAFT).withAlignedEntityId("O53").build());
+                .withState(DRAFT).withAlignedEntity(alignedEntityDtoObjective).build());
         when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
         when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn(null);
         when(objectivePersistenceService.save(any())).thenReturn(objective);
@@ -214,7 +217,7 @@ class ObjectiveBusinessServiceTest {
         // act
         Objective updatedObjective = objectiveBusinessService.updateEntity(objective.getId(), objective,
                 authorizationUser);
-        objective.setAlignedEntityId("O53");
+        objective.setAlignedEntity(alignedEntityDtoObjective);
 
         // assert
         verify(objectivePersistenceService, times(1)).save(objective);
@@ -231,7 +234,8 @@ class ObjectiveBusinessServiceTest {
                 .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
                 .withState(DRAFT).build());
         when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
-        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn("O52");
+        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any()))
+                .thenReturn(new AlignedEntityDto(52L, "objective"));
         when(objectivePersistenceService.save(any())).thenReturn(objective);
         doNothing().when(objective).setCreatedOn(any());
 
@@ -252,7 +256,7 @@ class ObjectiveBusinessServiceTest {
         // arrange
         Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
                 .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
-                .withState(DRAFT).withAlignedEntityId("O42").build());
+                .withState(DRAFT).withAlignedEntity(new AlignedEntityDto(42L, OBJECTIVE)).build());
         doNothing().when(objective).setCreatedOn(any());
 
         // act

@@ -654,11 +654,11 @@ export const alignmentObject3: AlignmentPossibilityObject = {
 export const alignmentPossibility1: AlignmentPossibility = {
   teamId: 1,
   teamName: 'Puzzle ITC',
-  alignmentObjectDtos: [alignmentObject2, alignmentObject3],
+  alignmentObjects: [alignmentObject2, alignmentObject3],
 };
 
 export const alignmentPossibility2: AlignmentPossibility = {
   teamId: 2,
   teamName: 'We are cube',
-  alignmentObjectDtos: [alignmentObject1],
+  alignmentObjects: [alignmentObject1],
 };

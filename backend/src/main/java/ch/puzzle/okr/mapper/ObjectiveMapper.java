@@ -25,7 +25,7 @@ public class ObjectiveMapper {
         return new ObjectiveDto(objective.getId(), objective.getVersion(), objective.getTitle(),
                 objective.getTeam().getId(), objective.getQuarter().getId(), objective.getQuarter().getLabel(),
                 objective.getDescription(), objective.getState(), objective.getCreatedOn(), objective.getModifiedOn(),
-                objective.isWriteable(), objective.getAlignedEntityId());
+                objective.isWriteable(), objective.getAlignedEntity());
     }
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
@@ -34,6 +34,6 @@ public class ObjectiveMapper {
                 .withDescription(objectiveDto.description()).withModifiedOn(LocalDateTime.now())
                 .withState(objectiveDto.state()).withCreatedOn(objectiveDto.createdOn())
                 .withQuarter(quarterBusinessService.getQuarterById(objectiveDto.quarterId()))
-                .withAlignedEntityId(objectiveDto.alignedEntityId()).build();
+                .withAlignedEntity(objectiveDto.alignedEntity()).build();
     }
 }

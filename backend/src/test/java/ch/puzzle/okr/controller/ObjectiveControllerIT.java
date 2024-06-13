@@ -3,6 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.AlignmentDto;
 import ch.puzzle.okr.dto.AlignmentObjectDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
@@ -41,6 +42,7 @@ import static ch.puzzle.okr.TestConstants.*;
 class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
+    private static final String OBJECTIVE = "objective";
     private static final String DESCRIPTION = "This is our description";
     private static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
     private static final String TITLE = "Hunting";
@@ -68,12 +70,13 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String JSON_RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true,"alignedEntityId":null}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true,"alignedEntity":null}""";
     private static final String JSON_PATH_TITLE = "$.title";
+    private static final AlignedEntityDto alignedEntityDtoObjective = new AlignedEntityDto(42L, OBJECTIVE);
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
     private static final Objective objectiveAlignment = Objective.Builder.builder().withId(9L)
-            .withTitle("Objective Alignment").withAlignedEntityId("O42").build();
+            .withTitle("Objective Alignment").withAlignedEntity(alignedEntityDtoObjective).build();
     private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
             .build();
     private static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
@@ -86,12 +89,13 @@ class ObjectiveControllerIT {
     private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L, "GJ 22/23-Q2",
             DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true, null);
     private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, "GJ 22/23-Q2",
-            DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true, "O5");
+            DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true, new AlignedEntityDto(5L, OBJECTIVE));
     private static final ObjectiveDto objectiveAlignmentDto = new ObjectiveDto(9L, 1, "Objective Alignment", 1L, 1L,
-            "GJ 22/23-Q2", DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true, "O42");
+            "GJ 22/23-Q2", DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true,
+            alignedEntityDtoObjective);
     private static final AlignmentObjectDto alignmentObject1 = new AlignmentObjectDto(3L, "KR Title 1", "keyResult");
     private static final AlignmentObjectDto alignmentObject2 = new AlignmentObjectDto(1L, "Objective Title 1",
-            "objective");
+            OBJECTIVE);
     private static final AlignmentDto alignmentPossibilities = new AlignmentDto(1L, TEAM_PUZZLE,
             List.of(alignmentObject1, alignmentObject2));
 
@@ -127,7 +131,8 @@ class ObjectiveControllerIT {
         mvc.perform(get(URL_BASE_OBJECTIVE + "/9").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(9)))
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is("Objective Alignment")))
-                .andExpect(jsonPath("$.alignedEntityId", Is.is("O42")));
+                .andExpect(jsonPath("$.alignedEntity.id", Is.is(42)))
+                .andExpect(jsonPath("$.alignedEntity.type", Is.is(OBJECTIVE)));
     }
 
     @Test
@@ -152,7 +157,7 @@ class ObjectiveControllerIT {
                 .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectType", Is.is("keyResult")))
                 .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectId", Is.is(1)))
                 .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectTitle", Is.is("Objective Title 1")))
-                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectType", Is.is("objective")));
+                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectType", Is.is(OBJECTIVE)));
 
         verify(objectiveAuthorizationService, times(1)).getAlignmentPossibilities(5L);
     }

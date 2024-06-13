@@ -189,7 +189,7 @@ describe('ObjectiveDialogComponent', () => {
           teamId: 2,
           title: title,
           writeable: true,
-          alignedEntityId: null,
+          alignedEntity: null,
         },
         teamId: 1,
       });
@@ -219,7 +219,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 0,
         teamId: 0,
         version: undefined,
-        alignedEntityId: null,
+        alignedEntity: null,
       });
     });
 
@@ -247,7 +247,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 0,
         teamId: 0,
         version: undefined,
-        alignedEntityId: 'O2',
+        alignedEntity: { id: 2, type: 'objective' },
       });
     });
 
@@ -275,7 +275,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 0,
         teamId: 0,
         version: undefined,
-        alignedEntityId: 'K1',
+        alignedEntity: { id: 1, type: 'keyResult' },
       });
     });
 
@@ -303,7 +303,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 1,
         teamId: 1,
         version: undefined,
-        alignedEntityId: null,
+        alignedEntity: null,
       });
     });
 
@@ -333,7 +333,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterId: 1,
         teamId: 1,
         version: undefined,
-        alignedEntityId: 'K1',
+        alignedEntity: { id: 1, type: 'keyResult' },
       });
     });
 
@@ -535,7 +535,7 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should load existing keyResult alignment to objectiveForm', async () => {
-      objectiveWithAlignment.alignedEntityId = 'K1';
+      objectiveWithAlignment.alignedEntity = { id: 1, type: 'keyResult' };
       objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
       component.generateAlignmentPossibilities(3, objectiveWithAlignment, null);
 

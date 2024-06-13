@@ -616,7 +616,7 @@ export const alignmentObject2: AlignmentPossibilityObject = {
 
 export const alignmentObject3: AlignmentPossibilityObject = {
   objectId: 1,
-  objectTitle: 'We buy 3 palms',
+  objectTitle: 'We buy 3 palms puzzle',
   objectType: 'keyResult',
 };
 

@@ -600,6 +600,13 @@ describe('ObjectiveDialogComponent', () => {
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([]);
     });
 
+    it('should not include alignment object when already containing in team', async () => {
+      component.alignmentInput.nativeElement.value = 'puzzle';
+      component.alignmentPossibilities = [alignmentPossibility1];
+      component.filter();
+      expect(component.filteredAlignmentOptions$.getValue()).toEqual([alignmentPossibility1]);
+    });
+
     it('should find correct alignment object', () => {
       // objective
       let alignmentObject = component.findAlignmentPossibilityObject(
@@ -617,7 +624,7 @@ describe('ObjectiveDialogComponent', () => {
         'keyResult',
       );
       expect(alignmentObject!.objectId).toEqual(1);
-      expect(alignmentObject!.objectTitle).toEqual('We buy 3 palms');
+      expect(alignmentObject!.objectTitle).toEqual('We buy 3 palms puzzle');
 
       // no match
       alignmentObject = component.findAlignmentPossibilityObject(

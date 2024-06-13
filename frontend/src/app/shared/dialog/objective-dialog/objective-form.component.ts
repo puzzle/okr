@@ -313,33 +313,63 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       (possibility: AlignmentPossibility) => possibility.teamName.toLowerCase().includes(filterValue),
     );
 
-    let filteredObjects: AlignmentPossibilityObject[] = this.alignmentPossibilities.flatMap(
-      (alignmentPossibility: AlignmentPossibility) =>
-        alignmentPossibility.alignmentObjectDtos.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
-          alignmentPossibilityObject.objectTitle.toLowerCase().includes(filterValue),
-        ),
-    );
-
-    let matchingPossibilities: AlignmentPossibility[] = this.alignmentPossibilities.filter(
-      (possibility: AlignmentPossibility) =>
-        filteredObjects.some((alignmentPossibilityObject: AlignmentPossibilityObject) =>
-          possibility.alignmentObjectDtos.includes(alignmentPossibilityObject),
-        ),
-    );
-
+    let filteredObjects: AlignmentPossibilityObject[] =
+      this.getMatchingAlignmentPossibilityObjectsByInputFilter(filterValue);
+    let matchingPossibilities: AlignmentPossibility[] =
+      this.getAlignmentPossibilityFromAlignmentObject(filteredObjects);
     matchingPossibilities = [...new Set(matchingPossibilities)];
 
-    let alignmentOptionList = matchingPossibilities.map((possibility: AlignmentPossibility) => ({
+    let alignmentOptionList: AlignmentPossibility[] = this.removeNotMatchingObjectsFromAlignmentObject(
+      matchingPossibilities,
+      filteredObjects,
+    );
+    alignmentOptionList = this.removeAlignmentObjectWhenAlreadyContainingInMatchingTeam(
+      alignmentOptionList,
+      matchingTeams,
+    );
+
+    let concatAlignmentOptionList: AlignmentPossibility[] =
+      filterValue == '' ? matchingTeams : matchingTeams.concat(alignmentOptionList);
+    this.filteredAlignmentOptions$.next([...new Set(concatAlignmentOptionList)]);
+  }
+
+  getMatchingAlignmentPossibilityObjectsByInputFilter(filterValue: string): AlignmentPossibilityObject[] {
+    return this.alignmentPossibilities.flatMap((alignmentPossibility: AlignmentPossibility) =>
+      alignmentPossibility.alignmentObjectDtos.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+        alignmentPossibilityObject.objectTitle.toLowerCase().includes(filterValue),
+      ),
+    );
+  }
+
+  getAlignmentPossibilityFromAlignmentObject(filteredObjects: AlignmentPossibilityObject[]): AlignmentPossibility[] {
+    return this.alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
+      filteredObjects.some((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+        possibility.alignmentObjectDtos.includes(alignmentPossibilityObject),
+      ),
+    );
+  }
+
+  removeNotMatchingObjectsFromAlignmentObject(
+    matchingPossibilities: AlignmentPossibility[],
+    filteredObjects: AlignmentPossibilityObject[],
+  ): AlignmentPossibility[] {
+    return matchingPossibilities.map((possibility: AlignmentPossibility) => ({
       ...possibility,
       alignmentObjectDtos: possibility.alignmentObjectDtos.filter(
         (alignmentPossibilityObject: AlignmentPossibilityObject) =>
           filteredObjects.includes(alignmentPossibilityObject),
       ),
     }));
+  }
 
-    let concatAlignmentOptionList: AlignmentPossibility[] =
-      filterValue == '' ? matchingTeams : matchingTeams.concat(alignmentOptionList);
-    this.filteredAlignmentOptions$.next([...new Set(concatAlignmentOptionList)]);
+  removeAlignmentObjectWhenAlreadyContainingInMatchingTeam(
+    alignmentOptionList: AlignmentPossibility[],
+    matchingTeams: AlignmentPossibility[],
+  ): AlignmentPossibility[] {
+    return alignmentOptionList.filter(
+      (alignmentOption) =>
+        !matchingTeams.some((alignmentPossibility) => alignmentPossibility.teamId === alignmentOption.teamId),
+    );
   }
 
   displayWith(value: any) {

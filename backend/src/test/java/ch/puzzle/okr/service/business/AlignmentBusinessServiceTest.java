@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.alignment.Alignment;
@@ -43,12 +44,14 @@ class AlignmentBusinessServiceTest {
     Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
     Objective objective2 = Objective.Builder.builder().withId(8L).withTitle("Objective 2").withState(DRAFT).build();
     Objective objective3 = Objective.Builder.builder().withId(10L).withTitle("Objective 3").withState(DRAFT).build();
+    AlignedEntityDto alignedEntityDtoObjective = new AlignedEntityDto(8L, "objective");
+    AlignedEntityDto alignedEntityDtoKeyResult = new AlignedEntityDto(5L, "keyResult");
     Objective objectiveAlignedObjective = Objective.Builder.builder().withId(42L).withTitle("Objective 42")
-            .withState(DRAFT).withAlignedEntityId("O8").build();
+            .withState(DRAFT).withAlignedEntity(alignedEntityDtoObjective).build();
     Objective keyResultAlignedObjective = Objective.Builder.builder().withId(45L).withTitle("Objective 45")
-            .withState(DRAFT).withAlignedEntityId("K5").build();
+            .withState(DRAFT).withAlignedEntity(alignedEntityDtoKeyResult).build();
     Objective wrongAlignedObjective = Objective.Builder.builder().withId(48L).withTitle("Objective 48").withState(DRAFT)
-            .withAlignedEntityId("Hello").build();
+            .withAlignedEntity(new AlignedEntityDto(0L, "Hello")).build();
     KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle("KR Title 1").build();
     ObjectiveAlignment objectiveALignment = ObjectiveAlignment.Builder.builder().withId(1L)
             .withAlignedObjective(objective1).withTargetObjective(objective2).build();
@@ -63,10 +66,10 @@ class AlignmentBusinessServiceTest {
         when(alignmentPersistenceService.findByAlignedObjectiveId(5L)).thenReturn(objectiveALignment);
 
         // act
-        String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
+        AlignedEntityDto alignedEntity = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
         // assert
-        assertEquals("O8", targetId);
+        assertEquals(alignedEntityDtoObjective, alignedEntity);
     }
 
     @Test
@@ -75,11 +78,11 @@ class AlignmentBusinessServiceTest {
         when(alignmentPersistenceService.findByAlignedObjectiveId(5L)).thenReturn(null);
 
         // act
-        String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
+        AlignedEntityDto alignedEntity = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
         // assert
         verify(validator, times(1)).validateOnGet(5L);
-        assertNull(targetId);
+        assertNull(alignedEntity);
     }
 
     @Test
@@ -88,10 +91,10 @@ class AlignmentBusinessServiceTest {
         when(alignmentPersistenceService.findByAlignedObjectiveId(5L)).thenReturn(keyResultAlignment);
 
         // act
-        String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
+        AlignedEntityDto alignedEntity = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
         // assert
-        assertEquals("K5", targetId);
+        assertEquals(alignedEntityDtoKeyResult, alignedEntity);
     }
 
     @Test
@@ -197,9 +200,10 @@ class AlignmentBusinessServiceTest {
     }
 
     @Test
-    void shouldThrowErrorWhenAlignedEntityIdIsIncorrect() {
+    void shouldThrowErrorWhenAlignedEntityIsIncorrect() {
         // arrange
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("alignedEntityId", "Hello")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET",
+                List.of("alignedEntity", new AlignedEntityDto(0L, "Hello").toString())));
 
         // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

@@ -14,5 +14,8 @@ export interface Objective {
   modifiedOn?: Date;
   createdBy?: User;
   writeable: boolean;
-  alignedEntityId: string | null;
+  alignedEntity: {
+    id: number;
+    type: string;
+  } | null;
 }

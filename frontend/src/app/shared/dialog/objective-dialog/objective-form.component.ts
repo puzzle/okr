@@ -70,8 +70,11 @@ export class ObjectiveFormComponent implements OnInit {
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
 
     let alignment: AlignmentPossibilityObject | null = value.alignment;
-    let alignmentEntity: string | null = alignment
-      ? (alignment.objectType == 'objective' ? 'O' : 'K') + alignment.objectId
+    let alignedEntity: { id: number; type: string } | null = alignment
+      ? {
+          id: alignment.objectId,
+          type: alignment.objectType,
+        }
       : null;
 
     let objectiveDTO: Objective = {
@@ -82,7 +85,7 @@ export class ObjectiveFormComponent implements OnInit {
       title: value.title,
       teamId: value.team,
       state: state,
-      alignedEntityId: alignmentEntity,
+      alignedEntity: alignedEntity,
     } as unknown as Objective;
 
     const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
@@ -204,7 +207,7 @@ export class ObjectiveFormComponent implements OnInit {
       state: 'DRAFT' as State,
       teamId: 0,
       quarterId: 0,
-      alignedEntityId: null,
+      alignedEntity: null,
     } as Objective;
   }
 
@@ -254,15 +257,12 @@ export class ObjectiveFormComponent implements OnInit {
         }
 
         if (objective) {
-          let alignmentEntity: string | null = objective.alignedEntityId;
-          if (alignmentEntity) {
-            let alignmentType: string = alignmentEntity.charAt(0);
-            let alignmentId: number = parseInt(alignmentEntity.substring(1));
-            alignmentType = alignmentType == 'O' ? 'objective' : 'keyResult';
+          let alignedEntity: { id: number; type: string } | null = objective.alignedEntity;
+          if (alignedEntity) {
             let alignmentPossibilityObject: AlignmentPossibilityObject | null = this.findAlignmentPossibilityObject(
               alignmentPossibilities,
-              alignmentId,
-              alignmentType,
+              alignedEntity.id,
+              alignedEntity.type,
             );
             this.objectiveForm.patchValue({
               alignment: alignmentPossibilityObject,

@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.dto.AlignmentDto;
 import ch.puzzle.okr.dto.AlignmentObjectDto;
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -46,8 +47,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         validator.validateOnGet(id);
         Objective objective = objectivePersistenceService.findById(id);
 
-        String alignmentId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(objective.getId());
-        objective.setAlignedEntityId(alignmentId);
+        AlignedEntityDto alignedEntity = alignmentBusinessService.getTargetIdByAlignedObjectiveId(objective.getId());
+        objective.setAlignedEntity(alignedEntity);
         return objective;
     }
 
@@ -101,8 +102,9 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
         List<Objective> objectiveList = objectivePersistenceService.findObjectiveByTeamId(id);
         objectiveList.forEach(objective -> {
-            String alignmentId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(objective.getId());
-            objective.setAlignedEntityId(alignmentId);
+            AlignedEntityDto alignedEntity = alignmentBusinessService
+                    .getTargetIdByAlignedObjectiveId(objective.getId());
+            objective.setAlignedEntity(alignedEntity);
         });
 
         return objectiveList;
@@ -123,10 +125,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         logger.debug("quarter has changed and is{}changeable, {}", not, objective);
         validator.validateOnUpdate(id, objective);
         savedObjective = objectivePersistenceService.save(objective);
-        String targetAlignmentId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(savedObjective.getId());
-        if ((objective.getAlignedEntityId() != null)
-                || objective.getAlignedEntityId() == null && targetAlignmentId != null) {
-            savedObjective.setAlignedEntityId(objective.getAlignedEntityId());
+        AlignedEntityDto alignedEntity = alignmentBusinessService
+                .getTargetIdByAlignedObjectiveId(savedObjective.getId());
+        if ((objective.getAlignedEntity() != null) || objective.getAlignedEntity() == null && alignedEntity != null) {
+            savedObjective.setAlignedEntity(objective.getAlignedEntity());
             alignmentBusinessService.updateEntity(id, savedObjective);
         }
         return savedObjective;
@@ -156,7 +158,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
         Objective savedObjective = objectivePersistenceService.save(objective);
-        if (objective.getAlignedEntityId() != null) {
+        if (objective.getAlignedEntity() != null) {
             alignmentBusinessService.createEntity(savedObjective);
         }
         return savedObjective;

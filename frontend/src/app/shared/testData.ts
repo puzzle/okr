@@ -366,7 +366,7 @@ export const objective: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.SUCCESSFUL,
   writeable: true,
-  alignedEntityId: null,
+  alignedEntity: null,
 };
 
 export const objectiveWithAlignment: Objective = {
@@ -379,7 +379,7 @@ export const objectiveWithAlignment: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.SUCCESSFUL,
   writeable: true,
-  alignedEntityId: 'O2',
+  alignedEntity: { id: 2, type: 'objective' },
 };
 
 export const objectiveWriteableFalse: Objective = {
@@ -392,7 +392,7 @@ export const objectiveWriteableFalse: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.NOTSUCCESSFUL,
   writeable: false,
-  alignedEntityId: null,
+  alignedEntity: null,
 };
 
 export const firstCheckIn: CheckInMin = {

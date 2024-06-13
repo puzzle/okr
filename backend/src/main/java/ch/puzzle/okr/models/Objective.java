@@ -1,5 +1,6 @@
 package ch.puzzle.okr.models;
 
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -52,7 +53,7 @@ public class Objective implements WriteableInterface {
     private User modifiedBy;
 
     private transient boolean writeable;
-    private transient String alignedEntityId;
+    private transient AlignedEntityDto alignedEntity;
 
     public Objective() {
     }
@@ -69,7 +70,7 @@ public class Objective implements WriteableInterface {
         setState(builder.state);
         setCreatedOn(builder.createdOn);
         setModifiedBy(builder.modifiedBy);
-        setAlignedEntityId(builder.alignedEntityId);
+        setAlignedEntity(builder.alignedEntity);
     }
 
     public Long getId() {
@@ -162,12 +163,12 @@ public class Objective implements WriteableInterface {
         this.writeable = writeable;
     }
 
-    public String getAlignedEntityId() {
-        return alignedEntityId;
+    public AlignedEntityDto getAlignedEntity() {
+        return alignedEntity;
     }
 
-    public void setAlignedEntityId(String alignedEntityId) {
-        this.alignedEntityId = alignedEntityId;
+    public void setAlignedEntity(AlignedEntityDto alignedEntity) {
+        this.alignedEntity = alignedEntity;
     }
 
     @Override
@@ -175,7 +176,7 @@ public class Objective implements WriteableInterface {
         return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
                 + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
                 + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
-                + modifiedBy + ", writeable=" + writeable + ", alignedEntityId=" + alignedEntityId + '\'' + '}';
+                + modifiedBy + ", writeable=" + writeable + ", alignedEntity=" + alignedEntity + '\'' + '}';
     }
 
     @Override
@@ -211,7 +212,7 @@ public class Objective implements WriteableInterface {
         private State state;
         private LocalDateTime createdOn;
         private User modifiedBy;
-        private String alignedEntityId;
+        private AlignedEntityDto alignedEntity;
 
         private Builder() {
         }
@@ -275,8 +276,8 @@ public class Objective implements WriteableInterface {
             return this;
         }
 
-        public Builder withAlignedEntityId(String alignedEntityId) {
-            this.alignedEntityId = alignedEntityId;
+        public Builder withAlignedEntity(AlignedEntityDto alignedEntity) {
+            this.alignedEntity = alignedEntity;
             return this;
         }
 

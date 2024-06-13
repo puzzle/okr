@@ -427,13 +427,13 @@ class ObjectiveBusinessServiceTest {
         verify(objectivePersistenceService, times(1)).findObjectiveByQuarterId(5L);
         verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(1L);
         verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(2L);
-        assertEquals(2, alignmentsDtos.get(0).alignmentObjectDtos().size());
-        assertEquals(1, alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectId());
-        assertEquals(FULL_OBJECTIVE_1, alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectTitle());
-        assertEquals(OBJECTIVE, alignmentsDtos.get(0).alignmentObjectDtos().get(0).objectType());
-        assertEquals(2, alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectId());
-        assertEquals(FULL_OBJECTIVE_2, alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectTitle());
-        assertEquals(OBJECTIVE, alignmentsDtos.get(0).alignmentObjectDtos().get(1).objectType());
+        assertEquals(2, alignmentsDtos.get(0).alignmentObjects().size());
+        assertEquals(1, alignmentsDtos.get(0).alignmentObjects().get(0).objectId());
+        assertEquals(FULL_OBJECTIVE_1, alignmentsDtos.get(0).alignmentObjects().get(0).objectTitle());
+        assertEquals(OBJECTIVE, alignmentsDtos.get(0).alignmentObjects().get(0).objectType());
+        assertEquals(2, alignmentsDtos.get(0).alignmentObjects().get(1).objectId());
+        assertEquals(FULL_OBJECTIVE_2, alignmentsDtos.get(0).alignmentObjects().get(1).objectTitle());
+        assertEquals(OBJECTIVE, alignmentsDtos.get(0).alignmentObjects().get(1).objectType());
     }
 
     @Test

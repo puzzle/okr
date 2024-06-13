@@ -152,12 +152,12 @@ class ObjectiveControllerIT {
         mvc.perform(get(URL_BASE_OBJECTIVE + "/alignmentPossibilities/5").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$[0].teamId", Is.is(1)))
                 .andExpect(jsonPath("$[0].teamName", Is.is(TEAM_PUZZLE)))
-                .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectId", Is.is(3)))
-                .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectTitle", Is.is("KR Title 1")))
-                .andExpect(jsonPath("$[0].alignmentObjectDtos[0].objectType", Is.is("keyResult")))
-                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectId", Is.is(1)))
-                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectTitle", Is.is("Objective Title 1")))
-                .andExpect(jsonPath("$[0].alignmentObjectDtos[1].objectType", Is.is(OBJECTIVE)));
+                .andExpect(jsonPath("$[0].alignmentObjects[0].objectId", Is.is(3)))
+                .andExpect(jsonPath("$[0].alignmentObjects[0].objectTitle", Is.is("KR Title 1")))
+                .andExpect(jsonPath("$[0].alignmentObjects[0].objectType", Is.is("keyResult")))
+                .andExpect(jsonPath("$[0].alignmentObjects[1].objectId", Is.is(1)))
+                .andExpect(jsonPath("$[0].alignmentObjects[1].objectTitle", Is.is("Objective Title 1")))
+                .andExpect(jsonPath("$[0].alignmentObjects[1].objectType", Is.is(OBJECTIVE)));
 
         verify(objectiveAuthorizationService, times(1)).getAlignmentPossibilities(5L);
     }

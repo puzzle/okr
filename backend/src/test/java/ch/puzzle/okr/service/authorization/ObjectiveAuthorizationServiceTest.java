@@ -196,11 +196,11 @@ class ObjectiveAuthorizationServiceTest {
         // assert
         assertEquals(TEAM_PUZZLE, alignmentPossibilities.get(0).teamName());
         assertEquals(1, alignmentPossibilities.get(0).teamId());
-        assertEquals(3, alignmentPossibilities.get(0).alignmentObjectDtos().get(0).objectId());
-        assertEquals("KR Title 1", alignmentPossibilities.get(0).alignmentObjectDtos().get(0).objectTitle());
-        assertEquals("keyResult", alignmentPossibilities.get(0).alignmentObjectDtos().get(0).objectType());
-        assertEquals(1, alignmentPossibilities.get(0).alignmentObjectDtos().get(1).objectId());
-        assertEquals("objective", alignmentPossibilities.get(0).alignmentObjectDtos().get(1).objectType());
+        assertEquals(3, alignmentPossibilities.get(0).alignmentObjects().get(0).objectId());
+        assertEquals("KR Title 1", alignmentPossibilities.get(0).alignmentObjects().get(0).objectTitle());
+        assertEquals("keyResult", alignmentPossibilities.get(0).alignmentObjects().get(0).objectType());
+        assertEquals(1, alignmentPossibilities.get(0).alignmentObjects().get(1).objectId());
+        assertEquals("objective", alignmentPossibilities.get(0).alignmentObjects().get(1).objectType());
     }
 
     @Test

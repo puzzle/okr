@@ -560,7 +560,7 @@ describe('ObjectiveDialogComponent', () => {
       let modifiedAlignmentPossibility: AlignmentPossibility = {
         teamId: 1,
         teamName: 'Puzzle ITC',
-        alignmentObjectDtos: [alignmentObject3],
+        alignmentObjects: [alignmentObject3],
       };
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([modifiedAlignmentPossibility]);
 
@@ -571,7 +571,7 @@ describe('ObjectiveDialogComponent', () => {
       modifiedAlignmentPossibility = {
         teamId: 1,
         teamName: 'Puzzle ITC',
-        alignmentObjectDtos: [alignmentObject2, alignmentObject3],
+        alignmentObjects: [alignmentObject2, alignmentObject3],
       };
       expect(component.filteredAlignmentOptions$.getValue()).toEqual([modifiedAlignmentPossibility]);
 
@@ -583,12 +583,12 @@ describe('ObjectiveDialogComponent', () => {
         {
           teamId: 1,
           teamName: 'Puzzle ITC',
-          alignmentObjectDtos: [alignmentObject3],
+          alignmentObjects: [alignmentObject3],
         },
         {
           teamId: 2,
           teamName: 'We are cube',
-          alignmentObjectDtos: [alignmentObject1],
+          alignmentObjects: [alignmentObject1],
         },
       ];
       expect(component.filteredAlignmentOptions$.getValue()).toEqual(modifiedAlignmentPossibilities);

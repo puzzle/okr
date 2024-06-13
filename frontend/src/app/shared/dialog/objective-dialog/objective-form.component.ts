@@ -287,7 +287,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     objectType: string,
   ): AlignmentPossibilityObject | null {
     for (let possibility of alignmentPossibilities) {
-      let foundObject: AlignmentPossibilityObject | undefined = possibility.alignmentObjectDtos.find(
+      let foundObject: AlignmentPossibilityObject | undefined = possibility.alignmentObjects.find(
         (alignmentObject: AlignmentPossibilityObject) =>
           alignmentObject.objectId === objectId && alignmentObject.objectType === objectType,
       );
@@ -335,7 +335,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   getMatchingAlignmentPossibilityObjectsByInputFilter(filterValue: string): AlignmentPossibilityObject[] {
     return this.alignmentPossibilities.flatMap((alignmentPossibility: AlignmentPossibility) =>
-      alignmentPossibility.alignmentObjectDtos.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+      alignmentPossibility.alignmentObjects.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
         alignmentPossibilityObject.objectTitle.toLowerCase().includes(filterValue),
       ),
     );
@@ -344,7 +344,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   getAlignmentPossibilityFromAlignmentObject(filteredObjects: AlignmentPossibilityObject[]): AlignmentPossibility[] {
     return this.alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
       filteredObjects.some((alignmentPossibilityObject: AlignmentPossibilityObject) =>
-        possibility.alignmentObjectDtos.includes(alignmentPossibilityObject),
+        possibility.alignmentObjects.includes(alignmentPossibilityObject),
       ),
     );
   }
@@ -355,9 +355,8 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   ): AlignmentPossibility[] {
     return matchingPossibilities.map((possibility: AlignmentPossibility) => ({
       ...possibility,
-      alignmentObjectDtos: possibility.alignmentObjectDtos.filter(
-        (alignmentPossibilityObject: AlignmentPossibilityObject) =>
-          filteredObjects.includes(alignmentPossibilityObject),
+      alignmentObjects: possibility.alignmentObjects.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+        filteredObjects.includes(alignmentPossibilityObject),
       ),
     }));
   }

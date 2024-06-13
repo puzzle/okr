@@ -72,7 +72,10 @@ values (4, 1, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture tha
         null, '2023-07-25 08:39:45.772126', false),
        (8,1, '', '2023-07-25 08:39:28.175703', 40,
         'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
-        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703', false);
+        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703', false),
+       (998,1, '', '2023-07-25 08:39:28.175703', 40,
+        'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
+        1, 6, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703', true);
 
 insert into key_result (id, version, baseline, description, modified_on, stretch_goal, title, created_by_id,
                         objective_id, owner_id, key_result_type, created_on, unit, commit_zone, target_zone, stretch_zone)

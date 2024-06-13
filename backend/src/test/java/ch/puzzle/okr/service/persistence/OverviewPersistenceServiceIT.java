@@ -11,7 +11,7 @@ import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class OverviewPersistenceServiceIT {
@@ -79,6 +79,16 @@ class OverviewPersistenceServiceIT {
                 "kundenzufriedenheit", authorizationUser);
 
         assertTrue(overviews.isEmpty());
+    }
+
+    @Test
+    void getFilteredOverviewShouldReturnCorrectOverviewForArchive() {
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(998L, List.of(5L, 6L, 8L), "",
+                authorizationUser);
+
+        assertTrue(overviews.get(0).isObjectiveArchived());
+        assertEquals(6, overviews.get(0).getQuarterId());
+        assertFalse(overviews.get(0).isWriteable());
     }
 
     private List<OverviewId> getOverviewIds(List<Overview> overviewList) {

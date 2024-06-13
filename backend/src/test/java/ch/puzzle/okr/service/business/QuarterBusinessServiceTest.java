@@ -1,6 +1,9 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static ch.puzzle.okr.Constants.ARCHIVE;
 import static ch.puzzle.okr.Constants.BACKLOG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -44,13 +49,25 @@ class QuarterBusinessServiceTest {
     @Spy
     private QuarterBusinessService quarterBusinessService;
 
+    private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
+    private final Quarter quarter1 = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+    private final Quarter quarter2 = Quarter.Builder.builder().withId(2L).withLabel("GJ 22/23-Q3").build();
+    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+    private final Objective fullObjective = Objective.Builder.builder().withId(3L).withTitle("FullObjective1")
+            .withCreatedBy(user).withTeam(team1).withQuarter(quarter1).withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX).withArchived(false).build();
+
     private static Stream<Arguments> shouldGetFirstMonthFromQuarter() {
         return Stream.of(Arguments.of(1, 1), Arguments.of(2, 4), Arguments.of(3, 7), Arguments.of(4, 10));
     }
 
     @Test
     void shouldReturnProperQuarter() {
+        // act
         quarterBusinessService.getQuarterById(3L);
+
+        // assert
         verify(quarterValidationService, times(1)).validateOnGet(3L);
         verify(quarterPersistenceService, times(1)).findById(3L);
 
@@ -58,37 +75,52 @@ class QuarterBusinessServiceTest {
 
     @Test
     void shouldReturnExceptionWhenIdIsNullOnGetQuarter() {
+        // act
         quarterBusinessService.getQuarterById(null);
+
+        // assert
         verify(quarterValidationService, times(1)).validateOnGet(null);
     }
 
     @Test
     void shouldCallGetCurrentQuarterOnGetCurrentQuarter() {
+        // act
         quarterBusinessService.getCurrentQuarter();
+
+        // assert
         verify(quarterPersistenceService, times(1)).getCurrentQuarter();
     }
 
     @Test
     void shouldCallGetQuarters() {
+        // act
         quarterBusinessService.getQuarters();
+
+        // assert
         verify(quarterPersistenceService).getMostCurrentQuarters();
     }
 
     @Test
-    void shouldGetBacklogQuarter() {
+    void shouldGetBacklogAndArchiveQuarter() {
+        // arrange
         Quarter realQuarter1 = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
                 .withStartDate(LocalDate.of(2022, 4, 1)).withEndDate(LocalDate.of(2022, 7, 31)).build();
         Quarter realQuarter2 = Quarter.Builder.builder().withId(2L).withLabel("GJ-22/23-Q4")
                 .withStartDate(LocalDate.of(2022, 8, 1)).withEndDate(LocalDate.of(2022, 11, 30)).build();
         List<Quarter> quarterList = new ArrayList<>(Arrays.asList(realQuarter1, realQuarter2));
-
         Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel(BACKLOG).build();
+        Quarter archiveQuarter = Quarter.Builder.builder().withId(198L).withLabel(ARCHIVE).build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
         when(quarterPersistenceService.findByLabel(BACKLOG)).thenReturn(backlogQuarter);
+        when(quarterPersistenceService.findByLabel(ARCHIVE)).thenReturn(archiveQuarter);
 
+        // act
         quarterList = quarterBusinessService.getQuarters();
+
+        // assert
         assertEquals(4, quarterList.size());
         assertEquals(BACKLOG, quarterList.get(0).getLabel());
+        assertEquals(ARCHIVE, quarterList.get(3).getLabel());
         assertNull(quarterList.get(0).getStartDate());
         assertNull(quarterList.get(0).getEndDate());
     }
@@ -96,21 +128,31 @@ class QuarterBusinessServiceTest {
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 4, 5, 7, 8, 10, 11 })
     void shouldNotGenerateQuarterIfNotLastMonth(int month) {
+        // arrange
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
-
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
+
+        // act
         quarterBusinessService.scheduledGenerationQuarters();
+
+        // assert
         verify(quarterPersistenceService, never()).save(any());
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 3, 6, 9, 12 })
     void shouldGenerateQuarterIfLastMonth(int month) {
+        // arrange
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
-
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
+
+        // act
         quarterBusinessService.scheduledGenerationQuarters();
+
+        // assert
         verify(quarterPersistenceService, times(1)).save(any());
+        verify(objectiveBusinessService, times(1)).getAllObjectives();
+        verify(quarterPersistenceService, times(1)).getMostCurrentQuarters();
     }
 
     private static Stream<Arguments> generateQuarterParams() {
@@ -126,6 +168,7 @@ class QuarterBusinessServiceTest {
     @MethodSource("generateQuarterParams")
     void shouldGenerateCorrectQuarter(int quarterStart, String quarterFormat, YearMonth currentYearMonth,
             String expectedLabel) {
+        // arrange
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", quarterStart);
         ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", quarterFormat);
 
@@ -140,9 +183,13 @@ class QuarterBusinessServiceTest {
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(currentYearMonth);
 
+        // act
         quarterBusinessService.scheduledGenerationQuarters();
 
+        // assert
         verify(quarterPersistenceService).save(expectedQuarter);
+        verify(objectiveBusinessService, times(1)).getAllObjectives();
+        verify(quarterPersistenceService, times(1)).getMostCurrentQuarters();
     }
 
     private static Stream<Arguments> getQuartersParams() {
@@ -157,15 +204,66 @@ class QuarterBusinessServiceTest {
     @ParameterizedTest(name = "Start month={0}, current month={1} => quarter={2}")
     @MethodSource("getQuartersParams")
     void shouldGetQuartersBasedOnStart(int start, int month, int quarter) {
+        // arrange
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", start);
+
+        // act
         Map<Integer, Integer> quarters = quarterBusinessService.generateQuarters();
+
+        // assert
         assertEquals(quarter, quarters.get(month));
     }
 
     @Test
     void shouldReturnNullWhenNoQuarterGenerationNeeded() {
+        // arrange
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 4));
+
+        // act
         quarterBusinessService.scheduledGenerationQuarters();
+
+        // assert
         verify(quarterPersistenceService, times(0)).save(any());
+    }
+
+    @Test
+    void shouldCorrectMoveObjectsToArchive() {
+        // arrange
+        when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(List.of(quarter2));
+        when(objectiveBusinessService.getAllObjectives()).thenReturn(List.of(fullObjective, fullObjective, fullObjective));
+
+        // act
+        quarterBusinessService.moveObjectsFromNonMostCurrentQuartersIntoArchive();
+
+        // assert
+        verify(objectiveBusinessService, times(3)).archiveEntity(3L);
+    }
+
+    @Test
+    void shouldNotMoveObjectsToArchiveWhenInMostCurrentQuarters() {
+        // arrange
+        when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(List.of(quarter1, quarter2));
+        when(objectiveBusinessService.getAllObjectives()).thenReturn(List.of(fullObjective));
+
+        // act
+        quarterBusinessService.moveObjectsFromNonMostCurrentQuartersIntoArchive();
+
+        // assert
+        verify(objectiveBusinessService, times(0)).archiveEntity(anyLong());
+    }
+
+    @Test
+    void shouldNotMoveObjectsToArchiveWhenInBacklog() {
+        // arrange
+        Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1")
+                .withQuarter(Quarter.Builder.builder().withId(999L).build()).build();
+        when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(List.of(quarter2));
+        when(objectiveBusinessService.getAllObjectives()).thenReturn(List.of(objective));
+
+        // act
+        quarterBusinessService.moveObjectsFromNonMostCurrentQuartersIntoArchive();
+
+        // assert
+        verify(objectiveBusinessService, times(0)).archiveEntity(anyLong());
     }
 }

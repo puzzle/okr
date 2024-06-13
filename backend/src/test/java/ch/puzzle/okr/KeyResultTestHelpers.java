@@ -82,11 +82,18 @@ public class KeyResultTestHelpers {
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1")
             .withArchived(false).build();
+    public static final Objective archivedObjective = Objective.Builder.builder().withId(12L).withTitle("Objective 12")
+            .withArchived(true).build();
 
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle(TITLE)
             .withObjective(objective).build();
+    public static final KeyResult archivedKeyResult = KeyResultMetric.Builder.builder().withId(1L).withTitle(TITLE)
+            .withObjective(archivedObjective).build();
     public static final CheckIn checkIn1 = CheckInMetric.Builder.builder().withValue(23D).withId(1L)
             .withKeyResult(metricKeyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
+            .withChangeInfo(CHANGE_INFO_1).withInitiatives(INITIATIVES_1).build();
+    public static final CheckIn archivedCheckin = CheckInMetric.Builder.builder().withValue(23D).withId(13L)
+            .withKeyResult(archivedKeyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
             .withChangeInfo(CHANGE_INFO_1).withInitiatives(INITIATIVES_1).build();
     public static final CheckIn checkIn2 = CheckInMetric.Builder.builder().withValue(12D).withId(4L)
             .withKeyResult(metricKeyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)

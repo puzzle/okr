@@ -17,10 +17,10 @@ import java.util.List;
 import static ch.puzzle.okr.TestHelper.*;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.READ_ALL_PUBLISHED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OverviewAuthorizationServiceTest {
@@ -37,40 +37,69 @@ class OverviewAuthorizationServiceTest {
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenAuthorized() {
+        // arrange
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
+                .thenReturn(List.of(overview));
+        when(authorizationService.isWriteable(authorizationUser, 5L)).thenReturn(true);
+
+        // act
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+
+        // assert
+        verify(authorizationService, times(1)).isWriteable(authorizationUser, 5L);
+        assertThat(List.of(overview)).hasSameElementsAs(overviews);
+        assertTrue(overviews.get(0).isWriteable());
+    }
+
+    @Test
+    void getFilteredOverviewShouldReturnNotWriteableOverviewsWhenArchived() {
+        // arrange
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
-        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+        // act
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(998L, List.of(5L), "");
 
-        assertThat(List.of(overview)).hasSameElementsAs(overviews);
+        // assert
+        verify(authorizationService, times(0)).isWriteable(authorizationUser, 5L);
+        assertFalse(overviews.get(0).isWriteable());
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void getFilteredOverviewShouldSetWritableProperly(boolean isWritable) {
+        // arrange
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.isWriteable(authorizationUser, 5L)).thenReturn(isWritable);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
+        // act
         List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
 
+        // assert
         assertEquals(isWritable, overviews.get(0).isWriteable());
     }
 
     @Test
     void getFilteredOverviewShouldReturnEmptyListWhenNotAuthorized() {
+        // arrange
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(1L, List.of(5L), "", authorizationUser)).thenReturn(List.of());
 
+        // act
         List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+
+        // assert
         assertThat(List.of()).hasSameElementsAs(overviews);
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
+        // arrange
         if (hasRoleWriteAll) {
             when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         } else {
@@ -78,6 +107,7 @@ class OverviewAuthorizationServiceTest {
                     .thenReturn(mockAuthorizationUser(defaultUser(5L), List.of(), 7L, List.of(READ_ALL_PUBLISHED)));
         }
 
+        // assert
         assertEquals(hasRoleWriteAll, overviewAuthorizationService.hasWriteAllAccess());
     }
 }

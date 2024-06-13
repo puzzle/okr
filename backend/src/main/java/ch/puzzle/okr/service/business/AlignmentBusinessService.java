@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.alignment.Alignment;
@@ -34,13 +35,13 @@ public class AlignmentBusinessService {
         this.keyResultPersistenceService = keyResultPersistenceService;
     }
 
-    public String getTargetIdByAlignedObjectiveId(Long alignedObjectiveId) {
+    public AlignedEntityDto getTargetIdByAlignedObjectiveId(Long alignedObjectiveId) {
         alignmentValidationService.validateOnGet(alignedObjectiveId);
         Alignment alignment = alignmentPersistenceService.findByAlignedObjectiveId(alignedObjectiveId);
         if (alignment instanceof KeyResultAlignment keyResultAlignment) {
-            return "K" + keyResultAlignment.getAlignmentTarget().getId();
+            return new AlignedEntityDto(keyResultAlignment.getAlignmentTarget().getId(), "keyResult");
         } else if (alignment instanceof ObjectiveAlignment objectiveAlignment) {
-            return "O" + objectiveAlignment.getAlignmentTarget().getId();
+            return new AlignedEntityDto(objectiveAlignment.getAlignmentTarget().getId(), "objective");
         } else {
             return null;
         }
@@ -63,7 +64,7 @@ public class AlignmentBusinessService {
     }
 
     private void handleExistingAlignment(Objective objective, Alignment savedAlignment) {
-        if (objective.getAlignedEntityId() == null) {
+        if (objective.getAlignedEntity() == null) {
             validateAndDeleteAlignmentById(savedAlignment.getId());
         } else {
             validateAndUpdateAlignment(objective, savedAlignment);
@@ -87,23 +88,23 @@ public class AlignmentBusinessService {
     }
 
     public Alignment buildAlignmentModel(Objective alignedObjective, int version) {
-        if (alignedObjective.getAlignedEntityId().startsWith("O")) {
-            Long entityId = Long.valueOf(alignedObjective.getAlignedEntityId().replace("O", ""));
+        if (alignedObjective.getAlignedEntity().type().equals("objective")) {
+            Long entityId = alignedObjective.getAlignedEntity().id();
 
             Objective targetObjective = objectivePersistenceService.findById(entityId);
             return ObjectiveAlignment.Builder.builder() //
                     .withAlignedObjective(alignedObjective) //
                     .withTargetObjective(targetObjective) //
                     .withVersion(version).build();
-        } else if (alignedObjective.getAlignedEntityId().startsWith("K")) {
-            Long entityId = Long.valueOf(alignedObjective.getAlignedEntityId().replace("K", ""));
+        } else if (alignedObjective.getAlignedEntity().type().equals("keyResult")) {
+            Long entityId = alignedObjective.getAlignedEntity().id();
 
             KeyResult targetKeyResult = keyResultPersistenceService.findById(entityId);
             return KeyResultAlignment.Builder.builder().withAlignedObjective(alignedObjective)
                     .withTargetKeyResult(targetKeyResult).withVersion(version).build();
         } else {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NOT_SET,
-                    List.of("alignedEntityId", alignedObjective.getAlignedEntityId()));
+                    List.of("alignedEntity", alignedObjective.getAlignedEntity()));
         }
     }
 

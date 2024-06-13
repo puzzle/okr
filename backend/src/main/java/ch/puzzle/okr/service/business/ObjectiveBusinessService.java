@@ -130,7 +130,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private void handleAlignedEntity(Long id, Objective savedObjective, Objective updatedObjective) {
-        AlignedEntityDto alignedEntity = alignmentBusinessService.getTargetIdByAlignedObjectiveId(savedObjective.getId());
+        AlignedEntityDto alignedEntity = alignmentBusinessService
+                .getTargetIdByAlignedObjectiveId(savedObjective.getId());
         if ((updatedObjective.getAlignedEntity() != null)
                 || updatedObjective.getAlignedEntity() == null && alignedEntity != null) {
             savedObjective.setAlignedEntity(updatedObjective.getAlignedEntity());

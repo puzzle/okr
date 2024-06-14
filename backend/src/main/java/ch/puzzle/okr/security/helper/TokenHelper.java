@@ -12,33 +12,28 @@ import static ch.puzzle.okr.security.helper.UrlHelper.extractTenantFromIssUrl;
 public class TokenHelper {
 
     public Optional<String> getTenantFromTokenUsingClaimTenant(Jwt token) {
-        String tenant = getTenant(token);
-        return Optional.ofNullable(tenant);
+        return getTenant(token);
     }
 
-    private static String getTenant(Jwt token) {
+    private Optional<String> getTenant(Jwt token) {
         String tenant = token.getClaimAsString(CLAIM_TENANT); // can return null
         logStatus(CLAIM_TENANT, token, tenant);
-        return tenant;
+        return Optional.ofNullable(tenant);
     }
 
     public Optional<String> getTenantFromTokenUsingClaimIss(Jwt token) {
-        String issUrl = getIssUrl(token);
-        if (issUrl == null) {
-            return Optional.empty();
-        }
-        return getTenant(token, issUrl);
+        return getIssUrl(token).flatMap(url -> getTenant(token, url));
     }
 
-    private String getIssUrl(Jwt token) {
+    private Optional<String> getIssUrl(Jwt token) {
         String issUrl = token.getClaimAsString(CLAIM_ISS); // can return null
         logStatus(CLAIM_ISS, token, issUrl);
-        return issUrl;
+        return Optional.ofNullable(issUrl);
     }
 
     private Optional<String> getTenant(Jwt token, String issUrl) {
-        String tenant = extractTenantFromIssUrl(issUrl);
-        logStatus(CLAIM_ISS, token, tenant);
-        return Optional.ofNullable(tenant);
+        Optional<String> tenant = extractTenantFromIssUrl(issUrl);
+        logStatus(CLAIM_ISS, token, tenant.isPresent());
+        return tenant;
     }
 }

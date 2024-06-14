@@ -14,43 +14,38 @@ public class ClaimHelper {
 
     public Optional<String> getTenantFromClaimsSetUsingClaimTenant(JWTClaimsSet claimSet) {
         try {
-            String tenant = getTenant(claimSet);
-            return Optional.ofNullable(tenant);
+            return getTenant(claimSet);
         } catch (ParseException e) {
             logStatus(CLAIM_TENANT, claimSet, e);
             return Optional.empty();
         }
     }
 
-    private static String getTenant(JWTClaimsSet claimSet) throws ParseException {
+    private Optional<String> getTenant(JWTClaimsSet claimSet) throws ParseException {
         String tenant = claimSet.getStringClaim(CLAIM_TENANT);
         logStatus(CLAIM_TENANT, claimSet, tenant);
-        return tenant;
+        return Optional.ofNullable(tenant);
     }
 
     public Optional<String> getTenantFromClaimsSetUsingClaimIss(JWTClaimsSet claimSet) {
         try {
-            String issUrl = getIssUrl(claimSet);
-            if (issUrl == null) {
-                return Optional.empty();
-            }
-            return getTenant(claimSet, issUrl);
+            return getIssUrl(claimSet).flatMap(url -> getTenant(claimSet, url));
         } catch (ParseException e) {
             logStatus(CLAIM_ISS, claimSet, e);
             return Optional.empty();
         }
     }
 
-    private static String getIssUrl(JWTClaimsSet claimSet) throws ParseException {
+    private Optional<String> getIssUrl(JWTClaimsSet claimSet) throws ParseException {
         String issUrl = claimSet.getStringClaim(CLAIM_ISS);
         logStatus(CLAIM_ISS, claimSet, issUrl);
-        return issUrl;
+        return Optional.ofNullable(issUrl);
     }
 
-    private static Optional<String> getTenant(JWTClaimsSet claimSet, String issUrl) {
-        String tenant = extractTenantFromIssUrl(issUrl);
-        logStatus(CLAIM_ISS, claimSet, tenant);
-        return Optional.ofNullable(tenant);
+    private Optional<String> getTenant(JWTClaimsSet claimSet, String issUrl) {
+        Optional<String> tenant = extractTenantFromIssUrl(issUrl);
+        logStatus(CLAIM_ISS, claimSet, tenant.isPresent());
+        return tenant;
     }
 
 }

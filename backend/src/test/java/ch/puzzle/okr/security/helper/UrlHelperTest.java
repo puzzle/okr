@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UrlHelperTest {
 
@@ -18,10 +20,11 @@ public class UrlHelperTest {
         // arrange
 
         // act
-        String tenantFromIssUrl = UrlHelper.extractTenantFromIssUrl(issUrl);
+        Optional<String> tenantFromIssUrl = UrlHelper.extractTenantFromIssUrl(issUrl);
 
         // assert
-        assertEquals(PITC, tenantFromIssUrl);
+        assertTrue(tenantFromIssUrl.isPresent());
+        assertEquals(PITC, tenantFromIssUrl.get());
     }
 
     @DisplayName("extractTenantFromIssUrl() return input url if url not contains slash")
@@ -31,9 +34,23 @@ public class UrlHelperTest {
         String issUrl = "this_is_not_a_valid_url";
 
         // act
-        String tenantFromIssUrl = UrlHelper.extractTenantFromIssUrl(issUrl);
+        Optional<String> tenantFromIssUrl = UrlHelper.extractTenantFromIssUrl(issUrl);
 
         // assert
-        assertEquals(issUrl, tenantFromIssUrl);
+        assertTrue(tenantFromIssUrl.isPresent());
+        assertEquals(issUrl, tenantFromIssUrl.get());
+    }
+
+    @DisplayName("extractTenantFromIssUrl() return empty if url is null")
+    @Test
+    void extractTenantFromIssUrlReturnEmptyIfUrlIsNull() {
+        // arrange
+        String issUrl = null;
+
+        // act
+        Optional<String> tenantFromIssUrl = UrlHelper.extractTenantFromIssUrl(issUrl);
+
+        // assert
+        assertTrue(tenantFromIssUrl.isEmpty());
     }
 }

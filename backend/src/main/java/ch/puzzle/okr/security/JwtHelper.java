@@ -15,8 +15,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static ch.puzzle.okr.Constants.USER;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -25,6 +28,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class JwtHelper {
     public static final String CLAIM_TENANT = "tenant";
     public static final String CLAIM_ISS = "iss";
+    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS
+            + "' claims in JWT token!";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
@@ -61,36 +66,45 @@ public class JwtHelper {
 
     public String getTenantFromToken(Jwt token) {
         TokenHelper helper = new TokenHelper();
+        List<Function<Jwt, Optional<String>>> getTenantFromTokenFunctions = Arrays.asList( //
+                helper::getTenantFromTokenUsingClaimIss, //
+                helper::getTenantFromTokenUsingClaimTenant //
+        );
 
-        Optional<String> tenantUsingClaimIss = helper.getTenantFromTokenUsingClaimIss(token);
-        if (tenantUsingClaimIss.isPresent()) {
-            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimIss.get());
-        }
+        return getFirstMatchingTenantUsingListOfHelperFunctions(token, getTenantFromTokenFunctions);
+    }
 
-        Optional<String> tenantUsingClaimTenant = helper.getTenantFromTokenUsingClaimTenant(token);
-        if (tenantUsingClaimTenant.isPresent()) {
-            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimTenant.get());
-        }
+    private String getFirstMatchingTenantUsingListOfHelperFunctions(Jwt token,
+            List<Function<Jwt, Optional<String>>> getTenantFunctions) {
 
-        logErrorAndThrowException(CLAIM_TENANT, CLAIM_ISS);
-        return null; // only to make the compiler happy
+        return getTenantFunctions.stream() //
+                .map(func -> func.apply(token)) //
+                .filter(Optional::isPresent) //
+                .map(Optional::get) //
+                .map(this::getMatchingTenantFromConfigOrThrow) //
+                .findFirst() //
+                .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
     }
 
     public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
         ClaimHelper helper = new ClaimHelper();
+        List<Function<JWTClaimsSet, Optional<String>>> getTenantFromClaimsSetFunctions = Arrays.asList( //
+                helper::getTenantFromClaimsSetUsingClaimIss, //
+                helper::getTenantFromClaimsSetUsingClaimTenant //
+        );
 
-        Optional<String> tenantUsingClaimIss = helper.getTenantFromClaimsSetUsingClaimIss(claimSet);
-        if (tenantUsingClaimIss.isPresent()) {
-            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimIss.get());
-        }
+        return getFirstMatchingTenantUsingListOfHelperFunctions(claimSet, getTenantFromClaimsSetFunctions);
+    }
 
-        Optional<String> tenantUsingClaimTenant = helper.getTenantFromClaimsSetUsingClaimTenant(claimSet);
-        if (tenantUsingClaimTenant.isPresent()) {
-            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimTenant.get());
-        }
+    private String getFirstMatchingTenantUsingListOfHelperFunctions(JWTClaimsSet claimSet,
+            List<Function<JWTClaimsSet, Optional<String>>> getTenantFunctions) {
 
-        logErrorAndThrowException(CLAIM_TENANT, CLAIM_ISS);
-        return null; // only to make the compiler happy
+        return getTenantFunctions.stream() //
+                .map(func -> func.apply(claimSet)) //
+                .filter(Optional::isPresent) //
+                .map(Optional::get) //
+                .map(this::getMatchingTenantFromConfigOrThrow).findFirst() //
+                .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
     }
 
     private String getMatchingTenantFromConfigOrThrow(String tenant) {
@@ -98,12 +112,6 @@ public class JwtHelper {
         return this.tenantConfigProvider.getTenantConfigById(tenant)
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant {0}", tenant)))
                 .tenantId();
-    }
-
-    private void logErrorAndThrowException(String tenant, String iss) throws RuntimeException {
-        String errorInfo = "* Missing `" + tenant + "` and '" + iss + "' claims in JWT token!";
-        logger.error(errorInfo);
-        throw new RuntimeException(errorInfo);
     }
 
 }

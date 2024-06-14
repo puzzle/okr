@@ -10,7 +10,10 @@ public class JwtStatusLogger {
     private static final Logger logger = LoggerFactory.getLogger(ClaimHelper.class);
 
     public static void logStatus(String claim, Object context, String result) {
-        boolean isOk = result != null;
+        logStatus(claim, context, result != null);
+    }
+
+    public static void logStatus(String claim, Object context, boolean isOk) {
         if (isOk) {
             logger.info("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
                     statusToSymbol(isOk));

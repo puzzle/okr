@@ -4,6 +4,8 @@ import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.security.helper.ClaimHelper;
+import ch.puzzle.okr.security.helper.TokenHelper;
 import com.nimbusds.jwt.JWTClaimsSet;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -13,15 +15,16 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.util.Map;
+import java.util.Optional;
 
 import static ch.puzzle.okr.Constants.USER;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class JwtHelper {
-    private static final String CLAIM_TENANT = "tenant";
+    public static final String CLAIM_TENANT = "tenant";
+    public static final String CLAIM_ISS = "iss";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
@@ -57,22 +60,50 @@ public class JwtHelper {
     }
 
     public String getTenantFromToken(Jwt token) {
-        return getTenantOrThrow(token.getClaimAsString(CLAIM_TENANT));
+        TokenHelper helper = new TokenHelper();
+
+        Optional<String> tenantUsingClaimIss = helper.getTenantFromTokenUsingClaimIss(token);
+        if (tenantUsingClaimIss.isPresent()) {
+            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimIss.get());
+        }
+
+        Optional<String> tenantUsingClaimTenant = helper.getTenantFromTokenUsingClaimTenant(token);
+        if (tenantUsingClaimTenant.isPresent()) {
+            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimTenant.get());
+        }
+
+        logErrorAndThrowException(CLAIM_TENANT, CLAIM_ISS);
+        return null; // only to make the compiler happy
     }
 
-    private String getTenantOrThrow(String tenant) {
+    public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
+        ClaimHelper helper = new ClaimHelper();
+
+        Optional<String> tenantUsingClaimIss = helper.getTenantFromClaimsSetUsingClaimIss(claimSet);
+        if (tenantUsingClaimIss.isPresent()) {
+            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimIss.get());
+        }
+
+        Optional<String> tenantUsingClaimTenant = helper.getTenantFromClaimsSetUsingClaimTenant(claimSet);
+        if (tenantUsingClaimTenant.isPresent()) {
+            return getMatchingTenantFromConfigOrThrow(tenantUsingClaimTenant.get());
+        }
+
+        logErrorAndThrowException(CLAIM_TENANT, CLAIM_ISS);
+        return null; // only to make the compiler happy
+    }
+
+    private String getMatchingTenantFromConfigOrThrow(String tenant) {
         // Ensure we return only tenants for realms which really exist
         return this.tenantConfigProvider.getTenantConfigById(tenant)
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant {0}", tenant)))
                 .tenantId();
     }
 
-    public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
-        try {
-            return this.getTenantOrThrow(claimSet.getStringClaim(CLAIM_TENANT));
-        } catch (ParseException e) {
-            throw new RuntimeException("Missing `tenant` claim in JWT token!", e);
-        }
-
+    private void logErrorAndThrowException(String tenant, String iss) throws RuntimeException {
+        String errorInfo = "* Missing `" + tenant + "` and '" + iss + "' claims in JWT token!";
+        logger.error(errorInfo);
+        throw new RuntimeException(errorInfo);
     }
+
 }

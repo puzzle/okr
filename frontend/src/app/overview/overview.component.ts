@@ -69,43 +69,51 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.loadOverview(quarterId, teamIds, objectiveQueryString, reload);
   }
 
-  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string, reload?: boolean | null) {
+  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string, reload?: boolean | null): void {
     if (this.isOverview) {
-      this.overviewService
-        .getOverview(quarterId, teamIds, objectiveQuery)
-        .pipe(
-          catchError(() => {
-            this.loadOverview();
-            return EMPTY;
-          }),
-        )
-        .subscribe((dashboard) => {
-          this.hasAdminAccess.next(dashboard.adminAccess);
-          this.overviewEntities$.next(dashboard.overviews);
-        });
+      this.loadOverviewData(quarterId, teamIds, objectiveQuery);
     } else {
-      this.alignmentService
-        .getAlignmentByFilter(quarterId, teamIds, objectiveQuery)
-        .pipe(
-          catchError(() => {
-            this.loadOverview();
-            return EMPTY;
-          }),
-        )
-        .subscribe((alignmentLists: AlignmentLists) => {
-          if (reload != null) {
-            let alignmentObjectReload: AlignmentObject = {
-              objectId: 0,
-              objectTitle: 'reload',
-              objectType: reload.toString(),
-              objectTeamName: '',
-              objectState: null,
-            };
-            alignmentLists.alignmentObjectDtoList.push(alignmentObjectReload);
-          }
-          this.alignmentLists$.next(alignmentLists);
-        });
+      this.loadAlignmentData(quarterId, teamIds, objectiveQuery, reload);
     }
+  }
+
+  loadOverviewData(quarterId?: number, teamIds?: number[], objectiveQuery?: string): void {
+    this.overviewService
+      .getOverview(quarterId, teamIds, objectiveQuery)
+      .pipe(
+        catchError(() => {
+          this.loadOverview();
+          return EMPTY;
+        }),
+      )
+      .subscribe((dashboard) => {
+        this.hasAdminAccess.next(dashboard.adminAccess);
+        this.overviewEntities$.next(dashboard.overviews);
+      });
+  }
+
+  loadAlignmentData(quarterId?: number, teamIds?: number[], objectiveQuery?: string, reload?: boolean | null): void {
+    this.alignmentService
+      .getAlignmentByFilter(quarterId, teamIds, objectiveQuery)
+      .pipe(
+        catchError(() => {
+          this.loadOverview();
+          return EMPTY;
+        }),
+      )
+      .subscribe((alignmentLists: AlignmentLists) => {
+        if (reload != null) {
+          let alignmentObjectReload: AlignmentObject = {
+            objectId: 0,
+            objectTitle: 'reload',
+            objectType: reload.toString(),
+            objectTeamName: '',
+            objectState: null,
+          };
+          alignmentLists.alignmentObjectDtoList.push(alignmentObjectReload);
+        }
+        this.alignmentLists$.next(alignmentLists);
+      });
   }
 
   ngOnDestroy(): void {

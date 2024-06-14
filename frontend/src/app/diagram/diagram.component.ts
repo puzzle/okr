@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
-import { map, Observable, Subject, zip } from 'rxjs';
+import { map, Observable, of, Subject, zip } from 'rxjs';
 import { AlignmentLists } from '../shared/types/model/AlignmentLists';
 import cytoscape from 'cytoscape';
 import {
@@ -19,6 +19,8 @@ import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { Router } from '@angular/router';
 import { AlignmentObject } from '../shared/types/model/AlignmentObject';
 import { AlignmentConnection } from '../shared/types/model/AlignmentConnection';
+import { Zone } from '../shared/types/enums/Zone';
+import { ObjectiveState } from '../shared/types/enums/ObjectiveState';
 
 @Component({
   selector: 'app-diagram',
@@ -29,7 +31,6 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   private alignmentData$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
   cy!: cytoscape.Core;
   diagramData: any[] = [];
-  noAlignmentData: boolean = false;
   alignmentDataCache: AlignmentLists | null = null;
 
   constructor(
@@ -51,7 +52,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       let lastAlignmentItem: AlignmentObject =
         alignmentData.alignmentObjectDtoList[alignmentData.alignmentObjectDtoList.length - 1];
 
-      let diagramReloadRequired: boolean =
+      const diagramReloadRequired: boolean =
         lastAlignmentItem?.objectTitle === 'reload'
           ? lastAlignmentItem?.objectType === 'true'
           : JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData);
@@ -70,6 +71,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanUpDiagram();
+    this.alignmentData.unsubscribe();
   }
 
   generateDiagram(): void {
@@ -140,10 +142,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   }
 
   prepareDiagramData(alignmentData: AlignmentLists): void {
-    if (alignmentData.alignmentObjectDtoList.length == 0) {
-      this.noAlignmentData = true;
-    } else {
-      this.noAlignmentData = false;
+    if (alignmentData.alignmentObjectDtoList.length != 0) {
       this.generateNodes(alignmentData);
     }
   }
@@ -153,24 +152,20 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     let diagramElements: any[] = [];
     alignmentData.alignmentObjectDtoList.forEach((alignmentObject: AlignmentObject) => {
       if (alignmentObject.objectType == 'objective') {
-        let observable: Observable<any> = new Observable((observer) => {
-          let node = {
-            data: {
-              id: 'Ob' + alignmentObject.objectId,
-            },
-            style: {
-              'background-image': this.generateObjectiveSVG(
-                alignmentObject.objectTitle,
-                alignmentObject.objectTeamName,
-                alignmentObject.objectState!,
-              ),
-            },
-          };
-          diagramElements.push(node);
-          observer.next(node);
-          observer.complete();
-        });
-        observableArray.push(observable);
+        let node = {
+          data: {
+            id: 'Ob' + alignmentObject.objectId,
+          },
+          style: {
+            'background-image': this.generateObjectiveSVG(
+              alignmentObject.objectTitle,
+              alignmentObject.objectTeamName,
+              alignmentObject.objectState!,
+            ),
+          },
+        };
+        diagramElements.push(node);
+        observableArray.push(of(node));
       } else {
         let observable: Observable<void> = this.keyResultService.getFullKeyResult(alignmentObject.objectId).pipe(
           map((keyResult: KeyResult) => {
@@ -248,11 +243,11 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   generateObjectiveSVG(title: string, teamName: string, state: string): string {
     switch (state) {
-      case 'ONGOING':
+      case ObjectiveState.ONGOING:
         return generateObjectiveSVG(title, teamName, getOnGoingIcon);
-      case 'SUCCESSFUL':
+      case ObjectiveState.SUCCESSFUL:
         return generateObjectiveSVG(title, teamName, getSuccessfulIcon);
-      case 'NOTSUCCESSFUL':
+      case ObjectiveState.NOTSUCCESSFUL:
         return generateObjectiveSVG(title, teamName, getNotSuccessfulIcon);
       default:
         return generateObjectiveSVG(title, teamName, getDraftIcon);
@@ -261,13 +256,13 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   generateKeyResultSVG(title: string, teamName: string, state: string | undefined): string {
     switch (state) {
-      case 'FAIL':
+      case Zone.FAIL:
         return generateKeyResultSVG(title, teamName, '#BA3838', 'white');
-      case 'COMMIT':
+      case Zone.COMMIT:
         return generateKeyResultSVG(title, teamName, '#FFD600', 'black');
-      case 'TARGET':
+      case Zone.TARGET:
         return generateKeyResultSVG(title, teamName, '#1E8A29', 'black');
-      case 'STRETCH':
+      case Zone.STRETCH:
         return generateKeyResultSVG(title, teamName, '#1E5A96', 'white');
       default:
         return generateNeutralKeyResultSVG(title, teamName);

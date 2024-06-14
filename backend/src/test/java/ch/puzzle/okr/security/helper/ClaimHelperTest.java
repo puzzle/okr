@@ -85,7 +85,7 @@ public class ClaimHelperTest {
 
     @DisplayName("getTenantFromClaimsSetUsingClaimIss() return tenant if claim iss is found")
     @ParameterizedTest
-    @ValueSource(strings = {"https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc"})
+    @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
     void getTenantFromClaimsSetUsingClaimIssReturnTenantIfClaimIssFound(String issUrl) throws ParseException {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);

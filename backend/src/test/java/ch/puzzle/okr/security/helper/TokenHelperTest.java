@@ -70,7 +70,7 @@ public class TokenHelperTest {
 
     @DisplayName("getTenantFromTokenUsingClaimIss() return tenant if claim iss is found")
     @ParameterizedTest
-    @ValueSource(strings = {"https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc"})
+    @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
     void getTenantFromTokenUsingClaimIssReturnTenantIfClaimIssFound(String issUrl) {
         // arrange
         Jwt tokenMock = mock(Jwt.class);

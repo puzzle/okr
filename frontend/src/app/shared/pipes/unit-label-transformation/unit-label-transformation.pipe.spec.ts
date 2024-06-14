@@ -14,17 +14,17 @@ describe('UnitLabelTransformationPipe', () => {
 
   it('Format FTE label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.FTE)).toBe(Unit.FTE);
+    expect(pipe.transform(Unit.FTE)).toBe('');
   });
 
   it('Format CHF label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.CHF)).toBe(Unit.CHF);
+    expect(pipe.transform(Unit.CHF)).toBe('');
   });
 
   it('Format EUR label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.EUR)).toBe(Unit.EUR);
+    expect(pipe.transform(Unit.EUR)).toBe('');
   });
 
   it('Format Number label', () => {

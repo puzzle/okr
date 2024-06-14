@@ -58,11 +58,9 @@ export class ObjectiveDetailComponent {
       .subscribe((result) => {
         if (result?.openNew) {
           this.openAddKeyResultDialog();
-        } else if (result == '' || result == undefined) {
           return;
-        } else {
-          this.refreshDataService.markDataRefresh();
         }
+        this.refreshDataService.markDataRefresh();
       });
   }
 

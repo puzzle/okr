@@ -44,7 +44,7 @@ describe('DiagramComponent', () => {
 
     component.prepareDiagramData(alignmentLists);
     expect(component.generateNodes).toHaveBeenCalled();
-    expect(component.noAlignmentData).toBeFalsy();
+    expect(component.alignmentDataCache?.alignmentObjectDtoList.length).not.toEqual(0);
   });
 
   it('should not call generateElements if alignmentData is empty', () => {
@@ -57,7 +57,6 @@ describe('DiagramComponent', () => {
 
     component.prepareDiagramData(alignmentLists);
     expect(component.generateNodes).not.toHaveBeenCalled();
-    expect(component.noAlignmentData).toBeTruthy();
   });
 
   it('should call prepareDiagramData when Subject receives new data', () => {

@@ -17,4 +17,5 @@ public class Constants {
     public static final String QUARTER = "Quarter";
     public static final String TEAM = "Team";
     public static final String USER = "User";
+    public static final String USER_TEAM = "UserTeam";
 }

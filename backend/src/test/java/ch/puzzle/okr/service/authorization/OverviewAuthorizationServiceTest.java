@@ -15,9 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.*;
-import static ch.puzzle.okr.models.authorization.AuthorizationRole.READ_ALL_PUBLISHED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -30,41 +30,56 @@ class OverviewAuthorizationServiceTest {
     AuthorizationService authorizationService;
     @InjectMocks
     private OverviewAuthorizationService overviewAuthorizationService;
-    private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
+
+    private final long adminTeamId = 5L;
+    private final long memberTeamId = 6L;
+
+    private final AuthorizationUser authorizationUser = new AuthorizationUser(
+            defaultUserWithTeams(1L, List.of(defaultTeam(adminTeamId)), List.of(defaultTeam(memberTeamId))));
+    private final AuthorizationUser okrChampionUser = new AuthorizationUser(defaultOkrChampion(2L));
     private final Overview overview = Overview.Builder.builder()
-            .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(5L).build())
+            .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(adminTeamId).build())
             .withObjectiveTitle("Objective 1").build();
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
-        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(adminTeamId), "");
 
         assertThat(List.of(overview)).hasSameElementsAs(overviews);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void getFilteredOverviewShouldSetWritableProperly(boolean isWritable) {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(authorizationService.isWriteable(authorizationUser, 5L)).thenReturn(isWritable);
+    @Test
+    void getFilteredOverviewShouldSetWritableProperlyToTrue() {
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
-        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(adminTeamId), "");
 
-        assertEquals(isWritable, overviews.get(0).isWriteable());
+        assertTrue(overviews.get(0).isWriteable());
+    }
+
+    @Test
+    void getFilteredOverviewShouldSetWritableProperlyToFalse() {
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
+                .thenReturn(List.of(overview));
+
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(memberTeamId), "");
+
+        assertTrue(overviews.get(0).isWriteable());
     }
 
     @Test
     void getFilteredOverviewShouldReturnEmptyListWhenNotAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(1L, List.of(5L), "", authorizationUser)).thenReturn(List.of());
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
+        when(overviewBusinessService.getFilteredOverview(1L, List.of(adminTeamId), "", authorizationUser)).thenReturn(List.of());
 
-        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(adminTeamId), "");
         assertThat(List.of()).hasSameElementsAs(overviews);
     }
 
@@ -72,10 +87,10 @@ class OverviewAuthorizationServiceTest {
     @ValueSource(booleans = { true, false })
     void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
         if (hasRoleWriteAll) {
-            when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         } else {
-            when(authorizationService.getAuthorizationUser())
-                    .thenReturn(mockAuthorizationUser(defaultUser(5L), List.of(), 7L, List.of(READ_ALL_PUBLISHED)));
+            when(authorizationService.updateOrAddAuthorizationUser())
+                    .thenReturn(mockAuthorizationUser(defaultUser(adminTeamId)));
         }
 
         assertEquals(hasRoleWriteAll, overviewAuthorizationService.hasWriteAllAccess());

@@ -6,8 +6,10 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,6 +40,11 @@ class ActionPersistenceServiceIT {
 
     private static final String UPDATED_ACTION = "Updated Action";
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
     @AfterEach
     void tearDown() {
         try {
@@ -50,6 +57,7 @@ class ActionPersistenceServiceIT {
         } finally {
             createdAction = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test
@@ -118,7 +126,7 @@ class ActionPersistenceServiceIT {
         assertEquals(1L, action.getId());
         assertEquals("Neues Haus", action.getAction());
         assertEquals(1, action.getPriority());
-        assertEquals(true, action.isChecked());
+        assertTrue(action.isChecked());
         assertEquals(8L, action.getKeyResult().getId());
     }
 

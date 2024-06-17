@@ -1,0 +1,9 @@
+#search-member-form-field {
+  width: 100%;
+}
+
+mat-optgroup {
+  & > span {
+    font-size: 0.5rem;
+  }
+}

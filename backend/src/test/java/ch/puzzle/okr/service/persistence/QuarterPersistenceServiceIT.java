@@ -4,7 +4,10 @@ import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +24,16 @@ class QuarterPersistenceServiceIT {
 
     @Autowired
     private QuarterPersistenceService quarterPersistenceService;
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
+    @AfterEach
+    void tearDown() {
+        TenantContext.setCurrentTenant(null);
+    }
 
     @Test
     void shouldReturnSingleQuarterWhenFindingByValidId() {

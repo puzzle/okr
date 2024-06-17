@@ -47,7 +47,7 @@ class ObjectiveBusinessServiceTest {
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+            .withEmail("kaufmann@puzzle.ch").build();
     private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
             .withTeam(team1).withQuarter(quarter).withDescription("This is our description")

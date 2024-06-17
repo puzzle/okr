@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompleteDialogComponent } from './complete-dialog.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 import { TranslateService } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 const dialogMock = {
   close: jest.fn(),
@@ -22,6 +24,7 @@ describe('CompleteDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [FormsModule, ReactiveFormsModule, MatDialogModule, MatIconModule],
       declarations: [CompleteDialogComponent, DialogHeaderComponent],
       providers: [
         { provide: MatDialogRef, useValue: dialogMock },

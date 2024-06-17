@@ -9,11 +9,9 @@ import ch.puzzle.okr.dto.overview.OverviewKeyResultOrdinalDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
-import ch.puzzle.okr.service.business.OrganisationBusinessService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -26,8 +24,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class OverviewMapperTest {
-    @Mock
-    private OrganisationBusinessService organisationBusinessService;
 
     @InjectMocks
     private OverviewMapper overviewMapper;

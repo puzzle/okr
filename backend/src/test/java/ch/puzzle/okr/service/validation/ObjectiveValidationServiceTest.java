@@ -70,7 +70,7 @@ class ObjectiveValidationServiceTest {
     @BeforeEach
     void setUp() {
         this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+                .withEmail("kaufmann@puzzle.ch").build();
         this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
         this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2")
                 .withStartDate(LocalDate.of(2022, 1, 1)).withEndDate(LocalDate.of(2022, 3, 31)).build();
@@ -184,7 +184,7 @@ class ObjectiveValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveInvalid));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_SET_FORBIDDEN", List.of("ModifiedBy",
-                "User{id=1, version=0, username='bkaufmann', firstname='Bob', lastname='Kaufmann', email='kaufmann@puzzle.ch', writeable=false}")));
+                "User{id=1, version=0, firstname='Bob', lastname='Kaufmann', email='kaufmann@puzzle.ch', isOkrChampion='false'}")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

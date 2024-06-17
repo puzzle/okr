@@ -107,7 +107,6 @@
                     <excludes>
                         <exclude>ch/puzzle/okr/models/**</exclude>
                         <exclude>ch/puzzle/okr/dto/**</exclude>
-                        <exclude>ch/puzzle/okr/mapper/**</exclude>
                         <exclude>ch/puzzle/okr/OkrApplication.*</exclude>
                         <exclude>ch/puzzle/okr/Constants.java</exclude>
                         <exclude>ch/puzzle/okr/ErrorKey.java</exclude>

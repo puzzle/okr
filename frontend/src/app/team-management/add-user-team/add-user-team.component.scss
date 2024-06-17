@@ -1,0 +1,12 @@
+.new-team {
+  display: flex;
+
+  > mat-form-field {
+    flex: 0 0 calc(35% + 1rem);
+    padding-right: 1rem;
+    box-sizing: border-box;
+  }
+}
+.tooltip-wrapper {
+  width: fit-content;
+}

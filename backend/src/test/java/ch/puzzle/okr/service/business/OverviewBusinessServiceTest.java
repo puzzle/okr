@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
@@ -22,7 +21,6 @@ import java.util.List;
 import static ch.puzzle.okr.OverviewTestHelper.QUARTER_ID;
 import static ch.puzzle.okr.OverviewTestHelper.teamIds;
 import static ch.puzzle.okr.TestHelper.*;
-import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,31 +47,19 @@ class OverviewBusinessServiceTest {
         return createOverviews(authorizationUser);
     }
 
-    private static List<Overview> createOverviews(AuthorizationUser user, List<Long> teamIds) {
-        List<Overview> overviews = createOverviews(user);
-        long index = 151L;
-        for (Long teamId : teamIds) {
-            overviews.addAll((List.of(
-                    Overview.Builder.builder()
-                            .withOverviewId(OverviewId.Builder.builder().withObjectiveId(51L).withTeamId(teamId)
-                                    .withKeyResultId(index).build())
-                            .withObjectiveTitle("ZZZ Objective").withTeamName("team-" + teamId)
-                            .withObjectiveCreatedOn(LocalDateTime.of(2023, 9, 12, 17, 19))
-                            .withKeyResultTitle("keyResult-" + index++).build(),
-                    Overview.Builder.builder()
-                            .withOverviewId(OverviewId.Builder.builder().withObjectiveId(51L).withTeamId(teamId)
-                                    .withKeyResultId(index).build())
-                            .withObjectiveTitle("ZZZ Objective").withTeamName("team-" + teamId)
-                            .withObjectiveCreatedOn(LocalDateTime.of(2023, 9, 12, 17, 19))
-                            .withKeyResultTitle("keyResult-" + index++).build())));
-        }
-        return overviews;
-    }
-
-    private static List<Overview> createOverviews(AuthorizationUser user) {
+    private static List<Overview> createOverviews(AuthorizationUser authorizationUser) {
         long index = 1L;
-        List<Overview> overviews = new ArrayList<>();
-        for (Long teamId : user.firstLevelTeamIds()) {
+        List<Overview> overviews = new ArrayList<>(List.of(
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(index++).withTeamId(111L).build())
+                        .withObjectiveTitle("Another Team Objective A").withTeamName("team-111")
+                        .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 21, 18, 33)).build(),
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(index++).withTeamId(222L).build())
+                        .withObjectiveTitle("Another Team Objective B").withTeamName("team-222")
+                        .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 1, 8, 53)).build()));
+
+        for (Long teamId : authorizationUser.extractTeamIds()) {
             overviews
                     .addAll((List.of(
                             Overview.Builder.builder()
@@ -91,20 +77,6 @@ class OverviewBusinessServiceTest {
                                             .withTeamId(teamId).build())
                                     .withObjectiveTitle("AAA Objective").withTeamName("firstLevelTeam-" + teamId)
                                     .withObjectiveCreatedOn(LocalDateTime.of(2023, 9, 10, 18, 33)).build())));
-        }
-        for (Long teamId : user.userTeamIds()) {
-            overviews
-                    .addAll(List.of(
-                            Overview.Builder.builder()
-                                    .withOverviewId(OverviewId.Builder.builder().withObjectiveId(index++)
-                                            .withTeamId(teamId).build())
-                                    .withObjectiveTitle("CCC Objective").withTeamName("team-" + teamId)
-                                    .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 21, 18, 33)).build(),
-                            Overview.Builder.builder()
-                                    .withOverviewId(OverviewId.Builder.builder().withObjectiveId(index++)
-                                            .withTeamId(teamId).build())
-                                    .withObjectiveTitle("BBB Objective").withTeamName("team-" + teamId)
-                                    .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 1, 8, 53)).build()));
         }
         return overviews;
     }
@@ -198,60 +170,17 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
-    void getFilteredOverviewShouldReturnSortedListFirstLevelTeamFirst() {
-        Long firstLevelTeamId = 9L;
-        AuthorizationUser user = mockAuthorizationUser(defaultUser(13L), List.of(firstLevelTeamId, 2L),
-                firstLevelTeamId, List.of());
-        when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))
-                .thenReturn(createOverviews(user));
-
-        List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, null, user);
-
-        assertThat(List.of(OverviewId.of(firstLevelTeamId, 2L, null, null),
-                OverviewId.of(firstLevelTeamId, 3L, null, null), OverviewId.of(firstLevelTeamId, 1L, null, null),
-                OverviewId.of(firstLevelTeamId, 5L, null, null), OverviewId.of(firstLevelTeamId, 4L, null, null),
-                OverviewId.of(2L, 7L, null, null), OverviewId.of(2L, 6L, null, null)))
-                        .hasSameElementsAs(getOverviewIds(overviews));
-    }
-
-    @Test
-    void getFilteredOverviewShouldReturnSortedListFirstLevelTeamsFirst() {
-        List<Long> userTeamIds = List.of(1L, 2L);
-        List<Long> firstLevelTeamIds = List.of(9L, 5L);
-        User user = defaultUser(13L);
-        AuthorizationUser authUser = new AuthorizationUser(
-                User.Builder.builder().withId(user.getId()).withUsername(user.getUsername())
-                        .withFirstname(user.getFirstname()).withLastname(user.getLastname()).withEmail(user.getEmail())
-                        .build(),
-                userTeamIds, firstLevelTeamIds, List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT, WRITE_ALL));
-
-        when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, authUser))
-                .thenReturn(createOverviews(authUser, List.of(4L, 3L)));
-
-        List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, null, authUser);
-
-        assertThat(List.of(OverviewId.of(1L, 8L, null, null), OverviewId.of(1L, 7L, null, null),
-                OverviewId.of(2L, 10L, null, null), OverviewId.of(2L, 9L, null, null),
-                OverviewId.of(5L, 5L, null, null), OverviewId.of(5L, 6L, null, null), OverviewId.of(5L, 4L, null, null),
-                OverviewId.of(9L, 2L, null, null), OverviewId.of(9L, 3L, null, null), OverviewId.of(9L, 1L, null, null),
-                OverviewId.of(3L, 51L, 153L, null), OverviewId.of(3L, 51L, 154L, null),
-                OverviewId.of(4L, 51L, 151L, null), OverviewId.of(4L, 51L, 152L, null)))
-                        .hasSameElementsAs(getOverviewIds(overviews));
-    }
-
-    @Test
     void getFilteredOverviewShouldReturnSortedListUserTeamsFirst() {
         Long firstLevelTeamId = 5L;
-        AuthorizationUser user = mockAuthorizationUser(defaultUser(13L), List.of(9L, 2L), firstLevelTeamId, List.of());
+        AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))
                 .thenReturn(createOverviews(user));
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, null, user);
 
-        assertThat(List.of(OverviewId.of(2L, 7L, null, null), OverviewId.of(2L, 6L, null, null),
-                OverviewId.of(9L, 5L, null, null), OverviewId.of(9L, 4L, null, null),
-                OverviewId.of(firstLevelTeamId, 2L, null, null), OverviewId.of(firstLevelTeamId, 3L, null, null),
-                OverviewId.of(firstLevelTeamId, 1L, null, null))).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(List.of(OverviewId.of(1L, 4L, null, null), OverviewId.of(1L, 5L, null, null),
+                OverviewId.of(1L, 3L, null, null), OverviewId.of(111L, 1L, null, null),
+                OverviewId.of(222L, 2L, null, null))).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     private List<OverviewId> getOverviewIds(List<Overview> overviews) {

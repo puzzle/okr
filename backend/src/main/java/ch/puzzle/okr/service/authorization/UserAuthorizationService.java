@@ -1,30 +1,61 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
+import static ch.puzzle.okr.Constants.USER;
 
 @Service
 public class UserAuthorizationService {
     private final UserBusinessService userBusinessService;
     private final AuthorizationService authorizationService;
 
-    public UserAuthorizationService(UserBusinessService userBusinessService,
-            AuthorizationService authorizationService) {
+    private final TeamAuthorizationService teamAuthorizationService;
+
+    public UserAuthorizationService(UserBusinessService userBusinessService, AuthorizationService authorizationService,
+            TeamAuthorizationService teamAuthorizationService) {
         this.userBusinessService = userBusinessService;
         this.authorizationService = authorizationService;
+        this.teamAuthorizationService = teamAuthorizationService;
     }
 
     public List<User> getAllUsers() {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        boolean isWritable = hasRoleWriteAll(authorizationUser);
-        List<User> allUsers = userBusinessService.getAllUsers();
-        allUsers.forEach(user -> user.setWriteable(isWritable));
+        var allUsers = userBusinessService.getAllUsers();
+        allUsers.forEach(this::setTeamWritableForUser);
         return allUsers;
+    }
+
+    private void setTeamWritableForUser(User user) {
+        user.getUserTeamList().forEach(this::setTeamWritableForUserTeam);
+    }
+
+    private void setTeamWritableForUserTeam(UserTeam userTeam) {
+        var team = userTeam.getTeam();
+        team.setWriteable(teamAuthorizationService.isUserWriteAllowed(team.getId()));
+    }
+
+    public User getById(long id) {
+        var user = userBusinessService.getUserById(id);
+        setTeamWritableForUser(user);
+        return user;
+    }
+
+    public User setIsOkrChampion(long id, boolean isOkrChampion) {
+        var user = userBusinessService.getUserById(id);
+        AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
+        return userBusinessService.setIsOkrChampion(user, isOkrChampion);
+    }
+
+    public List<User> createUsers(List<User> userList) {
+        AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
+        return userBusinessService.createUsers(userList);
     }
 }

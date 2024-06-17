@@ -11,6 +11,8 @@ services:
       POSTGRES_DB: okr
     ports:
       - 5432:5432
+    volumes:
+      - ./dataset:/docker-entrypoint-initdb.d
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.3
@@ -18,7 +20,7 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=keycloak
     volumes:
-       - ./config/realm-export.json:/opt/keycloak/data/import/realm.json
+       - ./config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json
     command:
       - start-dev
       - --import-realm

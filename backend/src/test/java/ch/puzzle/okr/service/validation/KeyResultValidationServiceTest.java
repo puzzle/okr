@@ -39,7 +39,7 @@ class KeyResultValidationServiceTest {
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
 
     private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+            .withEmail("kaufmann@puzzle.ch").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Objective objective = Objective.Builder.builder().withId(1L).withTitle("Objective 1")

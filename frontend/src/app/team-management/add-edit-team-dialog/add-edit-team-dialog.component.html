@@ -1,0 +1,44 @@
+<section mat-dialog-title>
+  <app-dialog-header [dialogTitle]="data ? 'Team bearbeiten' : 'Team erfassen'"></app-dialog-header>
+</section>
+
+<mat-dialog-content>
+  <div class="dialog-content" tabindex="-1">
+    <div class="w-100 d-flex justify-content-between align-items-center">
+      <form [formGroup]="teamForm" class="d-flex flex-column flex-wrap container p-0">
+        <div class="input-style gap-2 col-12">
+          <label class="text-black" for="name">Teamname</label>
+          <input
+            matInput
+            [attr.data-testId]="'add-team-name'"
+            class="dialog-form-field"
+            [ngClass]="formInputCheck(teamForm, 'name')"
+            formControlName="name"
+            id="name"
+          />
+          <mat-error *ngIf="hasFormFieldErrors(teamForm, 'name')">
+            <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
+          </mat-error>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
+    <div class="d-flex p-0">
+      <button
+        [attr.data-testId]="'add-team-save'"
+        [disabled]="teamForm.invalid"
+        color="primary"
+        mat-flat-button
+        type="submit"
+        (click)="saveTeam()"
+      >
+        Speichern
+      </button>
+      <button color="primary" mat-button mat-dialog-close class="ms-2">Abbrechen</button>
+    </div>
+  </div>
+</mat-dialog-actions>

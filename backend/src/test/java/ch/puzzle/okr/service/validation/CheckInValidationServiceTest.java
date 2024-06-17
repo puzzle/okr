@@ -40,7 +40,7 @@ class CheckInValidationServiceTest {
     CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
 
     private final User user = User.Builder.builder().withId(1L).withFirstname("Ruedi").withLastname("Grochde")
-            .withUsername("rgrochde").withEmail("grochde@puzzle.ch").build();
+            .withEmail("grochde@puzzle.ch").build();
     private final Team team = Team.Builder.builder().withId(1L).withName("Team4").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final Objective objective = Objective.Builder.builder().withId(1L).withTitle("Objective 1")

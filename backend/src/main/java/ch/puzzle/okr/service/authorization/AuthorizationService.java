@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
@@ -9,6 +8,7 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.security.JwtHelper;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.security.core.Authentication;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import static ch.puzzle.okr.Constants.*;
 import static ch.puzzle.okr.ErrorKey.*;
-import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 
 @Service
 public class AuthorizationService {
@@ -27,51 +26,44 @@ public class AuthorizationService {
     private final AuthorizationRegistrationService authorizationRegistrationService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ActionPersistenceService actionPersistenceService;
-    private final JwtConverterFactory jwtConverterFactory;
+    private final JwtHelper jwtHelper;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
             ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-            JwtConverterFactory jwtConverterFactory) {
+            JwtHelper jwtHelper) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.jwtConverterFactory = jwtConverterFactory;
+        this.jwtHelper = jwtHelper;
     }
 
-    public static boolean hasRoleReadTeamsDraft(AuthorizationUser user) {
-        return user.roles().contains(READ_TEAMS_DRAFT);
+    public static boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Long teamId) {
+        if (hasRoleWriteAndReadAll(authorizationUser)) {
+            return true;
+        }
+        return authorizationUser.isUserAdminInTeam(teamId);
     }
 
-    public static boolean hasRoleReadTeamDraft(AuthorizationUser user) {
-        return user.roles().contains(READ_TEAM_DRAFT);
+    public static void checkRoleWriteAndReadAll(AuthorizationUser user,
+            OkrResponseStatusException notAuthorizedException) {
+        if (hasRoleWriteAndReadAll(user)) {
+            return;
+        }
+        throw notAuthorizedException;
     }
 
-    public static boolean hasRoleReadAllPublished(AuthorizationUser user) {
-        return user.roles().contains(READ_ALL_PUBLISHED);
+    public static boolean hasRoleWriteAndReadAll(AuthorizationUser user) {
+        return user.user().isOkrChampion();
     }
 
-    public static boolean hasRoleReadAllDraft(AuthorizationUser user) {
-        return user.roles().contains(READ_ALL_DRAFT);
-    }
-
-    public static boolean hasRoleWriteAll(AuthorizationUser user) {
-        return user.roles().contains(WRITE_ALL);
-    }
-
-    public static boolean hasRoleWriteAllTeams(AuthorizationUser user) {
-        return user.roles().contains(WRITE_ALL_TEAMS);
-    }
-
-    public static boolean hasRoleWriteTeam(AuthorizationUser user) {
-        return user.roles().contains(WRITE_TEAM);
-    }
-
-    public AuthorizationUser getAuthorizationUser() {
+    public AuthorizationUser updateOrAddAuthorizationUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
-        User user = jwtConverterFactory.getJwtUserConverter().convert(token);
-        return authorizationRegistrationService.registerAuthorizationUser(user, token);
+
+        User user = jwtHelper.getUserFromJwt(token);
+
+        return authorizationRegistrationService.updateOrAddAuthorizationUser(user);
     }
 
     public void hasRoleReadByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
@@ -91,7 +83,7 @@ public class AuthorizationService {
 
     public void hasRoleCreateOrUpdate(Objective objective, AuthorizationUser authorizationUser) {
 
-        hasRoleWrite(authorizationUser, objective.getTeam(),
+        hasRoleWriteForTeam(authorizationUser, objective.getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
@@ -99,7 +91,7 @@ public class AuthorizationService {
         Objective objective = objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(),
                 authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
 
-        hasRoleWrite(authorizationUser, objective.getTeam(),
+        hasRoleWriteForTeam(authorizationUser, objective.getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
@@ -107,32 +99,32 @@ public class AuthorizationService {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(),
                 authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
 
-        hasRoleWrite(authorizationUser, objective.getTeam(),
+        hasRoleWriteForTeam(authorizationUser, objective.getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
-    public boolean isWriteable(Objective objective, AuthorizationUser authorizationUser) {
-        return isWriteable(authorizationUser, objective.getTeam());
+    public boolean hasRoleWriteForTeam(Objective objective, AuthorizationUser authorizationUser) {
+        return hasRoleWriteForTeam(authorizationUser, objective.getTeam());
     }
 
-    public boolean isWriteable(KeyResult keyResult, AuthorizationUser authorizationUser) {
+    public boolean hasRoleWriteForTeam(KeyResult keyResult, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(),
                 authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
-        return isWriteable(authorizationUser, objective.getTeam());
+        return hasRoleWriteForTeam(authorizationUser, objective.getTeam());
     }
 
-    public boolean isWriteable(CheckIn checkIn, AuthorizationUser authorizationUser) {
+    public boolean hasRoleWriteForTeam(CheckIn checkIn, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(),
                 authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
 
-        return isWriteable(authorizationUser, objective.getTeam());
+        return hasRoleWriteForTeam(authorizationUser, objective.getTeam());
     }
 
     public void hasRoleCreateOrUpdateByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, OBJECTIVE));
 
-        hasRoleWrite(authorizationUser, objective.getTeam(),
+        hasRoleWriteForTeam(authorizationUser, objective.getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
@@ -140,7 +132,7 @@ public class AuthorizationService {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, OBJECTIVE));
 
-        hasRoleWrite(authorizationUser, objective.getTeam(),
+        hasRoleWriteForTeam(authorizationUser, objective.getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, OBJECTIVE));
     }
 
@@ -148,13 +140,13 @@ public class AuthorizationService {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(keyResultId, authorizationUser,
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
 
-        hasRoleWrite(authorizationUser, objective.getTeam(),
+        hasRoleWriteForTeam(authorizationUser, objective.getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, KEY_RESULT));
     }
 
     public void hasRoleDeleteByActionId(Long actionId, AuthorizationUser authorizationUser) {
         Action action = actionPersistenceService.findById(actionId);
-        hasRoleWrite(authorizationUser, action.getKeyResult().getObjective().getTeam(),
+        hasRoleWriteForTeam(authorizationUser, action.getKeyResult().getObjective().getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, ACTION));
 
     }
@@ -163,28 +155,19 @@ public class AuthorizationService {
         Objective objective = objectivePersistenceService.findObjectiveByCheckInId(checkInId, authorizationUser,
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
 
-        hasRoleWrite(authorizationUser, objective.getTeam(),
+        hasRoleWriteForTeam(authorizationUser, objective.getTeam(),
                 OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, CHECK_IN));
     }
 
-    private void hasRoleWrite(AuthorizationUser authorizationUser, Team team,
+    private void hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team,
             OkrResponseStatusException notAuthorizedException) {
-        if (isWriteable(authorizationUser, team)) {
+        if (hasRoleWriteForTeam(authorizationUser, team)) {
             return;
         }
         throw notAuthorizedException;
     }
 
-    private boolean isWriteable(AuthorizationUser authorizationUser, Team team) {
-        return isWriteable(authorizationUser, team.getId());
-    }
-
-    public boolean isWriteable(AuthorizationUser authorizationUser, Long teamId) {
-        if (hasRoleWriteAll(authorizationUser)) {
-            return true;
-        } else if (hasRoleWriteAllTeams(authorizationUser) && !authorizationUser.firstLevelTeamIds().contains(teamId)) {
-            return true;
-        } else
-            return hasRoleWriteTeam(authorizationUser) && authorizationUser.userTeamIds().contains(teamId);
+    private boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team) {
+        return hasRoleWriteForTeam(authorizationUser, team.getId());
     }
 }

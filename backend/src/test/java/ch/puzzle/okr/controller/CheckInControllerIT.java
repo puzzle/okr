@@ -30,8 +30,7 @@ import java.time.LocalDateTime;
 import static ch.puzzle.okr.CheckInTestHelpers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -177,5 +176,16 @@ class CheckInControllerIT {
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON_WITHOUT_KEY_RESULT_ID))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @Test
+    void shouldDeleteCheckin() throws Exception {
+        BDDMockito.willDoNothing().given(checkInAuthorizationService).deleteEntityById(anyLong());
+
+        mvc.perform(delete(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON_WITHOUT_KEY_RESULT_ID))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(this.checkInAuthorizationService).deleteEntityById(anyLong());
     }
 }

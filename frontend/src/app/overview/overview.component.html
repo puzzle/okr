@@ -46,7 +46,7 @@
     </div>
 
     <div [class.hidden]="isOverview">
-      <app-diagram [alignmentData]="(alignmentLists$ | async) || emptyAlignmentList"></app-diagram>
+      <app-diagram [alignmentData$]="alignmentLists$"></app-diagram>
     </div>
   </div>
 </div>

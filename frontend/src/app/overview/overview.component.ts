@@ -7,7 +7,6 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../shared/common';
 import { AlignmentService } from '../shared/services/alignment.service';
 import { AlignmentLists } from '../shared/types/model/AlignmentLists';
-import { AlignmentObject } from '../shared/types/model/AlignmentObject';
 
 @Component({
   selector: 'app-overview',
@@ -18,7 +17,6 @@ import { AlignmentObject } from '../shared/types/model/AlignmentObject';
 export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
   alignmentLists$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
-  emptyAlignmentList: AlignmentLists = { alignmentObjectDtoList: [], alignmentConnectionDtoList: [] } as AlignmentLists;
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
@@ -34,7 +32,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((reload: boolean | null | undefined) => this.loadOverviewWithParams(reload));
+      .subscribe(() => this.loadOverviewWithParams());
 
     combineLatest([
       refreshDataService.teamFilterReady.asObservable(),
@@ -58,7 +56,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadOverviewWithParams(reload?: boolean | null) {
+  loadOverviewWithParams() {
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
     const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
@@ -66,14 +64,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
     const objectiveQueryString = getQueryString(objectiveQuery);
-    this.loadOverview(quarterId, teamIds, objectiveQueryString, reload);
+    this.loadOverview(quarterId, teamIds, objectiveQueryString);
   }
 
-  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string, reload?: boolean | null): void {
+  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string): void {
     if (this.isOverview) {
       this.loadOverviewData(quarterId, teamIds, objectiveQuery);
     } else {
-      this.loadAlignmentData(quarterId, teamIds, objectiveQuery, reload);
+      this.loadAlignmentData(quarterId, teamIds, objectiveQuery);
     }
   }
 
@@ -92,7 +90,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  loadAlignmentData(quarterId?: number, teamIds?: number[], objectiveQuery?: string, reload?: boolean | null): void {
+  loadAlignmentData(quarterId?: number, teamIds?: number[], objectiveQuery?: string): void {
     this.alignmentService
       .getAlignmentByFilter(quarterId, teamIds, objectiveQuery)
       .pipe(
@@ -102,16 +100,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe((alignmentLists: AlignmentLists) => {
-        if (reload != null) {
-          let alignmentObjectReload: AlignmentObject = {
-            objectId: 0,
-            objectTitle: 'reload',
-            objectType: reload.toString(),
-            objectTeamName: '',
-            objectState: null,
-          };
-          alignmentLists.alignmentObjectDtoList.push(alignmentObjectReload);
-        }
         this.alignmentLists$.next(alignmentLists);
       });
   }

@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OverviewAuthorizationServiceTest {
@@ -34,6 +35,64 @@ class OverviewAuthorizationServiceTest {
     private final Overview overview = Overview.Builder.builder()
             .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(5L).build())
             .withObjectiveTitle("Objective 1").build();
+
+    @DisplayName("getFilteredOverview() should do nothing when OverviewId is null")
+    @Test
+    void getFilteredOverviewShouldDoNothingWhenOverviewIdIsNull() {
+        // arrange
+        Overview overviewWithoutOverviewId = mock(Overview.class);
+        when(overviewWithoutOverviewId.getOverviewId()).thenReturn(null);
+
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
+                .thenReturn(List.of(overviewWithoutOverviewId));
+
+        // act
+        overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+
+        // assert
+        verify(overviewWithoutOverviewId, never()).setWriteable(anyBoolean());
+    }
+
+    @DisplayName("getFilteredOverview() should do nothing when TeamId is null")
+    @Test
+    void getFilteredOverviewShouldDoNothingWhenTeamIdIsNull() {
+        // arrange
+        OverviewId overviewId = mock(OverviewId.class);
+        when(overviewId.getTeamId()).thenReturn(null);
+        Overview overviewWithoutTeamId = mock(Overview.class);
+        when(overviewWithoutTeamId.getOverviewId()).thenReturn(overviewId);
+
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
+                .thenReturn(List.of(overviewWithoutTeamId));
+
+        // act
+        overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+
+        // assert
+        verify(overviewWithoutTeamId, never()).setWriteable(anyBoolean());
+    }
+
+    @DisplayName("getFilteredOverview() should do nothing when ObjectiveId is null")
+    @Test
+    void getFilteredOverviewShouldDoNothingWhenObjectiveIdIsNull() {
+        // arrange
+        OverviewId overviewId = mock(OverviewId.class);
+        when(overviewId.getObjectiveId()).thenReturn(null);
+        Overview overviewWithoutObjectiveId = mock(Overview.class);
+        when(overviewWithoutObjectiveId.getOverviewId()).thenReturn(overviewId);
+
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
+                .thenReturn(List.of(overviewWithoutObjectiveId));
+
+        // act
+        overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
+
+        // assert
+        verify(overviewWithoutObjectiveId, never()).setWriteable(anyBoolean());
+    }
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenAuthorized() {

@@ -121,7 +121,7 @@ describe('OverviewComponent', () => {
       routerHarness.detectChanges();
       component.loadOverviewWithParams();
       expect(overviewService.getOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
-      expect(component.loadOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam, undefined);
+      expect(component.loadOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
     },
   );
 
@@ -145,7 +145,7 @@ describe('OverviewComponent', () => {
     jest.spyOn(overviewService, 'getOverview');
     component.isOverview = true;
 
-    component.loadOverview(3, [5, 6], '', null);
+    component.loadOverview(3, [5, 6], '');
     expect(overviewService.getOverview).toHaveBeenCalled();
   });
 
@@ -154,7 +154,7 @@ describe('OverviewComponent', () => {
     component.isOverview = false;
     fixture.detectChanges();
 
-    component.loadOverview(3, [5, 6], '', null);
+    component.loadOverview(3, [5, 6], '');
     expect(alignmentService.getAlignmentByFilter).toHaveBeenCalled();
   });
 

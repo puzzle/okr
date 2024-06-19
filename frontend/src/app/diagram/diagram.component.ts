@@ -21,6 +21,7 @@ import { AlignmentObject } from '../shared/types/model/AlignmentObject';
 import { AlignmentConnection } from '../shared/types/model/AlignmentConnection';
 import { Zone } from '../shared/types/enums/Zone';
 import { ObjectiveState } from '../shared/types/enums/ObjectiveState';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-diagram',
@@ -28,39 +29,27 @@ import { ObjectiveState } from '../shared/types/enums/ObjectiveState';
   styleUrl: './diagram.component.scss',
 })
 export class DiagramComponent implements AfterViewInit, OnDestroy {
-  private alignmentData$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
+  @Input()
+  public alignmentData$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
   cy!: cytoscape.Core;
   diagramData: any[] = [];
   alignmentDataCache: AlignmentLists | null = null;
+  reloadRequired: boolean | null | undefined = false;
 
   constructor(
     private keyResultService: KeyresultService,
+    private refreshDataService: RefreshDataService,
     private router: Router,
   ) {}
 
-  @Input()
-  get alignmentData(): Subject<AlignmentLists> {
-    return this.alignmentData$;
-  }
-
-  set alignmentData(alignmentData: AlignmentLists) {
-    this.alignmentData$.next(alignmentData);
-  }
-
   ngAfterViewInit(): void {
-    this.alignmentData.subscribe((alignmentData: AlignmentLists): void => {
-      let lastAlignmentItem: AlignmentObject =
-        alignmentData.alignmentObjectDtoList[alignmentData.alignmentObjectDtoList.length - 1];
+    this.refreshDataService.reloadAlignmentSubject.subscribe((value: boolean | null | undefined): void => {
+      this.reloadRequired = value;
+    });
 
-      const diagramReloadRequired: boolean =
-        lastAlignmentItem?.objectTitle === 'reload'
-          ? lastAlignmentItem?.objectType === 'true'
-          : JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData);
-
-      if (diagramReloadRequired) {
-        if (lastAlignmentItem?.objectTitle === 'reload') {
-          alignmentData.alignmentObjectDtoList.pop();
-        }
+    this.alignmentData$.subscribe((alignmentData: AlignmentLists): void => {
+      if (this.reloadRequired == true || JSON.stringify(this.alignmentDataCache) !== JSON.stringify(alignmentData)) {
+        this.reloadRequired = undefined;
         this.alignmentDataCache = alignmentData;
         this.diagramData = [];
         this.cleanUpDiagram();
@@ -71,7 +60,8 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanUpDiagram();
-    this.alignmentData.unsubscribe();
+    this.alignmentData$.unsubscribe();
+    this.refreshDataService.reloadAlignmentSubject.unsubscribe();
   }
 
   generateDiagram(): void {
@@ -187,8 +177,8 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    zip(observableArray).subscribe(() => {
-      this.generateConnections(alignmentData, diagramElements);
+    zip(observableArray).subscribe(async () => {
+      await this.generateConnections(alignmentData, diagramElements);
     });
   }
 
@@ -223,7 +213,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  generateConnections(alignmentData: AlignmentLists, diagramElements: any[]): void {
+  async generateConnections(alignmentData: AlignmentLists, diagramElements: any[]) {
     let edges: any[] = [];
     alignmentData.alignmentConnectionDtoList.forEach((alignmentConnection: AlignmentConnection) => {
       let edge = {
@@ -238,7 +228,10 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       edges.push(edge);
     });
     this.diagramData = diagramElements.concat(edges);
-    this.generateDiagram();
+
+    // Sometimes the DOM Element #cy is not ready when cytoscape tries to generate the diagram
+    // To avoid this, we use here a setTimeout()
+    setTimeout(() => this.generateDiagram(), 0);
   }
 
   generateObjectiveSVG(title: string, teamName: string, state: string): string {

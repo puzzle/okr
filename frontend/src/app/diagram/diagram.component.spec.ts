@@ -64,7 +64,7 @@ describe('DiagramComponent', () => {
     jest.spyOn(component, 'prepareDiagramData');
 
     component.ngAfterViewInit();
-    component.alignmentData.next(alignmentLists);
+    component.alignmentData$.next(alignmentLists);
 
     expect(component.cleanUpDiagram).toHaveBeenCalled();
     expect(component.prepareDiagramData).toHaveBeenCalledWith(alignmentLists);
@@ -104,7 +104,6 @@ describe('DiagramComponent', () => {
     component.generateNodes(alignmentLists);
 
     expect(component.generateConnections).toHaveBeenCalled();
-    expect(component.generateDiagram).toHaveBeenCalled();
     expect(component.diagramData).toEqual(diagramElements.concat(edges));
   });
 
@@ -120,7 +119,6 @@ describe('DiagramComponent', () => {
     component.generateNodes(alignmentListsKeyResult);
 
     expect(component.generateConnections).toHaveBeenCalled();
-    expect(component.generateDiagram).toHaveBeenCalled();
     expect(component.diagramData).toEqual(diagramData);
   });
 
@@ -136,7 +134,6 @@ describe('DiagramComponent', () => {
     component.generateNodes(alignmentListsKeyResult);
 
     expect(component.generateConnections).toHaveBeenCalled();
-    expect(component.generateDiagram).toHaveBeenCalled();
     expect(component.diagramData).toEqual(diagramData);
   });
 

@@ -36,6 +36,10 @@ public class TestHelper {
                 List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT));
     }
 
+    public static AuthorizationUser userWithoutAnyRole() {
+        return mockAuthorizationUser(1L, USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L, List.of());
+    }
+
     public static AuthorizationUser mockAuthorizationUser(User user, List<Long> teamIds, Long firstLevelTeamId,
             List<AuthorizationRole> roles) {
         return mockAuthorizationUser(user.getId(), user.getUsername(), user.getFirstname(), user.getLastname(),

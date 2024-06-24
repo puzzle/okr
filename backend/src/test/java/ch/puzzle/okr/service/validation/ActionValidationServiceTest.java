@@ -9,6 +9,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,13 +33,29 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class ActionValidationServiceTest {
-    private final KeyResult keyResult = KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build();
-    private final Action action1 = Action.Builder.builder().withId(null).withAction("Neue Katze").withIsChecked(false)
-            .withPriority(0).withKeyResult(keyResult).build();
-    private final Action action2 = Action.Builder.builder().withId(2L).withAction("Neues Lama").withIsChecked(true)
+    private final KeyResult keyResult = KeyResultMetric.Builder.builder() //
+            .withId(10L) //
+            .withTitle("KR Title").build(); //
+
+    private final Action action1 = Action.Builder.builder() //
+            .withId(null) //
+            .withAction("Neue Katze") //
+            .withIsChecked(false) //
+            .withPriority(0) //
+            .withKeyResult(keyResult).build();
+
+    private final Action action2 = Action.Builder.builder() //
+            .withId(2L) //
+            .withAction("Neues Lama") //
+            .withIsChecked(true) // //
             .withPriority(1).withKeyResult(keyResult).build();
+
     @Mock
     ActionPersistenceService actionPersistenceService;
+
+    @Mock
+    KeyResultValidationService keyResultValidationService;
+
     @Spy
     @InjectMocks
     private ActionValidationService validator;
@@ -260,6 +277,29 @@ class ActionValidationServiceTest {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NOT_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action"))), exception.getErrors());
+    }
+
+    @DisplayName("validateOnGetByKeyResultId() should be successful when id is not null")
+    @Test
+    void validateOnGetByKeyResultIdShouldBeSuccessfulWhenIdIsNotNull() {
+        // arrange
+        Long id = 1L;
+        doNothing().when(keyResultValidationService).validateOnGet(id);
+
+        // act + assert
+        assertDoesNotThrow(() -> validator.validateOnGetByKeyResultId(id));
+        verify(actionPersistenceService, never()).getModelName();
+    }
+
+    @DisplayName("validateOnGetByKeyResultId() should throw exception when id is null")
+    @Test
+    void validateOnGetByKeyResultIdShouldThrowExceptionWhenIdIsNull() {
+        // arrange
+        Long id = null;
+        doThrow(OkrResponseStatusException.class).when(keyResultValidationService).validateOnGet(id);
+
+        // act + assert
+        assertThrows(OkrResponseStatusException.class, () -> validator.validateOnGetByKeyResultId(id));
     }
 
 }

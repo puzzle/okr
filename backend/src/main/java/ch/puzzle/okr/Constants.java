@@ -17,4 +17,8 @@ public class Constants {
     public static final String QUARTER = "Quarter";
     public static final String TEAM = "Team";
     public static final String USER = "User";
+    public static final String BACKLOG = "Backlog";
+    public static final Long BACKLOG_QUARTER_ID = 999L;
+    public static final String ARCHIVE = "Archiv";
+    public static final Long ARCHIVE_QUARTER_ID = 998L;
 }

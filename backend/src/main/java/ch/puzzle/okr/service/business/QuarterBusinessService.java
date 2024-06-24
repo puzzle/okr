@@ -1,8 +1,10 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +17,16 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static ch.puzzle.okr.Constants.*;
 
 @Service
 public class QuarterBusinessService {
     private static final Logger logger = LoggerFactory.getLogger(QuarterBusinessService.class);
 
     private final QuarterPersistenceService quarterPersistenceService;
+    private final ObjectiveBusinessService objectiveBusinessService;
     private final QuarterValidationService validator;
 
     @Value("${okr.quarter.business.year.start}")
@@ -30,8 +36,9 @@ public class QuarterBusinessService {
     private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-            QuarterValidationService validator) {
+            ObjectiveBusinessService objectiveBusinessService, QuarterValidationService validator) {
         this.quarterPersistenceService = quarterPersistenceService;
+        this.objectiveBusinessService = objectiveBusinessService;
         this.validator = validator;
     }
 
@@ -42,8 +49,10 @@ public class QuarterBusinessService {
 
     public List<Quarter> getQuarters() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
-        Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
+        Quarter backlog = quarterPersistenceService.findByLabel(BACKLOG);
+        Quarter archive = quarterPersistenceService.findByLabel(ARCHIVE);
         mostCurrentQuarterList.add(0, backlog);
+        mostCurrentQuarterList.add(archive);
         return mostCurrentQuarterList;
     }
 
@@ -75,12 +84,14 @@ public class QuarterBusinessService {
         return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
-    private void generateQuarter(LocalDateTime start, String label) {
+    @Transactional
+    protected void generateQuarter(LocalDateTime start, String label) {
         YearMonth yearMonth = YearMonth.from(start);
         Quarter quarter = Quarter.Builder.builder().withLabel(label).withStartDate(start.toLocalDate())
                 .withEndDate(yearMonth.plusMonths(2).atEndOfMonth()).build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
+        moveObjectsFromNonMostCurrentQuartersIntoArchive();
     }
 
     private boolean inLastMonthOfQuarter(int currentQuarter, int nextQuarter) {
@@ -105,6 +116,21 @@ public class QuarterBusinessService {
         return quarters;
     }
 
+    @Transactional
+    protected void moveObjectsFromNonMostCurrentQuartersIntoArchive() {
+        List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
+        List<Objective> allObjectives = objectiveBusinessService.getAllObjectives();
+
+        allObjectives.forEach(objective -> {
+            if (!mostCurrentQuarterList.contains(objective.getQuarter())
+                    && !Objects.equals(objective.getQuarter().getId(), BACKLOG_QUARTER_ID)) {
+                objectiveBusinessService.archiveEntity(objective.getId());
+            }
+        });
+        logger.info("Update archived Objectives");
+    }
+
+    @Transactional
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
         Map<Integer, Integer> quarters = generateQuarters();

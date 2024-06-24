@@ -41,6 +41,7 @@ const quarterService = {
       { id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
       { id: 2, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
       { id: 199, startDate: null, endDate: null, label: 'Backlog' },
+      { id: 998, startDate: null, endDate: null, label: 'Archiv' },
     ]);
   },
 };
@@ -252,6 +253,16 @@ describe('ObjectiveDialogComponent', () => {
       expect(rawFormValue.description).toBe(objective.description);
       expect(rawFormValue.team).toBe(objective.teamId);
       expect(rawFormValue.quarter).toBe(objective.quarterId);
+    });
+
+    it('should remove archive as option in quarter list', async () => {
+      matDataMock.objective.objectiveId = 1;
+      const routerHarness = await RouterTestingHarness.create();
+      await routerHarness.navigateByUrl('/?quarter=2');
+      objectiveService.getFullObjective.mockReturnValue(of(objective));
+      component.ngOnInit();
+      expect(component.quarters.length).toBe(3);
+      expect(component.quarters[2].label).toBe('Backlog');
     });
 
     it('should return correct value if allowed to save to backlog', async () => {

@@ -68,7 +68,7 @@ class ObjectivePersistenceServiceIT {
     void findAllShouldReturnListOfObjectives() {
         List<Objective> objectives = objectivePersistenceService.findAll();
 
-        assertEquals(7, objectives.size());
+        assertEquals(8, objectives.size());
     }
 
     @Test

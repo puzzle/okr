@@ -132,6 +132,19 @@ describe('OverviewComponent', () => {
     expect(component.loadOverview).toHaveBeenLastCalledWith();
   });
 
+  it('should correct set isArchiveQuarter', async () => {
+    let routerHarness = await RouterTestingHarness.create();
+    await routerHarness.navigateByUrl('/' + ['?quarter=998', 7, [], '']);
+    routerHarness.detectChanges();
+    component.loadOverviewWithParams();
+    expect(component.isArchiveQuarter).toBeTruthy();
+
+    await routerHarness.navigateByUrl('/' + ['?quarter=98', 7, [], '']);
+    routerHarness.detectChanges();
+    component.loadOverviewWithParams();
+    expect(component.isArchiveQuarter).toBeFalsy();
+  });
+
   function markFiltersAsReady() {
     refreshDataServiceMock.quarterFilterReady.next(null);
     refreshDataServiceMock.teamFilterReady.next(null);

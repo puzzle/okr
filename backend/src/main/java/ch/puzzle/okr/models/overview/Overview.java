@@ -22,6 +22,7 @@ public class Overview implements WriteableInterface {
     @Enumerated(EnumType.STRING)
     private State objectiveState;
     private LocalDateTime objectiveCreatedOn;
+    private boolean objectiveArchived;
     private Long quarterId;
     private String quarterLabel;
     private String keyResultTitle;
@@ -49,6 +50,7 @@ public class Overview implements WriteableInterface {
         objectiveTitle = builder.objectiveTitle;
         objectiveState = builder.objectiveState;
         objectiveCreatedOn = builder.objectiveCreatedOn;
+        objectiveArchived = builder.objectiveArchived;
         quarterId = builder.quarterId;
         quarterLabel = builder.quarterLabel;
         keyResultTitle = builder.keyResultTitle;
@@ -87,6 +89,10 @@ public class Overview implements WriteableInterface {
 
     public LocalDateTime getObjectiveCreatedOn() {
         return objectiveCreatedOn;
+    }
+
+    public boolean isObjectiveArchived() {
+        return objectiveArchived;
     }
 
     public Long getQuarterId() {
@@ -157,15 +163,15 @@ public class Overview implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Overview{" + "overviewId=" + overviewId + ", teamVersion='" + teamVersion + ", teamName='" + teamName
-                + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
-                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
-                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
-                + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit
-                + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
-                + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\''
-                + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\''
-                + '}';
+        return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", teamVersion="
+                + teamVersion + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
+                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", objectiveArchived=" + objectiveArchived
+                + ", quarterId=" + quarterId + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='"
+                + keyResultTitle + '\'' + ", keyResultType='" + keyResultType + '\'' + ", baseline=" + baseline
+                + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\'' + ", commitZone='" + commitZone + '\''
+                + ", targetZone='" + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + ", checkInValue="
+                + checkInValue + ", checkInZone='" + checkInZone + '\'' + ", confidence=" + confidence
+                + ", checkInCreatedOn=" + checkInCreatedOn + ", writeable=" + writeable + '}';
     }
 
     public static final class Builder {
@@ -175,6 +181,7 @@ public class Overview implements WriteableInterface {
         private String objectiveTitle;
         private State objectiveState;
         private LocalDateTime objectiveCreatedOn;
+        private boolean objectiveArchived;
         private Long quarterId;
         private String quarterLabel;
         private String keyResultTitle;
@@ -224,6 +231,11 @@ public class Overview implements WriteableInterface {
 
         public Builder withObjectiveCreatedOn(LocalDateTime objectiveCreatedOn) {
             this.objectiveCreatedOn = objectiveCreatedOn;
+            return this;
+        }
+
+        public Builder withObjectiveArchived(boolean objectiveArchived) {
+            this.objectiveArchived = objectiveArchived;
             return this;
         }
 

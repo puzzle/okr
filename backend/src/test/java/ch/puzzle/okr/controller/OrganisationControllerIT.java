@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static ch.puzzle.okr.TestConstants.*;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class OrganisationControllerIT {
 
     /* Team test objects */
-    private static final Team PUZZLE = Team.Builder.builder().withId(1L).withName("PUZZLE ITC").build();
+    private static final Team PUZZLE = Team.Builder.builder().withId(1L).withName(TEAM_PUZZLE).build();
     private static final Team BBT = Team.Builder.builder().withId(1L).withName("/BBT").build();
 
     /* Organisation test objects */

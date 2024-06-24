@@ -10,8 +10,11 @@
 
 .add-keyresult {
   // Select is aligned with label and it's not easy to align checkbox to select
-  margin-top: -6px;
-  margin-left: 1.2rem;
+  margin-left: -10px;
+}
+
+.add-keyresult-text {
+  margin: 0;
 }
 
 @media only screen and (min-width: 820px) {
@@ -22,21 +25,24 @@
   }
 }
 
-@media only screen and (max-width: 770px) {
-  .add-keyresult {
-    margin-left: -10px;
-    margin-top: 1rem;
-  }
-
-  .add-keyresult-text {
-    margin: 0;
-  }
-}
-
-.add-keyresult-text {
-  margin-left: -10px;
-}
-
 .dialog-content {
   max-height: 35vh;
+}
+
+.select-width {
+  width: 92%;
+}
+
+.mat-mdc-option {
+  margin-bottom: 5px;
+}
+
+.alignment-input {
+  border: solid 1px #909090;
+  padding: 0.44rem 0.625rem 0.375rem 0.625rem !important;
+  cursor: pointer;
+  height: 1.18rem;
+  box-sizing: content-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

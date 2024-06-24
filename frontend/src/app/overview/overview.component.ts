@@ -5,6 +5,8 @@ import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../shared/common';
+import { AlignmentService } from '../shared/services/alignment.service';
+import { AlignmentLists } from '../shared/types/model/AlignmentLists';
 
 @Component({
   selector: 'app-overview',
@@ -14,13 +16,16 @@ import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '..
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
+  alignmentLists$: Subject<AlignmentLists> = new Subject<AlignmentLists>();
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   overviewPadding: Subject<number> = new Subject();
+  isOverview: boolean = true;
 
   constructor(
     private overviewService: OverviewService,
+    private alignmentService: AlignmentService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
@@ -62,7 +67,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.loadOverview(quarterId, teamIds, objectiveQueryString);
   }
 
-  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
+  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string): void {
+    if (this.isOverview) {
+      this.loadOverviewData(quarterId, teamIds, objectiveQuery);
+    } else {
+      this.loadAlignmentData(quarterId, teamIds, objectiveQuery);
+    }
+  }
+
+  loadOverviewData(quarterId?: number, teamIds?: number[], objectiveQuery?: string): void {
     this.overviewService
       .getOverview(quarterId, teamIds, objectiveQuery)
       .pipe(
@@ -77,8 +90,32 @@ export class OverviewComponent implements OnInit, OnDestroy {
       });
   }
 
+  loadAlignmentData(quarterId?: number, teamIds?: number[], objectiveQuery?: string): void {
+    this.alignmentService
+      .getAlignmentByFilter(quarterId, teamIds, objectiveQuery)
+      .pipe(
+        catchError(() => {
+          this.loadOverview();
+          return EMPTY;
+        }),
+      )
+      .subscribe((alignmentLists: AlignmentLists) => {
+        this.alignmentLists$.next(alignmentLists);
+      });
+  }
+
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
+  }
+
+  switchPage(input: string) {
+    if (input == 'diagram' && this.isOverview) {
+      this.isOverview = false;
+      this.loadOverviewWithParams();
+    } else if (input == 'overview' && !this.isOverview) {
+      this.isOverview = true;
+      this.loadOverviewWithParams();
+    }
   }
 }

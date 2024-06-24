@@ -1,9 +1,12 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.dto.AlignmentDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long, Objective, ObjectiveBusinessService> {
@@ -17,6 +20,10 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
         AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
         hasRoleCreateOrUpdate(objective, authorizationUser);
         return getBusinessService().duplicateObjective(id, objective, authorizationUser);
+    }
+
+    public List<AlignmentDto> getAlignmentPossibilities(Long quarterId) {
+        return getBusinessService().getAlignmentPossibilities(quarterId);
     }
 
     @Override

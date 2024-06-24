@@ -7,11 +7,14 @@ public class Constants {
     public static final String KEY_RESULT_TYPE_METRIC = "metric";
     public static final String KEY_RESULT_TYPE_ORDINAL = "ordinal";
     public static final String OBJECTIVE = "Objective";
+    public static final String OBJECTIVE_LOWERCASE = "objective";
     public static final String STATE_DRAFT = "Draft";
     public static final String KEY_RESULT = "KeyResult";
     public static final String CHECK_IN = "Check-in";
     public static final String ACTION = "Action";
     public static final String ALIGNMENT = "Alignment";
+    public static final String ALIGNMENT_VIEW = "AlignmentView";
+    public static final String ALIGNED_OBJECTIVE_ID = "alignedObjectiveId";
     public static final String COMPLETED = "Completed";
     public static final String ORGANISATION = "Organisation";
     public static final String QUARTER = "Quarter";

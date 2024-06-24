@@ -1,6 +1,10 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.dto.AlignmentDto;
+import ch.puzzle.okr.dto.AlignmentObjectDto;
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -14,8 +18,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
@@ -26,31 +29,118 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
+    private final AlignmentBusinessService alignmentBusinessService;
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
             ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService,
-            CompletedBusinessService completedBusinessService) {
+            CompletedBusinessService completedBusinessService, AlignmentBusinessService alignmentBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
+        this.alignmentBusinessService = alignmentBusinessService;
     }
 
     public Objective getEntityById(Long id) {
         validator.validateOnGet(id);
-        return objectivePersistenceService.findById(id);
+        Objective objective = objectivePersistenceService.findById(id);
+
+        AlignedEntityDto alignedEntity = alignmentBusinessService.getTargetIdByAlignedObjectiveId(objective.getId());
+        objective.setAlignedEntity(alignedEntity);
+        return objective;
+    }
+
+    public List<AlignmentDto> getAlignmentPossibilities(Long quarterId) {
+        validator.validateOnGet(quarterId);
+
+        List<Objective> objectivesByQuarter = objectivePersistenceService.findObjectiveByQuarterId(quarterId);
+        List<Team> teamList = getTeamsFromObjectives(objectivesByQuarter);
+
+        return createAlignmentDtoForEveryTeam(teamList, objectivesByQuarter);
+    }
+
+    private List<Team> getTeamsFromObjectives(List<Objective> objectiveList) {
+        return objectiveList.stream() //
+                .map(Objective::getTeam) //
+                .distinct() //
+                .sorted(Comparator.comparing(Team::getName)) //
+                .toList();
+    }
+
+    private List<AlignmentDto> createAlignmentDtoForEveryTeam(List<Team> teamList,
+            List<Objective> objectivesByQuarter) {
+        List<AlignmentDto> alignmentDtoList = new ArrayList<>();
+
+        teamList.forEach(team -> {
+            List<Objective> filteredObjectiveList = objectivesByQuarter.stream()
+                    .filter(objective -> objective.getTeam().equals(team))
+                    .sorted(Comparator.comparing(Objective::getTitle)).toList();
+
+            List<AlignmentObjectDto> alignmentObjectDtoList = generateAlignmentObjects(filteredObjectiveList);
+            AlignmentDto alignmentDto = new AlignmentDto(team.getId(), team.getName(), alignmentObjectDtoList);
+            alignmentDtoList.add(alignmentDto);
+        });
+
+        return alignmentDtoList;
+    }
+
+    private List<AlignmentObjectDto> generateAlignmentObjects(List<Objective> filteredObjectiveList) {
+        List<AlignmentObjectDto> alignmentObjectDtoList = new ArrayList<>();
+        filteredObjectiveList.forEach(objective -> {
+            AlignmentObjectDto objectiveDto = new AlignmentObjectDto(objective.getId(), "O - " + objective.getTitle(),
+                    "objective");
+            alignmentObjectDtoList.add(objectiveDto);
+
+            List<KeyResult> keyResultList = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId())
+                    .stream().sorted(Comparator.comparing(KeyResult::getTitle)).toList();
+
+            keyResultList.forEach(keyResult -> {
+                AlignmentObjectDto keyResultDto = new AlignmentObjectDto(keyResult.getId(),
+                        "KR - " + keyResult.getTitle(), "keyResult");
+                alignmentObjectDtoList.add(keyResultDto);
+            });
+        });
+        return alignmentObjectDtoList;
     }
 
     public List<Objective> getEntitiesByTeamId(Long id) {
         validator.validateOnGet(id);
-        return objectivePersistenceService.findObjectiveByTeamId(id);
+
+        List<Objective> objectiveList = objectivePersistenceService.findObjectiveByTeamId(id);
+        objectiveList.forEach(objective -> {
+            AlignedEntityDto alignedEntity = alignmentBusinessService
+                    .getTargetIdByAlignedObjectiveId(objective.getId());
+            objective.setAlignedEntity(alignedEntity);
+        });
+
+        return objectiveList;
     }
 
     @Transactional
     public Objective updateEntity(Long id, Objective objective, AuthorizationUser authorizationUser) {
         Objective savedObjective = objectivePersistenceService.findById(id);
+        Objective updatedObjective = updateObjectiveWithSavedAttrs(objective, savedObjective, authorizationUser);
+
+        validator.validateOnUpdate(id, updatedObjective);
+        savedObjective = objectivePersistenceService.save(updatedObjective);
+        handleAlignedEntity(id, savedObjective, updatedObjective);
+        return savedObjective;
+    }
+
+    private void handleAlignedEntity(Long id, Objective savedObjective, Objective updatedObjective) {
+        AlignedEntityDto alignedEntity = alignmentBusinessService
+                .getTargetIdByAlignedObjectiveId(savedObjective.getId());
+        if ((updatedObjective.getAlignedEntity() != null)
+                || updatedObjective.getAlignedEntity() == null && alignedEntity != null) {
+            savedObjective.setAlignedEntity(updatedObjective.getAlignedEntity());
+            alignmentBusinessService.updateEntity(id, savedObjective);
+        }
+    }
+
+    private Objective updateObjectiveWithSavedAttrs(Objective objective, Objective savedObjective,
+            AuthorizationUser authorizationUser) {
         objective.setCreatedBy(savedObjective.getCreatedBy());
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
@@ -61,8 +151,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
             not = " NOT ";
         }
         logger.debug("quarter has changed and is{}changeable, {}", not, objective);
-        validator.validateOnUpdate(id, objective);
-        return objectivePersistenceService.save(objective);
+        return objective;
     }
 
     public boolean isImUsed(Objective objective) {
@@ -88,7 +177,11 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedBy(authorizationUser.user());
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
-        return objectivePersistenceService.save(objective);
+        Objective savedObjective = objectivePersistenceService.save(objective);
+        if (objective.getAlignedEntity() != null) {
+            alignmentBusinessService.createEntity(savedObjective);
+        }
+        return savedObjective;
     }
 
     @Transactional
@@ -96,21 +189,32 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
         List<KeyResult> keyResultsOfDuplicatedObjective = keyResultBusinessService.getAllKeyResultsByObjective(id);
         for (KeyResult keyResult : keyResultsOfDuplicatedObjective) {
-            if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
-                KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(duplicatedObjective)
-                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withOwner(keyResult.getOwner()).withUnit(((KeyResultMetric) keyResult).getUnit())
-                        .withBaseline(0D).withStretchGoal(1D).build();
-                keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-            } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
-                KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
-                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withOwner(keyResult.getOwner()).withCommitZone("-").withTargetZone("-").withStretchZone("-")
-                        .build();
-                keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
-            }
+            createKeyResult(keyResult, duplicatedObjective, authorizationUser);
         }
         return duplicatedObjective;
+    }
+
+    private void createKeyResult(KeyResult keyResult, Objective objective, AuthorizationUser authorizationUser) {
+        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
+            createMetricKeyResult(keyResult, objective, authorizationUser);
+        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
+            createOrdinalKeyResult(keyResult, objective, authorizationUser);
+        }
+    }
+
+    private void createMetricKeyResult(KeyResult keyResult, Objective objective, AuthorizationUser authorizationUser) {
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(objective)
+                .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
+                .withOwner(keyResult.getOwner()).withUnit(((KeyResultMetric) keyResult).getUnit()).withBaseline(0D)
+                .withStretchGoal(1D).build();
+        keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
+    }
+
+    private void createOrdinalKeyResult(KeyResult keyResult, Objective objective, AuthorizationUser authorizationUser) {
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(objective)
+                .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
+                .withOwner(keyResult.getOwner()).withCommitZone("-").withTargetZone("-").withStretchZone("-").build();
+        keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
     }
 
     @Transactional
@@ -119,6 +223,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         completedBusinessService.deleteCompletedByObjectiveId(id);
         keyResultBusinessService.getAllKeyResultsByObjective(id)
                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
+        alignmentBusinessService.deleteAlignmentByObjectiveId(id);
         objectivePersistenceService.deleteById(id);
     }
 }

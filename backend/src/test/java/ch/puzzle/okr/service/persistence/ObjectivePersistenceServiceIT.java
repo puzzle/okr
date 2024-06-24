@@ -68,7 +68,7 @@ class ObjectivePersistenceServiceIT {
     void findAllShouldReturnListOfObjectives() {
         List<Objective> objectives = objectivePersistenceService.findAll();
 
-        assertEquals(7, objectives.size());
+        assertEquals(14, objectives.size());
     }
 
     @Test
@@ -252,5 +252,20 @@ class ObjectivePersistenceServiceIT {
                 Quarter.Builder.builder().withId(2L).build());
 
         assertEquals(2, count);
+    }
+
+    @Test
+    void findObjectiveByQuarterId() {
+        List<Objective> objectiveList = objectivePersistenceService.findObjectiveByQuarterId(2L);
+
+        assertEquals(7, objectiveList.size());
+        assertEquals("Wir wollen die Kundenzufriedenheit steigern", objectiveList.get(0).getTitle());
+    }
+
+    @Test
+    void findObjectiveByQuarterIdShouldReturnEmptyListWhenQuarterDoesNotExist() {
+        List<Objective> objectives = objectivePersistenceService.findObjectiveByQuarterId(12345L);
+
+        assertEquals(0, objectives.size());
     }
 }

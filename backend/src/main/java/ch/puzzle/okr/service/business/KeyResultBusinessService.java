@@ -24,14 +24,16 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     private final CheckInBusinessService checkInBusinessService;
     private final ActionBusinessService actionBusinessService;
     private final KeyResultValidationService validator;
+    private final AlignmentBusinessService alignmentBusinessService;
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
             KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,
-            ActionBusinessService actionBusinessService) {
+            ActionBusinessService actionBusinessService, AlignmentBusinessService alignmentBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionBusinessService = actionBusinessService;
         this.validator = validator;
+        this.alignmentBusinessService = alignmentBusinessService;
     }
 
     @Override
@@ -92,6 +94,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
             action.resetId();
             action.setKeyResult(recreatedEntity);
         });
+        alignmentBusinessService.updateKeyResultIdOnIdChange(id, recreatedEntity);
         return recreatedEntity;
     }
 
@@ -102,6 +105,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
                 .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
         actionBusinessService.getActionsByKeyResultId(id)
                 .forEach(action -> actionBusinessService.deleteEntityById(action.getId()));
+        alignmentBusinessService.deleteAlignmentByKeyResultId(id);
         keyResultPersistenceService.deleteById(id);
     }
 

@@ -41,6 +41,7 @@ values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
        (7, 'GJ 23/24-Q2', '2023-10-01', '2023-12-31'),
        (8, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31'),
        (9, 'GJ 23/24-Q4', '2024-04-01', '2024-06-30'),
+       (10, 'GJ 24/25-Q1', '2024-07-01', '2024-09-30'),
        (199, 'Backlog', null, null);
 
 insert into team (id, version, name)
@@ -71,7 +72,14 @@ values (4, 1, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture tha
         null, '2023-07-25 08:39:45.772126'),
        (8,1, '', '2023-07-25 08:39:28.175703', 40,
         'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
-        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703');
+        1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703'),
+       (40,1,'', '2024-04-04 13:45:13.000000',40,'Wir wollen eine gute Mitarbeiterzufriedenheit.', 1, 9, 5, 'ONGOING', null,'2024-04-04 13:44:52.000000'),
+       (41,1,'','2024-04-04 13:59:06.511620',40,'Das Projekt generiert 10000 CHF Umsatz',1,9,5,'ONGOING',null,'2024-04-04 13:59:06.523496'),
+       (42,1,'','2024-04-04 13:59:40.835896',40,'Die Lehrlinge sollen Freude haben',1,9,4,'ONGOING',null,'2024-04-04 13:59:40.848992'),
+       (43,1,'','2024-04-04 14:00:05.586152',40,'Der Firmenumsatz steigt',1,9,5,'ONGOING',null,'2024-04-04 14:00:05.588509'),
+       (44,1,'','2024-04-04 14:00:28.221906',40,'Die Members sollen gerne zur Arbeit kommen',1,9,6,'ONGOING',null,'2024-04-04 14:00:28.229058'),
+       (45,1,'','2024-04-04 14:00:47.659884',40,'Unsere Designer äussern sich zufrieden',1,9,8,'ONGOING',null,'2024-04-04 14:00:47.664414'),
+       (46,1,'','2024-04-04 14:00:57.485887',40,'Unsere Designer kommen gerne zur Arbeit',1,9,8,'ONGOING',null,'2024-04-04 14:00:57.494192');
 
 insert into key_result (id, version, baseline, description, modified_on, stretch_goal, title, created_by_id,
                         objective_id, owner_id, key_result_type, created_on, unit, commit_zone, target_zone, stretch_zone)
@@ -90,7 +98,9 @@ values  (10,1, 465, '', '2023-07-25 08:23:02.273028', 60, 'Im Durchschnitt soll 
     (19,1, 50, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', '2023-07-25 08:42:56.407125', 1, 'nsetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At ', 1, 8, 1, 'metric', '2023-07-25 08:42:56.407125', 'PERCENT', null, null, null),
     (17,1, 525, 'asdf', '2023-07-25 08:41:52.844903', 20000000, 'vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', 1, 9, 1, 'metric', '2023-07-25 08:41:52.844903', 'PERCENT', null, null, null),
     (9,1, 100, '', '2023-07-25 08:48:45.825328', 80, 'Die Member des BBT reduzieren Ihre Lautstärke um 20%', 1, 5, 1, 'metric', '2023-07-25 08:48:45.825328', 'PERCENT', null, null, null),
-    (18,1, 0, 'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', '2023-07-25 08:42:24.779721', 1, 'Lorem', 1, 8, 1, 'metric', '2023-07-25 08:42:24.779721', 'PERCENT', null, null, null);
+    (18,1, 0, 'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore', '2023-07-25 08:42:24.779721', 1, 'Lorem', 1, 8, 1, 'metric', '2023-07-25 08:42:24.779721', 'PERCENT', null, null, null),
+    (40,1,50,'',null,70,'60% sind in der Membersumfrage zufrienden',1,40,1,'metric','2024-04-04 14:06:21.689768','PERCENT',null,null,null),
+    (41,1,20000,'',null,80000,'Wir erreichen einen Umsatz von 70000 CHF',1,46,1,'metric','2024-04-04 14:06:42.100353','CHF',null,null,null);
 
 insert into check_in (id, version, change_info, created_on, initiatives, modified_on, value_metric, created_by_id, key_result_id, confidence, check_in_type, zone)
 values  (1,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam', '2023-07-25 08:44:13.865976', '', '2023-07-24 22:00:00.000000', 77, 1, 8, 5, 'metric', null),
@@ -111,11 +121,22 @@ values  (1,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
         (17,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-25 08:49:32.030171', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-24 22:00:00.000000', 66.7, 1, 16, 5, 'metric', null),
         (18,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-25 08:49:56.975649', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-24 22:00:00.000000', 99, 1, 15, 5, 'metric', null),
         (19,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-25 08:50:19.024254', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-24 22:00:00.000000', 35, 1, 19, 5, 'metric', null),
-        (20,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-25 08:50:44.059020', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-24 22:00:00.000000', 0.5, 1, 18, 5, 'metric', null);
+        (20,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-25 08:50:44.059020', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-24 22:00:00.000000', 0.5, 1, 18, 5, 'metric', null),
+        (40,1,'','2024-04-04 14:10:33.377726','','2024-04-04 14:10:33.377739',30000,1,41,7,'metric',null);
 
-insert into alignment (id, version, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id) values
-       (1,1, 4, 'objective', null, 3),
-       (2,1, 4, 'keyResult', 8, null);
+insert into alignment (id, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id, version) values
+       (1, 9, 'keyResult', 8, null, 1),
+       (2, 4, 'objective', null, 6, 0),
+       (3, 3, 'objective', null, 6, 0),
+       (4, 8, 'objective', null, 3, 0),
+       (5, 10, 'keyResult', 5, null, 0),
+       (6, 5, 'keyResult', 4, null, 0),
+       (7, 6, 'keyResult', 3, null, 0),
+       (8, 41, 'objective', null, 40, 0),
+       (9, 42, 'objective', null, 40, 0),
+       (10, 43, 'keyResult', 40, null, 0),
+       (11, 44, 'objective', null, 42, 0),
+       (12, 45, 'keyResult', 41, null, 0);
 
 insert into completed (id, version, objective_id, comment) values
        (1,1, 4, 'Das hat geklappt'),

@@ -118,6 +118,8 @@ export class KeyresultDetailComponent implements OnInit {
           this.refreshDataService.markDataRefresh();
         } else if (result?.closeState === CloseState.DELETED) {
           this.router.navigate(['']).then(() => this.refreshDataService.markDataRefresh());
+        } else if (result == '') {
+          return;
         } else {
           this.loadKeyResult(this.keyResult$.getValue().id);
         }
@@ -180,9 +182,11 @@ export class KeyresultDetailComponent implements OnInit {
         keyResult: this.keyResult$.getValue(),
       },
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.loadKeyResult(this.keyResult$.getValue().id);
-      this.refreshDataService.markDataRefresh();
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result != '' && result != undefined) {
+        this.loadKeyResult(this.keyResult$.getValue().id);
+        this.refreshDataService.markDataRefresh(true);
+      }
     });
   }
 

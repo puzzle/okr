@@ -72,6 +72,7 @@ import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
 import { KeyresultDialogComponent } from './shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { CustomizationService } from './shared/services/customization.service';
+import { DiagramComponent } from './diagram/diagram.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -134,6 +135,7 @@ export const MY_FORMATS = {
     ActionPlanComponent,
     TeamManagementComponent,
     KeyresultDialogComponent,
+    DiagramComponent,
   ],
   imports: [
     CommonModule,

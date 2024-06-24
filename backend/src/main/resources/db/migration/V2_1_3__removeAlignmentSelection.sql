@@ -1,0 +1,1 @@
+drop view if exists alignment_selection;

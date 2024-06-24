@@ -51,7 +51,7 @@ public class Objective implements WriteableInterface {
     @ManyToOne
     private User modifiedBy;
 
-    private boolean archived;
+    private boolean archived = false;
 
     private transient boolean writeable;
 

@@ -170,10 +170,7 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        O.TITLE             AS "OBJECTIVE_TITLE",
        O.STATE             AS "OBJECTIVE_STATE",
        O.CREATED_ON        AS "OBJECTIVE_CREATED_ON",
-       CASE
-           WHEN O.TITLE IS NOT NULL THEN O.ARCHIVED
-           ELSE FALSE
-           END                 AS "OBJECTIVE_ARCHIVED",
+       O.ARCHIVED          AS "OBJECTIVE_ARCHIVED",
        COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
        KR.TITLE            AS "KEY_RESULT_TITLE",
        KR.KEY_RESULT_TYPE  AS "KEY_RESULT_TYPE",

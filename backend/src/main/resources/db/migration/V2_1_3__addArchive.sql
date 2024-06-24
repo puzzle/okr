@@ -1,24 +1,8 @@
 alter table objective
-    add column if not exists archived boolean;
+    add column if not exists archived boolean default false not null;
 
 INSERT INTO quarter (id, label, start_date, end_date)
 VALUES (998, 'Archiv', null, null);
-
-DO $$
-    DECLARE
-        r record;
-    BEGIN
-        FOR r IN SELECT * FROM objective
-                 WHERE objective.archived IS NULL
-            LOOP
-                UPDATE objective o
-                SET archived = false
-                WHERE o.id = r.id;
-            END LOOP;
-END$$;
-
-alter table objective
-    alter column archived set not null;
 
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
@@ -31,10 +15,7 @@ SELECT tq.team_id          AS "team_id",
        o.title             AS "objective_title",
        o.state             AS "objective_state",
        o.created_on        AS "objective_created_on",
-       CASE
-           WHEN o.archived IS NOT NULL THEN o.archived
-           ELSE FALSE
-           END             AS "objective_archived",
+       o.archived          AS "objective_archived",
        coalesce(kr.id, -1) AS "key_result_id",
        kr.title            AS "key_result_title",
        kr.key_result_type  AS "key_result_type",

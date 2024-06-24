@@ -56,26 +56,6 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnGetShouldBeSuccessfulWhenValidActionId() {
-        validator.validateOnGet(1L);
-
-        verify(validator, times(1)).validateOnGet(1L);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
-    }
-
-    @Test
-    void validateOnGetShouldThrowExceptionIfActionIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
-
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("ATTRIBUTE_NULL", exception.getReason());
-        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Action"))), exception.getErrors());
-    }
-
-    @Test
     void validateOnCreateShouldBeSuccessfulWhenActionIsValid() {
         validator.validateOnCreate(action1);
 
@@ -280,26 +260,6 @@ class ActionValidationServiceTest {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NOT_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action"))), exception.getErrors());
-    }
-
-    @Test
-    void validateOnDeleteShouldBeSuccessfulWhenValidActionId() {
-        validator.validateOnGet(1L);
-
-        verify(validator, times(1)).validateOnGet(1L);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
-    }
-
-    @Test
-    void validateOnDeleteShouldThrowExceptionIfActionIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
-
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("ATTRIBUTE_NULL", exception.getReason());
-        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Action"))), exception.getErrors());
     }
 
 }

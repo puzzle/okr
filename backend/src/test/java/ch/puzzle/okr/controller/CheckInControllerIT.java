@@ -2,11 +2,14 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.models.checkin.Zone;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.authorization.CheckInAuthorizationService;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -27,6 +30,7 @@ import java.time.LocalDateTime;
 import static ch.puzzle.okr.CheckInTestHelpers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -121,30 +125,46 @@ class CheckInControllerIT {
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInMetric);
 
-        mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
-                .andExpect(jsonPath(JSON_PATH_CHANGE_INFO, Is.is(CHANGE_INFO_1)))
-                .andExpect(jsonPath(JSON_PATH_INITIATIVES, Is.is(INITIATIVES_1)))
-                .andExpect(jsonPath(JSON_PATH_CONFIDENCE, Is.is(6)))
-                .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(1)))
+        mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON) //
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON)) //
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()) //
+                .andExpect(jsonPath(JSON_PATH_ID, Is.is(5))) //
+                .andExpect(jsonPath(JSON_PATH_CHANGE_INFO, Is.is(CHANGE_INFO_1))) //
+                .andExpect(jsonPath(JSON_PATH_INITIATIVES, Is.is(INITIATIVES_1))) //
+                .andExpect(jsonPath(JSON_PATH_CONFIDENCE, Is.is(6))) //
+                .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(1))) //
                 .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(46D)));
     }
 
     @Test
     void shouldCreateKeyResultOrdinal() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
-                .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
+                .willReturn(KeyResultOrdinal.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInOrdinal);
 
-        mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(4)))
-                .andExpect(jsonPath(JSON_PATH_CHANGE_INFO, Is.is(CHANGE_INFO_2)))
-                .andExpect(jsonPath(JSON_PATH_INITIATIVES, Is.is(INITIATIVES_2)))
-                .andExpect(jsonPath(JSON_PATH_CONFIDENCE, Is.is(5)))
-                .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(2)))
+        mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON) //
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON)) //
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()) //
+                .andExpect(jsonPath(JSON_PATH_ID, Is.is(4))) //
+                .andExpect(jsonPath(JSON_PATH_CHANGE_INFO, Is.is(CHANGE_INFO_2))) //
+                .andExpect(jsonPath(JSON_PATH_INITIATIVES, Is.is(INITIATIVES_2))) //
+                .andExpect(jsonPath(JSON_PATH_CONFIDENCE, Is.is(5))) //
+                .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(2))) //
                 .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(Zone.COMMIT.toString())));
+    }
+
+    @DisplayName("should throw exception when KeyResultType is not Metric and not Ordinal")
+    @Test
+    void shouldThrowExceptionWhenKeyResultTypeIsNotMetricAndNotOrdinal() throws Exception {
+        KeyResult keyResult = mock(KeyResult.class);
+        when(keyResult.getKeyResultType()).thenReturn("a_not_supported_key_result_type");
+        BDDMockito.given(keyResultBusinessService.getEntityById(anyLong())).willReturn(keyResult);
+
+        mvc.perform(post(CHECK_IN_BASE_URL) //
+                .contentType(MediaType.APPLICATION_JSON) //
+                .with(SecurityMockMvcRequestPostProcessors.csrf()) //
+                .content(JSON) //
+        ).andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
@@ -156,5 +176,16 @@ class CheckInControllerIT {
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON_WITHOUT_KEY_RESULT_ID))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @Test
+    void shouldDeleteCheckin() throws Exception {
+        BDDMockito.willDoNothing().given(checkInAuthorizationService).deleteEntityById(anyLong());
+
+        mvc.perform(delete(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON_WITHOUT_KEY_RESULT_ID))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(this.checkInAuthorizationService).deleteEntityById(anyLong());
     }
 }

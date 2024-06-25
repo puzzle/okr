@@ -3,9 +3,12 @@ package ch.puzzle.okr.service.authorization;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,9 +17,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.TestHelper.userWithoutWriteAllRole;
+import static ch.puzzle.okr.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -108,4 +111,21 @@ class TeamAuthorizationServiceTest {
         assertEquals(teamList, teams);
         teams.forEach(team -> assertEquals(isWriteable, team.isWriteable()));
     }
+
+    @DisplayName("getUserTeamIds() should return team Ids independent of the roles of the AuthorizedUser")
+    @ParameterizedTest
+    @MethodSource("generator")
+    void getUserTeamIdsShouldReturnTeamIdsIndependentOfRolesOfAuthorizedUser(AuthorizationUser user) {
+        Long teamIdAuthorizedUser = 5L;
+        when(authorizationService.getAuthorizationUser()).thenReturn(user);
+
+        List<Long> userTeamIds = teamAuthorizationService.getUserTeamIds();
+        assertEquals(1, userTeamIds.size());
+        assertEquals(teamIdAuthorizedUser, userTeamIds.get(0));
+    }
+
+    private static Stream<Arguments> generator() {
+        return Stream.of(Arguments.of(userWithoutAnyRole()), Arguments.of(defaultAuthorizationUser()));
+    }
+
 }

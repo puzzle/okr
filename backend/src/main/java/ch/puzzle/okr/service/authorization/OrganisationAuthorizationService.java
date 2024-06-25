@@ -33,7 +33,7 @@ public class OrganisationAuthorizationService {
         return organisationBusinessService.getOrganisationsByTeam(id);
     }
 
-    public void checkUserAuthorization(OkrResponseStatusException exception) {
+    private void checkUserAuthorization(OkrResponseStatusException exception) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         if (!hasRoleWriteAll(authorizationUser)) {
             throw exception;

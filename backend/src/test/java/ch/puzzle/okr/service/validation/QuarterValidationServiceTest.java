@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,24 +31,63 @@ class QuarterValidationServiceTest {
     @InjectMocks
     private QuarterValidationService validator;
 
+    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull() should do nothing when Quarter Label is Backlog")
     @Test
-    void validateOnGetShouldBeSuccessfulWhenValidId() {
-        assertDoesNotThrow(() -> validator.validateOnGet(1L));
-        verify(validator, times(1)).validateOnGet(anyLong());
+    void throwExceptionWhenStartEndDateQuarterIsNullShouldDoNothingWhenQuarterLabelIsBacklog() {
+        // arrange
+        Quarter quarter = mock(Quarter.class);
+        when(quarter.getLabel()).thenReturn("Backlog");
+
+        // act
+        QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter);
+
+        // assert
+        verify(quarter, never()).getStartDate();
+        verify(quarter, never()).getEndDate();
     }
 
+    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull() should throw Exception when StartDate is null")
     @Test
-    void validateOnGetShouldThrowExceptionWhenIdIsNull() {
-        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
+    void throwExceptionWhenStartEndDateQuarterIsNullShouldThrowExceptionWhenStartDateIsNull() {
+        // arrange
+        Quarter quarter = mock(Quarter.class);
+        when(quarter.getLabel()).thenReturn("no Backlog");
+        when(quarter.getStartDate()).thenReturn(null);
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
+        // act + assert
+        OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
+                () -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+        assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
+    }
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
+    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull() should throw Exception when EndDate is null")
+    @Test
+    void throwExceptionWhenStartEndDateQuarterIsNullShouldThrowExceptionWhenEndDateIsNull() {
+        // arrange
+        Quarter quarter = mock(Quarter.class);
+        when(quarter.getLabel()).thenReturn("no Backlog");
+        when(quarter.getStartDate()).thenReturn(LocalDate.now());
+        when(quarter.getEndDate()).thenReturn(null);
 
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        // act + assert
+        OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
+                () -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+        assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
+    }
+
+    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull should do nothing when both dates are not null")
+    @Test
+    void throwExceptionWhenStartEndDateQuarterIsNullShouldDoNothingWhenBothDatesAreNotNull() {
+        // arrange
+        Quarter quarter = mock(Quarter.class);
+        when(quarter.getLabel()).thenReturn("no Backlog");
+        when(quarter.getStartDate()).thenReturn(LocalDate.now());
+        when(quarter.getEndDate()).thenReturn(LocalDate.now());
+
+        // act
+        QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter);
+
+        // assert (does nothing ... so nothing to check here)
     }
 
     @Test
@@ -63,35 +103,59 @@ class QuarterValidationServiceTest {
         assertEquals("This method must not be called because there is no update of quarters", exception.getMessage());
     }
 
+    @DisplayName("validateOnGeneration() should throw exception when StartDate is null")
     @Test
     void validateOnGenerationShouldThrowExceptionWhenStartDateIsNull() {
-        Quarter quarter = Quarter.Builder.builder().withLabel("GJ 22/23-Q2").withEndDate(LocalDate.of(2022, 11, 1))
-                .build();
-        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
+        // arrange
+        Quarter quarter = mock(Quarter.class);
+        when(quarter.getStartDate()).thenReturn(null);
+        when(quarter.getLabel()).thenReturn("Any Label");
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+        // act + assert
+        OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGeneration(quarter));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "GJ 22/23-Q2")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException( //
+                okrResponseStatusException, //
+                List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "Any Label"))));
     }
 
+    @DisplayName("validateOnGeneration() should throw exception when EndDate is null")
     @Test
     void validateOnGenerationShouldThrowExceptionWhenEndDateIsNull() {
-        Quarter quarter = Quarter.Builder.builder().withLabel("GJ 22/23-Q2").withStartDate(LocalDate.of(2022, 11, 1))
-                .build();
-        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
+        // arrange
+        Quarter quarter = mock(Quarter.class);
+        when(quarter.getStartDate()).thenReturn(LocalDate.now());
+        when(quarter.getEndDate()).thenReturn(null);
+        when(quarter.getLabel()).thenReturn("Any Label");
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+        // act + assert
+        OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGeneration(quarter));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "GJ 22/23-Q2")));
+        assertOkrResponseStatusException( //
+                okrResponseStatusException, //
+                List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "Any Label"))));
+    }
 
+    @DisplayName("validateOnGeneration() should do nothing when both dates are not null")
+    @Test
+    void validateOnGenerationShouldDoNothingWhenBothDatesAreNotNull() {
+        // arrange
+        Quarter quarter = mock(Quarter.class);
+        when(quarter.getStartDate()).thenReturn(LocalDate.now());
+        when(quarter.getEndDate()).thenReturn(LocalDate.now());
+
+        // act
+        validator.validateOnGeneration(quarter);
+
+        // assert (does nothing ... so nothing to check here)
+    }
+
+    private void assertOkrResponseStatusException(OkrResponseStatusException exception, List<ErrorDto> expectedErrors) {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
+
 }

@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -252,5 +253,25 @@ class ObjectivePersistenceServiceIT {
                 Quarter.Builder.builder().withId(2L).build());
 
         assertEquals(2, count);
+    }
+
+    @DisplayName("findObjectiveByTeamIdId() should return list of Objectives")
+    @Test
+    void findObjectiveByTeamIdIdShouldReturnListOfObjectives() {
+        long teamId = 5L;
+        List<Objective> objectives = objectivePersistenceService.findObjectiveByTeamId(teamId);
+
+        assertEquals(2, objectives.size());
+        assertEquals(3, objectives.get(0).getId());
+        assertEquals(4, objectives.get(1).getId());
+    }
+
+    @DisplayName("findObjectiveByTeamIdId() should return empty list when Team does not exist")
+    @Test
+    void findObjectiveByTeamIdIdShouldReturnEmptyListWhenTeamDoesNotExist() {
+        long notExistingTeamId = 1234567890L;
+        List<Objective> objectives = objectivePersistenceService.findObjectiveByTeamId(notExistingTeamId);
+
+        assertTrue(objectives.isEmpty());
     }
 }

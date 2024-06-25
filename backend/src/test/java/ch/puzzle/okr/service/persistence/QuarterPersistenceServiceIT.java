@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -73,5 +74,38 @@ class QuarterPersistenceServiceIT {
         assertTrue(LocalDate.now().isBefore(quarter.getEndDate()));
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());
+    }
+
+    @DisplayName("findByLabel() should return single Quarter when label is valid")
+    @Test
+    void findByLabelShouldReturnSingleQuarterWhenLabelIsValid() {
+        // arrange + act
+        Quarter returnedQuarter = quarterPersistenceService.findByLabel("GJ 22/23-Q4");
+
+        // assert
+        assertEquals(1L, returnedQuarter.getId());
+        assertEquals("GJ 22/23-Q4", returnedQuarter.getLabel());
+        assertEquals(LocalDate.of(2023, 4, 1), returnedQuarter.getStartDate());
+        assertEquals(LocalDate.of(2023, 6, 30), returnedQuarter.getEndDate());
+    }
+
+    @DisplayName("findByLabel() should return null when label is not valid")
+    @Test
+    void findByLabelShouldReturnNullWhenLabelIsNotValid() {
+        // arrange + act
+        Quarter returnedQuarter = quarterPersistenceService.findByLabel("a_not_valid_label");
+
+        // assert
+        assertNull(returnedQuarter);
+    }
+
+    @DisplayName("findByLabel() should return null when label is null")
+    @Test
+    void findByLabelShouldReturnNullWhenLabelIsNull() {
+        // arrange + act
+        Quarter returnedQuarter = quarterPersistenceService.findByLabel(null);
+
+        // assert
+        assertNull(returnedQuarter);
     }
 }

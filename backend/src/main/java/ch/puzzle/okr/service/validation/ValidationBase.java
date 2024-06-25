@@ -95,26 +95,47 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     private void processViolations(Set<ConstraintViolation<T>> violations) {
         if (!violations.isEmpty()) {
-            List<ErrorDto> list = violations.stream().map(e -> {
-                List<Object> attributes = new ArrayList<>(
-                        List.of(e.getPropertyPath().toString(), persistenceService.getModelName()));
-                attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate()));
-                String errorKey = e.getMessageTemplate().replaceAll("_\\{.*", "");
-                return ErrorDto.of(errorKey, attributes);
-            }).toList();
+            List<ErrorDto> list = createErrorDtos(violations);
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, list);
         }
     }
 
+    private List<ErrorDto> createErrorDtos(Set<ConstraintViolation<T>> violations) {
+        return violations.stream() //
+                .map(e -> { //
+                    String path = e.getPropertyPath().toString(); //
+                    List<Object> attributes = new ArrayList<>(List.of(path, persistenceService.getModelName())); //
+                    attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate())); //
+                    String errorKey = e.getMessageTemplate().replaceAll("_\\{.*", ""); //
+                    return ErrorDto.of(errorKey, attributes); //
+                }).toList();
+    }
+
+    // example:
+    // message : ATTRIBUTE_SIZE_BETWEEN_2_200
+    // messageTemplate: ATTRIBUTE_SIZE_BETWEEN_{min}_{max}
+    // returns: [2, 200]
     private List<String> getAttributes(String message, String messageTemplate) {
-        String patternString = messageTemplate.replaceAll("\\{([^}]*)\\}", "(.*)");
+        String patternString = convertMessageTemplateToRegexStringWithGroups(messageTemplate);
+        return extractAttributeValuesFromRegexGroups(message, patternString);
+    }
+
+    // example:
+    // messageTemplate: ATTRIBUTE_SIZE_BETWEEN_{min}_{max}
+    // returns: ATTRIBUTE_SIZE_BETWEEN_(.*)_(.*)
+    private String convertMessageTemplateToRegexStringWithGroups(String messageTemplate) {
+        return messageTemplate.replaceAll("\\{([^}]*)\\}", "(.*)");
+    }
+
+    private List<String> extractAttributeValuesFromRegexGroups(String message, String patternString) {
         Pattern p = Pattern.compile(patternString);
         Matcher m = p.matcher(message);
-        List<String> arr = new ArrayList<>();
+        List<String> attributeValues = new ArrayList<>();
         m.find();
         for (int i = 1; i < m.groupCount() + 1; i++) {
-            arr.add(m.group(i));
+            attributeValues.add(m.group(i));
         }
-        return arr;
+        return attributeValues;
     }
+
 }

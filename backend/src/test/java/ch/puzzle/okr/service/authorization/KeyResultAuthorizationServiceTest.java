@@ -5,6 +5,7 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -157,6 +158,17 @@ class KeyResultAuthorizationServiceTest {
 
         List<CheckIn> checkIns = keyResultAuthorizationService.getAllCheckInsByKeyResult(id);
         assertThat(List.of(checkIn1, checkIn1)).hasSameElementsAs(checkIns);
+    }
+
+    @DisplayName("getAllCheckInsByKeyResult() should return empty List if no Checkins are found")
+    @Test
+    void getAllCheckInsByKeyResultShouldReturnEmptyListIfNoCheckinsAreFound() {
+        long id = 13L;
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(keyResultBusinessService.getAllCheckInsByKeyResult(id)).thenReturn(List.of());
+
+        List<CheckIn> checkIns = keyResultAuthorizationService.getAllCheckInsByKeyResult(id);
+        assertThat(List.of()).hasSameElementsAs(checkIns);
     }
 
     @Test

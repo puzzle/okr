@@ -65,4 +65,13 @@ class CompletedBusinessServiceTest {
 
         verify(this.completedPersistenceService, times(1)).deleteById(1L);
     }
+
+    @Test
+    void shouldDoNothingIfCompletedIsNull() {
+        when(completedPersistenceService.getCompletedByObjectiveId(anyLong())).thenReturn(null);
+
+        this.completedBusinessService.deleteCompletedByObjectiveId(6L);
+
+        verify(validator, never()).validateOnDelete(anyLong());
+    }
 }

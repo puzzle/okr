@@ -5,6 +5,7 @@ import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.converter.JwtUserConverter;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
@@ -13,7 +14,10 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,6 +52,8 @@ class AuthorizationServiceTest {
     AuthorizationRegistrationService authorizationRegistrationService;
     @Mock
     ObjectivePersistenceService objectivePersistenceService;
+    @Mock
+    ActionPersistenceService actionPersistenceService;
     @Mock
     JwtConverterFactory jwtConverterFactory;
     @Mock
@@ -394,6 +400,24 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser);
+    }
+
+    @DisplayName("hasRoleDeleteByActionId() should pass through when authorized for team CheckIns")
+    @Test
+    void hasRoleDeleteByActionIdShouldPassThroughWhenAuthorizedForTeamCheckIns() {
+        // arrange
+        Long id = 13L;
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
+        KeyResult keyResult = KeyResultOrdinal.Builder.builder().withObjective(objective).build();
+        Action action = Action.Builder.builder().withId(id).withKeyResult(keyResult).build();
+
+        AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
+                List.of(WRITE_TEAM));
+
+        when(actionPersistenceService.findById(eq(id))).thenReturn(action);
+
+        // act + (implicit) assert (because no exception is thrown)
+        authorizationService.hasRoleDeleteByActionId(id, authorizationUser);
     }
 
     @Test

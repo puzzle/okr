@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
@@ -12,7 +11,6 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +27,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static ch.puzzle.okr.AssertionHelper.assertOkrResponseStatusException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInValidationServiceTest {
@@ -77,7 +75,6 @@ class CheckInValidationServiceTest {
 
     @BeforeEach
     void setUp() {
-        // when(checkInPersistenceService.findById(1L)).thenReturn(keyResultMetric);
         when(checkInPersistenceService.getModelName()).thenReturn("CheckIn");
     }
 
@@ -89,15 +86,14 @@ class CheckInValidationServiceTest {
 
     @Test
     void validateOnGetShouldThrowExceptionIfCheckInIdIsNull() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
+
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
@@ -113,60 +109,65 @@ class CheckInValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(fullCheckIn));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence,
             List<ErrorDto> expectedErrors) {
-        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withChangeInfo("ChangeInfo")
-                .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(user)
-                .withKeyResult(keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+
+        // arrange
+        CheckIn checkIn = CheckInMetric.Builder.builder() //
+                .withValue(40.9) //
+                .withChangeInfo("ChangeInfo") //
+                .withInitiatives("Initiatives") //
+                .withConfidence(confidence) //
+                .withCreatedBy(user) //
+                .withKeyResult(keyResultMetric) //
+                .withCreatedOn(LocalDateTime.MAX) //
+                .withModifiedOn(LocalDateTime.MAX) //
                 .build();
 
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(checkIn));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
-        CheckIn checkInInvalid = CheckInMetric.Builder.builder().withId(null).withChangeInfo("ChangeInfo").build();
+        // arrange
+        CheckIn checkInInvalid = CheckInMetric.Builder.builder() //
+                .withId(null) //
+                .withChangeInfo("ChangeInfo").build();
+
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(checkInInvalid));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "CheckIn")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
+        List<ErrorDto> expectedErrors = List.of( //
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")), //
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "CheckIn")), //
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")), //
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")), //
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
@@ -183,18 +184,17 @@ class CheckInValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, checkInOrdinal));
 
@@ -202,14 +202,12 @@ class CheckInValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsHasChanged() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(2L, checkInOrdinal));
 
@@ -218,16 +216,15 @@ class CheckInValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(2L, checkInOrdinal.getId());
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", "2", "1")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence,
             List<ErrorDto> expectedErrors) {
+
+        // arrange
         Long id = 2L;
         CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(id).withChangeInfo("ChangeInfo")
                 .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(user)
@@ -235,16 +232,15 @@ class CheckInValidationServiceTest {
                 .build();
         when(checkInPersistenceService.findById(id)).thenReturn(checkIn);
 
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(id, checkIn));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenCheckInsOfKeyResultIsEmpty() {
+        // arrange
         Long id = 2L;
         CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(id).withChangeInfo("ChangeInfo")
                 .withInitiatives("Initiatives").withConfidence(2).withCreatedBy(user).withKeyResult(keyResultMetric)
@@ -254,38 +250,40 @@ class CheckInValidationServiceTest {
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(13L).build()).build();
         when(checkInPersistenceService.findById(id)).thenReturn(savedCheckIn);
 
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(id, checkIn));
+
         verify(validator, times(1)).throwExceptionWhenModelIsNull(checkIn);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(checkIn.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(checkIn.getId(), checkIn.getId());
 
         List<ErrorDto> expectedErrors = List
                 .of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of("KeyResult", "Check-in")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
+        // arrange
         Long id = 11L;
-        CheckIn checkInInvalid = CheckInMetric.Builder.builder().withId(id).withChangeInfo("ChangeInfo")
-                .withKeyResult(KeyResultMetric.Builder.builder().withId(13L).build()).build();
+        CheckIn checkInInvalid = CheckInMetric.Builder.builder() //
+                .withId(id) //
+                .withChangeInfo("ChangeInfo") //
+                .withKeyResult(KeyResultMetric.Builder.builder().withId(13L).build()) //
+                .build();
         when(checkInPersistenceService.findById(id)).thenReturn(checkInInvalid);
+
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(id, checkInInvalid));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
+        List<ErrorDto> expectedErrors = List.of( //
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")), //
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")), //
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")), //
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
@@ -297,16 +295,14 @@ class CheckInValidationServiceTest {
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfKeyResultIdIsNull() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnDelete(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "CheckIn")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
 }

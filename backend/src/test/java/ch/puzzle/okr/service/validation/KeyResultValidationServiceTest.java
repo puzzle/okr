@@ -10,6 +10,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,6 +28,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static ch.puzzle.okr.AssertionHelper.assertOkrResponseStatusException;
+import static ch.puzzle.okr.Constants.KEY_RESULT;
+import static ch.puzzle.okr.Constants.OBJECTIVE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -286,6 +290,34 @@ class KeyResultValidationServiceTest {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @DisplayName("validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResuslt) has changed")
+    @Test
+    void validateOnUpdateShouldThrowExceptionWhenObjectiveIdOfKeyResultHasChanged() {
+        // arrange
+        Long keyResultId = 1L;
+        Long objectiveId = 2L;
+        Objective objective = Objective.Builder.builder().withId(objectiveId).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder() //
+                .withId(keyResultId) //
+                .withObjective(objective).build();
+
+        Long savedObjectiveId = 3L;
+        Objective savedObjective = Objective.Builder.builder().withId(savedObjectiveId).build();
+        KeyResult savedKeyResultWithDifferentObjectiveId = KeyResultMetric.Builder.builder() //
+                .withId(keyResultId) //
+                .withObjective(savedObjective).build();
+
+        when(keyResultPersistenceService.findById(keyResultId)).thenReturn(savedKeyResultWithDifferentObjectiveId);
+
+        // act + assert
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUpdate(keyResultId, keyResult));
+
+        List<ErrorDto> expectedErrors = List.of( //
+                new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of(OBJECTIVE, KEY_RESULT)));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
 }

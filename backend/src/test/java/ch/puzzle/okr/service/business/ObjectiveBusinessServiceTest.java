@@ -57,8 +57,9 @@ class ObjectiveBusinessServiceTest {
             .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective).build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
+    @DisplayName("getEntityById() should return one Objective")
     @Test
-    void getOneObjective() {
+    void getEntityByIdShouldReturnOneObjective() {
         when(objectivePersistenceService.findById(5L)).thenReturn(objective);
 
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
@@ -66,8 +67,9 @@ class ObjectiveBusinessServiceTest {
         assertEquals("Objective 1", realObjective.getTitle());
     }
 
+    @DisplayName("getEntitiesByTeamId() should return list of Objectives")
     @Test
-    void getEntitiesByTeamId() {
+    void getEntitiesByTeamIdShouldReturnListOfObjectives() {
         when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
 
         List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
@@ -75,23 +77,30 @@ class ObjectiveBusinessServiceTest {
         assertThat(entities).hasSameElementsAs(List.of(objective));
     }
 
+    @DisplayName("getEntityById() should throw exception when Objective is not found")
     @Test
-    void shouldNotFindTheObjective() {
+    void getEntityByIdShouldThrowExceptionWhenObjectiveNotFound() {
         when(objectivePersistenceService.findById(6L))
                 .thenThrow(new ResponseStatusException(NOT_FOUND, "Objective with id 6 not found"));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveBusinessService.getEntityById(6L));
+
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
 
+    @DisplayName("createEntity() should save new Objective")
     @Test
-    void shouldSaveANewObjective() {
-        Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
-                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
+    void createEntityShouldSaveNewObjective() {
+        Objective objective = spy(Objective.Builder.builder() //
+                .withTitle("Received Objective") //
+                .withTeam(team1) //
+                .withQuarter(quarter) //
+                .withDescription("The description") //
+                .withModifiedOn(null) //
+                .withModifiedBy(null) //
                 .withState(DRAFT).build());
-
         doNothing().when(objective).setCreatedOn(any());
 
         objectiveBusinessService.createEntity(objective, authorizationUser);
@@ -102,43 +111,73 @@ class ObjectiveBusinessServiceTest {
         assertNull(objective.getCreatedOn());
     }
 
+    @DisplayName("createEntity() should not throw ResponseStatusException when putting null Id")
     @Test
-    void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
-        Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
-                .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
+    void createEntityShouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
+        Objective objective1 = Objective.Builder.builder() //
+                .withId(null) //
+                .withTitle("Title") //
+                .withDescription("Description") //
+                .withModifiedOn(LocalDateTime.now()).build();
         when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
 
         Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
+
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
     }
 
+    @DisplayName("updateEntity() should handle Quarter correctly")
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
+        // arrange
         Long id = 27L;
         String title = "Received Objective";
         String description = "The description";
-        Quarter changedQuarter = Quarter.Builder.builder().withId(2L).withLabel("another quarter").build();
-        Objective savedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
-                .withQuarter(quarter).withDescription(null).withModifiedOn(null).withModifiedBy(null).build();
-        Objective changedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
-                .withQuarter(changedQuarter).withDescription(description).withModifiedOn(null).withModifiedBy(null)
-                .build();
-        Objective updatedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
-                .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter).withDescription(description)
-                .withModifiedOn(null).withModifiedBy(null).build();
+        Quarter changedQuarter = Quarter.Builder.builder() //
+                .withId(2L) //
+                .withLabel("another quarter").build();
+
+        Objective savedObjective = Objective.Builder.builder() //
+                .withId(id) //
+                .withTitle(title) //
+                .withTeam(team1) //
+                .withQuarter(quarter) //
+                .withDescription(null) //
+                .withModifiedOn(null) //
+                .withModifiedBy(null).build();
+
+        Objective changedObjective = Objective.Builder.builder() //
+                .withId(id) //
+                .withTitle(title) //
+                .withTeam(team1) //
+                .withQuarter(changedQuarter) //
+                .withDescription(description) //
+                .withModifiedOn(null) //
+                .withModifiedBy(null).build();
+
+        Objective updatedObjective = Objective.Builder.builder() //
+                .withId(id) //
+                .withTitle(title) //
+                .withTeam(team1) //
+                .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter) //
+                .withDescription(description) //
+                .withModifiedOn(null) //
+                .withModifiedBy(null).build();
 
         when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
         when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(hasKeyResultAnyCheckIns);
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
+        // act
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
         Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
                 authorizationUser);
 
+        // assert
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
         assertEquals(hasKeyResultAnyCheckIns ? savedObjective.getQuarter() : changedObjective.getQuarter(),
                 updatedEntity.getQuarter());
@@ -146,8 +185,9 @@ class ObjectiveBusinessServiceTest {
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
     }
 
+    @DisplayName("deleteEntityById() should delete Objective and associated KeyResults")
     @Test
-    void shouldDeleteObjectiveAndAssociatedKeyResults() {
+    void deleteEntityByIdShouldDeleteObjectiveAndAssociatedKeyResults() {
         when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(keyResultList);
 
         objectiveBusinessService.deleteEntityById(1L);
@@ -156,8 +196,9 @@ class ObjectiveBusinessServiceTest {
         verify(objectiveBusinessService, times(1)).deleteEntityById(1L);
     }
 
+    @DisplayName("duplicateObjective() should duplicate Objective")
     @Test
-    void shouldDuplicateObjective() {
+    void duplicateObjectiveShouldDuplicateObjective() {
         // arrange
         Objective sourceObjective = Objective.Builder.builder() //
                 .withId(23L) //

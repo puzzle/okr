@@ -47,33 +47,38 @@ public class ObjectiveValidationService
         validate(model);
     }
 
-    private static void throwExceptionWhenModifiedByIsSet(Objective model) {
+    private void throwExceptionWhenModifiedByIsSet(Objective model) {
         if (model.getModifiedBy() != null) {
-
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_SET_FORBIDDEN,
                     List.of("ModifiedBy", model.getModifiedBy()));
         }
     }
 
-    private static void throwExceptionWhenModifiedByIsNull(Objective model) {
+    private void throwExceptionWhenModifiedByIsNull(Objective model) {
         if (model.getModifiedBy() == null) {
             throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorKey.ATTRIBUTE_NOT_SET,
                     "modifiedBy");
         }
     }
 
-    private static void throwExceptionWhenTeamHasChanged(Team team, Team savedTeam) {
+    private void throwExceptionWhenTeamHasChanged(Team team, Team savedTeam) {
         if (!Objects.equals(team, savedTeam)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
                     List.of(TEAM, OBJECTIVE));
         }
     }
 
-    private static void throwExceptionWhenNotDraftInBacklogQuarter(Objective model) {
-        if (model.getQuarter().getStartDate() == null && model.getQuarter().getEndDate() == null
-                && model.getQuarter().getLabel().equals("Backlog") && (model.getState() != State.DRAFT)) {
+    private void throwExceptionWhenNotDraftInBacklogQuarter(Objective model) {
+        if (isInvalidBacklogObjective(model)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_MUST_BE_DRAFT,
                     List.of(OBJECTIVE, STATE_DRAFT, model.getState()));
         }
+    }
+
+    private boolean isInvalidBacklogObjective(Objective model) {
+        return model.getQuarter().getLabel().equals("Backlog") //
+                && model.getQuarter().getStartDate() == null //
+                && model.getQuarter().getEndDate() == null //
+                && (model.getState() != State.DRAFT);
     }
 }

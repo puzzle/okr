@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -196,4 +197,63 @@ class ObjectiveBusinessServiceTest {
         // called for creating the new KeyResults
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
+
+    @DisplayName("isImUsed() should return false when Quarter has not changed")
+    @Test
+    void isImUsedShouldReturnFalseWhenQuarterHasNotChanged() {
+        // arrange
+        Objective objective = Objective.Builder.builder() //
+                .withId(23L) //
+                .withTitle("Objective") //
+                .withQuarter(Quarter.Builder.builder().withLabel("Quarter Label").build()).build();
+
+        when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
+
+        // act + assert
+        assertFalse(objectiveBusinessService.isImUsed(objective));
+    }
+
+    @DisplayName("isImUsed() should return false when Quarter has changed but no CheckIns are found")
+    @Test
+    void isImUsedShouldReturnFalseWhenQuarterHasChangedButNoCheckinsAreFound() {
+        // arrange
+        Objective sourceObjective = Objective.Builder.builder() //
+                .withId(23L) //
+                .withTitle("Objective") //
+                .withQuarter(Quarter.Builder.builder().withLabel("Source Label").build()).build();
+
+        Objective savedObjectiveWithChangedQuarter = Objective.Builder.builder() //
+                .withId(23L) //
+                .withTitle("Objective") //
+                .withQuarter(Quarter.Builder.builder().withLabel("Saved Label").build()).build();
+
+        when(objectivePersistenceService.findById(anyLong())).thenReturn(savedObjectiveWithChangedQuarter);
+
+        // act + assert
+        assertFalse(objectiveBusinessService.isImUsed(sourceObjective));
+    }
+
+    @DisplayName("isImUsed() should return true when Quarter has changed and CheckIns are found")
+    @Test
+    void isImUsedShouldReturnTrueWhenQuarterHasChangedAndCheckinsAreFound() {
+        // arrange
+        Objective sourceObjective = Objective.Builder.builder() //
+                .withId(23L) //
+                .withTitle("Objective") //
+                .withQuarter(Quarter.Builder.builder().withLabel("Source Label").build()).build();
+
+        Objective savedObjectiveWithChangedQuarter = Objective.Builder.builder() //
+                .withId(23L) //
+                .withTitle("Objective") //
+                .withQuarter(Quarter.Builder.builder().withLabel("Saved Label").build()).build();
+
+        when(objectivePersistenceService.findById(anyLong())).thenReturn(savedObjectiveWithChangedQuarter);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjectiveWithChangedQuarter.getId()))
+                .thenReturn(keyResultList);
+        when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(true);
+
+        // act + assert
+        assertTrue(objectiveBusinessService.isImUsed(sourceObjective));
+    }
+
 }

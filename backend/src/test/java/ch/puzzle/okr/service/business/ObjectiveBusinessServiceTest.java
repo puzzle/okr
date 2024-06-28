@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,6 +32,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
+
     @InjectMocks
     @Spy
     ObjectiveBusinessService objectiveBusinessService;
@@ -45,16 +45,31 @@ class ObjectiveBusinessServiceTest {
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
 
-    private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
-    private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
-    private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-    private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
-            .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
-            .withModifiedOn(LocalDateTime.MAX).build();
-    private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
-            .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective).build();
+    private final Team team1 = Team.Builder.builder() //
+            .withId(1L) //
+            .withName("Team1").build();
+
+    private final Quarter quarter = Quarter.Builder.builder() //
+            .withId(1L) //
+            .withLabel("GJ 22/23-Q2").build();
+
+    private final User user = User.Builder.builder() //
+            .withId(1L) //
+            .withFirstname("Bob") //
+            .withLastname("Kaufmann") //
+            .withUsername("bkaufmann") //
+            .withEmail("kaufmann@puzzle.ch").build();
+
+    private final Objective objective = Objective.Builder.builder() //
+            .withId(5L) //
+            .withTitle("Objective 1").build();
+
+    private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder() //
+            .withCommitZone("Baum") //
+            .withStretchZone("Wald") //
+            .withId(5L).withTitle("Keyresult Ordinal") //
+            .withObjective(objective).build();
+
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
     @DisplayName("getEntityById() should return one Objective")
@@ -65,16 +80,6 @@ class ObjectiveBusinessServiceTest {
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
 
         assertEquals("Objective 1", realObjective.getTitle());
-    }
-
-    @DisplayName("getEntitiesByTeamId() should return list of Objectives")
-    @Test
-    void getEntitiesByTeamIdShouldReturnListOfObjectives() {
-        when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
-
-        List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
-
-        assertThat(entities).hasSameElementsAs(List.of(objective));
     }
 
     @DisplayName("getEntityById() should throw exception when Objective is not found")
@@ -90,42 +95,40 @@ class ObjectiveBusinessServiceTest {
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
 
+    @DisplayName("getEntitiesByTeamId() should return list of Objectives")
+    @Test
+    void getEntitiesByTeamIdShouldReturnListOfObjectives() {
+        when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
+
+        List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
+
+        assertThat(entities).hasSameElementsAs(List.of(objective));
+    }
+
     @DisplayName("createEntity() should save new Objective")
     @Test
     void createEntityShouldSaveNewObjective() {
-        Objective objective = spy(Objective.Builder.builder() //
-                .withTitle("Received Objective") //
-                .withTeam(team1) //
-                .withQuarter(quarter) //
-                .withDescription("The description") //
-                .withModifiedOn(null) //
-                .withModifiedBy(null) //
-                .withState(DRAFT).build());
-        doNothing().when(objective).setCreatedOn(any());
-
-        objectiveBusinessService.createEntity(objective, authorizationUser);
-
-        verify(objectivePersistenceService, times(1)).save(objective);
-        assertEquals(DRAFT, objective.getState());
-        assertEquals(user, objective.getCreatedBy());
-        assertNull(objective.getCreatedOn());
-    }
-
-    @DisplayName("createEntity() should not throw ResponseStatusException when putting null Id")
-    @Test
-    void createEntityShouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
-        Objective objective1 = Objective.Builder.builder() //
-                .withId(null) //
+        // arrange
+        Objective objective = Objective.Builder.builder() //
+                .withId(1L) //
                 .withTitle("Title") //
                 .withDescription("Description") //
-                .withModifiedOn(LocalDateTime.now()).build();
-        when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
+                .withModifiedOn(null) //
+                .withModifiedBy(null) //
+                .build();
 
-        Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
+        // return input Objective enriched with modified data
+        when(objectivePersistenceService.save(objective)).thenReturn(objective);
 
-        assertNull(savedObjective.getId());
-        assertEquals("FullObjective1", savedObjective.getTitle());
-        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
+        // act
+        Objective savedObjective = objectiveBusinessService.createEntity(objective, authorizationUser);
+
+        // assert
+        verify(objectivePersistenceService, times(1)).save(objective);
+
+        // verify enriched with modifiedOn and modifiedBy data
+        assertNotNull(savedObjective.getCreatedOn());
+        assertEquals(authorizationUser.user(), savedObjective.getCreatedBy());
     }
 
     @DisplayName("updateEntity() should handle Quarter correctly")
@@ -134,43 +137,42 @@ class ObjectiveBusinessServiceTest {
     void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
         // arrange
         Long id = 27L;
-        String title = "Received Objective";
-        String description = "The description";
+        String changedObjectiveTitle = "Changed Objective Title";
+        String savedObjectiveTitle = "Saved Objective Title";
+        String changedObjectiveDescription = "Changed Description";
+        String saveObjectiveDescription = "Saved Description";
+
+        LocalDateTime savedObjectiveCreatedOn = LocalDateTime.of(2024, 1, 1, 11, 11);
+
         Quarter changedQuarter = Quarter.Builder.builder() //
                 .withId(2L) //
                 .withLabel("another quarter").build();
 
-        Objective savedObjective = Objective.Builder.builder() //
-                .withId(id) //
-                .withTitle(title) //
-                .withTeam(team1) //
-                .withQuarter(quarter) //
-                .withDescription(null) //
-                .withModifiedOn(null) //
-                .withModifiedBy(null).build();
-
         Objective changedObjective = Objective.Builder.builder() //
                 .withId(id) //
-                .withTitle(title) //
+                .withTitle(changedObjectiveTitle) // "Changed Objective Title"
                 .withTeam(team1) //
-                .withQuarter(changedQuarter) //
-                .withDescription(description) //
-                .withModifiedOn(null) //
-                .withModifiedBy(null).build();
+                .withQuarter(changedQuarter) // quarter with id 2
+                .withDescription(changedObjectiveDescription) // "Changed Description"
+                .build();
 
-        Objective updatedObjective = Objective.Builder.builder() //
+        Objective savedObjectiveInDb = Objective.Builder.builder() //
                 .withId(id) //
-                .withTitle(title) //
+                .withTitle(savedObjectiveTitle) // "Saved Objective Title";
                 .withTeam(team1) //
-                .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter) //
-                .withDescription(description) //
-                .withModifiedOn(null) //
-                .withModifiedBy(null).build();
+                .withQuarter(quarter) // quarter with id 1
+                .withDescription(saveObjectiveDescription) // "Saved Description"
+                .withCreatedOn(savedObjectiveCreatedOn) //
+                .withCreatedBy(user) //
+                .build();
 
-        when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
+        when(objectivePersistenceService.findById(any())).thenReturn(savedObjectiveInDb);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjectiveInDb.getId()))
+                .thenReturn(keyResultList);
         when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(hasKeyResultAnyCheckIns);
-        when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
+
+        // return input Objective enriched with data from savedObjectiveInDb
+        when(objectivePersistenceService.save(changedObjective)).thenReturn(changedObjective);
 
         // act
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
@@ -178,11 +180,34 @@ class ObjectiveBusinessServiceTest {
                 authorizationUser);
 
         // assert
+        assertImUsed(hasKeyResultAnyCheckIns, isImUsed);
+        assertUnchangedData(changedObjectiveDescription, changedObjectiveTitle, updatedEntity);
+        assertChangedData(updatedEntity, savedObjectiveCreatedOn);
+        assertKeyResultDependentData(hasKeyResultAnyCheckIns, savedObjectiveInDb, changedObjective, updatedEntity);
+    }
+
+    private static void assertImUsed(boolean hasKeyResultAnyCheckIns, boolean isImUsed) {
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
-        assertEquals(hasKeyResultAnyCheckIns ? savedObjective.getQuarter() : changedObjective.getQuarter(),
-                updatedEntity.getQuarter());
-        assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());
-        assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
+    }
+
+    private void assertUnchangedData(String changedObjectiveDescription, String changedObjectiveTitle,
+            Objective updatedEntity) {
+        assertEquals(changedObjectiveDescription, updatedEntity.getDescription());
+        assertEquals(changedObjectiveTitle, updatedEntity.getTitle());
+    }
+
+    private void assertChangedData(Objective updatedEntity, LocalDateTime savedObjectiveCreatedOn) {
+        assertNotNull(updatedEntity.getModifiedOn());
+        assertEquals(authorizationUser.user(), updatedEntity.getModifiedBy());
+        assertEquals(savedObjectiveCreatedOn, updatedEntity.getCreatedOn());
+        assertEquals(user, updatedEntity.getCreatedBy());
+    }
+
+    private void assertKeyResultDependentData(boolean hasKeyResultAnyCheckIns, Objective savedObjectiveInDb,
+            Objective changedObjective, Objective updatedEntity) {
+        Quarter expectedQuarter = hasKeyResultAnyCheckIns ? savedObjectiveInDb.getQuarter()
+                : changedObjective.getQuarter();
+        assertEquals(expectedQuarter, updatedEntity.getQuarter());
     }
 
     @DisplayName("deleteEntityById() should delete Objective and associated KeyResults")
@@ -204,10 +229,12 @@ class ObjectiveBusinessServiceTest {
                 .withId(23L) //
                 .withTitle("Objective 1") //
                 .build();
+
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder() //
                 .withTitle("Ordinal 1") //
                 .withObjective(sourceObjective) //
                 .build();
+
         KeyResult keyResultMetric = KeyResultMetric.Builder.builder() //
                 .withTitle("Metric 1") //
                 .withObjective(sourceObjective) //
@@ -233,9 +260,9 @@ class ObjectiveBusinessServiceTest {
         assertEquals(newObjective.getId(), duplicatedObjective.getId());
         assertEquals(newObjective.getTitle(), duplicatedObjective.getTitle());
 
-        // called for creating the new Objective
+        // called when creating the new Objective
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
-        // called for creating the new KeyResults
+        // called when creating the new KeyResults
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
 

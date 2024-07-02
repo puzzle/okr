@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -134,25 +135,12 @@ class CompletedValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("validateOnUpdate() should throw exception")
     @Test
-    void validateOnDeleteShouldBeSuccessfulWhenValidCompletedId() {
-        validator.validateOnGet(1L);
-
-        verify(validator, times(1)).validateOnGet(1L);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
-    }
-
-    @Test
-    void validateOnDeleteShouldThrowExceptionIfCompletedIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
-
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Completed")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    void validateOnUpdateShouldThrowException() {
+        Long id = 1L;
+        Completed completed = Completed.Builder.builder().build();
+        assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(id, completed));
     }
 
 }

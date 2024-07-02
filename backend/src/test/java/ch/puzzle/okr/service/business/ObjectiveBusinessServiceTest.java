@@ -157,17 +157,43 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void shouldDuplicateObjective() {
-        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withTitle("Ordinal").build();
-        KeyResult keyResultOrdinal2 = KeyResultOrdinal.Builder.builder().withTitle("Ordinal2").build();
-        KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withTitle("Metric").withUnit(Unit.FTE).build();
-        KeyResult keyResultMetric2 = KeyResultMetric.Builder.builder().withTitle("Metric2").withUnit(Unit.CHF).build();
-        List<KeyResult> keyResults = List.of(keyResultOrdinal, keyResultOrdinal2, keyResultMetric, keyResultMetric2);
+        // arrange
+        Objective sourceObjective = Objective.Builder.builder() //
+                .withId(23L) //
+                .withTitle("Objective 1") //
+                .build();
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder() //
+                .withTitle("Ordinal 1") //
+                .withObjective(sourceObjective) //
+                .build();
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder() //
+                .withTitle("Metric 1") //
+                .withObjective(sourceObjective) //
+                .withUnit(Unit.FTE) //
+                .build();
 
-        when(objectivePersistenceService.save(any())).thenReturn(objective);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResults);
+        // new Objective with no KeyResults
+        Objective newObjective = Objective.Builder.builder() //
+                .withId(42L) //
+                .withTitle("Objective 2") //
+                .build();
 
-        objectiveBusinessService.duplicateObjective(objective.getId(), objective, authorizationUser);
-        verify(keyResultBusinessService, times(4)).createEntity(any(), any());
+        when(objectivePersistenceService.save(any())).thenReturn(newObjective);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong()))
+                .thenReturn(List.of(keyResultOrdinal, keyResultMetric));
+
+        // act
+        Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
+                newObjective, authorizationUser);
+
+        // assert
+        assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());
+        assertEquals(newObjective.getId(), duplicatedObjective.getId());
+        assertEquals(newObjective.getTitle(), duplicatedObjective.getTitle());
+
+        // called for creating the new Objective
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
+        // called for creating the new KeyResults
+        verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
 }

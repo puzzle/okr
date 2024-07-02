@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.authorization;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -137,5 +138,50 @@ class ObjectiveAuthorizationServiceTest {
                 () -> objectiveAuthorizationService.deleteEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
+    }
+
+    @DisplayName("duplicateEntity() should throw exception when not authorized")
+    @Test
+    void duplicateEntityShouldThrowExceptionWhenNotAuthorized() {
+        // arrange
+        Long idExistingObjective = 13L;
+        String reason = "junit test reason";
+        Objective objective = Objective.Builder.builder().build();
+
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
+                .hasRoleCreateOrUpdate(objective, authorizationUser);
+
+        // act
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveAuthorizationService.duplicateEntity(idExistingObjective, objective));
+
+        // assert
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
+        assertEquals(reason, exception.getReason());
+    }
+
+    @DisplayName("duplicateEntity() should return duplicated Objective when authorized")
+    @Test
+    void duplicateEntityShouldReturnDuplicatedObjectiveWhenAuthorized() {
+        // arrange
+        Long idExistingObjective = 13L;
+
+        Objective newObjectiveWithoutKeyResults = Objective.Builder.builder() //
+                .withTitle("Objective without KeyResults").build();
+
+        Objective newObjectiveWithKeyResults = Objective.Builder.builder() //
+                .withId(42L).withTitle("Objective with Id and KeyResults").build();
+
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
+        when(objectiveBusinessService.duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults,
+                authorizationUser)).thenReturn(newObjectiveWithKeyResults);
+
+        // act
+        Objective objective = objectiveAuthorizationService.duplicateEntity(idExistingObjective,
+                newObjectiveWithoutKeyResults);
+
+        // assert
+        assertEquals(newObjectiveWithKeyResults, objective);
     }
 }

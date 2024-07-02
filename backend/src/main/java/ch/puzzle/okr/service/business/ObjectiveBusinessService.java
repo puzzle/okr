@@ -91,26 +91,57 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         return objectivePersistenceService.save(objective);
     }
 
+    /**
+     * Create a new Objective (with a new ID) and copy from a source Objective (identified by id) the KeyResults. The
+     * CheckIns are not copied.
+     *
+     * @param id
+     *            ID of the source Objective
+     * @param objective
+     *            New Objective with no KeyResults
+     * @param authorizationUser
+     *            AuthorizationUser
+     *
+     * @return New Objective with copied KeyResults form the source Objective
+     */
     @Transactional
     public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
         List<KeyResult> keyResultsOfDuplicatedObjective = keyResultBusinessService.getAllKeyResultsByObjective(id);
         for (KeyResult keyResult : keyResultsOfDuplicatedObjective) {
             if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
-                KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(duplicatedObjective)
-                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withOwner(keyResult.getOwner()).withUnit(((KeyResultMetric) keyResult).getUnit())
-                        .withBaseline(0D).withStretchGoal(1D).build();
+                KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
                 keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
             } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
-                KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
-                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withOwner(keyResult.getOwner()).withCommitZone("-").withTargetZone("-").withStretchZone("-")
-                        .build();
+                KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
                 keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
             }
         }
         return duplicatedObjective;
+    }
+
+    private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
+        return KeyResultMetric.Builder.builder() //
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withUnit(((KeyResultMetric) keyResult).getUnit()) //
+                .withBaseline(0D) //
+                .withStretchGoal(1D) //
+                .build();
+    }
+
+    private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
+        return KeyResultOrdinal.Builder.builder() //
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withCommitZone("-") //
+                .withTargetZone("-") //
+                .withStretchZone("-") //
+                .build();
     }
 
     @Transactional

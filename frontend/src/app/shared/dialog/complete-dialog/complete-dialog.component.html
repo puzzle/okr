@@ -17,7 +17,7 @@
             class="successful w-50 valuation-card card-hover-successful"
             [ngClass]="{
               'active-successful': completeForm.value.isSuccessful == true,
-              'non-active-successful': completeForm.value.isSuccessful === false
+              'non-active-successful': completeForm.value.isSuccessful === false,
             }"
             (click)="switchSuccessState('successful')"
             (keydown.enter)="switchSuccessState('successful')"
@@ -30,7 +30,7 @@
             class="not-successful w-50 valuation-card card-hover-not-successful"
             [ngClass]="{
               'active-not-successful': completeForm.value.isSuccessful === false,
-              'non-active-not-successful': completeForm.value.isSuccessful == true
+              'non-active-not-successful': completeForm.value.isSuccessful == true,
             }"
             (click)="switchSuccessState('notSuccessful')"
             (keydown.enter)="switchSuccessState('notSuccessful')"

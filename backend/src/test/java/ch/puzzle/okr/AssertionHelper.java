@@ -16,9 +16,7 @@ public class AssertionHelper {
     public static void assertOkrResponseStatusException(OkrResponseStatusException exception,
             List<ErrorDto> expectedErrors) {
 
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(BAD_REQUEST, exception, expectedErrors);
     }
 
     public static void assertOkrResponseStatusException(HttpStatus statusCode, OkrResponseStatusException exception,

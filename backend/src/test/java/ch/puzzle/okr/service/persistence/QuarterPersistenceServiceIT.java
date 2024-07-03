@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.util.QuarterRangeChecker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +71,7 @@ class QuarterPersistenceServiceIT {
     void shouldReturnCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
-        assertTrue(LocalDate.now().isAfter(quarter.getStartDate()));
-        assertTrue(LocalDate.now().isBefore(quarter.getEndDate()));
+        assertTrue(QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter));
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());
     }

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.converter.JwtUserConverter;
 import ch.puzzle.okr.dto.ErrorDto;
@@ -33,8 +33,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static ch.puzzle.okr.ErrorKey.*;
-import static ch.puzzle.okr.TestConstants.ORGANISATION_FIRST_LEVEL;
-import static ch.puzzle.okr.TestHelper.*;
+import static ch.puzzle.okr.test.TestConstants.ORGANISATION_FIRST_LEVEL;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.*;
 import static org.assertj.core.api.Assertions.assertThat;

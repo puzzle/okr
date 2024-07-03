@@ -19,7 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
-import static ch.puzzle.okr.AssertionHelper.assertOkrResponseStatusException;
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

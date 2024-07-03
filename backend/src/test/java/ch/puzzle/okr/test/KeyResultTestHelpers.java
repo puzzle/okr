@@ -1,4 +1,4 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.test;
 
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;

@@ -1,4 +1,4 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.test;
 
 import java.util.List;
 

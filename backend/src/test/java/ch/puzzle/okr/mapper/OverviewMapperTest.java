@@ -1,6 +1,6 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultDto;

@@ -23,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static ch.puzzle.okr.AssertionHelper.assertOkrResponseStatusException;
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.anyLong;

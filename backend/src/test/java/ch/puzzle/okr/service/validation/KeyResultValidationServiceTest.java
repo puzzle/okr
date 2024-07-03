@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static ch.puzzle.okr.AssertionHelper.assertOkrResponseStatusException;
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
 import static ch.puzzle.okr.Constants.KEY_RESULT;
 import static ch.puzzle.okr.Constants.OBJECTIVE;
 import static org.junit.jupiter.api.Assertions.assertThrows;

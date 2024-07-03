@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.AssertionHelper;
+import ch.puzzle.okr.test.AssertionHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static ch.puzzle.okr.AssertionHelper.assertOkrResponseStatusException;
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;

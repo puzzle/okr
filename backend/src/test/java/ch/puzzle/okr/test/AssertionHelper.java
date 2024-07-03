@@ -1,7 +1,8 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.test;
 
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class AssertionHelper {
 
         assertEquals(statusCode, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        Assertions.assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
 }

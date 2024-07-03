@@ -34,7 +34,7 @@ import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-import static ch.puzzle.okr.KeyResultTestHelpers.*;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;

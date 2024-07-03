@@ -16,9 +16,9 @@ import java.util.List;
 
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
-import static ch.puzzle.okr.TestConstants.*;
-import static ch.puzzle.okr.TestHelper.defaultUser;
-import static ch.puzzle.okr.TestHelper.mockJwtToken;
+import static ch.puzzle.okr.test.TestConstants.*;
+import static ch.puzzle.okr.test.TestHelper.defaultUser;
+import static ch.puzzle.okr.test.TestHelper.mockJwtToken;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

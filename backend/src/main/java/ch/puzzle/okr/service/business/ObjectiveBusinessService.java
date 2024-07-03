@@ -55,14 +55,23 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
-        String not = " ";
-        if (isImUsed(objective, savedObjective)) {
-            objective.setQuarter(savedObjective.getQuarter());
-            not = " NOT ";
-        }
-        logger.debug("quarter has changed and is{}changeable, {}", not, objective);
+        setQuarterIfIsImUsed(objective, savedObjective);
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
+    }
+
+    private void setQuarterIfIsImUsed(Objective objective, Objective savedObjective) {
+        boolean imUsed = isImUsed(objective, savedObjective);
+        if (imUsed) {
+            objective.setQuarter(savedObjective.getQuarter());
+        }
+        logger.debug("quarter has changed and is{}changeable, {}", spaceOrNot(imUsed), objective);
+    }
+
+    private String spaceOrNot(boolean imUsed) {
+        if (imUsed)
+            return " NOT ";
+        return " ";
     }
 
     public boolean isImUsed(Objective objective) {
@@ -107,17 +116,21 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     @Transactional
     public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
-        List<KeyResult> keyResultsOfDuplicatedObjective = keyResultBusinessService.getAllKeyResultsByObjective(id);
-        for (KeyResult keyResult : keyResultsOfDuplicatedObjective) {
-            if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
-                KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
-                keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-            } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
-                KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
-                keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
-            }
+        for (KeyResult keyResult : keyResultBusinessService.getAllKeyResultsByObjective(id)) {
+            duplicateKeyResult(authorizationUser, keyResult, duplicatedObjective);
         }
         return duplicatedObjective;
+    }
+
+    private void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
+            Objective duplicatedObjective) {
+        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
+            KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
+            keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
+        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
+            KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
+            keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
+        }
     }
 
     private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
@@ -148,7 +161,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         completedBusinessService.deleteCompletedByObjectiveId(id);
-        keyResultBusinessService.getAllKeyResultsByObjective(id)
+        keyResultBusinessService //
+                .getAllKeyResultsByObjective(id) //
                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);
     }

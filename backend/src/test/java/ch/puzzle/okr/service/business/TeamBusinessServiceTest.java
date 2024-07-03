@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -16,13 +15,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.TestHelper.defaultUser;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.defaultUser;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static ch.puzzle.okr.models.State.SUCCESSFUL;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;

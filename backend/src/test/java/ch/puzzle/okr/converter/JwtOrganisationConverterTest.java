@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.defaultJwtToken;
+import static ch.puzzle.okr.test.TestHelper.defaultJwtToken;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 

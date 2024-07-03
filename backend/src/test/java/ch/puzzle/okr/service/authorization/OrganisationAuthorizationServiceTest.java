@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.TestHelper.userWithoutWriteAllRole;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.userWithoutWriteAllRole;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;

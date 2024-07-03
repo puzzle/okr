@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -20,10 +19,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class ValidationBaseTest {
@@ -39,12 +37,6 @@ class ValidationBaseTest {
 
     @InjectMocks
     private DummyValidationServiceWithSeveralConstraints validatorWithSeveralConstraints;
-
-    private void assertOkrResponseStatusException(OkrResponseStatusException exception, List<ErrorDto> expectedErrors) {
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-    }
 
     @DisplayName("getPersistenceService() should return not null")
     @Test
@@ -73,9 +65,7 @@ class ValidationBaseTest {
                 () -> validator.validateOnGet(id));
 
         // assert
-        List<ErrorDto> expectedErrors = List.of( //
-                new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")) //
-        );
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -106,9 +96,7 @@ class ValidationBaseTest {
                 () -> validator.validateOnDelete(id));
 
         // assert
-        List<ErrorDto> expectedErrors = List.of( //
-                new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")) //
-        );
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -136,9 +124,7 @@ class ValidationBaseTest {
                 () -> validator.throwExceptionWhenModelIsNull(model));
 
         // assert
-        List<ErrorDto> expectedErrors = List.of( //
-                new ErrorDto("MODEL_NULL", List.of("Quarter")) //
-        );
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -162,9 +148,7 @@ class ValidationBaseTest {
                 () -> validator.throwExceptionWhenIdIsNotNull(id));
 
         // assert
-        List<ErrorDto> expectedErrors = List.of( //
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Quarter")) //
-        );
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -190,9 +174,8 @@ class ValidationBaseTest {
                 () -> validator.throwExceptionWhenIdHasChanged(id, modelId));
 
         // assert
-        List<ErrorDto> expectedErrors = List.of( //
-                new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", id.toString(), modelId.toString())) //
-        );
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", id.toString(), modelId.toString())));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -220,9 +203,7 @@ class ValidationBaseTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validate(quarterWithNullLabel));
 
-        List<ErrorDto> expectedErrors = List.of( //
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("label", "Quarter")) //
-        );
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("label", "Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 
-import static ch.puzzle.okr.KeyResultTestHelpers.user;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.user;
 
 class UserKeyGeneratorTest {
 

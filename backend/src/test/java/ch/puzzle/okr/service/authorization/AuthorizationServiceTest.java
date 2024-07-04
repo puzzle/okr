@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static ch.puzzle.okr.ErrorKey.*;
-import static ch.puzzle.okr.TestHelper.*;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteForTeam;
 import static org.assertj.core.api.Assertions.assertThat;

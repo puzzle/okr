@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.*;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

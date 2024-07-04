@@ -24,7 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.*;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static ch.puzzle.okr.models.State.SUCCESSFUL;
 import static org.assertj.core.api.Assertions.assertThat;

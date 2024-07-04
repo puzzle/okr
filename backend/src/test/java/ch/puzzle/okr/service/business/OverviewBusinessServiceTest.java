@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.puzzle.okr.OverviewTestHelper.QUARTER_ID;
-import static ch.puzzle.okr.OverviewTestHelper.teamIds;
-import static ch.puzzle.okr.TestHelper.*;
+import static ch.puzzle.okr.test.OverviewTestHelper.QUARTER_ID;
+import static ch.puzzle.okr.test.OverviewTestHelper.teamIds;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

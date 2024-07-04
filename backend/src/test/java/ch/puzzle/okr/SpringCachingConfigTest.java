@@ -5,13 +5,14 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.authorization.AuthorizationRegistrationService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
-import static ch.puzzle.okr.TestHelper.defaultUser;
+import static ch.puzzle.okr.test.TestHelper.defaultUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

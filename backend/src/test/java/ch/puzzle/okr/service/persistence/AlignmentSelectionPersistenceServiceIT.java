@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.models.alignment.AlignmentSelection;
 import ch.puzzle.okr.models.alignment.AlignmentSelectionId;
 import ch.puzzle.okr.multitenancy.TenantContext;

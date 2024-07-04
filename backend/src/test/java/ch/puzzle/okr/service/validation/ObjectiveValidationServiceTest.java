@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;

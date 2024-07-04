@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;

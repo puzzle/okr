@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.*;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

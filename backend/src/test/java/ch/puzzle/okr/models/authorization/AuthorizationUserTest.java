@@ -1,6 +1,6 @@
 package ch.puzzle.okr.models.authorization;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import org.junit.jupiter.api.Test;

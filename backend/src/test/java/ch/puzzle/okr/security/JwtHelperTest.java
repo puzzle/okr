@@ -31,6 +31,7 @@ public class JwtHelperTest {
     private static final String TOKEN_CLAIMS_KEY_TENANT = "tenant";
     private static final String PITC = "pitc";
 
+    // ok
     @DisplayName("getUserFromJwt() extracts User data from Token")
     @Test
     void getUserFromJwtExtractsUserDataFromToken() {
@@ -54,6 +55,7 @@ public class JwtHelperTest {
         assertEquals(EMAIL, userFromToken.getEmail());
     }
 
+    // ok
     @DisplayName("getUserFromJwt() throws Exception if Token not contains User data")
     @Test
     void getUserFromJwtThrowsExceptionIfTokenNotContainsUserData() {

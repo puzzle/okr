@@ -4,6 +4,8 @@ import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.security.helper.ClaimHelper;
+import ch.puzzle.okr.security.helper.TokenHelper;
 import com.nimbusds.jwt.JWTClaimsSet;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -13,15 +15,21 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static ch.puzzle.okr.Constants.USER;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class JwtHelper {
-    private static final String CLAIM_TENANT = "tenant";
+    public static final String CLAIM_TENANT = "tenant";
+    public static final String CLAIM_ISS = "iss";
+    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS
+            + "' claims in JWT token!";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
@@ -57,22 +65,53 @@ public class JwtHelper {
     }
 
     public String getTenantFromToken(Jwt token) {
-        return getTenantOrThrow(token.getClaimAsString(CLAIM_TENANT));
+        TokenHelper helper = new TokenHelper();
+        List<Function<Jwt, Optional<String>>> getTenantFromTokenFunctions = Arrays.asList( //
+                helper::getTenantFromTokenUsingClaimIss, //
+                helper::getTenantFromTokenUsingClaimTenant //
+        );
+
+        return getFirstMatchingTenantUsingListOfHelperFunctions(token, getTenantFromTokenFunctions);
     }
 
-    private String getTenantOrThrow(String tenant) {
+    private String getFirstMatchingTenantUsingListOfHelperFunctions(Jwt token,
+            List<Function<Jwt, Optional<String>>> getTenantFunctions) {
+
+        return getTenantFunctions.stream() //
+                .map(func -> func.apply(token)) //
+                .filter(Optional::isPresent) //
+                .map(Optional::get) //
+                .map(this::getMatchingTenantFromConfigOrThrow) //
+                .findFirst() //
+                .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
+    }
+
+    public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
+        ClaimHelper helper = new ClaimHelper();
+        List<Function<JWTClaimsSet, Optional<String>>> getTenantFromClaimsSetFunctions = Arrays.asList( //
+                helper::getTenantFromClaimsSetUsingClaimIss, //
+                helper::getTenantFromClaimsSetUsingClaimTenant //
+        );
+
+        return getFirstMatchingTenantUsingListOfHelperFunctions(claimSet, getTenantFromClaimsSetFunctions);
+    }
+
+    private String getFirstMatchingTenantUsingListOfHelperFunctions(JWTClaimsSet claimSet,
+            List<Function<JWTClaimsSet, Optional<String>>> getTenantFunctions) {
+
+        return getTenantFunctions.stream() //
+                .map(func -> func.apply(claimSet)) //
+                .filter(Optional::isPresent) //
+                .map(Optional::get) //
+                .map(this::getMatchingTenantFromConfigOrThrow).findFirst() //
+                .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
+    }
+
+    private String getMatchingTenantFromConfigOrThrow(String tenant) {
         // Ensure we return only tenants for realms which really exist
         return this.tenantConfigProvider.getTenantConfigById(tenant)
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant {0}", tenant)))
                 .tenantId();
     }
 
-    public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
-        try {
-            return this.getTenantOrThrow(claimSet.getStringClaim(CLAIM_TENANT));
-        } catch (ParseException e) {
-            throw new RuntimeException("Missing `tenant` claim in JWT token!", e);
-        }
-
-    }
 }

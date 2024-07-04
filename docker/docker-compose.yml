@@ -14,8 +14,8 @@ services:
     volumes:
       - ./dataset:/docker-entrypoint-initdb.d
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:24.0.5
+  keycloak-pitc:
+    image: quay.io/keycloak/keycloak:24.0.3
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=keycloak
@@ -26,3 +26,16 @@ services:
       - --import-realm
     ports:
       - "8544:8080"
+
+  keycloak-acme:
+    image: quay.io/keycloak/keycloak:24.0.3
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=keycloak
+    volumes:
+      - ./config/realm-export-acme.json:/opt/keycloak/data/import/realm-acme.json
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - "8545:8080"

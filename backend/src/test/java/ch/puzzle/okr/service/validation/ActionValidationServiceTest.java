@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
@@ -24,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -102,12 +101,6 @@ class ActionValidationServiceTest {
                         Action.Builder.builder() //
                                 .withId(id).withAction("Action").withIsChecked(false).withPriority(1)
                                 .withKeyResult(keyResult).build())));
-    }
-
-    private void assertOkrResponseStatusException(OkrResponseStatusException exception, List<ErrorDto> expectedErrors) {
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @BeforeEach

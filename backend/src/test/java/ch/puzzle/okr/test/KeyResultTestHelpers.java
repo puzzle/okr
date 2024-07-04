@@ -1,4 +1,4 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.test;
 
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
@@ -78,7 +78,7 @@ public class KeyResultTestHelpers {
     static final String INITIATIVES_2 = "Initiatives2";
     static final String CHANGE_INFO_1 = "Changeinfo1";
     static final String CHANGE_INFO_2 = "Changeinfo2";
-    static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    public static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withEmail("kaufmann@puzzle.ch").build();
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle(TITLE)
             .build();

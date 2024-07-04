@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Unit;
@@ -29,7 +29,7 @@ import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;

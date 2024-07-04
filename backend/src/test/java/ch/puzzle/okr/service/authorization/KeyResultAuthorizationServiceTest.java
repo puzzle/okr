@@ -16,9 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static ch.puzzle.okr.KeyResultTestHelpers.checkIn1;
-import static ch.puzzle.okr.KeyResultTestHelpers.metricKeyResult;
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.checkIn1;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.metricKeyResult;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;

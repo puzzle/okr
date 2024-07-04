@@ -1,4 +1,4 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.test;
 
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.Team;

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

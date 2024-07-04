@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
@@ -25,11 +24,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class CompletedValidationServiceTest {
@@ -84,62 +82,72 @@ class CompletedValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Completed")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
-        Completed completed = Completed.Builder.builder().withId(300L).withObjective(this.objective)
-                .withComment("Not valid").build();
+        // arrange
+        Completed completed = Completed.Builder.builder() //
+                .withId(300L) //
+                .withObjective(this.objective) //
+                .withComment("Not valid") //
+                .build();
+
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(completed));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Completed")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
-        Completed completed = Completed.Builder.builder().withObjective(this.objective).withComment(comment).build();
+        // arrange
+        Completed completed = Completed.Builder.builder() //
+                .withObjective(this.objective) //
+                .withComment(comment) //
+                .build();
 
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(completed));
 
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
-        Completed completedInvalid = Completed.Builder.builder().withId(null).withComment("Valid comment")
-                .withObjective(null).build();
+        // arrange
+        Completed completedInvalid = Completed.Builder.builder() //
+                .withId(null) //
+                .withComment("Valid comment") //
+                .withObjective(null) //
+                .build();
+
+        // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(completedInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "Completed")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @DisplayName("validateOnUpdate() should throw exception")
     @Test
     void validateOnUpdateShouldThrowException() {
+        // arrange
         Long id = 1L;
         Completed completed = Completed.Builder.builder().build();
+
+        // act + assert
         assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(id, completed));
     }
 

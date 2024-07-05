@@ -5,8 +5,6 @@ on:
     types:
       - closed
     branches: [ multitenancy_main ]
-  push:
-    branches: [ multitenancy_main ]
 
 jobs:
   update-version:

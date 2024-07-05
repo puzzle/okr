@@ -193,10 +193,10 @@ jobs:
         env:
           COMMITPREFIX: '[CTS]'
         run: |
-          curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}?ref=${{vars.TARGET_GITLAB_REFERENCE}}" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
+          curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/deployments/overlays/demo/okr-demo-deploy.yaml?ref=${{vars.TARGET_GITLAB_REFERENCE}}" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
           yq -i "${{vars.YAML_PATH}} = \"${{needs.update-version.outputs.okr-docker-image}}\"" response.yaml
           UPDATED_CONTENT=$(cat response.yaml)
-          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=$COMMITPREFIX Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
+          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=$COMMITPREFIX Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/deployments/overlays/demo/okr-demo-deploy.yaml"
 
   generate-and-push-sbom:
     runs-on: ubuntu-latest

@@ -20,14 +20,14 @@ values (1, '1'), -- last past quarter
        (8, '8'), -- future quarter
        (999, 'Backlog');
 
-insert into person (id, email, firstname, lastname, username, version, is_okr_champion)
-values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann', 1, FALSE),
-       (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice', 1, FALSE),
-       (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob', 1, FALSE),
-       (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus', 1, FALSE),
-       (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco', 1, FALSE),
-       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin', 1, FALSE);
-       (61, 'gl@gl.com', 'gl', 'gl', 'gl', 1, TRUE);
+insert into person (id, email, firstname, lastname, version, is_okr_champion)
+values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, FALSE),
+       (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 1, FALSE),
+       (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 1, FALSE),
+       (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 1, FALSE),
+       (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 1, FALSE),
+       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 1, FALSE),
+       (61, 'gl@gl.com', 'gl', 'gl', 1, TRUE);
 
 insert into team (id, name, version)
 values (4, '/BBT', 1),

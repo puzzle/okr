@@ -5,10 +5,12 @@ on:
     types:
       - closed
     branches: [ multitenancy_main ]
+  push:
+    branches: [ multitenancy_main ]
 
 jobs:
   update-version:
-    if: github.event.pull_request.merged == true
+#    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     outputs:
       okr-docker-image:  ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-DEMO
@@ -195,15 +197,15 @@ jobs:
           wget -q https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
           tar xz && mv ${BINARY} /usr/local/bin/yq
 
-      - name: Update YAML file
-        shell: bash
-        env:
-          COMMITPREFIX: '[CTS]'
-        run: |
-          curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/deployments/overlays/demo/okr-demo-deploy.yaml?ref=${{vars.TARGET_GITLAB_REFERENCE}}" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
-          yq -i "${{vars.YAML_PATH}} = \"${{needs.update-version.outputs.okr-docker-image}}\"" response.yaml
-          UPDATED_CONTENT=$(cat response.yaml)
-          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=$COMMITPREFIX Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/deployments/overlays/demo/okr-demo-deploy.yaml"
+#      - name: Update YAML file
+#        shell: bash
+#        env:
+#          COMMITPREFIX: '[CTS]'
+#        run: |
+#          curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/deployments/overlays/demo/okr-demo-deploy.yaml?ref=${{vars.TARGET_GITLAB_REFERENCE}}" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
+#          yq -i "${{vars.YAML_PATH}} = \"${{needs.update-version.outputs.okr-docker-image}}\"" response.yaml
+#          UPDATED_CONTENT=$(cat response.yaml)
+#          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=$COMMITPREFIX Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/deployments/overlays/demo/okr-demo-deploy.yaml"
 
   generate-and-push-sbom:
     runs-on: ubuntu-latest

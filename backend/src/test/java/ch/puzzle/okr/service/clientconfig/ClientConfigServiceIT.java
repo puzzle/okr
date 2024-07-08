@@ -1,7 +1,6 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.clientconfig;
 
 import ch.puzzle.okr.dto.ClientConfigDto;
-import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;

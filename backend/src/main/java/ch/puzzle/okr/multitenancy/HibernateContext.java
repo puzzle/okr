@@ -15,33 +15,27 @@ public class HibernateContext {
     public static String SPRING_DATASOURCE_PASSWORD = "spring.datasource.password";
 
     public record DbConfig(String url, String username, String password, String multiTenancy) {
+
+        public boolean isValid() {
+            return !hasNullValues() && !hasEmptyValues();
+        }
+
+        private boolean hasNullValues() {
+            return url() == null || username() == null || password() == null || multiTenancy() == null;
+        }
+
+        private boolean hasEmptyValues() {
+            return url().isBlank() || username().isBlank() || password().isBlank() || multiTenancy().isBlank();
+        }
     }
 
     private static DbConfig cachedHibernateConfig;
 
     public static void setHibernateConfig(DbConfig dbConfig) {
-        if (!isValid(dbConfig)) {
+        if (dbConfig == null || !dbConfig.isValid()) {
             throw new RuntimeException("Invalid hibernate configuration " + dbConfig);
         }
         cachedHibernateConfig = dbConfig;
-    }
-
-    private static boolean isValid(DbConfig config) {
-        return config != null && !hasNullValues(config) && !hasEmptyValues(config);
-    }
-
-    private static boolean hasNullValues(DbConfig config) {
-        return config.url() == null //
-                || config.username() == null //
-                || config.password() == null //
-                || config.multiTenancy() == null;
-    }
-
-    private static boolean hasEmptyValues(DbConfig config) {
-        return config.url().isBlank() //
-                || config.username().isBlank() //
-                || config.password().isBlank() //
-                || config.multiTenancy().isBlank();
     }
 
     public static void extractAndSetHibernateConfig(ConfigurableEnvironment environment) {
@@ -55,6 +49,11 @@ public class HibernateContext {
         String password = environment.getProperty(HibernateContext.HIBERNATE_CONNECTION_PASSWORD);
         String multiTenancy = environment.getProperty(HibernateContext.HIBERNATE_MULTITENANCY);
         return new DbConfig(url, username, password, multiTenancy);
+    }
+
+    // for testing
+    public static void resetHibernateConfig() {
+        cachedHibernateConfig = null;
     }
 
     public static Properties getHibernateConfig() {

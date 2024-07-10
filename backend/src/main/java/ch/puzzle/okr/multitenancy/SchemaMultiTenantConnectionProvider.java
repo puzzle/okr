@@ -16,13 +16,13 @@ import java.util.*;
 
 import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
 
-public class AbstractSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
+public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractSchemaMultiTenantConnectionProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(SchemaMultiTenantConnectionProvider.class);
 
     final Map<String, ConnectionProvider> connectionProviderMap;
 
-    public AbstractSchemaMultiTenantConnectionProvider() {
+    public SchemaMultiTenantConnectionProvider() {
         this.connectionProviderMap = new HashMap<>();
     }
 

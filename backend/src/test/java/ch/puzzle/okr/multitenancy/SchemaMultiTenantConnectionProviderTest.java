@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,8 +26,7 @@ public class SchemaMultiTenantConnectionProviderTest {
     void getConnectionShouldSetSchemaWithOkrPrefix() throws SQLException {
         // arrange
         when(connection.createStatement()).thenReturn(statement);
-        AbstractSchemaMultiTenantConnectionProvider provider = new AbstractSchemaMultiTenantConnectionProvider() {
-        };
+        SchemaMultiTenantConnectionProvider provider = new SchemaMultiTenantConnectionProvider();
 
         // act
         provider.getConnection(TENANT_ID, connection);
@@ -42,8 +40,7 @@ public class SchemaMultiTenantConnectionProviderTest {
     void getConnectionShouldSetSchemaWithoutOkrPrefixIfTenantIdIsDefaultTenantId() throws SQLException {
         // arrange
         when(connection.createStatement()).thenReturn(statement);
-        AbstractSchemaMultiTenantConnectionProvider provider = new AbstractSchemaMultiTenantConnectionProvider() {
-        };
+        SchemaMultiTenantConnectionProvider provider = new SchemaMultiTenantConnectionProvider();
 
         // act
         provider.getConnection(TenantContext.DEFAULT_TENANT_ID, connection);

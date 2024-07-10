@@ -14,7 +14,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
 
     private static final String TENANT_ID = "pitc";
 
-    private static class ConfigurableConnectionProviderMock extends AbstractSchemaMultiTenantConnectionProvider {
+    private static class ConfigurableConnectionProviderMock extends SchemaMultiTenantConnectionProvider {
 
         @Override
         protected Properties getHibernateProperties() {

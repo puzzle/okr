@@ -1,6 +1,7 @@
 package ch.puzzle.okr.multitenancy;
 
 import ch.puzzle.okr.exception.ConnectionProviderException;
+import ch.puzzle.okr.multitenancy.listener.HibernateContext;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
@@ -15,8 +16,8 @@ import java.util.*;
 
 import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
 
-public abstract class AbstractSchemaMultiTenantConnectionProvider
-        extends AbstractMultiTenantConnectionProvider<String> {
+public class AbstractSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractSchemaMultiTenantConnectionProvider.class);
 
     final Map<String, ConnectionProvider> connectionProviderMap;
@@ -109,5 +110,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         return configProperties;
     }
 
-    protected abstract Properties getHibernateProperties();
+    protected Properties getHibernateProperties() {
+        return HibernateContext.getHibernateConfig();
+    }
 }

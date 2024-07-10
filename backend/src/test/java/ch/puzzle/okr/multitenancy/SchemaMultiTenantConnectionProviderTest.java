@@ -28,10 +28,6 @@ public class SchemaMultiTenantConnectionProviderTest {
         // arrange
         when(connection.createStatement()).thenReturn(statement);
         AbstractSchemaMultiTenantConnectionProvider provider = new AbstractSchemaMultiTenantConnectionProvider() {
-            @Override
-            protected Properties getHibernateProperties() {
-                return new Properties();
-            }
         };
 
         // act
@@ -47,10 +43,6 @@ public class SchemaMultiTenantConnectionProviderTest {
         // arrange
         when(connection.createStatement()).thenReturn(statement);
         AbstractSchemaMultiTenantConnectionProvider provider = new AbstractSchemaMultiTenantConnectionProvider() {
-            @Override
-            protected Properties getHibernateProperties() {
-                return new Properties();
-            }
         };
 
         // act

@@ -1,13 +1,11 @@
 package ch.puzzle.okr.multitenancy;
 
 import ch.puzzle.okr.exception.ConnectionProviderException;
-import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import static org.mockito.Mockito.mock;
@@ -16,25 +14,11 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
 
     private static final String TENANT_ID = "pitc";
 
-    private static class BasicConnectionProviderMock extends AbstractSchemaMultiTenantConnectionProvider {
-        @Override
-        protected String getHibernatePropertiesFilePaths() {
-            return null;
-        }
+    private static class ConfigurableConnectionProviderMock extends AbstractSchemaMultiTenantConnectionProvider {
 
         @Override
-        protected DriverManagerConnectionProviderImpl getDriverManagerConnectionProviderImpl() {
-            return mock(DriverManagerConnectionProviderImpl.class);
-        }
-    }
-
-    private static class ConfigurableConnectionProviderMock extends BasicConnectionProviderMock {
-
-        @Override
-        protected Properties getPropertiesFromFilePaths() {
-            Properties properties = new Properties();
-            properties.put("hibernate.connection.url", "no_value");
-            return properties;
+        protected Properties getHibernateProperties() {
+            return new Properties();
         }
 
         public void registerProvider(String tenantIdentifier, ConnectionProvider connectionProvider) {
@@ -54,19 +38,6 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
 
         // assert
         Assertions.assertNotNull(foundConnectionProvider);
-    }
-
-    @DisplayName("getConnectionProvider() creates ConnectionProvider if TenantId is not registered")
-    @Test
-    void getConnectionProviderCreatesConnectionProviderIfTenantIdIsNotRegistered() {
-        // arrange
-        ConfigurableConnectionProviderMock mockProvider = new ConfigurableConnectionProviderMock();
-
-        // act
-        ConnectionProvider notFoundConnectionProvider = mockProvider.getConnectionProvider(TENANT_ID);
-
-        // assert
-        Assertions.assertNotNull(notFoundConnectionProvider);
     }
 
     @DisplayName("getConnectionProvider() throws Exception when lookup TenantId is null")
@@ -107,17 +78,11 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         Assertions.assertNotNull(foundConnectionProvider);
     }
 
-    @DisplayName("throws a RuntimeException when getPropertiesFromFilePaths() throws an IOException")
+    @DisplayName("getConnectionProviderShouldThrowRuntimeExceptionWhenNoPropertiesAreFound")
     @Test
-    void throwsRuntimeExceptionWhenGetPropertiesFromFilePathsThrowsIOException() {
-        BasicConnectionProviderMock mockProviderWhichThrowsIOException = new BasicConnectionProviderMock() {
-            @Override
-            protected Properties getPropertiesFromFilePaths() throws IOException {
-                throw new IOException("no properties found");
-            }
-        };
+    void getConnectionProviderShouldThrowRuntimeExceptionWhenNoPropertiesAreFound() {
+        ConfigurableConnectionProviderMock mockProvider = new ConfigurableConnectionProviderMock();
 
-        Assertions.assertThrows(RuntimeException.class,
-                () -> mockProviderWhichThrowsIOException.getConnectionProvider(TENANT_ID));
+        Assertions.assertThrows(RuntimeException.class, () -> mockProvider.getConnectionProvider(TENANT_ID));
     }
 }

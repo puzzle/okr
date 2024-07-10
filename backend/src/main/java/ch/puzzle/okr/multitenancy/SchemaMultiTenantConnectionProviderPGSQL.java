@@ -1,9 +1,13 @@
 package ch.puzzle.okr.multitenancy;
 
-import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
+import ch.puzzle.okr.multitenancy.listener.HibernateContext;
+
+import java.util.Properties;
 
 public class SchemaMultiTenantConnectionProviderPGSQL extends AbstractSchemaMultiTenantConnectionProvider {
-    protected String getHibernatePropertiesFilePaths() {
-        return "/hibernate-multitenancy-pgsql.properties";
+
+    @Override
+    protected Properties getHibernateProperties() {
+        return HibernateContext.getHibernateConfig();
     }
 }

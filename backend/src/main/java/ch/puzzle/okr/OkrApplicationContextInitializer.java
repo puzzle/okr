@@ -1,6 +1,6 @@
 package ch.puzzle.okr;
 
-import ch.puzzle.okr.multitenancy.listener.HibernateContext;
+import ch.puzzle.okr.multitenancy.HibernateContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextInitializer;
@@ -15,7 +15,7 @@ public class OkrApplicationContextInitializer implements ApplicationContextIniti
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
         logger.info("Loading hibernate configuration from application properties");
-        HibernateContext.cacheHibernateProperties(applicationContext.getEnvironment());
+        HibernateContext.extractAndSetHibernateConfig(applicationContext.getEnvironment());
     }
 
 }

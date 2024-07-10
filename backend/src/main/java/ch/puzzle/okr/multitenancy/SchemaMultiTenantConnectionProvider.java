@@ -1,7 +1,6 @@
 package ch.puzzle.okr.multitenancy;
 
 import ch.puzzle.okr.exception.ConnectionProviderException;
-import ch.puzzle.okr.multitenancy.listener.HibernateContext;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;

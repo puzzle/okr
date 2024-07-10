@@ -1,6 +1,7 @@
 package ch.puzzle.okr.multitenancy;
 
 import ch.puzzle.okr.exception.ConnectionProviderException;
+import ch.puzzle.okr.multitenancy.listener.HibernateContext;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
@@ -8,7 +9,6 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
@@ -16,13 +16,13 @@ import java.util.*;
 
 import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
 
-public abstract class AbstractSchemaMultiTenantConnectionProvider
-        extends AbstractMultiTenantConnectionProvider<String> {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractSchemaMultiTenantConnectionProvider.class);
+public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
+
+    private static final Logger logger = LoggerFactory.getLogger(SchemaMultiTenantConnectionProvider.class);
 
     final Map<String, ConnectionProvider> connectionProviderMap;
 
-    public AbstractSchemaMultiTenantConnectionProvider() {
+    public SchemaMultiTenantConnectionProvider() {
         this.connectionProviderMap = new HashMap<>();
     }
 
@@ -80,21 +80,13 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
     }
 
     protected Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
-        try {
-            Properties properties = getPropertiesFromFilePaths();
-            if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
-                properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
-            }
-            return properties;
-        } catch (IOException e) {
-            throw new RuntimeException(
-                    String.format("Cannot open hibernate properties: %s)", this.getHibernatePropertiesFilePaths()));
+        Properties properties = getHibernateProperties();
+        if (properties == null || properties.isEmpty()) {
+            throw new RuntimeException("Cannot load hibernate properties from application.properties)");
         }
-    }
-
-    protected Properties getPropertiesFromFilePaths() throws IOException {
-        Properties properties = new Properties();
-        properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
+        if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
+            properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
+        }
         return properties;
     }
 
@@ -118,5 +110,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         return configProperties;
     }
 
-    protected abstract String getHibernatePropertiesFilePaths();
+    protected Properties getHibernateProperties() {
+        return HibernateContext.getHibernateConfig();
+    }
 }

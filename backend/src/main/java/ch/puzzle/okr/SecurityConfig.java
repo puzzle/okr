@@ -7,6 +7,7 @@ import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,9 +37,14 @@ import org.springframework.security.web.header.writers.*;
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
+    private String connectSrc;
+
     @Bean
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
-    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, @Value("${connect.src}") String connectSrc)
+            throws Exception {
+        this.connectSrc = connectSrc;
+
         setHeaders(http);
         http.addFilterAfter(new ForwardFilter(), BasicAuthenticationFilter.class);
         logger.debug("*** apiSecurityFilterChain reached");
@@ -93,7 +99,7 @@ public class SecurityConfig {
                 + "        style-src 'self' 'unsafe-inline';" //
                 + "        object-src 'none';" //
                 + "        base-uri 'self';" //
-                + "        connect-src 'self' https://sso.puzzle.ch http://localhost:8544;" //
+                + "        connect-src 'self' " + connectSrc + ";" //
                 + "        font-src 'self';" //
                 + "        frame-src 'self';" //
                 + "        img-src 'self' data: ;" //

@@ -29,7 +29,13 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.header.writers.*;
+import org.springframework.security.web.header.writers.CrossOriginOpenerPolicyHeaderWriter;
+import org.springframework.security.web.header.writers.CrossOriginResourcePolicyHeaderWriter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+
+import static org.springframework.security.web.header.writers.CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP;
+import static org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER;
+import static org.springframework.security.web.header.writers.XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK;
 
 @Configuration
 @EnableWebSecurity
@@ -37,14 +43,17 @@ import org.springframework.security.web.header.writers.*;
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
+    private static final CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy CROSS_ORIGIN_OPENER_POLICY = CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy.SAME_ORIGIN;
+    private static final CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy CROSS_ORIGIN_RESOURCE_POLICY = CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy.SAME_ORIGIN;
+
     private String connectSrc;
 
     @Bean
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, @Value("${connect.src}") String connectSrc)
             throws Exception {
-        this.connectSrc = connectSrc;
 
+        this.connectSrc = connectSrc;
         setHeaders(http);
         http.addFilterAfter(new ForwardFilter(), BasicAuthenticationFilter.class);
         logger.debug("*** apiSecurityFilterChain reached");
@@ -78,19 +87,16 @@ public class SecurityConfig {
     }
 
     private HttpSecurity setHeaders(HttpSecurity http) throws Exception {
-        http.headers(h -> h.contentSecurityPolicy(e -> e.policyDirectives(okrContentSecurityPolicy()))
-                .crossOriginEmbedderPolicy(coepCustomizer -> coepCustomizer
-                        .policy(CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP))
-                .crossOriginOpenerPolicy(coopCustomizer -> coopCustomizer
-                        .policy(CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy.SAME_ORIGIN))
-                .crossOriginResourcePolicy(corpCustomizer -> corpCustomizer
-                        .policy(CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy.SAME_ORIGIN))
-                .addHeaderWriter(new StaticHeadersWriter("X-Permitted-Cross-Domain-Policies", "none")));
-        return http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
-                .xssProtection(e -> e.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
-                .httpStrictTransportSecurity(e -> e.includeSubDomains(true).maxAgeInSeconds(31536000))
-                .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
-                .permissionsPolicy(permissions -> permissions.policy(okrPermissionPolicy())));
+        return http.headers(headers -> headers
+                .contentSecurityPolicy(c -> c.policyDirectives(okrContentSecurityPolicy()))
+                .crossOriginEmbedderPolicy(c -> c.policy(REQUIRE_CORP))
+                .crossOriginOpenerPolicy(c -> c.policy(CROSS_ORIGIN_OPENER_POLICY))
+                .crossOriginResourcePolicy(c -> c.policy(CROSS_ORIGIN_RESOURCE_POLICY))
+                .addHeaderWriter(new StaticHeadersWriter("X-Permitted-Cross-Domain-Policies", "none"))
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
+                .xssProtection(c -> c.headerValue(ENABLED_MODE_BLOCK))
+                .httpStrictTransportSecurity(c -> c.includeSubDomains(true).maxAgeInSeconds(31536000))
+                .referrerPolicy(c -> c.policy(NO_REFERRER)).permissionsPolicy(c -> c.policy(okrPermissionPolicy())));
     }
 
     private String okrContentSecurityPolicy() {

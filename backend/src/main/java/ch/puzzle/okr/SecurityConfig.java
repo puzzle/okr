@@ -72,13 +72,7 @@ public class SecurityConfig {
     }
 
     private HttpSecurity setHeaders(HttpSecurity http) throws Exception {
-        http.headers(h -> h
-                .contentSecurityPolicy(e -> e.policyDirectives("default-src 'self';"
-                        + "script-src 'self' 'unsafe-inline';" + "        style-src 'self' 'unsafe-inline';"
-                        + "        object-src 'none';" + "        base-uri 'self';"
-                        + "        connect-src 'self' https://sso.puzzle.ch http://localhost:8544;"
-                        + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self' data: ;"
-                        + "        manifest-src 'self';" + "        media-src 'self';" + "        worker-src 'none';"))
+        http.headers(h -> h.contentSecurityPolicy(e -> e.policyDirectives(okrContentSecurityPolicy()))
                 .crossOriginEmbedderPolicy(coepCustomizer -> coepCustomizer
                         .policy(CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP))
                 .crossOriginOpenerPolicy(coopCustomizer -> coopCustomizer
@@ -90,14 +84,32 @@ public class SecurityConfig {
                 .xssProtection(e -> e.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
                 .httpStrictTransportSecurity(e -> e.includeSubDomains(true).maxAgeInSeconds(31536000))
                 .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
-                .permissionsPolicy(
-                        permissions -> permissions.policy("accelerometer=(), ambient-light-sensor=(), autoplay=(), "
-                                + "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), "
-                                + "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(),"
-                                + " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), "
-                                + "midi=(), navigation-override=(), payment=(), picture-in-picture=(),"
-                                + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
-                                + "usb=(), web-share=(), xr-spatial-tracking=()")));
+                .permissionsPolicy(permissions -> permissions.policy(okrPermissionPolicy())));
+    }
+
+    private String okrContentSecurityPolicy() {
+        return "default-src 'self';" //
+                + "script-src 'self' 'unsafe-inline';" //
+                + "        style-src 'self' 'unsafe-inline';" //
+                + "        object-src 'none';" //
+                + "        base-uri 'self';" //
+                + "        connect-src 'self' https://sso.puzzle.ch http://localhost:8544;" //
+                + "        font-src 'self';" //
+                + "        frame-src 'self';" //
+                + "        img-src 'self' data: ;" //
+                + "        manifest-src 'self';" //
+                + "        media-src 'self';" //
+                + "        worker-src 'none';"; //
+    }
+
+    private String okrPermissionPolicy() {
+        return "accelerometer=(), ambient-light-sensor=(), autoplay=(), "
+                + "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), "
+                + "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(),"
+                + " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), "
+                + "midi=(), navigation-override=(), payment=(), picture-in-picture=(),"
+                + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
+                + "usb=(), web-share=(), xr-spatial-tracking=()";
     }
 
     @Bean

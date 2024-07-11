@@ -43,8 +43,8 @@ import static org.springframework.security.web.header.writers.XXssProtectionHead
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
-    private static final CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy CROSS_ORIGIN_OPENER_POLICY = CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy.SAME_ORIGIN;
-    private static final CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy CROSS_ORIGIN_RESOURCE_POLICY = CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy.SAME_ORIGIN;
+    private static final CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy OPENER_SAME_ORIGIN = CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy.SAME_ORIGIN;
+    private static final CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy RESOURCE_SAME_ORIGIN = CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy.SAME_ORIGIN;
 
     private String connectSrc;
 
@@ -90,8 +90,8 @@ public class SecurityConfig {
         return http.headers(headers -> headers
                 .contentSecurityPolicy(c -> c.policyDirectives(okrContentSecurityPolicy()))
                 .crossOriginEmbedderPolicy(c -> c.policy(REQUIRE_CORP))
-                .crossOriginOpenerPolicy(c -> c.policy(CROSS_ORIGIN_OPENER_POLICY))
-                .crossOriginResourcePolicy(c -> c.policy(CROSS_ORIGIN_RESOURCE_POLICY))
+                .crossOriginOpenerPolicy(c -> c.policy(OPENER_SAME_ORIGIN))
+                .crossOriginResourcePolicy(c -> c.policy(RESOURCE_SAME_ORIGIN))
                 .addHeaderWriter(new StaticHeadersWriter("X-Permitted-Cross-Domain-Policies", "none"))
                 .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
                 .xssProtection(c -> c.headerValue(ENABLED_MODE_BLOCK))

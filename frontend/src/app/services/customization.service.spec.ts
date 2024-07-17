@@ -34,6 +34,8 @@ describe('CustomizationService', () => {
     title: 'title',
     favicon: 'favicon',
     logo: 'logo',
+    triangles: 'triangles',
+    backgroundLogo: 'backgroundLogo',
     customStyles: { cssVar1: 'foo' },
   };
 
@@ -82,6 +84,8 @@ describe('CustomizationService', () => {
     expect(currentConfig?.title).toBe(body.title);
     expect(currentConfig?.logo).toBe(body.logo);
     expect(currentConfig?.favicon).toBe(body.favicon);
+    expect(currentConfig?.triangles).toBe(body.triangles);
+    expect(currentConfig?.backgroundLogo).toBe(body.backgroundLogo);
     expect(currentConfig?.customStyles['cssVar1']).toBe(body.customStyles['cssVar1']);
 
     expect(callRecorder.getCallCount('title.innerHTML')).toBe(1);
@@ -104,6 +108,8 @@ describe('CustomizationService', () => {
       title: 'title-second',
       favicon: 'favicon-second',
       logo: 'logo-second',
+      triangles: 'triangles-second',
+      backgroundLogo: 'backgroundLogo-second',
       customStyles: { cssVarNew: 'bar' },
     };
     configSubject.next(bodySecond);
@@ -112,6 +118,8 @@ describe('CustomizationService', () => {
     expect(currentConfig?.title).toBe(bodySecond.title);
     expect(currentConfig?.logo).toBe(bodySecond.logo);
     expect(currentConfig?.favicon).toBe(bodySecond.favicon);
+    expect(currentConfig?.triangles).toBe(bodySecond.triangles);
+    expect(currentConfig?.backgroundLogo).toBe(bodySecond.backgroundLogo);
     expect(currentConfig?.customStyles['cssVarNew']).toBe(bodySecond.customStyles['cssVarNew']);
     expect(currentConfig?.customStyles['cssVar1']).toBe(undefined);
 

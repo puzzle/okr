@@ -24,10 +24,10 @@ public class TenantClientCustomizationProvider {
 
     private TenantClientCustomization readClientCustomizationConfig(String tenantId) {
         return new TenantClientCustomization(
+                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.favicon", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.logo", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.triangles", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.background-logo", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.favicon", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.title", tenantId)),
                 new HashMap<>());
     }

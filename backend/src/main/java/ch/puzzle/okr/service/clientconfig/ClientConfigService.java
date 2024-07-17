@@ -15,16 +15,16 @@ import java.util.Optional;
 public class ClientConfigService {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientConfigService.class);
-    private final ClientCustomizationProperties clientCustomizationProperties;
+    private final TenantClientCustomizationProvider tenantClientCustomizationProvider;
     private final TenantConfigProvider tenantConfigProvider;
 
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    public ClientConfigService(final ClientCustomizationProperties clientCustomizationProperties,
+    public ClientConfigService(final TenantClientCustomizationProvider clientCustomizationProvider,
             final TenantConfigProvider tenantConfigProvider) {
         this.tenantConfigProvider = tenantConfigProvider;
-        this.clientCustomizationProperties = clientCustomizationProperties;
+        this.tenantClientCustomizationProvider = clientCustomizationProvider;
     }
 
     public ClientConfigDto getConfigBasedOnActiveEnv(String hostName) {
@@ -36,12 +36,26 @@ public class ClientConfigService {
 
         if (tenantConfig.isEmpty()) {
             throw new EntityNotFoundException(
-                    MessageFormat.format("Could not find tenant for subdomain:{0}", subdomain));
+                    MessageFormat.format("Could not find tenant config for subdomain:{0}", subdomain));
         }
 
-        return new ClientConfigDto(activeProfile, tenantConfig.get().issuerUrl(), tenantConfig.get().clientId(),
-                clientCustomizationProperties.getFavicon(), clientCustomizationProperties.getLogo(),
-                clientCustomizationProperties.getTitle(), clientCustomizationProperties.getCustomStyles());
+        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostName,
+                subdomain, domainPrefixByHyphen);
+
+        if (tenantClientCustomization.isEmpty()) {
+            throw new EntityNotFoundException(
+                    MessageFormat.format("Could not find tenant client customization for subdomain:{0}", subdomain));
+        }
+
+        return new ClientConfigDto(activeProfile, //
+                tenantConfig.get().issuerUrl(), //
+                tenantConfig.get().clientId(), //
+                tenantClientCustomization.get().favicon(), //
+                tenantClientCustomization.get().logo(), //
+                tenantClientCustomization.get().triangles(), //
+                tenantClientCustomization.get().backgroundLogo(), //
+                tenantClientCustomization.get().title(), //
+                tenantClientCustomization.get().customStyles()); //
     }
 
     private Optional<TenantConfigProvider.TenantConfig> getTenantConfig(String hostname, String... tenantsFromUrl) {
@@ -54,6 +68,21 @@ public class ClientConfigService {
             logger.info("get config found for " + tenant + ": failed");
         }
         logger.info("no config found for " + hostname + ": failed");
+        return Optional.empty();
+    }
+
+    private Optional<TenantClientCustomization> getTenantClientCustomization(String hostname,
+            String... tenantsFromUrl) {
+        for (String tenant : tenantsFromUrl) {
+            Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider
+                    .getTenantClientCustomizationsById(tenant);
+            if (tenantCustomization.isPresent()) {
+                logger.info("get client customization for " + tenant + ": OK");
+                return tenantCustomization;
+            }
+            logger.info("get client customization for " + tenant + ": failed");
+        }
+        logger.info("no client customization found for " + hostname + ": failed");
         return Optional.empty();
     }
 }

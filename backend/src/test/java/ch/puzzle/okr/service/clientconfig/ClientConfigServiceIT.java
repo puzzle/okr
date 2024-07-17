@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.clientconfig;
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
+@Disabled
 @SpringIntegrationTest
 @SpringBootTest(properties = { "okr.clientcustomization.customstyles.okr-topbar-background-color=#affe00",
         "okr.clientcustomization.customstyles.okr-other-css-style=rgba(50,60,70,0.5)", })

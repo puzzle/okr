@@ -5,7 +5,6 @@ import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import ch.puzzle.okr.multitenancy.customization.TenantClientCustomization;
 import ch.puzzle.okr.multitenancy.customization.TenantClientCustomizationProvider;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,18 +16,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Disabled
 public class ClientConfigServiceTest {
 
-    @DisplayName("getConfigBasedOnActiveEnv() should be successful when tenant is configured")
+    @DisplayName("getConfigBasedOnActiveEnv() should be successful when tenant is configured properly")
     @ParameterizedTest
     @CsvSource({ "pitc,pitc.ork.ch", "acme,acme-ork.ch" })
-    void getConfigBasedOnActiveEnvShouldBeSuccessfulWhenTenantIsConfigured(String tenant, String hostname) {
+    void getConfigBasedOnActiveEnvShouldBeSuccessfulWhenTenantIsConfiguredProperly(String tenant, String hostname) {
         // arrange
-        TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
-        ClientConfigService service = getClientConfigServiceWithConfiguredTenantId(tenantCustomization, tenantConfig,
-                tenant);
+        TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
+        ClientConfigService service = getClientConfig(tenantConfig, tenantCustomization, tenant);
 
         // act
         ClientConfigDto configBasedOnActiveEnv = service.getConfigBasedOnActiveEnv(hostname);
@@ -37,36 +34,55 @@ public class ClientConfigServiceTest {
         assertClientConfigDto(configBasedOnActiveEnv, tenant);
     }
 
-    @DisplayName("getConfigBasedOnActiveEnv() should throw exception when tenant is not configured")
+    @DisplayName("getConfigBasedOnActiveEnv() should throw exception if client customization is not found")
     @ParameterizedTest
-    @CsvSource({ "ohneconfig,ohneconfig.ork.ch" })
-    void getConfigBasedOnActiveEnvShouldThrowExceptionWhenTenantIsNotConfigured(String tenantWithoutConfig,
-            String hostname) {
+    @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
+    void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostname,
+            String subdomain) {
         // arrange
-        TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenantWithoutConfig);
-        ClientConfigService service = getClientConfigServiceWhichHasNotConfiguredTenantId(tenantCustomization,
-                tenantWithoutConfig);
+        TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
+        ClientConfigService service = getClientConfig(tenantConfig, tenant);
 
         // act + assert
         EntityNotFoundException entityNotFoundException = //
                 assertThrows(EntityNotFoundException.class, () -> service.getConfigBasedOnActiveEnv(hostname));
 
-        String expectedErrorMessage = "Could not find tenant config for subdomain:" + tenantWithoutConfig;
+        String expectedErrorMessage = "Could not find tenant client customization for subdomain:" + subdomain;
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
-    private ClientConfigService getClientConfigServiceWithConfiguredTenantId(TenantClientCustomization properties,
-            TenantConfigProvider.TenantConfig tenantConfig, String tenantId) {
-        return mockClientConfigService(properties, tenantId, tenantConfig);
+    @DisplayName("getConfigBasedOnActiveEnv() should throw exception if client config is not found")
+    @ParameterizedTest
+    @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
+    void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientConfigIsNotFound(String tenant, String hostname,
+            String subdomain) {
+        // arrange
+        TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
+        ClientConfigService service = getClientConfig(tenantCustomization, tenant);
+
+        // act + assert
+        EntityNotFoundException entityNotFoundException = //
+                assertThrows(EntityNotFoundException.class, () -> service.getConfigBasedOnActiveEnv(hostname));
+
+        String expectedErrorMessage = "Could not find tenant config for subdomain:" + subdomain;
+        assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
-    private ClientConfigService getClientConfigServiceWhichHasNotConfiguredTenantId(
-            TenantClientCustomization properties, String tenantId) {
-        return mockClientConfigService(properties, tenantId, null);
+    private ClientConfigService getClientConfig(TenantConfigProvider.TenantConfig tenantConfig,
+            TenantClientCustomization tenantClientCustomization, String tenantId) {
+        return mockClientConfigService(tenantConfig, tenantClientCustomization, tenantId);
     }
 
-    private ClientConfigService mockClientConfigService(TenantClientCustomization tenantCustomization, String tenantId,
-            TenantConfigProvider.TenantConfig tenantConfig) {
+    private ClientConfigService getClientConfig(TenantClientCustomization tenantClientCustomization, String tenantId) {
+        return mockClientConfigService(null, tenantClientCustomization, tenantId);
+    }
+
+    private ClientConfigService getClientConfig(TenantConfigProvider.TenantConfig tenantConfig, String tenantId) {
+        return mockClientConfigService(tenantConfig, null, tenantId);
+    }
+
+    private ClientConfigService mockClientConfigService(TenantConfigProvider.TenantConfig tenantConfig,
+            TenantClientCustomization tenantCustomization, String tenantId) {
 
         TenantClientCustomizationProvider tenantCustomizationProvider = mock(TenantClientCustomizationProvider.class);
         when(tenantCustomizationProvider.getTenantClientCustomizationsById(tenantId)) //

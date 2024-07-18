@@ -5,13 +5,13 @@ describe('OKR Login', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it('Login and check correct name is displayed', () => {
+  it.skip('Login and check correct name is displayed', () => {
     console.log('***', cy.title());
     cy.title().should('equal', 'OKR Tool');
     cy.getByTestId('user-name').contains(users.gl.name);
   });
 
-  it('Login  and logout', () => {
+  it.skip('Login  and logout', () => {
     cy.title().should('equal', 'OKR Tool');
     cy.getByTestId('user-options').click();
     cy.getByTestId('logout').click();

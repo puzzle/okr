@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.clientconfig;
+package ch.puzzle.okr.multitenancy.customization;
 
 import java.util.Map;
 

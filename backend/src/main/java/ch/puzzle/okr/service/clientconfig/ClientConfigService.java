@@ -2,6 +2,8 @@ package ch.puzzle.okr.service.clientconfig;
 
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.multitenancy.customization.TenantClientCustomization;
+import ch.puzzle.okr.multitenancy.customization.TenantClientCustomizationProvider;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

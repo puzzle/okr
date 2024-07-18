@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.clientconfig;
+package ch.puzzle.okr.multitenancy.customization;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;

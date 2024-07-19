@@ -29,7 +29,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   overviewPadding: Subject<number> = new Subject();
 
-  private subscription?: Subscription;
   backgroundLogoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
 
   constructor(
@@ -63,7 +62,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     if (!isMobileDevice()) {
       document.getElementById('overview')?.classList.add('bottom-shadow-space');
     }
-    this.subscription = this.configService.config$.subscribe({
+    this.configService.config$.subscribe({
       next: (config) => {
         if (config.triangles) {
           this.backgroundLogoSrc$.next(config.backgroundLogo);

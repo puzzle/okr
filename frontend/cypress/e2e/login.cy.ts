@@ -5,14 +5,14 @@ describe('OKR Login', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it.skip('Login and check correct name is displayed', () => {
+  it('Login and check correct name is displayed', () => {
     console.log('***', cy.title());
-    cy.title().should('equal', 'OKR Tool');
+    cy.title().should('equal', 'Puzzle OKR');
     cy.getByTestId('user-name').contains(users.gl.name);
   });
 
-  it.skip('Login  and logout', () => {
-    cy.title().should('equal', 'OKR Tool');
+  it('Login  and logout', () => {
+    cy.title().should('equal', 'Puzzle OKR');
     cy.getByTestId('user-options').click();
     cy.getByTestId('logout').click();
     cy.origin(Cypress.env('login_url'), () => {

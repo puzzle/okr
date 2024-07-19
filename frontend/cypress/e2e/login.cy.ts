@@ -6,7 +6,6 @@ describe('OKR Login', () => {
   });
 
   it('Login and check correct name is displayed', () => {
-    console.log('***', cy.title());
     cy.title().should('equal', 'Puzzle OKR');
     cy.getByTestId('user-name').contains(users.gl.name);
   });

@@ -11,6 +11,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 export class OkrTangramComponent {
   private readonly MOBILE_WIDTH = 100;
   private readonly DESKTOP_WIDTH = 274;
+
   getWidth() {
     return isMobileDevice() ? this.MOBILE_WIDTH : this.DESKTOP_WIDTH;
   }
@@ -21,12 +22,10 @@ export class OkrTangramComponent {
   constructor(private configService: ConfigService) {}
 
   ngOnInit(): void {
-    this.subscription = this.configService.config$.subscribe({
-      next: (config) => {
-        if (config.triangles) {
-          this.trianglesSrc$.next(config.triangles);
-        }
-      },
+    this.subscription = this.configService.config$.subscribe((config) => {
+      if (config.triangles) {
+        this.trianglesSrc$.next(config.triangles);
+      }
     });
   }
 }

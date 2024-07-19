@@ -307,7 +307,7 @@ img.add-cross-button {
   height: min-content;
   z-index: 100;
   transition: 0.5s;
-  background-color: #dcedf9;
+  background-color: var(--okr-banner-background-color);
 }
 
 app-team-management-banner > #okrBanner {

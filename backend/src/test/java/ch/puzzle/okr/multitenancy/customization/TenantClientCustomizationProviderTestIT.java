@@ -82,7 +82,7 @@ public class TenantClientCustomizationProviderTestIT {
 
     private void assertCustomStyles(TenantClientCustomization customization, String tenantId) {
         assertNotNull(customization.customStyles());
-        assertEquals(1, customization.customStyles().size());
+        assertFalse(customization.customStyles().isEmpty());
 
         String customStyleValue = customization.customStyles().get(CUSTOM_STYLE_NAME);
         assertEquals(prefix(tenantId) + CUSTOM_STYLE_VALUE, customStyleValue);

@@ -7,14 +7,19 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Component
 public class TenantClientCustomizationProvider {
+    private static final String CUSTOM_STYLES_PREFIX = "okr.tenants.{0}.clientcustomization.customstyles";
+    private static final String TOPBAR_BACKGROUND_COLOR = ".okr-topbar-background-color";
+    private static final String BANNER_BACKGROUND_COLOR = ".okr-banner-background-color";
+
     private final Map<String, TenantClientCustomization> tenantCustomizations = new HashMap<>();
+    private final List<String> customCssStyles = List.of(TOPBAR_BACKGROUND_COLOR, BANNER_BACKGROUND_COLOR);
     private final Environment env;
-    private static String CUSTOMSTYLES_PREFIX = "okr.tenants.{0}.clientcustomization.customstyles";
 
     record CssConfigItem(String cssName, String cssValue) implements Serializable {
     }
@@ -34,24 +39,18 @@ public class TenantClientCustomizationProvider {
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.triangles", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.background-logo", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.title", tenantId)),
-                getCustomStyles(tenantId) //
+                getCustomCssStyles(tenantId) //
         );
     }
 
-    private Map<String, String> getCustomStyles(String tenantId) {
-        Map<String, String> customStyles = new HashMap<>();
-
-        CssConfigItem topbarBackgroundColor = getTopbarBackgroundColor(tenantId);
-        customStyles.put(topbarBackgroundColor.cssName(), topbarBackgroundColor.cssValue());
-
-        return customStyles;
-    }
-
-    private CssConfigItem getTopbarBackgroundColor(String tenantId) {
-        String topbarColorPropertyName = formatWithTenant( //
-                CUSTOMSTYLES_PREFIX + ".okr-topbar-background-color", //
-                tenantId);
-        return getCssPropertyNameAndValue(topbarColorPropertyName, tenantId);
+    private Map<String, String> getCustomCssStyles(String tenantId) {
+        Map<String, String> styles = new HashMap<>();
+        for (String customStyle : customCssStyles) {
+            String propertyName = formatWithTenant(CUSTOM_STYLES_PREFIX + customStyle, tenantId);
+            CssConfigItem cssPropertyNameAndValue = getCssPropertyNameAndValue(propertyName, tenantId);
+            styles.put(cssPropertyNameAndValue.cssName(), cssPropertyNameAndValue.cssValue());
+        }
+        return styles;
     }
 
     private CssConfigItem getCssPropertyNameAndValue(String propertyName, String tenantId) {
@@ -65,7 +64,7 @@ public class TenantClientCustomizationProvider {
     }
 
     String extractCssNameFromPropertyName(String propertyName, String tenantId) {
-        String prefix = formatWithTenant("okr.tenants.{0}.clientcustomization.customstyles", tenantId);
+        String prefix = formatWithTenant(CUSTOM_STYLES_PREFIX, tenantId);
         int startPrefix = propertyName.indexOf(prefix);
         if (startPrefix == -1) {
             throw new IllegalArgumentException(propertyName + " is not a valid property name client customization");

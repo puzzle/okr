@@ -1,10 +1,21 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
-import { catchError, combineLatest, EMPTY, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatest,
+  EMPTY,
+  ReplaySubject,
+  Subject,
+  Subscription,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../../shared/common';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-overview',
@@ -18,11 +29,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   overviewPadding: Subject<number> = new Subject();
 
+  backgroundLogoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+
   constructor(
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
+    private configService: ConfigService,
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
@@ -48,6 +62,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
     if (!isMobileDevice()) {
       document.getElementById('overview')?.classList.add('bottom-shadow-space');
     }
+    this.configService.config$.subscribe({
+      next: (config) => {
+        if (config.triangles) {
+          this.backgroundLogoSrc$.next(config.backgroundLogo);
+        }
+      },
+    });
   }
 
   loadOverviewWithParams() {

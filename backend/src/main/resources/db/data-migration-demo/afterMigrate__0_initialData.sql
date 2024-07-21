@@ -35,6 +35,24 @@ values (4, '/BBT', 1),
        (6, 'LoremIpsum', 1),
        (8, 'we are cube.³', 1);
 
+insert into person_team (id, version, person_id, team_id, is_team_admin)
+        -- peggimann@puzzle.ch
+VALUES (1, 1, 1, 4, TRUE),
+       (2, 1, 1, 5, FALSE),
+       -- wunderland@puzzle.ch
+       (3, 1, 11, 6, FALSE),
+       -- baumeister@puzzle.ch
+       (4, 1, 21, 8, FALSE),
+       -- peterson@puzzle.ch
+       (5, 1, 31, 8, TRUE),
+       -- egiman@puzzlech
+       (6, 1, 41, 4, FALSE),
+       -- papierer@puzzle.ch
+       (7, 1, 51, 6, TRUE),
+       -- gl@gl.ch
+       (8, 1, 61, 5, TRUE),
+       (9, 1, 61, 6, FALSE);
+
 insert into objective (id, description, modified_on, title, created_by_id, quarter_id, team_id, state, modified_by_id,
                        created_on, version)
 values (4, '', '2023-07-25 08:17:51.309958', 'Build a company culture that kills the competition.', 1, 7, 5, 'ONGOING',

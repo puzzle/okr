@@ -21,11 +21,13 @@ values (1, '1'), -- last past quarter
        (999, 'Backlog');
 
 insert into person (id, email, firstname, lastname, version, is_okr_champion)
-values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, FALSE),
+values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, TRUE),
+       (2, 'leimgruber@puzzle.ch', 'Philipp', 'Leimgruber', 1, TRUE),
+       (3, 'brantschen@puzzle.ch', 'Jean-Claude', 'Brantschen', 1, TRUE),
+       (4, 'endtner@puzzle.ch', 'Janik', 'Endtner', 1, TRUE),
        (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 1, FALSE),
        (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 1, FALSE),
        (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 1, FALSE),
-       (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 1, FALSE),
        (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 1, FALSE),
        (61, 'gl@gl.com', 'gl', 'gl', 1, TRUE);
 
@@ -33,25 +35,35 @@ insert into team (id, name, version)
 values (4, '/BBT', 1),
        (5, 'Puzzle ITC', 1),
        (6, 'LoremIpsum', 1),
+       (7, 'Mobility', 1),
        (8, 'we are cube.³', 1);
 
 insert into person_team (id, version, person_id, team_id, is_team_admin)
         -- peggimann@puzzle.ch
 VALUES (1, 1, 1, 4, TRUE),
        (2, 1, 1, 5, FALSE),
+       (3, 1, 1, 7, FALSE),
        -- wunderland@puzzle.ch
-       (3, 1, 11, 6, FALSE),
+       (4, 1, 11, 6, FALSE),
        -- baumeister@puzzle.ch
-       (4, 1, 21, 8, FALSE),
+       (5, 1, 21, 8, FALSE),
        -- peterson@puzzle.ch
-       (5, 1, 31, 8, TRUE),
-       -- egiman@puzzlech
-       (6, 1, 41, 4, FALSE),
+       (6, 1, 31, 8, TRUE),
        -- papierer@puzzle.ch
-       (7, 1, 51, 6, TRUE),
+       (8, 1, 51, 6, TRUE),
        -- gl@gl.ch
-       (8, 1, 61, 5, TRUE),
-       (9, 1, 61, 6, FALSE);
+       (9, 1, 61, 5, TRUE),
+       (10, 1, 61, 6, FALSE),
+        -- leimgruber@puzzle.ch
+       (11, 1, 2, 5, FALSE),
+       (12, 1, 2, 7, TRUE),
+       -- brantschen@puzzle.ch
+       (13, 1, 3, 5, FALSE),
+       (14, 1, 3, 7, FALSE),
+       -- endtner@puzzle.ch
+       (15, 1, 4, 5, FALSE),
+       (16, 1, 4, 7, FALSE);
+;
 
 insert into objective (id, description, modified_on, title, created_by_id, quarter_id, team_id, state, modified_by_id,
                        created_on, version)

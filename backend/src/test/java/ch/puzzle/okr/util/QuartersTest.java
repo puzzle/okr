@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class QuarterSqlGeneratorTest {
+public class QuartersTest {
 
     private static final LocalDate START_DATE = LocalDate.of(2024, 7, 15);
     private static final LocalDate START_DATE_7_MONTHS_BEFORE = START_DATE.minusMonths(7);
@@ -18,13 +18,13 @@ public class QuarterSqlGeneratorTest {
     @MethodSource("indexAndFutureLabels")
     void nowAnd12MonthsInFuture(int index, String expectedLabelFirstYear, String expectedLabelSecondYear) {
         LocalDate now = START_DATE.plusMonths(index);
-        QuarterSqlGenerator nowSqlGenerator = new QuarterSqlGenerator(now);
+        Quarters nowSqlGenerator = new Quarters(now);
         String sqlNow = nowSqlGenerator.quarterSqlData(index).toSqlString();
 
         assertEquals(expectedLabelFirstYear, sqlNow);
 
         LocalDate in3Months = now.plusMonths(3);
-        QuarterSqlGenerator in3MonthsSqlGenerator = new QuarterSqlGenerator(in3Months);
+        Quarters in3MonthsSqlGenerator = new Quarters(in3Months);
         String sqlIn3Months = in3MonthsSqlGenerator.quarterSqlData(index).toSqlString();
 
         assertEquals(expectedLabelSecondYear, sqlIn3Months);
@@ -91,13 +91,13 @@ public class QuarterSqlGeneratorTest {
     @MethodSource("indexAndPastLabels")
     void nowAnd7MonthsInPast(int index, String expectedLabelFirstYear, String expectedLabelSecondYear) {
         LocalDate now = START_DATE_7_MONTHS_BEFORE.plusMonths(index);
-        QuarterSqlGenerator nowSqlGenerator = new QuarterSqlGenerator(now);
+        Quarters nowSqlGenerator = new Quarters(now);
         String sqlNow = nowSqlGenerator.quarterSqlData(index).toSqlString();
 
         assertEquals(expectedLabelFirstYear, sqlNow);
 
         LocalDate in3Months = now.plusMonths(3);
-        QuarterSqlGenerator in3MonthsSqlGenerator = new QuarterSqlGenerator(in3Months);
+        Quarters in3MonthsSqlGenerator = new Quarters(in3Months);
         String sqlIn3Months = in3MonthsSqlGenerator.quarterSqlData(index).toSqlString();
 
         assertEquals(expectedLabelSecondYear, sqlIn3Months);

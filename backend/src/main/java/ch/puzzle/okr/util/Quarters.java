@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuarterSqlGenerator {
+public class Quarters {
     public static final String Q1_START = "07-01";
     public static final String Q1_END = "09-30";
     public static final String Q2_START = "10-01";
@@ -17,7 +17,7 @@ public class QuarterSqlGenerator {
     private final LocalDate now;
     private final List<QuarterData> quarters = new ArrayList<>();
 
-    public QuarterSqlGenerator(LocalDate now) {
+    public Quarters(LocalDate now) {
         this.now = now;
         calculateQuarters();
     }

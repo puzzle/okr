@@ -42,6 +42,15 @@ public class Quarters {
         return null;
     }
 
+    public QuarterData currentQuarter() {
+        for (QuarterData quarter : quarters) {
+            if (isInQuarter(quarter.start(), quarter.end())) {
+                return quarter;
+            }
+        }
+        return null;
+    }
+
     private boolean isInQuarter(LocalDate start, LocalDate end) {
         boolean isAfterStart = now.equals(start) || now.isAfter(start);
         boolean isBeforeEnd = now.isBefore(end) || now.equals(end);

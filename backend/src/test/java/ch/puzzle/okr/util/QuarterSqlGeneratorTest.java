@@ -1,7 +1,5 @@
 package ch.puzzle.okr.util;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,35 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuarterSqlGeneratorTest {
 
-    @Disabled
-    @Test
-    void _nowAnd12MonthsInFuture() {
-        LocalDate startDate = LocalDate.of(2024, 7, 15);
-
-        for (int i = 0; i < 13; i++) {
-            LocalDate now = startDate.plusMonths(i);
-            System.out.println(now);
-
-            QuarterSqlGenerator currentQuarterSqlGenerator = new QuarterSqlGenerator(now);
-            String sqlNow = currentQuarterSqlGenerator.quarterSqlData(i).toSqlString();
-            System.out.println(sqlNow);
-
-            LocalDate in3Months = now.plusMonths(3);
-            QuarterSqlGenerator in3MonthsQuarterSqlGenerator = new QuarterSqlGenerator(in3Months);
-            String sqlIn3Months = in3MonthsQuarterSqlGenerator.quarterSqlData(i).toSqlString();
-            System.out.println(sqlIn3Months);
-
-            System.out.println("-------------");
-        }
-    }
+    private static final LocalDate START_DATE = LocalDate.of(2024, 7, 15);
+    private static final LocalDate START_DATE_7_MONTHS_BEFORE = START_DATE.minusMonths(7);
 
     @ParameterizedTest
     @MethodSource("indexAndFutureLabels")
     void nowAnd12MonthsInFuture(int index, String expectedLabelFirstYear, String expectedLabelSecondYear) {
-
-        LocalDate startDate = LocalDate.of(2024, 7, 15);
-        LocalDate now = startDate.plusMonths(index);
-
+        LocalDate now = START_DATE.plusMonths(index);
         QuarterSqlGenerator nowSqlGenerator = new QuarterSqlGenerator(now);
         String sqlNow = nowSqlGenerator.quarterSqlData(index).toSqlString();
 
@@ -111,33 +87,10 @@ public class QuarterSqlGeneratorTest {
 
     }
 
-    @Disabled
-    @Test
-    void _nowAnd7MonthsInPast() {
-        LocalDate startDate = LocalDate.of(2024, 7, 15).minusMonths(7);
-        for (int i = 0; i < 8; i++) {
-            LocalDate now = startDate.plusMonths(i);
-            System.out.println(now);
-
-            QuarterSqlGenerator currentQuarterSqlGenerator = new QuarterSqlGenerator(now);
-            String sqlNow = currentQuarterSqlGenerator.quarterSqlData(i).toSqlString();
-            System.out.println(sqlNow);
-
-            LocalDate in3Months = now.plusMonths(3);
-            QuarterSqlGenerator in3MonthsQuarterSqlGenerator = new QuarterSqlGenerator(in3Months);
-            String sqlIn3Months = in3MonthsQuarterSqlGenerator.quarterSqlData(i).toSqlString();
-            System.out.println(sqlIn3Months);
-
-            System.out.println("-------------");
-        }
-    }
-
-    private static final LocalDate START_DATE = LocalDate.of(2024, 7, 15).minusMonths(7);
-
     @ParameterizedTest
     @MethodSource("indexAndPastLabels")
     void nowAnd7MonthsInPast(int index, String expectedLabelFirstYear, String expectedLabelSecondYear) {
-        LocalDate now = START_DATE.plusMonths(index);
+        LocalDate now = START_DATE_7_MONTHS_BEFORE.plusMonths(index);
         QuarterSqlGenerator nowSqlGenerator = new QuarterSqlGenerator(now);
         String sqlNow = nowSqlGenerator.quarterSqlData(index).toSqlString();
 
@@ -192,7 +145,6 @@ public class QuarterSqlGeneratorTest {
                         "(7, 'GJ 24/25-Q1', '2024-07-01', '2024-09-30')", //
                         "(7, 'GJ 24/25-Q2', '2024-10-01', '2024-12-31')" //
                 ));
-
     }
 
 }

@@ -4,18 +4,27 @@ import java.time.LocalDate;
 
 public class GJ {
     private final LocalDate now;
-    private final Quarters quarters;
 
     public GJ(LocalDate now) {
         this.now = now;
-        this.quarters = new Quarters(now);
     }
 
     public String getLabel() {
         return "GJ " + //
                 formatYearAs2Digits(firstYearOfGJ()) + "/" + //
                 formatYearAs2Digits(secondYearOfGJ()) + "-Q" + //
-                quarters.currentQuarter().quarterData().quarterDigit();
+                getQuarterDigit();
+    }
+
+    private int getQuarterDigit() {
+        int month = now.getMonthValue();
+        if (month < 4)
+            return 3;
+        if (month < 7)
+            return 4;
+        if (month < 10)
+            return 1;
+        return 2;
     }
 
     private int firstYearOfGJ() {

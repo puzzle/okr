@@ -19,13 +19,13 @@ public class QuartersTest {
     void nowAnd12MonthsInFuture(int index, String expectedLabelFirstYear, String expectedLabelSecondYear) {
         LocalDate now = START_DATE.plusMonths(index);
         Quarters nowSqlGenerator = new Quarters(now);
-        QuarterDataWithGJ quarterDataWithGJ = nowSqlGenerator.currentQuarter();
+        QuarterDataWithGJ quarterDataWithGJ = nowSqlGenerator.currentQuarterWithGJ();
 
         assertEquals(expectedLabelFirstYear, quarterDataWithGJ.toString());
 
         LocalDate in3Months = now.plusMonths(3);
         Quarters in3MonthsSqlGenerator = new Quarters(in3Months);
-        QuarterDataWithGJ sqlIn3Months = in3MonthsSqlGenerator.currentQuarter();
+        QuarterDataWithGJ sqlIn3Months = in3MonthsSqlGenerator.currentQuarterWithGJ();
 
         assertEquals(expectedLabelSecondYear, sqlIn3Months.toString());
     }
@@ -79,13 +79,13 @@ public class QuartersTest {
     void nowAnd7MonthsInPast(int index, String expectedLabelFirstYear, String expectedLabelSecondYear) {
         LocalDate now = START_DATE_7_MONTHS_BEFORE.plusMonths(index);
         Quarters nowSqlGenerator = new Quarters(now);
-        QuarterDataWithGJ sqlNow = nowSqlGenerator.currentQuarter();
+        QuarterDataWithGJ sqlNow = nowSqlGenerator.currentQuarterWithGJ();
 
         assertEquals(expectedLabelFirstYear, sqlNow.toString());
 
         LocalDate in3Months = now.plusMonths(3);
         Quarters in3MonthsSqlGenerator = new Quarters(in3Months);
-        QuarterDataWithGJ sqlIn3Months = in3MonthsSqlGenerator.currentQuarter();
+        QuarterDataWithGJ sqlIn3Months = in3MonthsSqlGenerator.currentQuarterWithGJ();
 
         assertEquals(expectedLabelSecondYear, sqlIn3Months.toString());
     }

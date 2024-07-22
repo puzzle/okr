@@ -1,6 +1,5 @@
 package ch.puzzle.okr.util;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -8,13 +7,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class GJTest {
 
     @ParameterizedTest
     @MethodSource("nowAndLabels")
     void getLabelShouldReturnLabelWithYearAndQuarterInfo(LocalDate now, String expectedLabel) {
+        QuarterData currentQuarter = new Quarters(now).currentQuarter();
         GJ gj = new GJ(now);
-        Assertions.assertEquals(expectedLabel, gj.getLabel());
+        assertEquals(expectedLabel, gj.getLabel());
     }
 
     private static Stream<Arguments> nowAndLabels() {

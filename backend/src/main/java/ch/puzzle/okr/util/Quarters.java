@@ -33,10 +33,19 @@ public class Quarters {
         return LocalDate.parse(now.getYear() + "-" + monthDay);
     }
 
-    public QuarterDataWithGJ currentQuarter() {
+    public QuarterDataWithGJ currentQuarterWithGJ() {
         for (QuarterData quarter : quarters) {
             if (isInQuarter(quarter.start(), quarter.end())) {
                 return new QuarterDataWithGJ(new GJ(now), quarter);
+            }
+        }
+        return null;
+    }
+
+    public QuarterData currentQuarter() {
+        for (QuarterData quarter : quarters) {
+            if (isInQuarter(quarter.start(), quarter.end())) {
+                return quarter;
             }
         }
         return null;

@@ -15,7 +15,7 @@ public class GJ {
         return "GJ " + //
                 formatYearAs2Digits(firstYearOfGJ()) + "/" + //
                 formatYearAs2Digits(secondYearOfGJ()) + "-Q" + //
-                quarters.currentQuarter().quarterDigit();
+                quarters.currentQuarter().quarterData().quarterDigit();
     }
 
     private int firstYearOfGJ() {

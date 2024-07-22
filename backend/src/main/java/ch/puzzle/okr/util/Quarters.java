@@ -33,10 +33,10 @@ public class Quarters {
         return LocalDate.parse(now.getYear() + "-" + monthDay);
     }
 
-    public QuarterDbData quarterSqlData(long idInDb) {
+    public QuarterDataWithGJ quarterSqlData(long idInDb) {
         for (QuarterData quarter : quarters) {
             if (isInQuarter(quarter.start(), quarter.end())) {
-                return new QuarterDbData(idInDb, now, quarter);
+                return new QuarterDataWithGJ(new GJ(now), quarter);
             }
         }
         return null;

@@ -47,7 +47,7 @@ public class Quarters {
                 return new QuarterData(label, quarter.startDate(), quarter.endDate());
             }
         }
-        return null;
+        throw new RuntimeException("No current quarter found for " + now);
     }
 
     private boolean isInQuarter(LocalDate now, LocalDate start, LocalDate end) {

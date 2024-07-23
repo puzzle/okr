@@ -40,7 +40,7 @@ public class Quarters {
         return LocalDate.parse(year + "-" + monthDay);
     }
 
-    public QuarterData currentQuarterWithGJ(LocalDate now) {
+    public QuarterData currentQuarter(LocalDate now) {
         for (QuarterDateRange quarter : quarters) {
             if (isInQuarter(now, quarter.startDate(), quarter.endDate())) {
                 String label = new QuarterLabel(now).label();

@@ -1,11 +1,14 @@
 package ch.puzzle.okr.util.quarter.generate.h2;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuarterFunctionTest {
+
+    @DisplayName("QuarterFunction should return correct current quarter data")
     @Test
     void quarterFunctionShouldReturnCorrectCurrentQuarterData() {
         // arrange
@@ -22,6 +25,7 @@ public class QuarterFunctionTest {
         assertEquals(expectedCurrent, currentQuarter);
     }
 
+    @DisplayName("QuarterFunction should return correct next quarter data")
     @Test
     void quarterFunctionShouldReturnCorrectNextQuarterData() {
         // arrange

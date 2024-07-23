@@ -1,5 +1,6 @@
 package ch.puzzle.okr.util.quarter.generate;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,9 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuarterLabelTest {
 
+    @DisplayName("label() should return label with year and quarter info")
     @ParameterizedTest
     @MethodSource("nowAndLabels")
-    void labelWithYearAndQuarterInfo(LocalDate now, String expectedLabel) {
+    void labelShouldReturnLabelWithYearAndQuarterInfo(LocalDate now, String expectedLabel) {
         QuarterLabel quarterLabel = new QuarterLabel(now);
         assertEquals(expectedLabel, quarterLabel.label());
     }

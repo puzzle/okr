@@ -1,0 +1,40 @@
+package ch.puzzle.okr.util.quarter.generate.h2;
+
+import org.junit.jupiter.api.Test;
+
+import static ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class QuarterFunctionTest {
+    @Test
+    void quarterFunctionShouldReturnCorrectCurrentQuarterData() {
+        // arrange
+        initQuarterData();
+
+        // act
+        String currentQuarter = "(2, " //
+                + currentQuarterLabel() + ", " //
+                + currentQuarterStartDate() + ", " //
+                + currentQuarterEndDate() + ")";
+
+        // assert
+        String expectedCurrent = "(2, GJ 24/25-Q1, 2024-07-01, 2024-09-30)";
+        assertEquals(expectedCurrent, currentQuarter);
+    }
+
+    @Test
+    void quarterFunctionShouldReturnCorrectNextQuarterData() {
+        // arrange
+        initQuarterData();
+
+        // act
+        String nextQuarter = "(3, " //
+                + nextQuarterLabel() + ", " //
+                + nextQuarterStartDate() + ", " //
+                + nextQuarterEndDate() + ")";
+
+        // assert
+        String expectedNext = "(3, GJ 24/25-Q2, 2024-10-01, 2024-12-31)";
+        assertEquals(expectedNext, nextQuarter);
+    }
+}

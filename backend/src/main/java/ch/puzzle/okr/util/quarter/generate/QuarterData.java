@@ -1,4 +1,4 @@
-package ch.puzzle.okr.util;
+package ch.puzzle.okr.util.quarter.generate;
 
 import java.time.LocalDate;
 

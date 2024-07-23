@@ -1,4 +1,4 @@
-package ch.puzzle.okr.util;
+package ch.puzzle.okr.util.quarter.check;
 
 import ch.puzzle.okr.models.Quarter;
 import org.junit.jupiter.api.DisplayName;

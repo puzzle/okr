@@ -25,8 +25,8 @@ public class QuartersTest {
         Quarters allQuartersForIn3MonthsYear = new Quarters(in3Months.getYear());
 
         // act
-        QuarterData currentQuarter = allQuartersForYearOfNow.currentQuarterWithGJ(now);
-        QuarterData nextQuarter = allQuartersForIn3MonthsYear.currentQuarterWithGJ(in3Months);
+        QuarterData currentQuarter = allQuartersForYearOfNow.currentQuarter(now);
+        QuarterData nextQuarter = allQuartersForIn3MonthsYear.currentQuarter(in3Months);
 
         // assert
         assertEquals(expectedLabelFirstYear, currentQuarter.toString());
@@ -88,8 +88,8 @@ public class QuartersTest {
         Quarters allQuartersForIn3MonthsYear = new Quarters(in3Months.getYear());
 
         // act
-        QuarterData currentQuarter = allQuartersForYearOfNow.currentQuarterWithGJ(now);
-        QuarterData nextQuarter = allQuartersForIn3MonthsYear.currentQuarterWithGJ(in3Months);
+        QuarterData currentQuarter = allQuartersForYearOfNow.currentQuarter(now);
+        QuarterData nextQuarter = allQuartersForIn3MonthsYear.currentQuarter(in3Months);
 
         // assert
         assertEquals(expectedLabelFirstYear, currentQuarter.toString());

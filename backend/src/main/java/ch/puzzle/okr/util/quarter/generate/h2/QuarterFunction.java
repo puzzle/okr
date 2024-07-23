@@ -16,12 +16,12 @@ public class QuarterFunction {
     public static void initQuarterData() {
         LocalDate now = LocalDate.now();
         Quarters quarters = new Quarters(now.getYear());
-        QuarterData currentQuarter = quarters.currentQuarterWithGJ(now);
+        QuarterData currentQuarter = quarters.currentQuarter(now);
         QUARTERS.put(CURRENT_QUARTER_DB_ID, currentQuarter);
 
         LocalDate in3Months = now.plusMonths(3);
         Quarters nextQuarters = new Quarters(in3Months.getYear());
-        QuarterData nextQuarter = nextQuarters.currentQuarterWithGJ(in3Months);
+        QuarterData nextQuarter = nextQuarters.currentQuarter(in3Months);
         QUARTERS.put(NEXT_QUARTER_DB_ID, nextQuarter);
     }
 

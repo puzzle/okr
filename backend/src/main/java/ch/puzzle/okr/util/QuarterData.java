@@ -2,7 +2,7 @@ package ch.puzzle.okr.util;
 
 import java.time.LocalDate;
 
-public record QuarterDataWithGJ(String label, LocalDate startDate, LocalDate endDate) {
+public record QuarterData(String label, LocalDate startDate, LocalDate endDate) {
 
     public String start() {
         return isoFormat(startDate);

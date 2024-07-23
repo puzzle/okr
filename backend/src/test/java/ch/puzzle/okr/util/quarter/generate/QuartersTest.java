@@ -157,14 +157,38 @@ public class QuartersTest {
         LocalDate in2Years = now.plusYears(2);
 
         // act
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            allQuartersForYearOfNow.currentQuarter(in2Years);
-        });
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> allQuartersForYearOfNow.currentQuarter(in2Years));
 
         // assert
         assertEquals(RuntimeException.class, exception.getClass());
 
         String expectedMessage = "No current quarter found for 2026-07-15";
         assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @DisplayName("currentQuarter() should find current quarter for boundary dates")
+    @ParameterizedTest
+    @MethodSource("boundaryDatesAndLabels")
+    void currentQuarterShouldFindCurrentQuarterForBoundaryDates(LocalDate startDate, String expectedLabel) {
+        // arrange
+        Quarters allQuartersForYearOfNow = new Quarters(startDate.getYear());
+
+        // act
+        QuarterData currentQuarter = allQuartersForYearOfNow.currentQuarter(startDate);
+
+        // assert
+        assertEquals(expectedLabel, currentQuarter.toString());
+    }
+
+    public static Stream<Arguments> boundaryDatesAndLabels() {
+        return Stream.of( //
+                Arguments.of(LocalDate.of(2024, 7, 1), //
+                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //
+                ), //
+                Arguments.of(LocalDate.of(2024, 9, 30), //
+                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //
+                ) //
+        );
     }
 }

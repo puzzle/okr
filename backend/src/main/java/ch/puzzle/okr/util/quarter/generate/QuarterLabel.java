@@ -28,8 +28,9 @@ public class QuarterLabel {
     }
 
     private int firstYearOfGeschaeftsJahr() {
-        if (isNowInNewGeschaeftsJahr())
+        if (isNowInNewGeschaeftsJahr()) {
             return now.getYear();
+        }
         return now.getYear() - 1;
     }
 

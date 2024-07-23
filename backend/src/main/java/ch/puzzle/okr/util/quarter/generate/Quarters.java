@@ -8,14 +8,14 @@ public class Quarters {
     private record QuarterDateRange(LocalDate startDate, LocalDate endDate) {
     }
 
-    public static final String Q1_START = "07-01";
-    public static final String Q1_END = "09-30";
-    public static final String Q2_START = "10-01";
-    public static final String Q2_END = "12-31";
-    public static final String Q3_START = "01-01";
-    public static final String Q3_END = "03-31";
-    public static final String Q4_START = "04-01";
-    public static final String Q4_END = "06-30";
+    private static final String Q1_START = "07-01";
+    private static final String Q1_END = "09-30";
+    private static final String Q2_START = "10-01";
+    private static final String Q2_END = "12-31";
+    private static final String Q3_START = "01-01";
+    private static final String Q3_END = "03-31";
+    private static final String Q4_START = "04-01";
+    private static final String Q4_END = "06-30";
 
     private final List<QuarterDateRange> quarters = new ArrayList<>();
 

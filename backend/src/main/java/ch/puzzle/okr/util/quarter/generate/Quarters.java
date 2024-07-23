@@ -31,18 +31,18 @@ public class Quarters {
     }
 
     private QuarterDateRange createQuarter(int year, String startMonthDay, String endMonthDay) {
-        LocalDate startDate = date(year, startMonthDay);
-        LocalDate endDate = date(year, endMonthDay);
+        LocalDate startDate = toDate(year, startMonthDay);
+        LocalDate endDate = toDate(year, endMonthDay);
         return new QuarterDateRange(startDate, endDate);
     }
 
-    private LocalDate date(int year, String monthDay) {
+    private LocalDate toDate(int year, String monthDay) {
         return LocalDate.parse(year + "-" + monthDay);
     }
 
     public QuarterData currentQuarter(LocalDate now) {
         for (QuarterDateRange quarter : quarters) {
-            if (isInQuarter(now, quarter.startDate(), quarter.endDate())) {
+            if (isNowInQuarter(now, quarter.startDate(), quarter.endDate())) {
                 String label = new QuarterLabel(now).label();
                 return new QuarterData(label, quarter.startDate(), quarter.endDate());
             }
@@ -50,7 +50,7 @@ public class Quarters {
         throw new RuntimeException("No current quarter found for " + now);
     }
 
-    private boolean isInQuarter(LocalDate now, LocalDate start, LocalDate end) {
+    private boolean isNowInQuarter(LocalDate now, LocalDate start, LocalDate end) {
         boolean isAfterStart = now.equals(start) || now.isAfter(start);
         boolean isBeforeEnd = now.isBefore(end) || now.equals(end);
         return isAfterStart && isBeforeEnd;

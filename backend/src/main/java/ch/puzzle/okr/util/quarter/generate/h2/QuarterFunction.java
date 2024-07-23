@@ -49,12 +49,4 @@ public class QuarterFunction {
         return QUARTERS.get(NEXT_QUARTER_DB_ID).end();
     }
 
-    public static void main(String[] args) {
-        QuarterFunction.initQuarterData();
-        String q2 = "(2, " + currentQuarterLabel() + ", " + currentQuarterStartDate() + ", " + currentQuarterEndDate()
-                + ")";
-        String q3 = "(3, " + nextQuarterLabel() + ", " + nextQuarterStartDate() + ", " + nextQuarterEndDate() + ")";
-        System.out.println(q2);
-        System.out.println(q3);
-    }
 }

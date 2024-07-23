@@ -4,10 +4,21 @@ import java.time.LocalDate;
 
 public record QuarterDataWithGJ(GJ gj, QuarterData quarterData) {
 
+    public String label() {
+        return gj.getLabel();
+    }
+
+    public String start() {
+        return isoFormat(quarterData.start());
+    }
+
+    public String end() {
+        return isoFormat(quarterData.end());
+    }
+
     @Override
     public String toString() {
-        return "(" +
-                "'" + gj.getLabel() + "', " + //
+        return "(" + "'" + gj.getLabel() + "', " + //
                 "'" + isoFormat(quarterData.start()) + "', " + //
                 "'" + isoFormat(quarterData.end()) + "'" + //
                 ")";

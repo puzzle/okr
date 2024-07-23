@@ -43,7 +43,7 @@ public class Quarters {
     public QuarterData currentQuarterWithGJ(LocalDate now) {
         for (QuarterDateRange quarter : quarters) {
             if (isInQuarter(now, quarter.startDate(), quarter.endDate())) {
-                String label = new GJ(now).getLabel();
+                String label = new QuarterLabel(now).label();
                 return new QuarterData(label, quarter.startDate(), quarter.endDate());
             }
         }

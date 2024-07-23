@@ -14,7 +14,6 @@ public class GJTest {
     @ParameterizedTest
     @MethodSource("nowAndLabels")
     void getLabelShouldReturnLabelWithYearAndQuarterInfo(LocalDate now, String expectedLabel) {
-        QuarterData currentQuarter = new Quarters(now).currentQuarter();
         GJ gj = new GJ(now);
         assertEquals(expectedLabel, gj.getLabel());
     }

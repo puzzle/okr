@@ -15,13 +15,13 @@ public class QuarterFunction {
 
     public static void initQuarterData() {
         LocalDate now = LocalDate.now();
-        Quarters quarters = new Quarters(now);
-        QuarterDataWithGJ currentQuarter = quarters.currentQuarterWithGJ();
+        Quarters quarters = new Quarters(now.getYear() );
+        QuarterDataWithGJ currentQuarter = quarters.currentQuarterWithGJ(now);
         QUARTERS.put(CURRENT_QUARTER_DB_ID, currentQuarter);
 
         LocalDate in3Months = now.plusMonths(3);
-        Quarters nextQuarters = new Quarters(in3Months);
-        QuarterDataWithGJ nextQuarter = nextQuarters.currentQuarterWithGJ();
+        Quarters nextQuarters = new Quarters(in3Months.getYear() );
+        QuarterDataWithGJ nextQuarter = nextQuarters.currentQuarterWithGJ(in3Months);
         QUARTERS.put(NEXT_QUARTER_DB_ID, nextQuarter);
     }
 

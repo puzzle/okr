@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Quarters {
+    private record QuarterDateRange(LocalDate startDate, LocalDate endDate) {
+    }
+
     public static final String Q1_START = "07-01";
     public static final String Q1_END = "09-30";
     public static final String Q2_START = "10-01";
@@ -14,44 +17,40 @@ public class Quarters {
     public static final String Q4_START = "04-01";
     public static final String Q4_END = "06-30";
 
-    private final LocalDate now;
-    private final List<QuarterData> quarters = new ArrayList<>();
+    private final List<QuarterDateRange> quarters = new ArrayList<>();
 
-    public Quarters(LocalDate now) {
-        this.now = now;
-        calculateQuarters();
+    public Quarters(int year) {
+        createQuarters(year);
     }
 
-    private void calculateQuarters() {
-        quarters.add(new QuarterData(date(Q1_START), date(Q1_END)));
-        quarters.add(new QuarterData(date(Q2_START), date(Q2_END)));
-        quarters.add(new QuarterData(date(Q3_START), date(Q3_END)));
-        quarters.add(new QuarterData(date(Q4_START), date(Q4_END)));
+    private void createQuarters(int year) {
+        quarters.add(createQuarter(year, Q1_START, Q1_END));
+        quarters.add(createQuarter(year, Q2_START, Q2_END));
+        quarters.add(createQuarter(year, Q3_START, Q3_END));
+        quarters.add(createQuarter(year, Q4_START, Q4_END));
     }
 
-    private LocalDate date(String monthDay) {
-        return LocalDate.parse(now.getYear() + "-" + monthDay);
+    private QuarterDateRange createQuarter(int year, String startMonthDay, String endMonthDay) {
+        LocalDate startDate = date(year, startMonthDay);
+        LocalDate endDate = date(year, endMonthDay);
+        return new QuarterDateRange(startDate, endDate);
     }
 
-    public QuarterDataWithGJ currentQuarterWithGJ() {
-        for (QuarterData quarter : quarters) {
-            if (isInQuarter(quarter.start(), quarter.end())) {
-                return new QuarterDataWithGJ(new GJ(now), quarter);
+    private LocalDate date(int year, String monthDay) {
+        return LocalDate.parse(year + "-" + monthDay);
+    }
+
+    public QuarterDataWithGJ currentQuarterWithGJ(LocalDate now) {
+        for (QuarterDateRange quarter : quarters) {
+            if (isInQuarter(now, quarter.startDate(), quarter.endDate())) {
+                String label = new GJ(now).getLabel();
+                return new QuarterDataWithGJ(label, quarter.startDate(), quarter.endDate() );
             }
         }
         return null;
     }
 
-    public QuarterData currentQuarter() {
-        for (QuarterData quarter : quarters) {
-            if (isInQuarter(quarter.start(), quarter.end())) {
-                return quarter;
-            }
-        }
-        return null;
-    }
-
-    private boolean isInQuarter(LocalDate start, LocalDate end) {
+    private boolean isInQuarter(LocalDate now, LocalDate start, LocalDate end) {
         boolean isAfterStart = now.equals(start) || now.isAfter(start);
         boolean isBeforeEnd = now.isBefore(end) || now.equals(end);
         return isAfterStart && isBeforeEnd;

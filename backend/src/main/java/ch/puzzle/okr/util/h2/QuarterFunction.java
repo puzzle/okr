@@ -1,6 +1,6 @@
 package ch.puzzle.okr.util.h2;
 
-import ch.puzzle.okr.util.QuarterDataWithGJ;
+import ch.puzzle.okr.util.QuarterData;
 import ch.puzzle.okr.util.Quarters;
 
 import java.time.LocalDate;
@@ -11,17 +11,17 @@ public class QuarterFunction {
     public static final int CURRENT_QUARTER_DB_ID = 2;
     public static final int NEXT_QUARTER_DB_ID = 3;
 
-    private static final Map<Integer, QuarterDataWithGJ> QUARTERS = new HashMap<>();
+    private static final Map<Integer, QuarterData> QUARTERS = new HashMap<>();
 
     public static void initQuarterData() {
         LocalDate now = LocalDate.now();
-        Quarters quarters = new Quarters(now.getYear() );
-        QuarterDataWithGJ currentQuarter = quarters.currentQuarterWithGJ(now);
+        Quarters quarters = new Quarters(now.getYear());
+        QuarterData currentQuarter = quarters.currentQuarterWithGJ(now);
         QUARTERS.put(CURRENT_QUARTER_DB_ID, currentQuarter);
 
         LocalDate in3Months = now.plusMonths(3);
-        Quarters nextQuarters = new Quarters(in3Months.getYear() );
-        QuarterDataWithGJ nextQuarter = nextQuarters.currentQuarterWithGJ(in3Months);
+        Quarters nextQuarters = new Quarters(in3Months.getYear());
+        QuarterData nextQuarter = nextQuarters.currentQuarterWithGJ(in3Months);
         QUARTERS.put(NEXT_QUARTER_DB_ID, nextQuarter);
     }
 

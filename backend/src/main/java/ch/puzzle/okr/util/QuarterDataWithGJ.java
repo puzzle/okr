@@ -2,25 +2,21 @@ package ch.puzzle.okr.util;
 
 import java.time.LocalDate;
 
-public record QuarterDataWithGJ(GJ gj, QuarterData quarterData) {
-
-    public String label() {
-        return gj.getLabel();
-    }
+public record QuarterDataWithGJ(String label, LocalDate startDate, LocalDate endDate) {
 
     public String start() {
-        return isoFormat(quarterData.start());
+        return isoFormat(startDate);
     }
 
     public String end() {
-        return isoFormat(quarterData.end());
+        return isoFormat(endDate);
     }
 
     @Override
     public String toString() {
-        return "(" + "'" + gj.getLabel() + "', " + //
-                "'" + isoFormat(quarterData.start()) + "', " + //
-                "'" + isoFormat(quarterData.end()) + "'" + //
+        return "(" + "'" + label() + "', " + //
+                "'" + isoFormat(startDate) + "', " + //
+                "'" + isoFormat(endDate) + "'" + //
                 ")";
     }
 

@@ -23,10 +23,10 @@ public class Quarters {
     }
 
     private void calculateQuarters() {
-        quarters.add(new QuarterData(1, date(Q1_START), date(Q1_END)));
-        quarters.add(new QuarterData(2, date(Q2_START), date(Q2_END)));
-        quarters.add(new QuarterData(3, date(Q3_START), date(Q3_END)));
-        quarters.add(new QuarterData(4, date(Q4_START), date(Q4_END)));
+        quarters.add(new QuarterData(date(Q1_START), date(Q1_END)));
+        quarters.add(new QuarterData(date(Q2_START), date(Q2_END)));
+        quarters.add(new QuarterData(date(Q3_START), date(Q3_END)));
+        quarters.add(new QuarterData(date(Q4_START), date(Q4_END)));
     }
 
     private LocalDate date(String monthDay) {

@@ -2,17 +2,17 @@ package ch.puzzle.okr.util.quarter.generate;
 
 import java.time.LocalDate;
 
-public class GJ {
+public class QuarterLabel {
     private final LocalDate now;
 
-    public GJ(LocalDate now) {
+    public QuarterLabel(LocalDate now) {
         this.now = now;
     }
 
-    public String getLabel() {
+    public String label() {
         return "GJ " + //
-                formatYearAs2Digits(firstYearOfGJ()) + "/" + //
-                formatYearAs2Digits(secondYearOfGJ()) + "-Q" + //
+                formatYearAs2Digits(firstYearOfGeschaeftsJahr()) + "/" + //
+                formatYearAs2Digits(secondYearOfGeschaeftsJahr()) + "-Q" + //
                 getQuarterDigit();
     }
 
@@ -27,26 +27,26 @@ public class GJ {
         return 2;
     }
 
-    private int firstYearOfGJ() {
-        if (isNowInNewGJ())
+    private int firstYearOfGeschaeftsJahr() {
+        if (isNowInNewGeschaeftsJahr())
             return now.getYear();
         return now.getYear() - 1;
     }
 
-    private boolean isNowInNewGJ() {
-        LocalDate startNewGJ = startOfNewGJ();
+    private boolean isNowInNewGeschaeftsJahr() {
+        LocalDate startNewGJ = startOfNewGeschaeftsJahr();
         return now.equals(startNewGJ) || now.isAfter(startNewGJ);
     }
 
-    private int secondYearOfGJ() {
-        return firstYearOfGJ() + 1;
+    private int secondYearOfGeschaeftsJahr() {
+        return firstYearOfGeschaeftsJahr() + 1;
     }
 
     private int formatYearAs2Digits(int year) {
         return year % 1000;
     }
 
-    private LocalDate startOfNewGJ() {
+    private LocalDate startOfNewGeschaeftsJahr() {
         return LocalDate.of(now.getYear(), 7, 1);
     }
 }

@@ -9,13 +9,13 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GJTest {
+public class QuarterLabelTest {
 
     @ParameterizedTest
     @MethodSource("nowAndLabels")
-    void getLabelShouldReturnLabelWithYearAndQuarterInfo(LocalDate now, String expectedLabel) {
-        GJ gj = new GJ(now);
-        assertEquals(expectedLabel, gj.getLabel());
+    void labelWithYearAndQuarterInfo(LocalDate now, String expectedLabel) {
+        QuarterLabel quarterLabel = new QuarterLabel(now);
+        assertEquals(expectedLabel, quarterLabel.label());
     }
 
     private static Stream<Arguments> nowAndLabels() {

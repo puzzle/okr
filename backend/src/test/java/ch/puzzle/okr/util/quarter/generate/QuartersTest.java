@@ -38,7 +38,7 @@ public class QuartersTest {
         assertEquals(expectedLabelSecondYear, nextQuarter.toString());
     }
 
-    public static Stream<Arguments> indexAndFutureLabels() {
+    private static Stream<Arguments> indexAndFutureLabels() {
         return Stream.of(
                 // 2024-07-15
                 Arguments.of(0, //
@@ -103,7 +103,7 @@ public class QuartersTest {
         assertEquals(expectedLabelSecondYear, nextQuarter.toString());
     }
 
-    public static Stream<Arguments> indexAndPastLabels() {
+    private static Stream<Arguments> indexAndPastLabels() {
         return Stream.of(
                 // 2023-12-15
                 Arguments.of(0, //
@@ -181,7 +181,7 @@ public class QuartersTest {
         assertEquals(expectedLabel, currentQuarter.toString());
     }
 
-    public static Stream<Arguments> boundaryDatesAndLabels() {
+    private static Stream<Arguments> boundaryDatesAndLabels() {
         return Stream.of( //
                 Arguments.of(LocalDate.of(2024, 7, 1), //
                         "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //

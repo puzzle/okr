@@ -1,4 +1,4 @@
-package ch.puzzle.okr.util;
+package ch.puzzle.okr.util.quarter.generate;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

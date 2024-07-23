@@ -1,7 +1,7 @@
-package ch.puzzle.okr.util.h2;
+package ch.puzzle.okr.util.quarter.generate.h2;
 
-import ch.puzzle.okr.util.QuarterData;
-import ch.puzzle.okr.util.Quarters;
+import ch.puzzle.okr.util.quarter.generate.QuarterData;
+import ch.puzzle.okr.util.quarter.generate.Quarters;
 
 import java.time.LocalDate;
 import java.util.HashMap;

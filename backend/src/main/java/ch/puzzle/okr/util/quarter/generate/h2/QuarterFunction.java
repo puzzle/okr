@@ -30,11 +30,11 @@ public class QuarterFunction {
     }
 
     public static String currentQuarterStartDate() {
-        return QUARTERS.get(CURRENT_QUARTER_DB_ID).start();
+        return QUARTERS.get(CURRENT_QUARTER_DB_ID).startDateAsIsoString();
     }
 
     public static String currentQuarterEndDate() {
-        return QUARTERS.get(CURRENT_QUARTER_DB_ID).end();
+        return QUARTERS.get(CURRENT_QUARTER_DB_ID).endDateAsIsoString();
     }
 
     public static String nextQuarterLabel() {
@@ -42,11 +42,11 @@ public class QuarterFunction {
     }
 
     public static String nextQuarterStartDate() {
-        return QUARTERS.get(NEXT_QUARTER_DB_ID).start();
+        return QUARTERS.get(NEXT_QUARTER_DB_ID).startDateAsIsoString();
     }
 
     public static String nextQuarterEndDate() {
-        return QUARTERS.get(NEXT_QUARTER_DB_ID).end();
+        return QUARTERS.get(NEXT_QUARTER_DB_ID).endDateAsIsoString();
     }
 
 }

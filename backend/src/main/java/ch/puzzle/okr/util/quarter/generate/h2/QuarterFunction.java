@@ -15,14 +15,16 @@ public class QuarterFunction {
 
     public static void initQuarterData() {
         LocalDate now = LocalDate.now();
-        Quarters quarters = new Quarters(now.getYear());
-        QuarterData currentQuarter = quarters.currentQuarter(now);
-        QUARTERS.put(CURRENT_QUARTER_DB_ID, currentQuarter);
+        registerCurrentQuarterForDate(now, CURRENT_QUARTER_DB_ID);
 
         LocalDate in3Months = now.plusMonths(3);
-        Quarters nextQuarters = new Quarters(in3Months.getYear());
-        QuarterData nextQuarter = nextQuarters.currentQuarter(in3Months);
-        QUARTERS.put(NEXT_QUARTER_DB_ID, nextQuarter);
+        registerCurrentQuarterForDate(in3Months, NEXT_QUARTER_DB_ID);
+    }
+
+    private static void registerCurrentQuarterForDate(LocalDate date, int dbId) {
+        Quarters quarters = new Quarters(date.getYear());
+        QuarterData currentQuarter = quarters.currentQuarter(date);
+        QUARTERS.put(dbId, currentQuarter);
     }
 
     public static String currentQuarterLabel() {

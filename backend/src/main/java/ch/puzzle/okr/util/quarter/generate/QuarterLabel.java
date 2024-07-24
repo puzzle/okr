@@ -3,10 +3,10 @@ package ch.puzzle.okr.util.quarter.generate;
 import java.time.LocalDate;
 
 public class QuarterLabel {
-    private final LocalDate now;
+    private final LocalDate date;
 
-    public QuarterLabel(LocalDate now) {
-        this.now = now;
+    public QuarterLabel(LocalDate date) {
+        this.date = date;
     }
 
     public String label() {
@@ -17,7 +17,7 @@ public class QuarterLabel {
     }
 
     private int getQuarterDigit() {
-        int month = now.getMonthValue();
+        int month = date.getMonthValue();
         if (month < 4)
             return 3;
         if (month < 7)
@@ -29,14 +29,14 @@ public class QuarterLabel {
 
     private int firstYearOfGeschaeftsJahr() {
         if (isNowInNewGeschaeftsJahr()) {
-            return now.getYear();
+            return date.getYear();
         }
-        return now.getYear() - 1;
+        return date.getYear() - 1;
     }
 
     private boolean isNowInNewGeschaeftsJahr() {
         LocalDate startNewGJ = startOfNewGeschaeftsJahr();
-        return now.equals(startNewGJ) || now.isAfter(startNewGJ);
+        return date.equals(startNewGJ) || date.isAfter(startNewGJ);
     }
 
     private int secondYearOfGeschaeftsJahr() {
@@ -48,6 +48,6 @@ public class QuarterLabel {
     }
 
     private LocalDate startOfNewGeschaeftsJahr() {
-        return LocalDate.of(now.getYear(), 7, 1);
+        return LocalDate.of(date.getYear(), 7, 1);
     }
 }

@@ -40,19 +40,19 @@ public class Quarters {
         return LocalDate.parse(year + "-" + monthDay);
     }
 
-    public QuarterData currentQuarter(LocalDate now) {
+    public QuarterData currentQuarter(LocalDate date) {
         for (QuarterDateRange quarter : quarters) {
-            if (isNowInQuarter(now, quarter.startDate(), quarter.endDate())) {
-                String label = new QuarterLabel(now).label();
+            if (isDateInQuarter(date, quarter.startDate(), quarter.endDate())) {
+                String label = new QuarterLabel(date).label();
                 return new QuarterData(label, quarter.startDate(), quarter.endDate());
             }
         }
-        throw new RuntimeException("No current quarter found for " + now);
+        throw new RuntimeException("No current quarter found for " + date);
     }
 
-    private boolean isNowInQuarter(LocalDate now, LocalDate start, LocalDate end) {
-        boolean isAfterStart = now.equals(start) || now.isAfter(start);
-        boolean isBeforeEnd = now.isBefore(end) || now.equals(end);
+    private boolean isDateInQuarter(LocalDate date, LocalDate start, LocalDate end) {
+        boolean isAfterStart = date.equals(start) || date.isAfter(start);
+        boolean isBeforeEnd = date.isBefore(end) || date.equals(end);
         return isAfterStart && isBeforeEnd;
     }
 

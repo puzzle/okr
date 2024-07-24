@@ -14,13 +14,13 @@ public class QuarterLabelTest {
 
     @DisplayName("label() should return label with year and quarter info")
     @ParameterizedTest
-    @MethodSource("nowAndLabels")
-    void labelShouldReturnLabelWithYearAndQuarterInfo(LocalDate now, String expectedLabel) {
-        QuarterLabel quarterLabel = new QuarterLabel(now);
+    @MethodSource("datesAndLabels")
+    void labelShouldReturnLabelWithYearAndQuarterInfo(LocalDate date, String expectedLabel) {
+        QuarterLabel quarterLabel = new QuarterLabel(date);
         assertEquals(expectedLabel, quarterLabel.label());
     }
 
-    private static Stream<Arguments> nowAndLabels() {
+    private static Stream<Arguments> datesAndLabels() {
         return Stream.of( //
                 Arguments.of(LocalDate.of(2024, 7, 1), "GJ 24/25-Q1"),
                 Arguments.of(LocalDate.of(2024, 7, 2), "GJ 24/25-Q1"),

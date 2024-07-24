@@ -14,12 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class QuartersTest {
 
-    private static final LocalDate START_DATE = LocalDate.of(2024, 7, 15);
-    private static final LocalDate START_DATE_7_MONTHS_BEFORE = START_DATE.minusMonths(7);
-
     @DisplayName("currentQuarter() should find current quarter for now and 12 months in future")
     @ParameterizedTest
-    @MethodSource("nowAndQuarterLabelsForFuture")
+    @MethodSource("futureDatesAndLabels")
     void currentQuarterShouldFindCurrentQuarterForNowAnd12MonthsInFuture(LocalDate now, String expectedLabelFirstYear,
             String expectedLabelSecondYear) {
 
@@ -38,7 +35,7 @@ public class QuartersTest {
         assertEquals(expectedLabelSecondYear, nextQuarter.toString());
     }
 
-    private static Stream<Arguments> nowAndQuarterLabelsForFuture() {
+    private static Stream<Arguments> futureDatesAndLabels() {
         return Stream.of( //
                 Arguments.of( //
                         LocalDate.of(2024, 7, 15), //
@@ -96,14 +93,14 @@ public class QuartersTest {
 
     @DisplayName("currentQuarter() should find current quarter for now and 7 months in past")
     @ParameterizedTest
-    @MethodSource("indexAndPastLabels")
-    void currentQuarterShouldFindCurrentQuarterForNowAnd7MonthsInPast(int monthOffset, String expectedLabelFirstYear,
+    @MethodSource("pastDatesAndLabels")
+    void currentQuarterShouldFindCurrentQuarterForNowAnd7MonthsInPast(LocalDate now, String expectedLabelFirstYear,
             String expectedLabelSecondYear) {
-        // arrange
-        LocalDate now = START_DATE_7_MONTHS_BEFORE.plusMonths(monthOffset);
-        LocalDate in3Months = now.plusMonths(3);
 
+        // arrange
         Quarters nowQuarters = new Quarters(now.getYear());
+
+        LocalDate in3Months = now.plusMonths(3);
         Quarters in3MonthsQuarters = new Quarters(in3Months.getYear());
 
         // act
@@ -115,55 +112,47 @@ public class QuartersTest {
         assertEquals(expectedLabelSecondYear, nextQuarter.toString());
     }
 
-    private static Stream<Arguments> indexAndPastLabels() {
-        return Stream.of(
-                // 2023-12-15
-                Arguments.of(0, //
+    private static Stream<Arguments> pastDatesAndLabels() {
+        return Stream.of( //
+                Arguments.of( //
+                        LocalDate.of(2023, 12, 15), //
                         "('GJ 23/24-Q2', '2023-10-01', '2023-12-31')", //
-                        "('GJ 23/24-Q3', '2024-01-01', '2024-03-31')" //
-                ),
-                // 2024-01-15
-                Arguments.of(1, //
+                        "('GJ 23/24-Q3', '2024-01-01', '2024-03-31')"),
+                Arguments.of( //
+                        LocalDate.of(2024, 1, 15), //
                         "('GJ 23/24-Q3', '2024-01-01', '2024-03-31')", //
-                        "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')" //
-                ),
-                // 2024-02-15
-                Arguments.of(2, //
+                        "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')"),
+                Arguments.of( //
+                        LocalDate.of(2024, 2, 15), //
                         "('GJ 23/24-Q3', '2024-01-01', '2024-03-31')", //
-                        "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')" //
-                ),
-                // 2024-03-15
-                Arguments.of(3, //
+                        "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')"),
+                Arguments.of( //
+                        LocalDate.of(2024, 3, 15), //
                         "('GJ 23/24-Q3', '2024-01-01', '2024-03-31')", //
-                        "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')" //
-                ),
-                // 2024-04-15
-                Arguments.of(4, //
+                        "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')"),
+                Arguments.of( //
+                        LocalDate.of(2024, 4, 15), //
                         "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')", //
-                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //
-                ),
-                // 2024-05-15
-                Arguments.of(5, //
+                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')"),
+                Arguments.of( //
+                        LocalDate.of(2024, 5, 15), //
                         "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')", //
-                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //
-                ),
-                // 2024-06-15
-                Arguments.of(6, //
+                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')"),
+                Arguments.of( //
+                        LocalDate.of(2024, 6, 15), //
                         "('GJ 23/24-Q4', '2024-04-01', '2024-06-30')", //
-                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //
-                ),
-                // 2024-07-15
-                Arguments.of(7, //
+                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')"),
+                Arguments.of( //
+                        LocalDate.of(2024, 7, 15), //
                         "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')", //
-                        "('GJ 24/25-Q2', '2024-10-01', '2024-12-31')" //
-                ));
+                        "('GJ 24/25-Q2', '2024-10-01', '2024-12-31')"));
     }
 
     @DisplayName("currentQuarter() should throw exception if no matching quarter is found for now")
     @Test
     void currentQuarterShouldThrowExceptionIfNoMatchingQuarterIsFoundForNow() {
         // arrange
-        LocalDate now = START_DATE;
+        LocalDate now = LocalDate.of(2024, 7, 15);
         Quarters allQuartersOfCurrentYear = new Quarters(now.getYear());
 
         LocalDate in2Years = now.plusYears(2);
@@ -193,12 +182,12 @@ public class QuartersTest {
 
     private static Stream<Arguments> boundaryDatesAndLabels() {
         return Stream.of( //
-                Arguments.of(LocalDate.of(2024, 7, 1), //
-                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //
-                ), //
-                Arguments.of(LocalDate.of(2024, 9, 30), //
-                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')" //
-                ) //
+                Arguments.of( //
+                        LocalDate.of(2024, 7, 1), //
+                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')"), //
+                Arguments.of( //
+                        LocalDate.of(2024, 9, 30), //
+                        "('GJ 24/25-Q1', '2024-07-01', '2024-09-30')") //
         );
     }
 }

@@ -4,20 +4,12 @@ import java.time.LocalDate;
 
 public record QuarterData(String label, LocalDate startDate, LocalDate endDate) {
 
-    public String start() {
+    public String startDateAsIsoString() {
         return isoFormat(startDate);
     }
 
-    public String end() {
+    public String endDateAsIsoString() {
         return isoFormat(endDate);
-    }
-
-    @Override
-    public String toString() {
-        return "(" + "'" + label() + "', " + //
-                "'" + isoFormat(startDate) + "', " + //
-                "'" + isoFormat(endDate) + "'" + //
-                ")";
     }
 
     private String isoFormat(LocalDate date) {
@@ -26,4 +18,13 @@ public record QuarterData(String label, LocalDate startDate, LocalDate endDate) 
         String day = String.format("%02d", date.getDayOfMonth());
         return year + "-" + month + "-" + day;
     }
+
+    @Override
+    public String toString() {
+        return "(" + "'" + label() + "', " + //
+                "'" + startDateAsIsoString() + "', " + //
+                "'" + endDateAsIsoString() + "'" + //
+                ")";
+    }
+
 }

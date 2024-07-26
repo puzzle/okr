@@ -42,13 +42,21 @@ export class DeleteUserComponent implements OnInit {
     });
   }
 
+  // https://blog.angular-university.io/angular-material-dialog/
+  // https://stackblitz.com/edit/angular-ivy-b3fqjj?file=src%2Fapp%2FAlertDialogComponent%2Falert-dialog.component.ts
   deleteUser() {
     if (this.isUserMemberOfTeams) {
-      alert('user is member of team');
+      this.showUnableToDeleteDialog(
+        this.user,
+        `${getFullNameFromUser(this.user)} ist in Team(s) und kann nicht gelöscht werden!`,
+      );
       return;
     }
     if (this.isUserOwnerOfKeyResults) {
-      alert('user is owner of key results');
+      this.showUnableToDeleteDialog(
+        this.user,
+        `${getFullNameFromUser(this.user)} ist Owner von KeyResults kann nicht gelöscht werden!`,
+      );
       return;
     }
 
@@ -71,5 +79,13 @@ export class DeleteUserComponent implements OnInit {
         this.userService.reloadUsers();
         this.location.back();
       });
+  }
+
+  showUnableToDeleteDialog(user: User, title: string) {
+    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
+    dialogConfig.data = {
+      dialogTitle: title,
+    };
+    this.dialog.open(CancelDialogComponent, dialogConfig);
   }
 }

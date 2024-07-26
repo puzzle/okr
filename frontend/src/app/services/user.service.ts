@@ -62,4 +62,12 @@ export class UserService {
   createUsers(userList: NewUser[]) {
     return this.httpClient.post<User>(`${this.API_URL}/createall`, userList).pipe(tap(() => this.reloadUsers()));
   }
+
+  isUserOwnerOfKeyResults(user: User): Observable<Object> {
+    return this.httpClient.get(`${this.API_URL}/${user.id}/iskeyresultowner`, {});
+  }
+
+  deleteUser(user: User) {
+    return this.httpClient.delete<void>(`${this.API_URL}/${user.id}`, {}).pipe(tap(() => this.reloadUsers()));
+  }
 }

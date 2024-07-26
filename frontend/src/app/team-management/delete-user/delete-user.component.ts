@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { User } from '../../shared/types/model/User';
+import { getFullNameFromUser, User } from '../../shared/types/model/User';
 import { Location } from '@angular/common';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
+import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { filter, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-delete-user',
@@ -17,6 +21,7 @@ export class DeleteUserComponent implements OnInit {
   constructor(
     private readonly userService: UserService,
     private readonly location: Location,
+    private readonly dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -47,8 +52,24 @@ export class DeleteUserComponent implements OnInit {
       return;
     }
 
-    this.userService.deleteUser(this.user).subscribe((v) => {
-      this.location.back();
-    });
+    this.showDeleteUserDialog(this.user);
+  }
+
+  showDeleteUserDialog(user: User) {
+    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
+    dialogConfig.data = {
+      dialogTitle: `Member ${getFullNameFromUser(user)} wirklich löschen?`,
+    };
+    this.dialog
+      .open(CancelDialogComponent, dialogConfig)
+      .afterClosed()
+      .pipe(
+        filter((confirm) => confirm),
+        mergeMap(() => this.userService.deleteUser(user)),
+      )
+      .subscribe(() => {
+        this.userService.reloadUsers();
+        this.location.back();
+      });
   }
 }

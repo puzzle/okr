@@ -1,0 +1,14 @@
+<ng-container>
+  <button
+    (click)="deleteUser()"
+    [attr.data-testId]="'delete-user'"
+    class="mdc-button px-0 pe-2"
+    color="primary"
+    mat-button
+  >
+    <span class="d-flex align-items-center fw-bold add-text">
+      <img alt="Delete user button" class="add-cross-button" src="/assets/icons/delete-icon.svg" />
+      Member l&ouml;schen
+    </span>
+  </button>
+</ng-container>

@@ -69,4 +69,9 @@ public class UserBusinessService {
         var userIter = userPersistenceService.saveAll(userList);
         return StreamSupport.stream(userIter.spliterator(), false).toList();
     }
+
+    @Transactional
+    public void deleteUser(long id) {
+        userPersistenceService.deleteById(id);
+    }
 }

@@ -4,6 +4,7 @@ import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,14 @@ public class UserAuthorizationService {
     private final AuthorizationService authorizationService;
 
     private final TeamAuthorizationService teamAuthorizationService;
+    private final KeyResultBusinessService keyResultBusinessService;
 
     public UserAuthorizationService(UserBusinessService userBusinessService, AuthorizationService authorizationService,
-            TeamAuthorizationService teamAuthorizationService) {
+            TeamAuthorizationService teamAuthorizationService, KeyResultBusinessService keyResultBusinessService) {
         this.userBusinessService = userBusinessService;
         this.authorizationService = authorizationService;
         this.teamAuthorizationService = teamAuthorizationService;
+        this.keyResultBusinessService = keyResultBusinessService;
     }
 
     public List<User> getAllUsers() {
@@ -58,4 +61,14 @@ public class UserAuthorizationService {
                 OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
         return userBusinessService.createUsers(userList);
     }
+
+    public boolean isUserOwnerOfKeyResults(long id) {
+        return keyResultBusinessService.isUserOwnerOfKeyResults(id);
+    }
+
+    public void deleteUser(long id) {
+        // TODO check Role
+        userBusinessService.deleteUser(id);
+    }
+
 }

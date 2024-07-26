@@ -38,4 +38,11 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
     public KeyResult updateEntity(KeyResult keyResult) {
         return save(keyResult);
     }
+
+    public boolean isUserOwnerOfKeyResults(long id) {
+        List<KeyResult> allKeyResults = findAll();
+        long numberOfKeyResultsOfUser = allKeyResults.stream()
+                .filter(keyResult -> keyResult.getOwner().getId().equals(id)).count();
+        return numberOfKeyResultsOfUser > 0;
+    }
 }

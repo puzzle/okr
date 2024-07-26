@@ -11,13 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -83,6 +77,27 @@ public class UserController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The users to create", required = true) @RequestBody List<NewUserDto> newUserDtoList) {
         var createdUsers = this.userAuthorizationService.createUsers(userMapper.toUserList(newUserDtoList));
         return userMapper.toDtos(createdUsers);
+    }
+
+    @Operation(summary = "Check User has KeyResults", description = "Check if User is the owner of KeyResults.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "true if user is owner of KeyResults", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)) }), })
+
+    @GetMapping(path = "/{id}/iskeyresultowner")
+    public Boolean isUserOwnerOfKeyResults(
+            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id) {
+
+        return this.userAuthorizationService.isUserOwnerOfKeyResults(id);
+    }
+
+    @Operation(summary = "Delete User by Id", description = "Delete User by Id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted User by Id"),
+            @ApiResponse(responseCode = "401", description = "Not authorized to delete a User", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the User with requested id") })
+    @DeleteMapping(path = "/{id}")
+    public void deleteUserById(@PathVariable long id) {
+        this.userAuthorizationService.deleteUser(id);
     }
 
 }

@@ -26,6 +26,7 @@ import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from './custom/spinner/spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.component';
+import { AlertDialogComponent } from './dialog/alert-dialog/alert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.comp
     SidepanelComponent,
     SpinnerComponent,
     CancelDialogComponent,
+    AlertDialogComponent,
   ],
   imports: [
     CommonModule,

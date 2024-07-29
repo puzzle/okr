@@ -1,0 +1,17 @@
+<section mat-dialog-title>
+  <app-dialog-header [dialogTitle]="this.data.dialogTitle"></app-dialog-header>
+</section>
+
+<mat-dialog-content>
+  @if (data.dialogText) {
+    <div class="mb-3">
+      <span class="dialog-text">{{ this.data.dialogText }}</span>
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions class="m-0">
+  <button color="primary" [attr.data-testId]="'alertDialog-confirm'" (click)="closeDialog()" mat-flat-button>
+    Schliessen
+  </button>
+</mat-dialog-actions>

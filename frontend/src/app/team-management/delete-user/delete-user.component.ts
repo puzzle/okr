@@ -16,8 +16,7 @@ import { AlertDialogComponent, AlertDialogData } from '../../shared/dialog/alert
 export class DeleteUserComponent implements OnInit {
   @Input({ required: true }) user!: User;
 
-  private isUserMemberOfTeams: boolean = false;
-  private isUserOwnerOfKeyResults: boolean = false;
+  private userHasKeyResults: boolean = false;
 
   constructor(
     private readonly userService: UserService,
@@ -26,29 +25,25 @@ export class DeleteUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.memberOfTeams(this.user.id);
-    this.ownerOfKeyResults(this.user.id);
-  }
-
-  memberOfTeams(userId: number) {
-    this.isUserMemberOfTeams = this.user.userTeamList != null && this.user.userTeamList.length > 0;
-    console.log('### member_of_teams', userId, this.isUserMemberOfTeams);
-  }
-
-  ownerOfKeyResults(userId: number) {
-    this.isUserMemberOfTeams = this.user.userTeamList.length > 0;
     this.userService.isUserOwnerOfKeyResults(this.user).subscribe((booleanAsObject) => {
-      this.isUserOwnerOfKeyResults = !!booleanAsObject;
-      console.log('### key_result', userId, !!booleanAsObject);
+      this.userHasKeyResults = !!booleanAsObject;
     });
   }
 
+  isUserMemberOfTeams(): boolean {
+    return this.user.userTeamList != null && this.user.userTeamList.length > 0;
+  }
+
+  isUserOwnerOfKeyResults(): boolean {
+    return this.userHasKeyResults;
+  }
+
   deleteUser() {
-    if (this.isUserMemberOfTeams) {
+    if (this.isUserMemberOfTeams()) {
       this.showUnableToDeleteDialog(`${this.userInfo()} ist in Team(s) und kann nicht gelöscht werden!`);
       return;
     }
-    if (this.isUserOwnerOfKeyResults) {
+    if (this.isUserOwnerOfKeyResults()) {
       this.showUnableToDeleteDialog(`${this.userInfo()} ist Owner von KeyResults und kann nicht gelöscht werden!`);
       return;
     }

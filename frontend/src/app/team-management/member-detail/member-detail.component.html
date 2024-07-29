@@ -53,7 +53,9 @@
         [currentTeams$]="currentUserTeams$.asObservable()"
         (addUserTeam)="addTeamMembership($event, userRef)"
       ></app-add-user-team>
-      <app-delete-user [user]="userRef"></app-delete-user>
+      <div *ngIf="hasOkrUserRoleOkrChampion()">
+        <app-delete-user [user]="userRef"></app-delete-user>
+      </div>
     </div>
   </div>
 </div>

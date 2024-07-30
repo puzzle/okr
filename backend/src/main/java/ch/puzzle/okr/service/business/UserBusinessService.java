@@ -71,7 +71,8 @@ public class UserBusinessService {
     }
 
     @Transactional
-    public void deleteUser(long id) {
+    public void deleteEntityById(long id) {
+        validationService.validateOnDelete(id);
         userPersistenceService.deleteById(id);
     }
 }

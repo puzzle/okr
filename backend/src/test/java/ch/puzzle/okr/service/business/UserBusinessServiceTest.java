@@ -38,11 +38,19 @@ class UserBusinessServiceTest {
 
     @BeforeEach
     void setUp() {
-        User userAlice = User.Builder.builder().withId(2L).withFirstname("Alice").withLastname("Wunderland")
-                .withEmail("wunderland@puzzle.ch").build();
+        User userAlice = User.Builder.builder() //
+                .withId(2L) //
+                .withFirstname("Alice") //
+                .withLastname("Wunderland") //
+                .withEmail("wunderland@puzzle.ch") //
+                .build();
 
-        User userBob = User.Builder.builder().withId(9L).withFirstname("Bob").withLastname("Baumeister")
-                .withEmail("baumeister@puzzle.ch").build();
+        User userBob = User.Builder.builder() //
+                .withId(9L) //
+                .withFirstname("Bob") //
+                .withLastname("Baumeister") //
+                .withEmail("baumeister@puzzle.ch") //
+                .build();
 
         userList = Arrays.asList(userAlice, userBob);
     }
@@ -161,5 +169,12 @@ class UserBusinessServiceTest {
 
         verify(userPersistenceService, times(1)).save(user);
         assertFalse(user.isOkrChampion());
+    }
+
+    @Test
+    void shouldDeleteUser() {
+        userBusinessService.deleteEntityById(23L);
+
+        verify(userPersistenceService, times(1)).deleteById(23L);
     }
 }

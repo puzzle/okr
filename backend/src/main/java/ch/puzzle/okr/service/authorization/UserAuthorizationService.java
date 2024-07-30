@@ -68,7 +68,7 @@ public class UserAuthorizationService {
 
     public void deleteEntityById(long id) {
         // TODO check Role
-        userBusinessService.deleteUser(id);
+        userBusinessService.deleteEntityById(id);
     }
 
 }

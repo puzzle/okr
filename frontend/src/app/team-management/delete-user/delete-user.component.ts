@@ -40,19 +40,42 @@ export class DeleteUserComponent implements OnInit {
 
   deleteUser() {
     if (this.isUserMemberOfTeams()) {
-      this.showUnableToDeleteDialog(`${this.userInfo()} ist in Team(s) und kann nicht gelöscht werden!`);
+      this.showUnableToDeleteDialog(this.dialogTitle(), this.dialogMessageUserIsInTeams());
       return;
     }
     if (this.isUserOwnerOfKeyResults()) {
-      this.showUnableToDeleteDialog(`${this.userInfo()} ist Owner von KeyResults und kann nicht gelöscht werden!`);
+      this.showUnableToDeleteDialog(this.dialogTitle(), this.dialogMessageUserHasKeyResults());
       return;
     }
 
     this.showDeleteUserDialog(this.user);
   }
 
+  private dialogTitle() {
+    return `${this.userInfo()} kann nicht gelöscht werden`;
+  }
+
   private userInfo() {
     return getFullNameFromUser(this.user);
+  }
+
+  private dialogMessageUserIsInTeams() {
+    const userTeamsString = this.user.userTeamList.map((t) => `"${t.team.name}"`).join(', ');
+
+    return `${this.userInfo()} ist in folgenden Teams und kann daher nicht gelöscht werden: ${userTeamsString}`;
+  }
+
+  private dialogMessageUserHasKeyResults() {
+    return `${this.userInfo()} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: TODO`;
+  }
+
+  showUnableToDeleteDialog(title: string, text: string) {
+    const dialogConfig: MatDialogConfig<AlertDialogData> = OKR_DIALOG_CONFIG;
+    dialogConfig.data = {
+      dialogTitle: title,
+      dialogText: text,
+    };
+    this.dialog.open(AlertDialogComponent, dialogConfig);
   }
 
   showDeleteUserDialog(user: User) {
@@ -71,13 +94,5 @@ export class DeleteUserComponent implements OnInit {
         this.userService.reloadUsers();
         this.location.back();
       });
-  }
-
-  showUnableToDeleteDialog(title: string) {
-    const dialogConfig: MatDialogConfig<AlertDialogData> = OKR_DIALOG_CONFIG;
-    dialogConfig.data = {
-      dialogTitle: title,
-    };
-    this.dialog.open(AlertDialogComponent, dialogConfig);
   }
 }

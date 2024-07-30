@@ -66,7 +66,7 @@ public class UserAuthorizationService {
         return keyResultBusinessService.isUserOwnerOfKeyResults(id);
     }
 
-    public void deleteUser(long id) {
+    public void deleteEntityById(long id) {
         // TODO check Role
         userBusinessService.deleteUser(id);
     }

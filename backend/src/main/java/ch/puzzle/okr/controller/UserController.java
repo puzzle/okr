@@ -97,7 +97,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Did not find the User with requested id") })
     @DeleteMapping(path = "/{id}")
     public void deleteUserById(@PathVariable long id) {
-        this.userAuthorizationService.deleteUser(id);
+        this.userAuthorizationService.deleteEntityById(id);
     }
 
 }

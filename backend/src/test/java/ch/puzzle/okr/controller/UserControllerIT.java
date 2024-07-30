@@ -102,7 +102,7 @@ class UserControllerIT {
     @DisplayName("should throw exception when user with id cant be found while deleting")
     @Test
     void throwExceptionWhenUserWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(userAuthorizationService)
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")).when(userAuthorizationService)
                 .deleteEntityById(1000);
 
         mvc.perform(delete("/api/v1/users/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))

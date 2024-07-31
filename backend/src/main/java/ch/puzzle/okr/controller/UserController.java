@@ -2,6 +2,8 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
+import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
+import ch.puzzle.okr.dto.userOkrData.UserKeyResultDataDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UserAuthorizationService;
@@ -79,6 +81,7 @@ public class UserController {
         return userMapper.toDtos(createdUsers);
     }
 
+    // TODO remove endpoint (no longer used in frontend)
     @Operation(summary = "Check User has KeyResults", description = "Check if User is the owner of KeyResults.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "true if user is owner of KeyResults", content = {
@@ -89,6 +92,14 @@ public class UserController {
             @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id) {
 
         return this.userAuthorizationService.isUserOwnerOfKeyResults(id);
+    }
+
+    @Operation(summary = "Get User OKR Data", description = "Get User OKR Data")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned User OKR Data.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserOkrDataDto.class)) }), })
+    @GetMapping(path = "/{id}/userokrdata")
+    public UserOkrDataDto getUserOkrData(@PathVariable long id) {
+        return this.userAuthorizationService.getUserOkrData(id);
     }
 
     @Operation(summary = "Delete User by Id", description = "Delete User by Id")

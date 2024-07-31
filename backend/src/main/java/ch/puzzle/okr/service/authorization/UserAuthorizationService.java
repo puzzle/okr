@@ -1,9 +1,12 @@
 package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
+import ch.puzzle.okr.mapper.UserOkrDataMapper;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import org.springframework.stereotype.Service;
@@ -71,4 +74,9 @@ public class UserAuthorizationService {
         userBusinessService.deleteEntityById(id);
     }
 
+    public UserOkrDataDto getUserOkrData(long id) {
+        // TODO check Role
+        List<KeyResult> keyResultsOwnedByUser = keyResultBusinessService.getKeyResultsOwnedByUser(id);
+        return new UserOkrDataMapper().toDto(keyResultsOwnedByUser);
+    }
 }

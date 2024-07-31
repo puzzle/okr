@@ -8,6 +8,18 @@
       <span class="dialog-text">{{ this.data.dialogText }}</span>
     </div>
   }
+
+  @if (data.dialogDetails) {
+    <ul>
+      @for (item of this.data.dialogDetails; track $index) {
+        <div class="mb-3">
+          <li>
+            <span class="dialog-text">{{ item }}</span>
+          </li>
+        </div>
+      }
+    </ul>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions class="m-0">

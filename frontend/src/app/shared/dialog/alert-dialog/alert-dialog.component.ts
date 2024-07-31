@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export type AlertDialogData = {
   dialogTitle: string;
   dialogText?: string;
+  dialogDetails?: string[];
 };
 
 @Component({

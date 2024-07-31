@@ -1,4 +1,4 @@
-import { fakeAsync, getTestBed, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from './user.service';
 import { testUser, users } from '../shared/testData';
@@ -6,15 +6,12 @@ import { testUser, users } from '../shared/testData';
 describe('UserService', () => {
   let service: UserService;
   let httpMock: HttpTestingController;
-  const URL = 'api/v1/users';
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(UserService);
-    const injector = getTestBed();
-    httpMock = injector.get(HttpTestingController);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
@@ -29,7 +26,7 @@ describe('UserService', () => {
     const spy = jest.spyOn(service, 'reloadUsers');
     service.getUsers().subscribe(() => {
       expect(spy).toBeCalledTimes(1);
-      httpMock.expectOne(URL);
+      httpMock.expectOne('api/v1/users');
       service.getUsers().subscribe((users) => {
         expect(spy).toBeCalledTimes(1);
         expect(users).toStrictEqual([]);
@@ -74,5 +71,25 @@ describe('UserService', () => {
 
     const req2 = httpMock.expectOne(`api/v1/users`);
     req2.flush({});
+  }));
+
+  it('getUserOkrData() should call userokrdata', fakeAsync(() => {
+    service.getUserOkrData(testUser).subscribe();
+    const req = httpMock.expectOne(`api/v1/users/${testUser.id}/userokrdata`);
+    expect(req.request.method).toBe('GET');
+    req.flush(testUser);
+  }));
+
+  it('deleteUser() should call deleteUser and reloadUsers', fakeAsync(() => {
+    service.deleteUser(testUser).subscribe();
+    const reqDeleteUser = httpMock.expectOne(`api/v1/users/${testUser.id}`);
+    expect(reqDeleteUser.request.method).toBe('DELETE');
+    reqDeleteUser.flush(testUser);
+
+    tick();
+
+    const reqReloadUsers = httpMock.expectOne(`api/v1/users`);
+    expect(reqReloadUsers.request.method).toBe('GET');
+    reqReloadUsers.flush({});
   }));
 });

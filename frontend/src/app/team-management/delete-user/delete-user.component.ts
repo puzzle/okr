@@ -26,7 +26,7 @@ export class DeleteUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.userOkrData(this.user).subscribe((okrData) => {
+    this.userService.getUserOkrData(this.user).subscribe((okrData) => {
       this.userOkrData = okrData;
     });
   }

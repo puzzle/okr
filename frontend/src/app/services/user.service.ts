@@ -64,7 +64,7 @@ export class UserService {
     return this.httpClient.post<User>(`${this.API_URL}/createall`, userList).pipe(tap(() => this.reloadUsers()));
   }
 
-  userOkrData(user: User): Observable<UserOkrData> {
+  getUserOkrData(user: User): Observable<UserOkrData> {
     return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`, {});
   }
 

@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../shared/types/model/User';
 import { NewUser } from '../shared/types/model/NewUser';
+import { UserOkrData } from '../shared/types/model/UserOkrData';
 
 @Injectable({
   providedIn: 'root',
@@ -63,8 +64,8 @@ export class UserService {
     return this.httpClient.post<User>(`${this.API_URL}/createall`, userList).pipe(tap(() => this.reloadUsers()));
   }
 
-  isUserOwnerOfKeyResults(user: User): Observable<Object> {
-    return this.httpClient.get(`${this.API_URL}/${user.id}/iskeyresultowner`, {});
+  userOkrData(user: User): Observable<UserOkrData> {
+    return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`, {});
   }
 
   deleteUser(user: User) {

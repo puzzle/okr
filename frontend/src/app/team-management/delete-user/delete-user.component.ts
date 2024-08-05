@@ -17,7 +17,7 @@ import { UserOkrData } from '../../shared/types/model/UserOkrData';
 export class DeleteUserComponent implements OnInit {
   @Input({ required: true }) user!: User;
 
-  private userOkrData: UserOkrData | undefined;
+  userOkrData: UserOkrData | undefined;
 
   constructor(
     private readonly userService: UserService,
@@ -26,9 +26,7 @@ export class DeleteUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.getUserOkrData(this.user).subscribe((okrData) => {
-      this.userOkrData = okrData;
-    });
+    this.userService.getUserOkrData(this.user).subscribe((okrData) => (this.userOkrData = okrData));
   }
 
   isUserMemberOfTeams(): boolean {

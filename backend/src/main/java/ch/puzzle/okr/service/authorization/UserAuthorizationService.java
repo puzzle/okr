@@ -65,7 +65,14 @@ public class UserAuthorizationService {
         return userBusinessService.createUsers(userList);
     }
 
+    public boolean isUserMemberOfTeams(long id) {
+        // TODO check Role
+        List<UserTeam> userTeamList = userBusinessService.getUserById(id).getUserTeamList();
+        return userTeamList != null && !userTeamList.isEmpty();
+    }
+
     public boolean isUserOwnerOfKeyResults(long id) {
+        // TODO check Role
         return keyResultBusinessService.isUserOwnerOfKeyResults(id);
     }
 

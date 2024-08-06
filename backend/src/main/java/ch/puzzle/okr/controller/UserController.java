@@ -3,7 +3,6 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
-import ch.puzzle.okr.dto.userOkrData.UserKeyResultDataDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UserAuthorizationService;
@@ -92,6 +91,18 @@ public class UserController {
             @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id) {
 
         return this.userAuthorizationService.isUserOwnerOfKeyResults(id);
+    }
+
+    @Operation(summary = "Check if User is member of Teams", description = "Check if User is member of any Team.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "true if user is member of a Team", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)) }), })
+
+    @GetMapping(path = "/{id}/ismemberofteams")
+    public Boolean isUserMemberOfTeams(
+            @Parameter(description = "The ID of the user.", required = true) @PathVariable long id) {
+
+        return this.userAuthorizationService.isUserMemberOfTeams(id);
     }
 
     @Operation(summary = "Get User OKR Data", description = "Get User OKR Data")

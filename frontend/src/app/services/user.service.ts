@@ -64,6 +64,10 @@ export class UserService {
     return this.httpClient.post<User>(`${this.API_URL}/createall`, userList).pipe(tap(() => this.reloadUsers()));
   }
 
+  isUserMemberOfTeams(user: User): Observable<Boolean> {
+    return this.httpClient.get<Boolean>(`${this.API_URL}/${user.id}/ismemberofteams`, {});
+  }
+
   getUserOkrData(user: User): Observable<UserOkrData> {
     return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`, {});
   }

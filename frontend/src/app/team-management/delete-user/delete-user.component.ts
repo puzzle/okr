@@ -18,6 +18,7 @@ export class DeleteUserComponent implements OnInit {
   @Input({ required: true }) user!: User;
 
   userOkrData: UserOkrData | undefined;
+  userMemberOfTeams: Boolean = true;
 
   constructor(
     private readonly userService: UserService,
@@ -27,10 +28,13 @@ export class DeleteUserComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUserOkrData(this.user).subscribe((okrData) => (this.userOkrData = okrData));
+    this.userService
+      .isUserMemberOfTeams(this.user)
+      .subscribe((memberOfTeams) => (this.userMemberOfTeams = memberOfTeams));
   }
 
   isUserMemberOfTeams(): boolean {
-    return this.user.userTeamList != null && this.user.userTeamList.length > 0;
+    return this.userMemberOfTeams.valueOf();
   }
 
   isUserOwnerOfKeyResults(): boolean {

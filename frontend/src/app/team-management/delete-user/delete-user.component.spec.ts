@@ -71,13 +71,13 @@ describe('DeleteUserComponent', () => {
     expect(component.isUserMemberOfTeams()).toBe(false);
   });
 
-  it('should return false userOkrData is undefined', () => {
+  it('should return true userOkrData is undefined', () => {
     component.user = testUserWithoutTeam;
     component.userOkrData = undefined;
-    expect(component.isUserOwnerOfKeyResults()).toBe(false);
+    expect(component.isUserOwnerOfKeyResults()).toBe(true);
   });
 
-  it('should return true if userOkrData has no keyResults', () => {
+  it('should return false if userOkrData has no keyResults', () => {
     component.user = testUserWithoutTeam;
     component.userOkrData = {
       keyResults: [],

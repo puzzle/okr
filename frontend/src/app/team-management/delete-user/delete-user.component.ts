@@ -5,9 +5,10 @@ import { Location } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
-import { filter, mergeMap } from 'rxjs';
+import { filter, mergeMap, Observable } from 'rxjs';
 import { AlertDialogComponent, AlertDialogData } from '../../shared/dialog/alert-dialog/alert-dialog.component';
 import { UserOkrData } from '../../shared/types/model/UserOkrData';
+import { UserTeam } from '../../shared/types/model/UserTeam';
 
 @Component({
   selector: 'app-delete-user',
@@ -16,9 +17,10 @@ import { UserOkrData } from '../../shared/types/model/UserOkrData';
 })
 export class DeleteUserComponent implements OnInit {
   @Input({ required: true }) user!: User;
+  @Input({ required: true }) currentTeams$!: Observable<UserTeam[]>;
 
+  userIsMemberOfTeams: Boolean | undefined;
   userOkrData: UserOkrData | undefined;
-  userMemberOfTeams: Boolean = true;
 
   constructor(
     private readonly userService: UserService,
@@ -27,21 +29,27 @@ export class DeleteUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.getUserOkrData(this.user).subscribe((okrData) => (this.userOkrData = okrData));
+    this.currentTeams$.subscribe((team) => {
+      this.updateUserMemberTeamsStatus();
+    });
+
+    this.userService //
+      .getUserOkrData(this.user) //
+      .subscribe((okrData) => (this.userOkrData = okrData));
+  }
+
+  updateUserMemberTeamsStatus() {
     this.userService
-      .isUserMemberOfTeams(this.user)
-      .subscribe((memberOfTeams) => (this.userMemberOfTeams = memberOfTeams));
+      .isUserMemberOfTeams(this.user) //
+      .subscribe((isMemberOfTeams) => (this.userIsMemberOfTeams = isMemberOfTeams));
   }
 
   isUserMemberOfTeams(): boolean {
-    return this.userMemberOfTeams.valueOf();
+    return this.userIsMemberOfTeams !== undefined ? this.userIsMemberOfTeams.valueOf() : true;
   }
 
   isUserOwnerOfKeyResults(): boolean {
-    if (this.userOkrData) {
-      return this.userOkrData.keyResults.length > 0;
-    }
-    return false;
+    return this.userOkrData !== undefined ? this.userOkrData.keyResults.length > 0 : true;
   }
 
   deleteUser() {

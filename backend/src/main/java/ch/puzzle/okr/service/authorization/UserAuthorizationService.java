@@ -66,23 +66,22 @@ public class UserAuthorizationService {
     }
 
     public boolean isUserMemberOfTeams(long id) {
-        // TODO check Role
         List<UserTeam> userTeamList = userBusinessService.getUserById(id).getUserTeamList();
         return userTeamList != null && !userTeamList.isEmpty();
     }
 
     public boolean isUserOwnerOfKeyResults(long id) {
-        // TODO check Role
         return keyResultBusinessService.isUserOwnerOfKeyResults(id);
     }
 
     public void deleteEntityById(long id) {
-        // TODO check Role
+        AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, USER));
+
         userBusinessService.deleteEntityById(id);
     }
 
     public UserOkrDataDto getUserOkrData(long id) {
-        // TODO check Role
         List<KeyResult> keyResultsOwnedByUser = keyResultBusinessService.getKeyResultsOwnedByUser(id);
         return new UserOkrDataMapper().toDto(keyResultsOwnedByUser);
     }

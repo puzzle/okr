@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
-import { filter, mergeMap, Observable } from 'rxjs';
+import { mergeMap, Observable } from 'rxjs';
 import { AlertDialogComponent, AlertDialogData } from '../../shared/dialog/alert-dialog/alert-dialog.component';
 import { UserOkrData } from '../../shared/types/model/UserOkrData';
 import { UserTeam } from '../../shared/types/model/UserTeam';
@@ -33,15 +33,19 @@ export class DeleteUserComponent implements OnInit {
       this.updateUserMemberTeamsStatus();
     });
 
-    this.userService //
-      .getUserOkrData(this.user) //
-      .subscribe((okrData) => (this.userOkrData = okrData));
+    this.loadUserOkrData();
   }
 
   updateUserMemberTeamsStatus() {
     this.userService
       .isUserMemberOfTeams(this.user) //
       .subscribe((isMemberOfTeams) => (this.userIsMemberOfTeams = isMemberOfTeams));
+  }
+
+  loadUserOkrData() {
+    this.userService //
+      .getUserOkrData(this.user) //
+      .subscribe((okrData) => (this.userOkrData = okrData));
   }
 
   isUserMemberOfTeams(): boolean {
@@ -120,10 +124,7 @@ export class DeleteUserComponent implements OnInit {
     this.dialog
       .open(CancelDialogComponent, dialogConfig)
       .afterClosed()
-      .pipe(
-        filter((confirm) => confirm),
-        mergeMap(() => this.userService.deleteUser(user)),
-      )
+      .pipe(mergeMap(() => this.userService.deleteUser(user)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.location.back();

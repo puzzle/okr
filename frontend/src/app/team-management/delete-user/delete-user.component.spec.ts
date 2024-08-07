@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '../../services/user.service';
 import { DeleteUserComponent } from './delete-user.component';
 import { of } from 'rxjs';
@@ -39,7 +39,7 @@ describe('DeleteUserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load UserOkrData and MemberTeamStatus (case is member of teams + with KeyResults)', fakeAsync(() => {
+  it('should load UserOkrData and MemberTeamStatus (case is member of teams + with KeyResults)', () => {
     const userOkrData: UserOkrData = {
       keyResults: [
         {
@@ -56,13 +56,12 @@ describe('DeleteUserComponent', () => {
     userServiceMock.isUserMemberOfTeams.mockReturnValue(of(true));
 
     component.ngOnInit();
-    tick();
 
     expect(component.userOkrData).toBe(userOkrData);
     expect(component.userIsMemberOfTeams).toBe(true);
-  }));
+  });
 
-  it('should load UserOkrData and MemberTeamStatus (case not member of teams + no KeyResults)', fakeAsync(() => {
+  it('should load UserOkrData and MemberTeamStatus (case not member of teams + no KeyResults)', () => {
     const userOkrDataWithoutKeyResults: UserOkrData = {
       keyResults: [],
     };
@@ -72,11 +71,10 @@ describe('DeleteUserComponent', () => {
     userServiceMock.isUserMemberOfTeams.mockReturnValue(of(false));
 
     component.ngOnInit();
-    tick();
 
     expect(component.userOkrData).toBe(userOkrDataWithoutKeyResults);
     expect(component.userIsMemberOfTeams).toBe(false);
-  }));
+  });
 
   it('should return true if userIsMemberOfTeams is undefined', () => {
     component.userIsMemberOfTeams = undefined;

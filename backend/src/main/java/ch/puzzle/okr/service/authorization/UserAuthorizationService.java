@@ -2,8 +2,8 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
-import ch.puzzle.okr.mapper.UserOkrDataMapper;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import ch.puzzle.okr.mapper.UserOkrDataMapper;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -68,10 +68,6 @@ public class UserAuthorizationService {
     public boolean isUserMemberOfTeams(long id) {
         List<UserTeam> userTeamList = userBusinessService.getUserById(id).getUserTeamList();
         return userTeamList != null && !userTeamList.isEmpty();
-    }
-
-    public boolean isUserOwnerOfKeyResults(long id) {
-        return keyResultBusinessService.isUserOwnerOfKeyResults(id);
     }
 
     public void deleteEntityById(long id) {

@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -126,10 +125,6 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     private boolean isKeyResultTypeChangeable(Long id) {
         return !hasKeyResultAnyCheckIns(id);
-    }
-
-    public boolean isUserOwnerOfKeyResults(long id) {
-        return keyResultPersistenceService.isUserOwnerOfKeyResults(id);
     }
 
     public List<KeyResult> getKeyResultsOwnedByUser(long id) {

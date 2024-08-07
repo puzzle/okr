@@ -80,19 +80,6 @@ public class UserController {
         return userMapper.toDtos(createdUsers);
     }
 
-    // TODO remove endpoint (no longer used in frontend)
-    @Operation(summary = "Check User has KeyResults", description = "Check if User is the owner of KeyResults.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "true if user is owner of KeyResults", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)) }), })
-
-    @GetMapping(path = "/{id}/iskeyresultowner")
-    public Boolean isUserOwnerOfKeyResults(
-            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id) {
-
-        return this.userAuthorizationService.isUserOwnerOfKeyResults(id);
-    }
-
     @Operation(summary = "Check if User is member of Teams", description = "Check if User is member of any Team.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "true if user is member of a Team", content = {

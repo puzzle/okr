@@ -29,7 +29,7 @@ export class DeleteUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentTeams$.subscribe((team) => {
+    this.currentTeams$.subscribe(() => {
       this.updateUserMemberTeamsStatus();
     });
 
@@ -58,7 +58,11 @@ export class DeleteUserComponent implements OnInit {
 
   deleteUser() {
     if (this.isUserMemberOfTeams()) {
-      this.showUnableToDeleteDialog(this.dialogTitle(), this.dialogTextUserIsInTeams(), this.dialogDetailsUserTeams(8));
+      this.showUnableToDeleteDialog(
+        this.dialogTitle(), //
+        this.dialogTextUserIsInTeams(), //
+        this.dialogDetailsUserTeams(8),
+      );
       return;
     }
     if (this.isUserOwnerOfKeyResults()) {
@@ -90,8 +94,8 @@ export class DeleteUserComponent implements OnInit {
 
   private dialogDetailsUserTeams(showMaxTeams: number) {
     if (this.userOkrData) {
-      return this.user.userTeamList
-        .filter((elementAt, index) => index < showMaxTeams)
+      return this.user.userTeamList //
+        .filter((_, index) => index < showMaxTeams) //
         .map((userTeam) => userTeam.team.name);
     }
     return [];
@@ -100,7 +104,7 @@ export class DeleteUserComponent implements OnInit {
   private dialogDetailsUserKeyResults(showMaxKeyResults: number) {
     if (this.userOkrData) {
       return this.userOkrData.keyResults
-        .filter((elementAt, index) => index < showMaxKeyResults)
+        .filter((_, index) => index < showMaxKeyResults)
         .map((data) => data.keyResultName + ' (Objective: ' + data.objectiveName + ')');
     }
     return [];

@@ -38,11 +38,11 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
 
     @Override
     protected boolean isWriteable(KeyResult entity, AuthorizationUser authorizationUser) {
-        return getAuthorizationService().isWriteable(entity, authorizationUser);
+        return getAuthorizationService().hasRoleWriteForTeam(entity, authorizationUser);
     }
 
     public List<CheckIn> getAllCheckInsByKeyResult(Long keyResultId) {
-        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         getAuthorizationService().hasRoleReadByKeyResultId(keyResultId, authorizationUser);
         List<CheckIn> checkIns = getBusinessService().getAllCheckInsByKeyResult(keyResultId);
         setRoleCreateOrUpdateCheckIn(checkIns, authorizationUser);
@@ -56,7 +56,7 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
     }
 
     public KeyResultWithActionList updateEntities(Long id, KeyResult entity, List<Action> actionList) {
-        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
         KeyResultWithActionList updatedEntities = getBusinessService().updateEntities(id, entity, actionList);
         updatedEntities.keyResult().setWriteable(true);
@@ -70,7 +70,7 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
 
     private void setRoleCreateOrUpdateCheckIn(List<CheckIn> checkIns, AuthorizationUser authorizationUser) {
         if (!CollectionUtils.isEmpty(checkIns)) {
-            boolean isWriteable = getAuthorizationService().isWriteable(checkIns.get(0), authorizationUser);
+            boolean isWriteable = getAuthorizationService().hasRoleWriteForTeam(checkIns.get(0), authorizationUser);
             checkIns.forEach(c -> c.setWriteable(isWriteable));
         }
     }

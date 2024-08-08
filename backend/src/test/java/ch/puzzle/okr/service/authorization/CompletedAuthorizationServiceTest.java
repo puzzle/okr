@@ -35,7 +35,7 @@ class CompletedAuthorizationServiceTest {
 
     @Test
     void createCompletedShouldReturnObjectiveWhenAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(completedBusinessService.createCompleted(newCompleted)).thenReturn(newCompleted);
 
         Completed completed = completedAuthorizationService.createCompleted(newCompleted);
@@ -45,7 +45,7 @@ class CompletedAuthorizationServiceTest {
     @Test
     void createCompletedShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdateByObjectiveId(objectiveId, authorizationUser);
 
@@ -57,7 +57,7 @@ class CompletedAuthorizationServiceTest {
 
     @Test
     void deleteCompletedByObjectiveIdShouldPassThroughWhenAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         completedAuthorizationService.deleteCompletedByObjectiveId(13L);
     }
@@ -65,7 +65,7 @@ class CompletedAuthorizationServiceTest {
     @Test
     void deleteCompletedByObjectiveIdShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
 

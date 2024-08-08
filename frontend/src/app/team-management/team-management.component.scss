@@ -1,0 +1,11 @@
+#wrapper {
+  $margin-top: 2rem;
+
+  app-team-list {
+    padding-top: $margin-top;
+  }
+
+  app-member-list {
+    padding-top: $margin-top;
+  }
+}

@@ -1,0 +1,26 @@
+<div class="mt-4">
+  <app-search-team-management></app-search-team-management>
+</div>
+<div class="mt-4">
+  <div class="new-team">
+    <mat-form-field
+      class="bg-white header-form-field w-100"
+      ngDefaultControl
+      subscriptSizing="dynamic"
+      appearance="outline"
+    >
+      <mat-select
+        [attr.data-testId]="'select-team-dropdown'"
+        [(ngModel)]="selectedTeam"
+        (ngModelChange)="navigate($event)"
+      >
+        <mat-option [value]="ALL_TEAMS">Alle Teams ({{ teams.length }})</mat-option>
+        @for (team of teams; track team.id) {
+          <mat-option [attr.data-testId]="'select-team-dropdown-option'" [value]="team">
+            {{ team.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

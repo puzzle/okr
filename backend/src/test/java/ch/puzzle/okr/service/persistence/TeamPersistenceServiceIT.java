@@ -4,34 +4,33 @@ import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringIntegrationTest
 class TeamPersistenceServiceIT {
 
-    private static final Logger logger = LoggerFactory.getLogger(TeamPersistenceServiceIT.class);
     private static final String NEW_TEAM = "New Team";
     private Team createdTeam;
     @Autowired
     private TeamPersistenceService teamPersistenceService;
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
 
     @AfterEach
     void tearDown() {
@@ -45,6 +44,7 @@ class TeamPersistenceServiceIT {
         } finally {
             createdTeam = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test
@@ -133,31 +133,11 @@ class TeamPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @ParameterizedTest
-    @MethodSource("findTeamIdsByOrganisationNamesArguments")
-    void findTeamIdsByOrganisationNamesShouldReturnFirstLevelTeams(List<String> organisationNames,
-            List<Long> expectedIds, String useCase) {
-        logger.info(useCase);
-        List<Long> teamIds = teamPersistenceService.findTeamIdsByOrganisationNames(organisationNames);
-
-        assertThat(expectedIds).hasSameElementsAs(teamIds);
-    }
-
     @Test
     void shouldFindTeamsByName() {
         Team team = Team.Builder.builder().withName(NEW_TEAM).build();
         createdTeam = teamPersistenceService.save(team);
         List<Team> teams = teamPersistenceService.findTeamsByName(NEW_TEAM);
         assertThat(teams).contains(createdTeam);
-    }
-
-    private static Stream<Arguments> findTeamIdsByOrganisationNamesArguments() {
-        return Stream.of(arguments(List.of("org_gl"), List.of(5L), "get 1st level team"), //
-                arguments(List.of("org_bl"), List.of(6L, 8L), "get 2nd level teams"), //
-                arguments(List.of("org_mobility"), List.of(6L), "get teams belong to organisation mobility"), //
-                arguments(List.of("org_inactive"), List.of(4L, 8L), "get teams belong to inactive organisation name"), //
-                arguments(List.of("org_azubi"), List.of(), "get empty team list for organisation azubi"), //
-                arguments(List.of("org_unknown"), List.of(), "get teams belong to unknown organisation name") //
-        );
     }
 }

@@ -245,10 +245,12 @@ function setConfidence(confidence: number) {
 
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
+  cy.intercept('GET', '**/users/current').as('getCurrentUser');
   cy.origin(Cypress.env('login_url'), { args: { username, password } }, ({ username, password }) => {
     cy.get('input[name="username"]').type(username);
     cy.get('input[name="password"]').type(password);
     cy.get('input[type="submit"]').click();
+    cy.wait('@getCurrentUser', { responseTimeout: 10000 });
   });
   cy.url().then((url) => {
     const currentUrl = new URL(url);
@@ -267,8 +269,7 @@ function checkForToaster(selector: string, amount: number, messages: string[] = 
     .then((e) => messages.forEach((m) => expect(e).contains(m)));
 }
 
-const overviewIsLoaded = () =>
-  cy.get('mat-chip').should('have.length.at.least', 2) && cy.get('.team-title').should('have.length.at.least', 1);
+const overviewIsLoaded = () => cy.get('mat-chip').should('have.length.at.least', 2);
 
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })

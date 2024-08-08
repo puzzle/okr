@@ -1,0 +1,74 @@
+<section mat-dialog-title>
+  <app-dialog-header [dialogTitle]="getDialogTitle()"></app-dialog-header>
+</section>
+
+<mat-dialog-content>
+  <div class="dialog-content" tabindex="-1">
+    <div class="w-100 d-flex justify-content-between align-items-center">
+      <form class="example-form w-100">
+        <mat-form-field
+          class="w-100 bg-white header-form-field"
+          ngDefaultControl
+          subscriptSizing="dynamic"
+          appearance="outline"
+        >
+          <input
+            type="text"
+            placeholder="Nach Name oder E-Mail suchen"
+            aria-label="Nach Name oder E-Mail suchen"
+            matInput
+            [formControl]="search"
+            [matAutocomplete]="auto"
+            [attr.data-testId]="'search-member-to-add'"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selectUser($event.option.value)"
+            [displayWith]="getDisplayValue"
+          >
+            <mat-option *ngFor="let user of usersForSelection$ | async" [value]="user">
+              {{ getDisplayValue(user) }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="w-100" *ngIf="dataSource">
+      <table mat-table [dataSource]="dataSource" class="okr-table" id="all-member-table">
+        <ng-container matColumnDef="name">
+          <td mat-cell *matCellDef="let element">{{ getDisplayValue(element) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex">
+              <app-puzzle-icon-button
+                (click)="remove(element)"
+                icon="delete-icon.svg"
+                alt="Remove User Icon"
+              ></app-puzzle-icon-button>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
+    <div class="d-flex p-0">
+      <button
+        [attr.data-testId]="'save'"
+        [disabled]="!(selectedUsers$ | async)?.length"
+        color="primary"
+        mat-flat-button
+        type="submit"
+        (click)="addUsersToTeam()"
+      >
+        Hinzufügen
+      </button>
+      <button color="primary" mat-button mat-dialog-close class="ms-2">Abbrechen</button>
+    </div>
+  </div>
+</mat-dialog-actions>

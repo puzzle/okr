@@ -27,9 +27,9 @@ public class KeyResultMapper {
 
     public KeyResultDto toDto(KeyResult keyResult, List<Action> actionList) {
         if (keyResult instanceof KeyResultMetric keyResultMetric) {
-            return keyResultMetricMapper.toKeyResultMetricDto(keyResultMetric, actionList);
+            return keyResultMetricMapper.toDto(keyResultMetric, actionList);
         } else if (keyResult instanceof KeyResultOrdinal keyResultOrdinal) {
-            return keyResultOrdinalMapper.toKeyResultOrdinalDto(keyResultOrdinal, actionList);
+            return keyResultOrdinalMapper.toDto(keyResultOrdinal, actionList);
         } else {
             throw new ResponseStatusException(BAD_REQUEST,
                     String.format("The KeyResult %s can't be converted to a metric or ordinal KeyResult", keyResult));

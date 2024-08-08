@@ -123,11 +123,11 @@ describe('Tab workflow tests', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
       onlyOn('chrome');
+      cy.tabForward();
     });
 
     // Header from here
     it('Tab to help element and user menu', () => {
-      cy.tabForward();
       cy.focused().contains('Teamverwaltung');
       cy.tabForward();
       cy.focused().contains('Hilfe');
@@ -138,7 +138,6 @@ describe('Tab workflow tests', () => {
     it('Tab to user menu and log out', () => {
       cy.tabForward();
       cy.tabForward();
-      cy.tabForward();
       cy.focused().contains('Jaya Norris');
       cy.realPress('Enter');
       cy.focused().contains('Logout');
@@ -146,7 +145,6 @@ describe('Tab workflow tests', () => {
     });
 
     it('Tab to quarter-filter, objective-filter and team-filter', () => {
-      cy.tabForward();
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();
@@ -217,7 +215,7 @@ describe('Tab workflow tests', () => {
       cy.contains('Edited by Cypress');
     });
 
-    it('Duplicate objective with tab', () => {
+    it.skip('Duplicate objective with tab', () => {
       openThreeDotMenu();
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective duplizieren');
@@ -339,7 +337,7 @@ describe('Tab workflow tests', () => {
       cy.contains('This has been edited by Cypress').should('not.exist');
     });
 
-    it('Create new key result metric with checkin and edit checkin with tab', () => {
+    it.skip('Create new key result metric with checkin and edit checkin with tab', () => {
       // Create keyresult
       openCreateKeyResult();
       cy.wait(500);

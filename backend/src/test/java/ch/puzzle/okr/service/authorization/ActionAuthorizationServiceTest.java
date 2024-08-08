@@ -55,7 +55,7 @@ class ActionAuthorizationServiceTest {
 
     @Test
     void createEntityShouldReturnCreatedActionWhenAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         action1.setWriteable(false);
         action2.setWriteable(false);
@@ -70,7 +70,7 @@ class ActionAuthorizationServiceTest {
     @Test
     void createEntityShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdate(actionList.get(0).getKeyResult(), authorizationUser);
 
@@ -82,7 +82,7 @@ class ActionAuthorizationServiceTest {
 
     @Test
     void updateEntitiesShouldUpdateActionWhenAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         actionAuthorizationService.updateEntities(actionList);
 
@@ -92,7 +92,7 @@ class ActionAuthorizationServiceTest {
     @Test
     void updateEntitiesShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdate(actionList.get(0).getKeyResult(), authorizationUser);
 
@@ -105,7 +105,7 @@ class ActionAuthorizationServiceTest {
     @Test
     void deleteEntityByIdShouldPassThroughWhenAuthorized() {
         Long id = 5L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         actionAuthorizationService.deleteActionByActionId(id);
 
@@ -116,7 +116,7 @@ class ActionAuthorizationServiceTest {
     void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
         Long id = 8L;
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleDeleteByActionId(id, authorizationUser);
 

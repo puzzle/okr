@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
-import { ConfigService } from '../config.service';
+import { ConfigService } from '../services/config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 
 import { Router } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { isMobileDevice } from '../shared/common';
+import { TeamManagementComponent } from '../team-management/team-management.component';
+import { RefreshDataService } from '../services/refresh-data.service';
 
 @Component({
   selector: 'app-application-top-bar',

@@ -14,7 +14,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { By } from '@angular/platform-browser';
 // @ts-ignore
 import * as errorData from '../../../../assets/errors/error-messages.json';
-import { ObjectiveComponent } from '../../../objective/objective.component';
+import { ObjectiveComponent } from '../../../components/objective/objective.component';
 import { MatOptionHarness } from '@angular/material/core/testing';
 
 describe('ExampleDialogComponent', () => {

@@ -10,7 +10,7 @@ BEGIN
               FROM information_schema.columns
               WHERE table_name='objective' and column_name='owner_id')
     THEN
-        ALTER TABLE "public"."objective" RENAME COLUMN "owner_id" TO "created_by_id";
+        ALTER TABLE "objective" RENAME COLUMN "owner_id" TO "created_by_id";
     END IF;
 END $$;
 

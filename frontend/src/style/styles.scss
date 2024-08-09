@@ -4,18 +4,40 @@
 @import "fonts/Roboto";
 @import "fonts/MaterialIcons";
 
-p {
-  margin: 0;
-  padding: 0;
-}
-
 html,
-body {
+body.okr {
   font-size: 100%;
   margin: 0;
   padding: 0;
   background-color: $overview-bg;
   font-family: Roboto, sans-serif;
+  --bs-body-font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: $pz-dark-blue;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .font-size-14 {
+    font-size: 0.875rem;
+  }
 }
 
 .linebreak {
@@ -99,15 +121,6 @@ input textarea {
   margin-top: $top-bar-height;
 }
 
-.spinner-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  @extend .mt-5;
-  @extend .display-6;
-}
-
 .cursor-pointer {
   cursor: pointer;
 }
@@ -130,6 +143,10 @@ input[type="text"] {
 
 .big-dialog-form-field {
   height: 4.375rem !important;
+  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
+}
+
+.dialog-form-field {
   padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
 }
 
@@ -189,22 +206,12 @@ input {
   }
 }
 
-.team-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
 .select-style .mat-mdc-select-value-text {
   margin-left: 0.5rem !important;
 }
 
 .dialog-detail-button {
   margin-left: -8px;
-}
-
-#objective-form-field .mdc-notched-outline__trailing {
-  border-bottom-right-radius: 0 !important;
-  border-top-right-radius: 0 !important;
 }
 
 mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
@@ -292,4 +299,74 @@ img.add-cross-button {
 
 .break-word {
   word-break: break-all;
+}
+
+#okrBanner {
+  position: fixed;
+  width: 100%;
+  height: min-content;
+  z-index: 100;
+  transition: 0.5s;
+  background-color: var(--okr-banner-background-color);
+}
+
+app-team-management-banner > #okrBanner {
+  position: relative;
+}
+
+table.okr-table {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  border: none;
+  box-shadow: none;
+  tr {
+    $table-height: 40px;
+    height: $table-height;
+
+    > td {
+      height: $table-height;
+      border: none;
+      background-color: $light-grey;
+    }
+    > th {
+      vertical-align: bottom;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border: none;
+      background-color: white;
+    }
+  }
+  tbody {
+    tr:hover {
+      box-shadow: 0 0 0 1px $dark-grey;
+    }
+  }
+}
+
+.search-form {
+  button {
+    border-radius: 0 4px 4px 0;
+    mat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(1.25);
+    }
+  }
+  .mdc-notched-outline__trailing {
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+}
+
+.mat-mdc-autocomplete-panel {
+  &.autocomplete-bigger {
+    max-height: 480px;
+  }
+}
+
+@import "custom_bootstrap";
+
+.spinner-container {
+  @extend .mt-5;
 }

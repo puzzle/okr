@@ -1,4 +1,3 @@
-import { TeamMin } from './types/model/TeamMin';
 import { State } from './types/enums/State';
 import { CheckInMin } from './types/model/CheckInMin';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
@@ -16,63 +15,45 @@ import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
-import { OrganisationState } from './types/enums/OrganisationState';
-import { Organisation } from './types/model/Organisation';
-import { Dashboard } from './types/model/Dashboard';
-
-export const organisationActive = {
-  id: 1,
-  version: 1,
-  orgName: 'org_bbt',
-  teams: [],
-  state: OrganisationState.ACTIVE,
-} as Organisation;
-
-export const organisationInActive = {
-  id: 1,
-  version: 1,
-  orgName: 'org_mobility',
-  teams: [],
-  state: OrganisationState.INACTIVE,
-} as Organisation;
 
 export const teamFormObject = {
   name: 'newTeamName',
-  organisations: [organisationActive],
 };
 
-export const teamMin1: TeamMin = {
+export const marketingTeamWriteable: Team = {
   id: 1,
   version: 2,
   name: 'Marketing Team',
-  writable: true,
-} as TeamMin;
+  writeable: true,
+};
 
-export const teamMin2: TeamMin = {
+export const marketingTeamNotWriteable: Team = {
   id: 1,
   version: 3,
   name: 'Marketing Team',
-  writable: false,
-} as TeamMin;
+  writeable: false,
+};
 
 export const team1: Team = {
   id: 1,
   version: 2,
-  name: 'Team2',
-  filterIsActive: true,
-} as Team;
+  name: 'Team1',
+  writeable: false,
+};
 
 export const team2: Team = {
   id: 2,
   version: 3,
   name: 'Team2',
-} as Team;
+  writeable: false,
+};
 
 export const team3: Team = {
   id: 3,
   version: 4,
   name: 'Team3',
-} as Team;
+  writeable: false,
+};
 
 export const teamList = [team1, team2, team3];
 
@@ -302,15 +283,15 @@ export const objectiveResponse4: any = {
 };
 
 export const overViewEntity1: OverviewEntity = {
-  team: teamMin1,
+  team: marketingTeamWriteable,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
-  writable: true,
+  writeable: true,
 };
 
 export const overViewEntity2: OverviewEntity = {
-  team: teamMin2,
+  team: marketingTeamNotWriteable,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
-  writable: true,
+  writeable: true,
 };
 
 export const overViewEntityResponse1: any = {
@@ -325,10 +306,7 @@ export const overViewEntityResponse2: any = {
   writable: false,
 };
 
-export const dashboard: Dashboard = {
-  overviews: [overViewEntityResponse1, overViewEntityResponse2],
-  adminAccess: true,
-};
+export const overviews: OverviewEntity[] = [overViewEntityResponse1, overViewEntityResponse2];
 
 export const quarter: Quarter = {
   id: 1,
@@ -404,22 +382,42 @@ export const testUser: User = {
   id: 1,
   firstname: 'Bob',
   lastname: 'Baumeister',
-  username: 'username',
+  isOkrChampion: false,
+  userTeamList: [
+    {
+      id: 1,
+      team: team1,
+      isTeamAdmin: false,
+    },
+  ],
+  email: 'bob.baumeister@puzzle.ch',
 };
 
 export const users: User[] = [
   testUser,
   {
     id: 2,
-    username: 'pacoegiman',
     firstname: 'Paco',
     lastname: 'Egiman',
+    isOkrChampion: true,
+    userTeamList: [],
+    email: 'peggimann@puzzle.ch',
   },
   {
     id: 3,
-    username: 'robinpapier',
     firstname: 'Robin',
     lastname: 'Papier',
+    isOkrChampion: false,
+    userTeamList: [],
+    email: 'robin.papier@puzzle.ch',
+  },
+  {
+    id: 4,
+    firstname: 'Key Result',
+    lastname: 'Owner',
+    isOkrChampion: false,
+    userTeamList: [],
+    email: 'keyresult.owner@puzzle.ch',
   },
 ];
 
@@ -431,7 +429,7 @@ export const keyResult: KeyResultOrdinal = {
   commitZone: 'Äpfel',
   targetZone: 'Äpfel und Birnen',
   stretchZone: 'Äpfel, Birnen, Bananen und Erdberen',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+  owner: users[3],
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -470,7 +468,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   commitZone: 'Grundriss steht',
   targetZone: 'Gebäude gebaut',
   stretchZone: 'Inneneinrichtung gestaltet',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+  owner: users[3],
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -509,7 +507,7 @@ export const keyResultWriteableFalse: KeyResultOrdinal = {
   commitZone: 'Not writeable',
   targetZone: 'Not writeable',
   stretchZone: 'Not writeable',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+  owner: users[3],
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -548,7 +546,7 @@ export const keyResultMetric: KeyResultMetric = {
   baseline: 30,
   stretchGoal: 100,
   unit: Unit.PERCENT,
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+  owner: users[3],
   keyResultType: 'metric',
   objective: {
     id: 302,
@@ -587,7 +585,7 @@ export const keyResultActions: KeyResultMetric = {
   baseline: 10,
   stretchGoal: 30,
   unit: Unit.PERCENT,
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+  owner: users[3],
   keyResultType: 'metric',
   objective: {
     id: 302,

@@ -1,7 +1,7 @@
 package ch.puzzle.okr.dto;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public record ClientConfigDto(String activeProfile, String issuer, String clientId, String favicon, String logo,
-        String title, HashMap<String, String> customStyles) {
+        String triangles, String backgroundLogo, String title, Map<String, String> customStyles) {
 }

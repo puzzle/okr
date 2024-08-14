@@ -2,11 +2,20 @@ package ch.puzzle.okr.util.quarter.generate.h2;
 
 import ch.puzzle.okr.util.quarter.generate.QuarterData;
 import ch.puzzle.okr.util.quarter.generate.Quarters;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Quarter functions for H2 database.</br>
+ * </br>
+ * This class is used for testing purposes only. Do NOT use this class in production mode.
+ */
+@Component
+@Profile("integration-test")
 public class QuarterFunction {
     public static final int CURRENT_QUARTER_DB_ID = 2;
     public static final int NEXT_QUARTER_DB_ID = 3;

@@ -47,8 +47,6 @@ values (2, CURRENT_QUARTER_LABEL(), CURRENT_QUARTER_START_DATE(), CURRENT_QUARTE
        (99, 'GJ ForTests', '2000-07-01', '2000-09-30'),
        (999, 'Backlog', null, null);
 
-select * from quarter;
-
 insert into team (id, version, name)
 values (4, 1, '/BBT'),
        (8, 1, 'we are cube.³'),

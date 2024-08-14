@@ -1,7 +1,15 @@
 package ch.puzzle.okr.util.quarter.generate;
 
+import org.springframework.context.annotation.Profile;
+
 import java.time.LocalDate;
 
+/**
+ * Quarter label for H2 database.</br>
+ * </br>
+ * This class is used for testing purposes only. Do NOT use this class in production mode.
+ */
+@Profile("integration-test")
 public class QuarterLabel {
     private final LocalDate date;
 

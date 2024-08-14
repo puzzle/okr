@@ -220,11 +220,11 @@ describe('OKR Objective e2e tests', () => {
           .contains('Objective bearbeiten')
           .click();
 
-        cy.fillOutObjective('Move to another quarter on edit', 'safe', 'GJ 22/23-Q4', '', false);
+        cy.fillOutObjective('Move to another quarter on edit', 'safe', '3', '', false);
 
         cy.get('Move to another quarter on edit').should('not.exist');
 
-        cy.visit('/?quarter=1');
+        cy.visit('/?quarter=3');
 
         cy.contains('Move to another quarter on edit');
       });

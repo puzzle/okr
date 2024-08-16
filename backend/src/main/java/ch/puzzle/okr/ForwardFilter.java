@@ -21,8 +21,11 @@ public class ForwardFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        SanitizeParametersRequestWrapper request = new SanitizeParametersRequestWrapper(
+                (HttpServletRequest) servletRequest);
         String path = request.getRequestURI();
+
+        logger.info(String.format("This is the URI '%s'", path));
 
         if (Arrays.stream(this.allowedRoutes).anyMatch(path::startsWith)) {
             logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",

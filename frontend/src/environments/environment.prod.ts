@@ -10,7 +10,7 @@ export const environment = {
     strictDiscoveryDocumentValidation: false,
     // redirectUri: 'http://localhost:8080/auth/keycloakopenid/callback',
     // redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/auth/keycloakopenid/callback${window.location.search}`,
-    redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}`,
+    redirectUri: window.location.origin + '/dashboard',
     scope: 'profile openid',
     clientId: 'pitc_okr_prod',
     responseType: 'code',

@@ -12,7 +12,6 @@ export const authGuard: CanActivateFn = (route, state) => {
       return false;
     }
     oauthService.setupAutomaticSilentRefresh();
-    location.hash = '';
     return true;
   });
 };

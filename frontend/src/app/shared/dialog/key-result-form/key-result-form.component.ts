@@ -8,8 +8,8 @@ import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } fr
 import { UserService } from '../../services/user.service';
 import { Action } from '../../types/model/Action';
 import { formInputCheck, hasFormFieldErrors } from '../../common';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { TranslateService } from '@ngx-translate/core';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-key-result-form',
@@ -31,7 +31,7 @@ export class KeyResultFormComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    private oauthService: OAuthService,
+    private oauthService: OidcSecurityService,
     private translate: TranslateService,
   ) {}
 
@@ -131,6 +131,7 @@ export class KeyResultFormComponent implements OnInit {
   updateFormValidity() {}
 
   getUserName() {
-    return this.oauthService.getIdentityClaims()['name'];
+    // return this.oauthService.getUserData()['name'];
+    return '';
   }
 }

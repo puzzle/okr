@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // @ts-ignore
 import * as de from '../assets/i18n/de.json';
@@ -16,9 +15,10 @@ import { of } from 'rxjs';
 import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { CommonModule } from '@angular/common';
+import { OpenIdConfiguration } from 'angular-auth-oidc-client';
 
 const oauthServiceMock = {
-  configure(environment: AuthConfig): void {},
+  configure(environment: OpenIdConfiguration): void {},
   initCodeFlow(): void {},
   setupAutomaticSilentRefresh(): void {},
   hasValidAccessToken(): boolean {
@@ -57,12 +57,12 @@ describe('AppComponent', () => {
         TranslateTestingModule.withTranslations({
           de: de,
         }),
-        OAuthModule.forRoot(),
+        // OAuthModule.forRoot(),
         MatSidenavModule,
         NoopAnimationsModule,
         CommonModule,
       ],
-      providers: [{ provide: OAuthService, useValue: oauthServiceMock }],
+      // providers: [{ provide: OAuthService, useValue: oauthServiceMock }],
       declarations: [AppComponent, OverviewComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

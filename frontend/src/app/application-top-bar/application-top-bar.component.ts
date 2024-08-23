@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -8,6 +7,7 @@ import { TeamManagementComponent } from '../shared/dialog/team-management/team-m
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { isMobileDevice } from '../shared/common';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -26,7 +26,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   constructor(
-    private oauthService: OAuthService,
+    private oauthService: OidcSecurityService,
     private configService: ConfigService,
     private dialog: MatDialog,
     private router: Router,
@@ -42,9 +42,9 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
       },
     });
 
-    if (this.oauthService.hasValidIdToken()) {
-      this.username.next(this.oauthService.getIdentityClaims()['name']);
-    }
+    // if (this.oauthService.isAuthenticated()) {
+    //   this.username.next(this.oauthService.getUserData()['name']);
+    // }
   }
 
   ngOnDestroy(): void {
@@ -52,10 +52,10 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
-    this.router.navigateByUrl(currentUrlTree).then(() => {
-      this.oauthService.logOut();
-    });
+    // const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
+    // this.router.navigateByUrl(currentUrlTree).then(() => {
+    this.oauthService.logoff();
+    // });
   }
 
   openTeamManagement() {

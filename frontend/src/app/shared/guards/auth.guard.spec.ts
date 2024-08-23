@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
 import { authGuard } from './auth.guard';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 const oAuthMock = {
   initCodeFlow: jest.fn(),
@@ -19,7 +19,7 @@ describe('authGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: OAuthService,
+          provide: OidcSecurityService,
           useValue: oAuthMock,
         },
       ],

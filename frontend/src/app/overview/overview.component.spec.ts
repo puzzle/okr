@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
@@ -11,7 +10,6 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { authGuard } from '../shared/guards/auth.guard';
 import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
 import { ApplicationTopBarComponent } from '../application-top-bar/application-top-bar.component';
-import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -65,10 +63,10 @@ describe('OverviewComponent', () => {
           provide: MatDialogRef,
           useValue: {},
         },
-        OAuthService,
-        UrlHelperService,
-        OAuthLogger,
-        DateTimeProvider,
+        // OAuthService,
+        // UrlHelperService,
+        // OAuthLogger,
+        // DateTimeProvider,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

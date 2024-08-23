@@ -4,8 +4,8 @@ services:
   spring:
     container_name: spring
     build:
-      context: ../..
-      dockerfile: docker/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
     environment:
@@ -20,11 +20,13 @@ services:
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: sa
       SPRING_FLYWAY_LOCATIONS: classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2
+    volumes:
+        - ../../../okr/backend/target:/app-root/backend
     depends_on:
-      maven:
+      build-maven:
         condition: service_completed_successfully
 
-  maven:
+  build-maven:
     container_name: maven
     image: maven:3.8.3-openjdk-17
     volumes:
@@ -33,10 +35,10 @@ services:
       - /etc/group:/etc/group:ro
     command: [ "/bin/bash", "-c", "cd /opt && mvn -B clean package --file pom.xml -P build-for-docker && chown -R 1000:1000 ./backend/target" ]
     depends_on:
-      angular:
+      build-angular:
         condition: service_completed_successfully
 
-  angular:
+  build-angular:
     container_name: angular
     image: node:20
     volumes:

@@ -24,19 +24,20 @@ public class ForwardFilter extends GenericFilterBean {
                 (HttpServletRequest) servletRequest);
         String path = request.getRequestURI();
 
-        logger.debug(String.format("This is the URI '%s'", path));
-        if (path.startsWith("/?state")) {
-            logger.debug("change path to /dashboard");
-
-            request.getRequestDispatcher("/dashboard");
+        // logger.debug(String.format("This is the URI '%s'", path));
+        // if (path.startsWith("/?state")) {
+        // logger.debug("change path to /dashboard");
+        //
+        // request.getRequestDispatcher("/dashboard");
+        // }
+        logger.info("This is the URI: " + path);
+        if (Arrays.stream(this.allowedRoutes).anyMatch(path::startsWith)) {
+            logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
+                    request.getRequestURI(), "/"));
+            request.getRequestDispatcher("/").forward(request, servletResponse);
+            return;
         }
 
-        // if (Arrays.stream(this.allowedRoutes).anyMatch(path::startsWith)) {
-        // logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
-        // request.getRequestURI(), "/"));
-        // request.getRequestDispatcher("/").forward(request, servletResponse);
-        // return;
-        // }
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(request, servletResponse);
     }

@@ -23,10 +23,10 @@ services:
     volumes:
         - ../../../okr/backend/target:/app-root/backend
     depends_on:
-      build-maven:
+      maven:
         condition: service_completed_successfully
 
-  build-maven:
+  maven:
     container_name: maven
     image: maven:3.8.3-openjdk-17
     volumes:
@@ -34,15 +34,12 @@ services:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     command: [ "/bin/bash", "-c", "cd /opt && mvn -B clean package --file pom.xml -P build-for-docker && chown -R 1000:1000 ./backend/target" ]
-    depends_on:
-      build-angular:
-        condition: service_completed_successfully
 
-  build-angular:
+  angular:
     container_name: angular
     image: node:20
     volumes:
       - ../../../okr:/opt
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm run build --ignore-scripts" ]
+    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm run watch:prod" ]

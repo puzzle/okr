@@ -11,7 +11,6 @@ export const environment = {
     decreaseExpirationBySec: 30,
     clearHashAfterLogin: true,
     issuer: '',
-    customQueryParams: { response_mode: 'query' },
     strictDiscoveryDocumentValidation: false,
     redirectUri: 'http://localhost:4200',
     scope: 'openid profile',

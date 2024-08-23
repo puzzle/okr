@@ -11,7 +11,7 @@ export const environment = {
     customQueryParams: { response_modes_supported: ['query'] },
     // redirectUri: 'http://localhost:8080/auth/keycloakopenid/callback',
     // redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/auth/keycloakopenid/callback${window.location.search}`,
-    redirectUri: window.location.origin + '/dashboard',
+    redirectUri: window.location.origin,
     scope: 'profile openid',
     clientId: 'pitc_okr_prod',
     responseType: 'code',

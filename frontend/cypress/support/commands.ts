@@ -253,7 +253,7 @@ function loginWithCredentials(username: string, password: string) {
   cy.url().then((url) => {
     const currentUrl = new URL(url);
     const baseURL = new URL(Cypress.config().baseUrl!);
-    expect(currentUrl.pathname).equal(baseURL.pathname);
+    expect(currentUrl.pathname).equal(baseURL.pathname + 'callback');
   });
 }
 

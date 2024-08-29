@@ -10,7 +10,7 @@ export const environment = {
   oauth: {
     issuer: 'http://localhost:8095/auth/realms/pitc',
     redirectUrl: 'http://localhost:4200/callback',
-    postLoginRoute: window.location.origin,
+    postLogoutRedirectUri: window.location.origin,
     renewTimeBeforeTokenExpiresInSeconds: 30,
     scope: 'openid profile offline_access',
     clientId: '',

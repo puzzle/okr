@@ -13,14 +13,7 @@ export class OauthInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    return merge(
-      of(this.oauthService.getAccessToken()).pipe(filter((token) => !!token)),
-      // this.oauthService..pipe(
-      //   filter((e) => e.type === 'token_received'),
-      //   timeout(500),
-      //   map((_) => this.oauthService.getAccessToken()),
-      // ),
-    ).pipe(
+    return this.oauthService.getAccessToken().pipe(
       take(1),
       mergeMap((token) => {
         if (token) {
@@ -30,7 +23,6 @@ export class OauthInterceptor implements HttpInterceptor {
         }
 
         return next.handle(req);
-        // .pipe(catchError((err) => this.errorHandler.handleError(err)));
       }),
     );
   }

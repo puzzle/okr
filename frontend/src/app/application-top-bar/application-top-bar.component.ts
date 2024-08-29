@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, map, of, ReplaySubject, Subscription, switchMap } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
-
-import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { isMobileDevice } from '../shared/common';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
@@ -16,7 +14,6 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
-  username: ReplaySubject<string> = new ReplaySubject();
   menuIsOpen = false;
 
   @Input()
@@ -29,7 +26,6 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
     private oauthService: OidcSecurityService,
     private configService: ConfigService,
     private dialog: MatDialog,
-    private router: Router,
     private refreshDataService: RefreshDataService,
   ) {}
 
@@ -41,10 +37,6 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
         }
       },
     });
-
-    // if (this.oauthService.isAuthenticated()) {
-    //   this.username.next(this.oauthService.getUserData()['name']);
-    // }
   }
 
   ngOnDestroy(): void {
@@ -52,10 +44,14 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    // const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
-    // this.router.navigateByUrl(currentUrlTree).then(() => {
-    this.oauthService.logoff();
-    // });
+    this.oauthService.logoffAndRevokeTokens().subscribe((result) => console.log(result));
+  }
+
+  username() {
+    return this.oauthService.getUserData().pipe(
+      map((user) => user?.name || 'No username available'),
+      switchMap((username) => (username ? of(username) : of('no username received'))),
+    );
   }
 
   openTeamManagement() {

@@ -38,6 +38,7 @@ services:
   angular:
     container_name: angular
     image: node:20
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ../../../okr:/opt
       - /etc/passwd:/etc/passwd:ro

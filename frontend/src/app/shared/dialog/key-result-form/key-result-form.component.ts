@@ -62,11 +62,12 @@ export class KeyResultFormComponent implements OnInit {
       ]);
 
       this.users$.subscribe((users) => {
-        const loggedInUser = this.getUserName();
-        users.forEach((user) => {
-          if (user.firstname + ' ' + user.lastname === loggedInUser) {
-            this.keyResultForm.controls['owner'].setValue(user);
-          }
+        this.getUserName().subscribe((userName) => {
+          users.forEach((user) => {
+            if (user.firstname + ' ' + user.lastname === userName) {
+              this.keyResultForm.controls['owner'].setValue(user);
+            }
+          });
         });
       });
     }
@@ -131,7 +132,6 @@ export class KeyResultFormComponent implements OnInit {
   updateFormValidity() {}
 
   getUserName() {
-    // return this.oauthService.getUserData()['name'];
-    return '';
+    return this.oauthService.getUserData().pipe(map((user) => user?.name || ''));
   }
 }

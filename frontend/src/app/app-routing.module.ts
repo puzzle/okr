@@ -3,7 +3,6 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angula
 import { OverviewComponent } from './overview/overview.component';
 import { EMPTY, of } from 'rxjs';
 import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
-import { authGuard } from './shared/guards/auth.guard';
 import { AutoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 import { CallbackComponent } from './callback/callback.component';
 

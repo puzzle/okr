@@ -44,14 +44,11 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    this.oauthService.logoffAndRevokeTokens().subscribe((result) => console.log(result));
+    this.oauthService.logoff().subscribe();
   }
 
   username() {
-    return this.oauthService.getUserData().pipe(
-      map((user) => user?.name || 'No username available'),
-      switchMap((username) => (username ? of(username) : of('no username received'))),
-    );
+    return this.oauthService.getUserData().pipe(map((user) => user?.name || ''));
   }
 
   openTeamManagement() {

@@ -235,7 +235,7 @@ describe('KeyResultFormComponent', () => {
 
     it('should get username from oauthService  right', () => {
       component.getUserName().subscribe((userName) => {
-        expect(userName).toEqual('Bob Baumeister');
+        expect(userName).toEqual('Paco Egiman');
       });
     });
   });

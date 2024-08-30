@@ -7,11 +7,21 @@ This is the Spring Boot backend for the OKR-Tool.
 Build only the Backend
 - Build backend without frontend: `mvn clean package`
 
+
 Build Frontend + Backend together
+
+NATIVE
 - Build Frontend for production im `frontend` dir: `npm run build`
 - Build Backend with frontend: `mvn clean package -P build-for-docker`
 - Setup DB
 - Start Backend `java -jar {path to .jar file}`
+
+USING DOCKER
+- cd into the root directory of the project
+- cd `docker/local-prod`
+- Run `docker-compose up`
+- You have to restart after every code change `docker compose restart spring`
+- Get the logs with `docker compose logs -f spring`
 
 Formatting:
 - Check code formatting: `mvn formatter:validate`

@@ -4,7 +4,7 @@ import { User } from '../../types/model/User';
 import { KeyResult } from '../../types/model/KeyResult';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Action } from '../../types/model/Action';
 import { formInputCheck, hasFormFieldErrors } from '../../common';

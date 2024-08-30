@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { authGuard } from '../shared/guards/auth.guard';
 import { OverviewComponent } from '../overview/overview.component';
+import { AbstractLoggerService, AutoLoginPartialRoutesGuard, StsConfigLoader } from 'angular-auth-oidc-client';
+import { of } from 'rxjs';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;
@@ -22,17 +24,26 @@ describe('ObjectiveFilterComponent', () => {
   let loader: HarnessLoader;
   let router: Router;
 
-  const authGuardMock = () => {
-    return Promise.resolve(true);
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ObjectiveFilterComponent, OverviewComponent],
       providers: [
         {
-          provide: authGuard,
-          useValue: authGuardMock,
+          provide: StsConfigLoader,
+          useValue: {
+            loadConfig: () => of({}),
+            loadConfigs: () => of([{}]),
+          },
+        },
+        {
+          provide: AbstractLoggerService,
+          useValue: {
+            logError: () => of({}),
+          },
+        },
+        {
+          provide: AutoLoginPartialRoutesGuard,
+          useValue: () => Promise.resolve(true),
         },
       ],
       imports: [

@@ -14,6 +14,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AbstractLoggerService, AutoLoginPartialRoutesGuard, StsConfigLoader } from 'angular-auth-oidc-client';
+import { NgOptimizedImage } from '@angular/common';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -44,7 +46,14 @@ describe('OverviewComponent', () => {
   let fixture: ComponentFixture<OverviewComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppRoutingModule, MatDialogModule, MatIconModule, MatMenuModule],
+      imports: [
+        HttpClientTestingModule,
+        AppRoutingModule,
+        MatDialogModule,
+        MatIconModule,
+        MatMenuModule,
+        NgOptimizedImage,
+      ],
       declarations: [OverviewComponent, ApplicationBannerComponent, ApplicationTopBarComponent],
       providers: [
         {
@@ -52,8 +61,8 @@ describe('OverviewComponent', () => {
           useValue: overviewService,
         },
         {
-          provide: authGuard,
-          useValue: authGuardMock,
+          provide: AutoLoginPartialRoutesGuard,
+          useValue: () => Promise.resolve(true),
         },
         {
           provide: RefreshDataService,
@@ -63,10 +72,19 @@ describe('OverviewComponent', () => {
           provide: MatDialogRef,
           useValue: {},
         },
-        // OAuthService,
-        // UrlHelperService,
-        // OAuthLogger,
-        // DateTimeProvider,
+        {
+          provide: StsConfigLoader,
+          useValue: {
+            loadConfig: () => of({}),
+            loadConfigs: () => of([{}]),
+          },
+        },
+        {
+          provide: AbstractLoggerService,
+          useValue: {
+            logError: () => of({}),
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

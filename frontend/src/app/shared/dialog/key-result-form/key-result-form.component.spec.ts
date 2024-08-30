@@ -15,7 +15,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../types/model/KeyResultObjective';
 import { User } from '../../types/model/User';
 import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyresultTypeComponent } from '../../../keyresult-type/keyresult-type.component';
 import { ActionPlanComponent } from '../../../action-plan/action-plan.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -26,15 +25,17 @@ import { Action } from '../../types/model/Action';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
   let fixture: ComponentFixture<KeyResultFormComponent>;
 
   const oauthMockService = {
-    getIdentityClaims() {
-      return { name: users[1].firstname + ' ' + users[1].lastname };
+    getUserData() {
+      return of({ name: users[1].firstname + ' ' + users[1].lastname });
     },
   };
 
@@ -115,7 +116,7 @@ describe('KeyResultFormComponent', () => {
             useValue: matDialogRefMock,
           },
           {
-            provide: OAuthService,
+            provide: OidcSecurityService,
             useValue: oauthMockService,
           },
         ],
@@ -233,7 +234,9 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should get username from oauthService  right', () => {
-      expect(component.getUserName()).toEqual('Paco Egiman');
+      component.getUserName().subscribe((userName) => {
+        expect(userName).toEqual('Bob Baumeister');
+      });
     });
   });
 });

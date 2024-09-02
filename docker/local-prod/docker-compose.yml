@@ -4,7 +4,7 @@ services:
   spring:
     container_name: spring
     build:
-      context: ../..
+      context: ./..
       dockerfile: Dockerfile
     ports:
       - 8080:8080

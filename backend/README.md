@@ -19,12 +19,12 @@ NATIVE
 USING DOCKER
 - cd into the root directory of the project
 - cd `docker/local-prod`
-- Run `docker-compose up`
+- Run `docker compose up`
 - You have to restart after every code change `docker compose restart spring`
 - Get the logs with `docker compose logs -f spring`
 !IMPORTANT!
 - If after the first start the backend is not reachable, restart the backend container with `docker compose restart spring`
-- if any permission issues occur, following folders
+- if any permission issues occur, delete all of the following folders
   - .angular
   - frontend/dist
   - frontend/node_modules

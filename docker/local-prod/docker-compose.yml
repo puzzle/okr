@@ -21,7 +21,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://okr-dev-db:5432/okr
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: pwd
-      SPRING_FLYWAY_LOCATIONS: classpath:db/data-migration,classpath:db/migration
+      SPRING_FLYWAY_LOCATIONS: classpath:db/data-migration,classpath:db/migration,classpath:db/callback
 
       ## In memory DB
 #      SPRING_DATASOURCE_URL: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class ClientConfigController {
 
     private final ClientConfigService configService;
-    private static final Logger logger = LoggerFactory.getLogger(ClientConfigController.class);
 
     public ClientConfigController(ClientConfigService configService) {
         this.configService = configService;
@@ -29,11 +28,6 @@ public class ClientConfigController {
     @RequestMapping(value = "/**/{[path:[^\\.]*}")
     public String redirect(HttpServletRequest request) {
         String path = request.getRequestURI();
-
-        logger.debug("----------------------");
-        logger.debug("Forwarding request to: " + path);
-        logger.debug("----------------------");
-
         // Serve static resources or paths containing a dot directly
         if (path.startsWith("/assets/") || path.contains(".")) {
             return "forward:" + path;

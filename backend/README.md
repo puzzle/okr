@@ -20,7 +20,7 @@ USING DOCKER
 - cd into the root directory of the project
 - cd `docker/local-prod`
 - Run `docker compose up`
-- You have to restart after every code change `docker compose restart spring`
+- You have to restart after every code change `docker compose down spring && docker compose up spring`
 - Get the logs with `docker compose logs -f spring`
 <br>
 

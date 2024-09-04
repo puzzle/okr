@@ -51,4 +51,4 @@ services:
       - ../../../okr:/opt
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm run watch:prod" ]
+    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm ci && npm run watch:prod" ]

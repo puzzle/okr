@@ -4,7 +4,7 @@ on:
   pull_request:
     types:
       - closed
-    branches: [ multitenancy_main ]
+    branches: [ main ]
 
 jobs:
   update-version:
@@ -42,7 +42,7 @@ jobs:
             echo "No changes to commit, skipping push"
             exit 0
           }
-          git push -f origin multitenancy_main
+          git push -f origin main
 
   build-docker-image:
     needs: update-version

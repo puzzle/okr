@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, map, of, ReplaySubject, Subscription, switchMap } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 import { Router } from '@angular/router';
 import { isMobileDevice } from '../shared/common';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { TeamManagementComponent } from '../team-management/team-management.component';
 import { RefreshDataService } from '../services/refresh-data.service';
 
@@ -16,7 +18,6 @@ import { RefreshDataService } from '../services/refresh-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
-  username: ReplaySubject<string> = new ReplaySubject();
   menuIsOpen = false;
 
   @Input()
@@ -26,10 +27,9 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   constructor(
-    private oauthService: OAuthService,
+    private oauthService: OidcSecurityService,
     private configService: ConfigService,
     private dialog: MatDialog,
-    private router: Router,
     private refreshDataService: RefreshDataService,
   ) {}
 
@@ -41,10 +41,6 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
         }
       },
     });
-
-    if (this.oauthService.hasValidIdToken()) {
-      this.username.next(this.oauthService.getIdentityClaims()['name']);
-    }
   }
 
   ngOnDestroy(): void {
@@ -52,10 +48,11 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
-    this.router.navigateByUrl(currentUrlTree).then(() => {
-      this.oauthService.logOut();
-    });
+    this.oauthService.logoff().subscribe();
+  }
+
+  username() {
+    return this.oauthService.getUserData().pipe(map((user) => user?.name || ''));
   }
 
   openTeamManagement() {

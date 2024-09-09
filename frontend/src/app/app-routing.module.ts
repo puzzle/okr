@@ -1,3 +1,10 @@
+import { NgModule } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angular/router';
+import { OverviewComponent } from './overview/overview.component';
+import { EMPTY, of } from 'rxjs';
+import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
+import { AutoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
+import { CallbackComponent } from './callback/callback.component';
 import { inject, NgModule } from '@angular/core';
 import { ResolveFn, RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './components/overview/overview.component';
@@ -42,8 +49,9 @@ const routes: Routes = [
         ],
       },
     ],
-    canActivate: [authGuard],
+    canActivate: [AutoLoginPartialRoutesGuard],
   },
+  { path: 'callback', component: CallbackComponent },
   {
     path: 'team-management',
     loadChildren: () => import('./team-management/team-management.module').then((m) => m.TeamManagementModule),

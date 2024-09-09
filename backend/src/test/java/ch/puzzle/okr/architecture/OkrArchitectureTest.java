@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
@@ -91,7 +90,8 @@ class OkrArchitectureTest {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes().that().areNotAnonymousClasses().and().resideInAPackage("ch.puzzle.okr.controller..")
-                .should().beAnnotatedWith(RestController.class).andShould().notBeInterfaces();
+                .should().beAnnotatedWith(RestController.class).orShould().beAnnotatedWith(Controller.class).andShould()
+                .notBeInterfaces();
 
         rule.check(importedClasses);
     }

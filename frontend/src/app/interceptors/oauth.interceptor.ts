@@ -1,26 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { filter, map, merge, mergeMap, Observable, of, take, timeout } from 'rxjs';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OauthInterceptor implements HttpInterceptor {
-  constructor(private oauthService: OAuthService) {}
+  constructor(private oauthService: OidcSecurityService) {}
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.match(/^(\/)?api/)) {
       return next.handle(req);
     }
 
-    return merge(
-      of(this.oauthService.getAccessToken()).pipe(filter((token) => !!token)),
-      this.oauthService.events.pipe(
-        filter((e) => e.type === 'token_received'),
-        timeout(500),
-        map((_) => this.oauthService.getAccessToken()),
-      ),
-    ).pipe(
+    return this.oauthService.getAccessToken().pipe(
       take(1),
       mergeMap((token) => {
         if (token) {
@@ -30,7 +23,6 @@ export class OauthInterceptor implements HttpInterceptor {
         }
 
         return next.handle(req);
-        // .pipe(catchError((err) => this.errorHandler.handleError(err)));
       }),
     );
   }

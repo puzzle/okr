@@ -8,8 +8,8 @@ import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switc
 import { UserService } from '../../services/user.service';
 import { Action } from '../../shared/types/model/Action';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { TranslateService } from '@ngx-translate/core';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-key-result-form',
@@ -32,7 +32,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   constructor(
     public userService: UserService,
-    private oauthService: OAuthService,
+    private oauthService: OidcSecurityService,
     private translate: TranslateService,
   ) {}
 
@@ -62,12 +62,13 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
         { id: null, version: 1, action: '', priority: 2, keyResultId: null, isChecked: false },
       ]);
 
-      this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
-        const loggedInUser = this.getLoggedInUserName();
-        users.forEach((user) => {
-          if (getFullNameFromUser(user) === loggedInUser) {
-            this.keyResultForm.controls['owner'].setValue(user);
-          }
+      this.users$.subscribe((users) => {
+        this.getUserName().subscribe((userName) => {
+          users.forEach((user) => {
+            if (user.firstname + ' ' + user.lastname === userName) {
+              this.keyResultForm.controls['owner'].setValue(user);
+            }
+          });
         });
       });
     }

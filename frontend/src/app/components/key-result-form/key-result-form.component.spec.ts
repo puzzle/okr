@@ -26,15 +26,17 @@ import { Action } from '../../shared/types/model/Action';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import * as de from '../../../assets/i18n/de.json';
+// @ts-ignore
+import * as de from '../../../../assets/i18n/de.json';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
   let fixture: ComponentFixture<KeyResultFormComponent>;
 
   const oauthMockService = {
-    getIdentityClaims() {
-      return { name: users[1].firstname + ' ' + users[1].lastname };
+    getUserData() {
+      return of({ name: users[1].firstname + ' ' + users[1].lastname });
     },
   };
 
@@ -116,7 +118,7 @@ describe('KeyResultFormComponent', () => {
             useValue: matDialogRefMock,
           },
           {
-            provide: OAuthService,
+            provide: OidcSecurityService,
             useValue: oauthMockService,
           },
         ],
@@ -235,7 +237,9 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should get username from oauthService  right', () => {
-      expect(component.getLoggedInUserName()).toEqual(testUser.firstname + ' ' + testUser.lastname);
+      component.getLoggedInUserName().subscribe((userName) => {
+        expect(userName).toEqual(testUser.firstname + ' ' + testUser.lastname);
+      });
     });
   });
 });

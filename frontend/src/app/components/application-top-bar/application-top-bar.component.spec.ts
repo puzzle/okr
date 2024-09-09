@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ApplicationTopBarComponent } from './application-top-bar.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { MatMenuModule } from '@angular/material/menu';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -12,14 +10,16 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
+import { team1 } from '../shared/testData';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { NgOptimizedImage } from '@angular/common';
 import { testUser } from '../../shared/testData';
 import { UserService } from '../../services/user.service';
 import { ConfigService } from '../../services/config.service';
 
 const oAuthMock = {
-  getIdentityClaims: jest.fn(),
-  logOut: jest.fn(),
-  hasValidIdToken: jest.fn(),
+  getUserData: jest.fn(),
+  logOff: jest.fn(),
 };
 
 const dialogMock = {
@@ -46,15 +46,12 @@ describe('ApplicationTopBarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatMenuModule, NoopAnimationsModule, MatDialogModule],
+      imports: [MatMenuModule, NoopAnimationsModule, MatDialogModule, NgOptimizedImage],
       declarations: [ApplicationTopBarComponent],
       providers: [
-        { provide: OAuthService, useValue: oAuthMock },
+        { provide: OidcSecurityService, useValue: oAuthMock },
         { provide: HttpClient },
         { provide: HttpHandler },
-        { provide: UrlHelperService },
-        { provide: OAuthLogger },
-        { provide: DateTimeProvider },
         {
           provide: MatDialog,
           useValue: dialogMock,
@@ -90,13 +87,14 @@ describe('ApplicationTopBarComponent', () => {
   });
 
   it('logout function should get called on button click', async () => {
-    routerMock.navigateByUrl.mockReturnValue(of().toPromise());
+    oAuthMock.getUserData.mockReturnValue(of({ name: 'Username' }));
+
     const harness = await loader.getHarness(MatMenuHarness);
     await harness.open();
     fixture.detectChanges();
     harness.getItems().then((items) => {
       items[0].click();
-      expect(oAuthMock.logOut).toBeCalledTimes(1);
+      expect(oAuthMock.logOff).toHaveBeenCalledTimes(1);
     });
   });
 });

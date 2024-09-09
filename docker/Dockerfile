@@ -9,6 +9,8 @@ USER 1001
 
 WORKDIR app-root/backend
 
-COPY --chown=1001 backend/target .
+RUN if [ -d "../backend/target" ]; then \
+      cp -r --chown=1001 ../backend/target .; \
+    fi
 
 ENTRYPOINT ["/bin/sh", "-c", "export BACKEND_VERSION=$(find . -type f -name 'backend-*.jar' -print -quit | sed -n 's/.*backend-\\(.*\\)\\.jar/\\1/p'); java -jar backend-${BACKEND_VERSION}.jar"]

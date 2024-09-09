@@ -1,88 +1,56 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
 
 import { authGuard } from './auth.guard';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { of } from 'rxjs';
 
 const oAuthMock = {
-  initCodeFlow: jest.fn(),
-  loadDiscoveryDocumentAndTryLogin: jest.fn(),
-  hasValidIdToken: jest.fn(),
-  setupAutomaticSilentRefresh: jest.fn(),
+  get isAuthenticated$() {
+    return of({});
+  },
 };
-
-const routerMock = {
-  navigateByUrl: jest.fn(),
-};
-
-const route = { queryParamMap: new Map() };
 
 describe('authGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+  const route: ActivatedRouteSnapshot = {} as any;
+  const state: RouterStateSnapshot = {} as any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: OAuthService,
+          provide: OidcSecurityService,
           useValue: oAuthMock,
-        },
-        {
-          provide: Router,
-          useValue: routerMock,
         },
       ],
     });
-    jest.spyOn(oAuthMock, 'initCodeFlow').mockReturnValue(true);
-    jest.spyOn(oAuthMock, 'loadDiscoveryDocumentAndTryLogin').mockReturnValue(Promise.resolve(true));
-    jest.spyOn(oAuthMock, 'setupAutomaticSilentRefresh').mockReturnValue(true);
-    jest.spyOn(routerMock, 'navigateByUrl').mockReturnValue(of().toPromise());
-    oAuthMock.initCodeFlow.mockReset();
-    oAuthMock.setupAutomaticSilentRefresh.mockReset();
-    routerMock.navigateByUrl.mockReset();
   });
 
   it('should be created', () => {
     expect(executeGuard).toBeTruthy();
   });
 
-  it('should not call initCodeFlow if token is valid and call router if state param exist', async () => {
-    jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(true);
-    route.queryParamMap.set('state', 1234);
+  it('should return true if token valid ', async () => {
+    jest.spyOn(oAuthMock, 'isAuthenticated$', 'get').mockReturnValue(of({ isAuthenticated: true }));
+    const result$ = runAuthGuardWithContext(authGuard, route, state);
 
-    const result = await runAuthGuardWithContext(authGuard);
-
-    expect(result).toBe(false);
-    expect(oAuthMock.loadDiscoveryDocumentAndTryLogin).toHaveBeenCalled();
-    expect(oAuthMock.initCodeFlow).not.toHaveBeenCalled();
-    expect(oAuthMock.setupAutomaticSilentRefresh).toHaveBeenCalled();
-
-    expect(routerMock.navigateByUrl).toHaveBeenCalled();
+    result$.then((result) => {
+      expect(result).toBe(true);
+    });
   });
 
-  it('should not call router if state param does not exist', async () => {
-    jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(true);
-    route.queryParamMap.set('state', null);
+  it('should return false if token invalid', async () => {
+    jest.spyOn(oAuthMock, 'isAuthenticated$', 'get').mockReturnValue(of({ isAuthenticated: false }));
+    const result$ = runAuthGuardWithContext(authGuard, route, state);
 
-    const result = await runAuthGuardWithContext(authGuard);
-
-    expect(result).toBeTruthy();
-    expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
+    result$.then((result) => {
+      expect(result).toBe(false);
+    });
   });
 
-  it('should call initCodeFlow if token is invalid', async () => {
-    jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(false);
-    const result = await runAuthGuardWithContext(authGuard);
-
-    expect(result).toBe(false);
-    expect(oAuthMock.loadDiscoveryDocumentAndTryLogin).toHaveBeenCalled();
-    expect(oAuthMock.initCodeFlow).toHaveBeenCalled();
-    expect(oAuthMock.setupAutomaticSilentRefresh).not.toHaveBeenCalled();
-  });
-
-  async function runAuthGuardWithContext(authGuard: any): Promise<boolean> {
-    return await TestBed.runInInjectionContext(() => authGuard(route, null));
+  async function runAuthGuardWithContext(authGuard: any, route: any, state: any): Promise<boolean> {
+    return await TestBed.runInInjectionContext(() => authGuard(route, state));
   }
 });

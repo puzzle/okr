@@ -112,7 +112,7 @@ jobs:
           docker run \
           -p 8080:8080 \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://localhost:8544/realms/pitc \
-          -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://keycloak:8080/realms/pitc/protocol/openid-connect/certs \
+          -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://localhost:8544/realms/pitc/protocol/openid-connect/certs \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_OPAQUETOKEN_CLIENT-ID=pitc_okr_staging \
           -e SPRING_PROFILES_ACTIVE-ID=integration-test \
           -e SPRING_DATASOURCE_URL="jdbc:h2:mem:db;DB_CLOSE_DELAY=-1" \

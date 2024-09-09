@@ -1,14 +1,11 @@
 name: 'Staging-Deploy'
 
-on:
-  pull_request:
-    types:
-      - closed
-    branches: [ main ]
+on: [push]
+
 
 jobs:
   update-version:
-    if: github.event.pull_request.merged == true
+#    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     outputs:
       okr-docker-image:  ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-STAGING
@@ -27,22 +24,22 @@ jobs:
       - name: Set New Snapshot Version
         run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store-version.outputs.version}}-SNAPSHOT -DgenerateBackupPoms=false
 
-      - name: Commit and Push Changes
-        shell: bash
-        env:
-          COMMITPREFIX: '[VU]'
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add . || {
-            echo "No files were changed, so we did not commit anything"
-            exit 1
-          }
-          git commit -m "$COMMITPREFIX Automated version update" || {
-            echo "No changes to commit, skipping push"
-            exit 0
-          }
-          git push -f origin main
+#      - name: Commit and Push Changes
+#        shell: bash
+#        env:
+#          COMMITPREFIX: '[VU]'
+#        run: |
+#          git config --global user.email "actions@github.com"
+#          git config --global user.name "GitHub Actions"
+#          git add . || {
+#            echo "No files were changed, so we did not commit anything"
+#            exit 1
+#          }
+#          git commit -m "$COMMITPREFIX Automated version update" || {
+#            echo "No changes to commit, skipping push"
+#            exit 0
+#          }
+#          git push -f origin main
 
   build-docker-image:
     needs: update-version
@@ -112,7 +109,7 @@ jobs:
 
       - name: Run docker image
         run: |
-          docker run --network=host \
+          docker run \
           -p 8080:8080 \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://localhost:8544/realms/pitc \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://keycloak:8080/realms/pitc/protocol/openid-connect/certs \

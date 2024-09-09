@@ -20,14 +20,13 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { OAuthModule, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { A11yModule } from '@angular/cdk/a11y';
 import { ExampleDialogComponent } from './shared/dialog/example-dialog/example-dialog.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { ConfigService } from './config.service';
-import { firstValueFrom } from 'rxjs';
+import { config, firstValueFrom, map } from 'rxjs';
 import { environment } from '../environments/environment';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
 import { ApplicationTopBarComponent } from './application-top-bar/application-top-bar.component';
@@ -72,20 +71,27 @@ import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
 import { KeyresultDialogComponent } from './shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { CustomizationService } from './shared/services/customization.service';
+import {
+  AuthModule,
+  DefaultLocalStorageService,
+  AbstractSecurityStorage,
+  StsConfigLoader,
+  StsConfigHttpLoader,
+  AuthInterceptor,
+} from 'angular-auth-oidc-client';
+import { CallbackComponent } from './callback/callback.component';
 
-function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
-  return async () => {
-    const config = await firstValueFrom(configService.config$);
-    oauthService.configure({ ...environment.oauth, issuer: config.issuer, clientId: config.clientId });
-  };
+function initOauthFactory(configService: ConfigService) {
+  const config$ = configService.config$.pipe(
+    map((config) => {
+      return { ...environment.oauth, authority: config.issuer, clientId: config.clientId };
+    }),
+  );
+  return new StsConfigHttpLoader(config$);
 }
 
 export function createTranslateLoader(http: HttpBackend) {
   return new TranslateHttpLoader(new HttpClient(http), './assets/i18n/', '.json');
-}
-
-export function storageFactory(): OAuthStorage {
-  return localStorage;
 }
 
 export const MY_FORMATS = {
@@ -134,12 +140,20 @@ export const MY_FORMATS = {
     ActionPlanComponent,
     TeamManagementComponent,
     KeyresultDialogComponent,
+    CallbackComponent,
   ],
   imports: [
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    AuthModule.forRoot({
+      loader: {
+        provide: StsConfigLoader,
+        useFactory: initOauthFactory,
+        deps: [ConfigService],
+      },
+    }),
     MatFormFieldModule,
     MatSelectModule,
     MatIconModule,
@@ -164,7 +178,6 @@ export const MY_FORMATS = {
         deps: [HttpBackend],
       },
     }),
-    OAuthModule.forRoot(),
     A11yModule,
     MatRadioModule,
     NgOptimizedImage,
@@ -191,8 +204,10 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: OAuthStorage, useFactory: storageFactory },
-    { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    {
+      provide: AbstractSecurityStorage,
+      useClass: DefaultLocalStorageService,
+    },
     {
       provide: Router,
       useClass: CustomRouter,

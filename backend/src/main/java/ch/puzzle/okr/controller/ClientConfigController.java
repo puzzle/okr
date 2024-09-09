@@ -1,15 +1,17 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.ForwardFilter;
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.service.clientconfig.ClientConfigService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/config")
+@Controller
 public class ClientConfigController {
 
     private final ClientConfigService configService;
@@ -18,8 +20,21 @@ public class ClientConfigController {
         this.configService = configService;
     }
 
-    @GetMapping
+    @GetMapping("/config")
     public ResponseEntity<ClientConfigDto> getConfig() {
         return ResponseEntity.status(HttpStatus.OK).body(configService.getConfigBasedOnActiveEnv());
     }
+
+    @RequestMapping(value = "/**/{[path:[^\\.]*}")
+    public String redirect(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        // Serve static resources or paths containing a dot directly
+        if (path.startsWith("/assets/") || path.contains(".")) {
+            return "forward:" + path;
+        }
+
+        // Forward all other requests to index.html
+        return "forward:/";
+    }
+
 }

@@ -55,19 +55,4 @@ class ForwardFilterTest {
         verify(filterChain, times(1)).doFilter(Mockito.eq(request), Mockito.eq(response));
         verify(request, never()).getRequestDispatcher(anyString());
     }
-
-    @Test
-    void shouldFilterAuthPath() throws ServletException, IOException {
-        // given
-        when(request.getRequestURI()).thenReturn("/?state=''");
-        when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        doNothing().when(requestDispatcher).forward(Mockito.eq(request), Mockito.eq(response));
-
-        // when
-        forwardFilter.doFilter(request, response, filterChain);
-
-        // then
-        verify(filterChain, never()).doFilter(Mockito.eq(request), Mockito.eq(response));
-        verify(request, times(1)).getRequestDispatcher(anyString());
-    }
 }

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
@@ -11,11 +10,12 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { authGuard } from '../shared/guards/auth.guard';
 import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
 import { ApplicationTopBarComponent } from '../application-top-bar/application-top-bar.component';
-import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AbstractLoggerService, AutoLoginPartialRoutesGuard, StsConfigLoader } from 'angular-auth-oidc-client';
+import { NgOptimizedImage } from '@angular/common';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -46,7 +46,14 @@ describe('OverviewComponent', () => {
   let fixture: ComponentFixture<OverviewComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppRoutingModule, MatDialogModule, MatIconModule, MatMenuModule],
+      imports: [
+        HttpClientTestingModule,
+        AppRoutingModule,
+        MatDialogModule,
+        MatIconModule,
+        MatMenuModule,
+        NgOptimizedImage,
+      ],
       declarations: [OverviewComponent, ApplicationBannerComponent, ApplicationTopBarComponent],
       providers: [
         {
@@ -54,8 +61,8 @@ describe('OverviewComponent', () => {
           useValue: overviewService,
         },
         {
-          provide: authGuard,
-          useValue: authGuardMock,
+          provide: AutoLoginPartialRoutesGuard,
+          useValue: () => Promise.resolve(true),
         },
         {
           provide: RefreshDataService,
@@ -65,10 +72,19 @@ describe('OverviewComponent', () => {
           provide: MatDialogRef,
           useValue: {},
         },
-        OAuthService,
-        UrlHelperService,
-        OAuthLogger,
-        DateTimeProvider,
+        {
+          provide: StsConfigLoader,
+          useValue: {
+            loadConfig: () => of({}),
+            loadConfigs: () => of([{}]),
+          },
+        },
+        {
+          provide: AbstractLoggerService,
+          useValue: {
+            logError: () => of({}),
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

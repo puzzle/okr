@@ -4,12 +4,12 @@ import { User } from '../../types/model/User';
 import { KeyResult } from '../../types/model/KeyResult';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Action } from '../../types/model/Action';
 import { formInputCheck, hasFormFieldErrors } from '../../common';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { TranslateService } from '@ngx-translate/core';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-key-result-form',
@@ -31,7 +31,7 @@ export class KeyResultFormComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    private oauthService: OAuthService,
+    private oauthService: OidcSecurityService,
     private translate: TranslateService,
   ) {}
 
@@ -62,11 +62,12 @@ export class KeyResultFormComponent implements OnInit {
       ]);
 
       this.users$.subscribe((users) => {
-        const loggedInUser = this.getUserName();
-        users.forEach((user) => {
-          if (user.firstname + ' ' + user.lastname === loggedInUser) {
-            this.keyResultForm.controls['owner'].setValue(user);
-          }
+        this.getUserName().subscribe((userName) => {
+          users.forEach((user) => {
+            if (user.firstname + ' ' + user.lastname === userName) {
+              this.keyResultForm.controls['owner'].setValue(user);
+            }
+          });
         });
       });
     }
@@ -131,6 +132,6 @@ export class KeyResultFormComponent implements OnInit {
   updateFormValidity() {}
 
   getUserName() {
-    return this.oauthService.getIdentityClaims()['name'];
+    return this.oauthService.getUserData().pipe(map((user) => user?.name || ''));
   }
 }

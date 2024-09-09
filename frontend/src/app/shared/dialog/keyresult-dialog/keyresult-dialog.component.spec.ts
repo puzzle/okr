@@ -17,13 +17,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../types/model/KeyResultObjective';
 import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyresultTypeComponent } from '../../../keyresult-type/keyresult-type.component';
 import { ActionPlanComponent } from '../../../action-plan/action-plan.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 import { KeyResultFormComponent } from '../key-result-form/key-result-form.component';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 describe('KeyresultDialogComponent', () => {
   let component: KeyresultDialogComponent;
@@ -31,8 +31,8 @@ describe('KeyresultDialogComponent', () => {
   let keyResultService: KeyresultService;
 
   const oauthMockService = {
-    getIdentityClaims() {
-      return { name: users[1].firstname + ' ' + users[1].lastname };
+    getUserData() {
+      return of({ name: users[1].firstname + ' ' + users[1].lastname });
     },
   };
 
@@ -277,7 +277,7 @@ describe('KeyresultDialogComponent', () => {
             useValue: { objective: fullObjective, keyResult: undefined },
           },
           {
-            provide: OAuthService,
+            provide: OidcSecurityService,
             useValue: oauthMockService,
           },
         ],
@@ -419,7 +419,7 @@ describe('KeyresultDialogComponent', () => {
             },
           },
           {
-            provide: OAuthService,
+            provide: OidcSecurityService,
             useValue: oauthMockService,
           },
           {
@@ -562,7 +562,7 @@ describe('KeyresultDialogComponent', () => {
             useValue: matDialogRefMock,
           },
           {
-            provide: OAuthService,
+            provide: OidcSecurityService,
             useValue: oauthMockService,
           },
           {

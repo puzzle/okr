@@ -4,8 +4,8 @@ services:
   spring:
     container_name: spring
     build:
-      context: ./..
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: local-prod.Dockerfile
     restart: always
     ports:
       - 8080:8080

@@ -4,10 +4,12 @@ import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.authorization.CheckInAuthorizationService;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -156,6 +158,20 @@ class CheckInControllerIT {
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON_WITHOUT_KEY_RESULT_ID))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @DisplayName("Should return client error for KeyResult not of type metric or ordinal")
+    @Test
+    void shouldReturnClientErrorForKeyResultNotOfTypeMetricOrOrdinal() throws Exception {
+        class NonMetricOrOrdinalKeyResult extends KeyResult {
+        }
+
+        BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
+                .willReturn(new NonMetricOrOrdinalKeyResult());
+
+        mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 }

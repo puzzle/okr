@@ -3,6 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.authorization.CheckInAuthorizationService;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.hamcrest.core.Is;
@@ -134,7 +135,7 @@ class CheckInControllerIT {
     @Test
     void shouldCreateKeyResultOrdinal() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
-                .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
+                .willReturn(KeyResultOrdinal.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInOrdinal);
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)

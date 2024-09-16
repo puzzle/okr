@@ -1,5 +1,6 @@
 package ch.puzzle.okr.mapper;
 
+import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
@@ -31,6 +32,21 @@ public class UserMapperTest {
     @InjectMocks
     private TeamMapper teamMapper;
 
+    private final User user = User.Builder.builder() //
+            .withId(ID) //
+            .withVersion(VERSION) //
+            .withFirstname(FIRSTNAME) //
+            .withLastname(LASTNAME) //
+            .withEmail(EMAIL) //
+            .withUserTeamList(List.of(UserTeam.Builder.builder() //
+                    .withId(USER_TEAM_ID) //
+                    .withTeam(Team.Builder.builder().build()) //
+                    .build())) //
+            .withOkrChampion(IS_OKR_CHAMPION) //
+            .build();
+
+    private final NewUserDto userDto = new NewUserDto(FIRSTNAME, LASTNAME, EMAIL);
+
     @BeforeEach
     void setup() {
         userMapper = new UserMapper(teamMapper);
@@ -56,27 +72,23 @@ public class UserMapperTest {
     @DisplayName("toDto() should map User to Dto")
     @Test
     void toDtoShouldMapUserToDto() {
-        // arrange
-        UserTeam userTeam = UserTeam.Builder.builder() //
-                .withId(USER_TEAM_ID) //
-                .withTeam(Team.Builder.builder().build()) //
-                .build();
-        User user = User.Builder.builder() //
-                .withId(ID) //
-                .withVersion(VERSION) //
-                .withFirstname(FIRSTNAME) //
-                .withLastname(LASTNAME) //
-                .withEmail(EMAIL) //
-                .withUserTeamList(List.of(userTeam)) //
-                .withOkrChampion(IS_OKR_CHAMPION) //
-                .build();
-
         // act
         UserDto userDto = userMapper.toDto(user);
 
         // assert
         assertNotNull(userDto);
         assertUserDto(user, userDto);
+    }
+
+    @DisplayName("toDtos() should map list of Users to Dtos")
+    @Test
+    void toDtosShouldMapListOfUsersToDtos() {
+        // act
+        List<UserDto> userDtos = userMapper.toDtos(List.of(user));
+
+        // assert
+        assertEquals(1, userDtos.size());
+        assertUserDto(user, userDtos.get(0));
     }
 
     private void assertUserDto(User expected, UserDto actual) {
@@ -89,4 +101,33 @@ public class UserMapperTest {
         assertEquals(1, actual.userTeamList().size());
         assertEquals(expected.getUserTeamList().get(0).getId(), actual.userTeamList().get(0).id());
     }
+
+    @DisplayName("toUser() should map UserDto to User")
+    @Test
+    void toUserShouldMapUserDtoToUser() {
+        // act
+        User user = userMapper.toUser(userDto);
+
+        // assert
+        assertNotNull(user);
+        assertUser(userDto, user);
+    }
+
+    @DisplayName("toUserList() should map List of UserDtos to List of Users")
+    @Test
+    void toUserListShouldMapUserDtoListToUserList() {
+        // act
+        List<User> users = userMapper.toUserList(List.of(userDto));
+
+        // assert
+        assertEquals(1, users.size());
+        assertUser(userDto, users.get(0));
+    }
+
+    private void assertUser(NewUserDto expected, User actual) {
+        assertEquals(expected.firstname(), actual.getFirstname());
+        assertEquals(expected.lastname(), actual.getLastname());
+        assertEquals(expected.email(), actual.getEmail());
+    }
+
 }

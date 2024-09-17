@@ -49,7 +49,7 @@ public class QuarterFunction {
 
     public static String currentQuarterStartDate() {
         String start = QUARTERS.get(CURRENT_QUARTER_DB_ID).startDateAsIsoString();
-        logger.warn("currentQuarterStartDate: " +start);
+        logger.warn("currentQuarterStartDate: " + start);
         return start;
     }
 

@@ -1,7 +1,10 @@
 package ch.puzzle.okr.util.quarter.generate.h2;
 
+import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.util.quarter.generate.QuarterData;
 import ch.puzzle.okr.util.quarter.generate.Quarters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +25,8 @@ public class QuarterFunction {
 
     private static final Map<Integer, QuarterData> QUARTERS = new HashMap<>();
 
+    private static final Logger logger = LoggerFactory.getLogger(QuarterFunction.class);
+
     public static void initQuarterData() {
         LocalDate now = LocalDate.now();
         registerCurrentQuarterForDate(now, CURRENT_QUARTER_DB_ID);
@@ -37,27 +42,39 @@ public class QuarterFunction {
     }
 
     public static String currentQuarterLabel() {
-        return QUARTERS.get(CURRENT_QUARTER_DB_ID).label();
+        String label = QUARTERS.get(CURRENT_QUARTER_DB_ID).label();
+        logger.warn("currentQuarterLabel    : " + label);
+        return label;
     }
 
     public static String currentQuarterStartDate() {
-        return QUARTERS.get(CURRENT_QUARTER_DB_ID).startDateAsIsoString();
+        String start = QUARTERS.get(CURRENT_QUARTER_DB_ID).startDateAsIsoString();
+        logger.warn("currentQuarterStartDate: " +start);
+        return start;
     }
 
     public static String currentQuarterEndDate() {
-        return QUARTERS.get(CURRENT_QUARTER_DB_ID).endDateAsIsoString();
+        String end = QUARTERS.get(CURRENT_QUARTER_DB_ID).endDateAsIsoString();
+        logger.warn("currentQuarterEndDate  : " + end);
+        return end;
     }
 
     public static String nextQuarterLabel() {
-        return QUARTERS.get(NEXT_QUARTER_DB_ID).label();
+        String label = QUARTERS.get(NEXT_QUARTER_DB_ID).label();
+        logger.warn("nextQuarterLabel       : " + label);
+        return label;
     }
 
     public static String nextQuarterStartDate() {
-        return QUARTERS.get(NEXT_QUARTER_DB_ID).startDateAsIsoString();
+        String start = QUARTERS.get(NEXT_QUARTER_DB_ID).startDateAsIsoString();
+        logger.warn("nextQuarterStartDate   : " + start);
+        return start;
     }
 
     public static String nextQuarterEndDate() {
-        return QUARTERS.get(NEXT_QUARTER_DB_ID).endDateAsIsoString();
+        String end = QUARTERS.get(NEXT_QUARTER_DB_ID).endDateAsIsoString();
+        logger.warn("nextQuarterEndDate     : " + end);
+        return end;
     }
 
 }

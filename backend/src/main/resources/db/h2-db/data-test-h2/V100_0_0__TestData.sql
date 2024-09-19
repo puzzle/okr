@@ -31,13 +31,13 @@ values (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
        (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
        (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin');
 
-CREATE ALIAS INIT_QUARTER_DATA FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.initQuarterData';
-CREATE ALIAS CURRENT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterLabel';
-CREATE ALIAS CURRENT_QUARTER_START_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterStartDate';
-CREATE ALIAS CURRENT_QUARTER_END_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterEndDate';
-CREATE ALIAS NEXT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.nextQuarterLabel';
-CREATE ALIAS NEXT_QUARTER_START_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.nextQuarterStartDate';
-CREATE ALIAS NEXT_QUARTER_END_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.nextQuarterEndDate';
+CREATE ALIAS INIT_QUARTER_DATA FOR 'ch.puzzle.okr.util.QuarterData.initQuarterData';
+CREATE ALIAS CURRENT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.QuarterData.currentQuarterLabel';
+CREATE ALIAS CURRENT_QUARTER_START_DATE FOR 'ch.puzzle.okr.util.QuarterData.currentQuarterStartDate';
+CREATE ALIAS CURRENT_QUARTER_END_DATE FOR 'ch.puzzle.okr.util.QuarterData.currentQuarterEndDate';
+CREATE ALIAS NEXT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.QuarterData.nextQuarterLabel';
+CREATE ALIAS NEXT_QUARTER_START_DATE FOR 'ch.puzzle.okr.util.QuarterData.nextQuarterStartDate';
+CREATE ALIAS NEXT_QUARTER_END_DATE FOR 'ch.puzzle.okr.util.QuarterData.nextQuarterEndDate';
 
 call INIT_QUARTER_DATA();
 

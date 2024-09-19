@@ -1,6 +1,4 @@
-package ch.puzzle.okr.util.quarter.generate;
-
-import org.springframework.context.annotation.Profile;
+package ch.puzzle.quarter.generate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,7 +9,6 @@ import java.util.List;
  * </br>
  * This class is used for testing purposes only. Do NOT use this class in production mode.
  */
-@Profile("integration-test")
 public class Quarters {
     private record QuarterDateRange(LocalDate startDate, LocalDate endDate) {
     }

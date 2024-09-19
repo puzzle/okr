@@ -1,10 +1,12 @@
-package ch.puzzle.okr.util.quarter.generate;
+package generate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import ch.puzzle.quarter.generate.QuarterData;
+import ch.puzzle.quarter.generate.Quarters;
 
 import java.time.LocalDate;
 import java.util.stream.Stream;

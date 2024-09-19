@@ -1,9 +1,9 @@
-package ch.puzzle.okr.util.quarter.generate.h2;
+package generate.h2;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.*;
+import static ch.puzzle.quarter.generate.h2.QuarterFunction.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuarterFunctionTest {

@@ -30,6 +30,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>local-repo</id>
+            <url>file:///local_repo</url>
+        </repository>
+    </repositories>
 
     <build>
         <pluginManagement>

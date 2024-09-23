@@ -1,4 +1,4 @@
-package ch.puzzle.okr.utilX;
+package ch.puzzle.okr.util;
 
 import ch.puzzle.quarter.generate.h2.QuarterFunction;
 import org.slf4j.Logger;

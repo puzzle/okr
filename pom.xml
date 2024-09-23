@@ -25,6 +25,7 @@
     </parent>
 
     <modules>
+        <module>quarter_lib</module>
         <module>backend</module>
     </modules>
 

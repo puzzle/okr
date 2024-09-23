@@ -1,6 +1,4 @@
-package ch.puzzle.okr.util.quarter.generate;
-
-import org.springframework.context.annotation.Profile;
+package ch.puzzle.quarter.generate;
 
 import java.time.LocalDate;
 
@@ -9,7 +7,6 @@ import java.time.LocalDate;
  * </br>
  * This class is used for testing purposes only. Do NOT use this class in production mode.
  */
-@Profile("integration-test")
 public class QuarterLabel {
     private final LocalDate date;
 

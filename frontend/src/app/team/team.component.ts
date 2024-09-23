@@ -51,6 +51,7 @@ export class TeamComponent {
           width: '100vw',
         }
       : {
+          minHeight: '28em',
           width: '45em',
           height: 'auto',
         };
@@ -62,6 +63,7 @@ export class TeamComponent {
           teamVersion: this.overviewEntity.value.team.version,
         },
       },
+      minHeight: dialogConfig.minHeight,
       height: dialogConfig.height,
       width: dialogConfig.width,
       maxHeight: dialogConfig.maxHeight,

@@ -174,4 +174,10 @@ class CheckInControllerIT {
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
+
+    @Test
+    void shouldDeleteCheckInById() throws Exception {
+        mvc.perform(delete(CHECK_IN_5_URL).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }

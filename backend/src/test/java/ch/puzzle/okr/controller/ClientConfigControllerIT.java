@@ -34,8 +34,7 @@ public class ClientConfigControllerIT {
 
     @Test
     void shouldGetClientConfig() throws Exception {
-        BDDMockito.given(configService.getConfigBasedOnActiveEnv(anyString()))
-                .willReturn(createClientConfigDto());
+        BDDMockito.given(configService.getConfigBasedOnActiveEnv(anyString())).willReturn(createClientConfigDto());
 
         mvc.perform(get("/config").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -54,9 +53,8 @@ public class ClientConfigControllerIT {
 
     private ClientConfigDto createClientConfigDto() {
         Map<String, String> customStyles = Map.of("font-family", "verdana", "font-size", "20px");
-        return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo",
-                "Triangles", "Background_Logo", "Title", customStyles);
+        return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo", "Triangles",
+                "Background_Logo", "Title", customStyles);
     }
 
 }
-

@@ -3,6 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <repositories>
+        <repository>
+            <id>local-repo</id>
+            <url>file://${project.basedir}/backend/local_repo</url>
+        </repository>
+    </repositories>
+
     <parent>
         <groupId>ch.puzzle.okr</groupId>
         <artifactId>parent</artifactId>

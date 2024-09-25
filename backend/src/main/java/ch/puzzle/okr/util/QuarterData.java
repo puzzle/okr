@@ -14,37 +14,37 @@ public class QuarterData {
 
     public static String currentQuarterLabel() {
         String label = QuarterFunction.currentQuarterLabel();
-        logger.warn("currentQuarterLabel    : " + label);
+        logger.info("currentQuarterLabel    : " + label);
         return label;
     }
 
     public static String currentQuarterStartDate() {
         String start = QuarterFunction.currentQuarterStartDate();
-        logger.warn("currentQuarterStartDate: " + start);
+        logger.info("currentQuarterStartDate: " + start);
         return start;
     }
 
     public static String currentQuarterEndDate() {
         String end = QuarterFunction.currentQuarterEndDate();
-        logger.warn("currentQuarterEndDate  : " + end);
+        logger.info("currentQuarterEndDate  : " + end);
         return end;
     }
 
     public static String nextQuarterLabel() {
         String label = QuarterFunction.nextQuarterLabel();
-        logger.warn("nextQuarterLabel       : " + label);
+        logger.info("nextQuarterLabel       : " + label);
         return label;
     }
 
     public static String nextQuarterStartDate() {
         String start = QuarterFunction.nextQuarterStartDate();
-        logger.warn("nextQuarterStartDate   : " + start);
+        logger.info("nextQuarterStartDate   : " + start);
         return start;
     }
 
     public static String nextQuarterEndDate() {
         String end = QuarterFunction.nextQuarterEndDate();
-        logger.warn("nextQuarterEndDate     : " + end);
+        logger.info("nextQuarterEndDate     : " + end);
         return end;
     }
 }

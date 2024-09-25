@@ -13,6 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <parent.project.dir>${project.basedir}/..</parent.project.dir>
     </properties>
 
     <dependencies>
@@ -35,6 +36,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -49,4 +51,10 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>local-repo</id>
+            <url>file://${parent.project.dir}/backend/local_repo</url>
+        </repository>
+    </distributionManagement>
 </project>

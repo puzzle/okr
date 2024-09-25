@@ -46,9 +46,6 @@ jobs:
       - name: Build backend with Maven
         run: mvn -B clean package --file pom.xml -P build-for-docker
 
-      - name: Deploy quarter_lib with Maven
-        run: mvn deploy --file quarter_lib/pom.xml
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 

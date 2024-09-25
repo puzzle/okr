@@ -3,6 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UserAuthorizationService;
 import org.hamcrest.Matchers;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -25,7 +27,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static ch.puzzle.okr.controller.ActionControllerIT.SUCCESSFUL_UPDATE_BODY;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
@@ -81,4 +85,82 @@ class UserControllerIT {
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
+
+    @Test
+    void shouldReturnCurrentUser() throws Exception {
+        BDDMockito.given(authorizationService.updateOrAddAuthorizationUser())
+                .willReturn(new AuthorizationUser(userAlice));
+        BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
+
+        mvc.perform(get("/api/v1/users/current").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()) //
+                .andExpect(jsonPath("$", Matchers.aMapWithSize(7))) //
+                .andExpect(jsonPath("$.id", Is.is(2))) //
+                .andExpect(jsonPath("$.version", Is.is(3))) //
+                .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1))) //
+                .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1))) //
+                .andExpect(jsonPath("$.email", Is.is(EMAIL_1))) //
+                .andExpect(jsonPath("$.userTeamList", Matchers.empty())) //
+                .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
+    }
+
+    @Test
+    void shouldReturnUserById() throws Exception {
+        BDDMockito.given(userAuthorizationService.getById(2)).willReturn(userAlice);
+        BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
+
+        mvc.perform(get("/api/v1/users/2").contentType(MediaType.APPLICATION_JSON)) //
+                .andExpect(MockMvcResultMatchers.status().isOk()) //
+                .andExpect(jsonPath("$", Matchers.aMapWithSize(7))) //
+                .andExpect(jsonPath("$.id", Is.is(2))) //
+                .andExpect(jsonPath("$.version", Is.is(3))) //
+                .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1))) //
+                .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1))) //
+                .andExpect(jsonPath("$.email", Is.is(EMAIL_1))) //
+                .andExpect(jsonPath("$.userTeamList", Matchers.empty())) //
+                .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
+    }
+
+    @Test
+    void shouldSetOkrChampion() throws Exception {
+        BDDMockito.given(userAuthorizationService.setIsOkrChampion(2, true)).willReturn(userAlice);
+        BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
+
+        mvc.perform(put("/api/v1/users/2/isokrchampion/true") //
+                .content(SUCCESSFUL_UPDATE_BODY) //
+                .contentType(MediaType.APPLICATION_JSON) //
+                .with(SecurityMockMvcRequestPostProcessors.csrf()) //
+        ) //
+                .andExpect(MockMvcResultMatchers.status().isOk()) //
+                .andExpect(jsonPath("$", Matchers.aMapWithSize(7))) //
+                .andExpect(jsonPath("$.id", Is.is(2))) //
+                .andExpect(jsonPath("$.version", Is.is(3))) //
+                .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1))) //
+                .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1))) //
+                .andExpect(jsonPath("$.email", Is.is(EMAIL_1))) //
+                .andExpect(jsonPath("$.userTeamList", Matchers.empty())) //
+                .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
+    }
+
+    @Test
+    void shouldCreateUsers() throws Exception {
+        BDDMockito.given(userAuthorizationService.createUsers(any())).willReturn(List.of(userAlice));
+        BDDMockito.given(userMapper.toDtos(List.of(userAlice))).willReturn(List.of(userAliceDto));
+
+        mvc.perform(post("/api/v1/users/createall") //
+                .content(SUCCESSFUL_UPDATE_BODY) //
+                .contentType(MediaType.APPLICATION_JSON) //
+                .with(SecurityMockMvcRequestPostProcessors.csrf()) //
+        ) //
+                .andExpect(MockMvcResultMatchers.status().isOk()) //
+                .andExpect(jsonPath("$", Matchers.hasSize(1))) //
+                .andExpect(jsonPath("$[0].id", Is.is(2))) //
+                .andExpect(jsonPath("$[0].version", Is.is(3))) //
+                .andExpect(jsonPath("$[0].firstname", Is.is(FIRSTNAME_1))) //
+                .andExpect(jsonPath("$[0].lastname", Is.is(LASTNAME_1))) //
+                .andExpect(jsonPath("$[0].email", Is.is(EMAIL_1))) //
+                .andExpect(jsonPath("$[0].userTeamList", Matchers.empty())) //
+                .andExpect(jsonPath("$[0].isOkrChampion", Is.is(false)));
+    }
+
 }

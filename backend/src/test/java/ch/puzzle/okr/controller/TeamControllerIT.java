@@ -40,6 +40,7 @@ class TeamControllerIT {
     private static final String BASE_URL = "/api/v2/teams";
     private static final String URL_TEAM_1 = "/api/v2/teams/1";
     public static final String PUZZLE = "Puzzle";
+    public static final String SUB_URL_USER_5 = "/user/5";
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
@@ -180,6 +181,20 @@ class TeamControllerIT {
     @Test
     void addUsersToTeam_shouldReturnOk() throws Exception {
         mvc.perform(put(URL_TEAM_1 + "/addusers").contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void removeUserFromTeam_shouldReturnOk() throws Exception {
+        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser").contentType(MediaType.APPLICATION_JSON)
+                .content(ADD_USERS).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
+        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true")
+                .contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

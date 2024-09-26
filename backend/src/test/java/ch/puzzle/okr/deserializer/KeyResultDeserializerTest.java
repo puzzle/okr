@@ -133,7 +133,7 @@ public class KeyResultDeserializerTest {
                   "writeable": false,
                   "actionList": []
                 }
-                
+
                 """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
@@ -165,7 +165,6 @@ public class KeyResultDeserializerTest {
         KeyResultObjectiveDto objective = keyResultOrdinalDto.objective();
         assertObjective(objective);
     }
-
 
     @DisplayName("deserialize() should throw ResponseStatusException if KeyResult is of unsupported type")
     @Test
@@ -217,7 +216,8 @@ public class KeyResultDeserializerTest {
     }
 
     private void assertBadRequest(ResponseStatusException responseStatusException) {
-        assertEquals("400 BAD_REQUEST \"unsupported keyResult DTO to deserialize\"", responseStatusException.getMessage());
+        assertEquals("400 BAD_REQUEST \"unsupported keyResult DTO to deserialize\"",
+                responseStatusException.getMessage());
         assertEquals("unsupported keyResult DTO to deserialize", responseStatusException.getReason());
     }
 

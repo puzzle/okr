@@ -87,7 +87,7 @@ class CheckInDeserializerTest {
         assertEquals(23, checkInMetricDto.value());
     }
 
-    @DisplayName("deserialize() should return CheckInMetricDto for ordinal json")
+    @DisplayName("deserialize() should return CheckInOrdinalDto for ordinal json")
     @Test
     void deserializeShouldReturnCheckInOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
@@ -168,9 +168,9 @@ class CheckInDeserializerTest {
         assertEquals("unsupported checkIn DTO to deserialize", responseStatusException.getReason());
     }
 
-    @DisplayName("deserialize() should throw ResponseStatusException json has no KeyResult Id")
+    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Id")
     @Test
-    void deserializeShouldThrowResponseStatusExceptionJsonHasNoKeyResultId() throws Exception {
+    void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() throws Exception {
         // arrange
         String jsonWithoutKeyResultId = """
                 {

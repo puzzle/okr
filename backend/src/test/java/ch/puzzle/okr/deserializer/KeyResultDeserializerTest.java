@@ -91,16 +91,16 @@ public class KeyResultDeserializerTest {
         assertObjective(objective);
     }
 
-    private static void assertObjective(KeyResultObjectiveDto objective) {
-        assertNotNull(objective);
-        assertEquals(1000, objective.id());
-    }
-
     private static void assertOwner(KeyResultUserDto owner) {
         assertNotNull(owner);
         assertEquals(1000, owner.id());
         assertEquals("Jaya", owner.firstname());
         assertEquals("Norris", owner.lastname());
+    }
+
+    private static void assertObjective(KeyResultObjectiveDto objective) {
+        assertNotNull(objective);
+        assertEquals(1000, objective.id());
     }
 
     @DisplayName("deserialize() should return KeyResultOrdinalDto for ordinal json")
@@ -193,7 +193,7 @@ public class KeyResultDeserializerTest {
 
     @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Type")
     @Test
-    void deserializeShouldThrowResponseStatusExceptionJsonHasNoKeyResultType() throws Exception {
+    void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultType() throws Exception {
         // arrange
         String jsonMetric = """
                 {

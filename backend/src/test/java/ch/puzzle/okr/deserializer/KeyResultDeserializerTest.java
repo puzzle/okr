@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -184,11 +185,11 @@ public class KeyResultDeserializerTest {
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             keyResultDeserializer.deserialize(jsonParser, ctxt);
         });
 
-        assertBadRequest(responseStatusException);
+        assertBadRequest(exception);
     }
 
     @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Type")
@@ -208,17 +209,16 @@ public class KeyResultDeserializerTest {
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             keyResultDeserializer.deserialize(jsonParser, ctxt);
         });
 
-        assertBadRequest(responseStatusException);
+        assertBadRequest(exception);
     }
 
-    private void assertBadRequest(ResponseStatusException responseStatusException) {
-        assertEquals("400 BAD_REQUEST \"unsupported keyResult DTO to deserialize\"",
-                responseStatusException.getMessage());
-        assertEquals("unsupported keyResult DTO to deserialize", responseStatusException.getReason());
+    private void assertBadRequest(ResponseStatusException exception) {
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("unsupported keyResult DTO to deserialize", exception.getReason());
     }
 
 }

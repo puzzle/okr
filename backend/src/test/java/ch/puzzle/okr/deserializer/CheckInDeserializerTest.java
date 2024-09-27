@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -158,14 +159,12 @@ class CheckInDeserializerTest {
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             checkInDeserializer.deserialize(jsonParser, ctxt);
         });
 
-        assertEquals("400 BAD_REQUEST \"unsupported checkIn DTO to deserialize\"",
-                responseStatusException.getMessage());
-
-        assertEquals("unsupported checkIn DTO to deserialize", responseStatusException.getReason());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("unsupported checkIn DTO to deserialize", exception.getReason());
     }
 
     @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Id")
@@ -183,13 +182,11 @@ class CheckInDeserializerTest {
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             checkInDeserializer.deserialize(jsonParser, ctxt);
         });
 
-        assertEquals("400 BAD_REQUEST \"missing keyResult ID to deserialize checkIn DTO\"",
-                responseStatusException.getMessage());
-
-        assertEquals("missing keyResult ID to deserialize checkIn DTO", responseStatusException.getReason());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("missing keyResult ID to deserialize checkIn DTO", exception.getReason());
     }
 }

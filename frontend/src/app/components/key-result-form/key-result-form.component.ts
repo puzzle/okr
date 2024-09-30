@@ -1,20 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { getFullNameFromUser, User } from '../../shared/types/model/User';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
-import { User } from '../../types/model/User';
-import { KeyResult } from '../../types/model/KeyResult';
-import { KeyResultMetric } from '../../types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Action } from '../../shared/types/model/Action';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import { KeyResult } from '../../shared/types/model/KeyResult';
+import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 
 @Component({
   selector: 'app-key-result-form',
@@ -68,12 +63,11 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
       ]);
 
       this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
-        this.getLoggedInUserName().subscribe((userName) => {
-          users.forEach((user) => {
-            if (getFullNameFromUser(user) === userName) {
-              this.keyResultForm.controls['owner'].setValue(user);
-            }
-          });
+        const loggedInUserName = this.getLoggedInUserName();
+        users.forEach((user) => {
+          if (getFullNameFromUser(user) === loggedInUserName) {
+            this.keyResultForm.controls['owner'].setValue(user);
+          }
         });
       });
     }

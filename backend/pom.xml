@@ -90,13 +90,6 @@
             <groupId>ch.puzzle.okr</groupId>
             <artifactId>quarter_lib</artifactId>
             <version>1.0.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ch.puzzle.okr</groupId>
-            <artifactId>quarter_lib</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>

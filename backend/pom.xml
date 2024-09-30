@@ -89,7 +89,7 @@
         <dependency>
             <groupId>ch.puzzle.okr</groupId>
             <artifactId>quarter_lib</artifactId>
-            <version>1.0</version>
+            <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

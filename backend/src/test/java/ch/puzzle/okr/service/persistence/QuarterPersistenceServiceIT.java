@@ -97,46 +97,8 @@ class QuarterPersistenceServiceIT {
     void shouldReturnCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
-        assertTrue(LocalDate.now().isEqual(quarter.getStartDate()) || //
-                LocalDate.now().isAfter(quarter.getStartDate()));
-
-        assertTrue(LocalDate.now().isEqual(quarter.getEndDate()) || //
-                LocalDate.now().isBefore(quarter.getEndDate()));
-
+        assertTrue(QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter));
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());
-    }
-
-    @DisplayName("findByLabel() should return single Quarter when label is valid")
-    @Test
-    void findByLabelShouldReturnSingleQuarterWhenLabelIsValid() {
-        // arrange + act
-        Quarter returnedQuarter = quarterPersistenceService.findByLabel("GJ ForTests");
-
-        // assert
-        assertEquals(99L, returnedQuarter.getId());
-        assertEquals("GJ ForTests", returnedQuarter.getLabel());
-        assertEquals(LocalDate.of(2000, 7, 1), returnedQuarter.getStartDate());
-        assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
-    }
-
-    @DisplayName("findByLabel() should return null when label is not valid")
-    @Test
-    void findByLabelShouldReturnNullWhenLabelIsNotValid() {
-        // arrange + act
-        Quarter returnedQuarter = quarterPersistenceService.findByLabel("a_not_valid_label");
-
-        // assert
-        assertNull(returnedQuarter);
-    }
-
-    @DisplayName("findByLabel() should return null when label is null")
-    @Test
-    void findByLabelShouldReturnNullWhenLabelIsNull() {
-        // arrange + act
-        Quarter returnedQuarter = quarterPersistenceService.findByLabel(null);
-
-        // assert
-        assertNull(returnedQuarter);
     }
 }

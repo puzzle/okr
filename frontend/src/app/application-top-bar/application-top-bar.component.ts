@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { BehaviorSubject, map, of, ReplaySubject, Subscription, switchMap } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+
+import { Router } from '@angular/router';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 

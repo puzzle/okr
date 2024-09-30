@@ -17,6 +17,7 @@ import { authGuard } from '../../guards/auth.guard';
 import { OverviewComponent } from '../overview/overview.component';
 import { AbstractLoggerService, AutoLoginPartialRoutesGuard, StsConfigLoader } from 'angular-auth-oidc-client';
 import { of } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;

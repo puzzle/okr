@@ -15,7 +15,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
 import { User } from '../../shared/types/model/User';
 import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-header.component';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyresultTypeComponent } from '../keyresult-type/keyresult-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -27,7 +26,7 @@ import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
-import * as de from '../../../../assets/i18n/de.json';
+import * as de from '../../../assets/i18n/de.json';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 describe('KeyResultFormComponent', () => {
@@ -237,9 +236,7 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should get username from oauthService  right', () => {
-      component.getLoggedInUserName().subscribe((userName) => {
-        expect(userName).toEqual(testUser.firstname + ' ' + testUser.lastname);
-      });
+      expect(component.getLoggedInUserName()).toEqual(testUser.firstname + ' ' + testUser.lastname);
     });
   });
 });

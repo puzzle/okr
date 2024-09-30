@@ -62,10 +62,10 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
         { id: null, version: 1, action: '', priority: 2, keyResultId: null, isChecked: false },
       ]);
 
-      this.users$.subscribe((users) => {
-        this.getUserName().subscribe((userName) => {
+      this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
+        this.getLoggedInUserName().subscribe((userName) => {
           users.forEach((user) => {
-            if (user.firstname + ' ' + user.lastname === userName) {
+            if (getFullNameFromUser(user) === userName) {
               this.keyResultForm.controls['owner'].setValue(user);
             }
           });

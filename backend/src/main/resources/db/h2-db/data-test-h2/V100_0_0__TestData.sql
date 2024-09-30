@@ -33,6 +33,15 @@ VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),
        (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', FALSE),
        (61, 1, 'gl@gl.com', 'Jaya', 'Norris', TRUE);
 
+INSERT INTO person (id, version, email, firstname, lastname, is_okr_champion)
+VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),
+       (11, 1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', FALSE),
+       (21, 1, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', FALSE),
+       (31, 1, 'peterson@puzzle.ch', 'Findus', 'Peterson', FALSE),
+       (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman', FALSE),
+       (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', FALSE),
+       (61, 1, 'gl@gl.com', 'Jaya', 'Norris', TRUE);
+
 insert into quarter (id, label, start_date, end_date)
 values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
        (2, 'GJ 23/24-Q1', '2023-07-01', '2023-09-30'),

@@ -45,7 +45,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    this.oauthService.logoff();
+    this.oauthService.logoff().subscribe();
   }
 
   private initUserFullName() {

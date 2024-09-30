@@ -8,8 +8,10 @@ import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -42,6 +44,11 @@ class AlignmentPersistenceServiceIT {
                 .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build()).build();
     }
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
     @AfterEach
     void tearDown() {
         try {
@@ -54,6 +61,7 @@ class AlignmentPersistenceServiceIT {
         } finally {
             createdAlignment = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

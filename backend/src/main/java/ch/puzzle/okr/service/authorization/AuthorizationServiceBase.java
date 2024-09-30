@@ -31,7 +31,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
     protected abstract boolean isWriteable(T entity, AuthorizationUser authorizationUser);
 
     public T getEntityById(ID id) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         hasRoleReadById(id, authorizationUser);
         T entity = businessService.getEntityById(id);
         entity.setWriteable(isWriteable(entity, authorizationUser));
@@ -39,7 +39,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
     }
 
     public T createEntity(T entity) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
         T savedEntity = businessService.createEntity(entity, authorizationUser);
         savedEntity.setWriteable(true);
@@ -47,7 +47,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
     }
 
     public T updateEntity(ID id, T entity) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
         T updatedEntity = businessService.updateEntity(id, entity, authorizationUser);
         updatedEntity.setWriteable(true);
@@ -55,7 +55,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
     }
 
     public void deleteEntityById(ID id) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         hasRoleDeleteById(id, authorizationUser);
         businessService.deleteEntityById(id);
     }

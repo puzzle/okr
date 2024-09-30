@@ -3,10 +3,13 @@ package ch.puzzle.okr.service.persistence;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.util.quarter.check.QuarterRangeChecker;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +26,16 @@ class QuarterPersistenceServiceIT {
 
     @Autowired
     private QuarterPersistenceService quarterPersistenceService;
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
+    @AfterEach
+    void tearDown() {
+        TenantContext.setCurrentTenant(null);
+    }
 
     @Test
     void shouldReturnSingleQuarterWhenFindingByValidId() {
@@ -84,41 +97,9 @@ class QuarterPersistenceServiceIT {
     void shouldReturnCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
-        assertTrue(QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter));
+        assertTrue(LocalDate.now().isAfter(quarter.getStartDate()));
+        assertTrue(LocalDate.now().isBefore(quarter.getEndDate()));
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());
-    }
-
-    @DisplayName("findByLabel() should return single Quarter when label is valid")
-    @Test
-    void findByLabelShouldReturnSingleQuarterWhenLabelIsValid() {
-        // arrange + act
-        Quarter returnedQuarter = quarterPersistenceService.findByLabel("GJ ForTests");
-
-        // assert
-        assertEquals(99L, returnedQuarter.getId());
-        assertEquals("GJ ForTests", returnedQuarter.getLabel());
-        assertEquals(LocalDate.of(2000, 7, 1), returnedQuarter.getStartDate());
-        assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
-    }
-
-    @DisplayName("findByLabel() should return null when label is not valid")
-    @Test
-    void findByLabelShouldReturnNullWhenLabelIsNotValid() {
-        // arrange + act
-        Quarter returnedQuarter = quarterPersistenceService.findByLabel("a_not_valid_label");
-
-        // assert
-        assertNull(returnedQuarter);
-    }
-
-    @DisplayName("findByLabel() should return null when label is null")
-    @Test
-    void findByLabelShouldReturnNullWhenLabelIsNull() {
-        // arrange + act
-        Quarter returnedQuarter = quarterPersistenceService.findByLabel(null);
-
-        // assert
-        assertNull(returnedQuarter);
     }
 }

@@ -1,0 +1,10 @@
+#add-member-table {
+  ::ng-deep thead {
+    display: none;
+  }
+}
+
+.mat-column-delete {
+  display: flex;
+  justify-content: flex-end;
+}

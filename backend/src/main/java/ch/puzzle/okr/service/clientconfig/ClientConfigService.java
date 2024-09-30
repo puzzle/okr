@@ -1,31 +1,90 @@
 package ch.puzzle.okr.service.clientconfig;
 
 import ch.puzzle.okr.dto.ClientConfigDto;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.multitenancy.customization.TenantClientCustomization;
+import ch.puzzle.okr.multitenancy.customization.TenantClientCustomizationProvider;
+import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
+import java.util.Optional;
 
 @Service
 public class ClientConfigService {
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
-    private String issuer;
+    private static final Logger logger = LoggerFactory.getLogger(ClientConfigService.class);
+    private final TenantClientCustomizationProvider tenantClientCustomizationProvider;
+    private final TenantConfigProvider tenantConfigProvider;
 
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
-    private String clientId;
-
-    private final ClientCustomizationProperties clientCustomizationProperties;
-
-    public ClientConfigService(ClientCustomizationProperties clientCustomizationProperties) {
-        this.clientCustomizationProperties = clientCustomizationProperties;
+    public ClientConfigService(final TenantClientCustomizationProvider clientCustomizationProvider,
+            final TenantConfigProvider tenantConfigProvider) {
+        this.tenantConfigProvider = tenantConfigProvider;
+        this.tenantClientCustomizationProvider = clientCustomizationProvider;
     }
 
-    public ClientConfigDto getConfigBasedOnActiveEnv() {
-        return new ClientConfigDto(activeProfile, issuer, clientId, this.clientCustomizationProperties.getFavicon(),
-                this.clientCustomizationProperties.getLogo(), this.clientCustomizationProperties.getTitle(),
-                this.clientCustomizationProperties.getCustomStyles());
+    public ClientConfigDto getConfigBasedOnActiveEnv(String hostName) {
+        String subdomain = hostName.split("\\.")[0];
+        String domainPrefixByHyphen = hostName.split("-")[0];
+
+        Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostName, subdomain,
+                domainPrefixByHyphen);
+
+        if (tenantConfig.isEmpty()) {
+            throw new EntityNotFoundException(
+                    MessageFormat.format("Could not find tenant config for subdomain:{0}", subdomain));
+        }
+
+        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostName,
+                subdomain, domainPrefixByHyphen);
+
+        if (tenantClientCustomization.isEmpty()) {
+            throw new EntityNotFoundException(
+                    MessageFormat.format("Could not find tenant client customization for subdomain:{0}", subdomain));
+        }
+
+        return new ClientConfigDto(activeProfile, //
+                tenantConfig.get().issuerUrl(), //
+                tenantConfig.get().clientId(), //
+                tenantClientCustomization.get().favicon(), //
+                tenantClientCustomization.get().logo(), //
+                tenantClientCustomization.get().triangles(), //
+                tenantClientCustomization.get().backgroundLogo(), //
+                tenantClientCustomization.get().title(), //
+                tenantClientCustomization.get().customStyles()); //
     }
 
+    private Optional<TenantConfigProvider.TenantConfig> getTenantConfig(String hostname, String... tenantsFromUrl) {
+        for (String tenant : tenantsFromUrl) {
+            Optional<TenantConfigProvider.TenantConfig> tenantConfig = tenantConfigProvider.getTenantConfigById(tenant);
+            if (tenantConfig.isPresent()) {
+                logger.info("get config for " + tenant + ": OK");
+                return tenantConfig;
+            }
+            logger.info("get config found for " + tenant + ": failed");
+        }
+        logger.info("no config found for " + hostname + ": failed");
+        return Optional.empty();
+    }
+
+    private Optional<TenantClientCustomization> getTenantClientCustomization(String hostname,
+            String... tenantsFromUrl) {
+        for (String tenant : tenantsFromUrl) {
+            Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider
+                    .getTenantClientCustomizationsById(tenant);
+            if (tenantCustomization.isPresent()) {
+                logger.info("get client customization for " + tenant + ": OK");
+                return tenantCustomization;
+            }
+            logger.info("get client customization for " + tenant + ": failed");
+        }
+        logger.info("no client customization found for " + hostname + ": failed");
+        return Optional.empty();
+    }
 }

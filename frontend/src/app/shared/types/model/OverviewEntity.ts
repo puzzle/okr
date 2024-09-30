@@ -1,8 +1,8 @@
-import { TeamMin } from './TeamMin';
 import { ObjectiveMin } from './ObjectiveMin';
+import { TeamMin } from './TeamMin';
 
 export interface OverviewEntity {
   team: TeamMin;
   objectives: ObjectiveMin[];
-  writable: boolean;
+  writeable: boolean;
 }

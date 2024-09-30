@@ -17,13 +17,13 @@ public class CompletedAuthorizationService {
     }
 
     public Completed createCompleted(Completed completed) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         authorizationService.hasRoleCreateOrUpdateByObjectiveId(completed.getObjective().getId(), authorizationUser);
         return completedBusinessService.createCompleted(completed);
     }
 
     public void deleteCompletedByObjectiveId(Long objectiveId) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         authorizationService.hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
         completedBusinessService.deleteCompletedByObjectiveId(objectiveId);
     }

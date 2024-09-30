@@ -1,0 +1,47 @@
+@import "../../../style/_variables.scss";
+
+#okrBanner {
+  position: relative;
+  height: 140px; // height of okr-tangram
+
+  .first-line {
+    padding-top: 2rem;
+
+    > div:first-child {
+      padding-left: 2rem;
+    }
+  }
+
+  .second-line {
+    padding-top: 0.5rem;
+
+    > div {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    div:first-child {
+      padding-left: 2rem;
+    }
+
+    h1 {
+      margin: 0;
+    }
+  }
+
+  #okr-tangram {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+  }
+
+  app-search-team-management {
+    width: 100%;
+    max-width: 360px;
+    margin-right: 2rem;
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}

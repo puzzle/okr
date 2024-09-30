@@ -9,16 +9,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ObjectiveService } from '../../services/objective.service';
-import { objective, quarter, quarterList, teamMin1 } from '../../testData';
+import { ObjectiveService } from '../../../services/objective.service';
+import { marketingTeamWriteable, objective, quarter, quarterList } from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Quarter } from '../../types/model/Quarter';
-import { QuarterService } from '../../services/quarter.service';
+import { QuarterService } from '../../../services/quarter.service';
 import { Team } from '../../types/model/Team';
-import { TeamService } from '../../services/team.service';
+import { TeamService } from '../../../services/team.service';
 import { State } from '../../types/enums/State';
 import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
@@ -48,8 +48,8 @@ const quarterService = {
 const teamService = {
   getAllTeams(): Observable<Team[]> {
     return of([
-      { id: 1, version: 2, name: teamMin1.name, writeable: true, organisations: [], filterIsActive: true },
-      { id: 4, version: 5, name: 'team2', writeable: true, organisations: [], filterIsActive: true },
+      { id: 1, version: 2, name: marketingTeamWriteable.name, writeable: true, organisations: [] },
+      { id: 4, version: 5, name: 'team2', writeable: true, organisations: [] },
     ]);
   },
 };

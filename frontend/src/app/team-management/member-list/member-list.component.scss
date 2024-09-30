@@ -1,0 +1,53 @@
+@import "../../../style/_variables.scss";
+
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+
+  div {
+    max-width: 800px;
+    flex: 1 0 0;
+
+    #member-header {
+      display: flex;
+      align-items: center;
+      background-color: $dark-grey;
+      width: 100%;
+      min-height: 57px;
+      justify-content: space-between;
+
+      div {
+        display: flex;
+        align-items: end;
+
+        &.team-title {
+          align-items: flex-end;
+
+          div {
+            flex: 0 0 auto;
+            align-items: flex-end;
+
+            h2 {
+              margin-bottom: 0;
+              padding-right: 0.2rem;
+            }
+
+            p {
+              font-size: 0.75rem;
+              font-weight: bold;
+              padding-left: 0.5rem;
+            }
+          }
+        }
+        &.menu {
+          flex: 0 0 0;
+        }
+        &.action-button {
+          flex: 0 0 auto;
+          padding-right: 1rem;
+        }
+      }
+    }
+  }
+}

@@ -4,9 +4,16 @@ This is an open source application for managing OKRs, developed by the team of a
 
 This project contains two parts:
 
+## Setup
+Add subdomains to hosts file:
+```shell
+sudo sh -c 'echo "127.0.0.1       pitc.okr.localhost\n127.0.0.1       acme.okr.localhost" >> /etc/hosts'
+```
+
 ## Frontend
 
 [Frontend description](frontend/README.md)
+
 
 ## Backend
 [Backend description](backend/README.md)
@@ -20,7 +27,7 @@ Path to folder from repository root `cd docker`
 Type `docker-compose up` in terminal to start up the docker container, `docker-compose down` to shut the container down.
 
 ## Users
-All users 
+All users PITC
 ```json
 {
   "gl": {
@@ -65,3 +72,25 @@ All users
   }
 }
 ```
+All users ACME
+```json
+{
+  "gl": {
+    "username": "gl-acme",
+    "password": "gl",
+    "name": "Jaya Norris"
+  },
+  "bl": {
+    "username": "bl-acme",
+    "password": "bl",
+    "name": "Esha Harris"
+  },
+  "member": {
+    "username": "member-acme",
+    "password": "member",
+    "name": "Abraham Woodard"
+  }
+}
+```
+
+

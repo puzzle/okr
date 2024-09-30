@@ -9,8 +9,10 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,6 +55,11 @@ class KeyResultPersistenceServiceIT {
     private static final String MODEL_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
     private static final String KEYRESULT = "KeyResult";
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
     @AfterEach
     void tearDown() {
         try {
@@ -65,6 +72,7 @@ class KeyResultPersistenceServiceIT {
         } finally {
             createdKeyResult = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test

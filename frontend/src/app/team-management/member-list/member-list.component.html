@@ -1,0 +1,79 @@
+<div>
+  <div id="member-header">
+    <div class="team-title">
+      <div class="d-flex px-3">
+        <h2 *ngIf="selectedTeam$.value">{{ selectedTeam$.value!.name }}</h2>
+        <app-puzzle-icon-button
+          *ngIf="selectedTeam$.value?.writeable"
+          (click)="editTeam()"
+          [attr.data-testId]="'editTeamButton'"
+          icon="edit.svg"
+          alt="Edit Team Icon"
+        >
+        </app-puzzle-icon-button>
+        <h2 *ngIf="!selectedTeam$.value">Alle Teams</h2>
+      </div>
+      <div class="d-none d-md-flex flex-grow-1">
+        <p>Members: {{ dataSource.data.length }}</p>
+      </div>
+    </div>
+    <div class="action-button d-none d-md-flex">
+      <button
+        *ngIf="showAddMemberToTeam()"
+        (click)="addMemberToTeam()"
+        [attr.data-testId]="'add-team-member'"
+        class="align-new-icon mdc-button px-0 pe-2"
+        color="primary"
+        mat-button
+      >
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Member hinzufügen
+        </span>
+      </button>
+      <button
+        *ngIf="showInviteMember()"
+        (click)="inviteMember()"
+        [attr.data-testId]="'invite-member'"
+        class="align-new-icon"
+        color="primary"
+        mat-button
+      >
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Member registrieren
+        </span>
+      </button>
+    </div>
+    <div class="menu mx-2" *ngIf="selectedTeam$.value?.writeable">
+      <app-puzzle-icon-button
+        icon="three-dot-menu-icon.svg"
+        alt="Menu Icon"
+        [matMenuTriggerFor]="menu"
+        [attr.data-testId]="'teamMoreButton'"
+      ></app-puzzle-icon-button>
+      <mat-menu #menu="matMenu">
+        <button
+          class="d-block d-md-none"
+          (click)="deleteTeam(selectedTeam$.value!)"
+          mat-menu-item
+          [attr.data-testId]="'teamAddMemberButton'"
+        >
+          <span>Member hinzufügen</span>
+        </button>
+        <button (click)="deleteTeam(selectedTeam$.value!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+          <app-puzzle-icon icon="delete-icon.svg" alt="Delete Team"></app-puzzle-icon>
+          <span class="font-size-14">Team löschen</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+  <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
+
+  <div class="d-none d-md-block">
+    <app-member-list-table [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-table>
+  </div>
+  <div class="d-block d-md-none">
+    <app-member-list-mobile [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-mobile>
+  </div>
+</div>

@@ -45,38 +45,23 @@ public class OverviewBusinessService {
         return overviews;
     }
 
-    record OverviewComparator(AuthorizationUser authorizationUser) implements Comparator<Overview> {
+    private record OverviewComparator(AuthorizationUser authorizationUser) implements Comparator<Overview> {
 
         @Override
         public int compare(Overview o1, Overview o2) {
-            boolean containsUserTeam1 = authorizationUser.userTeamIds().contains(o1.getOverviewId().getTeamId());
-            boolean containsUserTeam2 = authorizationUser.userTeamIds().contains(o2.getOverviewId().getTeamId());
-            boolean containsFirstLevelTeam1 = authorizationUser.firstLevelTeamIds()
-                    .contains(o1.getOverviewId().getTeamId());
-            boolean containsFirstLevelTeam2 = authorizationUser.firstLevelTeamIds()
-                    .contains(o2.getOverviewId().getTeamId());
+            boolean containsUserTeam1 = authorizationUser.isUserMemberInTeam(o1.getOverviewId().getTeamId());
+            boolean containsUserTeam2 = authorizationUser.isUserMemberInTeam(o2.getOverviewId().getTeamId());
 
-            return compare(o1, o2, containsUserTeam1, containsUserTeam2, containsFirstLevelTeam1,
-                    containsFirstLevelTeam2);
-        }
-
-        public int compare(Overview o1, Overview o2, boolean containsUserTeam1, boolean containsUserTeam2,
-                boolean containsFirstLevelTeam1, boolean containsFirstLevelTeam2) {
             if (containsUserTeam1 != containsUserTeam2) {
                 return containsUserTeam1 ? -1 : 1;
-            }
-            if (containsFirstLevelTeam1 != containsFirstLevelTeam2) {
-                return containsFirstLevelTeam1 ? -1 : 1;
             }
             if (!Objects.equals(o1.getTeamName(), o2.getTeamName())) {
                 return o1.getTeamName().compareTo(o2.getTeamName());
             }
-            if (!Objects.equals(o1.getObjectiveCreatedOn(), o2.getObjectiveCreatedOn())) {
-                return o1.getObjectiveCreatedOn().compareTo(o2.getObjectiveCreatedOn());
+            if (Objects.equals(o1.getObjectiveCreatedOn(), o2.getObjectiveCreatedOn())) {
+                return o1.getOverviewId().compareTo(o2.getOverviewId());
             }
-            return o1.getOverviewId().compareTo(o2.getOverviewId());
+            return o1.getObjectiveCreatedOn().compareTo(o2.getObjectiveCreatedOn());
         }
-
     }
-
 }

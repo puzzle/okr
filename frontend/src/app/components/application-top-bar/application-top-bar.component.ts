@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { BehaviorSubject, filter, Observable, of, Subscription, switchMap } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { getFullNameFromUser } from '../../shared/types/model/User';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -20,7 +20,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   constructor(
-    private oauthService: OAuthService,
+    private oauthService: OidcSecurityService,
     private userService: UserService,
     private configService: ConfigService,
     private router: Router,
@@ -45,10 +45,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
-    this.router.navigateByUrl(currentUrlTree).then(() => {
-      this.oauthService.logOut();
-    });
+    this.oauthService.logoff();
   }
 
   private initUserFullName() {

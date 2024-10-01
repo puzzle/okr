@@ -29,7 +29,6 @@ class ObjectivePersistenceServiceIT {
     private static final String MODEL_WITH_ID_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
     private static final String OBJECTIVE = "Objective";
     private static final String ATTRIBUTE_NULL = "ATTRIBUTE_NULL";
-    private static final long GJ_FOR_TESTS_QUARTER_ID = 99L;
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
 
@@ -48,9 +47,9 @@ class ObjectivePersistenceServiceIT {
         return Objective.Builder.builder().withId(id).withVersion(version).withTitle("title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withTeam(Team.Builder.builder().withId(5L).build())
-                .withQuarter(Quarter.Builder.builder().withId(GJ_FOR_TESTS_QUARTER_ID).build())
-                .withDescription("This is our description").withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX).withModifiedBy(User.Builder.builder().withId(1L).build()).build();
+                .withQuarter(Quarter.Builder.builder().withId(1L).build()).withDescription("This is our description")
+                .withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .withModifiedBy(User.Builder.builder().withId(1L).build()).build();
     }
 
     @BeforeEach

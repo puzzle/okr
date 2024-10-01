@@ -18,7 +18,7 @@ describe('OKR Objective Backlog e2e tests', () => {
 
     cy.get('Objective in quarter backlog').should('not.exist');
 
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
 
     cy.contains('Objective in quarter backlog');
   });
@@ -41,7 +41,7 @@ describe('OKR Objective Backlog e2e tests', () => {
 
     cy.get('This goes now to backlog').should('not.exist');
 
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
 
     cy.contains('This goes now to backlog');
   });
@@ -60,12 +60,12 @@ describe('OKR Objective Backlog e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#quarter').should('contain', 'GJ ForTests');
+    cy.get('select#quarter').should('contain', 'GJ 23/24-Q1');
     cy.get('select#quarter').should('not.contain', 'Backlog');
   });
 
   it(`Can release Objective to another quarter from backlog`, () => {
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('We can not release this');
     cy.getByTestId('safe').should('not.exist');
@@ -89,7 +89,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.getByTestId('title').first().clear().type('This is our first released objective');
 
     cy.get('select#quarter').should('not.contain', 'Backlog');
-    cy.get('select#quarter').select('GJ ForTests');
+    cy.get('select#quarter').select('GJ 22/23-Q4');
 
     cy.contains('Als Draft speichern').should('not.exist');
     cy.contains('Speichern');
@@ -97,13 +97,13 @@ describe('OKR Objective Backlog e2e tests', () => {
 
     cy.contains('This is our first released objective').should('not.exist');
 
-    cy.visit('/?quarter=99');
+    cy.visit('/?quarter=1');
 
     cy.contains('This is our first released objective');
   });
 
   it(`Can edit Objective title in backlog`, () => {
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('This is possible for edit', 'safe-draft', undefined, '', false);
 
@@ -125,7 +125,7 @@ describe('OKR Objective Backlog e2e tests', () => {
   });
 
   it(`Can edit Objective in backlog and change quarter`, () => {
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('This goes to other quarter later', 'safe-draft', undefined, '', false);
 
@@ -139,15 +139,15 @@ describe('OKR Objective Backlog e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#quarter').select('GJ ForTests');
+    cy.get('select#quarter').select('GJ 22/23-Q4');
     cy.getByTestId('safe').first().click();
 
-    cy.visit('/?quarter=99');
+    cy.visit('/?quarter=1');
     cy.contains('This goes to other quarter later');
   });
 
   it(`Can duplicate from backlog`, () => {
-    cy.visit('/?quarter=99');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('Ready for duplicate', 'safe-draft', undefined, '', false);
 
@@ -176,9 +176,10 @@ describe('OKR Objective Backlog e2e tests', () => {
       .contains('Objective duplizieren')
       .click();
 
-    cy.fillOutObjective('New duplication for other quarter', 'safe', 'GJ ForTests', '', false);
+    cy.fillOutObjective('New duplication for other quarter', 'safe', 'GJ 22/23-Q4', '', false);
     cy.get('New duplication for other quarter').should('not.exist');
 
+    cy.visit('/?quarter=1');
     cy.contains('New duplication for other quarter');
   });
 
@@ -199,7 +200,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.get('select#quarter').select('Backlog');
     cy.getByTestId('safe').first().click();
 
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.contains('Possible to duplicate into backlog');
   });
 });

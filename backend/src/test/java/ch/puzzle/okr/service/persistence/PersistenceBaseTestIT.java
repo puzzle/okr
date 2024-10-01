@@ -56,6 +56,7 @@ public class PersistenceBaseTestIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("findById() should return single entity if entity with id exists")
     @Test
     void findByIdShouldReturnSingleEntityIfEntityWithIdExists() {
         User foundUser = persistenceBase.findById(ID_USER_PACO);
@@ -64,8 +65,9 @@ public class PersistenceBaseTestIT {
         assertUser("Paco", "Eggimann", "peggimann@puzzle.ch", foundUser);
     }
 
+    @DisplayName("findById() should throw exception if entity with id does not exists")
     @Test
-    void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
+    void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExists() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> persistenceBase.findById(321L));
 
@@ -73,6 +75,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
     }
 
+    @DisplayName("findById() should throw exception if id is null")
     @Test
     void findByIdShouldThrowExceptionIfIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -82,6 +85,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("ATTRIBUTE_NULL", exception);
     }
 
+    @DisplayName("findAll() should return all entities as list")
     @Test
     void findAllShouldReturnAllEntitiesAsList() throws ResponseStatusException {
         List<User> userList = persistenceBase.findAll();
@@ -89,6 +93,7 @@ public class PersistenceBaseTestIT {
         assertThat(userList.size()).isGreaterThanOrEqualTo(7);
     }
 
+    @DisplayName("save() should add new entity")
     @Test
     void saveShouldAddNewEntity() throws ResponseStatusException {
         createdUser = persistenceBase.save(USER_WITHOUT_CONSTRAINTS);
@@ -97,6 +102,7 @@ public class PersistenceBaseTestIT {
         assertUser("Hans", "Muster", "hans.muster@puzzle.ch", createdUser);
     }
 
+    @DisplayName("save() existing entity with different data should update existing entity")
     @Test
     void saveExistingEntityWithDifferentDataShouldUpdateExistingEntity() throws ResponseStatusException {
         // arrange
@@ -114,6 +120,7 @@ public class PersistenceBaseTestIT {
         assertEquals("Pekka", foundUser.getFirstname());
     }
 
+    @DisplayName("deleteById() should delete entity")
     @Test
     void deleteByIdShouldDeleteEntity() throws ResponseStatusException {
         // arrange

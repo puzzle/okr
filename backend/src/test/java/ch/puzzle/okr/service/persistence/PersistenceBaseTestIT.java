@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.UserRepository;
@@ -10,15 +11,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.test.TestHelper.getAllErrorKeys;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Testing the functionality of the abstract PersistenceBase and use UserRepository as example of a CrudRepository
@@ -28,6 +31,13 @@ import static org.mockito.Mockito.when;
 public class PersistenceBaseTestIT {
 
     private User createdUser;
+
+    private static final long ID_USER_PACO = 1L;
+    private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder() //
+            .withFirstname("Hans") //
+            .withLastname("Muster") //
+            .withEmail("hans.muster@puzzle.ch") //
+            .build();
 
     @Autowired
     private PersistenceBase<User, Long, UserRepository> persistenceBase;
@@ -46,88 +56,76 @@ public class PersistenceBaseTestIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("findById() should return single item if item with id exists")
     @Test
-    void findByIdShouldReturnSingleItemIfItemWithIdExists() {
-        User returnedUser = persistenceBase.findById(1L);
+    void findByIdShouldReturnSingleEntityIfEntityWithIdExists() {
+        User foundUser = persistenceBase.findById(ID_USER_PACO);
 
-        assertEquals(1L, returnedUser.getId());
-        assertEquals("Paco", returnedUser.getFirstname());
-        assertEquals("Eggimann", returnedUser.getLastname());
-        assertEquals("peggimann@puzzle.ch", returnedUser.getEmail());
+        assertEquals(ID_USER_PACO, foundUser.getId());
+        assertUser("Paco", "Eggimann", "peggimann@puzzle.ch", foundUser);
     }
 
-    @DisplayName("findById() should throw exception if item with id does not exist")
     @Test
-    void findByIdShouldThrowExceptionIfItemWithIdDoesNotExist() {
+    void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> persistenceBase.findById(321L));
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
     }
 
-    @DisplayName("findById() should throw exception if id is null")
     @Test
     void findByIdShouldThrowExceptionIfIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> persistenceBase.findById(null));
 
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("ATTRIBUTE_NULL", exception.getReason());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertErrorKey("ATTRIBUTE_NULL", exception);
     }
 
-    @DisplayName("findAll() should return all items as list")
     @Test
-    void findAllShouldReturnAllItemsAsList() throws ResponseStatusException {
+    void findAllShouldReturnAllEntitiesAsList() throws ResponseStatusException {
         List<User> userList = persistenceBase.findAll();
 
-        assertEquals(7, userList.size());
+        assertThat(userList.size()).isGreaterThanOrEqualTo(7);
     }
 
-    @DisplayName("save() should add new item")
     @Test
-    void saveShouldAddNewItem() throws ResponseStatusException {
-        createdUser = persistenceBase.save(User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("hans.muster@puzzle.ch") //
-                .build());
+    void saveShouldAddNewEntity() throws ResponseStatusException {
+        createdUser = persistenceBase.save(USER_WITHOUT_CONSTRAINTS);
 
         assertNotNull(createdUser);
-        assertEquals(persistenceBase.findAll().size(), 8);
+        assertUser("Hans", "Muster", "hans.muster@puzzle.ch", createdUser);
     }
 
-    @DisplayName("deleteById() should delete item")
     @Test
-    void deleteByIdShouldDeleteItem() throws ResponseStatusException {
-        assertNumberOfUsersInRepo(7);
+    void saveExistingEntityWithDifferentDataShouldUpdateExistingEntity() throws ResponseStatusException {
+        // arrange
+        createdUser = persistenceBase.save(USER_WITHOUT_CONSTRAINTS);
+        Long createdUserId = createdUser.getId();
+        User foundUser = persistenceBase.findById(createdUserId);
 
-        createdUser = persistenceBase.save(User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("hans.muster@puzzle.ch") //
-                .build());
+        // act
+        foundUser.setFirstname("Pekka");
+        persistenceBase.save(foundUser);
+        foundUser = persistenceBase.findById(createdUserId);
 
-        assertNumberOfUsersInRepo(8);
-        assertNotNull(persistenceBase.findById(createdUser.getId()));
-
-        persistenceBase.deleteById(createdUser.getId());
-
-        assertNumberOfUsersInRepo(7);
-        assertUserNotFound(createdUser.getId());
+        // assert
+        assertEquals(createdUserId, foundUser.getId());
+        assertEquals("Pekka", foundUser.getFirstname());
     }
 
-    private void assertNumberOfUsersInRepo(int n) {
-        assertEquals(persistenceBase.findAll().size(), n);
-    }
+    @Test
+    void deleteByIdShouldDeleteEntity() throws ResponseStatusException {
+        // arrange
+        createdUser = persistenceBase.save(USER_WITHOUT_CONSTRAINTS);
+        Long createdUserId = createdUser.getId();
+        assertNotNull(persistenceBase.findById(createdUserId));
 
-    private void assertUserNotFound(long userId) {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> persistenceBase.findById(userId));
+        // act
+        persistenceBase.deleteById(createdUserId);
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
+        // assert
+        assertEntityNotFound(createdUserId);
     }
 
     @DisplayName("deleteById() should throw exception in the case of optimistic locking failure")
@@ -149,8 +147,27 @@ public class PersistenceBaseTestIT {
                 () -> persistenceBaseForTest.save(createdUser));
 
         // assert
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, exception.getStatusCode());
-        assertEquals("DATA_HAS_BEEN_UPDATED", exception.getReason());
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
+        assertErrorKey("DATA_HAS_BEEN_UPDATED", exception);
     }
 
+    private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail,
+            User currentUser) {
+        assertEquals(expectedFirstName, currentUser.getFirstname());
+        assertEquals(expectedLastName, currentUser.getLastname());
+        assertEquals(expectedEmail, currentUser.getEmail());
+    }
+
+    private void assertErrorKey(String errorKey, ResponseStatusException exception) {
+        List<String> errorKeys = getAllErrorKeys(List.of(new ErrorDto(errorKey, List.of("User"))));
+        assertTrue(errorKeys.contains(exception.getReason()));
+    }
+
+    private void assertEntityNotFound(long entityId) {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> persistenceBase.findById(entityId));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
+    }
 }

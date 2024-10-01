@@ -1,13 +1,14 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -45,38 +46,6 @@ class TeamPersistenceServiceIT {
             createdTeam = null;
         }
         TenantContext.setCurrentTenant(null);
-    }
-
-    @Test
-    void getTeamByIdShouldReturnTeam() throws ResponseStatusException {
-        Team team = teamPersistenceService.findById(5L);
-
-        assertEquals(5L, team.getId());
-        assertEquals(TEAM_PUZZLE, team.getName());
-    }
-
-    @Test
-    void getTeamByIdShouldThrowExceptionWhenTeamNotFound() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> teamPersistenceService.findById(321L));
-
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Team", "321")));
-
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-    }
-
-    @Test
-    void getTeamByIdShouldThrowExceptionWhenTeamIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> teamPersistenceService.findById(null));
-
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test

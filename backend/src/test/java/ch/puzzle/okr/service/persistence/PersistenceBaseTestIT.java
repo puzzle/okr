@@ -33,6 +33,8 @@ public class PersistenceBaseTestIT {
     private User createdUser;
 
     private static final long ID_USER_PACO = 1L;
+    private static final long ID_OF_NOT_EXISTING_ENTITY = 321L;
+
     private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder() //
             .withFirstname("Hans") //
             .withLastname("Muster") //
@@ -69,7 +71,7 @@ public class PersistenceBaseTestIT {
     @Test
     void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExists() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> persistenceBase.findById(321L));
+                () -> persistenceBase.findById(ID_OF_NOT_EXISTING_ENTITY));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
@@ -158,8 +160,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("DATA_HAS_BEEN_UPDATED", exception);
     }
 
-    private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail,
-            User currentUser) {
+    private void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail, User currentUser) {
         assertEquals(expectedFirstName, currentUser.getFirstname());
         assertEquals(expectedLastName, currentUser.getLastname());
         assertEquals(expectedEmail, currentUser.getEmail());

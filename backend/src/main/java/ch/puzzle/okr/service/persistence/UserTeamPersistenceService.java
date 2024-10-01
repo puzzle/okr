@@ -14,10 +14,12 @@ public class UserTeamPersistenceService extends PersistenceBase<UserTeam, Long, 
         super(repository);
     }
 
+    // TODO implement Test
     public void delete(UserTeam userTeam) {
         getRepository().delete(userTeam);
     }
 
+    // TODO implement Test
     public void deleteAll(List<UserTeam> userTeamList) {
         getRepository().deleteAll(userTeamList);
     }

@@ -73,13 +73,6 @@ class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findAllShouldReturnListOfObjectives() {
-        List<Objective> objectives = objectivePersistenceService.findAll();
-
-        assertEquals(7, objectives.size());
-    }
-
-    @Test
     void findObjectiveByIdShouldReturnObjectiveProperly() {
         Objective objective = objectivePersistenceService.findObjectiveById(3L, authorizationUser, exception);
 

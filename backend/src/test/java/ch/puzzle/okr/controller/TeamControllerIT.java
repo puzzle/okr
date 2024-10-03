@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,29 +40,34 @@ class TeamControllerIT {
     private static final String BASE_URL = "/api/v2/teams";
     private static final String URL_TEAM_1 = "/api/v2/teams/1";
     public static final String PUZZLE = "Puzzle";
+    public static final String SUB_URL_USER_5 = "/user/5";
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, new ArrayList<>(), false);
-    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", new ArrayList<>(), false);
+    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, false);
+    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", false);
 
     private static final String CREATE_NEW_TEAM = """
             {
-               "id": null, "name": "OKR-Team", "organisations": []
+            "id": null, "name": "OKR-Team", "organisations": []
             }
             """;
     private static final String CREATE_NEW_TEAM_WITH_NULL_VALUES = """
             {
-               "id": null, "name": null, "organisations": null
+            "id": null, "name": null, "organisations": null
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"version":4,"name":"OKR","organisations":[],"filterIsActive":false}""";
+            {"id":7,"version":4,"name":"OKR","writeable":false}""";
 
     private static final String UPDATE_TEAM = """
             {
-                "id": 1, "name": "OKR-Team", "organisations": []
+            "id": 1, "name": "OKR-Team", "organisations": []
             }
+            """;
+
+    private static final String ADD_USERS = """
+            [{"id":31,"version":1,"firstname":"Findus","lastname":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstname":"Paco","lastname":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
             """;
 
     @Autowired
@@ -75,8 +79,8 @@ class TeamControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(teamMapper.toDto(teamPuzzle, List.of())).willReturn(teamPuzzleDto);
-        BDDMockito.given(teamMapper.toDto(teamOKR, List.of())).willReturn(teamOkrDto);
+        BDDMockito.given(teamMapper.toDto(teamPuzzle)).willReturn(teamPuzzleDto);
+        BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
     }
 
     @Test
@@ -93,8 +97,8 @@ class TeamControllerIT {
     void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
         mvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON)).andExpectAll();
-        BDDMockito.verify(teamMapper).toDto(teamOKR, List.of());
-        BDDMockito.verify(teamMapper).toDto(teamPuzzle, List.of());
+        BDDMockito.verify(teamMapper).toDto(teamOKR);
+        BDDMockito.verify(teamMapper).toDto(teamPuzzle);
     }
 
     @Test
@@ -127,11 +131,10 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnUpdatedTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", new ArrayList<>(), false);
-        Team team = Team.Builder.builder().withId(1L).withName("OKR-Team")
-                .withAuthorizationOrganisation(new ArrayList<>()).build();
+        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", false);
+        Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
-        BDDMockito.given(teamMapper.toDto(any(), any())).willReturn(teamDto);
+        BDDMockito.given(teamMapper.toDto(any())).willReturn(teamDto);
         BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong())).willReturn(team);
 
         mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON).content(UPDATE_TEAM)
@@ -173,5 +176,25 @@ class TeamControllerIT {
                 .deleteEntity(anyLong());
         mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void addUsersToTeam_shouldReturnOk() throws Exception {
+        mvc.perform(put(URL_TEAM_1 + "/addusers").contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void removeUserFromTeam_shouldReturnOk() throws Exception {
+        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser").contentType(MediaType.APPLICATION_JSON)
+                .content(ADD_USERS).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
+        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true")
+                .contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

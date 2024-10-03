@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+
 @Service
 public class QuarterBusinessService {
     private static final Logger logger = LoggerFactory.getLogger(QuarterBusinessService.class);
@@ -42,7 +44,7 @@ public class QuarterBusinessService {
 
     public List<Quarter> getQuarters() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
-        Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
+        Quarter backlog = quarterPersistenceService.findByLabel(BACK_LOG_QUARTER_LABEL);
         mostCurrentQuarterList.add(0, backlog);
         return mostCurrentQuarterList;
     }

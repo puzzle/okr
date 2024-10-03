@@ -27,7 +27,7 @@ public class ActionAuthorizationService {
     }
 
     public List<Action> createEntities(List<Action> actionList) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
         List<Action> savedActions = actionBusinessService.createEntities(actionList);
         savedActions.forEach(action -> action.setWriteable(true));
@@ -35,7 +35,7 @@ public class ActionAuthorizationService {
     }
 
     public List<Action> updateEntities(List<Action> actionList) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
         List<Action> updatedActions = actionBusinessService.updateEntities(actionList);
         updatedActions.forEach(action -> action.setWriteable(true));
@@ -43,7 +43,7 @@ public class ActionAuthorizationService {
     }
 
     public void deleteActionByActionId(Long actionId) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         authorizationService.hasRoleDeleteByActionId(actionId, authorizationUser);
         actionBusinessService.deleteEntityById(actionId);
     }

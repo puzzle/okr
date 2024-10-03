@@ -6,11 +6,11 @@
     <parent>
         <groupId>ch.puzzle.okr</groupId>
         <artifactId>parent</artifactId>
-        <version>2.0.136-SNAPSHOT</version>
+        <version>2.0.160-SNAPSHOT</version>
     </parent>
 
     <artifactId>backend</artifactId>
-    <version>2.0.136-SNAPSHOT</version>
+    <version>2.0.160-SNAPSHOT</version>
     <name>backend</name>
     <description>Puzzle OKR Tool</description>
 
@@ -107,7 +107,6 @@
                     <excludes>
                         <exclude>ch/puzzle/okr/models/**</exclude>
                         <exclude>ch/puzzle/okr/dto/**</exclude>
-                        <exclude>ch/puzzle/okr/mapper/**</exclude>
                         <exclude>ch/puzzle/okr/OkrApplication.*</exclude>
                         <exclude>ch/puzzle/okr/Constants.java</exclude>
                         <exclude>ch/puzzle/okr/ErrorKey.java</exclude>

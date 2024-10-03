@@ -11,8 +11,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { of } from 'rxjs';
-import { OverviewComponent } from './overview/overview.component';
-import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
+import { OverviewComponent } from './components/overview/overview.component';
+import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { CommonModule } from '@angular/common';
 import { StsConfigLoader } from 'angular-auth-oidc-client';
 

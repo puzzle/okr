@@ -1,13 +1,14 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TESTS_QUARTER_ID;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +30,6 @@ class ObjectivePersistenceServiceIT {
     private static final String MODEL_WITH_ID_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
     private static final String OBJECTIVE = "Objective";
     private static final String ATTRIBUTE_NULL = "ATTRIBUTE_NULL";
-    private static final long GJ_FOR_TESTS_QUARTER_ID = 99L;
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
 
@@ -52,6 +53,11 @@ class ObjectivePersistenceServiceIT {
                 .withModifiedOn(LocalDateTime.MAX).withModifiedBy(User.Builder.builder().withId(1L).build()).build();
     }
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
     @AfterEach
     void tearDown() {
         try {
@@ -64,6 +70,7 @@ class ObjectivePersistenceServiceIT {
         } finally {
             createdObjective = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test
@@ -254,25 +261,5 @@ class ObjectivePersistenceServiceIT {
                 Quarter.Builder.builder().withId(2L).build());
 
         assertEquals(2, count);
-    }
-
-    @DisplayName("findObjectiveByTeamIdId() should return list of Objectives")
-    @Test
-    void findObjectiveByTeamIdIdShouldReturnListOfObjectives() {
-        long teamId = 5L;
-        List<Objective> objectives = objectivePersistenceService.findObjectiveByTeamId(teamId);
-
-        assertEquals(2, objectives.size());
-        assertEquals(3, objectives.get(0).getId());
-        assertEquals(4, objectives.get(1).getId());
-    }
-
-    @DisplayName("findObjectiveByTeamIdId() should return empty list when Team does not exist")
-    @Test
-    void findObjectiveByTeamIdIdShouldReturnEmptyListWhenTeamDoesNotExist() {
-        long notExistingTeamId = 1234567890L;
-        List<Objective> objectives = objectivePersistenceService.findObjectiveByTeamId(notExistingTeamId);
-
-        assertTrue(objectives.isEmpty());
     }
 }

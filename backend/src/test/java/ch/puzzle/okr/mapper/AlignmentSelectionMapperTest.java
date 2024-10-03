@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,7 +26,7 @@ class AlignmentSelectionMapperTest {
     void toDtoShouldReturnOneElementWhenObjectiveFound() {
         List<AlignmentSelection> alignmentSelections = List.of(AlignmentSelection.Builder.builder()
                 .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder().withObjectiveId(1L).build())
-                .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").build());
+                .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").build());
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertEquals(1, alignmentObjectiveDtos.size());
@@ -37,7 +38,7 @@ class AlignmentSelectionMapperTest {
         List<AlignmentSelection> alignmentSelections = List.of(AlignmentSelection.Builder.builder()
                 .withAlignmentSelectionId(
                         AlignmentSelectionId.Builder.builder().withObjectiveId(1L).withKeyResultId(3L).build())
-                .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1")
+                .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1")
                 .withKeyResultTitle("Key Result 3").build());
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
@@ -51,12 +52,12 @@ class AlignmentSelectionMapperTest {
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(
                                 AlignmentSelectionId.Builder.builder().withObjectiveId(1L).withKeyResultId(3L).build())
-                        .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1")
+                        .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1")
                         .withKeyResultTitle("Key Result 3").build(),
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(
                                 AlignmentSelectionId.Builder.builder().withObjectiveId(1L).withKeyResultId(5L).build())
-                        .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1")
+                        .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1")
                         .withKeyResultTitle("Key Result 5").build());
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
@@ -70,17 +71,17 @@ class AlignmentSelectionMapperTest {
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(
                                 AlignmentSelectionId.Builder.builder().withObjectiveId(1L).withKeyResultId(3L).build())
-                        .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1")
+                        .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1")
                         .withKeyResultTitle("Key Result 3").build(),
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(
                                 AlignmentSelectionId.Builder.builder().withObjectiveId(5L).withKeyResultId(6L).build())
-                        .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 5")
+                        .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 5")
                         .withKeyResultTitle("Key Result 6").build(),
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(
                                 AlignmentSelectionId.Builder.builder().withObjectiveId(1L).withKeyResultId(9L).build())
-                        .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1")
+                        .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1")
                         .withKeyResultTitle("Key Result 9").build());
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 

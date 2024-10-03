@@ -1,10 +1,10 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -36,7 +37,7 @@ class QuarterValidationServiceTest {
     void throwExceptionWhenStartEndDateQuarterIsNullShouldDoNothingWhenQuarterLabelIsBacklog() {
         // arrange
         Quarter quarter = mock(Quarter.class);
-        when(quarter.getLabel()).thenReturn("Backlog");
+        when(quarter.getLabel()).thenReturn(BACK_LOG_QUARTER_LABEL);
 
         // act
         QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter);

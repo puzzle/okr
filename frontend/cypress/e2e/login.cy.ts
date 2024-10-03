@@ -19,4 +19,13 @@ describe('OKR Login', () => {
       cy.get('#kc-page-title').contains('Sign in to your account');
     });
   });
+
+  it('Click on the Hilfe button should open a new tab with the correct URL', () => {
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('openWindow');
+    });
+
+    cy.get('#hilfeButton').click();
+    cy.get('@openWindow').should('be.calledWith', 'https://wiki.puzzle.ch/Puzzle/OKRs');
+  });
 });

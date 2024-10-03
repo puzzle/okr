@@ -1,53 +1,69 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.converter.JwtConverterFactory;
-import ch.puzzle.okr.mapper.role.RoleMapperFactory;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.business.UserBusinessService;
-import ch.puzzle.okr.service.persistence.TeamPersistenceService;
-import org.springframework.beans.factory.annotation.Value;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 
 @Service
 public class AuthorizationRegistrationService {
 
-    @Value("${okr.organisation.name.1stLevel}")
-    private String firstLevelOrganisationName;
-
     private final UserBusinessService userBusinessService;
-    private final TeamPersistenceService teamPersistenceService;
-    private final JwtConverterFactory jwtConverterFactory;
-    private final RoleMapperFactory roleMapperFactory;
+    private final TenantConfigProvider tenantConfigProvider;
+
+    private final UserUpdateHelper helper = new UserUpdateHelper();
 
     public AuthorizationRegistrationService(UserBusinessService userBusinessService,
-            TeamPersistenceService teamPersistenceService, JwtConverterFactory jwtConverterFactory,
-            RoleMapperFactory roleMapperFactory) {
+            TenantConfigProvider tenantConfigProvider) {
         this.userBusinessService = userBusinessService;
-        this.teamPersistenceService = teamPersistenceService;
-        this.jwtConverterFactory = jwtConverterFactory;
-        this.roleMapperFactory = roleMapperFactory;
+        this.tenantConfigProvider = tenantConfigProvider;
     }
 
-    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.username")
-    public AuthorizationUser registerAuthorizationUser(User user, Jwt token) {
-        List<String> organisationNames = jwtConverterFactory.getJwtOrganisationConverter().convert(token);
-        return new AuthorizationUser(userBusinessService.getOrCreateUser(user), getTeamIds(organisationNames),
-                getFirstLevelTeamIds(),
-                roleMapperFactory.getRoleMapper().mapAuthorizationRoles(organisationNames, user));
+    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "T(ch.puzzle.okr.SpringCachingConfig).cacheKey(#userFromToken)")
+    public AuthorizationUser updateOrAddAuthorizationUser(User userFromToken) {
+        var userFromDB = userBusinessService.getOrCreateUser(userFromToken);
+        var userFromDBWithTokenData = setFirstLastNameFromToken(userFromDB, userFromToken);
+        var userFromDBWithTokenAndPropertiesData = setOkrChampionFromProperties(userFromDBWithTokenData);
+        userBusinessService.saveUser(userFromDBWithTokenAndPropertiesData);
+        return new AuthorizationUser(userFromDBWithTokenAndPropertiesData);
     }
 
-    private List<Long> getTeamIds(List<String> organisationNames) {
-        return teamPersistenceService.findTeamIdsByOrganisationNames(organisationNames);
+    // firstname and lastname comes from JWT token
+    private User setFirstLastNameFromToken(User userFromDB, User userFromToken) {
+        return helper.setFirstLastNameFromToken(userFromDB, userFromToken);
     }
 
-    private List<Long> getFirstLevelTeamIds() {
-        return teamPersistenceService.findTeamIdsByOrganisationName(firstLevelOrganisationName);
+    // okr champion is set in application properties
+    private User setOkrChampionFromProperties(User user) {
+        TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider
+                .getTenantConfigById(TenantContext.getCurrentTenant())
+                .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
+
+        return helper.setOkrChampionFromProperties(user, tenantConfig);
     }
+
+    public static class UserUpdateHelper {
+
+        public User setOkrChampionFromProperties(User user, TenantConfigProvider.TenantConfig tenantConfig) {
+            for (var mail : tenantConfig.okrChampionEmails()) {
+                if (mail.trim().equals(user.getEmail())) {
+                    user.setOkrChampion(true);
+                }
+            }
+            return user;
+        }
+
+        public User setFirstLastNameFromToken(User userFromDB, User userFromToken) {
+            userFromDB.setFirstname(userFromToken.getFirstname());
+            userFromDB.setLastname(userFromToken.getLastname());
+            return userFromDB;
+        }
+    }
+
 }

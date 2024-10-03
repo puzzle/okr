@@ -1,5 +1,7 @@
 package ch.puzzle.okr.dto;
 
-public record UserDto(Long id, int version, String username, String firstname, String lastname, String email,
-        boolean isWriteable) {
+import java.util.List;
+
+public record UserDto(Long id, int version, String firstname, String lastname, String email,
+        List<UserTeamDto> userTeamList, boolean isOkrChampion) {
 }

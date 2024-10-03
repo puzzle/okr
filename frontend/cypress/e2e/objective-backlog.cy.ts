@@ -97,7 +97,7 @@ describe('OKR Objective Backlog e2e tests', () => {
 
     cy.contains('This is our first released objective').should('not.exist');
 
-    cy.visit('/?quarter=99');
+    cy.visit('/?quarter=998');
 
     cy.contains('This is our first released objective');
   });
@@ -142,12 +142,12 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.get('select#quarter').select('GJ ForTests');
     cy.getByTestId('safe').first().click();
 
-    cy.visit('/?quarter=99');
+    cy.visit('/?quarter=998');
     cy.contains('This goes to other quarter later');
   });
 
   it(`Can duplicate from backlog`, () => {
-    cy.visit('/?quarter=99');
+    cy.visit('/?quarter=998');
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('Ready for duplicate', 'safe-draft', undefined, '', false);
 

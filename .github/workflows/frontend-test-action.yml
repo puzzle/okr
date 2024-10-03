@@ -45,9 +45,9 @@ jobs:
               --name my_keycloak \
               -e KEYCLOAK_ADMIN=admin \
               -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
-              -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
+              -v ./docker/config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json \
               -p 8544:8080 \
-              quay.io/keycloak/keycloak:23.0.1 \
+              quay.io/keycloak/keycloak:24.0.2 \
               start-dev --import-realm
 
       - name: start backend
@@ -58,10 +58,16 @@ jobs:
         with:
           working-directory: frontend
           start: npm start
-          wait-on: 'http://localhost:8080/config, http://localhost:4200, http://localhost:8544'
+          wait-on: 'http://pitc.okr.localhost:8080/config, http://pitc.okr.localhost:4200, http://localhost:8544'
           wait-on-timeout: 120
           browser: chrome
           headed: true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-screenshots
+          path: frontend/cypress/screenshots
 
       - name: remove docker containers
         run: docker ps -aq | xargs -r docker rm -f

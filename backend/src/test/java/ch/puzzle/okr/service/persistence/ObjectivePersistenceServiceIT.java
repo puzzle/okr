@@ -1,12 +1,12 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +29,7 @@ class ObjectivePersistenceServiceIT {
     private static final String MODEL_WITH_ID_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
     private static final String OBJECTIVE = "Objective";
     private static final String ATTRIBUTE_NULL = "ATTRIBUTE_NULL";
+    private static final long GJ_FOR_TESTS_QUARTER_ID = 99L;
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
 
@@ -47,9 +48,9 @@ class ObjectivePersistenceServiceIT {
         return Objective.Builder.builder().withId(id).withVersion(version).withTitle("title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withTeam(Team.Builder.builder().withId(5L).build())
-                .withQuarter(Quarter.Builder.builder().withId(1L).build()).withDescription("This is our description")
-                .withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
-                .withModifiedBy(User.Builder.builder().withId(1L).build()).build();
+                .withQuarter(Quarter.Builder.builder().withId(GJ_FOR_TESTS_QUARTER_ID).build())
+                .withDescription("This is our description").withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX)
+                .withModifiedOn(LocalDateTime.MAX).withModifiedBy(User.Builder.builder().withId(1L).build()).build();
     }
 
     @BeforeEach

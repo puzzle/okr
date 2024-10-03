@@ -33,17 +33,21 @@ VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),
        (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', FALSE),
        (61, 1, 'gl@gl.com', 'Jaya', 'Norris', TRUE);
 
+CREATE ALIAS INIT_QUARTER_DATA FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.initQuarterData';
+CREATE ALIAS CURRENT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterLabel';
+CREATE ALIAS CURRENT_QUARTER_START_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterStartDate';
+CREATE ALIAS CURRENT_QUARTER_END_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterEndDate';
+CREATE ALIAS NEXT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.nextQuarterLabel';
+CREATE ALIAS NEXT_QUARTER_START_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.nextQuarterStartDate';
+CREATE ALIAS NEXT_QUARTER_END_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.nextQuarterEndDate';
+
+call INIT_QUARTER_DATA();
+
 insert into quarter (id, label, start_date, end_date)
-values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
-       (2, 'GJ 23/24-Q1', '2023-07-01', '2023-09-30'),
-       (3, 'GJ 22/23-Q3', '2023-01-01', '2023-03-31'),
-       (4, 'GJ 22/23-Q2', '2022-10-01', '2022-12-31'),
-       (5, 'GJ 22/23-Q1', '2022-07-01', '2022-09-30'),
-       (6, 'GJ 21/22-Q4', '2022-04-01', '2022-06-30'),
-       (7, 'GJ 23/24-Q2', '2023-10-01', '2023-12-31'),
-       (8, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31'),
-       (9, 'GJ 24/25-Q2', '2024-10-01', '2024-12-31'),
-       (199, 'Backlog', null, null);
+values (2, CURRENT_QUARTER_LABEL(), CURRENT_QUARTER_START_DATE(), CURRENT_QUARTER_END_DATE()),
+       (3, NEXT_QUARTER_LABEL(), NEXT_QUARTER_START_DATE(), NEXT_QUARTER_END_DATE()),
+       (99, 'GJ ForTests', '2000-07-01', '2000-09-30'),
+       (999, 'Backlog', null, null);
 
 insert into team (id, version, name)
 values (4, 1, '/BBT'),

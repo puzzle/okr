@@ -40,7 +40,7 @@ const quarterService = {
     return of([
       { id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
       { id: 2, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
-      { id: 199, startDate: null, endDate: null, label: 'Backlog' },
+      { id: 999, startDate: null, endDate: null, label: 'Backlog' },
     ]);
   },
 };
@@ -68,7 +68,7 @@ let matDataMock: { objective: { objectiveId: number | undefined; teamId: number 
 const mockActivatedRoute = {
   snapshot: {
     queryParams: {
-      quarter: '199',
+      quarter: '999',
     },
   },
 };
@@ -293,8 +293,8 @@ describe('ObjectiveDialogComponent', () => {
 
     it('should return if option is allowed for quarter select', async () => {
       let quarter: Quarter = {
-        id: 199,
-        label: 'GJ 22/23-Q3',
+        id: 999,
+        label: 'Backlog',
         startDate: null,
         endDate: null,
       };
@@ -386,7 +386,7 @@ describe('ObjectiveDialogComponent', () => {
       isBacklogQuarterSpy.mockReturnValue(false);
 
       const routerHarness = await RouterTestingHarness.create();
-      await routerHarness.navigateByUrl('/?quarter=199');
+      await routerHarness.navigateByUrl('/?quarter=999');
       objectiveService.getFullObjective.mockReturnValue(of(objective));
       fixture.detectChanges();
       component.ngOnInit();
@@ -395,7 +395,7 @@ describe('ObjectiveDialogComponent', () => {
       expect(rawFormValue.title).toBe(objective.title);
       expect(rawFormValue.description).toBe(objective.description);
       expect(rawFormValue.team).toBe(objective.teamId);
-      expect(rawFormValue.quarter).not.toBe(199);
+      expect(rawFormValue.quarter).not.toBe(999);
       expect(rawFormValue.quarter).toBe(2);
     });
   });

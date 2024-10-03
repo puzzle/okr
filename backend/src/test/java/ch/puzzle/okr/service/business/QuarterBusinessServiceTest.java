@@ -9,16 +9,25 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,13 +80,14 @@ class QuarterBusinessServiceTest {
                 .withStartDate(LocalDate.of(2022, 8, 1)).withEndDate(LocalDate.of(2022, 11, 30)).build();
         List<Quarter> quarterList = new ArrayList<>(Arrays.asList(realQuarter1, realQuarter2));
 
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").build();
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
+                .build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
-        when(quarterPersistenceService.findByLabel("Backlog")).thenReturn(backlogQuarter);
+        when(quarterPersistenceService.findByLabel(BACK_LOG_QUARTER_LABEL)).thenReturn(backlogQuarter);
 
         quarterList = quarterBusinessService.getQuarters();
         assertEquals(3, quarterList.size());
-        assertEquals("Backlog", quarterList.get(0).getLabel());
+        assertEquals(BACK_LOG_QUARTER_LABEL, quarterList.get(0).getLabel());
         assertNull(quarterList.get(0).getStartDate());
         assertNull(quarterList.get(0).getEndDate());
     }

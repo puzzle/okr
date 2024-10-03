@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TESTS_QUARTER_ID;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +30,6 @@ class ObjectivePersistenceServiceIT {
     private static final String MODEL_WITH_ID_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
     private static final String OBJECTIVE = "Objective";
     private static final String ATTRIBUTE_NULL = "ATTRIBUTE_NULL";
-    private static final long GJ_FOR_TESTS_QUARTER_ID = 99L;
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
 

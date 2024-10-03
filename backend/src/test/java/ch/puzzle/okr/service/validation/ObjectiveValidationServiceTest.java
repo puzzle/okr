@@ -1,10 +1,10 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import ch.puzzle.okr.test.TestHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -26,6 +25,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -384,8 +385,8 @@ class ObjectiveValidationServiceTest {
     @ParameterizedTest
     @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
     void validateOnCreateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
-                .withEndDate(null).build();
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
+                .withStartDate(null).withEndDate(null).build();
 
         Objective invalidObjective = Objective.Builder.builder().withTitle("Invalid Objective").withCreatedBy(user)
                 .withCreatedOn(LocalDateTime.MAX).withState(state).withTeam(team).withQuarter(backlogQuarter).build();
@@ -403,8 +404,8 @@ class ObjectiveValidationServiceTest {
     @ParameterizedTest
     @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
     void validateOnUpdateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
-                .withEndDate(null).build();
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
+                .withStartDate(null).withEndDate(null).build();
 
         Objective invalidObjective = Objective.Builder.builder().withId(1L).withTitle("Invalid Objective")
                 .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(state).withTeam(team)
@@ -422,8 +423,8 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldPassWhenQuarterIsBacklogAndStateIsDraft() {
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
-                .withEndDate(null).build();
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
+                .withStartDate(null).withEndDate(null).build();
 
         Objective validObjective = Objective.Builder.builder().withId(1L).withTitle("Invalid Objective")
                 .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)

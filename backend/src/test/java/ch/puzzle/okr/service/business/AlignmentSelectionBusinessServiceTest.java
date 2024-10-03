@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -24,17 +25,19 @@ class AlignmentSelectionBusinessServiceTest {
 
     private static AlignmentSelection createAlignmentSelection() {
         return AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(9L, 15L))
-                .withTeamId(5L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 9").withQuarterId(2L)
+                .withTeamId(5L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 9").withQuarterId(2L)
                 .withQuarterLabel("GJ 23/24-Q1").withKeyResultTitle("Key Result 15").build();
     }
 
     @Test
     void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnListOfAlignmentSelections() {
-        when(alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))
-                .thenReturn(List.of(createAlignmentSelection()));
+        when(alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L,
+                                                                                               4L)).thenReturn(List.of(
+                createAlignmentSelection()));
 
-        List<AlignmentSelection> alignmentSelections = alignmentSelectionBusinessService
-                .getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);
+        List<AlignmentSelection> alignmentSelections = alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(
+                2L,
+                4L);
 
         assertEquals(1, alignmentSelections.size());
         verify(alignmentSelectionPersistenceService, times(1)).getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);

@@ -46,7 +46,7 @@ call INIT_QUARTER_DATA();
 insert into quarter (id, label, start_date, end_date)
 values (2, CURRENT_QUARTER_LABEL(), CURRENT_QUARTER_START_DATE(), CURRENT_QUARTER_END_DATE()),
        (3, NEXT_QUARTER_LABEL(), NEXT_QUARTER_START_DATE(), NEXT_QUARTER_END_DATE()),
-       (99, 'GJ ForTests', '2000-07-01', '2000-09-30'),
+       (998, 'GJ ForTests', '2000-07-01', '2000-09-30'),
        (999, 'Backlog', null, null);
 
 insert into team (id, version, name)

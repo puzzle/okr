@@ -1,15 +1,18 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,9 +29,13 @@ class ObjectivePersistenceServiceIT {
     private static final String REASON = "not authorized to read objective";
     private static final OkrResponseStatusException exception = OkrResponseStatusException.of(REASON);
     private static final String HIGHER_CUSTOMER_HAPPINESS = "Wir wollen die Kundenzufriedenheit steigern";
+    private static final String COMPANY_CULTURE = "Build a company culture that kills the competition.";
     private static final String MODEL_WITH_ID_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
     private static final String OBJECTIVE = "Objective";
     private static final String ATTRIBUTE_NULL = "ATTRIBUTE_NULL";
+    private static final long TEAM_ID_PUZZLE_ITC = 5L;
+    private static final long ID_OF_NON_EXISTING_TEAM = 1L;
+    private static final long ID_OF_TEAM_WITH_NO_OBJECTIVES = 8L;
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
 
@@ -254,4 +261,34 @@ class ObjectivePersistenceServiceIT {
 
         assertEquals(2, count);
     }
+
+    // uses test data from V100_0_0__TestData.sql
+    @DisplayName("findObjectiveByTeamId() should return list of objectives")
+    @Test
+    void findObjectiveByTeamIdShouldReturnListOfObjectives() {
+        // act
+        List<Objective> objectives = objectivePersistenceService.findObjectiveByTeamId(TEAM_ID_PUZZLE_ITC);
+
+        // assert
+        assertEquals(2, objectives.size());
+        assertObjective(objectives.get(0), 3L, HIGHER_CUSTOMER_HAPPINESS);
+        assertObjective(objectives.get(1), 4L, COMPANY_CULTURE);
+    }
+
+    private void assertObjective(Objective objective, long id, String title) {
+        assertEquals(id, objective.getId());
+        assertEquals(title, objective.getTitle());
+    }
+
+    @DisplayName("findObjectiveByTeamId() should return empty list when team does not exist or team has no objectives")
+    @ParameterizedTest
+    @ValueSource(longs = { ID_OF_TEAM_WITH_NO_OBJECTIVES, ID_OF_NON_EXISTING_TEAM })
+    void findObjectiveByTeamIdShouldReturnEmptyListWhenTeamDoesNotExistOrTeamHasNoObjectives(long teamId) {
+        // act
+        List<Objective> objectives = objectivePersistenceService.findObjectiveByTeamId(teamId);
+
+        // assert
+        assertTrue(objectives.isEmpty());
+    }
+
 }

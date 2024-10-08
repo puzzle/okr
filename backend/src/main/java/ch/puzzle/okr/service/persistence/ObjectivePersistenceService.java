@@ -49,7 +49,6 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
         return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID, noResultException);
     }
 
-    // TODO implement Test
     public List<Objective> findObjectiveByTeamId(Long teamId) {
         return getRepository().findObjectivesByTeamId(teamId);
     }

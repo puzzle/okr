@@ -9,12 +9,5 @@ import java.util.List;
 
 public interface TeamRepository extends CrudRepository<Team, Long> {
 
-    @Query(value = """
-            select distinct teamOrg.team_id from team_organisation teamOrg
-              inner join organisation o on o.id = teamOrg.organisation_id
-            where o.org_name in (:organisationNames)
-            """, nativeQuery = true)
-    List<Long> findTeamIdsByOrganisationNames(@Param("organisationNames") List<String> organisationNames);
-
     List<Team> findTeamsByName(String name);
 }

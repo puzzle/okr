@@ -20,16 +20,6 @@ public class TeamPersistenceService extends PersistenceBase<Team, Long, TeamRepo
         return TEAM;
     }
 
-    // TODO implement Test
-    public List<Long> findTeamIdsByOrganisationName(String organisationName) {
-        return findTeamIdsByOrganisationNames(List.of(organisationName));
-    }
-
-    // TODO implement Test
-    public List<Long> findTeamIdsByOrganisationNames(List<String> organisationNames) {
-        return getRepository().findTeamIdsByOrganisationNames(organisationNames);
-    }
-
     public List<Team> findTeamsByName(String name) {
         return getRepository().findTeamsByName(name);
     }

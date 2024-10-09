@@ -170,14 +170,14 @@ public class TeamBusinessService {
         userTeamList.add(userTeam);
     }
 
-    private record TeamComparator(AuthorizationUser authorizationUser) implements Comparator<Team> {
+    record TeamComparator(AuthorizationUser authorizationUser) implements Comparator<Team> {
         @Override
         public int compare(Team t1, Team t2) {
-            boolean isUserTeam1 = authorizationUser.isUserMemberInTeam(t1.getId());
-            boolean isUserTeam2 = authorizationUser.isUserMemberInTeam(t2.getId());
+            boolean isUserInTeam1 = authorizationUser.isUserMemberInTeam(t1.getId());
+            boolean isUserInTeam2 = authorizationUser.isUserMemberInTeam(t2.getId());
 
-            if (isUserTeam1 != isUserTeam2) {
-                return isUserTeam1 ? -1 : 1;
+            if (isUserInTeam1 != isUserInTeam2) {
+                return isUserInTeam1 ? -1 : 1;
             }
             if (Objects.equals(t1.getName(), t2.getName())) {
                 return t1.getId().compareTo(t2.getId());

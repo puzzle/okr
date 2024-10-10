@@ -45,7 +45,7 @@ public class OverviewBusinessService {
         return overviews;
     }
 
-    private record OverviewComparator(AuthorizationUser authorizationUser) implements Comparator<Overview> {
+    record OverviewComparator(AuthorizationUser authorizationUser) implements Comparator<Overview> {
 
         @Override
         public int compare(Overview o1, Overview o2) {

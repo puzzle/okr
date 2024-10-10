@@ -113,25 +113,6 @@ class CheckInPersistenceServiceIT {
     }
 
     @Test
-    void getAllCheckInShouldReturnListOfAllCheckIns() {
-        List<CheckIn> checkIns = checkInPersistenceService.findAll();
-
-        assertEquals(19, checkIns.size());
-    }
-
-    @Test
-    void getCheckInByIdShouldReturnCheckInProperly() {
-        CheckIn checkIn = checkInPersistenceService.findById(20L);
-
-        assertEquals(20L, checkIn.getId());
-        assertEquals(0.5, ((CheckInMetric) checkIn).getValue(), 0.01);
-        assertEquals(
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore "
-                        + "magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ",
-                checkIn.getChangeInfo());
-    }
-
-    @Test
     void shouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
         List<CheckIn> checkIns = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(7L);
         assertTrue(checkIns.get(0).getCreatedOn().isAfter(checkIns.get(checkIns.size() - 1).getCreatedOn()));

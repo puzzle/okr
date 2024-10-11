@@ -128,4 +128,11 @@ class ActionBusinessServiceTest {
         actionBusinessService.deleteEntityById(action1.getId());
         verify(actionPersistenceService, times(1)).deleteById(action1.getId());
     }
+
+    @Test
+    void shouldDeleteDeleteByKeyResultId() {
+        actionBusinessService.deleteEntitiesByKeyResultId(action1.getKeyResult().getId());
+        verify(actionPersistenceService, times(1))
+                .getActionsByKeyResultIdOrderByPriorityAsc(action1.getKeyResult().getId());
+    }
 }

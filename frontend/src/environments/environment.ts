@@ -2,28 +2,22 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { LogLevel, OpenIdConfiguration } from 'angular-auth-oidc-client';
+import { AuthConfig } from 'angular-oauth2-oidc';
 
 export const environment = {
   production: false,
   staging: false,
   oauth: {
-    issuer: 'http://localhost:8095/auth/realms/pitc',
-    redirectUrl: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/callback`,
-    postLogoutRedirectUri: window.location.origin,
-    renewTimeBeforeTokenExpiresInSeconds: 30,
-    scope: 'openid profile offline_access',
+    decreaseExpirationBySec: 30,
+    clearHashAfterLogin: true,
+    issuer: '',
+    strictDiscoveryDocumentValidation: false,
+    redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}`,
+    scope: 'openid profile',
     clientId: '',
     responseType: 'code',
-    logLevel: LogLevel.Debug,
-    silentRenew: true,
-    useRefreshToken: true,
-    customParamsRefreshTokenRequest: {
-      scope: 'openid profile offline_access',
-    },
-    ignoreNonceAfterRefresh: true, // this is required if the id_token is not returned
-    triggerRefreshWhenIdTokenExpired: false,
-  } as OpenIdConfiguration,
+    showDebugInformation: true,
+  } as AuthConfig,
 };
 
 /*

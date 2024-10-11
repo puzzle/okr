@@ -1,20 +1,23 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { map, take, tap } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
 
-//Not used, can be deleted
 export const authGuard: CanActivateFn = (route, state) => {
-  const oidcSecurityService = inject(OidcSecurityService);
-  // console.log(oidcSecurityService.isAuthenticated$.subscribe(console.log));
-
-  return oidcSecurityService.isAuthenticated$.pipe(
-    take(1),
-    map(({ isAuthenticated }) => {
-      // allow navigation if authenticated
-      return isAuthenticated;
-
-      // redirect if not authenticated
-    }),
-  );
+  const oauthService = inject(OAuthService);
+  const router = inject(Router);
+  return oauthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
+    // if the login failed initialize code flow
+    let validToken = oauthService.hasValidIdToken();
+    if (!validToken) {
+      oauthService.initCodeFlow();
+      return false;
+    }
+    oauthService.setupAutomaticSilentRefresh();
+    // redirect route to remove state query param. do it only, if this param exist to avoid infinite loop
+    if (!!route.queryParamMap.get('state')) {
+      await router.navigateByUrl('');
+      return false;
+    }
+    return true;
+  });
 };

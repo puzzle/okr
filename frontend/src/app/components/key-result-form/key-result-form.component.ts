@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { getFullNameFromUser, User } from '../../shared/types/model/User';
-import { UserService } from '../../services/user.service';
-import { Action } from '../../shared/types/model/Action';
-import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
+import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import { UserService } from '../../services/user.service';
+import { Action } from '../../shared/types/model/Action';
+import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-key-result-form',
@@ -32,7 +32,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   constructor(
     public userService: UserService,
-    private oauthService: OidcSecurityService,
+    private oauthService: OAuthService,
     private translate: TranslateService,
   ) {}
 
@@ -63,9 +63,9 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
       ]);
 
       this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
-        const loggedInUserName = this.getLoggedInUserName();
+        const loggedInUser = this.getLoggedInUserName();
         users.forEach((user) => {
-          if (getFullNameFromUser(user) === loggedInUserName) {
+          if (getFullNameFromUser(user) === loggedInUser) {
             this.keyResultForm.controls['owner'].setValue(user);
           }
         });

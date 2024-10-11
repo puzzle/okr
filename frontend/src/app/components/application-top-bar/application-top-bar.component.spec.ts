@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { ApplicationTopBarComponent } from './application-top-bar.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { MatMenuModule } from '@angular/material/menu';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -13,12 +15,11 @@ import { of } from 'rxjs';
 import { testUser } from '../../shared/testData';
 import { UserService } from '../../services/user.service';
 import { ConfigService } from '../../services/config.service';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { NgOptimizedImage } from '@angular/common';
 
 const oAuthMock = {
-  getUserData: jest.fn(),
-  logOff: jest.fn(),
+  getIdentityClaims: jest.fn(),
+  logOut: jest.fn(),
+  hasValidIdToken: jest.fn(),
 };
 
 const dialogMock = {
@@ -45,12 +46,15 @@ describe('ApplicationTopBarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatMenuModule, NoopAnimationsModule, MatDialogModule, NgOptimizedImage],
+      imports: [MatMenuModule, NoopAnimationsModule, MatDialogModule],
       declarations: [ApplicationTopBarComponent],
       providers: [
-        { provide: OidcSecurityService, useValue: oAuthMock },
+        { provide: OAuthService, useValue: oAuthMock },
         { provide: HttpClient },
         { provide: HttpHandler },
+        { provide: UrlHelperService },
+        { provide: OAuthLogger },
+        { provide: DateTimeProvider },
         {
           provide: MatDialog,
           useValue: dialogMock,
@@ -86,15 +90,13 @@ describe('ApplicationTopBarComponent', () => {
   });
 
   it('logout function should get called on button click', async () => {
-    oAuthMock.getUserData.mockReturnValue(of({ name: 'Username' }));
-
     routerMock.navigateByUrl.mockReturnValue(of().toPromise());
     const harness = await loader.getHarness(MatMenuHarness);
     await harness.open();
     fixture.detectChanges();
     harness.getItems().then((items) => {
       items[0].click();
-      expect(oAuthMock.logOff).toHaveBeenCalledTimes(1);
+      expect(oAuthMock.logOut).toBeCalledTimes(1);
     });
   });
 });

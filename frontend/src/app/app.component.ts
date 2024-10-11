@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -9,11 +8,9 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   readonly PATH_PREFIX = '../assets/icons/';
-
   constructor(
-    private oidcSecurityService: OidcSecurityService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
   ) {
@@ -25,8 +22,5 @@ export class AppComponent implements OnInit {
       'pz-menu-icon',
       this.domSanitizer.bypassSecurityTrustResourceUrl(this.PATH_PREFIX + 'three-dot-menu-icon.svg'),
     );
-  }
-  ngOnInit(): void {
-    this.oidcSecurityService.checkAuth().subscribe();
   }
 }

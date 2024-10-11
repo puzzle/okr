@@ -1,4 +1,5 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../../shared/testData';
@@ -10,14 +11,11 @@ import { RefreshDataService } from '../../services/refresh-data.service';
 import { authGuard } from '../../guards/auth.guard';
 import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
 import { ApplicationTopBarComponent } from '../application-top-bar/application-top-bar.component';
+import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { CUSTOM_ELEMENTS_SCHEMA, NgZone } from '@angular/core';
-import { AbstractLoggerService, AutoLoginPartialRoutesGuard, StsConfigLoader } from 'angular-auth-oidc-client';
-import { NgOptimizedImage } from '@angular/common';
-import { provideRouter } from '@angular/router';
-import { provideLocationMocks } from '@angular/common/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -46,17 +44,9 @@ describe('OverviewComponent', () => {
 
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
-  let ngZone: any;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        AppRoutingModule,
-        MatDialogModule,
-        MatIconModule,
-        MatMenuModule,
-        NgOptimizedImage,
-      ],
+      imports: [HttpClientTestingModule, AppRoutingModule, MatDialogModule, MatIconModule, MatMenuModule],
       declarations: [OverviewComponent, ApplicationBannerComponent, ApplicationTopBarComponent],
       providers: [
         {
@@ -64,8 +54,8 @@ describe('OverviewComponent', () => {
           useValue: overviewService,
         },
         {
-          provide: AutoLoginPartialRoutesGuard,
-          useValue: () => Promise.resolve(true),
+          provide: authGuard,
+          useValue: authGuardMock,
         },
         {
           provide: RefreshDataService,
@@ -75,27 +65,10 @@ describe('OverviewComponent', () => {
           provide: MatDialogRef,
           useValue: {},
         },
-        {
-          provide: StsConfigLoader,
-          useValue: {
-            loadConfig: () => of({}),
-            loadConfigs: () => of([{}]),
-          },
-        },
-        {
-          provide: AbstractLoggerService,
-          useValue: {
-            logError: () => of({}),
-          },
-        },
-        provideRouter([
-          {
-            path: '',
-            pathMatch: 'full',
-            component: OverviewComponent,
-          },
-        ]),
-        provideLocationMocks(),
+        OAuthService,
+        UrlHelperService,
+        OAuthLogger,
+        DateTimeProvider,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -103,7 +76,6 @@ describe('OverviewComponent', () => {
     fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
     overviewService.getOverview.mockReturnValue(of([overViewEntity1]));
-    ngZone = TestBed.inject(NgZone);
     fixture.detectChanges();
   });
 
@@ -132,18 +104,16 @@ describe('OverviewComponent', () => {
     ['?quarter=7&objectiveQuery=a%20a', 7, [], 'a a'],
   ])(
     'should load overview based on queryparams',
-    fakeAsync((query: string, quarterParam?: number, teamsParam?: number[], objectiveQueryParam?: string) => {
+    async (query: string, quarterParam?: number, teamsParam?: number[], objectiveQueryParam?: string) => {
       jest.spyOn(overviewService, 'getOverview');
       jest.spyOn(component, 'loadOverview');
-      ngZone.run(async () => {
-        const routerHarness = await RouterTestingHarness.create();
-        await routerHarness.navigateByUrl('/' + query);
-        routerHarness.detectChanges();
-        component.loadOverviewWithParams();
-        expect(overviewService.getOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
-        expect(component.loadOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
-      });
-    }),
+      const routerHarness = await RouterTestingHarness.create();
+      await routerHarness.navigateByUrl('/' + query);
+      routerHarness.detectChanges();
+      component.loadOverviewWithParams();
+      expect(overviewService.getOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
+      expect(component.loadOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
+    },
   );
 
   it('should refresh overview Entities after getOverview is called', async () => {

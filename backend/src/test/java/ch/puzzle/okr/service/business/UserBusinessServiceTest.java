@@ -1,13 +1,14 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
+import ch.puzzle.okr.test.TestHelper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -79,10 +80,7 @@ class UserBusinessServiceTest {
 
         User returnedUser = userBusinessService.getUserById(1L);
 
-        assertEquals(1L, returnedUser.getId());
-        assertEquals("Bob", returnedUser.getFirstname());
-        assertEquals("Kaufmann", returnedUser.getLastname());
-        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+        assertUser(1L, "Bob", "Kaufmann", "kaufmann@puzzle.ch", returnedUser);
     }
 
     @Test
@@ -93,10 +91,7 @@ class UserBusinessServiceTest {
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
-        assertEquals(1L, returnedUser.getId());
-        assertEquals("Bob", returnedUser.getFirstname());
-        assertEquals("Kaufmann", returnedUser.getLastname());
-        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+        assertUser(1L, "Bob", "Kaufmann", "kaufmann@puzzle.ch", returnedUser);
     }
 
     @Test
@@ -107,10 +102,7 @@ class UserBusinessServiceTest {
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
-        assertEquals(1L, returnedUser.getId());
-        assertEquals("Bob", returnedUser.getFirstname());
-        assertEquals("Kaufmann", returnedUser.getLastname());
-        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+        assertUser(1L, "Bob", "Kaufmann", "kaufmann@puzzle.ch", returnedUser);
     }
 
     @Test
@@ -161,5 +153,61 @@ class UserBusinessServiceTest {
 
         verify(userPersistenceService, times(1)).save(user);
         assertFalse(user.isOkrChampion());
+    }
+
+    @DisplayName("saveUser() should return saved user")
+    @Test
+    void saveUserShouldReturnSavedUser() {
+        // arrange
+        User newUser = User.Builder.builder() //
+                .withId(1L) //
+                .withFirstname("Bob") //
+                .withLastname("Kaufmann") //
+                .withEmail("kaufmann@puzzle.ch") //
+                .build();
+        Mockito.when(userPersistenceService.save(newUser)).thenReturn(newUser);
+
+        // act
+        User returnedUser = userBusinessService.saveUser(newUser);
+
+        // assert
+        assertUser(1L, "Bob", "Kaufmann", "kaufmann@puzzle.ch", returnedUser);
+    }
+
+    @DisplayName("createUsers() should return created users")
+    @Test
+    void createUsersShouldReturnCreatedUsers() {
+        // arrange
+        User bob = User.Builder.builder() //
+                .withId(1L) //
+                .withFirstname("Bob") //
+                .withLastname("Kaufmann") //
+                .withEmail("kaufmann@puzzle.ch") //
+                .build();
+
+        User roberta = User.Builder.builder() //
+                .withId(2L) //
+                .withFirstname("Roberta") //
+                .withLastname("Kauffrau") //
+                .withEmail("kauffrau@puzzle.ch") //
+                .build();
+
+        List<User> newUsers = List.of(bob, roberta);
+        Mockito.when(userPersistenceService.saveAll(newUsers)).thenReturn(newUsers);
+
+        // act
+        List<User> returnedUsers = userBusinessService.createUsers(newUsers);
+
+        // assert
+        assertEquals(2, returnedUsers.size());
+        assertUser(1L, "Bob", "Kaufmann", "kaufmann@puzzle.ch", returnedUsers.get(0));
+        assertUser(2L, "Roberta", "Kauffrau", "kauffrau@puzzle.ch", returnedUsers.get(1));
+    }
+
+    private void assertUser(Long id, String firstname, String lastname, String email, User expectedUser) {
+        assertEquals(id, expectedUser.getId());
+        assertEquals(firstname, expectedUser.getFirstname());
+        assertEquals(lastname, expectedUser.getLastname());
+        assertEquals(email, expectedUser.getEmail());
     }
 }

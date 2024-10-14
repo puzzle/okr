@@ -25,7 +25,7 @@ public class ClientConfigServiceTest {
         // arrange
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
         TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
-        ClientConfigService service = getClientConfig(tenantConfig, tenantCustomization, tenant);
+        ClientConfigService service = mockClientConfig(tenantConfig, tenantCustomization, tenant);
 
         // act
         ClientConfigDto configBasedOnActiveEnv = service.getConfigBasedOnActiveEnv(hostname);
@@ -41,7 +41,7 @@ public class ClientConfigServiceTest {
             String subdomain) {
         // arrange
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
-        ClientConfigService service = getClientConfig(tenantConfig, tenant);
+        ClientConfigService service = mockClientConfigWithoutTenantClientCustomization(tenantConfig, tenant);
 
         // act + assert
         EntityNotFoundException entityNotFoundException = //
@@ -58,7 +58,7 @@ public class ClientConfigServiceTest {
             String subdomain) {
         // arrange
         TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
-        ClientConfigService service = getClientConfig(tenantCustomization, tenant);
+        ClientConfigService service = mockClientConfigWithoutTenantConfig(tenantCustomization, tenant);
 
         // act + assert
         EntityNotFoundException entityNotFoundException = //
@@ -68,16 +68,18 @@ public class ClientConfigServiceTest {
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
-    private ClientConfigService getClientConfig(TenantConfigProvider.TenantConfig tenantConfig,
+    private ClientConfigService mockClientConfig(TenantConfigProvider.TenantConfig tenantConfig,
             TenantClientCustomization tenantClientCustomization, String tenantId) {
         return mockClientConfigService(tenantConfig, tenantClientCustomization, tenantId);
     }
 
-    private ClientConfigService getClientConfig(TenantClientCustomization tenantClientCustomization, String tenantId) {
+    private ClientConfigService mockClientConfigWithoutTenantConfig(TenantClientCustomization tenantClientCustomization,
+            String tenantId) {
         return mockClientConfigService(null, tenantClientCustomization, tenantId);
     }
 
-    private ClientConfigService getClientConfig(TenantConfigProvider.TenantConfig tenantConfig, String tenantId) {
+    private ClientConfigService mockClientConfigWithoutTenantClientCustomization(
+            TenantConfigProvider.TenantConfig tenantConfig, String tenantId) {
         return mockClientConfigService(tenantConfig, null, tenantId);
     }
 

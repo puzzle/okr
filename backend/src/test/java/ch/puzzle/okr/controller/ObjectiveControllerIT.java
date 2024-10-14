@@ -72,7 +72,7 @@ class ObjectiveControllerIT {
     private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
             .build();
     private static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+            .withEmail("kaufmann@puzzle.ch").build();
     private static final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     private static final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private static final Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")

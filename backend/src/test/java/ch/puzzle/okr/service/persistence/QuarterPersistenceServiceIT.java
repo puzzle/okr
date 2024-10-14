@@ -3,9 +3,12 @@ package ch.puzzle.okr.service.persistence;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.util.quarter.check.QuarterRangeChecker;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TESTS_QUARTER_ID;
+import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TEST_QUARTER_LABEL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -24,12 +29,22 @@ class QuarterPersistenceServiceIT {
     @Autowired
     private QuarterPersistenceService quarterPersistenceService;
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
+    @AfterEach
+    void tearDown() {
+        TenantContext.setCurrentTenant(null);
+    }
+
     @Test
     void shouldReturnSingleQuarterWhenFindingByValidId() {
-        Quarter returnedQuarter = quarterPersistenceService.findById(99L);
+        Quarter returnedQuarter = quarterPersistenceService.findById(GJ_FOR_TESTS_QUARTER_ID);
 
-        assertEquals(99L, returnedQuarter.getId());
-        assertEquals("GJ ForTests", returnedQuarter.getLabel());
+        assertEquals(GJ_FOR_TESTS_QUARTER_ID, returnedQuarter.getId());
+        assertEquals(GJ_FOR_TEST_QUARTER_LABEL, returnedQuarter.getLabel());
         assertEquals(LocalDate.of(2000, 7, 1), returnedQuarter.getStartDate());
         assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
     }
@@ -70,7 +85,7 @@ class QuarterPersistenceServiceIT {
 
     private void assertGJForTestsQuarterIsFoundOnce(List<Quarter> quarters) {
         long foundGJForTestsQuartersCount = quarters.stream()
-                .filter(quarter -> quarter.getLabel().equals("GJ ForTests")).count();
+                .filter(quarter -> quarter.getLabel().equals(GJ_FOR_TEST_QUARTER_LABEL)).count();
         assertEquals(1, foundGJForTestsQuartersCount);
     }
 
@@ -84,7 +99,12 @@ class QuarterPersistenceServiceIT {
     void shouldReturnCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
-        assertTrue(QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter));
+        assertTrue(LocalDate.now().isEqual(quarter.getStartDate()) || //
+                LocalDate.now().isAfter(quarter.getStartDate()));
+
+        assertTrue(LocalDate.now().isEqual(quarter.getEndDate()) || //
+                LocalDate.now().isBefore(quarter.getEndDate()));
+
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());
     }
@@ -93,11 +113,11 @@ class QuarterPersistenceServiceIT {
     @Test
     void findByLabelShouldReturnSingleQuarterWhenLabelIsValid() {
         // arrange + act
-        Quarter returnedQuarter = quarterPersistenceService.findByLabel("GJ ForTests");
+        Quarter returnedQuarter = quarterPersistenceService.findByLabel(GJ_FOR_TEST_QUARTER_LABEL);
 
         // assert
-        assertEquals(99L, returnedQuarter.getId());
-        assertEquals("GJ ForTests", returnedQuarter.getLabel());
+        assertEquals(GJ_FOR_TESTS_QUARTER_ID, returnedQuarter.getId());
+        assertEquals(GJ_FOR_TEST_QUARTER_LABEL, returnedQuarter.getLabel());
         assertEquals(LocalDate.of(2000, 7, 1), returnedQuarter.getStartDate());
         assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
     }

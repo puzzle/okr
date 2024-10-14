@@ -12,6 +12,8 @@ export interface CustomizationConfig {
   title: string;
   favicon: string;
   logo: string;
+  triangles: string;
+  backgroundLogo: string;
   customStyles: CustomStyles;
 }
 export interface ClientConfig extends AuthConfig, CustomizationConfig {}

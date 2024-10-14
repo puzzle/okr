@@ -8,8 +8,10 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -45,6 +47,11 @@ class CheckInPersistenceServiceIT {
                 .withConfidence(5).build();
     }
 
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
+
     @AfterEach
     void tearDown() {
         try {
@@ -57,6 +64,7 @@ class CheckInPersistenceServiceIT {
         } finally {
             createdCheckIn = null;
         }
+        TenantContext.setCurrentTenant(null);
     }
 
     @Test
@@ -118,7 +126,8 @@ class CheckInPersistenceServiceIT {
         assertEquals(20L, checkIn.getId());
         assertEquals(0.5, ((CheckInMetric) checkIn).getValue(), 0.01);
         assertEquals(
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ",
+                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore "
+                        + "magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ",
                 checkIn.getChangeInfo());
     }
 

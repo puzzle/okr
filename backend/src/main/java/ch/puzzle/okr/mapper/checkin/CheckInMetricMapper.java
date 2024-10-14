@@ -15,16 +15,29 @@ public class CheckInMetricMapper {
     }
 
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
-        return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getVersion(), checkInMetric.getChangeInfo(),
-                checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult().getId(),
-                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue(),
+        return new CheckInMetricDto(checkInMetric.getId(), //
+                checkInMetric.getVersion(), //
+                checkInMetric.getChangeInfo(), //
+                checkInMetric.getInitiatives(), //
+                checkInMetric.getConfidence(), //
+                checkInMetric.getKeyResult().getId(), //
+                checkInMetric.getCreatedOn(), //
+                checkInMetric.getModifiedOn(), //
+                checkInMetric.getValue(), //
                 checkInMetric.isWriteable());
     }
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {
-        return CheckInMetric.Builder.builder().withValue(checkInMetricDto.value()).withId(checkInMetricDto.id())
-                .withVersion(checkInMetricDto.version()).withChangeInfo(checkInMetricDto.changeInfo())
-                .withInitiatives(checkInMetricDto.initiatives()).withConfidence(checkInMetricDto.confidence())
-                .withKeyResult(keyResultBusinessService.getEntityById(checkInMetricDto.keyResultId())).build();
+        return CheckInMetric.Builder.builder() //
+                .withValue(checkInMetricDto.value()) //
+                .withId(checkInMetricDto.id()) //
+                .withVersion(checkInMetricDto.version()) //
+                .withChangeInfo(checkInMetricDto.changeInfo()) //
+                .withInitiatives(checkInMetricDto.initiatives()) //
+                .withConfidence(checkInMetricDto.confidence()) //
+                .withCreatedOn(checkInMetricDto.createdOn()) //
+                .withModifiedOn(checkInMetricDto.modifiedOn()) //
+                .withKeyResult(keyResultBusinessService.getEntityById(checkInMetricDto.keyResultId())) //
+                .build();
     }
 }

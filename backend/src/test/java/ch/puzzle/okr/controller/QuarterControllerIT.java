@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -33,8 +35,8 @@ class QuarterControllerIT {
             .withStartDate(LocalDate.of(2022, 9, 1)).withEndDate(LocalDate.of(2022, 12, 31)).build();
     static Quarter quarter2 = Quarter.Builder.builder().withId(2L).withLabel("GJ 22/23-Q3")
             .withStartDate(LocalDate.of(2023, 1, 1)).withEndDate(LocalDate.of(2023, 3, 31)).build();
-    static Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
-            .withEndDate(null).build();
+    static Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID)
+            .withLabel(BACK_LOG_QUARTER_LABEL).withStartDate(null).withEndDate(null).build();
     static List<Quarter> quaterList = Arrays.asList(quarter1, quarter2, backlogQuarter);
 
     @Autowired
@@ -54,7 +56,8 @@ class QuarterControllerIT {
                 .andExpect(jsonPath("$[1].id", Is.is(2))).andExpect(jsonPath("$[1].label", Is.is("GJ 22/23-Q3")))
                 .andExpect(jsonPath("$[1].startDate", Is.is(LocalDate.of(2023, 1, 1).toString())))
                 .andExpect(jsonPath("$[1].endDate", Is.is(LocalDate.of(2023, 3, 31).toString())))
-                .andExpect(jsonPath("$[2].id", Is.is(199))).andExpect(jsonPath("$[2].label", Is.is("Backlog")));
+                .andExpect(jsonPath("$[2].id", Is.is((int) BACK_LOG_QUARTER_ID)))
+                .andExpect(jsonPath("$[2].label", Is.is(BACK_LOG_QUARTER_LABEL)));
     }
 
     @Test

@@ -5,12 +5,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 // table cannot be named "user" since it is a reserved keyword of Postgres
 @Table(name = "person")
-public class User implements WriteableInterface {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
     @SequenceGenerator(name = "sequence_person", allocationSize = 1)
@@ -18,12 +21,6 @@ public class User implements WriteableInterface {
 
     @Version
     private int version;
-
-    @Column(unique = true)
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 20, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
-    private String username;
 
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
@@ -35,13 +32,18 @@ public class User implements WriteableInterface {
     @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String lastname;
 
+    @Column(unique = true, nullable = false)
     @Email(message = MessageKey.ATTRIBUTE_NOT_VALID)
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String email;
 
-    private transient boolean writeable;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserTeam> userTeamList = new ArrayList<>();
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isOkrChampion = false;
 
     public User() {
     }
@@ -49,10 +51,11 @@ public class User implements WriteableInterface {
     private User(Builder builder) {
         id = builder.id;
         version = builder.version;
-        setUsername(builder.username);
         setFirstname(builder.firstname);
         setLastname(builder.lastname);
         setEmail(builder.email);
+        setUserTeamList(builder.userTeamList);
+        setOkrChampion(builder.isOkrChampion);
     }
 
     public Long getId() {
@@ -61,14 +64,6 @@ public class User implements WriteableInterface {
 
     public int getVersion() {
         return version;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstname() {
@@ -95,21 +90,26 @@ public class User implements WriteableInterface {
         this.email = email;
     }
 
-    @Override
-    public boolean isWriteable() {
-        return writeable;
+    public List<UserTeam> getUserTeamList() {
+        return userTeamList;
     }
 
-    @Override
-    public void setWriteable(boolean writeable) {
-        this.writeable = writeable;
+    public void setUserTeamList(List<UserTeam> userTeamList) {
+        this.userTeamList = userTeamList;
+    }
+
+    public boolean isOkrChampion() {
+        return isOkrChampion;
+    }
+
+    public void setOkrChampion(boolean okrChampion) {
+        isOkrChampion = okrChampion;
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", version=" + version + ", username='" + username + '\'' + ", firstname='"
-                + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", writeable="
-                + writeable + '}';
+        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
+                + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
     }
 
     @Override
@@ -120,23 +120,23 @@ public class User implements WriteableInterface {
             return false;
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(version, user.version)
-                && Objects.equals(username, user.username) && Objects.equals(firstname, user.firstname)
-                && Objects.equals(lastname, user.lastname) && Objects.equals(email, user.email)
-                && Objects.equals(writeable, user.writeable);
+                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
+                && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, username, firstname, lastname, email, writeable);
+        return Objects.hash(id, version, firstname, lastname, email, isOkrChampion);
     }
 
     public static final class Builder {
         private Long id;
         private int version;
-        private String username;
         private String firstname;
         private String lastname;
         private String email;
+        private List<UserTeam> userTeamList;
+        private boolean isOkrChampion;
 
         private Builder() {
         }
@@ -155,11 +155,6 @@ public class User implements WriteableInterface {
             return this;
         }
 
-        public Builder withUsername(String username) {
-            this.username = username;
-            return this;
-        }
-
         public Builder withFirstname(String firstname) {
             this.firstname = firstname;
             return this;
@@ -172,6 +167,16 @@ public class User implements WriteableInterface {
 
         public Builder withEmail(String email) {
             this.email = email;
+            return this;
+        }
+
+        public Builder withUserTeamList(List<UserTeam> userTeamList) {
+            this.userTeamList = userTeamList;
+            return this;
+        }
+
+        public Builder withOkrChampion(boolean isOkrChampion) {
+            this.isOkrChampion = isOkrChampion;
             return this;
         }
 

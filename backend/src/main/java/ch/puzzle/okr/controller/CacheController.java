@@ -24,13 +24,6 @@ public class CacheController {
         cacheService.emptyAuthorizationUsersCache();
     }
 
-    @Operation(summary = "Delete users cache", description = "Delete users cache")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Users cache deleted") })
-    @PostMapping("emptyUsersCache")
-    public void emptyUsersCache() {
-        cacheService.emptyUsersCache();
-    }
-
     @Operation(summary = "Delete all caches", description = "Delete all caches")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "All caches deleted") })
     @PostMapping("emptyAllCaches")

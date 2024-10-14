@@ -13,8 +13,10 @@ public class Constants {
     public static final String ACTION = "Action";
     public static final String ALIGNMENT = "Alignment";
     public static final String COMPLETED = "Completed";
-    public static final String ORGANISATION = "Organisation";
     public static final String QUARTER = "Quarter";
     public static final String TEAM = "Team";
     public static final String USER = "User";
+    public static final String USER_TEAM = "UserTeam";
+
+    public static final String BACK_LOG_QUARTER_LABEL = "Backlog";
 }

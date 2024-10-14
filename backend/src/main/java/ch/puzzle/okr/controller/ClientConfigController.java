@@ -1,15 +1,13 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.ForwardFilter;
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ClientConfigController {
@@ -21,8 +19,9 @@ public class ClientConfigController {
     }
 
     @GetMapping("/config")
-    public ResponseEntity<ClientConfigDto> getConfig() {
-        return ResponseEntity.status(HttpStatus.OK).body(configService.getConfigBasedOnActiveEnv());
+    public ResponseEntity<ClientConfigDto> getConfig(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 
     @RequestMapping(value = "/**/{[path:[^\\.]*}")

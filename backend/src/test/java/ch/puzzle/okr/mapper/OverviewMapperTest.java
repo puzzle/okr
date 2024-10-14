@@ -1,6 +1,5 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultDto;
@@ -9,25 +8,23 @@ import ch.puzzle.okr.dto.overview.OverviewKeyResultOrdinalDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
-import ch.puzzle.okr.service.business.OrganisationBusinessService;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class OverviewMapperTest {
-    @Mock
-    private OrganisationBusinessService organisationBusinessService;
 
     @InjectMocks
     private OverviewMapper overviewMapper;
@@ -42,9 +39,8 @@ class OverviewMapperTest {
 
     @Test
     void toDtoShouldReturnEmptyListWhenTeamFound() {
-        List<Overview> overviews = List
-                .of(Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build())
-                        .withTeamName("Puzzle ITC").build());
+        List<Overview> overviews = List.of(Overview.Builder.builder()
+                .withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build()).withTeamName(TEAM_PUZZLE).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -55,7 +51,7 @@ class OverviewMapperTest {
     void toDtoShouldReturnOneElementWhenObjectiveFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).build())
-                .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").build());
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -68,7 +64,7 @@ class OverviewMapperTest {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(
                         OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L).build())
-                .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                 .withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
@@ -82,7 +78,7 @@ class OverviewMapperTest {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
                         .withCheckInId(4L).build())
-                .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                 .withKeyResultType(KEY_RESULT_TYPE_METRIC).withCheckInValue(27.5).withConfidence(5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
@@ -97,12 +93,12 @@ class OverviewMapperTest {
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withCheckInId(4L).build())
-                        .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                         .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withCheckInZone("COMMIT").build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(5L).build())
-                        .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 5")
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 5")
                         .withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
@@ -117,13 +113,13 @@ class OverviewMapperTest {
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withCheckInId(4L).build())
-                        .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                         .withKeyResultType(KEY_RESULT_TYPE_METRIC).withBaseline(20.0).withStretchGoal(37.0)
                         .withUnit("TCHF").withCheckInValue(27.5).build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(2L)
                                 .withKeyResultId(6L).withCheckInId(7L).build())
-                        .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
                         .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withCommitZone("commit").withTargetZone("target")
                         .withStretchZone("stretch").withCheckInZone("checkIn").build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
@@ -155,7 +151,7 @@ class OverviewMapperTest {
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withCheckInId(4L).build())
-                        .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                         .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withCheckInZone("TARGET").build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(4L)
@@ -181,7 +177,7 @@ class OverviewMapperTest {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
                         .withCheckInId(4L).build())
-                .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                 .withKeyResultType("unknown").withCheckInZone("TARGET").build());
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

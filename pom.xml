@@ -8,7 +8,7 @@
 
     <groupId>ch.puzzle.okr</groupId>
     <artifactId>parent</artifactId>
-    <version>2.0.136-SNAPSHOT</version>
+    <version>2.0.160-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -28,11 +28,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-
-
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>com.fizzed</groupId>
+                    <artifactId>fizzed-watcher-maven-plugin</artifactId>
+                    <version>1.0.6</version>
+                    <configuration>
+                        <touchFile>backend/target/classes/watcher.txt</touchFile>
+                        <watches>
+                            <watch>
+                                <directory>backend/src/main/java</directory>
+                            </watch>
+                        </watches>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>package</goal>
+                        </goals>
+                        <profiles>
+                            <profile>build-for-docker</profile>
+                        </profiles>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>

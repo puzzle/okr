@@ -1,5 +1,7 @@
 import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
+import { uniqueSuffix } from '../support/utils';
+import Chainable = Cypress.Chainable;
 
 describe('OKR Check-in e2e tests', () => {
   describe('tests via click', () => {
@@ -281,18 +283,19 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('submit').click();
 
       cy.getByTestId('keyresult').contains('I am a metric keyresult for testing').click();
-      cy.tabForward();
-      cy.tabForward();
+
+      cy.tabForwardUntil('[data-testId="add-check-in"]');
       cy.focused().contains('Check-in erfassen').click();
       cy.contains('Check-in im Draft-Status');
       cy.contains('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
     });
 
-    it(`Should not display last value div if last checkin is not present`, () => {
+    it(`Should only display last value div if last checkin is present`, () => {
+      const objectiveName = uniqueSuffix('new objective');
       cy.getByTestId('add-objective').first().click();
-      cy.fillOutObjective('new objective', 'safe', '3');
+      cy.fillOutObjective(objectiveName, 'safe', '3');
       cy.visit('/?quarter=3');
-      cy.contains('new objective').first().parentsUntil('#objective-column').last().focus();
+      getObjectiveContainerByName(objectiveName).focus();
 
       cy.tabForwardUntil('[data-testId="add-keyResult"]');
       cy.focused().contains('Key Result hinzufügen');
@@ -300,15 +303,23 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.fillOutKeyResult('I am a keyresult metric', 'PERCENT', '45', '60', null, null, null, null, 'Description');
       cy.getByTestId('submit').click();
-      cy.getByTestId('keyresult').contains('I am a keyresult metric').click();
+      getObjectiveContainerByName(objectiveName).getByTestId('keyresult').contains('I am a keyresult metric').click();
+
+      cy.intercept('**/keyresults/*').as('getKeyResultsAfterSave');
       cy.getByTestId('add-check-in').first().click();
       cy.get('#old-value').should('not.exist');
-      cy.fillOutCheckInMetric(10, false, 'changeinfo', 'initiatives');
+      cy.fillOutCheckInMetric(10, 0, 'changeinfo', 'initiatives');
+      cy.wait('@getKeyResultsAfterSave');
+
       cy.getByTestId('add-check-in').first().click();
-      cy.get('#old-value').should('not.exist');
+      cy.get('#old-value label + div').contains('10 %');
     });
   });
 });
+
+function getObjectiveContainerByName(name: string): Chainable {
+  return cy.contains(name).first().parentsUntil('#objective-column').last();
+}
 
 function checkForDialogTextMetric() {
   cy.contains('Very important keyresult');
@@ -341,8 +352,10 @@ function getCurrentDate() {
   let mm = today.getMonth() + 1; // Months start at 0!
   let dd = today.getDate();
 
-  if (dd < 10) dd = '0' + dd;
-  if (mm < 10) mm = '0' + mm;
+  let dd_str = '' + dd;
+  let mm_str = '' + mm;
+  if (dd < 10) dd_str = '0' + dd_str;
+  if (mm < 10) mm_str = '0' + mm_str;
 
-  return dd + '.' + mm + '.' + yyyy;
+  return dd_str + '.' + mm_str + '.' + yyyy;
 }

@@ -78,8 +78,8 @@ public class KeyResultTestHelpers {
     static final String INITIATIVES_2 = "Initiatives2";
     static final String CHANGE_INFO_1 = "Changeinfo1";
     static final String CHANGE_INFO_2 = "Changeinfo2";
-    static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+    public static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+            .withEmail("kaufmann@puzzle.ch").build();
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle(TITLE)
             .build();
     public static final CheckIn checkIn1 = CheckInMetric.Builder.builder().withValue(23D).withId(1L)

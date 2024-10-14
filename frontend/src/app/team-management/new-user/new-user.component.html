@@ -1,0 +1,78 @@
+<div class="d-flex w-100" [formGroup]="userFormGroup">
+  <div class="firstname equal-sized-col">
+    <div class="input-style">
+      @if (index === 0) {
+        <label [for]="'firstName-col_' + index">Vorname&nbsp;*</label>
+      }
+      <input
+        type="text"
+        class="value-field dialog-form-field"
+        formControlName="firstname"
+        #firstInput
+        [id]="'firstName-col_' + index"
+        [name]="'firstName-col_' + index"
+      />
+      <mat-error>
+        @if (firstname.errors?.["required"] && triedToSubmit) {
+          <span>Angabe benötigt</span>
+        }
+      </mat-error>
+    </div>
+  </div>
+  <div class="lastname equal-sized-col">
+    <div class="input-style equal-sized-col">
+      @if (index === 0) {
+        <label [for]="'lastname-col_' + index">Nachname&nbsp;*</label>
+      }
+      <input
+        type="text"
+        [id]="'lastname-col_' + index"
+        [name]="'lastname-col_' + index"
+        class="value-field dialog-form-field"
+        formControlName="lastname"
+      />
+      <mat-error>
+        @if (lastname.errors?.["required"] && triedToSubmit) {
+          <span>Angabe benötigt</span>
+        }
+      </mat-error>
+    </div>
+  </div>
+  <div class="email equal-sized-col">
+    <div class="input-style equal-sized-col">
+      @if (index === 0) {
+        <label [for]="'email-col_' + index">E-Mail&nbsp;*</label>
+      }
+      <input
+        type="email"
+        [id]="'email-col_' + index"
+        [attr.data-testId]="'email-col_' + index"
+        [name]="'email-col_' + index"
+        class="value-field dialog-form-field"
+        formControlName="email"
+      />
+      <mat-error>
+        @if (email.errors?.["required"] && triedToSubmit) {
+          <span>Angabe benötigt</span>
+        } @else if (email.errors?.["notUniqueMail"]) {
+          <span>E-Mail existiert bereits</span>
+        } @else if (email.errors?.["email"] && triedToSubmit) {
+          <span>E-Mail ungültig</span>
+        }
+      </mat-error>
+    </div>
+  </div>
+  <div class="remove">
+    <div class="input-style equal-sized-col dialog-form-field">
+      @if (index === 0) {
+        <label [for]="'delete-col_' + index">&nbsp;</label>
+      }
+      <app-puzzle-icon-button
+        (click)="remove()"
+        [id]="'delete-col_' + index"
+        icon="delete-icon.svg"
+        alt="Remove User Icon"
+      ></app-puzzle-icon-button>
+    </div>
+  </div>
+</div>

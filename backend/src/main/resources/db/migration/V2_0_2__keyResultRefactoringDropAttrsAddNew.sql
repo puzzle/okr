@@ -6,9 +6,9 @@ $$
                   WHERE table_name = 'key_result'
                     and column_name = 'basis_value')
         THEN
-            ALTER TABLE "public"."key_result"
+            ALTER TABLE "key_result"
                 RENAME COLUMN "basis_value" TO "baseline";
-            ALTER TABLE "public"."key_result"
+            ALTER TABLE "key_result"
                 RENAME COLUMN "target_value" TO "stretch_goal";
             ALTER TABLE key_result RENAME unit to unit_old;
             Alter TABLE key_result ADD COLUMN if not exists unit varchar(30);

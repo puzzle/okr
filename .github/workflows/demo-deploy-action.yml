@@ -1,10 +1,10 @@
 name: 'Demo-Deploy'
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches: [ main ]
+#  pull_request:
+#    types:
+#      - closed
+#    branches: [ main ]
 
 jobs:
   update-version:
@@ -144,12 +144,12 @@ jobs:
         with:
           build: npm i -D cypress
           install: false
-          wait-on: 'http://localhost:8080/config, http://localhost:8544'
+          wait-on: 'http://pitc.okr.localhost:8080/config, http://pitc.okr.localhost:4200, http://localhost:8544'
           wait-on-timeout: 120
           browser: chrome
           headed: true
           working-directory: frontend
-          config: baseUrl=http://localhost:8080
+          config: baseUrl=http://pitc.okr.localhost:8080
 
       - uses: actions/upload-artifact@v4
         if: always()

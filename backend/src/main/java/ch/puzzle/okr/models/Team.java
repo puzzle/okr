@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -22,9 +23,8 @@ public class Team implements WriteableInterface {
     @Version
     private int version;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "team_organisation", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "organisation_id"))
-    private List<Organisation> authorizationOrganisation;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team", cascade = CascadeType.ALL)
+    private List<UserTeam> userTeamList;
 
     private transient boolean writeable;
 
@@ -35,7 +35,7 @@ public class Team implements WriteableInterface {
         id = builder.id;
         version = builder.version;
         setName(builder.name);
-        setAuthorizationOrganisation(builder.authorizationOrganisation);
+        setUserTeamList(builder.userTeamList);
     }
 
     public Long getId() {
@@ -54,12 +54,12 @@ public class Team implements WriteableInterface {
         this.name = name;
     }
 
-    public List<Organisation> getAuthorizationOrganisation() {
-        return authorizationOrganisation;
+    public List<UserTeam> getUserTeamList() {
+        return userTeamList;
     }
 
-    public void setAuthorizationOrganisation(List<Organisation> authorizationOrganisation) {
-        this.authorizationOrganisation = authorizationOrganisation;
+    public void setUserTeamList(List<UserTeam> userTeamList) {
+        this.userTeamList = userTeamList;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class Team implements WriteableInterface {
         private int version;
         private String name;
 
-        private List<Organisation> authorizationOrganisation;
+        private List<UserTeam> userTeamList;
 
         private Builder() {
         }
@@ -122,8 +122,8 @@ public class Team implements WriteableInterface {
             return this;
         }
 
-        public Builder withAuthorizationOrganisation(List<Organisation> authOrg) {
-            this.authorizationOrganisation = authOrg;
+        public Builder withUserTeamList(List<UserTeam> userTeamList) {
+            this.userTeamList = userTeamList;
             return this;
         }
 

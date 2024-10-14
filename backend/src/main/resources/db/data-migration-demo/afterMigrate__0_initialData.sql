@@ -6,8 +6,6 @@ truncate table completed cascade;
 truncate table objective cascade;
 truncate table person cascade;
 truncate table quarter cascade;
-truncate table team_organisation;
-truncate table organisation cascade;
 truncate table team cascade;
 
 -- fill quarter with dummy labels. correct labels are updated via callback sql scripts
@@ -22,56 +20,50 @@ values (1, '1'), -- last past quarter
        (8, '8'), -- future quarter
        (999, 'Backlog');
 
-insert into person (id, email, firstname, lastname, username, version)
-values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann', 1),
-       (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice', 1),
-       (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob', 1),
-       (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus', 1),
-       (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco', 1),
-       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin', 1);
+insert into person (id, email, firstname, lastname, version, is_okr_champion)
+values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, TRUE),
+       (2, 'leimgruber@puzzle.ch', 'Philipp', 'Leimgruber', 1, TRUE),
+       (3, 'brantschen@puzzle.ch', 'Jean-Claude', 'Brantschen', 1, TRUE),
+       (4, 'endtner@puzzle.ch', 'Janik', 'Endtner', 1, TRUE),
+       (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 1, FALSE),
+       (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 1, FALSE),
+       (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 1, FALSE),
+       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 1, FALSE),
+       (61, 'gl@gl.com', 'gl', 'gl', 1, TRUE);
 
 insert into team (id, name, version)
 values (4, '/BBT', 1),
        (5, 'Puzzle ITC', 1),
        (6, 'LoremIpsum', 1),
+       (7, 'Mobility', 1),
        (8, 'we are cube.³', 1);
 
-insert into organisation (id, org_name, state, version)
-values (1, 'org_bl', 'ACTIVE', 1),
-       (2, 'org_de', 'ACTIVE', 1),
-       (3, 'org_gl', 'ACTIVE', 1),
-       (4, 'org_pl', 'ACTIVE', 1),
-       (5, 'org_pv', 'ACTIVE', 1),
-       (6, 'org_ux', 'ACTIVE', 1),
-       (7, 'org_zh', 'ACTIVE', 1),
-       (8, 'org_sys', 'ACTIVE', 1),
-       (9, 'org_azubi', 'ACTIVE', 1),
-       (10, 'org_de_gl', 'ACTIVE', 1),
-       (11, 'org_de_gs', 'ACTIVE', 1),
-       (12, 'org_devtre', 'ACTIVE', 1),
-       (13, 'org_racoon', 'ACTIVE', 1),
-       (14, 'org_tqm_qm', 'ACTIVE', 1),
-       (15, 'org_devruby', 'ACTIVE', 1),
-       (16, 'org_midcicd', 'ACTIVE', 1),
-       (17, 'org_verkauf', 'ACTIVE', 1),
-       (18, 'org_finanzen', 'ACTIVE', 1),
-       (19, 'org_mobility', 'ACTIVE', 1),
-       (20, 'org_personal', 'ACTIVE', 1),
-       (21, 'org_security', 'ACTIVE', 1),
-       (22, 'org_marketing', 'ACTIVE', 1),
-       (23, 'org_openshift', 'ACTIVE', 1),
-       (24, 'org_ausbildung', 'ACTIVE', 1),
-       (25, 'org_backoffice', 'ACTIVE', 1),
-       (26, 'org_branch_sec', 'ACTIVE', 1),
-       (27, 'org_standort_zh', 'ACTIVE', 1),
-       (28, 'org_midcontainer', 'ACTIVE', 1);
-
-insert into team_organisation (team_id, organisation_id)
-values (5, 3),
-       (8, 6),
-       (4, 9),
-       (6, 19),
-       (8, 19);
+insert into person_team (id, version, person_id, team_id, is_team_admin)
+        -- peggimann@puzzle.ch
+VALUES (1, 1, 1, 4, TRUE),
+       (2, 1, 1, 5, FALSE),
+       (3, 1, 1, 7, FALSE),
+       -- wunderland@puzzle.ch
+       (4, 1, 11, 6, FALSE),
+       -- baumeister@puzzle.ch
+       (5, 1, 21, 8, FALSE),
+       -- peterson@puzzle.ch
+       (6, 1, 31, 8, TRUE),
+       -- papierer@puzzle.ch
+       (8, 1, 51, 6, TRUE),
+       -- gl@gl.ch
+       (9, 1, 61, 5, TRUE),
+       (10, 1, 61, 6, FALSE),
+        -- leimgruber@puzzle.ch
+       (11, 1, 2, 5, FALSE),
+       (12, 1, 2, 7, TRUE),
+       -- brantschen@puzzle.ch
+       (13, 1, 3, 5, FALSE),
+       (14, 1, 3, 7, FALSE),
+       -- endtner@puzzle.ch
+       (15, 1, 4, 5, FALSE),
+       (16, 1, 4, 7, FALSE);
+;
 
 insert into objective (id, description, modified_on, title, created_by_id, quarter_id, team_id, state, modified_by_id,
                        created_on, version)

@@ -28,11 +28,35 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-
-
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>com.fizzed</groupId>
+                    <artifactId>fizzed-watcher-maven-plugin</artifactId>
+                    <version>1.0.6</version>
+                    <configuration>
+                        <touchFile>backend/target/classes/watcher.txt</touchFile>
+                        <watches>
+                            <watch>
+                                <directory>backend/src/main/java</directory>
+                            </watch>
+                        </watches>
+                        <goals>
+<!--                            <goal>clean</goal>-->
+<!--                            <goal>resources:resources</goal>-->
+<!--                            <goal>compiler:compile</goal>-->
+<!--                            <goal>resources:copy-resources</goal>-->
+<!--                            <goal>jar:jar</goal>-->
+<!--                            <goal>spring-boot:repackage</goal>-->
+                            <goal>clean</goal>
+                            <goal>package</goal>
+                        </goals>
+                        <profiles>
+                            <profile>build-for-docker</profile>
+                        </profiles>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>

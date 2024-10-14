@@ -14,18 +14,15 @@ services:
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
     volumes:
         - ../../../okr/backend/target:/app-root/backend
-    depends_on:
-      maven:
-        condition: service_completed_successfully
 
   maven:
     container_name: maven
-    image: maven:3.8.3-openjdk-17
+    image: maven:3.9.9-amazoncorretto-21
+    command: sh -c "mvn fizzed-watcher:run"
+    working_dir: /app-root/
     volumes:
-      - ../../../okr:/opt
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-    command: [ "/bin/bash", "-c", "cd /opt && mvn -B clean package --file pom.xml -P build-for-docker && chown -R 1000:1000 ./backend/target" ]
+      - ../../../okr:/app-root/
+      - ~/.m2/repository:/root/.m2/repository
 
   angular:
     container_name: angular

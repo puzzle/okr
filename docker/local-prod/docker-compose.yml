@@ -12,22 +12,6 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: staging
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: http://localhost:8544/realms/pitc
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://keycloak:8080/realms/pitc/protocol/openid-connect/certs
-#      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: https://sso.puzzle.ch/auth/realms/pitc
-#      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: https://sso.puzzle.ch/auth/realms/pitc/protocol/openid-connect/certs
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_OPAQUETOKEN_CLIENT-ID: pitc_okr_staging
-      ## Postgres DB
-      SPRING_DATASOURCE_URL: jdbc:postgresql://okr-dev-db:5432/okr
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: pwd
-      SPRING_FLYWAY_LOCATIONS: classpath:db/data-migration,classpath:db/migration,classpath:db/callback
-
-      ## In memory DB
-#      SPRING_DATASOURCE_URL: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
-#      SPRING_DATASOURCE_USERNAME: user
-#      SPRING_DATASOURCE_PASSWORD: sa
-#      SPRING_FLYWAY_LOCATIONS: classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2
     volumes:
         - ../../../okr/backend/target:/app-root/backend
     depends_on:

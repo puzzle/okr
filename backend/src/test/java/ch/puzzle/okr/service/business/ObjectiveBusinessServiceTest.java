@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,11 +19,12 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.models.State.DRAFT;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +33,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
+    private static final LocalDate Q3_START = LocalDate.of(2024, 1, 1);
+    private static final LocalDate Q3_END = LocalDate.of(2024, 3, 31);
+    public static final LocalDate Q4_START = LocalDate.of(2024, 4, 1);
+    public static final LocalDate Q4_END = LocalDate.of(2024, 6, 30);
+
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     @InjectMocks
     @Spy
@@ -196,4 +203,70 @@ class ObjectiveBusinessServiceTest {
         // called for creating the new KeyResults
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
+
+    @DisplayName("isImUsed() should return false when quarter has not changed")
+    @Test
+    void isImUsedShouldReturnFalseWhenQuarterHasNotChanged() {
+        // arrange
+        Objective sourceObjective = getObjective(99L, Q3_START, Q3_END);
+        Objective savedObjective = getObjective(99L, Q3_START, Q3_END);
+
+        // mocking hasQuarterChanged()
+        when(objectivePersistenceService.findById(99L)).thenReturn(savedObjective);
+
+        // act
+        var res = objectiveBusinessService.isImUsed(sourceObjective);
+
+        // assert
+        assertFalse(res);
+    }
+
+    @DisplayName("isImUsed() should return false when quarter has changed but objective has no checkins")
+    @Test
+    void isImUsedShouldReturnFalseWhenQuarterHasChangedButObjectiveHasNoCheckins() {
+        // arrange
+        Objective sourceObjective = getObjective(99L, Q4_START, Q4_END);
+        Objective savedObjective = getObjective(99L, Q3_START, Q3_END);
+
+        // mocking hasQuarterChanged()
+        when(objectivePersistenceService.findById(99L)).thenReturn(savedObjective);
+
+        // act
+        var res = objectiveBusinessService.isImUsed(sourceObjective);
+
+        // assert
+        assertFalse(res);
+    }
+
+    @DisplayName("isImUsed() should return true when quarter has changed and objective has matching checkins")
+    @Test
+    void isImUsedShouldReturnTrueWhenQuarterHasChangedAndObjectiveHasMatchingCheckins() {
+        Objective sourceObjective = getObjective(99L, Q4_START, Q4_END);
+        Objective savedObjective = getObjective(99L, Q3_START, Q3_END);
+
+        // mocking hasQuarterChanged()
+        when(objectivePersistenceService.findById(99L)).thenReturn(savedObjective);
+
+        // mocking hasAlreadyCheckIns()
+        when(keyResultBusinessService.getAllKeyResultsByObjective(99L))
+                .thenReturn(List.of(KeyResultOrdinal.Builder.builder().withId(88L).build()));
+        when(keyResultBusinessService.hasKeyResultAnyCheckIns(88L)).thenReturn(true);
+
+        // act
+        var res = objectiveBusinessService.isImUsed(sourceObjective);
+
+        // assert
+        assertTrue(res);
+    }
+
+    private Objective getObjective(Long objectiveId, LocalDate startQuarter, LocalDate endQuarter) {
+        return Objective.Builder.builder() //
+                .withId(objectiveId) //
+                .withQuarter(Quarter.Builder.builder() //
+                        .withStartDate(startQuarter) //
+                        .withEndDate(endQuarter) //
+                        .build()) //
+                .build();
+    }
+
 }

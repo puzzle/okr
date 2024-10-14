@@ -1,19 +1,19 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import ch.puzzle.okr.test.TestHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -223,6 +223,63 @@ class ObjectiveValidationServiceTest {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @DisplayName("validateOnCreate() should throw exception when quarter start date is null")
+    @Test
+    void validateOnCreateShouldThrowExceptionWhenQuarterStartDateIsNull() {
+        // arrange
+        var quarterWithMissingStartDate = Quarter.Builder.builder() //
+                .withId(1L) //
+                .withLabel("GJ-22/23-Q3") //
+                .withStartDate(null) //
+                .withEndDate(LocalDate.of(2023, 4, 1)) //
+                .build();
+
+        var objectiveInvalid = objectiveInDraftStateWithQuarter(quarterWithMissingStartDate);
+
+        // act
+        var exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(objectiveInvalid));
+
+        // assert
+        var expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "GJ-22/23-Q3")));
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @DisplayName("validateOnCreate() should throw exception when quarter end date is null")
+    @Test
+    void validateOnCreateShouldThrowExceptionWhenQuarterEndDateIsNull() {
+        // arrange
+        var quarterWithMissingEndDate = Quarter.Builder.builder() //
+                .withId(1L) //
+                .withLabel("GJ-22/23-Q3") //
+                .withStartDate(LocalDate.of(2023, 1, 1)) //
+                .withEndDate(null) //
+                .build();
+        var objectiveInvalid = objectiveInDraftStateWithQuarter(quarterWithMissingEndDate);
+
+        // act
+        var exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(objectiveInvalid));
+
+        // assert
+        var expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "GJ-22/23-Q3")));
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    private Objective objectiveInDraftStateWithQuarter(Quarter quarter) {
+        return Objective.Builder.builder() //
+                .withId(null).withCreatedBy(user) //
+                .withCreatedOn(LocalDateTime.MAX) //
+                .withState(State.DRAFT) //
+                .withTeam(team) //
+                .withQuarter(quarter) //
+                .build();
     }
 
     @Test

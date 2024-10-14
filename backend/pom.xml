@@ -251,6 +251,8 @@
             <id>build-for-docker</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
+                <maven.test.skip>true</maven.test.skip>
+                <maven.formatter.skip>true</maven.formatter.skip>
                 <spring.profiles.active>prod</spring.profiles.active>
             </properties>
             <build>

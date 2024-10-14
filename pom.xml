@@ -43,12 +43,6 @@
                             </watch>
                         </watches>
                         <goals>
-<!--                            <goal>clean</goal>-->
-<!--                            <goal>resources:resources</goal>-->
-<!--                            <goal>compiler:compile</goal>-->
-<!--                            <goal>resources:copy-resources</goal>-->
-<!--                            <goal>jar:jar</goal>-->
-<!--                            <goal>spring-boot:repackage</goal>-->
                             <goal>clean</goal>
                             <goal>package</goal>
                         </goals>

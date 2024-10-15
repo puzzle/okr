@@ -38,7 +38,7 @@ public class QuarterFunctionTest {
                 + nextQuarterEndDate() + ")";
 
         // assert
-        String expectedNext = "(2, GJ 24/25-Q2, 2024-10-01, 2024-12-31)";
+        String expectedNext = "(3, GJ 24/25-Q3, 2025-01-01, 2025-03-31)";
         assertEquals(expectedNext, nextQuarter);
     }
 }

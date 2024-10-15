@@ -9,4 +9,4 @@ USER 1001
 
 WORKDIR app-root/backend
 
-ENTRYPOINT ["/bin/sh", "-c", "export BACKEND_VERSION=$(find . -type f -name 'backend-*.jar' -print -quit | sed -n 's/.*backend-\\(.*\\)\\.jar/\\1/p'); while true; do java -jar backend-${BACKEND_VERSION}.jar & pid=$!; inotifywait -e modify backend-${BACKEND_VERSION}.jar; kill -9 $pid; echo 'JAR updated. Restarting...'; done"]
+ENTRYPOINT ["/bin/sh", "-c", "export BACKEND_VERSION=$(find . -type f -name 'backend-*.jar' -print -quit | sed -n 's/.*backend-\\(.*\\)\\.jar/\\1/p'); while true; do java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005 -jar backend-${BACKEND_VERSION}.jar  & pid=$!; inotifywait -e modify backend-${BACKEND_VERSION}.jar; kill -9 $pid; echo 'JAR updated. Restarting...'; done"]

@@ -10,7 +10,6 @@ services:
     restart: always
     environment:
       SPRING_PROFILES_ACTIVE: staging
-      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
       SPRING_FLYWAY_LOCATIONS: classpath:db/migration,classpath:db/data-migration,classpath:db/callback
     volumes:
         - ../../../okr/backend/target:/app-root/backend

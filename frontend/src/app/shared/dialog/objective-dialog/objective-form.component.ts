@@ -89,7 +89,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
       this.quarters = quarters;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
+      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], objective.quarterId)[0];
 
       let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
       if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {

@@ -12,4 +12,8 @@ export class QuarterService {
   getAllQuarters(): Observable<Quarter[]> {
     return this.http.get<Quarter[]>('/api/v1/quarters');
   }
+
+  getCurrentQuarter(): Observable<Quarter> {
+    return this.http.get<Quarter>('/api/v1/quarters/current');
+  }
 }

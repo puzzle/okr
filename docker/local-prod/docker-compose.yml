@@ -7,13 +7,13 @@ services:
       context: .
       dockerfile: local-prod.Dockerfile
     restart: always
-    ports:
-      - 8080:8080
     environment:
       SPRING_PROFILES_ACTIVE: staging
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
+      SPRING_FLYWAY_LOCATION: classpath:db/migration,classpath:db/data-migration,classpath:db/callback
     volumes:
         - ../../../okr/backend/target:/app-root/backend
+    network_mode: "host"
 
   maven:
     container_name: maven

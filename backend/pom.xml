@@ -83,15 +83,6 @@
             <version>3.26.3</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.8.RELEASE</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -299,24 +290,6 @@
                     <version>1.2.8.RELEASE</version>
                 </dependency>
             </dependencies>
-        </profile>
-        <profile>
-            <id>no-formatter</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>net.revelc.code.formatter</groupId>
-                        <artifactId>formatter-maven-plugin</artifactId>
-                        <version>2.24.1</version>
-                        <executions>
-                            <execution>
-                                <id>code-format</id>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 </project>

@@ -2,6 +2,7 @@ include:
   - ../docker-compose.yml
 services:
   spring:
+    tty: true
     container_name: spring
     build:
       context: .
@@ -16,9 +17,10 @@ services:
     network_mode: "host"
 
   maven:
+    tty: true
     container_name: maven
     image: maven:3.9.9-amazoncorretto-21
-    command: sh -c "mvn fizzed-watcher:run"
+    command: sh -c "mvn -B clean package -P build-for-docker && mvn fizzed-watcher:run"
     working_dir: /app-root/
     volumes:
       - ../../../okr:/app-root/
@@ -26,10 +28,8 @@ services:
 
   angular:
     container_name: angular
-    image: node:22
-    user: "${UID:-1000}:${GID:-1000}"
+    image: node:20
+    tty: true
     volumes:
       - ../../../okr:/opt
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm ci && npm run watch:prod" ]
+    command: [ "/bin/bash", "-c", "cd /opt/frontend && mkdir -p dist && npm ci && npm run watch:prod" ]

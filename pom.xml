@@ -50,6 +50,7 @@
                         </goals>
                         <profiles>
                             <profile>build-for-docker</profile>
+                            <profile>debug</profile>
                         </profiles>
                     </configuration>
                 </plugin>

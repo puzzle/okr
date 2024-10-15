@@ -41,6 +41,9 @@ export class KeyresultDetailComponent implements OnInit {
   ngOnInit(): void {
     this.keyResultId = this.getIdFromParams();
     this.loadKeyResult(this.keyResultId);
+    this.refreshDataService.reloadKeyResultSubject.subscribe(() => {
+      this.loadKeyResult(this.keyResultId);
+    });
   }
 
   private getIdFromParams(): number {
@@ -181,7 +184,7 @@ export class KeyresultDetailComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadKeyResult(this.keyResult$.getValue().id);
+      this.refreshDataService.reloadKeyResultSubject.next();
       this.refreshDataService.markDataRefresh();
     });
   }

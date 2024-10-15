@@ -14,16 +14,32 @@ services:
     volumes:
         - ../../../okr/backend/target:/app-root/backend
     network_mode: "host"
+    depends_on:
+      maven-init:
+        condition: service_completed_successfully
 
   maven:
     tty: true
     container_name: maven
     restart: on-failure
     image: maven:3.9.9-amazoncorretto-21
-    command: sh -c "mvn -B clean package -P build-for-docker,debug && mvn fizzed-watcher:run"
+    command: mvn fizzed-watcher:run
     working_dir: /app-root/
     volumes:
-      - ../../../okr:/app-root/
+      - ../../../okr:/app-root
+      - ~/.m2/repository:/root/.m2/repository
+    depends_on:
+      maven-init:
+        condition: service_completed_successfully
+
+  maven-init:
+    tty: true
+    container_name: maven-init
+    image: maven:3.9.9-amazoncorretto-21
+    command: mvn -B clean package -P build-for-docker,debug
+    working_dir: /app-root/
+    volumes:
+      - ../../../okr:/app-root
       - ~/.m2/repository:/root/.m2/repository
 
   angular:

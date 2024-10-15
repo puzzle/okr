@@ -18,6 +18,7 @@ services:
   maven:
     tty: true
     container_name: maven
+    restart: on-failure
     image: maven:3.9.9-amazoncorretto-21
     command: sh -c "mvn -B clean package -P build-for-docker,debug && mvn fizzed-watcher:run"
     working_dir: /app-root/
@@ -29,6 +30,8 @@ services:
     container_name: angular
     image: node:20
     tty: true
+    restart: on-failure
     volumes:
       - ../../../okr:/opt
     command: [ "/bin/bash", "-c", "cd /opt/frontend && mkdir -p dist && npm ci && npm run watch:prod" ]
+

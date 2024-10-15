@@ -10,7 +10,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: staging
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
-      SPRING_FLYWAY_LOCATION: classpath:db/migration,classpath:db/data-migration,classpath:db/callback
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration,classpath:db/data-migration,classpath:db/callback
     volumes:
         - ../../../okr/backend/target:/app-root/backend
     network_mode: "host"
@@ -24,12 +24,12 @@ services:
       - ../../../okr:/app-root/
       - ~/.m2/repository:/root/.m2/repository
 
-  angular:
-    container_name: angular
-    image: node:20
-    user: "${UID:-1000}:${GID:-1000}"
-    volumes:
-      - ../../../okr:/opt
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm ci && npm run watch:prod" ]
+#  angular:
+#    container_name: angular
+#    image: node:20
+#    user: "${UID:-1000}:${GID:-1000}"
+#    volumes:
+#      - ../../../okr:/opt
+#      - /etc/passwd:/etc/passwd:ro
+#      - /etc/group:/etc/group:ro
+#    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm ci && npm run watch:prod" ]

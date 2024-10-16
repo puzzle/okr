@@ -11,6 +11,7 @@
     >
       Metrisch
     </div>
+
     <div
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: !isMetric, 'non-active': isMetric }"
@@ -22,11 +23,12 @@
     >
       Ordinal
     </div>
+
     <div class="buffer tab-title flex-fill"></div>
   </div>
 </div>
 
-<div *ngIf="isMetric; else ordinalBlock">
+<ng-template *ngIf="isMetric; else ordinalBlock">
   <form [formGroup]="keyResultForm" class="gap-1">
     <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
@@ -82,7 +84,7 @@
       </div>
     </div>
   </form>
-</div>
+</ng-template>
 
 <ng-template #ordinalBlock>
   <form [formGroup]="keyResultForm" class="gap-1">

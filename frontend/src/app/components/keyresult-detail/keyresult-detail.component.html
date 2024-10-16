@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="me-3">
-        <div class="d-flex justify-content-between mb-3">
+        <section class="d-flex justify-content-between mb-3">
           <div>
             {{ "KEY_RESULT_TYPE." + keyResult.keyResultType | translate }}
           </div>
@@ -17,9 +17,9 @@
             <p *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</p>
           </div>
           <span *ngIf="keyResult?.objective?.quarter as quarter">{{ quarter.label }}</span>
-        </div>
+        </section>
 
-        <div class="scoring-section">
+        <section class="scoring-section">
           <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
           <span class="text-small d-flex align-items-center flex-column mb-2 ms-3 confidence-container">
             Confidence
@@ -29,7 +29,7 @@
               class="bg-display-element"
             ></app-confidence>
           </span>
-        </div>
+        </section>
 
         <div class="d-flex gap-4 flex-row mt-2">
           <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
@@ -81,7 +81,7 @@
           </ng-container>
         </div>
 
-        <div *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
+        <section *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
           <h2 class="sub-title-keyresult-detail fw-bold mb-1">
             Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})
           </h2>
@@ -98,7 +98,7 @@
               Alle Check-ins anzeigen
             </button>
           </span>
-        </div>
+        </section>
 
         <div class="mt-3 mb-4">
           <h2 class="sub-title-keyresult-detail fw-bold mb-1">Beschrieb</h2>

@@ -9,7 +9,7 @@
   <app-scoring [keyResult]="keyResult" [isDetail]="false" [attr.data-testId]="'scoring-component'"></app-scoring>
   <div class="d-flex justify-content-between mt-1">
     <div class="d-flex justify-content-center">
-      <span class="d-flex align-items-center flex-wrap sub-title-keyresult">
+      <span class="d-flex align-items-center flex-wrap keyResult-overview-attribute">
         <span class="me-1 text-nowrap me-2">Letztes Check-in</span>
         <span class="keyResult-attribute-show" *ngIf="keyResult.lastCheckIn != null">{{
           keyResult!.lastCheckIn!.createdOn | date: DATE_FORMAT

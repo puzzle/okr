@@ -21,10 +21,10 @@ const overviewService = {
 };
 
 const quarters = [
-  { id: 999, label: 'Backlog', startDate: null, endDate: null },
-  { ...quarter, id: 2 },
-  { ...quarter, id: 5 },
-  { ...quarter, id: 7 },
+  new Quarter(999, 'Backlog', null, null),
+  new Quarter(2, '23.02.2025', new Date(), new Date()),
+  new Quarter(5, '23.02.2025', new Date(), new Date()),
+  new Quarter(7, '23.02.2025', new Date(), new Date()),
 ];
 
 const quarterService = {

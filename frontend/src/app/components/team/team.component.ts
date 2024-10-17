@@ -36,6 +36,7 @@ export class TeamComponent implements OnInit {
           width: '100vw',
         }
       : {
+          minHeight: '28em',
           width: '45em',
           height: 'auto',
         };
@@ -46,6 +47,7 @@ export class TeamComponent implements OnInit {
           teamId: this.overviewEntity.team.id,
         },
       },
+      minHeight: dialogConfig.minHeight,
       height: dialogConfig.height,
       width: dialogConfig.width,
       maxHeight: dialogConfig.maxHeight,

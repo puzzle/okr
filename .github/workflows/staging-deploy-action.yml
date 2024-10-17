@@ -1,10 +1,10 @@
 name: 'Staging-Deploy'
 
 on:
-#  pull_request:
-#    types:
-#      - closed
-#    branches: [ main ]
+  pull_request:
+    types:
+      - closed
+    branches: [ main ]
 
 jobs:
   update-version:

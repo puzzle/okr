@@ -25,22 +25,24 @@ export class QuarterFilterComponent implements OnInit {
 
   ngOnInit() {
     this.quarterService.getAllQuarters().subscribe((quarters) => {
-      this.quarters.next(quarters);
-      const quarterQuery = this.route.snapshot.queryParams['quarter'];
-      const quarterId: number = getValueFromQuery(quarterQuery)[0];
-      if (quarters.map((quarter) => quarter.id).includes(quarterId)) {
-        this.quarterId = quarterId;
-        this.changeDisplayedQuarter();
-      } else {
-        this.quarterId = quarters[2].id;
-        if (quarterQuery !== undefined) {
+      this.quarterService.getCurrentQuarter().subscribe((currentQuarter) => {
+        this.quarters.next(quarters);
+        const quarterQuery = this.route.snapshot.queryParams['quarter'];
+        const quarterId: number = getValueFromQuery(quarterQuery)[0];
+        if (quarters.map((quarter) => quarter.id).includes(quarterId)) {
+          this.quarterId = quarterId;
           this.changeDisplayedQuarter();
         } else {
-          this.refreshDataService.quarterFilterReady.next();
+          this.quarterId = currentQuarter.id;
+          if (quarterQuery !== undefined) {
+            this.changeDisplayedQuarter();
+          } else {
+            this.refreshDataService.quarterFilterReady.next();
+          }
         }
-      }
-      const quarterLabel = quarters.find((e) => e.id == this.quarterId)?.label || '';
-      this.quarterLabel$.next(quarterLabel);
+        const quarterLabel = quarters.find((e) => e.id == this.quarterId)?.label || '';
+        this.quarterLabel$.next(quarterLabel);
+      });
     });
   }
 

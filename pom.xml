@@ -41,13 +41,16 @@
                             <watch>
                                 <directory>backend/src/main/java</directory>
                             </watch>
+                            <watch>
+                                <directory>frontend/dist</directory>
+                            </watch>
                         </watches>
                         <goals>
-                            <goal>clean</goal>
                             <goal>package</goal>
                         </goals>
                         <profiles>
                             <profile>build-for-docker</profile>
+                            <profile>debug</profile>
                         </profiles>
                     </configuration>
                 </plugin>

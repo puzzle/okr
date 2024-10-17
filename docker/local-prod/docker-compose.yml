@@ -2,34 +2,54 @@ include:
   - ../docker-compose.yml
 services:
   spring:
+    tty: true
     container_name: spring
     build:
       context: .
       dockerfile: local-prod.Dockerfile
     restart: always
-    ports:
-      - 8080:8080
     environment:
       SPRING_PROFILES_ACTIVE: staging
-      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration,classpath:db/data-migration,classpath:db/callback
     volumes:
         - ../../../okr/backend/target:/app-root/backend
+    network_mode: "host"
+    depends_on:
+      maven-init:
+        condition: service_completed_successfully
 
   maven:
+    tty: true
     container_name: maven
+    restart: on-failure
     image: maven:3.9.9-amazoncorretto-21
-    command: sh -c "mvn fizzed-watcher:run"
+    command: mvn fizzed-watcher:run
     working_dir: /app-root/
     volumes:
-      - ../../../okr:/app-root/
+      - ../../../okr:/app-root
+      - ~/.m2/repository:/root/.m2/repository
+    depends_on:
+      maven-init:
+        condition: service_completed_successfully
+
+  maven-init:
+    tty: true
+    container_name: maven-init
+    image: maven:3.9.9-amazoncorretto-21
+    command: mvn -B clean package -P build-for-docker,debug
+    working_dir: /app-root/
+    volumes:
+      - ../../../okr:/app-root
       - ~/.m2/repository:/root/.m2/repository
 
   angular:
     container_name: angular
     image: node:20
-    user: "${UID:-1000}:${GID:-1000}"
+    tty: true
+    restart: on-failure
     volumes:
       - ../../../okr:/opt
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm ci && npm run watch:prod" ]
+    command: [ "/bin/bash", "-c", "cd /opt/frontend && mkdir -p dist && npm ci && npm run watch:prod" ]
+

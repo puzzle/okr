@@ -7,6 +7,7 @@ import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -66,5 +67,12 @@ class QuarterControllerIT {
 
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
+    }
+
+    @Test
+    void shouldCallCurrentQuarterAfterRequest() throws Exception {
+        mvc.perform(get("/api/v1/quarters/current").contentType(MediaType.APPLICATION_JSON));
+
+        BDDMockito.verify(quarterBusinessService, Mockito.times(1)).getCurrentQuarter();
     }
 }

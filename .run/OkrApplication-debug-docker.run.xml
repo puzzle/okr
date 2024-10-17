@@ -1,7 +1,7 @@
 
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="OkrApplication Local-prod debug" type="Remote">
-    <module name="exam-feedback-tool" />
+  <configuration default="false" name="OkrApplication Debug Docker" type="Remote">
+    <module name="OkrApplication" />
     <option name="USE_SOCKET_TRANSPORT" value="true" />
     <option name="SERVER_MODE" value="false" />
     <option name="SHMEM_ADDRESS" />

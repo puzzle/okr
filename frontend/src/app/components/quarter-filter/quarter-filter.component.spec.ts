@@ -74,7 +74,7 @@ describe('QuarterFilterComponent', () => {
     fixture.detectChanges();
     expect(component.quarterId).toBe(quarters[2].id);
     expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
-    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
+    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
   });
 
   it('should set correct value in form according to route param', async () => {

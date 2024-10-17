@@ -24,6 +24,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 import { KeyResultFormComponent } from '../key-result-form/key-result-form.component';
+import { Quarter } from '../../shared/types/model/Quarter';
 
 describe('KeyresultDialogComponent', () => {
   let component: KeyresultDialogComponent;
@@ -55,7 +56,7 @@ describe('KeyresultDialogComponent', () => {
   let keyResultObjective: KeyResultObjective = {
     id: 2,
     state: State.ONGOING,
-    quarter: { id: 1, label: 'GJ 22/23-Q2', endDate: new Date(), startDate: new Date() },
+    quarter: new Quarter(1, 'GJ 22/23-Q2', new Date(), new Date()),
   };
 
   let fullKeyResultMetric = {

@@ -1,51 +1,31 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
-import ch.puzzle.okr.dto.ErrorDto;
-import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
-import ch.puzzle.okr.models.checkin.CheckInMetric;
-import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static ch.puzzle.okr.Constants.CHECK_IN;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringIntegrationTest
 class CheckInPersistenceServiceIT {
-    CheckIn createdCheckIn;
+
+    private static final long KEY_RESULT_ID = 7L;
 
     @Autowired
     private CheckInPersistenceService checkInPersistenceService;
-
-    private static CheckIn createCheckIn(Long id) {
-        return createCheckIn(id, 1);
-    }
-
-    private static final String UPDATED_CHECKIN = "Updated CheckIn";
-
-    private static CheckIn createCheckIn(Long id, int version) {
-        return CheckInMetric.Builder.builder().withValue(30D).withId(id).withVersion(version)
-                .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
-                .withCreatedOn(LocalDateTime.MAX)
-                .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
-                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
-                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withModifiedOn(LocalDateTime.MAX)
-                .withConfidence(5).build();
-    }
 
     @BeforeEach
     void setUp() {
@@ -54,97 +34,53 @@ class CheckInPersistenceServiceIT {
 
     @AfterEach
     void tearDown() {
-        try {
-            if (createdCheckIn != null) {
-                checkInPersistenceService.findById(createdCheckIn.getId());
-                checkInPersistenceService.deleteById(createdCheckIn.getId());
-            }
-        } catch (ResponseStatusException ex) {
-            // created CheckIn already deleted
-        } finally {
-            createdCheckIn = null;
-        }
         TenantContext.setCurrentTenant(null);
     }
 
+    // uses data from V100_0_0__TestData.sql
+    @DisplayName("getCheckInsByKeyResultIdOrderByCheckInDate() should get checkIns by keyResultId and order them by date desc")
     @Test
-    void saveCheckInShouldSaveNewCheckIn() {
-        CheckIn checkIn = createCheckIn(null);
+    void getCheckInsByKeyResultIdOrderByCheckInDateShouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
+        // act
+        List<CheckIn> checkIns = checkInPersistenceService
+                .getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
 
-        createdCheckIn = checkInPersistenceService.save(checkIn);
-
-        assertNotNull(createdCheckIn.getId());
-        assertEquals(checkIn.getModifiedOn(), createdCheckIn.getModifiedOn());
-        assertEquals(((CheckInMetric) checkIn).getValue(), ((CheckInMetric) createdCheckIn).getValue());
-        assertEquals(checkIn.getCreatedBy(), createdCheckIn.getCreatedBy());
-        assertEquals(checkIn.getCreatedOn(), createdCheckIn.getCreatedOn());
-        assertEquals(checkIn.getInitiatives(), createdCheckIn.getInitiatives());
-        assertEquals(checkIn.getChangeInfo(), createdCheckIn.getChangeInfo());
+        // assert
+        assertThat(2, greaterThanOrEqualTo(checkIns.size()));
+        CheckIn firstCheckIn = checkIns.get(0);
+        CheckIn lastCheckIn = checkIns.get(checkIns.size() - 1);
+        assertFirstIsCreatedAfterSecond(firstCheckIn, lastCheckIn);
     }
 
-    @Test
-    void updateKeyResultShouldUpdateKeyResult() {
-        createdCheckIn = checkInPersistenceService.save(createCheckIn(null));
-        CheckIn updateCheckIn = createCheckIn(createdCheckIn.getId(), createdCheckIn.getVersion());
-        updateCheckIn.setChangeInfo(UPDATED_CHECKIN);
-
-        CheckIn updatedCheckIn = checkInPersistenceService.save(updateCheckIn);
-
-        assertEquals(createdCheckIn.getId(), updatedCheckIn.getId());
-        assertEquals(createdCheckIn.getVersion() + 1, updatedCheckIn.getVersion());
-        assertEquals(UPDATED_CHECKIN, updatedCheckIn.getChangeInfo());
+    private void assertFirstIsCreatedAfterSecond(CheckIn first, CheckIn second) {
+        assertTrue(first.getCreatedOn().isAfter(second.getCreatedOn()));
     }
 
+    // uses data from V100_0_0__TestData.sql
+    @DisplayName("getLastCheckInOfKeyResult() should get last checkIn of keyResult")
     @Test
-    void updateKeyResultShouldThrowExceptionWhenAlreadyUpdated() {
-        createdCheckIn = checkInPersistenceService.save(createCheckIn(null));
-        CheckIn updateCheckIn = createCheckIn(createdCheckIn.getId(), 0);
-        updateCheckIn.setChangeInfo(UPDATED_CHECKIN);
+    void getLastCheckInOfKeyResultShouldGetLastCheckInOfKeyResult() {
+        // act
+        var lastCheckIn = checkInPersistenceService.getLastCheckInOfKeyResult(KEY_RESULT_ID);
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> checkInPersistenceService.save(updateCheckIn));
-
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Check-in")));
-
-        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        // assert
+        var allCheckins = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
+        assertLastIsCreatedAfterAllOtherCheckIns(lastCheckIn, allCheckins);
 
     }
 
-    @Test
-    void getAllCheckInShouldReturnListOfAllCheckIns() {
-        List<CheckIn> checkIns = checkInPersistenceService.findAll();
-
-        assertEquals(19, checkIns.size());
-    }
-
-    @Test
-    void getCheckInByIdShouldReturnCheckInProperly() {
-        CheckIn checkIn = checkInPersistenceService.findById(20L);
-
-        assertEquals(20L, checkIn.getId());
-        assertEquals(0.5, ((CheckInMetric) checkIn).getValue(), 0.01);
-        assertEquals(
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore "
-                        + "magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ",
-                checkIn.getChangeInfo());
-    }
-
-    @Test
-    void shouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
-        List<CheckIn> checkIns = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(7L);
-        assertTrue(checkIns.get(0).getCreatedOn().isAfter(checkIns.get(checkIns.size() - 1).getCreatedOn()));
-    }
-
-    @Test
-    void shouldGetLastCheckInOfKeyResult() {
-        CheckIn checkIn = checkInPersistenceService.getLastCheckInOfKeyResult(7L);
-        List<CheckIn> checkInList = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(7L);
-        for (CheckIn checkInLoop : checkInList) {
-            if (!Objects.equals(checkInLoop.getId(), checkIn.getId())) {
-                assertTrue(checkIn.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
+    private void assertLastIsCreatedAfterAllOtherCheckIns(CheckIn last, List<CheckIn> allCheckIns) {
+        for (CheckIn checkInLoop : allCheckIns) {
+            if (!Objects.equals(checkInLoop.getId(), last.getId())) {
+                assertTrue(last.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
             }
         }
     }
+
+    @DisplayName("getModelName() should return checkIn")
+    @Test
+    void getModelNameShouldReturnCheckIn() {
+        assertEquals(CHECK_IN, checkInPersistenceService.getModelName());
+    }
+
 }

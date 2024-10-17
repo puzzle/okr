@@ -90,31 +90,13 @@ export const addedAction: Action = {
   keyResultId: 1,
 } as Action;
 
-export const quarterMin: Quarter = {
-  id: 1,
-  label: 'GJ 23/24-Q1',
-} as Quarter;
+export const quarterMin: Quarter = new Quarter(1, 'GJ 23/24-Q1', null, null);
 
-export const quarter1: Quarter = {
-  id: 1,
-  label: 'GJ 22/23-Q4',
-  startDate: new Date('2023-04-01'),
-  endDate: new Date('2023-07-30'),
-} as Quarter;
+export const quarter1: Quarter = new Quarter(1, 'GJ 22/23-Q4', new Date('2023-04-01'), new Date('2023-07-30'));
 
-export const quarter2: Quarter = {
-  id: 2,
-  label: 'GJ 22/23-Q3',
-  startDate: new Date('2023-01-01'),
-  endDate: new Date('2023-03-31'),
-} as Quarter;
+export const quarter2: Quarter = new Quarter(2, 'GJ 22/23-Q3', new Date('2023-01-01'), new Date('2023-03-31'));
 
-export const quarterBacklog: Quarter = {
-  id: 999,
-  label: 'GJ 23/24-Q1',
-  startDate: null,
-  endDate: null,
-} as Quarter;
+export const quarterBacklog: Quarter = new Quarter(999, 'GJ 23/24-Q1', null, null);
 
 export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
 
@@ -308,12 +290,7 @@ export const overViewEntityResponse2: any = {
 
 export const overviews: OverviewEntity[] = [overViewEntityResponse1, overViewEntityResponse2];
 
-export const quarter: Quarter = {
-  id: 1,
-  label: '23.02.2025',
-  endDate: new Date(),
-  startDate: new Date(),
-};
+export const quarter: Quarter = new Quarter(1, '23.02.2025', new Date(), new Date());
 
 export const keyResultObjective: KeyResultObjective = {
   id: 1,
@@ -435,12 +412,7 @@ export const keyResult: KeyResultOrdinal = {
     id: 301,
     version: 1,
     state: State.DRAFT,
-    quarter: {
-      id: 1,
-      label: 'GJ 23/24-Q1',
-      startDate: new Date(),
-      endDate: new Date(),
-    } as Quarter,
+    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
     writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
@@ -474,12 +446,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
     id: 301,
     version: 1,
     state: State.DRAFT,
-    quarter: {
-      id: 1,
-      label: 'GJ 23/24-Q1',
-      startDate: new Date(),
-      endDate: new Date(),
-    } as Quarter,
+    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
     writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
@@ -513,12 +480,7 @@ export const keyResultWriteableFalse: KeyResultOrdinal = {
     id: 301,
     version: 1,
     state: State.DRAFT,
-    quarter: {
-      id: 1,
-      label: 'GJ 23/24-Q1',
-      startDate: new Date(),
-      endDate: new Date(),
-    } as Quarter,
+    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
     writeable: false,
   } as KeyResultObjective,
   lastCheckIn: {
@@ -552,12 +514,7 @@ export const keyResultMetric: KeyResultMetric = {
     id: 302,
     version: 1,
     state: State.DRAFT,
-    quarter: {
-      id: 1,
-      label: 'GJ 23/24-Q1',
-      startDate: new Date(),
-      endDate: new Date(),
-    } as Quarter,
+    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
     writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
@@ -590,12 +547,7 @@ export const keyResultActions: KeyResultMetric = {
   objective: {
     id: 302,
     state: State.DRAFT,
-    quarter: {
-      id: 1,
-      label: 'GJ 23/24-Q1',
-      startDate: new Date(),
-      endDate: new Date(),
-    } as Quarter,
+    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
     writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {

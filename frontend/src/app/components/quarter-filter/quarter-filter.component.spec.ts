@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuarterFilterComponent } from './quarter-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OverviewService } from '../../services/overview.service';
-import { quarter } from '../../shared/testData';
 import { Observable, of } from 'rxjs';
 import { Quarter } from '../../shared/types/model/Quarter';
 import { QuarterService } from '../../services/quarter.service';
@@ -30,6 +29,9 @@ const quarters = [
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
     return of(quarters);
+  },
+  getCurrentQuarter(): Observable<Quarter> {
+    return of(quarters[2]);
   },
 };
 
@@ -68,6 +70,7 @@ describe('QuarterFilterComponent', () => {
 
   it('should set correct default quarter if no route param is defined', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
+    jest.spyOn(quarters[2] as any, 'isCurrent').mockReturnValue(true);
     const quarterSelect = await loader.getHarness(MatSelectHarness);
     expect(quarterSelect).toBeTruthy();
     component.ngOnInit();

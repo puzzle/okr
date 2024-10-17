@@ -11,7 +11,7 @@ import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { CONFIRM_DIALOG_WIDTH, GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
@@ -234,6 +234,4 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   isBacklogQuarter(label: string) {
     return GJ_REGEX_PATTERN.test(label);
   }
-
-  protected readonly getQuarterLabel = getQuarterLabel;
 }

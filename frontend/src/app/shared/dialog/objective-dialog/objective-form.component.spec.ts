@@ -38,9 +38,9 @@ let objectiveService = {
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
     return of([
-      { id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
-      { id: 2, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
-      { id: 999, startDate: null, endDate: null, label: 'Backlog' },
+      new Quarter(1, quarter.label, quarter.startDate, quarter.endDate),
+      new Quarter(2, quarter.label, quarter.startDate, quarter.endDate),
+      new Quarter(999, 'Backlog', null, null),
     ]);
   },
 };
@@ -292,12 +292,8 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should return if option is allowed for quarter select', async () => {
-      let quarter: Quarter = {
-        id: 999,
-        label: 'Backlog',
-        startDate: null,
-        endDate: null,
-      };
+      let quarter: Quarter = new Quarter(1, 'Backlog', null, null);
+
       let data = {
         action: 'duplicate',
         objective: {
@@ -310,7 +306,6 @@ describe('ObjectiveDialogComponent', () => {
 
       expect(component.allowedOption(quarter)).toBeTruthy();
 
-      quarter.label = 'Backlog';
       expect(component.allowedOption(quarter)).toBeTruthy();
       data.action = 'releaseBacklog';
       fixture.detectChanges();

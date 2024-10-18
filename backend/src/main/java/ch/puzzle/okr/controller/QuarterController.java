@@ -33,4 +33,12 @@ public class QuarterController {
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getQuarters());
     }
+
+    @Operation(summary = "Get quarters", description = "Get a List of quarters depending on current date")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned a List of quarters", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }) })
+    @GetMapping("/current")
+    public ResponseEntity<Quarter> getCurrentQuarter() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getCurrentQuarter());
+    }
 }

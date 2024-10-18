@@ -1,5 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
+import { Quarter } from './types/model/Quarter';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString().trim() === '') {
@@ -85,10 +86,6 @@ export function formInputCheck(form: FormGroup, propertyName: string) {
   } else {
     return 'dialog-form-field';
   }
-}
-
-export function getQuarterLabel(quarter: any, index: number): string {
-  return index == 2 ? quarter.label + ' Aktuell' : quarter.label;
 }
 
 export function isMobileDevice() {

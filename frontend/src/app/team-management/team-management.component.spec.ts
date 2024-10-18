@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { testUser, users } from '../shared/testData';
 import { UserService } from '../services/user.service';
+import { ConfigService } from '../services/config.service';
 
 describe('TeamManagementComponent', () => {
   let component: TeamManagementComponent;
@@ -35,6 +36,10 @@ describe('TeamManagementComponent', () => {
   const userServiceMock = {
     getCurrentUser: () => of(testUser),
     getUsers: () => of(users),
+  };
+
+  const configServiceMock = {
+    config$: of({}),
   };
 
   beforeEach(async () => {
@@ -69,6 +74,7 @@ describe('TeamManagementComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: UserService, useValue: userServiceMock },
+        { provide: ConfigService, useValue: configServiceMock },
       ],
     }).compileComponents();
   });

@@ -12,13 +12,13 @@ import { UserRole } from '../../shared/types/enums/UserRole';
 import { TeamService } from '../../services/team.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
-import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListTableComponent } from './member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
+import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 const userServiceMock = {
   getUsers: jest.fn(),

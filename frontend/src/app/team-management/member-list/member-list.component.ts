@@ -6,7 +6,11 @@ import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
-import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import {
+  AddMemberToTeamDialogComponent,
+  AddMemberToTeamDialogComponentData,
+} from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';

@@ -51,7 +51,7 @@ services:
     restart: on-failure
     volumes:
       - ../../../okr:/opt
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && rm -rf dist && mkdir -p dist && npm ci && npm run watch:prod" ]
+    command: [ "/bin/bash", "-c", "cd /opt/frontend && rm -rf dist && npm ci && npm run watch:prod" ]
     healthcheck:
       test: bash -c "[ -f /opt/frontend/dist/frontend/index.html ]"
       interval: 10s

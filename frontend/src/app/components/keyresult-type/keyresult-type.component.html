@@ -28,7 +28,7 @@
   </div>
 </div>
 
-<ng-template *ngIf="isMetric; else ordinalBlock">
+<div *ngIf="isMetric; else ordinalBlock">
   <form [formGroup]="keyResultForm" class="gap-1">
     <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
@@ -84,7 +84,7 @@
       </div>
     </div>
   </form>
-</ng-template>
+</div>
 
 <ng-template #ordinalBlock>
   <form [formGroup]="keyResultForm" class="gap-1">

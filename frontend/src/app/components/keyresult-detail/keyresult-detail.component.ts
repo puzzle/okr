@@ -106,11 +106,7 @@ export class KeyresultDetailComponent implements OnInit {
   checkForDraftState(keyResult: KeyResult) {
     if (keyResult.objective.state.toUpperCase() === 'DRAFT') {
       this.dialogService
-        .open(ConfirmDialogComponent, {
-          data: {
-            draftCreate: true,
-          },
-        })
+        .openConfirmDialog('CONFIRMATION.CREATE_DRAFT_KEYRESULT')
         .afterClosed()
         .subscribe((result) => {
           if (result) {

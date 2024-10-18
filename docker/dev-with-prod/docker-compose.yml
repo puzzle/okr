@@ -40,6 +40,9 @@ services:
     volumes:
       - ../../../okr:/app-root
       - ~/.m2/repository:/root/.m2/repository
+    depends_on:
+      angular:
+        condition: service_healthy
 
   angular:
     container_name: angular
@@ -48,5 +51,11 @@ services:
     restart: on-failure
     volumes:
       - ../../../okr:/opt
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && mkdir -p dist && npm ci && npm run watch:prod" ]
+    command: [ "/bin/bash", "-c", "cd /opt/frontend && rm -rf dist && mkdir -p dist && npm ci && npm run watch:prod" ]
+    healthcheck:
+      test: bash -c "[ -f /opt/frontend/dist/frontend/index.html ]"
+      interval: 10s
+      retries: 999
+      start_period: 30s
+      timeout: 10s
 

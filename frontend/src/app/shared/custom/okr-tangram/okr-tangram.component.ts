@@ -8,10 +8,12 @@ import { BehaviorSubject, map, Observable, Subject, Subscription } from 'rxjs';
   styleUrl: 'okr-tangram.component.scss',
 })
 export class OkrTangramComponent {
-  private readonly defaultTrianglesSrc = 'assets/images/empty.svg';
+  private readonly DEFAULT_TRIANGLE_SRC = 'assets/images/empty.svg';
   trianglesSrc$ = new Observable<string>();
 
   constructor(private readonly configService: ConfigService) {
-    this.trianglesSrc$ = this.configService.config$.pipe(map((config) => config.triangles || this.defaultTrianglesSrc));
+    this.trianglesSrc$ = this.configService.config$.pipe(
+      map((config) => config.triangles || this.DEFAULT_TRIANGLE_SRC),
+    );
   }
 }

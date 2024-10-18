@@ -15,6 +15,7 @@ import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors,
 import { ActivatedRoute } from '@angular/router';
 import { CONFIRM_DIALOG_WIDTH, GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -47,7 +48,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       action: string;
@@ -130,25 +131,10 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   deleteObjective() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: CONFIRM_DIALOG_WIDTH,
-          height: 'auto',
-        };
-    const dialog = this.dialog.open(ConfirmDialogComponent, {
+    const dialog = this.dialogService.open(ConfirmDialogComponent, {
       data: {
         title: 'Objective',
       },
-      width: dialogConfig.width,
-      height: dialogConfig.height,
-      maxHeight: dialogConfig.maxHeight,
-      maxWidth: dialogConfig.maxWidth,
     });
     dialog.afterClosed().subscribe((result) => {
       if (result) {

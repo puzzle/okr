@@ -3,7 +3,6 @@ import { MenuEntry } from '../../shared/types/menu-entry';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
-import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { State } from '../../shared/types/enums/State';
@@ -15,7 +14,8 @@ import { Objective } from '../../shared/types/model/Objective';
 import { trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { GJ_REGEX_PATTERN, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { GJ_REGEX_PATTERN } from '../../shared/constantLibary';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-objective-column',
@@ -34,7 +34,7 @@ export class ObjectiveComponent implements OnInit {
   @ViewChild('menuButton') private menuButton!: ElementRef;
 
   constructor(
-    private matDialog: MatDialog,
+    private dialogService: DialogService,
     private router: Router,
     private refreshDataService: RefreshDataService,
     private objectiveService: ObjectiveService,
@@ -147,22 +147,14 @@ export class ObjectiveComponent implements OnInit {
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.dialog) {
-      const dialogConfig = OKR_DIALOG_CONFIG;
-
-      if (menuEntry.action == 'release' || menuEntry.action == 'todraft') {
-        dialogConfig.width = 'auto';
-      }
-      const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
+      const matDialogRef = this.dialogService.open(menuEntry.dialog.dialog, {
         data: {
           title: menuEntry.dialog.data.title,
           action: menuEntry.action,
           objective: menuEntry.dialog.data,
           objectiveTitle: menuEntry.dialog.data.objectiveTitle,
         },
-        height: dialogConfig.height,
-        width: dialogConfig.width,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
+        ...((menuEntry.action == 'release' || menuEntry.action == 'todraft') && { width: 'auto' }),
       });
       matDialogRef.afterClosed().subscribe((result) => {
         this.menuButton.nativeElement.focus();
@@ -248,14 +240,8 @@ export class ObjectiveComponent implements OnInit {
   }
 
   openAddKeyResultDialog() {
-    const dialogConfig = OKR_DIALOG_CONFIG;
-
-    this.matDialog
+    this.dialogService
       .open(KeyresultDialogComponent, {
-        height: dialogConfig.height,
-        width: dialogConfig.width,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: this.objective$.value,
           keyResult: null,

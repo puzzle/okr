@@ -8,9 +8,8 @@ import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/routeUtils';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/UserTeam';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { CancelDialogComponent, CancelDialogData } from '../../../shared/dialog/cancel-dialog/cancel-dialog.component';
-import { OKR_DIALOG_CONFIG } from '../../../shared/constantLibary';
+import { MatDialog } from '@angular/material/dialog';
+import { CancelDialogComponent } from '../../../shared/dialog/cancel-dialog/cancel-dialog.component';
 
 @Component({
   selector: 'app-member-list-table',
@@ -59,12 +58,12 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
-    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
-    dialogConfig.data = {
-      dialogTitle: `${entry.firstname} ${entry.lastname} wirklich aus Team ${this.selectedTeam$.value?.name} entfernen?`,
-    };
     this.dialog
-      .open(CancelDialogComponent, dialogConfig)
+      .open(CancelDialogComponent, {
+        data: {
+          dialogTitle: `${entry.firstname} ${entry.lastname} wirklich aus Team ${this.selectedTeam$.value?.name} entfernen?`,
+        },
+      })
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),

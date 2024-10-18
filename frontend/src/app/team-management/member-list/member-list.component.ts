@@ -11,11 +11,11 @@ import {
   AddMemberToTeamDialogComponent,
   AddMemberToTeamDialogComponentData,
 } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
-import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
 import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-member-list',
@@ -35,7 +35,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly cd: ChangeDetectorRef,
     private readonly teamService: TeamService,
     private readonly router: Router,
-    private readonly dialog: MatDialog,
+    private readonly dialogService: DialogService,
   ) {}
 
   public ngOnInit(): void {}
@@ -89,13 +89,13 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   deleteTeam(selectedTeam: Team) {
-    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
-    dialogConfig.data = {
-      dialogTitle: selectedTeam.name + ' wirklich löschen?',
-      dialogText: 'Soll das Team und dessen OKRs wirklich gelöscht werden?',
-    };
-    this.dialog
-      .open(CancelDialogComponent, dialogConfig)
+    this.dialogService
+      .open(CancelDialogComponent, {
+        data: {
+          dialogTitle: selectedTeam.name + ' wirklich löschen?',
+          dialogText: 'Soll das Team und dessen OKRs wirklich gelöscht werden?',
+        },
+      })
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),
@@ -109,17 +109,17 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addMemberToTeam() {
-    const dialogConfig: MatDialogConfig<AddMemberToTeamDialogComponentData> = OKR_DIALOG_CONFIG;
-    dialogConfig.data = {
-      team: this.selectedTeam$.value!,
-      currentUsersOfTeam: this.dataSource.data,
-    };
-    const dialogRef = this.dialog.open(AddMemberToTeamDialogComponent, dialogConfig);
+    const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
+      data: {
+        team: this.selectedTeam$.value!,
+        currentUsersOfTeam: this.dataSource.data,
+      },
+    });
     dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
   }
 
   inviteMember() {
-    this.dialog.open(InviteUserDialogComponent, OKR_DIALOG_CONFIG).afterClosed().subscribe();
+    this.dialogService.open(InviteUserDialogComponent).afterClosed().subscribe();
   }
 
   showInviteMember(): boolean {
@@ -131,11 +131,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   editTeam(): void {
-    const dialogConfig = OKR_DIALOG_CONFIG;
-    dialogConfig.data = {
-      team: this.selectedTeam$.value,
-    };
-    const dialogRef = this.dialog.open(AddEditTeamDialog, dialogConfig);
+    const dialogRef = this.dialogService.open(AddEditTeamDialog, { data: { team: this.selectedTeam$.value } });
     dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
   }
 }

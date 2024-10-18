@@ -51,6 +51,7 @@
                         <profiles>
                             <profile>build-for-docker</profile>
                             <profile>debug</profile>
+                            <profile>no-formatter</profile>
                         </profiles>
                     </configuration>
                 </plugin>

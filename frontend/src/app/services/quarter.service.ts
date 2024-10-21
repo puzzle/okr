@@ -11,7 +11,7 @@ export class QuarterService {
 
   getAllQuarters(): Observable<Quarter[]> {
     return this.http
-      .get<Quarter[]>('/api/v1/quarters')
+      .get<Quarter[]>('/api/v2/quarters')
       .pipe(
         map((quarters) =>
           quarters.map((quarter) => new Quarter(quarter.id, quarter.label, quarter.startDate, quarter.endDate)),
@@ -20,6 +20,6 @@ export class QuarterService {
   }
 
   getCurrentQuarter(): Observable<Quarter> {
-    return this.http.get<Quarter>('/api/v1/quarters/current');
+    return this.http.get<Quarter>('/api/v2/quarters/current');
   }
 }

@@ -57,7 +57,7 @@
       "KEYRESULT":{
         "TITLE": "Löschen bestätigen",
         "TEXT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
-      },
+      }
     }
   },
   "ERROR": {

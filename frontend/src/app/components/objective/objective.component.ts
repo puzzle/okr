@@ -96,7 +96,10 @@ export class ObjectiveComponent implements OnInit {
           action: 'todraft',
           dialog: {
             dialog: ConfirmDialogComponent,
-            data: { title: 'Objective', action: 'todraft' },
+            data: {
+              title: 'Check-in im Draft-Status',
+              text: 'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?',
+            },
           },
         },
       ],

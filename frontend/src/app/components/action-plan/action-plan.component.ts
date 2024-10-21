@@ -2,8 +2,6 @@ import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Action } from '../../shared/types/model/Action';
 import { ActionService } from '../../services/action.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 import { isMobileDevice, trackByFn } from '../../shared/common';
 import { CONFIRM_DIALOG_WIDTH } from '../../shared/constantLibary';

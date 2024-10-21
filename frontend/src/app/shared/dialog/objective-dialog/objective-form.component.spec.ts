@@ -10,7 +10,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../../services/objective.service';
-import { marketingTeamWriteable, objective, quarter, quarterList } from '../../testData';
+import {
+  marketingTeamWriteable,
+  objective,
+  quarter,
+  quarter1,
+  quarterBacklog,
+  quarterList,
+  quarterMin,
+} from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -27,6 +35,7 @@ import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import * as de from '../../../../assets/i18n/de.json';
 import { ActivatedRoute } from '@angular/router';
+import mock = jest.mock;
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -126,7 +135,7 @@ describe('ObjectiveDialogComponent', () => {
         team = teams[0].id;
       });
       quarterService.getAllQuarters().subscribe((quarters) => {
-        quarter = quarters[1].id;
+        quarter = quarters[-1].id;
       });
 
       // Get input elements and set values

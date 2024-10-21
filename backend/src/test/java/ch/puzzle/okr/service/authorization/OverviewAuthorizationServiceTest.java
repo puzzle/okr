@@ -136,7 +136,8 @@ class OverviewAuthorizationServiceTest {
     @Test
     void getFilteredOverviewShouldReturnEmptyListWhenNotAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(1L, List.of(adminTeamId), "", authorizationUser)).thenReturn(List.of());
+        when(overviewBusinessService.getFilteredOverview(1L, List.of(adminTeamId), "", authorizationUser))
+                .thenReturn(List.of());
 
         List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(adminTeamId), "");
         assertThat(List.of()).hasSameElementsAs(overviews);

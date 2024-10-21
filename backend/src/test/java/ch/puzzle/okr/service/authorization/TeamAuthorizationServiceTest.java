@@ -43,7 +43,8 @@ class TeamAuthorizationServiceTest {
 
     @Test
     void createEntityShouldReturnTeam() {
-        when(teamBusinessService.createTeam(teamUnderTest, authorizationService.updateOrAddAuthorizationUser())).thenReturn(teamUnderTest);
+        when(teamBusinessService.createTeam(teamUnderTest, authorizationService.updateOrAddAuthorizationUser()))
+                .thenReturn(teamUnderTest);
 
         Team team = teamAuthorizationService.createEntity(teamUnderTest);
         assertEquals(teamUnderTest, team);
@@ -140,9 +141,8 @@ class TeamAuthorizationServiceTest {
 
     @Test
     void addUsersToTeam_shouldThrowExceptionIfUserNotAuthorized() {
-        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(
-                new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of()))
-        );
+        when(authorizationService.updateOrAddAuthorizationUser())
+                .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of())));
         assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, List.of()));
     }
 

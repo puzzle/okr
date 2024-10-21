@@ -107,10 +107,9 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getDraftMenuActions() {
-    console.log(this.isBacklogQuarter ? 'ObjectiveFormComponent' : 'ConfirmDialogComponent');
-    const relaseText = this.translate.instant('CONFIRMATION.RELEASE.TEXT');
+    const releaseText = this.translate.instant('CONFIRMATION.RELEASE.TEXT');
     const releaseBacklogText = 'releaseBacklog';
-    const dialogText = this.isBacklogQuarter ? relaseText : releaseBacklogText;
+    const dialogText = this.isBacklogQuarter ? releaseText : releaseBacklogText;
     let menuEntries = {
       displayName: 'Objective veröffentlichen',
       action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',

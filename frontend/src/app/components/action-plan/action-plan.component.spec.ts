@@ -2,13 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionPlanComponent } from './action-plan.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { ActionService } from '../../services/action.service';
 import { action1, action2, action3, addedAction } from '../../shared/testData';
 import { BehaviorSubject, of } from 'rxjs';
 import { Action } from '../../shared/types/model/Action';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../services/dialog.service';
+import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 
 const actionServiceMock = {
   deleteAction: jest.fn(),
@@ -22,9 +24,10 @@ describe('ActionPlanComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ActionPlanComponent],
-      imports: [HttpClientTestingModule, MatDialogModule, CdkDropList, CdkDrag, TranslateModule.forRoot()],
+      imports: [HttpClientTestingModule, CdkDropList, CdkDrag, TranslateModule.forRoot()],
       providers: [
         TranslateService,
+        DialogService,
         {
           provide: ActionService,
           useValue: actionServiceMock,
@@ -48,7 +51,9 @@ describe('ActionPlanComponent', () => {
   it('should remove item from actionplan array', () => {
     component.control = new BehaviorSubject<Action[] | null>([action1, action2]);
     actionServiceMock.deleteAction.mockReturnValue(of(null));
-    jest.spyOn(component.dialog, 'open').mockReturnValue({ afterClosed: () => of(true) } as MatDialogRef<unknown>);
+    jest
+      .spyOn(component.dialogService, 'openConfirmDialog')
+      .mockReturnValue({ afterClosed: () => of(true) } as MatDialogRef<ConfirmDialogComponent>);
 
     component.removeAction(0);
 
@@ -59,7 +64,7 @@ describe('ActionPlanComponent', () => {
   });
 
   it('should remove item from actionplan without opening dialog when action has no text and id', () => {
-    const dialogSpy = jest.spyOn(component.dialog, 'open');
+    const dialogSpy = jest.spyOn(component.dialogService, 'open');
     component.control = new BehaviorSubject<Action[] | null>([action3]);
 
     component.removeAction(0);
@@ -70,7 +75,7 @@ describe('ActionPlanComponent', () => {
   });
 
   it('should decrease index of active item when index is the same as the one of the removed item', () => {
-    jest.spyOn(component.dialog, 'open');
+    jest.spyOn(component.dialogService, 'open');
     component.control = new BehaviorSubject<Action[] | null>([action2, action3, action1]);
     component.activeItem = 2;
 

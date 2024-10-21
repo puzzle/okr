@@ -10,7 +10,6 @@ import { team1, team2, team3, testUser, users } from '../../shared/testData';
 import { convertFromUser, convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { UserRole } from '../../shared/types/enums/UserRole';
 import { TeamService } from '../../services/team.service';
-import { MatDialog } from '@angular/material/dialog';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -18,7 +17,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListTableComponent } from './member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
-import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { DialogService } from '../../services/dialog.service';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -41,7 +40,7 @@ const routerMock = {
   navigateByUrl: jest.fn(),
 };
 
-const dialogMock = {
+const dialogService = {
   open: jest.fn(),
 };
 
@@ -58,7 +57,7 @@ describe('MemberListComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: TeamService, useValue: teamServiceMock },
         { provide: Router, useValue: routerMock },
-        { provide: MatDialog, useValue: dialogMock },
+        { provide: DialogService, useValue: dialogService },
         ChangeDetectorRef,
       ],
     });
@@ -181,7 +180,7 @@ describe('MemberListComponent', () => {
   it('deleteTeam should trigger teamService.deleteTeam and navigate', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
-    dialogMock.open.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -201,7 +200,7 @@ describe('MemberListComponent', () => {
   it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
-    dialogMock.open.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(false),
     });
 
@@ -214,18 +213,20 @@ describe('MemberListComponent', () => {
   it('addMemberToTeam should open dialog', () => {
     component.selectedTeam$.next(team1);
     component.dataSource = new MatTableDataSource<UserTableEntry>([]);
-    dialogMock.open.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(null),
     });
     component.addMemberToTeam();
 
-    const expectedDialogConfig = OKR_DIALOG_CONFIG;
-    expectedDialogConfig.data = {
-      team: team1,
-      currentUsersOfTeam: component.dataSource,
-    };
-
-    expect(dialogMock.open).toBeCalledWith(AddMemberToTeamDialogComponent, expectedDialogConfig);
+    expect(dialogService.open).toBeCalledWith(
+      AddMemberToTeamDialogComponent,
+      expect.objectContaining({
+        data: {
+          team: team1,
+          currentUsersOfTeam: component.dataSource.filteredData,
+        },
+      }),
+    );
   });
 
   it('should showAddMemberToTeam if selectedTeam is set and selectedTeam is writable', () => {
@@ -241,16 +242,18 @@ describe('MemberListComponent', () => {
 
   it('edit team should open dialog', () => {
     component.selectedTeam$.next(team1);
-    dialogMock.open.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(null),
     });
     component.editTeam();
 
-    const expectedDialogConfig = OKR_DIALOG_CONFIG;
-    expectedDialogConfig.data = {
-      team: team1,
-    };
-
-    expect(dialogMock.open).toBeCalledWith(AddEditTeamDialog, expectedDialogConfig);
+    expect(dialogService.open).toBeCalledWith(
+      AddEditTeamDialog,
+      expect.objectContaining({
+        data: {
+          team: team1,
+        },
+      }),
+    );
   });
 });

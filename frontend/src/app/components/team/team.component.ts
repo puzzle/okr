@@ -3,7 +3,6 @@ import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { Objective } from '../../shared/types/model/Objective';
-import { isMobileDevice } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { DialogService } from '../../services/dialog.service';
@@ -44,18 +43,6 @@ export class TeamComponent implements OnInit {
   }
 
   openAddKeyResultDialog(objective: Objective) {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
-
     this.dialogService
       .open(KeyresultDialogComponent, {
         data: {

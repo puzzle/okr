@@ -8,8 +8,7 @@ import { UserTeam } from '../../shared/types/model/UserTeam';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
+import { CancelDialogComponent } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-team-management-banner',
@@ -10,7 +11,7 @@ import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.
 export class TeamManagementBannerComponent {
   private dialogRef!: MatDialogRef<AddEditTeamDialog> | undefined;
 
-  public constructor(private dialogService: MatDialog) {}
+  public constructor(private dialogService: DialogService) {}
 
   createTeam(): void {
     if (!this.dialogRef) {

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Objective } from '../../shared/types/model/Objective';
 import { ObjectiveService } from '../../services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';

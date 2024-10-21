@@ -64,7 +64,7 @@ class KeyResultValidationServiceTest {
         when(keyResultPersistenceService.getModelName()).thenReturn("KeyResult");
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("%s with id %s not found", keyResultPersistenceService.getModelName(), 2L)))
-                .when(keyResultPersistenceService).findById(2L);
+                        .when(keyResultPersistenceService).findById(2L);
     }
 
     @Spy

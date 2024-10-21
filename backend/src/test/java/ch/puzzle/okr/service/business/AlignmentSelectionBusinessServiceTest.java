@@ -31,13 +31,11 @@ class AlignmentSelectionBusinessServiceTest {
 
     @Test
     void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnListOfAlignmentSelections() {
-        when(alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L,
-                                                                                               4L)).thenReturn(List.of(
-                createAlignmentSelection()));
+        when(alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))
+                .thenReturn(List.of(createAlignmentSelection()));
 
-        List<AlignmentSelection> alignmentSelections = alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(
-                2L,
-                4L);
+        List<AlignmentSelection> alignmentSelections = alignmentSelectionBusinessService
+                .getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);
 
         assertEquals(1, alignmentSelections.size());
         verify(alignmentSelectionPersistenceService, times(1)).getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);

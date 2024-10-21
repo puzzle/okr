@@ -3,7 +3,7 @@ name: 'Frontend tests'
 on: [push]
 jobs:
   unit-tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: frontend

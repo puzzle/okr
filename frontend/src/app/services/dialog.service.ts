@@ -25,6 +25,12 @@ export class DialogService {
   }
 
   openConfirmDialog(translationKey: string) {
+    const tile = this.translationService.instant(`${translationKey}.TITLE`);
+    const text = this.translationService.instant(`${translationKey}.TEXT`);
+    return this.openConfirmDialogWithCustomText(tile, text);
+  }
+
+  openConfirmDialogWithCustomText(title: string, text: string) {
     const dialogConfig = isMobileDevice()
       ? {
           maxWidth: '100vw',
@@ -40,8 +46,8 @@ export class DialogService {
     return this.dialog.open(ConfirmDialogComponent, {
       ...dialogConfig,
       data: {
-        title: this.translationService.instant(`${translationKey}.TITLE`),
-        text: this.translationService.instant(`${translationKey}.TEXT`),
+        title: title,
+        text: text,
       },
     });
   }

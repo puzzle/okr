@@ -9,9 +9,7 @@ import { KeyResultMetricDTO } from '../../shared/types/DTOs/KeyResultMetricDTO';
 import { KeyResultOrdinalDTO } from '../../shared/types/DTOs/KeyResultOrdinalDTO';
 import { CloseState } from '../../shared/types/enums/CloseState';
 import { KeyresultService } from '../../services/keyresult.service';
-import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { isMobileDevice } from '../../shared/common';
-import { CONFIRM_DIALOG_WIDTH } from '../../shared/constantLibary';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-keyresult-dialog',
@@ -36,7 +34,7 @@ export class KeyresultDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
     private keyResultService: KeyresultService,
-    public dialog: MatDialog,
+    public dialogService: DialogService,
     public dialogRef: MatDialogRef<KeyresultDialogComponent>,
   ) {}
 
@@ -63,27 +61,8 @@ export class KeyresultDialogComponent {
   }
 
   deleteKeyResult() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: CONFIRM_DIALOG_WIDTH,
-          height: 'auto',
-        };
-    this.dialog
-      .open(ConfirmDialogComponent, {
-        data: {
-          title: 'Key Result',
-        },
-        width: dialogConfig.width,
-        height: dialogConfig.height,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
-      })
+    this.dialogService
+      .openConfirmDialog('CONFIRMATION.DELETE.KEY_RESULT')
       .afterClosed()
       .subscribe((result) => {
         if (result) {

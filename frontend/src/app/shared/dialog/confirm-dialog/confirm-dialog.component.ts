@@ -17,38 +17,8 @@ export class ConfirmDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.data.draftCreate) {
-      this.dialogTitle = 'Check-in im Draft-Status';
-      this.dialogText =
-        'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?';
-    } else if (this.data.action) {
-      if (this.data.action === 'release') {
-        this.dialogTitle = this.data.title + ' veröffentlichen';
-        this.dialogText = 'Soll dieses ' + this.data.title + ' veröffentlicht werden?';
-      } else if (this.data.action === 'todraft') {
-        this.dialogTitle = this.data.title + ' als Draft speichern';
-        this.dialogText = 'Soll dieses ' + this.data.title + ' als Draft gespeichert werden?';
-      }
-    } else {
-      this.dialogTitle = this.data.title + ' löschen';
-      if (this.data.isAction) {
-        this.dialogText = 'Möchtest du diese Action wirklich löschen?';
-      } else {
-        let error;
-        switch (this.data.title) {
-          case 'Team':
-            error = 'DELETE_TEAM';
-            break;
-          case 'Objective':
-            error = 'DELETE_OBJECTIVE';
-            break;
-          case 'Key Result':
-            error = 'DELETE_KEY_RESULT';
-            break;
-        }
-        this.dialogText = this.translate.instant('INFORMATION.' + error);
-      }
-    }
+    this.dialogTitle = this.data.title;
+    this.dialogText = this.data.text;
   }
 
   closeAndDelete() {

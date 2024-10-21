@@ -35,9 +35,9 @@ export class QuarterFilterComponent implements OnInit {
         this.changeDisplayedQuarter();
       } else {
         this.currentQuarterId = currentQuarter.id;
-        if (quarterQuery !== undefined) {
-          this.changeDisplayedQuarter();
-        } else {
+        this.changeDisplayedQuarter();
+
+        if (quarterQuery === undefined) {
           this.refreshDataService.quarterFilterReady.next();
         }
       }

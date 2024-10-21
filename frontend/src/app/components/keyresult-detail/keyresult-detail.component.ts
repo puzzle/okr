@@ -114,7 +114,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   checkForDraftState(keyResult: KeyResult) {
     if (keyResult.objective.state.toUpperCase() === 'DRAFT') {
       this.dialogService
-        .openConfirmDialog('CONFIRMATION.CREATE_DRAFT_KEYRESULT')
+        .openConfirmDialog('CONFIRMATION.DRAFT_CREATE')
         .afterClosed()
         .subscribe((result) => {
           if (result) {

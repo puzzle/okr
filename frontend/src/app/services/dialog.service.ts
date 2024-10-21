@@ -6,6 +6,11 @@ import { CONFIRM_DIALOG_WIDTH, OKR_DIALOG_CONFIG } from '../shared/constantLibar
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 
+export interface ConfirmDialogData {
+  title: string;
+  text: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })

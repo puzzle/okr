@@ -49,7 +49,7 @@ class QuarterControllerIT {
     void shouldGetAllQuarters() throws Exception {
         BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(quaterList);
 
-        mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(3)))
                 .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].label", Is.is("GJ 22/23-Q2")))
                 .andExpect(jsonPath("$[0].startDate", Is.is(LocalDate.of(2022, 9, 1).toString())))
@@ -65,13 +65,13 @@ class QuarterControllerIT {
     void shouldGetAllTeamsIfNoTeamsExists() throws Exception {
         BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(Collections.emptyList());
 
-        mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
     void shouldCallCurrentQuarterAfterRequest() throws Exception {
-        mvc.perform(get("/api/v1/quarters/current").contentType(MediaType.APPLICATION_JSON));
+        mvc.perform(get("/api/v2/quarters/current").contentType(MediaType.APPLICATION_JSON));
 
         BDDMockito.verify(quarterBusinessService, Mockito.times(1)).getCurrentQuarter();
     }

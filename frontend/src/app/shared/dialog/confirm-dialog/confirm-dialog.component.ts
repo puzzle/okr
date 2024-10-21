@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, InjectionToken, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfirmDialogData } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -11,9 +12,8 @@ export class ConfirmDialogComponent implements OnInit {
   dialogTitle: string = '';
   dialogText: string = '';
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    private translate: TranslateService,
   ) {}
 
   ngOnInit() {

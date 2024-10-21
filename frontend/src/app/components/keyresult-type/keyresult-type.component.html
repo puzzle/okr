@@ -32,53 +32,51 @@
   <form [formGroup]="keyResultForm" class="gap-1">
     <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
-        <div class="flex-fill">
-          <div class="input-alignments">
-            <div class="input-style gap-2">
-              <label class="text-black" for="unit">Einheit</label>
-              <select
-                class="unit-dropdown bg-white menu-option"
-                [ngClass]="formInputCheck(keyResultForm, 'unit')"
-                formControlName="unit"
-                id="unit"
-                [attr.data-testId]="'unit'"
-              >
-                <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
-                  {{ "UNIT." + unit.value | translate }}
-                </option>
-              </select>
-              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
-                <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
-              </mat-error>
-            </div>
+        <div class="flex-fill input-alignments">
+          <div class="input-style gap-2">
+            <label class="text-black" for="unit">Einheit</label>
+            <select
+              class="unit-dropdown bg-white menu-option"
+              [ngClass]="formInputCheck(keyResultForm, 'unit')"
+              formControlName="unit"
+              id="unit"
+              [attr.data-testId]="'unit'"
+            >
+              <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
+                {{ "UNIT." + unit.value | translate }}
+              </option>
+            </select>
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
+              <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
+            </mat-error>
+          </div>
 
-            <div class="input-style gap-2">
-              <label class="text-black" for="baseline">Baseline</label>
-              <input
-                [attr.data-testId]="'baseline'"
-                class="metric-fields"
-                [ngClass]="formInputCheck(keyResultForm, 'baseline')"
-                formControlName="baseline"
-                id="baseline"
-              />
-              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'baseline')">
-                <span>{{ getErrorMessage("MUST_BE_NUMBER", "Baseline", null, null) }}</span>
-              </mat-error>
-            </div>
+          <div class="input-style gap-2">
+            <label class="text-black" for="baseline">Baseline</label>
+            <input
+              [attr.data-testId]="'baseline'"
+              class="metric-fields"
+              [ngClass]="formInputCheck(keyResultForm, 'baseline')"
+              formControlName="baseline"
+              id="baseline"
+            />
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'baseline')">
+              <span>{{ getErrorMessage("MUST_BE_NUMBER", "Baseline", null, null) }}</span>
+            </mat-error>
+          </div>
 
-            <div class="input-style gap-2">
-              <label class="text-black" for="stretchGoal">Stretch Goal</label>
-              <input
-                [attr.data-testId]="'stretchGoal'"
-                class="metric-fields"
-                [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
-                formControlName="stretchGoal"
-                id="stretchGoal"
-              />
-              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
-                <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
-              </mat-error>
-            </div>
+          <div class="input-style gap-2">
+            <label class="text-black" for="stretchGoal">Stretch Goal</label>
+            <input
+              [attr.data-testId]="'stretchGoal'"
+              class="metric-fields"
+              [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
+              formControlName="stretchGoal"
+              id="stretchGoal"
+            />
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
+              <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
+            </mat-error>
           </div>
         </div>
       </div>
@@ -90,49 +88,47 @@
   <form [formGroup]="keyResultForm" class="gap-1">
     <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
-        <div class="flex-fill">
-          <div class="input-alignments">
-            <div class="input-style gap-2">
-              <label class="text-black" for="commitZone">Commit Zone</label>
-              <textarea
-                class="ordinal-input-fields"
-                [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
-                formControlName="commitZone"
-                id="commitZone"
-                [attr.data-testId]="'commitZone'"
-              ></textarea>
-              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'commitZone')">
-                <span>{{ getErrorMessage("SIZE_BETWEEN", "Commit Zone", 1, 400) }}</span>
-              </mat-error>
-            </div>
+        <div class="flex-fill input-alignments">
+          <div class="input-style gap-2">
+            <label class="text-black" for="commitZone">Commit Zone</label>
+            <textarea
+              class="ordinal-input-fields"
+              [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
+              formControlName="commitZone"
+              id="commitZone"
+              [attr.data-testId]="'commitZone'"
+            ></textarea>
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'commitZone')">
+              <span>{{ getErrorMessage("SIZE_BETWEEN", "Commit Zone", 1, 400) }}</span>
+            </mat-error>
+          </div>
 
-            <div class="input-style gap-2">
-              <label class="text-black" for="targetZone">Target Zone</label>
-              <textarea
-                [attr.data-testId]="'targetZone'"
-                class="ordinal-input-fields"
-                [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
-                formControlName="targetZone"
-                id="targetZone"
-              ></textarea>
-              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'targetZone')">
-                <span>{{ getErrorMessage("SIZE_BETWEEN", "Target Zone", 1, 400) }}</span>
-              </mat-error>
-            </div>
+          <div class="input-style gap-2">
+            <label class="text-black" for="targetZone">Target Zone</label>
+            <textarea
+              [attr.data-testId]="'targetZone'"
+              class="ordinal-input-fields"
+              [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
+              formControlName="targetZone"
+              id="targetZone"
+            ></textarea>
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'targetZone')">
+              <span>{{ getErrorMessage("SIZE_BETWEEN", "Target Zone", 1, 400) }}</span>
+            </mat-error>
+          </div>
 
-            <div class="input-style gap-2">
-              <label class="text-black" for="stretchZone">Stretch Goal</label>
-              <textarea
-                [attr.data-testId]="'stretchZone'"
-                class="ordinal-input-fields"
-                [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
-                formControlName="stretchZone"
-                id="stretchZone"
-              ></textarea>
-              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchZone')">
-                <span>{{ getErrorMessage("SIZE_BETWEEN", "Stretch Zone", 1, 400) }}</span>
-              </mat-error>
-            </div>
+          <div class="input-style gap-2">
+            <label class="text-black" for="stretchZone">Stretch Goal</label>
+            <textarea
+              [attr.data-testId]="'stretchZone'"
+              class="ordinal-input-fields"
+              [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
+              formControlName="stretchZone"
+              id="stretchZone"
+            ></textarea>
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchZone')">
+              <span>{{ getErrorMessage("SIZE_BETWEEN", "Stretch Zone", 1, 400) }}</span>
+            </mat-error>
           </div>
         </div>
       </div>

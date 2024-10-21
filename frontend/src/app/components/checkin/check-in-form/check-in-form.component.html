@@ -14,7 +14,7 @@
       </div>
       <div *ngIf="getActions()?.length != 0" class="input-style gap-1">
         <label class="text-black mb-1">Action Plan:</label>
-        <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
+        <div *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
           <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
           <span
             class="action-list-item w-100 break-word"
@@ -22,7 +22,7 @@
           >
             {{ action.action }}
           </span>
-        </span>
+        </div>
       </div>
 
       <div class="input-style gap-2 col-12">

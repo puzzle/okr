@@ -51,11 +51,11 @@
         "TEXT": "Möchtest du dieses Team wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!"
       },
       "OBJECTIVE":{
-        "TITLE": "Löschen bestätigen",
+        "TITLE": "Objective löschen",
         "TEXT": "Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!"
       },
       "KEYRESULT":{
-        "TITLE": "Löschen bestätigen",
+        "TITLE": "Key Result löschen\n",
         "TEXT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
       }
     }

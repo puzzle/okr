@@ -130,7 +130,7 @@ class TeamAuthorizationServiceTest {
         if (isWriteable) {
             when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         } else {
-            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(defaultAuthorizationUser());
         }
         when(teamBusinessService.getAllTeams(any())).thenReturn(teamList);
 

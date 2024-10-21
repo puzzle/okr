@@ -56,19 +56,22 @@ public class TestHelper {
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
-        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL);
-    }
-
-    public static AuthorizationUser userWithoutWriteAllRole() {
-        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL);
+        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL, false);
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user) {
-        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail());
+        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(),
+                user.isOkrChampion());
     }
 
-    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email) {
-        User user = User.Builder.builder().withId(id).withFirstname(firstname).withLastname(lastname).withEmail(email)
+    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email,
+            boolean isOkrChampion) {
+        User user = User.Builder.builder() //
+                .withId(id) //
+                .withFirstname(firstname) //
+                .withLastname(lastname) //
+                .withEmail(email) //
+                .withOkrChampion(isOkrChampion) //
                 .build();
         user.setUserTeamList(List.of(defaultUserTeam(1L, user)));
         return new AuthorizationUser(user);

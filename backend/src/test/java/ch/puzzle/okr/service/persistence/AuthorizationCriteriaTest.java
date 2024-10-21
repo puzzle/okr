@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,7 +13,7 @@ import java.util.stream.Stream;
 
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.test.TestHelper.mockAuthorizationUser;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AuthorizationCriteriaTest {

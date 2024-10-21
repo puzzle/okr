@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../shared/types/model/User';
 import { Action } from '../../shared/types/model/Action';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/Objective';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { KeyResultMetricDTO } from '../../shared/types/DTOs/KeyResultMetricDTO';

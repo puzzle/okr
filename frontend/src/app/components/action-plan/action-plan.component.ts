@@ -3,8 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Action } from '../../shared/types/model/Action';
 import { ActionService } from '../../services/action.service';
 import { BehaviorSubject } from 'rxjs';
-import { isMobileDevice, trackByFn } from '../../shared/common';
-import { CONFIRM_DIALOG_WIDTH } from '../../shared/constantLibary';
+import { trackByFn } from '../../shared/common';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
@@ -98,17 +97,6 @@ export class ActionPlanComponent {
       this.activeItem--;
     }
     if (actions[index].action !== '' || actions[index].id) {
-      const dialogConfig = isMobileDevice()
-        ? {
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-            height: '100vh',
-            width: CONFIRM_DIALOG_WIDTH,
-          }
-        : {
-            width: '45em',
-            height: 'auto',
-          };
       this.dialogService
         .openConfirmDialog('DELETE.ACTION')
         .afterClosed()

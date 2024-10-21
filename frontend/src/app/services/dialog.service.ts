@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { isMobileDevice } from '../shared/common';
-import { CONFIRM_DIALOG_WIDTH, OKR_DIALOG_CONFIG } from '../shared/constantLibary';
+import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -15,7 +15,17 @@ export interface ConfirmDialogData {
   providedIn: 'root',
 })
 export class DialogService {
-  DIALOG_CONFIG = OKR_DIALOG_CONFIG;
+  DIALOG_CONFIG = isMobileDevice()
+    ? {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100vh',
+        width: '100vw',
+      }
+    : {
+        width: '45em',
+        height: 'auto',
+      };
 
   constructor(
     private readonly dialog: MatDialog,

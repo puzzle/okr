@@ -8,7 +8,7 @@ import { UserService } from '../../../services/user.service';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../../shared/types/model/Team';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from '../../../services/dialog.service';
 
 describe('MemberListTableComponent', () => {
   let component: MemberListTableComponent;
@@ -27,7 +27,7 @@ describe('MemberListTableComponent', () => {
     updateOrAddTeamMembership: jest.fn(),
   };
 
-  const dialogMock = {
+  const dialogService = {
     open: jest.fn(),
   };
 
@@ -38,7 +38,7 @@ describe('MemberListTableComponent', () => {
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: TeamService, useValue: teamServiceMock },
-        { provide: MatDialog, useValue: dialogMock },
+        { provide: DialogService, useValue: dialogService },
       ],
     }).compileComponents();
 
@@ -94,7 +94,7 @@ describe('MemberListTableComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogMock.open.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -115,7 +115,7 @@ describe('MemberListTableComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogMock.open.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(false),
     });
 

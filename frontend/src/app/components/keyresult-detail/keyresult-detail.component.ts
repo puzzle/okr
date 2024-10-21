@@ -11,7 +11,7 @@ import { CloseState } from '../../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { State } from '../../shared/types/enums/State';
 import { DATE_FORMAT } from '../../shared/constantLibary';
-import { calculateCurrentPercentage, isLastCheckInNegative, isMobileDevice } from '../../shared/common';
+import { calculateCurrentPercentage, isLastCheckInNegative } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 

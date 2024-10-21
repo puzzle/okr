@@ -9,12 +9,13 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { testUser } from '../../shared/testData';
 import { UserService } from '../../services/user.service';
 import { ConfigService } from '../../services/config.service';
+import { DialogService } from '../../services/dialog.service';
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),
@@ -22,7 +23,7 @@ const oAuthMock = {
   hasValidIdToken: jest.fn(),
 };
 
-const dialogMock = {
+const dialogServiceMock = {
   open: jest.fn(),
 };
 
@@ -56,8 +57,8 @@ describe('ApplicationTopBarComponent', () => {
         { provide: OAuthLogger },
         { provide: DateTimeProvider },
         {
-          provide: MatDialog,
-          useValue: dialogMock,
+          provide: DialogService,
+          useValue: dialogServiceMock,
         },
         {
           provide: Router,

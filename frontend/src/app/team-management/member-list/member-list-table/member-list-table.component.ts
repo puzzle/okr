@@ -8,8 +8,8 @@ import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/routeUtils';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/UserTeam';
-import { MatDialog } from '@angular/material/dialog';
 import { CancelDialogComponent } from '../../../shared/dialog/cancel-dialog/cancel-dialog.component';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-member-list-table',
@@ -29,7 +29,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly teamService: TeamService,
     private readonly userService: UserService,
-    private readonly dialog: MatDialog,
+    private readonly dialogService: DialogService,
   ) {}
 
   ngOnInit() {
@@ -58,7 +58,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
-    this.dialog
+    this.dialogService
       .open(CancelDialogComponent, {
         data: {
           dialogTitle: `${entry.firstname} ${entry.lastname} wirklich aus Team ${this.selectedTeam$.value?.name} entfernen?`,

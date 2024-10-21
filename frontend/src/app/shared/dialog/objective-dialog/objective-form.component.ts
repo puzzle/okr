@@ -90,18 +90,15 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       this.quarters = quarters;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], objective.quarterId)[0];
-
       let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
       if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
         quarterId = quarters[1].id;
       }
-
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
         this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
       });
-
       this.objectiveForm.patchValue({
         title: objective.title,
         description: objective.description,

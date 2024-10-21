@@ -2,11 +2,11 @@
 @import "_variables";
 @import "custom_angular.components";
 
-$my-primary: mat.define-palette($pz-dark-blue-palette, 500);
-$my-accent: mat.define-palette(mat.$grey-palette, 900);
-$my-warn: mat.define-palette(mat.$red-palette);
+$my-primary: mat.m2-define-palette($pz-dark-blue-palette, 500);
+$my-accent: mat.m2-define-palette(mat.$m2-grey-palette, 900);
+$my-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$pz-theme: mat.define-light-theme(
+$pz-theme: mat.m2-define-light-theme(
   (
     color: (
       primary: $my-primary,

@@ -94,6 +94,9 @@
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
                 <version>2.9.0</version>
+                <configuration>
+                    <schemaVersion>1.4</schemaVersion>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

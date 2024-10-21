@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.test.TestHelper.mockAuthorizationUser;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AuthorizationCriteriaTest {
@@ -29,7 +30,7 @@ public class AuthorizationCriteriaTest {
 
         // assert
         var expected = " and ((o.state=:teamDraftState and o.team.id IN (:userTeamIds)) or o.state IN (:publishedStates))";
-        Assertions.assertEquals(expected, current);
+        assertEquals(expected, current);
     }
 
     @DisplayName("appendObjective() should be successful when user is okrChampion")
@@ -50,7 +51,7 @@ public class AuthorizationCriteriaTest {
 
         // assert
         var expected = " and (o.state=:allDraftState or o.state IN (:publishedStates))";
-        Assertions.assertEquals(expected, current);
+        assertEquals(expected, current);
     }
 
     @DisplayName("appendOverview() should be successful when team ids or objective query are empty")
@@ -66,7 +67,7 @@ public class AuthorizationCriteriaTest {
 
         // assert
         var expected = "\n and ((o.objectiveState=:teamDraftState and o.overviewId.teamId IN (:userTeamIds)) or o.objectiveState IN (:publishedStates) or o.overviewId.objectiveId = -1)";
-        Assertions.assertEquals(expected, current);
+        assertEquals(expected, current);
     }
 
     private static Stream<Arguments> provideListAndString() {
@@ -97,7 +98,7 @@ public class AuthorizationCriteriaTest {
                          and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:objectiveQuery,'%'))
                          and ((o.objectiveState=:teamDraftState and o.overviewId.teamId IN (:userTeamIds)) or o.objectiveState IN (:publishedStates) or o.overviewId.objectiveId = -1)""";
 
-        Assertions.assertEquals(expected, current);
+        assertEquals(expected, current);
         assertFalse(current.contains(anyNonEmptyString));
     }
 

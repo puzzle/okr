@@ -17,8 +17,8 @@ export class ConfirmDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.dialogTitle = this.data.title;
-    this.dialogText = this.data.text;
+    this.dialogTitle = this.data.title || 'Are you sure?';
+    this.dialogText = this.data.text || 'Are you sure you want to delete this item?';
   }
 
   closeAndDelete() {

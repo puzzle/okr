@@ -107,14 +107,19 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getDraftMenuActions() {
+    console.log(this.isBacklogQuarter ? 'ObjectiveFormComponent' : 'ConfirmDialogComponent');
+    const relaseText = this.translate.instant('CONFIRMATION.RELEASE.TEXT');
+    const releaseBacklogText = 'releaseBacklog';
+    const dialogText = this.isBacklogQuarter ? relaseText : releaseBacklogText;
     let menuEntries = {
       displayName: 'Objective veröffentlichen',
       action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
       dialog: {
         dialog: this.isBacklogQuarter ? ObjectiveFormComponent : ConfirmDialogComponent,
         data: {
-          title: 'Objective',
-          action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+          title: this.translate.instant('CONFIRMATION.RELEASE.TITLE'),
+          text: dialogText,
+          action: dialogText,
           objectiveId: this.isBacklogQuarter ? this.objective$.value.id : undefined,
         },
       },
@@ -154,6 +159,7 @@ export class ObjectiveComponent implements OnInit {
         data: {
           title: menuEntry.dialog.data.title,
           action: menuEntry.action,
+          text: menuEntry.action,
           objective: menuEntry.dialog.data,
           objectiveTitle: menuEntry.dialog.data.objectiveTitle,
         },

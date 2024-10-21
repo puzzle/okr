@@ -56,6 +56,4 @@ export class DialogService {
       },
     });
   }
-
-  openCancelDialog(message: string, title: string = 'Confirm') {}
 }

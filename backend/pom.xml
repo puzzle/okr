@@ -311,19 +311,5 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>debug</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-devtools</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>springloaded</artifactId>
-                    <version>1.2.8.RELEASE</version>
-                </dependency>
-            </dependencies>
-        </profile>
     </profiles>
 </project>

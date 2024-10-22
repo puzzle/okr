@@ -13,10 +13,10 @@ services:
       - ./dataset:/docker-entrypoint-initdb.d
 
   keycloak-pitc:
-    image: quay.io/keycloak/keycloak:24.0.3
+    image: quay.io/keycloak/keycloak:26.0.1
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=keycloak
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
     volumes:
        - ./config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json
     command:
@@ -26,10 +26,10 @@ services:
       - "8544:8080"
 
   keycloak-acme:
-    image: quay.io/keycloak/keycloak:24.0.3
+    image: quay.io/keycloak/keycloak:26.0.1
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=keycloak
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
     volumes:
       - ./config/realm-export-acme.json:/opt/keycloak/data/import/realm-acme.json
     command:

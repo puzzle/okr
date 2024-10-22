@@ -19,6 +19,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
   user: User | undefined;
+  okrUser: User | undefined;
   teams: Team[] = [];
   currentUserTeams$ = new BehaviorSubject<UserTeam[]>([]);
   selectedUserIsLoggedInUser: boolean = false;
@@ -38,6 +39,16 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     private readonly dialogService: DialogService,
   ) {}
   ngOnInit(): void {
+    this.loadSelectedUser();
+    this.loadOkrUser();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  private loadSelectedUser() {
     this.route.paramMap
       .pipe(
         takeUntil(this.unsubscribe$),
@@ -49,9 +60,19 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  private loadOkrUser() {
+    this.userService
+      .getOrInitCurrentUser()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap((user) => (this.okrUser = user)),
+      )
+      .subscribe();
+  }
+
+  public hasOkrUserRoleOkrChampion() {
+    if (this.okrUser == undefined) return false;
+    return this.okrUser.isOkrChampion;
   }
 
   private loadUser(userId: number) {

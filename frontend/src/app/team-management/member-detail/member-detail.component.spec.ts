@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../../shared/shared.module';
 import { UserService } from '../../services/user.service';
-import { testUser } from '../../shared/testData';
+import { testOkrChampionUser, testUser } from '../../shared/testData';
 import { AddUserTeamComponent } from '../add-user-team/add-user-team.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,6 +33,7 @@ describe('MemberDetailComponent', () => {
 
   const userServiceMock = {
     getUserById: jest.fn(),
+    getOrInitCurrentUser: jest.fn(),
     getCurrentUser: jest.fn(),
     reloadUsers: jest.fn(),
     reloadCurrentUser: jest.fn(),
@@ -78,6 +79,7 @@ describe('MemberDetailComponent', () => {
     component = fixture.componentInstance;
 
     userServiceMock.getUserById.mockReturnValue(of(testUser));
+    userServiceMock.getOrInitCurrentUser.mockReturnValue(of(testOkrChampionUser));
     userServiceMock.getCurrentUser.mockReturnValue(testUser);
     userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
 

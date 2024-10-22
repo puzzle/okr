@@ -4,6 +4,7 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.UserBusinessService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -106,4 +107,35 @@ public class UserAuthorizationServiceTest {
         assertThrows(OkrResponseStatusException.class,
                 () -> userAuthorizationService.createUsers(List.of(user, user2)));
     }
+
+    @DisplayName("isUserMemberOfTeams() should return false if user is not member of teams")
+    @Test
+    void isUserMemberOfTeamsShouldReturnFalseIfUserIsNotMemberOfTeams() {
+        // arrange
+        Long userId = 1L;
+        User userWithoutTeams = defaultUser(userId);
+        when(userBusinessService.getUserById(userId)).thenReturn(userWithoutTeams);
+
+        // act
+        boolean isUserMemberOfTeams = userAuthorizationService.isUserMemberOfTeams(1L);
+
+        // assert
+        assertFalse(isUserMemberOfTeams);
+    }
+
+    @DisplayName("isUserMemberOfTeams() should return true if user is member of teams")
+    @Test
+    void isUserMemberOfTeamsShouldReturnTrueIfUserIsMemberOfTeams() {
+        // arrange
+        User userWithTeams = user2;
+        Long userId = user2.getId();
+        when(userBusinessService.getUserById(userId)).thenReturn(userWithTeams);
+
+        // act
+        boolean isUserMemberOfTeams = userAuthorizationService.isUserMemberOfTeams(userId);
+
+        // assert
+        assertTrue(isUserMemberOfTeams);
+    }
+
 }

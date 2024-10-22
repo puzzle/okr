@@ -126,4 +126,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     private boolean isKeyResultTypeChangeable(Long id) {
         return !hasKeyResultAnyCheckIns(id);
     }
+
+    public List<KeyResult> getKeyResultsOwnedByUser(long id) {
+        return keyResultPersistenceService.getKeyResultsOwnedByUser(id);
+    }
 }

@@ -393,6 +393,21 @@ export const testUser: User = {
   email: 'bob.baumeister@puzzle.ch',
 };
 
+export const testOkrChampionUser: User = {
+  id: 1,
+  firstname: 'Hans',
+  lastname: 'Muster',
+  isOkrChampion: true,
+  userTeamList: [
+    {
+      id: 1,
+      team: team1,
+      isTeamAdmin: false,
+    },
+  ],
+  email: 'bob.baumeister@puzzle.ch',
+};
+
 export const users: User[] = [
   testUser,
   {

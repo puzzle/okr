@@ -27,6 +27,7 @@ import { TeamRoleDropdownComponent } from './team-role-dropdown/team-role-dropdo
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddUserTeamComponent } from './add-user-team/add-user-team.component';
+import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter/team-management-mobile-filter.component';
 import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
@@ -55,6 +56,7 @@ import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dial
     MemberDetailComponent,
     TeamRoleDropdownComponent,
     AddUserTeamComponent,
+    DeleteUserComponent,
     TeamManagementMobileFilterComponent,
     MemberListTableComponent,
     MemberListMobileComponent,

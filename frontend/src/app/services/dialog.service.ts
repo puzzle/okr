@@ -15,17 +15,10 @@ export interface ConfirmDialogData {
   providedIn: 'root',
 })
 export class DialogService {
-  DIALOG_CONFIG = isMobileDevice()
-    ? {
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        height: '100vh',
-        width: '100vw',
-      }
-    : {
-        width: '45em',
-        height: 'auto',
-      };
+  DIALOG_CONFIG = {
+    panelClass: 'okr-dialog-panel',
+    maxWidth: '100vw',
+  };
 
   constructor(
     private readonly dialog: MatDialog,
@@ -46,20 +39,8 @@ export class DialogService {
   }
 
   openConfirmDialogWithCustomText(title: string, text: string) {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: CONFIRM_DIALOG_WIDTH,
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
-
     return this.dialog.open(ConfirmDialogComponent, {
-      ...dialogConfig,
+      ...this.DIALOG_CONFIG,
       data: {
         title: title,
         text: text,

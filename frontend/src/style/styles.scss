@@ -370,3 +370,9 @@ table.okr-table {
 .spinner-container {
   @extend .mt-5;
 }
+
+.okr-dialog-panel {
+  @extend .col-12;
+
+  @extend .col-md-6;
+}

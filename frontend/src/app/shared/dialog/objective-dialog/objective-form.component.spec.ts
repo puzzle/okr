@@ -35,6 +35,10 @@ let objectiveService = {
   deleteObjective: jest.fn(),
 };
 
+interface MatDialogDataInterface {
+  objective: { objectiveId: number | undefined; teamId: number | undefined };
+}
+
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
     return of([
@@ -42,6 +46,9 @@ const quarterService = {
       new Quarter(2, quarter.label, quarter.startDate, quarter.endDate),
       new Quarter(999, 'Backlog', null, null),
     ]);
+  },
+  getCurrentQuarter(): Observable<Quarter> {
+    return of(new Quarter(2, quarter.label, quarter.startDate, quarter.endDate));
   },
 };
 
@@ -58,7 +65,7 @@ const dialogMock = {
   close: jest.fn(),
 };
 
-let matDataMock: { objective: { objectiveId: number | undefined; teamId: number | undefined } } = {
+let matDataMock: MatDialogDataInterface = {
   objective: {
     objectiveId: undefined,
     teamId: 1,
@@ -118,6 +125,16 @@ describe('ObjectiveDialogComponent', () => {
     it.each([['DRAFT'], ['ONGOING']])(
       'onSubmit create',
       fakeAsync((state: string) => {
+        matDataMock = {
+          objectiveId: 99,
+          teamId: 1,
+        } as any as MatDialogDataInterface;
+
+        TestBed.overrideProvider(MAT_DIALOG_DATA, { useValue: matDataMock });
+        TestBed.compileComponents();
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+
         //Prepare data
         let title: string = 'title';
         let description: string = 'description';
@@ -142,7 +159,6 @@ describe('ObjectiveDialogComponent', () => {
         tick(200);
         const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('#quarter')).nativeElement;
         quarterSelect.value = quarter.toString();
-
         // Trigger update of form
         fixture.detectChanges();
         titleInput.dispatchEvent(new Event('input'));

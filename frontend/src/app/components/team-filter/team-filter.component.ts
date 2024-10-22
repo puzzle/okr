@@ -19,6 +19,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   protected readonly trackByFn = trackByFn;
   private unsubscribe$ = new Subject<void>();
   private subscription?: Subscription;
+  protected showMoreTeams = false;
 
   constructor(
     private teamService: TeamService,
@@ -35,6 +36,8 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.refreshTeamData();
   }
+
+  showMore() {}
 
   private refreshTeamData() {
     if (this.subscription) {

@@ -74,4 +74,8 @@ export class AddEditTeamDialog implements OnInit {
   getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
     return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
   }
+
+  getDialogTitle(): string {
+    return this.data ? 'Team bearbeiten' : 'Team erfassen';
+  }
 }

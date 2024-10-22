@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -8,6 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -178,4 +182,42 @@ class UserPersistenceServiceIT {
         assertEquals(lastName, currentUser.getLastname());
         assertEquals(email, currentUser.getEmail());
     }
+
+    @DisplayName("deleteById() should delete user when user found")
+    @Test
+    void deleteByIdShouldDeleteUserWhenUserFound() {
+        // arrange
+        User user = createUser();
+
+        // act
+        userPersistenceService.deleteById(user.getId());
+
+        // assert
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, //
+                () -> userPersistenceService.findById(createdUser.getId()));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+    }
+
+    private User createUser() {
+        User newUser = User.Builder.builder() //
+                .withId(null) //
+                .withFirstname("firstname") //
+                .withLastname("lastname") //
+                .withEmail("lastname@puzzle.ch") //
+                .build();
+        createdUser = userPersistenceService.getOrCreateUser(newUser);
+        assertNotNull(createdUser.getId());
+        return createdUser;
+    }
+
+    @DisplayName("deleteById() should throw exception when Id is null")
+    @Test
+    void deleteByIdShouldThrowExceptionWhenIdIsNull() {
+        InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, //
+                () -> userPersistenceService.deleteById(null));
+
+        assertEquals("The given id must not be null", exception.getMessage());
+    }
+
 }

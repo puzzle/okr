@@ -372,6 +372,7 @@ table.okr-table {
 }
 
 .okr-dialog-panel {
+  margin-top: $top-bar-height;
   @extend .col-12;
 
   @extend .col-md-6;

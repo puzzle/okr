@@ -33,6 +33,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
+  currentQuarter$: Observable<Quarter> = of();
   quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
@@ -83,16 +84,16 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const isCreating: boolean = !!this.data.objective.objectiveId;
     this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
+    this.currentQuarter$ = this.quarterService.getCurrentQuarter();
     const objective$ = isCreating
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
-
-    forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
+    forkJoin([objective$, this.quarters$, this.currentQuarter$]).subscribe(([objective, quarters, currentQuarter]) => {
       this.quarters = quarters;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
+      const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
+      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-      let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
       if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
         quarterId = quarters[1].id;
       }

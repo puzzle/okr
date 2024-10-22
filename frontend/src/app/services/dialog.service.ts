@@ -28,7 +28,7 @@ export class DialogService {
   open<T, D = any, R = any>(component: ComponentType<T>, config?: MatDialogConfig<D>): MatDialogRef<T, R> {
     return this.dialog.open(component, {
       ...this.DIALOG_CONFIG,
-      data: config?.data,
+      ...config,
     });
   }
 
@@ -39,8 +39,7 @@ export class DialogService {
   }
 
   openConfirmDialogWithCustomText(title: string, text: string) {
-    return this.dialog.open(ConfirmDialogComponent, {
-      ...this.DIALOG_CONFIG,
+    return this.open(ConfirmDialogComponent, {
       data: {
         title: title,
         text: text,

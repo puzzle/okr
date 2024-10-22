@@ -87,4 +87,8 @@ export class KeyresultDialogComponent {
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
   }
+
+  getDialogTitle(): string {
+    return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
+  }
 }

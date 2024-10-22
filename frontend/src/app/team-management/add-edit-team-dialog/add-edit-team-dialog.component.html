@@ -1,4 +1,4 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="data ? 'Team bearbeiten' : 'Team erfassen'"></app-dialog-header>
+<app-dialog-header mat-dialog-title [dialogTitle]="getDialogTitle()"></app-dialog-header>
 
 <mat-dialog-content>
   <form [formGroup]="teamForm" class="okr-dialog-form">

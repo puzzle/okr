@@ -1,7 +1,4 @@
-<section mat-dialog-title>
-  <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen'"></app-dialog-header>
-  <app-dialog-header *ngIf="this.checkIn.id" [dialogTitle]="'Check-in bearbeiten'"></app-dialog-header>
-</section>
+<app-dialog-header mat-dialog-title [dialogTitle]="getDialogTitle()"></app-dialog-header>
 
 <mat-dialog-content>
   <form [formGroup]="dialogForm">

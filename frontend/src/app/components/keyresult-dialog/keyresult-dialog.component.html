@@ -1,8 +1,4 @@
-<section mat-dialog-title>
-  <app-dialog-header
-    [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
-  ></app-dialog-header>
-</section>
+<app-dialog-header mat-dialog-title [dialogTitle]="getDialogTitle()"></app-dialog-header>
 
 <mat-dialog-content>
   <div class="d-flex flex-column scroll-shadows">

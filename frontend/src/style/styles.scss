@@ -376,6 +376,9 @@ table.okr-table {
   @extend .col-12;
   @extend .col-md-6;
   max-height: calc(100vh - $top-bar-height);
+  @include media-breakpoint-down(md) {
+    height: 100%;
+  }
 }
 
 mat-dialog-content {
@@ -383,16 +386,19 @@ mat-dialog-content {
   @extend .flex-column;
   @extend .flex-wrap;
   @extend .container-fluid;
-  max-height: calc(100vh - $top-bar-height - $dialog-action-buttons-div-height);
+  max-height: calc(100vh - $top-bar-height - $dialog-action-buttons-div-height) !important;
+  @include media-breakpoint-down(md) {
+    height: 100%;
+  }
 }
 
 mat-dialog-actions {
   @extend .d-flex;
   @extend .justify-content-between;
-
+  height: $dialog-action-buttons-div-height;
   & > .okr-dialog-action-group {
     @extend .d-flex;
-    @extend .gap-2;
+    // @extend .gap-2;
     @extend .justify-content-start;
   }
 }

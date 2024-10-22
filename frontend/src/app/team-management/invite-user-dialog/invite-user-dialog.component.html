@@ -1,26 +1,24 @@
 <app-dialog-header mat-dialog-title [dialogTitle]="'Members registrieren'"></app-dialog-header>
 
 <mat-dialog-content>
-  <form>
-    @for (userFormGroup of form.controls; track $index) {
-      <div class="w-100 d-flex justify-content-between align-items-center pe-4">
-        <app-new-user
-          (removeUser)="removeUser($index)"
-          [index]="$index"
-          [userFormGroup]="userFormGroup"
-          [triedToSubmit]="triedToSubmit"
-        ></app-new-user>
-      </div>
-    }
-    <div class="w-100 d-flex justify-content-start">
-      <button (click)="addUser()" class="px-0 mb-3 pe-2 align-new-icon" color="primary" mat-button>
-        <span class="d-flex align-items-center fw-bold add-text">
-          <img alt="Add User button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
-          Weiterer Member hinzufügen
-        </span>
-      </button>
+  @for (userFormGroup of form.controls; track $index) {
+    <div class="w-100 d-flex justify-content-between align-items-center pe-4">
+      <app-new-user
+        (removeUser)="removeUser($index)"
+        [index]="$index"
+        [userFormGroup]="userFormGroup"
+        [triedToSubmit]="triedToSubmit"
+      ></app-new-user>
     </div>
-  </form>
+  }
+  <div class="w-100 d-flex justify-content-start">
+    <button (click)="addUser()" class="px-0 mb-3 pe-2 align-new-icon" color="primary" mat-button>
+      <span class="d-flex align-items-center fw-bold add-text">
+        <img alt="Add User button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+        Weiterer Member hinzufügen
+      </span>
+    </button>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="okr-dialog-action-group">

@@ -1,4 +1,4 @@
-<div #okrBanner id="okrBanner">
+<div id="okrBanner" #okrBanner>
   <div class="d-flex flex-row">
     <div class="w-100 h-100 m-0 d-flex" slot="content">
       <section class="d-none d-md-flex">
@@ -33,7 +33,7 @@
             <div class="d-flex gap-2 flex-column filter-container">
               <app-objective-filter class="m-2"></app-objective-filter>
               <app-quarter-filter (quarterLabel$)="quarterLabel$.next($event)" class="m-2"></app-quarter-filter>
-              <app-team-filter class="m-2"></app-team-filter>
+              <app-team-filter [showMoreTeams]="false" class="m-2"></app-team-filter>
             </div>
           </mat-expansion-panel>
         </mat-accordion>

@@ -23,18 +23,10 @@ values (1, 'GJ 22/23-Q4'),
        (7, 'GJ 23/24-Q2');
 
 insert into team (id, name)
-values (1, '/BBT'),
-       (2, 'we are cube.³'),
-       (3, 'Puzzle ITC'),
-       (4, 'LoremIpsum'),
-       (5, '/BBT'),
-       (6, 'we are cube.³'),
-       (7, 'Puzzle ITC'),
-       (8, 'LoremIpsum'),
-       (9, '/BBT'),
-       (10, 'we are cube.³'),
-       (11, 'Puzzle ITC'),
-       (12, 'LoremIpsum');
+values (4, '/BBT'),
+       (8, 'we are cube.³'),
+       (5, 'Puzzle ITC'),
+       (6, 'LoremIpsum');
 
 insert into objective (id, description, modified_on, progress, title, owner_id, quarter_id, team_id)
 values (4, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture that kills the competition.', 1, 2, 5),

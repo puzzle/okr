@@ -1,5 +1,9 @@
-<mat-chip-listbox [ngStyle]="{ height: showMoreTeams ? '100%' : '85px' }" class="d-flex overflow-hidden">
-  <button (click)="toggleAll()" class="icon-button team-button focus-outline d-none d-sm-block">
+<mat-chip-listbox
+  [ngStyle]="{ height: showMoreTeams ? '100%' : '85px' }"
+  class="chip-list overflow-hidden w-100 d-grid"
+>
+  <!-- Button to select all teams -->
+  <button (click)="toggleAll()" class="icon-button team-button focus-outline d-none d-sm-block" id="diddy">
     <mat-chip
       [attr.data-testId]="'team-filter-alle'"
       [highlighted]="activeTeams.length == (this.teams$ | async)?.length"
@@ -8,16 +12,20 @@
     </mat-chip>
   </button>
   <button
+    matTooltipPosition="above"
+    [matTooltip]="team.name"
     (click)="toggleSelection(team.id)"
-    *ngFor="let team of (teams$ | async)?.slice(0, this.showMoreTeams ? undefined : 12); trackBy: trackByFn"
+    *ngFor="let team of (teams$ | async)?.slice(0, showMoreTeams ? undefined : 6); trackBy: trackByFn"
     [attr.data-testId]="'team-filter-chip'"
     class="icon-button focus-outline m-1"
   >
-    <mat-chip [highlighted]="activeTeams.includes(team.id)" color="primary">{{ team.name }}</mat-chip>
+    <mat-chip [highlighted]="activeTeams.includes(team.id)" color="primary">{{ getTeamName(team.id) }}</mat-chip>
+  </button>
+  <button
+    (click)="showMoreTeams = !showMoreTeams"
+    [attr.data-testId]="'team-filter-chip'"
+    class="icon-button focus-outline m-1 d-block d-sm-none"
+  >
+    <a class="primary-a-tag">{{ showMoreTeams ? "Weniger" : "Mehr" }}</a>
   </button>
 </mat-chip-listbox>
-<mat-action-row class="p-0 d-flex justify-content-center align-items-center border-0 d-sm-none">
-  <button (click)="this.showMoreTeams = !this.showMoreTeams" class="w-100" color="primary" mat-button>
-    {{ this.showMoreTeams ? "Weniger" : "Mehr" }}
-  </button>
-</mat-action-row>

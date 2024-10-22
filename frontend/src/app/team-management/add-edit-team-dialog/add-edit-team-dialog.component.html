@@ -3,25 +3,23 @@
 </section>
 
 <mat-dialog-content>
-  <div tabindex="-1">
-    <div class="w-100 d-flex justify-content-between align-items-center">
-      <form [formGroup]="teamForm" class="d-flex flex-column flex-wrap container p-0">
-        <div class="input-style gap-2 col-12">
-          <label class="text-black" for="name">Teamname</label>
-          <input
-            matInput
-            [attr.data-testId]="'add-team-name'"
-            class="dialog-form-field"
-            [ngClass]="formInputCheck(teamForm, 'name')"
-            formControlName="name"
-            id="name"
-          />
-          <mat-error *ngIf="hasFormFieldErrors(teamForm, 'name')">
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
-          </mat-error>
-        </div>
-      </form>
-    </div>
+  <div class="w-100 d-flex justify-content-between align-items-center">
+    <form [formGroup]="teamForm" class="d-flex flex-column flex-wrap container p-0">
+      <div class="input-style gap-2 col-12">
+        <label class="text-black" for="name">Teamname</label>
+        <input
+          matInput
+          [attr.data-testId]="'add-team-name'"
+          class="dialog-form-field"
+          [ngClass]="formInputCheck(teamForm, 'name')"
+          formControlName="name"
+          id="name"
+        />
+        <mat-error *ngIf="hasFormFieldErrors(teamForm, 'name')">
+          <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
+        </mat-error>
+      </div>
+    </form>
   </div>
 </mat-dialog-content>
 

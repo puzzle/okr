@@ -1,9 +1,6 @@
 <div class="ps-4 pt-3 pe-4">
   <app-dialog-header [dialogTitle]="'Check-in History'"></app-dialog-header>
-  <div
-    class="d-flex justify-content-start flex-column gap-4 text-black overflow-y-scroll text-break mt-3"
-    tabindex="-1"
-  >
+  <div class="d-flex justify-content-start flex-column gap-4 text-black overflow-y-scroll text-break mt-3">
     <ng-container
       *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
     >

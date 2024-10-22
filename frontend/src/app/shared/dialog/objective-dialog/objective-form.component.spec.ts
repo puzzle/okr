@@ -125,16 +125,6 @@ describe('ObjectiveDialogComponent', () => {
     it.each([['DRAFT'], ['ONGOING']])(
       'onSubmit create',
       fakeAsync((state: string) => {
-        matDataMock = {
-          objectiveId: 99,
-          teamId: 1,
-        } as any as MatDialogDataInterface;
-
-        TestBed.overrideProvider(MAT_DIALOG_DATA, { useValue: matDataMock });
-        TestBed.compileComponents();
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-
         //Prepare data
         let title: string = 'title';
         let description: string = 'description';
@@ -157,17 +147,19 @@ describe('ObjectiveDialogComponent', () => {
         descriptionInput.value = description;
         loader.getHarness(MatCheckboxHarness).then((checkBox) => checkBox.check());
         tick(200);
-        const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('#quarter')).nativeElement;
+        const quarterSelect: HTMLSelectElement = fixture.debugElement.query(
+          By.css('[data-testId="quarterSelect"]'),
+        ).nativeElement;
         quarterSelect.value = quarter.toString();
         // Trigger update of form
         fixture.detectChanges();
         titleInput.dispatchEvent(new Event('input'));
         descriptionInput.dispatchEvent(new Event('input'));
-        quarterSelect.dispatchEvent(new Event('input'));
+        quarterSelect.dispatchEvent(new Event('change'));
 
         const rawFormValue = component.objectiveForm.getRawValue();
         expect(rawFormValue.description).toBe(description);
-        expect(rawFormValue.quarter).toBe(quarter);
+        expect(rawFormValue.quarter).toBe(quarter.toString());
         expect(rawFormValue.team).toBe(team);
         expect(rawFormValue.title).toBe(title);
         expect(rawFormValue.createKeyResults).toBe(createKeyresults);

@@ -1,6 +1,7 @@
-<div class="ps-4 pt-3 pe-4">
-  <app-dialog-header [dialogTitle]="'Check-in History'"></app-dialog-header>
-  <div class="d-flex justify-content-start flex-column gap-4 text-black overflow-y-scroll text-break mt-3">
+<app-dialog-header matDialogTitle [dialogTitle]="'Check-in History'"></app-dialog-header>
+
+<mat-dialog-content>
+  <div class="d-flex justify-content-start flex-column gap-4 text-black text-break">
     <ng-container
       *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
     >
@@ -47,8 +48,13 @@
       </div>
     </ng-container>
   </div>
-  <button class="close-button" mat-flat-button color="primary" mat-dialog-close>Schliessen</button>
   <ng-template #spinner>
     <app-spinner text="Check-in history wird geladen..."></app-spinner>
   </ng-template>
-</div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="okr-dialog-action-group">
+    <button class="close-button" mat-flat-button color="primary" mat-dialog-close>Schliessen</button>
+  </div>
+</mat-dialog-actions>

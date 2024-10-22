@@ -1,6 +1,4 @@
-<section mat-dialog-title>
-  <app-dialog-header [dialogTitle]="this.data.dialogTitle"></app-dialog-header>
-</section>
+<app-dialog-header mat-dialog-title [dialogTitle]="this.data.dialogTitle"></app-dialog-header>
 
 <mat-dialog-content>
   @if (data.dialogText) {
@@ -10,9 +8,11 @@
   }
 </mat-dialog-content>
 
-<mat-dialog-actions class="m-0">
-  <button color="primary" [attr.data-testId]="'cancelDialog-confirm'" (click)="closeAndConfirm()" mat-flat-button>
-    Ja
-  </button>
-  <button mat-button mat-dialog-close [attr.data-testId]="'cancelDialog-cancel'">Abbrechen</button>
+<mat-dialog-actions>
+  <div class="okr-dialog-action-group">
+    <button color="primary" [attr.data-testId]="'cancelDialog-confirm'" (click)="closeAndConfirm()" mat-flat-button>
+      Ja
+    </button>
+    <button mat-button mat-dialog-close [attr.data-testId]="'cancelDialog-cancel'">Abbrechen</button>
+  </div>
 </mat-dialog-actions>

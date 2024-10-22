@@ -1,10 +1,5 @@
-<section mat-dialog-title>
-  <div class="d-flex justify-content-between align-items-center position-relative dialog-header mt-1">
-    <span class="title w-100 mb-2">
-      <span>Members registrieren</span>
-    </span>
-  </div>
-</section>
+<app-dialog-header mat-dialog-title [dialogTitle]="'Members registrieren'"></app-dialog-header>
+
 <mat-dialog-content>
   <form>
     @for (userFormGroup of form.controls; track $index) {
@@ -28,12 +23,10 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
-    <div class="d-flex p-0">
-      <button color="primary" [attr.data-testId]="'invite'" mat-flat-button type="submit" (click)="registerUsers()">
-        Einladen
-      </button>
-      <button color="primary" mat-button mat-dialog-close class="ms-2">Abbrechen</button>
-    </div>
+  <div class="okr-dialog-action-group">
+    <button color="primary" [attr.data-testId]="'invite'" mat-flat-button type="submit" (click)="registerUsers()">
+      Einladen
+    </button>
+    <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
   </div>
 </mat-dialog-actions>

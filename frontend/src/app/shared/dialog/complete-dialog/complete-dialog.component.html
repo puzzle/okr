@@ -1,6 +1,4 @@
-<section mat-dialog-title>
-  <app-dialog-header [dialogTitle]="'Objective abschliessen'"></app-dialog-header>
-</section>
+<app-dialog-header mat-dialog-title [dialogTitle]="'Objective abschliessen'"></app-dialog-header>
 
 <mat-dialog-content>
   <div class="input-style gap-2 col-12">
@@ -58,19 +56,17 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <div class="mt-3">
-    <div class="d-flex justify-content-between">
-      <button
-        [attr.data-testId]="'submit'"
-        type="submit"
-        (click)="closeDialog()"
-        [disabled]="completeForm.invalid"
-        color="primary"
-        mat-flat-button
-      >
-        Objective abschliessen
-      </button>
-      <button color="primary" mat-button mat-dialog-close class="ms-2">Abbrechen</button>
-    </div>
+  <div class="okr-dialog-action-group">
+    <button
+      [attr.data-testId]="'submit'"
+      type="submit"
+      (click)="closeDialog()"
+      [disabled]="completeForm.invalid"
+      color="primary"
+      mat-flat-button
+    >
+      Objective abschliessen
+    </button>
+    <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
   </div>
 </mat-dialog-actions>

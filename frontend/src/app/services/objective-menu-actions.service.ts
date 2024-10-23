@@ -4,7 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
-import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
+import { State } from '../shared/types/enums/State';
+import { isInBacklogQuarter, isObjectiveComplete } from '../shared/common';
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
 
@@ -20,11 +21,19 @@ export interface ObjectiveMenuEntry {
 export class ObjectiveMenuActionsService {
   constructor(private readonly dialogService: DialogService) {}
 
-  isInBacklogQuarter(objective: ObjectiveMin) {
-    return !GJ_REGEX_PATTERN.test(objective.quarter.label);
+  getMenu(objective: ObjectiveMin): ObjectiveMenuEntry[] {
+    if (isObjectiveComplete(objective)) {
+      return this.getCompletedMenuActions(objective);
+    } else if (objective.state === State.ONGOING) {
+      return this.getOngoingMenuActions(objective);
+    } else if (objective.state === State.DRAFT) {
+      return this.getDraftMenuActions(objective);
+    }
+    //Probably throw an error here
+    return [];
   }
 
-  getOngoingMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
+  private getOngoingMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
     return [
       ...this.getDefaultActions(objective),
       this.saveObjectiveAsDraftAction(),
@@ -32,36 +41,36 @@ export class ObjectiveMenuActionsService {
     ];
   }
 
-  getDefaultActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
+  private getDefaultActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
     return [this.editObjectiveAction(objective), this.duplicateObjectiveAction(objective)];
   }
 
-  getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    const releaseAction = this.isInBacklogQuarter(objective)
+  private getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
+    const releaseAction = isInBacklogQuarter(objective)
       ? this.releaseFromDraftInBacklogAction(objective)
       : this.releaseFromDraftAction(objective);
     return [releaseAction];
   }
 
-  releaseFromDraftAction(objective: ObjectiveMin): ObjectiveMenuEntry {
+  private releaseFromDraftAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const action = () => this.dialogService.openConfirmDialog('CONFIRMATION.RELEASE');
     return { displayName: 'Objective veröffentlichen', action: action };
   }
 
-  releaseFromDraftInBacklogAction(objective: ObjectiveMin): ObjectiveMenuEntry {
-    const config = { data: { action: 'releaseBacklog', objectiveId: objective } };
+  private releaseFromDraftInBacklogAction(objective: ObjectiveMin): ObjectiveMenuEntry {
+    const config = { data: { objective: { objectiveId: objective }, action: 'releaseBacklog' } };
     const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
     return { displayName: 'Objective veröffentlichen', action: action };
   }
 
   private editObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
-    const config = { data: { objectiveId: objective.id } };
+    const config = { data: { objective: { objectiveId: objective.id } } };
     const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
     return { displayName: 'Objective bearbeiten', action: action };
   }
 
   private duplicateObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
-    const config = { data: { objectiveId: objective.id } };
+    const config = { data: { objective: { objectiveId: objective.id } } };
     const action = () => this.dialogService.open(ObjectiveFormComponent, config);
     return { displayName: 'Objective duplizieren', action: action };
   }
@@ -79,7 +88,7 @@ export class ObjectiveMenuActionsService {
     return { displayName: 'Objective als Draft speicherns', action: action };
   }
 
-  getCompletedMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
+  private getCompletedMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
     return [];
   }
 }

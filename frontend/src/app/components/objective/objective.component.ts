@@ -1,20 +1,16 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
-import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { State } from '../../shared/types/enums/State';
 import { ObjectiveService } from '../../services/objective.service';
-import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { CompleteDialogComponent } from '../../shared/dialog/complete-dialog/complete-dialog.component';
 import { Completed } from '../../shared/types/model/Completed';
 import { Objective } from '../../shared/types/model/Objective';
-import { trackByFn } from '../../shared/common';
+import { isObjectiveComplete, trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { GJ_REGEX_PATTERN } from '../../shared/constantLibary';
 import { DialogService } from '../../services/dialog.service';
 import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/objective-menu-actions.service';
 
@@ -24,11 +20,13 @@ import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/
   styleUrls: ['./objective.component.scss'],
 })
 export class ObjectiveComponent implements OnInit {
-  @Input()
-  isWritable!: boolean;
+  @Input() isWritable!: boolean;
   isComplete: boolean = false;
+  public objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
+  menuEntries = this.objective$.pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
   protected readonly trackByFn = trackByFn;
-  @ViewChild('menuButton') private menuButton!: ElementRef;
+  protected readonly console = console;
+  protected readonly isObjectiveComplete = isObjectiveComplete;
 
   constructor(
     private dialogService: DialogService,
@@ -39,12 +37,9 @@ export class ObjectiveComponent implements OnInit {
     private objectiveMenuActionsService: ObjectiveMenuActionsService,
   ) {}
 
-  @Input()
-  set objective(objective: ObjectiveMin) {
+  @Input() set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
   }
-
-  public objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   ngOnInit() {}
 
@@ -59,23 +54,6 @@ export class ObjectiveComponent implements OnInit {
 
   getStateTooltip(): string {
     return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP');
-  }
-
-  isObjectiveComplete(objective: ObjectiveMin): boolean {
-    return objective.state == State.SUCCESSFUL || objective.state == State.NOTSUCCESSFUL;
-  }
-
-  getMenu(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    console.log('get');
-    if (this.isObjectiveComplete(objective)) {
-      return this.objectiveMenuActionsService.getCompletedMenuActions(objective);
-    } else if (objective.state === State.ONGOING) {
-      return this.objectiveMenuActionsService.getOngoingMenuActions(objective);
-    } else if (objective.state === State.DRAFT) {
-      return this.objectiveMenuActionsService.getDraftMenuActions(objective);
-    }
-    //Probably throw an error here
-    return [];
   }
 
   redirect(menuEntry: ObjectiveMenuEntry) {
@@ -172,6 +150,4 @@ export class ObjectiveComponent implements OnInit {
         this.refreshDataService.markDataRefresh();
       });
   }
-
-  protected readonly console = console;
 }

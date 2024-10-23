@@ -91,7 +91,7 @@ class AuthorizationRegistrationServiceIT {
      * false) is after calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch
      * exists before the test, we make no clean in db (we don't remove it) </pre>
      */
-    @Disabled
+    // @Disabled
     @Test
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {

@@ -15,7 +15,7 @@
             [src]="'assets/icons/' + objective.state"
             alt="The objectives state"
             class="icon"
-            matTooltip="{{ getStateTooltip() + ' ' + formatObjectiveState(objective.state) }}"
+            matTooltip="{{ getStateTooltip(objective.state) }}"
             matTooltipPosition="above"
           />
           <h2 class="title fit-content">{{ objective.title }}</h2>

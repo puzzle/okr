@@ -109,3 +109,7 @@ export function hasFormFieldErrors(formGroup: FormGroup, field: string) {
     return false;
   }
 }
+
+export function getStateByValue(value: string): string {
+  return Object.keys(State).find((key) => State[key as keyof typeof State] === value) ?? '';
+}

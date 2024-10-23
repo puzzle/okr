@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ConfidenceComponent } from '../confidence/confidence.component';
+import { RefreshDataService } from '../../services/refresh-data.service';
 
 const keyResultServiceMock = {
   getFullKeyResult: jest.fn(),
@@ -86,5 +87,22 @@ describe('KeyresultDetailComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-check-in"]'));
     expect(button).toBeFalsy();
+  });
+
+  it('should trigger observable when subject gets next value', () => {
+    const spy = jest.spyOn(component, 'loadKeyResult');
+    const refreshDataService = TestBed.inject(RefreshDataService);
+    refreshDataService.reloadKeyResultSubject.next();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should close subscription on destroy', () => {
+    const spyNext = jest.spyOn(component.ngDestroy$, 'next');
+    const spyComplete = jest.spyOn(component.ngDestroy$, 'complete');
+
+    component.ngOnDestroy();
+
+    expect(spyNext).toHaveBeenCalled();
+    expect(spyComplete).toHaveBeenCalled();
   });
 });

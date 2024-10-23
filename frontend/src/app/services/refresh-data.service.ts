@@ -7,6 +7,7 @@ import { DEFAULT_HEADER_HEIGHT_PX } from '../shared/constantLibary';
 })
 export class RefreshDataService {
   public reloadOverviewSubject: Subject<void> = new Subject();
+  public reloadKeyResultSubject: Subject<void> = new Subject();
 
   public quarterFilterReady: Subject<void> = new Subject<void>();
   public teamFilterReady: Subject<void> = new Subject<void>();

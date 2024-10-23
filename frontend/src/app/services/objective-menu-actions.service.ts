@@ -12,7 +12,7 @@ export type ObjectiveMenuAction = () => MatDialogRef<any>;
 export interface ObjectiveMenuEntry {
   displayName: string;
   action: ObjectiveMenuAction;
-  afterAction?: (arg1: any, arg2: any) => any;
+  afterAction: (arg?: any) => any;
 }
 
 @Injectable({
@@ -54,25 +54,29 @@ export class ObjectiveMenuActionsService {
 
   private releaseFromDraftAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const action = () => this.dialogService.openConfirmDialog('CONFIRMATION.RELEASE');
-    return { displayName: 'Objective veröffentlichen', action: action };
+    const afterAction = () => {};
+    return { displayName: 'Objective veröffentlichen', action: action, afterAction: afterAction };
   }
 
   private releaseFromDraftInBacklogAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective }, action: 'releaseBacklog' } };
     const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
-    return { displayName: 'Objective veröffentlichen', action: action };
+    const afterAction = () => {};
+    return { displayName: 'Objective veröffentlichen', action: action, afterAction };
   }
 
   private editObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id } } };
     const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
-    return { displayName: 'Objective bearbeiten', action: action };
+    const afterAction = () => {};
+    return { displayName: 'Objective bearbeiten', action: action, afterAction: afterAction };
   }
 
   private duplicateObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id } } };
     const action = () => this.dialogService.open(ObjectiveFormComponent, config);
-    return { displayName: 'Objective duplizieren', action: action };
+    const afterAction = () => {};
+    return { displayName: 'Objective duplizieren', action: action, afterAction: afterAction };
   }
 
   private completeObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
@@ -80,12 +84,16 @@ export class ObjectiveMenuActionsService {
       data: { objectiveTitle: objective.title },
     };
     const action = () => this.dialogService.open(CompleteDialogComponent, config);
-    return { displayName: 'Objective abschliessen', action: action };
+    const afterAction = () => {};
+
+    return { displayName: 'Objective abschliessen', action: action, afterAction: afterAction };
   }
 
   private saveObjectiveAsDraftAction(): ObjectiveMenuEntry {
     const action = () => this.dialogService.openConfirmDialog('CONFIRMATION.DRAFT_CREATE');
-    return { displayName: 'Objective als Draft speicherns', action: action };
+    const afterAction = () => {};
+
+    return { displayName: 'Objective als Draft speicherns', action: action, afterAction: afterAction };
   }
 
   private getCompletedMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

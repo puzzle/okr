@@ -50,7 +50,7 @@
         color="primary"
         class="fw-bold px-0 pe-2 ms-2"
         [attr.data-testId]="'add-keyResult'"
-        (click)="openAddKeyResultDialog(); $event.stopPropagation()"
+        (click)="openAddKeyResultDialog(objective); $event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"
       >
         <span class="d-flex align-items-center add-text">

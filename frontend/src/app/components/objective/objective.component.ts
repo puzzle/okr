@@ -57,9 +57,10 @@ export class ObjectiveComponent implements OnInit {
   }
 
   redirect(menuEntry: ObjectiveMenuEntry) {
-    console.log('test');
-    console.log(menuEntry.action);
     const matDialogRef = menuEntry.action();
+    matDialogRef.afterClosed().subscribe((result) => {
+      menuEntry.afterAction(result);
+    });
   }
 
   handleDialogResult(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
@@ -134,18 +135,18 @@ export class ObjectiveComponent implements OnInit {
     this.router.navigate(['details/objective', objectiveId]);
   }
 
-  openAddKeyResultDialog() {
+  openAddKeyResultDialog(objective: ObjectiveMin) {
     this.dialogService
       .open(KeyresultDialogComponent, {
         data: {
-          objective: this.objective$.value,
+          objective: objective,
           keyResult: null,
         },
       })
       .afterClosed()
       .subscribe((result) => {
         if (result?.openNew) {
-          this.openAddKeyResultDialog();
+          this.openAddKeyResultDialog(objective);
         }
         this.refreshDataService.markDataRefresh();
       });

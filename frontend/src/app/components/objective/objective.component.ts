@@ -1,13 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MenuEntry } from '../../shared/types/menu-entry';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { State } from '../../shared/types/enums/State';
 import { ObjectiveService } from '../../services/objective.service';
-import { Completed } from '../../shared/types/model/Completed';
-import { Objective } from '../../shared/types/model/Objective';
 import { isObjectiveComplete, trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
@@ -63,25 +59,6 @@ export class ObjectiveComponent implements OnInit {
         menuEntry.afterAction(objective, result);
       });
     });
-  }
-
-  handleDialogResult(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
-    if (menuEntry.action) {
-      this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
-        if (menuEntry.action == 'complete') {
-        } else if (menuEntry.action == 'release') {
-        } else if (menuEntry.action == 'duplicate') {
-          this.refreshDataService.markDataRefresh();
-        } else if (menuEntry.action == 'releaseBacklog') {
-          this.refreshDataService.markDataRefresh();
-        } else if (menuEntry.action == 'todraft') {
-        }
-      });
-    } else {
-      if (result?.objective) {
-        this.refreshDataService.markDataRefresh();
-      }
-    }
   }
 
   openObjectiveDetail(objectiveId: number) {

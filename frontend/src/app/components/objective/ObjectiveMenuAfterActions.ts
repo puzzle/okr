@@ -1,13 +1,11 @@
-import { DialogService } from '../../services/dialog.service';
 import { Objective } from '../../shared/types/model/Objective';
 import { State } from '../../shared/types/enums/State';
 import { Completed } from '../../shared/types/model/Completed';
 import { ObjectiveService } from '../../services/objective.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
 
-export class ObjectiveMenuAfterActionFactory {
+export class ObjectiveMenuAfterActions {
   constructor(
-    private readonly dialogService: DialogService,
     private readonly objectiveService: ObjectiveService,
     private readonly refreshDataService: RefreshDataService,
   ) {}

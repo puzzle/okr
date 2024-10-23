@@ -7,7 +7,7 @@
     class="bg-inherit d-flex justify-content-center align-items-center"
     [ngClass]="[edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show', isDetail ? 'height' : '']"
   >
-    <span class="fw-normal text-black keyResult-overview-attribute" data-testid="confidence"
+    <span class="fw-normal text-black keyResult-overview-attribute" [attr.data-testId]="'confidence'"
       >{{ checkIn.confidence }}/{{ max }}</span
     >
   </div>

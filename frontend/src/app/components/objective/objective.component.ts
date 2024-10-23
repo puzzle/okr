@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map } from 'rxjs';
+import { map, Subject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveService } from '../../services/objective.service';
-import { isObjectiveComplete, trackByFn } from '../../shared/common';
+import { getStateByValue, isObjectiveComplete, trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
@@ -17,11 +17,9 @@ import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/
 })
 export class ObjectiveComponent implements OnInit {
   @Input() isWritable!: boolean;
-  isComplete: boolean = false;
-  public objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
+  public objective$ = new Subject<ObjectiveMin>();
   menuEntries = this.objective$.pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
   protected readonly trackByFn = trackByFn;
-  protected readonly console = console;
   protected readonly isObjectiveComplete = isObjectiveComplete;
 
   constructor(
@@ -39,17 +37,9 @@ export class ObjectiveComponent implements OnInit {
 
   ngOnInit() {}
 
-  formatObjectiveState(state: string): string {
-    const lastIndex = state.lastIndexOf('-');
-    if (lastIndex !== -1) {
-      return state.substring(0, lastIndex).toUpperCase();
-    } else {
-      return state.toUpperCase();
-    }
-  }
-
-  getStateTooltip(): string {
-    return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP');
+  getStateTooltip(stateString: string): string {
+    const state = getStateByValue(stateString);
+    return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP', { state: state });
   }
 
   redirect(menuEntry: ObjectiveMenuEntry, objectiveMin: ObjectiveMin) {

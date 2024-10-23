@@ -33,6 +33,10 @@
       "TITLE": "Check-in im Draft-Status",
       "TEXT": "Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?"
     },
+    "REOPEN": {
+      "TITLE": "Objective wiedereröffnen",
+      "TEXT": "Soll dieses Objective wiedereröffnet werden?"
+    },
     "RELEASE": {
       "TITLE": "Objective veröffentlichen",
       "TEXT": "Soll dieses Objective veröffentlicht werden?"

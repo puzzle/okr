@@ -56,10 +56,12 @@ export class ObjectiveComponent implements OnInit {
     return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP');
   }
 
-  redirect(menuEntry: ObjectiveMenuEntry) {
+  redirect(menuEntry: ObjectiveMenuEntry, objectiveMin: ObjectiveMin) {
     const matDialogRef = menuEntry.action();
     matDialogRef.afterClosed().subscribe((result) => {
-      menuEntry.afterAction(result);
+      this.objectiveService.getFullObjective(objectiveMin.id).subscribe((objective) => {
+        menuEntry.afterAction(objective, result);
+      });
     });
   }
 
@@ -67,67 +69,18 @@ export class ObjectiveComponent implements OnInit {
     if (menuEntry.action) {
       this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
         if (menuEntry.action == 'complete') {
-          this.completeObjective(objective, result);
         } else if (menuEntry.action == 'release') {
-          this.releaseObjective(objective);
         } else if (menuEntry.action == 'duplicate') {
           this.refreshDataService.markDataRefresh();
         } else if (menuEntry.action == 'releaseBacklog') {
           this.refreshDataService.markDataRefresh();
         } else if (menuEntry.action == 'todraft') {
-          this.objectiveBackToDraft(objective);
         }
       });
     } else {
       if (result?.objective) {
         this.refreshDataService.markDataRefresh();
       }
-    }
-  }
-
-  completeObjective(objective: Objective, result: { endState: string; comment: string | null; objective: any }) {
-    objective.state = result.endState as State;
-    const completed: Completed = {
-      id: null,
-      version: objective.version,
-      objective: objective,
-      comment: result.comment,
-    };
-    this.objectiveService.updateObjective(objective).subscribe(() => {
-      this.objectiveService.createCompleted(completed).subscribe(() => {
-        this.isComplete = true;
-        this.refreshDataService.markDataRefresh();
-      });
-    });
-  }
-
-  releaseObjective(objective: Objective) {
-    objective.state = 'ONGOING' as State;
-    this.objectiveService.updateObjective(objective).subscribe(() => {
-      this.refreshDataService.markDataRefresh();
-    });
-  }
-
-  objectiveBackToDraft(objective: Objective) {
-    objective.state = 'DRAFT' as State;
-    this.objectiveService.updateObjective(objective).subscribe(() => {
-      this.refreshDataService.markDataRefresh();
-    });
-  }
-
-  reopenRedirect(menuEntry: MenuEntry) {
-    if (menuEntry.action === 'reopen') {
-      this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
-        objective.state = 'ONGOING' as State;
-        this.objectiveService.updateObjective(objective).subscribe(() => {
-          this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
-            this.isComplete = false;
-            this.refreshDataService.markDataRefresh();
-          });
-        });
-      });
-    } else {
-      this.router.navigate([menuEntry.route!]);
     }
   }
 

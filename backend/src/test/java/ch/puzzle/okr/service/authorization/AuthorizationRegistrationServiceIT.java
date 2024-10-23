@@ -31,6 +31,12 @@ class AuthorizationRegistrationServiceIT {
     private final String tenant = TestHelper.SCHEMA_PITC;
     private final String key = tenant + "_" + user.getEmail();
 
+    private User userX = User.Builder.builder() //
+            .withFirstname("Alice") //
+            .withLastname("Wunderland") //
+            .withEmail("wunderland@puzzle.ch") // user.champion.emails from application-integration-test.properties
+            .build();
+
     @BeforeEach
     void setUp() {
         TenantContext.setCurrentTenant(tenant);
@@ -38,10 +44,26 @@ class AuthorizationRegistrationServiceIT {
 
     @AfterEach
     void tearDown() {
+
+        cleanup();
+
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
         assertNotNull(cache);
         cache.clear();
         TenantContext.setCurrentTenant(null);
+    }
+
+    private void cleanup() {
+        var aa = userPersistenceService.findByEmail(userX.getEmail());
+        System.out.println("aa=" + aa.get().isOkrChampion());
+
+        userX.setOkrChampion(false);
+        var xxx = userPersistenceService.getOrCreateUser(userX);
+        xxx.setOkrChampion(false);
+        userPersistenceService.save(xxx);
+
+        var zz = userPersistenceService.findByEmail(userX.getEmail());
+        System.out.println("zz=" + zz.get().isOkrChampion());
     }
 
     @Test
@@ -96,20 +118,15 @@ class AuthorizationRegistrationServiceIT {
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
         // arrange
-        User user = User.Builder.builder() //
-                .withFirstname("Alice") //
-                .withLastname("Wunderland") //
-                .withEmail("wunderland@puzzle.ch") // user.champion.emails from application-integration-test.properties
-                .build();
 
-        userPersistenceService.getOrCreateUser(user); // updates input user with id from DB !!!
+        userPersistenceService.getOrCreateUser(userX); // updates input user with id from DB !!!
 
         // act
-        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(user);
+        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(userX);
 
         // assert
         assertTrue(processedUser.user().isOkrChampion());
-        Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+        Optional<User> userFromDB = userPersistenceService.findByEmail(userX.getEmail());
         assertTrue(userFromDB.get().isOkrChampion());
     }
 

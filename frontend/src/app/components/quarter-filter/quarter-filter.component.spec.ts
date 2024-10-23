@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuarterFilterComponent } from './quarter-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OverviewService } from '../../services/overview.service';
-import { quarter } from '../../shared/testData';
 import { Observable, of } from 'rxjs';
 import { Quarter } from '../../shared/types/model/Quarter';
 import { QuarterService } from '../../services/quarter.service';
@@ -21,15 +20,18 @@ const overviewService = {
 };
 
 const quarters = [
-  { id: 999, label: 'Backlog', startDate: null, endDate: null },
-  { ...quarter, id: 2 },
-  { ...quarter, id: 5 },
-  { ...quarter, id: 7 },
+  new Quarter(999, 'Backlog', null, null),
+  new Quarter(2, '23.02.2025', new Date(), new Date()),
+  new Quarter(5, '23.02.2025', new Date(), new Date()),
+  new Quarter(7, '23.02.2025', new Date(), new Date()),
 ];
 
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
     return of(quarters);
+  },
+  getCurrentQuarter(): Observable<Quarter> {
+    return of(quarters[2]);
   },
 };
 
@@ -68,13 +70,14 @@ describe('QuarterFilterComponent', () => {
 
   it('should set correct default quarter if no route param is defined', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
+    jest.spyOn(quarters[2] as any, 'isCurrent').mockReturnValue(true);
     const quarterSelect = await loader.getHarness(MatSelectHarness);
     expect(quarterSelect).toBeTruthy();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.quarterId).toBe(quarters[2].id);
+    expect(component.currentQuarterId).toBe(quarters[2].id);
     expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
-    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
+    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
   });
 
   it('should set correct value in form according to route param', async () => {
@@ -89,7 +92,7 @@ describe('QuarterFilterComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(component.quarterId).toBe(quarters[3].id);
+      expect(component.currentQuarterId).toBe(quarters[3].id);
       expect(await quarterSelect.getValueText()).toBe(quarters[3].label);
       expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
     });
@@ -106,7 +109,7 @@ describe('QuarterFilterComponent', () => {
     routerHarness.detectChanges();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.quarterId).toBe(quarters[2].id);
+    expect(component.currentQuarterId).toBe(quarters[2].id);
     expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
     expect(router.url).toBe('/?quarter=' + quarters[2].id);

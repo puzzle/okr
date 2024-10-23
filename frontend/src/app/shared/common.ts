@@ -87,10 +87,6 @@ export function formInputCheck(form: FormGroup, propertyName: string) {
   }
 }
 
-export function getQuarterLabel(quarter: any, index: number): string {
-  return index == 2 ? quarter.label + ' Aktuell' : quarter.label;
-}
-
 export function isMobileDevice() {
   return window.navigator.userAgent.toLowerCase().includes('mobile');
 }

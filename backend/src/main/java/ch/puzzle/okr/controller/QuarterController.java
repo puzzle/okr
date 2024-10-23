@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/quarters")
+@RequestMapping("api/v2/quarters")
 public class QuarterController {
 
     private final QuarterBusinessService quarterBusinessService;
@@ -28,9 +28,17 @@ public class QuarterController {
 
     @Operation(summary = "Get quarters", description = "Get a List of quarters depending on current date")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned a List of quarters", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class)) }) })
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getQuarters());
+    }
+
+    @Operation(summary = "Get current quarter", description = "Get the current quarter depending on current date")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned the current quarter", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class)) }) })
+    @GetMapping("/current")
+    public ResponseEntity<Quarter> getCurrentQuarter() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getCurrentQuarter());
     }
 }

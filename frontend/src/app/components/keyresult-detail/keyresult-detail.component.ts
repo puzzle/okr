@@ -4,6 +4,7 @@ import { KeyresultService } from '../../services/keyresult.service';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../check-in-history-dialog/check-in-history-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../../services/refresh-data.service';

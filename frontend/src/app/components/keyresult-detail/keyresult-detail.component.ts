@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { KeyresultService } from '../../services/keyresult.service';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { CloseState } from '../../shared/types/enums/CloseState';
@@ -22,10 +22,11 @@ import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confi
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultDetailComponent implements OnInit {
+export class KeyresultDetailComponent implements OnInit, OnDestroy {
   @Input() keyResultId!: number;
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
+  ngDestroy$: Subject<void> = new Subject();
   isComplete: boolean = false;
   protected readonly DATE_FORMAT = DATE_FORMAT;
   protected readonly isLastCheckInNegative = isLastCheckInNegative;
@@ -41,6 +42,14 @@ export class KeyresultDetailComponent implements OnInit {
   ngOnInit(): void {
     this.keyResultId = this.getIdFromParams();
     this.loadKeyResult(this.keyResultId);
+    this.refreshDataService.reloadKeyResultSubject.pipe(takeUntil(this.ngDestroy$)).subscribe(() => {
+      this.loadKeyResult(this.keyResultId);
+    });
+  }
+
+  ngOnDestroy() {
+    this.ngDestroy$.next();
+    this.ngDestroy$.complete();
   }
 
   private getIdFromParams(): number {
@@ -181,7 +190,7 @@ export class KeyresultDetailComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadKeyResult(this.keyResult$.getValue().id);
+      this.refreshDataService.reloadKeyResultSubject.next();
       this.refreshDataService.markDataRefresh();
     });
   }

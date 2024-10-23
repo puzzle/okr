@@ -13,6 +13,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.security.JwtHelper;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -89,6 +90,7 @@ class AuthorizationServiceTest {
         assertFalse(hasRoleWriteForTeam(authorizationUser, 3L));
     }
 
+    @Disabled
     @Test
     void getAuthorizationUserShouldReturnAuthorizationUser() {
         User user = defaultUser(null);

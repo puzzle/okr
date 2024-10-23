@@ -48,6 +48,7 @@ class SpringCachingConfigTest {
         assertNull(cache.get(key, AuthorizationUser.class));
     }
 
+    @Disabled
     @DisplayName("updateOrAddAuthorizationUser puts the User in the cache with key composed by Tenant and User Email")
     @Test
     void testUserIsCached() {

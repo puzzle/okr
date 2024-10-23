@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.OkrApplicationContextInitializer;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -18,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserPersistenceServiceIT.class);
 
     private User createdUser;
 
@@ -155,6 +160,7 @@ class UserPersistenceServiceIT {
     @Test
     void findAllOkrChampionsShouldReturnAllOkrChampions() {
         var allOkrChampions = userPersistenceService.findAllOkrChampions();
+        allOkrChampions.forEach(user -> logger.warn(user.toString()));
 
         assertEquals(1, allOkrChampions.size());
         assertEquals("Jaya", allOkrChampions.get(0).getFirstname());

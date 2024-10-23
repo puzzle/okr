@@ -16,6 +16,7 @@ import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.c
 import { TranslateService } from '@ngx-translate/core';
 import { GJ_REGEX_PATTERN } from '../../shared/constantLibary';
 import { DialogService } from '../../services/dialog.service';
+import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/objective-menu-actions.service';
 
 @Component({
   selector: 'app-objective-column',
@@ -26,10 +27,7 @@ import { DialogService } from '../../services/dialog.service';
 export class ObjectiveComponent implements OnInit {
   @Input()
   isWritable!: boolean;
-
-  menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
-  isBacklogQuarter: boolean = false;
   protected readonly trackByFn = trackByFn;
   @ViewChild('menuButton') private menuButton!: ElementRef;
 
@@ -39,6 +37,7 @@ export class ObjectiveComponent implements OnInit {
     private refreshDataService: RefreshDataService,
     private objectiveService: ObjectiveService,
     private translate: TranslateService,
+    private objectiveMenuActionsService: ObjectiveMenuActionsService,
   ) {}
 
   @Input()
@@ -48,14 +47,7 @@ export class ObjectiveComponent implements OnInit {
 
   public objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
-  ngOnInit() {
-    if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
-      this.isComplete = true;
-    }
-    if (!GJ_REGEX_PATTERN.test(this.objective$.value.quarter.label)) {
-      this.isBacklogQuarter = true;
-    }
-  }
+  ngOnInit() {}
 
   formatObjectiveState(state: string): string {
     const lastIndex = state.lastIndexOf('-');
@@ -70,107 +62,43 @@ export class ObjectiveComponent implements OnInit {
     return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP');
   }
 
-  getMenu(): void {
-    if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
-      this.menuEntries = this.getCompletedMenuActions();
-    } else {
-      if (this.objective$.value.state === State.ONGOING) {
-        this.menuEntries = this.getOngoingMenuActions();
-      } else {
-        this.menuEntries = this.getDraftMenuActions();
-      }
+  isObjectiveComplete(objective: ObjectiveMin): boolean {
+    return objective.state == State.SUCCESSFUL || objective.state == State.NOTSUCCESSFUL;
+  }
+
+  getMenu(objective: ObjectiveMin): ObjectiveMenuEntry[] {
+    if (this.isObjectiveComplete(objective)) {
+      return this.objectiveMenuActionsService.getCompletedMenuActions(objective);
+    } else if (objective.state === State.ONGOING) {
+      return this.objectiveMenuActionsService.getOngoingMenuActions(objective);
+    } else if (objective.state === State.DRAFT) {
+      return this.objectiveMenuActionsService.getDraftMenuActions(objective);
     }
+    //Probably throw an error here
+    return [];
   }
 
-  getOngoingMenuActions() {
-    return [
-      ...this.getDefaultMenuActions(),
-      ...[
-        {
-          displayName: 'Objective abschliessen',
-          action: 'complete',
-          dialog: { dialog: CompleteDialogComponent, data: { objectiveTitle: this.objective$.value.title } },
-        },
-        {
-          displayName: 'Objective als Draft speichern',
-          action: 'todraft',
-          dialog: {
-            dialog: ConfirmDialogComponent,
-            data: {
-              title: this.translate.instant('CONFIRMATION.TO_DRAFT.TITLE'),
-              text: this.translate.instant('CONFIRMATION.TO_DRAFT.TEXT'),
-            },
-          },
-        },
-      ],
-    ];
-  }
-
-  getDraftMenuActions() {
-    const action = this.isBacklogQuarter ? 'releaseBacklog' : 'release';
-    let menuEntries = {
-      displayName: 'Objective veröffentlichen',
-      action: action,
-      dialog: {
-        dialog: this.isBacklogQuarter ? ObjectiveFormComponent : ConfirmDialogComponent,
-        data: {
-          title: this.translate.instant('CONFIRMATION.RELEASE.TITLE'),
-          text: this.translate.instant('CONFIRMATION.RELEASE.TEXT'),
-          action: action,
-          objectiveId: this.isBacklogQuarter ? this.objective$.value.id : undefined,
-        },
-      },
-    };
-
-    return [...this.getDefaultMenuActions(), menuEntries];
-  }
-
-  getDefaultMenuActions() {
-    return [
-      {
-        displayName: 'Objective bearbeiten',
-        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
-      },
-      {
-        displayName: 'Objective duplizieren',
-        action: 'duplicate',
-        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
-      },
-    ];
-  }
-
-  getCompletedMenuActions() {
-    return [
-      { displayName: 'Objective wiedereröffnen', action: 'reopen' },
-      {
-        displayName: 'Objective duplizieren',
-        action: 'duplicate',
-        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
-      },
-    ];
-  }
-
-  redirect(menuEntry: MenuEntry) {
-    if (menuEntry.dialog) {
-      const matDialogRef = this.dialogService.open(menuEntry.dialog.dialog, {
-        data: {
-          title: menuEntry.dialog.data.title,
-          action: menuEntry.action,
-          text: menuEntry.dialog.data.text,
-          objective: menuEntry.dialog.data,
-          objectiveTitle: menuEntry.dialog.data.objectiveTitle,
-        },
-        ...((menuEntry.action == 'release' || menuEntry.action == 'todraft') && { width: 'auto' }),
-      });
-      matDialogRef.afterClosed().subscribe((result) => {
-        this.menuButton.nativeElement.focus();
-        if (result) {
-          this.handleDialogResult(menuEntry, result);
-        }
-      });
-    } else {
-      this.reopenRedirect(menuEntry);
-    }
+  redirect(menuEntry: ObjectiveMenuEntry) {
+    // if (menuEntry.dialog) {
+    //   const matDialogRef = this.dialogService.open(menuEntry.dialog.dialog, {
+    //     data: {
+    //       title: menuEntry.dialog.data.title,
+    //       action: menuEntry.action,
+    //       text: menuEntry.action,
+    //       objective: menuEntry.dialog.data,
+    //       objectiveTitle: menuEntry.dialog.data.objectiveTitle,
+    //     },
+    //     ...((menuEntry.action == 'release' || menuEntry.action == 'todraft') && { width: 'auto' }),
+    //   });
+    //   matDialogRef.afterClosed().subscribe((result) => {
+    //     this.menuButton.nativeElement.focus();
+    //     if (result) {
+    //       this.handleDialogResult(menuEntry, result);
+    //     }
+    //   });
+    // } else {
+    //   this.reopenRedirect(menuEntry);
+    // }
   }
 
   handleDialogResult(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
@@ -241,8 +169,8 @@ export class ObjectiveComponent implements OnInit {
     }
   }
 
-  openObjectiveDetail() {
-    this.router.navigate(['details/objective', this.objective$.value.id]);
+  openObjectiveDetail(objectiveId: number) {
+    this.router.navigate(['details/objective', objectiveId]);
   }
 
   openAddKeyResultDialog() {

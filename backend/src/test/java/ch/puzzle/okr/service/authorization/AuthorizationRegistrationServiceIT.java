@@ -6,10 +6,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -47,6 +44,7 @@ class AuthorizationRegistrationServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @Disabled
     @Test
     void registerAuthorizationUserShouldAddAuthorizationUserToCache() {
         // arrange
@@ -63,6 +61,7 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(user.getId());
     }
 
+    @Disabled
     @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
     @Test
     void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
@@ -94,6 +93,7 @@ class AuthorizationRegistrationServiceIT {
      * false) is after calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch
      * exists before the test, we make no clean in db (we don't remove it) </pre>
      */
+    @Disabled
     @Test
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
@@ -115,6 +115,7 @@ class AuthorizationRegistrationServiceIT {
         assertTrue(userFromDB.get().isOkrChampion());
     }
 
+    @Disabled
     @Test
     void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
         // arrange

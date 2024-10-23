@@ -82,9 +82,9 @@
         </div>
 
         <section *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
-          <h2 class="sub-title-keyresult-detail fw-bold mb-1">
+          <h4 class="sub-title-keyresult-detail fw-bold mb-1">
             Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})
-          </h2>
+          </h4>
           <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
           <span class="d-flex justify-content-start">
             <button

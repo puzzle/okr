@@ -6,15 +6,12 @@ import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/comple
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
 
-export type ObjectiveMenuAction = {
-  (): MatDialogRef<any>;
-  (arg1: any): MatDialogRef<any>;
-  (arg1: any, arg2: any): MatDialogRef<any>;
-};
+export type ObjectiveMenuAction = () => MatDialogRef<any>;
 
 export interface ObjectiveMenuEntry {
   displayName: string;
   action: ObjectiveMenuAction;
+  afterAction?: (arg1: any, arg2: any) => any;
 }
 
 @Injectable({
@@ -53,7 +50,7 @@ export class ObjectiveMenuActionsService {
 
   releaseFromDraftInBacklogAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { action: 'releaseBacklog', objectiveId: objective } };
-    const action = () => this.dialogService.open(ObjectiveFormComponent, config);
+    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
     return { displayName: 'Objective veröffentlichen', action: action };
   }
 
@@ -79,7 +76,7 @@ export class ObjectiveMenuActionsService {
 
   private saveObjectiveAsDraftAction(): ObjectiveMenuEntry {
     const action = () => this.dialogService.openConfirmDialog('CONFIRMATION.DRAFT_CREATE');
-    return { displayName: 'Objective als Draft speichern', action: action };
+    return { displayName: 'Objective als Draft speicherns', action: action };
   }
 
   getCompletedMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

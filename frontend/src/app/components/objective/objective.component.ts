@@ -22,7 +22,6 @@ import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/
   selector: 'app-objective-column',
   templateUrl: './objective.component.html',
   styleUrls: ['./objective.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveComponent implements OnInit {
   @Input()
@@ -67,6 +66,7 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getMenu(objective: ObjectiveMin): ObjectiveMenuEntry[] {
+    console.log('get');
     if (this.isObjectiveComplete(objective)) {
       return this.objectiveMenuActionsService.getCompletedMenuActions(objective);
     } else if (objective.state === State.ONGOING) {
@@ -79,26 +79,9 @@ export class ObjectiveComponent implements OnInit {
   }
 
   redirect(menuEntry: ObjectiveMenuEntry) {
-    // if (menuEntry.dialog) {
-    //   const matDialogRef = this.dialogService.open(menuEntry.dialog.dialog, {
-    //     data: {
-    //       title: menuEntry.dialog.data.title,
-    //       action: menuEntry.action,
-    //       text: menuEntry.action,
-    //       objective: menuEntry.dialog.data,
-    //       objectiveTitle: menuEntry.dialog.data.objectiveTitle,
-    //     },
-    //     ...((menuEntry.action == 'release' || menuEntry.action == 'todraft') && { width: 'auto' }),
-    //   });
-    //   matDialogRef.afterClosed().subscribe((result) => {
-    //     this.menuButton.nativeElement.focus();
-    //     if (result) {
-    //       this.handleDialogResult(menuEntry, result);
-    //     }
-    //   });
-    // } else {
-    //   this.reopenRedirect(menuEntry);
-    // }
+    console.log('test');
+    console.log(menuEntry.action);
+    const matDialogRef = menuEntry.action();
   }
 
   handleDialogResult(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
@@ -189,4 +172,6 @@ export class ObjectiveComponent implements OnInit {
         this.refreshDataService.markDataRefresh();
       });
   }
+
+  protected readonly console = console;
 }

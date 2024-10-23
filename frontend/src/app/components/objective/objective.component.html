@@ -70,13 +70,13 @@
     yPosition="below"
   >
     <button
-      (click)="redirect(menuEntry)"
+      (click)="$event.stopPropagation(); console.log('menuEntry', menuEntry)"
       *ngFor="let menuEntry of getMenu(objective)"
       [attr.data-testId]="'objective-menu'"
       class="objective-menu-option"
       mat-menu-item
     >
-      {{ menuEntry.displayName }}
+      {{ menuEntry.displayName }}123
     </button>
   </mat-menu>
 </div>

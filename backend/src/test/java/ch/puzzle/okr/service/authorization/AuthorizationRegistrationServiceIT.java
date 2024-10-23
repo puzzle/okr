@@ -44,7 +44,6 @@ class AuthorizationRegistrationServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @Disabled
     @Test
     void registerAuthorizationUserShouldAddAuthorizationUserToCache() {
         // arrange
@@ -61,7 +60,6 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(user.getId());
     }
 
-    @Disabled
     @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
     @Test
     void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
@@ -115,7 +113,6 @@ class AuthorizationRegistrationServiceIT {
         assertTrue(userFromDB.get().isOkrChampion());
     }
 
-    @Disabled
     @Test
     void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
         // arrange

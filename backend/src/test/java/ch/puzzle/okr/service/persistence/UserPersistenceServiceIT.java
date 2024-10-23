@@ -159,7 +159,19 @@ class UserPersistenceServiceIT {
     @DisplayName("findAllOkrChampions() should return all okr champions")
     @Test
     void findAllOkrChampionsShouldReturnAllOkrChampions() {
+        var allUsers = userPersistenceService.findAll();
+        logger.warn("*** ALL USERS");
+        allUsers.forEach(user -> {
+            logger.warn(user.toString());
+        });
+
+        logger.warn("*** ALL OKR CHAMPIONS V1");
+        allUsers.stream().filter(user -> user.isOkrChampion()).toList().forEach(champion -> {
+            logger.warn(champion.toString());
+        });
+
         var allOkrChampions = userPersistenceService.findAllOkrChampions();
+        logger.warn("*** ALL OKR CHAMPIONS V2");
         allOkrChampions.forEach(user -> logger.warn(user.toString()));
 
         assertEquals(1, allOkrChampions.size());

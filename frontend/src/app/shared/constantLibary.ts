@@ -1,8 +1,6 @@
 import { HttpType } from './types/enums/HttpType';
 import { ToasterType } from './types/enums/ToasterType';
 import { HttpStatusCode } from '@angular/common/http';
-import { MatDialogConfig } from '@angular/material/dialog';
-import { isMobileDevice } from './common';
 
 interface MessageKeyMap {
   [key: string]: {
@@ -78,15 +76,3 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
     methods: [{ method: HttpType.PUT }, { method: HttpType.POST }, { method: HttpType.DELETE }],
   },
 };
-
-export const OKR_DIALOG_CONFIG: MatDialogConfig = isMobileDevice()
-  ? {
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      height: '100vh',
-      width: '100vw',
-    }
-  : {
-      width: '45em',
-      height: 'auto',
-    };

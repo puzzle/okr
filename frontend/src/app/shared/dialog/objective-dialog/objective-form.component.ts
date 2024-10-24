@@ -6,15 +6,15 @@ import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
 import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
+import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors } from '../../common';
 import { ActivatedRoute } from '@angular/router';
-import { CONFIRM_DIALOG_WIDTH, GJ_REGEX_PATTERN } from '../../constantLibary';
+import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -47,7 +47,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       action: string;
@@ -130,26 +130,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   deleteObjective() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: CONFIRM_DIALOG_WIDTH,
-          height: 'auto',
-        };
-    const dialog = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Objective',
-      },
-      width: dialogConfig.width,
-      height: dialogConfig.height,
-      maxHeight: dialogConfig.maxHeight,
-      maxWidth: dialogConfig.maxWidth,
-    });
+    const dialog = this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
     dialog.afterClosed().subscribe((result) => {
       if (result) {
         this.objectiveService.deleteObjective(this.data.objective.objectiveId!).subscribe({

@@ -2,7 +2,7 @@ import { AddEditTeamDialog } from './add-edit-team-dialog.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,12 +18,13 @@ import { of } from 'rxjs';
 import { marketingTeamWriteable, teamFormObject } from '../../shared/testData';
 import { Team } from '../../shared/types/model/Team';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../services/dialog.service';
 
 const dialogRefMock = {
   close: jest.fn(),
 };
 
-const dialogMock = {
+const dialogServiceMock = {
   open: jest.fn(),
 };
 
@@ -55,8 +56,8 @@ describe('TeamManagementComponent', () => {
       declarations: [AddEditTeamDialog, DialogHeaderComponent],
       providers: [
         {
-          provide: MatDialog,
-          useValue: dialogMock,
+          provide: DialogService,
+          useValue: dialogServiceMock,
         },
         {
           provide: MatDialogRef,

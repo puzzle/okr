@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { isMobileDevice } from '../../common';
 import { ConfigService } from '../../../services/config.service';
-import { BehaviorSubject, map, Observable, Subject, Subscription } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-okr-tangram',

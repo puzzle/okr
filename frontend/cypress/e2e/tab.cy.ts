@@ -124,6 +124,7 @@ describe('Tab workflow tests', () => {
       cy.loginAsUser(users.gl);
       onlyOn('chrome');
       cy.tabForward();
+      cy.tabForward();
     });
 
     // Header from here

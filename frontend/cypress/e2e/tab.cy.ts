@@ -123,7 +123,7 @@ describe('Tab workflow tests', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
       onlyOn('chrome');
-      cy.tabForward();
+      cy.tabForwardUntil('[data-testId="team-management"]');
     });
 
     // Header from here

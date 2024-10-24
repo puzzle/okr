@@ -1,16 +1,14 @@
 <div class="d-flex flex-column">
   <div class="scoring-container d-flex flex-row">
     <div class="flex-fill">
-      <div>
-        <span class="okr-score-label">
-          <span class="text-center text-small">Fail</span>
-        </span>
-        <span class="okr-score-label okr-score-commit">
-          <span class="text-center text-small">Commit</span>
-        </span>
-        <span class="okr-score-label">
-          <span class="text-center text-small">Target</span>
-        </span>
+      <div class="okr-score-label">
+        <h5 class="text-center text-small">Fail</h5>
+      </div>
+      <div class="okr-score-label okr-score-commit">
+        <h5 class="text-center text-small">Commit</h5>
+      </div>
+      <div class="okr-score-label">
+        <h5 class="text-center text-small">Target</h5>
       </div>
       <div
         [ngStyle]="{ display: stretched ? 'none' : 'flex' }"

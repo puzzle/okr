@@ -1,6 +1,5 @@
 <section mat-dialog-title>
-  <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen'"></app-dialog-header>
-  <app-dialog-header *ngIf="this.checkIn.id" [dialogTitle]="'Check-in bearbeiten'"></app-dialog-header>
+  <app-dialog-header [dialogTitle]="checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen'"></app-dialog-header>
 </section>
 
 <mat-dialog-content>
@@ -10,12 +9,12 @@
   >
     <form [formGroup]="dialogForm" class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex mb-3 gap-2 col-12 flex-column">
-        <p class="fs-6 text-black">Key Result</p>
+        <h4 class="fs-6 text-black">Key Result</h4>
         <p class="linebreak bg-display-element py-2 ps-2 fw-normal text-black">{{ keyResult.title }}</p>
       </div>
       <div *ngIf="getActions()?.length != 0" class="input-style gap-1">
-        <label class="text-black mb-1">Action Plan:</label>
-        <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
+        <h4 class="text-black mb-1">Action Plan:</h4>
+        <div *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
           <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
           <span
             class="action-list-item w-100 break-word"
@@ -23,11 +22,11 @@
           >
             {{ action.action }}
           </span>
-        </span>
+        </div>
       </div>
 
       <div class="input-style gap-2 col-12">
-        <label class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
+        <h4 class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional):</h4>
         <textarea
           [attr.data-testId]="'changeInfo'"
           [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
@@ -53,7 +52,7 @@
       ></app-check-in-form-ordinal>
 
       <div class="input-style gap-2 col-12">
-        <label class="text-black">Massnahmen (optional):</label>
+        <h4 class="text-black">Massnahmen (optional):</h4>
         <textarea
           [attr.data-testId]="'initiatives'"
           [ngClass]="formInputCheck(dialogForm, 'initiatives')"
@@ -66,13 +65,13 @@
       </div>
 
       <div class="d-flex flex-column justify-content-start gap-2 col-12">
-        <label class="text-black confidence-label"
-          >Confidence um Target Zone
+        <h4 class="text-black confidence-label">
+          Confidence um Target Zone
           <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
             ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
           </span>
           zu erreichen:
-        </label>
+        </h4>
         <app-confidence [checkIn]="checkIn" [edit]="true" class="w-100"></app-confidence>
       </div>
     </form>

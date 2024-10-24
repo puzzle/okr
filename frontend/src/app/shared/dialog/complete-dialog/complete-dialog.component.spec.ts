@@ -45,7 +45,7 @@ describe('CompleteDialogComponent', () => {
     let elements = document.querySelectorAll('.valuation-card');
     let successful = document.querySelectorAll('.card-hover-successful');
     let notSuccessful = document.querySelectorAll('.card-hover-not-successful');
-    let submitButton = document.querySelectorAll('button')[1];
+    const submitButton = document.querySelector('[data-testId="submit"]');
 
     expect(elements.length).toEqual(2);
     expect(successful.length).toEqual(1);
@@ -53,18 +53,18 @@ describe('CompleteDialogComponent', () => {
     expect(component.completeForm.value.isSuccessful).toBeNull();
     expect(component.completeForm.value.comment).toBeNull();
     expect(component.completeForm.invalid).toBeTruthy();
-    expect(submitButton.disabled).toBeTruthy();
+    expect(submitButton!.hasAttribute('disabled')).toBeTruthy();
   });
 
   it('should change isSuccessful value on card click and remove class card-hover', () => {
     component.switchSuccessState('successful');
     let elements = document.querySelectorAll('.card-hover');
-    let submitButton = document.querySelectorAll('button')[1];
+    const submitButton = document.querySelector('[data-testId="submit"]');
 
     expect(component.completeForm.value.isSuccessful).toBeTruthy();
     expect(component.completeForm.invalid).toBeFalsy();
     expect(elements.length).toEqual(0);
-    expect(submitButton.disabled).toBeTruthy();
+    expect(submitButton!.hasAttribute('disabled')).toBeTruthy();
 
     component.completeForm.patchValue({ isSuccessful: null });
     component.switchSuccessState('notSuccessful');

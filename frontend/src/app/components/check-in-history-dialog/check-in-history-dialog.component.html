@@ -7,7 +7,7 @@
     <ng-container
       *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
     >
-      <div
+      <section
         *ngFor="let checkIn of checkInHistory; index as i"
         class="d-flex flex-column dialog-form-fields p-2 check-in-box"
       >
@@ -47,7 +47,7 @@
           <span class="label-width"><i>Massnahmen: </i></span>
           <span class="value-width linebreak">{{ checkIn.initiatives }}</span>
         </div>
-      </div>
+      </section>
     </ng-container>
   </div>
   <button class="close-button" mat-flat-button color="primary" mat-dialog-close>Schliessen</button>

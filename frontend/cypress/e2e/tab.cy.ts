@@ -226,8 +226,7 @@ describe('Tab workflow tests', () => {
       editInputFields('Duplicated by Cypress');
       cy.tabForward();
       cy.tabForward();
-      cy.focused().contains('GJ');
-      cy.realPress('ArrowDown');
+      cy.focused().contains('Aktuell');
       cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');

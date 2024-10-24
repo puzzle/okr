@@ -12,14 +12,17 @@
     </mat-chip>
   </button>
   <button
-    matTooltipPosition="above"
-    [matTooltip]="team.name"
     (click)="toggleSelection(team.id)"
     *ngFor="let team of (teams$ | async)?.slice(0, showMoreTeams ? undefined : 6); trackBy: trackByFn"
     [attr.data-testId]="'team-filter-chip'"
+    [matTooltip]="team.name"
+    matTooltipPosition="above"
     class="icon-button focus-outline m-1"
   >
-    <mat-chip [highlighted]="activeTeams.includes(team.id)" color="primary">{{ getTeamName(team.id) }}</mat-chip>
+    <mat-chip [highlighted]="activeTeams.includes(team.id)" color="primary">
+      <p class="d-sm-none d-block">{{ getTeamName(team.id) }}</p>
+      <p class="d-none d-sm-block">{{ team.name }}</p>
+    </mat-chip>
   </button>
   <button
     (click)="showMoreTeams = !showMoreTeams"

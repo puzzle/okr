@@ -46,23 +46,25 @@ class AuthorizationRegistrationServiceIT {
 
     @AfterEach
     void tearDown() {
-        resetOkrChamptionStatus(userWithNoOkrChampionInfo);
+        resetOkrChampionStatus(userWithNoOkrChampionInfo);
         clearCache();
         TenantContext.setCurrentTenant(null);
+    }
+
+    private void resetOkrChampionStatus(User user) {
+        // var userFromDb = userPersistenceService.getOrCreateUser(user);
+        Optional<User> userFromDb = userPersistenceService.findByEmail(user.getEmail());
+        assertTrue(userFromDb.isPresent());
+
+        userFromDb.get().setOkrChampion(false);
+        userPersistenceService.save(userFromDb.get());
+        assertOkrChampionStatusInDb(user.getEmail(), false);
     }
 
     private void clearCache() {
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
         assertNotNull(cache);
         cache.clear();
-    }
-
-    private void resetOkrChamptionStatus(User user) {
-        // user.setOkrChampion(false);
-        var userFromDb = userPersistenceService.getOrCreateUser(user);
-        userFromDb.setOkrChampion(false);
-        userPersistenceService.save(userFromDb);
-        assertOkrChampionStatusInDb(user.getEmail(), false);
     }
 
     private void assertOkrChampionStatusInDb(String email, boolean expectedOkrChampionStatus) {

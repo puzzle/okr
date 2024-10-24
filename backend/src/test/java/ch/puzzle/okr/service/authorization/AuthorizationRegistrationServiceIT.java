@@ -106,6 +106,8 @@ class AuthorizationRegistrationServiceIT {
         // assert
         assertFalse(processedUser.user().isOkrChampion());
         Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+
+        assertTrue(userFromDB.isPresent());
         assertFalse(userFromDB.get().isOkrChampion());
 
         // cleanup
@@ -119,16 +121,15 @@ class AuthorizationRegistrationServiceIT {
      * false) is after calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch
      * exists before the test, we make no clean in db (we don't remove it) </pre>
      */
-    // @Disabled
     @Test
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
         // arrange
-        var userFromDb = userPersistenceService.getOrCreateUser(userWithNoOkrChampionInfo); // ensure user exists
-        assertFalse(userFromDb.isOkrChampion()); // pre-condition
+        assertOkrChampionStatusInDb(userWithNoOkrChampionInfo.getEmail(), false); // pre-condition
 
         // act
-        // load user from db and set OkrChampion status based on property "okr.tenants.pitc.user.champion.emails"
+        // load user from db (by email) and set OkrChampion status based on property
+        // "okr.tenants.pitc.user.champion.emails"
         // from application-integration-test.properties file
         AuthorizationUser processedUser = authorizationRegistrationService
                 .updateOrAddAuthorizationUser(userWithNoOkrChampionInfo);
@@ -136,11 +137,6 @@ class AuthorizationRegistrationServiceIT {
         // assert
         assertTrue(processedUser.user().isOkrChampion());
         assertOkrChampionStatusInDb(processedUser.user().getEmail(), true);
-
-        /*
-         * Optional<User> updatedUserFromDB = userPersistenceService.findByEmail(userWithNoOkrChampionInfo.getEmail());
-         * assertTrue(updatedUserFromDB.isPresent()); assertTrue(updatedUserFromDB.get().isOkrChampion());
-         */
     }
 
     @Test
@@ -166,6 +162,7 @@ class AuthorizationRegistrationServiceIT {
 
         // assert
         Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+        assertTrue(userFromDB.isPresent());
         assertEquals(userFromDB.get().getFirstname(), firstNameFromToken);
         assertEquals(userFromDB.get().getLastname(), lastNameFromToken);
 

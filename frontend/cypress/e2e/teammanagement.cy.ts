@@ -149,6 +149,10 @@ describe('Team management tests', () => {
         const firstNameStefan = uniqueSuffix('Stefan');
 
         cy.getByTestId('invite-member').click();
+        cy.wait(1000); // wait for dialog to open
+        cy.tabForward();
+        cy.contains('Members registrieren');
+
         fillOutNewUser(firstNameClaudia, 'Meier', mailUserClaudia);
         cy.tabForward();
         cy.tabForward();

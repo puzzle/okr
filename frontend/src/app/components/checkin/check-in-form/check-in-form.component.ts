@@ -120,4 +120,8 @@ export class CheckInFormComponent implements OnInit {
     actions[index] = { ...actions[index], isChecked: event.checked };
     this.dialogForm.patchValue({ actionList: actions });
   }
+
+  getDialogTitle(): string {
+    return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
+  }
 }

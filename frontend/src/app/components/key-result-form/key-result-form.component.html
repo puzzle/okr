@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center p-2 ps-0">
   <form [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="input-style gap-2 col-12">
-      <label class="text-black" for="title">Titel</label>
+      <h4 class="text-black" for="title">Titel</h4>
       <textarea
         [attr.data-testId]="'titleInput'"
         class="big-dialog-form-field"
@@ -23,7 +23,7 @@
     </div>
 
     <div class="input-style gap-2 col-12">
-      <label class="text-black">Owner</label>
+      <h4 class="text-black">Owner</h4>
       <input
         (keydown.enter)="$event.preventDefault()"
         [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
@@ -44,7 +44,7 @@
     </div>
 
     <div class="input-style gap-2 col-12">
-      <label for="description" class="text-black">Beschreibung (optional)</label>
+      <h4 for="description" class="text-black">Beschreibung (optional)</h4>
       <textarea
         [attr.data-testId]="'descriptionInput'"
         class="big-dialog-form-field"

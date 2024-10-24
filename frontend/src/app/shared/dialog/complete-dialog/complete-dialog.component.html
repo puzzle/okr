@@ -5,13 +5,13 @@
 <mat-dialog-content>
   <div class="dialog-content">
     <div class="input-style gap-2 col-12">
-      <p class="fs-6 text-black">Objective</p>
+      <h4 class="fs-6 text-black">Objective</h4>
       <p class="linebreak bg-display-element py-2 ps-2 fs-6 fw-normal text-black">{{ data.objectiveTitle }}</p>
     </div>
 
     <form [formGroup]="completeForm">
       <div class="input-style gap-2 col-12">
-        <p class="text-black">Bewertung</p>
+        <h4 class="text-black">Bewertung</h4>
         <div class="d-flex gap-3">
           <button
             class="successful w-50 valuation-card card-hover-successful"
@@ -43,7 +43,7 @@
       </div>
 
       <div class="input-style gap-2 col-12">
-        <label for="comment" class="text-black">Kommentar (optional)</label>
+        <h4 for="comment" class="text-black">Kommentar (optional)</h4>
         <textarea
           class="big-dialog-form-field"
           formControlName="comment"

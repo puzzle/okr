@@ -1,13 +1,14 @@
 <form class="d-flex search-form" (ngSubmit)="this.refresh.next()">
   <mat-form-field
     id="objective-form-field"
-    class="bg-white header-form-field"
+    class="bg-white header-form-field w-100"
     ngDefaultControl
     subscriptSizing="dynamic"
     [appearance]="'outline'"
   >
     <input
       matInput
+      class="w-100"
       [type]="'text'"
       [placeholder]="'Nach Objectives suchen'"
       [(ngModel)]="query"

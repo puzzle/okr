@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { TeamService } from '../../services/team.service';
@@ -19,6 +19,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   protected readonly trackByFn = trackByFn;
   private unsubscribe$ = new Subject<void>();
   private subscription?: Subscription;
+
+  @Input('showMoreTeams')
+  showMoreTeams = true;
 
   constructor(
     private teamService: TeamService,
@@ -96,5 +99,13 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   getAllTeamIds() {
     return this.teams$.getValue().map((team) => team.id);
+  }
+
+  getTeamName(id: number): string {
+    let teamName = this.teams$.getValue().find((team) => team.id === id)?.name;
+    if (teamName && teamName.length > 10) {
+      teamName = teamName.substring(0, 10) + '...';
+    }
+    return teamName ?? 'no team name';
   }
 }

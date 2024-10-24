@@ -1,11 +1,13 @@
-<mat-form-field appearance="outline" class="bg-white header-form-field quarter-filter" subscriptSizing="dynamic">
+<mat-form-field appearance="outline" class="bg-white header-form-field quarter-filter w-100" subscriptSizing="dynamic">
   <mat-select
-    [(ngModel)]="quarterId"
     (ngModelChange)="changeDisplayedQuarter()"
-    ngDefaultControl
+    [(ngModel)]="quarterId"
     [attr.data-testId]="'quarterFilter'"
+    [panelClass]="'custom-select-panel'"
+    class="w-100"
+    ngDefaultControl
   >
-    <mat-option *ngFor="let quarter of quarters | async; let i = index" [value]="quarter.id">
+    <mat-option *ngFor="let quarter of quarters | async; let i = index" [value]="quarter.id" class="w-100">
       {{ getQuarterLabel(quarter, i) }}
     </mat-option>
   </mat-select>

@@ -33,12 +33,6 @@ class AuthorizationRegistrationServiceIT {
 
     private static final String EMAIL_WUNDERLAND = "wunderland@puzzle.ch";
 
-    private final User userWithNoOkrChampionInfo = User.Builder.builder() //
-            .withFirstname("Alice") //
-            .withLastname("Wunderland") //
-            .withEmail(EMAIL_WUNDERLAND) // user.champion.emails from application-integration-test.properties
-            .build();
-
     @BeforeEach
     void setUp() {
         TenantContext.setCurrentTenant(tenant);
@@ -46,13 +40,13 @@ class AuthorizationRegistrationServiceIT {
 
     @AfterEach
     void tearDown() {
-        resetOkrChampionStatus(userWithNoOkrChampionInfo.getEmail());
+        resetOkrChampionStatus();
         clearCache();
         TenantContext.setCurrentTenant(null);
     }
 
-    private void resetOkrChampionStatus(String email) {
-        Optional<User> userFromDb = userPersistenceService.findByEmail(email);
+    private void resetOkrChampionStatus() {
+        Optional<User> userFromDb = userPersistenceService.findByEmail(EMAIL_WUNDERLAND);
         assertTrue(userFromDb.isPresent());
 
         userFromDb.get().setOkrChampion(false);
@@ -116,23 +110,27 @@ class AuthorizationRegistrationServiceIT {
 
     /*
      * Special test setup. <pre> - the user wunderland@puzzle.ch is an existing user in the H2 db (created via
-     * X_TestData.sql) - the user wunderland@puzzle.ch is also defined in application-integration-test.properties as
-     * user champion - with this combination we can test, that the user in the db (which has initial isOkrChampion ==
-     * false) is after calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch
-     * exists before the test, we make no clean in db (we don't remove it) </pre>
+     * V100_0_0__TestData.sql) - the user wunderland@puzzle.ch is also defined in
+     * application-integration-test.properties as user champion - with this combination we can test, that the user in
+     * the db (which has initial isOkrChampion == false) is after calling updateOrAddAuthorizationUser() a user
+     * champion. - the OkrChampion status must manually be reset (in the tearDown method) </pre>
      */
     @Test
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
         // arrange
-        assertOkrChampionStatusInDb(userWithNoOkrChampionInfo.getEmail(), false); // pre-condition
+        assertOkrChampionStatusInDb(EMAIL_WUNDERLAND, false); // pre-condition
 
         // act
         // load user from db (by email) and set OkrChampion status based on property
-        // "okr.tenants.pitc.user.champion.emails"
-        // from application-integration-test.properties file
+        // "okr.tenants.pitc.user.champion.emails" from application-integration-test.properties file
         AuthorizationUser processedUser = authorizationRegistrationService
-                .updateOrAddAuthorizationUser(userWithNoOkrChampionInfo);
+                .updateOrAddAuthorizationUser(User.Builder.builder() //
+                        .withFirstname("Alice") //
+                        .withLastname("Wunderland") //
+                        .withEmail(EMAIL_WUNDERLAND) // user.champion.emails from
+                                                     // application-integration-test.properties
+                        .build());
 
         // assert
         assertTrue(processedUser.user().isOkrChampion());

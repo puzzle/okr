@@ -55,10 +55,7 @@ export class ObjectiveMenuActionsService {
   }
 
   private getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    const releaseAction = isInBacklogQuarter(objective)
-      ? this.actions.releaseFromBacklogAction(objective)
-      : this.actions.releaseFromQuarterAction(objective);
-    return [releaseAction];
+    return [this.getReleaseAction(objective)];
   }
 
   private getOngoingMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
@@ -71,5 +68,11 @@ export class ObjectiveMenuActionsService {
 
   private getCompletedMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
     return [this.actions.objectiveReopen()];
+  }
+
+  private getReleaseAction(objective: ObjectiveMin): ObjectiveMenuEntry {
+    return isInBacklogQuarter(objective)
+      ? this.actions.releaseFromBacklogAction(objective)
+      : this.actions.releaseFromQuarterAction(objective);
   }
 }

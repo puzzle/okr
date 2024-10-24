@@ -6,8 +6,6 @@ import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import jakarta.persistence.EntityNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +18,6 @@ public class AuthorizationRegistrationService {
     private final TenantConfigProvider tenantConfigProvider;
 
     private final UserUpdateHelper helper = new UserUpdateHelper();
-
-    private static final Logger logger = LoggerFactory.getLogger(AuthorizationRegistrationService.class);
 
     public AuthorizationRegistrationService(UserBusinessService userBusinessService,
             TenantConfigProvider tenantConfigProvider) {
@@ -45,7 +41,6 @@ public class AuthorizationRegistrationService {
 
     // okr champion is set in application properties
     private User setOkrChampionFromProperties(User user) {
-        logger.warn("SHOULD NEVER BE CALLED 4 USER (outer): " + user);
         TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider
                 .getTenantConfigById(TenantContext.getCurrentTenant())
                 .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
@@ -56,7 +51,6 @@ public class AuthorizationRegistrationService {
     public static class UserUpdateHelper {
 
         public User setOkrChampionFromProperties(User user, TenantConfigProvider.TenantConfig tenantConfig) {
-            logger.warn("SHOULD NEVER BE CALLED 4 USER (inner): " + user);
             for (var mail : tenantConfig.okrChampionEmails()) {
                 if (mail.trim().equals(user.getEmail())) {
                     user.setOkrChampion(true);

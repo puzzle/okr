@@ -6,10 +6,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -34,6 +31,8 @@ class AuthorizationRegistrationServiceIT {
     private final String tenant = TestHelper.SCHEMA_PITC;
     private final String key = tenant + "_" + user.getEmail();
 
+    private static final String EMAIL_WUNDERLAND = "wunderland@puzzle.ch";
+
     @BeforeEach
     void setUp() {
         TenantContext.setCurrentTenant(tenant);
@@ -41,10 +40,30 @@ class AuthorizationRegistrationServiceIT {
 
     @AfterEach
     void tearDown() {
+        resetOkrChampionStatus();
+        clearCache();
+        TenantContext.setCurrentTenant(null);
+    }
+
+    private void resetOkrChampionStatus() {
+        Optional<User> userFromDb = userPersistenceService.findByEmail(EMAIL_WUNDERLAND);
+        assertTrue(userFromDb.isPresent());
+
+        userFromDb.get().setOkrChampion(false);
+        userPersistenceService.save(userFromDb.get());
+        assertOkrChampionStatusInDb(userFromDb.get().getEmail(), false);
+    }
+
+    private void clearCache() {
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
         assertNotNull(cache);
         cache.clear();
-        TenantContext.setCurrentTenant(null);
+    }
+
+    private void assertOkrChampionStatusInDb(String email, boolean expectedOkrChampionStatus) {
+        var userInDb = userPersistenceService.findByEmail(email);
+        assertTrue(userInDb.isPresent());
+        assertEquals(expectedOkrChampionStatus, userInDb.get().isOkrChampion());
     }
 
     @Test
@@ -81,6 +100,8 @@ class AuthorizationRegistrationServiceIT {
         // assert
         assertFalse(processedUser.user().isOkrChampion());
         Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+
+        assertTrue(userFromDB.isPresent());
         assertFalse(userFromDB.get().isOkrChampion());
 
         // cleanup
@@ -89,30 +110,31 @@ class AuthorizationRegistrationServiceIT {
 
     /*
      * Special test setup. <pre> - the user wunderland@puzzle.ch is an existing user in the H2 db (created via
-     * X_TestData.sql) - the user wunderland@puzzle.ch is also defined in application-integration-test.properties as
-     * user champion - with this combination we can test, that the user in the db (which has initial isOkrChampion ==
-     * false) is after calling updateOrAddAuthorizationUser() a user champion. - because the user wunderland@puzzle.ch
-     * exists before the test, we make no clean in db (we don't remove it) </pre>
+     * V100_0_0__TestData.sql) - the user wunderland@puzzle.ch is also defined in
+     * application-integration-test.properties as user champion - with this combination we can test, that the user in
+     * the db (which has initial isOkrChampion == false) is after calling updateOrAddAuthorizationUser() a user
+     * champion. - the OkrChampion status must manually be reset (in the tearDown method) </pre>
      */
     @Test
     @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
         // arrange
-        User user = User.Builder.builder() //
-                .withFirstname("Alice") //
-                .withLastname("Wunderland") //
-                .withEmail("wunderland@puzzle.ch") // user.champion.emails from application-integration-test.properties
-                .build();
-
-        userPersistenceService.getOrCreateUser(user); // updates input user with id from DB !!!
+        assertOkrChampionStatusInDb(EMAIL_WUNDERLAND, false); // pre-condition
 
         // act
-        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(user);
+        // load user from db (by email) and set OkrChampion status based on property
+        // "okr.tenants.pitc.user.champion.emails" from application-integration-test.properties file
+        AuthorizationUser processedUser = authorizationRegistrationService
+                .updateOrAddAuthorizationUser(User.Builder.builder() //
+                        .withFirstname("Alice") //
+                        .withLastname("Wunderland") //
+                        .withEmail(EMAIL_WUNDERLAND) // user.champion.emails from
+                                                     // application-integration-test.properties
+                        .build());
 
         // assert
         assertTrue(processedUser.user().isOkrChampion());
-        Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
-        assertTrue(userFromDB.get().isOkrChampion());
+        assertOkrChampionStatusInDb(processedUser.user().getEmail(), true);
     }
 
     @Test
@@ -138,6 +160,7 @@ class AuthorizationRegistrationServiceIT {
 
         // assert
         Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
+        assertTrue(userFromDB.isPresent());
         assertEquals(userFromDB.get().getFirstname(), firstNameFromToken);
         assertEquals(userFromDB.get().getLastname(), lastNameFromToken);
 

@@ -13,9 +13,10 @@ export interface ConfirmDialogData {
   providedIn: 'root',
 })
 export class DialogService {
-  DIALOG_CONFIG = {
+  DIALOG_CONFIG: MatDialogConfig = {
     panelClass: 'okr-dialog-panel',
     maxWidth: '100vw',
+    autoFocus: 'first-tabbable',
   };
 
   constructor(

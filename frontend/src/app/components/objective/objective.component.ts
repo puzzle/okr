@@ -97,8 +97,8 @@ export class ObjectiveComponent implements OnInit {
           dialog: {
             dialog: ConfirmDialogComponent,
             data: {
-              title: 'Check-in im Draft-Status',
-              text: 'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?',
+              title: this.translate.instant('CONFIRMATION.TO_DRAFT.TITLE'),
+              text: this.translate.instant('CONFIRMATION.TO_DRAFT.TEXT'),
             },
           },
         },
@@ -107,18 +107,16 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getDraftMenuActions() {
-    const releaseText = this.translate.instant('CONFIRMATION.RELEASE.TEXT');
-    const releaseBacklogText = 'releaseBacklog';
-    const dialogText = this.isBacklogQuarter ? releaseText : releaseBacklogText;
+    const action = this.isBacklogQuarter ? 'releaseBacklog' : 'release';
     let menuEntries = {
       displayName: 'Objective veröffentlichen',
-      action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+      action: action,
       dialog: {
         dialog: this.isBacklogQuarter ? ObjectiveFormComponent : ConfirmDialogComponent,
         data: {
           title: this.translate.instant('CONFIRMATION.RELEASE.TITLE'),
-          text: dialogText,
-          action: dialogText,
+          text: this.translate.instant('CONFIRMATION.RELEASE.TEXT'),
+          action: action,
           objectiveId: this.isBacklogQuarter ? this.objective$.value.id : undefined,
         },
       },
@@ -158,7 +156,7 @@ export class ObjectiveComponent implements OnInit {
         data: {
           title: menuEntry.dialog.data.title,
           action: menuEntry.action,
-          text: menuEntry.action,
+          text: menuEntry.dialog.data.text,
           objective: menuEntry.dialog.data,
           objectiveTitle: menuEntry.dialog.data.objectiveTitle,
         },

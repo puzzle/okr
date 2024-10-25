@@ -374,7 +374,7 @@ table.okr-table {
 .okr-dialog-panel {
   margin-top: $top-bar-height;
   @extend .col-12;
-  @extend .col-md-6;
+  @extend .col-md-4;
   max-height: calc(100vh - $top-bar-height);
   @include media-breakpoint-down(md) {
     height: 100%;

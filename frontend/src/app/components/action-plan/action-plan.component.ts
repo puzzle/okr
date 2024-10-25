@@ -2,11 +2,9 @@ import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Action } from '../../shared/types/model/Action';
 import { ActionService } from '../../services/action.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { BehaviorSubject } from 'rxjs';
-import { isMobileDevice, trackByFn } from '../../shared/common';
-import { CONFIRM_DIALOG_WIDTH } from '../../shared/constantLibary';
+import { trackByFn } from '../../shared/common';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-action-plan',
@@ -23,7 +21,7 @@ export class ActionPlanComponent {
 
   constructor(
     private actionService: ActionService,
-    public dialog: MatDialog,
+    public dialogService: DialogService,
   ) {}
 
   handleKeyDown(event: Event, currentIndex: number) {
@@ -99,28 +97,8 @@ export class ActionPlanComponent {
       this.activeItem--;
     }
     if (actions[index].action !== '' || actions[index].id) {
-      const dialogConfig = isMobileDevice()
-        ? {
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-            height: '100vh',
-            width: CONFIRM_DIALOG_WIDTH,
-          }
-        : {
-            width: '45em',
-            height: 'auto',
-          };
-      this.dialog
-        .open(ConfirmDialogComponent, {
-          data: {
-            title: 'Action',
-            isAction: true,
-          },
-          width: dialogConfig.width,
-          height: dialogConfig.height,
-          maxHeight: dialogConfig.maxHeight,
-          maxWidth: dialogConfig.maxWidth,
-        })
+      this.dialogService
+        .openConfirmDialog('DELETE.ACTION')
         .afterClosed()
         .subscribe((result) => {
           if (result) {

@@ -1,13 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CheckInMin } from '../../shared/types/model/CheckInMin';
 import { CheckInService } from '../../services/check-in.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DATE_FORMAT, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DATE_FORMAT } from '../../shared/constantLibary';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { Observable, of } from 'rxjs';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { RefreshDataService } from '../../services/refresh-data.service';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -23,7 +24,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private checkInService: CheckInService,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     public dialogRef: MatDialogRef<CheckInHistoryDialogComponent>,
     private refreshDataService: RefreshDataService,
   ) {}
@@ -35,16 +36,11 @@ export class CheckInHistoryDialogComponent implements OnInit {
   }
 
   openCheckInDialogForm(checkIn: CheckInMin) {
-    const dialogConfig = OKR_DIALOG_CONFIG;
-    const dialogRef = this.dialog.open(CheckInFormComponent, {
+    const dialogRef = this.dialogService.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult,
         checkIn: checkIn,
       },
-      height: dialogConfig.height,
-      width: dialogConfig.width,
-      maxHeight: dialogConfig.maxHeight,
-      maxWidth: dialogConfig.maxWidth,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadCheckInHistory();

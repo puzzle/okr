@@ -1,7 +1,7 @@
 import { AddEditTeamDialog } from './add-edit-team-dialog.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,10 +17,6 @@ import { marketingTeamWriteable, teamFormObject } from '../../shared/testData';
 import { Team } from '../../shared/types/model/Team';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
-import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
-import { MatDividerModule } from '@angular/material/divider';
 
 const dialogRefMock = {
   close: jest.fn(),

@@ -17,9 +17,6 @@ import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialogService } from '../../services/dialog.service';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 
 describe('MemberDetailComponent', () => {
   let component: MemberDetailComponent;
@@ -111,7 +108,7 @@ describe('MemberDetailComponent', () => {
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
     userServiceMock.getUserById.mockReturnValue(of(user));
-    dialogServiceMock.openConfirmDialog.mockReturnValue({
+    dialogServiceMock.open.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -128,7 +125,7 @@ describe('MemberDetailComponent', () => {
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
     userServiceMock.getUserById.mockReturnValue(of(user));
-    dialogServiceMock.openConfirmDialog.mockReturnValue({
+    dialogServiceMock.open.mockReturnValue({
       afterClosed: () => of(false),
     });
 

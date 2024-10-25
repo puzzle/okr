@@ -62,7 +62,7 @@ export class KeyresultDialogComponent {
 
   deleteKeyResult() {
     this.dialogService
-      .openConfirmDialog('CONFIRMATION.DELETE.KEYRESULT')
+      .openConfirmDialog('CONFIRMATION.DELETE.KEY_RESULT')
       .afterClosed()
       .subscribe((result) => {
         if (result) {

@@ -95,7 +95,7 @@ describe('MemberListTableComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogService.openConfirmDialog.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -116,7 +116,7 @@ describe('MemberListTableComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogService.openConfirmDialog.mockReturnValue({
+    dialogService.open.mockReturnValue({
       afterClosed: () => of(false),
     });
 

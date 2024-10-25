@@ -30,7 +30,7 @@ describe('OKR Objective e2e tests', () => {
           .click();
         cy.contains('Objective veröffentlichen');
         cy.contains('Soll dieses Objective veröffentlicht werden?');
-        cy.getByTestId('confirm-yes').click();
+        cy.getByTestId('confirmYes').click();
         cy.getByTestId('objective')
           .filter(':contains(A objective in state draft)')
           .last()
@@ -158,7 +158,7 @@ describe('OKR Objective e2e tests', () => {
           .tabForward();
         cy.contains('Objective als Draft speichern');
         cy.contains('Soll dieses Objective als Draft gespeichert werden?');
-        cy.getByTestId('confirm-yes').click();
+        cy.focused().click().wait(500);
 
         cy.getByTestId('objective')
           .filter(':contains("This objective will be returned to draft state")')

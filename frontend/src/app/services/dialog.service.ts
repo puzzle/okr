@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
-import { isMobileDevice } from '../shared/common';
-import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -33,12 +31,8 @@ export class DialogService {
   }
 
   openConfirmDialog(translationKey: string) {
-    const tile = this.translationService.instant(`${translationKey}.TITLE`);
+    const title = this.translationService.instant(`${translationKey}.TITLE`);
     const text = this.translationService.instant(`${translationKey}.TEXT`);
-    return this.openConfirmDialogWithCustomText(tile, text);
-  }
-
-  openConfirmDialogWithCustomText(title: string, text: string) {
     return this.open(ConfirmDialogComponent, {
       data: {
         title: title,

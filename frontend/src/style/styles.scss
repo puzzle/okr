@@ -372,3 +372,23 @@ mat-dialog-actions {
     @extend .justify-content-start;
   }
 }
+
+.okr-form-container {
+  @extend .d-flex;
+  @extend .container-fluid;
+  @extend .gap-2;
+  @extend .flex-column;
+  @extend .p-0;
+}
+
+.okr-form-row {
+  @extend .d-flex;
+  @extend .flex-column;
+  @extend .row;
+}
+
+.okr-form-col {
+  @extend .col-12;
+  @extend .d-flex;
+  @extend .flex-column;
+}

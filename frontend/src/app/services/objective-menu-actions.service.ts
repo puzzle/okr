@@ -8,7 +8,7 @@ import { ObjectiveMenuAfterActions } from '../components/objective/ObjectiveMenu
 import { ObjectiveService } from './objective.service';
 import { RefreshDataService } from './refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
-import { ObjectiveMenuActions } from '../components/objective/ObjectiveMenuActionFactory';
+import { ObjectiveMenuActions } from '../components/objective/ObjectiveMenuActions';
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
 export type ObjectiveMenuAfterAction = (objective: Objective, dialogResult: any) => any;

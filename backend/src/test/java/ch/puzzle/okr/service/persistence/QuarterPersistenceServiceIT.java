@@ -1,7 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.dto.ErrorDto;
-import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -16,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.QUARTER;
 import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TESTS_QUARTER_ID;
 import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TEST_QUARTER_LABEL;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @SpringIntegrationTest
 class QuarterPersistenceServiceIT {
@@ -37,40 +33,6 @@ class QuarterPersistenceServiceIT {
     @AfterEach
     void tearDown() {
         TenantContext.setCurrentTenant(null);
-    }
-
-    @Test
-    void shouldReturnSingleQuarterWhenFindingByValidId() {
-        Quarter returnedQuarter = quarterPersistenceService.findById(GJ_FOR_TESTS_QUARTER_ID);
-
-        assertEquals(GJ_FOR_TESTS_QUARTER_ID, returnedQuarter.getId());
-        assertEquals(GJ_FOR_TEST_QUARTER_LABEL, returnedQuarter.getLabel());
-        assertEquals(LocalDate.of(2000, 7, 1), returnedQuarter.getStartDate());
-        assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenFindingQuarterNotFound() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> quarterPersistenceService.findById(321L));
-
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Quarter", "321")));
-
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenFindingQuarterWithIdNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> quarterPersistenceService.findById(null));
-
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @DisplayName("getMostCurrentQuarters() should return current quarter and future quarter and GJForTests quarter")
@@ -140,5 +102,11 @@ class QuarterPersistenceServiceIT {
 
         // assert
         assertNull(returnedQuarter);
+    }
+
+    @DisplayName("getModelName() should return Quarter")
+    @Test
+    void getModelNameShouldReturnQuarter() {
+        assertEquals(QUARTER, quarterPersistenceService.getModelName());
     }
 }

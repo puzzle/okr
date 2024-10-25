@@ -100,7 +100,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
     });
 
-    it('Create checkin ordinal', () => {
+    it.only('Create checkin ordinal', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
 

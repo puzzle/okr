@@ -1,6 +1,7 @@
 import { validateScoring } from './scoringSupport';
 
 Cypress.Commands.add('loginAsUser', (user: any) => {
+  cy.viewport(1920, 1080);
   loginWithCredentials(user.username, user.password);
   overviewIsLoaded();
 });

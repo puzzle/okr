@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Objective } from '../../shared/types/model/Objective';
 import { ObjectiveService } from '../../services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-objective-detail',
@@ -21,7 +20,7 @@ export class ObjectiveDetailComponent {
 
   constructor(
     private objectiveService: ObjectiveService,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
     private router: Router,
     private route: ActivatedRoute,
@@ -48,14 +47,8 @@ export class ObjectiveDetailComponent {
   }
 
   openAddKeyResultDialog() {
-    const dialogConfig = OKR_DIALOG_CONFIG;
-
-    this.dialog
+    this.dialogService
       .open(KeyresultDialogComponent, {
-        height: dialogConfig.height,
-        width: dialogConfig.width,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: this.objective$.getValue(),
           keyResult: null,
@@ -71,10 +64,8 @@ export class ObjectiveDetailComponent {
   }
 
   openEditObjectiveDialog() {
-    this.dialog
+    this.dialogService
       .open(ObjectiveFormComponent, {
-        width: '45em',
-        height: 'auto',
         data: {
           objective: {
             objectiveId: this.objective$.getValue().id,

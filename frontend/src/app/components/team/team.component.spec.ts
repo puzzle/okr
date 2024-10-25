@@ -6,18 +6,20 @@ import { ObjectiveComponent } from '../objective/objective.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { DialogService } from '../../services/dialog.service';
 
-const dialogMock = {
+const dialogService = {
   open: jest.fn(),
 };
 
@@ -45,8 +47,8 @@ describe('TeamComponent', () => {
       declarations: [TeamComponent, ObjectiveComponent, KeyresultComponent, ConfidenceComponent, ScoringComponent],
       providers: [
         {
-          provide: MatDialog,
-          useValue: dialogMock,
+          provide: DialogService,
+          useValue: dialogService,
         },
         {
           provide: RefreshDataService,

@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -28,7 +29,7 @@ describe('ObjectiveDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDialogModule, MatIconModule],
+      imports: [HttpClientTestingModule, MatDialogModule, MatIconModule, TranslateModule.forRoot()],
       providers: [
         { provide: ObjectiveService, useValue: objectiveService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },

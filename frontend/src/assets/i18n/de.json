@@ -28,6 +28,38 @@
     "DELETE_OBJECTIVE": "Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!",
     "DELETE_KEY_RESULT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
   },
+  "CONFIRMATION": {
+    "DRAFT_CREATE": {
+      "TITLE": "Check-in im Draft-Status",
+      "TEXT": "Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?"
+    },
+    "RELEASE": {
+      "TITLE": "Objective veröffentlichen",
+      "TEXT": "Soll dieses Objective veröffentlicht werden?"
+    },
+    "TO_DRAFT": {
+      "TITLE": "Objective als Draft speichern",
+      "TEXT": "Soll dieses Objective als Draft gespeichert werden?"
+    },
+    "DELETE": {
+      "ACTION":{
+        "TITLE": "Löschen bestätigen",
+        "TEXT": "Möchtest du die Action wirklich löschen?"
+      },
+      "TEAM":{
+        "TITLE": "Löschen bestätigen",
+        "TEXT": "Möchtest du dieses Team wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!"
+      },
+      "OBJECTIVE":{
+        "TITLE": "Objective löschen",
+        "TEXT": "Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!"
+      },
+      "KEYRESULT":{
+        "TITLE": "Key Result löschen",
+        "TEXT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
+      }
+    }
+  },
   "ERROR": {
     "UNAUTHORIZED": "Du bist nicht autorisiert, um das Objekt mit der Id {1} zu öffnen.",
     "NOT_FOUND": "Das Objekt '{0}' mit der Id {1} konnte nicht gefunden werden.",

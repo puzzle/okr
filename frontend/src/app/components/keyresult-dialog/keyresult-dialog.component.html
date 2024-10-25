@@ -1,13 +1,11 @@
 <app-dialog-header mat-dialog-title [dialogTitle]="getDialogTitle()"></app-dialog-header>
 
 <mat-dialog-content>
-  <div class="d-flex flex-column scroll-shadows">
-    <app-key-result-form
-      class="keyresult-form"
-      [keyResultForm]="keyResultForm"
-      [keyResult]="data.keyResult"
-    ></app-key-result-form>
-  </div>
+  <app-key-result-form
+    class="keyresult-form"
+    [keyResultForm]="keyResultForm"
+    [keyResult]="data.keyResult"
+  ></app-key-result-form>
 </mat-dialog-content>
 
 <mat-dialog-actions>

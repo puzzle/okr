@@ -17,6 +17,7 @@ export class DialogService {
   DIALOG_PANEL_CLASS_SMALL = 'okr-dialog-panel-small';
 
   DIALOG_CONFIG: MatDialogConfig = {
+    maxWidth: '100vw', // Used to override the default maxWidth of angular material dialog
     autoFocus: 'first-tabbable',
   };
 

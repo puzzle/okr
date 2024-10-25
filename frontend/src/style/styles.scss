@@ -375,19 +375,21 @@ table.okr-table {
   margin-top: $top-bar-height;
   max-height: calc(100vh - $top-bar-height);
   @extend .col-12;
-  @include media-breakpoint-down(md) {
-    height: 100%;
-  }
 }
 
 .okr-dialog-panel-default {
   @extend .okr-dialog-panel;
-  @extend .col-md-4;
+  @extend .col-sm-8;
+  @extend .col-md-6;
+  @extend .col-xl-4;
+  @include media-breakpoint-down(sm) {
+    height: 100%;
+  }
 }
 
 .okr-dialog-panel-small {
   @extend .okr-dialog-panel;
-  @extend .col-md-3;
+  @extend .col-sm-3;
 }
 
 mat-dialog-content {
@@ -395,10 +397,8 @@ mat-dialog-content {
   @extend .flex-column;
   @extend .flex-wrap;
   @extend .container-fluid;
-  max-height: calc(100vh - $top-bar-height - $dialog-action-buttons-div-height) !important;
-  @include media-breakpoint-down(md) {
-    height: 100%;
-  }
+  max-height: none !important;
+  height: calc(100vh - $top-bar-height - $dialog-action-buttons-div-height) !important;
 }
 
 mat-dialog-actions {
@@ -407,7 +407,6 @@ mat-dialog-actions {
   height: $dialog-action-buttons-div-height;
   & > .okr-dialog-action-group {
     @extend .d-flex;
-    // @extend .gap-2;
     @extend .justify-content-start;
   }
 }

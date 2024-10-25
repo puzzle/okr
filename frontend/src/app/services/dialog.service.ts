@@ -17,7 +17,6 @@ export class DialogService {
   DIALOG_PANEL_CLASS_SMALL = 'okr-dialog-panel-small';
 
   DIALOG_CONFIG: MatDialogConfig = {
-    maxWidth: '100vw',
     autoFocus: 'first-tabbable',
   };
 

@@ -13,8 +13,10 @@ export interface ConfirmDialogData {
   providedIn: 'root',
 })
 export class DialogService {
+  DIALOG_PANEL_CLASS_DEFAULT = 'okr-dialog-panel-default';
+  DIALOG_PANEL_CLASS_SMALL = 'okr-dialog-panel-small';
+
   DIALOG_CONFIG: MatDialogConfig = {
-    panelClass: 'okr-dialog-panel',
     maxWidth: '100vw',
     autoFocus: 'first-tabbable',
   };
@@ -26,6 +28,7 @@ export class DialogService {
 
   open<T, D = any, R = any>(component: ComponentType<T>, config?: MatDialogConfig<D>): MatDialogRef<T, R> {
     return this.dialog.open(component, {
+      panelClass: this.DIALOG_PANEL_CLASS_DEFAULT,
       ...this.DIALOG_CONFIG,
       ...config,
     });
@@ -35,6 +38,7 @@ export class DialogService {
     const title = this.translationService.instant(`${translationKey}.TITLE`);
     const text = this.translationService.instant(`${translationKey}.TEXT`);
     return this.open(ConfirmDialogComponent, {
+      panelClass: this.DIALOG_PANEL_CLASS_SMALL,
       data: {
         title: title,
         text: text,

@@ -373,12 +373,21 @@ table.okr-table {
 
 .okr-dialog-panel {
   margin-top: $top-bar-height;
-  @extend .col-12;
-  @extend .col-md-4;
   max-height: calc(100vh - $top-bar-height);
+  @extend .col-12;
   @include media-breakpoint-down(md) {
     height: 100%;
   }
+}
+
+.okr-dialog-panel-default {
+  @extend .okr-dialog-panel;
+  @extend .col-md-4;
+}
+
+.okr-dialog-panel-small {
+  @extend .okr-dialog-panel;
+  @extend .col-md-3;
 }
 
 mat-dialog-content {

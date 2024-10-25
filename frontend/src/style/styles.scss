@@ -357,7 +357,10 @@ mat-dialog-content {
   @extend .flex-wrap;
   @extend .container-fluid;
   max-height: none !important;
-  height: calc(100vh - $top-bar-height - $dialog-action-buttons-div-height) !important;
+
+  @include media-breakpoint-down(sm) {
+    height: calc(100vh - $top-bar-height - $dialog-action-buttons-div-height) !important;
+  }
 }
 
 mat-dialog-actions {

@@ -10,7 +10,6 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/constantLibary';
-import { isMobileDevice } from '../../shared/common';
 
 @Component({
   selector: 'app-application-banner',
@@ -25,7 +24,6 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   resizeObserver: ResizeObserver;
   bannerHeight: number = DEFAULT_HEADER_HEIGHT_PX;
   lastScrollPosition: number = 0;
-  protected readonly isMobileDevice = isMobileDevice;
 
   constructor(private refreshDataService: RefreshDataService) {
     this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {

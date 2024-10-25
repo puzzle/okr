@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, TrackByFunction } from '@angular/core';
 import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
-import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { Objective } from '../../shared/types/model/Objective';
-import { isMobileDevice } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-team',
@@ -19,7 +18,7 @@ export class TeamComponent implements OnInit {
   public overviewEntity!: OverviewEntity;
 
   constructor(
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
   ) {}
 
@@ -28,28 +27,12 @@ export class TeamComponent implements OnInit {
   ngOnInit(): void {}
 
   createObjective() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
-
-    const matDialogRef = this.dialog.open(ObjectiveFormComponent, {
+    const matDialogRef = this.dialogService.open(ObjectiveFormComponent, {
       data: {
         objective: {
           teamId: this.overviewEntity.team.id,
         },
       },
-      height: dialogConfig.height,
-      width: dialogConfig.width,
-      maxHeight: dialogConfig.maxHeight,
-      maxWidth: dialogConfig.maxWidth,
     });
     matDialogRef.afterClosed().subscribe((result) => {
       if (result?.addKeyResult) {
@@ -60,24 +43,8 @@ export class TeamComponent implements OnInit {
   }
 
   openAddKeyResultDialog(objective: Objective) {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
-
-    this.dialog
+    this.dialogService
       .open(KeyresultDialogComponent, {
-        height: dialogConfig.height,
-        width: dialogConfig.width,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: objective,
           keyResult: null,

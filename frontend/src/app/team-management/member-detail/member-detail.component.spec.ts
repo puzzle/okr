@@ -17,7 +17,7 @@ import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-butto
 import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from '../../services/dialog.service';
 
 describe('MemberDetailComponent', () => {
   let component: MemberDetailComponent;
@@ -42,7 +42,7 @@ describe('MemberDetailComponent', () => {
     getAllTeams: () => of([]),
   };
 
-  const dialogMock = {
+  const dialogServiceMock = {
     open: jest.fn(),
   };
 
@@ -68,7 +68,7 @@ describe('MemberDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: UserService, useValue: userServiceMock },
         { provide: TeamService, useValue: teamServiceMock },
-        { provide: MatDialog, useValue: dialogMock },
+        { provide: DialogService, useValue: dialogServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -89,7 +89,7 @@ describe('MemberDetailComponent', () => {
     userServiceMock.getUserById.mockReset();
     userServiceMock.reloadUsers.mockReset();
     teamServiceMock.updateOrAddTeamMembership.mockReset();
-    dialogMock.open.mockReset();
+    dialogServiceMock.open.mockReset();
     teamServiceMock.removeUserFromTeam.mockReset();
   });
 
@@ -112,7 +112,7 @@ describe('MemberDetailComponent', () => {
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
     userServiceMock.getUserById.mockReturnValue(of(user));
-    dialogMock.open.mockReturnValue({
+    dialogServiceMock.open.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -129,7 +129,7 @@ describe('MemberDetailComponent', () => {
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
     userServiceMock.getUserById.mockReturnValue(of(user));
-    dialogMock.open.mockReturnValue({
+    dialogServiceMock.open.mockReturnValue({
       afterClosed: () => of(false),
     });
 

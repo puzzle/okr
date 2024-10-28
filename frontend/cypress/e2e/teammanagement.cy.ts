@@ -267,11 +267,10 @@ describe('Team management tests', () => {
     beforeEach(() => {
       cy.loginAsUser(users.bl);
       cy.getByTestId('team-management').click();
+      cy.intercept('GET', '**/users/*').as('getEsha');
     });
 
     it('should check if correct roles for BL are set', () => {
-      cy.intercept('GET', '**/users/*').as('getEsha');
-
       cy.get('td').contains(nameEsha).click();
       cy.wait('@getEsha');
 

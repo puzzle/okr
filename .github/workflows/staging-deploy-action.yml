@@ -56,10 +56,10 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Set up node 18
+      - name: Set up node 
         uses: actions/setup-node@v4
         with:
-          node-version: 18.17.1
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Install Dependencies
         run: cd ./frontend && npm ci

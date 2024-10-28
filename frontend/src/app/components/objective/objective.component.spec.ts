@@ -25,6 +25,8 @@ import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import { of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
+import { ObjectiveMenuActions } from './ObjectiveMenuActions';
+import { ObjectiveMenuActionsService } from '../../services/objective-menu-actions.service';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
@@ -39,6 +41,8 @@ const objectiveServiceMock = {
 };
 describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveComponent;
+  let bum: ObjectiveMenuActions;
+  let bam: ObjectiveMenuActionsService;
   let fixture: ComponentFixture<ObjectiveComponent>;
   let loader: HarnessLoader;
   beforeEach(() => {
@@ -116,19 +120,19 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   it('Correct method should be called when back to draft is clicked', () => {
-    jest.spyOn(component, 'objectiveBackToDraft');
+    jest.spyOn(bum, 'objectiveBackToDraft');
     component.objective$.next(objectiveMin);
     fixture.detectChanges();
     const menuEntry: MenuEntry =
-      component.getOngoingMenuActions()[
-        component
+      bam.getOngoingMenuActions()[
+        bam
           .getOngoingMenuActions()
           .map((menuAction) => menuAction.action)
           .indexOf('todraft')
       ];
     component.handleDialogResult(menuEntry, { endState: '', comment: null, objective: objective });
     fixture.detectChanges();
-    expect(component.objectiveBackToDraft).toHaveBeenCalled();
+    expect(bum.objectiveBackToDraft).toHaveBeenCalled();
   });
 
   test('Should set isBacklogQuarter right', async () => {

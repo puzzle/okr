@@ -48,11 +48,6 @@
   display: none !important;
 }
 
-mat-dialog-content,
-mat-dialog-actions {
-  padding: 0 24px 0 24px !important;
-}
-
 //Offset for top bar
 .cdk-overlay-backdrop.cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
   margin-top: $top-bar-height;

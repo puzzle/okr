@@ -367,10 +367,6 @@ mat-dialog-actions {
   @extend .d-flex;
   @extend .justify-content-between;
   height: $dialog-action-buttons-div-height;
-  & > .okr-dialog-action-group {
-    @extend .d-flex;
-    @extend .justify-content-start;
-  }
 }
 
 .okr-form-container {
@@ -388,7 +384,7 @@ mat-dialog-actions {
 }
 
 .okr-form-col {
-  @extend .col-12;
+  @extend .col;
   @extend .d-flex;
   @extend .flex-column;
 }

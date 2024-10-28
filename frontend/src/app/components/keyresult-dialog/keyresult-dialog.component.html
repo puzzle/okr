@@ -12,7 +12,7 @@
   </ng-container>
 
   <ng-container actions>
-    <div class="okr-dialog-action-group">
+    <div class="col-auto">
       <button
         [attr.data-testId]="'submit'"
         type="submit"
@@ -35,7 +35,7 @@
       </button>
       <button mat-button mat-dialog-close color="primary" [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
-    <div class="okr-dialog-action-group" *ngIf="this.data.keyResult">
+    <div class="col-auto" *ngIf="this.data.keyResult">
       <button color="primary" mat-button (click)="deleteKeyResult()" [attr.data-testId]="'delete-keyResult'">
         Key Result löschen
       </button>

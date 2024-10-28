@@ -1,40 +1,44 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="getDialogTitle()"></app-dialog-header>
+<app-dialog-template-core>
+  <ng-container title>
+    {{ getDialogTitle() }}
+  </ng-container>
 
-<mat-dialog-content>
-  <app-key-result-form
-    class="keyresult-form"
-    [keyResultForm]="keyResultForm"
-    [keyResult]="data.keyResult"
-  ></app-key-result-form>
-</mat-dialog-content>
+  <ng-container content>
+    <app-key-result-form
+      class="keyresult-form"
+      [keyResultForm]="keyResultForm"
+      [keyResult]="data.keyResult"
+    ></app-key-result-form>
+  </ng-container>
 
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button
-      [attr.data-testId]="'submit'"
-      type="submit"
-      (click)="saveKeyResult()"
-      [disabled]="keyResultForm.invalid || invalidOwner()"
-      color="primary"
-      mat-flat-button
-    >
-      Speichern
-    </button>
-    <button
-      *ngIf="!data.keyResult"
-      [attr.data-testId]="'saveAndNew'"
-      (click)="openNew()"
-      mat-stroked-button
-      [disabled]="keyResultForm.invalid"
-      color="primary"
-    >
-      Speichern & Neu
-    </button>
-    <button mat-button mat-dialog-close color="primary" [attr.data-testId]="'cancel'">Abbrechen</button>
-  </div>
-  <div class="okr-dialog-action-group" *ngIf="this.data.keyResult">
-    <button color="primary" mat-button (click)="deleteKeyResult()" [attr.data-testId]="'delete-keyResult'">
-      Key Result löschen
-    </button>
-  </div>
-</mat-dialog-actions>
+  <ng-container actions>
+    <div class="okr-dialog-action-group">
+      <button
+        [attr.data-testId]="'submit'"
+        type="submit"
+        (click)="saveKeyResult()"
+        [disabled]="keyResultForm.invalid || invalidOwner()"
+        color="primary"
+        mat-flat-button
+      >
+        Speichern
+      </button>
+      <button
+        *ngIf="!data.keyResult"
+        [attr.data-testId]="'saveAndNew'"
+        (click)="openNew()"
+        mat-stroked-button
+        [disabled]="keyResultForm.invalid"
+        color="primary"
+      >
+        Speichern & Neu
+      </button>
+      <button mat-button mat-dialog-close color="primary" [attr.data-testId]="'cancel'">Abbrechen</button>
+    </div>
+    <div class="okr-dialog-action-group" *ngIf="this.data.keyResult">
+      <button color="primary" mat-button (click)="deleteKeyResult()" [attr.data-testId]="'delete-keyResult'">
+        Key Result löschen
+      </button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>

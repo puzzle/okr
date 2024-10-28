@@ -26,6 +26,7 @@ import { Action } from '../../shared/types/model/Action';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { Quarter } from '../../shared/types/model/Quarter';
 

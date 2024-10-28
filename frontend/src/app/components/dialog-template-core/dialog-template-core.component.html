@@ -1,0 +1,18 @@
+<div mat-dialog-title class="d-flex justify-content-between container-fluid align-items-center py-0">
+  <ng-content select="[title]"></ng-content>
+  <button mat-dialog-close mat-icon-button>
+    <mat-icon class="text-secondary">close</mat-icon>
+  </button>
+</div>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+  <ng-content select="[content]"></ng-content>
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions>
+  <ng-content select="[actions]"></ng-content>
+</mat-dialog-actions>

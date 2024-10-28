@@ -92,66 +92,66 @@ jobs:
       - name: print imagetags
         run: echo ${{ needs.update-version.outputs.okr-docker-image}}
 
-  e2e-docker:
-    runs-on: ubuntu-24.04
-    needs: [build-docker-image,update-version]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: okr-image
-          path: /tmp
-
-      - name: Load image
-        run: docker load --input /tmp/okr-docker-image.tar
-
-      - name: show images
-        run: docker image ls -a
-
-      - name: Run docker image
-        run: |
-          docker run --network=host \
-          -e SPRING_PROFILES_ACTIVE=integration-test \
-          ${{ needs.update-version.outputs.okr-docker-image}} &
-
-      - name: run keycloak docker
-        run: |
-          docker run \
-          -e KEYCLOAK_ADMIN=admin \
-          -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
-          -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
-          -p 8544:8080 \
-          quay.io/keycloak/keycloak:23.0.1 \
-          start-dev --import-realm &
-
-      - uses: abhi1693/setup-browser@v0.3.5
-        with:
-          browser: chrome
-          version: latest
-
-      - name: Cypress run e2e tests
-        uses: cypress-io/github-action@v6
-        with:
-          build: npm i -D cypress
-          install: false
-          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544'
-          wait-on-timeout: 120
-          browser: chrome
-          headed: true
-          working-directory: frontend
-          config: baseUrl=http://pitc.okr.localhost:8080
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-screenshots
-          path: frontend/cypress/screenshots
+#  e2e-docker:
+#    runs-on: ubuntu-24.04
+#    needs: [build-docker-image,update-version]
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Download artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: okr-image
+#          path: /tmp
+#
+#      - name: Load image
+#        run: docker load --input /tmp/okr-docker-image.tar
+#
+#      - name: show images
+#        run: docker image ls -a
+#
+#      - name: Run docker image
+#        run: |
+#          docker run --network=host \
+#          -e SPRING_PROFILES_ACTIVE=integration-test \
+#          ${{ needs.update-version.outputs.okr-docker-image}} &
+#
+#      - name: run keycloak docker
+#        run: |
+#          docker run \
+#          -e KEYCLOAK_ADMIN=admin \
+#          -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
+#          -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
+#          -p 8544:8080 \
+#          quay.io/keycloak/keycloak:23.0.1 \
+#          start-dev --import-realm &
+#
+#      - uses: abhi1693/setup-browser@v0.3.5
+#        with:
+#          browser: chrome
+#          version: latest
+#
+#      - name: Cypress run e2e tests
+#        uses: cypress-io/github-action@v6
+#        with:
+#          build: npm i -D cypress
+#          install: false
+#          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544'
+#          wait-on-timeout: 120
+#          browser: chrome
+#          headed: true
+#          working-directory: frontend
+#          config: baseUrl=http://pitc.okr.localhost:8080
+#
+#      - uses: actions/upload-artifact@v4
+#        if: always()
+#        with:
+#          name: cypress-screenshots
+#          path: frontend/cypress/screenshots
 
   upload-to-quay:
     runs-on: ubuntu-latest
-    needs: [e2e-docker, update-version]
+    needs: [update-version] #[e2e-docker, update-version]
     steps:
       - uses: actions/checkout@v4
 

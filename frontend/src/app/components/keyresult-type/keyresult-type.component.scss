@@ -1,3 +1,4 @@
+@import "custom_bootstrap";
 .active {
   border-left: #909090 1px solid;
   border-top: #909090 1px solid;
@@ -17,28 +18,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 39px;
-  margin-bottom: 16px;
+  @extend .py-2;
+  @extend .col-auto;
+  @extend .tab-focus;
 }
 
 .buffer {
   border-bottom: #909090 1px solid;
 }
 
-.tabfocus {
+.tab-focus {
   outline: none;
   &:focus-visible {
     border-radius: 5px;
     border: 2px solid #1a4e83;
   }
-}
-
-.metric {
-  width: 87px;
-}
-
-.ordinal {
-  width: 75px;
 }
 
 .ordinal-input-fields {
@@ -51,37 +45,14 @@
   padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
 }
 
-.input-style {
-  width: 31%;
-}
-
 .unit-dropdown {
   @extend .metric-fields;
   border: solid 1px #909090;
   cursor: pointer;
 }
 
-@media only screen and (min-width: 820px) {
-  .input-alignments {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .input-style {
-    margin-bottom: 0;
-  }
-}
-
-@media only screen and (max-width: 820px) {
-  .metric-fields {
-    width: 100%;
-  }
-
-  .ordinal-input-fields {
-    width: 100%;
-  }
-
-  .input-style {
-    width: auto;
-  }
+.kr-input-container {
+  @extend .d-flex;
+  @extend .flex-column;
+  @extend .col-md-4;
 }

@@ -352,14 +352,16 @@ table.okr-table {
 }
 
 mat-dialog-content {
+  $dialog-header-height: 56px;
   @extend .d-flex;
   @extend .flex-column;
   @extend .flex-wrap;
   @extend .container-fluid;
-  max-height: none !important;
+  max-height: calc(
+    100vh - $top-bar-height - $dialog-action-buttons-div-height - $dialog-header-height - $dialog-content-padding-y
+  ) !important;
 
   @include media-breakpoint-down(sm) {
-    $dialog-header-height: 56px;
     height: calc(
       100vh - $top-bar-height - $dialog-action-buttons-div-height - $dialog-header-height - $dialog-content-padding-y
     ) !important;

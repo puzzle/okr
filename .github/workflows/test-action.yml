@@ -32,11 +32,6 @@ jobs:
         run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
         id: store-version
 
-      - name: Set New Snapshot Version
-        run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store-version.outputs.version}}-SNAPSHOT -DgenerateBackupPoms=false
-
-
-
   build-run-docker-image:
     needs: update-version
     runs-on: ubuntu-24.04
@@ -87,26 +82,26 @@ jobs:
       - name: show images
         run: docker image ls -a
 
+      - name: run keycloak docker
+        run: |
+          docker run \
+          -e KEYCLOAK_ADMIN=admin \
+          -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
+          -v ./docker/config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json \
+          -p 8544:8080 \
+          quay.io/keycloak/keycloak:24.0.5 \
+          start-dev --import-realm &
+
       - name: Run docker image
         run: |
           docker run --network=host \
           -e SPRING_PROFILES_ACTIVE=integration-test \
           ${{ needs.update-version.outputs.okr-docker-image}} &
 
-      - name: run keycloak docker
-        run: |
-          docker run \
-          -e KEYCLOAK_ADMIN=admin \
-          -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
-          -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
-          -p 8544:8080 \
-          quay.io/keycloak/keycloak:23.0.1 \
-          start-dev --import-realm &
-
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:
-          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544'
+          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544/realms/pitc/.well-known/openid-configuration'
           wait-on-timeout: 120
           browser: chrome
           headed: true

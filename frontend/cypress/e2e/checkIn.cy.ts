@@ -193,16 +193,16 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
-      cy.contains('Aktuell: CHF 30.-');
+      cy.contains('Aktuell: CHF 30');
       cy.getByTestId('show-all-checkins').click();
 
       cy.wait(500);
       cy.contains('Check-in History');
-      cy.contains('Wert: CHF 30.-');
+      cy.contains('Wert: CHF 30');
       cy.getByTestId('edit-check-in').first().click();
       cy.contains('Here we edit a metric checkin');
-      cy.contains('CHF 30.-');
-      cy.contains('Confidence um Target Zone (CHF 213.-) zu erreichen');
+      cy.contains('CHF 30');
+      cy.contains('Confidence um Target Zone (CHF 213) zu erreichen');
       cy.contains('5/10');
       cy.getByTestId('check-in-metric-value').click().clear().type('200');
       cy.getByTestId('confidence-slider').realMouseDown();
@@ -212,7 +212,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('submit-check-in').click();
 
       cy.wait(200);
-      cy.contains('CHF 200.-');
+      cy.contains('CHF 200');
       cy.contains('We bought a new sheep');
     });
 

@@ -24,7 +24,7 @@ describe('UnitTransformationPipe', () => {
 
   it('should format as CHF without double value', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.CHF)).toBe('CHF 380.-');
+    expect(pipe.transform(380, Unit.CHF)).toBe('CHF 380');
   });
 
   it('should format as EUR without double value', () => {

@@ -352,7 +352,7 @@ table.okr-table {
 }
 
 mat-dialog-content {
-  $dialog-header-height: 56px;
+  $dialog-header-height: 48px;
   @extend .d-flex;
   @extend .flex-column;
   @extend .flex-wrap;
@@ -371,7 +371,7 @@ mat-dialog-content {
 mat-dialog-actions {
   @extend .d-flex;
   @extend .justify-content-between;
-  height: $dialog-action-buttons-div-height;
+  height: $dialog-action-buttons-div-height !important;
 }
 
 .okr-form-container {

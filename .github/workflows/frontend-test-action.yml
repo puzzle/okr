@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK ${{vars.JAVA_VERSION}}
         uses: actions/setup-java@v4
         with:
           java-version: ${{vars.JAVA_VERSION}}

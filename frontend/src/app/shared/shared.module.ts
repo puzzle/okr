@@ -4,7 +4,6 @@ import { ExampleDialogComponent } from './dialog/example-dialog/example-dialog.c
 import { ObjectiveFormComponent } from './dialog/objective-dialog/objective-form.component';
 import { UnitValueTransformationPipe } from './pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { ConfirmDialogComponent } from './dialog/confirm-dialog/confirm-dialog.component';
-import { UnitLabelTransformationPipe } from './pipes/unit-label-transformation/unit-label-transformation.pipe';
 import { ParseUnitValuePipe } from './pipes/parse-unit-value/parse-unit-value.pipe';
 import { ScoringComponent } from './custom/scoring/scoring.component';
 import { CompleteDialogComponent } from './dialog/complete-dialog/complete-dialog.component';
@@ -33,7 +32,6 @@ import { MatDividerModule } from '@angular/material/divider';
     ObjectiveFormComponent,
     UnitValueTransformationPipe,
     ConfirmDialogComponent,
-    UnitLabelTransformationPipe,
     ParseUnitValuePipe,
     ScoringComponent,
     CompleteDialogComponent,
@@ -68,7 +66,6 @@ import { MatDividerModule } from '@angular/material/divider';
     ObjectiveFormComponent,
     UnitValueTransformationPipe,
     ConfirmDialogComponent,
-    UnitLabelTransformationPipe,
     ParseUnitValuePipe,
     ScoringComponent,
     CompleteDialogComponent,

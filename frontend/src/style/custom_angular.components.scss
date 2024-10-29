@@ -91,3 +91,7 @@ $scale-gap: 0.1;
 #toast-container {
   position: fixed;
 }
+
+.mat-mdc-dialog-surface {
+  overflow: unset !important;
+}

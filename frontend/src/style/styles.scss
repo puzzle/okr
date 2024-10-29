@@ -359,7 +359,10 @@ mat-dialog-content {
   max-height: none !important;
 
   @include media-breakpoint-down(sm) {
-    height: calc(100vh - $top-bar-height - $dialog-action-buttons-div-height) !important;
+    $dialog-header-height: 56px;
+    height: calc(
+      100vh - $top-bar-height - $dialog-action-buttons-div-height - $dialog-header-height - $dialog-content-padding-y
+    ) !important;
   }
 }
 

@@ -353,18 +353,17 @@ table.okr-table {
 
 mat-dialog-content {
   $dialog-header-height: 48px;
+  $full-dialog-content-height: calc(
+    100vh - $top-bar-height - $dialog-header-height - $dialog-content-padding-y - $dialog-action-buttons-div-height
+  );
   @extend .d-flex;
   @extend .flex-column;
   @extend .flex-wrap;
   @extend .container-fluid;
-  max-height: calc(
-    100vh - $top-bar-height - $dialog-action-buttons-div-height - $dialog-header-height - $dialog-content-padding-y
-  ) !important;
+  max-height: $full-dialog-content-height !important;
 
-  @include media-breakpoint-down(sm) {
-    height: calc(
-      100vh - $top-bar-height - $dialog-action-buttons-div-height - $dialog-header-height - $dialog-content-padding-y
-    ) !important;
+  @include media-breakpoint-down(md) {
+    height: $full-dialog-content-height !important;
   }
 }
 

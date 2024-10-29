@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row ms-0">
+  <div class="row row-cols-auto ms-0">
     <div
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
@@ -22,10 +22,10 @@
     >
       Ordinal
     </div>
-    <div class="buffer col tab-title"></div>
+    <div class="buffer col flex-fill tab-title"></div>
   </div>
 
-  <form [formGroup]="keyResultForm" class="row">
+  <form [formGroup]="keyResultForm" class="row mt-2">
     <ng-container *ngIf="isMetric; else ordinalBlock">
       <div class="kr-input-container">
         <label class="text-black" for="unit">Einheit</label>

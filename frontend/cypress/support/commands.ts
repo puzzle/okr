@@ -249,7 +249,7 @@ function loginWithCredentials(username: string, password: string) {
   cy.origin(Cypress.env('login_url'), { args: { username, password } }, ({ username, password }) => {
     cy.get('input[name="username"]').type(username);
     cy.get('input[name="password"]').type(password);
-    cy.get('input[type="submit"]').click();
+    cy.get('button[type="submit"]').click();
     cy.wait('@getCurrentUser', { responseTimeout: 10000 });
   });
   cy.url().then((url) => {

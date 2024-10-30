@@ -43,11 +43,11 @@ jobs:
         run: |
               docker run -d \
               --name my_keycloak \
-              -e KEYCLOAK_ADMIN=admin \
-              -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
+              -e KC_BOOTSTRAP_ADMIN_USERNAME=admin26 \
+              -e KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26 \
               -v ./docker/config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json \
               -p 8544:8080 \
-              quay.io/keycloak/keycloak:24.0.2 \
+              quay.io/keycloak/keycloak:26.0.1 \
               start-dev --import-realm
 
       - name: start backend

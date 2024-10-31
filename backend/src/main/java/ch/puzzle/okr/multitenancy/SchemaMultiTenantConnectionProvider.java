@@ -79,8 +79,8 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     protected Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
-        Properties properties = getHibernateProperties();
-        if (properties == null || properties.isEmpty()) {
+        Properties properties = getHibernateProperties(tenantIdentifier);
+        if (properties.isEmpty()) {
             throw new RuntimeException("Cannot load hibernate properties from application.properties)");
         }
         if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
@@ -109,7 +109,10 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         return configProperties;
     }
 
-    protected Properties getHibernateProperties() {
-        return HibernateContext.getHibernateConfig();
+    protected Properties getHibernateProperties(String tenantIdentifier) {
+        if (tenantIdentifier.equals(DEFAULT_TENANT_ID)) {
+            return HibernateContext.getHibernateConfig();
+        }
+        return HibernateContext.getHibernateConfig(tenantIdentifier);
     }
 }

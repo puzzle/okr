@@ -70,4 +70,4 @@ jobs:
           path: frontend/cypress/screenshots
 
       - name: remove docker containers
-        run: docker ps -aq | xargs -r docker rm -fs
+        run: docker ps -aq | xargs -r docker rm -f

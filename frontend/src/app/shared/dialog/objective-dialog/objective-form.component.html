@@ -7,46 +7,53 @@
     <form [formGroup]="objectiveForm">
       <div class="okr-form-row">
         <label class="okr-form-label" for="title">Titel</label>
-        <textarea
-          [attr.data-testId]="'title'"
-          class="big-dialog-form-field okr-form-input"
-          [ngClass]="formInputCheck(objectiveForm, 'title')"
-          formControlName="title"
-          id="title"
-        ></textarea>
-        <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'title')">
-          <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
-        </mat-error>
+        <div class="okr-form-input">
+          <textarea
+            [attr.data-testId]="'title'"
+            class="big-dialog-form-field"
+            [ngClass]="formInputCheck(objectiveForm, 'title')"
+            formControlName="title"
+            id="title"
+          ></textarea>
+          <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'title')">
+            <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
+          </mat-error>
+        </div>
       </div>
+
       <div class="okr-form-row">
         <label class="okr-form-label" for="title">Beschreibung (optional)</label>
-        <textarea
-          [attr.data-testId]="'description'"
-          formControlName="description"
-          class="big-dialog-form-field okr-form-input"
-          [ngClass]="formInputCheck(objectiveForm, 'description')"
-        ></textarea>
-        <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'description')">
-          <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
-        </mat-error>
+        <div class="okr-form-input">
+          <textarea
+            [attr.data-testId]="'description'"
+            formControlName="description"
+            class="big-dialog-form-field"
+            [ngClass]="formInputCheck(objectiveForm, 'description')"
+          ></textarea>
+          <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'description')">
+            <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
+          </mat-error>
+        </div>
       </div>
 
       <div class="okr-form-row row-cols-1 row-cols-md-2 gx-2">
         <div class="col">
           <div class="okr-form-row">
             <label class="okr-form-label" for="quarter">Quartal</label>
-            <select
-              class="custom-select bg-white okr-form-input"
-              formControlName="quarter"
-              id="quarter"
-              [attr.data-testId]="'quarterSelect'"
-            >
-              <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
-                <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
-                  {{ quarter.fullLabel() }}
-                </option>
-              </ng-container>
-            </select>
+            <div class="okr-form-input">
+              <select
+                class="custom-select bg-white okr-form-input"
+                formControlName="quarter"
+                id="quarter"
+                [attr.data-testId]="'quarterSelect'"
+              >
+                <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
+                  <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
+                    {{ quarter.fullLabel() }}
+                  </option>
+                </ng-container>
+              </select>
+            </div>
           </div>
         </div>
         <div class="col align-self-end">

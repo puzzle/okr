@@ -51,7 +51,7 @@ public class TenantJwtIssuerValidatorTest {
         when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC)).thenReturn(Optional.of( //
                 new TenantConfigProvider.TenantConfig( //
                         PITC, new String[] {}, "jwkSetUri", //
-                        ISSUER_URL, "clientId", null)));
+                        ISSUER_URL, "clientId", null, null)));
 
         TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(
                 tenantConfigProviderWithPitcConfig, jwtHelper) {

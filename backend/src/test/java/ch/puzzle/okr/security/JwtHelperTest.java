@@ -84,7 +84,7 @@ public class JwtHelperTest {
         when(tenantConfigProviderMock.getTenantConfigById(PITC)).thenReturn(Optional.of( //
                 new TenantConfigProvider.TenantConfig(PITC, //
                         new String[] {}, "jwkSetUri", "issuerUrl", //
-                        "clientId", null) //
+                        "clientId", null, null) //
         ));
 
         JwtHelper jwtHelper = new JwtHelper(tenantConfigProviderMock, null, null, null);
@@ -122,7 +122,7 @@ public class JwtHelperTest {
         when(tenantConfigProviderWithDataMock.getTenantConfigById(PITC)).thenReturn(Optional.of( //
                 new TenantConfigProvider.TenantConfig(PITC, //
                         new String[] {}, "jwkSetUri", "issuerUrl", //
-                        "clientId", null) //
+                        "clientId", null, null) //
         ));
 
         JwtHelper jwtHelper = new JwtHelper(tenantConfigProviderWithDataMock, null, null, null);

@@ -330,6 +330,7 @@ table.okr-table {
   @extend .okr-dialog-panel;
   @extend .col-sm-8;
   @extend .col-md-6;
+  @extend .col-lg-5;
   @extend .col-xxl-4;
   @include media-breakpoint-down(sm) {
     height: 100%;
@@ -342,6 +343,7 @@ table.okr-table {
   @extend .col-md-6;
   @extend .col-lg-5;
   @extend .col-xl-4;
+  @extend .col-xxl-3;
 }
 
 .okr-form-container {

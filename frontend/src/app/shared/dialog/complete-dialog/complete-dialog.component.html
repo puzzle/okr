@@ -3,16 +3,16 @@
 
   <ng-container content>
     <div class="okr-form-row">
-      <h4 class="okr-label">Objective</h4>
-      <p class="okr-label linebreak bg-display-element py-2 ps-2 fs-6 fw-normal">{{ data.objectiveTitle }}</p>
+      <h4 class="okr-form-label">Objective</h4>
+      <p class="okr-form-label linebreak bg-display-element fs-6 fw-normal">{{ data.objectiveTitle }}</p>
     </div>
 
     <form [formGroup]="completeForm">
       <div class="okr-form-row">
-        <p class="okr-label">Bewertung</p>
-        <div class="d-flex gap-3">
-          <div
-            class="successful w-50 valuation-card card-hover-successful"
+        <p class="okr-form-label">Bewertung</p>
+        <div class="okr-form-row mx-0">
+          <button
+            class="col successful valuation-card card-hover-successful"
             [ngClass]="{
               'active-successful': completeForm.value.isSuccessful == true,
               'non-active-successful': completeForm.value.isSuccessful === false,
@@ -23,9 +23,9 @@
             tabindex="0"
           >
             Objective erreicht
-          </div>
-          <div
-            class="not-successful w-50 valuation-card card-hover-not-successful"
+          </button>
+          <button
+            class="col not-successful valuation-card card-hover-not-successful"
             [ngClass]="{
               'active-not-successful': completeForm.value.isSuccessful === false,
               'non-active-not-successful': completeForm.value.isSuccessful == true,
@@ -36,22 +36,24 @@
             tabindex="0"
           >
             Objective nicht erreicht
-          </div>
+          </button>
         </div>
       </div>
 
       <div class="okr-form-row">
         <label class="okr-form-label" for="comment">Kommentar (optional)</label>
-        <textarea
-          class="big-dialog-form-field okr-form-input"
-          formControlName="comment"
-          [attr.data-testId]="'completeComment'"
-          [ngClass]="formInputCheck(completeForm, 'comment')"
-          id="comment"
-        ></textarea>
-        <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
-          <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
-        </mat-error>
+        <div class="okr-form-input">
+          <textarea
+            class="big-dialog-form-field"
+            formControlName="comment"
+            [attr.data-testId]="'completeComment'"
+            [ngClass]="formInputCheck(completeForm, 'comment')"
+            id="comment"
+          ></textarea>
+          <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
+            <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
+          </mat-error>
+        </div>
       </div>
     </form>
   </ng-container>

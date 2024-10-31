@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="OkrApplication-E2E" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="integration-test" />
-    <option name="ALTERNATIVE_JRE_PATH" value="azul-17" />
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <module name="backend" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="ch.puzzle.okr.OkrApplication" />

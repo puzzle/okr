@@ -152,13 +152,11 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(30, 5, 'We bought a new house', 'We have to buy more PCs');
-      cy.wait(200);
-      cy.getByTestId('add-check-in').first().click();
+      cy.getByTestId('add-check-in').should('exist').first().click();
       cy.fillOutCheckInMetric(50, 6, 'This was a good idea', 'Will be difficult');
 
       cy.getByTestId('show-all-checkins').click();
 
-      cy.wait(500);
       cy.contains('Check-in History');
       cy.contains(getCurrentDate());
       cy.contains('Wert: 30%');
@@ -196,7 +194,6 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('Aktuell: CHF 30.-');
       cy.getByTestId('show-all-checkins').click();
 
-      cy.wait(500);
       cy.contains('Check-in History');
       cy.getByTestId('edit-check-in').first().click();
       cy.contains('Here we edit a metric checkin');
@@ -210,7 +207,6 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('changeInfo').clear().type('We bought a new sheep');
       cy.getByTestId('submit-check-in').click();
 
-      cy.wait(200);
       cy.contains('CHF 200.-');
       cy.contains('We bought a new sheep');
     });
@@ -240,7 +236,6 @@ describe('OKR Check-in e2e tests', () => {
       cy.fillOutCheckInOrdinal(0, 6, 'There is a new car', 'Buy now a new pool');
       cy.getByTestId('show-all-checkins').click();
 
-      cy.wait(500);
       cy.contains('Check-in History');
       cy.getByTestId('edit-check-in').first().click();
       cy.contains('For editing ordinal checkin');
@@ -253,7 +248,6 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('changeInfo').clear().type('We bought a new dog');
       cy.getByTestId('submit-check-in').click();
 
-      cy.wait(200);
       cy.contains('We bought a new dog');
       cy.contains('Buy now a new pool');
       cy.contains('STRETCH');

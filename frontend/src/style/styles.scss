@@ -348,10 +348,16 @@ table.okr-table {
   @extend .p-0;
 }
 
-.okr-form-col {
-  @extend .col;
-  @extend .d-flex;
-  @extend .flex-column;
+.okr-form-row {
+  @extend .row;
+  @extend .gx-0;
+
+  > label,
+  input,
+  select,
+  textarea {
+    @extend .col-12;
+  }
 }
 
 .okr-input-container {

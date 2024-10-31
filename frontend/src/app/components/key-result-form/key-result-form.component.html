@@ -1,18 +1,16 @@
 <form [formGroup]="keyResultForm" class="okr-form-container">
-  <div class="row">
-    <div class="okr-form-col">
-      <label class="text-black" for="title">Titel</label>
-      <textarea
-        [attr.data-testId]="'titleInput'"
-        class="big-dialog-form-field"
-        [ngClass]="formInputCheck(keyResultForm, 'title')"
-        formControlName="title"
-        id="title"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'title')">
-        <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
-      </mat-error>
-    </div>
+  <div class="okr-form-row">
+    <label class="text-black" for="title">Titel</label>
+    <textarea
+      [attr.data-testId]="'titleInput'"
+      class="big-dialog-form-field"
+      [ngClass]="formInputCheck(keyResultForm, 'title')"
+      formControlName="title"
+      id="title"
+    ></textarea>
+    <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'title')">
+      <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
+    </mat-error>
   </div>
 
   <app-keyresult-type
@@ -22,43 +20,39 @@
     [keyResultForm]="keyResultForm"
   ></app-keyresult-type>
 
-  <div class="row">
-    <div class="okr-form-col">
-      <label class="text-black" for="owner">Owner</label>
-      <input
-        (keydown.enter)="$event.preventDefault()"
-        [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
-        class="owner-input"
-        [attr.data-testId]="'ownerInput'"
-        [matAutocomplete]="auto"
-        formControlName="owner"
-        id="owner"
-      />
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameFromUser.bind(this)">
-        <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-          {{ user.firstname + " " + user.lastname }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-error *ngIf="invalidOwner()">
-        <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
-      </mat-error>
-    </div>
+  <div class="okr-form-row">
+    <label class="text-black" for="owner">Owner</label>
+    <input
+      (keydown.enter)="$event.preventDefault()"
+      [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+      class="owner-input"
+      [attr.data-testId]="'ownerInput'"
+      [matAutocomplete]="auto"
+      formControlName="owner"
+      id="owner"
+    />
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameFromUser.bind(this)">
+      <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
+        {{ user.firstname + " " + user.lastname }}
+      </mat-option>
+    </mat-autocomplete>
+    <mat-error *ngIf="invalidOwner()">
+      <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
+    </mat-error>
   </div>
 
-  <div class="row">
-    <div class="okr-form-col">
-      <label for="description" class="text-black">Beschreibung (optional)</label>
-      <textarea
-        [attr.data-testId]="'descriptionInput'"
-        class="big-dialog-form-field"
-        [ngClass]="formInputCheck(keyResultForm, 'description')"
-        formControlName="description"
-        id="description"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'description')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
-      </mat-error>
-    </div>
+  <div class="okr-form-row">
+    <label for="description" class="text-black">Beschreibung (optional)</label>
+    <textarea
+      [attr.data-testId]="'descriptionInput'"
+      class="big-dialog-form-field"
+      [ngClass]="formInputCheck(keyResultForm, 'description')"
+      formControlName="description"
+      id="description"
+    ></textarea>
+    <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'description')">
+      <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
+    </mat-error>
   </div>
   <app-action-plan [control]="actionList$" [keyResultId]="getKeyResultId()"></app-action-plan>
 </form>

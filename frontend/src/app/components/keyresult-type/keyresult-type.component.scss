@@ -36,28 +36,7 @@
   }
 }
 
-.kr-input {
-  @extend .w-100;
-  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
-}
-
-.ordinal-input-fields {
-  @extend .kr-input;
-  height: 4.3rem;
-}
-
-.metric-fields {
-  @extend .kr-input;
-  height: 2rem;
-}
-
 .unit-dropdown {
-  @extend .metric-fields;
   border: solid 1px #909090;
   cursor: pointer;
-}
-
-.kr-input-container {
-  @extend .col-12;
-  @extend .col-md;
 }

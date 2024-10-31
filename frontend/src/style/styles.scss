@@ -130,13 +130,14 @@ input[type="text"] {
   @extend .ps-1;
 }
 
-.big-dialog-form-field {
-  height: 4.375rem !important;
+.dialog-form-field {
+  width: 100%;
   padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
 }
 
-.dialog-form-field {
-  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
+.big-dialog-form-field {
+  @extend .dialog-form-field;
+  height: 4.375rem !important;
 }
 
 .mat-mdc-checkbox .mdc-form-field {
@@ -345,12 +346,11 @@ table.okr-table {
 
 .okr-form-container {
   @extend .container-fluid;
-  @extend .row-gap-3;
 }
 
 .okr-form-row {
   @extend .row;
-  @extend .gx-0;
+  //@extend .gx-0;
   @extend .mt-2; //Isn't there a better way space the rows?
 }
 

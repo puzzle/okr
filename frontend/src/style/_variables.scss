@@ -51,9 +51,9 @@ $pz-dark-blue-palette: (
   --mdc-text-button-label-text-tracking: normal;
   --mdc-filled-button-label-text-tracking: normal;
   --mdc-outlined-button-label-text-tracking: normal;
-  --mat-dialog-headline-padding: 0 0px 0 12px;
+  --mat-dialog-headline-padding: 0 0 0 12px;
   --mat-dialog-actions-padding: 0 12px 0 12px;
-  --mat-dialog-with-actions-content-padding: var($dialog-content-padding-y) 24px;
+  --mat-dialog-with-actions-content-padding: 24px var($dialog-content-padding-y);
   --okr-topbar-background-color: #1e5a96;
   --okr-banner-background-color: #dcedf9;
 }

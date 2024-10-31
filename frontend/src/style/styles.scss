@@ -93,32 +93,12 @@ body pzsh-backdrop {
   }
 }
 
-.dialog {
-  max-width: 769px;
-  box-shadow:
-    0 0 0 0 rgba(0, 0, 0, 0.06),
-    1px 1px 2px 0 rgba(0, 0, 0, 0.06),
-    3px 3px 4px 0 rgba(0, 0, 0, 0.05),
-    8px 6px 6px 0 rgba(0, 0, 0, 0.03),
-    14px 11px 7px 0 rgba(0, 0, 0, 0.01),
-    21px 18px 8px 0 rgba(0, 0, 0, 0);
-}
-
 .disable-scrolling {
   overflow-y: hidden;
 }
 
 input textarea {
   outline-color: #909090;
-}
-
-.panel {
-  max-width: 800px;
-  @extend .col-md-12;
-}
-
-.backdrop {
-  margin-top: $top-bar-height;
 }
 
 .cursor-pointer {
@@ -357,12 +337,6 @@ table.okr-table {
   @extend .gap-2;
   @extend .flex-column;
   @extend .p-0;
-}
-
-.okr-form-row {
-  @extend .d-flex;
-  @extend .flex-column;
-  @extend .row;
 }
 
 .okr-form-col {

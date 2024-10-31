@@ -1,5 +1,5 @@
 <form [formGroup]="keyResultForm" class="okr-form-container">
-  <div class="okr-form-row">
+  <div class="row">
     <div class="okr-form-col">
       <label class="text-black" for="title">Titel</label>
       <textarea
@@ -16,13 +16,13 @@
   </div>
 
   <app-keyresult-type
-    class="okr-form-row"
+    class="row"
     (formValidityEmitter)="updateFormValidity()"
     [keyresult]="keyResult"
     [keyResultForm]="keyResultForm"
   ></app-keyresult-type>
 
-  <div class="okr-form-row">
+  <div class="row">
     <div class="okr-form-col">
       <label class="text-black" for="owner">Owner</label>
       <input
@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <div class="okr-form-row">
+  <div class="row">
     <div class="okr-form-col">
       <label for="description" class="text-black">Beschreibung (optional)</label>
       <textarea

@@ -26,6 +26,9 @@ import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from './custom/spinner/spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.component';
+import { AppModule } from '../app.module';
+import { DialogTemplateCoreComponent } from './custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,7 @@ import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.comp
     SidepanelComponent,
     SpinnerComponent,
     CancelDialogComponent,
+    DialogTemplateCoreComponent,
   ],
   imports: [
     CommonModule,
@@ -62,6 +66,7 @@ import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.comp
     A11yModule,
     RouterOutlet,
     MatProgressSpinnerModule,
+    MatDividerModule,
   ],
   exports: [
     ExampleDialogComponent,
@@ -76,6 +81,7 @@ import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.comp
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,
+    DialogTemplateCoreComponent,
   ],
 })
 export class SharedModule {}

@@ -1,18 +1,22 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="this.data.dialogTitle"></app-dialog-header>
+<app-dialog-template-core>
+  <ng-container title>
+    {{ this.data.dialogTitle }}
+  </ng-container>
 
-<mat-dialog-content>
-  @if (data.dialogText) {
-    <div class="mb-3">
-      <span class="dialog-text">{{ this.data.dialogText }}</span>
+  <ng-container content>
+    @if (data.dialogText) {
+      <div class="mb-3">
+        <span class="dialog-text">{{ this.data.dialogText }}</span>
+      </div>
+    }
+  </ng-container>
+
+  <ng-container actions>
+    <div class="okr-dialog-action-group">
+      <button color="primary" [attr.data-testId]="'cancelDialog-confirm'" (click)="closeAndConfirm()" mat-flat-button>
+        Ja
+      </button>
+      <button mat-button mat-dialog-close [attr.data-testId]="'cancelDialog-cancel'">Abbrechen</button>
     </div>
-  }
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button color="primary" [attr.data-testId]="'cancelDialog-confirm'" (click)="closeAndConfirm()" mat-flat-button>
-      Ja
-    </button>
-    <button mat-button mat-dialog-close [attr.data-testId]="'cancelDialog-cancel'">Abbrechen</button>
-  </div>
-</mat-dialog-actions>
+  </ng-container>
+</app-dialog-template-core>

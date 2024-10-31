@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row row-cols-auto mx-0">
-    <div
+    <button
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
       [attr.data-testId]="'metricTab'"
@@ -10,8 +10,8 @@
       tabindex="0"
     >
       Metrisch
-    </div>
-    <div
+    </button>
+    <button
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: !isMetric, 'non-active': isMetric }"
       [attr.data-testId]="'ordinalTab'"
@@ -21,7 +21,7 @@
       tabindex="0"
     >
       Ordinal
-    </div>
+    </button>
     <div class="buffer col flex-fill tab-title"></div>
   </div>
 

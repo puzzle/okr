@@ -4,6 +4,8 @@
   border-left: #909090 1px solid;
   border-top: #909090 1px solid;
   border-right: #909090 1px solid;
+  border-bottom: #909090 0 solid;
+
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background: white;
@@ -12,6 +14,8 @@
 
 .non-active {
   color: #9c9c9c;
+  background: white;
+  border: #909090 0 solid;
   border-bottom: #909090 1px solid;
 }
 

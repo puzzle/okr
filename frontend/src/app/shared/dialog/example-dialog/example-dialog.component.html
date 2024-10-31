@@ -1,53 +1,55 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="'This is an example dialog'"></app-dialog-header>
+<app-dialog-template-core>
+  <ng-container title> This is an example dialog </ng-container>
 
-<mat-dialog-content>
-  <form [formGroup]="dialogForm" (ngSubmit)="save()">
-    <mat-form-field>
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="Ex. Tom" />
-      <div *ngIf="isTouchedOrDirty('name')">
-        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+  <ng-container content>
+    <form [formGroup]="dialogForm" (ngSubmit)="save()">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Ex. Tom" />
+        <div *ngIf="isTouchedOrDirty('name')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
+        </div>
+      </mat-form-field>
+
+      <mat-radio-group formControlName="gender">
+        <mat-radio-button value="male">Male</mat-radio-button>
+        <mat-radio-button value="female">Female</mat-radio-button>
+        <mat-radio-button value="other">Other</mat-radio-button>
+      </mat-radio-group>
+      <div *ngIf="isTouchedOrDirty('gender')">
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('gender')">
           <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
         </mat-error>
       </div>
-    </mat-form-field>
 
-    <mat-radio-group formControlName="gender">
-      <mat-radio-button value="male">Male</mat-radio-button>
-      <mat-radio-button value="female">Female</mat-radio-button>
-      <mat-radio-button value="other">Other</mat-radio-button>
-    </mat-radio-group>
-    <div *ngIf="isTouchedOrDirty('gender')">
-      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('gender')">
-        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-      </mat-error>
+      <mat-form-field>
+        <mat-label>Please select a hobby</mat-label>
+        <mat-select name="hobbies" formControlName="hobby">
+          <mat-option [value]="hobby" *ngFor="let hobby of hobbies">{{ hobby }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="isTouchedOrDirty('hobby')">
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('hobby')">
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+        </mat-error>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-container actions>
+    <div class="col-auto">
+      <button
+        [attr.data-testId]="'submit'"
+        mat-flat-button
+        type="submit"
+        [mat-dialog-close]="true"
+        [disabled]="!dialogForm.valid"
+      >
+        Save
+      </button>
+      <button mat-button mat-dialog-close>Cancel</button>
     </div>
-
-    <mat-form-field>
-      <mat-label>Please select a hobby</mat-label>
-      <mat-select name="hobbies" formControlName="hobby">
-        <mat-option [value]="hobby" *ngFor="let hobby of hobbies">{{ hobby }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div *ngIf="isTouchedOrDirty('hobby')">
-      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('hobby')">
-        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-      </mat-error>
-    </div>
-  </form>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button
-      [attr.data-testId]="'submit'"
-      mat-flat-button
-      type="submit"
-      [mat-dialog-close]="true"
-      [disabled]="!dialogForm.valid"
-    >
-      Save
-    </button>
-    <button mat-button mat-dialog-close>Cancel</button>
-  </div>
-</mat-dialog-actions>
+  </ng-container>
+</app-dialog-template-core>

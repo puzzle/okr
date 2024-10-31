@@ -1,5 +1,5 @@
-<div class="container-fluid">
-  <div class="row row-cols-auto mx-0">
+<div class="okr-form-container">
+  <div class="okr-form-row row-cols-auto">
     <button
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
@@ -25,12 +25,12 @@
     <div class="buffer col flex-fill tab-title"></div>
   </div>
 
-  <form [formGroup]="keyResultForm" class="row mt-2">
+  <form [formGroup]="keyResultForm" class="okr-form-row gx-3">
     <ng-container *ngIf="isMetric; else ordinalBlock">
       <div class="kr-input-container">
-        <label class="text-black" for="unit">Einheit</label>
+        <label class="okr-form-label" for="unit">Einheit</label>
         <select
-          class="unit-dropdown bg-white menu-option"
+          class="unit-dropdown bg-white menu-option okr-form-col"
           [ngClass]="formInputCheck(keyResultForm, 'unit')"
           formControlName="unit"
           id="unit"
@@ -46,7 +46,7 @@
       </div>
 
       <div class="kr-input-container">
-        <label class="text-black" for="baseline">Baseline</label>
+        <label class="okr-form-label" for="baseline">Baseline</label>
         <input
           [attr.data-testId]="'baseline'"
           class="metric-fields"

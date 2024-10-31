@@ -341,27 +341,26 @@ table.okr-table {
 }
 
 .okr-form-container {
-  @extend .d-flex;
   @extend .container-fluid;
-  @extend .gap-2;
-  @extend .flex-column;
-  @extend .p-0;
+  @extend .row-gap-3;
 }
 
 .okr-form-row {
   @extend .row;
   @extend .gx-0;
+  @extend .mt-2; //Isn't there a better way space the rows?
+}
 
-  > label,
-  .okr-label {
-    color: black;
-  }
+.okr-form-col {
+  @extend .col-12;
+}
 
-  > label,
-  input,
-  select,
-  textarea,
-  .okr-label {
-    @extend .col-12;
-  }
+.okr-form-label {
+  @extend .okr-form-col;
+  color: black;
+}
+
+// Is used to style the input fields in the OKR form globally
+.okr-form-input {
+  @extend .okr-form-col;
 }

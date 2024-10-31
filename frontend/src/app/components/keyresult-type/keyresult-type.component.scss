@@ -20,7 +20,7 @@
 }
 
 .tab-title {
-  @extend .py-2;
+  @extend .p-2;
   @extend .tab-focus;
 }
 
@@ -60,9 +60,4 @@
 .kr-input-container {
   @extend .col-12;
   @extend .col-md;
-  * > label,
-  input,
-  select {
-    @extend .col-12;
-  }
 }

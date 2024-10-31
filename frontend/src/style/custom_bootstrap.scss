@@ -6,4 +6,5 @@ $theme-colors: (
   "keyResult-attribute": $keyResult-attribute-bg,
   "error": $error,
 );
+$enable-negative-margins: true;
 @import "bootstrap";

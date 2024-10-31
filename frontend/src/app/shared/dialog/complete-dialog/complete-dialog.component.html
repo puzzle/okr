@@ -41,9 +41,9 @@
       </div>
 
       <div class="okr-form-row">
-        <label for="comment">Kommentar (optional)</label>
+        <label class="okr-form-label" for="comment">Kommentar (optional)</label>
         <textarea
-          class="big-dialog-form-field"
+          class="big-dialog-form-field okr-form-input"
           formControlName="comment"
           [attr.data-testId]="'completeComment'"
           [ngClass]="formInputCheck(completeForm, 'comment')"

@@ -358,3 +358,23 @@ table.okr-table {
   @extend .flex-column;
   @extend .p-0;
 }
+
+.okr-form-row {
+  @extend .d-flex;
+  @extend .flex-column;
+  @extend .row;
+}
+
+.okr-form-col {
+  @extend .col;
+  @extend .d-flex;
+  @extend .flex-column;
+}
+
+.okr-input-container {
+  @extend .row;
+  * > input,
+  select {
+    @extend .col;
+  }
+}

@@ -1,6 +1,7 @@
 @import "custom_bootstrap";
 
 mat-dialog-content {
+  scrollbar-gutter: stable both-edges;
   $dialog-header-height: 48px;
   $full-dialog-content-height: calc(
     100vh - $top-bar-height - $dialog-header-height - $dialog-content-padding-y - $dialog-action-buttons-div-height

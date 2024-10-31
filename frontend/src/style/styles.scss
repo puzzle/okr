@@ -97,6 +97,15 @@ body pzsh-backdrop {
   overflow-y: hidden;
 }
 
+.panel {
+  max-width: 800px;
+  @extend .col-md-12;
+}
+
+.backdrop {
+  margin-top: $top-bar-height;
+}
+
 input textarea {
   outline-color: #909090;
 }

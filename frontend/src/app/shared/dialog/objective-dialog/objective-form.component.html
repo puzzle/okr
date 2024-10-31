@@ -1,95 +1,100 @@
-<app-dialog-header
-  mat-dialog-title
-  [dialogTitle]="getDialogTitle((this.currentTeam | async)?.name || '')"
-></app-dialog-header>
+<app-dialog-template-core>
+  <ng-container title>
+    {{ getDialogTitle((this.currentTeam | async)?.name || "") }}
+  </ng-container>
 
-<mat-dialog-content>
-  <form [formGroup]="objectiveForm">
-    <div class="input-style gap-2 col-12">
-      <label class="text-black" for="title">Titel</label>
-      <textarea
-        [attr.data-testId]="'title'"
-        class="big-dialog-form-field"
-        [ngClass]="formInputCheck(objectiveForm, 'title')"
-        formControlName="title"
-        id="title"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'title')">
-        <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
-      </mat-error>
-    </div>
-    <div class="input-style gap-2 col-12">
-      <label class="text-black" for="title">Beschreibung (optional)</label>
-      <textarea
-        [attr.data-testId]="'description'"
-        formControlName="description"
-        class="big-dialog-form-field"
-        [ngClass]="formInputCheck(objectiveForm, 'description')"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'description')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
-      </mat-error>
-    </div>
-
-    <div class="d-flex row mb-1">
-      <div class="d-flex flex-column gap-2 col-6">
-        <label class="text-black" for="quarter">Quartal</label>
-        <select
-          class="custom-select bg-white w-100"
-          formControlName="quarter"
-          id="quarter"
-          [attr.data-testId]="'quarterSelect'"
-        >
-          <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
-            <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
-              {{ quarter.fullLabel() }}
-            </option>
-          </ng-container>
-        </select>
+  <ng-container content>
+    <form [formGroup]="objectiveForm">
+      <div class="okr-form-row">
+        <label for="title">Titel</label>
+        <textarea
+          [attr.data-testId]="'title'"
+          class="big-dialog-form-field"
+          [ngClass]="formInputCheck(objectiveForm, 'title')"
+          formControlName="title"
+          id="title"
+        ></textarea>
+        <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'title')">
+          <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
+        </mat-error>
       </div>
-      <mat-checkbox
-        [attr.data-testId]="'keyResult-checkbox'"
-        class="d-flex align-items-center custom-text-wrap col-5 col-6 text-black add-keyresult"
-        color="primary"
-        formControlName="createKeyResults"
+      <div class="okr-form-row">
+        <label for="title">Beschreibung (optional)</label>
+        <textarea
+          [attr.data-testId]="'description'"
+          formControlName="description"
+          class="big-dialog-form-field"
+          [ngClass]="formInputCheck(objectiveForm, 'description')"
+        ></textarea>
+        <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'description')">
+          <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
+        </mat-error>
+      </div>
+
+      <div class="d-flex row mb-1">
+        <div class="d-flex flex-column gap-2 col-6">
+          <label class="text-black" for="quarter">Quartal</label>
+          <select
+            class="custom-select bg-white w-100"
+            formControlName="quarter"
+            id="quarter"
+            [attr.data-testId]="'quarterSelect'"
+          >
+            <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
+              <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
+                {{ quarter.fullLabel() }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+        <mat-checkbox
+          [attr.data-testId]="'keyResult-checkbox'"
+          class="d-flex align-items-center custom-text-wrap col-5 col-6 text-black add-keyresult"
+          color="primary"
+          formControlName="createKeyResults"
+          *ngIf="!data.objective.objectiveId"
+        >
+          <p class="add-keyresult-text">Key Results im Anschluss erfassen</p>
+        </mat-checkbox>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-container actions>
+    <div class="col-auto">
+      <button
         *ngIf="!data.objective.objectiveId"
+        [disabled]="objectiveForm.invalid"
+        color="primary"
+        mat-flat-button
+        (click)="onSubmit('DRAFT')"
+        type="submit"
+        [attr.data-testId]="'safe-draft'"
       >
-        <p class="add-keyresult-text">Key Results im Anschluss erfassen</p>
-      </mat-checkbox>
+        Als Draft speichern
+      </button>
+      <button
+        *ngIf="allowedToSaveBacklog()"
+        [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
+        color="primary"
+        mat-stroked-button
+        type="submit"
+        (click)="onSubmit('ONGOING')"
+        [attr.data-testId]="'safe'"
+      >
+        Speichern
+      </button>
+      <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
-  </form>
-</mat-dialog-content>
 
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button
-      *ngIf="!data.objective.objectiveId"
-      [disabled]="objectiveForm.invalid"
-      color="primary"
-      mat-flat-button
-      (click)="onSubmit('DRAFT')"
-      type="submit"
-      [attr.data-testId]="'safe-draft'"
-    >
-      Als Draft speichern
-    </button>
-    <button
-      *ngIf="allowedToSaveBacklog()"
-      [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
-      color="primary"
-      mat-stroked-button
-      type="submit"
-      (click)="onSubmit('ONGOING')"
-      [attr.data-testId]="'safe'"
-    >
-      Speichern
-    </button>
-    <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
-  </div>
+    <div class="col-auto" *ngIf="data.objective.objectiveId && data.action != 'duplicate'">
+      <button color="primary" type="button" mat-button (click)="deleteObjective()" [attr.data-testId]="'delete'">
+        Objective Löschen
+      </button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>
 
-  <div class="okr-dialog-action-group" *ngIf="data.objective.objectiveId && data.action != 'duplicate'">
-    <button color="primary" type="button" mat-button (click)="deleteObjective()" [attr.data-testId]="'delete'">
-      Objective Löschen
-    </button>
-  </div>
-</mat-dialog-actions>
+<mat-dialog-content> </mat-dialog-content>
+
+<mat-dialog-actions> </mat-dialog-actions>

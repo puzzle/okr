@@ -1,16 +1,26 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="this.dialogTitle"></app-dialog-header>
+<app-dialog-template-core>
+  <ng-container title>
+    {{ this.dialogTitle }}
+  </ng-container>
 
-<mat-dialog-content>
-  <div class="linebreak bg-display-element p-2 fw-normal mb-3">
-    <span class="information">{{ this.dialogText.trim() }}</span>
-  </div>
-</mat-dialog-content>
+  <ng-container content>
+    <div class="linebreak bg-display-element p-2 fw-normal mb-3">
+      <span class="information">{{ this.dialogText.trim() }}</span>
+    </div>
+  </ng-container>
 
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button [attr.data-testId]="'confirmYes'" type="submit" (click)="closeAndDelete()" color="primary" mat-flat-button>
-      Ja
-    </button>
-    <button mat-button mat-dialog-close color="primary">Nein</button>
-  </div>
-</mat-dialog-actions>
+  <ng-container actions>
+    <div class="col-auto">
+      <button
+        [attr.data-testId]="'confirmYes'"
+        type="submit"
+        (click)="closeAndDelete()"
+        color="primary"
+        mat-flat-button
+      >
+        Ja
+      </button>
+      <button mat-button mat-dialog-close color="primary">Nein</button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>

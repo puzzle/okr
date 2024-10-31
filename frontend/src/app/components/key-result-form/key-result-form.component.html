@@ -1,6 +1,6 @@
 <form [formGroup]="keyResultForm" class="okr-form-container">
   <div class="okr-form-row">
-    <label class="text-black" for="title">Titel</label>
+    <label for="title">Titel</label>
     <textarea
       [attr.data-testId]="'titleInput'"
       class="big-dialog-form-field"
@@ -21,7 +21,7 @@
   ></app-keyresult-type>
 
   <div class="okr-form-row">
-    <label class="text-black" for="owner">Owner</label>
+    <label for="owner">Owner</label>
     <input
       (keydown.enter)="$event.preventDefault()"
       [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
@@ -42,7 +42,7 @@
   </div>
 
   <div class="okr-form-row">
-    <label for="description" class="text-black">Beschreibung (optional)</label>
+    <label for="description">Beschreibung (optional)</label>
     <textarea
       [attr.data-testId]="'descriptionInput'"
       class="big-dialog-form-field"

@@ -353,17 +353,15 @@ table.okr-table {
   @extend .gx-0;
 
   > label,
+  .okr-label {
+    color: black;
+  }
+
+  > label,
   input,
   select,
-  textarea {
+  textarea,
+  .okr-label {
     @extend .col-12;
-  }
-}
-
-.okr-input-container {
-  @extend .row;
-  * > input,
-  select {
-    @extend .col;
   }
 }

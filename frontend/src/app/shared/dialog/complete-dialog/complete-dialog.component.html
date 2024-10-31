@@ -1,72 +1,74 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="'Objective abschliessen'"></app-dialog-header>
+<app-dialog-template-core>
+  <ng-container title> Objective abschliessen </ng-container>
 
-<mat-dialog-content>
-  <div class="input-style gap-2 col-12">
-    <p class="fs-6 text-black">Objective</p>
-    <p class="linebreak bg-display-element py-2 ps-2 fs-6 fw-normal text-black">{{ data.objectiveTitle }}</p>
-  </div>
+  <ng-container content>
+    <div class="okr-form-row">
+      <h4 class="okr-label">Objective</h4>
+      <p class="okr-label linebreak bg-display-element py-2 ps-2 fs-6 fw-normal">{{ data.objectiveTitle }}</p>
+    </div>
 
-  <form [formGroup]="completeForm">
-    <div class="input-style gap-2 col-12">
-      <label class="text-black">Bewertung</label>
-      <div class="d-flex gap-3">
-        <div
-          class="successful w-50 valuation-card card-hover-successful"
-          [ngClass]="{
-            'active-successful': completeForm.value.isSuccessful == true,
-            'non-active-successful': completeForm.value.isSuccessful === false,
-          }"
-          (click)="switchSuccessState('successful')"
-          (keydown.enter)="switchSuccessState('successful')"
-          [attr.data-testId]="'successful'"
-          tabindex="0"
-        >
-          Objective erreicht
-        </div>
-        <div
-          class="not-successful w-50 valuation-card card-hover-not-successful"
-          [ngClass]="{
-            'active-not-successful': completeForm.value.isSuccessful === false,
-            'non-active-not-successful': completeForm.value.isSuccessful == true,
-          }"
-          (click)="switchSuccessState('notSuccessful')"
-          (keydown.enter)="switchSuccessState('notSuccessful')"
-          [attr.data-testId]="'not-successful'"
-          tabindex="0"
-        >
-          Objective nicht erreicht
+    <form [formGroup]="completeForm">
+      <div class="okr-form-row">
+        <p class="okr-label">Bewertung</p>
+        <div class="d-flex gap-3">
+          <div
+            class="successful w-50 valuation-card card-hover-successful"
+            [ngClass]="{
+              'active-successful': completeForm.value.isSuccessful == true,
+              'non-active-successful': completeForm.value.isSuccessful === false,
+            }"
+            (click)="switchSuccessState('successful')"
+            (keydown.enter)="switchSuccessState('successful')"
+            [attr.data-testId]="'successful'"
+            tabindex="0"
+          >
+            Objective erreicht
+          </div>
+          <div
+            class="not-successful w-50 valuation-card card-hover-not-successful"
+            [ngClass]="{
+              'active-not-successful': completeForm.value.isSuccessful === false,
+              'non-active-not-successful': completeForm.value.isSuccessful == true,
+            }"
+            (click)="switchSuccessState('notSuccessful')"
+            (keydown.enter)="switchSuccessState('notSuccessful')"
+            [attr.data-testId]="'not-successful'"
+            tabindex="0"
+          >
+            Objective nicht erreicht
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="input-style gap-2 col-12">
-      <label for="comment" class="text-black">Kommentar (optional)</label>
-      <textarea
-        class="big-dialog-form-field"
-        formControlName="comment"
-        [attr.data-testId]="'completeComment'"
-        [ngClass]="formInputCheck(completeForm, 'comment')"
-        id="comment"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
-      </mat-error>
-    </div>
-  </form>
-</mat-dialog-content>
+      <div class="okr-form-row">
+        <label for="comment">Kommentar (optional)</label>
+        <textarea
+          class="big-dialog-form-field"
+          formControlName="comment"
+          [attr.data-testId]="'completeComment'"
+          [ngClass]="formInputCheck(completeForm, 'comment')"
+          id="comment"
+        ></textarea>
+        <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
+          <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
+        </mat-error>
+      </div>
+    </form>
+  </ng-container>
 
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button
-      [attr.data-testId]="'submit'"
-      type="submit"
-      (click)="closeDialog()"
-      [disabled]="completeForm.invalid"
-      color="primary"
-      mat-flat-button
-    >
-      Objective abschliessen
-    </button>
-    <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
-  </div>
-</mat-dialog-actions>
+  <ng-container actions>
+    <div class="col-auto">
+      <button
+        [attr.data-testId]="'submit'"
+        type="submit"
+        (click)="closeDialog()"
+        [disabled]="completeForm.invalid"
+        color="primary"
+        mat-flat-button
+      >
+        Objective abschliessen
+      </button>
+      <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>

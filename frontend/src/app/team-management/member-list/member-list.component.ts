@@ -9,7 +9,6 @@ import { Team } from '../../shared/types/model/Team';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
 import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 
@@ -85,13 +84,12 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   deleteTeam(selectedTeam: Team) {
+    const data = {
+      team: selectedTeam.name,
+    };
+
     this.dialogService
-      .open(CancelDialogComponent, {
-        data: {
-          dialogTitle: selectedTeam.name + ' wirklich löschen?',
-          dialogText: 'Soll das Team und dessen OKRs wirklich gelöscht werden?',
-        },
-      })
+      .openConfirmDialog('CONFIRMATION.DELETE.TEAM', data)
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),

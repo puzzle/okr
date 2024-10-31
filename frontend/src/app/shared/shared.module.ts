@@ -25,8 +25,6 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from './custom/spinner/spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.component';
-import { AppModule } from '../app.module';
 import { DialogTemplateCoreComponent } from './custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 
@@ -44,7 +42,6 @@ import { MatDividerModule } from '@angular/material/divider';
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,
-    CancelDialogComponent,
     DialogTemplateCoreComponent,
   ],
   imports: [

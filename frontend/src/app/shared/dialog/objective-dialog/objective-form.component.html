@@ -42,7 +42,7 @@
             <label class="okr-form-label" for="quarter">Quartal</label>
             <div class="okr-form-input">
               <select
-                class="custom-select bg-white okr-form-input"
+                class="custom-select bg-white"
                 formControlName="quarter"
                 id="quarter"
                 [attr.data-testId]="'quarterSelect'"
@@ -60,7 +60,7 @@
           <div class="okr-form-row mb-2">
             <mat-checkbox
               [attr.data-testId]="'keyResult-checkbox'"
-              class="col-auto add-keyresult m-n2"
+              class="col-auto add-keyresult me-n2"
               color="primary"
               formControlName="createKeyResults"
               *ngIf="!data.objective.objectiveId"

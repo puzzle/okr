@@ -1,0 +1,23 @@
+@import "custom_bootstrap";
+
+mat-dialog-content {
+  $dialog-header-height: 48px;
+  $full-dialog-content-height: calc(
+    100vh - $top-bar-height - $dialog-header-height - $dialog-content-padding-y - $dialog-action-buttons-div-height
+  );
+  @extend .d-flex;
+  @extend .flex-column;
+  @extend .flex-wrap;
+  @extend .container-fluid;
+  max-height: $full-dialog-content-height !important;
+
+  @include media-breakpoint-down(sm) {
+    height: $full-dialog-content-height !important;
+  }
+}
+
+mat-dialog-actions {
+  @extend .d-flex;
+  @extend .justify-content-between;
+  height: $dialog-action-buttons-div-height !important;
+}

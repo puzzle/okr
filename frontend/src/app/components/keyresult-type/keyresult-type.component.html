@@ -31,7 +31,7 @@
         <label class="okr-form-label" for="unit">Einheit</label>
         <div class="col">
           <select
-            class="dialog-form-field unit-dropdown bg-white menu-option"
+            class="dialog-form-field unit-dropdown bg-white"
             [ngClass]="formInputCheck(keyResultForm, 'unit')"
             formControlName="unit"
             id="unit"
@@ -90,7 +90,7 @@
         <label class="okr-form-label" for="commitZone">Commit Zone</label>
         <div class="col">
           <textarea
-            class="big-dialog-form-field col"
+            class="big-dialog-form-field"
             [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
             formControlName="commitZone"
             id="commitZone"
@@ -109,7 +109,7 @@
         <div class="col">
           <textarea
             [attr.data-testId]="'targetZone'"
-            class="big-dialog-form-field col"
+            class="big-dialog-form-field"
             [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
             formControlName="targetZone"
             id="targetZone"
@@ -127,7 +127,7 @@
         <div class="col">
           <textarea
             [attr.data-testId]="'stretchZone'"
-            class="big-dialog-form-field col"
+            class="big-dialog-form-field"
             [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
             formControlName="stretchZone"
             id="stretchZone"

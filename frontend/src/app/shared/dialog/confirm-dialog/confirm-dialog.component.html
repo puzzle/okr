@@ -1,8 +1,4 @@
-<app-dialog-template-core>
-  <ng-container title>
-    {{ this.dialogTitle }}
-  </ng-container>
-
+<app-dialog-template-core [title]="dialogTitle">
   <ng-container content>
     <div class="linebreak bg-display-element p-2 fw-normal mb-3">
       <span class="information">{{ this.dialogText.trim() }}</span>

@@ -1,8 +1,4 @@
-<app-dialog-template-core>
-  <ng-container title>
-    {{ getDialogTitle((this.currentTeam | async)?.name || "") }}
-  </ng-container>
-
+<app-dialog-template-core [title]="getDialogTitle((this.currentTeam | async)?.name || '')">
   <ng-container content>
     <form [formGroup]="objectiveForm">
       <div class="okr-form-row">

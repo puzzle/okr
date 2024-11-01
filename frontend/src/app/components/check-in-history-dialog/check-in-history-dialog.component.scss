@@ -6,20 +6,6 @@
   width: min-content;
 }
 
-.edit-check-in {
-  width: 20px;
-  height: 20px;
-}
-
-.edit-check-in-button {
-  @extend .edit-check-in;
-  margin-right: 5px;
-}
-
-.check-in-box {
-  background-color: $show-element;
-}
-
 .label-width {
   width: 19%;
 }

@@ -1,60 +1,60 @@
-<app-dialog-header matDialogTitle [dialogTitle]="'Check-in History'"></app-dialog-header>
+<app-dialog-template-core>
+  <ng-container title> Check-in History </ng-container>
 
-<mat-dialog-content>
-  <div class="d-flex justify-content-start flex-column gap-4 text-black text-break">
+  <ng-container content>
     <ng-container
       *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
     >
-      <div
-        *ngFor="let checkIn of checkInHistory; index as i"
-        class="d-flex flex-column dialog-form-fields p-2 check-in-box"
-      >
-        <div class="d-flex flex-row">
-          <span class="w-50 d-flex align-items-center me-1 fw-bold mt-2 mb-2">{{
-            checkIn.createdOn | date: DATE_FORMAT
-          }}</span>
-          <div class="w-50 d-flex justify-content-end align-items-center">
-            <button
-              class="d-flex align-items-center justify-content-center edit-check-in-button"
-              mat-icon-button
-              (click)="openCheckInDialogForm(checkIn)"
-              *ngIf="!isComplete && checkIn.writeable"
-              [attr.data-testId]="'edit-check-in'"
-            >
-              <img class="edit-check-in cursor-pointer m-1" src="../../assets/icons/edit.svg" alt="edit check-in" />
-            </button>
-          </div>
+      <div *ngFor="let checkIn of checkInHistory; index as i" class="okr-form-row bg-display-element">
+        <div class="d-flex flex-row justify-content-between">
+          <span class="fw-bold col-auto">
+            {{ checkIn.createdOn | date: DATE_FORMAT }}
+          </span>
+
+          <button
+            class="col-auto"
+            mat-icon-button
+            (click)="openCheckInDialogForm(checkIn)"
+            *ngIf="!isComplete && checkIn.writeable"
+            [attr.data-testId]="'edit-check-in'"
+          >
+            <img ngSrc="assets/icons/edit.svg" alt="edit check-in" width="24" height="24" />
+          </button>
         </div>
-        <div class="d-flex flex-row mb-1">
-          <div class="w-50 d-flex justify-content-start">
-            <span *ngIf="keyResult.keyResultType === 'metric'"
-              ><i>Wert: </i>{{ getMetricKeyResult().unit | unitLabelTransformation }}
-              {{ +checkIn.value! | unitValueTransformation: getMetricKeyResult().unit }}</span
-            >
-            <span *ngIf="keyResult.keyResultType === 'ordinal'"><i>Wert: </i>{{ checkIn.value }}</span>
+        <div class="okr-form-row row-cols-4">
+          <h4 class="col-auto">Wert:</h4>
+          <div class="col">
+            <ng-container *ngIf="keyResult.keyResultType === 'metric'">
+              {{ getMetricKeyResult().unit | unitLabelTransformation }}
+              {{ +checkIn.value! | unitValueTransformation: getMetricKeyResult().unit }}
+            </ng-container>
+            <ng-container *ngIf="keyResult.keyResultType === 'ordinal'">
+              {{ checkIn.value }}
+            </ng-container>
           </div>
-          <div class="w-50 d-flex justify-content-start">
-            <span><i>Confidence: </i>{{ checkIn.confidence }} / 10</span>
-          </div>
+          <h4 class="col-auto">Confidence:</h4>
+          <div class="col">{{ checkIn.confidence }} / 10</div>
         </div>
-        <div class="d-flex flex-row w-100 text-wrap mb-1" *ngIf="checkIn.changeInfo !== ''">
-          <span class="label-width"><i>Veränderungen: </i></span>
-          <span class="value-width linebreak">{{ checkIn.changeInfo }}</span>
+
+        <div class="okr-form-row" *ngIf="checkIn.changeInfo !== ''">
+          <h4 class="col-auto">Veränderungen:</h4>
+          <span class="col linebreak">{{ checkIn.changeInfo }}</span>
         </div>
-        <div class="d-flex flex-row w-100 text-wrap" *ngIf="checkIn.initiatives !== ''">
-          <span class="label-width"><i>Massnahmen: </i></span>
-          <span class="value-width linebreak">{{ checkIn.initiatives }}</span>
+
+        <div class="okr-form-row" *ngIf="checkIn.initiatives !== ''">
+          <span class="col-auto"><i>Massnahmen: </i></span>
+          <span class="col linebreak">{{ checkIn.initiatives }}</span>
         </div>
       </div>
     </ng-container>
-  </div>
-  <ng-template #spinner>
-    <app-spinner text="Check-in history wird geladen..."></app-spinner>
-  </ng-template>
-</mat-dialog-content>
+    <ng-template #spinner>
+      <app-spinner text="Check-in history wird geladen..."></app-spinner>
+    </ng-template>
+  </ng-container>
 
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button class="close-button" mat-flat-button color="primary" mat-dialog-close>Schliessen</button>
-  </div>
-</mat-dialog-actions>
+  <ng-container actions>
+    <div class="col-auto">
+      <button class="close-button" mat-flat-button color="primary" mat-dialog-close>Schliessen</button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>

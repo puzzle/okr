@@ -35,9 +35,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
         }
       },
     });
-
     this.initUserFullName();
-    this.initTeamManagementVisible();
   }
 
   ngOnDestroy(): void {
@@ -59,14 +57,5 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
       }
     });
-  }
-
-  private initTeamManagementVisible() {
-    this.teamManagementVisible$ = this.router.events.pipe(
-      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-      switchMap(() => {
-        return of(this.router.url.split('?')[0] === '/');
-      }),
-    );
   }
 }

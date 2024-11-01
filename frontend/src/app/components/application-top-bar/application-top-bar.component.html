@@ -1,22 +1,16 @@
 <div id="topBarHeight">
   <div id="okrTopbar">
-    <span class="d-flex h-100 align-items-center ps-4">
-      <img alt="okr-logo" height="32" ngSrc="{{ this.logoSrc$ | async }}" width="140" priority />
+    <span routerLink="/" class="d-flex h-100 align-items-center ps-4 link-light cursor-pointer">
+      <img [attr.data-testId]="'logo'" alt="okr-logo" height="32" ngSrc="{{ this.logoSrc$ | async }}" width="140" priority />
     </span>
     <div class="d-flex align-items-center me-md-5 me-1">
       <button
-        *ngIf="teamManagementVisible$ | async"
         routerLink="team-management"
         [attr.data-testId]="'team-management'"
         class="topBarEntry btn visible-by-default"
       >
         <mat-icon aria-hidden="false" aria-label="Group icon" fontIcon="group"></mat-icon>
         <span class="d-none d-md-flex">Teamverwaltung </span>
-      </button>
-
-      <button *ngIf="!(teamManagementVisible$ | async)" routerLink="/" class="topBarEntry btn visible-by-default">
-        <mat-icon aria-hidden="false" aria-label="Group icon" fontIcon="group"></mat-icon>
-        <span class="d-none d-md-flex">OKR Übersicht </span>
       </button>
 
       <button

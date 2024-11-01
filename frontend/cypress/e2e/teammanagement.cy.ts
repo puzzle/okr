@@ -5,6 +5,21 @@ describe('Team management tests', () => {
   const teamName = uniqueSuffix('New Team');
   const nameEsha = users.bl.name;
 
+  describe('Routing to overview', () => {
+    beforeEach(() => {
+      cy.loginAsUser(users.gl);
+      cy.getByTestId('team-management').click();
+    });
+    it('should navigate to overview when clicking logo', () => {
+      cy.getByTestId('logo').click();
+      cy.url().should('not.include', 'team-management');
+    });
+    it('should navigate to overview when pressing back to overview', () => {
+      cy.getByTestId('routerLink-to-overview').click();
+      cy.url().should('not.include', 'team-management');
+    });
+  });
+
   describe('As GL', () => {
     before(() => {
       // login as bl to ensure this user exists in database

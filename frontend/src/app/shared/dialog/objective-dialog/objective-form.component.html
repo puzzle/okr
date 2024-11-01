@@ -40,7 +40,7 @@
         <div class="col">
           <div class="okr-form-row">
             <label class="okr-form-label" for="quarter">Quartal</label>
-            <div class="okr-form-input">
+            <div class="okr-form-input pe-5">
               <select
                 class="custom-select bg-white"
                 formControlName="quarter"
@@ -57,10 +57,10 @@
           </div>
         </div>
         <div class="col align-self-end">
-          <div class="okr-form-row mb-2">
+          <div class="okr-form-row">
             <mat-checkbox
               [attr.data-testId]="'keyResult-checkbox'"
-              class="col-auto add-keyresult me-n2"
+              class="col-auto mx-n2"
               color="primary"
               formControlName="createKeyResults"
               *ngIf="!data.objective.objectiveId"

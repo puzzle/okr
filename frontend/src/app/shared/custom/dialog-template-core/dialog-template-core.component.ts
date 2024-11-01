@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-dialog-template-core',
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   styleUrl: './dialog-template-core.component.scss',
 })
 export class DialogTemplateCoreComponent {
-  @Input() observable: Observable<any> = new Observable();
+  @Input() observable: Observable<any> = of({});
   @Input() title: string = '';
 
   isValueReady(obj: any): boolean {

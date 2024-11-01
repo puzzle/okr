@@ -111,8 +111,8 @@ export class CheckInFormComponent implements OnInit {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  getActions(): Action[] | null {
-    return this.dialogForm.controls['actionList'].value;
+  getActions(): Action[] {
+    return this.dialogForm.controls['actionList'].value || [];
   }
 
   changeIsChecked(event: any, index: number) {

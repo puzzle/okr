@@ -361,6 +361,7 @@ table.okr-table {
 .okr-form-label {
   @extend .okr-form-col;
   color: black;
+  @extend .py-1;
 }
 
 // Is used to style the input fields in the OKR form globally

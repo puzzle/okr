@@ -1,92 +1,98 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="getDialogTitle()"></app-dialog-header>
+<app-dialog-template-core [title]="getDialogTitle()">
+  <ng-container content>
+    <form [formGroup]="dialogForm">
+      <div class="okr-form-row">
+        <h4 class="okr-form-label">Key Result</h4>
+        <p class="okr-form-label linebreak bg-display-element fs-6 fw-normal">{{ keyResult.title }}</p>
+      </div>
 
-<mat-dialog-content>
-  <form [formGroup]="dialogForm">
-    <div class="d-flex mb-3 gap-2 col-12 flex-column">
-      <p class="fs-6 text-black">Key Result</p>
-      <p class="linebreak bg-display-element py-2 ps-2 fw-normal text-black">{{ keyResult.title }}</p>
+      <div *ngIf="getActions().length > 0" class="okr-form-row">
+        <p class="okr-form-label">Action Plan:</p>
+        <div class="col">
+          <span *ngFor="let action of getActions(); let i = index" class="okr-form-row">
+            <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked" class="col-auto">
+            </mat-checkbox>
+            <div
+              class="col bg-display-element break-word text-black d-flex align-items-center"
+              [ngClass]="{ 'text-decoration-line-through': checkbox.checked }"
+            >
+              {{ action.action }}
+            </div>
+          </span>
+        </div>
+      </div>
+
+      <div class="okr-form-row">
+        <label class="okr-form-label" for="changeInfo">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
+        <div class="okr-form-input">
+          <textarea
+            [attr.data-testId]="'changeInfo'"
+            [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
+            class="big-dialog-form-field"
+            id="changeInfo"
+            formControlName="changeInfo"
+          ></textarea>
+          <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'changeInfo')">
+            <span>{{ getErrorMessage("MAX_VALUE", "Kommentar / Veränderung", 4096) }}</span>
+          </mat-error>
+        </div>
+      </div>
+
+      <app-check-in-form-metric
+        *ngIf="keyResult.keyResultType === 'metric'"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+        [keyResult]="getKeyResultMetric()"
+      ></app-check-in-form-metric>
+      <app-check-in-form-ordinal
+        *ngIf="keyResult.keyResultType === 'ordinal'"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+        [keyResult]="getKeyResultOrdinal()"
+      ></app-check-in-form-ordinal>
+
+      <div class="okr-form-row">
+        <label class="okr-form-label" for="initiatives">Massnahmen (optional):</label>
+        <div class="okr-form-input">
+          <textarea
+            [attr.data-testId]="'initiatives'"
+            [ngClass]="formInputCheck(dialogForm, 'initiatives')"
+            class="big-dialog-form-field"
+            formControlName="initiatives"
+            id="initiatives"
+          ></textarea>
+          <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'initiatives')">
+            <span>{{ getErrorMessage("MAX_VALUE", "Massnahmen", 4096) }}</span>
+          </mat-error>
+        </div>
+      </div>
+
+      <div class="okr-form-row">
+        <p class="okr-form-label confidence-label">
+          Confidence um Target Zone
+          <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
+            ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
+          </span>
+          zu erreichen:
+        </p>
+        <app-confidence [checkIn]="checkIn" [edit]="true"></app-confidence>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-container actions>
+    <div class="col-auto">
+      <button
+        (click)="saveCheckIn()"
+        [attr.data-testId]="'submit-check-in'"
+        [disabled]="!this.dialogForm.valid"
+        color="primary"
+        mat-flat-button
+        type="submit"
+      >
+        <span *ngIf="checkIn.id">Speichern</span>
+        <span *ngIf="!checkIn.id">Check-in speichern</span>
+      </button>
     </div>
-    <div *ngIf="getActions()?.length != 0" class="input-style gap-1">
-      <label class="text-black mb-1">Action Plan:</label>
-      <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
-        <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
-        <span
-          class="action-list-item w-100 break-word"
-          [ngStyle]="{ 'text-decoration': checkbox.checked ? 'line-through' : 'none' }"
-        >
-          {{ action.action }}
-        </span>
-      </span>
-    </div>
-
-    <div class="input-style gap-2 col-12">
-      <label class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
-      <textarea
-        [attr.data-testId]="'changeInfo'"
-        [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
-        class="big-dialog-form-field"
-        formControlName="changeInfo"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'changeInfo')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Kommentar / Veränderung", 4096) }}</span>
-      </mat-error>
-    </div>
-
-    <app-check-in-form-metric
-      *ngIf="keyResult.keyResultType === 'metric'"
-      [checkIn]="checkIn"
-      [dialogForm]="dialogForm"
-      [keyResult]="getKeyResultMetric()"
-    ></app-check-in-form-metric>
-    <app-check-in-form-ordinal
-      *ngIf="keyResult.keyResultType === 'ordinal'"
-      [checkIn]="checkIn"
-      [dialogForm]="dialogForm"
-      [keyResult]="getKeyResultOrdinal()"
-    ></app-check-in-form-ordinal>
-
-    <div class="input-style gap-2 col-12">
-      <label class="text-black">Massnahmen (optional):</label>
-      <textarea
-        [attr.data-testId]="'initiatives'"
-        [ngClass]="formInputCheck(dialogForm, 'initiatives')"
-        class="w-100 big-dialog-form-field"
-        formControlName="initiatives"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'initiatives')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Massnahmen", 4096) }}</span>
-      </mat-error>
-    </div>
-
-    <div class="d-flex flex-column justify-content-start gap-2 col-12">
-      <label class="text-black confidence-label"
-        >Confidence um Target Zone
-        <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
-          ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
-        </span>
-        zu erreichen:
-      </label>
-      <app-confidence [checkIn]="checkIn" [edit]="true" class="w-100"></app-confidence>
-    </div>
-  </form>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button
-      (click)="saveCheckIn()"
-      [attr.data-testId]="'submit-check-in'"
-      [disabled]="!this.dialogForm.valid"
-      color="primary"
-      mat-flat-button
-      type="submit"
-    >
-      <span *ngIf="checkIn.id">Speichern</span>
-      <span *ngIf="!checkIn.id">Check-in speichern</span>
-    </button>
-
-    <button *ngIf="!continued" [attr.data-testId]="'cancel-checkin'" color="primary" mat-button mat-dialog-close>
-      Abbrechen
-    </button>
-  </div>
-</mat-dialog-actions>
+  </ng-container>
+</app-dialog-template-core>

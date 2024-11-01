@@ -1,12 +1,7 @@
-<app-dialog-template-core>
-  <ng-container title>
-    {{ getDialogTitle() }}
-  </ng-container>
-
+<app-dialog-template-core [title]="getDialogTitle()">
   <ng-container content>
     <app-key-result-form [keyResultForm]="keyResultForm" [keyResult]="data.keyResult"></app-key-result-form>
   </ng-container>
-
   <ng-container actions>
     <div class="col-auto">
       <button
@@ -24,7 +19,7 @@
         [attr.data-testId]="'saveAndNew'"
         (click)="openNew()"
         mat-stroked-button
-        [disabled]="keyResultForm.invalid"
+        [disabled]="keyResultForm.invalid || invalidOwner()"
         color="primary"
       >
         Speichern & Neu

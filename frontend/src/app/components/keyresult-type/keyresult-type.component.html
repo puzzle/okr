@@ -24,8 +24,8 @@
   <div class="buffer col flex-fill tab-title"></div>
 </div>
 
-<form [formGroup]="keyResultForm" class="okr-form-row row-cols-1 row-cols-md-3">
-  <ng-container *ngIf="isMetric; else ordinalBlock">
+<ng-container *ngIf="isMetric; else ordinalBlock">
+  <form [formGroup]="keyResultForm" class="okr-form-row row-cols-1 row-cols-md-3">
     <div class="col">
       <div class="okr-form-row">
         <label class="okr-form-label" for="unit">Einheit</label>
@@ -83,8 +83,11 @@
         </div>
       </div>
     </div>
-  </ng-container>
-  <ng-template #ordinalBlock>
+  </form>
+</ng-container>
+
+<ng-template #ordinalBlock>
+  <form [formGroup]="keyResultForm" class="okr-form-row row-cols-1 row-cols-md-3">
     <div class="col">
       <div class="okr-form-row">
         <label class="okr-form-label" for="commitZone">Commit Zone</label>
@@ -138,5 +141,5 @@
         </div>
       </div>
     </div>
-  </ng-template>
-</form>
+  </form>
+</ng-template>

@@ -1,10 +1,6 @@
-<app-dialog-template-core>
-  <ng-container title> Check-in History </ng-container>
-
+<app-dialog-template-core [observable]="checkInHistory$" [title]="'Check-in History'">
   <ng-container content>
-    <ng-container
-      *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
-    >
+    <ng-container *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory">
       <div *ngFor="let checkIn of checkInHistory; index as i" class="okr-form-row bg-display-element">
         <div class="d-flex flex-row justify-content-between">
           <span class="fw-bold col-auto">
@@ -47,9 +43,6 @@
         </div>
       </div>
     </ng-container>
-    <ng-template #spinner>
-      <app-spinner text="Check-in history wird geladen..."></app-spinner>
-    </ng-template>
   </ng-container>
 
   <ng-container actions>

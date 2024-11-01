@@ -1,13 +1,13 @@
 <app-dialog-template-core [title]="'Objective abschliessen'">
   <ng-container content>
     <div class="okr-form-row">
-      <h4 class="okr-form-label">Objective</h4>
-      <p class="okr-form-label linebreak bg-display-element fs-6 fw-normal">{{ data.objectiveTitle }}</p>
+      <h4 class="okr-form-label okr-form-col">Objective</h4>
+      <p class="okr-form-label okr-form-col linebreak bg-display-element fs-6 fw-normal">{{ data.objectiveTitle }}</p>
     </div>
 
     <form [formGroup]="completeForm">
       <div class="okr-form-row">
-        <p class="okr-form-label">Bewertung</p>
+        <p class="okr-form-label okr-form-col">Bewertung</p>
         <div class="okr-form-row mx-0">
           <button
             class="col successful valuation-card card-hover-successful"
@@ -39,7 +39,7 @@
       </div>
 
       <div class="okr-form-row">
-        <label class="okr-form-label" for="comment">Kommentar (optional)</label>
+        <label class="okr-form-label okr-form-col" for="comment">Kommentar (optional)</label>
         <div class="okr-form-input">
           <textarea
             class="big-dialog-form-field"

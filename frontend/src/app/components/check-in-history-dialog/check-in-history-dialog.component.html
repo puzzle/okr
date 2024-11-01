@@ -2,7 +2,7 @@
   <ng-container content>
     <ng-container *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory">
       <div *ngFor="let checkIn of checkInHistory; index as i" class="bg-display-element p-1 okr-form-row">
-        <div class="col text-black">
+        <div class="col okr-form-label">
           <div class="okr-form-row justify-content-between">
             <span class="fw-bold col-auto">
               {{ checkIn.createdOn | date: DATE_FORMAT }}

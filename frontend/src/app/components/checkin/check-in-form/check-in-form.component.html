@@ -2,18 +2,18 @@
   <ng-container content>
     <form [formGroup]="dialogForm">
       <div class="okr-form-row">
-        <h4 class="okr-form-label">Key Result</h4>
-        <p class="okr-form-label linebreak bg-display-element fs-6 fw-normal">{{ keyResult.title }}</p>
+        <h4 class="okr-form-label okr-form-col">Key Result</h4>
+        <p class="okr-form-label okr-form-col linebreak bg-display-element fs-6 fw-normal">{{ keyResult.title }}</p>
       </div>
 
       <div *ngIf="getActions().length > 0" class="okr-form-row">
-        <p class="okr-form-label">Action Plan:</p>
+        <p class="okr-form-label okr-form-col">Action Plan:</p>
         <div class="col">
           <span *ngFor="let action of getActions(); let i = index" class="okr-form-row">
             <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked" class="col-auto">
             </mat-checkbox>
             <div
-              class="col bg-display-element break-word text-black d-flex align-items-center"
+              class="col bg-display-element break-word okr-form-label d-flex align-items-center"
               [ngClass]="{ 'text-decoration-line-through': checkbox.checked }"
             >
               {{ action.action }}
@@ -23,7 +23,9 @@
       </div>
 
       <div class="okr-form-row">
-        <label class="okr-form-label" for="changeInfo">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
+        <label class="okr-form-label okr-form-col" for="changeInfo"
+          >Kommentar/ Veränderung seit letztem Check-in (optional):</label
+        >
         <div class="okr-form-input">
           <textarea
             [attr.data-testId]="'changeInfo'"
@@ -52,7 +54,7 @@
       ></app-check-in-form-ordinal>
 
       <div class="okr-form-row">
-        <label class="okr-form-label" for="initiatives">Massnahmen (optional):</label>
+        <label class="okr-form-label okr-form-col" for="initiatives">Massnahmen (optional):</label>
         <div class="okr-form-input">
           <textarea
             [attr.data-testId]="'initiatives'"
@@ -68,7 +70,7 @@
       </div>
 
       <div class="okr-form-row">
-        <p class="okr-form-label confidence-label">
+        <p class="okr-form-label okr-form-col confidence-label">
           Confidence um Target Zone
           <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
             ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})

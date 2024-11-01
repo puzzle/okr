@@ -1,5 +1,5 @@
 <div class="okr-form-row">
-  <label class="okr-form-label" for="value">Neuer Wert</label>
+  <label class="okr-form-label okr-form-col" for="value">Neuer Wert</label>
   <div class="col">
     <form [formGroup]="dialogForm" class="okr-form-row align-items-center">
       <div class="col">
@@ -12,7 +12,7 @@
         />
       </div>
 
-      <span class="text-black col-auto h-fit">{{ generateUnitLabel() }}</span>
+      <span class="okr-form-label col-auto h-fit">{{ generateUnitLabel() }}</span>
     </form>
   </div>
   <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'value')">
@@ -21,7 +21,7 @@
 </div>
 
 <div *ngIf="checkIn.value" class="okr-form-row">
-  <p class="okr-form-label">Letzter Wert</p>
+  <p class="okr-form-label okr-form-col">Letzter Wert</p>
   <div class="okr-form-col text-black">
     <div class="bg-display-element w-100 px-2 py-1">{{ checkIn.value }} {{ generateUnitLabel() }}</div>
   </div>

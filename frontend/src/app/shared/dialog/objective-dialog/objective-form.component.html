@@ -2,7 +2,7 @@
   <ng-container content>
     <form [formGroup]="objectiveForm">
       <div class="okr-form-row">
-        <label class="okr-form-label" for="title">Titel</label>
+        <label class="okr-form-label okr-form-col" for="title">Titel</label>
         <div class="okr-form-input">
           <textarea
             [attr.data-testId]="'title'"
@@ -18,7 +18,7 @@
       </div>
 
       <div class="okr-form-row">
-        <label class="okr-form-label" for="title">Beschreibung (optional)</label>
+        <label class="okr-form-label okr-form-col" for="title">Beschreibung (optional)</label>
         <div class="okr-form-input">
           <textarea
             [attr.data-testId]="'description'"
@@ -35,7 +35,7 @@
       <div class="okr-form-row row-cols-1 row-cols-md-2 gx-2">
         <div class="col">
           <div class="okr-form-row">
-            <label class="okr-form-label" for="quarter">Quartal</label>
+            <label class="okr-form-label okr-form-col" for="quarter">Quartal</label>
             <div class="okr-form-input pe-5">
               <select
                 class="custom-select bg-white"

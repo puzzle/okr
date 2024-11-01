@@ -1,6 +1,6 @@
 <form [formGroup]="keyResultForm">
   <div class="okr-form-row">
-    <label class="okr-form-label" for="title">Titel</label>
+    <label class="okr-form-label okr-form-col" for="title">Titel</label>
     <div class="okr-form-input">
       <textarea
         [attr.data-testId]="'titleInput'"
@@ -22,7 +22,7 @@
   ></app-keyresult-type>
 
   <div class="okr-form-row">
-    <label class="okr-form-label" for="owner">Owner</label>
+    <label class="okr-form-label okr-form-col" for="owner">Owner</label>
     <div class="okr-form-input">
       <input
         (keydown.enter)="$event.preventDefault()"
@@ -45,7 +45,7 @@
   </div>
 
   <div class="okr-form-row">
-    <label class="okr-form-label" for="description">Beschreibung (optional)</label>
+    <label class="okr-form-label okr-form-col" for="description">Beschreibung (optional)</label>
     <div class="okr-form-input">
       <textarea
         [attr.data-testId]="'descriptionInput'"

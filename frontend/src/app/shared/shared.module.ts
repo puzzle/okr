@@ -8,7 +8,6 @@ import { UnitLabelTransformationPipe } from './pipes/unit-label-transformation/u
 import { ParseUnitValuePipe } from './pipes/parse-unit-value/parse-unit-value.pipe';
 import { ScoringComponent } from './custom/scoring/scoring.component';
 import { CompleteDialogComponent } from './dialog/complete-dialog/complete-dialog.component';
-import { DialogHeaderComponent } from './custom/dialog-header/dialog-header.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -38,7 +37,6 @@ import { MatDividerModule } from '@angular/material/divider';
     ParseUnitValuePipe,
     ScoringComponent,
     CompleteDialogComponent,
-    DialogHeaderComponent,
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,
@@ -74,7 +72,6 @@ import { MatDividerModule } from '@angular/material/divider';
     ParseUnitValuePipe,
     ScoringComponent,
     CompleteDialogComponent,
-    DialogHeaderComponent,
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,

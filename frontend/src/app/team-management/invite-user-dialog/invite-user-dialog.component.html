@@ -1,30 +1,30 @@
-<app-dialog-header mat-dialog-title [dialogTitle]="'Members registrieren'"></app-dialog-header>
-
-<mat-dialog-content>
-  @for (userFormGroup of form.controls; track $index) {
-    <div class="w-100 d-flex justify-content-between align-items-center pe-4">
-      <app-new-user
-        (removeUser)="removeUser($index)"
-        [index]="$index"
-        [userFormGroup]="userFormGroup"
-        [triedToSubmit]="triedToSubmit"
-      ></app-new-user>
+<app-dialog-template-core [title]="'Members registrieren'">
+  <ng-container content>
+    @for (userFormGroup of form.controls; track $index) {
+      <div class="okr-form-row align-items-center pe-4">
+        <app-new-user
+          (removeUser)="removeUser($index)"
+          [index]="$index"
+          [userFormGroup]="userFormGroup"
+          [triedToSubmit]="triedToSubmit"
+        ></app-new-user>
+      </div>
+    }
+    <div class="okr-form-row">
+      <button (click)="addUser()" class="px-0 mb-3 pe-2 align-new-icon col-auto" color="primary" mat-button>
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add User button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Weiterer Member hinzufügen
+        </span>
+      </button>
     </div>
-  }
-  <div class="w-100 d-flex justify-content-start">
-    <button (click)="addUser()" class="px-0 mb-3 pe-2 align-new-icon" color="primary" mat-button>
-      <span class="d-flex align-items-center fw-bold add-text">
-        <img alt="Add User button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
-        Weiterer Member hinzufügen
-      </span>
-    </button>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <div class="okr-dialog-action-group">
-    <button color="primary" [attr.data-testId]="'invite'" mat-flat-button type="submit" (click)="registerUsers()">
-      Einladen
-    </button>
-    <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
-  </div>
-</mat-dialog-actions>
+  </ng-container>
+  <ng-container actions>
+    <div class="col-auto">
+      <button color="primary" [attr.data-testId]="'invite'" mat-flat-button type="submit" (click)="registerUsers()">
+        Einladen
+      </button>
+      <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>

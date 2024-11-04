@@ -60,7 +60,7 @@
       },
       "USER_FROM_TEAM":{
         "TITLE": "Mitglied entfernen",
-        "TEXT": "Möchtest du {{user}} wirklich aus dem Team '{{team}}'entfernen?"
+        "TEXT": "Möchtest du {{user}} wirklich aus dem Team '{{team}}' entfernen?"
       }
     }
   },

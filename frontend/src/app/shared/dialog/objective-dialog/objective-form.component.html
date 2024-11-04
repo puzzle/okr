@@ -60,7 +60,7 @@
             >
               <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
                 <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
-                  {{ getQuarterLabel(quarter, i) }}
+                  {{ quarter.fullLabel() }}
                 </option>
               </ng-container>
             </select>

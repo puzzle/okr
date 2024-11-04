@@ -8,16 +8,35 @@ describe('Team management tests', () => {
   describe('Routing to overview', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
-      cy.getByTestId('team-management').click();
     });
     it('should navigate to overview when clicking logo', () => {
+      cy.getByTestId('team-management').click();
       cy.getByTestId('logo').click();
       cy.url().should('not.include', 'team-management');
     });
     it('should navigate to overview when pressing back to overview', () => {
+      cy.getByTestId('team-management').click();
       cy.getByTestId('routerLink-to-overview').click();
       cy.url().should('not.include', 'team-management');
     });
+    it('should preserve team filter', () => {
+      cy.get('mat-chip:visible:contains("/BBT")').click();
+      cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+      checkTeamsSelected();
+      cy.getByTestId('team-management').click();
+      checkTeamsSelected();
+      cy.getByTestId('routerLink-to-overview').click();
+      checkTeamsSelected();
+      cy.getByTestId('team-management').click();
+      cy.getByTestId('logo').click();
+      checkTeamsSelected();
+    });
+
+    function checkTeamsSelected() {
+      cy.url().should('include', 'teams=');
+      cy.url().should('include', '5');
+      cy.url().should('include', '4');
+    }
   });
 
   describe('As GL', () => {

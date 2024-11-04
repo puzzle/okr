@@ -1,7 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MemberDetailComponent } from './member-detail.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { delay, of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,6 +17,9 @@ import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialogService } from '../../services/dialog.service';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 
 describe('MemberDetailComponent', () => {
   let component: MemberDetailComponent;
@@ -44,6 +46,7 @@ describe('MemberDetailComponent', () => {
 
   const dialogServiceMock = {
     open: jest.fn(),
+    openConfirmDialog: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -54,17 +57,13 @@ describe('MemberDetailComponent', () => {
         ShowEditRoleComponent,
         PuzzleIconButtonComponent,
         PuzzleIconComponent,
+        DialogTemplateCoreComponent,
       ],
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot(),
-        BrowserModule,
-        SharedModule,
-        MatTableModule,
-        MatIconModule,
-        CommonModule,
-      ],
+      imports: [TranslateModule.forRoot(), BrowserModule, SharedModule, MatTableModule, MatIconModule, CommonModule],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: UserService, useValue: userServiceMock },
         { provide: TeamService, useValue: teamServiceMock },
@@ -112,7 +111,7 @@ describe('MemberDetailComponent', () => {
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
     userServiceMock.getUserById.mockReturnValue(of(user));
-    dialogServiceMock.open.mockReturnValue({
+    dialogServiceMock.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -129,7 +128,7 @@ describe('MemberDetailComponent', () => {
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
     userServiceMock.getUserById.mockReturnValue(of(user));
-    dialogServiceMock.open.mockReturnValue({
+    dialogServiceMock.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(false),
     });
 

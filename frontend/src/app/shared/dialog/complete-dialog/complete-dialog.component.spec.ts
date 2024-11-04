@@ -25,6 +25,7 @@ let matDataMock: { objective: { objectiveId: number | undefined; teamId: number 
 describe('CompleteDialogComponent', () => {
   let component: CompleteDialogComponent;
   let fixture: ComponentFixture<CompleteDialogComponent>;
+  let debugElement: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,6 +43,7 @@ describe('CompleteDialogComponent', () => {
     fixture = TestBed.createComponent(CompleteDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    debugElement = fixture.debugElement.nativeElement;
   });
 
   it('should create', () => {
@@ -52,7 +54,7 @@ describe('CompleteDialogComponent', () => {
     let elements = document.querySelectorAll('.valuation-card');
     let successful = document.querySelectorAll('.card-hover-successful');
     let notSuccessful = document.querySelectorAll('.card-hover-not-successful');
-    let submitButton = document.querySelectorAll('button')[0];
+    let submitButton = debugElement.querySelector('[data-testid="submit"]');
 
     expect(elements.length).toEqual(2);
     expect(successful.length).toEqual(1);
@@ -66,7 +68,7 @@ describe('CompleteDialogComponent', () => {
   it('should change isSuccessful value on card click and remove class card-hover', () => {
     component.switchSuccessState('successful');
     let elements = document.querySelectorAll('.card-hover');
-    let submitButton = document.querySelectorAll('button')[1];
+    let submitButton = debugElement.querySelector('[data-testid="submit"]');
 
     expect(component.completeForm.value.isSuccessful).toBeTruthy();
     expect(component.completeForm.invalid).toBeFalsy();

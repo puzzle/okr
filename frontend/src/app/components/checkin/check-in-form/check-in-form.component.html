@@ -3,7 +3,9 @@
     <form [formGroup]="dialogForm">
       <div class="okr-form-row okr-form-label-input-container">
         <h4 class="okr-form-label okr-form-col">Key Result</h4>
-        <p class="okr-form-label okr-form-col linebreak bg-display-element fs-6 fw-normal">{{ keyResult.title }}</p>
+        <span class="okr-form-col">
+          <p class="dialog-data-show">{{ keyResult.title }}</p>
+        </span>
       </div>
 
       <div *ngIf="getActions().length > 0" class="okr-form-row okr-form-label-input-container">

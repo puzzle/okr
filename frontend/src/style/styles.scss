@@ -74,6 +74,16 @@ body.okr {
   border: solid $keyResult-attribute-edit-border 1px;
 }
 
+.dialog-data-show {
+  @extend .okr-form-label;
+  @extend .linebreak;
+  @extend .bg-display-element;
+  @extend .fs-6;
+  @extend .fw-normal;
+  @extend .px-2;
+  @extend .py-1;
+}
+
 .bg-grey {
   background-color: $overview-bg;
 }

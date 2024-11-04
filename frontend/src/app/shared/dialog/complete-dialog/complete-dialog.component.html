@@ -2,7 +2,9 @@
   <ng-container content>
     <div class="okr-form-row">
       <h4 class="okr-form-label okr-form-col">Objective</h4>
-      <p class="okr-form-label okr-form-col linebreak bg-display-element fs-6 fw-normal">{{ data.objectiveTitle }}</p>
+      <span class="okr-form-col">
+        <p class="dialog-data-show">{{ data.objectiveTitle }}</p>
+      </span>
     </div>
 
     <form [formGroup]="completeForm">

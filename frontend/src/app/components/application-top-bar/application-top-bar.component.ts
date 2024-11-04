@@ -15,7 +15,6 @@ import { getFullNameFromUser } from '../../shared/types/model/User';
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   userFullName: string = '';
   menuIsOpen = false;
-  teamManagementVisible$: Observable<boolean> | undefined;
   logoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
   private subscription?: Subscription;
 

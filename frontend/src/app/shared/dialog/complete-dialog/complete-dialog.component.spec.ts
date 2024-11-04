@@ -2,10 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompleteDialogComponent } from './complete-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 import { TranslateService } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 const dialogMock = {
   close: jest.fn(),
@@ -24,9 +28,12 @@ describe('CompleteDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatDialogModule, MatIconModule],
-      declarations: [CompleteDialogComponent, DialogHeaderComponent],
+      imports: [FormsModule, ReactiveFormsModule, MatDialogModule, MatIconModule, MatDividerModule],
+      declarations: [CompleteDialogComponent, DialogTemplateCoreComponent],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: matDataMock },
         { provide: TranslateService, useValue: {} },
@@ -45,7 +52,7 @@ describe('CompleteDialogComponent', () => {
     let elements = document.querySelectorAll('.valuation-card');
     let successful = document.querySelectorAll('.card-hover-successful');
     let notSuccessful = document.querySelectorAll('.card-hover-not-successful');
-    let submitButton = document.querySelectorAll('button')[1];
+    let submitButton = document.querySelectorAll('button')[0];
 
     expect(elements.length).toEqual(2);
     expect(successful.length).toEqual(1);

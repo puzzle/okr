@@ -1,7 +1,7 @@
 import { AddEditTeamDialog } from './add-edit-team-dialog.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,8 +10,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-header.component';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TeamService } from '../../services/team.service';
 import { of } from 'rxjs';
@@ -19,6 +17,10 @@ import { marketingTeamWriteable, teamFormObject } from '../../shared/testData';
 import { Team } from '../../shared/types/model/Team';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 const dialogRefMock = {
   close: jest.fn(),
@@ -42,7 +44,6 @@ describe('TeamManagementComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         MatDialogModule,
         MatIconModule,
         MatFormFieldModule,
@@ -51,10 +52,13 @@ describe('TeamManagementComponent', () => {
         MatInputModule,
         NoopAnimationsModule,
         MatCheckboxModule,
-        RouterTestingModule,
+        MatDividerModule,
       ],
-      declarations: [AddEditTeamDialog, DialogHeaderComponent],
+      declarations: [AddEditTeamDialog, DialogTemplateCoreComponent],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: DialogService,
           useValue: dialogServiceMock,

@@ -34,7 +34,7 @@ describe('Team management tests', () => {
 
     function checkTeamsSelected() {
       cy.url().should('include', 'teams=');
-      cy.url().should('include', '5');
+      cy.url().should('include', '6');
       cy.url().should('include', '4');
     }
   });

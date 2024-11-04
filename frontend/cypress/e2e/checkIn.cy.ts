@@ -131,7 +131,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
     });
 
-    it.only('Should generate checkin list', () => {
+    it('Should generate checkin list', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
 
@@ -361,7 +361,5 @@ function getCurrentDate() {
 }
 
 function checkForAttribute(title: string, value: string) {
-  // cy.contains(title).parent().should('contain', value);
-  cy.contains(title);
-  cy.contains(value);
+  cy.get('mat-dialog-container').contains(value).parent().should('contain', title);
 }

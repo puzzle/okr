@@ -95,6 +95,7 @@
         <span *ngIf="checkIn.id">Speichern</span>
         <span *ngIf="!checkIn.id">Check-in speichern</span>
       </button>
+      <button [attr.data-testId]="'cancel'" color="primary" mat-button mat-dialog-close>Abbrechen</button>
     </div>
   </ng-container>
 </app-dialog-template-core>

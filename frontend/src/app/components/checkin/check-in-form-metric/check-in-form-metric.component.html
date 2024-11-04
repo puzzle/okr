@@ -1,28 +1,34 @@
-<div class="okr-form-row okr-form-label-input-container">
-  <label class="okr-form-label okr-form-col" for="value">Neuer Wert</label>
+<div class="okr-form-row row-cols-2">
   <div class="col">
-    <form [formGroup]="dialogForm" class="okr-form-row align-items-center">
+    <div class="okr-form-row okr-form-label-input-container">
+      <label class="okr-form-label okr-form-col" for="value">Neuer Wert</label>
       <div class="col">
-        <input
-          class="dialog-form-field"
-          [attr.data-testId]="'check-in-metric-value'"
-          [ngClass]="formInputCheck(dialogForm, 'value')"
-          formControlName="value"
-          id="value"
-        />
+        <form [formGroup]="dialogForm" class="okr-form-row align-items-center">
+          <div class="col">
+            <input
+              class="dialog-form-field pe-0"
+              [attr.data-testId]="'check-in-metric-value'"
+              [ngClass]="formInputCheck(dialogForm, 'value')"
+              formControlName="value"
+              id="value"
+            />
+          </div>
+
+          <span class="okr-form-label col-auto h-fit ps-0">{{ generateUnitLabel() }}</span>
+        </form>
       </div>
-
-      <span class="okr-form-label col-auto h-fit">{{ generateUnitLabel() }}</span>
-    </form>
+      <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'value')">
+        <span>{{ getErrorMessage("MUST_BE_NUMBER", "Neuer Wert") }}</span>
+      </mat-error>
+    </div>
   </div>
-  <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'value')">
-    <span>{{ getErrorMessage("MUST_BE_NUMBER", "Neuer Wert") }}</span>
-  </mat-error>
-</div>
 
-<div *ngIf="checkIn.value" class="okr-form-row okr-form-label-input-container">
-  <p class="okr-form-label okr-form-col">Letzter Wert</p>
-  <div class="okr-form-col text-black">
-    <div class="dialog-data-show w-100">{{ checkIn.value }} {{ generateUnitLabel() }}</div>
+  <div class="col">
+    <div *ngIf="checkIn.value" class="okr-form-row okr-form-label-input-container">
+      <p class="okr-form-label okr-form-col">Letzter Wert</p>
+      <div class="okr-form-col text-black">
+        <div class="dialog-data-show dialog-form-field py-2">{{ checkIn.value }} {{ generateUnitLabel() }}</div>
+      </div>
+    </div>
   </div>
 </div>

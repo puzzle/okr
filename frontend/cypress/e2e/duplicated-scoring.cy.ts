@@ -29,7 +29,7 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
     cy.visit('/?quarter=3');
 
     let scoringBlock1 = cy
-      .getByTestId('objective')
+      .get('.objective:contains("A duplicated Objective for this tool")')
       .first()
       .getByTestId('key-result')
       .first()

@@ -32,24 +32,21 @@
         </div>
       </div>
 
-      <div class="okr-form-row row-cols-1 row-cols-md-2 gx-2">
-        <div class="col">
-          <div class="okr-form-row okr-form-label-input-container">
-            <label class="okr-form-label okr-form-col" for="quarter">Quartal</label>
-            <div class="okr-form-input pe-5">
-              <select
-                class="custom-select bg-white"
-                formControlName="quarter"
-                id="quarter"
-                [attr.data-testId]="'quarterSelect'"
-              >
-                <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
-                  <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
-                    {{ quarter.fullLabel() }}
-                  </option>
-                </ng-container>
-              </select>
-            </div>
+        <div class="d-flex row mb-1">
+          <div class="d-flex flex-column gap-2 col-6">
+            <label class="text-black" for="quarter">Quartal</label>
+            <select
+              class="custom-select bg-white w-100"
+              formControlName="quarter"
+              id="quarter"
+              [attr.data-testId]="'quarterSelect'"
+            >
+              <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
+                <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
+                  {{ quarter.fullLabel() }}
+                </option>
+              </ng-container>
+            </select>
           </div>
         </div>
         <div class="col align-self-end">

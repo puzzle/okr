@@ -10,7 +10,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors } from '../../common';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
@@ -215,25 +216,5 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   isBacklogQuarter(label: string) {
     return GJ_REGEX_PATTERN.test(label);
-  }
-
-  getDialogTitle(teamName: string): string {
-    if (this.data.action === 'duplicate') {
-      return `Objective von ${teamName} duplizieren`;
-    }
-
-    if (this.data.action === 'releaseBacklog') {
-      return 'Objective veröffentlichen';
-    }
-
-    if (!this.data.objective.objectiveId) {
-      return `Objective für ${teamName} erfassen`;
-    }
-
-    if (this.data.objective.objectiveId && this.data.action !== 'releaseBacklog') {
-      return `Objective von ${teamName} bearbeiten`;
-    }
-
-    return '';
   }
 }

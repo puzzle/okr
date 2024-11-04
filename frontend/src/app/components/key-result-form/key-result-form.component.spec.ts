@@ -27,6 +27,7 @@ import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import * as de from '../../../assets/i18n/de.json';
+import { Quarter } from '../../shared/types/model/Quarter';
 
 describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
@@ -70,7 +71,7 @@ describe('KeyResultFormComponent', () => {
   const keyResultObjective: KeyResultObjective = {
     id: 2,
     state: State.ONGOING,
-    quarter: { id: 1, label: 'GJ 22/23-Q2', endDate: new Date(), startDate: new Date() },
+    quarter: new Quarter(1, 'GJ 22/23-Q2', new Date(), new Date()),
   };
 
   const keyResultFormGroup = new FormGroup({

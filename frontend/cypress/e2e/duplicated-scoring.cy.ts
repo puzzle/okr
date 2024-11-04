@@ -9,7 +9,10 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
   });
 
   it('Create ordinal checkin and validate value of scoring component', () => {
+    cy.intercept('POST', '**/keyresults').as('createKeyresult');
     cy.createOrdinalKeyresult('stretch keyresult for testing', null);
+    cy.wait('@createKeyresult');
+    cy.contains('stretch keyresult for testing');
     cy.getByTestId('keyresult').get(':contains("stretch keyresult for testing")').last().click();
     cy.getByTestId('add-check-in').click();
     cy.getByTestId(`stretch-radio`).click();

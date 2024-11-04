@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { ObjectiveFormComponent } from './objective-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -35,13 +35,20 @@ let objectiveService = {
   deleteObjective: jest.fn(),
 };
 
+interface MatDialogDataInterface {
+  objective: { objectiveId: number | undefined; teamId: number | undefined };
+}
+
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
     return of([
-      { id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
-      { id: 2, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
-      { id: 999, startDate: null, endDate: null, label: 'Backlog' },
+      new Quarter(1, quarter.label, quarter.startDate, quarter.endDate),
+      new Quarter(2, quarter.label, quarter.startDate, quarter.endDate),
+      new Quarter(999, 'Backlog', null, null),
     ]);
+  },
+  getCurrentQuarter(): Observable<Quarter> {
+    return of(new Quarter(2, quarter.label, quarter.startDate, quarter.endDate));
   },
 };
 
@@ -58,7 +65,7 @@ const dialogMock = {
   close: jest.fn(),
 };
 
-let matDataMock: { objective: { objectiveId: number | undefined; teamId: number | undefined } } = {
+let matDataMock: MatDialogDataInterface = {
   objective: {
     objectiveId: undefined,
     teamId: 1,
@@ -115,65 +122,69 @@ describe('ObjectiveDialogComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it.each([['DRAFT'], ['ONGOING']])('onSubmit create', async (state: string) => {
-      //Prepare data
-      let title: string = 'title';
-      let description: string = 'description';
-      let createKeyresults: boolean = true;
-      let quarter: number = 0;
-      let team: number = 0;
-      teamService.getAllTeams().subscribe((teams) => {
-        team = teams[0].id;
-      });
-      quarterService.getAllQuarters().subscribe((quarters) => {
-        quarter = quarters[1].id;
-      });
+    it.each([['DRAFT'], ['ONGOING']])(
+      'onSubmit create',
+      fakeAsync((state: string) => {
+        //Prepare data
+        let title: string = 'title';
+        let description: string = 'description';
+        let createKeyresults: boolean = true;
+        let quarter: number = 0;
+        let team: number = 0;
+        teamService.getAllTeams().subscribe((teams) => {
+          team = teams[0].id;
+        });
+        quarterService.getAllQuarters().subscribe((quarters) => {
+          quarter = quarters[1].id;
+        });
 
-      // Get input elements and set values
-      const titleInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="title"]')).nativeElement;
-      titleInput.value = title;
-      const descriptionInput: HTMLInputElement = fixture.debugElement.query(
-        By.css('[data-testId="description"]'),
-      ).nativeElement;
-      descriptionInput.value = description;
-      const checkBox = await loader.getHarness(MatCheckboxHarness);
-      await checkBox.check();
-      const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('#quarter')).nativeElement;
-      quarterSelect.value = quarter.toString();
+        // Get input elements and set values
+        const titleInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="title"]')).nativeElement;
+        titleInput.value = title;
+        const descriptionInput: HTMLInputElement = fixture.debugElement.query(
+          By.css('[data-testId="description"]'),
+        ).nativeElement;
+        descriptionInput.value = description;
+        loader.getHarness(MatCheckboxHarness).then((checkBox) => checkBox.check());
+        tick(200);
+        const quarterSelect: HTMLSelectElement = fixture.debugElement.query(
+          By.css('[data-testId="quarterSelect"]'),
+        ).nativeElement;
+        quarterSelect.value = quarter.toString();
+        // Trigger update of form
+        fixture.detectChanges();
+        titleInput.dispatchEvent(new Event('input'));
+        descriptionInput.dispatchEvent(new Event('input'));
+        quarterSelect.dispatchEvent(new Event('change'));
 
-      // Trigger update of form
-      fixture.detectChanges();
-      titleInput.dispatchEvent(new Event('input'));
-      descriptionInput.dispatchEvent(new Event('input'));
-      quarterSelect.dispatchEvent(new Event('input'));
+        const rawFormValue = component.objectiveForm.getRawValue();
+        expect(rawFormValue.description).toBe(description);
+        expect(rawFormValue.quarter).toBe(quarter.toString());
+        expect(rawFormValue.team).toBe(team);
+        expect(rawFormValue.title).toBe(title);
+        expect(rawFormValue.createKeyResults).toBe(createKeyresults);
 
-      const rawFormValue = component.objectiveForm.getRawValue();
-      expect(rawFormValue.description).toBe(description);
-      expect(rawFormValue.quarter).toBe(quarter);
-      expect(rawFormValue.team).toBe(team);
-      expect(rawFormValue.title).toBe(title);
-      expect(rawFormValue.createKeyResults).toBe(createKeyresults);
+        objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
+        component.onSubmit(state);
 
-      objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
-      component.onSubmit(state);
-
-      expect(dialogMock.close).toHaveBeenCalledWith({
-        addKeyResult: createKeyresults,
-        delete: false,
-        objective: {
-          description: description,
-          id: 5,
-          version: 1,
-          quarterId: 2,
-          quarterLabel: 'GJ 22/23-Q2',
-          state: State[state as keyof typeof State],
-          teamId: 2,
-          title: title,
-          writeable: true,
-        },
-        teamId: 1,
-      });
-    });
+        expect(dialogMock.close).toHaveBeenCalledWith({
+          addKeyResult: createKeyresults,
+          delete: false,
+          objective: {
+            description: description,
+            id: 5,
+            version: 1,
+            quarterId: 2,
+            quarterLabel: 'GJ 22/23-Q2',
+            state: State[state as keyof typeof State],
+            teamId: 2,
+            title: title,
+            writeable: true,
+          },
+          teamId: 1,
+        });
+      }),
+    );
 
     it('should create objective', () => {
       matDataMock.objective.objectiveId = undefined;
@@ -292,12 +303,8 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should return if option is allowed for quarter select', async () => {
-      let quarter: Quarter = {
-        id: 999,
-        label: 'Backlog',
-        startDate: null,
-        endDate: null,
-      };
+      let quarter: Quarter = new Quarter(1, 'Backlog', null, null);
+
       let data = {
         action: 'duplicate',
         objective: {
@@ -310,7 +317,6 @@ describe('ObjectiveDialogComponent', () => {
 
       expect(component.allowedOption(quarter)).toBeTruthy();
 
-      quarter.label = 'Backlog';
       expect(component.allowedOption(quarter)).toBeTruthy();
       data.action = 'releaseBacklog';
       fixture.detectChanges();

@@ -2,60 +2,34 @@ include:
   - ../docker-compose.yml
 services:
   spring:
-    tty: true
     container_name: spring
     build:
       context: .
       dockerfile: local-prod.Dockerfile
     restart: always
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: staging
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: debug
+      SPRING_FLYWAY_LOCATION: classpath:db/migration,classpath:db/data-migration,classpath:db/callback
     volumes:
         - ../../../okr/backend/target:/app-root/backend
     network_mode: "host"
-    depends_on:
-      maven-init:
-        condition: service_completed_successfully
 
   maven:
-    tty: true
     container_name: maven
-    restart: on-failure
     image: maven:3.9.9-amazoncorretto-21
-    command: mvn fizzed-watcher:run
+    command: sh -c "mvn fizzed-watcher:run"
     working_dir: /app-root/
     volumes:
-      - ../../../okr:/app-root
+      - ../../../okr:/app-root/
       - ~/.m2/repository:/root/.m2/repository
-    depends_on:
-      maven-init:
-        condition: service_completed_successfully
-
-  maven-init:
-    tty: true
-    container_name: maven-init
-    image: maven:3.9.9-amazoncorretto-21
-    command: mvn -B clean package -P build-for-docker,debug,no-formatter
-    working_dir: /app-root/
-    volumes:
-      - ../../../okr:/app-root
-      - ~/.m2/repository:/root/.m2/repository
-    depends_on:
-      angular:
-        condition: service_healthy
 
   angular:
     container_name: angular
-    image: node:20
-    tty: true
-    restart: on-failure
+    image: node:22
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ../../../okr:/opt
-    command: [ "/bin/bash", "-c", "cd /opt/frontend && rm -rf dist && npm ci && npm run watch:prod" ]
-    healthcheck:
-      test: bash -c "[ -f /opt/frontend/dist/frontend/index.html ]"
-      interval: 10s
-      retries: 999
-      start_period: 30s
-      timeout: 10s
-
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    command: [ "/bin/bash", "-c", "cd /opt/frontend && npm ci && npm run watch:prod" ]

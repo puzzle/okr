@@ -294,7 +294,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('edit-keyResult').click();
 
     cy.getByTestId('delete-keyResult').click();
-    cy.getByTestId('confirmYes').click();
+    cy.getByTestId('confirm-yes').click();
 
     cy.contains('Puzzle ITC');
     cy.get('A keyresult to delete').should('not.exist');

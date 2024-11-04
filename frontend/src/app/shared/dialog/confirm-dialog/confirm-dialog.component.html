@@ -8,7 +8,7 @@
   <ng-container actions>
     <div class="col-auto">
       <button
-        [attr.data-testId]="'confirmYes'"
+        [attr.data-testId]="'confirm-yes'"
         type="submit"
         (click)="closeAndDelete()"
         color="primary"
@@ -16,7 +16,8 @@
       >
         Ja
       </button>
-      <button mat-button mat-dialog-close color="primary">Nein</button>
+
+      <button mat-button mat-dialog-close color="primary" [attr.data-testId]="'confirm-no'">Nein</button>
     </div>
   </ng-container>
 </app-dialog-template-core>

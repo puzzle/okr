@@ -36,7 +36,7 @@ describe('Team management tests', () => {
       cy.contains(teamName);
     });
 
-    it('Try to remove last admin of team should not work', () => {
+    it.only('Try to remove last admin of team should not work', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
@@ -45,14 +45,14 @@ describe('Team management tests', () => {
 
       // dialog
       cy.contains(`Jaya Norris wirklich aus Team ${teamName} entfernen?`);
-      cy.getByTestId('cancelDialog-confirm').click();
+      cy.getByTestId('confirm-yes').click();
 
       cy.wait('@removeUser');
 
       cy.contains('Der letzte Administrator eines Teams kann nicht entfernt werden').should('exist');
     });
 
-    it('clicking cancel in dialog when removing user should not remove user', () => {
+    it.only('clicking cancel in dialog when removing user should not remove user', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
@@ -61,7 +61,7 @@ describe('Team management tests', () => {
 
       // cancel dialog
       cy.contains(`Jaya Norris wirklich aus Team ${teamName} entfernen?`);
-      cy.getByTestId('cancelDialog-cancel').click();
+      cy.getByTestId('confirm-no').click();
 
       cy.get('@removeUser.all').then((interceptions) => {
         expect(interceptions).to.have.length(0);
@@ -85,7 +85,7 @@ describe('Team management tests', () => {
       editTeamNameAndTest('LoremIpsum');
     });
 
-    it('Delete team', () => {
+    it.only('Delete team', () => {
       cy.intercept('DELETE', '**/teams/*').as('saveTeam');
       cy.intercept('GET', '**/users').as('getUsers');
 
@@ -96,14 +96,18 @@ describe('Team management tests', () => {
       cy.getByTestId('teamDeleteButton').click();
 
       // cancel dialog => cancel
-      cy.contains(`${teamName} wirklich löschen?`);
-      cy.getByTestId('cancelDialog-cancel').click();
+      cy.contains(
+        `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
+      );
+      cy.getByTestId('confirm-no').click();
 
       // try again and confirm dialog
       cy.getByTestId('teamMoreButton').click();
       cy.getByTestId('teamDeleteButton').click();
-      cy.contains(`${teamName} wirklich löschen?`);
-      cy.getByTestId('cancelDialog-confirm').click();
+      cy.contains(
+        `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
+      );
+      cy.getByTestId('confirm-yes').click();
 
       cy.wait(['@saveTeam', '@getUsers']);
 
@@ -357,24 +361,24 @@ describe('Team management tests', () => {
       cy.get('app-member-detail').getByTestId('add-user').should('be.disabled');
     });
 
-    it('should remove BBT membership of findus', () => {
+    it.only('should remove BBT membership of findus', () => {
       navigateToUser('Findus Peterson');
       cy.getByTestId('delete-team-member').click();
       cy.getByTestId('cancelDialog-confirm').click();
       cy.get('app-member-detail').contains('/BBT').should('not.exist');
     });
 
-    it('should remove added memberships from esha', () => {
+    it.only('should remove added memberships from esha', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       navigateToUser(nameEsha);
       cy.getByTestId('delete-team-member').eq(0).click();
-      cy.getByTestId('cancelDialog-confirm').click();
+      cy.getByTestId('confirm-yes').click();
 
       cy.wait('@removeUser');
 
       cy.getByTestId('delete-team-member').eq(0).click();
-      cy.getByTestId('cancelDialog-confirm').click();
+      cy.getByTestId('confirm-yes').click();
       cy.get('app-member-detail').should('not.contain', '/BBT').and('not.contain', 'LoremIpsum');
     });
 

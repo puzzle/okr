@@ -1,4 +1,4 @@
-<div class="okr-form-row">
+<div class="okr-form-row okr-form-label-input-container">
   <label class="okr-form-label okr-form-col" for="value">Neuer Wert</label>
   <div class="col">
     <form [formGroup]="dialogForm" class="okr-form-row align-items-center">
@@ -20,7 +20,7 @@
   </mat-error>
 </div>
 
-<div *ngIf="checkIn.value" class="okr-form-row">
+<div *ngIf="checkIn.value" class="okr-form-row okr-form-label-input-container">
   <p class="okr-form-label okr-form-col">Letzter Wert</p>
   <div class="okr-form-col text-black">
     <div class="bg-display-element w-100 px-2 py-1">{{ checkIn.value }} {{ generateUnitLabel() }}</div>

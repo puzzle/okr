@@ -1,7 +1,7 @@
 <app-dialog-template-core [title]="getDialogTitle((this.currentTeam | async)?.name || '')">
   <ng-container content>
     <form [formGroup]="objectiveForm">
-      <div class="okr-form-row">
+      <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col" for="title">Titel</label>
         <div class="okr-form-input">
           <textarea
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div class="okr-form-row">
+      <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col" for="title">Beschreibung (optional)</label>
         <div class="okr-form-input">
           <textarea
@@ -34,7 +34,7 @@
 
       <div class="okr-form-row row-cols-1 row-cols-md-2 gx-2">
         <div class="col">
-          <div class="okr-form-row">
+          <div class="okr-form-row okr-form-label-input-container">
             <label class="okr-form-label okr-form-col" for="quarter">Quartal</label>
             <div class="okr-form-input pe-5">
               <select

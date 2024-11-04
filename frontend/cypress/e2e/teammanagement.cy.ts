@@ -36,7 +36,7 @@ describe('Team management tests', () => {
       cy.contains(teamName);
     });
 
-    it.only('Try to remove last admin of team should not work', () => {
+    it('Try to remove last admin of team should not work', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
@@ -52,7 +52,7 @@ describe('Team management tests', () => {
       cy.contains('Der letzte Administrator eines Teams kann nicht entfernt werden').should('exist');
     });
 
-    it.only('clicking cancel in dialog when removing user should not remove user', () => {
+    it('clicking cancel in dialog when removing user should not remove user', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
@@ -85,7 +85,7 @@ describe('Team management tests', () => {
       editTeamNameAndTest('LoremIpsum');
     });
 
-    it.only('Delete team', () => {
+    it('Delete team', () => {
       cy.intercept('DELETE', '**/teams/*').as('saveTeam');
       cy.intercept('GET', '**/users').as('getUsers');
 
@@ -361,14 +361,14 @@ describe('Team management tests', () => {
       cy.get('app-member-detail').getByTestId('add-user').should('be.disabled');
     });
 
-    it.only('should remove BBT membership of findus', () => {
+    it('should remove BBT membership of findus', () => {
       navigateToUser('Findus Peterson');
       cy.getByTestId('delete-team-member').click();
       cy.getByTestId('cancelDialog-confirm').click();
       cy.get('app-member-detail').contains('/BBT').should('not.exist');
     });
 
-    it.only('should remove added memberships from esha', () => {
+    it('should remove added memberships from esha', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       navigateToUser(nameEsha);

@@ -207,8 +207,6 @@
                             <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
                         </configuration>
                     </execution>
-
-
                 </executions>
             </plugin>
 

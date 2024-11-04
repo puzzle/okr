@@ -354,8 +354,6 @@ table.okr-table {
 
 .okr-form-row {
   @extend .row;
-  //@extend .gx-0;
-  //@extend .mt-2; //Isn't there a better way space the rows?
 }
 
 .okr-form-col {
@@ -373,5 +371,4 @@ table.okr-table {
 }
 
 .okr-form-label-input-container {
-  //TODO
 }

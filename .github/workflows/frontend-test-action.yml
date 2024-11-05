@@ -22,27 +22,8 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-  get-e2e-files:
-    runs-on: ubuntu-24.04
-    outputs:
-      file_list: ${{ steps.generate-file-list.outputs.file_list }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Generate file list
-        id: generate-file-list
-        run: |
-          FILES=$(find frontend/cypress/e2e -type f -exec basename {} \; | jq -R . | jq -s . | jq -c)
-          echo $FILES
-          echo "file_list=$FILES" >> $GITHUB_OUTPUT
-
   e2e:
-    needs: get-e2e-files
     runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,7 +62,6 @@ jobs:
           wait-on-timeout: 120
           browser: chrome
           headed: true
-          spec: cypress/e2e/${{ matrix.file }}
 
       - uses: actions/upload-artifact@v4
         if: always()

@@ -1,4 +1,4 @@
-<div *ngIf="objective$ | async as objective">
+<ng-container *ngIf="objective$ | async as objective">
   <div
     (click)="openObjectiveDetail(objective.id)"
     (keydown.enter)="openObjectiveDetail(objective.id)"
@@ -78,4 +78,4 @@
       {{ menuEntry.displayName }}
     </button>
   </mat-menu>
-</div>
+</ng-container>

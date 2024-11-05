@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { map, ReplaySubject } from 'rxjs';
@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
 import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/objective-menu-actions.service';
 import { State } from '../../shared/types/enums/State';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-objective-column',
@@ -21,6 +22,7 @@ export class ObjectiveComponent implements OnInit {
   public objective$ = new ReplaySubject<ObjectiveMin>();
   menuEntries = this.objective$.pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
   protected readonly trackByFn = trackByFn;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger | undefined;
 
   constructor(
     private readonly dialogService: DialogService,
@@ -47,6 +49,7 @@ export class ObjectiveComponent implements OnInit {
     matDialogRef.afterClosed().subscribe((result) => {
       this.objectiveService.getFullObjective(objectiveMin.id).subscribe((objective) => {
         menuEntry.afterAction(objective, result);
+        this.trigger?.focus();
       });
     });
   }

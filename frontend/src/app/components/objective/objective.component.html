@@ -21,6 +21,7 @@
           <h2 class="title fit-content">{{ objective.title }}</h2>
         </section>
         <button
+          #menuButton
           *ngIf="isWritable"
           class="icon-button three-dot-menu focus-outline"
           [matMenuTriggerFor]="objectiveMenu"

@@ -18,6 +18,7 @@ export class DialogService {
 
   DIALOG_CONFIG: MatDialogConfig = {
     maxWidth: '100vw', // Used to override the default maxWidth of angular material dialog
+    restoreFocus: true,
     autoFocus: 'first-tabbable',
   };
 

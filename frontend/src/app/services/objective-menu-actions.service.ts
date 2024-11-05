@@ -35,7 +35,7 @@ export class ObjectiveMenuActionsService {
   }
 
   getMenu(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [...this.getDefaultActions(objective), ...this.getSpecificMenuEntries(objective)];
+    return [...this.getSpecificMenuEntries(objective), ...this.getDefaultActions(objective)];
   }
 
   private getSpecificMenuEntries(objective: ObjectiveMin): ObjectiveMenuEntry[] {
@@ -55,7 +55,7 @@ export class ObjectiveMenuActionsService {
   }
 
   private getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [this.getReleaseAction(objective), this.actions.editObjectiveAction(objective)];
+    return [this.actions.editObjectiveAction(objective), this.getReleaseAction(objective)];
   }
 
   private getOngoingMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

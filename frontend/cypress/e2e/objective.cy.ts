@@ -100,7 +100,7 @@ describe('OKR Objective e2e tests', () => {
           .should('have.attr', 'src', `assets/icons/not-successful-icon.svg`);
       });
 
-      it.only(`Reopen Successful Objective`, () => {
+      it(`Reopen Successful Objective`, () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('This objective will be reopened after', 'safe', undefined, '', false);
 
@@ -140,7 +140,7 @@ describe('OKR Objective e2e tests', () => {
           .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
       });
 
-      it.only('Ongoing objective back to draft state', () => {
+      it('Ongoing objective back to draft state', () => {
         onlyOn('chrome');
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('This objective will be returned to draft state', 'safe', undefined, '', false);

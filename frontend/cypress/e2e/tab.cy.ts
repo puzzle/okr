@@ -219,6 +219,8 @@ describe('Tab workflow tests', () => {
     it('Duplicate objective with tab', () => {
       openThreeDotMenu();
       cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
       cy.focused().contains('Objective duplizieren');
       cy.realPress('Enter');
       cy.wait(500);
@@ -233,6 +235,7 @@ describe('Tab workflow tests', () => {
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
       cy.wait(500);
+      cy.get('.objective').first().focus();
       cy.tabBackwardUntil('[data-testId="quarterFilter"]');
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');
@@ -241,7 +244,6 @@ describe('Tab workflow tests', () => {
 
     it('Complete objective dialog with tab', () => {
       openThreeDotMenu();
-      cy.realPress('ArrowDown');
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective abschliessen');
       cy.realPress('Enter');

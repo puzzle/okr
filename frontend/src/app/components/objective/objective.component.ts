@@ -23,15 +23,16 @@ export class ObjectiveComponent implements OnInit {
   protected readonly trackByFn = trackByFn;
 
   constructor(
-    private dialogService: DialogService,
-    private router: Router,
-    private refreshDataService: RefreshDataService,
-    private objectiveService: ObjectiveService,
-    private translate: TranslateService,
-    private objectiveMenuActionsService: ObjectiveMenuActionsService,
+    private readonly dialogService: DialogService,
+    private readonly router: Router,
+    private readonly refreshDataService: RefreshDataService,
+    private readonly objectiveService: ObjectiveService,
+    private readonly translate: TranslateService,
+    private readonly objectiveMenuActionsService: ObjectiveMenuActionsService,
   ) {}
 
   @Input() set objective(objective: ObjectiveMin) {
+    console.log('objective', objective);
     this.objective$.next(objective);
   }
 

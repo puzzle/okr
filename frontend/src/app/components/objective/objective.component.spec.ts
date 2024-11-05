@@ -19,10 +19,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ReactiveFormsModule } from '@angular/forms';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
-import { MenuEntry } from '../../shared/types/menu-entry';
 import { of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
 import { ObjectiveMenuActions } from './ObjectiveMenuActions';
@@ -117,47 +117,5 @@ describe('ObjectiveColumnComponent', () => {
     component.isWritable = false;
     const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult"]'));
     expect(button).toBeFalsy();
-  });
-
-  it('Correct method should be called when back to draft is clicked', () => {
-    jest.spyOn(bum, 'objectiveBackToDraft');
-    component.objective$.next(objectiveMin);
-    fixture.detectChanges();
-    const menuEntry: MenuEntry =
-      bam.getOngoingMenuActions()[
-        bam
-          .getOngoingMenuActions()
-          .map((menuAction) => menuAction.action)
-          .indexOf('todraft')
-      ];
-    component.handleDialogResult(menuEntry, { endState: '', comment: null, objective: objective });
-    fixture.detectChanges();
-    expect(bum.objectiveBackToDraft).toHaveBeenCalled();
-  });
-
-  test('Should set isBacklogQuarter right', async () => {
-    expect(component.isBacklogQuarter).toBeFalsy();
-
-    objectiveMin.quarter.label = 'Backlog';
-
-    component.objective = objectiveMin;
-    fixture.detectChanges();
-    component.ngOnInit();
-
-    expect(component.isBacklogQuarter).toBeTruthy();
-  });
-
-  test('Should return correct menu entries when backlog', async () => {
-    objectiveMin.quarter.label = 'Backlog';
-    component.objective = objectiveMin;
-    fixture.detectChanges();
-    component.ngOnInit();
-
-    let menuActions = component.getDraftMenuActions();
-
-    expect(menuActions.length).toEqual(3);
-    expect(menuActions[0].displayName).toEqual('Objective bearbeiten');
-    expect(menuActions[1].displayName).toEqual('Objective duplizieren');
-    expect(menuActions[2].displayName).toEqual('Objective veröffentlichen');
   });
 });

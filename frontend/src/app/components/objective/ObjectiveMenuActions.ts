@@ -60,7 +60,7 @@ export class ObjectiveMenuActions {
   }
 
   objectiveBackToDraft(): ObjectiveMenuEntry {
-    const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.DRAFT_CREATE');
+    const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.TO_DRAFT');
     const afterAction: ObjectiveMenuAfterAction = (obj: Objective, result: any) =>
       this.afterActions.objectiveBackToDraft(obj);
 

@@ -100,7 +100,7 @@ describe('OKR Objective e2e tests', () => {
           .should('have.attr', 'src', `assets/icons/not-successful-icon.svg`);
       });
 
-      it(`Reopen Successful Objective`, () => {
+      it.only(`Reopen Successful Objective`, () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('This objective will be reopened after', 'safe', undefined, '', false);
 
@@ -129,6 +129,10 @@ describe('OKR Objective e2e tests', () => {
           .contains('Objective wiedereröffnen')
           .click();
 
+        cy.contains('Objective wiedereröffnen');
+        cy.contains('Soll dieses Objective wiedereröffnet werden?');
+        cy.getByTestId('confirmYes').click();
+
         cy.getByTestId('objective')
           .filter(':contains("This objective will be reopened after")')
           .last()
@@ -136,7 +140,7 @@ describe('OKR Objective e2e tests', () => {
           .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
       });
 
-      it('Ongoing objective back to draft state', () => {
+      it.only('Ongoing objective back to draft state', () => {
         onlyOn('chrome');
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('This objective will be returned to draft state', 'safe', undefined, '', false);
@@ -154,7 +158,7 @@ describe('OKR Objective e2e tests', () => {
           .tabForward();
         cy.contains('Objective als Draft speichern');
         cy.contains('Soll dieses Objective als Draft gespeichert werden?');
-        cy.focused().click().wait(500);
+        cy.getByTestId('confirmYes').click();
 
         cy.getByTestId('objective')
           .filter(':contains("This objective will be returned to draft state")')

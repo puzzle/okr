@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { map, Subject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveService } from '../../services/objective.service';
-import { getStateByValue, isObjectiveComplete, trackByFn } from '../../shared/common';
+import { trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
 import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/objective-menu-actions.service';
+import { State } from '../../shared/types/enums/State';
 
 @Component({
   selector: 'app-objective-column',
@@ -20,7 +21,6 @@ export class ObjectiveComponent implements OnInit {
   public objective$ = new Subject<ObjectiveMin>();
   menuEntries = this.objective$.pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
   protected readonly trackByFn = trackByFn;
-  protected readonly isObjectiveComplete = isObjectiveComplete;
 
   constructor(
     private dialogService: DialogService,
@@ -38,7 +38,7 @@ export class ObjectiveComponent implements OnInit {
   ngOnInit() {}
 
   getStateTooltip(stateString: string): string {
-    const state = getStateByValue(stateString);
+    const state = this.getStateByValue(stateString);
     return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP', { state: state });
   }
 
@@ -70,5 +70,13 @@ export class ObjectiveComponent implements OnInit {
         }
         this.refreshDataService.markDataRefresh();
       });
+  }
+
+  isObjectiveComplete(objective: ObjectiveMin): boolean {
+    return objective.state == State.SUCCESSFUL || objective.state == State.NOTSUCCESSFUL;
+  }
+
+  getStateByValue(value: string): string {
+    return Object.keys(State).find((key) => State[key as keyof typeof State] === value) ?? '';
   }
 }

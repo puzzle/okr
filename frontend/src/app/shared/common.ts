@@ -94,22 +94,10 @@ export function isMobileDevice() {
   return window.navigator.userAgent.toLowerCase().includes('mobile');
 }
 
-export function isInBacklogQuarter(objective: ObjectiveMin) {
-  return !GJ_REGEX_PATTERN.test(objective.quarter.label);
-}
-
-export function isObjectiveComplete(objective: ObjectiveMin): boolean {
-  return objective.state == State.SUCCESSFUL || objective.state == State.NOTSUCCESSFUL;
-}
-
 export function hasFormFieldErrors(formGroup: FormGroup, field: string) {
   if (formGroup.get(field)?.dirty || formGroup.get(field)?.touched) {
     return formGroup.get(field)?.errors;
   } else {
     return false;
   }
-}
-
-export function getStateByValue(value: string): string {
-  return Object.keys(State).find((key) => State[key as keyof typeof State] === value) ?? '';
 }

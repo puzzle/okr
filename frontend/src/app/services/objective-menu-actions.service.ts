@@ -3,12 +3,12 @@ import { DialogService } from './dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { State } from '../shared/types/enums/State';
-import { isInBacklogQuarter, isObjectiveComplete } from '../shared/common';
 import { ObjectiveMenuAfterActions } from '../components/objective/ObjectiveMenuAfterActions';
 import { ObjectiveService } from './objective.service';
 import { RefreshDataService } from './refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveMenuActions } from '../components/objective/ObjectiveMenuActions';
+import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
 export type ObjectiveMenuAfterAction = (objective: Objective, dialogResult: any) => any;
@@ -39,7 +39,7 @@ export class ObjectiveMenuActionsService {
   }
 
   private getSpecificMenuEntries(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    if (isObjectiveComplete(objective)) {
+    if (this.isObjectiveComplete(objective)) {
       return this.getCompletedMenuActions(objective);
     } else if (objective.state === State.ONGOING) {
       return this.getOngoingMenuActions(objective);
@@ -71,8 +71,16 @@ export class ObjectiveMenuActionsService {
   }
 
   private getReleaseAction(objective: ObjectiveMin): ObjectiveMenuEntry {
-    return isInBacklogQuarter(objective)
+    return this.isInBacklogQuarter(objective)
       ? this.actions.releaseFromBacklogAction(objective)
       : this.actions.releaseFromQuarterAction(objective);
+  }
+
+  private isObjectiveComplete(objective: ObjectiveMin): boolean {
+    return objective.state == State.SUCCESSFUL || objective.state == State.NOTSUCCESSFUL;
+  }
+
+  private isInBacklogQuarter(objective: ObjectiveMin) {
+    return !GJ_REGEX_PATTERN.test(objective.quarter.label);
   }
 }

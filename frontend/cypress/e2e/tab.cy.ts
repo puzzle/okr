@@ -72,7 +72,7 @@ describe('Tab workflow tests', () => {
   }
 
   function openKeyresultDetail() {
-    cy.get('.objective').first().focus();
+    cy.get("[src='assets/icons/ongoing-icon.svg']").parentsUntil('.objective').focus();
     cy.tabForwardUntil('[data-testId="key-result"]');
     cy.focused().contains('Fail');
     cy.focused().contains('Commit');

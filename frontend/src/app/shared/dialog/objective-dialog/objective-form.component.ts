@@ -237,6 +237,4 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
     return '';
   }
-
-  protected readonly getQuarterLabel = getQuarterLabel;
 }

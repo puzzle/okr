@@ -55,7 +55,7 @@ export class ObjectiveMenuActionsService {
   }
 
   private getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [this.getReleaseAction(objective)];
+    return [this.getReleaseAction(objective), this.actions.editObjectiveAction(objective)];
   }
 
   private getOngoingMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

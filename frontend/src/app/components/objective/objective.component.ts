@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
-import { map, Subject } from 'rxjs';
+import { map, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveService } from '../../services/objective.service';
 import { trackByFn } from '../../shared/common';
@@ -18,7 +18,7 @@ import { State } from '../../shared/types/enums/State';
 })
 export class ObjectiveComponent implements OnInit {
   @Input() isWritable!: boolean;
-  public objective$ = new Subject<ObjectiveMin>();
+  public objective$ = new ReplaySubject<ObjectiveMin>();
   menuEntries = this.objective$.pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
   protected readonly trackByFn = trackByFn;
 

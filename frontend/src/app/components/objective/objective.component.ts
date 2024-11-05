@@ -32,7 +32,6 @@ export class ObjectiveComponent implements OnInit {
   ) {}
 
   @Input() set objective(objective: ObjectiveMin) {
-    console.log('objective', objective);
     this.objective$.next(objective);
   }
 

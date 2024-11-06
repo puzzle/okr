@@ -8,7 +8,6 @@ import { UserTeam } from '../../shared/types/model/UserTeam';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';
-import { CancelDialogComponent } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
@@ -79,12 +78,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   removeUserFromTeam(userTeam: UserTeam, user: User) {
+    const i18nData = {
+      user: getFullNameFromUser(user),
+      team: userTeam.team.name,
+    };
     this.dialogService
-      .open(CancelDialogComponent, {
-        data: {
-          dialogTitle: getFullNameFromUser(user) + ` wirklich aus Team ${userTeam.team.name} entfernen?`,
-        },
-      })
+      .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),

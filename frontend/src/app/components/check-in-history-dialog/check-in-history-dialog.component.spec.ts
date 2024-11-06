@@ -7,10 +7,13 @@ import { checkInMetric, checkInMetricWriteableFalse, keyResult } from '../../sha
 import { By } from '@angular/platform-browser';
 import { DialogService } from '../../services/dialog.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SpinnerComponent } from '../../shared/custom/spinner/spinner.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 const checkInService = {
   getAllCheckInOfKeyResult: jest.fn(),
@@ -22,10 +25,13 @@ describe('CheckInHistoryDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CheckInHistoryDialogComponent, DialogHeaderComponent, SpinnerComponent],
+      declarations: [CheckInHistoryDialogComponent, DialogTemplateCoreComponent, SpinnerComponent],
 
-      imports: [HttpClientTestingModule, TranslateModule.forRoot(), MatIconModule, MatProgressSpinner],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatProgressSpinner, MatDividerModule, MatDialogModule],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         TranslateService,
         DialogService,
         { provide: MAT_DIALOG_DATA, useValue: { keyResult: keyResult } },

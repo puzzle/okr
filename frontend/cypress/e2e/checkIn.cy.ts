@@ -374,7 +374,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.wait('@getKeyResultsAfterSave');
 
       cy.getByTestId('add-check-in').first().click();
-      cy.contains('Letzter Wert').siblings('div').contains('10%');
+      cy.contains('Letzter Wert').siblings('div').contains('10 %');
     });
   });
 });

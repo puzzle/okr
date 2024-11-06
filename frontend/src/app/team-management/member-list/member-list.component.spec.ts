@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListTableComponent } from './member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
 import { DialogService } from '../../services/dialog.service';
+import { provideHttpClient } from '@angular/common/http';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -184,7 +185,7 @@ describe('MemberListComponent', () => {
   it('deleteTeam should trigger teamService.deleteTeam and navigate', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
-    dialogService.open.mockReturnValue({
+    dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -204,7 +205,7 @@ describe('MemberListComponent', () => {
   it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
-    dialogService.open.mockReturnValue({
+    dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(false),
     });
 

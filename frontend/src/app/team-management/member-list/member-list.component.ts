@@ -84,13 +84,12 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   deleteTeam(selectedTeam: Team) {
+    const data = {
+      team: selectedTeam.name,
+    };
+
     this.dialogService
-      .open(CancelDialogComponent, {
-        data: {
-          dialogTitle: selectedTeam.name + ' wirklich löschen?',
-          dialogText: 'Soll das Team und dessen OKRs wirklich gelöscht werden?',
-        },
-      })
+      .openConfirmDialog('CONFIRMATION.DELETE.TEAM', data)
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),

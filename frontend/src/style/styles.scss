@@ -47,15 +47,6 @@ body.okr {
 
   p {
     margin: 0;
-    font-size: 14px;
-  }
-
-  span {
-    font-size: 14px;
-  }
-
-  .quarter-filter-text span {
-    font-size: 16px;
   }
 
   a {
@@ -348,7 +339,52 @@ table.okr-table {
 }
 
 .okr-dialog-panel {
+  margin-top: $top-bar-height;
+  max-height: calc(100vh - $top-bar-height);
   @extend .col-12;
+}
 
+.okr-dialog-panel-default {
+  @extend .okr-dialog-panel;
+  @extend .col-sm-8;
   @extend .col-md-6;
+  @extend .col-lg-5;
+  @extend .col-xxl-4;
+  @include media-breakpoint-down(sm) {
+    height: 100%;
+  }
+}
+
+.okr-dialog-panel-small {
+  @extend .okr-dialog-panel;
+  @extend .col-sm-8;
+  @extend .col-md-6;
+  @extend .col-lg-5;
+  @extend .col-xl-4;
+  @extend .col-xxl-3;
+}
+
+.okr-form-container {
+  @extend .container-fluid;
+}
+
+.okr-form-row {
+  @extend .row;
+}
+
+.okr-form-col {
+  @extend .col-12;
+}
+
+.okr-form-label {
+  color: black;
+  @extend .py-1;
+}
+
+// Is used to style the input fields in the OKR form globally
+.okr-form-input {
+  @extend .okr-form-col;
+}
+
+.okr-form-label-input-container {
 }

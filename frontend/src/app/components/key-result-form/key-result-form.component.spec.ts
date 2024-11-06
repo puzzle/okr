@@ -27,6 +27,9 @@ import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/Quarter';
 
 describe('KeyResultFormComponent', () => {

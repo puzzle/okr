@@ -47,8 +47,8 @@
         "TEXT": "Möchtest du die Action wirklich löschen?"
       },
       "TEAM":{
-        "TITLE": "Löschen bestätigen",
-        "TEXT": "Möchtest du dieses Team wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!"
+        "TITLE": "Team löschen",
+        "TEXT": "Möchtest du das Team '{{team}}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!"
       },
       "OBJECTIVE":{
         "TITLE": "Objective löschen",
@@ -57,6 +57,10 @@
       "KEYRESULT":{
         "TITLE": "Key Result löschen",
         "TEXT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
+      },
+      "USER_FROM_TEAM":{
+        "TITLE": "Mitglied entfernen",
+        "TEXT": "Möchtest du {{user}} wirklich aus dem Team '{{team}}' entfernen?"
       }
     }
   },

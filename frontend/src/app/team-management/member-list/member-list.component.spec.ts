@@ -1,10 +1,10 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { of } from 'rxjs';
 import { MemberListComponent } from './member-list.component';
 import { UserService } from '../../services/user.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { User } from '../../shared/types/model/User';
 import { team1, team2, team3, testUser, users } from '../../shared/testData';
 import { convertFromUser, convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListTableComponent } from './member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
 import { DialogService } from '../../services/dialog.service';
+import { provideHttpClient } from '@angular/common/http';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -42,6 +43,7 @@ const routerMock = {
 
 const dialogService = {
   open: jest.fn(),
+  openConfirmDialog: jest.fn(),
 };
 
 describe('MemberListComponent', () => {
@@ -51,8 +53,11 @@ describe('MemberListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MemberListComponent, MemberListTableComponent, MemberListMobileComponent],
-      imports: [HttpClientTestingModule, TranslateTestingModule, BrowserAnimationsModule],
+      imports: [TranslateTestingModule, BrowserAnimationsModule],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: UserService, useValue: userServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: TeamService, useValue: teamServiceMock },
@@ -180,7 +185,7 @@ describe('MemberListComponent', () => {
   it('deleteTeam should trigger teamService.deleteTeam and navigate', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
-    dialogService.open.mockReturnValue({
+    dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -200,7 +205,7 @@ describe('MemberListComponent', () => {
   it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
-    dialogService.open.mockReturnValue({
+    dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(false),
     });
 

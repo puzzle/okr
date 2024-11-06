@@ -111,13 +111,17 @@ export class CheckInFormComponent implements OnInit {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  getActions(): Action[] | null {
-    return this.dialogForm.controls['actionList'].value;
+  getActions(): Action[] {
+    return this.dialogForm.controls['actionList'].value || [];
   }
 
   changeIsChecked(event: any, index: number) {
     const actions = this.dialogForm.value.actionList!;
     actions[index] = { ...actions[index], isChecked: event.checked };
     this.dialogForm.patchValue({ actionList: actions });
+  }
+
+  getDialogTitle(): string {
+    return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
   }
 }

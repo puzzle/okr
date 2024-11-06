@@ -4,7 +4,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { keyResultOrdinal, testUser, users } from '../../shared/testData';
 import { State } from '../../shared/types/enums/State';
@@ -14,7 +14,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
 import { User } from '../../shared/types/model/User';
-import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-header.component';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyresultTypeComponent } from '../keyresult-type/keyresult-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
@@ -26,7 +25,11 @@ import { Action } from '../../shared/types/model/Action';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/Quarter';
 
 describe('KeyResultFormComponent', () => {
@@ -93,7 +96,6 @@ describe('KeyResultFormComponent', () => {
       mockUserService.getUsers.mockReturnValue(users);
       TestBed.configureTestingModule({
         imports: [
-          HttpClientTestingModule,
           MatDialogModule,
           NoopAnimationsModule,
           MatSelectModule,
@@ -120,8 +122,16 @@ describe('KeyResultFormComponent', () => {
             provide: OAuthService,
             useValue: oauthMockService,
           },
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
         ],
-        declarations: [KeyResultFormComponent, DialogHeaderComponent, KeyresultTypeComponent, ActionPlanComponent],
+        declarations: [
+          KeyResultFormComponent,
+          DialogTemplateCoreComponent,
+          KeyresultTypeComponent,
+          ActionPlanComponent,
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultFormComponent);

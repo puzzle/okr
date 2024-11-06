@@ -29,6 +29,7 @@ describe('MemberListTableComponent', () => {
 
   const dialogService = {
     open: jest.fn(),
+    openConfirmDialog: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -94,7 +95,7 @@ describe('MemberListTableComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogService.open.mockReturnValue({
+    dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(true),
     });
 
@@ -115,7 +116,7 @@ describe('MemberListTableComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogService.open.mockReturnValue({
+    dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(false),
     });
 

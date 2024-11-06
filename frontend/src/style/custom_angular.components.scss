@@ -21,7 +21,6 @@
 
 .mdc-button--outlined {
   padding: 0 16px 0 16px !important;
-  margin-left: 8px !important;
 }
 
 .ordinal-zone .mdc-form-field,
@@ -47,15 +46,6 @@
 
 .mdc-dialog__title::before {
   display: none !important;
-}
-
-.mat-mdc-dialog-surface {
-  padding: 1rem 0 1rem 0;
-}
-
-mat-dialog-content,
-mat-dialog-actions {
-  padding: 0 1.62rem 0 1.62rem !important;
 }
 
 //Offset for top bar
@@ -100,4 +90,8 @@ $scale-gap: 0.1;
 
 #toast-container {
   position: fixed;
+}
+
+.mat-mdc-dialog-surface {
+  overflow: unset !important;
 }

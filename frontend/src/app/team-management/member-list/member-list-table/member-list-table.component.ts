@@ -1,14 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/UserTableEntry';
-import { User } from '../../../shared/types/model/User';
+import { getFullNameFromUser, User } from '../../../shared/types/model/User';
 import { Team } from '../../../shared/types/model/Team';
 import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/routeUtils';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/UserTeam';
-import { CancelDialogComponent } from '../../../shared/dialog/cancel-dialog/cancel-dialog.component';
 import { DialogService } from '../../../services/dialog.service';
 
 @Component({
@@ -57,13 +56,12 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-
+    const i18nData = {
+      user: `${entry.firstname} ${entry.lastname}`,
+      team: this.selectedTeam$.value?.name,
+    };
     this.dialogService
-      .open(CancelDialogComponent, {
-        data: {
-          dialogTitle: `${entry.firstname} ${entry.lastname} wirklich aus Team ${this.selectedTeam$.value?.name} entfernen?`,
-        },
-      })
+      .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),

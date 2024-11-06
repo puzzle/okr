@@ -30,7 +30,7 @@ describe('OKR Objective e2e tests', () => {
           .click();
         cy.contains('Objective veröffentlichen');
         cy.contains('Soll dieses Objective veröffentlicht werden?');
-        cy.getByTestId('confirmYes').click();
+        cy.getByTestId('confirm-yes').click();
         cy.getByTestId('objective')
           .filter(':contains(A objective in state draft)')
           .last()

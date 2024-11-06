@@ -1,7 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { ObjectiveFormComponent } from './objective-form.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,11 +21,15 @@ import { TeamService } from '../../../services/team.service';
 import { State } from '../../types/enums/State';
 import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
-import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
+import { RouterTestingHarness } from '@angular/router/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -89,7 +92,6 @@ describe('ObjectiveDialogComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          HttpClientTestingModule,
           MatDialogModule,
           MatIconModule,
           MatFormFieldModule,
@@ -98,13 +100,16 @@ describe('ObjectiveDialogComponent', () => {
           MatInputModule,
           NoopAnimationsModule,
           MatCheckboxModule,
-          RouterTestingModule,
           TranslateTestingModule.withTranslations({
             de: de,
           }),
+          MatDividerModule,
         ],
-        declarations: [ObjectiveFormComponent, DialogHeaderComponent],
+        declarations: [ObjectiveFormComponent, DialogTemplateCoreComponent],
         providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           { provide: MatDialogRef, useValue: dialogMock },
           { provide: MAT_DIALOG_DATA, useValue: matDataMock },
           { provide: ObjectiveService, useValue: objectiveService },
@@ -345,7 +350,6 @@ describe('ObjectiveDialogComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          HttpClientTestingModule,
           MatDialogModule,
           MatIconModule,
           MatFormFieldModule,
@@ -354,13 +358,16 @@ describe('ObjectiveDialogComponent', () => {
           MatInputModule,
           NoopAnimationsModule,
           MatCheckboxModule,
-          RouterTestingModule,
           TranslateTestingModule.withTranslations({
             de: de,
           }),
+          MatDividerModule,
         ],
-        declarations: [ObjectiveFormComponent, DialogHeaderComponent],
+        declarations: [ObjectiveFormComponent, DialogTemplateCoreComponent],
         providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           { provide: MatDialogRef, useValue: dialogMock },
           { provide: MAT_DIALOG_DATA, useValue: matDataMock },
           { provide: ObjectiveService, useValue: objectiveService },

@@ -25,7 +25,6 @@ body.okr {
 
   p {
     margin: 0;
-    padding: 0;
   }
 
   a {
@@ -75,6 +74,16 @@ body.okr {
   border: solid $keyResult-attribute-edit-border 1px;
 }
 
+.dialog-data-show {
+  @extend .okr-form-label;
+  @extend .linebreak;
+  @extend .bg-display-element;
+  @extend .fs-6;
+  @extend .fw-normal;
+  @extend .px-2;
+  @extend .py-1;
+}
+
 .bg-grey {
   background-color: $overview-bg;
 }
@@ -93,23 +102,8 @@ body pzsh-backdrop {
   }
 }
 
-.dialog {
-  max-width: 769px;
-  box-shadow:
-    0 0 0 0 rgba(0, 0, 0, 0.06),
-    1px 1px 2px 0 rgba(0, 0, 0, 0.06),
-    3px 3px 4px 0 rgba(0, 0, 0, 0.05),
-    8px 6px 6px 0 rgba(0, 0, 0, 0.03),
-    14px 11px 7px 0 rgba(0, 0, 0, 0.01),
-    21px 18px 8px 0 rgba(0, 0, 0, 0);
-}
-
 .disable-scrolling {
   overflow-y: hidden;
-}
-
-input textarea {
-  outline-color: #909090;
 }
 
 .panel {
@@ -119,6 +113,10 @@ input textarea {
 
 .backdrop {
   margin-top: $top-bar-height;
+}
+
+input textarea {
+  outline-color: #909090;
 }
 
 .cursor-pointer {
@@ -141,13 +139,14 @@ input[type="text"] {
   @extend .ps-1;
 }
 
-.big-dialog-form-field {
-  height: 4.375rem !important;
+.dialog-form-field {
+  width: 100%;
   padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
 }
 
-.dialog-form-field {
-  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
+.big-dialog-form-field {
+  @extend .dialog-form-field;
+  height: 4.375rem !important;
 }
 
 .mat-mdc-checkbox .mdc-form-field {
@@ -162,9 +161,8 @@ input[type="text"] {
 
 .custom-select {
   border: solid 1px #909090;
-  padding: 0.44rem 0.625rem 0.375rem 0.625rem;
+  @extend .dialog-form-field;
   cursor: pointer;
-  width: 9.625rem;
   height: 1.18rem;
   box-sizing: content-box;
 }
@@ -224,47 +222,6 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   margin-bottom: 1rem;
 }
 
-.scroll-shadows {
-  max-height: 80vh;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  overflow-scrolling: touch;
-
-  background:
-    /* Shadow Cover TOP */
-    linear-gradient(white 30%, rgba(255, 255, 255, 0)) center top,
-    /* Shadow Cover BOTTOM */ linear-gradient(rgba(255, 255, 255, 0), white 70%) center bottom,
-    /* Shadow TOP */ radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) center top,
-    /* Shadow BOTTOM */ radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) center bottom;
-
-  background-repeat: no-repeat;
-  background-size:
-    100% 40px,
-    100% 40px,
-    100% 14px,
-    100% 14px;
-  background-attachment: local, local, scroll, scroll;
-}
-
-.scroll-shadows {
-  --scrollbarBG: transparent;
-  --thumbBG: #90a4ae;
-
-  scrollbar-width: thin;
-  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
-}
-.scroll-shadows::-webkit-scrollbar {
-  width: 6px;
-}
-.scroll-shadows::-webkit-scrollbar-track {
-  background: var(--scrollbarBG);
-}
-.scroll-shadows::-webkit-scrollbar-thumb {
-  background-color: var(--thumbBG);
-  border-radius: 6px;
-  border: 3px solid var(--scrollbarBG);
-}
-
 .sub-title-keyresult {
   font-size: 0.9rem !important;
 }
@@ -295,6 +252,10 @@ img.add-cross-button {
 
 .h-0 {
   height: 0;
+}
+
+.h-fit {
+  height: fit-content;
 }
 
 .break-word {
@@ -372,7 +333,52 @@ table.okr-table {
 }
 
 .okr-dialog-panel {
+  margin-top: $top-bar-height;
+  max-height: calc(100vh - $top-bar-height);
   @extend .col-12;
+}
 
+.okr-dialog-panel-default {
+  @extend .okr-dialog-panel;
+  @extend .col-sm-8;
   @extend .col-md-6;
+  @extend .col-lg-5;
+  @extend .col-xxl-4;
+  @include media-breakpoint-down(sm) {
+    height: 100%;
+  }
+}
+
+.okr-dialog-panel-small {
+  @extend .okr-dialog-panel;
+  @extend .col-sm-8;
+  @extend .col-md-6;
+  @extend .col-lg-5;
+  @extend .col-xl-4;
+  @extend .col-xxl-3;
+}
+
+.okr-form-container {
+  @extend .container-fluid;
+}
+
+.okr-form-row {
+  @extend .row;
+}
+
+.okr-form-col {
+  @extend .col-12;
+}
+
+.okr-form-label {
+  color: black;
+  @extend .py-1;
+}
+
+// Is used to style the input fields in the OKR form globally
+.okr-form-input {
+  @extend .okr-form-col;
+}
+
+.okr-form-label-input-container {
 }

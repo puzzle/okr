@@ -11,9 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmDialogData } from '../../../services/dialog.service';
+import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 const dialogRefMock = {
   close: jest.fn(),
@@ -35,8 +36,9 @@ describe('ConfirmDialogComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         MatIconModule,
+        MatDividerModule,
       ],
-      declarations: [ConfirmDialogComponent, DialogHeaderComponent],
+      declarations: [ConfirmDialogComponent, DialogTemplateCoreComponent],
       providers: [
         TranslateService,
         { provide: MAT_DIALOG_DATA, useValue: { title: '', text: '' } as ConfirmDialogData },

@@ -8,7 +8,6 @@ import { UnitLabelTransformationPipe } from './pipes/unit-label-transformation/u
 import { ParseUnitValuePipe } from './pipes/parse-unit-value/parse-unit-value.pipe';
 import { ScoringComponent } from './custom/scoring/scoring.component';
 import { CompleteDialogComponent } from './dialog/complete-dialog/complete-dialog.component';
-import { DialogHeaderComponent } from './custom/dialog-header/dialog-header.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,7 +24,8 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from './custom/spinner/spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.component';
+import { DialogTemplateCoreComponent } from './custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -37,11 +37,10 @@ import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.comp
     ParseUnitValuePipe,
     ScoringComponent,
     CompleteDialogComponent,
-    DialogHeaderComponent,
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,
-    CancelDialogComponent,
+    DialogTemplateCoreComponent,
   ],
   imports: [
     CommonModule,
@@ -62,6 +61,7 @@ import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.comp
     A11yModule,
     RouterOutlet,
     MatProgressSpinnerModule,
+    MatDividerModule,
   ],
   exports: [
     ExampleDialogComponent,
@@ -72,10 +72,10 @@ import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.comp
     ParseUnitValuePipe,
     ScoringComponent,
     CompleteDialogComponent,
-    DialogHeaderComponent,
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,
+    DialogTemplateCoreComponent,
   ],
 })
 export class SharedModule {}

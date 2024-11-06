@@ -1,0 +1,35 @@
+<div mat-dialog-title>
+  <div class="container-fluid">
+    <div class="row">
+      <h2 class="col d-flex justify-content-between align-items-center my-2">
+        {{ title }}
+        <button mat-dialog-close mat-icon-button>
+          <mat-icon class="text-secondary">close</mat-icon>
+        </button>
+      </h2>
+    </div>
+  </div>
+</div>
+
+<mat-divider class="mx-4"></mat-divider>
+
+<mat-dialog-content>
+  <ng-container *ngIf="isValueReady(observable | async); else spinner">
+    <div class="container-fluid">
+      <ng-content select="[content]"></ng-content>
+    </div>
+  </ng-container>
+  <ng-template #spinner>
+    <app-spinner [text]="title + ' wird geladen...'"></app-spinner>
+  </ng-template>
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions>
+  <div class="container-fluid">
+    <div class="row justify-content-between">
+      <ng-content select="[actions]"></ng-content>
+    </div>
+  </div>
+</mat-dialog-actions>

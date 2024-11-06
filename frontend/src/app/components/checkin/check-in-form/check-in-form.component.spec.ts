@@ -11,7 +11,6 @@ import {
   keyResultMetric,
   keyResultOrdinal,
 } from '../../../shared/testData';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,11 +22,16 @@ import { ParseUnitValuePipe } from '../../../shared/pipes/parse-unit-value/parse
 import { CheckInService } from '../../../services/check-in.service';
 import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
+// @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { DialogHeaderComponent } from '../../../shared/custom/dialog-header/dialog-header.component';
 import { ConfidenceComponent } from '../../confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 const dialogMock = {
   close: jest.fn(),
@@ -48,7 +52,6 @@ describe('CheckInFormComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         MatDialogModule,
         MatIconModule,
         MatFormFieldModule,
@@ -63,15 +66,19 @@ describe('CheckInFormComponent', () => {
         TranslateTestingModule.withTranslations({
           de: de,
         }),
+        MatDividerModule,
       ],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: MAT_DIALOG_DATA, useValue: { keyResult: {} } },
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: CheckInService, useValue: checkInServiceMock },
         { provide: ActionService, useValue: actionServiceMock },
         ParseUnitValuePipe,
       ],
-      declarations: [CheckInFormComponent, DialogHeaderComponent, ConfidenceComponent],
+      declarations: [CheckInFormComponent, DialogTemplateCoreComponent, ConfidenceComponent],
     });
     fixture = TestBed.createComponent(CheckInFormComponent);
     component = fixture.componentInstance;

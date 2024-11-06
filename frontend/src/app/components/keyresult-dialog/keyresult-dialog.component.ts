@@ -62,7 +62,7 @@ export class KeyresultDialogComponent {
 
   deleteKeyResult() {
     this.dialogService
-      .openConfirmDialog('CONFIRMATION.DELETE.KEY_RESULT')
+      .openConfirmDialog('CONFIRMATION.DELETE.KEYRESULT')
       .afterClosed()
       .subscribe((result) => {
         if (result) {
@@ -86,5 +86,9 @@ export class KeyresultDialogComponent {
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
+  }
+
+  getDialogTitle(): string {
+    return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
   }
 }

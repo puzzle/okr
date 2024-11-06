@@ -166,9 +166,9 @@ export const MY_FORMATS = {
     MatChipsModule,
     CdkDropList,
     CdkDrag,
-    SharedModule,
     A11yModule,
     CdkDragHandle,
+    SharedModule,
   ],
   providers: [
     {

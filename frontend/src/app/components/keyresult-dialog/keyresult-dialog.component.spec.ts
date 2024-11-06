@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { testUser, users } from '../../shared/testData';
@@ -16,7 +15,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
-import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-header.component';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyresultTypeComponent } from '../keyresult-type/keyresult-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
@@ -24,6 +22,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 import { KeyResultFormComponent } from '../key-result-form/key-result-form.component';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { MatDividerModule } from '@angular/material/divider';
+import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/Quarter';
 
 describe('KeyresultDialogComponent', () => {
@@ -254,7 +257,6 @@ describe('KeyresultDialogComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          HttpClientTestingModule,
           MatDialogModule,
           NoopAnimationsModule,
           MatSelectModule,
@@ -265,8 +267,12 @@ describe('KeyresultDialogComponent', () => {
           MatIconModule,
           TranslateModule.forRoot(),
           DragDropModule,
+          MatDividerModule,
         ],
         providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           KeyresultService,
           TranslateService,
           { provide: UserService, useValue: userService },
@@ -286,9 +292,9 @@ describe('KeyresultDialogComponent', () => {
         declarations: [
           KeyresultDialogComponent,
           KeyResultFormComponent,
-          DialogHeaderComponent,
           KeyresultTypeComponent,
           ActionPlanComponent,
+          DialogTemplateCoreComponent,
         ],
       }).compileComponents();
 
@@ -409,13 +415,16 @@ describe('KeyresultDialogComponent', () => {
           NoopAnimationsModule,
           MatInputModule,
           ReactiveFormsModule,
-          HttpClientTestingModule,
           MatIconModule,
           MatAutocompleteModule,
           DragDropModule,
           TranslateModule.forRoot(),
+          MatDividerModule,
         ],
         providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           KeyresultService,
           {
             provide: MatDialogRef,
@@ -435,7 +444,7 @@ describe('KeyresultDialogComponent', () => {
         declarations: [
           KeyresultDialogComponent,
           KeyResultFormComponent,
-          DialogHeaderComponent,
+          DialogTemplateCoreComponent,
           ActionPlanComponent,
           KeyresultTypeComponent,
         ],
@@ -554,13 +563,16 @@ describe('KeyresultDialogComponent', () => {
           NoopAnimationsModule,
           MatInputModule,
           ReactiveFormsModule,
-          HttpClientTestingModule,
           MatIconModule,
           MatAutocompleteModule,
           DragDropModule,
           TranslateModule.forRoot(),
+          MatDividerModule,
         ],
         providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           KeyresultService,
           {
             provide: MatDialogRef,
@@ -578,7 +590,7 @@ describe('KeyresultDialogComponent', () => {
         declarations: [
           KeyresultDialogComponent,
           KeyResultFormComponent,
-          DialogHeaderComponent,
+          DialogTemplateCoreComponent,
           ActionPlanComponent,
           KeyresultTypeComponent,
         ],

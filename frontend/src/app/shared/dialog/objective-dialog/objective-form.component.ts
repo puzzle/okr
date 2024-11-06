@@ -217,4 +217,24 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   isBacklogQuarter(label: string) {
     return GJ_REGEX_PATTERN.test(label);
   }
+
+  getDialogTitle(teamName: string): string {
+    if (this.data.action === 'duplicate') {
+      return `Objective von ${teamName} duplizieren`;
+    }
+
+    if (this.data.action === 'releaseBacklog') {
+      return 'Objective veröffentlichen';
+    }
+
+    if (!this.data.objective.objectiveId) {
+      return `Objective für ${teamName} erfassen`;
+    }
+
+    if (this.data.objective.objectiveId && this.data.action !== 'releaseBacklog') {
+      return `Objective von ${teamName} bearbeiten`;
+    }
+
+    return '';
+  }
 }

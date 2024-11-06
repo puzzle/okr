@@ -416,7 +416,7 @@ describe('Tab workflow tests', () => {
         cy.tabForwardUntil('[data-testId="add-action-plan-line"]');
         cy.tabBackward();
         cy.realPress('Enter');
-        cy.tabForwardUntil('[data-testId="confirmYes"]');
+        cy.tabForwardUntil('[data-testId="confirm-yes"]');
         cy.realPress('Enter');
         cy.tabForward();
         cy.tabForwardUntil('[data-testId="submit"]');

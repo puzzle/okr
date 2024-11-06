@@ -4,6 +4,7 @@ import { pressUntilContains, doUntilSelector } from './helper/utils';
 import Chainable = Cypress.Chainable;
 
 Cypress.Commands.add('loginAsUser', (user: any) => {
+  cy.viewport(1920, 1080);
   loginWithCredentials(user.username, user.password);
   overviewIsLoaded();
 });

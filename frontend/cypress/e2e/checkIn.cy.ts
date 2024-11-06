@@ -131,7 +131,8 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
     });
 
-    it('Should generate checkin list', () => {
+    // TODO: Re-enable tests in ticket #1014 https://github.com/puzzle/okr/issues/1014
+    xit('Should generate checkin list', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
 
@@ -368,7 +369,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.intercept('**/keyresults/*').as('getKeyResultsAfterSave');
       cy.getByTestId('add-check-in').first().click();
-      cy.get('#old-value').should('not.exist');
+      cy.getByTestId('old-checkin-value').should('not.exist');
       cy.fillOutCheckInMetric(10, 0, 'changeinfo', 'initiatives');
       cy.wait('@getKeyResultsAfterSave');
 

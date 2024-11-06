@@ -15,16 +15,13 @@
     >
       <span class="d-flex align-items-center fw-bold add-text">
         <img
-          *ngIf="!addButtonDisabled(selectableAdminTeams)"
+          [src]="
+            addButtonDisabled(selectableAdminTeams)
+              ? '/assets/icons/new-icon-disabled.svg'
+              : '/assets/icons/new-icon.svg'
+          "
           alt="Add key-result button"
           class="add-cross-button"
-          src="/assets/icons/new-icon.svg"
-        />
-        <img
-          *ngIf="addButtonDisabled(selectableAdminTeams)"
-          alt="Add key-result button"
-          class="add-cross-button"
-          src="/assets/icons/new-icon-disabled.svg"
         />
         Zu weiterem Team hinzufügen
       </span>

@@ -56,8 +56,8 @@ describe('ObjectiveDetailComponent', () => {
   it('get data from backend', () => {
     fixture.detectChanges();
     component.objectiveId = 2;
-    const title = fixture.debugElement.query(By.css('.title')).nativeElement.innerHTML;
-    const description = fixture.debugElement.query(By.css('[data-test-id="description"]')).nativeElement.innerHTML;
+    const title = fixture.debugElement.query(By.css('[data-testId="objective-title"]'))?.nativeElement.innerHTML;
+    const description = fixture.debugElement.query(By.css('[data-testId="description"]'))?.nativeElement.innerHTML;
     expect(title).toContain(objective.title);
     expect(description).toContain(objective.description);
   });

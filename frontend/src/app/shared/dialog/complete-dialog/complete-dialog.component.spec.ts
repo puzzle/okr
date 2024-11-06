@@ -62,7 +62,7 @@ describe('CompleteDialogComponent', () => {
     expect(component.completeForm.value.isSuccessful).toBeNull();
     expect(component.completeForm.value.comment).toBeNull();
     expect(component.completeForm.invalid).toBeTruthy();
-    expect(submitButton.disabled).toBeTruthy();
+    expect(submitButton!.hasAttribute('disabled')).toBeTruthy();
   });
 
   it('should change isSuccessful value on card click and remove class card-hover', () => {
@@ -73,7 +73,7 @@ describe('CompleteDialogComponent', () => {
     expect(component.completeForm.value.isSuccessful).toBeTruthy();
     expect(component.completeForm.invalid).toBeFalsy();
     expect(elements.length).toEqual(0);
-    expect(submitButton.disabled).toBeTruthy();
+    expect(submitButton!.hasAttribute('disabled')).toBeTruthy();
 
     component.completeForm.patchValue({ isSuccessful: null });
     component.switchSuccessState('notSuccessful');

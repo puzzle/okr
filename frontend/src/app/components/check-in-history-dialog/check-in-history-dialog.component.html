@@ -22,7 +22,6 @@
             <h4 class="col-auto">Wert:</h4>
             <div class="col">
               <ng-container *ngIf="keyResult.keyResultType === 'metric'">
-                {{ getMetricKeyResult().unit | unitLabelTransformation }}
                 {{ +checkIn.value! | unitValueTransformation: getMetricKeyResult().unit }}
               </ng-container>
               <ng-container *ngIf="keyResult.keyResultType === 'ordinal'">

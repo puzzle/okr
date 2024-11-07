@@ -212,8 +212,10 @@ describe('Tab workflow tests', () => {
       editInputFields('Edited by Cypress too');
       cy.tabForward();
       cy.tabForward();
+      cy.focused().contains('Speichern');
       cy.realPress('Enter');
-      cy.contains('Edited by Cypress');
+      cy.focused().invoke('attr', 'data-testid').should('contain', 'three-dot-menu');
+      cy.focused().parentsUntil('#objective-column').last().contains('Edited by Cypress');
     });
 
     it('Duplicate objective with tab', () => {
@@ -235,7 +237,6 @@ describe('Tab workflow tests', () => {
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
       cy.wait(500);
-      cy.get('.objective').first().focus();
       cy.tabBackwardUntil('[data-testId="quarterFilter"]');
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');

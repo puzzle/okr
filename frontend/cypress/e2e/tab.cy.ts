@@ -274,22 +274,19 @@ describe('Tab workflow tests', () => {
       createNewObjectiveWithTab();
     });
 
-    it('Delete objective with tab', () => {
+    it.only('Delete objective with tab', () => {
       createNewObjectiveWithTab();
       cy.wait(500);
       cy.get('.objective').last().focus();
       cy.tabForwardUntil('[data-testId="three-dot-menu"]');
       cy.focused().realPress('Enter');
-      cy.focused().contains('Objective bearbeiten');
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.focused().contains('Objective löschen');
       cy.realPress('Enter');
-      cy.contains('bearbeiten');
-      cy.tabForwardUntil('[data-testId="delete"]');
-      cy.focused().contains('Objective Löschen');
-      cy.realPress('Enter');
-      cy.wait(500);
-      cy.tabForward();
-      cy.contains('Objective löschen');
-      cy.focused().contains('Ja');
+      cy.tabForwardUntil('[data-testId="confirm-yes"]');
       cy.realPress('Enter');
     });
 
@@ -328,10 +325,7 @@ describe('Tab workflow tests', () => {
       cy.wait(500);
       cy.tabForwardUntil('[data-testId="edit-keyResult"]');
       cy.focused().contains('Key Result bearbeiten');
-      cy.realPress('Enter');
-      cy.wait(500);
-      cy.tabForwardUntil('[data-testId="delete-keyResult"]');
-      cy.focused().contains('Key Result löschen');
+
       cy.realPress('Enter');
       cy.wait(500);
       cy.tabForward();

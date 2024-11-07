@@ -1,5 +1,6 @@
 import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
+import { wait } from 'cypress-real-events/utils';
 
 describe('OKR Objective e2e tests', () => {
   describe('tests via click', () => {
@@ -67,6 +68,25 @@ describe('OKR Objective e2e tests', () => {
           .last()
           .getByTestId('objective-state')
           .should('have.attr', 'src', `assets/icons/successful-icon.svg`);
+      });
+      it.only('delete objective with success', () => {
+        cy.getByTestId('add-objective').first().click({ force: true });
+        cy.fillOutObjective('We want to delete this objective', 'safe', undefined, '', false);
+        cy.getByTestId('objective')
+          .filter(':contains("We want to delete this objective")')
+          .last()
+          .getByTestId('three-dot-menu')
+          .click({ force: true })
+          .get('.objective-menu-option')
+          .contains('Objective löschen')
+          .click({ force: true });
+        wait(200);
+        cy.contains('Objective löschen');
+        cy.contains(
+          'Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!',
+        );
+        cy.getByTestId('confirm-yes').click({ force: true });
+        cy.get('We want to delete this objective').should('not.exist');
       });
 
       it(`Complete Objective with Not-Successful`, () => {

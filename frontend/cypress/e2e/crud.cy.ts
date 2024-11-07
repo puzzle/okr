@@ -49,8 +49,7 @@ describe('CRUD operations', () => {
 
   it(`Delete existing objective`, () => {
     cy.get('.objective').first().getByTestId('three-dot-menu').click();
-    cy.get('.mat-mdc-menu-content').contains('Objective bearbeiten').click();
-    cy.getByTestId('delete').click();
+    cy.get('.mat-mdc-menu-content').contains('Objective löschen').click();
     cy.get("button[type='submit']").contains('Ja').click();
   });
 

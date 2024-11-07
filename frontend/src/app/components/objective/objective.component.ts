@@ -17,7 +17,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
   templateUrl: './objective.component.html',
   styleUrls: ['./objective.component.scss'],
 })
-export class ObjectiveComponent implements OnInit {
+export class ObjectiveComponent {
   @Input() isWritable!: boolean;
   public objective$ = new ReplaySubject<ObjectiveMin>();
   menuEntries = this.objective$.pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
@@ -36,8 +36,6 @@ export class ObjectiveComponent implements OnInit {
   @Input() set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
   }
-
-  ngOnInit() {}
 
   getStateTooltip(stateString: string): string {
     const state = this.getStateByValue(stateString);

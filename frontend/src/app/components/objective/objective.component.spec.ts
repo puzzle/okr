@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { State } from '../../shared/types/enums/State';
 import { OverviewService } from '../../services/overview.service';
-import { objective, objectiveMin } from '../../shared/testData';
+import { objectiveMin } from '../../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -20,27 +20,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
-import { of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
-import { ObjectiveMenuActions } from './ObjectiveMenuActions';
-import { ObjectiveMenuActionsService } from '../../services/objective-menu-actions.service';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
 };
 
 const objectiveServiceMock = {
-  getFullObjective(objectiveMin: ObjectiveMin) {
-    let ongoingObjective = objective;
-    ongoingObjective.state = State.ONGOING;
-    return of(ongoingObjective);
-  },
+  getFullObjective: jest.fn(),
 };
+
 describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveComponent;
-  let bum: ObjectiveMenuActions;
-  let bam: ObjectiveMenuActionsService;
   let fixture: ComponentFixture<ObjectiveComponent>;
   let loader: HarnessLoader;
   beforeEach(() => {

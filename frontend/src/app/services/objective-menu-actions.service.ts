@@ -46,8 +46,7 @@ export class ObjectiveMenuActionsService {
     } else if (objective.state === State.DRAFT) {
       return this.getDraftMenuActions(objective);
     }
-    //Probably throw an error here
-    return [];
+    throw new Error('Objective invalid');
   }
 
   private getDefaultActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

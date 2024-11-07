@@ -10,11 +10,11 @@ export class UnitLabelTransformationPipe implements PipeTransform {
       case Unit.PERCENT:
         return '%';
       case Unit.FTE:
-        return Unit.FTE;
+        return ' ' + Unit.FTE;
       case Unit.CHF:
-        return Unit.CHF;
+        return ' ' + Unit.CHF;
       case Unit.EUR:
-        return Unit.EUR;
+        return ' ' + Unit.EUR;
       case Unit.NUMBER:
         return '';
       default:

@@ -34,7 +34,7 @@ describe('OKR Check-in e2e tests', () => {
       checkForDialogTextMetric();
       cy.fillOutCheckInMetric(30, 6, 'We bought a new house', 'We have to buy more PCs');
 
-      cy.contains('30 %');
+      cy.contains('30%');
       cy.contains('6/10');
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
       cy.contains('We bought a new house');
@@ -64,7 +64,7 @@ describe('OKR Check-in e2e tests', () => {
       checkForDialogTextMetric();
       cy.fillOutCheckInMetric(30, 0, 'We bought a new house', 'We have to buy more PCs');
 
-      cy.contains('30 %');
+      cy.contains('30%');
       cy.contains('6/10');
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
       cy.contains('We bought a new house');
@@ -94,7 +94,7 @@ describe('OKR Check-in e2e tests', () => {
       checkForDialogTextMetric();
       cy.fillOutCheckInMetric(5, 5, null, null);
 
-      cy.contains('5 %');
+      cy.contains('5%');
       cy.contains('!');
       cy.contains('5/10');
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
@@ -161,8 +161,8 @@ describe('OKR Check-in e2e tests', () => {
       cy.wait(500);
       cy.contains('Check-in History');
       cy.contains(getCurrentDate());
-      cy.contains('Wert: 30 %');
-      cy.contains('Wert: 50 %');
+      cy.contains('Wert: 30%');
+      cy.contains('Wert: 50%');
       checkForAttribute('Confidence:', '5 / 10');
       checkForAttribute('Confidence:', '6 / 10');
       checkForAttribute('Veränderungen:', 'We bought a new house');
@@ -237,12 +237,12 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
-      cy.contains('Aktuell: 30 €');
+      cy.contains('Aktuell: 30 EUR');
       cy.getByTestId('show-all-checkins').click();
 
       cy.wait(500);
       cy.contains('Check-in History');
-      cy.contains('Wert: 30 €');
+      cy.contains('Wert: 30 EUR');
 
       cy.getByTestId('closeButton').click();
       // Wait this time because of the toaster message
@@ -373,7 +373,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.wait('@getKeyResultsAfterSave');
 
       cy.getByTestId('add-check-in').first().click();
-      cy.contains('Letzter Wert').siblings('div').contains('10 %');
+      cy.contains('Letzter Wert').siblings('div').contains('10%');
     });
   });
 });
@@ -387,7 +387,7 @@ function checkForDialogTextMetric() {
   cy.contains('Check-in erfassen');
   cy.contains('Key Result');
   cy.contains('Neuer Wert');
-  cy.contains('Confidence um Target Zone (42.7 %) zu erreichen');
+  cy.contains('Confidence um Target Zone (42.7%) zu erreichen');
   cy.contains('Abbrechen');
 }
 

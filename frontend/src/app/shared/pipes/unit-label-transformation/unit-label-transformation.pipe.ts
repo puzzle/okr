@@ -8,7 +8,7 @@ export class UnitLabelTransformationPipe implements PipeTransform {
   transform(unitLabel: string): string {
     switch (unitLabel) {
       case Unit.PERCENT:
-        return '';
+        return '%';
       case Unit.FTE:
         return Unit.FTE;
       case Unit.CHF:

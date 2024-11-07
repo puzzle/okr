@@ -35,7 +35,7 @@
           <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
             <div class="d-flex justify-content-start w-100 metric-label-div">
               <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
-                Baseline: {{ keyResultMetric.baseline | unitValueTransformation: keyResultMetric.unit.toString() }}
+                Baseline: {{ keyResultMetric.baseline | unitValueTransformation }}
                 {{ keyResultMetric.unit | unitLabelTransformation }}
               </p>
               <p
@@ -48,13 +48,13 @@
                 <span class="text-error" *ngIf="calculateCurrentPercentage(keyResultMetric) < 1">!</span>
                 Aktuell:
                 <span>
-                  {{ +lastCheckIn.value | unitValueTransformation: keyResultMetric.unit.toString() }}
+                  {{ +lastCheckIn.value | unitValueTransformation }}
                   {{ keyResultMetric.unit | unitLabelTransformation }}
                 </span>
               </p>
               <p class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center">
                 Stretch Goal:
-                {{ keyResultMetric.stretchGoal | unitValueTransformation: keyResultMetric.unit.toString() }}
+                {{ keyResultMetric.stretchGoal | unitValueTransformation }}
                 {{ keyResultMetric.unit | unitLabelTransformation }}
               </p>
             </div>

@@ -9,7 +9,7 @@ describe('UnitTransformationPipe', () => {
 
   it('should format as Percent', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.PERCENT)).toBe('380%');
+    expect(pipe.transform(380, Unit.PERCENT)).toBe('380');
   });
 
   it('should format as Number', () => {
@@ -19,27 +19,27 @@ describe('UnitTransformationPipe', () => {
 
   it('should format as FTE', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.FTE)).toBe('380 FTE');
+    expect(pipe.transform(380, Unit.FTE)).toBe('380');
   });
 
   it('should format as CHF without double value', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.CHF)).toBe('CHF 380');
+    expect(pipe.transform(380, Unit.CHF)).toBe('380');
   });
 
   it('should format as EUR without double value', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.EUR)).toBe('380 €');
+    expect(pipe.transform(380, Unit.EUR)).toBe('380');
   });
 
   it('should format as CHF as double value', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380.987, Unit.CHF)).toBe('CHF 380.99');
+    expect(pipe.transform(380.987, Unit.CHF)).toBe('380.99');
   });
 
   it('should format as EUR as double value', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380.987, Unit.EUR)).toBe('380.99 €');
+    expect(pipe.transform(380.987, Unit.EUR)).toBe('380.99');
   });
 
   it('should return with no format if unit is not preset one', () => {

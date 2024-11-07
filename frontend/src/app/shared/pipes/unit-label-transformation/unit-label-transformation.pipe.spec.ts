@@ -9,7 +9,7 @@ describe('UnitLabelTransformationPipe', () => {
 
   it('Format Percent label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.PERCENT)).toBe('');
+    expect(pipe.transform(Unit.PERCENT)).toBe('%');
   });
 
   it('Format FTE label', () => {

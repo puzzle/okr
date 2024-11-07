@@ -64,7 +64,7 @@ export class ObjectiveMenuActions {
     const afterAction: ObjectiveMenuAfterAction = (obj: Objective, result: any) =>
       this.afterActions.objectiveBackToDraft(obj);
 
-    return { displayName: 'Objective als Draft speicherns', action: action, afterAction: afterAction };
+    return { displayName: 'Objective als Draft speichern', action: action, afterAction: afterAction };
   }
 
   objectiveReopen(): ObjectiveMenuEntry {

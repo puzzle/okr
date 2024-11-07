@@ -5,9 +5,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ObjectiveService } from './objective.service';
-import { RefreshDataService } from './refresh-data.service';
-import { DialogService } from './dialog.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { State } from '../shared/types/enums/State';
 import { objectiveMin } from '../shared/testData';
@@ -75,17 +72,15 @@ describe('ObjectiveMenuActionsService', () => {
     it('should return release from backlog action for an objective in backlog quarter', () => {
       jest.spyOn(service as any, 'isInBacklogQuarter').mockReturnValue(true);
       let spyOn = jest.spyOn(service as any, 'isInBacklogQuarter').mockReturnValue(true);
-      let objectiveMinLocal: ObjectiveMin = objectiveMin;
       // @ts-expect-error
-      service.getReleaseAction(objectiveMinLocal);
+      service.getReleaseAction(objectiveMin);
       expect(spyOn).toHaveBeenCalledTimes(1);
     });
 
     it('should return release from quarter action for an objective in non-backlog quarter', () => {
       let spyOn = jest.spyOn(service as any, 'isInBacklogQuarter').mockReturnValue(false);
-      let objectiveMinLocal: ObjectiveMin = objectiveMin;
       // @ts-expect-error
-      service.getReleaseAction(objectiveMinLocal);
+      service.getReleaseAction(objectiveMin);
       expect(spyOn).toHaveBeenCalledTimes(1);
     });
   });

@@ -1,8 +1,5 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
-import { ObjectiveMin } from './types/model/ObjectiveMin';
-import { State } from './types/enums/State';
-import { GJ_REGEX_PATTERN } from './constantLibary';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString().trim() === '') {

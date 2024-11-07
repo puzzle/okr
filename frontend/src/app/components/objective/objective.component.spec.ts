@@ -7,13 +7,11 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { State } from '../../shared/types/enums/State';
-import { RouterTestingModule } from '@angular/router/testing';
 import { OverviewService } from '../../services/overview.service';
 import { objective, objectiveMin } from '../../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
@@ -54,9 +52,7 @@ describe('ObjectiveColumnComponent', () => {
         MatMenuModule,
         MatCardModule,
         NoopAnimationsModule,
-        RouterTestingModule,
         MatDialogModule,
-        HttpClientTestingModule,
         MatIconModule,
         MatTooltipModule,
         ReactiveFormsModule,

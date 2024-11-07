@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
-import { map, ReplaySubject } from 'rxjs';
+import { map, ReplaySubject, take } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveService } from '../../services/objective.service';
 import { trackByFn } from '../../shared/common';
@@ -46,12 +46,15 @@ export class ObjectiveComponent implements OnInit {
 
   redirect(menuEntry: ObjectiveMenuEntry, objectiveMin: ObjectiveMin) {
     const matDialogRef = menuEntry.action();
-    matDialogRef.afterClosed().subscribe((result) => {
-      this.objectiveService.getFullObjective(objectiveMin.id).subscribe((objective) => {
-        menuEntry.afterAction(objective, result);
-        this.trigger?.focus();
+    matDialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.objectiveService.getFullObjective(objectiveMin.id).subscribe((objective) => {
+          menuEntry.afterAction(objective, result);
+          this.trigger?.focus();
+        });
       });
-    });
   }
 
   openObjectiveDetail(objectiveId: number) {

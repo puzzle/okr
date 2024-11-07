@@ -32,6 +32,12 @@ export class ObjectiveMenuAfterActions {
     });
   }
 
+  deleteObjective(objective: Objective) {
+    this.objectiveService.deleteObjective(objective.id).subscribe(() => {
+      this.refreshDataService.markDataRefresh();
+    });
+  }
+
   objectiveBackToDraft(objective: Objective) {
     objective.state = 'DRAFT' as State;
     this.objectiveService.updateObjective(objective).subscribe(() => {

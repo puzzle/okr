@@ -48,6 +48,13 @@ export class ObjectiveMenuActions {
     return { displayName: 'Objective duplizieren', action: action, afterAction: afterAction };
   }
 
+  deleteObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
+    const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
+    const afterAction: ObjectiveMenuAfterAction = (objective, dialogResult) =>
+      this.afterActions.deleteObjective(objective);
+    return { displayName: 'Objective löschen', action: action, afterAction: afterAction };
+  }
+
   completeObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = {
       data: { objectiveTitle: objective.title },

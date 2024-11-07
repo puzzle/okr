@@ -95,11 +95,6 @@
       </button>
       <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
-
-    <div class="col-auto" *ngIf="data.objective.objectiveId && data.action != 'duplicate'">
-      <button color="primary" type="button" mat-button (click)="deleteObjective()" [attr.data-testId]="'delete'">
-        Objective Löschen
-      </button>
-    </div>
+    >
   </ng-container>
 </app-dialog-template-core>

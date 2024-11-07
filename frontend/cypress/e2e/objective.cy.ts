@@ -69,7 +69,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('objective-state')
           .should('have.attr', 'src', `assets/icons/successful-icon.svg`);
       });
-      it.only('delete objective with success', () => {
+      it('delete objective with success', () => {
         cy.getByTestId('add-objective').first().click({ force: true });
         cy.fillOutObjective('We want to delete this objective', 'safe', undefined, '', false);
         cy.getByTestId('objective')

@@ -12,13 +12,13 @@ export class UnitValueTransformationPipe implements PipeTransform {
     }
     switch (unit) {
       case Unit.CHF:
-        return 'CHF ' + this.roundAndAddThousandSplitSign(value);
+        return this.roundAndAddThousandSplitSign(value);
       case Unit.EUR:
-        return this.roundAndAddThousandSplitSign(value) + ' €';
+        return this.roundAndAddThousandSplitSign(value);
       case Unit.PERCENT:
-        return value + '%';
+        return value.toString();
       case Unit.FTE:
-        return this.roundAndAddThousandSplitSign(value) + ' FTE';
+        return this.roundAndAddThousandSplitSign(value);
       case Unit.NUMBER:
         return this.roundAndAddThousandSplitSign(value);
       default:

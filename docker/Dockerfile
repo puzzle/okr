@@ -2,7 +2,7 @@ FROM alpine:3.20
 
 USER root
 
-RUN apk update && apk add --upgrade curl && apk --no-cache add openjdk17
+RUN apk update && apk add --upgrade curl && apk --no-cache add openjdk21
 
 RUN adduser --home /app-root --uid 1001 --disabled-password okr
 USER 1001

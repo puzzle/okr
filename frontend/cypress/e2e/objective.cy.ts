@@ -158,7 +158,7 @@ describe('OKR Objective e2e tests', () => {
           .tabForward();
         cy.contains('Objective als Draft speichern');
         cy.contains('Soll dieses Objective als Draft gespeichert werden?');
-        cy.focused().click().wait(500);
+        cy.getByTestId('confirm-yes').click();
 
         cy.getByTestId('objective')
           .filter(':contains("This objective will be returned to draft state")')

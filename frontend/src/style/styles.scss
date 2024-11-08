@@ -47,6 +47,15 @@ body.okr {
 
   p {
     margin: 0;
+    font-size: 14px;
+  }
+
+  span {
+    font-size: 14px;
+  }
+
+  .quarter-filter-text span {
+    font-size: 16px;
   }
 
   a {
@@ -387,4 +396,5 @@ table.okr-table {
 }
 
 .okr-form-label-input-container {
+  @extend .py-1;
 }

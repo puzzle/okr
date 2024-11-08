@@ -112,7 +112,7 @@
               <div *ngIf="action.isChecked">
                 <div class="action-list-checked-item break-word ms-4">
                   <img src="../../../assets/icons/checkmark.svg" alt="checkbox" class="action-checkbox me-1" />
-                  <span class="" [ngStyle]="{ 'text-decoration': 'line-through' }">{{ action.action }}</span>
+                  <p [ngStyle]="{ 'text-decoration': 'line-through' }">{{ action.action }}</p>
                 </div>
               </div>
               <div *ngIf="!action.isChecked">

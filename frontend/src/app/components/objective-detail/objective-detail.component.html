@@ -14,7 +14,7 @@
       </section>
 
       <section class="me-3">
-        <h3 class="sub-title-objective fw-bold mb-1">Beschrieb</h3>
+        <h3 class="mb-1">Beschrieb</h3>
         <div class="linebreak" *ngIf="objective.description === ''"><p>-</p></div>
         <div *ngIf="objective.description !== ''" [attr.data-testId]="'description'" class="linebreak">
           <p>{{ objective.description }}</p>

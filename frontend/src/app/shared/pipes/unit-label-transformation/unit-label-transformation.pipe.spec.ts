@@ -9,22 +9,22 @@ describe('UnitLabelTransformationPipe', () => {
 
   it('Format Percent label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.PERCENT)).toBe('');
+    expect(pipe.transform(Unit.PERCENT)).toBe('%');
   });
 
   it('Format FTE label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.FTE)).toBe(Unit.FTE);
+    expect(pipe.transform(Unit.FTE)).toBe(' ' + Unit.FTE);
   });
 
   it('Format CHF label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.CHF)).toBe(Unit.CHF);
+    expect(pipe.transform(Unit.CHF)).toBe(' ' + Unit.CHF);
   });
 
   it('Format EUR label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.EUR)).toBe(Unit.EUR);
+    expect(pipe.transform(Unit.EUR)).toBe(' ' + Unit.EUR);
   });
 
   it('Format Number label', () => {

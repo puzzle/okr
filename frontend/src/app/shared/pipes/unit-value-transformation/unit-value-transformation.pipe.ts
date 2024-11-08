@@ -5,29 +5,9 @@ import { Unit } from '../../types/enums/Unit';
   name: 'unitValueTransformation',
 })
 export class UnitValueTransformationPipe implements PipeTransform {
-  transform(value: number, unit: string): string {
+  transform(value: number): string {
     /* If user tries to input String, set value to 0 */
-    if (Number.isNaN(value)) {
-      value = 0;
-    }
-    switch (unit) {
-      case Unit.CHF:
-        return 'CHF ' + this.addCHFSign(this.roundAndAddThousandSplitSign(value));
-      case Unit.EUR:
-        return this.roundAndAddThousandSplitSign(value) + ' €';
-      case Unit.PERCENT:
-        return value + '%';
-      case Unit.FTE:
-        return this.roundAndAddThousandSplitSign(value) + ' FTE';
-      case Unit.NUMBER:
-        return this.roundAndAddThousandSplitSign(value);
-      default:
-        return value.toString();
-    }
-  }
-
-  addCHFSign(value: string): string {
-    return !+value.split('.')[1] ? value.split('.')[0] + '.-' : value;
+    return Number.isNaN(value) ? '0' : this.roundAndAddThousandSplitSign(value);
   }
 
   roundAndAddThousandSplitSign(value: number): string {

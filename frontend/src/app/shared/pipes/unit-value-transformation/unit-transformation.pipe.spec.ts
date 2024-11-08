@@ -1,5 +1,4 @@
 import { UnitValueTransformationPipe } from './unit-value-transformation.pipe';
-import { Unit } from '../../types/enums/Unit';
 
 describe('UnitTransformationPipe', () => {
   it('create an instance', () => {
@@ -9,41 +8,21 @@ describe('UnitTransformationPipe', () => {
 
   it('should format as Percent', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.PERCENT)).toBe('380%');
+    expect(pipe.transform(380)).toBe('380');
   });
 
   it('should format as Number', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.NUMBER)).toBe('380');
-  });
-
-  it('should format as FTE', () => {
-    const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.FTE)).toBe('380 FTE');
-  });
-
-  it('should format as CHF without double value', () => {
-    const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.CHF)).toBe('CHF 380.-');
-  });
-
-  it('should format as EUR without double value', () => {
-    const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380, Unit.EUR)).toBe('380 €');
+    expect(pipe.transform(38000)).toBe("38'000");
   });
 
   it('should format as CHF as double value', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380.987, Unit.CHF)).toBe('CHF 380.99');
-  });
-
-  it('should format as EUR as double value', () => {
-    const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(380.987, Unit.EUR)).toBe('380.99 €');
+    expect(pipe.transform(380.987)).toBe('380.99');
   });
 
   it('should return with no format if unit is not preset one', () => {
     const pipe = new UnitValueTransformationPipe();
-    expect(pipe.transform(140, 'MEMBERS')).toBe('140');
+    expect(pipe.transform(140)).toBe('140');
   });
 });

@@ -193,15 +193,16 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
-      cy.contains('Aktuell: CHF 30.-');
+      cy.contains('Aktuell: 30 CHF');
       cy.getByTestId('show-all-checkins').click();
 
       cy.wait(500);
       cy.contains('Check-in History');
+      cy.contains('Wert: 30 CHF');
       cy.getByTestId('edit-check-in').first().click();
       cy.contains('Here we edit a metric checkin');
-      cy.contains('CHF 30.-');
-      cy.contains('Confidence um Target Zone (CHF 213.-) zu erreichen');
+      cy.contains('30 CHF');
+      cy.contains('Confidence um Target Zone (213 CHF) zu erreichen');
       cy.contains('5/10');
       cy.getByTestId('check-in-metric-value').click().clear().type('200');
       cy.getByTestId('confidence-slider').realMouseDown();
@@ -211,8 +212,68 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('submit-check-in').click();
 
       cy.wait(200);
-      cy.contains('CHF 200.-');
+      cy.contains('200 CHF');
       cy.contains('We bought a new sheep');
+    });
+
+    it('Should generate right labels in checkin history list', () => {
+      cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+      cy.getByTestId('submit').should('be.disabled');
+      cy.fillOutKeyResult(
+        'A new KeyResult for checking checkin list',
+        'EUR',
+        '10',
+        '300',
+        null,
+        null,
+        null,
+        null,
+        'This is my description',
+      );
+
+      cy.getByTestId('submit').click();
+
+      cy.getByTestId('keyresult').contains('A new KeyResult for checking checkin list').click();
+
+      cy.getByTestId('add-check-in').first().click();
+      cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
+      cy.contains('Aktuell: 30 EUR');
+      cy.getByTestId('show-all-checkins').click();
+
+      cy.wait(500);
+      cy.contains('Check-in History');
+      cy.contains('Wert: 30 EUR');
+
+      cy.getByTestId('closeButton').click();
+      // Wait this time because of the toaster message
+      cy.wait(2000);
+      cy.getByTestId('close-drawer').click();
+
+      cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+      cy.fillOutKeyResult(
+        'There is another kr with fte',
+        'FTE',
+        '10',
+        '300',
+        null,
+        null,
+        null,
+        null,
+        'This is my description',
+      );
+
+      cy.getByTestId('submit').click();
+
+      cy.getByTestId('keyresult').contains('There is another kr with fte').click();
+
+      cy.getByTestId('add-check-in').first().click();
+      cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
+      cy.contains('Aktuell: 30 FTE');
+      cy.getByTestId('show-all-checkins').click();
+
+      cy.wait(500);
+      cy.contains('Check-in History');
+      cy.contains('Wert: 30 FTE');
     });
 
     it('Edit ordinal checkin', () => {
@@ -312,7 +373,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.wait('@getKeyResultsAfterSave');
 
       cy.getByTestId('add-check-in').first().click();
-      cy.contains('Letzter Wert').siblings('div').contains('10 %');
+      cy.contains('Letzter Wert').siblings('div').contains('10%');
     });
   });
 });

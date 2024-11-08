@@ -4,6 +4,10 @@
   height: $top-bar-height;
 }
 
+span.d-none.d-md-flex {
+  font-size: 16px;
+}
+
 #okrTopbar {
   display: flex;
   position: fixed;

@@ -23,10 +23,47 @@
     "ordinal": "Ordinal"
   },
   "INFORMATION": {
-    "OBJECTIVE_STATE_TOOLTIP": "Der Status dieses Objectives ist",
-    "DELETE_TEAM": "Möchtest du dieses Team wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!",
-    "DELETE_OBJECTIVE": "Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!",
-    "DELETE_KEY_RESULT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
+    "OBJECTIVE_STATE_TOOLTIP": "Der Status dieses Objectives ist: {{state}}"
+  },
+  "CONFIRMATION": {
+    "DRAFT_CREATE": {
+      "TITLE": "Check-in im Draft-Status",
+      "TEXT": "Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?"
+    },
+    "REOPEN": {
+      "TITLE": "Objective wiedereröffnen",
+      "TEXT": "Soll dieses Objective wiedereröffnet werden?"
+    },
+    "RELEASE": {
+      "TITLE": "Objective veröffentlichen",
+      "TEXT": "Soll dieses Objective veröffentlicht werden?"
+    },
+    "TO_DRAFT": {
+      "TITLE": "Objective als Draft speichern",
+      "TEXT": "Soll dieses Objective als Draft gespeichert werden?"
+    },
+    "DELETE": {
+      "ACTION":{
+        "TITLE": "Löschen bestätigen",
+        "TEXT": "Möchtest du die Action wirklich löschen?"
+      },
+      "TEAM":{
+        "TITLE": "Team löschen",
+        "TEXT": "Möchtest du das Team '{{team}}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!"
+      },
+      "OBJECTIVE":{
+        "TITLE": "Objective löschen",
+        "TEXT": "Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!"
+      },
+      "KEYRESULT":{
+        "TITLE": "Key Result löschen",
+        "TEXT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
+      },
+      "USER_FROM_TEAM":{
+        "TITLE": "Mitglied entfernen",
+        "TEXT": "Möchtest du {{user}} wirklich aus dem Team '{{team}}' entfernen?"
+      }
+    }
   },
   "ERROR": {
     "UNAUTHORIZED": "Du bist nicht autorisiert, um das Objekt mit der Id {1} zu öffnen.",

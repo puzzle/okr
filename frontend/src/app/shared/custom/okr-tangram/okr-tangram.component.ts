@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { isMobileDevice } from '../../common';
 import { ConfigService } from '../../../services/config.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-okr-tangram',
@@ -9,23 +8,12 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   styleUrl: 'okr-tangram.component.scss',
 })
 export class OkrTangramComponent {
-  private readonly MOBILE_WIDTH = 100;
-  private readonly DESKTOP_WIDTH = 274;
+  private readonly DEFAULT_TRIANGLE_SRC = 'assets/images/empty.svg';
+  trianglesSrc$ = new Observable<string>();
 
-  getWidth() {
-    return isMobileDevice() ? this.MOBILE_WIDTH : this.DESKTOP_WIDTH;
-  }
-
-  private subscription?: Subscription;
-  trianglesSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
-
-  constructor(private configService: ConfigService) {}
-
-  ngOnInit(): void {
-    this.subscription = this.configService.config$.subscribe((config) => {
-      if (config.triangles) {
-        this.trianglesSrc$.next(config.triangles);
-      }
-    });
+  constructor(private readonly configService: ConfigService) {
+    this.trianglesSrc$ = this.configService.config$.pipe(
+      map((config) => config.triangles || this.DEFAULT_TRIANGLE_SRC),
+    );
   }
 }

@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -13,6 +12,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.security.JwtHelper;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,9 +28,9 @@ import java.util.Collection;
 import java.util.List;
 
 import static ch.puzzle.okr.ErrorKey.*;
-import static ch.puzzle.okr.test.TestHelper.*;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteForTeam;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

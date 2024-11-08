@@ -1,20 +1,19 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { KeyresultService } from '../../services/keyresult.service';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../check-in-history-dialog/check-in-history-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { CloseState } from '../../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { State } from '../../shared/types/enums/State';
-import { CONFIRM_DIALOG_WIDTH, DATE_FORMAT, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
-import { calculateCurrentPercentage, isLastCheckInNegative, isMobileDevice } from '../../shared/common';
+import { DATE_FORMAT } from '../../shared/constantLibary';
+import { calculateCurrentPercentage, isLastCheckInNegative } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
-import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -22,10 +21,11 @@ import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confi
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultDetailComponent implements OnInit {
+export class KeyresultDetailComponent implements OnInit, OnDestroy {
   @Input() keyResultId!: number;
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
+  ngDestroy$: Subject<void> = new Subject();
   isComplete: boolean = false;
   protected readonly DATE_FORMAT = DATE_FORMAT;
   protected readonly isLastCheckInNegative = isLastCheckInNegative;
@@ -33,7 +33,7 @@ export class KeyresultDetailComponent implements OnInit {
   constructor(
     private keyResultService: KeyresultService,
     private refreshDataService: RefreshDataService,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     private router: Router,
     private route: ActivatedRoute,
   ) {}
@@ -41,6 +41,14 @@ export class KeyresultDetailComponent implements OnInit {
   ngOnInit(): void {
     this.keyResultId = this.getIdFromParams();
     this.loadKeyResult(this.keyResultId);
+    this.refreshDataService.reloadKeyResultSubject.pipe(takeUntil(this.ngDestroy$)).subscribe(() => {
+      this.loadKeyResult(this.keyResultId);
+    });
+  }
+
+  ngOnDestroy() {
+    this.ngDestroy$.next();
+    this.ngDestroy$.complete();
   }
 
   private getIdFromParams(): number {
@@ -71,16 +79,11 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   checkInHistory() {
-    const dialogConfig = OKR_DIALOG_CONFIG;
-    const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
+    const dialogRef = this.dialogService.open(CheckInHistoryDialogComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
         isComplete: this.isComplete,
       },
-      width: dialogConfig.width,
-      height: dialogConfig.height,
-      maxHeight: dialogConfig.maxHeight,
-      maxWidth: dialogConfig.maxWidth,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.refreshDataService.markDataRefresh();
@@ -88,24 +91,8 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openEditKeyResultDialog(keyResult: KeyResult) {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
-
-    this.dialog
+    this.dialogService
       .open(KeyresultDialogComponent, {
-        height: dialogConfig.height,
-        width: dialogConfig.width,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: keyResult.objective,
           keyResult: keyResult,
@@ -126,28 +113,8 @@ export class KeyresultDetailComponent implements OnInit {
 
   checkForDraftState(keyResult: KeyResult) {
     if (keyResult.objective.state.toUpperCase() === 'DRAFT') {
-      const dialogConfig = isMobileDevice()
-        ? {
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-            height: '100vh',
-            width: CONFIRM_DIALOG_WIDTH,
-          }
-        : {
-            width: '45em',
-            height: 'auto',
-          };
-
-      this.dialog
-        .open(ConfirmDialogComponent, {
-          data: {
-            draftCreate: true,
-          },
-          width: dialogConfig.width,
-          height: dialogConfig.height,
-          maxHeight: dialogConfig.maxHeight,
-          maxWidth: dialogConfig.maxWidth,
-        })
+      this.dialogService
+        .openConfirmDialog('CONFIRMATION.DRAFT_CREATE')
         .afterClosed()
         .subscribe((result) => {
           if (result) {
@@ -160,28 +127,13 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openCheckInForm() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
-    const dialogRef = this.dialog.open(CheckInFormComponent, {
-      height: dialogConfig.height,
-      width: dialogConfig.width,
-      maxHeight: dialogConfig.maxHeight,
-      maxWidth: dialogConfig.maxWidth,
+    const dialogRef = this.dialogService.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
       },
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadKeyResult(this.keyResult$.getValue().id);
+      this.refreshDataService.reloadKeyResultSubject.next();
       this.refreshDataService.markDataRefresh();
     });
   }

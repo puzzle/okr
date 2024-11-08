@@ -1,16 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/UserTableEntry';
-import { User } from '../../../shared/types/model/User';
+import { getFullNameFromUser, User } from '../../../shared/types/model/User';
 import { Team } from '../../../shared/types/model/Team';
 import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/routeUtils';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/UserTeam';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { CancelDialogComponent, CancelDialogData } from '../../../shared/dialog/cancel-dialog/cancel-dialog.component';
-import { OKR_DIALOG_CONFIG } from '../../../shared/constantLibary';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-member-list-table',
@@ -30,7 +28,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly teamService: TeamService,
     private readonly userService: UserService,
-    private readonly dialog: MatDialog,
+    private readonly dialogService: DialogService,
   ) {}
 
   ngOnInit() {
@@ -58,13 +56,12 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-
-    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
-    dialogConfig.data = {
-      dialogTitle: `${entry.firstname} ${entry.lastname} wirklich aus Team ${this.selectedTeam$.value?.name} entfernen?`,
+    const i18nData = {
+      user: `${entry.firstname} ${entry.lastname}`,
+      team: this.selectedTeam$.value?.name,
     };
-    this.dialog
-      .open(CancelDialogComponent, dialogConfig)
+    this.dialogService
+      .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),

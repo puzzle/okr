@@ -1,17 +1,15 @@
 <div class="d-flex flex-column">
   <div class="scoring-container d-flex flex-row">
     <div class="flex-fill">
-      <div>
-        <span class="okr-score-label">
-          <span class="text-center text-small">Fail</span>
-        </span>
-        <span class="okr-score-label okr-score-commit">
-          <span class="text-center text-small">Commit</span>
-        </span>
-        <span class="okr-score-label">
-          <span class="text-center text-small">Target</span>
-        </span>
-      </div>
+      <span class="okr-score-label">
+        <h4 class="text-center text-small">Fail</h4>
+      </span>
+      <span class="okr-score-label okr-score-commit">
+        <h4 class="text-center text-small">Commit</h4>
+      </span>
+      <span class="okr-score-label">
+        <h4 class="text-center text-small">Target</h4>
+      </span>
       <div
         [ngStyle]="{ display: stretched ? 'none' : 'flex' }"
         [attr.data-testId]="'normal-scoring'"
@@ -41,8 +39,8 @@
       ></div>
     </div>
 
-    <div class="okr-stretch d-flex flex-column align-items-center mb-1">
-      <span class="text-center text-small">Stretch</span>
+    <div class="okr-stretch d-flex flex-column align-items-center">
+      <h4 class="text-center stretch-label">Stretch</h4>
       <img
         [src]="'assets/icons/star-' + iconPath + '-icon.svg'"
         [attr.data-testId]="'stretch'"

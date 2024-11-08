@@ -21,7 +21,6 @@
 
 .mdc-button--outlined {
   padding: 0 16px 0 16px !important;
-  margin-left: 8px !important;
 }
 
 .ordinal-zone .mdc-form-field,
@@ -49,17 +48,9 @@
   display: none !important;
 }
 
-.mat-mdc-dialog-surface {
-  padding: 1rem 0 1rem 0;
-}
-
-mat-dialog-content {
-  max-height: 80vh !important;
-}
-
-mat-dialog-content,
-mat-dialog-actions {
-  padding: 0 1.62rem 0 1.62rem !important;
+//Offset for top bar
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
+  margin-top: $top-bar-height;
 }
 
 .mat-mdc-standard-chip {
@@ -78,10 +69,6 @@ mat-dialog-actions {
 
 .mdc-evolution-chip__action {
   cursor: pointer !important;
-}
-
-.cdk-overlay-backdrop.cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
-  margin-top: $top-bar-height;
 }
 
 $scale-start: 0.5;
@@ -103,4 +90,8 @@ $scale-gap: 0.1;
 
 #toast-container {
   position: fixed;
+}
+
+.mat-mdc-dialog-surface {
+  overflow: unset !important;
 }

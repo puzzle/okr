@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -28,7 +29,7 @@ describe('ObjectiveDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDialogModule, MatIconModule],
+      imports: [HttpClientTestingModule, MatDialogModule, MatIconModule, TranslateModule.forRoot()],
       providers: [
         { provide: ObjectiveService, useValue: objectiveService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -55,8 +56,8 @@ describe('ObjectiveDetailComponent', () => {
   it('get data from backend', () => {
     fixture.detectChanges();
     component.objectiveId = 2;
-    const title = fixture.debugElement.query(By.css('.title')).nativeElement.innerHTML;
-    const description = fixture.debugElement.query(By.css('[data-test-id="description"]')).nativeElement.innerHTML;
+    const title = fixture.debugElement.query(By.css('[data-testId="objective-title"]'))?.nativeElement.innerHTML;
+    const description = fixture.debugElement.query(By.css('[data-testId="description"]'))?.nativeElement.innerHTML;
     expect(title).toContain(objective.title);
     expect(description).toContain(objective.description);
   });

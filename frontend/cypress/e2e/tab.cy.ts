@@ -72,7 +72,7 @@ describe('Tab workflow tests', () => {
   }
 
   function openKeyresultDetail() {
-    cy.get('.objective').first().focus();
+    cy.get("[src='assets/icons/ongoing-icon.svg']").parentsUntil('#objective-column').last().focus();
     cy.tabForwardUntil('[data-testId="key-result"]');
     cy.focused().contains('Fail');
     cy.focused().contains('Commit');
@@ -123,6 +123,7 @@ describe('Tab workflow tests', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
       onlyOn('chrome');
+      cy.tabForward();
       cy.tabForward();
     });
 
@@ -211,12 +212,16 @@ describe('Tab workflow tests', () => {
       editInputFields('Edited by Cypress too');
       cy.tabForward();
       cy.tabForward();
+      cy.focused().contains('Speichern');
       cy.realPress('Enter');
-      cy.contains('Edited by Cypress');
+      cy.focused().invoke('attr', 'data-testid').should('contain', 'three-dot-menu');
+      cy.focused().parentsUntil('#objective-column').last().contains('Edited by Cypress');
     });
 
     it('Duplicate objective with tab', () => {
       openThreeDotMenu();
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective duplizieren');
       cy.realPress('Enter');
@@ -240,7 +245,6 @@ describe('Tab workflow tests', () => {
 
     it('Complete objective dialog with tab', () => {
       openThreeDotMenu();
-      cy.realPress('ArrowDown');
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective abschliessen');
       cy.realPress('Enter');
@@ -416,7 +420,7 @@ describe('Tab workflow tests', () => {
         cy.tabForwardUntil('[data-testId="add-action-plan-line"]');
         cy.tabBackward();
         cy.realPress('Enter');
-        cy.tabForwardUntil('[data-testId="confirmYes"]');
+        cy.tabForwardUntil('[data-testId="confirm-yes"]');
         cy.realPress('Enter');
         cy.tabForward();
         cy.tabForwardUntil('[data-testId="submit"]');

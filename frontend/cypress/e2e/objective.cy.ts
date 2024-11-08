@@ -28,8 +28,9 @@ describe('OKR Objective e2e tests', () => {
           .get('.objective-menu-option')
           .contains('Objective veröffentlichen')
           .click();
-        cy.getByTestId('confirmYes').click();
-
+        cy.contains('Objective veröffentlichen');
+        cy.contains('Soll dieses Objective veröffentlicht werden?');
+        cy.getByTestId('confirm-yes').click();
         cy.getByTestId('objective')
           .filter(':contains(A objective in state draft)')
           .last()
@@ -128,6 +129,10 @@ describe('OKR Objective e2e tests', () => {
           .contains('Objective wiedereröffnen')
           .click();
 
+        cy.contains('Objective wiedereröffnen');
+        cy.contains('Soll dieses Objective wiedereröffnet werden?');
+        cy.getByTestId('confirm-yes').click();
+
         cy.getByTestId('objective')
           .filter(':contains("This objective will be reopened after")')
           .last()
@@ -151,7 +156,9 @@ describe('OKR Objective e2e tests', () => {
           .click()
           .wait(500)
           .tabForward();
-        cy.focused().click().wait(500);
+        cy.contains('Objective als Draft speichern');
+        cy.contains('Soll dieses Objective als Draft gespeichert werden?');
+        cy.getByTestId('confirm-yes').click();
 
         cy.getByTestId('objective')
           .filter(':contains("This objective will be returned to draft state")')

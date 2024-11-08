@@ -16,7 +16,10 @@ $keyResult-attribute-bg: #ffffff;
 $keyResult-attribute-edit-border: #ddddddff;
 
 $error-color: #b3261b;
-$show-element: #f5f5f5;
+$display-element: #f5f5f5;
+
+$dialog-action-buttons-div-height: 52px;
+$dialog-content-padding-y: 20px;
 
 $pz-dark-blue-palette: (
   50: lighten($pz-dark-blue, 50%),
@@ -48,7 +51,9 @@ $pz-dark-blue-palette: (
   --mdc-text-button-label-text-tracking: normal;
   --mdc-filled-button-label-text-tracking: normal;
   --mdc-outlined-button-label-text-tracking: normal;
-
+  --mat-dialog-headline-padding: 0 0 0 12px;
+  --mat-dialog-actions-padding: 0 12px 0 12px;
+  --mat-dialog-with-actions-content-padding: #{$dialog-content-padding-y} 12px;
   --okr-topbar-background-color: #1e5a96;
   --okr-banner-background-color: #dcedf9;
 }

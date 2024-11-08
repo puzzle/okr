@@ -1,6 +1,6 @@
 <div id="okrBanner" #okrBanner>
   <div class="d-flex flex-row">
-    <div [ngClass]="isMobileDevice() ? 'filters' : 'none'" class="w-100 h-100 m-0 d-flex filters" slot="content">
+    <div class="w-100 h-100 m-0 d-flex" slot="content">
       <section class="d-none d-md-flex">
         <div class="header-content h-100 m-0 pt-3 pb-3 d-flex gap-2 flex-column container-fluid">
           <div class="d-flex align-items-end gap-2">
@@ -35,7 +35,7 @@
         </mat-accordion>
       </section>
     </div>
-    <div *ngIf="!isMobileDevice()" class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end d-none d-md-flex">
       <app-okr-tangram [attr.data-testId]="'okr-logo'"></app-okr-tangram>
     </div>
   </div>

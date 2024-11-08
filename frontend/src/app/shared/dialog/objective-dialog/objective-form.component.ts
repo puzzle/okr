@@ -6,15 +6,16 @@ import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
 import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
-import { CONFIRM_DIALOG_WIDTH, GJ_REGEX_PATTERN } from '../../constantLibary';
+import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -32,6 +33,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
+  currentQuarter$: Observable<Quarter> = of();
   quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
@@ -47,7 +49,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       action: string;
@@ -82,16 +84,16 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const isCreating: boolean = !!this.data.objective.objectiveId;
     this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
+    this.currentQuarter$ = this.quarterService.getCurrentQuarter();
     const objective$ = isCreating
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
-
-    forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
+    forkJoin([objective$, this.quarters$, this.currentQuarter$]).subscribe(([objective, quarters, currentQuarter]) => {
       this.quarters = quarters;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
+      const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
+      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-      let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
       if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
         quarterId = quarters[1].id;
       }
@@ -130,26 +132,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   deleteObjective() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: CONFIRM_DIALOG_WIDTH,
-          height: 'auto',
-        };
-    const dialog = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Objective',
-      },
-      width: dialogConfig.width,
-      height: dialogConfig.height,
-      maxHeight: dialogConfig.maxHeight,
-      maxWidth: dialogConfig.maxWidth,
-    });
+    const dialog = this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
     dialog.afterClosed().subscribe((result) => {
       if (result) {
         this.objectiveService.deleteObjective(this.data.objective.objectiveId!).subscribe({
@@ -235,5 +218,23 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     return GJ_REGEX_PATTERN.test(label);
   }
 
-  protected readonly getQuarterLabel = getQuarterLabel;
+  getDialogTitle(teamName: string): string {
+    if (this.data.action === 'duplicate') {
+      return `Objective von ${teamName} duplizieren`;
+    }
+
+    if (this.data.action === 'releaseBacklog') {
+      return 'Objective veröffentlichen';
+    }
+
+    if (!this.data.objective.objectiveId) {
+      return `Objective für ${teamName} erfassen`;
+    }
+
+    if (this.data.objective.objectiveId && this.data.action !== 'releaseBacklog') {
+      return `Objective von ${teamName} bearbeiten`;
+    }
+
+    return '';
+  }
 }

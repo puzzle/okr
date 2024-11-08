@@ -1,11 +1,11 @@
-<div class="d-flex flex-column gap-2 col-12">
-  <label for="actionlist" class="text-black">Action Plan (optional)</label>
+<div class="okr-form-row okr-form-label-input-container">
+  <label for="actionlist" class="okr-form-label">Action Plan (optional)</label>
   <div
     cdkDropList
     *ngIf="control?.getValue()"
     [cdkDropListData]="control | async"
     (keydown.enter)="preventAddingNewItems($event)"
-    class="d-flex flex-column gap-2"
+    class="okr-form-col d-flex flex-column gap-2"
     (cdkDropListDropped)="drop($event)"
     id="actionlist"
   >
@@ -42,11 +42,11 @@
     </div>
   </div>
 
-  <section class="add-action-button">
+  <div class="okr-form-row mx-0">
     <button
       mat-button
       color="primary"
-      class="fw-bold"
+      class="fw-bold col-auto"
       [attr.data-testId]="'add-action-plan-line'"
       (click)="addNewAction()"
     >
@@ -60,5 +60,5 @@
         Weitere Action hinzufügen
       </span>
     </button>
-  </section>
+  </div>
 </div>

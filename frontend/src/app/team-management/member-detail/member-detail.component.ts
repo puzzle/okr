@@ -8,9 +8,7 @@ import { UserTeam } from '../../shared/types/model/UserTeam';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
-import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -37,7 +35,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     private readonly teamService: TeamService,
     private readonly cd: ChangeDetectorRef,
     private readonly router: Router,
-    private readonly dialog: MatDialog,
+    private readonly dialogService: DialogService,
   ) {}
   ngOnInit(): void {
     this.route.paramMap
@@ -80,12 +78,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   removeUserFromTeam(userTeam: UserTeam, user: User) {
-    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
-    dialogConfig.data = {
-      dialogTitle: getFullNameFromUser(user) + ` wirklich aus Team ${userTeam.team.name} entfernen?`,
+    const i18nData = {
+      user: getFullNameFromUser(user),
+      team: userTeam.team.name,
     };
-    this.dialog
-      .open(CancelDialogComponent, dialogConfig)
+    this.dialogService
+      .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
       .pipe(
         filter((confirm) => confirm),

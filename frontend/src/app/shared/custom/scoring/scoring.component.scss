@@ -12,7 +12,7 @@
 .okr-score-label {
   display: inline-grid;
   width: 30%;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .okr-score {
@@ -35,7 +35,6 @@
   display: block;
   width: 21px;
   height: 21px;
-  margin-top: 2px;
 }
 
 .stretch-div {
@@ -66,6 +65,11 @@
   min-width: fit-content;
   display: inline-block;
   text-align: end;
+}
+
+.stretch-label {
+  padding-top: 2px;
+  padding-bottom: 4px;
 }
 
 @media screen and (max-width: 580px) {

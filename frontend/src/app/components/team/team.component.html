@@ -1,10 +1,8 @@
 <div *ngIf="overviewEntity as OVEntity" class="bg-grey justify-content-between pt-3">
   <section class="team-header">
-    <span class="d-flex align-items-center gap-2">
-      <div class="d-flex align-items-center flex-row">
-        <h1 class="team-title">{{ OVEntity.team.name }}</h1>
-      </div>
-    </span>
+    <div class="d-flex align-items-center gap-2 flex-row">
+      <h1 class="team-title">{{ OVEntity.team.name }}</h1>
+    </div>
     <button
       (click)="createObjective()"
       *ngIf="OVEntity.writeable"
@@ -22,7 +20,7 @@
 
   <div
     class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2"
-    data-testid="objective-container"
+    [attr.data-testId]="'objective-container'"
   >
     <app-objective-column
       *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"

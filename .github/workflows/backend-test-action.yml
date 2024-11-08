@@ -10,11 +10,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK ${{vars.JAVA_VERSION}}
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: ${{vars.JAVA_VERSION}}
           distribution: 'adopt'
 
       - name: Use Maven to run unittests and integration tests
-        run: mvn clean verify
+        run: mvn clean verify -X

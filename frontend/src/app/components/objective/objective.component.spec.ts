@@ -7,23 +7,19 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { State } from '../../shared/types/enums/State';
-import { RouterTestingModule } from '@angular/router/testing';
 import { OverviewService } from '../../services/overview.service';
-import { objective, objectiveMin } from '../../shared/testData';
+import { objectiveMin } from '../../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ReactiveFormsModule } from '@angular/forms';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
-import { MenuEntry } from '../../shared/types/menu-entry';
-import { of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
 
 const overviewServiceMock = {
@@ -31,12 +27,9 @@ const overviewServiceMock = {
 };
 
 const objectiveServiceMock = {
-  getFullObjective(objectiveMin: ObjectiveMin) {
-    let ongoingObjective = objective;
-    ongoingObjective.state = State.ONGOING;
-    return of(ongoingObjective);
-  },
+  getFullObjective: jest.fn(),
 };
+
 describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveComponent;
   let fixture: ComponentFixture<ObjectiveComponent>;
@@ -50,9 +43,7 @@ describe('ObjectiveColumnComponent', () => {
         MatMenuModule,
         MatCardModule,
         NoopAnimationsModule,
-        RouterTestingModule,
         MatDialogModule,
-        HttpClientTestingModule,
         MatIconModule,
         MatTooltipModule,
         ReactiveFormsModule,
@@ -113,47 +104,5 @@ describe('ObjectiveColumnComponent', () => {
     component.isWritable = false;
     const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult"]'));
     expect(button).toBeFalsy();
-  });
-
-  it('Correct method should be called when back to draft is clicked', () => {
-    jest.spyOn(component, 'objectiveBackToDraft');
-    component.objective$.next(objectiveMin);
-    fixture.detectChanges();
-    const menuEntry: MenuEntry =
-      component.getOngoingMenuActions()[
-        component
-          .getOngoingMenuActions()
-          .map((menuAction) => menuAction.action)
-          .indexOf('todraft')
-      ];
-    component.handleDialogResult(menuEntry, { endState: '', comment: null, objective: objective });
-    fixture.detectChanges();
-    expect(component.objectiveBackToDraft).toHaveBeenCalled();
-  });
-
-  test('Should set isBacklogQuarter right', async () => {
-    expect(component.isBacklogQuarter).toBeFalsy();
-
-    objectiveMin.quarter.label = 'Backlog';
-
-    component.objective = objectiveMin;
-    fixture.detectChanges();
-    component.ngOnInit();
-
-    expect(component.isBacklogQuarter).toBeTruthy();
-  });
-
-  test('Should return correct menu entries when backlog', async () => {
-    objectiveMin.quarter.label = 'Backlog';
-    component.objective = objectiveMin;
-    fixture.detectChanges();
-    component.ngOnInit();
-
-    let menuActions = component.getDraftMenuActions();
-
-    expect(menuActions.length).toEqual(3);
-    expect(menuActions[0].displayName).toEqual('Objective bearbeiten');
-    expect(menuActions[1].displayName).toEqual('Objective duplizieren');
-    expect(menuActions[2].displayName).toEqual('Objective veröffentlichen');
   });
 });

@@ -1,4 +1,8 @@
-<mat-form-field appearance="outline" class="bg-white header-form-field quarter-filter" subscriptSizing="dynamic">
+<mat-form-field
+  appearance="outline"
+  class="bg-white header-form-field quarter-filter quarter-filter-text"
+  subscriptSizing="dynamic"
+>
   <mat-select
     [(ngModel)]="currentQuarterId"
     (ngModelChange)="changeDisplayedQuarter()"

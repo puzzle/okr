@@ -1,22 +1,22 @@
 <div class="w-100" [cdkTrapFocus]="true" [cdkTrapFocusAutoCapture]="true">
   <ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
     <div *ngIf="objective" class="d-flex flex-column">
-      <div class="w-100 d-flex justify-content-between align-items-center mb-3">
-        <h2 class="title">{{ objective.title }}</h2>
+      <section class="w-100 d-flex justify-content-between align-items-center mb-3">
+        <h2 class="title" [attr.data-testId]="'objective-title'">{{ objective.title }}</h2>
         <button
           class="d-flex align-items-center justify-content-center"
           mat-icon-button
           (click)="backToOverview()"
-          data-test-id="closeDrawer"
+          [attr.data-testId]="'closeDrawer'"
         >
           <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
         </button>
-      </div>
+      </section>
 
-      <div class="me-3">
-        <p class="sub-title-objective fw-bold mb-1">Beschrieb</p>
+      <section class="me-3">
+        <h3 class="mb-1">Beschrieb</h3>
         <div class="linebreak" *ngIf="objective.description === ''"><p>-</p></div>
-        <div *ngIf="objective.description !== ''" data-test-id="description" class="linebreak">
+        <div *ngIf="objective.description !== ''" [attr.data-testId]="'description'" class="linebreak">
           <p>{{ objective.description }}</p>
         </div>
 
@@ -47,7 +47,7 @@
             Objective bearbeiten
           </button>
         </div>
-      </div>
+      </section>
     </div>
   </ng-container>
 

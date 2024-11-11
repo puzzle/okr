@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, input, OnDestroy, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { TeamService } from '../../services/team.service';
@@ -20,8 +20,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   private subscription?: Subscription;
 
-  @Input('showMoreTeams')
-  showMoreTeams = true;
+  showMoreTeams = false;
 
   constructor(
     private teamService: TeamService,

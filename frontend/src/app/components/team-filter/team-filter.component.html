@@ -3,7 +3,7 @@
   class="chip-list overflow-hidden w-100 d-grid"
 >
   <!-- Button to select all teams -->
-  <button (click)="toggleAll()" class="icon-button team-button focus-outline d-none d-sm-block" id="diddy">
+  <button (click)="toggleAll()" class="icon-button team-button focus-outline d-none d-sm-block">
     <mat-chip
       [attr.data-testId]="'team-filter-alle'"
       [highlighted]="activeTeams.length == (this.teams$ | async)?.length"
@@ -13,7 +13,7 @@
   </button>
   <button
     (click)="toggleSelection(team.id)"
-    *ngFor="let team of (teams$ | async)?.slice(0, showMoreTeams ? undefined : 6); trackBy: trackByFn"
+    *ngFor="let team of (teams$ | async)?.slice(0, showMoreTeams ? (teams$ | async)?.length : 6); trackBy: trackByFn"
     [attr.data-testId]="'team-filter-chip'"
     [matTooltip]="team.name"
     matTooltipPosition="above"

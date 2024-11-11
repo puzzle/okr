@@ -214,6 +214,7 @@ input {
 
 .objective-three-dot-menu {
   border-radius: 0.5rem !important;
+
   .mat-mdc-menu-content {
     padding: 0 !important;
   }
@@ -334,7 +335,6 @@ table.okr-table {
     border-top-right-radius: 0 !important;
   }
 }
-
 .mat-mdc-autocomplete-panel {
   &.autocomplete-bigger {
     max-height: 480px;

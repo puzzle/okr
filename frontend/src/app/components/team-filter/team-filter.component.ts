@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { TeamService } from '../../services/team.service';

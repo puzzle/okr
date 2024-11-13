@@ -10,7 +10,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { Unit } from '../../../shared/types/enums/Unit';
-import { ParseUnitValuePipe } from '../../../shared/pipes/parse-unit-value/parse-unit-value.pipe';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import * as de from '../../../../assets/i18n/de.json';
 
@@ -32,7 +31,7 @@ describe('CheckInFormComponent', () => {
         }),
       ],
       declarations: [CheckInFormMetricComponent, UnitValueTransformationPipe],
-      providers: [UnitValueTransformationPipe, ParseUnitValuePipe],
+      providers: [UnitValueTransformationPipe],
     });
     fixture = TestBed.createComponent(CheckInFormMetricComponent);
     component = fixture.componentInstance;

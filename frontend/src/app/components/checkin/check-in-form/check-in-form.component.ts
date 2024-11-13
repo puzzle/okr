@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../../shared/types/model/KeyResult';
 import { KeyResultOrdinal } from '../../../shared/types/model/KeyResultOrdinal';
 import { CheckInMin } from '../../../shared/types/model/CheckInMin';
-import { ParseUnitValuePipe } from '../../../shared/pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../shared/types/model/Action';
 import { ActionService } from '../../../services/action.service';
@@ -32,11 +31,11 @@ export class CheckInFormComponent implements OnInit {
   });
   protected readonly formInputCheck = formInputCheck;
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
+  protected readonly CHAR_REGEX = /[^0-9.]/g;
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public parserPipe: ParseUnitValuePipe,
     private checkInService: CheckInService,
     private actionService: ActionService,
     private translate: TranslateService,
@@ -89,7 +88,7 @@ export class CheckInFormComponent implements OnInit {
     if (this.keyResult.keyResultType === 'metric') {
       checkIn = {
         ...this.dialogForm.value,
-        value: this.parserPipe.transform(this.dialogForm.controls['value'].value),
+        value: this.parseUnitValue(this.dialogForm.controls['value'].value),
         keyResultId: this.keyResult.id,
         id: this.checkIn.id,
         version: this.checkIn.version,
@@ -124,4 +123,13 @@ export class CheckInFormComponent implements OnInit {
   getDialogTitle(): string {
     return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
   }
+
+  private parseUnitValue(param: string | null): number {
+    const value: string = param || '0';
+    if (value.toString().at(0) == '-') {
+      return +('-' + value.toString().replace(this.CHAR_REGEX, ''));
+    }
+    return Number(value.toString().replace(this.CHAR_REGEX, ''));
+  }
+
 }

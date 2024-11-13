@@ -18,7 +18,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ParseUnitValuePipe } from '../../../shared/pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
 import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
@@ -76,7 +75,6 @@ describe('CheckInFormComponent', () => {
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: CheckInService, useValue: checkInServiceMock },
         { provide: ActionService, useValue: actionServiceMock },
-        ParseUnitValuePipe,
       ],
       declarations: [CheckInFormComponent, DialogTemplateCoreComponent, ConfidenceComponent],
     });
@@ -183,4 +181,5 @@ describe('CheckInFormComponent', () => {
     component.saveCheckIn();
     expect(actionServiceMock.updateActions).toHaveBeenCalled();
   }));
+
 });

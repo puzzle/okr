@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ExampleDialogComponent } from './dialog/example-dialog/example-dialog.component';
 import { ObjectiveFormComponent } from './dialog/objective-dialog/objective-form.component';
-import { UnitValueTransformationPipe } from './pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { ConfirmDialogComponent } from './dialog/confirm-dialog/confirm-dialog.component';
 import { ScoringComponent } from './custom/scoring/scoring.component';
 import { CompleteDialogComponent } from './dialog/complete-dialog/complete-dialog.component';
@@ -24,15 +23,14 @@ import { SpinnerComponent } from './custom/spinner/spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogTemplateCoreComponent } from './custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { UnitLabelTransformationPipe } from './pipes/unit-label-transformation/unit-label-transformation.pipe';
+import { UnitTransformationPipe } from './pipes/unit-transformation/unit-transformation.pipe';
 
 @NgModule({
   declarations: [
     ExampleDialogComponent,
     ObjectiveFormComponent,
-    UnitValueTransformationPipe,
     ConfirmDialogComponent,
-    UnitLabelTransformationPipe,
+    UnitTransformationPipe,
     ScoringComponent,
     CompleteDialogComponent,
     OkrTangramComponent,
@@ -64,12 +62,11 @@ import { UnitLabelTransformationPipe } from './pipes/unit-label-transformation/u
   exports: [
     ExampleDialogComponent,
     ObjectiveFormComponent,
-    UnitValueTransformationPipe,
     ConfirmDialogComponent,
-    UnitLabelTransformationPipe,
     ScoringComponent,
     CompleteDialogComponent,
     OkrTangramComponent,
+    UnitTransformationPipe,
     SidepanelComponent,
     SpinnerComponent,
     DialogTemplateCoreComponent,

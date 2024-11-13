@@ -131,5 +131,4 @@ export class CheckInFormComponent implements OnInit {
     }
     return Number(value.toString().replace(this.CHAR_REGEX, ''));
   }
-
 }

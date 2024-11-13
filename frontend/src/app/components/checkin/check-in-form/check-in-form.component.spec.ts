@@ -181,5 +181,4 @@ describe('CheckInFormComponent', () => {
     component.saveCheckIn();
     expect(actionServiceMock.updateActions).toHaveBeenCalled();
   }));
-
 });

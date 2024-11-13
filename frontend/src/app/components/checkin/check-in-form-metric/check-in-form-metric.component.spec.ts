@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CheckInFormMetricComponent } from './check-in-form-metric.component';
-import { UnitValueTransformationPipe } from '../../../shared/pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { checkInMetric, keyResultMetric } from '../../../shared/testData';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -30,8 +29,8 @@ describe('CheckInFormComponent', () => {
           de: de,
         }),
       ],
-      declarations: [CheckInFormMetricComponent, UnitValueTransformationPipe],
-      providers: [UnitValueTransformationPipe],
+      declarations: [CheckInFormMetricComponent,],
+      providers: [],
     });
     fixture = TestBed.createComponent(CheckInFormMetricComponent);
     component = fixture.componentInstance;

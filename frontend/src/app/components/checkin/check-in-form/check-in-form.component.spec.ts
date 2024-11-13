@@ -31,6 +31,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { KeyResultMetric } from '../../../shared/types/model/KeyResultMetric';
 
 const dialogMock = {
   close: jest.fn(),
@@ -181,4 +182,20 @@ describe('CheckInFormComponent', () => {
     component.saveCheckIn();
     expect(actionServiceMock.updateActions).toHaveBeenCalled();
   }));
+
+  it('should replace characters at the end of string from the value', () => {
+    expect(component.parseUnitValue('200HelloWorld')).toBe(200);
+  });
+
+  it('should replace characters at beginning of string from the value', () => {
+    expect(component.parseUnitValue('HelloWorld200')).toBe(200);
+  });
+
+  it('should replace characters between strings from the value', () => {
+    expect(component.parseUnitValue("200'000")).toBe(200000);
+  });
+
+  it('should replace special characters from the value', () => {
+    expect(component.parseUnitValue('1050&%ç*')).toBe(1050);
+  });
 });

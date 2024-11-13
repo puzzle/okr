@@ -102,7 +102,7 @@ public class ClientConfigServiceTest {
                 prefix(tenantId) + "jwkSetUri", //
                 prefix(tenantId) + "issuerUrl", //
                 prefix(tenantId) + "clientId", //
-                null);
+                null, null);
     }
 
     private TenantClientCustomization getTenantClientCustomization(String tenantId) {

@@ -1,7 +1,4 @@
-<mat-chip-listbox
-  [ngStyle]="{ height: showMoreTeams ? '100%' : '85px' }"
-  class="chip-list overflow-hidden w-100 d-grid"
->
+<mat-chip-listbox class="chip-list overflow-hidden w-100 d-grid">
   <!-- Button to select all teams -->
   <button (click)="toggleAll()" class="icon-button team-button focus-outline d-none d-sm-block">
     <mat-chip
@@ -20,7 +17,7 @@
     class="icon-button focus-outline m-1"
   >
     <mat-chip [highlighted]="activeTeams.includes(team.id)" color="primary">
-      <p class="d-sm-none d-block">{{ getTeamName(team.id) }}</p>
+      <p class="d-sm-none d-block text-truncate chip-team-name">{{ getTeamName(team.id) }}</p>
       <p class="d-none d-sm-block">{{ team.name }}</p>
     </mat-chip>
   </button>

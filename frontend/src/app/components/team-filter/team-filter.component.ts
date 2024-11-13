@@ -11,6 +11,7 @@ import { extractTeamsFromUser } from '../../shared/types/model/User';
 @Component({
   selector: 'app-team-filter',
   templateUrl: './team-filter.component.html',
+  styleUrls: ['./team-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
@@ -102,9 +103,6 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   getTeamName(id: number): string {
     let teamName = this.teams$.getValue().find((team) => team.id === id)?.name;
-    if (teamName && teamName.length > 10) {
-      teamName = teamName.substring(0, 10) + '...';
-    }
     return teamName ?? 'no team name';
   }
 }

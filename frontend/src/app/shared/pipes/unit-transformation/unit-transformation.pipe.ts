@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class UnitTransformationPipe implements PipeTransform {
   transform(value: number, label: string): string {
-    return this.transformValue(value) + this.transformLabel(label)
+    return this.transformValue(value) + this.transformLabel(label);
   }
 
   transformValue(value: number): string {

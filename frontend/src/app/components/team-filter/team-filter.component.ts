@@ -59,6 +59,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         } else {
           this.activeTeams = knownTeams;
         }
+        this.teams$.next(this.sortTeamsToggledPriority());
         this.changeTeamFilterParams();
       });
   }
@@ -85,6 +86,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       this.activeTeams.push(id);
     }
 
+    this.teams$.next(this.sortTeamsToggledPriority());
     this.changeTeamFilterParams();
   }
 
@@ -104,5 +106,18 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   getTeamName(id: number): string {
     let teamName = this.teams$.getValue().find((team) => team.id === id)?.name;
     return teamName ?? 'no team name';
+  }
+
+  sortTeamsToggledPriority() {
+    return this.teams$.getValue().sort((a, b) => {
+      const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;
+      const bToggled = this.activeTeams.includes(b.id) ? 0 : 1;
+
+      if (aToggled !== bToggled) {
+        return aToggled - bToggled;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
   }
 }

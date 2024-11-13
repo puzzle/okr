@@ -34,9 +34,9 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="d-flex gap-2 flex-column filter-container">
-              <app-objective-filter class="m-2"></app-objective-filter>
-              <app-quarter-filter (quarterLabel$)="quarterLabel$.next($event)" class="m-2"></app-quarter-filter>
-              <app-team-filter [showMoreTeams]="false" class="m-2"></app-team-filter>
+              <app-objective-filter></app-objective-filter>
+              <app-quarter-filter (quarterLabel$)="quarterLabel$.next($event)"></app-quarter-filter>
+              <app-team-filter id="team-filter" class="m-2"></app-team-filter>
             </div>
           </mat-expansion-panel>
         </mat-accordion>

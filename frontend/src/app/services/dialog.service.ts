@@ -3,10 +3,14 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { ComponentType } from '@angular/cdk/overlay';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { ButtonState } from '../shared/types/enums/ButtonState';
 
 export interface ConfirmDialogData {
   title: string;
   text: string;
+  yesButtonState?: ButtonState;
+  noButtonState?: ButtonState;
+  closeButtonState?: ButtonState;
 }
 
 @Injectable({
@@ -43,6 +47,19 @@ export class DialogService {
       data: {
         title: title,
         text: text,
+      },
+    });
+  }
+
+  openCustomizedConfirmDialog(data: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent> {
+    return this.open(ConfirmDialogComponent, {
+      panelClass: this.DIALOG_PANEL_CLASS_SMALL,
+      data: {
+        title: data.title,
+        text: data.text,
+        yesButtonState: data.yesButtonState,
+        noButtonState: data.noButtonState,
+        closeButtonState: data.closeButtonState,
       },
     });
   }

@@ -31,7 +31,6 @@ export class CheckInFormComponent implements OnInit {
   });
   protected readonly formInputCheck = formInputCheck;
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
-  protected readonly CHAR_REGEX = /[^0-9.]/g;
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
@@ -113,13 +112,5 @@ export class CheckInFormComponent implements OnInit {
 
   getDialogTitle(): string {
     return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
-  }
-
-  private parseUnitValue(param: string | null): number {
-    const value: string = param || '0';
-    if (value.toString().at(0) == '-') {
-      return +('-' + value.toString().replace(this.CHAR_REGEX, ''));
-    }
-    return Number(value.toString().replace(this.CHAR_REGEX, ''));
   }
 }

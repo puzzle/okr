@@ -85,16 +85,7 @@ export class CheckInFormComponent implements OnInit {
       version: this.checkIn.version,
       keyResultId: this.keyResult.id,
     };
-    if (this.keyResult.keyResultType === 'metric') {
-      checkIn = {
-        ...this.dialogForm.value,
-        value: this.parseUnitValue(this.dialogForm.controls['value'].value),
-        keyResultId: this.keyResult.id,
-        id: this.checkIn.id,
-        version: this.checkIn.version,
-      };
-    }
-
+    console.log(checkIn);
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
       this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {
         this.dialogRef.close();

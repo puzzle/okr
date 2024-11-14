@@ -112,6 +112,35 @@ describe('CheckInFormComponent', () => {
     expect(actionServiceMock.updateActions).toHaveBeenCalled();
   }));
 
+  it.each([
+    ['HelloWorld200', 200],
+    ['200HelloWorld', 200],
+    ["200'000", 200000],
+    ['1050&%ç*', 1050],
+  ])('should parse value %s correctly to %s if key result is metric', (value: string, expected: number) => {
+    component.checkIn = checkInMetric;
+    component.keyResult = keyResultMetric;
+    component.dialogForm.controls['value'].setValue(value);
+    component.dialogForm.controls['confidence'].setValue(checkInMetric.confidence);
+    component.dialogForm.controls['changeInfo'].setValue(checkInMetric.changeInfo);
+    component.dialogForm.controls['initiatives'].setValue(checkInMetric.initiatives);
+
+    checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInMetric));
+    actionServiceMock.updateActions.mockReturnValue(of(action2));
+    component.saveCheckIn();
+
+    expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
+      id: checkInMetric.id,
+      version: checkInMetric.version,
+      confidence: checkInMetric.confidence,
+      value: expected,
+      changeInfo: checkInMetric.changeInfo,
+      initiatives: checkInMetric.initiatives,
+      keyResultId: keyResultMetric.id,
+    });
+    expect(actionServiceMock.updateActions).toHaveBeenCalled();
+  });
+
   it('should save check-in correctly if key result is ordinal', waitForAsync(async () => {
     component.checkIn = checkInOrdinal;
     component.keyResult = keyResultOrdinal;
@@ -182,20 +211,4 @@ describe('CheckInFormComponent', () => {
     component.saveCheckIn();
     expect(actionServiceMock.updateActions).toHaveBeenCalled();
   }));
-
-  it('should replace characters at the end of string from the value', () => {
-    expect(component.parseUnitValue('200HelloWorld')).toBe(200);
-  });
-
-  it('should replace characters at beginning of string from the value', () => {
-    expect(component.parseUnitValue('HelloWorld200')).toBe(200);
-  });
-
-  it('should replace characters between strings from the value', () => {
-    expect(component.parseUnitValue("200'000")).toBe(200000);
-  });
-
-  it('should replace special characters from the value', () => {
-    expect(component.parseUnitValue('1050&%ç*')).toBe(1050);
-  });
 });

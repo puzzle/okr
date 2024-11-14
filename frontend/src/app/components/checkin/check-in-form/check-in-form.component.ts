@@ -124,7 +124,7 @@ export class CheckInFormComponent implements OnInit {
     return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
   }
 
-  parseUnitValue(param: string | null): number {
+  private parseUnitValue(param: string | null): number {
     const value: string = param || '0';
     if (value.toString().at(0) == '-') {
       return +('-' + value.toString().replace(this.CHAR_REGEX, ''));

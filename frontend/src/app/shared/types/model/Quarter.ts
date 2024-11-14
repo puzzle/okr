@@ -19,6 +19,6 @@ export class Quarter {
     if (this.startDate === null || this.endDate === null) {
       return false;
     }
-    return this.startDate <= new Date() && this.endDate >= new Date();
+    return new Date(this.startDate) <= new Date() && new Date(this.endDate) >= new Date();
   }
 }

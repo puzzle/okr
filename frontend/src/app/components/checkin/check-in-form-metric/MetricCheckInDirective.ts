@@ -1,4 +1,4 @@
-import { Directive, HostListener, forwardRef } from '@angular/core';
+import { Directive, HostListener, forwardRef, ElementRef, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
@@ -15,6 +15,11 @@ export class MetricCheckInDirective implements ControlValueAccessor {
   private onChange: (value: number | null) => void = () => {};
   protected readonly CHAR_REGEX = /[^0-9.]/g;
 
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+  ) {}
+
   writeValue(value: any): void {
     // does not need to be implemented because the display value does not need to be modified
   }
@@ -25,6 +30,10 @@ export class MetricCheckInDirective implements ControlValueAccessor {
 
   registerOnTouched(fn: () => void): void {
     // does not need to be implemented
+  }
+
+  setDisabledState(isDisabled: boolean) {
+    this.renderer.setProperty(this.el.nativeElement, 'disabled', isDisabled);
   }
 
   @HostListener('input', ['$event.target.value'])

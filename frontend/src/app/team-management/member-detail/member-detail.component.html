@@ -53,9 +53,12 @@
         [currentTeams$]="currentUserTeams$.asObservable()"
         (addUserTeam)="addTeamMembership($event, userRef)"
       ></app-add-user-team>
+
+      <app-delete-user [user]="userRef" [currentTeams$]="currentUserTeams$.asObservable()"></app-delete-user>
     </div>
   </div>
 </div>
+
 <ng-template #spinner>
   <app-spinner text="Member wird geladen..."></app-spinner>
 </ng-template>

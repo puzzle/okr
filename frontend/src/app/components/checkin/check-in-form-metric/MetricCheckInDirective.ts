@@ -41,6 +41,7 @@ export class MetricCheckInDirective implements ControlValueAccessor {
     const value: string = param || '0';
     if (value.toString().at(0) == '-') {
       this.onChange(+('-' + value.toString().replace(this.CHAR_REGEX, '')));
+      return;
     }
     this.onChange(Number(value.toString().replace(this.CHAR_REGEX, '')));
   }

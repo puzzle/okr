@@ -33,17 +33,16 @@ USING DOCKER
   - backend/target
 
 Formatting:
-- Check code formatting: `mvn formatter:validate`
-- Format the code: `mvn formatter:format`
+- Check code formatting: `mvn spotless:check`
+- Format the code: `mvn spotless:apply`
 
-The `compile` goal execute also a `formatter:format` goal.
+The `compile` goal execute also a `spotless:apply` goal.
 
 Verify the Backend for coverage check:
 - `mvn clean verify`
 
 ## Formatting
-We use the **formatter-maven-plugin** Plugin for formatting the Java code:
-https://code.revelc.net/formatter-maven-plugin/
-
+We use the **spotless** Plugin for formatting the Java code:
+https://github.com/diffplug/spotless
 ## Build
 _tbd_

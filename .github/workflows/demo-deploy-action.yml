@@ -51,7 +51,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          tags: ${{ needs.update-version.outputs.okr-docker-image}}
+          tags: ${{ needs.read-version.outputs.okr-docker-image}}
           load: true
           push: false
           outputs: type=docker,dest=/tmp/okr-docker-image.tar
@@ -65,18 +65,7 @@ jobs:
   e2e-docker:
     runs-on: ubuntu-24.04
     needs: [build-docker-image, read-version]
-    container:
-      image: quay.io/keycloak/keycloak:26.0.5
-      environment:
-        - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
-        - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
-      volumes:
-        - ./config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json
-      command:
-        - start-dev
-        - --import-realm
-      ports:
-        - "8544:8080"
+
     steps:
       - uses: actions/checkout@v4
 
@@ -89,11 +78,14 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/okr-docker-image.tar
 
-      - name: run keycloak docker
+      - name: Run keyloak server
+        run: cd docker && docker compose up -d keycloak-pitc
+
+      - name: run Springboot okr application
         run: |
           docker run --network=host \
           -e SPRING_PROFILES_ACTIVE=integration-test \
-          ${{ needs.update-version.outputs.okr-docker-image}} &
+          ${{ needs.read-version.outputs.okr-docker-image}} &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
@@ -139,7 +131,7 @@ jobs:
           password: ${{ secrets.QUAY_TOKEN }}
 
       - name: Push
-        run: docker push ${{ needs.update-version.outputs.okr-docker-image}}
+        run: docker push ${{ needs.read-version.outputs.okr-docker-image}}
 
       - name: Install yq
         shell: bash
@@ -156,7 +148,7 @@ jobs:
           COMMITPREFIX: '[CTS]'
         run: |
           curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}?ref=${{vars.TARGET_GITLAB_REFERENCE}}" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
-          yq -i "${{vars.YAML_PATH}} = \"${{needs.update-version.outputs.okr-docker-image}}\"" response.yaml
+          yq -i "${{vars.YAML_PATH}} = \"${{needs.read-version.outputs.okr-docker-image}}\"" response.yaml
           UPDATED_CONTENT=$(cat response.yaml)
           curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=$COMMITPREFIX Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
 

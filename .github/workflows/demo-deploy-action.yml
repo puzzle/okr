@@ -4,7 +4,7 @@ on:
  workflow_dispatch:
 
 jobs:
-  update-version:
+  read-version:
     runs-on: ubuntu-24.04
     outputs:
       okr-docker-image:  ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-DEMO
@@ -18,7 +18,7 @@ jobs:
         id: store-version
 
   build-docker-image:
-    needs: update-version
+    needs: read-version
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -64,7 +64,7 @@ jobs:
 
   e2e-docker:
     runs-on: ubuntu-24.04
-    needs: [build-docker-image, update-version]
+    needs: [build-docker-image, read-version]
     container:
       image: quay.io/keycloak/keycloak:26.0.5
       environment:
@@ -92,7 +92,7 @@ jobs:
       - name: run keycloak docker
         run: |
           docker run --network=host \
-          -e SPRING_PROFILES_ACTIVE-ID=dev \
+          -e SPRING_PROFILES_ACTIVE=integration-test \
           ${{ needs.update-version.outputs.okr-docker-image}} &
 
       - name: Cypress run e2e tests
@@ -115,7 +115,7 @@ jobs:
 
   upload-to-quay:
     runs-on: ubuntu-latest
-    needs: [e2e-docker, update-version]
+    needs: [e2e-docker, read-version]
     steps:
       - uses: actions/checkout@v4
 

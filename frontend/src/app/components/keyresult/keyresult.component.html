@@ -9,14 +9,14 @@
   <app-scoring [keyResult]="keyResult" [isDetail]="false" [attr.data-testId]="'scoring-component'"></app-scoring>
   <div class="d-flex justify-content-between mt-2">
     <div class="d-flex justify-content-center align-items-center flex-wrap">
-      <h5 class="text-nowrap me-2">Letztes Check-in</h5>
+      <h4 class="text-nowrap me-2">Letztes Check-in</h4>
       <span class="keyResult-attribute-show">{{
         keyResult.lastCheckIn == null ? "Keines" : (keyResult!.lastCheckIn!.createdOn | date: DATE_FORMAT)
       }}</span>
     </div>
 
     <div class="d-flex align-items-center flex-wrap justify-content-end keyResult-overview-attribute">
-      <h5 class="me-2">Confidence</h5>
+      <h4 class="me-2">Confidence</h4>
       <app-confidence
         [edit]="false"
         [isDetail]="false"

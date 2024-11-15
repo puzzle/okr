@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="me-3">
-        <section class="d-flex justify-content-between mb-3">
+        <section class="d-flex justify-content-between mb-2-rem">
           <h4>
             {{ "KEY_RESULT_TYPE." + keyResult.keyResultType | translate }}
           </h4>
@@ -19,7 +19,7 @@
           <h4 *ngIf="keyResult?.objective?.quarter as quarter">{{ quarter.label }}</h4>
         </section>
 
-        <section class="scoring-section">
+        <section class="scoring-section mb-2-rem">
           <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
           <span class="text-small d-flex align-items-center flex-column mb-2 ms-3 confidence-container">
             <h4>Confidence</h4>
@@ -31,7 +31,7 @@
           </span>
         </section>
 
-        <section class="d-flex gap-4 flex-row mt-2">
+        <section class="d-flex gap-4 flex-row mb-2-rem">
           <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
             <div class="d-flex justify-content-start w-100 metric-label-div">
               <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
@@ -83,7 +83,7 @@
           </ng-container>
         </section>
 
-        <section *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
+        <section *ngIf="keyResult.lastCheckIn as checkIn" class="mb-2-rem">
           <h3 class="mb-1">Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})</h3>
           <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
           <span class="d-flex justify-content-start">
@@ -100,8 +100,8 @@
           </span>
         </section>
 
-        <section>
-          <div class="mt-3 mb-4">
+        <section class="mb-2-rem">
+          <div>
             <h3 class="mb-1">Beschrieb</h3>
             <p class="linebreak">{{ keyResult.description || "-" }}</p>
           </div>
@@ -112,7 +112,7 @@
               <div *ngIf="action.isChecked">
                 <div class="action-list-checked-item break-word ms-4">
                   <img src="../../../assets/icons/checkmark.svg" alt="checkbox" class="action-checkbox me-1" />
-                  <span class="" [ngStyle]="{ 'text-decoration': 'line-through' }">{{ action.action }}</span>
+                  <span [ngStyle]="{ 'text-decoration': 'line-through' }">{{ action.action }}</span>
                 </div>
               </div>
               <div *ngIf="!action.isChecked">

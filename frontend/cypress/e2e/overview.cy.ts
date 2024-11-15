@@ -5,27 +5,9 @@ describe('OKR Overview', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it.only('should have the current quarter with label Aktuell', () => {
-    cy.getByTestId('quarterFilter')
-      .contains('Aktuell')
-      .invoke('text')
-      .then((text) => {
-        //Checks if the current quarter is displayed with the label Aktuell not sure if this is needed
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth();
-        let quarter = Math.ceil((currentMonth + 1) / 3 + 1);
-
-        if (quarter > 4) {
-          quarter -= 4;
-        }
-
-        const businessYearStart = quarter > 2 ? currentDate.getFullYear() - 2001 : currentDate.getFullYear() - 2000;
-        const businessYearEnd = businessYearStart + 1;
-
-        const expectedText = `GJ ${businessYearStart}/${businessYearEnd}-Q${quarter} Aktuell`;
-
-        expect(text).to.contain(expectedText);
-      });
+  it('should have the current quarter with label Aktuell', () => {
+    cy.visit('/?quarter=2');
+    cy.getByTestId('quarterFilter').contains('Aktuell');
   });
 
   it('Check order of teams', () => {

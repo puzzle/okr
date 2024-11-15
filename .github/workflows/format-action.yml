@@ -3,7 +3,7 @@ name: 'Format'
 on: [push]
 jobs:
 
-  Frontend:
+  frontend:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -15,33 +15,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.10.0
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Npm install
         run: npm ci
 
       - name: Format frontend
-        run: npm run format
+        run: npm run check
 
-      - name: Commit and Push formated frontend
-        shell: bash
-        env:
-          COMMITPREFIX: '[FM]'
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add . || {
-            echo "No files were changed, so we did not commit anything"
-            exit 1
-          }
-          git commit -m "$COMMITPREFIX Automated formating frontend" || {
-            echo "No changes to commit, skipping push"
-            exit 0
-          }
-          git push -f
-
-  Backend:
+  backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,21 +41,4 @@ jobs:
           settings-path: ${{github.workspace}}
 
       - name: Format backend
-        run: mvn formatter:format -f backend/pom.xml
-
-      - name: Commit and Push formated backend
-        shell: bash
-        env:
-          COMMITPREFIX: '[FM]'
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add . || {
-            echo "No files were changed, so we did not commit anything"
-            exit 1
-          }
-          git commit -m "$COMMITPREFIX Automated formating backend" || {
-            echo "No changes to commit, skipping push"
-            exit 0
-          }
-          git push -f
+        run: mvn spotless:check

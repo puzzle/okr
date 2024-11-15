@@ -4,6 +4,21 @@ on:
  workflow_dispatch:
 
 jobs:
+  get-e2e-files:
+    runs-on: ubuntu-24.04
+    outputs:
+      file_list: ${{ steps.generate-file-list.outputs.file_list }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate file list
+        id: generate-file-list
+        run: |
+          FILES=$(ls frontend/cypress/e2e | jq -R . | jq -s . | jq -c)
+          echo $FILES
+          echo "file_list=$FILES" >> $GITHUB_OUTPUT
+
   read-version:
     runs-on: ubuntu-24.04
     outputs:
@@ -32,7 +47,7 @@ jobs:
       - name: Set up node 18
         uses: actions/setup-node@v4
         with:
-          node-version: 18.17.1
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Install Dependencies
         run: cd ./frontend && npm ci
@@ -64,8 +79,11 @@ jobs:
 
   e2e-docker:
     runs-on: ubuntu-24.04
-    needs: [build-docker-image, read-version]
-
+    needs: [build-docker-image, read-version, get-e2e-files]
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -91,18 +109,19 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           build: npm i -D cypress
+          working-directory: frontend
           install: false
-          wait-on: 'http://pitc.okr.localhost:8080/config, http://pitc.okr.localhost:4200, http://localhost:8544'
+          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544'
           wait-on-timeout: 120
           browser: chrome
-          headed: true
-          working-directory: frontend
+          headed: false
           config: baseUrl=http://pitc.okr.localhost:8080
+          spec: cypress/e2e/${{ matrix.file }}
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots for ${{ matrix.file }}
           path: frontend/cypress/screenshots
 
   upload-to-quay:

@@ -1,5 +1,4 @@
 import { DialogService } from '../../services/dialog.service';
-import { Objective } from '../../shared/types/model/Objective';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
@@ -20,7 +19,7 @@ export class ObjectiveMenuActions {
 
   releaseFromQuarterAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.RELEASE');
-    const afterAction: ObjectiveMenuAfterAction = (objective, dialogResult) =>
+    const afterAction: ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult) =>
       this.afterActions.releaseFromQuarter(objective);
     return { displayName: 'Objective veröffentlichen', action: action, afterAction: afterAction };
   }
@@ -53,7 +52,7 @@ export class ObjectiveMenuActions {
       data: { objectiveTitle: objective.title },
     };
     const action: ObjectiveMenuAction = () => this.dialogService.open(CompleteDialogComponent, config);
-    const afterAction: ObjectiveMenuAfterAction = (obj: Objective, result: any) =>
+    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) =>
       this.afterActions.completeObjective(obj, result);
 
     return { displayName: 'Objective abschliessen', action: action, afterAction: afterAction };
@@ -61,7 +60,7 @@ export class ObjectiveMenuActions {
 
   objectiveBackToDraft(): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.TO_DRAFT');
-    const afterAction: ObjectiveMenuAfterAction = (obj: Objective, result: any) =>
+    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) =>
       this.afterActions.objectiveBackToDraft(obj);
 
     return { displayName: 'Objective als Draft speichern', action: action, afterAction: afterAction };
@@ -69,7 +68,7 @@ export class ObjectiveMenuActions {
 
   objectiveReopen(): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.REOPEN');
-    const afterAction: ObjectiveMenuAfterAction = (obj: Objective, result: any) =>
+    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) =>
       this.afterActions.objectiveReopen(obj);
 
     return { displayName: 'Objective wiedereröffnen', action: action, afterAction: afterAction };

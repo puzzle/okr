@@ -1,14 +1,10 @@
 name: 'Demo-Deploy'
 
 on:
-#  pull_request:
-#    types:
-#      - closed
-#    branches: [ main ]
+ workflow_dispatch:
 
 jobs:
   update-version:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-24.04
     outputs:
       okr-docker-image:  ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-DEMO
@@ -17,32 +13,9 @@ jobs:
         with:
           token: ${{secrets.VERSION_TOKEN}}
 
-      - name: Generate and Set New Version
-        run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false
-
       - name: Extract Maven project version
         run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
         id: store-version
-
-      - name: Set New Snapshot Version
-        run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store-version.outputs.version}}-SNAPSHOT -DgenerateBackupPoms=false
-
-      - name: Commit and Push Changes
-        shell: bash
-        env:
-          COMMITPREFIX: '[VU]'
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add . || {
-            echo "No files were changed, so we did not commit anything"
-            exit 1
-          }
-          git commit -m "$COMMITPREFIX Automated version update" || {
-            echo "No changes to commit, skipping push"
-            exit 0
-          }
-          git push -f origin main
 
   build-docker-image:
     needs: update-version
@@ -89,12 +62,21 @@ jobs:
           name: okr-image
           path: /tmp/okr-docker-image.tar
 
-      - name: print imagetags
-        run: echo ${{ needs.update-version.outputs.okr-docker-image}}
-
   e2e-docker:
     runs-on: ubuntu-24.04
-    needs: [build-docker-image,update-version]
+    needs: [build-docker-image, update-version]
+    container:
+      image: quay.io/keycloak/keycloak:26.0.5
+      environment:
+        - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
+        - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
+      volumes:
+        - ./config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json
+      command:
+        - start-dev
+        - --import-realm
+      ports:
+        - "8544:8080"
     steps:
       - uses: actions/checkout@v4
 
@@ -107,37 +89,11 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/okr-docker-image.tar
 
-      - name: show images
-        run: docker image ls -a
-
-      - name: Run docker image
-        run: |
-          docker run --network=host \
-          -p 8080:8080 \
-          -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://localhost:8544/realms/pitc \
-          -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://localhost:8544/realms/pitc/protocol/openid-connect/certs \
-          -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_OPAQUETOKEN_CLIENT-ID=pitc_okr_staging \
-          -e SPRING_PROFILES_ACTIVE-ID=integration-test \
-          -e SPRING_DATASOURCE_URL="jdbc:h2:mem:db;DB_CLOSE_DELAY=-1" \
-          -e SPRING_DATASOURCE_USERNAME=user \
-          -e SPRING_DATASOURCE_PASSWORD=sa \
-          -e SPRING_FLYWAY_LOCATIONS="classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2" \
-          ${{ needs.update-version.outputs.okr-docker-image}} &
-
       - name: run keycloak docker
         run: |
-          docker run \
-          -e KEYCLOAK_ADMIN=admin \
-          -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
-          -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
-          -p 8544:8080 \
-          quay.io/keycloak/keycloak:23.0.1 \
-          start-dev --import-realm &
-
-      - uses: abhi1693/setup-browser@v0.3.5
-        with:
-          browser: chrome
-          version: latest
+          docker run --network=host \
+          -e SPRING_PROFILES_ACTIVE-ID=dev \
+          ${{ needs.update-version.outputs.okr-docker-image}} &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
@@ -238,11 +194,3 @@ jobs:
           --form "projectName=${PROJECT_NAME:-$GITHUB_REPOSITORY}" \
           --form "projectVersion=latest" \
           --form "bom=@sbom.xml"
-
-  clean-up:
-    needs: [generate-and-push-sbom]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: remove dockers
-        run: docker ps -aq | xargs -r docker rm -f

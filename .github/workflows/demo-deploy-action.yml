@@ -25,8 +25,6 @@ jobs:
       okr-docker-image:  ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-DEMO
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{secrets.VERSION_TOKEN}}
 
       - name: Extract Maven project version
         run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT

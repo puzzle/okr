@@ -11,7 +11,7 @@ import { ObjectiveMenuActions } from '../components/objective/ObjectiveMenuActio
 import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
-export type ObjectiveMenuAfterAction = (objective: Objective, dialogResult: any) => any;
+export type ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult: any) => any;
 
 export interface ObjectiveMenuEntry {
   displayName: string;

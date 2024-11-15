@@ -75,12 +75,12 @@ export class ObjectiveDetailComponent {
       })
       .afterClosed()
       .subscribe((result) => {
+        this.refreshDataService.markDataRefresh();
         if (result.delete) {
-          this.router.navigate(['']);
+          this.backToOverview();
         } else {
           this.loadObjective(this.objective$.value.id);
         }
-        this.refreshDataService.markDataRefresh();
       });
   }
 

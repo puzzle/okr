@@ -48,10 +48,10 @@ export class ObjectiveComponent {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result) => {
-        this.objectiveService.getFullObjective(objectiveMin.id).subscribe((objective) => {
-          menuEntry.afterAction(objective, result);
-          this.trigger?.focus();
-        });
+        if (result) {
+          menuEntry.afterAction(objectiveMin, result);
+        }
+        this.trigger?.focus();
       });
   }
 

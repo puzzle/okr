@@ -42,7 +42,7 @@ jobs:
           java-version: ${{vars.JAVA_VERSION}}
           distribution: 'adopt'
 
-      - name: Set up node 18
+      - name: Set up node ${{vars.NODE_VERSION}}
         uses: actions/setup-node@v4
         with:
           node-version: ${{vars.NODE_VERSION}}

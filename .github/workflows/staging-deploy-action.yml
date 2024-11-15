@@ -163,7 +163,7 @@ jobs:
 
   upload-to-quay:
     runs-on: ubuntu-latest
-    needs: [update-version, build-docker-image] #[e2e-docker, update-version]
+    needs: [update-version, e2e-docker] #[e2e-docker, update-version]
     steps:
       - uses: actions/checkout@v4
 

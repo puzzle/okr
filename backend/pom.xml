@@ -248,10 +248,13 @@
                         <eclipse>
                             <version>4.26</version>
                             <file>${project.basedir}/src/main/resources/formatting.xml</file>
-<!--                            <file>${project.basedir}/src/main/resources/formatters/default.xml</file>-->
                         </eclipse>
                         <removeUnusedImports />
-                        <importOrder />
+                        <importOrder>
+                            <order>java|javax,ch.puzzle,org,com,com.diffplug,,\#com.diffplug,\#</order>
+                            <semanticSort>true</semanticSort>
+                        </importOrder>
+                        <formatAnnotations />
                     </java>
                 </configuration>
             </plugin>

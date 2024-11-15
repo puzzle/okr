@@ -5,6 +5,11 @@ describe('OKR Overview', () => {
     cy.loginAsUser(users.gl);
   });
 
+  it('should have the current quarter with label Aktuell', () => {
+    cy.visit('/?quarter=2');
+    cy.getByTestId('quarterFilter').contains('Aktuell');
+  });
+
   it('Check order of teams', () => {
     cy.intercept('GET', '**/overview*').as('overview');
 

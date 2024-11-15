@@ -1,20 +1,20 @@
 #!/bin/sh
 
-projectPath=$PWD
-addedFiles=$(git diff --cached --name-only --diff-filter=a)
+gitBasePath=$(git rev-parse --show-toplevel)
+addedFiles=$(git diff --cached --name-only --diff-filter=d)
 
 echo "*****Running prettier******"
-cd $projectPath/frontend
+cd $gitBasePath/frontend
 npm run format
 echo "*****Finish running prettier******"
 
 echo "*****Running maven formatter******"
-cd $projectPath/backend
-mvn formatter:format
+cd $gitBasePath/backend
+mvn spotless:apply
 echo "*****Finish running maven formatter******"
 
 echo "*****Adding changes to git******"
-cd $projectPath
+cd $gitBasePath
 git add $addedFiles
 echo "*****Formatted files added again******"
 

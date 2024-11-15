@@ -12,7 +12,7 @@ describe('MetricCheckInDirective', () => {
     ["200'000", 200000],
     ['1050&%ç*', 1050],
     ['-1', -1],
-    ['-ç13&%', -13]
+    ['-ç13&%', -13],
   ])('should parse value %s correctly to %s', (value: string, expected: number) => {
     const mockOnChange = jest.fn();
     const directive = new MetricCheckInDirective();
@@ -20,6 +20,6 @@ describe('MetricCheckInDirective', () => {
 
     directive.handleInput(value);
 
-    expect(mockOnChange).toHaveBeenCalledWith(expected)
+    expect(mockOnChange).toHaveBeenCalledWith(expected);
   });
 });

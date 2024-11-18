@@ -114,6 +114,10 @@ jobs:
   e2e-docker:
     runs-on: ubuntu-24.04
     needs: [build-docker-image,update-version]
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -153,12 +157,6 @@ jobs:
         if: always()
         with:
           name: cypress-screenshots ${{ matrix.file }}
-          path: frontend/cypress/screenshots
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-screenshots
           path: frontend/cypress/screenshots
 
   upload-to-quay:

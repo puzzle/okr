@@ -137,7 +137,7 @@ jobs:
         run: |
           docker run --network=host \
           -e SPRING_PROFILES_ACTIVE=integration-test \
-          ${{ needs.read-version.outputs.okr-docker-image}} &
+          ${{ needs.update-version.outputs.okr-docker-image}} &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6

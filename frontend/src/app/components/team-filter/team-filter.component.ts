@@ -7,6 +7,7 @@ import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { UserService } from '../../services/user.service';
 import { extractTeamsFromUser } from '../../shared/types/model/User';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-team-filter',
@@ -21,7 +22,8 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   private subscription?: Subscription;
 
-  showMoreTeams = false;
+  showMoreTeams = true;
+  isMobile: boolean = false;
 
   constructor(
     private teamService: TeamService,
@@ -29,6 +31,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     private router: Router,
     private refreshDataService: RefreshDataService,
     private userService: UserService,
+    private breakpointObserver: BreakpointObserver,
   ) {
     this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.refreshTeamData();
@@ -37,6 +40,13 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.refreshTeamData();
+
+    this.breakpointObserver
+      .observe(['(min-width: 1px) and (max-width: 767px)'])
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
   }
 
   private refreshTeamData() {
@@ -59,7 +69,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         } else {
           this.activeTeams = knownTeams;
         }
-        this.teams$.next(this.sortTeamsToggledPriority());
+        if (this.isMobile) {
+          this.teams$.next(this.sortTeamsToggledPriority());
+        }
         this.changeTeamFilterParams();
       });
   }
@@ -86,7 +98,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       this.activeTeams.push(id);
     }
 
-    this.teams$.next(this.sortTeamsToggledPriority());
+    if (this.isMobile) {
+      this.teams$.next(this.sortTeamsToggledPriority());
+    }
     this.changeTeamFilterParams();
   }
 

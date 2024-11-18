@@ -136,7 +136,7 @@ jobs:
           ${{ needs.update-version.outputs.okr-docker-image}} &
 
       - name: set node version
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{vars.NODE_VERSION}}
 

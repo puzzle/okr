@@ -62,10 +62,6 @@ jobs:
   build-docker-image:
     needs: update-version
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
     steps:
       - uses: actions/checkout@v4
 

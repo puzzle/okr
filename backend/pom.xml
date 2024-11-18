@@ -256,6 +256,22 @@
                         </importOrder>
                         <formatAnnotations />
                     </java>
+
+                    <typescript>
+                        <includes> <!-- You have to set the target manually -->
+                            <include>src/**/*.ts</include>
+                        </includes>
+
+                        <tsfmt/>    <!-- has its own section below -->
+                        <prettier/> <!-- has its own section below -->
+                        <eslint/>   <!-- has its own section below -->
+                        <biome/>    <!-- has its own section below -->
+
+                        <licenseHeader>
+                            <content>/* (C)$YEAR */</content>  <!-- or <file>${project.basedir}/license-header</file> -->
+                            <delimiter>(import|const|declare|export|var) </delimiter>
+                        </licenseHeader>
+                    </typescript>
                 </configuration>
             </plugin>
         </plugins>

@@ -259,18 +259,35 @@
 
                     <typescript>
                         <includes> <!-- You have to set the target manually -->
-                            <include>src/**/*.ts</include>
+                            <include>../frontend/src/app/**/*.ts</include>
                         </includes>
 
-                        <tsfmt/>    <!-- has its own section below -->
-                        <prettier/> <!-- has its own section below -->
-                        <eslint/>   <!-- has its own section below -->
-                        <biome/>    <!-- has its own section below -->
-
-                        <licenseHeader>
-                            <content>/* (C)$YEAR */</content>  <!-- or <file>${project.basedir}/license-header</file> -->
-                            <delimiter>(import|const|declare|export|var) </delimiter>
-                        </licenseHeader>
+                        <eslint>
+                            <!-- Specify at most one of the following 3 configs: either 'eslintVersion', 'devDependencies' or 'devDependencyProperties'  -->
+                            <eslintVersion>8.30.0</eslintVersion>
+                            <!-- mandatory: provide either a configFile or a configJs object -->
+<!--                            <configFile>${project.basedir}/.eslintrc.js</configFile>-->
+                            <configJs>
+                                {
+                                env: {
+                                browser: true,
+                                es2021: true
+                                },
+                                extends: 'standard-with-typescript',
+                                overrides: [
+                                ],
+                                parserOptions: {
+                                ecmaVersion: 'latest',
+                                sourceType: 'module',
+                                project: '../../frontend/tsconfig.json',
+                                },
+                                rules: {
+                                }
+                                }
+                            </configJs>
+                            <!-- recommended: provide a tsconfigFile - especially when using the styleguides -->
+                            <tsconfigFile>${project.basedir}/../frontend/tsconfig.json</tsconfigFile>
+                        </eslint>
                     </typescript>
                 </configuration>
             </plugin>

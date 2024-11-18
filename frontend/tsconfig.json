@@ -23,8 +23,6 @@
     "esModuleInterop": true,
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

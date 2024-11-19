@@ -170,8 +170,8 @@ class AlignmentBusinessServiceTest {
         // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(8L)).thenReturn(objectiveAlignment2);
         when(objectivePersistenceService.findById(8L)).thenReturn(objective1);
-        Alignment returnAlignment = ObjectiveAlignment.Builder.builder().withId(2L).withAlignedObjective(objectiveAlignedObjective)
-                .withTargetObjective(objective1).build();
+        Alignment returnAlignment = ObjectiveAlignment.Builder.builder().withId(2L)
+                .withAlignedObjective(objectiveAlignedObjective).withTargetObjective(objective1).build();
 
         // act
         alignmentBusinessService.updateEntity(8L, objectiveAlignedObjective);
@@ -185,8 +185,8 @@ class AlignmentBusinessServiceTest {
         // arrange
         when(alignmentPersistenceService.findByAlignedObjectiveId(8L)).thenReturn(objectiveAlignment2);
         when(keyResultPersistenceService.findById(5L)).thenReturn(metricKeyResult);
-        Alignment returnAlignment = KeyResultAlignment.Builder.builder().withId(2L).withAlignedObjective(keyResultAlignedObjective)
-                .withTargetKeyResult(metricKeyResult).build();
+        Alignment returnAlignment = KeyResultAlignment.Builder.builder().withId(2L)
+                .withAlignedObjective(keyResultAlignedObjective).withTargetKeyResult(metricKeyResult).build();
 
         // act
         alignmentBusinessService.updateEntity(8L, keyResultAlignedObjective);

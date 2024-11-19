@@ -112,6 +112,7 @@ public class ClientConfigServiceTest {
                 prefix(tenantId) + "triangles", //
                 prefix(tenantId) + "backgroundLogo", //
                 prefix(tenantId) + "title", //
+                prefix(tenantId) + "supportSiteUrl", //
                 new HashMap<>());
     }
 

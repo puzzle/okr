@@ -36,6 +36,7 @@ describe('CustomizationService', () => {
     logo: 'logo',
     triangles: 'triangles',
     backgroundLogo: 'backgroundLogo',
+    supportSiteUrl: 'https://wiki.puzzle.ch/Puzzle/OKRs',
     customStyles: { cssVar1: 'foo' },
   };
 
@@ -86,6 +87,7 @@ describe('CustomizationService', () => {
     expect(currentConfig?.favicon).toBe(body.favicon);
     expect(currentConfig?.triangles).toBe(body.triangles);
     expect(currentConfig?.backgroundLogo).toBe(body.backgroundLogo);
+    expect(currentConfig?.supportSiteUrl).toBe(body.supportSiteUrl);
     expect(currentConfig?.customStyles['cssVar1']).toBe(body.customStyles['cssVar1']);
 
     expect(callRecorder.getCallCount('title.innerHTML')).toBe(1);
@@ -110,6 +112,7 @@ describe('CustomizationService', () => {
       logo: 'logo-second',
       triangles: 'triangles-second',
       backgroundLogo: 'backgroundLogo-second',
+      supportSiteUrl: 'https://wiki.puzzle.ch/Puzzle/OKRs',
       customStyles: { cssVarNew: 'bar' },
     };
     configSubject.next(bodySecond);
@@ -120,6 +123,7 @@ describe('CustomizationService', () => {
     expect(currentConfig?.favicon).toBe(bodySecond.favicon);
     expect(currentConfig?.triangles).toBe(bodySecond.triangles);
     expect(currentConfig?.backgroundLogo).toBe(bodySecond.backgroundLogo);
+    expect(currentConfig?.supportSiteUrl).toBe(bodySecond.supportSiteUrl);
     expect(currentConfig?.customStyles['cssVarNew']).toBe(bodySecond.customStyles['cssVarNew']);
     expect(currentConfig?.customStyles['cssVar1']).toBe(undefined);
 

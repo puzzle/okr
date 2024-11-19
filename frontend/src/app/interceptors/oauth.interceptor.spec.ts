@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { OauthInterceptor } from './oauth.interceptor';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DateTimeProvider, OAuthLogger, OAuthModule, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
+import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 
 describe('OauthInterceptor', () => {
   beforeEach(() =>

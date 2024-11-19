@@ -1,10 +1,10 @@
 package ch.puzzle.okr.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 import java.util.Objects;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Quarter {
@@ -13,8 +13,7 @@ public class Quarter {
     @SequenceGenerator(name = "sequence_quarter", allocationSize = 1)
     private Long id;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Column(unique = true)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Column(unique = true)
     private String label;
 
     private LocalDate startDate;
@@ -61,8 +60,7 @@ public class Quarter {
 
     @Override
     public String toString() {
-        return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate="
-                + endDate + '}';
+        return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate=" + endDate + '}';
     }
 
     @Override
@@ -72,8 +70,9 @@ public class Quarter {
         if (o == null || getClass() != o.getClass())
             return false;
         Quarter quarter = (Quarter) o;
-        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label)
-                && Objects.equals(startDate, quarter.startDate) && Objects.equals(endDate, quarter.endDate);
+        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label) && Objects.equals(startDate,
+                                                                                                        quarter.startDate) && Objects.equals(endDate,
+                                                                                                                                             quarter.endDate);
     }
 
     @Override

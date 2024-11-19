@@ -60,7 +60,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (!successMessageObj) return;
 
     let messageKey = successMessageObj.key;
-    let isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
+    const isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
     if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
       messageKey += '_BACKLOG';
     }
@@ -75,7 +75,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
       for (const toasterMessage of value.methods) {
         if (toasterMessage.method == method) {
-          for (let codeKey of toasterMessage.keysForCode || []) {
+          for (const codeKey of toasterMessage.keysForCode || []) {
             if (codeKey.code == statusCode) {
               const messageKey = value.KEY + '.' + codeKey.key;
               return { key: messageKey, toasterType: codeKey.toaster };

@@ -3,7 +3,6 @@ import { ScoringComponent } from './scoring.component';
 import { keyResultMetricMinScoring, keyResultOrdinalMinScoring } from '../../testData';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { By } from '@angular/platform-browser';
 import { Zone } from '../../types/enums/Zone';
 
 describe('ScoringComponent', () => {
@@ -55,7 +54,7 @@ describe('ScoringComponent', () => {
       component.commitPercent = object.commit;
       component.failPercent = object.fail;
 
-      let color: string | null = component.getScoringColorClassAndSetBorder();
+      const color: string | null = component.getScoringColorClassAndSetBorder();
       expect(color).toBe(object.className);
     });
   });

@@ -1,14 +1,15 @@
 package ch.puzzle.okr.security;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
@@ -32,9 +33,9 @@ public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private JwtIssuerValidator createValidatorForTenant(String tenant) {
         return this.tenantConfigProvider.getTenantConfigById(tenant) //
-                .map(TenantConfigProvider.TenantConfig::issuerUrl) //
-                .map(this::createValidator) //
-                .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
+                                        .map(TenantConfigProvider.TenantConfig::issuerUrl) //
+                                        .map(this::createValidator) //
+                                        .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }
 
     JwtIssuerValidator createValidator(String issuer) {

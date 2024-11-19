@@ -1,9 +1,10 @@
 package ch.puzzle.okr.models;
 
+import java.util.Objects;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.Objects;
 
 @Entity
 public class Completed {
@@ -15,8 +16,7 @@ public class Completed {
     @Version
     private int version;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @OneToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @OneToOne
     private Objective objective;
 
     @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
@@ -58,8 +58,7 @@ public class Completed {
 
     @Override
     public String toString() {
-        return "Completed{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", comment='" + comment
-                + '\'' + '}';
+        return "Completed{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", comment='" + comment + '\'' + '}';
     }
 
     @Override
@@ -69,8 +68,9 @@ public class Completed {
         if (o == null || getClass() != o.getClass())
             return false;
         Completed completed = (Completed) o;
-        return Objects.equals(id, completed.id) && version == completed.version
-                && Objects.equals(objective, completed.objective) && Objects.equals(comment, completed.comment);
+        return Objects.equals(id, completed.id) && version == completed.version && Objects.equals(objective,
+                                                                                                  completed.objective) && Objects.equals(comment,
+                                                                                                                                         completed.comment);
     }
 
     @Override

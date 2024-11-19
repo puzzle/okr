@@ -10,7 +10,6 @@ import {
   sanitize,
 } from './common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from './types/model/User';
 import { keyResultMetricMinScoring, keyResultOrdinalMinScoring } from './testData';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
 
@@ -139,7 +138,7 @@ describe('test common functions', () => {
         stretchGoal: stretchGoal,
         lastCheckIn: { ...keyResultOrdinalMinScoring.lastCheckIn, value: value },
       } as KeyResultMetricMin;
-      let percentage = calculateCurrentPercentage(keyResult);
+      const percentage = calculateCurrentPercentage(keyResult);
       expect(percentage).toBe(filledPercentage);
     },
   );
@@ -176,7 +175,7 @@ describe('test common functions', () => {
   );
 
   test('should return correct class', () => {
-    let testForm = new FormGroup({
+    const testForm = new FormGroup({
       title: new FormControl<string | undefined>(undefined, [
         Validators.required,
         Validators.minLength(2),

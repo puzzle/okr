@@ -7,8 +7,8 @@ interface ScoringValue {
 }
 
 export function validateScoring(isOverview: boolean, percentage: number) {
-  let rgbCode = colorFromPercentage(percentage);
-  let scoringValue = scoringValueFromPercentage(percentage);
+  const rgbCode = colorFromPercentage(percentage);
+  const scoringValue = scoringValueFromPercentage(percentage);
 
   if (percentage >= 100) {
     cy.getZone('stretch', isOverview).should('have.attr', 'src').should('include', 'star-filled-icon.svg');
@@ -81,12 +81,12 @@ function scoringValueFromPercentage(percentage: number): ScoringValue {
   if (percentage >= 100) {
     return { failPercent: 0, commitPercent: 0, targetPercent: 0 };
   } else if (percentage > 70) {
-    let targetPercent = (percentage - 70) * (100 / 30);
+    const targetPercent = (percentage - 70) * (100 / 30);
     return { failPercent: 100, commitPercent: 100, targetPercent: targetPercent };
   } else if (percentage > 30) {
-    let commitPercent = (percentage - 30) * (100 / 40);
+    const commitPercent = (percentage - 30) * (100 / 40);
     return { failPercent: 100, commitPercent: commitPercent, targetPercent: -1 };
   }
-  let failPercent = percentage * (100 / 30);
+  const failPercent = percentage * (100 / 30);
   return { failPercent: failPercent, commitPercent: -1, targetPercent: -1 };
 }

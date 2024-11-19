@@ -44,7 +44,7 @@ export class KeyresultDialogComponent {
 
   saveKeyResult(openNewDialog = false) {
     const value = this.keyResultForm.value;
-    let keyResult = this.isMetricKeyResult()
+    const keyResult = this.isMetricKeyResult()
       ? ({ ...value, objective: this.data.objective } as KeyResultMetricDTO)
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;

@@ -1,8 +1,8 @@
 package ch.puzzle.okr.util.quarter.generate;
 
-import org.springframework.context.annotation.Profile;
-
 import java.time.LocalDate;
+
+import org.springframework.context.annotation.Profile;
 
 /**
  * Quarter label for H2 database.</br>

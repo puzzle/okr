@@ -10,8 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
@@ -64,7 +63,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   onSubmit(submitType: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
-    let objectiveDTO: Objective = {
+    const objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       version: this.version,
       quarterId: value.quarter,
@@ -137,7 +136,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       if (result) {
         this.objectiveService.deleteObjective(this.data.objective.objectiveId!).subscribe({
           next: () => {
-            let objectiveDTO: Objective = { id: this.data.objective.objectiveId! } as unknown as Objective;
+            const objectiveDTO: Objective = { id: this.data.objective.objectiveId! } as unknown as Objective;
             this.closeDialog(objectiveDTO, true);
           },
           error: () => {
@@ -182,11 +181,11 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   allowedToSaveBacklog() {
-    let currentQuarter: Quarter | undefined = this.quarters.find(
+    const currentQuarter: Quarter | undefined = this.quarters.find(
       (quarter) => quarter.id == this.objectiveForm.value.quarter,
     );
     if (currentQuarter) {
-      let isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
+      const isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
       if (this.data.action == 'duplicate') return true;
       if (this.data.objective.objectiveId) {
         return isBacklogCurrent ? this.state == 'DRAFT' : true;

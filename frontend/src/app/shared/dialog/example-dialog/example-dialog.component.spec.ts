@@ -22,7 +22,7 @@ describe('ExampleDialogComponent', () => {
   let fixture: ComponentFixture<ExampleDialogComponent>;
   let loader: HarnessLoader;
 
-  let errors = errorData;
+  const errors = errorData;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -146,7 +146,7 @@ describe('ExampleDialogComponent', () => {
     const radioButtons = loader.getAllHarnesses(MatRadioButtonHarness);
 
     //Verify that the submit button is disabled because the radio button is not checked yet
-    let submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
+    const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
     expect(submitButton.nativeElement.disabled).toBeTruthy();
 
     await Promise.all([nameInput, matSelect, radioButtons]).then(

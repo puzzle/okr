@@ -1,10 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
+import java.util.List;
+
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.repository.ActionRepository;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 import static ch.puzzle.okr.Constants.ACTION;
 

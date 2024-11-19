@@ -228,41 +228,41 @@ export const objectiveMin: ObjectiveMin = {
   keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
 } as ObjectiveMin;
 
-export const objectiveResponse1: any = {
+export const objectiveResponse1: ObjectiveMin = {
   id: 101,
   version: 1,
   title: 'Increase Environment Engagement',
   state: 'ONGOING',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
-};
+} as ObjectiveMin;
 
-export const objectiveResponse2: any = {
+export const objectiveResponse2: ObjectiveMin = {
   id: 102,
   version: 1,
   title: 'Increase Social Engagement',
   state: 'DRAFT',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
-};
+} as ObjectiveMin;
 
-export const objectiveResponse3: any = {
+export const objectiveResponse3: ObjectiveMin = {
   id: 103,
   version: 1,
   title: 'Increase Member Engagement',
   state: 'NOTSUCCESSFUL',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
-};
+} as ObjectiveMin;
 
-export const objectiveResponse4: any = {
+export const objectiveResponse4: ObjectiveMin = {
   id: 104,
   version: 1,
   title: 'Increase Company Engagement',
   state: 'SUCCESSFUL',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
-};
+} as ObjectiveMin;
 
 export const overViewEntity1: OverviewEntity = {
   team: marketingTeamWriteable,
@@ -276,16 +276,16 @@ export const overViewEntity2: OverviewEntity = {
   writeable: true,
 };
 
-export const overViewEntityResponse1: any = {
+export const overViewEntityResponse1: OverviewEntity = {
   team: team1,
   objectives: [objectiveResponse1, objectiveResponse2],
-  writable: true,
+  writeable: true,
 };
 
-export const overViewEntityResponse2: any = {
+export const overViewEntityResponse2: OverviewEntity = {
   team: team2,
   objectives: [objectiveResponse3, objectiveResponse4],
-  writable: false,
+  writeable: false,
 };
 
 export const overviews: OverviewEntity[] = [overViewEntityResponse1, overViewEntityResponse2];

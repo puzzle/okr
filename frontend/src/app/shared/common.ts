@@ -39,9 +39,9 @@ export function isLastCheckInNegative(baseline: number, stretchGoal: number, val
 }
 
 export function calculateCurrentPercentage(keyResultMetric: KeyResultMetricMin): number {
-  let value: number = +keyResultMetric.lastCheckIn?.value!;
-  let baseline: number = +keyResultMetric.baseline;
-  let stretchGoal: number = +keyResultMetric.stretchGoal;
+  const value: number = +keyResultMetric.lastCheckIn?.value!;
+  const baseline: number = +keyResultMetric.baseline;
+  const stretchGoal: number = +keyResultMetric.stretchGoal;
   if (isLastCheckInNegative(baseline, stretchGoal, value)) return 0;
   if (value == stretchGoal) return 100;
 

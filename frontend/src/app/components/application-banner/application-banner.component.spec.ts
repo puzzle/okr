@@ -81,9 +81,9 @@ describe('ApplicationBannerComponent', () => {
 
   it('should should hide banner if scrolled down', fakeAsync(() => {
     //Set bannerHeight to default
-    let bannerHeight: number = 160;
+    const bannerHeight: number = 160;
     //Scroll more than the height of the banner
-    let scrollTop: number = 180;
+    const scrollTop: number = 180;
     //Set lastScrollPosition to smaller than scrollTop => user scrolls down
     component.lastScrollPosition = 160;
     component.bannerHeight = bannerHeight;
@@ -101,7 +101,7 @@ describe('ApplicationBannerComponent', () => {
 
   it('should show banner if scrolled up', fakeAsync(() => {
     //Scroll more than the height of the banner
-    let scrollTop: number = 180;
+    const scrollTop: number = 180;
     //Set lastScrollPosition to bigger than scrollTop => user scrolls up
     component.lastScrollPosition = 200;
 

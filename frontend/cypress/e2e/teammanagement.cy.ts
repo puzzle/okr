@@ -263,11 +263,11 @@ describe('Team management tests', () => {
       let foundEsha = false;
       cy.get('app-member-list tbody tr')
         .each(($row) => {
-          let usernameCell = $row.find('td:nth-child(2)');
+          const usernameCell = $row.find('td:nth-child(2)');
           if (usernameCell.text().trim() === nameEsha) {
             foundEsha = true;
-            let roleCell = $row.find('td:nth-child(3)');
-            let teamsCell = $row.find('td:nth-child(4)');
+            const roleCell = $row.find('td:nth-child(3)');
+            const teamsCell = $row.find('td:nth-child(4)');
             expect(roleCell.text().trim()).to.equal('Team-Admin, Team-Member');
             expect(teamsCell.text().trim()).to.equal('/BBT, LoremIpsum');
             return false;
@@ -373,7 +373,7 @@ describe('Team management tests', () => {
 
       cy.get('app-member-list tbody tr')
         .each(($row) => {
-          let usernameCell = $row.find('td:nth-child(2)');
+          const usernameCell = $row.find('td:nth-child(2)');
           if (usernameCell.text().trim() !== 'Findus Peterson') {
             return;
           }

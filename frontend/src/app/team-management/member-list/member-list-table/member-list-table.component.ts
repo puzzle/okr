@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/UserTableEntry';
-import { getFullNameFromUser, User } from '../../../shared/types/model/User';
+import { User } from '../../../shared/types/model/User';
 import { Team } from '../../../shared/types/model/Team';
 import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
@@ -33,7 +33,8 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.selectedTeam$.pipe(takeUntil(this.unsubscribe$)).subscribe((team) => {
-      team ? this.setColumnForTeam(team) : this.setColumnsForAllTeams();
+      if (team) this.setColumnForTeam(team)
+      else this.setColumnsForAllTeams();
     });
   }
 

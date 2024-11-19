@@ -1,5 +1,8 @@
 package ch.puzzle.okr.service.business;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -7,6 +10,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,11 +22,8 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.models.State.DRAFT;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,8 +33,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
-    @InjectMocks
-    @Spy
+    @InjectMocks @Spy
     ObjectiveBusinessService objectiveBusinessService;
     @Mock
     ObjectivePersistenceService objectivePersistenceService;
@@ -44,16 +44,39 @@ class ObjectiveBusinessServiceTest {
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
 
-    private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
-    private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-            .withEmail("kaufmann@puzzle.ch").build();
-    private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-    private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
-            .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
-            .withModifiedOn(LocalDateTime.MAX).build();
-    private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
-            .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective).build();
+    private final Team team1 = Team.Builder.builder()
+                                           .withId(1L)
+                                           .withName("Team1")
+                                           .build();
+    private final Quarter quarter = Quarter.Builder.builder()
+                                                   .withId(1L)
+                                                   .withLabel("GJ 22/23-Q2")
+                                                   .build();
+    private final User user = User.Builder.builder()
+                                          .withId(1L)
+                                          .withFirstname("Bob")
+                                          .withLastname("Kaufmann")
+                                          .withEmail("kaufmann@puzzle.ch")
+                                          .build();
+    private final Objective objective = Objective.Builder.builder()
+                                                         .withId(5L)
+                                                         .withTitle("Objective 1")
+                                                         .build();
+    private final Objective fullObjective = Objective.Builder.builder()
+                                                             .withTitle("FullObjective1")
+                                                             .withCreatedBy(user)
+                                                             .withTeam(team1)
+                                                             .withQuarter(quarter)
+                                                             .withDescription("This is our description")
+                                                             .withModifiedOn(LocalDateTime.MAX)
+                                                             .build();
+    private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder()
+                                                                       .withCommitZone("Baum")
+                                                                       .withStretchZone("Wald")
+                                                                       .withId(5L)
+                                                                       .withTitle("Keyresult Ordinal")
+                                                                       .withObjective(objective)
+                                                                       .build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
     @Test
@@ -87,11 +110,18 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void shouldSaveANewObjective() {
-        Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
-                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
-                .withState(DRAFT).build());
+        Objective objective = spy(Objective.Builder.builder()
+                                                   .withTitle("Received Objective")
+                                                   .withTeam(team1)
+                                                   .withQuarter(quarter)
+                                                   .withDescription("The description")
+                                                   .withModifiedOn(null)
+                                                   .withModifiedBy(null)
+                                                   .withState(DRAFT)
+                                                   .build());
 
-        doNothing().when(objective).setCreatedOn(any());
+        doNothing().when(objective)
+                   .setCreatedOn(any());
 
         objectiveBusinessService.createEntity(objective, authorizationUser);
 
@@ -103,31 +133,59 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
-        Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
-                .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
+        Objective objective1 = Objective.Builder.builder()
+                                                .withId(null)
+                                                .withTitle("Title")
+                                                .withDescription("Description")
+                                                .withModifiedOn(LocalDateTime.now())
+                                                .build();
         when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
 
         Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
-        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
+        assertEquals("Bob",
+                     savedObjective.getCreatedBy()
+                                   .getFirstname());
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { false, true })
+    @ValueSource(booleans = {false, true})
     void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";
         String description = "The description";
-        Quarter changedQuarter = Quarter.Builder.builder().withId(2L).withLabel("another quarter").build();
-        Objective savedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
-                .withQuarter(quarter).withDescription(null).withModifiedOn(null).withModifiedBy(null).build();
-        Objective changedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
-                .withQuarter(changedQuarter).withDescription(description).withModifiedOn(null).withModifiedBy(null)
-                .build();
-        Objective updatedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
-                .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter).withDescription(description)
-                .withModifiedOn(null).withModifiedBy(null).build();
+        Quarter changedQuarter = Quarter.Builder.builder()
+                                                .withId(2L)
+                                                .withLabel("another quarter")
+                                                .build();
+        Objective savedObjective = Objective.Builder.builder()
+                                                    .withId(id)
+                                                    .withTitle(title)
+                                                    .withTeam(team1)
+                                                    .withQuarter(quarter)
+                                                    .withDescription(null)
+                                                    .withModifiedOn(null)
+                                                    .withModifiedBy(null)
+                                                    .build();
+        Objective changedObjective = Objective.Builder.builder()
+                                                      .withId(id)
+                                                      .withTitle(title)
+                                                      .withTeam(team1)
+                                                      .withQuarter(changedQuarter)
+                                                      .withDescription(description)
+                                                      .withModifiedOn(null)
+                                                      .withModifiedBy(null)
+                                                      .build();
+        Objective updatedObjective = Objective.Builder.builder()
+                                                      .withId(id)
+                                                      .withTitle(title)
+                                                      .withTeam(team1)
+                                                      .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter)
+                                                      .withDescription(description)
+                                                      .withModifiedOn(null)
+                                                      .withModifiedBy(null)
+                                                      .build();
 
         when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
@@ -135,12 +193,13 @@ class ObjectiveBusinessServiceTest {
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
-        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
-                authorizationUser);
+        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(),
+                                                                        changedObjective,
+                                                                        authorizationUser);
 
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
         assertEquals(hasKeyResultAnyCheckIns ? savedObjective.getQuarter() : changedObjective.getQuarter(),
-                updatedEntity.getQuarter());
+                     updatedEntity.getQuarter());
         assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
     }
@@ -159,32 +218,33 @@ class ObjectiveBusinessServiceTest {
     void shouldDuplicateObjective() {
         // arrange
         Objective sourceObjective = Objective.Builder.builder() //
-                .withId(23L) //
-                .withTitle("Objective 1") //
-                .build();
+                                                     .withId(23L) //
+                                                     .withTitle("Objective 1") //
+                                                     .build();
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder() //
-                .withTitle("Ordinal 1") //
-                .withObjective(sourceObjective) //
-                .build();
+                                                             .withTitle("Ordinal 1") //
+                                                             .withObjective(sourceObjective) //
+                                                             .build();
         KeyResult keyResultMetric = KeyResultMetric.Builder.builder() //
-                .withTitle("Metric 1") //
-                .withObjective(sourceObjective) //
-                .withUnit(Unit.FTE) //
-                .build();
+                                                           .withTitle("Metric 1") //
+                                                           .withObjective(sourceObjective) //
+                                                           .withUnit(Unit.FTE) //
+                                                           .build();
 
         // new Objective with no KeyResults
         Objective newObjective = Objective.Builder.builder() //
-                .withId(42L) //
-                .withTitle("Objective 2") //
-                .build();
+                                                  .withId(42L) //
+                                                  .withTitle("Objective 2") //
+                                                  .build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong()))
-                .thenReturn(List.of(keyResultOrdinal, keyResultMetric));
+        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(List.of(keyResultOrdinal,
+                                                                                                 keyResultMetric));
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
-                newObjective, authorizationUser);
+                                                                                    newObjective,
+                                                                                    authorizationUser);
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());

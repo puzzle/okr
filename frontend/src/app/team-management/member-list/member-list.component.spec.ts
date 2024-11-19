@@ -149,7 +149,7 @@ describe('MemberListComponent', () => {
       },
     );
 
-    let userTableEntries = convertFromUsers(usersCopy, null);
+    const userTableEntries = convertFromUsers(usersCopy, null);
     expect(userTableEntries.length).toBe(4);
     // test that it makes a deep copy
     expect(userTableEntries).not.toBe(usersCopy);

@@ -13,10 +13,10 @@ describe('KeyresultTypeComponent', () => {
   let component: KeyresultTypeComponent;
   let fixture: ComponentFixture<KeyresultTypeComponent>;
 
-  let metricKeyResult: KeyResult = keyResultMetric;
-  let ordinalKeyResult: KeyResult = keyResultOrdinal;
+  const metricKeyResult: KeyResult = keyResultMetric;
+  const ordinalKeyResult: KeyResult = keyResultOrdinal;
 
-  let metricKeyResultForm = new FormGroup({
+  const metricKeyResultForm = new FormGroup({
     title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [
       Validators.required,
       Validators.minLength(2),
@@ -35,7 +35,7 @@ describe('KeyresultTypeComponent', () => {
     keyResultType: new FormControl<string>('metric'),
   });
 
-  let ordinalKeyResultForm = new FormGroup({
+  const ordinalKeyResultForm = new FormGroup({
     title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [
       Validators.required,
       Validators.minLength(2),
@@ -54,7 +54,7 @@ describe('KeyresultTypeComponent', () => {
     keyResultType: new FormControl<string>('metric'),
   });
 
-  let emptyKeyResultForm = new FormGroup({
+  const emptyKeyResultForm = new FormGroup({
     title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [
       Validators.required,
       Validators.minLength(2),
@@ -124,7 +124,7 @@ describe('KeyresultTypeComponent', () => {
     it('should select metric tab', () => {
       component.isMetric = true;
 
-      let activeTab = document.getElementsByClassName('active')[0];
+      const activeTab = document.getElementsByClassName('active')[0];
       expect(activeTab.innerHTML).toContain('Metrisch');
     });
 
@@ -189,7 +189,7 @@ describe('KeyresultTypeComponent', () => {
       component.isMetric = false;
       fixture.detectChanges();
 
-      let activeTab = document.getElementsByClassName('active')[0];
+      const activeTab = document.getElementsByClassName('active')[0];
       expect(activeTab.innerHTML).toContain('Ordinal');
     });
 
@@ -253,7 +253,7 @@ describe('KeyresultTypeComponent', () => {
     it('should select metric tab', () => {
       component.isMetric = true;
 
-      let activeTab = document.getElementsByClassName('active')[0];
+      const activeTab = document.getElementsByClassName('active')[0];
       expect(activeTab.innerHTML).toContain('Metrisch');
     });
 

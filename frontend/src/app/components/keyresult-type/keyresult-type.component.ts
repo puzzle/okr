@@ -94,7 +94,7 @@ export class KeyresultTypeComponent implements OnInit {
   switchKeyResultType(type: string) {
     if (((type == 'metric' && !this.isMetric) || (type == 'ordinal' && this.isMetric)) && this.typeChangeAllowed) {
       this.isMetric = !this.isMetric;
-      let keyResultType = this.isMetric ? 'metric' : 'ordinal';
+      const keyResultType = this.isMetric ? 'metric' : 'ordinal';
       this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
       this.switchValidators();
     }

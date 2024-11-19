@@ -1,8 +1,8 @@
 package ch.puzzle.okr.security.helper;
 
-import org.springframework.security.oauth2.jwt.Jwt;
-
 import java.util.Optional;
+
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_ISS;
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_TENANT;

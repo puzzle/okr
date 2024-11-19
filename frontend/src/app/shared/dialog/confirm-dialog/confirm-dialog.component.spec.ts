@@ -56,7 +56,7 @@ describe('ConfirmDialogComponent', () => {
   });
 
   it('should call close method with parameter: true if clicked to submit button', async () => {
-    let buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const buttons = await loader.getAllHarnesses(MatButtonHarness);
     const submitButton = buttons[1];
     await submitButton.click();
 
@@ -64,7 +64,7 @@ describe('ConfirmDialogComponent', () => {
   });
 
   it('should call close method with parameter: "" if clicked to cancel button', async () => {
-    let buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const buttons = await loader.getAllHarnesses(MatButtonHarness);
     const cancelButton = buttons[0];
     await cancelButton.click();
 

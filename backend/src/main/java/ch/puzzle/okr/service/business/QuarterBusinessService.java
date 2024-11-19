@@ -1,20 +1,21 @@
 package ch.puzzle.okr.service.business;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
 
@@ -31,8 +32,7 @@ public class QuarterBusinessService {
     @Value("${okr.quarter.label.format}")
     private String quarterFormat;
 
-    public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-            QuarterValidationService validator) {
+    public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService, QuarterValidationService validator) {
         this.quarterPersistenceService = quarterPersistenceService;
         this.validator = validator;
     }
@@ -66,21 +66,26 @@ public class QuarterBusinessService {
         int yearStart = getStartOfBusinessYear(startOfQuarter, quarter);
         int yearEnd = yearStart + 1;
 
-        return StringUtils.replaceEach(quarterFormat, new String[] { "xxxx", "yyyy", "xx", "yy", "zz" },
-                new String[] { String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
-                        shortenYear(yearEnd), String.valueOf(quarter) });
+        return StringUtils.replaceEach(quarterFormat,
+                                       new String[]{"xxxx", "yyyy", "xx", "yy", "zz"},
+                                       new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart), shortenYear(yearEnd), String.valueOf(quarter)});
     }
 
     private int getStartOfBusinessYear(YearMonth startOfQuarter, int quarter) {
         // Subtract the amount of months, based on the quarter we are in
         // i.e. quarter=2, subtract (2 - 1) * 3 = 3 Months to get start
-        return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
+        return startOfQuarter.minusMonths((quarter - 1) * 3L)
+                             .getYear();
     }
 
     private void generateQuarter(LocalDateTime start, String label) {
         YearMonth yearMonth = YearMonth.from(start);
-        Quarter quarter = Quarter.Builder.builder().withLabel(label).withStartDate(start.toLocalDate())
-                .withEndDate(yearMonth.plusMonths(2).atEndOfMonth()).build();
+        Quarter quarter = Quarter.Builder.builder()
+                                         .withLabel(label)
+                                         .withStartDate(start.toLocalDate())
+                                         .withEndDate(yearMonth.plusMonths(2)
+                                                               .atEndOfMonth())
+                                         .build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }
@@ -120,7 +125,8 @@ public class QuarterBusinessService {
         if (inLastMonthOfQuarter(currentQuarter, nextQuarter)) {
             logger.info("Generated quarters on last day of month");
             String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
-            generateQuarter(nextQuarterYearMonth.atDay(1).atStartOfDay(), label);
+            generateQuarter(nextQuarterYearMonth.atDay(1)
+                                                .atStartOfDay(), label);
         }
     }
 }

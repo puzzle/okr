@@ -1,12 +1,12 @@
 package ch.puzzle.okr.models;
 
+import java.util.List;
+import java.util.Objects;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class Team implements WriteableInterface {
@@ -16,8 +16,7 @@ public class Team implements WriteableInterface {
     private Long id;
 
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String name;
 
     @Version
@@ -84,8 +83,9 @@ public class Team implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         Team team = (Team) o;
-        return Objects.equals(id, team.id) && Objects.equals(version, team.version) && Objects.equals(name, team.name)
-                && Objects.equals(writeable, team.writeable);
+        return Objects.equals(id, team.id) && Objects.equals(version, team.version) && Objects.equals(name,
+                                                                                                      team.name) && Objects.equals(writeable,
+                                                                                                                                   team.writeable);
     }
 
     @Override

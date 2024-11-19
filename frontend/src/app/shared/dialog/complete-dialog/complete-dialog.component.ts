@@ -44,7 +44,7 @@ export class CompleteDialogComponent {
   }
 
   removeStandardHover() {
-    let elements = document.querySelectorAll('.card-hover');
+    const elements = document.querySelectorAll('.card-hover');
     elements.forEach((el) => {
       el.classList.remove('card-hover');
     });

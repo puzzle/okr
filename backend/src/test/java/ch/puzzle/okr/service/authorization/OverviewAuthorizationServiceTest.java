@@ -1,9 +1,12 @@
 package ch.puzzle.okr.service.authorization;
 
+import java.util.List;
+
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +15,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
 
 import static ch.puzzle.okr.test.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,12 +36,17 @@ class OverviewAuthorizationServiceTest {
     private final long adminTeamId = 5L;
     private final long memberTeamId = 6L;
 
-    private final AuthorizationUser authorizationUser = new AuthorizationUser(
-            defaultUserWithTeams(1L, List.of(defaultTeam(adminTeamId)), List.of(defaultTeam(memberTeamId))));
+    private final AuthorizationUser authorizationUser = new AuthorizationUser(defaultUserWithTeams(1L,
+                                                                                                   List.of(defaultTeam(adminTeamId)),
+                                                                                                   List.of(defaultTeam(memberTeamId))));
     private final AuthorizationUser okrChampionUser = new AuthorizationUser(defaultOkrChampion(2L));
     private final Overview overview = Overview.Builder.builder()
-            .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(adminTeamId).build())
-            .withObjectiveTitle("Objective 1").build();
+                                                      .withOverviewId(OverviewId.Builder.builder()
+                                                                                        .withObjectiveId(1L)
+                                                                                        .withTeamId(adminTeamId)
+                                                                                        .build())
+                                                      .withObjectiveTitle("Objective 1")
+                                                      .build();
 
     @DisplayName("getFilteredOverview() should do nothing when OverviewId is null")
     @Test
@@ -50,8 +56,8 @@ class OverviewAuthorizationServiceTest {
         when(overviewWithoutOverviewId.getOverviewId()).thenReturn(null);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
-                .thenReturn(List.of(overviewWithoutOverviewId));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(List
+                                                                                                                     .of(overviewWithoutOverviewId));
 
         // act
         overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
@@ -70,8 +76,8 @@ class OverviewAuthorizationServiceTest {
         when(overviewWithoutTeamId.getOverviewId()).thenReturn(overviewId);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
-                .thenReturn(List.of(overviewWithoutTeamId));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(List
+                                                                                                                     .of(overviewWithoutTeamId));
 
         // act
         overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
@@ -90,8 +96,8 @@ class OverviewAuthorizationServiceTest {
         when(overviewWithoutObjectiveId.getOverviewId()).thenReturn(overviewId);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
-                .thenReturn(List.of(overviewWithoutObjectiveId));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(List
+                                                                                                                     .of(overviewWithoutObjectiveId));
 
         // act
         overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
@@ -144,13 +150,12 @@ class OverviewAuthorizationServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { true, false })
+    @ValueSource(booleans = {true, false})
     void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
         if (hasRoleWriteAll) {
             when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         } else {
-            when(authorizationService.updateOrAddAuthorizationUser())
-                    .thenReturn(mockAuthorizationUser(defaultUser(adminTeamId)));
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(mockAuthorizationUser(defaultUser(adminTeamId)));
         }
 
         assertEquals(hasRoleWriteAll, overviewAuthorizationService.hasWriteAllAccess());

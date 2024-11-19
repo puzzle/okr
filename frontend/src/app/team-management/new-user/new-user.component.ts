@@ -1,7 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  Component,
+  Component, ElementRef,
   EventEmitter,
   Input,
   Output,
@@ -30,7 +30,7 @@ export class NewUserComponent implements AfterViewInit {
   @Output()
   removeUser: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild('firstInput') firstInput: any;
+  @ViewChild('firstInput') firstInput: ElementRef;
 
   ngAfterViewInit(): void {
     this.firstInput.nativeElement.focus();

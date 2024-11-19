@@ -8,9 +8,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +18,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -46,26 +48,27 @@ class CheckInDeserializerTest {
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
         // arrange
         String jsonMetric = """
-                {
-                  "id": 42,
-                  "version": 0,
-                  "changeInfo": "Change_Info",
-                  "initiatives": "Initiatives",
-                  "confidence": 5,
-                  "keyResultId": 1000,
-                  "createdOn": null,
-                  "modifiedOn": null,
-                  "value": 23.0,
-                  "writeable": false
-                }
-                """;
+                            {
+                              "id": 42,
+                              "version": 0,
+                              "changeInfo": "Change_Info",
+                              "initiatives": "Initiatives",
+                              "confidence": 5,
+                              "keyResultId": 1000,
+                              "createdOn": null,
+                              "modifiedOn": null,
+                              "value": 23.0,
+                              "writeable": false
+                            }
+                            """;
 
         when(keyResultBusinessService.getEntityById(1000L)) //
-                .thenReturn(KeyResultMetric.Builder.builder() //
-                        .withId(1000L) //
-                        .build());
+                                                           .thenReturn(KeyResultMetric.Builder.builder() //
+                                                                                              .withId(1000L) //
+                                                                                              .build());
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.getFactory()
+                                            .createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
@@ -93,26 +96,27 @@ class CheckInDeserializerTest {
     void deserializeShouldReturnCheckInOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
         String jsonOrdinal = """
-                {
-                  "id": 43,
-                  "version": 0,
-                  "changeInfo": "Change_Info",
-                  "initiatives": "Initiatives",
-                  "confidence": 7,
-                  "keyResultId": 1001,
-                  "createdOn": null,
-                  "modifiedOn": null,
-                  "value": "STRETCH",
-                  "writeable": false
-                }
-                """;
+                             {
+                               "id": 43,
+                               "version": 0,
+                               "changeInfo": "Change_Info",
+                               "initiatives": "Initiatives",
+                               "confidence": 7,
+                               "keyResultId": 1001,
+                               "createdOn": null,
+                               "modifiedOn": null,
+                               "value": "STRETCH",
+                               "writeable": false
+                             }
+                             """;
 
         when(keyResultBusinessService.getEntityById(1001L)) //
-                .thenReturn(KeyResultOrdinal.Builder.builder() //
-                        .withId(1001L) //
-                        .build());
+                                                           .thenReturn(KeyResultOrdinal.Builder.builder() //
+                                                                                               .withId(1001L) //
+                                                                                               .build());
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonOrdinal);
+        JsonParser jsonParser = objectMapper.getFactory()
+                                            .createParser(jsonOrdinal);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
@@ -140,11 +144,11 @@ class CheckInDeserializerTest {
     void deserializeShouldThrowResponseStatusExceptionIfKeyResultIsUnsupportedType() throws Exception {
         // arrange
         String json = """
-                {
-                  "id": 0,
-                  "keyResultId": 1002
-                }
-                """;
+                      {
+                        "id": 0,
+                        "keyResultId": 1002
+                      }
+                      """;
 
         KeyResult unsupportedKeyResult = new KeyResult() {
             @Override
@@ -155,7 +159,8 @@ class CheckInDeserializerTest {
 
         when(keyResultBusinessService.getEntityById(1002L)).thenReturn(unsupportedKeyResult);
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(json);
+        JsonParser jsonParser = objectMapper.getFactory()
+                                            .createParser(json);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert
@@ -172,13 +177,14 @@ class CheckInDeserializerTest {
     void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() throws Exception {
         // arrange
         String jsonWithoutKeyResultId = """
-                {
-                  "id": 0,
-                  "changeInfo": "THIS_JSON_WILL_NOT_BE_USED"
-                }
-                """;
+                                        {
+                                          "id": 0,
+                                          "changeInfo": "THIS_JSON_WILL_NOT_BE_USED"
+                                        }
+                                        """;
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonWithoutKeyResultId);
+        JsonParser jsonParser = objectMapper.getFactory()
+                                            .createParser(jsonWithoutKeyResultId);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert

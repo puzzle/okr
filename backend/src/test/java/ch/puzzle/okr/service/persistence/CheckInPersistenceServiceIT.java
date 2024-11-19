@@ -1,17 +1,18 @@
 package ch.puzzle.okr.service.persistence;
 
+import java.util.List;
+import java.util.Objects;
+
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Objects;
 
 import static ch.puzzle.okr.Constants.CHECK_IN;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,8 +43,7 @@ class CheckInPersistenceServiceIT {
     @Test
     void getCheckInsByKeyResultIdOrderByCheckInDateShouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
         // act
-        List<CheckIn> checkIns = checkInPersistenceService
-                .getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
+        List<CheckIn> checkIns = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
 
         // assert
         assertThat(2, greaterThanOrEqualTo(checkIns.size()));
@@ -53,7 +53,8 @@ class CheckInPersistenceServiceIT {
     }
 
     private void assertFirstIsCreatedAfterSecond(CheckIn first, CheckIn second) {
-        assertTrue(first.getCreatedOn().isAfter(second.getCreatedOn()));
+        assertTrue(first.getCreatedOn()
+                        .isAfter(second.getCreatedOn()));
     }
 
     // uses data from V100_0_0__TestData.sql
@@ -72,7 +73,8 @@ class CheckInPersistenceServiceIT {
     private void assertLastIsCreatedAfterAllOtherCheckIns(CheckIn last, List<CheckIn> allCheckIns) {
         for (CheckIn checkInLoop : allCheckIns) {
             if (!Objects.equals(checkInLoop.getId(), last.getId())) {
-                assertTrue(last.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
+                assertTrue(last.getCreatedOn()
+                               .isAfter(checkInLoop.getCreatedOn()));
             }
         }
     }

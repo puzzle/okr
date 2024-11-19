@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Unit } from '../../types/enums/Unit';
 
 @Pipe({
   name: 'unitValueTransformation',

@@ -7,7 +7,6 @@ import {
   EMPTY,
   ReplaySubject,
   Subject,
-  Subscription,
   take,
   takeUntil,
 } from 'rxjs';
@@ -29,7 +28,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   overviewPadding: Subject<number> = new Subject();
 
-  backgroundLogoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+  backgroundLogoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
 
   constructor(
     private overviewService: OverviewService,

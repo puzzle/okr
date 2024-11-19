@@ -159,7 +159,7 @@ describe('ErrorInterceptor', () => {
     jest.spyOn(toaster, 'showCustomToaster');
     jest.spyOn(interceptor, 'getSuccessMessageKey').mockReturnValue({ key: 'OBJECTIVE.POST', toasterType: undefined });
 
-    let mockHttpResponse = {
+    const mockHttpResponse = {
       url: '"http://localhost:4200/api/v2/objectives"',
       status: 201,
       statusText: 'Created',

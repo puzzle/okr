@@ -1,13 +1,13 @@
 package ch.puzzle.okr.security.helper;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.security.oauth2.jwt.Jwt;
-
-import java.util.Optional;
 
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_ISS;
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_TENANT;
@@ -70,7 +70,7 @@ public class TokenHelperTest {
 
     @DisplayName("getTenantFromTokenUsingClaimIss() return tenant if claim iss is found")
     @ParameterizedTest
-    @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
+    @ValueSource(strings = {"https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc"})
     void getTenantFromTokenUsingClaimIssReturnTenantIfClaimIssFound(String issUrl) {
         // arrange
         Jwt tokenMock = mock(Jwt.class);

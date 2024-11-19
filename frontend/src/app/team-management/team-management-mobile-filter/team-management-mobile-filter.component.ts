@@ -27,7 +27,8 @@ export class TeamManagementMobileFilterComponent {
   }
 
   navigate(team: Team | 'alle') {
-    team == this.ALL_TEAMS ? this.navigateToAllTeams() : this.navigateToTeam(team);
+    if (team == this.ALL_TEAMS) this.navigateToAllTeams()
+    else this.navigateToTeam(team);
   }
 
   private navigateToTeam(team: Team) {

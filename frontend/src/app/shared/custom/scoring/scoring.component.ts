@@ -71,7 +71,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     // Set color of scoring component
-    let scoringClass = this.getScoringColorClassAndSetBorder();
+    const scoringClass = this.getScoringColorClassAndSetBorder();
     if (scoringClass !== null) {
       this.targetElement!.nativeElement.classList.add(scoringClass);
       this.commitElement!.nativeElement.classList.add(scoringClass);
@@ -110,9 +110,9 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
 
   calculatePercentageMetric() {
     if (this.keyResult.lastCheckIn !== null) {
-      let keyResultMetric: KeyResultMetricMin = this.castToMetric();
+      const keyResultMetric: KeyResultMetricMin = this.castToMetric();
 
-      let percentage = calculateCurrentPercentage(keyResultMetric);
+      const percentage = calculateCurrentPercentage(keyResultMetric);
       this.labelPercentage = of(percentage);
       if (percentage < 30) {
         this.stretched = false;
@@ -166,8 +166,8 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   removeStyleClass() {
-    let classArray: string[] = ['score-red', 'score-green', 'score-yellow', 'score-stretch', 'border-right'];
-    for (let classToRemove of classArray) {
+    const classArray: string[] = ['score-red', 'score-green', 'score-yellow', 'score-stretch', 'border-right'];
+    for (const classToRemove of classArray) {
       this.commitElement?.nativeElement.classList.remove(classToRemove);
       this.targetElement?.nativeElement.classList.remove(classToRemove);
       this.failElement?.nativeElement.classList.remove(classToRemove);

@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
-let objectiveService = {
+const objectiveService = {
   getFullObjective: jest.fn(),
 };
 

@@ -1,15 +1,16 @@
 package ch.puzzle.okr.multitenancy.customization;
 
+import java.text.MessageFormat;
+import java.util.Optional;
+
 import ch.puzzle.okr.test.SpringIntegrationTest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.springframework.core.env.Environment;
-
-import java.text.MessageFormat;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -25,7 +26,7 @@ public class TenantClientCustomizationProviderTestIT {
     private static final String CUSTOM_STYLE_NAME = "okr-topbar-background-color";
     private static final String CUSTOM_STYLE_VALUE = "css-custom-value";
 
-    private final String[] tenantIds = { "pitc", "acme" };
+    private final String[] tenantIds = {"pitc", "acme"};
 
     @Mock
     private Environment env;
@@ -43,8 +44,9 @@ public class TenantClientCustomizationProviderTestIT {
         mockProperty("okr.tenants.{0}.clientcustomization.background-logo", BACKGROUND_LOGO, id);
         mockProperty("okr.tenants.{0}.clientcustomization.favicon", FAVICON, id);
         mockProperty("okr.tenants.{0}.clientcustomization.title", TITLE, id);
-        mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color", CUSTOM_STYLE_VALUE,
-                id);
+        mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color",
+                     CUSTOM_STYLE_VALUE,
+                     id);
     }
 
     private void mockProperty(String propertyName, String propertyValue, String tenantId) {
@@ -58,7 +60,7 @@ public class TenantClientCustomizationProviderTestIT {
 
     @DisplayName("getTenantClientCustomizationsById() should return TenantClientCustomization")
     @ParameterizedTest
-    @CsvSource({ "pitc", "acme" })
+    @CsvSource({"pitc", "acme"})
     void getTenantClientCustomizationsByIdShouldReturnTenantClientCustomization(String tenantId) {
         // arrange
         TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(tenantIds, env);
@@ -82,9 +84,11 @@ public class TenantClientCustomizationProviderTestIT {
 
     private void assertCustomStyles(TenantClientCustomization customization, String tenantId) {
         assertNotNull(customization.customStyles());
-        assertFalse(customization.customStyles().isEmpty());
+        assertFalse(customization.customStyles()
+                                 .isEmpty());
 
-        String customStyleValue = customization.customStyles().get(CUSTOM_STYLE_NAME);
+        String customStyleValue = customization.customStyles()
+                                               .get(CUSTOM_STYLE_NAME);
         assertEquals(prefix(tenantId) + CUSTOM_STYLE_VALUE, customStyleValue);
     }
 }

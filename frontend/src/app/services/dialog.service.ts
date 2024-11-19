@@ -35,7 +35,7 @@ export class DialogService {
     });
   }
 
-  openConfirmDialog(translationKey: string, i18nData?: Object): MatDialogRef<ConfirmDialogComponent> {
+  openConfirmDialog(translationKey: string, i18nData?: object): MatDialogRef<ConfirmDialogComponent> {
     const title = this.translationService.instant(`${translationKey}.TITLE`, i18nData);
     const text = this.translationService.instant(`${translationKey}.TEXT`, i18nData);
     return this.open(ConfirmDialogComponent, {

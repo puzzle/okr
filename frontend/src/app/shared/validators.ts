@@ -16,7 +16,7 @@ export class UnitValueValidator implements Validator {
   @Input('unitValueValidator') unit: string | null = '';
 
   validate(control: AbstractControl): ValidationErrors | null {
-    let value: string = control.value;
+    const value: string = control.value;
     switch (this.unit) {
       case 'PERCENT': {
         return this.proceedRegex(value, PERCENT_REGEX);

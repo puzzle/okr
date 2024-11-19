@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, filter, Observable, of, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
@@ -15,7 +15,7 @@ import { getFullNameFromUser } from '../../shared/types/model/User';
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   userFullName: string = '';
   menuIsOpen = false;
-  logoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+  logoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
   private subscription?: Subscription;
 
   constructor(

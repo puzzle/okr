@@ -89,7 +89,7 @@ describe('ObjectiveColumnComponent', () => {
     component.objective = { ...objectiveMin, state: state };
     fixture.detectChanges();
     const image = fixture.debugElement.query(By.css('[data-testid="objective-state"]'));
-    let statusIndicatorSrc = image.attributes['src'];
+    const statusIndicatorSrc = image.attributes['src'];
     expect(statusIndicatorSrc).toBe(path);
   });
 

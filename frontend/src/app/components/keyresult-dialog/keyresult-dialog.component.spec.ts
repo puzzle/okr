@@ -47,7 +47,7 @@ describe('KeyresultDialogComponent', () => {
     getCurrentUser: jest.fn(),
   };
 
-  let fullObjective = {
+  const fullObjective = {
     id: 1,
     title: 'Das ist ein Objective',
     description: 'Das ist die Beschreibung',
@@ -56,13 +56,13 @@ describe('KeyresultDialogComponent', () => {
     quarter: { id: 1, label: 'GJ 22/23-Q2' },
   };
 
-  let keyResultObjective: KeyResultObjective = {
+  const keyResultObjective: KeyResultObjective = {
     id: 2,
     state: State.ONGOING,
     quarter: new Quarter(1, 'GJ 22/23-Q2', new Date(), new Date()),
   };
 
-  let fullKeyResultMetric = {
+  const fullKeyResultMetric = {
     id: 3,
     version: 2,
     actionList: [
@@ -98,7 +98,7 @@ describe('KeyresultDialogComponent', () => {
     unit: 'CHF',
   };
 
-  let receivedKeyResultMetric = {
+  const receivedKeyResultMetric = {
     id: 3,
     version: 2,
     actionList: [
@@ -137,7 +137,7 @@ describe('KeyresultDialogComponent', () => {
     stretchZone: null,
   };
 
-  let fullKeyResultOrdinal = {
+  const fullKeyResultOrdinal = {
     id: 6,
     version: 2,
     actionList: [
@@ -173,7 +173,7 @@ describe('KeyresultDialogComponent', () => {
     stretchZone: 'Stretch goal',
   };
 
-  let receivedKeyResultOrdinal = {
+  const receivedKeyResultOrdinal = {
     id: 6,
     version: 2,
     actionList: [
@@ -212,7 +212,7 @@ describe('KeyresultDialogComponent', () => {
     unit: null,
   };
 
-  let initKeyResult = {
+  const initKeyResult = {
     id: undefined,
     title: '',
     description: '',
@@ -228,7 +228,7 @@ describe('KeyresultDialogComponent', () => {
     actionList: [],
   };
 
-  let savedKeyResult = {
+  const savedKeyResult = {
     id: undefined,
     version: undefined,
     title: 'Neuer Titel',

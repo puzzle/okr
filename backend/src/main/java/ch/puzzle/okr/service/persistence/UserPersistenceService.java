@@ -1,11 +1,12 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.repository.UserRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.repository.UserRepository;
+
+import org.springframework.stereotype.Service;
 
 import static ch.puzzle.okr.Constants.USER;
 

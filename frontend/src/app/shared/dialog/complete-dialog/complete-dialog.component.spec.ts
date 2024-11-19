@@ -15,7 +15,7 @@ const dialogMock = {
   close: jest.fn(),
 };
 
-let matDataMock: { objective: { objectiveId: number | undefined; teamId: number | undefined } } = {
+const matDataMock: { objective: { objectiveId: number | undefined; teamId: number | undefined } } = {
   objective: {
     objectiveId: undefined,
     teamId: 1,
@@ -51,10 +51,10 @@ describe('CompleteDialogComponent', () => {
   });
 
   it('should set right classes on init', () => {
-    let elements = document.querySelectorAll('.valuation-card');
-    let successful = document.querySelectorAll('.card-hover-successful');
-    let notSuccessful = document.querySelectorAll('.card-hover-not-successful');
-    let submitButton = debugElement.querySelector('[data-testid="submit"]');
+    const elements = document.querySelectorAll('.valuation-card');
+    const successful = document.querySelectorAll('.card-hover-successful');
+    const notSuccessful = document.querySelectorAll('.card-hover-not-successful');
+    const submitButton = debugElement.querySelector('[data-testid="submit"]');
 
     expect(elements.length).toEqual(2);
     expect(successful.length).toEqual(1);
@@ -68,7 +68,7 @@ describe('CompleteDialogComponent', () => {
   it('should change isSuccessful value on card click and remove class card-hover', () => {
     component.switchSuccessState('successful');
     let elements = document.querySelectorAll('.card-hover');
-    let submitButton = debugElement.querySelector('[data-testid="submit"]');
+    const submitButton = debugElement.querySelector('[data-testid="submit"]');
 
     expect(component.completeForm.value.isSuccessful).toBeTruthy();
     expect(component.completeForm.invalid).toBeFalsy();

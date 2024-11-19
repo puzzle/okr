@@ -42,7 +42,7 @@ describe('CustomizationService', () => {
   let service: CustomizationService;
   let configServiceMock: ConfigService;
   let documentMock: Document;
-  let callRecorder = new CallRecorder();
+  const callRecorder = new CallRecorder();
   let configSubject: BehaviorSubject<ClientConfig>;
 
   beforeEach(() => {

@@ -7,14 +7,14 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   return oauthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
     // if the login failed initialize code flow
-    let validToken = oauthService.hasValidIdToken();
+    const validToken = oauthService.hasValidIdToken();
     if (!validToken) {
       oauthService.initCodeFlow();
       return false;
     }
     oauthService.setupAutomaticSilentRefresh();
     // redirect route to remove state query param. do it only, if this param exist to avoid infinite loop
-    if (!!route.queryParamMap.get('state')) {
+    if (route.queryParamMap.get('state')) {
       await router.navigateByUrl('');
       return false;
     }

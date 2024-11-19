@@ -23,7 +23,7 @@ import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-// @ts-ignore
+// @ts-expect-error
 import * as de from '../../../../assets/i18n/de.json';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
@@ -31,7 +31,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 
-let objectiveService = {
+const objectiveService = {
   getFullObjective: jest.fn(),
   createObjective: jest.fn(),
   updateObjective: jest.fn(),
@@ -68,7 +68,7 @@ const dialogMock = {
   close: jest.fn(),
 };
 
-let matDataMock: MatDialogDataInterface = {
+const matDataMock: MatDialogDataInterface = {
   objective: {
     objectiveId: undefined,
     teamId: 1,
@@ -131,9 +131,9 @@ describe('ObjectiveDialogComponent', () => {
       'onSubmit create',
       fakeAsync((state: string) => {
         //Prepare data
-        let title: string = 'title';
-        let description: string = 'description';
-        let createKeyresults: boolean = true;
+        const title: string = 'title';
+        const description: string = 'description';
+        const createKeyresults: boolean = true;
         let quarter: number = 0;
         let team: number = 0;
         teamService.getAllTeams().subscribe((teams) => {
@@ -308,9 +308,9 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should return if option is allowed for quarter select', async () => {
-      let quarter: Quarter = new Quarter(1, 'Backlog', null, null);
+      const quarter: Quarter = new Quarter(1, 'Backlog', null, null);
 
-      let data = {
+      const data = {
         action: 'duplicate',
         objective: {
           objectiveId: 22,

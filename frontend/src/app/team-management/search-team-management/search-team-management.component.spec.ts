@@ -152,8 +152,8 @@ describe('SearchTeamManagementComponent', () => {
     fixture.detectChanges();
     jest.advanceTimersByTime(250);
 
-    let filteredUsers = component.filteredUsers$.getValue();
-    let filteredTeams = component.filteredTeams$.getValue();
+    const filteredUsers = component.filteredUsers$.getValue();
+    const filteredTeams = component.filteredTeams$.getValue();
     expect(filteredUsers.map(getDisplayValues)).toEqual([
       'Pete Parrot (parrot@puzzle.ch)',
       'Martin Käser (kaeser@puzzle.ch)',
@@ -171,8 +171,8 @@ describe('SearchTeamManagementComponent', () => {
     fixture.detectChanges();
     jest.advanceTimersByTime(250);
 
-    let filteredUsers = component.filteredUsers$.getValue();
-    let filteredTeams = component.filteredTeams$.getValue();
+    const filteredUsers = component.filteredUsers$.getValue();
+    const filteredTeams = component.filteredTeams$.getValue();
 
     expect(filteredUsers.map(getHTMLValues)).toEqual(['<strong>Ruedi</strong> Peters (rpeter@gmail.com)']);
 

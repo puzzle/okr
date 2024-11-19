@@ -411,8 +411,8 @@ function checkForDialogTextOrdinal() {
 function getCurrentDate() {
   const today = new Date();
   const yyyy = today.getFullYear();
-  let mm = today.getMonth() + 1; // Months start at 0!
-  let dd = today.getDate();
+  const mm = today.getMonth() + 1; // Months start at 0!
+  const dd = today.getDate();
 
   let dd_str = '' + dd;
   let mm_str = '' + mm;

@@ -1,8 +1,8 @@
 package ch.puzzle.okr.util.quarter.check;
 
-import ch.puzzle.okr.models.Quarter;
-
 import java.time.LocalDate;
+
+import ch.puzzle.okr.models.Quarter;
 
 public class QuarterRangeChecker {
 

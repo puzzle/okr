@@ -41,7 +41,7 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   }
 
   changeHeaderAppearance() {
-    let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
+    const scrollTop: number = window.scrollY || document.documentElement.scrollTop;
     this.refreshBanner(scrollTop);
     this.lastScrollPosition = scrollTop;
   }

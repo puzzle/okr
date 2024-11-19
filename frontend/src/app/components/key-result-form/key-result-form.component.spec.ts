@@ -173,12 +173,12 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should return label from user', () => {
-      let userName: string = component.getUserNameFromUser(testUser);
+      const userName: string = component.getUserNameFromUser(testUser);
       expect(userName).toEqual('Bob Baumeister');
     });
 
     it('should set metric values', () => {
-      let fullKeyResultMetric: KeyResultMetric = {
+      const fullKeyResultMetric: KeyResultMetric = {
         id: 3,
         version: 2,
         title: 'Der Titel ist hier',
@@ -203,7 +203,7 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should set ordinal values', () => {
-      let fullKeyResultOrdinal: KeyResultOrdinal = {
+      const fullKeyResultOrdinal: KeyResultOrdinal = {
         id: 3,
         version: 2,
         title: 'Der Titel ist hier',
@@ -234,7 +234,7 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should get username from user right', () => {
-      let user = users[0];
+      const user = users[0];
       expect(component.getUserNameFromUser(user)).toEqual('Bob Baumeister');
       expect(component.getUserNameFromUser(null!)).toEqual('');
     });

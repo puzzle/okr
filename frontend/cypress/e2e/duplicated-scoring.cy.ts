@@ -28,7 +28,7 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
     cy.fillOutObjective('A duplicated Objective for this tool', 'safe', '3');
     cy.visit('/?quarter=3');
 
-    let scoringBlock1 = cy
+    const scoringBlock1 = cy
       .get('.objective:contains("A duplicated Objective for this tool")')
       .first()
       .getByTestId('key-result')
@@ -41,7 +41,7 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
     scoringBlock1.getByTestId('fail').first().should('not.have.css', 'score-green');
     scoringBlock1.getByTestId('fail').first().should('not.have.css', 'score-stretch');
 
-    let scoringBlock2 = cy
+    const scoringBlock2 = cy
       .getByTestId('objective')
       .first()
       .getByTestId('key-result')

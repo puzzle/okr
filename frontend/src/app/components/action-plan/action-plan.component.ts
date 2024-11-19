@@ -41,7 +41,7 @@ export class ActionPlanComponent {
 
   changeItemPosition(newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
-    let currentActionPlan: Action[] = this.control.getValue()!;
+    const currentActionPlan: Action[] = this.control.getValue()!;
     this.updateActionTexts(currentActionPlan);
     moveItemInArray(currentActionPlan, currentIndex, newIndex);
     currentActionPlan.forEach((action: Action, index: number) => (action.priority = index));
@@ -49,7 +49,7 @@ export class ActionPlanComponent {
   }
 
   updateActionTexts(currentActionPlan: Action[]) {
-    let texts = Array.from(this.listItems).map((input: any) => input.nativeElement.value);
+    const texts = Array.from(this.listItems).map((input: any) => input.nativeElement.value);
     currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
   }
 
@@ -66,7 +66,7 @@ export class ActionPlanComponent {
   }
 
   drop(event: CdkDragDrop<Action[] | null>) {
-    let value: string = (<HTMLInputElement>(
+    const value: string = (<HTMLInputElement>(
       event.container.element.nativeElement.children[event.previousIndex].children[1]
     )).value;
     const actions: Action[] = this.control.getValue()!;
@@ -92,7 +92,7 @@ export class ActionPlanComponent {
   }
 
   removeAction(index: number) {
-    let actions: Action[] = this.control.getValue()!;
+    const actions: Action[] = this.control.getValue()!;
     if (this.activeItem == index && this.activeItem > 0) {
       this.activeItem--;
     }

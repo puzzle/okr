@@ -226,8 +226,10 @@ class AlignmentValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenAlignmentIsInSameTeamKeyResult() {
         // arrange
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1").withObjective(objective1).build();
-        KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1")
+                .withObjective(objective1).build();
+        KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withAlignedObjective(objective1)
+                .withTargetKeyResult(keyResult).build();
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
 
         // act
@@ -246,8 +248,10 @@ class AlignmentValidationServiceTest {
         when(alignmentPersistenceService.findByAlignedObjectiveId(anyLong())).thenReturn(objectiveALignment);
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         when(teamPersistenceService.findById(2L)).thenReturn(team2);
-        ObjectiveAlignment createAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1).withTargetObjective(objective2).build();
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ALIGNMENT_ALREADY_EXISTS", List.of("alignedObjectiveId", "5")));
+        ObjectiveAlignment createAlignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1)
+                .withTargetObjective(objective2).build();
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("ALIGNMENT_ALREADY_EXISTS", List.of("alignedObjectiveId", "5")));
 
         // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -395,8 +399,10 @@ class AlignmentValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenAlignmentIsInSameTeamKeyResult() {
         // arrange
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1").withObjective(objective1).build();
-        KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withId(2L).withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(3L).withTitle("KeyResult 1")
+                .withObjective(objective1).build();
+        KeyResultAlignment keyResultAlignment1 = KeyResultAlignment.Builder.builder().withId(2L)
+                .withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_LINK_IN_SAME_TEAM", List.of("teamId", "1")));
 
         // act

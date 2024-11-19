@@ -1,0 +1,24 @@
+name: 'Staging-Deploy'
+
+on:
+  push:
+
+env:
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: "pitc-okr-demo"
+  POD_NAME: "demo-okr-application"
+
+jobs:
+  reset-demo:
+    runs-on: ubuntu-24.04
+    name: Build and push image to ECR
+    steps:
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+      - name: set pod replicas to 0 and trigger auto restart
+        run: oc scale deployment ${{ env.POD_NAME }} --replicas 0

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, window } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
@@ -61,4 +61,6 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  protected readonly window = window;
 }

@@ -24,9 +24,9 @@
       <button
         *ngIf="this.supportSiteUrl$ | async as supportSiteUrl"
         id="hilfeButton"
-        class="topBarEntry btn"
         [attr.data-testId]="'help-button'"
-        onclick="window.open(supportSiteUrl, '_blank')"
+        class="topBarEntry btn"
+        (click)="window.open(supportSiteUrl, '_blank')"
       >
         <mat-icon aria-hidden="false" aria-label="Help icon" fontIcon="help_outline"></mat-icon>
         <span class="d-none d-md-flex"> Hilfe </span>

@@ -1,7 +1,7 @@
 name: 'Reset Demo instances'
 
 on:
-  push:
+  workflow_dispatch:
 
 env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}

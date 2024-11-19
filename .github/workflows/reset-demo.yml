@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-24.04
     name: Build and push image to ECR
     steps:
+      - name: Install CLI tools from GitHub
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.15"
+
       - name: Log in to OpenShift
         uses: redhat-actions/oc-login@v1
         with:

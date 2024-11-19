@@ -25,7 +25,14 @@ jobs:
           openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
           openshift_token: ${{ env.OPENSHIFT_TOKEN }}
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+
       - name: set pod replicas to 0 and trigger auto restart
         run: |
+          echo "test"
+          oc projects
+          oc project
+          echo "${{ env.OPENSHIFT_NAMESPACE }}"
+          echo "${{ env.POD_NAME }}"
           oc project ${{ env.OPENSHIFT_NAMESPACE }}
-          oc scale deployment ${{ env.POD_NAME }} --replicas 0
+          oc project
+          oc scale deployment demo-okr-application --replicas 0

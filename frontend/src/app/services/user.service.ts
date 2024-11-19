@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../shared/types/model/User';
 import { NewUser } from '../shared/types/model/NewUser';
+import { UserOkrData } from '../shared/types/model/UserOkrData';
 
 @Injectable({
   providedIn: 'root',
@@ -65,5 +66,13 @@ export class UserService {
 
   deleteUser(user: User) {
     return this.httpClient.delete<void>(`${this.API_URL}/${user.id}`, {}).pipe(tap(() => this.reloadUsers()));
+  }
+
+  getUserOkrData(user: User): Observable<UserOkrData> {
+    return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`, {});
+  }
+
+  isUserMemberOfTeams(user: User): Observable<Boolean> {
+    return this.httpClient.get<Boolean>(`${this.API_URL}/${user.id}/ismemberofteams`, {});
   }
 }

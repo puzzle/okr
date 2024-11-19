@@ -38,7 +38,7 @@ public class ClientConfigControllerIT {
 
         mvc.perform(get("/config").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.aMapWithSize(9)))
+                .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.aMapWithSize(10)))
                 .andExpect(jsonPath("$.activeProfile", Matchers.is("Active_Profile")))
                 .andExpect(jsonPath("$.issuer", Matchers.is("Issuer")))
                 .andExpect(jsonPath("$.clientId", Matchers.is("Client_Id")))
@@ -47,6 +47,7 @@ public class ClientConfigControllerIT {
                 .andExpect(jsonPath("$.triangles", Matchers.is("Triangles")))
                 .andExpect(jsonPath("$.backgroundLogo", Matchers.is("Background_Logo")))
                 .andExpect(jsonPath("$.title", Matchers.is("Title")))
+                .andExpect(jsonPath("$.supportSiteUrl", Matchers.is("supportSiteUrl")))
                 .andExpect(jsonPath("$.customStyles.font-family", Matchers.is("verdana")))
                 .andExpect(jsonPath("$.customStyles.font-size", Matchers.is("20px")));
     }
@@ -54,7 +55,7 @@ public class ClientConfigControllerIT {
     private ClientConfigDto createClientConfigDto() {
         Map<String, String> customStyles = Map.of("font-family", "verdana", "font-size", "20px");
         return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo", "Triangles",
-                "Background_Logo", "Title", customStyles);
+                "Background_Logo", "Title", "supportSiteUrl", customStyles);
     }
 
 }

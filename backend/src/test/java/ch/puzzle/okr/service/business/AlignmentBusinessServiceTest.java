@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.dto.alignment.AlignmentLists;
 import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
@@ -18,6 +17,7 @@ import ch.puzzle.okr.service.persistence.AlignmentViewPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.AlignmentValidationService;
+import ch.puzzle.okr.test.TestHelper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.alignment.AlignmentConnectionDto;
 import ch.puzzle.okr.dto.alignment.AlignmentLists;
 import ch.puzzle.okr.dto.alignment.AlignmentObjectDto;
 import ch.puzzle.okr.service.business.AlignmentBusinessService;
+import ch.puzzle.okr.test.TestConstants;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
-import static ch.puzzle.okr.TestConstants.TEAM_PUZZLE;
+import static ch.puzzle.okr.test.TestConstants.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 

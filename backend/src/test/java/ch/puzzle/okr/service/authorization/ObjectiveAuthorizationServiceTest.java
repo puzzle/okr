@@ -16,13 +16,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static ch.puzzle.okr.TestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveAuthorizationServiceTest {

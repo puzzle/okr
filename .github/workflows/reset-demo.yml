@@ -1,4 +1,4 @@
-name: 'Staging-Deploy'
+name: 'Reset Demo instances'
 
 on:
   push:
@@ -12,7 +12,7 @@ env:
 jobs:
   reset-demo:
     runs-on: ubuntu-24.04
-    name: Build and push image to ECR
+    name: Scale down and restart demo application
     steps:
       - name: Install CLI tools from GitHub
         uses: redhat-actions/openshift-tools-installer@v1

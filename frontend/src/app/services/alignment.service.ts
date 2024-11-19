@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AlignmentLists } from '../types/model/AlignmentLists';
-import { optionalValue } from '../common';
+import { AlignmentLists } from '../shared/types/model/AlignmentLists';
+import { optionalValue } from '../shared/common';
 
 @Injectable({
   providedIn: 'root',

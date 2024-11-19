@@ -16,7 +16,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { AlignmentService } from '../shared/services/alignment.service';
+import { AlignmentService } from '../../services/alignment.service';
 
 const overviewService = {
   getOverview: jest.fn(),

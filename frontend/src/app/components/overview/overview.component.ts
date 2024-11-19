@@ -15,9 +15,9 @@ import { OverviewService } from '../../services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../../shared/common';
 import { ConfigService } from '../../services/config.service';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { AlignmentService } from '../shared/services/alignment.service';
-import { AlignmentLists } from '../shared/types/model/AlignmentLists';
+import { AlignmentService } from '../../services/alignment.service';
+import { RefreshDataService } from '../../services/refresh-data.service';
+import { AlignmentLists } from '../../shared/types/model/AlignmentLists';
 
 @Component({
   selector: 'app-overview',

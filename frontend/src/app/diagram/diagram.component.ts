@@ -11,7 +11,6 @@ import {
   getOnGoingIcon,
   getSuccessfulIcon,
 } from './svgGeneration';
-import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { calculateCurrentPercentage } from '../shared/common';
@@ -21,7 +20,8 @@ import { AlignmentObject } from '../shared/types/model/AlignmentObject';
 import { AlignmentConnection } from '../shared/types/model/AlignmentConnection';
 import { Zone } from '../shared/types/enums/Zone';
 import { ObjectiveState } from '../shared/types/enums/ObjectiveState';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { KeyresultService } from '../services/keyresult.service';
+import { RefreshDataService } from '../services/refresh-data.service';
 
 @Component({
   selector: 'app-diagram',

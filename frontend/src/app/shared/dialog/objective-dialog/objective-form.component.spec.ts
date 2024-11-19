@@ -10,12 +10,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../../services/objective.service';
 import {
-    alignmentObject2, alignmentObject3,
-    marketingTeamWriteable,
-    objective,
-    objectiveWithAlignment,
-    quarter,
-    quarterList
+  alignmentObject2,
+  alignmentObject3,
+  alignmentPossibility1,
+  alignmentPossibility2,
+  alignmentPossibilityObject1,
+  alignmentPossibilityObject2,
+  alignmentPossibilityObject3,
+  marketingTeamWriteable,
+  objective,
+  objectiveWithAlignment,
+  quarter,
+  quarterList,
 } from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
@@ -32,15 +38,14 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
-import { ActivatedRoute, provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { ActivatedRoute } from '@angular/router';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
 import { ElementRef } from '@angular/core';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -146,18 +151,18 @@ describe('ObjectiveDialogComponent', () => {
       fakeAsync((state: string) => {
         objectiveService.getAlignmentPossibilities.mockReturnValue(of([alignmentPossibility1, alignmentPossibility2]));
 
-      //Prepare data
-      let title: string = 'title';
-      let description: string = 'description';
-      let createKeyresults: boolean = true;
-      let quarter: number = 0;
-      let team: number = 0;
-      teamService.getAllTeams().subscribe((teams) => {
-        team = teams[0].id;
-      });
-      quarterService.getAllQuarters().subscribe((quarters) => {
-        quarter = quarters[2].id;
-      });
+        //Prepare data
+        let title: string = 'title';
+        let description: string = 'description';
+        let createKeyresults: boolean = true;
+        let quarter: number = 0;
+        let team: number = 0;
+        teamService.getAllTeams().subscribe((teams) => {
+          team = teams[0].id;
+        });
+        quarterService.getAllQuarters().subscribe((quarters) => {
+          quarter = quarters[2].id;
+        });
 
         // Get input elements and set values
         const titleInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="title"]')).nativeElement;
@@ -188,24 +193,24 @@ describe('ObjectiveDialogComponent', () => {
         objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
         component.onSubmit(state);
 
-      expect(dialogMock.close).toHaveBeenCalledWith({
-        addKeyResult: createKeyresults,
-        delete: false,
-        objective: {
-          description: description,
-          id: 5,
-          version: 1,
-          quarterId: 2,
-          quarterLabel: 'GJ 22/23-Q2',
-          state: State[state as keyof typeof State],
-          teamId: 2,
-          title: title,
-          writeable: true,
-          alignedEntity: null,
-        },
-        teamId: 1,
-      });
-    }),
+        expect(dialogMock.close).toHaveBeenCalledWith({
+          addKeyResult: createKeyresults,
+          delete: false,
+          objective: {
+            description: description,
+            id: 5,
+            version: 1,
+            quarterId: 2,
+            quarterLabel: 'GJ 22/23-Q2',
+            state: State[state as keyof typeof State],
+            teamId: 2,
+            title: title,
+            writeable: true,
+            alignedEntity: null,
+          },
+          teamId: 1,
+        });
+      }),
     );
 
     it('should create objective', () => {
@@ -473,7 +478,9 @@ describe('ObjectiveDialogComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          HttpClientTestingModule,
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           MatDialogModule,
           MatIconModule,
           MatFormFieldModule,
@@ -483,12 +490,11 @@ describe('ObjectiveDialogComponent', () => {
           MatAutocompleteModule,
           NoopAnimationsModule,
           MatCheckboxModule,
-          RouterTestingModule,
           TranslateTestingModule.withTranslations({
             de: de,
           }),
         ],
-        declarations: [ObjectiveFormComponent, DialogHeaderComponent],
+        declarations: [ObjectiveFormComponent],
         providers: [
           { provide: MatDialogRef, useValue: dialogMock },
           { provide: MAT_DIALOG_DATA, useValue: matDataMock },

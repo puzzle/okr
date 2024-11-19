@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Objective } from '../shared/types/model/Objective';
 import { Observable } from 'rxjs';
 import { Completed } from '../shared/types/model/Completed';
-import { AlignmentPossibility } from '../types/model/AlignmentPossibility';
+import { AlignmentPossibility } from '../shared/types/model/AlignmentPossibility';
 
 @Injectable({
   providedIn: 'root',

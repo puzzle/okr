@@ -1,4 +1,4 @@
-<app-dialog-template-core [title]="getDialogTitle((this.currentTeam | async)?.name || '')">
+<app-dialog-template-core [title]="getDialogTitle((this.currentTeam$ | async)?.name || '')">
   <ng-container content>
     <form [formGroup]="objectiveForm">
       <div class="okr-form-row okr-form-label-input-container">
@@ -42,11 +42,11 @@
                 formControlName="quarter"
                 id="quarter"
                 (change)="updateAlignments()"
-              [attr.data-testId]="'quarterSelect'"
-            >
-              <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
-                <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
-                  {{ quarter.fullLabel() }}
+                [attr.data-testId]="'quarterSelect'"
+              >
+                <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
+                  <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
+                    {{ quarter.fullLabel() }}
                   </option>
                 </ng-container>
               </select>
@@ -81,18 +81,18 @@
             </mat-autocomplete>
           </div>
         </div>
-        </div>
-        <div class="col align-self-end">
-          <div class="okr-form-row">
-            <mat-checkbox
-          [attr.data-testId]="'keyResult-checkbox'"
-          class="col-auto mx-n2"
-          color="primary"
-          formControlName="createKeyResults"
-          *ngIf="!data.objective.objectiveId"
-        >
-          <p class="col d-flex">Key Results im Anschluss erfassen</p>
-        </mat-checkbox>
+      </div>
+      <div class="col align-self-end">
+        <div class="okr-form-row">
+          <mat-checkbox
+            [attr.data-testId]="'keyResult-checkbox'"
+            class="col-auto mx-n2"
+            color="primary"
+            formControlName="createKeyResults"
+            *ngIf="!data.objective.objectiveId"
+          >
+            <p class="col d-flex">Key Results im Anschluss erfassen</p>
+          </mat-checkbox>
         </div>
       </div>
     </form>

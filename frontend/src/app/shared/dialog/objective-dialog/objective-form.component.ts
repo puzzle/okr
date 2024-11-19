@@ -4,7 +4,7 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
-import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
@@ -116,7 +116,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
-        this.currentTeam$.next(value.filter((team: Team) => team.id == teamId)[0]);
+        this.currentTeam$.next(value.filter((team) => team.id == teamId)[0]);
       });
       this.generateAlignmentPossibilities(quarterId, objective, teamId!);
 
@@ -388,6 +388,4 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   scrollLeft() {
     this.alignmentInput.nativeElement.scrollLeft = 0;
   }
-
-  protected readonly getQuarterLabel = getQuarterLabel;
 }

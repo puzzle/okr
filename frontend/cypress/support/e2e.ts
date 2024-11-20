@@ -15,3 +15,7 @@
 
 import './commands';
 import 'cypress-real-events';
+
+Cypress.Keyboard.defaults({
+  keystrokeDelay: 0,
+});

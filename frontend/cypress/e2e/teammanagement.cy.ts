@@ -1,5 +1,9 @@
 import * as users from '../fixtures/users.json';
-import { uniqueSuffix } from '../support/utils';
+import { uniqueSuffix } from '../support/helper/utils';
+import ConfirmDialog from '../support/helper/pom-helper/dialogs/confirmDialog';
+import TeammanagementPage from '../support/helper/pom-helper/pages/teammanagementPage';
+import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
+import InviteMembersDialog from '../support/helper/pom-helper/dialogs/inviteMembersDialog';
 
 describe('Team management tests', () => {
   const teamName = uniqueSuffix('New Team');
@@ -9,26 +13,18 @@ describe('Team management tests', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
     });
-    it('should navigate to overview when clicking logo', () => {
-      cy.getByTestId('team-management').click();
-      cy.getByTestId('logo').click();
-      cy.url().should('not.include', 'team-management');
-    });
-    it('should navigate to overview when pressing back to overview', () => {
-      cy.getByTestId('team-management').click();
-      cy.getByTestId('routerLink-to-overview').click();
-      cy.url().should('not.include', 'team-management');
-    });
+
     it('should preserve team filter', () => {
+      CyOverviewPage.do().visitViaURL();
       cy.get('mat-chip:visible:contains("/BBT")').click();
       cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
       checkTeamsSelected();
-      cy.getByTestId('team-management').click();
+      CyOverviewPage.do().visitTeammanagement();
       checkTeamsSelected();
-      cy.getByTestId('routerLink-to-overview').click();
+      TeammanagementPage.do().backToOverview();
       checkTeamsSelected();
-      cy.getByTestId('team-management').click();
-      cy.getByTestId('logo').click();
+      CyOverviewPage.do().visitTeammanagement();
+      TeammanagementPage.do().visitOverview();
       checkTeamsSelected();
     });
 
@@ -40,6 +36,7 @@ describe('Team management tests', () => {
   });
 
   describe('As GL', () => {
+    let teammanagementPage: TeammanagementPage;
     before(() => {
       // login as bl to ensure this user exists in database
       cy.loginAsUser(users.bl);
@@ -49,23 +46,13 @@ describe('Team management tests', () => {
 
     beforeEach(() => {
       cy.loginAsUser(users.gl);
-      cy.getByTestId('team-management').click();
-    });
-
-    it('Opens teammanagement dialog', () => {
-      //Check if overview contains correct titles of teammanagement
-      cy.contains('Teamverwaltung');
-      cy.contains('Team erfassen');
-      cy.contains('Alle Teams');
+      teammanagementPage = TeammanagementPage.do().visitViaURL();
     });
 
     it('Create team', () => {
       cy.intercept('POST', '**/teams').as('addTeam');
 
-      cy.contains('Teamverwaltung');
-      cy.getByTestId('add-team').click();
-      cy.getByTestId('add-team-name').click().clear().type(teamName, { delay: 1 });
-      cy.getByTestId('add-team-save').click();
+      teammanagementPage.addTeam().fillName(teamName).submit();
       cy.wait('@addTeam');
       cy.contains(teamName);
     });
@@ -77,9 +64,10 @@ describe('Team management tests', () => {
       cy.getByTestId('member-list-more').click();
       cy.getByTestId('remove-from-member-list').click();
 
-      // dialog
-      cy.contains(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`);
-      cy.getByTestId('confirm-yes').click();
+      ConfirmDialog.do()
+        .checkTitle('Mitglied entfernen')
+        .checkDescription(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`)
+        .submit();
 
       cy.wait('@removeUser');
 
@@ -94,8 +82,10 @@ describe('Team management tests', () => {
       cy.getByTestId('remove-from-member-list').click();
 
       // cancel dialog
-      cy.contains(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`);
-      cy.getByTestId('confirm-no').click();
+      ConfirmDialog.do()
+        .checkTitle('Mitglied entfernen')
+        .checkDescription(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`)
+        .cancel();
 
       cy.get('@removeUser.all').then((interceptions) => {
         expect(interceptions).to.have.length(0);
@@ -130,18 +120,24 @@ describe('Team management tests', () => {
       cy.getByTestId('teamDeleteButton').click();
 
       // cancel dialog => cancel
-      cy.contains(
-        `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
-      );
-      cy.getByTestId('confirm-no').click();
+
+      ConfirmDialog.do()
+        .checkTitle('Team löschen')
+        .checkDescription(
+          `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
+        )
+        .cancel();
 
       // try again and confirm dialog
       cy.getByTestId('teamMoreButton').click();
       cy.getByTestId('teamDeleteButton').click();
-      cy.contains(
-        `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
-      );
-      cy.getByTestId('confirm-yes').click();
+
+      ConfirmDialog.do()
+        .checkTitle('Team löschen')
+        .checkDescription(
+          `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
+        )
+        .submit();
 
       cy.wait(['@saveTeam', '@getUsers']);
 
@@ -150,55 +146,44 @@ describe('Team management tests', () => {
 
     describe('Search', () => {
       it('Search user', () => {
-        cy.get('app-team-management-banner').getByTestId('teamManagementSearch').click().type('pa', { delay: 1 });
-
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Robin Papierer (papierer@puzzle.ch)').click();
+        teammanagementPage.elements
+          .teamSearch()
+          .fill('pa')
+          .shouldHaveOption('Paco Eggimann (peggimann@puzzle.ch)')
+          .shouldHaveOption('Paco Egiman (egiman@puzzle.ch)')
+          .selectOption('Robin Papierer (papierer@puzzle.ch)');
 
         cy.contains('app-member-detail h2', 'Robin Papierer');
       });
 
       it('Search team', () => {
-        cy.get('app-team-management-banner').getByTestId('teamManagementSearch').click().type('we are', { delay: 1 });
-
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'we are cube.³').click();
+        teammanagementPage.elements.teamSearch().fill('we are').selectOption('we are cube.³');
 
         cy.contains('app-member-list h2', 'we are cube.³');
       });
 
       it('Search mixed', () => {
-        cy.get('app-team-management-banner').getByTestId('teamManagementSearch').click().type('puz', { delay: 1 });
-
-        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Members');
-        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Teams');
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Robin Papierer (papierer@puzzle.ch)');
-        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Puzzle ITC');
+        teammanagementPage.elements
+          .teamSearch()
+          .fill('puz')
+          .shouldHaveLabel('Members')
+          .shouldHaveLabel('Teams')
+          .shouldHaveOption('Paco Eggimann (peggimann@puzzle.ch)')
+          .shouldHaveOption('Paco Egiman (egiman@puzzle.ch)')
+          .shouldHaveOption('Robin Papierer (papierer@puzzle.ch)')
+          .shouldHaveOption('Puzzle ITC');
       });
     });
 
     describe('invite members', () => {
       it('invite two members', () => {
-        const mailUserClaudia = uniqueSuffix('claudia.meier@test') + '.ch';
-        const mailUserStefan = uniqueSuffix('stefan.schmidt@test') + '.ch';
-        const firstNameClaudia = uniqueSuffix('Claudia');
-        const firstNameStefan = uniqueSuffix('Stefan');
-
-        cy.getByTestId('invite-member').click();
-        cy.wait(1000); // wait for dialog to open
-        cy.tabForward();
-        cy.contains('Members registrieren');
-
-        fillOutNewUser(firstNameClaudia, 'Meier', mailUserClaudia);
-        cy.tabForward();
-        cy.tabForward();
-        cy.realPress('Enter');
-        fillOutNewUser(firstNameStefan, 'Schmidt', mailUserStefan);
-        cy.tabForward();
-        cy.tabForward();
-        cy.realPress('Enter');
+        teammanagementPage.elements.registerMember().click();
+        const firstNames = InviteMembersDialog.do()
+          .enterUser('Claudia', 'Meier', 'claudia.meier@test.ch')
+          .addAnotherUser()
+          .enterUser('Stefan', 'Schmidt', 'stefan.schmidt@test.ch')
+          .addAnotherUser()
+          .getFirstNames();
 
         // test error messages
         fillOutNewUser('Robin', '', 'papierer');
@@ -222,8 +207,7 @@ describe('Team management tests', () => {
         // save
         cy.getByTestId('invite').click();
         cy.contains('Die Members wurden erfolgreich registriert');
-        cy.contains(firstNameClaudia);
-        cy.contains(firstNameStefan);
+        firstNames.forEach((email) => cy.contains(email));
       });
     });
 
@@ -233,26 +217,26 @@ describe('Team management tests', () => {
       navigateToUser(nameEsha);
 
       // add to team bbt as admin
-      cy.get('app-member-detail').getByTestId('add-user').click();
-      cy.get('app-member-detail').getByTestId('select-team-dropdown').click();
+      cy.get('app-member-detail').findByTestId('add-user').click();
+      cy.get('app-member-detail').findByTestId('select-team-dropdown').click();
       cy.getByTestId('select-team-dropdown-option').contains('/BBT').click();
-      cy.get('app-member-detail').getByTestId('select-team-role').click();
+      cy.get('app-member-detail').findByTestId('select-team-role').click();
       cy.getByTestId('select-team-role-admin').click();
-      cy.get('app-member-detail').getByTestId('add-user-to-team-save').click();
+      cy.get('app-member-detail').findByTestId('add-user-to-team-save').click();
 
       cy.wait('@updateEsha');
 
       // add to team loremipsum as member
-      cy.get('app-member-detail').getByTestId('add-user').click();
-      cy.get('app-member-detail').getByTestId('select-team-dropdown').click();
+      cy.get('app-member-detail').findByTestId('add-user').click();
+      cy.get('app-member-detail').findByTestId('select-team-dropdown').click();
 
       // team BBT should not be in list anymore
       cy.getByTestId('select-team-dropdown-option').should('not.contain', '/BBT');
 
       cy.getByTestId('select-team-dropdown-option').contains('LoremIpsum').click();
-      cy.get('app-member-detail').getByTestId('select-team-role').click();
+      cy.get('app-member-detail').findByTestId('select-team-role').click();
       cy.getByTestId('select-team-role-member').click();
-      cy.get('app-member-detail').getByTestId('add-user-to-team-save').click();
+      cy.get('app-member-detail').findByTestId('add-user-to-team-save').click();
 
       cy.wait('@updateEsha');
       // check table
@@ -346,7 +330,8 @@ describe('Team management tests', () => {
       cy.get(matOption).contains(nameEsha).should('not.exist');
 
       // add findus peterson
-      cy.getByTestId('search-member-to-add').click().type('Find', { delay: 1 });
+      cy.getByTestId('search-member-to-add').as('member-search').click();
+      cy.get('@member-search').type('Find');
       cy.contains(matOption, 'Findus Peterson').click();
 
       // add robin papierer
@@ -399,7 +384,12 @@ describe('Team management tests', () => {
     it('should remove BBT membership of findus', () => {
       navigateToUser('Findus Peterson');
       cy.getByTestId('delete-team-member').click();
-      cy.getByTestId('confirm-yes').click();
+
+      ConfirmDialog.do()
+        .checkTitle('Mitglied entfernen')
+        .checkDescription(`Möchtest du Findus Peterson wirklich aus dem Team '/BBT' entfernen?`)
+        .submit();
+
       cy.get('app-member-detail').contains('/BBT').should('not.exist');
     });
 
@@ -408,12 +398,21 @@ describe('Team management tests', () => {
 
       navigateToUser(nameEsha);
       cy.getByTestId('delete-team-member').eq(0).click();
-      cy.getByTestId('confirm-yes').click();
+
+      ConfirmDialog.do()
+        .checkTitle('Mitglied entfernen')
+        .checkDescription(`Möchtest du ${nameEsha} wirklich aus dem Team '/BBT' entfernen?`)
+        .submit();
 
       cy.wait('@removeUser');
 
       cy.getByTestId('delete-team-member').eq(0).click();
-      cy.getByTestId('confirm-yes').click();
+
+      ConfirmDialog.do()
+        .checkTitle('Mitglied entfernen')
+        .checkDescription(`Möchtest du ${nameEsha} wirklich aus dem Team 'LoremIpsum' entfernen?`)
+        .submit();
+
       cy.get('app-member-detail').should('not.contain', '/BBT').and('not.contain', 'LoremIpsum');
     });
 
@@ -437,8 +436,10 @@ function checkRolesForEsha() {
 function editTeamNameAndTest(teamName: string) {
   cy.intercept('PUT', '**/teams/*').as('saveTeam');
   cy.getByTestId('editTeamButton').click();
-  cy.getByTestId('add-team-name').click().clear().type(teamName, { delay: 1 });
-  cy.getByTestId('add-team-save').click();
+  cy.getByTestId('add-team-name').as('team-name').click();
+  cy.get('@team-name').clear();
+  cy.get('@team-name').type(teamName);
+  cy.getByTestId('safe').click();
   cy.wait('@saveTeam');
   cy.contains(teamName);
 }
@@ -450,9 +451,9 @@ function navigateToUser(userName: string) {
 }
 
 function fillOutNewUser(firstname: string, lastname: string, email: string) {
-  cy.realType(firstname, { delay: 1 });
+  cy.realType(firstname);
   cy.tabForward();
-  cy.realType(lastname, { delay: 1 });
+  cy.realType(lastname);
   cy.tabForward();
-  cy.realType(email, { delay: 1 });
+  cy.realType(email);
 }

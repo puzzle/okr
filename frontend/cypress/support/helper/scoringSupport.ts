@@ -1,4 +1,4 @@
-import { isLastCheckInNegative } from '../../src/app/shared/common';
+import { isLastCheckInNegative } from '../../../src/app/shared/common';
 
 interface ScoringValue {
   failPercent: number;
@@ -65,7 +65,7 @@ function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean
 
 function checkVisibilityOfScoringComponent(isOverview: boolean, displayProperty: string, componentTestId: string) {
   (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-    .getByTestId(componentTestId)
+    .findByTestId(componentTestId)
     .invoke('css', 'display')
     .should('equal', displayProperty);
 }

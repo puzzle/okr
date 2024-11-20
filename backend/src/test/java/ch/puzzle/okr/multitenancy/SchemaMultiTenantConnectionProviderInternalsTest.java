@@ -17,7 +17,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
     private static class ConfigurableConnectionProviderMock extends SchemaMultiTenantConnectionProvider {
 
         @Override
-        protected Properties getHibernateProperties() {
+        protected Properties getHibernateProperties(String tenantIdentifier) {
             return new Properties();
         }
 
@@ -78,6 +78,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         Assertions.assertNotNull(foundConnectionProvider);
     }
 
+    // @Disabled
     @DisplayName("getConnectionProviderShouldThrowRuntimeExceptionWhenNoPropertiesAreFound")
     @Test
     void getConnectionProviderShouldThrowRuntimeExceptionWhenNoPropertiesAreFound() {

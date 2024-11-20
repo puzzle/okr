@@ -72,7 +72,7 @@ public class FlywayMultitenantMigrationInitializerTest {
                 NOT_USED, URL, NAME, PASSWORD, SCHEMA);
 
         private final TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(NOT_USED,
-                new String[] { NOT_USED }, NOT_USED, NOT_USED, NOT_USED, dataSourceConfig);
+                new String[] { NOT_USED }, NOT_USED, NOT_USED, NOT_USED, dataSourceConfig, dataSourceConfig);
 
         @Override
         public List<TenantConfigProvider.TenantConfig> getTenantConfigs() {

@@ -32,14 +32,9 @@ describe('UnitTransformationPipe', () => {
     expect(pipe.transform(1, Unit.NUMBER)).toBe('1');
   });
 
-  it('Format non-default label', () => {
-    const pipe = new UnitTransformationPipe();
-    const nonDefaultUnit = 'MEMBERS';
-    expect(pipe.transform(1, nonDefaultUnit)).toBe('1' + nonDefaultUnit);
-  });
   it('should format as Percent', () => {
     const pipe = new UnitTransformationPipe();
-    expect(pipe.transform(380, Unit.NUMBER)).toBe('380');
+    expect(pipe.transform(38, Unit.PERCENT)).toBe('38%');
   });
 
   it('should format as Number', () => {
@@ -52,8 +47,8 @@ describe('UnitTransformationPipe', () => {
     expect(pipe.transform(380.987, Unit.NUMBER)).toBe('380.99');
   });
 
-  it('should return with no format if unit is not preset one', () => {
+  it('should return with no format if unit is not known', () => {
     const pipe = new UnitTransformationPipe();
-    expect(pipe.transform(140, Unit.NUMBER)).toBe('140');
-  });
+    expect(pipe.transform(134, 'Some Unit')).toBe('134')
+  })
 });

@@ -125,7 +125,7 @@ describe('DeleteUserComponent', () => {
       text: 'Hans Muster ist in folgenden Teams und kann daher nicht gelöscht werden: Lorem',
       yesButtonState: ButtonState.Hidden,
       noButtonState: ButtonState.Hidden,
-      closeButtonState: ButtonState.Visible_Enabled,
+      closeButtonState: ButtonState.VisibleEnabled,
     });
   });
 
@@ -153,7 +153,7 @@ describe('DeleteUserComponent', () => {
       text: 'Hans Muster ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\none\n(Objective: two)',
       yesButtonState: ButtonState.Hidden,
       noButtonState: ButtonState.Hidden,
-      closeButtonState: ButtonState.Visible_Enabled,
+      closeButtonState: ButtonState.VisibleEnabled,
     });
   });
 
@@ -174,8 +174,8 @@ describe('DeleteUserComponent', () => {
     expect(dialogServiceMock.openCustomizedConfirmDialog).toHaveBeenCalledWith({
       title: 'User löschen',
       text: 'Möchtest du den User Hans Muster wirklich löschen?',
-      yesButtonState: ButtonState.Visible_Enabled,
-      noButtonState: ButtonState.Visible_Enabled,
+      yesButtonState: ButtonState.VisibleEnabled,
+      noButtonState: ButtonState.VisibleEnabled,
       closeButtonState: ButtonState.Hidden,
     });
   });

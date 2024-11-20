@@ -23,8 +23,8 @@ export class ConfirmDialogComponent implements OnInit {
   ngOnInit() {
     this.dialogTitle = this.data.title;
     this.dialogText = this.data.text;
-    this.yesButtonState = this.data.yesButtonState ?? ButtonState.Visible_Enabled;
-    this.noButtonState = this.data.noButtonState ?? ButtonState.Visible_Enabled;
+    this.yesButtonState = this.data.yesButtonState ?? ButtonState.VisibleEnabled;
+    this.noButtonState = this.data.noButtonState ?? ButtonState.VisibleEnabled;
     this.closeButtonState = this.data.closeButtonState ?? ButtonState.Hidden;
   }
 
@@ -33,28 +33,28 @@ export class ConfirmDialogComponent implements OnInit {
   }
 
   isYesButtonVisible() {
-    return this.yesButtonState === ButtonState.Visible_Enabled || this.yesButtonState === ButtonState.Visible_Disabled;
+    return this.yesButtonState === ButtonState.VisibleEnabled || this.yesButtonState === ButtonState.VisibleDisabled;
   }
 
   isYesButtonDisabled() {
-    return this.yesButtonState === ButtonState.Visible_Disabled;
+    return this.yesButtonState === ButtonState.VisibleDisabled;
   }
 
   isNoButtonVisible() {
-    return this.noButtonState === ButtonState.Visible_Enabled || this.noButtonState === ButtonState.Visible_Disabled;
+    return this.noButtonState === ButtonState.VisibleEnabled || this.noButtonState === ButtonState.VisibleDisabled;
   }
 
   isNoButtonDisabled() {
-    return this.noButtonState === ButtonState.Visible_Disabled;
+    return this.noButtonState === ButtonState.VisibleDisabled;
   }
 
   isCloseButtonVisible() {
     return (
-      this.closeButtonState === ButtonState.Visible_Enabled || this.closeButtonState === ButtonState.Visible_Disabled
+      this.closeButtonState === ButtonState.VisibleEnabled || this.closeButtonState === ButtonState.VisibleDisabled
     );
   }
 
   isCloseButtonDisabled() {
-    return this.closeButtonState === ButtonState.Visible_Disabled;
+    return this.closeButtonState === ButtonState.VisibleDisabled;
   }
 }

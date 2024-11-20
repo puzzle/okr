@@ -128,7 +128,7 @@ export class DeleteUserComponent implements OnInit {
       text: dialogText,
       yesButtonState: ButtonState.Hidden,
       noButtonState: ButtonState.Hidden,
-      closeButtonState: ButtonState.Visible_Enabled,
+      closeButtonState: ButtonState.VisibleEnabled,
     };
     this.dialogService.openCustomizedConfirmDialog(data);
   }
@@ -137,8 +137,8 @@ export class DeleteUserComponent implements OnInit {
     const data: ConfirmDialogData = {
       title: `User löschen`,
       text: `Möchtest du den User ${this.user.firstname} ${this.user.lastname} wirklich löschen?`,
-      yesButtonState: ButtonState.Visible_Enabled,
-      noButtonState: ButtonState.Visible_Enabled,
+      yesButtonState: ButtonState.VisibleEnabled,
+      noButtonState: ButtonState.VisibleEnabled,
       closeButtonState: ButtonState.Hidden,
     };
     const dialog = this.dialogService.openCustomizedConfirmDialog(data);

@@ -148,8 +148,8 @@ describe('DialogService', () => {
     const data: ConfirmDialogData = {
       title: 'Test title',
       text: 'Test description',
-      yesButtonState: ButtonState.Visible_Enabled,
-      noButtonState: ButtonState.Visible_Disabled,
+      yesButtonState: ButtonState.VisibleEnabled,
+      noButtonState: ButtonState.VisibleDisabled,
       closeButtonState: ButtonState.Hidden,
     };
 

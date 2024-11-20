@@ -1,5 +1,6 @@
 import Dialog from './dialog';
 import ConfirmDialog from './confirmDialog';
+import Chainable = Cypress.Chainable;
 
 export default class ObjectiveDialog extends Dialog {
   fillObjectiveTitle(title: string) {
@@ -31,7 +32,7 @@ export default class ObjectiveDialog extends Dialog {
     cy.getByTestId('safe-draft').click();
   }
 
-  getPage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  getPage(): Chainable {
     return cy.get('app-objective-form').should('exist');
   }
 }

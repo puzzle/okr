@@ -1,4 +1,5 @@
 import Dialog from './dialog';
+import Chainable = Cypress.Chainable;
 
 export default class TeamDialog extends Dialog {
   override validatePage() {
@@ -11,7 +12,7 @@ export default class TeamDialog extends Dialog {
     return this;
   }
 
-  getPage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  getPage(): Chainable {
     return cy.get('app-add-edit-team-dialog');
   }
 }

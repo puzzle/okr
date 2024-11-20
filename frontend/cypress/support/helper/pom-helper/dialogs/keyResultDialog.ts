@@ -1,6 +1,7 @@
 import Dialog from './dialog';
 import { Unit } from '../../../../../src/app/shared/types/enums/Unit';
 import ConfirmDialog from './confirmDialog';
+import Chainable = Cypress.Chainable;
 
 export default class KeyResultDialog extends Dialog {
   fillKeyResultTitle(title: string) {
@@ -89,7 +90,7 @@ export default class KeyResultDialog extends Dialog {
     cy.getByTestId('saveAndNew').click();
   }
 
-  getPage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  getPage(): Chainable {
     return cy.get('app-key-result-form');
   }
 }

@@ -1,4 +1,5 @@
 import { PageObjectMapperBase } from '../pageObjectMapperBase';
+import Chainable = Cypress.Chainable;
 
 export default abstract class Dialog extends PageObjectMapperBase {
   constructor() {
@@ -32,5 +33,5 @@ export default abstract class Dialog extends PageObjectMapperBase {
     elem.type(value);
   }
 
-  abstract getPage(): Cypress.Chainable<JQuery<HTMLElement>>;
+  abstract getPage(): Chainable;
 }

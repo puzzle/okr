@@ -1,5 +1,6 @@
 import Dialog from './dialog';
 import CheckInDialog from './checkInDialog';
+import Chainable = Cypress.Chainable;
 
 export default class CheckInHistoryDialog extends Dialog {
   override submit() {
@@ -15,7 +16,7 @@ export default class CheckInHistoryDialog extends Dialog {
     return new CheckInDialog();
   }
 
-  getPage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  getPage(): Chainable {
     return cy.get('app-check-in-history-dialog');
   }
 }

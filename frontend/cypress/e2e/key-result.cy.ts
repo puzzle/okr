@@ -19,14 +19,14 @@ describe('OKR Overview', () => {
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult')
       .withMetricValues(Unit.PERCENT, '21', '52')
-      .fillOwner('Paco Eggimann')
+      .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
 
     cy.contains('I am a metric keyresult');
     cy.contains('Metrisch');
-    cy.contains('Paco Eggimann');
+    cy.contains('Bob Baumeister');
     cy.contains('21%');
     cy.contains('52%');
     cy.contains('Stretch');
@@ -42,14 +42,14 @@ describe('OKR Overview', () => {
       .fillKeyResultTitle('I am a ordinal keyresult')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
       .checkForDialogTextOrdinal()
-      .fillOwner('Paco Eggimann')
+      .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage.visit('I am a ordinal keyresult');
 
     cy.contains('I am a ordinal keyresult');
     cy.contains('Ordinal');
-    cy.contains('Paco Eggimann');
+    cy.contains('Bob Baumeister');
     cy.contains('Fail');
     cy.contains('Commit');
     cy.contains('Target');
@@ -69,7 +69,7 @@ describe('OKR Overview', () => {
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult with a new one')
       .withMetricValues(Unit.PERCENT, '21', '52')
-      .fillOwner('Paco Eggimann')
+      .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description when creating and then open a new')
       .saveAndNew();
     cy.contains('Jaya Norris');
@@ -80,7 +80,7 @@ describe('OKR Overview', () => {
     op.addKeyResult()
       .fillKeyResultTitle('This is a keyresult with an action plan')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
-      .fillOwner('Paco Eggimann')
+      .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description')
       .addActionPlanElement('A new car')
       .addActionPlanElement('A new house')
@@ -210,7 +210,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Owner muss ausgewählt sein');
 
-    KeyResultDialog.do().fillOwner('Paco Eggimann');
+    KeyResultDialog.do().fillOwner('Bob Baumeister');
     cy.getByTestId('submit').should('not.be.disabled');
 
     cy.getByTestId('ordinalTab').click();

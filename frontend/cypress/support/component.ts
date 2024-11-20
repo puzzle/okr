@@ -5,8 +5,8 @@ declare global {
   namespace Cypress {
     interface Chainable {
       loginAsUser(user: any): Chainable;
-      getByTestId(testsId: string, text?: string): Chainable<JQuery<HTMLElement>>;
-      findByTestId(testId: string, text?: string): Chainable<JQuery<HTMLElement>>;
+      getByTestId(testsId: string, text?: string): Chainable;
+      findByTestId(testId: string, text?: string): Chainable;
       pressUntilContains(text: string, key: keyof typeof keyCodeDefinitions): void;
       tabForward(): void;
       tabBackward(): void;

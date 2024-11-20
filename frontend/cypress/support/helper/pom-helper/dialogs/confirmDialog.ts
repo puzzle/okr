@@ -1,4 +1,5 @@
 import Dialog from './dialog';
+import Chainable = Cypress.Chainable;
 
 export default class ConfirmDialog extends Dialog {
   checkTitle(title: string) {
@@ -19,7 +20,7 @@ export default class ConfirmDialog extends Dialog {
     cy.getByTestId('confirm-no').click();
   }
 
-  getPage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  getPage(): Chainable {
     return cy.get('app-confirm-dialog');
   }
 }

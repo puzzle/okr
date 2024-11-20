@@ -63,9 +63,9 @@ describe('OKR team e2e tests', () => {
         .optionShouldNotBeSelected('/BBT')
         .optionShouldNotBeSelected('we are cube');
 
-      filterHelper.validateUrl('teams', ['5', '6']);
+      filterHelper.validateUrlParameter('teams', ['5', '6']);
 
-      filterHelper.toggleOption('/BBT').validateUrl('teams', ['4', '5', '6']);
+      filterHelper.toggleOption('/BBT').validateUrlParameter('teams', ['4', '5', '6']);
       filterHelper.toggleOption('Puzzle ITC').toggleOption('LoremIpsum').toggleOption('/BBT');
       cy.url().should('not.include', 'teams=');
     });

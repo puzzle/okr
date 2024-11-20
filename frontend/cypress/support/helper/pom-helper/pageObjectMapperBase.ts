@@ -14,7 +14,7 @@ export abstract class PageObjectMapperBase {
     return this;
   }
 
-  validateUrl(key: string, value: any[]) {
+  validateUrlParameter(key: string, value: any[]) {
     cy.url().then((url) => {
       const params = new URL(url).searchParams;
       const queryParamValues = params.get(key)?.split(',');

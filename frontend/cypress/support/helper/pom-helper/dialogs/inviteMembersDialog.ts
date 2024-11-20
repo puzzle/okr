@@ -1,5 +1,6 @@
 import Dialog from './dialog';
 import { uniqueSuffix } from '../../utils';
+import Chainable = Cypress.Chainable;
 
 export default class InviteMembersDialog extends Dialog {
   private readonly firstnames: string[] = [];
@@ -35,7 +36,7 @@ export default class InviteMembersDialog extends Dialog {
     return this.firstnames;
   }
 
-  getPage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  getPage(): Chainable {
     return cy.get('app-invite-user-dialog');
   }
 }

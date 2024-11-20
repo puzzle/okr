@@ -439,7 +439,7 @@ function editTeamNameAndTest(teamName: string) {
   cy.getByTestId('add-team-name').as('team-name').click();
   cy.get('@team-name').clear();
   cy.get('@team-name').type(teamName);
-  cy.getByTestId('safe').click();
+  cy.getByTestId('save').click();
   cy.wait('@saveTeam');
   cy.contains(teamName);
 }

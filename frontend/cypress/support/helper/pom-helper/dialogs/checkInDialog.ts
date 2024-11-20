@@ -1,4 +1,5 @@
 import Dialog from './dialog';
+import Chainable = Cypress.Chainable;
 
 export default class CheckInDialog extends Dialog {
   fillCheckInCommentary(commentary: string) {
@@ -76,7 +77,7 @@ export default class CheckInDialog extends Dialog {
     cy.getByTestId('submit-check-in').click();
   }
 
-  getPage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  getPage(): Chainable {
     return cy.get('app-check-in-form');
   }
 }

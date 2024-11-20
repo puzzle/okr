@@ -1,8 +1,8 @@
 export function filterByKeyResultName(keyResultName: string) {
-  return (index: number, element: HTMLElement) => byKeyResultName(element, keyResultName);
+  return (index: number, element: HTMLElement) => isKeyResultName(element, keyResultName);
 }
 
-const byKeyResultName = (element: HTMLElement, keyResultName: string) => {
+const isKeyResultName = (element: HTMLElement, keyResultName: string) => {
   return Cypress.$(element).find(`:contains("${keyResultName}")`).length > 0;
 };
 

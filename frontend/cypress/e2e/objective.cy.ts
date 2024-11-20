@@ -1,5 +1,4 @@
 import * as users from '../fixtures/users.json';
-import { onlyOn } from '@cypress/skip-test';
 import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
 import ObjectiveDialog from '../support/helper/pom-helper/dialogs/objectiveDialog';
 import ConfirmDialog from '../support/helper/pom-helper/dialogs/confirmDialog';

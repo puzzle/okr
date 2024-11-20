@@ -1,5 +1,4 @@
 import * as users from '../fixtures/users.json';
-import { onlyOn } from '@cypress/skip-test';
 import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/pom-helper/pages/keyResultDetailPage';
 

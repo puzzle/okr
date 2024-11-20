@@ -1,5 +1,4 @@
 import * as users from '../fixtures/users.json';
-import { onlyOn } from '@cypress/skip-test';
 import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDetailPage from '../support/helper/pom-helper/pages/keyResultDetailPage';
@@ -63,8 +62,8 @@ describe('Tab workflow tests', () => {
       tabAndCheck('description');
       cy.realType('description');
       tabAndCheck('quarterSelect');
-      tabAndCheck('safe-draft');
-      tabAndCheck('safe');
+      tabAndCheck('save-draft');
+      tabAndCheck('save');
       tabAndCheck('cancel');
     });
 
@@ -80,7 +79,7 @@ describe('Tab workflow tests', () => {
       cy.realType('description');
       tabAndCheck('quarterSelect');
       tabAndCheck('cancel', 'Abbrechen');
-      tabAndCheck('safe', 'Speichern');
+      tabAndCheck('save', 'Speichern');
       cy.realPress('Enter');
       focusedShouldHaveTestId('three-dot-menu');
     });

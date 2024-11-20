@@ -13,7 +13,6 @@ describe('Scoring component e2e tests', () => {
     op = new CyOverviewPage();
     keyresultDetailPage = new KeyResultDetailPage();
     cy.loginAsUser(users.gl);
-    onlyOn('chrome');
   });
 
   [

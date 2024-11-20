@@ -11,7 +11,6 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
     op = new CyOverviewPage();
     keyresultDetailPage = new KeyResultDetailPage();
     cy.loginAsUser(users.gl);
-    onlyOn('chrome');
   });
 
   it('Duplicate ordinal checkin and validate value of scoring component', () => {

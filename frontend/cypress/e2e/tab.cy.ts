@@ -7,7 +7,6 @@ import KeyResultDetailPage from '../support/helper/pom-helper/pages/keyResultDet
 describe('Tab workflow tests', () => {
   let overviewPage: CyOverviewPage;
   beforeEach(() => {
-    onlyOn('chrome');
     cy.loginAsUser(users.gl);
     overviewPage = new CyOverviewPage();
     overviewPage.elements.logo().parent().focus();

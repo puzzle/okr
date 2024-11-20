@@ -124,7 +124,6 @@ describe('OKR Objective e2e tests', () => {
     });
 
     it('Cancel Ongoing objective back to draft state', () => {
-      onlyOn('chrome');
       op.addObjective().fillObjectiveTitle('This objective will be returned to draft state').submit();
 
       op.getObjectiveByNameAndState('This objective will be returned to draft state', 'ongoing')
@@ -141,7 +140,6 @@ describe('OKR Objective e2e tests', () => {
     });
 
     it('Ongoing objective back to draft state', () => {
-      onlyOn('chrome');
       op.addObjective().fillObjectiveTitle('Putting this objective back to draft state will be canceled').submit();
 
       op.getObjectiveByNameAndState('Putting this objective back to draft state will be canceled', 'ongoing')

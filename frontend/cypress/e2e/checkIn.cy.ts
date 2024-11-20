@@ -17,7 +17,6 @@ describe('OKR Check-in e2e tests', () => {
       op = new CyOverviewPage();
       keyresultDetailPage = new KeyResultDetailPage();
       cy.loginAsUser(users.gl);
-      onlyOn('chrome');
     });
 
     it(`Create checkin metric`, () => {

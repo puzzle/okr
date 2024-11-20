@@ -27,7 +27,10 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
       .fillCheckInCommentary('Testveränderungen')
       .fillCheckInInitiatives('Testmassnahmen')
       .submit();
+
+    cy.intercept('GET', '**/overview?*').as('indexPage');
     keyresultDetailPage.close();
+    cy.wait('@indexPage');
 
     op.duplicateObjective('Wir wollen die Kundenzufriedenheit steigern')
       .fillObjectiveTitle('A duplicated Objective for this tool')

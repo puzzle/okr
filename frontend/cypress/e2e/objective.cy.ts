@@ -1,7 +1,7 @@
 import * as users from '../fixtures/users.json';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
-import ObjectiveDialog from '../support/helper/pom-helper/dialogs/objectiveDialog';
-import ConfirmDialog from '../support/helper/pom-helper/dialogs/confirmDialog';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('OKR Objective e2e tests', () => {
   let op = new CyOverviewPage();

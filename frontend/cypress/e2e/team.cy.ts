@@ -1,6 +1,6 @@
 import * as users from '../fixtures/users.json';
-import FilterHelper from '../support/helper/pom-helper/filterHelper';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
+import FilterHelper from '../support/helper/dom-helper/filterHelper';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 
 describe('OKR team e2e tests', () => {
   describe('tests via click', () => {

@@ -1,8 +1,8 @@
 import * as users from '../fixtures/users.json';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
-import KeyResultDetailPage from '../support/helper/pom-helper/pages/keyResultDetailPage';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
-import KeyResultDialog from '../support/helper/pom-helper/dialogs/keyResultDialog';
+import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
 
 describe('OKR Overview', () => {
   let op = new CyOverviewPage();

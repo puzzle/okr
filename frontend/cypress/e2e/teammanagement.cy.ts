@@ -1,9 +1,9 @@
 import * as users from '../fixtures/users.json';
 import { uniqueSuffix } from '../support/helper/utils';
-import ConfirmDialog from '../support/helper/pom-helper/dialogs/confirmDialog';
-import TeammanagementPage from '../support/helper/pom-helper/pages/teammanagementPage';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
-import InviteMembersDialog from '../support/helper/pom-helper/dialogs/inviteMembersDialog';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
+import TeammanagementPage from '../support/helper/dom-helper/pages/teammanagementPage';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import InviteMembersDialog from '../support/helper/dom-helper/dialogs/inviteMembersDialog';
 
 describe('Team management tests', () => {
   const teamName = uniqueSuffix('New Team');

@@ -1,5 +1,5 @@
 import * as users from '../fixtures/users.json';
-import FilterHelper from '../support/helper/pom-helper/filterHelper';
+import FilterHelper from '../support/helper/dom-helper/filterHelper';
 
 describe('OKR Overview', () => {
   beforeEach(() => {

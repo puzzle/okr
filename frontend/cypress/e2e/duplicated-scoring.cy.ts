@@ -1,6 +1,6 @@
 import * as users from '../fixtures/users.json';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
-import KeyResultDetailPage from '../support/helper/pom-helper/pages/keyResultDetailPage';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
 describe('e2e test for scoring adjustment on objective duplicate', () => {
   let op = new CyOverviewPage();

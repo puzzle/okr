@@ -1,8 +1,8 @@
 import * as users from '../fixtures/users.json';
 import { getPercentageMetric, getPercentageOrdinal } from 'cypress/support/helper/scoringSupport';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
-import KeyResultDetailPage from '../support/helper/pom-helper/pages/keyResultDetailPage';
+import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
 describe('Scoring component e2e tests', () => {
   let op = new CyOverviewPage();

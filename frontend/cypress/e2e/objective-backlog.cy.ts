@@ -1,6 +1,6 @@
 import * as users from '../fixtures/users.json';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
-import ObjectiveDialog from '../support/helper/pom-helper/dialogs/objectiveDialog';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
 
 describe('OKR Objective Backlog e2e tests', () => {
   let op = new CyOverviewPage();

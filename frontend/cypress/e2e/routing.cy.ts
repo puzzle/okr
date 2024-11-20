@@ -1,6 +1,6 @@
 import * as users from '../fixtures/users.json';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
-import TeammanagementPage from '../support/helper/pom-helper/pages/teammanagementPage';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import TeammanagementPage from '../support/helper/dom-helper/pages/teammanagementPage';
 
 describe('Routing', () => {
   beforeEach(() => {

@@ -1,12 +1,12 @@
 import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
 import { uniqueSuffix } from '../support/helper/utils';
-import CyOverviewPage from '../support/helper/pom-helper/pages/overviewPage';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
-import KeyResultDetailPage from '../support/helper/pom-helper/pages/keyResultDetailPage';
-import CheckInDialog from '../support/helper/pom-helper/dialogs/checkInDialog';
-import CheckInHistoryDialog from '../support/helper/pom-helper/dialogs/checkInHistoryDialog';
-import ConfirmDialog from '../support/helper/pom-helper/dialogs/confirmDialog';
+import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
+import CheckInDialog from '../support/helper/dom-helper/dialogs/checkInDialog';
+import CheckInHistoryDialog from '../support/helper/dom-helper/dialogs/checkInHistoryDialog';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('OKR Check-in e2e tests', () => {
   describe('tests via click', () => {

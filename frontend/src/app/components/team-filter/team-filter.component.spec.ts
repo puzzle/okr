@@ -8,7 +8,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TeamService } from '../../services/team.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { of, Subject } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { team1, team2, team3, teamList, testUser } from '../../shared/testData';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -69,8 +69,8 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
 
     expect(component.teams$.next).toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next).toBeCalledTimes(1);
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.teams$.next).toHaveBeenCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   }));
 
   it('should select the right chips', waitForAsync(async () => {
@@ -85,9 +85,9 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
 
     expect(component.teams$.next).toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next).toBeCalledTimes(1);
+    expect(component.teams$.next).toHaveBeenCalledTimes(1);
     expect(component.activeTeams).toStrictEqual(teamIds);
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   }));
 
   it('activeTeams array should contain every team when all teams are shown', waitForAsync(async () => {
@@ -102,9 +102,9 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
 
     expect(component.teams$.next).toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next).toBeCalledTimes(1);
+    expect(component.teams$.next).toHaveBeenCalledTimes(1);
     expect(component.activeTeams.length).toBe(3);
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   }));
 
   it('change filter params and reload', fakeAsync(async () => {
@@ -117,7 +117,7 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
     await component.changeTeamFilterParams();
     routerHarness.detectChanges();
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
     expect(router.url).toBe('/?teams=8,5,10');
   }));
 
@@ -134,8 +134,8 @@ describe('TeamFilterComponent', () => {
 
     component.toggleSelection(selected);
     fixture.detectChanges();
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-    expect(component.areAllTeamsShown).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
+    expect(component.areAllTeamsShown).toHaveBeenCalledTimes(1);
     expect(component.activeTeams).toStrictEqual(expected);
   });
 
@@ -162,7 +162,7 @@ describe('TeamFilterComponent', () => {
     component.activeTeams = currentTeams;
     jest.spyOn(component, 'changeTeamFilterParams');
     component.toggleAll();
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
     expect(component.activeTeams).toStrictEqual(expectedTeams);
   });
 
@@ -193,7 +193,7 @@ describe('TeamFilterComponent', () => {
 
     expect(component.activeTeams.length).toBe(1);
     expect(component.activeTeams).toStrictEqual(extractTeamsFromUser(testUser).map((team) => team.id));
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   });
 
   it('should use teams of user if no teams are in url', async () => {
@@ -208,7 +208,7 @@ describe('TeamFilterComponent', () => {
 
     expect(component.activeTeams.length).toBe(1);
     expect(component.activeTeams).toStrictEqual(extractTeamsFromUser(testUser).map((team) => team.id));
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   });
 
   it.each([
@@ -222,7 +222,28 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
     await component.changeTeamFilterParams();
 
-    expect(router.navigate).toBeCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: routingTeams } });
+  });
+
+  it('should filter teams by toggled priority and then by name', async () => {
+    const teams = [
+      { id: 1, version: 0, name: 'Team D', writeable: true },
+      { id: 2, version: 0, name: 'Team C', writeable: true },
+      { id: 3, version: 0, name: 'Team B', writeable: true },
+      { id: 4, version: 0, name: 'Team A', writeable: true },
+    ];
+
+    component.teams$ = new BehaviorSubject(teams);
+    component.activeTeams = [3, 4];
+
+    const sortedTeams = component.sortTeamsToggledPriority();
+
+    expect(sortedTeams).toEqual([
+      { id: 4, version: 0, name: 'Team A', writeable: true },
+      { id: 3, version: 0, name: 'Team B', writeable: true },
+      { id: 2, version: 0, name: 'Team C', writeable: true },
+      { id: 1, version: 0, name: 'Team D', writeable: true },
+    ]);
   });
 });

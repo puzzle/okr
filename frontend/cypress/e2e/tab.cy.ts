@@ -262,7 +262,7 @@ describe('Tab workflow tests', () => {
       focusedShouldHaveTestId('close-dialog');
       tabAndCheck('add-team-name');
       cy.focused().type('Name of new team');
-      tabAndCheck('safe', 'Speichern');
+      tabAndCheck('save', 'Speichern');
       tabAndCheck('cancel', 'Abbrechen');
     });
     it('Should tab register member', () => {

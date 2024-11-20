@@ -12,7 +12,7 @@ export default abstract class Dialog extends PageObjectMapperBase {
   }
 
   submit() {
-    cy.getByTestId('safe').click();
+    cy.getByTestId('save').click();
   }
 
   cancel() {

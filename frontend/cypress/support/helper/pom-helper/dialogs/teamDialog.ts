@@ -12,6 +12,10 @@ export default class TeamDialog extends Dialog {
     return this;
   }
 
+  override submit() {
+    cy.getByTestId('save').click();
+  }
+
   getPage(): Chainable {
     return cy.get('app-add-edit-team-dialog');
   }

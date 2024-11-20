@@ -11,8 +11,8 @@ describe('CRUD operations', () => {
   });
 
   [
-    ['ongoing objective title', 'safe', 'ongoing-icon.svg'],
-    ['draft objective title', 'safe-draft', 'draft-icon.svg'],
+    ['ongoing objective title', 'save', 'ongoing-icon.svg'],
+    ['draft objective title', 'save-draft', 'draft-icon.svg'],
   ].forEach(([objectiveTitle, buttonTestId, icon]) => {
     it(`Create objective, no keyresults`, () => {
       op.addObjective().fillObjectiveTitle(objectiveTitle).selectQuarter('3');
@@ -28,8 +28,8 @@ describe('CRUD operations', () => {
     op.addObjective();
     cy.getByTestId('title').first().type('title').clear();
     cy.contains('Titel muss folgende Länge haben: 2-250 Zeichen');
-    cy.getByTestId('safe').should('be.disabled');
-    cy.getByTestId('safe-draft').should('be.disabled');
+    cy.getByTestId('save').should('be.disabled');
+    cy.getByTestId('save-draft').should('be.disabled');
     cy.getByTestId('cancel').should('not.be.disabled');
   });
 

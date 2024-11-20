@@ -29,7 +29,7 @@ export default class ObjectiveDialog extends Dialog {
   }
 
   submitDraftObjective() {
-    cy.getByTestId('safe-draft').click();
+    cy.getByTestId('save-draft').click();
   }
 
   getPage(): Chainable {

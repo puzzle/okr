@@ -65,7 +65,7 @@ describe('OKR Objective Backlog e2e tests', () => {
 
     cy.contains('Als Draft speichern').should('not.exist');
     cy.contains('Speichern');
-    cy.getByTestId('safe').click();
+    cy.getByTestId('save').click();
 
     cy.contains('This is our first released objective').should('not.exist');
 

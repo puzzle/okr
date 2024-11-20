@@ -30,7 +30,6 @@ describe('CheckInFormComponent', () => {
         }),
       ],
       declarations: [CheckInFormMetricComponent],
-      providers: [],
     });
     fixture = TestBed.createComponent(CheckInFormMetricComponent);
     component = fixture.componentInstance;

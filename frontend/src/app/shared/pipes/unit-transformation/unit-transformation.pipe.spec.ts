@@ -49,6 +49,6 @@ describe('UnitTransformationPipe', () => {
 
   it('should return with no format if unit is not known', () => {
     const pipe = new UnitTransformationPipe();
-    expect(pipe.transform(134, 'Some Unit')).toBe('134')
-  })
+    expect(pipe.transform(134, 'Some Unit')).toBe('134');
+  });
 });

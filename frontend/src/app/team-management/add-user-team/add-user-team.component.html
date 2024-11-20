@@ -52,7 +52,9 @@
       <button [attr.data-testId]="'add-user-to-team-save'" (click)="save()" mat-flat-button color="primary">
         Hinzufügen
       </button>
-      <button class="ms-2" (click)="userTeam = undefined" mat-button>Abbrechen</button>
+      <button [attr.data-testId]="'add-user-to-team-cancel'" class="ms-2" (click)="userTeam = undefined" mat-button>
+        Abbrechen
+      </button>
     </div>
   </ng-container>
 </ng-container>

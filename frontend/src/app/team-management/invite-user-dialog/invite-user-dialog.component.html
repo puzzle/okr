@@ -11,7 +11,7 @@
       </div>
     }
     <div class="okr-form-row">
-      <button (click)="addUser()" class="col-auto" color="primary" mat-button>
+      <button (click)="addUser()" class="col-auto" color="primary" mat-button [attr.data-testId]="'new-member-add-row'">
         <span class="d-flex align-items-center fw-bold">
           <img alt="Add User button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
           Weiterer Member hinzufügen
@@ -24,7 +24,7 @@
       <button color="primary" [attr.data-testId]="'invite'" mat-flat-button type="submit" (click)="registerUsers()">
         Einladen
       </button>
-      <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+      <button color="primary" [attr.data-testId]="'new-member-cancel'" mat-button mat-dialog-close>Abbrechen</button>
     </div>
   </ng-container>
 </app-dialog-template-core>

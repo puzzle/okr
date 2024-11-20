@@ -1,120 +1,85 @@
 import * as users from '../fixtures/users.json';
+import FilterHelper from '../support/helper/dom-helper/filterHelper';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 
 describe('OKR team e2e tests', () => {
   describe('tests via click', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
-      cy.visit('/?quarter=2');
+      CyOverviewPage.do().visitCurrentQuarter();
     });
 
-    it('Select teams from filter', () => {
-      cy.get('h1:visible:contains("Puzzle ITC")').should('have.length', 1);
-      cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
-      cy.get('mat-chip:visible:contains("Alle")').click();
-      cy.contains('Alle');
-      cy.get('h1:visible:contains("/BBT")').should('have.length', 1);
-      cy.get('mat-chip:visible:contains("/BBT")').should('have.length', 1);
-      cy.get('h1:visible:contains("Puzzle ITC")').should('have.length', 1);
-      cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
-      cy.get('h1:visible:contains("LoremIpsum")').should('have.length', 1);
-      cy.get('mat-chip:visible:contains("LoremIpsum")').should('have.length', 1);
-      cy.get('h1:visible:contains("we are cube")').should('have.length', 1);
-      cy.get('mat-chip:visible:contains("we are cube")').should('have.length', 1);
+    it('Should select teams from teamfilter', () => {
+      const filterHelper = FilterHelper.do()
+        .optionShouldBeSelected('Puzzle ITC')
+        .optionShouldBeSelected('LoremIpsum')
+        .optionShouldNotBeSelected('Alle')
+        .optionShouldNotBeSelected('/BBT')
+        .optionShouldNotBeSelected('we are cube');
 
-      cy.getByTestId('team-filter-alle').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
+      filterHelper
+        .toggleOption('Alle')
+        .optionShouldBeSelected('Alle', false)
+        .optionShouldBeSelected('/BBT')
+        .optionShouldBeSelected('Puzzle ITC')
+        .optionShouldBeSelected('LoremIpsum')
+        .optionShouldBeSelected('we are cube');
 
-      cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
+      filterHelper
+        .toggleOption('/BBT')
+        .optionShouldBeSelected('/BBT')
+        .optionShouldNotBeSelected('Alle')
+        .optionShouldNotBeSelected('Puzzle ITC')
+        .optionShouldNotBeSelected('LoremIpsum')
+        .optionShouldNotBeSelected('we are cube');
 
-      cy.get('mat-chip:visible:contains("/BBT")').click();
-      cy.get('h1:visible:contains("/BBT")').should('exist');
-      cy.get('h1:visible:contains("Puzzle ITC")').should('not.exist');
-      cy.get('h1:visible:contains("LoremIpsum")').should('not.exist');
-      cy.get('h1:visible:contains("we are cube")').should('not.exist');
-      cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
-      cy.get('mat-chip:visible:contains("Puzzle ITC")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("LoremIpsum")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("we are cube")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.getByTestId('team-filter-alle').should('have.css', 'background-color').and('eq', 'rgb(255, 255, 255)');
-
-      cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
-      cy.get('h1:visible:contains("Puzzle ITC")').should('exist');
-      cy.get('h1:visible:contains("/BBT")').should('exist');
-      cy.get('h1:visible:contains("LoremIpsum")').should('not.exist');
-      cy.get('h1:visible:contains("we are cube")').should('not.exist');
-
-      cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
-
-      cy.get('mat-chip:visible:contains("Puzzle ITC")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(30, 90, 150)');
-
-      cy.get('mat-chip:visible:contains("LoremIpsum")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("we are cube")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.getByTestId('team-filter-alle').should('have.css', 'background-color').and('eq', 'rgb(255, 255, 255)');
+      filterHelper
+        .toggleOption('Puzzle ITC')
+        .optionShouldBeSelected('/BBT')
+        .optionShouldNotBeSelected('Alle')
+        .optionShouldBeSelected('Puzzle ITC')
+        .optionShouldNotBeSelected('LoremIpsum')
+        .optionShouldNotBeSelected('we are cube');
     });
 
     it('Deselect all teams from filter will display text on overview', () => {
-      cy.getByTestId('team-filter-alle').should('have.css', 'background-color').and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("/BBT")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("Puzzle ITC")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(30, 90, 150)');
-      cy.get('mat-chip:visible:contains("LoremIpsum")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(30, 90, 150)');
-      cy.get('mat-chip:visible:contains("we are cube")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
-      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
+      const filterHelper = FilterHelper.do()
+        .optionShouldBeSelected('Puzzle ITC')
+        .optionShouldBeSelected('LoremIpsum')
+        .optionShouldNotBeSelected('Alle')
+        .optionShouldNotBeSelected('/BBT')
+        .optionShouldNotBeSelected('we are cube');
+
+      filterHelper.toggleOption('Puzzle ITC').toggleOption('LoremIpsum');
+
       cy.contains('Kein Team ausgewählt');
     });
 
     it('URL changes to the selected teams', () => {
-      cy.url().should('include', 'teams=');
-      cy.url().should('include', '5');
-      cy.url().should('include', '6');
+      const filterHelper = FilterHelper.do()
+        .optionShouldBeSelected('Puzzle ITC')
+        .optionShouldBeSelected('LoremIpsum')
+        .optionShouldNotBeSelected('Alle')
+        .optionShouldNotBeSelected('/BBT')
+        .optionShouldNotBeSelected('we are cube');
 
-      cy.get('mat-chip:visible:contains("/BBT")').click();
-      cy.url().should('include', 'teams=');
-      cy.url().should('include', '5');
-      cy.url().should('include', '6');
-      cy.url().should('include', '4');
-      cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
-      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
-      cy.get('mat-chip:visible:contains("/BBT")').click();
+      filterHelper.validateUrlParameter('teams', ['5', '6']);
+
+      filterHelper.toggleOption('/BBT').validateUrlParameter('teams', ['4', '5', '6']);
+      filterHelper.toggleOption('Puzzle ITC').toggleOption('LoremIpsum').toggleOption('/BBT');
       cy.url().should('not.include', 'teams=');
     });
 
     it('Select teams by url', () => {
-      cy.url().should('not.include', 'team');
+      cy.url().should('not.include', 'teams');
 
       cy.visit('/?quarter=2&teams=4,5,8');
-      cy.wait(1000);
-      cy.getByTestId('team-filter-alle').should('have.css', 'background-color').and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
-      cy.get('mat-chip:visible:contains("Puzzle ITC")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(30, 90, 150)');
-      cy.get('mat-chip:visible:contains("LoremIpsum")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
-      cy.get('mat-chip:visible:contains("we are cube")')
-        .should('have.css', 'background-color')
-        .and('eq', 'rgb(30, 90, 150)');
-      cy.get('h1:visible:contains("LoremIpsum")').should('not.exist');
+      FilterHelper.do()
+        .optionShouldNotBeSelected('Alle')
+        .optionShouldBeSelected('/BBT')
+        .optionShouldBeSelected('Puzzle ITC')
+        .optionShouldBeSelected('we are cube')
+        .optionShouldNotBeSelected('LoremIpsum');
     });
   });
 });

@@ -1,205 +1,143 @@
 import * as users from '../fixtures/users.json';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
 
 describe('OKR Objective Backlog e2e tests', () => {
+  let op = new CyOverviewPage();
+
   beforeEach(() => {
+    op = new CyOverviewPage();
     cy.loginAsUser(users.gl);
-    cy.visit('/?quarter=2');
   });
 
   it(`Create Objective in backlog quarter should not have save button`, () => {
-    cy.getByTestId('add-objective').first().click();
+    op.addObjective()
+      .fillObjectiveTitle('Objective in quarter backlog')
+      .selectQuarter('Backlog')
+      .run(cy.contains('Speichern').should('not.exist'))
+      .run(cy.contains('Als Draft speichern'))
+      .submitDraftObjective();
 
-    cy.getByTestId('title').first().clear().type('Objective in quarter backlog');
-    cy.get('select#quarter').select('Backlog');
+    cy.contains('Objective in quarter backlog').should('not.exist');
 
-    cy.contains('Speichern').should('not.exist');
-    cy.contains('Als Draft speichern');
-    cy.getByTestId('safe-draft').click();
-
-    cy.get('Objective in quarter backlog').should('not.exist');
-
-    cy.visit('/?quarter=999');
-
+    op.visitBacklogQuarter();
     cy.contains('Objective in quarter backlog');
   });
 
   it(`Edit Objective and move to backlog`, () => {
-    cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective('Move to another quarter on edit', 'safe-draft', undefined, '', false);
+    op.addObjective().fillObjectiveTitle('Move to another quarter on edit').submitDraftObjective();
 
-    cy.getByTestId('objective')
-      .filter(':contains("Move to another quarter on edit")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click()
-      .wait(500)
-      .get('.objective-menu-option')
-      .contains('Objective bearbeiten')
-      .click();
+    op.getObjectiveByNameAndState('Move to another quarter on edit', 'draft').findByTestId('three-dot-menu').click();
+    op.selectFromThreeDotMenu('Objective bearbeiten');
 
-    cy.fillOutObjective('This goes now to backlog', 'safe', 'Backlog', '', false);
+    ObjectiveDialog.do().fillObjectiveTitle('This goes now to backlog').selectQuarter('Backlog').submit();
 
-    cy.get('This goes now to backlog').should('not.exist');
+    cy.contains('This goes now to backlog').should('not.exist');
 
-    cy.visit('/?quarter=999');
-
+    op.visitBacklogQuarter();
     cy.contains('This goes now to backlog');
   });
 
   it(`Edit ongoing Objective can not choose backlog in quarter select`, () => {
-    cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective('We can not move this to backlog', 'safe', undefined, '', false);
+    op.addObjective().fillObjectiveTitle('We can not move this to backlog').submit();
 
-    cy.getByTestId('objective')
-      .filter(':contains("We can not move this to backlog")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click()
-      .wait(500)
-      .get('.objective-menu-option')
-      .contains('Objective bearbeiten')
-      .click();
+    op.getObjectiveByNameAndState('We can not move this to backlog', 'ongoing').findByTestId('three-dot-menu').click();
+    op.selectFromThreeDotMenu('Objective bearbeiten');
 
     cy.get('select#quarter').should('contain', 'GJ ForTests');
     cy.get('select#quarter').should('not.contain', 'Backlog');
   });
 
   it(`Can release Objective to another quarter from backlog`, () => {
-    cy.visit('/?quarter=999');
-    cy.getByTestId('add-objective').first().click();
-    cy.getByTestId('title').first().clear().type('We can not release this');
-    cy.getByTestId('safe').should('not.exist');
-    cy.getByTestId('safe-draft').click();
+    op.visitBacklogQuarter();
+    op.addObjective().fillObjectiveTitle('We can not release this').submitDraftObjective();
 
-    cy.getByTestId('objective')
-      .filter(':contains("We can not release this")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click();
-
-    cy.wait(500);
-    cy.contains('Objective bearbeiten');
-    cy.contains('Objective duplizieren');
-    cy.contains('Objective veröffentlichen');
-
-    cy.get('.objective-menu-option').contains('Objective veröffentlichen').click();
+    op.getObjectiveByNameAndState('We can not release this', 'draft').findByTestId('three-dot-menu').click();
+    op.selectFromThreeDotMenu('Objective veröffentlichen');
 
     cy.contains('Objective veröffentlichen');
-
-    cy.getByTestId('title').first().clear().type('This is our first released objective');
+    cy.getByTestId('title').first().as('title');
+    cy.get('@title').clear();
+    cy.get('@title').type('This is our first released objective');
 
     cy.get('select#quarter').should('not.contain', 'Backlog');
     cy.get('select#quarter').select('GJ ForTests');
 
     cy.contains('Als Draft speichern').should('not.exist');
     cy.contains('Speichern');
-    cy.getByTestId('safe').click();
+    cy.getByTestId('save').click();
 
     cy.contains('This is our first released objective').should('not.exist');
 
-    cy.visit('/?quarter=998');
-
+    op.visitGJForTests();
     cy.contains('This is our first released objective');
   });
 
   it(`Can edit Objective title in backlog`, () => {
-    cy.visit('/?quarter=999');
-    cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective('This is possible for edit', 'safe-draft', undefined, '', false);
+    op.visitBacklogQuarter();
+    op.addObjective().fillObjectiveTitle('This is possible for edit').submitDraftObjective();
 
-    cy.contains('This is possible for edit');
+    op.getObjectiveByNameAndState('This is possible for edit', 'draft').findByTestId('three-dot-menu').click();
+    op.selectFromThreeDotMenu('Objective bearbeiten');
 
-    cy.getByTestId('objective')
-      .filter(':contains("This is possible for edit")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click()
-      .wait(500)
-      .get('.objective-menu-option')
-      .contains('Objective bearbeiten')
-      .click();
+    ObjectiveDialog.do().fillObjectiveTitle('My new title').submit();
 
-    cy.fillOutObjective('My new title', 'safe', undefined, '', false);
-
-    cy.contains('My new title');
+    op.getObjectiveByNameAndState('My new title', 'draft');
   });
 
   it(`Can edit Objective in backlog and change quarter`, () => {
-    cy.visit('/?quarter=999');
-    cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective('This goes to other quarter later', 'safe-draft', undefined, '', false);
+    op.visitBacklogQuarter();
+    op.addObjective().fillObjectiveTitle('This goes to other quarter later').submitDraftObjective();
 
-    cy.getByTestId('objective')
-      .filter(':contains("This goes to other quarter later")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click()
-      .wait(500)
-      .get('.objective-menu-option')
-      .contains('Objective bearbeiten')
-      .click();
+    op.getObjectiveByNameAndState('This goes to other quarter later', 'draft').findByTestId('three-dot-menu').click();
+    op.selectFromThreeDotMenu('Objective bearbeiten');
 
-    cy.get('select#quarter').select('GJ ForTests');
-    cy.getByTestId('safe').first().click();
+    ObjectiveDialog.do().selectQuarter('GJ ForTests').submit();
 
-    cy.visit('/?quarter=998');
-    cy.contains('This goes to other quarter later');
+    op.visitGJForTests();
+    op.getObjectiveByNameAndState('This goes to other quarter later', 'draft');
   });
 
-  it(`Can duplicate from backlog`, () => {
-    cy.visit('/?quarter=998');
-    cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective('Ready for duplicate', 'safe-draft', undefined, '', false);
+  it(`Can duplicate in backlog`, () => {
+    op.visitBacklogQuarter();
+    op.addObjective().fillObjectiveTitle('Ready for duplicate in backlog').submitDraftObjective();
 
-    cy.getByTestId('objective')
-      .filter(':contains("Ready for duplicate")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click()
-      .wait(500)
-      .get('.objective-menu-option')
-      .contains('Objective duplizieren')
+    op.getObjectiveByNameAndState('Ready for duplicate in backlog', 'draft').findByTestId('three-dot-menu').click();
+    op.selectFromThreeDotMenu('Objective duplizieren');
+
+    ObjectiveDialog.do().fillObjectiveTitle('This is a new duplication in backlog').submit();
+
+    op.getObjectiveByNameAndState('Ready for duplicate in backlog', 'draft');
+    op.getObjectiveByNameAndState('This is a new duplication in backlog', 'draft');
+  });
+
+  it('should duplicate from backlog', () => {
+    op.visitBacklogQuarter();
+    op.addObjective().fillObjectiveTitle('Ready for duplicate to another quarter').submitDraftObjective();
+    op.getObjectiveByNameAndState('Ready for duplicate to another quarter', 'draft')
+      .findByTestId('three-dot-menu')
       .click();
+    op.selectFromThreeDotMenu('Objective duplizieren');
 
-    cy.fillOutObjective('This is a new duplication', 'safe', undefined, '', false);
+    ObjectiveDialog.do().fillObjectiveTitle('New duplication from backlog').selectQuarter('GJ ForTests').submit();
 
-    cy.contains('Ready for duplicate');
-    cy.contains('This is a new duplication');
-
-    cy.getByTestId('objective')
-      .filter(':contains("Ready for duplicate")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click()
-      .wait(500)
-      .get('.objective-menu-option')
-      .contains('Objective duplizieren')
-      .click();
-
-    cy.fillOutObjective('New duplication for other quarter', 'safe', 'GJ ForTests', '', false);
-    cy.get('New duplication for other quarter').should('not.exist');
-
-    cy.contains('New duplication for other quarter');
+    op.getObjectiveByNameAndState('Ready for duplicate to another quarter', 'draft').should('exist');
+    cy.contains('New duplication from backlog').should('not.exist');
+    op.visitGJForTests();
+    op.getObjectiveByNameAndState('New duplication from backlog', 'draft').should('exist');
   });
 
   it(`Can duplicate ongoing Objective to backlog`, () => {
-    cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective('Possible to duplicate into backlog', 'safe', undefined, '', false);
+    op.addObjective().fillObjectiveTitle('Possible to duplicate into backlog').submit();
 
-    cy.getByTestId('objective')
-      .filter(':contains("Possible to duplicate into backlog")')
-      .last()
-      .getByTestId('three-dot-menu')
-      .click()
-      .wait(500)
-      .get('.objective-menu-option')
-      .contains('Objective duplizieren')
+    op.getObjectiveByNameAndState('Possible to duplicate into backlog', 'ongoing')
+      .findByTestId('three-dot-menu')
       .click();
+    op.selectFromThreeDotMenu('Objective duplizieren');
 
-    cy.get('select#quarter').select('Backlog');
-    cy.getByTestId('safe').first().click();
+    ObjectiveDialog.do().selectQuarter('Backlog').submit();
 
-    cy.visit('/?quarter=999');
+    op.visitBacklogQuarter();
     cy.contains('Possible to duplicate into backlog');
   });
 });

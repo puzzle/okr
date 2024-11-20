@@ -57,11 +57,11 @@ class AuthorizationServiceTest {
             Team.Builder.builder().withName("Team 6").withId(6L).build());
 
     private final User user = defaultUserWithTeams(1L, adminTeams, memberTeams);
-    private final User okrUser = defaultOkrChampion(1L);
+    private final User okrChampion = defaultOkrChampion(1L);
 
     @Test
     void hasRoleWriteAllShouldReturnTrueWhenContainsRole() {
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
         assertTrue(hasRoleWriteAndReadAll(authorizationUser));
     }
 
@@ -73,7 +73,7 @@ class AuthorizationServiceTest {
 
     @Test
     void hasRoleWriteForTeam_shouldReturnTrueWhenOkrChampion() {
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
         assertTrue(hasRoleWriteForTeam(authorizationUser, 3L));
     }
 
@@ -84,9 +84,15 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleWriteForTeam_shouldReturnFalseWhenUserIsNotAdmin() {
+    void hasRoleWriteForTeam_shouldReturnTrueWhenUserIsInTeam() {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        assertFalse(hasRoleWriteForTeam(authorizationUser, 3L));
+        assertTrue(hasRoleWriteForTeam(authorizationUser, 3L));
+    }
+
+    @Test
+    void hasRoleWriteForTeam_shouldReturnFalseWhenUserIsNotInTeam() {
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+        assertFalse(hasRoleWriteForTeam(authorizationUser, 5L));
     }
 
     @Test
@@ -180,14 +186,30 @@ class AuthorizationServiceTest {
     @Test
     void hasRoleCreateOrUpdateShouldPassThroughWhenAuthorizedForAllObjectives() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser);
     }
 
     @Test
-    void hasRoleCreateOrUpdateShouldThrowExceptionWhenMember() {
-        var id = memberTeams.get(0).getId();
+    void hasRoleCreateOrUpdateShouldPassThroughWhenAdmin() {
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+
+        authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser);
+    }
+
+    @Test
+    void hasRoleCreateOrUpdateShouldPassThroughWhenMember() {
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(3L).build()).build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+
+        authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser);
+    }
+
+    @Test
+    void hasRoleCreateOrUpdateShouldThrowExceptionWhenNotInTeam() {
+        var id = otherTeams.get(0).getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -205,7 +227,7 @@ class AuthorizationServiceTest {
     void hasRoleCreateOrUpdateShouldPassThroughWhenAuthorizedForKeyResults() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
                 any())).thenReturn(objective);
@@ -227,7 +249,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdateShouldThorwExceptionWhenNotAuthorizedForKeyResults() {
+    void hasRoleCreateOrUpdateShouldThrowExceptionWhenNotAuthorizedForKeyResults() {
         var id = otherTeams.get(0).getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
@@ -261,8 +283,22 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdateShouldThrowExceptionWhenMemberForTeamCheckIns() {
+    void hasRoleCreateOrUpdateShouldPassThroughWhenAuthorizedAsMemberForTeamCheckIns() {
         var id = memberTeams.get(0).getId();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getObjective().getId()),
+                eq(authorizationUser), any())).thenReturn(objective);
+
+        authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser);
+    }
+
+    @Test
+    void hasRoleCreateOrUpdateShouldThrowExceptionWhenNotInTeamForTeamCheckIns() {
+        var id = otherTeams.get(0).getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -285,7 +321,7 @@ class AuthorizationServiceTest {
     void hasRoleCreateOrUpdateByObjectiveIdShouldPassThroughWhenAuthorizedForAllObjectives() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
@@ -304,8 +340,19 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdateByObjectiveIdShouldThrowExceptionWhenAuthorizedAsMember() {
+    void hasRoleCreateOrUpdateByObjectiveIdShouldPassThroughWhenAuthorizedAsMember() {
         var id = memberTeams.get(0).getId();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+
+        when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
+
+        authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser);
+    }
+
+    @Test
+    void hasRoleCreateOrUpdateByObjectiveIdShouldThrowExceptionWhenNotInTeam() {
+        var id = otherTeams.get(0).getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -325,7 +372,7 @@ class AuthorizationServiceTest {
     @Test
     void hasRoleWriteForTeamShouldReturnTrueWhenAuthorizedToWriteAllObjectives() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         assertTrue(authorizationService.hasRoleWriteForTeam(objective, authorizationUser));
     }
@@ -340,8 +387,17 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleWriteForTeamShouldReturnFalseWhenAuthorizedAsMember() {
+    void hasRoleWriteForTeamShouldReturnTrueWhenAuthorizedAsMember() {
         var id = memberTeams.get(0).getId();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+
+        assertTrue(authorizationService.hasRoleWriteForTeam(objective, authorizationUser));
+    }
+
+    @Test
+    void hasRoleWriteForTeamShouldReturnFalseWhenNotMemberOfTeam() {
+        var id = otherTeams.get(0).getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -352,7 +408,7 @@ class AuthorizationServiceTest {
     void hasRoleWriteForTeamShouldReturnTrueWhenAuthorizedToWriteAllKeyResults() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(4L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
                 any())).thenReturn(objective);
@@ -390,7 +446,7 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getId()),
                 eq(authorizationUser), any())).thenReturn(objective);
@@ -429,7 +485,7 @@ class AuthorizationServiceTest {
     void hasRoleDeleteByObjectiveIdShouldPassThroughWhenAuthorizedForAllObjectives() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
@@ -440,7 +496,7 @@ class AuthorizationServiceTest {
     void hasRoleDeleteByKeyResultIdShouldPassThroughWhenAuthorizedForAllTeamsKeyResults() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
-        AuthorizationUser authorizationUser = new AuthorizationUser(okrUser);
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any()))
                 .thenReturn(objective);
@@ -473,17 +529,52 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleDeleteByKeyResultIdShouldThrowExceptionWhenNotAuthorized() {
-        var memeberId = memberTeams.get(0).getId();
-        var otherId = otherTeams.get(0).getId();
-        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(memeberId).build())
+    void hasRoleDeleteByKeyResultIdShouldPassThroughWhenOkrChampion() {
+        var otherTeamId = otherTeams.get(0).getId();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
+                .build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
+                .thenReturn(objective);
+
+        authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
+    }
+
+    @Test
+    void hasRoleDeleteByKeyResultIdShouldPassThroughWhenAdmin() {
+        var otherTeamId = adminTeams.get(0).getId();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
                 .build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(otherId), eq(authorizationUser), any()))
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
+                .thenReturn(objective);
+
+        authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
+    }
+
+    @Test
+    void hasRoleDeleteByKeyResultIdShouldPassThroughWhenMember() {
+        var otherTeamId = memberTeams.get(0).getId();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
+                .build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
+                .thenReturn(objective);
+
+        authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
+    }
+
+    @Test
+    void hasRoleDeleteByKeyResultIdShouldThrowExceptionWhenNotInTeam() {
+        var otherTeamId = otherTeams.get(0).getId();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
+                .build();
+        AuthorizationUser authorizationUser = new AuthorizationUser(user);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleDeleteByKeyResultId(otherId, authorizationUser));
+                () -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_DELETE, "KeyResult"));
 

@@ -22,7 +22,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   private subscription?: Subscription;
 
-  showMoreTeams = true;
+  showMoreTeams: boolean = true;
   isMobile: boolean = false;
 
   constructor(

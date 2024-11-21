@@ -1,6 +1,7 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('crud operations', () => {
   let overviewPage = new CyOverviewPage();
@@ -57,7 +58,16 @@ describe('crud operations', () => {
       .should('not.exist');
   });
 
-  it('should delete existing objective', () => {
+  it(`should delete existing objective`, () => {
+    op.getObjectiveByState('ongoing').findByTestId('three-dot-menu').click();
+    op.selectFromThreeDotMenu('Objective löschen');
+    ConfirmDialog.do()
+      .checkTitle('Objective löschen')
+      .checkDescription('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')
+      .submit();
+  });
+
+  it('should delete existing objective using edit dialog', () => {
     overviewPage.getFirstObjective()
       .findByTestId('three-dot-menu')
       .click();

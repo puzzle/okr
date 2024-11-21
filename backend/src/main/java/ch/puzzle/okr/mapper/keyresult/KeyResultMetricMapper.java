@@ -3,8 +3,7 @@ package ch.puzzle.okr.mapper.keyresult;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.models.Action;
-import ch.puzzle.okr.models.checkin.CheckIn;
-import ch.puzzle.okr.models.checkin.CheckInMetric;
+import ch.puzzle.okr.models.checkin.*;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
@@ -85,7 +84,7 @@ public class KeyResultMetricMapper {
 
     public KeyResultLastCheckInMetricDto getLastCheckInDto(Long keyResultId) {
         CheckIn lastCheckIn = checkInBusinessService.getLastCheckInByKeyResultId(keyResultId);
-        if (lastCheckIn == null) {
+        if (!(lastCheckIn instanceof CheckInMetric)) {
             return null;
         }
         return new KeyResultLastCheckInMetricDto(lastCheckIn.getId(), lastCheckIn.getVersion(),

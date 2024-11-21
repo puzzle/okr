@@ -21,7 +21,7 @@ public class TenantClientCustomizationProviderTestIT {
     private static final String BACKGROUND_LOGO = "background-logo";
     private static final String FAVICON = "favicon";
     private static final String TITLE = "title";
-    private static final String SUPPORT_SITE_URL = "supportSiteUrl";
+    private static final String HELP_SITE_URL = "helpSiteUrl";
 
     private static final String CUSTOM_STYLE_NAME = "okr-topbar-background-color";
     private static final String CUSTOM_STYLE_VALUE = "css-custom-value";
@@ -44,7 +44,7 @@ public class TenantClientCustomizationProviderTestIT {
         mockProperty("okr.tenants.{0}.clientcustomization.background-logo", BACKGROUND_LOGO, id);
         mockProperty("okr.tenants.{0}.clientcustomization.favicon", FAVICON, id);
         mockProperty("okr.tenants.{0}.clientcustomization.title", TITLE, id);
-        mockProperty("okr.tenants.{0}.clientcustomization.supportSiteUrl", SUPPORT_SITE_URL, id);
+        mockProperty("okr.tenants.{0}.clientcustomization.helpSiteUrl", HELP_SITE_URL, id);
         mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color", CUSTOM_STYLE_VALUE,
                 id);
     }
@@ -79,7 +79,7 @@ public class TenantClientCustomizationProviderTestIT {
         assertEquals(prefix(tenantId) + TRIANGLES, customization.triangles());
         assertEquals(prefix(tenantId) + BACKGROUND_LOGO, customization.backgroundLogo());
         assertEquals(prefix(tenantId) + TITLE, customization.title());
-        assertEquals(prefix(tenantId) + SUPPORT_SITE_URL, customization.supportSiteUrl());
+        assertEquals(prefix(tenantId) + HELP_SITE_URL, customization.helpSiteUrl());
         assertCustomStyles(customization, tenantId);
     }
 

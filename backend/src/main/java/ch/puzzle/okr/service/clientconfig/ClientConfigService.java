@@ -57,6 +57,7 @@ public class ClientConfigService {
                 tenantClientCustomization.get().triangles(), //
                 tenantClientCustomization.get().backgroundLogo(), //
                 tenantClientCustomization.get().title(), //
+                tenantClientCustomization.get().helpSiteUrl(), //
                 tenantClientCustomization.get().customStyles()); //
     }
 

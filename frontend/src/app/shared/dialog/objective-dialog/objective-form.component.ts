@@ -131,23 +131,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteObjective() {
-    const dialog = this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
-    dialog.afterClosed().subscribe((result) => {
-      if (result) {
-        this.objectiveService.deleteObjective(this.data.objective.objectiveId!).subscribe({
-          next: () => {
-            let objectiveDTO: Objective = { id: this.data.objective.objectiveId! } as unknown as Objective;
-            this.closeDialog(objectiveDTO, true);
-          },
-          error: () => {
-            this.dialogRef.close();
-          },
-        });
-      }
-    });
-  }
-
   objectiveToObjectiveMin(objectiveDto: Objective): ObjectiveMin {
     return {
       ...objectiveDto,

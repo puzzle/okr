@@ -97,11 +97,17 @@ describe('OKR team e2e tests', () => {
       cy.wait('@addTeam');
       cy.contains('Z-Team');
 
-      cy.getByTestId('routerLink-to-overview').click();
-
+      teammanagementPage.visitOverview();
       cy.viewport(767, 1200);
       cy.getByTestId('expansion-panel-header').click();
       cy.contains('Weniger');
+
+      cy.viewport(Cypress.config('viewportWidth'), Cypress.config('viewportHeight'));
+
+      cy.visit(`${teammanagementPage.getURL()}`);
+      teammanagementPage.deleteTeam('X-Team');
+      teammanagementPage.deleteTeam('Y-Team');
+      teammanagementPage.deleteTeam('Z-Team');
     });
   });
 });

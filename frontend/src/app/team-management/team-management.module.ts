@@ -41,6 +41,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NewUserComponent } from './new-user/new-user.component';
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { MatChip } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     OkrChampionPipe,
     MatCheckboxModule,
     MatTooltipModule,
+    MatChip,
   ],
 })
 export class TeamManagementModule {}

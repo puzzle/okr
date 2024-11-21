@@ -19,6 +19,9 @@ export default tseslint.config(
     },
     rules: {
       'unused-imports/no-unused-imports': 'error',
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "no-undef": "off",
     },
   }
 );

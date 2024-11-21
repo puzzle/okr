@@ -39,7 +39,7 @@ public class TenantClientCustomizationProvider {
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.triangles", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.background-logo", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.title", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.supportSiteUrl", tenantId)),
+                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.helpSiteUrl", tenantId)),
                 getCustomCssStyles(tenantId) //
         );
     }

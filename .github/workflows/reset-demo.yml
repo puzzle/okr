@@ -1,0 +1,30 @@
+name: 'Reset Demo instances'
+
+on:
+  workflow_dispatch:
+
+env:
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: "pitc-okr-demo"
+  POD_NAME: "demo-okr-application"
+
+jobs:
+  reset-demo:
+    runs-on: ubuntu-24.04
+    name: Scale down and restart demo application
+    steps:
+      - name: Install CLI tools from GitHub
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: "4.15"
+
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+
+      - name: set pod replicas to 0 and trigger auto restart
+        run: oc scale deployment ${{env.POD_NAME}} --replicas 0

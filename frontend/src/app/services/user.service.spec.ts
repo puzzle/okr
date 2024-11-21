@@ -75,4 +75,15 @@ describe('UserService', () => {
     const req2 = httpMock.expectOne(`api/v1/users`);
     req2.flush({});
   }));
+
+  it('deleteUser should call /userId and reloadUsers', fakeAsync(() => {
+    service.deleteUser(testUser).subscribe();
+    const req = httpMock.expectOne(`api/v1/users/${testUser.id}`);
+    req.flush(users);
+
+    tick();
+
+    const req2 = httpMock.expectOne(`api/v1/users`);
+    req2.flush({});
+  }));
 });

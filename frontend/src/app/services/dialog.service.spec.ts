@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DialogService } from './dialog.service';
+import { ConfirmDialogData, DialogService } from './dialog.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { AddEditTeamDialog } from '../team-management/add-edit-team-dialog/add-edit-team-dialog.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { ButtonState } from '../shared/types/enums/ButtonState';
 
 describe('DialogService', () => {
   let service: DialogService;
@@ -23,6 +24,34 @@ describe('DialogService', () => {
     translateServiceSpy = TestBed.inject(TranslateService);
     jest.spyOn(matDialogSpy, 'open');
   });
+
+  function expectData(current: ConfirmDialogData, expected: ConfirmDialogData) {
+    expect(current.title).toBe(expected.title);
+    expect(current.text).toBe(expected.text);
+    expect(current.yesButtonState).toBe(expected.yesButtonState);
+    expect(current.noButtonState).toBe(expected.noButtonState);
+    expect(current.closeButtonState).toBe(expected.closeButtonState);
+  }
+
+  function expectYesButtonIsVisibleAndEnabled(dialog: ConfirmDialogComponent) {
+    expect(dialog.isYesButtonVisible()).toBe(true);
+    expect(dialog.isYesButtonDisabled()).toBe(false);
+  }
+
+  function expectNoButtonIsVisibleAndEnabled(dialog: ConfirmDialogComponent) {
+    expect(dialog.isNoButtonVisible()).toBe(true);
+    expect(dialog.isNoButtonDisabled()).toBe(false);
+  }
+
+  function expectCloseButtonIsHiddenAndEnabled(dialog: ConfirmDialogComponent) {
+    expect(dialog.isCloseButtonVisible()).toBe(false);
+    expect(dialog.isCloseButtonDisabled()).toBe(false);
+  }
+
+  function expectNoButtonIsVisibleAndDisabled(dialog: ConfirmDialogComponent) {
+    expect(dialog.isNoButtonVisible()).toBe(true);
+    expect(dialog.isNoButtonDisabled()).toBe(true);
+  }
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -75,5 +104,79 @@ describe('DialogService', () => {
         text: 'DELETE.TEAM.TEXT',
       },
     });
+  });
+
+  it('should open customized confirm dialog with default visibility properties', () => {
+    // arrange
+    const data: ConfirmDialogData = {
+      title: 'Test title',
+      text: 'Test description',
+      yesButtonState: undefined,
+      noButtonState: undefined,
+      closeButtonState: undefined,
+    };
+
+    jest.spyOn(service, 'open');
+    jest.spyOn(translateServiceSpy, 'instant');
+
+    // act
+    const dialog = service.openCustomizedConfirmDialog(data);
+    dialog.componentInstance.ngOnInit(); // trigger ngOnInit() manually in the test
+
+    // assert
+    expect(service.open).toHaveBeenCalledTimes(1);
+    expect(dialog).toBeInstanceOf(MatDialogRef);
+    expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
+
+    let confirmDialogInstance = dialog.componentInstance;
+    expect(confirmDialogInstance).toBeInstanceOf(ConfirmDialogComponent);
+    expectData(confirmDialogInstance.data, data);
+
+    expect(matDialogSpy.open).toHaveBeenCalledWith(ConfirmDialogComponent, {
+      panelClass: service.DIALOG_PANEL_CLASS_SMALL,
+      ...service.DIALOG_CONFIG,
+      data,
+    });
+
+    expectYesButtonIsVisibleAndEnabled(confirmDialogInstance);
+    expectNoButtonIsVisibleAndEnabled(confirmDialogInstance);
+    expectCloseButtonIsHiddenAndEnabled(confirmDialogInstance);
+  });
+
+  it('should open customized confirm dialog with explicit visibility properties', () => {
+    // arrange
+    const data: ConfirmDialogData = {
+      title: 'Test title',
+      text: 'Test description',
+      yesButtonState: ButtonState.VisibleEnabled,
+      noButtonState: ButtonState.VisibleDisabled,
+      closeButtonState: ButtonState.Hidden,
+    };
+
+    jest.spyOn(service, 'open');
+    jest.spyOn(translateServiceSpy, 'instant');
+
+    // act
+    const dialog = service.openCustomizedConfirmDialog(data);
+    dialog.componentInstance.ngOnInit(); // trigger ngOnInit() manually in the test
+
+    // assert
+    expect(service.open).toHaveBeenCalledTimes(1);
+    expect(dialog).toBeInstanceOf(MatDialogRef);
+    expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
+
+    let confirmDialogInstance = dialog.componentInstance;
+    expect(confirmDialogInstance).toBeInstanceOf(ConfirmDialogComponent);
+    expectData(confirmDialogInstance.data, data);
+
+    expect(matDialogSpy.open).toHaveBeenCalledWith(ConfirmDialogComponent, {
+      panelClass: service.DIALOG_PANEL_CLASS_SMALL,
+      ...service.DIALOG_CONFIG,
+      data,
+    });
+
+    expectYesButtonIsVisibleAndEnabled(confirmDialogInstance);
+    expectNoButtonIsVisibleAndDisabled(confirmDialogInstance);
+    expectCloseButtonIsHiddenAndEnabled(confirmDialogInstance);
   });
 });

@@ -38,11 +38,19 @@ class UserBusinessServiceTest {
 
     @BeforeEach
     void setUp() {
-        User userAlice = User.Builder.builder().withId(2L).withFirstname("Alice").withLastname("Wunderland")
-                .withEmail("wunderland@puzzle.ch").build();
+        User userAlice = User.Builder.builder() //
+                .withId(2L) //
+                .withFirstname("Alice") //
+                .withLastname("Wunderland") //
+                .withEmail("wunderland@puzzle.ch") //
+                .build();
 
-        User userBob = User.Builder.builder().withId(9L).withFirstname("Bob").withLastname("Baumeister")
-                .withEmail("baumeister@puzzle.ch").build();
+        User userBob = User.Builder.builder() //
+                .withId(9L) //
+                .withFirstname("Bob") //
+                .withLastname("Baumeister") //
+                .withEmail("baumeister@puzzle.ch") //
+                .build();
 
         userList = Arrays.asList(userAlice, userBob);
     }
@@ -54,8 +62,8 @@ class UserBusinessServiceTest {
         List<User> userList = userBusinessService.getAllUsers();
 
         Assertions.assertThat(userList.size()).isEqualTo(2);
-        Assertions.assertThat(userList.get(0).getId()).isEqualTo(2);
-        Assertions.assertThat(userList.get(0).getFirstname()).isEqualTo("Alice");
+        Assertions.assertThat(userList.getFirst().getId()).isEqualTo(2);
+        Assertions.assertThat(userList.getFirst().getFirstname()).isEqualTo("Alice");
         Assertions.assertThat(userList.get(0).getLastname()).isEqualTo("Wunderland");
         Assertions.assertThat(userList.get(0).getEmail()).isEqualTo("wunderland@puzzle.ch");
         Assertions.assertThat(userList.get(1).getId()).isEqualTo(9);
@@ -120,9 +128,8 @@ class UserBusinessServiceTest {
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))
                 .when(validationService).validateOnGetOrCreate(newUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userBusinessService.getOrCreateUser(newUser);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> userBusinessService.getOrCreateUser(newUser));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Not allowed to give an id", exception.getReason());
@@ -161,5 +168,12 @@ class UserBusinessServiceTest {
 
         verify(userPersistenceService, times(1)).save(user);
         assertFalse(user.isOkrChampion());
+    }
+
+    @Test
+    void shouldDeleteUser() {
+        userBusinessService.deleteEntityById(23L);
+
+        verify(userPersistenceService, times(1)).deleteById(23L);
     }
 }

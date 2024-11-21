@@ -75,7 +75,7 @@
         <p class="okr-form-label okr-form-col confidence-label">
           Confidence um Target Zone
           <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
-            ({{ calculateTarget(kr) | unitValueTransformation }}{{ kr.unit | unitLabelTransformation }})
+            ({{ calculateTarget(kr) | unitTransformation: kr.unit }})
           </span>
           zu erreichen:
         </p>

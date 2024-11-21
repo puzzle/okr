@@ -11,6 +11,7 @@
         #firstInput
         [id]="'firstName-col_' + index"
         [name]="'firstName-col_' + index"
+        [attr.data-testId]="'new-member-first-name'"
       />
       <mat-error>
         @if (firstname.errors?.["required"] && triedToSubmit) {
@@ -30,6 +31,7 @@
         [name]="'lastname-col_' + index"
         class="value-field dialog-form-field"
         formControlName="lastname"
+        [attr.data-testId]="'new-member-last-name'"
       />
       <mat-error>
         @if (lastname.errors?.["required"] && triedToSubmit) {

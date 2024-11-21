@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
-import { map, ReplaySubject, take } from 'rxjs';
+import { distinct, map, ReplaySubject, take } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveService } from '../../services/objective.service';
 import { trackByFn } from '../../shared/common';
@@ -20,7 +20,9 @@ import { MatMenuTrigger } from '@angular/material/menu';
 export class ObjectiveComponent {
   @Input() isWritable!: boolean;
   public objective$ = new ReplaySubject<ObjectiveMin>();
-  menuEntries = this.objective$.pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
+  menuEntries = this.objective$
+    .pipe(distinct())
+    .pipe(map((objective) => this.objectiveMenuActionsService.getMenu(objective)));
   protected readonly trackByFn = trackByFn;
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger | undefined;
 
@@ -28,7 +30,6 @@ export class ObjectiveComponent {
     private readonly dialogService: DialogService,
     private readonly router: Router,
     private readonly refreshDataService: RefreshDataService,
-    private readonly objectiveService: ObjectiveService,
     private readonly translate: TranslateService,
     private readonly objectiveMenuActionsService: ObjectiveMenuActionsService,
   ) {}

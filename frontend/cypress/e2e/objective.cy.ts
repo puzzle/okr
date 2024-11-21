@@ -1,254 +1,229 @@
 import * as users from '../fixtures/users.json';
-import { onlyOn } from '@cypress/skip-test';
+import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('OKR Objective e2e tests', () => {
+  let op = new CyOverviewPage();
+  beforeEach(() => {
+    op = new CyOverviewPage();
+    cy.loginAsUser(users.gl);
+  });
+
   describe('tests via click', () => {
-    describe('Functionality', () => {
-      beforeEach(() => {
-        cy.loginAsUser(users.gl);
-        cy.visit('/?quarter=2');
-      });
+    it(`Release Objective from Draft to Ongoing`, () => {
+      op.addObjective().fillObjectiveTitle('A objective in state draft').submitDraftObjective();
 
-      it(`Release Objective from Draft to Ongoing`, () => {
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('A objective in state draft', 'safe-draft', undefined, '', false);
+      op.getObjectiveByNameAndState('A objective in state draft', 'draft').findByTestId('three-dot-menu').click();
+      op.selectFromThreeDotMenu('Objective veröffentlichen');
 
-        cy.getByTestId('objective')
-          .filter(':contains(A objective in state draft)')
-          .last()
-          .getByTestId('objective-state')
-          .should('have.attr', 'src', `assets/icons/draft-icon.svg`);
+      ConfirmDialog.do()
+        .checkTitle('Objective veröffentlichen')
+        .checkDescription('Soll dieses Objective veröffentlicht werden?')
+        .submit();
 
-        cy.getByTestId('objective')
-          .filter(':contains(A objective in state draft)')
-          .last()
-          .getByTestId('three-dot-menu')
-          .click()
-          .wait(500)
-          .get('.objective-menu-option')
-          .contains('Objective veröffentlichen')
-          .click();
-        cy.contains('Objective veröffentlichen');
-        cy.contains('Soll dieses Objective veröffentlicht werden?');
-        cy.getByTestId('confirm-yes').click();
-        cy.getByTestId('objective')
-          .filter(':contains(A objective in state draft)')
-          .last()
-          .getByTestId('objective-state')
-          .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
-      });
+      op.getObjectiveByNameAndState('A objective in state draft', 'ongoing').should('exist');
+    });
 
-      it(`Complete Objective with Successful`, () => {
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('We want to complete this successful', 'safe', undefined, '', false);
+    it(`Complete Objective with Successful`, () => {
+      op.addObjective().fillObjectiveTitle('We want to complete this successful').submit();
 
-        cy.getByTestId('objective')
-          .filter(':contains("We want to complete this successful")')
-          .last()
-          .getByTestId('three-dot-menu')
-          .click()
-          .wait(500)
-          .get('.objective-menu-option')
-          .contains('Objective abschliessen')
-          .click();
+      op.getObjectiveByNameAndState('We want to complete this successful', 'ongoing')
+        .findByTestId('three-dot-menu')
+        .click();
 
-        cy.contains('Bewertung');
-        cy.contains('Objective erreicht');
-        cy.contains('Objective nicht erreicht');
-        cy.contains('Kommentar (optional)');
-        cy.contains('Objective abschliessen');
-        cy.contains('Abbrechen');
+      op.selectFromThreeDotMenu('Objective abschliessen');
 
-        cy.getByTestId('successful').click();
-        cy.getByTestId('submit').click();
+      cy.contains('Bewertung');
+      cy.contains('Objective erreicht');
+      cy.contains('Objective nicht erreicht');
+      cy.contains('Kommentar (optional)');
+      cy.contains('Objective abschliessen');
+      cy.contains('Abbrechen');
 
-        cy.getByTestId('objective')
-          .filter(':contains("We want to complete this successful")')
-          .last()
-          .getByTestId('objective-state')
-          .should('have.attr', 'src', `assets/icons/successful-icon.svg`);
-      });
+      cy.getByTestId('successful').click();
+      cy.getByTestId('submit').click();
 
-      it(`Complete Objective with Not-Successful`, () => {
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('A not successful objective', 'safe', undefined, '', false);
+      op.getObjectiveByNameAndState('We want to complete this successful', 'successful');
+    });
 
-        cy.getByTestId('objective')
-          .filter(':contains("A not successful objective")')
-          .last()
-          .getByTestId('three-dot-menu')
-          .click()
-          .wait(500)
-          .get('.objective-menu-option')
-          .contains('Objective abschliessen')
-          .click();
+    it(`Complete Objective with Not-Successful`, () => {
+      op.addObjective().fillObjectiveTitle('A not successful objective').submit();
 
-        cy.contains('Bewertung');
-        cy.contains('Objective erreicht');
-        cy.contains('Objective nicht erreicht');
-        cy.contains('Kommentar (optional)');
-        cy.contains('Objective abschliessen');
-        cy.contains('Abbrechen');
+      op.getObjectiveByNameAndState('A not successful objective', 'ongoing').findByTestId('three-dot-menu').click();
+      op.selectFromThreeDotMenu('Objective abschliessen');
 
-        cy.getByTestId('not-successful').click();
-        cy.getByTestId('submit').click();
+      cy.contains('Bewertung');
+      cy.contains('Objective erreicht');
+      cy.contains('Objective nicht erreicht');
+      cy.contains('Kommentar (optional)');
+      cy.contains('Objective abschliessen');
+      cy.contains('Abbrechen');
 
-        cy.getByTestId('objective')
-          .filter(':contains("A not successful objective")')
-          .last()
-          .getByTestId('objective-state')
-          .should('have.attr', 'src', `assets/icons/not-successful-icon.svg`);
-      });
+      cy.getByTestId('not-successful').click();
+      cy.getByTestId('submit').click();
 
-      it(`Reopen Successful Objective`, () => {
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('This objective will be reopened after', 'safe', undefined, '', false);
+      op.getObjectiveByNameAndState('A not successful objective', 'not-successful');
+    });
 
-        cy.getByTestId('objective')
-          .filter(':contains("This objective will be reopened after")')
-          .last()
-          .getByTestId('three-dot-menu')
-          .click()
-          .get('.objective-menu-option')
-          .wait(500)
-          .contains('Objective abschliessen')
-          .click();
+    it(`Reopen Successful Objective`, () => {
+      op.addObjective().fillObjectiveTitle('This objective will be reopened after').submit();
 
-        cy.getByTestId('successful').click();
-        cy.getByTestId('submit').click();
+      op.getObjectiveByNameAndState('This objective will be reopened after', 'ongoing')
+        .findByTestId('three-dot-menu')
+        .click();
 
-        cy.wait(500);
+      op.selectFromThreeDotMenu('Objective abschliessen');
 
-        cy.getByTestId('objective')
-          .filter(':contains("This objective will be reopened after")')
-          .last()
-          .getByTestId('three-dot-menu')
-          .click()
-          .wait(500)
-          .get('.objective-menu-option')
-          .contains('Objective wiedereröffnen')
-          .click();
+      cy.getByTestId('successful').click();
+      cy.getByTestId('submit').click();
 
-        cy.contains('Objective wiedereröffnen');
-        cy.contains('Soll dieses Objective wiedereröffnet werden?');
-        cy.getByTestId('confirm-yes').click();
+      cy.wait(500);
 
-        cy.getByTestId('objective')
-          .filter(':contains("This objective will be reopened after")')
-          .last()
-          .getByTestId('objective-state')
-          .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
-      });
+      op.getObjectiveByNameAndState('This objective will be reopened after', 'successful')
+        .findByTestId('three-dot-menu')
+        .click();
 
-      it('Ongoing objective back to draft state', () => {
-        onlyOn('chrome');
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('This objective will be returned to draft state', 'safe', undefined, '', false);
+      op.selectFromThreeDotMenu('Objective wiedereröffnen');
 
-        cy.getByTestId('objective')
-          .filter(':contains("This objective will be returned to draft state")')
-          .last()
-          .getByTestId('three-dot-menu')
-          .click()
-          .get('.objective-menu-option')
-          .wait(500)
-          .contains('Objective als Draft speichern')
-          .click()
-          .wait(500)
-          .tabForward();
-        cy.contains('Objective als Draft speichern');
-        cy.contains('Soll dieses Objective als Draft gespeichert werden?');
-        cy.getByTestId('confirm-yes').click();
+      ConfirmDialog.do()
+        .checkTitle('Objective wiedereröffnen')
+        .checkDescription('Soll dieses Objective wiedereröffnet werden?')
+        .submit();
 
-        cy.getByTestId('objective')
-          .filter(':contains("This objective will be returned to draft state")')
-          .last()
-          .getByTestId('objective-state')
-          .should('have.attr', 'src', `assets/icons/draft-icon.svg`);
-      });
+      op.getObjectiveByNameAndState('This objective will be reopened after', 'ongoing').should('exist');
+    });
 
-      it(`Search for Objective`, () => {
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('Search after this objective', 'safe', undefined, '', false);
+    it(`Cancel Reopen Successful Objective`, () => {
+      op.addObjective().fillObjectiveTitle('The reopening of this objective will be canceled').submit();
 
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('We dont want to search for this', 'safe', undefined, '', false);
+      op.getObjectiveByNameAndState('The reopening of this objective will be canceled', 'ongoing')
+        .findByTestId('three-dot-menu')
+        .click();
 
-        cy.contains('Search after this objective');
-        cy.contains('We dont want to search for this');
+      op.selectFromThreeDotMenu('Objective abschliessen');
 
-        cy.scrollTo(0, 0);
-        cy.wait(500);
+      cy.getByTestId('successful').click();
+      cy.getByTestId('submit').click();
 
-        cy.getByTestId('objectiveSearch').first().click();
-        cy.getByTestId('objectiveSearch').first().type('Search after').wait(350);
+      cy.wait(500);
 
-        cy.contains('Search after this objective');
-        cy.get('We dont want to search for this').should('not.exist');
+      op.getObjectiveByNameAndState('he reopening of this objective will be canceled', 'successful')
+        .findByTestId('three-dot-menu')
+        .click();
 
-        cy.getByTestId('objectiveSearch').first().clear().type('this').wait(350);
+      op.selectFromThreeDotMenu('Objective wiedereröffnen');
 
-        cy.contains('Search after this objective');
-        cy.contains('We dont want to search for this');
+      ConfirmDialog.do()
+        .checkTitle('Objective wiedereröffnen')
+        .checkDescription('Soll dieses Objective wiedereröffnet werden?')
+        .cancel();
 
-        cy.getByTestId('objectiveSearch').first().clear().type('dont want to').wait(350);
+      op.getObjectiveByNameAndState('The reopening of this objective will be canceled', 'successful').should('exist');
+    });
 
-        cy.contains('We dont want to search for this');
-        cy.get('Search after this objective').should('not.exist');
+    it('Cancel Ongoing objective back to draft state', () => {
+      op.addObjective().fillObjectiveTitle('This objective will be returned to draft state').submit();
 
-        cy.getByTestId('objectiveSearch').first().clear().type('there is no objective').wait(350);
+      op.getObjectiveByNameAndState('This objective will be returned to draft state', 'ongoing')
+        .findByTestId('three-dot-menu')
+        .click();
+      op.selectFromThreeDotMenu('Objective als Draft speichern');
 
-        cy.get('We dont want to search for this').should('not.exist');
-        cy.get('Search after this objective').should('not.exist');
-      });
+      ConfirmDialog.do()
+        .checkTitle('Objective als Draft speichern')
+        .checkDescription('Soll dieses Objective als Draft gespeichert werden?')
+        .submit();
 
-      it(`Create Objective in other quarter`, () => {
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('Objective in quarter 2', 'safe', '2', '', false);
+      op.getObjectiveByNameAndState('This objective will be returned to draft state', 'draft').should('exist');
+    });
 
-        cy.get('Objective in quarter 2').should('not.exist');
+    it('Ongoing objective back to draft state', () => {
+      op.addObjective().fillObjectiveTitle('Putting this objective back to draft state will be canceled').submit();
 
-        cy.visit('/?quarter=2');
+      op.getObjectiveByNameAndState('Putting this objective back to draft state will be canceled', 'ongoing')
+        .findByTestId('three-dot-menu')
+        .click();
+      op.selectFromThreeDotMenu('Objective als Draft speichern');
 
-        cy.contains('Objective in quarter 2');
-      });
+      ConfirmDialog.do()
+        .checkTitle('Objective als Draft speichern')
+        .checkDescription('Soll dieses Objective als Draft gespeichert werden?')
+        .cancel();
 
-      it(`Edit Objective and move to other quarter`, () => {
-        cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('Move to another quarter on edit', 'safe', undefined, '', false);
+      op.getObjectiveByNameAndState('Putting this objective back to draft state will be canceled', 'ongoing').should(
+        'exist',
+      );
+    });
 
-        cy.getByTestId('objective')
-          .filter(':contains("Move to another quarter on edit")')
-          .last()
-          .getByTestId('three-dot-menu')
-          .click()
-          .wait(500)
-          .get('.objective-menu-option')
-          .contains('Objective bearbeiten')
-          .click();
+    it(`Search for Objective`, () => {
+      op.addObjective().fillObjectiveTitle('Search after this objective').submit();
 
-        cy.fillOutObjective('Move to another quarter on edit', 'safe', '3', '', false);
+      op.addObjective().fillObjectiveTitle('We dont want to search for this').submit();
 
-        cy.get('Move to another quarter on edit').should('not.exist');
+      cy.contains('Search after this objective');
+      cy.contains('We dont want to search for this');
 
-        cy.visit('/?quarter=3');
+      cy.scrollTo(0, 0);
+      cy.wait(500);
 
-        cy.contains('Move to another quarter on edit');
-      });
+      cy.getByTestId('objectiveSearch').first().click();
+      cy.getByTestId('objectiveSearch').first().type('Search after').wait(350);
+
+      cy.contains('Search after this objective');
+      cy.contains('We dont want to search for this').should('not.exist');
+
+      cy.getByTestId('objectiveSearch').first().as('objective-search').clear();
+      cy.get('@objective-search').type('this').wait(350);
+
+      cy.contains('Search after this objective');
+      cy.contains('We dont want to search for this');
+
+      cy.get('@objective-search').clear();
+      cy.get('@objective-search').type('dont want to').wait(350);
+
+      cy.contains('We dont want to search for this');
+      cy.contains('Search after this objective').should('not.exist');
+
+      cy.get('@objective-search').clear();
+      cy.get('@objective-search').type('there is no objective').wait(350);
+
+      cy.contains('We dont want to search for this').should('not.exist');
+      cy.contains('Search after this objective').should('not.exist');
+    });
+
+    it(`Create Objective in other quarter`, () => {
+      op.addObjective().fillObjectiveTitle('Objective in quarter 3').selectQuarter('3').submit();
+
+      cy.contains('Objective in quarter 3').should('not.exist');
+
+      op.visitNextQuarter();
+
+      cy.contains('Objective in quarter 3');
+    });
+
+    it(`Edit Objective and move to other quarter`, () => {
+      op.addObjective().fillObjectiveTitle('Move to another quarter on edit').submit();
+
+      op.getObjectiveByNameAndState('Move to another quarter on edit', 'ongoing')
+        .findByTestId('three-dot-menu')
+        .click();
+
+      op.selectFromThreeDotMenu('Objective bearbeiten');
+      ObjectiveDialog.do().selectQuarter('3').submit();
+
+      cy.contains('Move to another quarter on edit').should('not.exist');
+
+      op.visitNextQuarter();
+      cy.contains('Move to another quarter on edit');
     });
   });
-});
 
-describe('tests via keyboard', () => {
-  beforeEach(() => {
-    cy.loginAsUser(users.gl);
-    cy.visit('/?quarter=2');
-    onlyOn('chrome');
-  });
-
-  it(`Open objective aside via enter`, () => {
-    cy.getByTestId('objective').first().find('[tabindex]').first().focus();
-    cy.realPress('Enter');
-    cy.url().should('include', 'objective');
+  describe('tests via keyboard', () => {
+    it(`Open objective aside via enter`, () => {
+      cy.getByTestId('objective').first().find('[tabindex]').first().focus();
+      cy.realPress('Enter');
+      cy.url().should('include', 'objective');
+    });
   });
 });

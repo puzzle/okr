@@ -22,7 +22,7 @@
   <ng-container actions>
     <div class="col-auto">
       <button
-        [attr.data-testId]="'add-team-save'"
+        [attr.data-testId]="'save'"
         [disabled]="teamForm.invalid"
         color="primary"
         mat-flat-button
@@ -31,7 +31,8 @@
       >
         Speichern
       </button>
-      <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+
+      <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
   </ng-container>
 </app-dialog-template-core>

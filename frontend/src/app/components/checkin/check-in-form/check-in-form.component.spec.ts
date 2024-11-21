@@ -18,7 +18,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ParseUnitValuePipe } from '../../../shared/pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
 import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
@@ -32,6 +31,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { KeyResultMetric } from '../../../shared/types/model/KeyResultMetric';
 
 const dialogMock = {
   close: jest.fn(),
@@ -76,7 +76,6 @@ describe('CheckInFormComponent', () => {
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: CheckInService, useValue: checkInServiceMock },
         { provide: ActionService, useValue: actionServiceMock },
-        ParseUnitValuePipe,
       ],
       declarations: [CheckInFormComponent, DialogTemplateCoreComponent, ConfidenceComponent],
     });
@@ -105,7 +104,7 @@ describe('CheckInFormComponent', () => {
       id: checkInMetric.id,
       version: checkInMetric.version,
       confidence: checkInMetric.confidence,
-      value: checkInMetric.value,
+      value: checkInMetric.value!.toString(),
       changeInfo: checkInMetric.changeInfo,
       initiatives: checkInMetric.initiatives,
       keyResultId: keyResultMetric.id,

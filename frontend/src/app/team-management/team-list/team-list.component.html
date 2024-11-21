@@ -1,6 +1,10 @@
 <div>
   <mat-nav-list *ngIf="teams$ | async as teams">
-    <a mat-list-item routerLink="/team-management" [ngClass]="{ selected: selectedTeamId === undefined }"
+    <a
+      mat-list-item
+      routerLink="/team-management"
+      [attr.data-testId]="'all-teams-selector'"
+      [ngClass]="{ selected: selectedTeamId === undefined }"
       >Alle Teams ({{ teams.length }})</a
     >
     <a

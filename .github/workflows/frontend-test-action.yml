@@ -22,8 +22,28 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-  e2e:
+  get-e2e-files:
     runs-on: ubuntu-24.04
+    outputs:
+      file_list: ${{ steps.generate-file-list.outputs.file_list }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate file list
+        id: generate-file-list
+        run: |
+          FILES=$(ls frontend/cypress/e2e | jq -R . | jq -s . | jq -c)
+          echo $FILES
+          echo "file_list=$FILES" >> $GITHUB_OUTPUT
+
+  e2e:
+    needs: get-e2e-files
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,12 +52,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{vars.JAVA_VERSION}}
-          distribution: 'adopt'
-
-      - uses: abhi1693/setup-browser@v0.3.5
-        with:
-          browser: chrome
-          version: latest
+          distribution: 'temurin'
 
       - name: run keycloak docker
         run: |
@@ -61,12 +76,13 @@ jobs:
           wait-on: 'http://pitc.okr.localhost:8080/config, http://pitc.okr.localhost:4200, http://localhost:8544'
           wait-on-timeout: 120
           browser: chrome
-          headed: true
+          headed: false
+          spec: cypress/e2e/${{ matrix.file }}
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots for ${{ matrix.file }}
           path: frontend/cypress/screenshots
 
       - name: remove docker containers

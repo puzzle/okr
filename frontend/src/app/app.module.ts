@@ -68,6 +68,7 @@ import { CheckInFormComponent } from './components/checkin/check-in-form/check-i
 import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { CustomizationService } from './services/customization.service';
+import { MetricCheckInDirective } from './components/checkin/check-in-form-metric/metric-check-in-directive';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -123,6 +124,7 @@ export const MY_FORMATS = {
     CheckInFormMetricComponent,
     CheckInFormOrdinalComponent,
     CheckInFormComponent,
+    MetricCheckInDirective,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

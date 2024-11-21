@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../../shared/types/model/KeyResult';
 import { KeyResultOrdinal } from '../../../shared/types/model/KeyResultOrdinal';
 import { CheckInMin } from '../../../shared/types/model/CheckInMin';
-import { ParseUnitValuePipe } from '../../../shared/pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../shared/types/model/Action';
 import { ActionService } from '../../../services/action.service';
@@ -36,7 +35,6 @@ export class CheckInFormComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public parserPipe: ParseUnitValuePipe,
     private checkInService: CheckInService,
     private actionService: ActionService,
     private translate: TranslateService,
@@ -86,15 +84,6 @@ export class CheckInFormComponent implements OnInit {
       version: this.checkIn.version,
       keyResultId: this.keyResult.id,
     };
-    if (this.keyResult.keyResultType === 'metric') {
-      checkIn = {
-        ...this.dialogForm.value,
-        value: this.parserPipe.transform(this.dialogForm.controls['value'].value),
-        keyResultId: this.keyResult.id,
-        id: this.checkIn.id,
-        version: this.checkIn.version,
-      };
-    }
 
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
       this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {

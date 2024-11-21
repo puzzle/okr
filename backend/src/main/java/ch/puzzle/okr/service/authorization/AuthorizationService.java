@@ -41,7 +41,7 @@ public class AuthorizationService {
         if (hasRoleWriteAndReadAll(authorizationUser)) {
             return true;
         }
-        return authorizationUser.isUserAdminInTeam(teamId);
+        return authorizationUser.isUserMemberInTeam(teamId);
     }
 
     public static void checkRoleWriteAndReadAll(AuthorizationUser user,

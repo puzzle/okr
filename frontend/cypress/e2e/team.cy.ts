@@ -1,6 +1,7 @@
 import * as users from '../fixtures/users.json';
 import FilterHelper from '../support/helper/dom-helper/filterHelper';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
+import TeammanagementPage from '../support/helper/dom-helper/pages/teammanagementPage';
 
 describe('OKR team e2e tests', () => {
   describe('tests via click', () => {
@@ -80,6 +81,27 @@ describe('OKR team e2e tests', () => {
         .optionShouldBeSelected('Puzzle ITC')
         .optionShouldBeSelected('we are cube')
         .optionShouldNotBeSelected('LoremIpsum');
+    });
+
+    it('should display less button on mobile header', () => {
+      let teammanagementPage = TeammanagementPage.do().visitViaURL();
+      cy.intercept('POST', '**/teams').as('addTeam');
+
+      teammanagementPage.addTeam().fillName('X-Team').submit();
+      cy.wait('@addTeam');
+      cy.contains('X-Team');
+      teammanagementPage.addTeam().fillName('Y-Team').submit();
+      cy.wait('@addTeam');
+      cy.contains('Y-Team');
+      teammanagementPage.addTeam().fillName('Z-Team').submit();
+      cy.wait('@addTeam');
+      cy.contains('Z-Team');
+
+      cy.getByTestId('routerLink-to-overview').click();
+
+      cy.viewport(767, 1200);
+      cy.getByTestId('expansion-panel-header').click();
+      cy.contains('Weniger');
     });
   });
 });

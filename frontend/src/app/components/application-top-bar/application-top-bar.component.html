@@ -22,9 +22,10 @@
       </button>
 
       <button
+        *ngIf="this.helpSiteUrl | async as helpSiteUrl"
         id="hilfeButton"
         class="topBarEntry btn"
-        onclick="window.open('https://wiki.puzzle.ch/Puzzle/OKRs', '_blank')"
+        (click)="window.open(helpSiteUrl, '_blank')"
       >
         <mat-icon aria-hidden="false" aria-label="Help icon" fontIcon="help_outline"></mat-icon>
         <span class="d-none d-md-flex"> Hilfe </span>

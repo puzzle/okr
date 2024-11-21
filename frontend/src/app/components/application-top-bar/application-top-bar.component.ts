@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, filter, Observable, of, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
@@ -16,6 +16,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   userFullName: string = '';
   menuIsOpen = false;
   logoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+  helpSiteUrl = new BehaviorSubject<string>('https://en.wikipedia.org/wiki/Objectives_and_key_results');
   private subscription?: Subscription;
 
   constructor(
@@ -31,6 +32,9 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
       next: (config) => {
         if (config.logo) {
           this.logoSrc$.next(config.logo);
+        }
+        if (config.helpSiteUrl) {
+          this.helpSiteUrl.next(config.helpSiteUrl);
         }
       },
     });
@@ -57,4 +61,6 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  protected readonly window = window;
 }

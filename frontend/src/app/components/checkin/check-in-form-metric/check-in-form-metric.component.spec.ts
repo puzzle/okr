@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { Unit } from '../../../shared/types/enums/Unit';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
 
 describe('CheckInFormComponent', () => {

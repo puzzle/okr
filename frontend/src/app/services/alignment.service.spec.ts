@@ -4,7 +4,7 @@ import { AlignmentService } from './alignment.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
-import { alignmentLists } from '../testData';
+import { alignmentLists } from '../shared/testData';
 
 const httpClient = {
   get: jest.fn(),

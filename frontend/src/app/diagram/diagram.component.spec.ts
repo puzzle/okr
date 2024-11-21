@@ -6,8 +6,7 @@ import { alignmentLists, alignmentListsKeyResult, keyResult, keyResultMetric } f
 import * as functions from './svgGeneration';
 import { getDraftIcon, getNotSuccessfulIcon, getOnGoingIcon, getSuccessfulIcon } from './svgGeneration';
 import { of } from 'rxjs';
-import { KeyresultService } from '../shared/services/keyresult.service';
-import { ParseUnitValuePipe } from '../shared/pipes/parse-unit-value/parse-unit-value.pipe';
+import { KeyresultService } from '../services/keyresult.service';
 
 const keyResultServiceMock = {
   getFullKeyResult: jest.fn(),
@@ -21,7 +20,7 @@ describe('DiagramComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DiagramComponent],
       imports: [HttpClientTestingModule],
-      providers: [{ provide: KeyresultService, useValue: keyResultServiceMock }, ParseUnitValuePipe],
+      providers: [{ provide: KeyresultService, useValue: keyResultServiceMock }],
     });
     fixture = TestBed.createComponent(DiagramComponent);
     URL.createObjectURL = jest.fn();

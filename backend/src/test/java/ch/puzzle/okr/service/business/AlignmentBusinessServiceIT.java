@@ -1,7 +1,10 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.dto.alignment.AlignmentLists;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +19,11 @@ class AlignmentBusinessServiceIT {
     private AlignmentBusinessService alignmentBusinessService;
 
     private final String OBJECTIVE = "objective";
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
 
     @Test
     void shouldReturnCorrectAlignmentData() {

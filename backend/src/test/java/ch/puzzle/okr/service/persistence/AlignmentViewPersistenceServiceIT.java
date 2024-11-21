@@ -1,7 +1,10 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.alignment.AlignmentView;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +23,11 @@ class AlignmentViewPersistenceServiceIT {
     private static final List<Long> expectedAlignmentViewTeamIds = List.of(4L, 5L, 6L, 8L);
 
     private static final List<Long> expectedAlignmentViewQuarterId = List.of(9L);
+
+    @BeforeEach
+    void setUp() {
+        TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+    }
 
     @Test
     void getAlignmentsByFiltersShouldReturnListOfAlignmentViews() {

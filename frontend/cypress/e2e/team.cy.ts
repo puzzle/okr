@@ -105,9 +105,14 @@ describe('OKR team e2e tests', () => {
       cy.viewport(Cypress.config('viewportWidth'), Cypress.config('viewportHeight'));
 
       cy.visit(`${teammanagementPage.getURL()}`);
-      teammanagementPage.deleteTeam('X-Team');
-      teammanagementPage.deleteTeam('Y-Team');
-      teammanagementPage.deleteTeam('Z-Team');
+      teammanagementPage.clickOnTeamDetailView('X-Team');
+      teammanagementPage.deleteTeam('X-Team', false);
+
+      teammanagementPage.clickOnTeamDetailView('Y-Team');
+      teammanagementPage.deleteTeam('Y-Team', false);
+
+      teammanagementPage.clickOnTeamDetailView('Z-Team');
+      teammanagementPage.deleteTeam('Z-Team', false);
     });
   });
 });

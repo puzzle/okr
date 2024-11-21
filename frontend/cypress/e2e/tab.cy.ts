@@ -311,7 +311,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('add-user');
       cy.realPress('Enter');
       cy.tabForward();
-      tabAndCheck('select-team-dropdown', '/BBT');
+      tabAndCheck('select-team-dropdown', 'Puzzle ITC');
       tabAndCheck('select-team-role', 'Team-Member');
       tabAndCheck('add-user-to-team-save', 'Hinzufügen');
       tabAndCheck('add-user-to-team-cancel', 'Abbrechen');

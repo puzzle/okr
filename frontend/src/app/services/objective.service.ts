@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Objective } from '../shared/types/model/Objective';
 import { Observable } from 'rxjs';
-import { Completed } from '../shared/types/model/Completed';
 
 @Injectable({
   providedIn: 'root',
@@ -28,13 +27,5 @@ export class ObjectiveService {
 
   duplicateObjective(objectiveId: number, objectiveDTO: any): Observable<Objective> {
     return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, objectiveDTO);
-  }
-
-  createCompleted(completed: Completed): Observable<Completed> {
-    return this.httpClient.post<Completed>('/api/v2/completed', completed);
-  }
-
-  deleteCompleted(objectiveId: number): Observable<Completed> {
-    return this.httpClient.delete<Completed>('/api/v2/completed/' + objectiveId);
   }
 }

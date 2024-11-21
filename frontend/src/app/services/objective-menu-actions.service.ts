@@ -6,9 +6,9 @@ import { State } from '../shared/types/enums/State';
 import { ObjectiveMenuAfterActions } from '../components/objective/ObjectiveMenuAfterActions';
 import { ObjectiveService } from './objective.service';
 import { RefreshDataService } from './refresh-data.service';
-import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveMenuActions } from '../components/objective/ObjectiveMenuActions';
 import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
+import { CompletedService } from './completed.servce';
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
 export type ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult: any) => any;
@@ -28,9 +28,10 @@ export class ObjectiveMenuActionsService {
   constructor(
     dialogService: DialogService,
     objectiveService: ObjectiveService,
+    completedService: CompletedService,
     refreshDataService: RefreshDataService,
   ) {
-    this.afterActions = new ObjectiveMenuAfterActions(objectiveService, refreshDataService);
+    this.afterActions = new ObjectiveMenuAfterActions(objectiveService, completedService, refreshDataService);
     this.actions = new ObjectiveMenuActions(dialogService, refreshDataService, this.afterActions);
   }
 

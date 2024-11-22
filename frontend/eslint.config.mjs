@@ -1,24 +1,24 @@
 
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import eslint from "@eslint/js";
+import tsEslint from "typescript-eslint";
 import unusedImports from "eslint-plugin-unused-imports";
-import stylistic from '@stylistic/eslint-plugin'
+import stylistic from "@stylistic/eslint-plugin";
 
 
-
-export default tseslint.config(
+export default tsEslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  {
-    files: ['**/*.spec.ts'],
-    rules: {
-      "@typescript-eslint/no-explicit-any": "off"
+  ...tsEslint.configs.recommended,
+    stylistic.configs['all-flat'],
+    {
+      files: ['**/*.spec.ts'],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off"
     },
   },
   {
     plugins: {
       'unused-imports': unusedImports,
-        '@stylistic': stylistic
+      '@stylistic': stylistic
     },
     rules: {
       'unused-imports/no-unused-imports': 'error',

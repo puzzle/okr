@@ -41,7 +41,8 @@ export default tsEslint.config(
       "@stylistic/dot-location": ["error", "property"],
       "@stylistic/newline-per-chained-call": ["error", { "ignoreChainWithDepth": 1 }],
       "@stylistic/indent": ["error", 2],
-      "@stylistic/quotes":["error","double"]
+      "@stylistic/quotes":["error","double"],
+        "@stylistic/multiline-ternary": ["off"],
     },
   }
 );

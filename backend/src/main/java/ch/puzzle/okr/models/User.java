@@ -1,14 +1,14 @@
 package ch.puzzle.okr.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 // table cannot be named "user" since it is a reserved keyword of Postgres
@@ -23,20 +23,17 @@ public class User {
     private int version;
 
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String firstname;
 
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String lastname;
 
     @Column(unique = true, nullable = false)
     @Email(message = MessageKey.ATTRIBUTE_NOT_VALID)
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String email;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
@@ -108,8 +105,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
-                + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
+        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
     }
 
     @Override
@@ -119,9 +115,11 @@ public class User {
         if (o == null || getClass() != o.getClass())
             return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(version, user.version)
-                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
-                && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
+        return Objects.equals(id, user.id) && Objects.equals(version, user.version) && Objects.equals(firstname,
+                                                                                                      user.firstname) && Objects.equals(lastname,
+                                                                                                                                        user.lastname) && Objects.equals(email,
+                                                                                                                                                                         user.email) && Objects.equals(isOkrChampion,
+                                                                                                                                                                                                       user.isOkrChampion);
     }
 
     @Override

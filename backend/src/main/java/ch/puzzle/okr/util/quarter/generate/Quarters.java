@@ -1,10 +1,10 @@
 package ch.puzzle.okr.util.quarter.generate;
 
-import org.springframework.context.annotation.Profile;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.context.annotation.Profile;
 
 /**
  * Static initialize quarters for H2 database.</br>

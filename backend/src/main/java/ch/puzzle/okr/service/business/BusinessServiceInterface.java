@@ -4,9 +4,9 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 
 /**
  * @param <T>
- *            the Type or entity of the repository
+ *             the Type or entity of the repository
  * @param <ID>
- *            the Identifier or primary key of the entity
+ *             the Identifier or primary key of the entity
  */
 public interface BusinessServiceInterface<ID, T> {
     T getEntityById(ID id);

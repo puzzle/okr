@@ -1,15 +1,16 @@
 package ch.puzzle.okr.service.validation;
 
+import java.util.List;
+import java.util.Objects;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
 
 import static ch.puzzle.okr.Constants.TEAM;
 
@@ -39,11 +40,15 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
     }
 
     private void checkIfTeamWithNameAlreadyExists(String name, Long id) {
-        List<Team> filteredTeam = this.getPersistenceService().findTeamsByName(name).stream()
-                .filter(team -> !Objects.equals(team.getId(), id)).toList();
+        List<Team> filteredTeam = this.getPersistenceService()
+                                      .findTeamsByName(name)
+                                      .stream()
+                                      .filter(team -> !Objects.equals(team.getId(), id))
+                                      .toList();
         if (!filteredTeam.isEmpty()) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALREADY_EXISTS_SAME_NAME,
-                    List.of(TEAM, name));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.ALREADY_EXISTS_SAME_NAME,
+                                                 List.of(TEAM, name));
         }
     }
 }

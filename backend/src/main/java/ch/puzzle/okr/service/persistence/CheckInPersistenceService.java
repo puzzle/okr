@@ -1,10 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
+import java.util.List;
+
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.repository.CheckInRepository;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 import static ch.puzzle.okr.Constants.CHECK_IN;
 

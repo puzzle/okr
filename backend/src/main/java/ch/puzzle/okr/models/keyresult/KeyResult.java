@@ -1,5 +1,8 @@
 package ch.puzzle.okr.models.keyresult;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
@@ -9,8 +12,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -24,28 +25,23 @@ public abstract class KeyResult implements WriteableInterface {
     @Version
     private int version;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @ManyToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
     private Objective objective;
 
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String title;
 
     @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String description;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @ManyToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
     private User owner;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @ManyToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
     private User createdBy;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    private LocalDateTime createdOn;
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
 
@@ -138,10 +134,7 @@ public abstract class KeyResult implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title
-                + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy
-                + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType
-                + ", writeable=" + writeable + '\'' + '}';
+        return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -151,18 +144,29 @@ public abstract class KeyResult implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         KeyResult keyResult = (KeyResult) o;
-        return Objects.equals(id, keyResult.id) && version == keyResult.version
-                && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title)
-                && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner)
-                && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn)
-                && Objects.equals(modifiedOn, keyResult.modifiedOn)
-                && Objects.equals(keyResultType, keyResult.keyResultType);
+        return Objects.equals(id, keyResult.id) && version == keyResult.version && Objects.equals(objective,
+                                                                                                  keyResult.objective) && Objects.equals(title,
+                                                                                                                                         keyResult.title) && Objects.equals(description,
+                                                                                                                                                                            keyResult.description) && Objects.equals(owner,
+                                                                                                                                                                                                                     keyResult.owner) && Objects.equals(createdBy,
+                                                                                                                                                                                                                                                        keyResult.createdBy) && Objects.equals(createdOn,
+                                                                                                                                                                                                                                                                                               keyResult.createdOn) && Objects.equals(modifiedOn,
+                                                                                                                                                                                                                                                                                                                                      keyResult.modifiedOn) && Objects.equals(keyResultType,
+                                                                                                                                                                                                                                                                                                                                                                              keyResult.keyResultType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, objective, title, description, owner, createdBy, createdOn, modifiedOn,
-                keyResultType);
+        return Objects.hash(id,
+                            version,
+                            objective,
+                            title,
+                            description,
+                            owner,
+                            createdBy,
+                            createdOn,
+                            modifiedOn,
+                            keyResultType);
     }
 
     protected KeyResult() {

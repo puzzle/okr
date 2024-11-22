@@ -5,6 +5,7 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.jwt.Jwt;

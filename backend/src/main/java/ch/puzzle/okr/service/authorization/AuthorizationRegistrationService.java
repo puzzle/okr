@@ -5,9 +5,11 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.business.UserBusinessService;
-import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityNotFoundException;
 
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 
@@ -19,8 +21,7 @@ public class AuthorizationRegistrationService {
 
     private final UserUpdateHelper helper = new UserUpdateHelper();
 
-    public AuthorizationRegistrationService(UserBusinessService userBusinessService,
-            TenantConfigProvider tenantConfigProvider) {
+    public AuthorizationRegistrationService(UserBusinessService userBusinessService, TenantConfigProvider tenantConfigProvider) {
         this.userBusinessService = userBusinessService;
         this.tenantConfigProvider = tenantConfigProvider;
     }
@@ -41,9 +42,8 @@ public class AuthorizationRegistrationService {
 
     // okr champion is set in application properties
     private User setOkrChampionFromProperties(User user) {
-        TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider
-                .getTenantConfigById(TenantContext.getCurrentTenant())
-                .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
+        TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider.getTenantConfigById(TenantContext.getCurrentTenant())
+                                                                                  .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
 
         return helper.setOkrChampionFromProperties(user, tenantConfig);
     }
@@ -52,7 +52,8 @@ public class AuthorizationRegistrationService {
 
         public User setOkrChampionFromProperties(User user, TenantConfigProvider.TenantConfig tenantConfig) {
             for (var mail : tenantConfig.okrChampionEmails()) {
-                if (mail.trim().equals(user.getEmail())) {
+                if (mail.trim()
+                        .equals(user.getEmail())) {
                     user.setOkrChampion(true);
                 }
             }

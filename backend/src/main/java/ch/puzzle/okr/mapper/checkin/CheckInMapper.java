@@ -6,6 +6,7 @@ import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,7 +28,8 @@ public class CheckInMapper {
             return checkInOrdinalMapper.toDto(checkInOrdinal);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("The CheckIn %s can't be converted to a metric or ordinal CheckIn", checkIn));
+                                              String.format("The CheckIn %s can't be converted to a metric or ordinal CheckIn",
+                                                            checkIn));
         }
     }
 
@@ -38,7 +40,8 @@ public class CheckInMapper {
             return checkInOrdinalMapper.toCheckInOrdinal((CheckInOrdinalDto) checkInDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("The provided CheckInDto %s is neither metric nor ordinal", checkInDto));
+                                              String.format("The provided CheckInDto %s is neither metric nor ordinal",
+                                                            checkInDto));
         }
     }
 }

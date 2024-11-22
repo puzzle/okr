@@ -1,8 +1,8 @@
 package ch.puzzle.okr.models.keyresult;
 
-import ch.puzzle.okr.models.Action;
-
 import java.util.List;
+
+import ch.puzzle.okr.models.Action;
 
 public record KeyResultWithActionList(KeyResult keyResult, List<Action> actionList) {
 }

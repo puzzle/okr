@@ -1,10 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
+import java.util.List;
+
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.repository.UserTeamRepository;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 import static ch.puzzle.okr.Constants.USER_TEAM;
 

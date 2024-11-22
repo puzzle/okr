@@ -12,12 +12,11 @@ public class TenantClientCustomizationProviderTest {
 
     @DisplayName("extractCssNameFromPropertyName() should return css name for valid property name")
     @ParameterizedTest
-    @CsvSource({ "pitc", "acme" })
+    @CsvSource({"pitc", "acme"})
     void extractCssNameFromPropertyNameShouldReturnCssNameForValidPropertyName(String tenantId) {
         // arrange
-        String propertyNameWithTenant = "okr.tenants." + tenantId
-                + ".clientcustomization.customstyles.my-css-property-name";
-        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[] {}, null);
+        String propertyNameWithTenant = "okr.tenants." + tenantId + ".clientcustomization.customstyles.my-css-property-name";
+        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[]{}, null);
 
         // act
         String cssName = provider.extractCssNameFromPropertyName(propertyNameWithTenant, tenantId);
@@ -31,10 +30,10 @@ public class TenantClientCustomizationProviderTest {
     void extractCssNameFromPropertyNameShouldThrowIllegalArgumentExceptionForInvalidPropertyName() {
         // arrange
         String propertyNameWithoutTenant = "okr.tenants.clientcustomization.customstyles.my-css-property-name";
-        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[] {}, null);
+        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[]{}, null);
 
         // act + assert
         assertThrows(IllegalArgumentException.class,
-                () -> provider.extractCssNameFromPropertyName(propertyNameWithoutTenant, "pitc"));
+                     () -> provider.extractCssNameFromPropertyName(propertyNameWithoutTenant, "pitc"));
     }
 }

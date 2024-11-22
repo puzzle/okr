@@ -1,15 +1,16 @@
 package ch.puzzle.okr.service.persistence;
 
+import java.util.List;
+
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 // uses test date from V100_0_0__TestData.sql
 @SpringIntegrationTest
@@ -45,11 +46,14 @@ public class UserTeamPersistenceServiceIT {
         assertUserIsInTeam(ID_OF_USER_ALICE, ID_OF_TEAM_LOREM, 3);
 
         // arrange
-        var userTeamToRemove = user.getUserTeamList().get(0); // Alice is only in Team Lorem
+        var userTeamToRemove = user.getUserTeamList()
+                                   .get(0); // Alice is only in Team Lorem
 
         // act
-        user.getUserTeamList().remove(userTeamToRemove);
-        team.getUserTeamList().remove(userTeamToRemove);
+        user.getUserTeamList()
+            .remove(userTeamToRemove);
+        team.getUserTeamList()
+            .remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
 
         // assert: user Alice is no longer in team Lorem and team Lorem has 2 users
@@ -68,11 +72,14 @@ public class UserTeamPersistenceServiceIT {
         assertUserIsInTeam(ID_OF_USER_BOB, ID_OF_TEAM_CUBE, 2);
 
         // arrange
-        var userTeamToRemove = user.getUserTeamList().get(0); // Bos is only in Team Cube
+        var userTeamToRemove = user.getUserTeamList()
+                                   .get(0); // Bos is only in Team Cube
 
         // act
-        user.getUserTeamList().remove(userTeamToRemove);
-        team.getUserTeamList().remove(userTeamToRemove);
+        user.getUserTeamList()
+            .remove(userTeamToRemove);
+        team.getUserTeamList()
+            .remove(userTeamToRemove);
         userTeamPersistenceService.deleteAll(List.of(userTeamToRemove));
 
         // assert: user Bob is no longer in team Cube and team Cube has 1 user
@@ -81,18 +88,26 @@ public class UserTeamPersistenceServiceIT {
 
     private void assertUserIsInTeam(Long userId, Long teamId, int expectedUsersInTeam) {
         var user = userPersistenceService.findById(userId);
-        Assertions.assertEquals(1, user.getUserTeamList().size());
+        Assertions.assertEquals(1,
+                                user.getUserTeamList()
+                                    .size());
 
         var team = this.teamPersistenceService.findById(teamId);
-        Assertions.assertEquals(expectedUsersInTeam, team.getUserTeamList().size());
+        Assertions.assertEquals(expectedUsersInTeam,
+                                team.getUserTeamList()
+                                    .size());
     }
 
     private void assertUserIsRemovedFromTeam(Long userId, Long teamId, int expectedUsersInTeam) {
         var reloadedUser = userPersistenceService.findById(userId);
-        Assertions.assertEquals(0, reloadedUser.getUserTeamList().size());
+        Assertions.assertEquals(0,
+                                reloadedUser.getUserTeamList()
+                                            .size());
 
         var reloadedTeam = this.teamPersistenceService.findById(teamId);
-        Assertions.assertEquals(expectedUsersInTeam, reloadedTeam.getUserTeamList().size());
+        Assertions.assertEquals(expectedUsersInTeam,
+                                reloadedTeam.getUserTeamList()
+                                            .size());
     }
 
 }

@@ -1,21 +1,21 @@
 package ch.puzzle.okr.models.checkin;
 
+import java.util.Objects;
+
 import ch.puzzle.okr.models.MessageKey;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Objects;
-
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_ORDINAL)
 public class CheckInOrdinal extends CheckIn {
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Enumerated(EnumType.STRING)
     private Zone zone;
 
     /* Getter and Setter */

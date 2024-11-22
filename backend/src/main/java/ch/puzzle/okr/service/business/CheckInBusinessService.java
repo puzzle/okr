@@ -1,22 +1,23 @@
 package ch.puzzle.okr.service.business;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
-import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CheckInBusinessService implements BusinessServiceInterface<Long, CheckIn> {
     private final CheckInPersistenceService checkInPersistenceService;
     private final CheckInValidationService validator;
 
-    public CheckInBusinessService(CheckInPersistenceService checkInPersistenceService,
-            CheckInValidationService validator) {
+    public CheckInBusinessService(CheckInPersistenceService checkInPersistenceService, CheckInValidationService validator) {
         this.checkInPersistenceService = checkInPersistenceService;
         this.validator = validator;
     }

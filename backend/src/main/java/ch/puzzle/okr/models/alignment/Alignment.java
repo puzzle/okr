@@ -1,10 +1,11 @@
 package ch.puzzle.okr.models.alignment;
 
+import java.util.Objects;
+
 import ch.puzzle.okr.models.Objective;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -17,8 +18,7 @@ public abstract class Alignment {
     private Long id;
     @Version
     private int version;
-    @NotNull(message = "Aligned objective must not be null")
-    @ManyToOne
+    @NotNull(message = "Aligned objective must not be null") @ManyToOne
     private Objective alignedObjective;
 
     protected Alignment() {
@@ -58,8 +58,8 @@ public abstract class Alignment {
         if (o == null || getClass() != o.getClass())
             return false;
         Alignment alignment = (Alignment) o;
-        return Objects.equals(id, alignment.id) && version == alignment.version
-                && Objects.equals(alignedObjective, alignment.alignedObjective);
+        return Objects.equals(id, alignment.id) && version == alignment.version && Objects.equals(alignedObjective,
+                                                                                                  alignment.alignedObjective);
     }
 
     @Override

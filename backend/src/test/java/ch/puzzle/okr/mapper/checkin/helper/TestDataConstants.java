@@ -1,9 +1,9 @@
 package ch.puzzle.okr.mapper.checkin.helper;
 
-import ch.puzzle.okr.models.checkin.Zone;
-
 import java.time.LocalDateTime;
 import java.time.Month;
+
+import ch.puzzle.okr.models.checkin.Zone;
 
 public class TestDataConstants {
     public static final boolean CHECK_IN_IS_WRITEABLE = true;

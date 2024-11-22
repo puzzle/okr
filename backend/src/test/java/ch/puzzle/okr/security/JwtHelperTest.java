@@ -1,17 +1,20 @@
 package ch.puzzle.okr.security;
 
+import java.text.ParseException;
+import java.util.Map;
+import java.util.Optional;
+
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
-import com.nimbusds.jwt.JWTClaimsSet;
-import jakarta.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-import java.text.ParseException;
-import java.util.Map;
-import java.util.Optional;
+import com.nimbusds.jwt.JWTClaimsSet;
+
+import jakarta.persistence.EntityNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,13 +41,18 @@ public class JwtHelperTest {
         // arrange
         Jwt tokenWithUserDataMock = mock(Jwt.class);
         when(tokenWithUserDataMock.getClaims()).thenReturn(Map.of( //
-                TOKEN_CLAIMS_KEY_FIRSTNAME, HANS, //
-                TOKEN_CLAIMS_KEY_LASTNAME, MUSTER, //
-                TOKEN_CLAIMS_KEY_EMAIL, EMAIL //
+                                                                  TOKEN_CLAIMS_KEY_FIRSTNAME,
+                                                                  HANS, //
+                                                                  TOKEN_CLAIMS_KEY_LASTNAME,
+                                                                  MUSTER, //
+                                                                  TOKEN_CLAIMS_KEY_EMAIL,
+                                                                  EMAIL //
         ));
 
         JwtHelper jwtHelper = new JwtHelper(null, //
-                TOKEN_CLAIMS_KEY_FIRSTNAME, TOKEN_CLAIMS_KEY_LASTNAME, TOKEN_CLAIMS_KEY_EMAIL);
+                                            TOKEN_CLAIMS_KEY_FIRSTNAME,
+                                            TOKEN_CLAIMS_KEY_LASTNAME,
+                                            TOKEN_CLAIMS_KEY_EMAIL);
 
         // act
         User userFromToken = jwtHelper.getUserFromJwt(tokenWithUserDataMock);
@@ -63,7 +71,9 @@ public class JwtHelperTest {
         Jwt tokenWithNoUserDataMock = mock(Jwt.class);
 
         JwtHelper jwtHelper = new JwtHelper(null, //
-                TOKEN_CLAIMS_KEY_FIRSTNAME, TOKEN_CLAIMS_KEY_LASTNAME, TOKEN_CLAIMS_KEY_EMAIL);
+                                            TOKEN_CLAIMS_KEY_FIRSTNAME,
+                                            TOKEN_CLAIMS_KEY_LASTNAME,
+                                            TOKEN_CLAIMS_KEY_EMAIL);
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = //
@@ -82,9 +92,12 @@ public class JwtHelperTest {
 
         TenantConfigProvider tenantConfigProviderMock = mock(TenantConfigProvider.class);
         when(tenantConfigProviderMock.getTenantConfigById(PITC)).thenReturn(Optional.of( //
-                new TenantConfigProvider.TenantConfig(PITC, //
-                        new String[] {}, "jwkSetUri", "issuerUrl", //
-                        "clientId", null) //
+                                                                                        new TenantConfigProvider.TenantConfig(PITC, //
+                                                                                                                              new String[]{},
+                                                                                                                              "jwkSetUri",
+                                                                                                                              "issuerUrl", //
+                                                                                                                              "clientId",
+                                                                                                                              null) //
         ));
 
         JwtHelper jwtHelper = new JwtHelper(tenantConfigProviderMock, null, null, null);
@@ -120,9 +133,12 @@ public class JwtHelperTest {
 
         TenantConfigProvider tenantConfigProviderWithDataMock = mock(TenantConfigProvider.class);
         when(tenantConfigProviderWithDataMock.getTenantConfigById(PITC)).thenReturn(Optional.of( //
-                new TenantConfigProvider.TenantConfig(PITC, //
-                        new String[] {}, "jwkSetUri", "issuerUrl", //
-                        "clientId", null) //
+                                                                                                new TenantConfigProvider.TenantConfig(PITC, //
+                                                                                                                                      new String[]{},
+                                                                                                                                      "jwkSetUri",
+                                                                                                                                      "issuerUrl", //
+                                                                                                                                      "clientId",
+                                                                                                                                      null) //
         ));
 
         JwtHelper jwtHelper = new JwtHelper(tenantConfigProviderWithDataMock, null, null, null);

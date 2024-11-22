@@ -6,18 +6,17 @@ import ch.puzzle.okr.service.business.BusinessServiceInterface;
 
 /**
  * @param <ID>
- *            the Identifier or primary key of the entity
+ *             the Identifier or primary key of the entity
  * @param <T>
- *            the Type or entity of the repository
+ *             the Type or entity of the repository
  * @param <BS>
- *            the Business Service of this entity
+ *             the Business Service of this entity
  */
 public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface, BS> {
     private final BusinessServiceInterface<ID, T> businessService;
     private final AuthorizationService authorizationService;
 
-    protected AuthorizationServiceBase(BusinessServiceInterface<ID, T> businessService,
-            AuthorizationService authorizationService) {
+    protected AuthorizationServiceBase(BusinessServiceInterface<ID, T> businessService, AuthorizationService authorizationService) {
         this.businessService = businessService;
         this.authorizationService = authorizationService;
     }

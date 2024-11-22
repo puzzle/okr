@@ -36,7 +36,7 @@ Formatting:
 - Check code formatting: `mvn spotless:check`
 - Format the code: `mvn spotless:apply`
 
-The `compile` goal execute also a `spotless:apply` goal.
+We also run the formatter with `spotless:apply` in the `compile` goal.
 
 Verify the Backend for coverage check:
 - `mvn clean verify`

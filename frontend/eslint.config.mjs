@@ -27,7 +27,9 @@ export default tsEslint.config(
   }, {
     files: ["**/*.spec.ts"],
     rules: {
-      "@typescript-eslint/no-explicit-any": "off"
+      "@typescript-eslint/no-explicit-any": "off",
+      "prefer-rest-params": "off",
+
     },
   }, {
     ...html.configs["flat/recommended"],

@@ -45,9 +45,8 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
       this.userService.getUsers(),
       this.selectedUsers$,
       this.search.valueChanges.pipe(
-        startWith(""),
         // directly after selecting object, filtervalue is an object.
-        filter((searchValue) => typeof searchValue === "string"),
+        startWith(""), filter((searchValue) => typeof searchValue === "string"),
       ),
     ])
       .pipe(

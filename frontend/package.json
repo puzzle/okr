@@ -13,8 +13,11 @@
     "cypress:run": "cypress run --browser chrome",
     "cypress:open-test": "concurrently \"npm start\" \"cypress open\"",
     "cypress:run-test": "npm run build && concurrently \"npm run serve:dist\" \"cypress run\"",
-    "format": "eslint --fix .",
-    "check": "eslint .",
+    "format": "npm run esl-format",
+    "check": "npm run es-check",
+    "esl-format": "eslint --fix .",
+    "es-check": "eslint .",
+
     "prestart": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'hook copied'",
     "prebuild": "version=$(grep -oP '<version>\\K.*(?=-SNAPSHOT</version>)' ../pom.xml); echo \"export const version = 'v$version';\" > src/app/version.ts\n",
     "e2e": "ng e2e"

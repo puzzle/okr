@@ -1,7 +1,7 @@
 @import "custom_angular";
 @import "_variables";
 @import "custom_bootstrap";
-@import "fonts/Roboto";
+@import "fonts/OpenSans";
 @import "fonts/MaterialIcons";
 
 html,
@@ -10,8 +10,8 @@ body.okr {
   margin: 0;
   padding: 0;
   background-color: $overview-bg;
-  font-family: Roboto, sans-serif;
-  --bs-body-font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: OpenSans, "sans-serif";
+  --bs-body-font-family: OpenSans;
 
   h1 {
     font-size: 1.5rem;

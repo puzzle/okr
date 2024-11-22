@@ -7,7 +7,10 @@ import html from "@html-eslint/eslint-plugin";
 export default tsEslint.config(
   eslint.configs.recommended,
   ...tsEslint.configs.recommended,
-    stylistic.configs['all-flat'],
+    {
+        ...stylistic.configs['all-flat'],
+        files: ['**/*.ts'],
+    },
     {
       files: ['**/*.spec.ts'],
       rules: {
@@ -38,7 +41,7 @@ export default tsEslint.config(
       "@stylistic/dot-location": ["error", "property"],
       "@stylistic/newline-per-chained-call": ["error", { "ignoreChainWithDepth": 1 }],
       "@stylistic/indent": ["error", 2],
-      // "@stylistic/quotes":"off"
+      "@stylistic/quotes":["error","double"]
     },
   }
 );

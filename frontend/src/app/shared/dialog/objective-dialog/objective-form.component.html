@@ -1,4 +1,4 @@
-<app-dialog-template-core [title]="getDialogTitle((this.currentTeam | async)?.name || '')">
+<app-dialog-template-core [title]="getDialogTitle((this.currentTeam$ | async)?.name || '')">
   <ng-container content>
     <form [formGroup]="objectiveForm">
       <div class="okr-form-row okr-form-label-input-container">
@@ -41,6 +41,7 @@
                 class="custom-select bg-white"
                 formControlName="quarter"
                 id="quarter"
+                (change)="updateAlignments()"
                 [attr.data-testId]="'quarterSelect'"
               >
                 <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
@@ -51,19 +52,47 @@
               </select>
             </div>
           </div>
-        </div>
-        <div class="col align-self-end">
-          <div class="okr-form-row">
-            <mat-checkbox
-              [attr.data-testId]="'keyResult-checkbox'"
-              class="col-auto mx-n2"
-              color="primary"
-              formControlName="createKeyResults"
-              *ngIf="!data.objective.objectiveId"
-            >
-              <p class="col d-flex">Key Results im Anschluss erfassen</p>
-            </mat-checkbox>
+
+          <div class="d-flex flex-column gap-2 col-6">
+            <label class="text-black">Bezug (optional)</label>
+            <input
+              #alignmentInput
+              type="text"
+              formControlName="alignment"
+              class="alignment-input"
+              placeholder="{{
+                (this.filteredAlignmentOptions$ | async)?.length == 0 ? 'Kein Alignment vorhanden' : 'Bezug wählen'
+              }}"
+              [matAutocomplete]="auto"
+              [attr.data-testId]="'alignmentInput'"
+              (input)="filter()"
+              (focus)="filter(); alignmentInput.select()"
+              (focusout)="scrollLeft()"
+              [value]="displayedValue"
+            />
+            <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayWith">
+              @for (group of filteredAlignmentOptions$ | async; track group) {
+                <mat-optgroup [label]="group.teamName" style="font-weight: bold">
+                  @for (alignmentObject of group.alignmentObjects; track alignmentObject) {
+                    <mat-option [value]="alignmentObject">{{ alignmentObject.objectTitle }}</mat-option>
+                  }
+                </mat-optgroup>
+              }
+            </mat-autocomplete>
           </div>
+        </div>
+      </div>
+      <div class="col align-self-end">
+        <div class="okr-form-row">
+          <mat-checkbox
+            [attr.data-testId]="'keyResult-checkbox'"
+            class="col-auto mx-n2"
+            color="primary"
+            formControlName="createKeyResults"
+            *ngIf="!data.objective.objectiveId"
+          >
+            <p class="col d-flex">Key Results im Anschluss erfassen</p>
+          </mat-checkbox>
         </div>
       </div>
     </form>

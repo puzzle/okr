@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Objective } from '../shared/types/model/Objective';
 import { Observable } from 'rxjs';
 import { Completed } from '../shared/types/model/Completed';
+import { AlignmentPossibility } from '../shared/types/model/AlignmentPossibility';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,10 @@ export class ObjectiveService {
 
   getFullObjective(id: number) {
     return this.httpClient.get<Objective>('/api/v2/objectives/' + id);
+  }
+
+  getAlignmentPossibilities(quarterId: number): Observable<AlignmentPossibility[]> {
+    return this.httpClient.get<AlignmentPossibility[]>('/api/v2/objectives/alignmentPossibilities/' + quarterId);
   }
 
   createObjective(objectiveDTO: Objective): Observable<Objective> {

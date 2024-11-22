@@ -1,10 +1,14 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.AlignmentDto;
+import ch.puzzle.okr.dto.AlignmentObjectDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
+import ch.puzzle.okr.test.TestConstants;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,9 +27,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -38,12 +43,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
+    private static final String OBJECTIVE = "objective";
     private static final String DESCRIPTION = "This is our description";
     private static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
     private static final String TITLE = "Hunting";
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
-    private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
-    private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
+    private static final String URL_OBJECTIVE_5 = URL_BASE_OBJECTIVE + "/5";
+    private static final String URL_OBJECTIVE_10 = URL_BASE_OBJECTIVE + "/10";
     private static final String JSON = """
             {
                "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
@@ -64,11 +70,14 @@ class ObjectiveControllerIT {
                "description": "This is our description", "progress": 33.3
             }
             """;
-    private static final String RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
+    private static final String JSON_RESPONSE_NEW_OBJECTIVE = """
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true,"alignedEntity":null}""";
     private static final String JSON_PATH_TITLE = "$.title";
+    private static final AlignedEntityDto alignedEntityDtoObjective = new AlignedEntityDto(42L, OBJECTIVE);
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
+    private static final Objective objectiveAlignment = Objective.Builder.builder().withId(9L)
+            .withTitle("Objective Alignment").withAlignedEntity(alignedEntityDtoObjective).build();
     private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
             .build();
     private static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
@@ -79,9 +88,17 @@ class ObjectiveControllerIT {
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription(DESCRIPTION)
             .withModifiedOn(LocalDateTime.MAX).build();
     private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L, "GJ 22/23-Q2",
-            DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true);
+            DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true, null);
     private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, "GJ 22/23-Q2",
-            DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true);
+            DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true, new AlignedEntityDto(5L, OBJECTIVE));
+    private static final ObjectiveDto objectiveAlignmentDto = new ObjectiveDto(9L, 1, "Objective Alignment", 1L, 1L,
+            "GJ 22/23-Q2", DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true,
+            alignedEntityDtoObjective);
+    private static final AlignmentObjectDto alignmentObject1 = new AlignmentObjectDto(3L, "KR Title 1", "keyResult");
+    private static final AlignmentObjectDto alignmentObject2 = new AlignmentObjectDto(1L, "Objective Title 1",
+            OBJECTIVE);
+    private static final AlignmentDto alignmentPossibilities = new AlignmentDto(1L, TEAM_PUZZLE,
+            List.of(alignmentObject1, alignmentObject2));
 
     @Autowired
     private MockMvc mvc;
@@ -96,6 +113,7 @@ class ObjectiveControllerIT {
     void setUp() {
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
+        BDDMockito.given(objectiveMapper.toDto(objectiveAlignment)).willReturn(objectiveAlignmentDto);
     }
 
     @Test
@@ -108,6 +126,17 @@ class ObjectiveControllerIT {
     }
 
     @Test
+    void getObjectiveByIdWithAlignmentId() throws Exception {
+        BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong())).willReturn(objectiveAlignment);
+
+        mvc.perform(get(URL_BASE_OBJECTIVE + "/9").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(9)))
+                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is("Objective Alignment")))
+                .andExpect(jsonPath("$.alignedEntity.id", Is.is(42)))
+                .andExpect(jsonPath("$.alignedEntity.type", Is.is(OBJECTIVE)));
+    }
+
+    @Test
     void getObjectiveByIdFail() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -117,9 +146,27 @@ class ObjectiveControllerIT {
     }
 
     @Test
+    void getAlignmentPossibilities() throws Exception {
+        BDDMockito.given(objectiveAuthorizationService.getAlignmentPossibilities(anyLong()))
+                .willReturn(List.of(alignmentPossibilities));
+
+        mvc.perform(get(URL_BASE_OBJECTIVE + "/alignmentPossibilities/5").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$[0].teamId", Is.is(1)))
+                .andExpect(jsonPath("$[0].teamName", Is.is(TEAM_PUZZLE)))
+                .andExpect(jsonPath("$[0].alignmentObjects[0].objectId", Is.is(3)))
+                .andExpect(jsonPath("$[0].alignmentObjects[0].objectTitle", Is.is("KR Title 1")))
+                .andExpect(jsonPath("$[0].alignmentObjects[0].objectType", Is.is("keyResult")))
+                .andExpect(jsonPath("$[0].alignmentObjects[1].objectId", Is.is(1)))
+                .andExpect(jsonPath("$[0].alignmentObjects[1].objectTitle", Is.is("Objective Title 1")))
+                .andExpect(jsonPath("$[0].alignmentObjects[1].objectType", Is.is(OBJECTIVE)));
+
+        verify(objectiveAuthorizationService, times(1)).getAlignmentPossibilities(5L);
+    }
+
+    @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "GJ 22/23-Q2",
-                "Just be faster", State.DRAFT, null, null, true);
+                "Just be faster", State.DRAFT, null, null, true, null);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
@@ -127,7 +174,7 @@ class ObjectiveControllerIT {
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(CREATE_NEW_OBJECTIVE))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_OBJECTIVE));
+                .andExpect(MockMvcResultMatchers.content().string(JSON_RESPONSE_NEW_OBJECTIVE));
         verify(objectiveAuthorizationService, times(1)).createEntity(any());
     }
 
@@ -144,7 +191,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", EVERYTHING_FINE_DESCRIPTION,
-                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
+                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true, null);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withTitle(TITLE).build();
 
@@ -162,7 +209,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnImUsed() throws Exception {
         ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2",
-                EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
+                EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true, null);
         Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle(TITLE)
                 .build();
@@ -207,7 +254,7 @@ class ObjectiveControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found"))
                 .when(objectiveAuthorizationService).deleteEntityById(anyLong());
 
-        mvc.perform(delete("/api/v2/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc.perform(delete(URL_BASE_OBJECTIVE + "/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -217,7 +264,7 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 
-        mvc.perform(post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(URL_BASE_OBJECTIVE + "/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
                 .content(JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))

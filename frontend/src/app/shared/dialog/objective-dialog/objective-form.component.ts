@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
-import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
@@ -16,6 +16,8 @@ import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
+import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
+import { AlignmentPossibilityObject } from '../../types/model/AlignmentPossibilityObject';
 
 @Component({
   selector: 'app-objective-form',
@@ -24,19 +26,22 @@ import { DialogService } from '../../../services/dialog.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
+  @ViewChild('alignmentInput') alignmentInput!: ElementRef<HTMLInputElement>;
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     quarter: new FormControl<number>(0, [Validators.required]),
     team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
-    relation: new FormControl<number>({ value: 0, disabled: true }),
+    alignment: new FormControl<AlignmentPossibilityObject | null>(null),
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
   currentQuarter$: Observable<Quarter> = of();
   quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
-  currentTeam: Subject<Team> = new Subject<Team>();
+  alignmentPossibilities: AlignmentPossibility[] = [];
+  filteredAlignmentOptions$: BehaviorSubject<AlignmentPossibility[]> = new BehaviorSubject<AlignmentPossibility[]>([]);
+  currentTeam$: BehaviorSubject<Team | null> = new BehaviorSubject<Team | null>(null);
   state: string | null = null;
   version!: number;
   protected readonly formInputCheck = formInputCheck;
@@ -64,6 +69,15 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   onSubmit(submitType: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
+
+    let alignment: AlignmentPossibilityObject | null = value.alignment;
+    let alignedEntity: { id: number; type: string } | null = alignment
+      ? {
+          id: alignment.objectId,
+          type: alignment.objectType,
+        }
+      : null;
+
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       version: this.version,
@@ -72,6 +86,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       title: value.title,
       teamId: value.team,
       state: state,
+      alignedEntity: alignedEntity,
     } as unknown as Objective;
 
     const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
@@ -94,15 +109,16 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-      if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
-        quarterId = quarters[1].id;
+      if (currentQuarter && !this.isNotBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+        quarterId = quarters[2].id;
       }
 
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
-        this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
+        this.currentTeam$.next(value.filter((team) => team.id == teamId)[0]);
       });
+      this.generateAlignmentPossibilities(quarterId, objective, teamId!);
 
       this.objectiveForm.patchValue({
         title: objective.title,
@@ -178,6 +194,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       state: 'DRAFT' as State,
       teamId: 0,
       quarterId: 0,
+      alignedEntity: null,
     } as Objective;
   }
 
@@ -186,12 +203,12 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       (quarter) => quarter.id == this.objectiveForm.value.quarter,
     );
     if (currentQuarter) {
-      let isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
+      let isBacklogCurrent: boolean = this.isNotBacklogQuarter(currentQuarter.label);
       if (this.data.action == 'duplicate') return true;
       if (this.data.objective.objectiveId) {
-        return isBacklogCurrent ? this.state == 'DRAFT' : true;
+        return !isBacklogCurrent ? this.state == 'DRAFT' : true;
       } else {
-        return !isBacklogCurrent;
+        return isBacklogCurrent;
       }
     } else {
       return true;
@@ -214,7 +231,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  isBacklogQuarter(label: string) {
+  isNotBacklogQuarter(label: string) {
     return GJ_REGEX_PATTERN.test(label);
   }
 
@@ -236,5 +253,139 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
 
     return '';
+  }
+  generateAlignmentPossibilities(quarterId: number, objective: Objective | null, teamId: number | null) {
+    this.objectiveService
+      .getAlignmentPossibilities(quarterId)
+      .subscribe((alignmentPossibilities: AlignmentPossibility[]) => {
+        if (teamId) {
+          alignmentPossibilities = alignmentPossibilities.filter((item: AlignmentPossibility) => item.teamId != teamId);
+        }
+
+        if (objective) {
+          let alignedEntity: { id: number; type: string } | null = objective.alignedEntity;
+          if (alignedEntity) {
+            let alignmentPossibilityObject: AlignmentPossibilityObject | null = this.findAlignmentPossibilityObject(
+              alignmentPossibilities,
+              alignedEntity.id,
+              alignedEntity.type,
+            );
+            this.objectiveForm.patchValue({
+              alignment: alignmentPossibilityObject,
+            });
+          }
+        }
+
+        this.filteredAlignmentOptions$.next(alignmentPossibilities.slice());
+        this.alignmentPossibilities = alignmentPossibilities;
+      });
+  }
+
+  findAlignmentPossibilityObject(
+    alignmentPossibilities: AlignmentPossibility[],
+    objectId: number,
+    objectType: string,
+  ): AlignmentPossibilityObject | null {
+    for (let possibility of alignmentPossibilities) {
+      let foundObject: AlignmentPossibilityObject | undefined = possibility.alignmentObjects.find(
+        (alignmentObject: AlignmentPossibilityObject) =>
+          alignmentObject.objectId === objectId && alignmentObject.objectType === objectType,
+      );
+      if (foundObject) {
+        return foundObject;
+      }
+    }
+    return null;
+  }
+
+  updateAlignments() {
+    this.alignmentInput.nativeElement.value = '';
+    this.filteredAlignmentOptions$.next([]);
+    this.objectiveForm.patchValue({
+      alignment: null,
+    });
+    this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!, null, this.currentTeam$.getValue()!.id);
+  }
+
+  filter() {
+    let filterValue: string = this.alignmentInput.nativeElement.value.toLowerCase();
+    let matchingTeams: AlignmentPossibility[] = this.alignmentPossibilities.filter(
+      (possibility: AlignmentPossibility) => possibility.teamName.toLowerCase().includes(filterValue),
+    );
+
+    let filteredObjects: AlignmentPossibilityObject[] =
+      this.getMatchingAlignmentPossibilityObjectsByInputFilter(filterValue);
+    let matchingPossibilities: AlignmentPossibility[] =
+      this.getAlignmentPossibilityFromAlignmentObject(filteredObjects);
+    matchingPossibilities = [...new Set(matchingPossibilities)];
+
+    let alignmentOptionList: AlignmentPossibility[] = this.removeNotMatchingObjectsFromAlignmentObject(
+      matchingPossibilities,
+      filteredObjects,
+    );
+    alignmentOptionList = this.removeAlignmentObjectWhenAlreadyContainingInMatchingTeam(
+      alignmentOptionList,
+      matchingTeams,
+    );
+
+    let concatAlignmentOptionList: AlignmentPossibility[] =
+      filterValue == '' ? matchingTeams : matchingTeams.concat(alignmentOptionList);
+    this.filteredAlignmentOptions$.next([...new Set(concatAlignmentOptionList)]);
+  }
+
+  getMatchingAlignmentPossibilityObjectsByInputFilter(filterValue: string): AlignmentPossibilityObject[] {
+    return this.alignmentPossibilities.flatMap((alignmentPossibility: AlignmentPossibility) =>
+      alignmentPossibility.alignmentObjects.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+        alignmentPossibilityObject.objectTitle.toLowerCase().includes(filterValue),
+      ),
+    );
+  }
+
+  getAlignmentPossibilityFromAlignmentObject(filteredObjects: AlignmentPossibilityObject[]): AlignmentPossibility[] {
+    return this.alignmentPossibilities.filter((possibility: AlignmentPossibility) =>
+      filteredObjects.some((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+        possibility.alignmentObjects.includes(alignmentPossibilityObject),
+      ),
+    );
+  }
+
+  removeNotMatchingObjectsFromAlignmentObject(
+    matchingPossibilities: AlignmentPossibility[],
+    filteredObjects: AlignmentPossibilityObject[],
+  ): AlignmentPossibility[] {
+    return matchingPossibilities.map((possibility: AlignmentPossibility) => ({
+      ...possibility,
+      alignmentObjects: possibility.alignmentObjects.filter((alignmentPossibilityObject: AlignmentPossibilityObject) =>
+        filteredObjects.includes(alignmentPossibilityObject),
+      ),
+    }));
+  }
+
+  removeAlignmentObjectWhenAlreadyContainingInMatchingTeam(
+    alignmentOptionList: AlignmentPossibility[],
+    matchingTeams: AlignmentPossibility[],
+  ): AlignmentPossibility[] {
+    return alignmentOptionList.filter(
+      (alignmentOption) =>
+        !matchingTeams.some((alignmentPossibility) => alignmentPossibility.teamId === alignmentOption.teamId),
+    );
+  }
+
+  displayWith(value: any) {
+    if (value) {
+      return value.objectTitle;
+    }
+  }
+
+  displayedValue(): string {
+    if (this.alignmentInput) {
+      return this.alignmentInput.nativeElement.value;
+    } else {
+      return '';
+    }
+  }
+
+  scrollLeft() {
+    this.alignmentInput.nativeElement.scrollLeft = 0;
   }
 }

@@ -15,6 +15,11 @@ import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
+import { AlignmentObject } from './types/model/AlignmentObject';
+import { AlignmentConnection } from './types/model/AlignmentConnection';
+import { AlignmentLists } from './types/model/AlignmentLists';
+import { AlignmentPossibilityObject } from './types/model/AlignmentPossibilityObject';
+import { AlignmentPossibility } from './types/model/AlignmentPossibility';
 
 export const teamFormObject = {
   name: 'newTeamName',
@@ -98,7 +103,7 @@ export const quarter2: Quarter = new Quarter(2, 'GJ 22/23-Q3', new Date('2023-01
 
 export const quarterBacklog: Quarter = new Quarter(999, 'GJ 23/24-Q1', null, null);
 
-export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
+export const quarterList: Quarter[] = [quarterBacklog, quarter1, quarter2];
 
 export const checkInMetric: CheckInMin = {
   id: 815,
@@ -319,6 +324,20 @@ export const objective: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.SUCCESSFUL,
   writeable: true,
+  alignedEntity: null,
+};
+
+export const objectiveWithAlignment: Objective = {
+  id: 5,
+  version: 1,
+  title: 'title',
+  description: 'description',
+  teamId: 2,
+  quarterId: 2,
+  quarterLabel: 'GJ 22/23-Q2',
+  state: State.SUCCESSFUL,
+  writeable: true,
+  alignedEntity: { id: 2, type: 'objective' },
 };
 
 export const objectiveWriteableFalse: Objective = {
@@ -331,6 +350,7 @@ export const objectiveWriteableFalse: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.NOTSUCCESSFUL,
   writeable: false,
+  alignedEntity: null,
 };
 
 export const firstCheckIn: CheckInMin = {
@@ -564,4 +584,88 @@ export const keyResultActions: KeyResultMetric = {
   modifiedOn: new Date(),
   actionList: [action1, action2],
   writeable: true,
+};
+
+export const alignmentPossibilityObject1: AlignmentPossibilityObject = {
+  objectId: 1,
+  objectTitle: 'We want to increase the income puzzle buy',
+  objectType: 'objective',
+};
+
+export const alignmentPossibilityObject2: AlignmentPossibilityObject = {
+  objectId: 2,
+  objectTitle: 'Our office has more plants for',
+  objectType: 'objective',
+};
+
+export const alignmentPossibilityObject3: AlignmentPossibilityObject = {
+  objectId: 1,
+  objectTitle: 'We buy 3 palms puzzle',
+  objectType: 'keyResult',
+};
+
+export const alignmentPossibility1: AlignmentPossibility = {
+  teamId: 1,
+  teamName: 'Puzzle ITC',
+  alignmentObjects: [alignmentPossibilityObject2, alignmentPossibilityObject3],
+};
+
+export const alignmentPossibility2: AlignmentPossibility = {
+  teamId: 2,
+  teamName: 'We are cube',
+  alignmentObjects: [alignmentPossibilityObject1],
+};
+
+export const alignmentObject1: AlignmentObject = {
+  objectId: 1,
+  objectTitle: 'Title 1',
+  objectTeamName: 'Example Team',
+  objectState: 'ONGOING',
+  objectType: 'objective',
+};
+
+export const alignmentObject2: AlignmentObject = {
+  objectId: 2,
+  objectTitle: 'Title 2',
+  objectTeamName: 'Example Team',
+  objectState: 'DRAFT',
+  objectType: 'objective',
+};
+
+export const alignmentObject3: AlignmentObject = {
+  objectId: 3,
+  objectTitle: 'Title 3',
+  objectTeamName: 'Example Team',
+  objectState: 'DRAFT',
+  objectType: 'objective',
+};
+
+export const alignmentObjectKeyResult: AlignmentObject = {
+  objectId: 102,
+  objectTitle: 'Title 1',
+  objectTeamName: 'Example Team',
+  objectState: null,
+  objectType: 'keyResult',
+};
+
+export const alignmentConnection: AlignmentConnection = {
+  alignedObjectiveId: 1,
+  targetObjectiveId: 2,
+  targetKeyResultId: null,
+};
+
+export const alignmentConnectionKeyResult: AlignmentConnection = {
+  alignedObjectiveId: 3,
+  targetObjectiveId: null,
+  targetKeyResultId: 102,
+};
+
+export const alignmentLists: AlignmentLists = {
+  alignmentObjectDtoList: [alignmentObject1, alignmentObject2],
+  alignmentConnectionDtoList: [alignmentConnection],
+};
+
+export const alignmentListsKeyResult: AlignmentLists = {
+  alignmentObjectDtoList: [alignmentObject3, alignmentObjectKeyResult],
+  alignmentConnectionDtoList: [alignmentConnectionKeyResult],
 };

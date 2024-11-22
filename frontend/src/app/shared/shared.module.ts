@@ -24,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogTemplateCoreComponent } from './custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { UnitTransformationPipe } from './pipes/unit-transformation/unit-transformation.pipe';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,8 @@ import { UnitTransformationPipe } from './pipes/unit-transformation/unit-transfo
     RouterOutlet,
     MatProgressSpinnerModule,
     MatDividerModule,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
   ],
   exports: [
     ExampleDialogComponent,

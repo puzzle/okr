@@ -42,7 +42,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
         checkIn: checkIn,
       },
     });
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.loadCheckInHistory();
       this.refreshDataService.reloadKeyResultSubject.next();
       this.refreshDataService.markDataRefresh();

@@ -1,8 +1,7 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.alignment.AlignmentObjectiveDto;
-import ch.puzzle.okr.mapper.AlignmentSelectionMapper;
-import ch.puzzle.okr.service.business.AlignmentSelectionBusinessService;
+import ch.puzzle.okr.dto.alignment.AlignmentLists;
+import ch.puzzle.okr.service.business.AlignmentBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,26 +19,23 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v2/alignments")
 public class AlignmentController {
-    private final AlignmentSelectionMapper alignmentSelectionMapper;
-    private final AlignmentSelectionBusinessService alignmentSelectionBusinessService;
+    private final AlignmentBusinessService alignmentBusinessService;
 
-    public AlignmentController(AlignmentSelectionMapper alignmentSelectionMapper,
-            AlignmentSelectionBusinessService alignmentSelectionBusinessService) {
-        this.alignmentSelectionMapper = alignmentSelectionMapper;
-        this.alignmentSelectionBusinessService = alignmentSelectionBusinessService;
+    public AlignmentController(AlignmentBusinessService alignmentBusinessService) {
+        this.alignmentBusinessService = alignmentBusinessService;
     }
 
-    @Operation(summary = "Get all objectives and their key results to select the alignment", description = "Get a list of objectives with their key results to select the alignment")
+    @Operation(summary = "Get AlignmentLists from filter", description = "Get a list of AlignmentObjects with all AlignmentConnections, which match current quarter, team and objective filter")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a list of objectives with their key results to select the alignment", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = AlignmentObjectiveDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't return list of objectives with their key results to select the alignment", content = @Content) })
-    @GetMapping("/selections")
-    public ResponseEntity<List<AlignmentObjectiveDto>> getAlignmentSelections(
-            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
-            @RequestParam(required = false, defaultValue = "", name = "team") Long teamFilter) {
+            @ApiResponse(responseCode = "200", description = "Returned AlignmentLists, which match current filters", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = AlignmentLists.class)) }),
+            @ApiResponse(responseCode = "400", description = "Can't generate AlignmentLists from current filters", content = @Content) })
+    @GetMapping("/alignmentLists")
+    public ResponseEntity<AlignmentLists> getAlignments(
+            @RequestParam(required = false, defaultValue = "", name = "teamFilter") List<Long> teamFilter,
+            @RequestParam(required = false, defaultValue = "", name = "quarterFilter") Long quarterFilter,
+            @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(alignmentSelectionMapper.toDto(alignmentSelectionBusinessService
-                        .getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter, teamFilter)));
+                .body(alignmentBusinessService.getAlignmentListsByFilters(quarterFilter, teamFilter, objectiveQuery));
     }
 }

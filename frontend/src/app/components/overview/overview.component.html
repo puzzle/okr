@@ -1,13 +1,54 @@
 <app-application-banner id="bannerComponent"></app-application-banner>
 <div id="overview" class="overview-container px-sm-4" [ngStyle]="{ 'padding-top.px': overviewPadding | async }">
-  <app-team
-    *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
-    [overviewEntity]="overviewEntity"
-  >
-  </app-team>
-  <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
-    <p>Kein Team ausgewählt</p>
-    <img src="{{ this.backgroundLogoSrc$ | async }}" alt="Greyed out company logo" width="242" class="puzzle-logo" />
+  <div class="mt-3">
+    <div class="d-flex">
+      <div
+        [style.cursor]="'pointer'"
+        [ngClass]="{ active: isOverview, 'non-active': !isOverview }"
+        [attr.data-testId]="'overviewTab'"
+        class="overview tab-title tabfocus"
+        (click)="switchPage('overview')"
+        (keydown.enter)="switchPage('overview')"
+        tabindex="0"
+      >
+        Overview
+      </div>
+      <div
+        [style.cursor]="'pointer'"
+        [ngClass]="{ active: !isOverview, 'non-active': isOverview }"
+        class="diagram tab-title tabfocus"
+        (click)="switchPage('diagram')"
+        (keydown.enter)="switchPage('diagram')"
+        [attr.data-testId]="'diagramTab'"
+        tabindex="0"
+      >
+        Network
+      </div>
+      <div class="buffer tab-title flex-fill"></div>
+    </div>
+  </div>
+
+  <div>
+    <div [class.hidden]="!isOverview">
+      <app-team
+        *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
+        [overviewEntity]="overviewEntity"
+      >
+      </app-team>
+      <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
+        <p>Kein Team ausgewählt</p>
+        <img
+          src="{{ this.backgroundLogoSrc$ | async }}"
+          alt="Greyed out company logo"
+          width="242"
+          class="puzzle-logo"
+        />
+      </div>
+    </div>
+
+    <div [class.hidden]="isOverview">
+      <app-diagram [alignmentData$]="alignmentLists$"></app-diagram>
+    </div>
   </div>
 </div>
 <router-outlet></router-outlet>

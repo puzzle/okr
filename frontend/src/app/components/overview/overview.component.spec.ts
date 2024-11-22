@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { overViewEntity1 } from '../../shared/testData';
+import { alignmentLists, overViewEntity1 } from '../../shared/testData';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
 import { AppRoutingModule } from '../../app-routing.module';
@@ -16,9 +16,14 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AlignmentService } from '../../services/alignment.service';
 
 const overviewService = {
   getOverview: jest.fn(),
+};
+
+const alignmentService = {
+  getAlignmentByFilter: jest.fn(),
 };
 
 const authGuardMock = () => {
@@ -52,6 +57,10 @@ describe('OverviewComponent', () => {
         {
           provide: OverviewService,
           useValue: overviewService,
+        },
+        {
+          provide: AlignmentService,
+          useValue: alignmentService,
         },
         {
           provide: authGuard,
@@ -130,6 +139,23 @@ describe('OverviewComponent', () => {
     jest.spyOn(component, 'loadOverview');
     component.loadOverview();
     expect(component.loadOverview).toHaveBeenLastCalledWith();
+  });
+
+  it('should call overviewService on overview', async () => {
+    jest.spyOn(overviewService, 'getOverview');
+    component.isOverview = true;
+
+    component.loadOverview(3, [5, 6], '');
+    expect(overviewService.getOverview).toHaveBeenCalled();
+  });
+
+  it('should call alignmentService on diagram', async () => {
+    jest.spyOn(alignmentService, 'getAlignmentByFilter').mockReturnValue(of(alignmentLists));
+    component.isOverview = false;
+    fixture.detectChanges();
+
+    component.loadOverview(3, [5, 6], '');
+    expect(alignmentService.getAlignmentByFilter).toHaveBeenCalled();
   });
 
   function markFiltersAsReady() {

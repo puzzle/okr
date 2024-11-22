@@ -1,0 +1,6 @@
+export enum ObjectiveState {
+  DRAFT = 'DRAFT',
+  ONGOING = 'ONGOING',
+  SUCCESSFUL = 'SUCCESSFUL',
+  NOTSUCCESSFUL = 'NOTSUCCESSFUL',
+}

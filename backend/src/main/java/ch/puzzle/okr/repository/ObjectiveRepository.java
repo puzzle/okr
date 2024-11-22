@@ -14,4 +14,6 @@ public interface ObjectiveRepository extends CrudRepository<Objective, Long> {
     Integer countByTeamAndQuarter(Team team, Quarter quarter);
 
     List<Objective> findObjectivesByTeamId(Long id);
+
+    List<Objective> findObjectivesByQuarterId(Long id);
 }

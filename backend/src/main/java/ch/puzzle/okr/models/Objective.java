@@ -1,5 +1,6 @@
 package ch.puzzle.okr.models;
 
+import ch.puzzle.okr.dto.alignment.AlignedEntityDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -52,6 +53,7 @@ public class Objective implements WriteableInterface {
     private User modifiedBy;
 
     private transient boolean writeable;
+    private transient AlignedEntityDto alignedEntity;
 
     public Objective() {
     }
@@ -68,6 +70,7 @@ public class Objective implements WriteableInterface {
         setState(builder.state);
         setCreatedOn(builder.createdOn);
         setModifiedBy(builder.modifiedBy);
+        setAlignedEntity(builder.alignedEntity);
     }
 
     public Long getId() {
@@ -160,12 +163,20 @@ public class Objective implements WriteableInterface {
         this.writeable = writeable;
     }
 
+    public AlignedEntityDto getAlignedEntity() {
+        return alignedEntity;
+    }
+
+    public void setAlignedEntity(AlignedEntityDto alignedEntity) {
+        this.alignedEntity = alignedEntity;
+    }
+
     @Override
     public String toString() {
         return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
                 + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
                 + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
-                + modifiedBy + ", writeable=" + writeable + '\'' + '}';
+                + modifiedBy + ", writeable=" + writeable + ", alignedEntity=" + alignedEntity + '\'' + '}';
     }
 
     @Override
@@ -201,6 +212,7 @@ public class Objective implements WriteableInterface {
         private State state;
         private LocalDateTime createdOn;
         private User modifiedBy;
+        private AlignedEntityDto alignedEntity;
 
         private Builder() {
         }
@@ -261,6 +273,11 @@ public class Objective implements WriteableInterface {
 
         public Builder withModifiedBy(User modifiedBy) {
             this.modifiedBy = modifiedBy;
+            return this;
+        }
+
+        public Builder withAlignedEntity(AlignedEntityDto alignedEntity) {
+            this.alignedEntity = alignedEntity;
             return this;
         }
 

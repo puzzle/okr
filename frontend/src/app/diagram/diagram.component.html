@@ -1,0 +1,9 @@
+<div *ngIf="((alignmentData$ | async)?.alignmentObjectDtoList)!.length != 0" id="cy"></div>
+
+<div
+  *ngIf="((alignmentData$ | async)?.alignmentObjectDtoList)!.length == 0"
+  class="d-flex align-items-center flex-column pt-5 gap-5"
+>
+  <p>Kein Alignment vorhanden</p>
+  <img src="assets/images/puzzle-p.svg" alt="Puzzle Logo" width="242" class="puzzle-logo" />
+</div>

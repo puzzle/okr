@@ -87,7 +87,9 @@ export class CheckInFormComponent implements OnInit {
 
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
       this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {
-        this.dialogRef.close();
+        this.dialogRef.close({
+          checkIn: checkIn,
+        });
       });
     });
   }

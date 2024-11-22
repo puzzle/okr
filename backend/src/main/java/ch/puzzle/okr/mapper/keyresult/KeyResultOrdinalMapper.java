@@ -86,7 +86,7 @@ public class KeyResultOrdinalMapper {
 
     public KeyResultLastCheckInOrdinalDto getLastCheckInDto(Long keyResultId) {
         CheckIn lastCheckIn = checkInBusinessService.getLastCheckInByKeyResultId(keyResultId);
-        if (lastCheckIn == null) {
+        if (!(lastCheckIn instanceof CheckInOrdinal)) {
             return null;
         }
         return new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(), lastCheckIn.getVersion(),

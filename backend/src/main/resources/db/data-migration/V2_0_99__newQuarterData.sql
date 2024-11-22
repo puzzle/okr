@@ -33,7 +33,14 @@ values (19, 1, 'Lorem Ipsum sit amet diri guru humu saguri alam apmach helum di 
        (22, 1, 'Lorem Ipsum sit amet diri guru humu saguri alam apmach helum di gau', '2023-10-02 13:07:56.000000',
         'Wing Wang Tala Tala Ting Tang', 1, 7, 6, 'DRAFT', null, '2023-10-02 09:08:40.000000'),
        (21, 1, 'Lorem Ipsum sit amet diri guru humu saguri alam apmach helum di gau', '2023-10-02 13:07:09.000000',
-        'Ting Tang Wala Wala Bing Bang', 1, 7, 6, 'DRAFT', null, '2023-10-02 09:07:39.000000');
+        'Ting Tang Wala Wala Bing Bang', 1, 7, 6, 'DRAFT', null, '2023-10-02 09:07:39.000000'),
+       (40,1,'', '2024-04-04 13:45:13.000000','Wir wollen eine gute Mitarbeiterzufriedenheit.', 1, 6, 5, 'ONGOING', null,'2024-04-04 13:44:52.000000'),
+       (41,1,'','2024-04-04 13:59:06.511620','Das Projekt generiert 10000 CHF Umsatz',1,6,5,'ONGOING',null,'2024-04-04 13:59:06.523496'),
+       (42,1,'','2024-04-04 13:59:40.835896','Die Lehrlinge sollen Freude haben',1,6,4,'ONGOING',null,'2024-04-04 13:59:40.848992'),
+       (43,1,'','2024-04-04 14:00:05.586152','Der Firmenumsatz steigt',1,6,5,'ONGOING',null,'2024-04-04 14:00:05.588509'),
+       (44,1,'','2024-04-04 14:00:28.221906','Die Members sollen gerne zur Arbeit kommen',1,6,6,'ONGOING',null,'2024-04-04 14:00:28.229058'),
+       (45,1,'','2024-04-04 14:00:47.659884','Unsere Designer äussern sich zufrieden',1,6,8,'ONGOING',null,'2024-04-04 14:00:47.664414'),
+       (46,1,'','2024-04-04 14:00:57.485887','Unsere Designer kommen gerne zur Arbeit',1,6,8,'ONGOING',null,'2024-04-04 14:00:57.494192');
 
 insert into key_result (id, version, baseline, description, modified_on, stretch_goal, title, created_by_id,
                         objective_id, owner_id, unit, key_result_type, created_on, commit_zone, target_zone,
@@ -123,7 +130,9 @@ values (20, 1, 0,
         'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
         '2023-10-02 13:15:22.000000', null,
         'Clap of thunder bilge aft log crows nest landlubber or just lubber overhaul', 1, 11, 1, '', 'ordinal',
-        '2023-10-02 09:16:07.000000', 'This is the commit zone', 'This is the target zone', 'This is the stretch zone');
+        '2023-10-02 09:16:07.000000', 'This is the commit zone', 'This is the target zone', 'This is the stretch zone'),
+       (40,1,50,'',null,70,'60% sind in der Membersumfrage zufrienden',1,40,1,'PERCENT','metric','2024-04-04 14:06:21.689768',null,null,null),
+       (41,1,20000,'',null,80000,'Wir erreichen einen Umsatz von 70000 CHF',1,46,1,'CHF','metric','2024-04-04 14:06:42.100353',null,null,null);
 
 insert into check_in (id, version, change_info, created_on, initiatives, modified_on, value_metric, created_by_id,
                       key_result_id,
@@ -171,7 +180,8 @@ values (21, 1,
         null, 1, 30, 2, 'ordinal', 'FAIL'),
        (32, 1, 'Lorem ipsum dolor sit amet, richi rogsi brokilon', '2023-10-02 08:50:44.059000',
         ' sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat', '2023-10-02 22:00:00.000000',
-        13, 1, 31, 3, 'metric', null);
+        13, 1, 31, 3, 'metric', null),
+       (40,1,'','2024-04-04 14:10:33.377726','','2024-04-04 14:10:33.377739',30000,1,41,7,'metric',null);
 
 insert into quarter (id, label, start_date, end_date)
 values (8, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31');
@@ -191,3 +201,17 @@ values (1, 1, 15, 'Not successful because there were many events this month'),
        (2, 1, 19, 'Was not successful because we were too slow'),
        (3, 1, 18, 'Sadly we had not enough members to complete this objective'),
        (4, 1, 20, 'Objective could be completed fast and easy');
+
+insert into alignment(id, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id, version)
+values (1, 4, 'objective', null, 6, 0),
+       (2, 3, 'objective', null, 6, 0),
+       (3, 8, 'objective', null, 3, 0),
+       (4, 9, 'keyResult', 8, null, 0),
+       (5, 10, 'keyResult', 5, null, 0),
+       (6, 5, 'keyResult', 4, null, 0),
+       (7, 6, 'keyResult', 3, null, 0),
+--        (8, 41, 'objective', null, 40, 0),
+       (9, 42, 'objective', null, 40, 0),
+       (10, 43, 'keyResult', 41, null, 0),
+       (11, 44, 'objective', null, 42, 0),
+       (12, 45, 'keyResult', 40, null, 0);

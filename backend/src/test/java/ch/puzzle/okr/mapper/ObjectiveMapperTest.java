@@ -113,8 +113,8 @@ public class ObjectiveMapperTest {
                 STATE, //
                 CREATE_DATE_TIME, //
                 MODIFIED_DATE_TIME, //
-                IS_WRITEABLE //
-        );
+                IS_WRITEABLE, //
+                null);
 
         // mock (LocalDateTime.now()) + act + assert
         try (MockedStatic<LocalDateTime> mockedStatic = Mockito.mockStatic(LocalDateTime.class)) {

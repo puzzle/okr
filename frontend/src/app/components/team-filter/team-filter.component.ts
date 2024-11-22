@@ -7,10 +7,12 @@ import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { UserService } from '../../services/user.service';
 import { extractTeamsFromUser } from '../../shared/types/model/User';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-team-filter',
   templateUrl: './team-filter.component.html',
+  styleUrls: ['./team-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
@@ -20,12 +22,16 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   private subscription?: Subscription;
 
+  showMoreTeams: boolean = true;
+  isMobile: boolean = false;
+
   constructor(
     private teamService: TeamService,
     private route: ActivatedRoute,
     private router: Router,
     private refreshDataService: RefreshDataService,
     private userService: UserService,
+    private breakpointObserver: BreakpointObserver,
   ) {
     this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.refreshTeamData();
@@ -34,6 +40,13 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.refreshTeamData();
+
+    this.breakpointObserver
+      .observe(['(min-width: 1px) and (max-width: 767px)'])
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
   }
 
   private refreshTeamData() {
@@ -55,6 +68,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
           this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser()).map((team) => team.id);
         } else {
           this.activeTeams = knownTeams;
+        }
+        if (this.isMobile) {
+          this.teams$.next(this.sortTeamsToggledPriority());
         }
         this.changeTeamFilterParams();
       });
@@ -82,6 +98,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       this.activeTeams.push(id);
     }
 
+    if (this.isMobile) {
+      this.teams$.next(this.sortTeamsToggledPriority());
+    }
     this.changeTeamFilterParams();
   }
 
@@ -96,5 +115,23 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   getAllTeamIds() {
     return this.teams$.getValue().map((team) => team.id);
+  }
+
+  getTeamName(id: number): string {
+    let teamName = this.teams$.getValue().find((team) => team.id === id)?.name;
+    return teamName ?? 'no team name';
+  }
+
+  sortTeamsToggledPriority() {
+    return this.teams$.getValue().sort((a, b) => {
+      const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;
+      const bToggled = this.activeTeams.includes(b.id) ? 0 : 1;
+
+      if (aToggled !== bToggled) {
+        return aToggled - bToggled;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
   }
 }

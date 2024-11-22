@@ -211,6 +211,6 @@ describe('SearchTeamManagementComponent', () => {
   it('should switch to teams page when selected', () => {
     component.selectTeam(teams[0]);
 
-    expect(navigateSpy).toHaveBeenCalledWith('/team-management/3');
+    expect(navigateSpy).toHaveBeenCalledWith('/team-management/1');
   });
 });

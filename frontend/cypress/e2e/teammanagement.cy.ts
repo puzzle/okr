@@ -110,38 +110,11 @@ describe('Team management tests', () => {
     });
 
     it('Delete team', () => {
-      cy.intercept('DELETE', '**/teams/*').as('saveTeam');
-      cy.intercept('GET', '**/users').as('getUsers');
-
-      cy.contains('app-team-list .mat-mdc-list-item', teamName).click();
-
-      //Click delete button
-      cy.getByTestId('teamMoreButton').click();
-      cy.getByTestId('teamDeleteButton').click();
-
-      // cancel dialog => cancel
-
-      ConfirmDialog.do()
-        .checkTitle('Team löschen')
-        .checkDescription(
-          `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
-        )
-        .cancel();
+      //Click delete button and cancel
+      teammanagementPage.deleteTeam(teamName).cancel();
 
       // try again and confirm dialog
-      cy.getByTestId('teamMoreButton').click();
-      cy.getByTestId('teamDeleteButton').click();
-
-      ConfirmDialog.do()
-        .checkTitle('Team löschen')
-        .checkDescription(
-          `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
-        )
-        .submit();
-
-      cy.wait(['@saveTeam', '@getUsers']);
-
-      cy.contains(teamName).should('not.exist');
+      teammanagementPage.deleteTeam(teamName).submit();
     });
 
     describe('Search', () => {

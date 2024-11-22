@@ -251,7 +251,7 @@ describe('OKR Check-in e2e tests', () => {
         .fillKeyResultDescription('This is my description')
         .submit();
       keyresultDetailPage.visit('I am a metric keyresult for testing');
-      keyresultDetailPage.createCheckIn();
+      keyresultDetailPage.elements.addCheckin().click();
       ConfirmDialog.do().checkTitle('Check-in im Draft-Status');
       ConfirmDialog.do().checkDescription(
         'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?',

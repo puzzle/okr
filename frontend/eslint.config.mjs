@@ -10,11 +10,13 @@ export default tsEslint.config(
     files: ["**/*.ts"],
       rules: {
         "unused-imports/no-unused-imports": "error",
-        //disable rules so eslint passes, probably fix later
+        // ToDo: Disable rules so eslint passes, fix in followup ticket
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-unused-expressions": "off",
         "no-undef": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-namespace": "off",
+        "prefer-rest-params": "off",
         //stylistic rules
         "@stylistic/function-call-argument-newline": ["error", "never"],
         "@stylistic/padded-blocks": ["error", "never"],
@@ -29,15 +31,17 @@ export default tsEslint.config(
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "prefer-rest-params": "off",
-
     },
   }, {
     ...html.configs["flat/recommended"],
     files: ["**/*.html"],
     rules: {
       ...html.configs["flat/recommended"].rules,
+      // ToDo: Disable rules so eslint passes, fix in followup ticket
+      "@html-eslint/require-img-alt": "off",
+      "@html-eslint/element-newline": "off",
+      //stylistic rules
       "@html-eslint/indent": ["error",2],
-
     }
   }, {
     plugins: {

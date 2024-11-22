@@ -6,12 +6,7 @@
 
 .keyResult-detail-attribute-show {
   background-color: $display-element;
-  height: 100%;
-  font-size: 0.85rem;
-}
-
-.ordinal-zone-title {
-  font-size: 1.1rem;
+  height: auto;
 }
 
 .scoring-detail {
@@ -69,10 +64,6 @@
   }
   .ordinal-col {
     width: 100%;
-  }
-
-  .keyResult-detail-attribute-show {
-    height: auto;
   }
 
   .confidence-container {

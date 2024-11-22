@@ -4,10 +4,12 @@ import { Completed } from '../../shared/types/model/Completed';
 import { ObjectiveService } from '../../services/objective.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
+import { CompletedService } from '../../services/completed.servce';
 
 export class ObjectiveMenuAfterActions {
   constructor(
     private readonly objectiveService: ObjectiveService,
+    private readonly completedService: CompletedService,
     private readonly refreshDataService: RefreshDataService,
   ) {}
 
@@ -21,7 +23,7 @@ export class ObjectiveMenuAfterActions {
         comment: result.comment,
       };
       this.objectiveService.updateObjective(objective).subscribe(() => {
-        this.objectiveService.createCompleted(completed).subscribe(() => {
+        this.completedService.createCompleted(completed).subscribe(() => {
           this.refreshDataService.markDataRefresh();
         });
       });
@@ -50,7 +52,7 @@ export class ObjectiveMenuAfterActions {
     this.objectiveService.getFullObjective(objectiveMin.id).subscribe((objective: Objective) => {
       objective.state = 'ONGOING' as State;
       this.objectiveService.updateObjective(objective).subscribe(() => {
-        this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
+        this.completedService.deleteCompleted(objective.id).subscribe(() => {
           this.refreshDataService.markDataRefresh();
         });
       });

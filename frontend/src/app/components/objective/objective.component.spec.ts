@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import * as de from '../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { ObjectiveService } from '../../services/objective.service';
+import { CompletedService } from '../../services/completed.servce';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
@@ -28,6 +29,11 @@ const overviewServiceMock = {
 
 const objectiveServiceMock = {
   getFullObjective: jest.fn(),
+};
+
+const completedServiceMock = {
+  createCompleted: jest.fn(),
+  deleteCompleted: jest.fn(),
 };
 
 describe('ObjectiveColumnComponent', () => {
@@ -54,6 +60,7 @@ describe('ObjectiveColumnComponent', () => {
       providers: [
         { provide: OverviewService, useValue: overviewServiceMock },
         { provide: ObjectiveService, useValue: objectiveServiceMock },
+        { provide: CompletedService, useValue: completedServiceMock },
       ],
     }).compileComponents();
 

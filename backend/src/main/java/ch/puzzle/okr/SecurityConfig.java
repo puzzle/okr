@@ -57,17 +57,11 @@ public class SecurityConfig {
         setHeaders(http);
         http.addFilterAfter(new ForwardFilter(), BasicAuthenticationFilter.class);
         logger.debug("*** apiSecurityFilterChain reached");
+        setHeaders(http);
         return http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(e -> e.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())).build();
-    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain securityHeadersFilter(HttpSecurity http) throws Exception {
-        logger.debug("*** SecurityHeader reached");
-        return setHeaders(http).build();
     }
 
     @Bean
@@ -87,16 +81,17 @@ public class SecurityConfig {
     }
 
     private HttpSecurity setHeaders(HttpSecurity http) throws Exception {
-        return http.headers(headers -> headers
-                .contentSecurityPolicy(c -> c.policyDirectives(okrContentSecurityPolicy()))
-                .crossOriginEmbedderPolicy(c -> c.policy(REQUIRE_CORP))
-                .crossOriginOpenerPolicy(c -> c.policy(OPENER_SAME_ORIGIN))
-                .crossOriginResourcePolicy(c -> c.policy(RESOURCE_SAME_ORIGIN))
-                .addHeaderWriter(new StaticHeadersWriter("X-Permitted-Cross-Domain-Policies", "none"))
-                .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
-                .xssProtection(c -> c.headerValue(ENABLED_MODE_BLOCK))
-                .httpStrictTransportSecurity(c -> c.includeSubDomains(true).maxAgeInSeconds(31536000))
-                .referrerPolicy(c -> c.policy(NO_REFERRER)).permissionsPolicy(c -> c.policy(okrPermissionPolicy())));
+        return http
+                .headers(headers -> headers.contentSecurityPolicy(c -> c.policyDirectives(okrContentSecurityPolicy()))
+                        .crossOriginEmbedderPolicy(c -> c.policy(REQUIRE_CORP))
+                        .crossOriginOpenerPolicy(c -> c.policy(OPENER_SAME_ORIGIN))
+                        .crossOriginResourcePolicy(c -> c.policy(RESOURCE_SAME_ORIGIN))
+                        .addHeaderWriter(new StaticHeadersWriter("X-Permitted-Cross-Domain-Policies", "none"))
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
+                        .xssProtection(c -> c.headerValue(ENABLED_MODE_BLOCK))
+                        .httpStrictTransportSecurity(c -> c.includeSubDomains(true).maxAgeInSeconds(31536000))
+                        .referrerPolicy(c -> c.policy(NO_REFERRER))
+                        .permissionsPolicyHeader(c -> c.policy(okrPermissionPolicy())));
     }
 
     private String okrContentSecurityPolicy() {

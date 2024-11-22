@@ -28,7 +28,9 @@ export default tsEslint.config(
       "@stylistic/function-call-argument-newline": ["error", "never"],
       "@stylistic/padded-blocks": ["error", "never"],
       "@stylistic/dot-location": ["error", "property"],
-      "@stylistic/newline-per-chained-call": ["error", { "ignoreChainWithDepth": 1 }]
+      "@stylistic/newline-per-chained-call": ["error", { "ignoreChainWithDepth": 1 }],
+      "@stylistic/indent": ["error", 2],
+      // "@stylistic/quotes":"off"
     },
   }
 );

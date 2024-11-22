@@ -1,9 +1,8 @@
-
 import eslint from "@eslint/js";
 import tsEslint from "typescript-eslint";
 import unusedImports from "eslint-plugin-unused-imports";
 import stylistic from "@stylistic/eslint-plugin";
-
+import html from "@html-eslint/eslint-plugin";
 
 export default tsEslint.config(
   eslint.configs.recommended,
@@ -13,8 +12,17 @@ export default tsEslint.config(
       files: ['**/*.spec.ts'],
       rules: {
         "@typescript-eslint/no-explicit-any": "off"
+      },
     },
-  },
+    {
+        ...html.configs["flat/recommended"],
+        files: ["**/*.html"],
+        rules: {
+            ...html.configs["flat/recommended"].rules,
+            "@html-eslint/indent": ["error",2],
+
+        }
+    },
   {
     plugins: {
       'unused-imports': unusedImports,

@@ -50,6 +50,8 @@
     "@cypress/schematic": "^2.5.2",
     "@cypress/skip-test": "^2.6.1",
     "@eslint/js": "^9.15.0",
+    "@html-eslint/eslint-plugin": "^0.27.0",
+    "@html-eslint/parser": "^0.27.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.13",
     "@types/uuid": "^10.0.0",

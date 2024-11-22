@@ -98,21 +98,27 @@ describe('OKR team e2e tests', () => {
       cy.contains('Z-Team');
 
       teammanagementPage.visitOverview();
+
+      // set viewport to < 768 to trigger mobile header
       cy.viewport(767, 1200);
+
       cy.getByTestId('expansion-panel-header').click();
       cy.contains('Weniger');
 
+      // reset viewport
       cy.viewport(Cypress.config('viewportWidth'), Cypress.config('viewportHeight'));
 
       cy.visit(`${teammanagementPage.getURL()}`);
-      teammanagementPage.clickOnTeamDetailView('X-Team');
-      teammanagementPage.deleteTeam('X-Team', false);
+      cy.intercept('DELETE', '**/teams/*').as('deleteTeam');
 
-      teammanagementPage.clickOnTeamDetailView('Y-Team');
-      teammanagementPage.deleteTeam('Y-Team', false);
+      teammanagementPage.deleteTeam('X-Team').submit();
+      cy.wait('@deleteTeam');
 
-      teammanagementPage.clickOnTeamDetailView('Z-Team');
-      teammanagementPage.deleteTeam('Z-Team', false);
+      teammanagementPage.deleteTeam('Y-Team').submit();
+      cy.wait('@deleteTeam');
+
+      teammanagementPage.deleteTeam('Z-Team').submit();
+      cy.wait('@deleteTeam');
     });
   });
 });

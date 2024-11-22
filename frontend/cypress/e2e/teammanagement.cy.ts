@@ -110,16 +110,11 @@ describe('Team management tests', () => {
     });
 
     it('Delete team', () => {
-      // cy.intercept('GET', '**/users').as('getUsers');
-
-      teammanagementPage.clickOnTeamDetailView(teamName);
-
       //Click delete button and cancel
-      teammanagementPage.deleteTeam(teamName, true);
+      teammanagementPage.deleteTeam(teamName).cancel();
 
       // try again and confirm dialog
-      teammanagementPage.deleteTeam(teamName, false);
-      // cy.wait(['@getUsers']);
+      teammanagementPage.deleteTeam(teamName).submit();
     });
 
     describe('Search', () => {

@@ -43,27 +43,16 @@ export default class TeammanagementPage extends Page {
     return new TeamDialog();
   }
 
-  clickOnTeamDetailView(teamName: string) {
+  deleteTeam(teamName: string) {
     cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
-  }
-
-  deleteTeam(teamName: string, pressCancel: boolean): void {
-    cy.intercept('DELETE', '**/teams/*').as('deleteTeamRequest');
-
     cy.getByTestId('teamMoreButton').click();
     cy.getByTestId('teamDeleteButton').click();
 
-    ConfirmDialog.do()
+    return ConfirmDialog.do()
       .checkTitle('Team löschen')
       .checkDescription(
         `Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`,
-      )
-      [pressCancel ? 'cancel' : 'submit']();
-
-    if (!pressCancel) {
-      cy.wait('@deleteTeamRequest').its('response.statusCode').should('eq', 200);
-      cy.contains(teamName).should('not.exist');
-    }
+      );
   }
 
   getURL(): string {

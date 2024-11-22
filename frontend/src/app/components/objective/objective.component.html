@@ -17,7 +17,7 @@
             class="icon"
             matTooltip="{{ getStateTooltip(objective.state) }}"
             matTooltipPosition="above"
-          />
+          >
           <h2 class="title fit-content">{{ objective.title }}</h2>
         </div>
         <button
@@ -29,7 +29,11 @@
           (keydown.enter)="$event.stopPropagation()"
           [attr.data-testId]="'three-dot-menu'"
         >
-          <img src="../assets/icons/three-dot-menu-icon.svg" alt="menu icon" class="text-white menu-scale" />
+          <img
+            src="../assets/icons/three-dot-menu-icon.svg"
+            alt="menu icon"
+            class="text-white menu-scale"
+          >
         </button>
       </section>
 
@@ -55,7 +59,11 @@
           (keydown.enter)="$event.stopPropagation()"
         >
           <span class="d-flex align-items-center add-text">
-            <img alt="Add key-result button" class="add-cross-button" src="../../../assets/icons/new-icon.svg" />
+            <img
+              alt="Add key-result button"
+              class="add-cross-button"
+              src="../../../assets/icons/new-icon.svg"
+            >
             Key Result hinzufügen
           </span>
         </button>

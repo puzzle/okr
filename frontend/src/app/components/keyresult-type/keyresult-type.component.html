@@ -58,7 +58,7 @@
             [ngClass]="formInputCheck(keyResultForm, 'baseline')"
             formControlName="baseline"
             id="baseline"
-          />
+          >
           <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'baseline')">
             <span>{{ getErrorMessage("MUST_BE_NUMBER", "Baseline", null, null) }}</span>
           </mat-error>
@@ -76,7 +76,7 @@
             [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
             formControlName="stretchGoal"
             id="stretchGoal"
-          />
+          >
           <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
             <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
           </mat-error>

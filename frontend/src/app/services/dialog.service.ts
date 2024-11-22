@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { ComponentType } from '@angular/cdk/overlay';
-import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { TranslateService } from '@ngx-translate/core';
-import { ButtonState } from '../shared/types/enums/ButtonState';
+import { Injectable } from "@angular/core";
+import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
+import { ComponentType } from "@angular/cdk/overlay";
+import { ConfirmDialogComponent } from "../shared/dialog/confirm-dialog/confirm-dialog.component";
+import { TranslateService } from "@ngx-translate/core";
+import { ButtonState } from "../shared/types/enums/ButtonState";
 
 export interface ConfirmDialogData {
   title: string;
@@ -14,16 +14,16 @@ export interface ConfirmDialogData {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DialogService {
-  DIALOG_PANEL_CLASS_DEFAULT = 'okr-dialog-panel-default';
-  DIALOG_PANEL_CLASS_SMALL = 'okr-dialog-panel-small';
+  DIALOG_PANEL_CLASS_DEFAULT = "okr-dialog-panel-default";
+  DIALOG_PANEL_CLASS_SMALL = "okr-dialog-panel-small";
 
   DIALOG_CONFIG: MatDialogConfig = {
-    maxWidth: '100vw', // Used to override the default maxWidth of angular material dialog
+    maxWidth: "100vw", // Used to override the default maxWidth of angular material dialog
     restoreFocus: true,
-    autoFocus: 'first-tabbable',
+    autoFocus: "first-tabbable",
   };
 
   constructor(
@@ -39,7 +39,7 @@ export class DialogService {
     });
   }
 
-  openConfirmDialog(translationKey: string, i18nData?: Object): MatDialogRef<ConfirmDialogComponent> {
+  openConfirmDialog(translationKey: string, i18nData?: object): MatDialogRef<ConfirmDialogComponent> {
     const title = this.translationService.instant(`${translationKey}.TITLE`, i18nData);
     const text = this.translationService.instant(`${translationKey}.TEXT`, i18nData);
     return this.open(ConfirmDialogComponent, {

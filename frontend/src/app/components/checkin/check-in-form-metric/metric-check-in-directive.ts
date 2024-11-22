@@ -1,8 +1,8 @@
-import { Directive, HostListener, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Directive, HostListener, forwardRef } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Directive({
-  selector: '[metricCheckIn]',
+  selector: "[metricCheckIn]",
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -27,13 +27,16 @@ export class MetricCheckInDirective implements ControlValueAccessor {
     // does not need to be implemented
   }
 
-  @HostListener('input', ['$event.target.value'])
+  @HostListener("input", ["$event.target.value"])
   handleInput(param: string): void {
-    const value: string = param || '0';
-    if (value.toString().at(0) == '-') {
-      this.onChange(+('-' + value.toString().replace(this.CHAR_REGEX, '')));
+    const value: string = param || "0";
+    if (value.toString()
+      .at(0) == "-") {
+      this.onChange(+("-" + value.toString()
+        .replace(this.CHAR_REGEX, "")));
       return;
     }
-    this.onChange(Number(value.toString().replace(this.CHAR_REGEX, '')));
+    this.onChange(Number(value.toString()
+      .replace(this.CHAR_REGEX, "")));
   }
 }

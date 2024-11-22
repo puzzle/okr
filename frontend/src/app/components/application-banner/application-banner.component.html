@@ -27,10 +27,12 @@
                 <div class="w-100 d-flex justify-content-between">
                   <span *ngIf="!panelOpenState; else openedPanel">{{
                     (quarterLabel$ | async) || quarterLabel$.getValue()
-                  }}</span>
+                    }}</span>
                   <span *ngIf="!panelOpenState">Filter</span>
                 </div>
-                <ng-template #openedPanel><p>Filter</p></ng-template>
+                <ng-template #openedPanel>
+                  <p>Filter</p>
+                </ng-template>
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="d-flex gap-2 flex-column filter-container">

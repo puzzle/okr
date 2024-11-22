@@ -1,13 +1,13 @@
-import { filterByObjectiveName, filterByObjectiveState, getObjectiveColumns } from '../../objectiveHelper';
-import ObjectiveDialog from '../dialogs/objectiveDialog';
-import { Page } from './page';
-import KeyResultDialog from '../dialogs/keyResultDialog';
-import { filterByKeyResultName, getKeyResults } from '../../keyResultHelper';
+import { filterByObjectiveName, filterByObjectiveState, getObjectiveColumns } from "../../objectiveHelper";
+import ObjectiveDialog from "../dialogs/objectiveDialog";
+import { Page } from "./page";
+import KeyResultDialog from "../dialogs/keyResultDialog";
+import { filterByKeyResultName, getKeyResults } from "../../keyResultHelper";
 
 export default class CyOverviewPage extends Page {
   elements = {
-    logo: () => cy.getByTestId('logo'),
-    teammanagement: () => cy.getByTestId('team-management'),
+    logo: () => cy.getByTestId("logo"),
+    teammanagement: () => cy.getByTestId("team-management"),
   };
 
   visitGJForTests() {
@@ -32,112 +32,161 @@ export default class CyOverviewPage extends Page {
 
   addObjective(teamName?: string) {
     if (teamName) {
-      this.getTeamByName(teamName).find('.add-objective').first().click();
+      this.getTeamByName(teamName)
+        .find(".add-objective")
+        .first()
+        .click();
       return new ObjectiveDialog();
     }
-    cy.getByTestId('add-objective').first().click();
+    cy.getByTestId("add-objective")
+      .first()
+      .click();
     return new ObjectiveDialog();
   }
 
   addKeyResult(teamName?: string, objectiveName?: string) {
     if (teamName && objectiveName) {
-      this.getObjectiveByTeamAndName(teamName, objectiveName).findByTestId('add-keyResult').first().click();
+      this.getObjectiveByTeamAndName(teamName, objectiveName)
+        .findByTestId("add-keyResult")
+        .first()
+        .click();
     } else if (teamName) {
-      this.getTeamByName(teamName).findByTestId('add-keyResult').first().click();
+      this.getTeamByName(teamName)
+        .findByTestId("add-keyResult")
+        .first()
+        .click();
     } else if (objectiveName) {
-      this.getObjectiveByName(objectiveName).findByTestId('add-keyResult').first().click();
+      this.getObjectiveByName(objectiveName)
+        .findByTestId("add-keyResult")
+        .first()
+        .click();
     } else {
-      cy.getByTestId('add-keyResult').first().click();
+      cy.getByTestId("add-keyResult")
+        .first()
+        .click();
     }
 
     return new KeyResultDialog();
   }
 
   addOngoingKeyResult() {
-    this.getObjectiveByState('ongoing').findByTestId('add-keyResult').first().click();
+    this.getObjectiveByState("ongoing")
+      .findByTestId("add-keyResult")
+      .first()
+      .click();
 
     return new KeyResultDialog();
   }
 
   getTeamByName(teamName: string) {
-    return cy.contains('.team-title', teamName).parentsUntil('#overview').last();
+    return cy.contains(".team-title", teamName)
+      .parentsUntil("#overview")
+      .last();
   }
 
   getFirstObjective() {
-    return cy.get('.objective').first();
+    return cy.get(".objective")
+      .first();
   }
 
   getObjectiveByNameAndState(objectiveName: string, state: string) {
-    this.getObjectivesByNameAndState(objectiveName, state).last().as('objective').scrollIntoView();
-    return cy.get('@objective');
+    this.getObjectivesByNameAndState(objectiveName, state)
+      .last()
+      .as("objective")
+      .scrollIntoView();
+    return cy.get("@objective");
   }
 
   getObjectivesByNameAndState(objectiveName: string, state: string) {
-    return getObjectiveColumns().filter(filterByObjectiveName(objectiveName)).filter(filterByObjectiveState(state));
+    return getObjectiveColumns()
+      .filter(filterByObjectiveName(objectiveName))
+      .filter(filterByObjectiveState(state));
   }
 
   getObjectiveByName(objectiveName: string) {
-    this.getObjectivesByName(objectiveName).last().as('objective').scrollIntoView();
-    return cy.get('@objective');
+    this.getObjectivesByName(objectiveName)
+      .last()
+      .as("objective")
+      .scrollIntoView();
+    return cy.get("@objective");
   }
 
   getObjectiveByTeamAndName(teamName: string, objectiveName: string) {
     this.getTeamByName(teamName)
-      .find('.objective')
+      .find(".objective")
       .filter(filterByObjectiveName(objectiveName))
       .last()
-      .as('team')
+      .as("team")
       .scrollIntoView();
 
-    return cy.get('@team');
+    return cy.get("@team");
   }
 
   getObjectivesByName(objectiveName: string) {
-    return getObjectiveColumns().filter(filterByObjectiveName(objectiveName));
+    return getObjectiveColumns()
+      .filter(filterByObjectiveName(objectiveName));
   }
 
   getObjectiveByState(state: string) {
-    this.getObjectivesByState(state).first().as('objective').scrollIntoView();
-    return cy.get('@objective');
+    this.getObjectivesByState(state)
+      .first()
+      .as("objective")
+      .scrollIntoView();
+    return cy.get("@objective");
   }
 
   getObjectivesByState(state: string) {
-    return getObjectiveColumns().filter(filterByObjectiveState(state));
+    return getObjectiveColumns()
+      .filter(filterByObjectiveState(state));
   }
 
   getKeyResultByName(keyResultName: string) {
-    this.getKeyResultsByName(keyResultName).last().as('keyResult').scrollIntoView();
-    return cy.get('@keyResult');
+    this.getKeyResultsByName(keyResultName)
+      .last()
+      .as("keyResult")
+      .scrollIntoView();
+    return cy.get("@keyResult");
   }
 
   getKeyResultsByName(keyresultName: string) {
-    return getKeyResults().filter(filterByKeyResultName(keyresultName));
+    return getKeyResults()
+      .filter(filterByKeyResultName(keyresultName));
   }
 
   selectFromThreeDotMenu(optionName: string) {
-    cy.contains(optionName).should('exist');
-    cy.get('.objective-three-dot-menu').contains(optionName).as('option').scrollIntoView();
+    cy.contains(optionName)
+      .should("exist");
+    cy.get(".objective-three-dot-menu")
+      .contains(optionName)
+      .as("option")
+      .scrollIntoView();
 
-    cy.get('@option').should('have.class', 'objective-menu-option').click();
+    cy.get("@option")
+      .should("have.class", "objective-menu-option")
+      .click();
   }
 
   duplicateObjective(objectiveName: string) {
-    this.getObjectiveByName(objectiveName).findByTestId('three-dot-menu').click();
-    this.selectFromThreeDotMenu('Objective duplizieren');
+    this.getObjectiveByName(objectiveName)
+      .findByTestId("three-dot-menu")
+      .click();
+    this.selectFromThreeDotMenu("Objective duplizieren");
     return new ObjectiveDialog();
   }
 
   visitTeammanagement(): void {
-    this.elements.teammanagement().click();
+    this.elements.teammanagement()
+      .click();
   }
 
   getURL(): string {
-    return '';
+    return "";
   }
 
   validatePage(): void {}
 
   protected doVisit(): void {
-    this.elements.logo().click();
+    this.elements.logo()
+      .click();
   }
 }

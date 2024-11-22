@@ -13,14 +13,14 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-import './commands';
-import 'cypress-real-events';
-import { onlyOn } from '@cypress/skip-test';
+import "./commands";
+import "cypress-real-events";
+import { onlyOn } from "@cypress/skip-test";
 
 Cypress.Keyboard.defaults({
   keystrokeDelay: 0,
 });
 
 beforeEach(() => {
-  onlyOn('chrome');
+  onlyOn("chrome");
 });

@@ -1,17 +1,17 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Objective } from '../../shared/types/model/Objective';
-import { ObjectiveService } from '../../services/objective.service';
-import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
-import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService } from '../../services/dialog.service';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Objective } from "../../shared/types/model/Objective";
+import { ObjectiveService } from "../../services/objective.service";
+import { BehaviorSubject, catchError, EMPTY } from "rxjs";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { KeyresultDialogComponent } from "../keyresult-dialog/keyresult-dialog.component";
+import { ObjectiveFormComponent } from "../../shared/dialog/objective-dialog/objective-form.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { DialogService } from "../../services/dialog.service";
 
 @Component({
-  selector: 'app-objective-detail',
-  templateUrl: './objective-detail.component.html',
-  styleUrl: 'objective-detail.component.scss',
+  selector: "app-objective-detail",
+  templateUrl: "./objective-detail.component.html",
+  styleUrl: "objective-detail.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveDetailComponent {
@@ -32,9 +32,9 @@ export class ObjectiveDetailComponent {
   }
 
   private getIdFromParams(): number {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get("id");
     if (!id) {
-      throw Error('objective id is undefined');
+      throw Error("objective id is undefined");
     }
     return parseInt(id);
   }
@@ -85,6 +85,6 @@ export class ObjectiveDetailComponent {
   }
 
   backToOverview() {
-    this.router.navigate(['']);
+    this.router.navigate([""]);
   }
 }

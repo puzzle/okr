@@ -9,7 +9,11 @@
     (cdkDropListDropped)="drop($event)"
     id="actionlist"
   >
-    <div class="action-point-item" *ngFor="let action of (control | async)!; index as i; trackBy: trackByFn" cdkDrag>
+    <div
+      class="action-point-item"
+      *ngFor="let action of (control | async)!; index as i; trackBy: trackByFn"
+      cdkDrag
+    >
       <div class="drag-drop-dots">
         <img
           cdkDragHandle
@@ -17,7 +21,7 @@
           src="../../../assets/icons/drag_indicator.svg"
           alt="Drag indicator"
           [attr.data-testId]="'dragIcon'"
-        />
+        >
       </div>
       <input
         #listItem
@@ -28,7 +32,7 @@
         class="action-input"
         [value]="action.action"
         [attr.data-testId]="'actionInput'"
-      />
+      >
       <img
         tabindex="0"
         (keydown.tab)="increaseActiveItemWithTab()"
@@ -38,7 +42,7 @@
         src="../../../assets/icons/delete-icon.svg"
         alt="Delete bin"
         (click)="removeAction(i)"
-      />
+      >
     </div>
   </div>
 
@@ -56,7 +60,7 @@
           alt="Add action button"
           class="add-cross-button"
           id="add-action"
-        />
+        >
         Weitere Action hinzufügen
       </span>
     </button>

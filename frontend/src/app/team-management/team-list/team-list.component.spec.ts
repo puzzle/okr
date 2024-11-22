@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { TeamService } from '../../services/team.service';
-import { TeamListComponent } from './team-list.component';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { of } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
+import { TeamService } from "../../services/team.service";
+import { TeamListComponent } from "./team-list.component";
 
-describe('TeamListComponent', () => {
+describe("TeamListComponent", () => {
   let component: TeamListComponent;
   let fixture: ComponentFixture<TeamListComponent>;
   let teamService: TeamService;
@@ -12,7 +12,8 @@ describe('TeamListComponent', () => {
   const paramTeamId = 1;
 
   const teamServiceMock = {
-    getAllTeams: jest.fn().mockReturnValue(of()),
+    getAllTeams: jest.fn()
+      .mockReturnValue(of()),
   };
 
   const activatedRouteMock: any = {
@@ -28,7 +29,8 @@ describe('TeamListComponent', () => {
         { provide: TeamService, useValue: teamServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
-    }).compileComponents();
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -39,20 +41,23 @@ describe('TeamListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
   });
 
-  it('should set selected teamid', () => {
+  it("should set selected teamid", () => {
     component.ngOnInit();
-    expect(component.selectedTeamId).toBe(paramTeamId);
+    expect(component.selectedTeamId)
+      .toBe(paramTeamId);
   });
 
-  it('should set selected teamid', () => {
+  it("should set selected teamid", () => {
     activatedRouteMock.paramMap = of({
       get: () => undefined,
     });
     component.ngOnInit();
-    expect(component.selectedTeamId).toBe(undefined);
+    expect(component.selectedTeamId)
+      .toBe(undefined);
   });
 });

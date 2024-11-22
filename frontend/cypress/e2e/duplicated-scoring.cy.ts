@@ -1,8 +1,8 @@
-import * as users from '../fixtures/users.json';
-import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
-import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
+import * as users from "../fixtures/users.json";
+import CyOverviewPage from "../support/helper/dom-helper/pages/overviewPage";
+import KeyResultDetailPage from "../support/helper/dom-helper/pages/keyResultDetailPage";
 
-describe('e2e test for scoring adjustment on objective duplicate', () => {
+describe("e2e test for scoring adjustment on objective duplicate", () => {
   let overviewPage = new CyOverviewPage();
   let keyresultDetailPage = new KeyResultDetailPage();
 
@@ -12,48 +12,50 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it('Duplicate ordinal checkin and validate value of scoring component', () => {
+  it("Duplicate ordinal checkin and validate value of scoring component", () => {
     overviewPage
-      .addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
-      .fillKeyResultTitle('stretch keyresult for testing')
-      .withOrdinalValues('Ex. val', 'Ex. val', 'Ex. val')
+      .addKeyResult("Puzzle ITC", "Wir wollen die Kundenzufriedenheit steigern")
+      .fillKeyResultTitle("stretch keyresult for testing")
+      .withOrdinalValues("Ex. val", "Ex. val", "Ex. val")
       .submit();
 
-    cy.contains('stretch keyresult for testing');
+    cy.contains("stretch keyresult for testing");
     keyresultDetailPage
-      .visit('stretch keyresult for testing')
+      .visit("stretch keyresult for testing")
       .createCheckIn()
-      .selectOrdinalCheckInZone('stretch')
+      .selectOrdinalCheckInZone("stretch")
       .setCheckInConfidence(8)
-      .fillCheckInCommentary('Testveränderungen')
-      .fillCheckInInitiatives('Testmassnahmen')
+      .fillCheckInCommentary("Testveränderungen")
+      .fillCheckInInitiatives("Testmassnahmen")
       .submit();
 
-    cy.intercept('GET', '**/overview?*').as('indexPage');
+    cy.intercept("GET", "**/overview?*")
+      .as("indexPage");
     keyresultDetailPage.close();
-    cy.wait('@indexPage');
+    cy.wait("@indexPage");
 
     overviewPage
-      .duplicateObjective('Wir wollen die Kundenzufriedenheit steigern')
-      .fillObjectiveTitle('A duplicated Objective for this tool')
-      .selectQuarter('3')
+      .duplicateObjective("Wir wollen die Kundenzufriedenheit steigern")
+      .fillObjectiveTitle("A duplicated Objective for this tool")
+      .selectQuarter("3")
       .submit();
 
-    overviewPage.checkForToaster('Das Objective wurde erfolgreich erstellt.', 'success');
+    overviewPage.checkForToaster("Das Objective wurde erfolgreich erstellt.", "success");
 
     overviewPage.visitNextQuarter();
 
     overviewPage
-      .getKeyResultByName('stretch keyresult for testing')
-      .findByTestId('scoring-component')
-      .findByTestId('fail')
-      .as('fail-area');
+      .getKeyResultByName("stretch keyresult for testing")
+      .findByTestId("scoring-component")
+      .findByTestId("fail")
+      .as("fail-area");
 
-    cy.get('@fail-area').should(($fail) => {
-      expect($fail).not.to.have.css('score-red');
-      expect($fail).not.to.have.css('score-yellow');
-      expect($fail).not.to.have.css('score-green');
-      expect($fail).not.to.have.css('score-stretch');
-    });
+    cy.get("@fail-area")
+      .should(($fail) => {
+        expect($fail).not.to.have.css("score-red");
+        expect($fail).not.to.have.css("score-yellow");
+        expect($fail).not.to.have.css("score-green");
+        expect($fail).not.to.have.css("score-stretch");
+      });
   });
 });

@@ -1,4 +1,4 @@
-import { PageObjectMapperBase } from './pageObjectMapperBase';
+import { PageObjectMapperBase } from "./pageObjectMapperBase";
 
 export default class AngularSearchBox extends PageObjectMapperBase {
   selector: string;
@@ -10,24 +10,26 @@ export default class AngularSearchBox extends PageObjectMapperBase {
   }
 
   fill(value: string) {
-    const input = cy.get('input').first();
+    const input = cy.get("input")
+      .first();
     input.clear();
     input.type(value);
     return this;
   }
 
   shouldHaveOption(option: string) {
-    cy.contains('.mat-mdc-autocomplete-panel mat-option', option);
+    cy.contains(".mat-mdc-autocomplete-panel mat-option", option);
     return this;
   }
 
   shouldHaveLabel(label: string) {
-    cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', label);
+    cy.contains(".mat-mdc-autocomplete-panel .mat-mdc-optgroup-label", label);
     return this;
   }
 
   selectOption(option: string) {
-    cy.contains('.mat-mdc-autocomplete-panel mat-option', option).click();
+    cy.contains(".mat-mdc-autocomplete-panel mat-option", option)
+      .click();
   }
 
   getPage() {
@@ -39,6 +41,7 @@ export default class AngularSearchBox extends PageObjectMapperBase {
   }
 
   validatePage(): void {
-    this.getPage().should('exist');
+    this.getPage()
+      .should("exist");
   }
 }

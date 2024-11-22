@@ -1,24 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { KeyresultService } from '../../services/keyresult.service';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
-import { CheckInHistoryDialogComponent } from '../check-in-history-dialog/check-in-history-dialog.component';
-import { BehaviorSubject, catchError, EMPTY, Subject, takeUntil } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { CloseState } from '../../shared/types/enums/CloseState';
-import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
-import { State } from '../../shared/types/enums/State';
-import { DATE_FORMAT } from '../../shared/constantLibary';
-import { calculateCurrentPercentage, isLastCheckInNegative } from '../../shared/common';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
-import { DialogService } from '../../services/dialog.service';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { KeyResult } from "../../shared/types/model/KeyResult";
+import { KeyresultService } from "../../services/keyresult.service";
+import { KeyResultMetric } from "../../shared/types/model/KeyResultMetric";
+import { KeyResultOrdinal } from "../../shared/types/model/KeyResultOrdinal";
+import { CheckInHistoryDialogComponent } from "../check-in-history-dialog/check-in-history-dialog.component";
+import { BehaviorSubject, catchError, EMPTY, Subject, takeUntil } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { CloseState } from "../../shared/types/enums/CloseState";
+import { CheckInFormComponent } from "../checkin/check-in-form/check-in-form.component";
+import { State } from "../../shared/types/enums/State";
+import { DATE_FORMAT } from "../../shared/constantLibary";
+import { calculateCurrentPercentage, isLastCheckInNegative } from "../../shared/common";
+import { KeyresultDialogComponent } from "../keyresult-dialog/keyresult-dialog.component";
+import { DialogService } from "../../services/dialog.service";
 
 @Component({
-  selector: 'app-keyresult-detail',
-  templateUrl: './keyresult-detail.component.html',
-  styleUrls: ['./keyresult-detail.component.scss'],
+  selector: "app-keyresult-detail",
+  templateUrl: "./keyresult-detail.component.html",
+  styleUrls: ["./keyresult-detail.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeyresultDetailComponent implements OnInit, OnDestroy {
@@ -41,9 +41,10 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.keyResultId = this.getIdFromParams();
     this.loadKeyResult(this.keyResultId);
-    this.refreshDataService.reloadKeyResultSubject.pipe(takeUntil(this.ngDestroy$)).subscribe(() => {
-      this.loadKeyResult(this.keyResultId);
-    });
+    this.refreshDataService.reloadKeyResultSubject.pipe(takeUntil(this.ngDestroy$))
+      .subscribe(() => {
+        this.loadKeyResult(this.keyResultId);
+      });
   }
 
   ngOnDestroy() {
@@ -52,9 +53,9 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   }
 
   private getIdFromParams(): number {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get("id");
     if (!id) {
-      throw Error('keyresult id is undefined');
+      throw Error("keyresult id is undefined");
     }
     return parseInt(id);
   }
@@ -66,7 +67,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
       .subscribe((keyResult) => {
         this.keyResult$.next(keyResult);
         const state = keyResult.objective.state;
-        this.isComplete = state === ('SUCCESSFUL' as State) || state === ('NOTSUCCESSFUL' as State);
+        this.isComplete = state === ("SUCCESSFUL" as State) || state === ("NOTSUCCESSFUL" as State);
       });
   }
 
@@ -85,9 +86,10 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
         isComplete: this.isComplete,
       },
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.refreshDataService.markDataRefresh();
-    });
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   openEditKeyResultDialog(keyResult: KeyResult) {
@@ -104,7 +106,8 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
           this.loadKeyResult(result.id);
           this.refreshDataService.markDataRefresh();
         } else if (result?.closeState === CloseState.DELETED) {
-          this.router.navigate(['']).then(() => this.refreshDataService.markDataRefresh());
+          this.router.navigate([""])
+            .then(() => this.refreshDataService.markDataRefresh());
         } else {
           this.loadKeyResult(this.keyResult$.getValue().id);
         }
@@ -112,9 +115,9 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   }
 
   checkForDraftState(keyResult: KeyResult) {
-    if (keyResult.objective.state.toUpperCase() === 'DRAFT') {
+    if (keyResult.objective.state.toUpperCase() === "DRAFT") {
       this.dialogService
-        .openConfirmDialog('CONFIRMATION.DRAFT_CREATE')
+        .openConfirmDialog("CONFIRMATION.DRAFT_CREATE")
         .afterClosed()
         .subscribe((result) => {
           if (result) {
@@ -132,14 +135,15 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
         keyResult: this.keyResult$.getValue(),
       },
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.refreshDataService.reloadKeyResultSubject.next();
-      this.refreshDataService.markDataRefresh();
-    });
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.refreshDataService.reloadKeyResultSubject.next();
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   backToOverview() {
-    this.router.navigate(['']);
+    this.router.navigate([""]);
   }
 
   protected readonly calculateCurrentPercentage = calculateCurrentPercentage;

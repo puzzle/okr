@@ -11,7 +11,7 @@
             [ngClass]="formInputCheck(teamForm, 'name')"
             formControlName="name"
             id="name"
-          />
+          >
           <mat-error *ngIf="hasFormFieldErrors(teamForm, 'name')">
             <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
           </mat-error>
@@ -32,7 +32,12 @@
         Speichern
       </button>
 
-      <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
+      <button
+        color="primary"
+        mat-button
+        mat-dialog-close
+        [attr.data-testId]="'cancel'"
+      >Abbrechen</button>
     </div>
   </ng-container>
 </app-dialog-template-core>

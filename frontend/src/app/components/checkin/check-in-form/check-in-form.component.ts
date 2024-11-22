@@ -1,20 +1,20 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { KeyResultMetric } from '../../../shared/types/model/KeyResultMetric';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { KeyResult } from '../../../shared/types/model/KeyResult';
-import { KeyResultOrdinal } from '../../../shared/types/model/KeyResultOrdinal';
-import { CheckInMin } from '../../../shared/types/model/CheckInMin';
-import { CheckInService } from '../../../services/check-in.service';
-import { Action } from '../../../shared/types/model/Action';
-import { ActionService } from '../../../services/action.service';
-import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from "@angular/core";
+import { KeyResultMetric } from "../../../shared/types/model/KeyResultMetric";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { KeyResult } from "../../../shared/types/model/KeyResult";
+import { KeyResultOrdinal } from "../../../shared/types/model/KeyResultOrdinal";
+import { CheckInMin } from "../../../shared/types/model/CheckInMin";
+import { CheckInService } from "../../../services/check-in.service";
+import { Action } from "../../../shared/types/model/Action";
+import { ActionService } from "../../../services/action.service";
+import { formInputCheck, hasFormFieldErrors } from "../../../shared/common";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-check-in-form',
-  templateUrl: './check-in-form.component.html',
-  styleUrls: ['./check-in-form.component.scss'],
+  selector: "app-check-in-form",
+  templateUrl: "./check-in-form.component.html",
+  styleUrls: ["./check-in-form.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckInFormComponent implements OnInit {
@@ -23,10 +23,10 @@ export class CheckInFormComponent implements OnInit {
   currentDate: Date;
   continued: boolean = false;
   dialogForm = new FormGroup({
-    value: new FormControl<string>('', [Validators.required]),
+    value: new FormControl<string>("", [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required, Validators.min(0), Validators.max(10)]),
-    changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
-    initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
+    changeInfo: new FormControl<string>("", [Validators.maxLength(4096)]),
+    initiatives: new FormControl<string>("", [Validators.maxLength(4096)]),
     actionList: new FormControl<Action[]>([]),
   });
   protected readonly formInputCheck = formInputCheck;
@@ -49,7 +49,8 @@ export class CheckInFormComponent implements OnInit {
   }
 
   getErrorMessage(error: string, field: string, maxLength: number): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(maxLength);
+    return field + this.translate.instant("DIALOG_ERRORS." + error)
+      .format(maxLength);
   }
 
   setDefaultValues() {
@@ -78,18 +79,20 @@ export class CheckInFormComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-    let checkIn: any = {
+    const checkIn: any = {
       ...this.dialogForm.value,
       id: this.checkIn.id,
       version: this.checkIn.version,
       keyResultId: this.keyResult.id,
     };
 
-    this.checkInService.saveCheckIn(checkIn).subscribe(() => {
-      this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {
-        this.dialogRef.close();
+    this.checkInService.saveCheckIn(checkIn)
+      .subscribe(() => {
+        this.actionService.updateActions(this.dialogForm.value.actionList!)
+          .subscribe(() => {
+            this.dialogRef.close();
+          });
       });
-    });
   }
 
   getKeyResultMetric(): KeyResultMetric {
@@ -101,7 +104,7 @@ export class CheckInFormComponent implements OnInit {
   }
 
   getActions(): Action[] {
-    return this.dialogForm.controls['actionList'].value || [];
+    return this.dialogForm.controls["actionList"].value || [];
   }
 
   changeIsChecked(event: any, index: number) {
@@ -111,6 +114,6 @@ export class CheckInFormComponent implements OnInit {
   }
 
   getDialogTitle(): string {
-    return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
+    return this.checkIn.id ? "Check-in bearbeiten" : "Check-in erfassen";
   }
 }

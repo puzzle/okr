@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { DEFAULT_HEADER_HEIGHT_PX } from '../shared/constantLibary';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Subject } from "rxjs";
+import { DEFAULT_HEADER_HEIGHT_PX } from "../shared/constantLibary";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class RefreshDataService {
   public reloadOverviewSubject: Subject<void> = new Subject();

@@ -1,19 +1,19 @@
-import { TeamManagementBannerComponent } from './team-management-banner.component';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
-import { of } from 'rxjs';
-import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
-import { SearchTeamManagementComponent } from '../search-team-management/search-team-management.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ActivatedRoute } from '@angular/router';
-import { DialogService } from '../../services/dialog.service';
-import { OkrTangramComponent } from '../../shared/custom/okr-tangram/okr-tangram.component';
+import { TeamManagementBannerComponent } from "./team-management-banner.component";
+import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { MatDialogModule } from "@angular/material/dialog";
+import { of } from "rxjs";
+import { AddEditTeamDialog } from "../add-edit-team-dialog/add-edit-team-dialog.component";
+import { SearchTeamManagementComponent } from "../search-team-management/search-team-management.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { TranslateModule } from "@ngx-translate/core";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { ActivatedRoute } from "@angular/router";
+import { DialogService } from "../../services/dialog.service";
+import { OkrTangramComponent } from "../../shared/custom/okr-tangram/okr-tangram.component";
 
-describe('TeamManagementBannerComponent', () => {
+describe("TeamManagementBannerComponent", () => {
   let component: TeamManagementBannerComponent;
   let fixture: ComponentFixture<TeamManagementBannerComponent>;
 
@@ -36,7 +36,8 @@ describe('TeamManagementBannerComponent', () => {
         { provide: DialogService, useValue: dialogServiceMock },
         { provide: ActivatedRoute, useValue: {} },
       ],
-    }).compileComponents();
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -44,17 +45,20 @@ describe('TeamManagementBannerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
   });
 
-  it('createTeam should open dialog', fakeAsync(() => {
+  it("createTeam should open dialog", fakeAsync(() => {
     dialogServiceMock.open.mockReturnValue({
       afterClosed: () => of(),
     });
     component.createTeam();
     tick();
-    expect(dialogServiceMock.open).toBeCalledTimes(1);
-    expect(dialogServiceMock.open).toBeCalledWith(AddEditTeamDialog);
+    expect(dialogServiceMock.open)
+      .toBeCalledTimes(1);
+    expect(dialogServiceMock.open)
+      .toBeCalledWith(AddEditTeamDialog);
   }));
 });

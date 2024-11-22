@@ -32,7 +32,7 @@
         [matAutocomplete]="auto"
         formControlName="owner"
         id="owner"
-      />
+      >
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameFromUser.bind(this)">
         <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
           {{ user.firstname + " " + user.lastname }}

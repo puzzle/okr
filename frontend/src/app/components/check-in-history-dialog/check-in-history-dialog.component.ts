@@ -1,19 +1,19 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { CheckInMin } from '../../shared/types/model/CheckInMin';
-import { CheckInService } from '../../services/check-in.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DATE_FORMAT } from '../../shared/constantLibary';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
-import { Observable, of } from 'rxjs';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { DialogService } from '../../services/dialog.service';
+import { Component, Inject, OnInit } from "@angular/core";
+import { CheckInMin } from "../../shared/types/model/CheckInMin";
+import { CheckInService } from "../../services/check-in.service";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { DATE_FORMAT } from "../../shared/constantLibary";
+import { KeyResult } from "../../shared/types/model/KeyResult";
+import { CheckInFormComponent } from "../checkin/check-in-form/check-in-form.component";
+import { Observable, of } from "rxjs";
+import { KeyResultMetric } from "../../shared/types/model/KeyResultMetric";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { DialogService } from "../../services/dialog.service";
 
 @Component({
-  selector: 'app-check-in-history-dialog',
-  templateUrl: './check-in-history-dialog.component.html',
-  styleUrls: ['./check-in-history-dialog.component.scss'],
+  selector: "app-check-in-history-dialog",
+  templateUrl: "./check-in-history-dialog.component.html",
+  styleUrls: ["./check-in-history-dialog.component.scss"],
 })
 export class CheckInHistoryDialogComponent implements OnInit {
   keyResult!: KeyResult;
@@ -42,11 +42,12 @@ export class CheckInHistoryDialogComponent implements OnInit {
         checkIn: checkIn,
       },
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.loadCheckInHistory();
-      this.refreshDataService.reloadKeyResultSubject.next();
-      this.refreshDataService.markDataRefresh();
-    });
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.loadCheckInHistory();
+        this.refreshDataService.reloadKeyResultSubject.next();
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   loadCheckInHistory() {

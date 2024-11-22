@@ -1,6 +1,6 @@
-import { User } from './User';
-import { UserRole } from '../enums/UserRole';
-import { UserTeam } from './UserTeam';
+import { User } from "./User";
+import { UserRole } from "../enums/UserRole";
+import { UserTeam } from "./UserTeam";
 
 export interface UserTableEntry {
   id: number;

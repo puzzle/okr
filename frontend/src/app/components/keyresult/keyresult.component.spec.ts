@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { KeyresultComponent } from './keyresult.component';
-import { keyResultMetricMin } from '../../shared/testData';
-import { MatDialogModule } from '@angular/material/dialog';
-import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
-import { ConfidenceComponent } from '../confidence/confidence.component';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { KeyresultComponent } from "./keyresult.component";
+import { keyResultMetricMin } from "../../shared/testData";
+import { MatDialogModule } from "@angular/material/dialog";
+import { ScoringComponent } from "../../shared/custom/scoring/scoring.component";
+import { ConfidenceComponent } from "../confidence/confidence.component";
 
-describe('KeyresultComponent', () => {
+describe("KeyresultComponent", () => {
   let component: KeyresultComponent;
   let fixture: ComponentFixture<KeyresultComponent>;
 
@@ -13,7 +13,8 @@ describe('KeyresultComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [KeyresultComponent, ScoringComponent, ConfidenceComponent],
       imports: [MatDialogModule],
-    }).compileComponents();
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(KeyresultComponent);
     component = fixture.componentInstance;
@@ -21,7 +22,8 @@ describe('KeyresultComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
   });
 });

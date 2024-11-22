@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { CheckInMin } from '../../shared/types/model/CheckInMin';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { CheckInMin } from "../../shared/types/model/CheckInMin";
 
 @Component({
-  selector: 'app-confidence',
-  templateUrl: './confidence.component.html',
-  styleUrls: ['./confidence.component.scss'],
+  selector: "app-confidence",
+  templateUrl: "./confidence.component.html",
+  styleUrls: ["./confidence.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfidenceComponent implements OnChanges {
@@ -15,7 +15,7 @@ export class ConfidenceComponent implements OnChanges {
   @Input() checkIn!: CheckInMin;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!changes['checkIn']?.currentValue) {
+    if (!changes["checkIn"]?.currentValue) {
       this.checkIn = { confidence: 5 } as CheckInMin;
     }
   }

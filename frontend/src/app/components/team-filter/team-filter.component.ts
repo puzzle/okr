@@ -1,18 +1,18 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
-import { Team } from '../../shared/types/model/Team';
-import { TeamService } from '../../services/team.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../../shared/common';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { UserService } from '../../services/user.service';
-import { extractTeamsFromUser } from '../../shared/types/model/User';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from "rxjs";
+import { Team } from "../../shared/types/model/Team";
+import { TeamService } from "../../services/team.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from "../../shared/common";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { UserService } from "../../services/user.service";
+import { extractTeamsFromUser } from "../../shared/types/model/User";
+import { BreakpointObserver } from "@angular/cdk/layout";
 
 @Component({
-  selector: 'app-team-filter',
-  templateUrl: './team-filter.component.html',
-  styleUrls: ['./team-filter.component.scss'],
+  selector: "app-team-filter",
+  templateUrl: "./team-filter.component.html",
+  styleUrls: ["./team-filter.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
@@ -33,16 +33,17 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private breakpointObserver: BreakpointObserver,
   ) {
-    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.refreshTeamData();
-    });
+    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.refreshTeamData();
+      });
   }
 
   ngOnInit(): void {
     this.refreshTeamData();
 
     this.breakpointObserver
-      .observe(['(min-width: 1px) and (max-width: 767px)'])
+      .observe(["(min-width: 1px) and (max-width: 767px)"])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.isMobile = result.matches;
@@ -56,16 +57,17 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     this.subscription = this.teamService
       .getAllTeams()
       .pipe(
-        takeUntil(this.unsubscribe$),
-        filter((teams) => teams.length > 0),
+        takeUntil(this.unsubscribe$), filter((teams) => teams.length > 0),
       )
       .subscribe((teams: Team[]) => {
         this.teams$.next(teams);
-        const teamQuery = this.route.snapshot.queryParams['teams'];
+        const teamQuery = this.route.snapshot.queryParams["teams"];
         const teamIds = getValueFromQuery(teamQuery);
-        const knownTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
+        const knownTeams = this.getAllTeamIds()
+          .filter((teamId) => teamIds?.includes(teamId));
         if (knownTeams.length == 0) {
-          this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser()).map((team) => team.id);
+          this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
+            .map((team) => team.id);
         } else {
           this.activeTeams = knownTeams;
         }
@@ -82,7 +84,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   }
 
   changeTeamFilterParams() {
-    const params = { teams: this.activeTeams.join(',') };
+    const params = { teams: this.activeTeams.join(",") };
     const optionalParams = optionalReplaceWithNulls(params);
     this.router
       .navigate([], { queryParams: optionalParams })
@@ -114,24 +116,27 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   }
 
   getAllTeamIds() {
-    return this.teams$.getValue().map((team) => team.id);
+    return this.teams$.getValue()
+      .map((team) => team.id);
   }
 
   getTeamName(id: number): string {
-    let teamName = this.teams$.getValue().find((team) => team.id === id)?.name;
-    return teamName ?? 'no team name';
+    const teamName = this.teams$.getValue()
+      .find((team) => team.id === id)?.name;
+    return teamName ?? "no team name";
   }
 
   sortTeamsToggledPriority() {
-    return this.teams$.getValue().sort((a, b) => {
-      const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;
-      const bToggled = this.activeTeams.includes(b.id) ? 0 : 1;
+    return this.teams$.getValue()
+      .sort((a, b) => {
+        const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;
+        const bToggled = this.activeTeams.includes(b.id) ? 0 : 1;
 
-      if (aToggled !== bToggled) {
-        return aToggled - bToggled;
-      }
+        if (aToggled !== bToggled) {
+          return aToggled - bToggled;
+        }
 
-      return a.name.localeCompare(b.name);
-    });
+        return a.name.localeCompare(b.name);
+      });
   }
 }

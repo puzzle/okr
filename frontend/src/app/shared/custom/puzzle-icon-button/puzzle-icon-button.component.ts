@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-puzzle-icon-button',
-  templateUrl: './puzzle-icon-button.component.html',
-  styleUrl: './puzzle-icon-button.component.scss',
+  selector: "app-puzzle-icon-button",
+  templateUrl: "./puzzle-icon-button.component.html",
+  styleUrl: "./puzzle-icon-button.component.scss",
 })
 export class PuzzleIconButtonComponent {
   @Input({ required: true })
@@ -20,8 +20,8 @@ export class PuzzleIconButtonComponent {
 
   getStyle() {
     return {
-      'border-radius': this.size / 2 + 'px',
-      padding: this.padding + 'px',
+      "border-radius": this.size / 2 + "px",
+      padding: this.padding + "px",
     };
   }
 }

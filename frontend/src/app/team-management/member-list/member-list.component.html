@@ -27,7 +27,11 @@
         mat-button
       >
         <span class="d-flex align-items-center fw-bold add-text">
-          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          <img
+            alt="Add key-result button"
+            class="add-cross-button"
+            src="/assets/icons/new-icon.svg"
+          >
           Member hinzufügen
         </span>
       </button>
@@ -40,7 +44,11 @@
         mat-button
       >
         <span class="d-flex align-items-center fw-bold add-text">
-          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          <img
+            alt="Add key-result button"
+            class="add-cross-button"
+            src="/assets/icons/new-icon.svg"
+          >
           Member registrieren
         </span>
       </button>
@@ -61,7 +69,11 @@
         >
           <span>Member hinzufügen</span>
         </button>
-        <button (click)="deleteTeam(selectedTeam$.value!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+        <button
+          (click)="deleteTeam(selectedTeam$.value!)"
+          mat-menu-item
+          [attr.data-testId]="'teamDeleteButton'"
+        >
           <app-puzzle-icon icon="delete-icon.svg" alt="Delete Team"></app-puzzle-icon>
           <span class="font-size-14">Team löschen</span>
         </button>

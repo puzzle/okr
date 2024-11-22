@@ -1,4 +1,4 @@
-import { PageObjectMapperBase } from '../pageObjectMapperBase';
+import { PageObjectMapperBase } from "../pageObjectMapperBase";
 import Chainable = Cypress.Chainable;
 
 export default abstract class Dialog extends PageObjectMapperBase {
@@ -8,19 +8,23 @@ export default abstract class Dialog extends PageObjectMapperBase {
   }
 
   override validatePage() {
-    this.getPage().should('exist');
+    this.getPage()
+      .should("exist");
   }
 
   submit() {
-    cy.getByTestId('save').click();
+    cy.getByTestId("save")
+      .click();
   }
 
   cancel() {
-    cy.getByTestId('cancel').click();
+    cy.getByTestId("cancel")
+      .click();
   }
 
   close() {
-    cy.getByTestId('close-dialog').click();
+    cy.getByTestId("close-dialog")
+      .click();
   }
 
   protected fillInputByTestId(testId: string, value: string) {

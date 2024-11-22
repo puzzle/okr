@@ -1,13 +1,13 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { formInputCheck, hasFormFieldErrors } from '../../common';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, Inject } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { formInputCheck, hasFormFieldErrors } from "../../common";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-complete-dialog',
-  templateUrl: './complete-dialog.component.html',
-  styleUrls: ['./complete-dialog.component.scss'],
+  selector: "app-complete-dialog",
+  templateUrl: "./complete-dialog.component.html",
+  styleUrls: ["./complete-dialog.component.scss"],
 })
 export class CompleteDialogComponent {
   completeForm = new FormGroup({
@@ -28,29 +28,30 @@ export class CompleteDialogComponent {
     let successfulValue = this.completeForm.value.isSuccessful;
     if (
       successfulValue == null ||
-      (input == 'successful' && !successfulValue) ||
-      (input == 'notSuccessful' && successfulValue)
+      (input == "successful" && !successfulValue) ||
+      (input == "notSuccessful" && successfulValue)
     ) {
-      successfulValue = input == 'successful';
+      successfulValue = input == "successful";
       this.completeForm.patchValue({ isSuccessful: successfulValue });
     }
   }
 
   closeDialog() {
     this.dialogRef.close({
-      endState: this.completeForm.value.isSuccessful ? 'SUCCESSFUL' : 'NOTSUCCESSFUL',
+      endState: this.completeForm.value.isSuccessful ? "SUCCESSFUL" : "NOTSUCCESSFUL",
       comment: this.completeForm.value.comment,
     });
   }
 
   removeStandardHover() {
-    let elements = document.querySelectorAll('.card-hover');
+    const elements = document.querySelectorAll(".card-hover");
     elements.forEach((el) => {
-      el.classList.remove('card-hover');
+      el.classList.remove("card-hover");
     });
   }
 
   getErrorMessage(error: string, field: string, maxLength: number): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(maxLength);
+    return field + this.translate.instant("DIALOG_ERRORS." + error)
+      .format(maxLength);
   }
 }

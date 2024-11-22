@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { CheckInMin } from '../shared/types/model/CheckInMin';
-import { Observable } from 'rxjs';
-import { CheckIn } from '../shared/types/model/CheckIn';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { CheckInMin } from "../shared/types/model/CheckInMin";
+import { Observable } from "rxjs";
+import { CheckIn } from "../shared/types/model/CheckIn";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class CheckInService {
   constructor(private httpclient: HttpClient) {}
@@ -16,9 +16,9 @@ export class CheckInService {
 
   saveCheckIn(checkIn: CheckIn) {
     if (checkIn.id) {
-      return this.httpclient.put<any>('/api/v2/checkIns/' + checkIn.id, checkIn);
+      return this.httpclient.put<any>("/api/v2/checkIns/" + checkIn.id, checkIn);
     } else {
-      return this.httpclient.post<any>('/api/v2/checkIns', checkIn);
+      return this.httpclient.post<any>("/api/v2/checkIns", checkIn);
     }
   }
 }

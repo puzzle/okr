@@ -1,7 +1,7 @@
-import { KeyResultObjective } from './KeyResultObjective';
-import { CheckIn } from './CheckIn';
-import { User } from './User';
-import { Action } from './Action';
+import { KeyResultObjective } from "./KeyResultObjective";
+import { CheckIn } from "./CheckIn";
+import { User } from "./User";
+import { Action } from "./Action";
 
 export interface KeyResult {
   id: number;

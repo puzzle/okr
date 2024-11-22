@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, TrackByFunction } from '@angular/core';
-import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
-import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { Objective } from '../../shared/types/model/Objective';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
-import { DialogService } from '../../services/dialog.service';
+import { ChangeDetectionStrategy, Component, Input, OnInit, TrackByFunction } from "@angular/core";
+import { OverviewEntity } from "../../shared/types/model/OverviewEntity";
+import { ObjectiveFormComponent } from "../../shared/dialog/objective-dialog/objective-form.component";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { Objective } from "../../shared/types/model/Objective";
+import { KeyresultDialogComponent } from "../keyresult-dialog/keyresult-dialog.component";
+import { ObjectiveMin } from "../../shared/types/model/ObjectiveMin";
+import { DialogService } from "../../services/dialog.service";
 
 @Component({
-  selector: 'app-team',
-  templateUrl: './team.component.html',
-  styleUrls: ['./team.component.scss'],
+  selector: "app-team",
+  templateUrl: "./team.component.html",
+  styleUrls: ["./team.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamComponent implements OnInit {
@@ -34,12 +34,13 @@ export class TeamComponent implements OnInit {
         },
       },
     });
-    matDialogRef.afterClosed().subscribe((result) => {
-      if (result?.addKeyResult) {
-        this.openAddKeyResultDialog(result.objective);
-      }
-      this.refreshDataService.markDataRefresh();
-    });
+    matDialogRef.afterClosed()
+      .subscribe((result) => {
+        if (result?.addKeyResult) {
+          this.openAddKeyResultDialog(result.objective);
+        }
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   openAddKeyResultDialog(objective: Objective) {

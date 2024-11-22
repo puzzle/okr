@@ -1,13 +1,13 @@
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Subject, takeUntil } from 'rxjs';
-import { Team } from '../../shared/types/model/Team';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User } from '../../shared/types/model/User';
-import { UserService } from '../../services/user.service';
-import { FormControl } from '@angular/forms';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { TeamService } from '../../services/team.service';
-import { UserTableEntry } from '../../shared/types/model/UserTableEntry';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Subject, takeUntil } from "rxjs";
+import { Team } from "../../shared/types/model/Team";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { User } from "../../shared/types/model/User";
+import { UserService } from "../../services/user.service";
+import { FormControl } from "@angular/forms";
+import { MatTable, MatTableDataSource } from "@angular/material/table";
+import { TeamService } from "../../services/team.service";
+import { UserTableEntry } from "../../shared/types/model/UserTableEntry";
 
 export type AddMemberToTeamDialogComponentData = {
   team: Team;
@@ -15,17 +15,17 @@ export type AddMemberToTeamDialogComponentData = {
 };
 
 @Component({
-  selector: 'app-add-member-to-team-dialog',
-  templateUrl: './add-member-to-team-dialog.component.html',
-  styleUrl: './add-member-to-team-dialog.component.scss',
+  selector: "app-add-member-to-team-dialog",
+  templateUrl: "./add-member-to-team-dialog.component.html",
+  styleUrl: "./add-member-to-team-dialog.component.scss",
 })
 export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
   selectedUsers$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
-  search = new FormControl('');
+  search = new FormControl("");
   usersForSelection$: Observable<User[]> | undefined;
-  displayedColumns = ['name', 'delete'];
+  displayedColumns = ["name", "delete"];
   dataSource: MatTableDataSource<User> | undefined;
 
   private readonly unsubscribe$ = new Subject<void>();
@@ -45,16 +45,16 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
       this.userService.getUsers(),
       this.selectedUsers$,
       this.search.valueChanges.pipe(
-        startWith(''),
+        startWith(""),
         // directly after selecting object, filtervalue is an object.
-        filter((searchValue) => typeof searchValue === 'string'),
+        filter((searchValue) => typeof searchValue === "string"),
       ),
-    ]).pipe(
-      takeUntil(this.unsubscribe$),
-      map(([allPossibleUsers, selectedUsers, filterValue]) => {
-        return this.filter(allPossibleUsers, filterValue || '', selectedUsers);
-      }),
-    );
+    ])
+      .pipe(
+        takeUntil(this.unsubscribe$), map(([allPossibleUsers, selectedUsers, filterValue]) => {
+          return this.filter(allPossibleUsers, filterValue || "", selectedUsers);
+        }),
+      );
   }
 
   public ngOnDestroy() {
@@ -67,11 +67,13 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   }
 
   addUsersToTeam(): void {
-    this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue()).subscribe(() => {
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-      this.dialogRef.close();
-    });
+    this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue())
+      .subscribe(() => {
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser()
+          .subscribe();
+        this.dialogRef.close();
+      });
   }
 
   private filter(allPossibleUsers: User[], searchValue: string, selectedUsers: User[]) {
@@ -84,13 +86,15 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
       if (selectedUsers.find((u) => u.id === user.id)) {
         return false;
       }
-      return this.getDisplayValue(user).toLowerCase().includes(filterLower);
+      return this.getDisplayValue(user)
+        .toLowerCase()
+        .includes(filterLower);
     });
   }
 
-  getDisplayValue(user: User | ''): string {
+  getDisplayValue(user: User | ""): string {
     if (!user) {
-      return '';
+      return "";
     }
     return `${user.firstname} ${user.lastname} (${user.email})`;
   }
@@ -99,11 +103,12 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
     const newUsers = this.selectedUsers$.getValue();
     newUsers.push(user);
     this.selectedUsers$.next(newUsers);
-    this.search.setValue('');
+    this.search.setValue("");
   }
 
   remove(user: User): void {
-    const filteredUsers = this.selectedUsers$.getValue().filter((u) => u !== user);
+    const filteredUsers = this.selectedUsers$.getValue()
+      .filter((u) => u !== user);
     this.selectedUsers$.next(filteredUsers);
   }
 }

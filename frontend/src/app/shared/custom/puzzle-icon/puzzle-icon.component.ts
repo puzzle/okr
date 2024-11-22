@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-puzzle-icon',
-  templateUrl: './puzzle-icon.component.html',
+  selector: "app-puzzle-icon",
+  templateUrl: "./puzzle-icon.component.html",
 })
 export class PuzzleIconComponent {
   @Input({ required: true })

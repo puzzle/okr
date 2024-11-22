@@ -25,6 +25,10 @@ export default tsEslint.config(
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-unused-expressions": "off",
         "no-undef": "off",
+      "@stylistic/function-call-argument-newline": ["error", "never"],
+      "@stylistic/padded-blocks": ["error", "never"],
+      "@stylistic/dot-location": ["error", "property"],
+      "@stylistic/newline-per-chained-call": ["error", { "ignoreChainWithDepth": 1 }]
     },
   }
 );

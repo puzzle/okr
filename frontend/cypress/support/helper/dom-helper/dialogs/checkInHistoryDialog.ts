@@ -19,4 +19,9 @@ export default class CheckInHistoryDialog extends Dialog {
   getPage(): Chainable {
     return cy.get('app-check-in-history-dialog');
   }
+
+  checkForAttribute(title: string, value: string) {
+    cy.get('mat-dialog-container').contains(value).parent().should('contain', title);
+    return this;
+  }
 }

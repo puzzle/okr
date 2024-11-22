@@ -3,17 +3,18 @@ import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
 describe('e2e test for scoring adjustment on objective duplicate', () => {
-  let op = new CyOverviewPage();
+  let overviewPage = new CyOverviewPage();
   let keyresultDetailPage = new KeyResultDetailPage();
 
   beforeEach(() => {
-    op = new CyOverviewPage();
+    overviewPage = new CyOverviewPage();
     keyresultDetailPage = new KeyResultDetailPage();
     cy.loginAsUser(users.gl);
   });
 
   it('Duplicate ordinal checkin and validate value of scoring component', () => {
-    op.addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
+    overviewPage
+      .addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
       .fillKeyResultTitle('stretch keyresult for testing')
       .withOrdinalValues('Ex. val', 'Ex. val', 'Ex. val')
       .submit();
@@ -32,16 +33,18 @@ describe('e2e test for scoring adjustment on objective duplicate', () => {
     keyresultDetailPage.close();
     cy.wait('@indexPage');
 
-    op.duplicateObjective('Wir wollen die Kundenzufriedenheit steigern')
+    overviewPage
+      .duplicateObjective('Wir wollen die Kundenzufriedenheit steigern')
       .fillObjectiveTitle('A duplicated Objective for this tool')
       .selectQuarter('3')
       .submit();
 
-    op.checkForToaster('Das Objective wurde erfolgreich erstellt.', 'success');
+    overviewPage.checkForToaster('Das Objective wurde erfolgreich erstellt.', 'success');
 
-    cy.visit('/?quarter=3');
+    overviewPage.visitNextQuarter();
 
-    op.getKeyResultByName('stretch keyresult for testing')
+    overviewPage
+      .getKeyResultByName('stretch keyresult for testing')
       .findByTestId('scoring-component')
       .findByTestId('fail')
       .as('fail-area');

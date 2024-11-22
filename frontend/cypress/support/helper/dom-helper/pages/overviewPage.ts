@@ -63,6 +63,10 @@ export default class CyOverviewPage extends Page {
     return cy.contains('.team-title', teamName).parentsUntil('#overview').last();
   }
 
+  getFirstObjective() {
+    return cy.get('.objective').first();
+  }
+
   getObjectiveByNameAndState(objectiveName: string, state: string) {
     this.getObjectivesByNameAndState(objectiveName, state).last().as('objective').scrollIntoView();
     return cy.get('@objective');

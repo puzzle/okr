@@ -4,7 +4,7 @@ import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
 describe('Tab workflow tests', () => {
-  let overviewPage: CyOverviewPage;
+  let overviewPage = new CyOverviewPage();
   beforeEach(() => {
     cy.loginAsUser(users.gl);
     overviewPage = new CyOverviewPage();

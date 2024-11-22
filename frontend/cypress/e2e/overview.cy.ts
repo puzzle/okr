@@ -7,12 +7,11 @@ describe('OKR Overview', () => {
   });
 
   it('should have the current quarter with label Aktuell', () => {
-    cy.visit('/?quarter=2');
     cy.getByTestId('quarterFilter').contains('Aktuell');
   });
 
   it('Check order of teams', () => {
-    FilterHelper.do().toggleOption('Alle');
+    FilterHelper.do().optionShouldNotBeSelected('Alle').toggleOption('Alle');
     const textsExpectedOrder = ['LoremIpsum', 'Puzzle ITC', '/BBT', 'we are cube.³'];
     cy.get('.team-title:contains("we are cube.³")');
     cy.get('.team-title').then((elements) => {

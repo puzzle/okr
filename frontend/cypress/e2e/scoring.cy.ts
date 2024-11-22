@@ -5,11 +5,11 @@ import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
 describe('Scoring component e2e tests', () => {
-  let op = new CyOverviewPage();
+  let overviewPage = new CyOverviewPage();
   let keyresultDetailPage = new KeyResultDetailPage();
 
   beforeEach(() => {
-    op = new CyOverviewPage();
+    overviewPage = new CyOverviewPage();
     keyresultDetailPage = new KeyResultDetailPage();
     cy.loginAsUser(users.gl);
   });
@@ -34,7 +34,9 @@ describe('Scoring component e2e tests', () => {
       keyresultDetailPage.close();
       cy.validateScoring(true, percentage);
 
-      op.getKeyResultByName(`Metric kr with check-in value ${value}`).not(':contains(*[class="scoring-error-badge"])');
+      overviewPage
+        .getKeyResultByName(`Metric kr with check-in value ${value}`)
+        .not(':contains(*[class="scoring-error-badge"])');
     });
   });
 
@@ -55,13 +57,14 @@ describe('Scoring component e2e tests', () => {
       keyresultDetailPage.close();
       cy.validateScoring(true, 0);
 
-      op.getKeyResultByName(`Check indicator with value ${value}`).get('.scoring-error-badge');
+      overviewPage.getKeyResultByName(`Check indicator with value ${value}`).get('.scoring-error-badge');
     });
   });
 
   [['fail'], ['commit'], ['target'], ['stretch']].forEach(([zoneName]) => {
     it('Create ordinal checkin and validate value of scoring component', () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('Ordinal scoring keyresult')
         .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
         .checkForDialogTextOrdinal()

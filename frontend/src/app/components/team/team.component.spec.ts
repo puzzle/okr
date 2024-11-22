@@ -11,7 +11,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { By } from "@angular/platform-browser";
 import { RefreshDataService } from "../../services/refresh-data.service";
 import { TranslateTestingModule } from "ngx-translate-testing";
-// @ts-ignore
+// @ts-expect-error error
 import * as de from "../../../assets/i18n/de.json";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { ConfidenceComponent } from "../confidence/confidence.component";

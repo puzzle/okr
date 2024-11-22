@@ -38,7 +38,7 @@ const routeMock = {
 };
 
 describe("ApplicationBannerComponent", () => {
-  //@ts-ignore
+  //@ts-expect-error error
   global.ResizeObserver = ResizeObserverMock;
   let component: ApplicationBannerComponent;
   let fixture: ComponentFixture<ApplicationBannerComponent>;

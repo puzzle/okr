@@ -17,7 +17,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { ScoringComponent } from "../../shared/custom/scoring/scoring.component";
 import { ConfidenceComponent } from "../confidence/confidence.component";
 import { ReactiveFormsModule } from "@angular/forms";
-// @ts-ignore
+// @ts-expect-error error
 import * as de from "../../../assets/i18n/de.json";
 import { TranslateTestingModule } from "ngx-translate-testing";
 import { ObjectiveService } from "../../services/objective.service";

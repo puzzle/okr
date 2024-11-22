@@ -12,7 +12,7 @@ import { MatRadioButtonHarness } from "@angular/material/radio/testing";
 import { MatInputHarness } from "@angular/material/input/testing";
 import { MatSelectHarness } from "@angular/material/select/testing";
 import { By } from "@angular/platform-browser";
-// @ts-ignore
+// @ts-expect-error error
 import * as errorData from "../../../../assets/errors/error-messages.json";
 import { ObjectiveComponent } from "../../../components/objective/objective.component";
 import { MatOptionHarness } from "@angular/material/core/testing";

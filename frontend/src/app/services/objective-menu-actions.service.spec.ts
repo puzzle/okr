@@ -80,7 +80,7 @@ describe("ObjectiveMenuActionsService", () => {
         .mockReturnValue(true);
       const spyOn = jest.spyOn(service as any, "isInBacklogQuarter")
         .mockReturnValue(true);
-      // @ts-expect-error
+      // @ts-expect-error error
       service.getReleaseAction(objectiveMin);
       expect(spyOn)
         .toHaveBeenCalledTimes(1);
@@ -89,7 +89,7 @@ describe("ObjectiveMenuActionsService", () => {
     it("should return release from quarter action for an objective in non-backlog quarter", () => {
       const spyOn = jest.spyOn(service as any, "isInBacklogQuarter")
         .mockReturnValue(false);
-      // @ts-expect-error
+      // @ts-expect-error error
       service.getReleaseAction(objectiveMin);
       expect(spyOn)
         .toHaveBeenCalledTimes(1);

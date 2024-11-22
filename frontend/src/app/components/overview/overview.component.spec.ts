@@ -39,7 +39,7 @@ class ResizeObserverMock {
 }
 
 describe("OverviewComponent", () => {
-  //@ts-ignore
+  //@ts-expect-error error
   global.ResizeObserver = ResizeObserverMock;
 
   let component: OverviewComponent;

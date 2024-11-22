@@ -5,17 +5,18 @@ import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
 
 describe('OKR Overview', () => {
-  let op = new CyOverviewPage();
+  let overviewPage = new CyOverviewPage();
   let keyResultDetailPage = new KeyResultDetailPage();
 
   beforeEach(() => {
-    op = new CyOverviewPage();
+    overviewPage = new CyOverviewPage();
     keyResultDetailPage = new KeyResultDetailPage();
     cy.loginAsUser(users.gl);
   });
 
   it('Create new metric KeyResult', () => {
-    op.addKeyResult()
+    overviewPage
+      .addKeyResult()
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult')
       .withMetricValues(Unit.PERCENT, '21', '52')
@@ -38,7 +39,8 @@ describe('OKR Overview', () => {
   });
 
   it('Create new ordinal KeyResult', () => {
-    op.addKeyResult()
+    overviewPage
+      .addKeyResult()
       .fillKeyResultTitle('I am a ordinal keyresult')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
       .checkForDialogTextOrdinal()
@@ -65,7 +67,8 @@ describe('OKR Overview', () => {
   });
 
   it('Create new KeyResult and Save and New', () => {
-    op.addKeyResult()
+    overviewPage
+      .addKeyResult()
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult with a new one')
       .withMetricValues(Unit.PERCENT, '21', '52')
@@ -77,7 +80,8 @@ describe('OKR Overview', () => {
   });
 
   it('Create and edit KeyResult with Action Plan', () => {
-    op.addKeyResult()
+    overviewPage
+      .addKeyResult()
       .fillKeyResultTitle('This is a keyresult with an action plan')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
       .fillOwner('Bob Baumeister')
@@ -103,7 +107,8 @@ describe('OKR Overview', () => {
   });
 
   it('Edit a KeyResult without type change', () => {
-    op.addKeyResult()
+    overviewPage
+      .addKeyResult()
       .fillKeyResultTitle('We want not to change keyresult title')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
       .checkForDialogTextOrdinal()
@@ -135,7 +140,8 @@ describe('OKR Overview', () => {
   });
 
   it('Edit a KeyResult with type change', () => {
-    op.addKeyResult()
+    overviewPage
+      .addKeyResult()
       .fillKeyResultTitle('Here we want to change keyresult title')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
       .checkForDialogTextOrdinal()
@@ -167,7 +173,7 @@ describe('OKR Overview', () => {
   });
 
   it('Check validation in keyresult dialog', () => {
-    op.addKeyResult().checkForDialogTextMetric();
+    overviewPage.addKeyResult().checkForDialogTextMetric();
     cy.getByTestId('submit').should('be.disabled');
     KeyResultDialog.do()
       .fillKeyResultTitle('I am a metric keyresult')
@@ -240,7 +246,8 @@ describe('OKR Overview', () => {
   });
 
   it('Delete existing keyresult', () => {
-    op.addKeyResult()
+    overviewPage
+      .addKeyResult()
       .fillKeyResultTitle('A keyresult to delete')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
       .checkForDialogTextOrdinal()

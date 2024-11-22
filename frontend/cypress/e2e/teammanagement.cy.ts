@@ -4,6 +4,7 @@ import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 import TeammanagementPage from '../support/helper/dom-helper/pages/teammanagementPage';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import InviteMembersDialog from '../support/helper/dom-helper/dialogs/inviteMembersDialog';
+import FilterHelper from '../support/helper/dom-helper/filterHelper';
 
 describe('Team management tests', () => {
   const teamName = uniqueSuffix('New Team');
@@ -16,8 +17,7 @@ describe('Team management tests', () => {
 
     it('should preserve team filter', () => {
       CyOverviewPage.do().visitViaURL();
-      cy.get('mat-chip:visible:contains("/BBT")').click();
-      cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+      FilterHelper.do().toggleOption('/BBT').toggleOption('Puzzle ITC');
       checkTeamsSelected();
       CyOverviewPage.do().visitTeammanagement();
       checkTeamsSelected();
@@ -29,9 +29,7 @@ describe('Team management tests', () => {
     });
 
     function checkTeamsSelected() {
-      cy.url().should('include', 'teams=');
-      cy.url().should('include', '6');
-      cy.url().should('include', '4');
+      FilterHelper.do().optionShouldBeSelected('LoremIpsum').optionShouldBeSelected('/BBT');
     }
   });
 

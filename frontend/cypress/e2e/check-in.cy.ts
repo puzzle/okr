@@ -1,5 +1,4 @@
 import * as users from '../fixtures/users.json';
-import { onlyOn } from '@cypress/skip-test';
 import { uniqueSuffix } from '../support/helper/utils';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
@@ -10,17 +9,18 @@ import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('OKR Check-in e2e tests', () => {
   describe('tests via click', () => {
-    let op = new CyOverviewPage();
+    let overviewPage = new CyOverviewPage();
     let keyresultDetailPage = new KeyResultDetailPage();
 
     beforeEach(() => {
-      op = new CyOverviewPage();
+      overviewPage = new CyOverviewPage();
       keyresultDetailPage = new KeyResultDetailPage();
       cy.loginAsUser(users.gl);
     });
 
     it(`Create checkin metric`, () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('Very important keyresult')
         .withMetricValues(Unit.PERCENT, '21', '51')
         .fillKeyResultDescription('This is my description')
@@ -41,7 +41,8 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it(`Create checkin metric with confidence 0`, () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('Very important keyresult')
         .withMetricValues(Unit.PERCENT, '21', '51')
         .fillKeyResultDescription('This is my description')
@@ -62,7 +63,8 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it(`Create checkin metric with value below baseline`, () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('This will not be good')
         .withMetricValues(Unit.PERCENT, '21', '52')
         .fillKeyResultDescription('This is my description')
@@ -81,7 +83,8 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it('Create checkin ordinal', () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('A new ordinal keyresult for our company')
         .withOrdinalValues('New house', 'New car', 'New pool')
         .fillKeyResultDescription('This is my description')
@@ -102,7 +105,8 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it('Should generate checkin list', () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('This will give a checkin list')
         .withMetricValues(Unit.PERCENT, '21', '52')
         .fillKeyResultDescription('This is my description')
@@ -122,22 +126,24 @@ describe('OKR Check-in e2e tests', () => {
         .fillCheckInCommentary('This was a good idea')
         .fillCheckInInitiatives('Will be difficult')
         .submit();
-      keyresultDetailPage.showAllCheckins();
+      keyresultDetailPage
+        .showAllCheckins()
+        .checkForAttribute('Confidence:', '5 / 10')
+        .checkForAttribute('Confidence:', '6 / 10')
+        .checkForAttribute('Veränderungen:', 'We bought a new house')
+        .checkForAttribute('Veränderungen:', 'This was a good idea')
+        .checkForAttribute('Massnahmen:', 'We have to buy more PCs')
+        .checkForAttribute('Massnahmen:', 'Will be difficult');
 
       cy.contains('Check-in History');
       cy.contains(getCurrentDate());
       cy.contains('Wert: 30%');
       cy.contains('Wert: 50%');
-      checkForAttribute('Confidence:', '5 / 10');
-      checkForAttribute('Confidence:', '6 / 10');
-      checkForAttribute('Veränderungen:', 'We bought a new house');
-      checkForAttribute('Veränderungen:', 'This was a good idea');
-      checkForAttribute('Massnahmen:', 'We have to buy more PCs');
-      checkForAttribute('Massnahmen:', 'Will be difficult');
     });
 
     it('Edit metric checkin', () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('Here we edit a metric checkin')
         .withMetricValues(Unit.CHF, '10', '300')
         .fillKeyResultDescription('This is my description')
@@ -167,7 +173,8 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it('Should generate right labels in checkin history list', () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('A new KeyResult for checking checkin list')
         .withMetricValues(Unit.EUR, '10', '300')
         .fillKeyResultDescription('This is my description')
@@ -187,7 +194,8 @@ describe('OKR Check-in e2e tests', () => {
       CheckInHistoryDialog.do().close();
       keyresultDetailPage.close();
 
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('There is another kr with fte')
         .withMetricValues(Unit.FTE, '10', '300')
         .fillKeyResultDescription('This is my description')
@@ -207,7 +215,8 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it('Edit ordinal checkin', () => {
-      op.addKeyResult()
+      overviewPage
+        .addKeyResult()
         .fillKeyResultTitle('For editing ordinal checkin')
         .withOrdinalValues('New house', 'New car', 'New pool')
         .fillKeyResultDescription('This is my description')
@@ -233,15 +242,16 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it(`Should display confirm dialog when creating checkin on draft objective`, () => {
-      op.addObjective().fillObjectiveTitle('draft objective title').selectQuarter('3').submitDraftObjective();
-      op.visitNextQuarter();
-      op.addKeyResult(undefined, 'draft objective title')
+      overviewPage.addObjective().fillObjectiveTitle('draft objective title').selectQuarter('3').submitDraftObjective();
+      overviewPage.visitNextQuarter();
+      overviewPage
+        .addKeyResult(undefined, 'draft objective title')
         .fillKeyResultTitle('I am a metric keyresult for testing')
         .withMetricValues(Unit.PERCENT, '21', '52')
         .fillKeyResultDescription('This is my description')
         .submit();
       keyresultDetailPage.visit('I am a metric keyresult for testing');
-      keyresultDetailPage.elements.addCheckin().click();
+      keyresultDetailPage.createCheckIn();
       ConfirmDialog.do().checkTitle('Check-in im Draft-Status');
       ConfirmDialog.do().checkDescription(
         'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?',
@@ -251,9 +261,10 @@ describe('OKR Check-in e2e tests', () => {
     it(`Should only display last value div if last checkin is present`, () => {
       const objectiveName = uniqueSuffix('new objective');
 
-      op.addObjective().fillObjectiveTitle(objectiveName).selectQuarter('3').submit();
-      op.visitNextQuarter();
-      op.addKeyResult(undefined, objectiveName)
+      overviewPage.addObjective().fillObjectiveTitle(objectiveName).selectQuarter('3').submit();
+      overviewPage.visitNextQuarter();
+      overviewPage
+        .addKeyResult(undefined, objectiveName)
         .fillKeyResultTitle('I am a keyresult metric')
         .withMetricValues(Unit.PERCENT, '45', '60')
         .fillKeyResultDescription('Description')
@@ -285,8 +296,4 @@ function getCurrentDate() {
   if (mm < 10) mm_str = '0' + mm_str;
 
   return dd_str + '.' + mm_str + '.' + yyyy;
-}
-
-function checkForAttribute(title: string, value: string) {
-  cy.get('mat-dialog-container').contains(value).parent().should('contain', title);
 }

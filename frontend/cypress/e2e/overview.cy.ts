@@ -7,7 +7,6 @@ describe('OKR Overview', () => {
   });
 
   it('should have the current quarter with label Aktuell', () => {
-    cy.visit('/?quarter=2');
     cy.getByTestId('quarterFilter').contains('Aktuell');
   });
 

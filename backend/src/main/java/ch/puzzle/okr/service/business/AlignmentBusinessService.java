@@ -14,7 +14,8 @@ public class AlignmentBusinessService {
     private final AlignmentPersistenceService alignmentPersistenceService;
     private final AlignmentValidationService validation;
 
-    public AlignmentBusinessService(AlignmentPersistenceService alignmentPersistenceService, AlignmentValidationService validation) {
+    public AlignmentBusinessService(AlignmentPersistenceService alignmentPersistenceService,
+            AlignmentValidationService validation) {
         this.alignmentPersistenceService = alignmentPersistenceService;
         this.validation = validation;
     }
@@ -24,7 +25,7 @@ public class AlignmentBusinessService {
         return alignmentPersistenceService.save(entity);
     }
 
-    public void updateKeyResultId(Long oldId, KeyResult newKeyResult){
+    public void updateKeyResultId(Long oldId, KeyResult newKeyResult) {
         List<KeyResultAlignment> alignments = alignmentPersistenceService.findByKeyResultAlignmentId(oldId);
 
         alignments.forEach(a -> {

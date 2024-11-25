@@ -30,11 +30,8 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
 
     @Transactional
     public KeyResult recreateEntity(Long id, KeyResult keyResult) {
-        logger.debug(keyResult.toString());
-        logger.debug("*".repeat(30));
         // delete entity in order to prevent duplicates in case of changed keyResultType
         deleteById(id);
-        logger.debug("reached delete entity with {}", id);
 
         // reset id of key result, so it gets saved as a new entity
         keyResult.resetId();

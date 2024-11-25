@@ -21,7 +21,7 @@ describe('OKR Overview', () => {
   });
 
   it('Check font ', () => {
-    cy.get('.team-title').first().invoke('css', 'font-family').should('eq', 'OpenSans, "sans-serif"');
+    cy.get('.team-title').first().invoke('css', 'font-family').should('eq', 'OpenSans, sans-serif');
     cy.get('.team-title').first().invoke('css', 'font-weight').should('eq', '600');
   });
 });

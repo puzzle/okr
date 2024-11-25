@@ -11,7 +11,8 @@ values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
        (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob'),
        (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus'),
        (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
-       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin');
+       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin'),
+       (999, 'gl@gl.com', 'Jaya', 'Norris', 'gl');
 
 insert into quarter (id, label)
 values (1, 'GJ 22/23-Q4'),
@@ -27,6 +28,11 @@ values (4, '/BBT'),
        (8, 'we are cube.³'),
        (5, 'Puzzle ITC'),
        (6, 'LoremIpsum');
+
+-- insert into person_team (id, person_id, team_id, is_team_admin)
+-- values (1, 1000, 4, true),
+--        (2, 1000, 5, true),
+--        (2, 1000, 5, true);
 
 insert into objective (id, description, modified_on, progress, title, owner_id, quarter_id, team_id)
 values (4, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture that kills the competition.', 1, 2, 5),
@@ -175,4 +181,5 @@ values (1,
         '2023-07-25 08:50:44.059020',
         'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ',
         '2023-07-24 22:00:00.000000', 0.5, 1, 18);
+
 

@@ -24,3 +24,27 @@ VALUES (1, 1, 1, 4, TRUE),
 ;
 
 ALTER SEQUENCE sequence_person_team RESTART WITH 1000;
+
+
+INSERT INTO team (id, name, version)
+VALUES (10, CONCAT('just_', current_schema), 1);
+
+insert into person_team (id, person_id, team_id, is_team_admin, version)
+            values (9, 999, 4, true,1 ),
+                   (8, 999, 10, true,1),
+                    (10, 999, 6, true,1 );
+
+
+
+-- DO $$
+--     BEGIN
+--         IF current_schema = 'okr_acme' THEN
+--
+--
+--             insert into person_team (id, person_id, team_id, is_team_admin, version)
+--             values (8, 1000, 10, true,1),
+--                    (9, 1000, 4, true,1 ),
+--                    (10, 1000, 6, true,1 );
+--
+--         END IF;
+--     END $$;

@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
@@ -246,19 +247,22 @@ class KeyResultPersistenceServiceIT {
 
     @Test
     void deleteKeyResultShouldThrowExceptionWhenKeyResultNotFound() {
-        KeyResult keyResult = createKeyResultMetric(35234L);
-        KeyResult newKeyResult = keyResultPersistenceService.save(keyResult);
-        keyResultPersistenceService.deleteById(newKeyResult.getId());
+        long nonExistentId = getNonExistentId();
 
-        Long keyResultId = newKeyResult.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> keyResultPersistenceService.findById(keyResultId));
+                () -> keyResultPersistenceService.findById(nonExistentId));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEYRESULT, keyResultId)));
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEYRESULT, nonExistentId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    private long getNonExistentId() {
+        long id = keyResultPersistenceService.findAll().stream().mapToLong(KeyResult::getId).max().orElse(10L);
+
+        return id + 1;
     }
 
     private void execute() {

@@ -5,6 +5,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
+import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import jakarta.transaction.Transactional;
@@ -23,15 +24,17 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final CheckInBusinessService checkInBusinessService;
     private final ActionBusinessService actionBusinessService;
+    private final AlignmentBusinessService alignmentBusinessServices;
     private final KeyResultValidationService validator;
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
             KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,
-            ActionBusinessService actionBusinessService) {
+            ActionBusinessService actionBusinessService, AlignmentBusinessService alignmentBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionBusinessService = actionBusinessService;
         this.validator = validator;
+        this.alignmentBusinessServices = alignmentBusinessService;
     }
 
     @Override
@@ -88,10 +91,13 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     private KeyResult recreateEntity(Long id, KeyResult keyResult, List<Action> actionList) {
         actionBusinessService.deleteEntitiesByKeyResultId(id);
         KeyResult recreatedEntity = keyResultPersistenceService.recreateEntity(id, keyResult);
+
         actionList.forEach(action -> {
             action.resetId();
             action.setKeyResult(recreatedEntity);
         });
+        alignmentBusinessServices.updateKeyResultId(id, recreatedEntity);
+
         return recreatedEntity;
     }
 

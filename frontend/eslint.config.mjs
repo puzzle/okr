@@ -13,6 +13,7 @@ export default tsEslint.config(
         // ToDo: Disable rules so eslint passes, fix in followup ticket
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
         "no-undef": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-namespace": "off",

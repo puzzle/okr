@@ -23,7 +23,7 @@ import { By } from "@angular/platform-browser";
 import { MatCheckboxHarness } from "@angular/material/checkbox/testing";
 import { RouterTestingHarness } from "@angular/router/testing";
 import { TranslateTestingModule } from "ngx-translate-testing";
-// @ts-expect-error error
+// @ts-ignore
 import * as de from "../../../../assets/i18n/de.json";
 import { ActivatedRoute, provideRouter } from "@angular/router";
 import { provideHttpClient } from "@angular/common/http";

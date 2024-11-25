@@ -21,7 +21,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { CheckInService } from "../../../services/check-in.service";
 import { of } from "rxjs";
 import { ActionService } from "../../../services/action.service";
-// @ts-expect-error error
+// @ts-ignore
 import * as de from "../../../../assets/i18n/de.json";
 import { TranslateTestingModule } from "ngx-translate-testing";
 import { ConfidenceComponent } from "../../confidence/confidence.component";

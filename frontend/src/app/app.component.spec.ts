@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { TranslateTestingModule } from "ngx-translate-testing";
 import { AuthConfig, OAuthModule, OAuthService } from "angular-oauth2-oidc";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-// @ts-expect-error error
+// @ts-ignore
 import * as de from "../assets/i18n/de.json";
 import { HarnessLoader } from "@angular/cdk/testing";
 import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";

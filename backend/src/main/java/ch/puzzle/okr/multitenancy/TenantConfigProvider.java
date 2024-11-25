@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 import java.util.*;
 
+import static java.text.MessageFormat.format;
+
 /**
  * Reads the configuration of the tenants (as TenantConfig objects) from the applicationX.properties and caches each
  * TenantConfig in the TenantConfigs class.
@@ -20,7 +22,11 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     private final Environment env;
 
     private enum DbType {
-        bootstrap, app, fly
+        BOOTSTRAP, APP, FLY;
+
+        public String nameUsedInProperties() {
+            return this.name().toLowerCase();
+        }
     }
 
     private static final Logger logger = LoggerFactory.getLogger(TenantConfigProvider.class);
@@ -58,11 +64,10 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     private OauthConfig readOauthConfig(String tenantId) {
-        return new OauthConfig(
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri",
-                        tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.issuer-url", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.client-id", tenantId)));
+        return new OauthConfig( //
+                getProperty("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri", tenantId),
+                getProperty("okr.tenants.{0}.security.oauth2.frontend.issuer-url", tenantId),
+                getProperty("okr.tenants.{0}.security.oauth2.frontend.client-id", tenantId));
     }
 
     private TenantConfig createTenantConfig(String jwkSetUriTemplate, String frontendClientIssuerUrl,
@@ -75,8 +80,8 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     private String[] getOkrChampionEmailsFromTenant(String tenantId) {
-        return Arrays.stream(env.getProperty(MessageFormat.format("okr.tenants.{0}.user.champion.emails", tenantId), "")
-                .split(EMAIL_DELIMITER)).map(String::trim).toArray(String[]::new);
+        return Arrays.stream(getProperty("okr.tenants.{0}.user.champion.emails", tenantId, "").split(EMAIL_DELIMITER))
+                .map(String::trim).toArray(String[]::new);
     }
 
     public List<TenantConfig> getTenantConfigs() {
@@ -84,19 +89,32 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     private DataSourceConfig readDataSourceConfigFlyway(String tenantId) {
-        return readDataSourceConfig(tenantId, DbType.fly);
+        return readDataSourceConfig(tenantId, DbType.FLY);
     }
 
     private DataSourceConfig readDataSourceConfigApp(String tenantId) {
-        return readDataSourceConfig(tenantId, DbType.app);
+        return readDataSourceConfig(tenantId, DbType.APP);
     }
 
     private DataSourceConfig readDataSourceConfig(String tenantId, DbType dbType) {
-        return new DataSourceConfig(env.getProperty("okr.datasource.driver-class-name"),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.url", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.username." + dbType, tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.password." + dbType, tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.schema", tenantId)));
+        return new DataSourceConfig( //
+                getProperty("okr.datasource.driver-class-name"),
+                getProperty("okr.tenants.{0}.datasource.url", tenantId),
+                getProperty("okr.tenants.{0}.datasource.username." + dbType.nameUsedInProperties(), tenantId),
+                getProperty("okr.tenants.{0}.datasource.password." + dbType.nameUsedInProperties(), tenantId),
+                getProperty("okr.tenants.{0}.datasource.schema", tenantId));
+    }
+
+    private String getProperty(String key) {
+        return env.getProperty(String.format(key));
+    }
+
+    private String getProperty(String key, String tenantId) {
+        return env.getProperty(MessageFormat.format(key, tenantId));
+    }
+
+    private String getProperty(String key, String tenantId, String defaultValue) {
+        return env.getProperty(format(key, tenantId), defaultValue);
     }
 
     public Optional<TenantConfig> getTenantConfigById(String tenantId) {

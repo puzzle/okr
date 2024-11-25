@@ -122,6 +122,10 @@ public abstract class KeyResult implements WriteableInterface {
         return keyResultType;
     }
 
+    public void resetId() {
+        this.id = null;
+    }
+
     private void setKeyResultType(String keyResultType) {
         this.keyResultType = keyResultType;
     }

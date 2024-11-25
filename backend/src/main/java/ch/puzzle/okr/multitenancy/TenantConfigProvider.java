@@ -49,7 +49,7 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     private void logCachingTenantConfig(String tenantId, TenantConfig tenantConfig) {
-        logger.error("cache TenantConfig: tenantId={}, users={}", //
+        logger.info("cache TenantConfig: tenantId={}, users={}", //
                 tenantId, //
                 tenantConfig.dataSourceConfigFlyway().name() + " | " + tenantConfig.dataSourceConfigApp().name());
     }

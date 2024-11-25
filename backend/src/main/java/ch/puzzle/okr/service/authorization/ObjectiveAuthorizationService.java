@@ -1,9 +1,12 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long, Objective, ObjectiveBusinessService> {
@@ -42,4 +45,5 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
     public boolean isImUsed(Objective objective) {
         return getBusinessService().isImUsed(objective);
     }
+
 }

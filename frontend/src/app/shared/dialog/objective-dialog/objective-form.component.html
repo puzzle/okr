@@ -65,6 +65,27 @@
             </mat-checkbox>
           </div>
         </div>
+        <div class="col align-self-end">
+          <div class="okr-form-row okr-form-label-input-container">
+            <label class="okr-form-label okr-form-col" for="keyresults">Keyresults übernehmen</label>
+            <div class="okr-form-input pe-5">
+              <!--              <button id="keyresults" mat-button>-->
+              <!--Auswählen-->
+              <!--              </button>-->
+              <select multiple>
+                <ng-container
+                  id="keyresults"
+                  formControlName="keyResults"
+                  *ngFor="let keyResult of [{ title: 'loremipsum1' }, { title: 'loremipsum2' }]"
+                >
+                  <option>
+                    {{ keyResult.title }}
+                  </option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </ng-container>

@@ -1,7 +1,10 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
+import ch.puzzle.okr.dto.checkin.CheckInDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
+import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.IM_USED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -22,11 +27,13 @@ import static org.springframework.http.HttpStatus.OK;
 public class ObjectiveController {
     private final ObjectiveAuthorizationService objectiveAuthorizationService;
     private final ObjectiveMapper objectiveMapper;
+    private final KeyResultMapper keyResultMapper;
 
     public ObjectiveController(ObjectiveAuthorizationService objectiveAuthorizationService,
-            ObjectiveMapper objectiveMapper) {
+            ObjectiveMapper objectiveMapper, KeyResultMapper keyResultMapper) {
         this.objectiveAuthorizationService = objectiveAuthorizationService;
         this.objectiveMapper = objectiveMapper;
+        this.keyResultMapper = keyResultMapper;
     }
 
     @Operation(summary = "Get Objective", description = "Get an Objective by ID")
@@ -40,6 +47,19 @@ public class ObjectiveController {
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
+    }
+
+    @Operation(summary = "Get Check-ins from KeyResult", description = "Get all Check-ins from one KeyResult by keyResultId.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all Check-ins from KeyResult.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to read Check-ins from a KeyResult", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Check-ins from.", content = @Content) })
+    @GetMapping("/{id}/keyResults")
+    public ResponseEntity<List<KeyResultDto>> getCheckInsFromKeyResult(
+            @Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
+        return ResponseEntity.status(OK).body(objectiveAuthorizationService.getAllKeyResultsByObjective(id).stream()
+                .map(keyResultMapper::toDto).toList());
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")

@@ -22,7 +22,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "useDefineForClassFields": false,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

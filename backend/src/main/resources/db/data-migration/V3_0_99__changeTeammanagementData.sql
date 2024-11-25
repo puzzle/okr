@@ -44,7 +44,7 @@ DO $$
                 (103, 'bl@mob.com', 'BL', 'Mobility', false, 1),
                 (104, 'bl@ruby.com', 'BL', 'Ruby', false, 1),
                 (105, 'bl@sys.com', 'BL', 'Sys', false, 1),
-                (106, 'gl@gl.com', 'Jaya', 'Norris', false, 1),
+                (106, 'gl@gl.com', 'Jaya', 'Norris', true, 1),
                 (107, 'member@member.com', 'Abraham', 'Woodard', false, 1);
 
             insert into person_team (id, person_id, team_id, is_team_admin, version)
@@ -68,7 +68,7 @@ DO $$
             INSERT INTO person (id, email, firstname, lastname, is_okr_champion, version)
             VALUES
                 (100, 'bl@acme.com', 'Esha', 'Harris', false, 1),
-                (101, 'gl@acme.com', 'Jaya', 'Norris', false, 1),
+                (101, 'gl@acme.com', 'Jaya', 'Norris', true, 1),
                 (102, 'member@acme.com', 'Abraham', 'Woodard', false, 1);
 
             insert into person_team (id, person_id, team_id, is_team_admin, version)

@@ -254,6 +254,7 @@ img.add-cross-button {
 .add-text {
   margin-top: 1px;
   height: 2rem;
+  font-weight: 500;
 }
 
 .align-new-icon {
@@ -264,10 +265,6 @@ img.add-cross-button {
   @include media-breakpoint-down(sm) {
     padding-left: 22px;
   }
-}
-
-.mdc-button {
-  font-weight: 400;
 }
 
 .h-0 {

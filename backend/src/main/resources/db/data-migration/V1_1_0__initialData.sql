@@ -11,8 +11,7 @@ values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
        (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob'),
        (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus'),
        (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
-       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin'),
-       (999, 'gl@gl.com', 'Jaya', 'Norris', 'gl');
+       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin');
 
 insert into quarter (id, label)
 values (1, 'GJ 22/23-Q4'),
@@ -34,23 +33,26 @@ values (4, '/BBT'),
 --        (2, 1000, 5, true),
 --        (2, 1000, 5, true);
 
-insert into objective (id, description, modified_on, progress, title, owner_id, quarter_id, team_id)
-values (4, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture that kills the competition.', 1, 2, 5),
-       (3,
-        'Die Konkurenz nimmt stark zu, um weiterhin einen angenehmen Markt bearbeiten zu können, wollen wir die Kundenzufriedenheit steigern. ',
-        '2023-07-25 08:13:48.768262', 84, 'Wir wollen die Kundenzufriedenheit steigern', 1, 2, 5),
-       (6, '', '2023-07-25 08:26:46.982010', 25,
-        'Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.', 1, 2, 4),
-       (5, 'Damit wir nicht alle anderen Entwickler stören wollen wir so leise wie möglich arbeiten',
-        '2023-07-25 08:20:36.894258', 65, 'Wir wollen das leiseste Team bei Puzzle sein', 1, 2, 4),
-       (9, '', '2023-07-25 08:39:45.752126', 88,
-        'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-        1, 2, 6),
-       (10, '', '2023-07-25 08:39:45.772126', 88,
-        'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.', 1, 2, 6),
-       (8, '', '2023-07-25 08:39:28.175703', 40,
-        'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua',
-        1, 2, 6);
+INSERT INTO objective (id, description, modified_on, progress, title, owner_id, quarter_id, team_id)
+VALUES
+    (4, '', '2023-07-25 08:17:51.309958', 66,
+     CONCAT('(', current_schema, ') ', 'Build a company culture that kills the competition.'), 1, 2, 5),
+    (3,
+     'Die Konkurenz nimmt stark zu, um weiterhin einen angenehmen Markt bearbeiten zu können, wollen wir die Kundenzufriedenheit steigern. ',
+     '2023-07-25 08:13:48.768262', 84,
+     CONCAT('(', current_schema, ') ', 'Wir wollen die Kundenzufriedenheit steigern'), 1, 2, 5),
+    (6, '', '2023-07-25 08:26:46.982010', 25,
+     CONCAT('(', current_schema, ') ', 'Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.'), 1, 2, 4),
+    (5, 'Damit wir nicht alle anderen Entwickler stören wollen wir so leise wie möglich arbeiten',
+     '2023-07-25 08:20:36.894258', 65,
+     CONCAT('(', current_schema, ') ', 'Wir wollen das leiseste Team bei Puzzle sein'), 1, 2, 4),
+    (9, '', '2023-07-25 08:39:45.752126', 88,
+     CONCAT('(', current_schema, ') ', 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.'), 1, 2, 6),
+    (10, '', '2023-07-25 08:39:45.772126', 88,
+     CONCAT('(', current_schema, ') ', 'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.'), 1, 2, 6),
+    (8, '', '2023-07-25 08:39:28.175703', 40,
+     CONCAT('(', current_schema, ') ', 'consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua'), 1, 2, 6);
+
 
 insert into key_result (id, basis_value, description, expected_evolution, modified_on, target_value, title, unit,
                         created_by_id, objective_id, owner_id)

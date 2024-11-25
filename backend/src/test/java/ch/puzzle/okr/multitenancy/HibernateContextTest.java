@@ -1,6 +1,5 @@
 package ch.puzzle.okr.multitenancy;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,11 +22,6 @@ public class HibernateContextTest {
 
     @BeforeEach
     void setUp() {
-        resetHibernateConfig();
-    }
-
-    @AfterEach
-    void tearDown() {
         resetHibernateConfig();
     }
 
@@ -136,9 +130,7 @@ public class HibernateContextTest {
         var tenantId = "tenantId"; // but no tenant config is cached
 
         // act + assert
-        var exception = assertThrows(RuntimeException.class, () -> {
-            getHibernateConfig(tenantId);
-        });
+        var exception = assertThrows(RuntimeException.class, () -> getHibernateConfig(tenantId));
         assertEquals("No cached tenant configuration found (for tenant tenantId)", exception.getMessage());
     }
 

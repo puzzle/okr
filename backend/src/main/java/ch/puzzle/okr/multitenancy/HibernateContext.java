@@ -127,16 +127,16 @@ public class HibernateContext {
     }
 
     private static void logUsedHibernateConfig(DbConfig hibernateConfig) {
-        logger.error("set DbConfig: user={}", hibernateConfig.username());
+        logger.info("set DbConfig: user={}", hibernateConfig.username());
     }
 
     private static void logUsedHibernateConfig(Properties hibernateConfig) {
-        logger.error("use DbConfig: user={}",
+        logger.info("use DbConfig: user={}",
                 hibernateConfig.getProperty(HibernateContext.HIBERNATE_CONNECTION_USERNAME)); //
     }
 
     private static void logUsedHibernateConfig(String tenantId, Properties hibernateConfig) {
-        logger.error("use DbConfig: tenant={} user={}", tenantId,
+        logger.info("use DbConfig: tenant={} user={}", tenantId,
                 hibernateConfig.getProperty(HibernateContext.HIBERNATE_CONNECTION_USERNAME));
     }
 

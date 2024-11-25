@@ -41,6 +41,6 @@ public class FlywayMultitenantMigrationInitializer {
     }
 
     private void logUsedHibernateConfig(TenantConfigProvider.DataSourceConfig dataSourceConfig) {
-        logger.error("use DbConfig: user={}", dataSourceConfig.name());
+        logger.info("use DbConfig: user={}", dataSourceConfig.name());
     }
 }

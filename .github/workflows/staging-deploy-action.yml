@@ -242,10 +242,17 @@ jobs:
           --form "projectVersion=latest" \
           --form "bom=@sbom.xml"
 
-  clean-up:
+  update-sonarqube:
     needs: [generate-and-push-sbom]
     runs-on: ubuntu-latest
 
     steps:
-      - name: remove dockers
-        run: docker ps -aq | xargs -r docker rm -f
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'oracle'
+
+      - name: Build and analyze
+        run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}

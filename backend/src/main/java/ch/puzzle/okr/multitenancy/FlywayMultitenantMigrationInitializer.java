@@ -22,18 +22,20 @@ public class FlywayMultitenantMigrationInitializer {
 
     public void migrateFlyway() {
         this.tenantConfigProvider.getTenantConfigs().forEach((tenantConfig) -> {
-            TenantConfigProvider.DataSourceConfig dataSourceConfig = this.tenantConfigProvider
+            TenantConfigProvider.DataSourceConfig dataSourceConfigFlyway = this.tenantConfigProvider
                     .getTenantConfigById(tenantConfig.tenantId())
-                    .map(TenantConfigProvider.TenantConfig::dataSourceConfigFlyway).orElseThrow(
+                    .map(TenantConfigProvider.TenantConfig::dataSourceConfigFlyway) //
+                    .orElseThrow(
                             () -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
 
-            logUsedHibernateConfig(dataSourceConfig);
+            logUsedHibernateConfig(dataSourceConfigFlyway);
 
             Flyway tenantSchemaFlyway = Flyway.configure() //
-                    .dataSource(dataSourceConfig.url(), dataSourceConfig.name(), dataSourceConfig.password()) //
+                    .dataSource(dataSourceConfigFlyway.url(), dataSourceConfigFlyway.name(),
+                            dataSourceConfigFlyway.password()) //
                     .locations(scriptLocations) //
                     .baselineOnMigrate(Boolean.TRUE) //
-                    .schemas(dataSourceConfig.schema()) //
+                    .schemas(dataSourceConfigFlyway.schema()) //
                     .load();
 
             tenantSchemaFlyway.migrate();

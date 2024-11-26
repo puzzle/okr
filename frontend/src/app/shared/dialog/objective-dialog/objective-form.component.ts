@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
@@ -10,12 +10,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
+import { KeyresultService } from '../../../services/keyresult.service';
+import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
 
 @Component({
   selector: 'app-objective-form',
@@ -30,6 +31,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     quarter: new FormControl<number>(0, [Validators.required]),
     team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
     relation: new FormControl<number>({ value: 0, disabled: true }),
+    keyResults: new FormArray<FormControl<boolean | null>>([]),
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
@@ -38,6 +40,9 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   teams$: Observable<Team[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
+  keyResults$: Observable<KeyResultDTO[]> = of([]);
+  keyResults: KeyResultDTO[] = [];
+
   version!: number;
   protected readonly formInputCheck = formInputCheck;
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
@@ -48,6 +53,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     private teamService: TeamService,
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
+    private keyResultService: KeyresultService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
     private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA)
@@ -75,9 +81,16 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     } as unknown as Objective;
 
     const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
-    submitFunction.subscribe((savedObjective: Objective) =>
-      this.closeDialog(savedObjective, false, value.createKeyResults!),
-    );
+    submitFunction.subscribe((savedObjective: Objective) => {
+      this.objectiveForm.getRawValue().keyResults.forEach((selected: boolean | null, index: number) => {
+        if (selected) {
+          this.keyResults[index].objective = savedObjective;
+          this.keyResultService.saveKeyResult(this.keyResults[index]).subscribe();
+        }
+      });
+
+      this.closeDialog(savedObjective, false, value.createKeyResults!);
+    });
   }
 
   ngOnInit(): void {
@@ -85,32 +98,38 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
+    this.keyResults$ = this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId!);
     const objective$ = isCreating
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
-    forkJoin([objective$, this.quarters$, this.currentQuarter$]).subscribe(([objective, quarters, currentQuarter]) => {
-      this.quarters = quarters;
-      const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
-      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
+    forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$]).subscribe(
+      ([objective, quarters, currentQuarter, keyResults]) => {
+        this.quarters = quarters;
+        const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
+        const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
+        let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-      if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
-        quarterId = quarters[1].id;
-      }
+        if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+          quarterId = quarters[1].id;
+        }
 
-      this.state = objective.state;
-      this.version = objective.version;
-      this.teams$.subscribe((value) => {
-        this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
-      });
-
-      this.objectiveForm.patchValue({
-        title: objective.title,
-        description: objective.description,
-        team: teamId,
-        quarter: quarterId,
-      });
-    });
+        this.state = objective.state;
+        this.version = objective.version;
+        this.keyResults = keyResults;
+        this.teams$.subscribe((value) => {
+          this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
+        });
+        this.objectiveForm.patchValue({
+          title: objective.title,
+          description: objective.description,
+          team: teamId,
+          quarter: quarterId,
+        });
+        keyResults.forEach((keyResult) => {
+          this.objectiveForm.controls.keyResults.push(new FormControl<boolean>(true));
+        });
+      },
+    );
   }
 
   ngOnDestroy() {

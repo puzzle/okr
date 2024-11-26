@@ -9,13 +9,18 @@ import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.test.CheckInTestHelpers;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.convert.DtoInstantiatingConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Map;
 
 import static ch.puzzle.okr.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -117,6 +122,59 @@ class DeserializerHelperTest {
         assertKeyResultOrdinalDto((KeyResultOrdinalDto) keyResultDto);
     }
 
+    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult id")
+    @Test
+    void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() throws Exception {
+
+        // arrange
+        String jsonMetric = """
+                {
+                  "version": 0,
+                  "title": "NO_KEY_RESULT_TYPE",
+                  "description": "BESCHREIBUNG"
+                }
+                """;
+
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
+
+        // act + assert
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            deserializerHelper.deserializeMetricOrdinal("id", jsonParser, CHECK_IN_MAP);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("missing keyResult ID to deserialize keyResult DTO", exception.getReason());
+    }
+
+    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Type")
+    @Test
+    void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultType() throws Exception {
+
+        when(keyResultBusinessService.getEntityById(45L)) //
+                .thenReturn(KeyResultOrdinal.Builder.builder() //
+                        .withId(45L) //
+                        .build());
+        // arrange
+        String jsonMetric = """
+                {
+                  "id": 45,
+                  "version": 0,
+                  "title": "NO_KEY_RESULT_TYPE",
+                  "description": "BESCHREIBUNG"
+                }
+                """;
+
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
+
+        // act + assert
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            deserializerHelper.deserializeMetricOrdinal("id", jsonParser, Map.of("", CheckInOrdinalDto.class));
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("unsupported entity DTO to deserialize", exception.getReason());
+    }
+
     private static void assertCheckInMetricDto(CheckInMetricDto checkInMetricDto) {
         assertEquals(42L, checkInMetricDto.id());
         assertEquals("Change_Info", checkInMetricDto.changeInfo());
@@ -179,8 +237,4 @@ class DeserializerHelperTest {
         assertEquals(1000, objective.id());
     }
 
-    private void assertBadRequest(ResponseStatusException exception) {
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("unsupported keyResult DTO to deserialize", exception.getReason());
-    }
 }

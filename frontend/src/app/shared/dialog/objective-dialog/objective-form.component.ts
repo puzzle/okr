@@ -71,7 +71,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
     let objectiveDTO: Objective = {
-      id: this.data.objective.objectiveId,
       version: this.version,
       quarterId: value.quarter,
       description: value.description,
@@ -80,15 +79,13 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       state: state,
     } as unknown as Objective;
 
-    const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
+    const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId!, {
+      objective: objectiveDTO,
+      keyResults: this.keyResults
+        .filter((keyResult, index) => value.keyResults[index])
+        .map((result) => ({ ...result, id: undefined })),
+    });
     submitFunction.subscribe((savedObjective: Objective) => {
-      this.objectiveForm.getRawValue().keyResults.forEach((selected: boolean | null, index: number) => {
-        if (selected) {
-          this.keyResults[index].objective = savedObjective;
-          this.keyResultService.saveKeyResult(this.keyResults[index]).subscribe();
-        }
-      });
-
       this.closeDialog(savedObjective, false, value.createKeyResults!);
     });
   }

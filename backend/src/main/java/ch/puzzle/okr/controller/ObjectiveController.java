@@ -1,12 +1,14 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
+import ch.puzzle.okr.dto.DuplicateObjectiveDto;
+import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -100,10 +102,12 @@ public class ObjectiveController {
     @PostMapping("/{id}")
     public ResponseEntity<ObjectiveDto> duplicateObjective(
             @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO) {
-        Objective objective = objectiveMapper.toObjective(objectiveDTO);
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
+        Objective objective = objectiveMapper.toObjective(duplicateObjectiveDto.getObjective());
+        List<KeyResult> keyResults = duplicateObjectiveDto.getKeyResults().stream().map(keyResultMapper::toKeyResult)
+                .toList();
         ObjectiveDto duplicatedObjectiveDto = objectiveMapper
-                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective));
+                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective, keyResults));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 

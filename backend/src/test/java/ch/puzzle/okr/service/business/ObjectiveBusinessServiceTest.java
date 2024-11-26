@@ -184,7 +184,7 @@ class ObjectiveBusinessServiceTest {
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
-                newObjective, authorizationUser);
+                newObjective, authorizationUser, keyResults);
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());

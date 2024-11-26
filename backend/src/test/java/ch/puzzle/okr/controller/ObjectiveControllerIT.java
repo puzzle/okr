@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -213,7 +212,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any())).willReturn(objective1);
+        BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any(), keyResults))
+                .willReturn(objective1);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 

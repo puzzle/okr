@@ -114,13 +114,16 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
      *            New Objective with no KeyResults
      * @param authorizationUser
      *            AuthorizationUser
+     * @param keyResults
+     *            KeyResults to copy
      *
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
-    public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
+    public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser,
+            List<KeyResult> keyResults) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
-        for (KeyResult keyResult : keyResultBusinessService.getAllKeyResultsByObjective(id)) {
+        for (KeyResult keyResult : keyResults) {
             duplicateKeyResult(authorizationUser, keyResult, duplicatedObjective);
         }
         return duplicatedObjective;

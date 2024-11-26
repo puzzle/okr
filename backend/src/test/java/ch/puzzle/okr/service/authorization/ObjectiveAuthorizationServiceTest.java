@@ -154,7 +154,7 @@ class ObjectiveAuthorizationServiceTest {
 
         // act
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.duplicateEntity(idExistingObjective, objective));
+                () -> objectiveAuthorizationService.duplicateEntity(idExistingObjective, objective, keyResults));
 
         // assert
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
@@ -175,11 +175,11 @@ class ObjectiveAuthorizationServiceTest {
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults,
-                authorizationUser)).thenReturn(newObjectiveWithKeyResults);
+                authorizationUser, keyResults)).thenReturn(newObjectiveWithKeyResults);
 
         // act
         Objective objective = objectiveAuthorizationService.duplicateEntity(idExistingObjective,
-                newObjectiveWithoutKeyResults);
+                newObjectiveWithoutKeyResults, keyResults);
 
         // assert
         assertEquals(newObjectiveWithKeyResults, objective);

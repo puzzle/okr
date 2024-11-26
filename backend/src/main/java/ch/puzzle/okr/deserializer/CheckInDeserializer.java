@@ -31,21 +31,20 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
 
     @Override
     public CheckInDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-            throws IOException, JacksonException {
+            throws IOException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
-        if (root.has("keyResultId")) {
-            KeyResult keyResultOfCheckIn = keyResultBusinessService.getEntityById(root.get("keyResultId").asLong());
-            if (KEY_RESULT_TYPE_METRIC.equals(keyResultOfCheckIn.getKeyResultType())) {
-                return mapper.readValue(root.toString(), CheckInMetricDto.class);
-            } else if (KEY_RESULT_TYPE_ORDINAL.equals(keyResultOfCheckIn.getKeyResultType())) {
-                return mapper.readValue(root.toString(), CheckInOrdinalDto.class);
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported checkIn DTO to deserialize");
-            }
-        } else {
+        String keyResultIdAttribute = "checkInId";
+        if (!root.has("keyResultId")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "missing keyResult ID to deserialize checkIn DTO");
         }
+
+        KeyResult keyResultOfCheckIn = keyResultBusinessService.getEntityById(root.get("keyResultId").asLong());
+        return switch (keyResultOfCheckIn.getKeyResultType()) {
+        case KEY_RESULT_TYPE_METRIC -> mapper.readValue(root.toString(), CheckInMetricDto.class);
+        case KEY_RESULT_TYPE_ORDINAL -> mapper.readValue(root.toString(), CheckInOrdinalDto.class);
+        default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported checkIn DTO to deserialize");
+        };
     }
 }

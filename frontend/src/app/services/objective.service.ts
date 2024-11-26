@@ -4,6 +4,9 @@ import { Objective } from '../shared/types/model/Objective';
 import { Observable } from 'rxjs';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
+import { User } from '../shared/types/model/User';
+import { CheckIn } from '../shared/types/model/CheckIn';
+import { Action } from '../shared/types/model/Action';
 
 @Injectable({
   providedIn: 'root',
@@ -34,8 +37,20 @@ export class ObjectiveService {
   duplicateObjective(
     objectiveId: number,
     duplicateObjectiveDto: {
-      objective: Objective;
-      keyResults: KeyResult[];
+      keyResults: {
+        owner: User;
+        modifiedOn: Date | null | undefined;
+        keyResultType: string | undefined;
+        description: string;
+        actionList: Action[] | null;
+        id: undefined;
+        lastCheckIn: CheckIn | null | undefined;
+        title: string;
+        version: number;
+        createdOn: Date | null | undefined;
+        objective: Objective;
+      }[];
+      objective: any;
     },
   ): Observable<Objective> {
     return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, duplicateObjectiveDto);

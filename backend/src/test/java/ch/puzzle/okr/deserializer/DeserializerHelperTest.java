@@ -55,6 +55,7 @@ class DeserializerHelperTest {
 
         // assert
         assertInstanceOf(CheckInMetricDto.class, checkInDto);
+        assertCheckInMetricDto((CheckInMetricDto) checkInDto);
     }
 
     @DisplayName("deserialize() should return CheckInOrdinalDto for ordinal json")
@@ -73,6 +74,8 @@ class DeserializerHelperTest {
 
         // assert
         assertInstanceOf(CheckInOrdinalDto.class, checkInDto);
+        assertCheckInOrdinalDto((CheckInOrdinalDto) checkInDto);
+
     }
 
     @DisplayName("deserialize() should return KeyResultMetricDto for metric json")
@@ -91,6 +94,7 @@ class DeserializerHelperTest {
 
         // assert
         assertInstanceOf(KeyResultMetricDto.class, keyResultDto);
+        assertKeyResultMetricDto((KeyResultMetricDto) keyResultDto);
     }
 
     @DisplayName("deserialize() should return KeyResultOrdinalDto for ordinal json")
@@ -110,6 +114,7 @@ class DeserializerHelperTest {
 
         // assert
         assertInstanceOf(KeyResultOrdinalDto.class, keyResultDto);
+        assertKeyResultOrdinalDto((KeyResultOrdinalDto) keyResultDto);
     }
 
     private static void assertCheckInMetricDto(CheckInMetricDto checkInMetricDto) {

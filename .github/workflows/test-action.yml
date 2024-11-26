@@ -1,31 +1,19 @@
 name: 'Show Variables'
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
-  sonarqube:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-
-        - name: Set up JDK ${{ vars.JAVA_VERSION }}
-          uses: actions/setup-java@v4
-          with:
-            java-version: ${{ vars.JAVA_VERSION }}
-            distribution: 'temurin'
-
-        - name: Set up node ${{ vars.NODE_VERSION }}
-          uses: actions/setup-node@v4
-          with:
-            node-version: ${{ vars.NODE_VERSION }}
-
-        - name: Install frontend dependencies
-          run: cd frontend && npm ci
-
-        - name: Generate frontend test coverage
-          run: cd frontend && npm run test -- --coverage
-
-        - name: Build and analyze
-          run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.host.url=${{vars.SONAR_HOST_URL}}
+  display-variables:
+    name: Show GitHub Variables
+    steps:
+    - name: Try to show GitHub Variables
+      run: |
+        echo "repository variable : ${{ vars.REPOSITORY_VAR }}"
+        echo "organization variable : ${{ vars.ORGANIZATION_VAR }}"
+        echo "overridden variable : ${{ vars.OVERRIDE_VAR }}"
+        echo "variable from shell environment : $env_var"
+        echo "IMAGE_TAG : $vars.ENV_CONTEXT_VAR"
+        echo "IMAGE_TAG : $IMAGE_TAG"
+        echo "QUAY_URL : $QUAY_URL"
     

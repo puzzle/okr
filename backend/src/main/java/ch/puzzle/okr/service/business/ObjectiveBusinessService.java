@@ -22,12 +22,11 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
+    private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
-
-    private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
             ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService,
@@ -36,6 +35,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
+    }
+
+    private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
+        return !Objects.equals(objective.getQuarter(), savedObjective.getQuarter());
     }
 
     public Objective getEntityById(Long id) {
@@ -48,9 +51,9 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         return objectivePersistenceService.findObjectiveByTeamId(id);
     }
 
-    public List<KeyResult> getKeyResultsByObjectiveId(Long id) {
-        validator.validateOnGet(id);
-        return List.of();
+    public List<KeyResult> getAllCheckInsByKeyResult(Long objectiveId) {
+        Objective objective = objectivePersistenceService.findById(objectiveId);
+        return keyResultBusinessService.getAllKeyResultsByObjective(objective.getId());
     }
 
     @Transactional
@@ -91,10 +94,6 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private boolean hasAlreadyCheckIns(Objective savedObjective) {
         return keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId()).stream()
                 .anyMatch(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId()));
-    }
-
-    private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
-        return !Objects.equals(objective.getQuarter(), savedObjective.getQuarter());
     }
 
     @Transactional

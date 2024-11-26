@@ -1,5 +1,12 @@
 package ch.puzzle.okr;
 
+import ch.puzzle.okr.dto.checkin.*;
+import ch.puzzle.okr.dto.keyresult.*;
+
+import java.util.Map;
+
+import static java.util.Map.entry;
+
 public class Constants {
     private Constants() {
     }
@@ -19,4 +26,12 @@ public class Constants {
     public static final String USER_TEAM = "UserTeam";
 
     public static final String BACK_LOG_QUARTER_LABEL = "Backlog";
+
+    public static final Map<String, Class<? extends KeyResultDto>> KEY_RESULT_MAP = Map.ofEntries(
+            entry(KEY_RESULT_TYPE_METRIC, KeyResultMetricDto.class),
+            entry(KEY_RESULT_TYPE_ORDINAL, KeyResultOrdinalDto.class));
+
+    public static final Map<String, Class<? extends CheckInDto>> CHECK_IN_MAP = Map.ofEntries(
+            entry(KEY_RESULT_TYPE_METRIC, CheckInMetricDto.class),
+            entry(KEY_RESULT_TYPE_ORDINAL, CheckInOrdinalDto.class));
 }

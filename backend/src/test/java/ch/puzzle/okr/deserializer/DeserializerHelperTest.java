@@ -12,11 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Map;
-
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-import static java.util.Map.entry;
+import static ch.puzzle.okr.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -36,14 +32,6 @@ class DeserializerHelperTest {
     void setUp() {
         objectMapper = new ObjectMapper();
     }
-
-    Map<String, Class<? extends KeyResultDto>> keyResultMap = Map.ofEntries(
-            entry(KEY_RESULT_TYPE_METRIC, KeyResultMetricDto.class),
-            entry(KEY_RESULT_TYPE_ORDINAL, KeyResultOrdinalDto.class));
-
-    Map<String, Class<? extends CheckInDto>> checkInMap = Map.ofEntries(
-            entry(KEY_RESULT_TYPE_METRIC, CheckInMetricDto.class),
-            entry(KEY_RESULT_TYPE_ORDINAL, CheckInOrdinalDto.class));
 
     @DisplayName("deserialize() should return CheckInMetricDto for metric json")
     @Test
@@ -76,7 +64,7 @@ class DeserializerHelperTest {
 
         // act
         Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("keyResultId", root,
-                checkInMap);
+                CHECK_IN_MAP);
 
         // assert
         assertEquals(CheckInMetricDto.class, dezerializerClass);
@@ -113,7 +101,7 @@ class DeserializerHelperTest {
 
         // act
         Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("keyResultId", root,
-                checkInMap);
+                CHECK_IN_MAP);
 
         // assert
         assertEquals(CheckInOrdinalDto.class, dezerializerClass);
@@ -163,7 +151,7 @@ class DeserializerHelperTest {
 
         // act
         Class<? extends KeyResultDto> dezerializerClass = deserializerHelper.getDezerializerClass("id", root,
-                keyResultMap);
+                KEY_RESULT_MAP);
 
         // assert
         assertEquals(KeyResultMetricDto.class, dezerializerClass);
@@ -213,7 +201,7 @@ class DeserializerHelperTest {
 
         // act
         Class<? extends KeyResultDto> dezerializerClass = deserializerHelper.getDezerializerClass("id", root,
-                keyResultMap);
+                KEY_RESULT_MAP);
 
         // assert
         assertEquals(KeyResultOrdinalDto.class, dezerializerClass);

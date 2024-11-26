@@ -31,7 +31,13 @@ export class ObjectiveService {
     return this.httpClient.delete<Objective>(`/api/v2/objectives/${objectiveId}`);
   }
 
-  duplicateObjective(objectiveId: number, objectiveDTO: any): Observable<Objective> {
-    return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, objectiveDTO);
+  duplicateObjective(
+    objectiveId: number,
+    duplicateObjectiveDto: {
+      objective: Objective;
+      keyResults: KeyResult[];
+    },
+  ): Observable<Objective> {
+    return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, duplicateObjectiveDto);
   }
 }

@@ -262,6 +262,66 @@ public class KeyResultTestHelpers {
             }
             """;
 
+    public static final String PUT_BODY_ORDINAL = """
+            {
+                "id":1,
+                "keyResultType":"ordinal",
+                "title":"Updated Keyresult",
+                "description":"",
+                "baseline":2.0,
+                "stretchGoal":5.0,
+                "unit":"NUMBER",
+                "ownerId":5,
+                "ownerFirstname":"",
+                "ownerLastname":"",
+                "objectiveId":5,
+                "objectiveState":"INPROGRESS",
+                "objectiveQuarterId":1,
+                "objectiveQuarterLabel":"GJ 22/23-Q3",
+                "objectiveQuarterStartDate":null,
+                "objectiveQuarterEndDate":null,
+                "lastCheckInId":1,
+                "lastCheckInValue":4.0,
+                "lastCheckInConfidence":6,
+                "lastCheckInCreatedOn":null,
+                "lastCheckInComment":"",
+                "createdById":5,
+                "createdByFirstname":"",
+                "createdByLastname":"",
+                "createdOn":null,
+                "modifiedOn":null,
+                "actionList":[]
+            }
+            """;
+
+    public static final String keyResultMetricJson = """
+            {
+              "id": 42,
+              "version": 0,
+              "keyResultType": "metric",
+              "title": "TITLE_METRIC",
+              "description": "BESCHREIBUNG",
+              "baseline": 1.0,
+              "stretchGoal": 5.0,
+              "unit": "NUMBER",
+              "owner": {
+                "id": 1000,
+                "firstname": "Jaya",
+                "lastname": "Norris"
+              },
+              "objective": {
+                "id": 1000,
+                "state": "ongoing-icon.svg",
+                "keyResultQuarterDto": null
+              },
+              "lastCheckIn": null,
+              "createdOn": null,
+              "modifiedOn": null,
+              "writeable": false,
+              "actionList": []
+            }
+            """;
+
     private KeyResultTestHelpers() {
     }
 }

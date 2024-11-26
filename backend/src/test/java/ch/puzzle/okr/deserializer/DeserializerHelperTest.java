@@ -6,7 +6,6 @@ import ch.puzzle.okr.models.keyresult.*;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -59,15 +58,11 @@ class DeserializerHelperTest {
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(checkInMetricJson);
 
-        ObjectMapper localObjectMapper = (ObjectMapper) jsonParser.getCodec();
-        ObjectNode root = localObjectMapper.readTree(jsonParser);
-
         // act
-        Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("keyResultId", root,
-                CHECK_IN_MAP);
+        CheckInDto checkInDto = deserializerHelper.getDeserializerClass("keyResultId", jsonParser, CHECK_IN_MAP);
 
         // assert
-        assertEquals(CheckInMetricDto.class, dezerializerClass);
+        assertInstanceOf(CheckInMetricDto.class, checkInDto);
     }
 
     @DisplayName("deserialize() should return CheckInOrdinalDto for ordinal json")
@@ -96,15 +91,11 @@ class DeserializerHelperTest {
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(checkInOrdinalJson);
 
-        ObjectMapper localObjectMapper = (ObjectMapper) jsonParser.getCodec();
-        ObjectNode root = localObjectMapper.readTree(jsonParser);
-
         // act
-        Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("keyResultId", root,
-                CHECK_IN_MAP);
+        CheckInDto checkInDto = deserializerHelper.getDeserializerClass("keyResultId", jsonParser, CHECK_IN_MAP);
 
         // assert
-        assertEquals(CheckInOrdinalDto.class, dezerializerClass);
+        assertInstanceOf(CheckInOrdinalDto.class, checkInDto);
     }
 
     @DisplayName("deserialize() should return KeyResultMetricDto for metric json")
@@ -146,15 +137,11 @@ class DeserializerHelperTest {
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(keyResultMetricJson);
 
-        ObjectMapper localObjectMapper = (ObjectMapper) jsonParser.getCodec();
-        ObjectNode root = localObjectMapper.readTree(jsonParser);
-
         // act
-        Class<? extends KeyResultDto> dezerializerClass = deserializerHelper.getDezerializerClass("id", root,
-                KEY_RESULT_MAP);
+        KeyResultDto keyResultDto = deserializerHelper.getDeserializerClass("id", jsonParser, KEY_RESULT_MAP);
 
         // assert
-        assertEquals(KeyResultMetricDto.class, dezerializerClass);
+        assertInstanceOf(KeyResultMetricDto.class, keyResultDto);
     }
 
     @DisplayName("deserialize() should return KeyResultOrdinalDto for ordinal json")
@@ -196,14 +183,10 @@ class DeserializerHelperTest {
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(keyResultOrdinalJson);
 
-        ObjectMapper localObjectMapper = (ObjectMapper) jsonParser.getCodec();
-        ObjectNode root = localObjectMapper.readTree(jsonParser);
-
         // act
-        Class<? extends KeyResultDto> dezerializerClass = deserializerHelper.getDezerializerClass("id", root,
-                KEY_RESULT_MAP);
+        KeyResultDto keyResultDto = deserializerHelper.getDeserializerClass("id", jsonParser, KEY_RESULT_MAP);
 
         // assert
-        assertEquals(KeyResultOrdinalDto.class, dezerializerClass);
+        assertInstanceOf(KeyResultOrdinalDto.class, keyResultDto);
     }
 }

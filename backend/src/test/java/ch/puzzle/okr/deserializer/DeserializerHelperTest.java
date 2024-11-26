@@ -146,18 +146,6 @@ class DeserializerHelperTest {
         assertObjective(objective);
     }
 
-    private static void assertOwner(KeyResultUserDto owner) {
-        assertNotNull(owner);
-        assertEquals(1000, owner.id());
-        assertEquals("Jaya", owner.firstname());
-        assertEquals("Norris", owner.lastname());
-    }
-
-    private static void assertObjective(KeyResultObjectiveDto objective) {
-        assertNotNull(objective);
-        assertEquals(1000, objective.id());
-    }
-
     private void assertKeyResultOrdinalDto(KeyResultOrdinalDto keyResultOrdinalDto) {
         assertEquals(43L, keyResultOrdinalDto.id());
         assertEquals("ordinal", keyResultOrdinalDto.keyResultType());
@@ -172,6 +160,18 @@ class DeserializerHelperTest {
 
         KeyResultObjectiveDto objective = keyResultOrdinalDto.objective();
         assertObjective(objective);
+    }
+
+    private static void assertOwner(KeyResultUserDto owner) {
+        assertNotNull(owner);
+        assertEquals(1000, owner.id());
+        assertEquals("Jaya", owner.firstname());
+        assertEquals("Norris", owner.lastname());
+    }
+
+    private static void assertObjective(KeyResultObjectiveDto objective) {
+        assertNotNull(objective);
+        assertEquals(1000, objective.id());
     }
 
     private void assertBadRequest(ResponseStatusException exception) {

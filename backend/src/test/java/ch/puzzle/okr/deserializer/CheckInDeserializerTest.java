@@ -1,6 +1,7 @@
 package ch.puzzle.okr.deserializer;
 
 import ch.puzzle.okr.Constants;
+import ch.puzzle.okr.test.CheckInTestHelpers;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -40,7 +41,7 @@ class CheckInDeserializerTest {
         when(deserializerHelper.deserializeMetricOrdinal(any(), any(), any())) //
                 .thenReturn(null);
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(KeyResultTestHelpers.KEY_RESULT_METRIC_JSON);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(CheckInTestHelpers.CHECK_IN_METRIC_JSON);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act

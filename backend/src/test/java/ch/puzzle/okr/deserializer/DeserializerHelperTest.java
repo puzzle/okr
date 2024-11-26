@@ -2,6 +2,7 @@ package ch.puzzle.okr.deserializer;
 
 import ch.puzzle.okr.dto.checkin.*;
 import ch.puzzle.okr.dto.keyresult.*;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.*;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import static ch.puzzle.okr.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -125,5 +128,54 @@ class DeserializerHelperTest {
         assertEquals(7, checkInOrdinalDto.confidence());
         assertEquals(1001, checkInOrdinalDto.keyResultId());
         assertEquals(Zone.STRETCH, checkInOrdinalDto.value());
+    }
+
+    private void assertKeyResultMetricDto(KeyResultMetricDto keyResultMetricDto) {
+        assertEquals(42L, keyResultMetricDto.id());
+        assertEquals("metric", keyResultMetricDto.keyResultType());
+        assertEquals("TITLE_METRIC", keyResultMetricDto.title());
+        assertEquals("BESCHREIBUNG", keyResultMetricDto.description());
+        assertEquals(1.0, keyResultMetricDto.baseline());
+        assertEquals(5.0, keyResultMetricDto.stretchGoal());
+        assertEquals(Unit.NUMBER, keyResultMetricDto.unit());
+
+        KeyResultUserDto owner = keyResultMetricDto.owner();
+        assertOwner(owner);
+
+        KeyResultObjectiveDto objective = keyResultMetricDto.objective();
+        assertObjective(objective);
+    }
+
+    private static void assertOwner(KeyResultUserDto owner) {
+        assertNotNull(owner);
+        assertEquals(1000, owner.id());
+        assertEquals("Jaya", owner.firstname());
+        assertEquals("Norris", owner.lastname());
+    }
+
+    private static void assertObjective(KeyResultObjectiveDto objective) {
+        assertNotNull(objective);
+        assertEquals(1000, objective.id());
+    }
+
+    private void assertKeyResultOrdinalDto(KeyResultOrdinalDto keyResultOrdinalDto) {
+        assertEquals(43L, keyResultOrdinalDto.id());
+        assertEquals("ordinal", keyResultOrdinalDto.keyResultType());
+        assertEquals("TITLE_ORDINAL", keyResultOrdinalDto.title());
+        assertEquals("BESCHREIBUNG", keyResultOrdinalDto.description());
+        assertEquals("1", keyResultOrdinalDto.commitZone());
+        assertEquals("3", keyResultOrdinalDto.targetZone());
+        assertEquals("5", keyResultOrdinalDto.stretchZone());
+
+        KeyResultUserDto owner = keyResultOrdinalDto.owner();
+        assertOwner(owner);
+
+        KeyResultObjectiveDto objective = keyResultOrdinalDto.objective();
+        assertObjective(objective);
+    }
+
+    private void assertBadRequest(ResponseStatusException exception) {
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("unsupported keyResult DTO to deserialize", exception.getReason());
     }
 }

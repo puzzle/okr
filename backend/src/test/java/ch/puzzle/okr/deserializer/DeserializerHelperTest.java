@@ -59,7 +59,7 @@ class DeserializerHelperTest {
         JsonParser jsonParser = objectMapper.getFactory().createParser(checkInMetricJson);
 
         // act
-        CheckInDto checkInDto = deserializerHelper.getDeserializerClass("keyResultId", jsonParser, CHECK_IN_MAP);
+        CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal("keyResultId", jsonParser, CHECK_IN_MAP);
 
         // assert
         assertInstanceOf(CheckInMetricDto.class, checkInDto);
@@ -92,7 +92,7 @@ class DeserializerHelperTest {
         JsonParser jsonParser = objectMapper.getFactory().createParser(checkInOrdinalJson);
 
         // act
-        CheckInDto checkInDto = deserializerHelper.getDeserializerClass("keyResultId", jsonParser, CHECK_IN_MAP);
+        CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal("keyResultId", jsonParser, CHECK_IN_MAP);
 
         // assert
         assertInstanceOf(CheckInOrdinalDto.class, checkInDto);
@@ -138,7 +138,7 @@ class DeserializerHelperTest {
         JsonParser jsonParser = objectMapper.getFactory().createParser(keyResultMetricJson);
 
         // act
-        KeyResultDto keyResultDto = deserializerHelper.getDeserializerClass("id", jsonParser, KEY_RESULT_MAP);
+        KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal("id", jsonParser, KEY_RESULT_MAP);
 
         // assert
         assertInstanceOf(KeyResultMetricDto.class, keyResultDto);
@@ -184,7 +184,7 @@ class DeserializerHelperTest {
         JsonParser jsonParser = objectMapper.getFactory().createParser(keyResultOrdinalJson);
 
         // act
-        KeyResultDto keyResultDto = deserializerHelper.getDeserializerClass("id", jsonParser, KEY_RESULT_MAP);
+        KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal("id", jsonParser, KEY_RESULT_MAP);
 
         // assert
         assertInstanceOf(KeyResultOrdinalDto.class, keyResultDto);

@@ -22,6 +22,6 @@ public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
             throws IOException {
 
         String keyResultIdAttribute = "id";
-        return deserializerHelper.getDeserializerClass(keyResultIdAttribute, jsonParser, KEY_RESULT_MAP);
+        return deserializerHelper.deserializeMetricOrdinal(keyResultIdAttribute, jsonParser, KEY_RESULT_MAP);
     }
 }

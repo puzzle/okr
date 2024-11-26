@@ -22,6 +22,6 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
     public CheckInDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException {
         String keyResultIdAttribute = "keyResultId";
-        return deserializerHelper.getDeserializerClass(keyResultIdAttribute, jsonParser, CHECK_IN_MAP);
+        return deserializerHelper.deserializeMetricOrdinal(keyResultIdAttribute, jsonParser, CHECK_IN_MAP);
     }
 }

@@ -21,7 +21,7 @@ public class DeserializerHelper {
         this.keyResultBusinessService = keyResultBusinessService;
     }
 
-    public <T> T getDeserializerClass(String identifier, JsonParser jsonParser, Map<String, Class<? extends T>> map)
+    public <T> T deserializeMetricOrdinal(String identifier, JsonParser jsonParser, Map<String, Class<? extends T>> map)
             throws IOException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);

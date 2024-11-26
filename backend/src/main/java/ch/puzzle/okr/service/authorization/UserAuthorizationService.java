@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.ErrorKey;
-import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
+import ch.puzzle.okr.dto.userokrdata.UserOkrDataDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.mapper.UserOkrDataMapper;
 import ch.puzzle.okr.models.User;

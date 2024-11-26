@@ -5,7 +5,9 @@ import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,12 +30,15 @@ public class ObjectiveController {
     private final ObjectiveAuthorizationService objectiveAuthorizationService;
     private final ObjectiveMapper objectiveMapper;
     private final KeyResultMapper keyResultMapper;
+    private final ActionAuthorizationService actionAuthorizationService;
 
     public ObjectiveController(ObjectiveAuthorizationService objectiveAuthorizationService,
-            ObjectiveMapper objectiveMapper, KeyResultMapper keyResultMapper) {
+            ObjectiveMapper objectiveMapper, KeyResultMapper keyResultMapper,
+            ActionAuthorizationService actionAuthorizationService) {
         this.objectiveAuthorizationService = objectiveAuthorizationService;
         this.objectiveMapper = objectiveMapper;
         this.keyResultMapper = keyResultMapper;
+        this.actionAuthorizationService = actionAuthorizationService;
     }
 
     @Operation(summary = "Get Objective", description = "Get an Objective by ID")
@@ -49,17 +54,20 @@ public class ObjectiveController {
                 .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
     }
 
-    @Operation(summary = "Get Check-ins from KeyResult", description = "Get all Check-ins from one KeyResult by keyResultId.")
+    @Operation(summary = "Get KeyResult from Objective", description = "Get all KeyResult from one Objective by ObjectiveId.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all Check-ins from KeyResult.", content = {
+            @ApiResponse(responseCode = "200", description = "Returned all KeyResult from Objective.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
-            @ApiResponse(responseCode = "401", description = "Not authorized to read Check-ins from a KeyResult", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Check-ins from.", content = @Content) })
+            @ApiResponse(responseCode = "401", description = "Not authorized to read KeyResult from a Objective", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find a Objective with a specified ID to get KeyResults from.", content = @Content) })
     @GetMapping("/{id}/keyResults")
     public ResponseEntity<List<KeyResultDto>> getCheckInsFromKeyResult(
             @Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
-        return ResponseEntity.status(OK).body(objectiveAuthorizationService.getAllKeyResultsByObjective(id).stream()
-                .map(keyResultMapper::toDto).toList());
+        return ResponseEntity.status(OK)
+                .body(objectiveAuthorizationService.getAllKeyResultsByObjective(id).stream().map(keyResult -> {
+                    List<Action> actionList = actionAuthorizationService.getActionsByKeyResult(keyResult);
+                    return keyResultMapper.toDto(keyResult, actionList);
+                }).toList());
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")

@@ -9,11 +9,23 @@ jobs:
       steps:
         - uses: actions/checkout@v4
 
-        - name: Set up JDK 21
+        - name: Set up JDK ${{ vars.JAVA_VERSION }}
           uses: actions/setup-java@v4
           with:
             java-version: ${{ vars.JAVA_VERSION }}
             distribution: 'temurin'
+
+        - name: Set up node ${{ vars.NODE_VERSION }}
+          uses: actions/setup-node@v4
+          with:
+            node-version: ${{ vars.NODE_VERSION }}
+
+        - name: Install frontend dependencies
+          run: cd frontend && npm ci
+
+        - name: Generate frontend test coverage
+          run: cd frontend && npm run test -- --coverage
+
         - name: Build and analyze
           run: mvn clean compile sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
     

@@ -2,6 +2,7 @@ package ch.puzzle.okr.deserializer;
 
 import ch.puzzle.okr.dto.checkin.*;
 import ch.puzzle.okr.dto.keyresult.*;
+import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.*;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.test.CheckInTestHelpers;
@@ -106,5 +107,23 @@ class DeserializerHelperTest {
 
         // assert
         assertInstanceOf(KeyResultOrdinalDto.class, keyResultDto);
+    }
+
+    private static void assertCheckInMetricDto(CheckInMetricDto checkInMetricDto) {
+        assertEquals(42L, checkInMetricDto.id());
+        assertEquals("Change_Info", checkInMetricDto.changeInfo());
+        assertEquals("Initiatives", checkInMetricDto.initiatives());
+        assertEquals(5, checkInMetricDto.confidence());
+        assertEquals(1000, checkInMetricDto.keyResultId());
+        assertEquals(23, checkInMetricDto.value());
+    }
+
+    private void assertCheckInOrdinalDto(CheckInOrdinalDto checkInOrdinalDto) {
+        assertEquals(43L, checkInOrdinalDto.id());
+        assertEquals("Change_Info", checkInOrdinalDto.changeInfo());
+        assertEquals("Initiatives", checkInOrdinalDto.initiatives());
+        assertEquals(7, checkInOrdinalDto.confidence());
+        assertEquals(1001, checkInOrdinalDto.keyResultId());
+        assertEquals(Zone.STRETCH, checkInOrdinalDto.value());
     }
 }

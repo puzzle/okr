@@ -79,12 +79,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       state: state,
     } as unknown as Objective;
 
-    const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId!, {
-      objective: objectiveDTO,
-      keyResults: this.keyResults
-        .filter((keyResult, index) => value.keyResults[index])
-        .map((result) => ({ ...result, id: undefined })),
-    });
+    const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId!, objectiveDTO);
     submitFunction.subscribe((savedObjective: Objective) => {
       this.closeDialog(savedObjective, false, value.createKeyResults!);
     });
@@ -138,12 +133,21 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     if (this.data.action == 'duplicate') {
       objectiveDTO.id = null;
       objectiveDTO.state = 'DRAFT' as State;
-      return this.objectiveService.duplicateObjective(id, objectiveDTO);
+      return this.objectiveService.duplicateObjective(id, {
+        objective: objectiveDTO,
+        keyResults: this.keyResults
+          .filter((keyResult, index) =>
+            this.objectiveForm.value.keyResults ? this.objectiveForm.value.keyResults[index] : false,
+          )
+          .map((result) => ({ ...result, id: undefined })),
+      });
     } else {
       if (this.data.action == 'releaseBacklog') objectiveDTO.state = 'ONGOING' as State;
-      return id
-        ? this.objectiveService.updateObjective(objectiveDTO)
-        : this.objectiveService.createObjective(objectiveDTO);
+      if (this.data.objective.objectiveId) {
+        objectiveDTO.id = id;
+        return this.objectiveService.updateObjective(objectiveDTO);
+      }
+      return this.objectiveService.createObjective(objectiveDTO);
     }
   }
 

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-public class KeyResultDeserializerTest {
+class KeyResultDeserializerTest {
 
     @InjectMocks
     private KeyResultDeserializer keyResultDeserializer;

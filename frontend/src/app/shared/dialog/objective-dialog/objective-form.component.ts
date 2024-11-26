@@ -75,7 +75,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       quarterId: value.quarter,
       description: value.description,
       title: value.title,
-      teamId: value.team,
+      teamId: this.data.objective.teamId,
       state: state,
     } as unknown as Objective;
 

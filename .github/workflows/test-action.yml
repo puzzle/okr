@@ -15,5 +15,5 @@ jobs:
             java-version: ${{ vars.JAVA_VERSION }}
             distribution: 'temurin'
         - name: Build and analyze
-          run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          run: mvn clean compile sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
     

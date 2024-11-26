@@ -34,6 +34,9 @@ class CheckInDeserializerTest {
     @InjectMocks
     private CheckInDeserializer checkInDeserializer;
 
+    @Mock
+    private DeserializerHelper deserializerHelper;
+
     private ObjectMapper objectMapper;
 
     @BeforeEach

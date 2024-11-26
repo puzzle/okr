@@ -65,6 +65,36 @@ public class CheckInTestHelpers {
     public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, 1, CHANGE_INFO_2, INITIATIVES_2, 5, 2L,
             LocalDateTime.MAX, LocalDateTime.MAX, Zone.COMMIT, true);
 
+    public static final String CHECK_IN_METRIC_JSON = """
+            {
+              "id": 42,
+              "version": 0,
+              "changeInfo": "Change_Info",
+              "initiatives": "Initiatives",
+              "confidence": 5,
+              "keyResultId": 1000,
+              "createdOn": null,
+              "modifiedOn": null,
+              "value": 23.0,
+              "writeable": false
+            }
+            """;
+
+    public static final String CHECK_IN_ORDINAL_JSON = """
+            {
+            "id": 43,
+            "version": 0,
+            "changeInfo": "Change_Info",
+            "initiatives": "Initiatives",
+            "confidence": 7,
+            "keyResultId": 1001,
+            "createdOn": null,
+            "modifiedOn": null,
+            "value": "STRETCH",
+            "writeable": false
+            }
+            """;
+
     private CheckInTestHelpers() {
     }
 

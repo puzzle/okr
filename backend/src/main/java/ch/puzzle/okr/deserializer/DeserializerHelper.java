@@ -3,6 +3,7 @@ package ch.puzzle.okr.deserializer;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,12 @@ public class DeserializerHelper {
             throws IOException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
-
-        if (!root.has(identifier)) {
+        JsonNode keyResultId = root.get(identifier);
+        if (keyResultId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "missing keyResult ID to deserialize keyResult DTO");
         }
-        KeyResult keyResult = keyResultBusinessService.getEntityById(root.get(identifier).asLong());
+        KeyResult keyResult = keyResultBusinessService.getEntityById(keyResultId.asLong());
 
         if (!map.containsKey(keyResult.getKeyResultType())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported entity DTO to deserialize");

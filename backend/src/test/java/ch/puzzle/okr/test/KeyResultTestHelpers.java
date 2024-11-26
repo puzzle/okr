@@ -262,39 +262,35 @@ public class KeyResultTestHelpers {
             }
             """;
 
-    public static final String PUT_BODY_ORDINAL = """
+    public static final String KEY_RESULT_ORDINAL_JSON = """
             {
-                "id":1,
-                "keyResultType":"ordinal",
-                "title":"Updated Keyresult",
-                "description":"",
-                "baseline":2.0,
-                "stretchGoal":5.0,
-                "unit":"NUMBER",
-                "ownerId":5,
-                "ownerFirstname":"",
-                "ownerLastname":"",
-                "objectiveId":5,
-                "objectiveState":"INPROGRESS",
-                "objectiveQuarterId":1,
-                "objectiveQuarterLabel":"GJ 22/23-Q3",
-                "objectiveQuarterStartDate":null,
-                "objectiveQuarterEndDate":null,
-                "lastCheckInId":1,
-                "lastCheckInValue":4.0,
-                "lastCheckInConfidence":6,
-                "lastCheckInCreatedOn":null,
-                "lastCheckInComment":"",
-                "createdById":5,
-                "createdByFirstname":"",
-                "createdByLastname":"",
-                "createdOn":null,
-                "modifiedOn":null,
-                "actionList":[]
+              "id": 43,
+              "version": 0,
+              "keyResultType": "ordinal",
+              "title": "TITLE_ORDINAL",
+              "description": "BESCHREIBUNG",
+              "commitZone": "1",
+              "targetZone": "3",
+              "stretchZone": "5",
+              "owner": {
+                "id": 1000,
+                "firstname": "Jaya",
+                "lastname": "Norris"
+              },
+              "objective": {
+                "id": 1000,
+                "state": "ongoing-icon.svg",
+                "keyResultQuarterDto": null
+              },
+              "lastCheckIn": null,
+              "createdOn": null,
+              "modifiedOn": null,
+              "writeable": false,
+              "actionList": []
             }
             """;
 
-    public static final String keyResultMetricJson = """
+    public static final String KEY_RESULT_METRIC_JSON = """
             {
               "id": 42,
               "version": 0,

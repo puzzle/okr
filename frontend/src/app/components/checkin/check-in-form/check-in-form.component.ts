@@ -4,12 +4,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../../shared/types/model/KeyResult';
 import { KeyResultOrdinal } from '../../../shared/types/model/KeyResultOrdinal';
-import { CheckInMin } from '../../../shared/types/model/CheckInMin';
+import { CheckInMin, CheckInMinMetric, CheckInMinOrdinal } from '../../../shared/types/model/CheckInMin';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../shared/types/model/Action';
 import { ActionService } from '../../../services/action.service';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
+import { keyResult } from '../../../shared/testData';
 
 @Component({
   selector: 'app-check-in-form',
@@ -56,7 +57,11 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
-      this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());
+      if (keyResult.keyResultType === 'metric') {
+        this.dialogForm.controls.value.setValue(this.getCheckInMetric().value!.toString());
+      } else {
+        this.dialogForm.controls.value.setValue(this.getCheckInOrdinal().zone!);
+      }
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
       this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
@@ -78,18 +83,38 @@ export class CheckInFormComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-    let checkIn: any = {
-      ...this.dialogForm.value,
-      id: this.checkIn.id,
-      version: this.checkIn.version,
-      keyResultId: this.keyResult.id,
-    };
+    let checkIn: any;
+    if (keyResult.keyResultType === 'metric') {
+      checkIn = {
+        ...this.dialogForm.value,
+        id: this.checkIn.id,
+        version: this.checkIn.version,
+        keyResultId: this.keyResult.id,
+        value: this.dialogForm.controls.value.value,
+      };
+    } else {
+      checkIn = {
+        ...this.dialogForm.value,
+        id: this.checkIn.id,
+        version: this.checkIn.version,
+        keyResultId: this.keyResult.id,
+        zone: this.dialogForm.controls.value.value,
+      };
+    }
 
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
       this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {
         this.dialogRef.close();
       });
     });
+  }
+
+  getCheckInMetric(): CheckInMinMetric {
+    return this.checkIn as CheckInMinMetric;
+  }
+
+  getCheckInOrdinal(): CheckInMinOrdinal {
+    return this.checkIn as CheckInMinOrdinal;
   }
 
   getKeyResultMetric(): KeyResultMetric {

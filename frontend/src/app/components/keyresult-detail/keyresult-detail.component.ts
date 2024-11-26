@@ -14,6 +14,7 @@ import { DATE_FORMAT } from '../../shared/constantLibary';
 import { calculateCurrentPercentage, isLastCheckInNegative } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { DialogService } from '../../services/dialog.service';
+import { CheckInMetric, CheckInOrdinal } from '../../shared/types/model/CheckIn';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -140,6 +141,10 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
 
   backToOverview() {
     this.router.navigate(['']);
+  }
+
+  getCheckInMetric(lastCheckIn: CheckInOrdinal | CheckInMetric | null): CheckInMetric {
+    return lastCheckIn as CheckInMetric;
   }
 
   protected readonly calculateCurrentPercentage = calculateCurrentPercentage;

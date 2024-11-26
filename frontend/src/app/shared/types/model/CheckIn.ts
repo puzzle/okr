@@ -7,6 +7,12 @@ export interface CheckIn {
   createdBy: string;
   createdOn: Date;
   modifiedOn: Date;
-  value: string | number;
   writeable: boolean;
+}
+export interface CheckInOrdinal extends CheckIn {
+  zone: string;
+}
+
+export interface CheckInMetric extends CheckIn {
+  value: number;
 }

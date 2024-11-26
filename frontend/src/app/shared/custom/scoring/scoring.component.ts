@@ -15,6 +15,7 @@ import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 import { Observable, of } from 'rxjs';
 import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common';
+import { CheckInOrdinal } from '../../types/model/CheckIn';
 
 @Component({
   selector: 'app-scoring',
@@ -86,7 +87,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageOrdinal() {
-    switch (this.keyResult.lastCheckIn?.value) {
+    switch ((this.keyResult.lastCheckIn as CheckInOrdinal)?.zone) {
       case Zone.STRETCH:
         this.stretched = true;
         break;

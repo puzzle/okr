@@ -1,5 +1,5 @@
 import { KeyResultObjective } from './KeyResultObjective';
-import { CheckIn } from './CheckIn';
+import { CheckIn, CheckInMetric, CheckInOrdinal } from './CheckIn';
 import { User } from './User';
 import { Action } from './Action';
 
@@ -12,7 +12,7 @@ export interface KeyResult {
 
   owner: User;
   objective: KeyResultObjective;
-  lastCheckIn: CheckIn | null;
+  lastCheckIn: CheckInMetric | CheckInOrdinal | null;
   createdOn: Date;
   modifiedOn: Date;
   actionList: Action[] | null;

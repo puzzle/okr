@@ -64,9 +64,9 @@ class DeserializerHelperTest {
                 }
                 """;
 
-        when(keyResultBusinessService.getEntityById(42L)) //
+        when(keyResultBusinessService.getEntityById(1000L)) //
                 .thenReturn(KeyResultMetric.Builder.builder() //
-                        .withId(42L) //
+                        .withId(1000L) //
                         .build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(checkInMetricJson);
@@ -75,7 +75,8 @@ class DeserializerHelperTest {
         ObjectNode root = localObjectMapper.readTree(jsonParser);
 
         // act
-        Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("id", root, checkInMap);
+        Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("keyResultId", root,
+                checkInMap);
 
         // assert
         assertEquals(CheckInMetricDto.class, dezerializerClass);
@@ -100,9 +101,9 @@ class DeserializerHelperTest {
                 }
                 """;
 
-        when(keyResultBusinessService.getEntityById(43L)) //
+        when(keyResultBusinessService.getEntityById(1001L)) //
                 .thenReturn(KeyResultOrdinal.Builder.builder() //
-                        .withId(43L) //
+                        .withId(1001L) //
                         .build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(checkInOrdinalJson);
@@ -111,7 +112,8 @@ class DeserializerHelperTest {
         ObjectNode root = localObjectMapper.readTree(jsonParser);
 
         // act
-        Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("id", root, checkInMap);
+        Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass("keyResultId", root,
+                checkInMap);
 
         // assert
         assertEquals(CheckInOrdinalDto.class, dezerializerClass);

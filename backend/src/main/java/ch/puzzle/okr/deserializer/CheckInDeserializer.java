@@ -29,7 +29,7 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
             throws IOException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
-        String keyResultIdAttribute = "checkInId";
+        String keyResultIdAttribute = "keyResultId";
         Class<? extends CheckInDto> dezerializerClass = deserializerHelper.getDezerializerClass(keyResultIdAttribute,
                 root, map);
 

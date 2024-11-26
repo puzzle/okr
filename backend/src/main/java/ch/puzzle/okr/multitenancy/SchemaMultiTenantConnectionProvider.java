@@ -89,7 +89,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
                 .orElseGet(() -> createAndCacheNewConnectionProvider(tenantIdentifier));
     }
 
-    private ConnectionProvider createAndCacheNewConnectionProvider(String tenantIdentifier) {
+    ConnectionProvider createAndCacheNewConnectionProvider(String tenantIdentifier) {
         return Optional.ofNullable(tenantIdentifier) //
                 .map(this::createConnectionProvider) //
                 .map(connectionProvider -> {
@@ -110,7 +110,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
         Properties properties = getHibernateProperties(tenantIdentifier);
         if (properties.isEmpty()) {
-            throw new RuntimeException("Cannot load hibernate properties from application.properties");
+            throw new ConnectionProviderException("Cannot load hibernate properties from application.properties");
         }
         if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
             properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
@@ -135,9 +135,16 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     private Properties getHibernateProperties(String tenantIdentifier) {
-        if (tenantIdentifier.equals(DEFAULT_TENANT_ID)) {
-            return HibernateContext.getHibernateConfig();
+        if (tenantIdentifier == null) {
+            throw new ConnectionProviderException("No hibernate configuration found for tenant: " + tenantIdentifier);
         }
-        return HibernateContext.getHibernateConfig(tenantIdentifier);
+        try {
+            if (tenantIdentifier.equals(DEFAULT_TENANT_ID)) {
+                return HibernateContext.getHibernateConfig();
+            }
+            return HibernateContext.getHibernateConfig(tenantIdentifier);
+        } catch (RuntimeException e) {
+            throw new ConnectionProviderException(e.getMessage());
+        }
     }
 }

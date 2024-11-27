@@ -251,7 +251,7 @@
                         </eclipse>
                         <removeUnusedImports />
                         <importOrder>
-                            <order>java|javax,ch.puzzle,org,com,com.diffplug,,\#com.diffplug,\#</order>
+                            <order>java|jakarta,ch.puzzle,org,com,com.diffplug,,\#com.diffplug,\#</order>
                             <semanticSort>true</semanticSort>
                         </importOrder>
                         <formatAnnotations />

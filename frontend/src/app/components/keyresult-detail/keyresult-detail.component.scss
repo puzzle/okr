@@ -6,12 +6,7 @@
 
 .keyResult-detail-attribute-show {
   background-color: $display-element;
-  height: 100%;
-  font-size: 0.85rem;
-}
-
-.ordinal-zone-title {
-  font-size: 1.1rem;
+  height: auto;
 }
 
 .scoring-detail {
@@ -71,10 +66,6 @@
     width: 100%;
   }
 
-  .keyResult-detail-attribute-show {
-    height: auto;
-  }
-
   .confidence-container {
     display: flex;
     flex-direction: column;
@@ -91,6 +82,6 @@
   text-indent: -1.3rem;
 }
 
-.mb-2-rem {
-  margin-bottom: 2rem !important;
+.all-checkins-button {
+  height: 25px;
 }

@@ -20,16 +20,16 @@
           </div>
           <div class="okr-form-row row-cols-4">
             <h4 class="col-auto">Wert:</h4>
-            <div class="col">
+            <span class="col">
               <ng-container *ngIf="keyResult.keyResultType === 'metric'">
                 {{ +checkIn.value! | unitTransformation: getMetricKeyResult().unit }}
               </ng-container>
               <ng-container *ngIf="keyResult.keyResultType === 'ordinal'">
                 {{ checkIn.value }}
               </ng-container>
-            </div>
+            </span>
             <h4 class="col-auto">Confidence:</h4>
-            <div class="col">{{ checkIn.confidence }} / 10</div>
+            <span class="col">{{ checkIn.confidence }} / 10</span>
           </div>
 
           <div class="okr-form-row justify-content-between" *ngIf="checkIn.changeInfo !== ''">

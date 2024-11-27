@@ -1,7 +1,7 @@
 @import "custom_angular";
 @import "_variables";
 @import "custom_bootstrap";
-@import "fonts/Roboto";
+@import "fonts/OpenSans";
 @import "fonts/MaterialIcons";
 
 html,
@@ -10,8 +10,8 @@ body.okr {
   margin: 0;
   padding: 0;
   background-color: $overview-bg;
-  font-family: Roboto, sans-serif;
-  --bs-body-font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: OpenSans, sans-serif;
+  --bs-body-font-family: OpenSans;
 
   h1 {
     font-size: 1.5rem;
@@ -68,6 +68,11 @@ body.okr {
   .font-size-14 {
     font-size: 0.875rem;
   }
+}
+
+// TODO: Find a better way to override the Angular Material default font once Angular 19 is installed. https://material.angular.io/guide/theming
+* {
+  font-family: OpenSans, sans-serif;
 }
 
 .linebreak {
@@ -254,6 +259,7 @@ img.add-cross-button {
 .add-text {
   margin-top: 1px;
   height: 2rem;
+  font-weight: 500;
 }
 
 .align-new-icon {
@@ -276,6 +282,10 @@ img.add-cross-button {
 
 .break-word {
   word-break: break-all;
+}
+
+.mb-2-rem {
+  margin-bottom: 2rem !important;
 }
 
 #okrBanner {

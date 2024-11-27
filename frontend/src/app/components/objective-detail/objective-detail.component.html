@@ -16,12 +16,12 @@
       <section class="me-3">
         <h3 class="mb-1">Beschrieb</h3>
         <div class="linebreak" *ngIf="objective.description === ''"><p>-</p></div>
-        <div *ngIf="objective.description !== ''" [attr.data-testId]="'description'" class="linebreak">
+        <div *ngIf="objective.description !== ''" [attr.data-testId]="'description'" class="linebreak mb-2-rem">
           <p>{{ objective.description }}</p>
         </div>
 
         <div
-          class="d-flex align-items-center flex-row justify-content-start mt-4"
+          class="d-flex align-items-center flex-row justify-content-start"
           *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
         >
           <button

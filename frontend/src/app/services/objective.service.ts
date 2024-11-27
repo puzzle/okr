@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Objective } from '../shared/types/model/Objective';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Objective } from "../shared/types/model/Objective";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ObjectiveService {
   constructor(private httpClient: HttpClient) {}
 
   getFullObjective(id: number) {
-    return this.httpClient.get<Objective>('/api/v2/objectives/' + id);
+    return this.httpClient.get<Objective>("/api/v2/objectives/" + id);
   }
 
   createObjective(objectiveDTO: Objective): Observable<Objective> {
-    return this.httpClient.post<Objective>('/api/v2/objectives', objectiveDTO);
+    return this.httpClient.post<Objective>("/api/v2/objectives", objectiveDTO);
   }
 
   updateObjective(objectiveDTO: Objective): Observable<Objective> {

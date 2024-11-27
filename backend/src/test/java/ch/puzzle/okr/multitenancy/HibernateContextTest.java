@@ -1,5 +1,8 @@
 package ch.puzzle.okr.multitenancy;
 
+import java.util.Properties;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,9 +10,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.env.ConfigurableEnvironment;
-
-import java.util.Properties;
-import java.util.stream.Stream;
 
 import static ch.puzzle.okr.multitenancy.HibernateContext.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,27 +37,27 @@ public class HibernateContextTest {
     @DisplayName("setHibernateConfig() should throw exception if db config has null or empty values")
     @ParameterizedTest
     @MethodSource("invalidDbConfig")
-    void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username,
-            String password, String tenant) {
+    void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username, String password, String tenant) {
 
         // arrange
         DbConfig dbConfig = new DbConfig(url, username, password, tenant);
 
         // act + assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> setHibernateConfig(dbConfig));
-        assertTrue(exception.getMessage().startsWith("Invalid hibernate configuration"));
+        assertTrue(exception.getMessage()
+                            .startsWith("Invalid hibernate configuration"));
     }
 
     private static Stream<Arguments> invalidDbConfig() {
         return Stream.of( //
-                Arguments.of(null, "username", "password", "multiTenancy"), //
-                Arguments.of("", "username", "password", "multiTenancy"), //
-                Arguments.of("url", null, "password", "multiTenancy"), //
-                Arguments.of("url", "", "password", "multiTenancy"), //
-                Arguments.of("url", "username", null, "multiTenancy"), //
-                Arguments.of("url", "username", "", "multiTenancy"), //
-                Arguments.of("url", "username", "password", null), //
-                Arguments.of("url", "username", "password", ""));
+                         Arguments.of(null, "username", "password", "multiTenancy"), //
+                         Arguments.of("", "username", "password", "multiTenancy"), //
+                         Arguments.of("url", null, "password", "multiTenancy"), //
+                         Arguments.of("url", "", "password", "multiTenancy"), //
+                         Arguments.of("url", "username", null, "multiTenancy"), //
+                         Arguments.of("url", "username", "", "multiTenancy"), //
+                         Arguments.of("url", "username", "password", null), //
+                         Arguments.of("url", "username", "password", ""));
     }
 
     @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and set it")
@@ -107,8 +107,7 @@ public class HibernateContextTest {
         assertProperties(url, username, password, multiTenancy, hibernateProperties);
     }
 
-    private void assertProperties(String url, String username, String password, String multiTenancy,
-            Properties properties) {
+    private void assertProperties(String url, String username, String password, String multiTenancy, Properties properties) {
 
         assertEquals(url, properties.get(HIBERNATE_CONNECTION_URL));
         assertEquals(username, properties.get(HIBERNATE_CONNECTION_USERNAME));

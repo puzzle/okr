@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import ch.puzzle.okr.service.validation.CompletedValidationService;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,22 +24,30 @@ class CompletedBusinessServiceTest {
     @Mock
     CompletedValidationService validator;
 
-    Completed successfulCompleted = Completed.Builder.builder().withId(1L)
-            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft").build();
+    Completed successfulCompleted = Completed.Builder.builder()
+                                                     .withId(1L)
+                                                     .withObjective(Objective.Builder.builder()
+                                                                                     .withId(3L)
+                                                                                     .withTitle("Gute Lernende")
+                                                                                     .build())
+                                                     .withComment("Wir haben es gut geschafft")
+                                                     .build();
 
-    @InjectMocks
-    @Spy
+    @InjectMocks @Spy
     private CompletedBusinessService completedBusinessService;
 
     @Test
     void saveSuccessFulCompleted() {
-        Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
+        Mockito.when(completedPersistenceService.save(any()))
+               .thenReturn(successfulCompleted);
 
         Completed completed = Completed.Builder.builder()
-                .withObjective(Objective.Builder.builder().withId(4L)
-                        .withTitle("Build a company culture that kills the competition.").build())
-                .withComment("Das ist gut").build();
+                                               .withObjective(Objective.Builder.builder()
+                                                                               .withId(4L)
+                                                                               .withTitle("Build a company culture that kills the competition.")
+                                                                               .build())
+                                               .withComment("Das ist gut")
+                                               .build();
 
         Completed savedCompleted = completedBusinessService.createCompleted(completed);
         verify(completedPersistenceService, times(1)).save(completed);
@@ -47,10 +56,15 @@ class CompletedBusinessServiceTest {
 
     @Test
     void shouldBePossibleToSaveCompletedWithoutComment() {
-        Completed completed = Completed.Builder.builder().withObjective(Objective.Builder.builder().withId(4L)
-                .withTitle("Build a company culture that kills the competition.").build()).build();
+        Completed completed = Completed.Builder.builder()
+                                               .withObjective(Objective.Builder.builder()
+                                                                               .withId(4L)
+                                                                               .withTitle("Build a company culture that kills the competition.")
+                                                                               .build())
+                                               .build();
 
-        Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
+        Mockito.when(completedPersistenceService.save(any()))
+               .thenReturn(successfulCompleted);
 
         Completed savedCompleted = completedBusinessService.createCompleted(completed);
         verify(completedPersistenceService, times(1)).save(completed);

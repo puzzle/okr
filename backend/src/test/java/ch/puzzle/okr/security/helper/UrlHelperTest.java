@@ -1,11 +1,11 @@
 package ch.puzzle.okr.security.helper;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +15,7 @@ public class UrlHelperTest {
 
     @DisplayName("extractTenantFromIssUrl() return tenant if Url contains slash")
     @ParameterizedTest
-    @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
+    @ValueSource(strings = {"https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc"})
     void extractTenantFromIssUrlReturnTenantIfUrlContainSlash(String issUrl) {
         // arrange
 

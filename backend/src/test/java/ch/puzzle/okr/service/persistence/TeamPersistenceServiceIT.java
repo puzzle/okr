@@ -1,15 +1,16 @@
 package ch.puzzle.okr.service.persistence;
 
+import java.util.List;
+
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 import static ch.puzzle.okr.Constants.TEAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,8 +33,12 @@ class TeamPersistenceServiceIT {
         List<Team> teams = teamPersistenceService.findTeamsByName("LoremIpsum");
 
         assertEquals(1, teams.size());
-        assertEquals(6, teams.get(0).getId());
-        assertEquals("LoremIpsum", teams.get(0).getName());
+        assertEquals(6,
+                     teams.get(0)
+                          .getId());
+        assertEquals("LoremIpsum",
+                     teams.get(0)
+                          .getName());
     }
 
     @DisplayName("getModelName() should return Team")

@@ -1,13 +1,14 @@
 package ch.puzzle.okr.repository;
 
+import java.util.List;
+
 import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface AlignmentRepository extends CrudRepository<Alignment, Long> {
 

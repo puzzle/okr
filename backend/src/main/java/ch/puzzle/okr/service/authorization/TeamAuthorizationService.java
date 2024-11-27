@@ -1,13 +1,14 @@
 package ch.puzzle.okr.service.authorization;
 
+import java.util.List;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 import static ch.puzzle.okr.Constants.TEAM;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
@@ -17,8 +18,7 @@ public class TeamAuthorizationService {
     private final TeamBusinessService teamBusinessService;
     private final AuthorizationService authorizationService;
 
-    public TeamAuthorizationService(TeamBusinessService teamBusinessService,
-            AuthorizationService authorizationService) {
+    public TeamAuthorizationService(TeamBusinessService teamBusinessService, AuthorizationService authorizationService) {
         this.teamBusinessService = teamBusinessService;
         this.authorizationService = authorizationService;
     }
@@ -71,7 +71,9 @@ public class TeamAuthorizationService {
 
     public void removeUserFromTeam(long entityId, long userId) {
         // user is allowed to remove own membership of any team
-        if (userId != authorizationService.updateOrAddAuthorizationUser().user().getId()) {
+        if (userId != authorizationService.updateOrAddAuthorizationUser()
+                                          .user()
+                                          .getId()) {
             checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
         }
         teamBusinessService.removeUserFromTeam(entityId, userId);

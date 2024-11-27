@@ -6,20 +6,20 @@ import {
   HostListener,
   OnDestroy,
   ViewChild,
-} from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/constantLibary';
+} from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from "../../shared/constantLibary";
 
 @Component({
-  selector: 'app-application-banner',
-  templateUrl: './application-banner.component.html',
-  styleUrls: ['./application-banner.component.scss'],
+  selector: "app-application-banner",
+  templateUrl: "./application-banner.component.html",
+  styleUrls: ["./application-banner.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('okrBanner') okrBanner!: ElementRef;
-  quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  @ViewChild("okrBanner") okrBanner!: ElementRef;
+  quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>("");
   panelOpenState = false;
   resizeObserver: ResizeObserver;
   bannerHeight: number = DEFAULT_HEADER_HEIGHT_PX;
@@ -41,14 +41,14 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   }
 
   changeHeaderAppearance() {
-    let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
+    const scrollTop: number = window.scrollY || document.documentElement.scrollTop;
     this.refreshBanner(scrollTop);
     this.lastScrollPosition = scrollTop;
   }
 
   refreshBanner(scrollTop: number) {
     const newBannerPadding = this.getBannerTopPadding(scrollTop);
-    this.okrBanner.nativeElement.style.top = newBannerPadding + 'px';
+    this.okrBanner.nativeElement.style.top = newBannerPadding + "px";
 
     const overviewPadding = this.getOverviewPadding(newBannerPadding, this.bannerHeight);
     this.refreshDataService.okrBannerHeightSubject.next(overviewPadding);
@@ -64,7 +64,7 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
     return newBannerPadding < 0 ? PUZZLE_TOP_BAR_HEIGHT * 2 : paddingAmount;
   }
 
-  @HostListener('window:scroll')
+  @HostListener("window:scroll")
   scroll() {
     this.changeHeaderAppearance();
   }

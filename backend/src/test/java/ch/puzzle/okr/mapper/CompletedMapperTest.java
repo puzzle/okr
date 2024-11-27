@@ -9,6 +9,7 @@ import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import ch.puzzle.okr.test.dto.builder.CompletedDtoBuilder;
 import ch.puzzle.okr.test.dto.builder.ObjectiveDtoBuilder;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,14 +51,18 @@ public class CompletedMapperTest {
     void toDtoShouldMapCompletedToDto() {
         // arrange
         var completed = Completed.Builder.builder() //
-                .withId(COMPLETED_ID) //
-                .withComment(COMPLETED_COMMENT) //
-                .withObjective(Objective.Builder.builder() //
-                        .withId(OBJECTIVE_ID)//
-                        .withTeam(Team.Builder.builder().withId(NOT_USED_LONG).build()) //
-                        .withQuarter(Quarter.Builder.builder().withId(NOT_USED_LONG).build()) //
-                        .build()) //
-                .build();
+                                         .withId(COMPLETED_ID) //
+                                         .withComment(COMPLETED_COMMENT) //
+                                         .withObjective(Objective.Builder.builder() //
+                                                                         .withId(OBJECTIVE_ID)//
+                                                                         .withTeam(Team.Builder.builder()
+                                                                                               .withId(NOT_USED_LONG)
+                                                                                               .build()) //
+                                                                         .withQuarter(Quarter.Builder.builder()
+                                                                                                     .withId(NOT_USED_LONG)
+                                                                                                     .build()) //
+                                                                         .build()) //
+                                         .build();
 
         // act
         var completedDto = completedMapper.toDto(completed);
@@ -70,15 +75,23 @@ public class CompletedMapperTest {
     private void assertCompletedDto(Completed expected, CompletedDto actual) {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getComment(), actual.comment());
-        assertEquals(expected.getObjective().getId(), actual.objective().id());
+        assertEquals(expected.getObjective()
+                             .getId(),
+                     actual.objective()
+                           .id());
     }
 
     @DisplayName("toCompleted() should map Dto to Completed")
     @Test
     void toCompletedShouldMapDtoToCompleted() {
         // arrange
-        var completedDto = CompletedDtoBuilder.builder().withId(COMPLETED_ID).withComment(COMPLETED_COMMENT)
-                .withObjectiveDto(ObjectiveDtoBuilder.builder().withId(OBJECTIVE_ID).build()).build();
+        var completedDto = CompletedDtoBuilder.builder()
+                                              .withId(COMPLETED_ID)
+                                              .withComment(COMPLETED_COMMENT)
+                                              .withObjectiveDto(ObjectiveDtoBuilder.builder()
+                                                                                   .withId(OBJECTIVE_ID)
+                                                                                   .build())
+                                              .build();
 
         // act
         var completed = completedMapper.toCompleted(completedDto);
@@ -91,7 +104,10 @@ public class CompletedMapperTest {
     private void assertCompleted(CompletedDto expected, Completed actual) {
         assertEquals(expected.id(), actual.getId());
         assertEquals(expected.comment(), actual.getComment());
-        assertEquals(expected.objective().id(), actual.getObjective().getId());
+        assertEquals(expected.objective()
+                             .id(),
+                     actual.getObjective()
+                           .getId());
     }
 
 }

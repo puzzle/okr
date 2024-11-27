@@ -1,4 +1,4 @@
-import { KeyresultMin } from './KeyresultMin';
+import { KeyresultMin } from "./KeyresultMin";
 
 export interface KeyResultOrdinalMin extends KeyresultMin {
   commitZone: string;

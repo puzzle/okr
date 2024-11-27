@@ -1,10 +1,10 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { CustomizationConfig, CustomStyles } from '../shared/types/model/ClientConfig';
-import { ConfigService } from './config.service';
+import { Inject, Injectable } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+import { CustomizationConfig, CustomStyles } from "../shared/types/model/ClientConfig";
+import { ConfigService } from "./config.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class CustomizationService {
   private currentConfig?: CustomizationConfig;
@@ -39,7 +39,8 @@ export class CustomizationService {
       return;
     }
 
-    this.document.getElementById('favicon')?.setAttribute('href', favicon);
+    this.document.getElementById("favicon")
+      ?.setAttribute("href", favicon);
   }
 
   private setTitle(title: string) {
@@ -51,7 +52,7 @@ export class CustomizationService {
       return;
     }
 
-    this.document.querySelector('title')!.innerHTML = title;
+    this.document.querySelector("title")!.innerHTML = title;
   }
 
   private setStyleCustomizations(customStylesMap: CustomStyles) {
@@ -76,14 +77,15 @@ export class CustomizationService {
       return;
     }
 
-    const styles = this.document.querySelector('html')!.style;
+    const styles = this.document.querySelector("html")!.style;
     if (!styles) {
       return;
     }
 
-    Object.entries(customStylesMap).forEach(([varName, varValue]) => {
-      styles.setProperty(`--${varName}`, varValue);
-    });
+    Object.entries(customStylesMap)
+      .forEach(([varName, varValue]) => {
+        styles.setProperty(`--${varName}`, varValue);
+      });
   }
 
   private removeStyles(customStylesMap: CustomStyles | undefined) {
@@ -91,12 +93,13 @@ export class CustomizationService {
       return;
     }
 
-    const styles = this.document.querySelector('html')!.style;
+    const styles = this.document.querySelector("html")!.style;
     if (!styles) {
       return;
     }
-    Object.keys(customStylesMap).forEach((varName) => {
-      styles.removeProperty(`--${varName}`);
-    });
+    Object.keys(customStylesMap)
+      .forEach((varName) => {
+        styles.removeProperty(`--${varName}`);
+      });
   }
 }

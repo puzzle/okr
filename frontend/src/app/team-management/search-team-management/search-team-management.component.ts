@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { TeamService } from '../../services/team.service';
-import { Team } from '../../shared/types/model/Team';
-import { User } from '../../shared/types/model/User';
-import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { getRouteToTeam, getRouteToUserDetails } from '../../shared/routeUtils';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { UserService } from "../../services/user.service";
+import { TeamService } from "../../services/team.service";
+import { Team } from "../../shared/types/model/Team";
+import { User } from "../../shared/types/model/User";
+import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map } from "rxjs";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { getRouteToTeam, getRouteToUserDetails } from "../../shared/routeUtils";
+import { ActivatedRoute, Router } from "@angular/router";
 
 export interface FilteredUser extends User {
   displayValue: string;
@@ -20,17 +20,17 @@ export interface FilteredTeam extends Team {
 }
 
 @Component({
-  selector: 'app-search-team-management',
-  templateUrl: './search-team-management.component.html',
-  styleUrl: './search-team-management.component.scss',
+  selector: "app-search-team-management",
+  templateUrl: "./search-team-management.component.html",
+  styleUrl: "./search-team-management.component.scss",
 })
 export class SearchTeamManagementComponent {
   static MAX_SUGGESTIONS = 3;
-  search = new FormControl('');
+  search = new FormControl("");
 
   filteredUsers$ = new BehaviorSubject<FilteredUser[]>([]);
   filteredTeams$ = new BehaviorSubject<FilteredTeam[]>([]);
-  searchValue$ = new BehaviorSubject<string>('');
+  searchValue$ = new BehaviorSubject<string>("");
 
   private teams: Team[] = [];
   private users: User[] = [];
@@ -50,29 +50,29 @@ export class SearchTeamManagementComponent {
 
     this.search.valueChanges
       .pipe(
-        takeUntilDestroyed(),
-        debounceTime(200),
-        map((v) => (v ? v.trim() : '')),
-        distinctUntilChanged(),
+        takeUntilDestroyed(), debounceTime(200), map((v) => (v ? v.trim() : "")), distinctUntilChanged(),
       )
       .subscribe((searchValue) => {
         this.searchValue$.next(searchValue);
       });
 
-    this.searchValue$.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.applyFilter(this.searchValue$.getValue());
-    });
+    this.searchValue$.pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.applyFilter(this.searchValue$.getValue());
+      });
   }
 
   selectUser(user: User) {
-    this.search.setValue('');
-    const teamId: number = this.activatedRoute.snapshot.params['teamId'];
-    this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId)).then();
+    this.search.setValue("");
+    const teamId: number = this.activatedRoute.snapshot.params["teamId"];
+    this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId))
+      .then();
   }
 
   selectTeam(team: Team) {
-    this.search.setValue('');
-    this.router.navigateByUrl(getRouteToTeam(team.id)).then();
+    this.search.setValue("");
+    this.router.navigateByUrl(getRouteToTeam(team.id))
+      .then();
   }
 
   private applyFilter(filterValue: string): void {
@@ -95,8 +95,10 @@ export class SearchTeamManagementComponent {
   }
 
   private sortByStringPosition(a: string, b: string, value: string): number {
-    const indexA = a.toLowerCase().indexOf(value);
-    const indexB = b.toLowerCase().indexOf(value);
+    const indexA = a.toLowerCase()
+      .indexOf(value);
+    const indexB = b.toLowerCase()
+      .indexOf(value);
     if (indexA === indexB) {
       return 0;
     }
@@ -140,10 +142,11 @@ export class SearchTeamManagementComponent {
   }
 
   private containsText(value: string, text: string): boolean {
-    return value.toLowerCase().indexOf(text.toLowerCase()) >= 0;
+    return value.toLowerCase()
+      .indexOf(text.toLowerCase()) >= 0;
   }
 
   private formatText(value: string, text: string): string {
-    return value.replaceAll(new RegExp(`(${text})`, 'ig'), `<strong>$1</strong>`);
+    return value.replaceAll(new RegExp(`(${text})`, "ig"), "<strong>$1</strong>");
   }
 }

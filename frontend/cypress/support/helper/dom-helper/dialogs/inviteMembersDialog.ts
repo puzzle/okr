@@ -1,5 +1,5 @@
-import Dialog from './dialog';
-import { uniqueSuffix } from '../../utils';
+import Dialog from "./dialog";
+import { uniqueSuffix } from "../../utils";
 import Chainable = Cypress.Chainable;
 
 export default class InviteMembersDialog extends Dialog {
@@ -7,16 +7,21 @@ export default class InviteMembersDialog extends Dialog {
 
   override validatePage() {
     super.validatePage();
-    this.getPage().contains('Members registrieren').should('exist');
+    this.getPage()
+      .contains("Members registrieren")
+      .should("exist");
   }
 
   enterUser(firstName: string, lastName: string, email: string) {
     firstName = uniqueSuffix(firstName);
     email = uniqueSuffix(email);
     this.firstnames.push(firstName);
-    const firstNameInput = cy.get('[formcontrolname="firstname"]').last();
-    const lastNameInput = cy.get('[formcontrolname="lastname"]').last();
-    const emailInput = cy.get('[formcontrolname="email"]').last();
+    const firstNameInput = cy.get("[formcontrolname=\"firstname\"]")
+      .last();
+    const lastNameInput = cy.get("[formcontrolname=\"lastname\"]")
+      .last();
+    const emailInput = cy.get("[formcontrolname=\"email\"]")
+      .last();
     this.fillInput(firstNameInput, firstName);
     this.fillInput(lastNameInput, lastName);
     this.fillInput(emailInput, email);
@@ -24,7 +29,8 @@ export default class InviteMembersDialog extends Dialog {
   }
 
   addAnotherUser() {
-    cy.contains('Weiterer Member hinzufügen').click();
+    cy.contains("Weiterer Member hinzufügen")
+      .click();
     return this;
   }
   getFirstNames() {
@@ -32,11 +38,12 @@ export default class InviteMembersDialog extends Dialog {
   }
 
   override submit() {
-    cy.getByTestId('invite').click();
+    cy.getByTestId("invite")
+      .click();
     return this.firstnames;
   }
 
   getPage(): Chainable {
-    return cy.get('app-invite-user-dialog');
+    return cy.get("app-invite-user-dialog");
   }
 }

@@ -1,9 +1,9 @@
 package ch.puzzle.okr.security.helper;
 
-import com.nimbusds.jwt.JWTClaimsSet;
-
 import java.text.ParseException;
 import java.util.Optional;
+
+import com.nimbusds.jwt.JWTClaimsSet;
 
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_ISS;
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_TENANT;

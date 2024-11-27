@@ -1,22 +1,22 @@
-import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Action } from '../../shared/types/model/Action';
-import { ActionService } from '../../services/action.service';
-import { BehaviorSubject } from 'rxjs';
-import { trackByFn } from '../../shared/common';
-import { DialogService } from '../../services/dialog.service';
+import { Component, ElementRef, Input, QueryList, ViewChildren } from "@angular/core";
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
+import { Action } from "../../shared/types/model/Action";
+import { ActionService } from "../../services/action.service";
+import { BehaviorSubject } from "rxjs";
+import { trackByFn } from "../../shared/common";
+import { DialogService } from "../../services/dialog.service";
 
 @Component({
-  selector: 'app-action-plan',
-  templateUrl: './action-plan.component.html',
-  styleUrls: ['./action-plan.component.scss'],
+  selector: "app-action-plan",
+  templateUrl: "./action-plan.component.html",
+  styleUrls: ["./action-plan.component.scss"],
 })
 export class ActionPlanComponent {
   @Input() control: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([]);
   @Input() keyResultId!: number | null;
   activeItem: number = 0;
 
-  @ViewChildren('listItem')
+  @ViewChildren("listItem")
   listItems!: QueryList<ElementRef>;
 
   constructor(
@@ -26,11 +26,11 @@ export class ActionPlanComponent {
 
   handleKeyDown(event: Event, currentIndex: number) {
     let newIndex = currentIndex;
-    if ((event as KeyboardEvent).key === 'ArrowDown') {
+    if ((event as KeyboardEvent).key === "ArrowDown") {
       if (newIndex + 1 <= this.control.getValue()!.length - 1) {
         newIndex += 1;
       }
-    } else if ((event as KeyboardEvent).key === 'ArrowUp') {
+    } else if ((event as KeyboardEvent).key === "ArrowUp") {
       if (newIndex - 1 >= 0) {
         newIndex -= 1;
       }
@@ -41,7 +41,7 @@ export class ActionPlanComponent {
 
   changeItemPosition(newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
-    let currentActionPlan: Action[] = this.control.getValue()!;
+    const currentActionPlan: Action[] = this.control.getValue()!;
     this.updateActionTexts(currentActionPlan);
     moveItemInArray(currentActionPlan, currentIndex, newIndex);
     currentActionPlan.forEach((action: Action, index: number) => (action.priority = index));
@@ -49,7 +49,8 @@ export class ActionPlanComponent {
   }
 
   updateActionTexts(currentActionPlan: Action[]) {
-    let texts = Array.from(this.listItems).map((input: any) => input.nativeElement.value);
+    const texts = Array.from(this.listItems)
+      .map((input: any) => input.nativeElement.value);
     currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
   }
 
@@ -66,11 +67,11 @@ export class ActionPlanComponent {
   }
 
   drop(event: CdkDragDrop<Action[] | null>) {
-    let value: string = (<HTMLInputElement>(
+    const value: string = (<HTMLInputElement>(
       event.container.element.nativeElement.children[event.previousIndex].children[1]
     )).value;
     const actions: Action[] = this.control.getValue()!;
-    if (actions[event.previousIndex].action == '' && value != '') {
+    if (actions[event.previousIndex].action == "" && value != "") {
       actions[event.previousIndex] = { ...actions[event.previousIndex], action: value };
       this.control.next(actions);
     }
@@ -92,18 +93,19 @@ export class ActionPlanComponent {
   }
 
   removeAction(index: number) {
-    let actions: Action[] = this.control.getValue()!;
+    const actions: Action[] = this.control.getValue()!;
     if (this.activeItem == index && this.activeItem > 0) {
       this.activeItem--;
     }
-    if (actions[index].action !== '' || actions[index].id) {
+    if (actions[index].action !== "" || actions[index].id) {
       this.dialogService
-        .openConfirmDialog('DELETE.ACTION')
+        .openConfirmDialog("DELETE.ACTION")
         .afterClosed()
         .subscribe((result) => {
           if (result) {
             if (actions[index].id) {
-              this.actionService.deleteAction(actions[index].id!).subscribe();
+              this.actionService.deleteAction(actions[index].id!)
+                .subscribe();
             }
             actions.splice(index, 1);
             this.control.next(actions);
@@ -119,7 +121,7 @@ export class ActionPlanComponent {
 
   addNewAction() {
     const actions: Action[] = this.control.getValue()!;
-    actions.push({ action: '', priority: actions.length, keyResultId: this.keyResultId } as Action);
+    actions.push({ action: "", priority: actions.length, keyResultId: this.keyResultId } as Action);
     this.control.next(actions);
     this.activeItem = actions.length - 1;
   }

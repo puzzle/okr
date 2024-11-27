@@ -1,11 +1,12 @@
 package ch.puzzle.okr.exception;
 
+import java.util.List;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.ErrorDto;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -51,7 +52,9 @@ public class OkrResponseStatusException extends ResponseStatusException {
     }
 
     public OkrResponseStatusException(HttpStatus status, List<ErrorDto> errors) {
-        super(status, errors.get(0).errorKey());
+        super(status,
+              errors.get(0)
+                    .errorKey());
         this.errors = errors;
     }
 

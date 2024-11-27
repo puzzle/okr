@@ -12,7 +12,7 @@ export class Quarter {
   readonly endDate: Date | null;
 
   fullLabel(): string {
-    return this.isCurrent() ? this.label + ' Aktuell' : this.label;
+    return this.isCurrent() ? this.label + " Aktuell" : this.label;
   }
 
   private isCurrent(): boolean {

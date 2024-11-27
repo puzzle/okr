@@ -1,8 +1,8 @@
-import { Unit } from '../../types/enums/Unit';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Unit } from "../../types/enums/Unit";
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'unitTransformation',
+  name: "unitTransformation",
 })
 export class UnitTransformationPipe implements PipeTransform {
   transform(value: number, label: string): string {
@@ -10,26 +10,27 @@ export class UnitTransformationPipe implements PipeTransform {
   }
 
   transformValue(value: number): string {
-    return Number.isNaN(value) ? '0' : this.roundAndAddThousandSplitSign(value);
+    return Number.isNaN(value) ? "0" : this.roundAndAddThousandSplitSign(value);
   }
 
   roundAndAddThousandSplitSign(value: number): string {
-    return (+value.toFixed(2)).toLocaleString('en-US').replace(/,/g, "'");
+    return (+value.toFixed(2)).toLocaleString("en-US")
+      .replace(/,/g, "'");
   }
 
   transformLabel(label: string): string {
     switch (label) {
       case Unit.PERCENT:
-        return '%';
+        return "%";
       case Unit.FTE:
-        return ' ' + Unit.FTE;
+        return " " + Unit.FTE;
       case Unit.CHF:
-        return ' ' + Unit.CHF;
+        return " " + Unit.CHF;
       case Unit.EUR:
-        return ' ' + Unit.EUR;
+        return " " + Unit.EUR;
       case Unit.NUMBER:
       default:
-        return '';
+        return "";
     }
   }
 }

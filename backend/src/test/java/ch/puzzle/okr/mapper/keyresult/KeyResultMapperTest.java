@@ -1,5 +1,7 @@
 package ch.puzzle.okr.mapper.keyresult;
 
+import java.util.List;
+
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
@@ -11,6 +13,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +23,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 import static ch.puzzle.okr.mapper.keyresult.helper.TestDataDtoHelper.keyResultMetricDto;
 import static ch.puzzle.okr.mapper.keyresult.helper.TestDataDtoHelper.keyResultOrdinalDto;
@@ -46,16 +47,16 @@ public class KeyResultMapperTest {
     @BeforeEach
     void setup() {
         KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper( //
-                userBusinessService, //
-                objectiveBusinessService, //
-                checkInBusinessService, //
-                actionMapper);
+                                                                                userBusinessService, //
+                                                                                objectiveBusinessService, //
+                                                                                checkInBusinessService, //
+                                                                                actionMapper);
 
         KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper( //
-                userBusinessService, //
-                objectiveBusinessService, //
-                checkInBusinessService, //
-                actionMapper);
+                                                                                   userBusinessService, //
+                                                                                   objectiveBusinessService, //
+                                                                                   checkInBusinessService, //
+                                                                                   actionMapper);
 
         keyResultMapper = new KeyResultMapper(keyResultOrdinalMapper, keyResultMetricMapper);
     }
@@ -124,8 +125,8 @@ public class KeyResultMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows( //
-                ResponseStatusException.class, //
-                () -> keyResultMapper.toDto(keyResult, actions));
+                                                                       ResponseStatusException.class, //
+                                                                       () -> keyResultMapper.toDto(keyResult, actions));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
@@ -137,8 +138,8 @@ public class KeyResultMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows( //
-                ResponseStatusException.class, //
-                () -> keyResultMapper.toKeyResult(keyResultDto));
+                                                                       ResponseStatusException.class, //
+                                                                       () -> keyResultMapper.toKeyResult(keyResultDto));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 }

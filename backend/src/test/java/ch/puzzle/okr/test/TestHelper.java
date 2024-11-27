@@ -1,12 +1,5 @@
 package ch.puzzle.okr.test;
 
-import ch.puzzle.okr.dto.ErrorDto;
-import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.UserTeam;
-import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import org.springframework.security.oauth2.jwt.Jwt;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.UserTeam;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
+
+import org.springframework.security.oauth2.jwt.Jwt;
 
 public class TestHelper {
     private TestHelper() {
@@ -26,8 +27,12 @@ public class TestHelper {
     private static final String EMAIL = "kaufmann@puzzle.ch";
 
     public static User defaultUser(Long id) {
-        return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withEmail(EMAIL)
-                .build();
+        return User.Builder.builder()
+                           .withId(id)
+                           .withFirstname(FIRSTNAME)
+                           .withLastname(LASTNAME)
+                           .withEmail(EMAIL)
+                           .build();
     }
 
     public static User defaultOkrChampion(Long id) {
@@ -39,20 +44,34 @@ public class TestHelper {
     public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
         var user = defaultUser(userId);
         var adminUserTeams = adminTeams.stream()
-                .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
+                                       .map(t -> UserTeam.Builder.builder()
+                                                                 .withTeamAdmin(true)
+                                                                 .withTeam(t)
+                                                                 .withUser(user)
+                                                                 .build());
         var memberUserTeams = memberTeams.stream()
-                .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
-        user.setUserTeamList(
-                Stream.concat(adminUserTeams, memberUserTeams).collect(Collectors.toCollection(ArrayList::new)));
+                                         .map(t -> UserTeam.Builder.builder()
+                                                                   .withTeam(t)
+                                                                   .withUser(user)
+                                                                   .build());
+        user.setUserTeamList(Stream.concat(adminUserTeams, memberUserTeams)
+                                   .collect(Collectors.toCollection(ArrayList::new)));
         return user;
     }
 
     public static Team defaultTeam(Long id) {
-        return Team.Builder.builder().withId(id).withName("Test Team").build();
+        return Team.Builder.builder()
+                           .withId(id)
+                           .withName("Test Team")
+                           .build();
     }
 
     public static UserTeam defaultUserTeam(Long id, User user) {
-        return UserTeam.Builder.builder().withId(id).withTeam(defaultTeam(1L)).withUser(user).build();
+        return UserTeam.Builder.builder()
+                               .withId(id)
+                               .withTeam(defaultTeam(1L))
+                               .withUser(user)
+                               .build();
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
@@ -60,19 +79,21 @@ public class TestHelper {
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user) {
-        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(),
-                user.isOkrChampion());
+        return mockAuthorizationUser(user.getId(),
+                                     user.getFirstname(),
+                                     user.getLastname(),
+                                     user.getEmail(),
+                                     user.isOkrChampion());
     }
 
-    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email,
-            boolean isOkrChampion) {
+    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email, boolean isOkrChampion) {
         User user = User.Builder.builder() //
-                .withId(id) //
-                .withFirstname(firstname) //
-                .withLastname(lastname) //
-                .withEmail(email) //
-                .withOkrChampion(isOkrChampion) //
-                .build();
+                                .withId(id) //
+                                .withFirstname(firstname) //
+                                .withLastname(lastname) //
+                                .withEmail(email) //
+                                .withOkrChampion(isOkrChampion) //
+                                .build();
         user.setUserTeamList(List.of(defaultUserTeam(1L, user)));
         return new AuthorizationUser(user);
     }
@@ -96,12 +117,22 @@ public class TestHelper {
         claims.put("given_name", firstname);
         claims.put("family_name", lastname);
         claims.put("email", email);
-        claims.put("exp", Instant.now().plusSeconds(3600).getEpochSecond()); // Expires in 1 hour
+        claims.put("exp",
+                   Instant.now()
+                          .plusSeconds(3600)
+                          .getEpochSecond()); // Expires in 1 hour
 
-        return new Jwt(exampleToken, Instant.now(), Instant.now().plusSeconds(3600), headers, claims);
+        return new Jwt(exampleToken,
+                       Instant.now(),
+                       Instant.now()
+                              .plusSeconds(3600),
+                       headers,
+                       claims);
     }
 
     public static List<String> getAllErrorKeys(List<ErrorDto> errors) {
-        return errors.stream().map(ErrorDto::errorKey).toList();
+        return errors.stream()
+                     .map(ErrorDto::errorKey)
+                     .toList();
     }
 }

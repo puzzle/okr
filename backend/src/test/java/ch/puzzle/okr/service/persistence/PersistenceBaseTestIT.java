@@ -1,10 +1,13 @@
 package ch.puzzle.okr.service.persistence;
 
+import java.util.List;
+
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,8 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 import static ch.puzzle.okr.test.TestHelper.getAllErrorKeys;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,10 +38,10 @@ public class PersistenceBaseTestIT {
     private static final long NON_EXISTING_USER_ID = 321L;
     private static final long USER_PACO_ID = 1L;
     private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder() //
-            .withFirstname("Hans") //
-            .withLastname("Muster") //
-            .withEmail("hans.muster@puzzle.ch") //
-            .build();
+                                                                     .withFirstname("Hans") //
+                                                                     .withLastname("Muster") //
+                                                                     .withEmail("hans.muster@puzzle.ch") //
+                                                                     .build();
 
     @Autowired
     private PersistenceBase<User, Long, UserRepository> persistenceBase;
@@ -72,7 +73,7 @@ public class PersistenceBaseTestIT {
     @Test
     void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
         var exception = assertThrows(ResponseStatusException.class,
-                () -> persistenceBase.findById(NON_EXISTING_USER_ID));
+                                     () -> persistenceBase.findById(NON_EXISTING_USER_ID));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
@@ -162,8 +163,7 @@ public class PersistenceBaseTestIT {
         assertEntityNotFound(createdUserId);
     }
 
-    private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail,
-            User currentUser) {
+    private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail, User currentUser) {
         assertEquals(expectedFirstName, currentUser.getFirstname());
         assertEquals(expectedLastName, currentUser.getLastname());
         assertEquals(expectedEmail, currentUser.getEmail());

@@ -1,21 +1,21 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { User } from '../../shared/types/model/User';
-import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
-import { TeamService } from '../../services/team.service';
-import { Team } from '../../shared/types/model/Team';
-import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
-import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
-import { DialogService } from '../../services/dialog.service';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { UserService } from "../../services/user.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from "rxjs";
+import { User } from "../../shared/types/model/User";
+import { convertFromUsers, UserTableEntry } from "../../shared/types/model/UserTableEntry";
+import { TeamService } from "../../services/team.service";
+import { Team } from "../../shared/types/model/Team";
+import { AddMemberToTeamDialogComponent } from "../add-member-to-team-dialog/add-member-to-team-dialog.component";
+import { AddEditTeamDialog } from "../add-edit-team-dialog/add-edit-team-dialog.component";
+import { MatTableDataSource } from "@angular/material/table";
+import { InviteUserDialogComponent } from "../invite-user-dialog/invite-user-dialog.component";
+import { DialogService } from "../../services/dialog.service";
 
 @Component({
-  selector: 'app-member-list',
-  templateUrl: './member-list.component.html',
-  styleUrl: './member-list.component.scss',
+  selector: "app-member-list",
+  templateUrl: "./member-list.component.html",
+  styleUrl: "./member-list.component.scss",
 })
 export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
@@ -40,7 +40,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
       .getUsers()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((users) => this.allUsersSubj.next(users));
-    const teamId$ = this.route.paramMap.pipe(map((params) => params.get('teamId')));
+    const teamId$ = this.route.paramMap.pipe(map((params) => params.get("teamId")));
     combineLatest([this.allUsersSubj.asObservable(), teamId$, this.teamService.getAllTeams()])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(([users, teamIdParam, teams]) => {
@@ -89,16 +89,16 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.dialogService
-      .openConfirmDialog('CONFIRMATION.DELETE.TEAM', data)
+      .openConfirmDialog("CONFIRMATION.DELETE.TEAM", data)
       .afterClosed()
       .pipe(
-        filter((confirm) => confirm),
-        mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)),
+        filter((confirm) => confirm), mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)),
       )
       .subscribe(() => {
         this.userService.reloadUsers();
-        this.userService.reloadCurrentUser().subscribe();
-        this.router.navigateByUrl('team-management');
+        this.userService.reloadCurrentUser()
+          .subscribe();
+        this.router.navigateByUrl("team-management");
       });
   }
 
@@ -109,11 +109,14 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
         currentUsersOfTeam: this.dataSource.data,
       },
     });
-    dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
+    dialogRef.afterClosed()
+      .subscribe(() => this.cd.markForCheck());
   }
 
   inviteMember() {
-    this.dialogService.open(InviteUserDialogComponent).afterClosed().subscribe();
+    this.dialogService.open(InviteUserDialogComponent)
+      .afterClosed()
+      .subscribe();
   }
 
   showInviteMember(): boolean {
@@ -126,6 +129,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   editTeam(): void {
     const dialogRef = this.dialogService.open(AddEditTeamDialog, { data: { team: this.selectedTeam$.value } });
-    dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
+    dialogRef.afterClosed()
+      .subscribe(() => this.cd.markForCheck());
   }
 }

@@ -1,6 +1,7 @@
 package ch.puzzle.okr.security;
 
 import ch.puzzle.okr.multitenancy.TenantContext;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,8 @@ public class AuthenticationEventsTest {
         Jwt tokenMock = mock(Jwt.class);
 
         AuthenticationSuccessEvent successEvent = new AuthenticationSuccessEvent(mock(Authentication.class));
-        when(successEvent.getAuthentication().getPrincipal()).thenReturn(tokenMock);
+        when(successEvent.getAuthentication()
+                         .getPrincipal()).thenReturn(tokenMock);
 
         JwtHelper jwtHelperMock = mock(JwtHelper.class);
         when(jwtHelperMock.getTenantFromToken(tokenMock)).thenReturn(TENANT_FROM_TOKEN);
@@ -53,8 +55,7 @@ public class AuthenticationEventsTest {
         assertEquals(TENANT_FROM_TOKEN, TenantContext.getCurrentTenant());
     }
 
-    private void verifyGetTenantFromTokenIsCalledWithTokenFromAuthenticationSuccessEvent(JwtHelper jwtHelper,
-            Jwt token) {
+    private void verifyGetTenantFromTokenIsCalledWithTokenFromAuthenticationSuccessEvent(JwtHelper jwtHelper, Jwt token) {
         verify(jwtHelper).getTenantFromToken(token);
     }
 

@@ -1,4 +1,8 @@
-<div class="w-100" [cdkTrapFocus]="true" [cdkTrapFocusAutoCapture]="true">
+<div
+  class="w-100"
+  [cdkTrapFocus]="true"
+  [cdkTrapFocusAutoCapture]="true"
+>
   <ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
     <div *ngIf="objective" class="d-flex flex-column">
       <section class="w-100 d-flex justify-content-between align-items-center mb-3">
@@ -16,14 +20,15 @@
       <section class="me-3">
         <h3 class="mb-1">Beschrieb</h3>
         <div class="linebreak" *ngIf="objective.description === ''"><p>-</p></div>
-        <div *ngIf="objective.description !== ''" [attr.data-testId]="'description'" class="linebreak mb-2-rem">
+        <div
+          *ngIf="objective.description !== ''"
+          [attr.data-testId]="'description'"
+          class="linebreak mb-2-rem"
+        >
           <p>{{ objective.description }}</p>
         </div>
 
-        <div
-          class="d-flex align-items-center flex-row justify-content-start"
-          *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
-        >
+        <div class="d-flex align-items-center flex-row justify-content-start" *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'">
           <button
             *ngIf="objective.writeable"
             mat-flat-button

@@ -1,19 +1,18 @@
 package ch.puzzle.okr.models.checkin;
 
-import ch.puzzle.okr.models.MessageKey;
+import java.util.Objects;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Objects;
+import ch.puzzle.okr.models.MessageKey;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_METRIC)
 public class CheckInMetric extends CheckIn {
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    private Double valueMetric;
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private Double valueMetric;
 
     /* Getter and Setter */
     public Double getValue() {

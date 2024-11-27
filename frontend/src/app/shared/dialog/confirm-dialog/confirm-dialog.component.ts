@@ -1,16 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmDialogData } from '../../../services/dialog.service';
-import { ButtonState } from '../../types/enums/ButtonState';
+import { Component, Inject, OnInit } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { ConfirmDialogData } from "../../../services/dialog.service";
+import { ButtonState } from "../../types/enums/ButtonState";
 
 @Component({
-  selector: 'app-confirm-dialog',
-  templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss'],
+  selector: "app-confirm-dialog",
+  templateUrl: "./confirm-dialog.component.html",
+  styleUrls: ["./confirm-dialog.component.scss"],
 })
 export class ConfirmDialogComponent implements OnInit {
-  dialogTitle: string = '';
-  dialogText: string = '';
+  dialogTitle: string = "";
+  dialogText: string = "";
   yesButtonState?: ButtonState;
   noButtonState?: ButtonState;
   closeButtonState?: ButtonState;

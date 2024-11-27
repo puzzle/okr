@@ -56,7 +56,7 @@ public class ObjectiveController {
                 .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
     }
 
-    @Operation(summary = "Get KeyResult from Objective", description = "Get all KeyResult from one Objective by ObjectiveId.")
+    @Operation(summary = "Get KeyResult from Objective", description = "Get all KeyResults from one Objective by ObjectiveId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all KeyResult from Objective.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),

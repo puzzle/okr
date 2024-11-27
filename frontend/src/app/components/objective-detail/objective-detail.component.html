@@ -1,7 +1,7 @@
 <div class="w-100" [cdkTrapFocus]="true" [cdkTrapFocusAutoCapture]="true">
   <ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
     <div *ngIf="objective" class="d-flex flex-column">
-      <section class="w-100 d-flex justify-content-between align-items-center mb-2-rem">
+      <section class="w-100 d-flex justify-content-between align-items-center mb-3">
         <h2 class="title" [attr.data-testId]="'objective-title'">{{ objective.title }}</h2>
         <button
           class="d-flex align-items-center justify-content-center"

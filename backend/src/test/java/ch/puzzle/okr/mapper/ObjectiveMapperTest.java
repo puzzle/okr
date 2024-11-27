@@ -1,5 +1,8 @@
 package ch.puzzle.okr.mapper;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
@@ -7,6 +10,7 @@ import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +19,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDateTime;
-import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -38,11 +39,13 @@ public class ObjectiveMapperTest {
     private static final LocalDateTime CREATE_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 20, 12, 35, 0);
     private static final LocalDateTime MODIFIED_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 21, 8, 0, 0);
 
-    private final Team team = Team.Builder.builder().withId(TEAM_ID).build();
+    private final Team team = Team.Builder.builder()
+                                          .withId(TEAM_ID)
+                                          .build();
     private final Quarter quarter = Quarter.Builder.builder() //
-            .withId(QUARTER_ID) //
-            .withLabel(QUARTER_LABEL) //
-            .build();
+                                                   .withId(QUARTER_ID) //
+                                                   .withLabel(QUARTER_LABEL) //
+                                                   .build();
 
     private ObjectiveMapper objectiveMapper;
 
@@ -62,16 +65,16 @@ public class ObjectiveMapperTest {
     void toDtoShouldMapObjectiveToDto() {
         // arrange
         Objective objective = Objective.Builder.builder() //
-                .withId(ID) //
-                .withVersion(VERSION) //
-                .withTitle(TITLE) //
-                .withTeam(team) //
-                .withQuarter(quarter) //
-                .withDescription(DESCRIPTION) //
-                .withState(STATE) //
-                .withCreatedOn(CREATE_DATE_TIME) //
-                .withModifiedOn(MODIFIED_DATE_TIME) //
-                .build();
+                                               .withId(ID) //
+                                               .withVersion(VERSION) //
+                                               .withTitle(TITLE) //
+                                               .withTeam(team) //
+                                               .withQuarter(quarter) //
+                                               .withDescription(DESCRIPTION) //
+                                               .withState(STATE) //
+                                               .withCreatedOn(CREATE_DATE_TIME) //
+                                               .withModifiedOn(MODIFIED_DATE_TIME) //
+                                               .build();
         objective.setWriteable(IS_WRITEABLE);
 
         // act
@@ -86,9 +89,12 @@ public class ObjectiveMapperTest {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
         assertEquals(expected.getTitle(), actual.title());
-        assertEquals(expected.getTeam().getId(), actual.teamId());
-        assertEquals(expected.getQuarter().getId(), actual.quarterId());
-        assertEquals(expected.getQuarter().getLabel(), actual.quarterLabel());
+        assertEquals(expected.getTeam()
+                             .getId(), actual.teamId());
+        assertEquals(expected.getQuarter()
+                             .getId(), actual.quarterId());
+        assertEquals(expected.getQuarter()
+                             .getLabel(), actual.quarterLabel());
         assertEquals(expected.getDescription(), actual.description());
         assertEquals(expected.getState(), actual.state());
         assertEquals(expected.getCreatedOn(), actual.createdOn());
@@ -133,9 +139,15 @@ public class ObjectiveMapperTest {
         assertEquals(expected.id(), actual.getId());
         assertEquals(expected.version(), actual.getVersion());
         assertEquals(expected.title(), actual.getTitle());
-        assertEquals(expected.teamId(), actual.getTeam().getId());
-        assertEquals(expected.quarterId(), actual.getQuarter().getId());
-        assertEquals(expected.quarterLabel(), actual.getQuarter().getLabel());
+        assertEquals(expected.teamId(),
+                     actual.getTeam()
+                           .getId());
+        assertEquals(expected.quarterId(),
+                     actual.getQuarter()
+                           .getId());
+        assertEquals(expected.quarterLabel(),
+                     actual.getQuarter()
+                           .getLabel());
         assertEquals(expected.description(), actual.getDescription());
         assertEquals(expected.state(), actual.getState());
         assertEquals(expected.createdOn(), actual.getCreatedOn());

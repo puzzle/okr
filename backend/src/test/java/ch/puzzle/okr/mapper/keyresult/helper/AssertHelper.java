@@ -1,5 +1,7 @@
 package ch.puzzle.okr.mapper.keyresult.helper;
 
+import java.util.List;
+
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.models.Action;
@@ -9,8 +11,6 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 
-import java.util.List;
-
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static ch.puzzle.okr.mapper.keyresult.helper.TestDataDtoHelper.lastCheckInMetricDto;
@@ -18,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AssertHelper {
 
-    public static void assertKeyResultMetricDtoWithCheckIn(KeyResultMetric expected, KeyResultMetricDto actual,
-            List<Action> actions) {
+    public static void assertKeyResultMetricDtoWithCheckIn(KeyResultMetric expected, KeyResultMetricDto actual, List<Action> actions) {
         assertKeyResultMetricDto(expected, actual, actions);
         // checkIn is only available on KeyResultMetricDto (and not on KeyResultMetric).
         // So check actual against the checkInMetricDto from TestDataDtoHelper
@@ -27,14 +26,12 @@ public class AssertHelper {
         assertCheckInMetricDto(lastCheckInMetricDto(), actual.lastCheckIn());
     }
 
-    public static void assertKeyResultMetricDtoWithoutCheckIn(KeyResultMetric expected, KeyResultMetricDto actual,
-            List<Action> actions) {
+    public static void assertKeyResultMetricDtoWithoutCheckIn(KeyResultMetric expected, KeyResultMetricDto actual, List<Action> actions) {
         assertKeyResultMetricDto(expected, actual, actions);
         assertNull(actual.lastCheckIn());
     }
 
-    private static void assertKeyResultMetricDto(KeyResultMetric expected, KeyResultMetricDto actual,
-            List<Action> actions) {
+    private static void assertKeyResultMetricDto(KeyResultMetric expected, KeyResultMetricDto actual, List<Action> actions) {
         assertEquals(KEY_RESULT_TYPE_METRIC, actual.keyResultType());
         assertEquals(expected.getKeyResultType(), actual.keyResultType());
 
@@ -50,8 +47,12 @@ public class AssertHelper {
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
 
-        assertEquals(1, actual.getActionList().size());
-        assertActionDto(actions.get(0), actual.getActionList().get(0));
+        assertEquals(1,
+                     actual.getActionList()
+                           .size());
+        assertActionDto(actions.get(0),
+                        actual.getActionList()
+                              .get(0));
     }
 
     public static void assertKeyResultMetric(KeyResultMetricDto expected, KeyResultMetric actual) {
@@ -70,23 +71,20 @@ public class AssertHelper {
         assertEquals(expected.modifiedOn(), actual.getModifiedOn());
     }
 
-    public static void assertKeyResultOrdinalDtoWithCheckIn(KeyResultOrdinal expected, KeyResultOrdinalDto actual,
-            List<Action> actions) {
+    public static void assertKeyResultOrdinalDtoWithCheckIn(KeyResultOrdinal expected, KeyResultOrdinalDto actual, List<Action> actions) {
         assertKeyResultOrdinalDto(expected, actual, actions);
         assertNotNull(actual.lastCheckIn());
         assertCheckInOrdinalDto(TestDataDtoHelper.lastCheckInOrdinalDto(), actual.lastCheckIn());
     }
 
-    public static void assertKeyResultOrdinalDtoWithoutCheckIn(KeyResultOrdinal expected, KeyResultOrdinalDto actual,
-            List<Action> actions) {
+    public static void assertKeyResultOrdinalDtoWithoutCheckIn(KeyResultOrdinal expected, KeyResultOrdinalDto actual, List<Action> actions) {
         assertKeyResultOrdinalDto(expected, actual, actions);
         // checkIn is only available on KeyResultOrdinalDto (and not on KeyResultOrdinal).
         // So check actual against the KeyResultOrdinalDto from TestDataDtoHelper
         assertNull(actual.lastCheckIn());
     }
 
-    private static void assertKeyResultOrdinalDto(KeyResultOrdinal expected, KeyResultOrdinalDto actual,
-            List<Action> actions) {
+    private static void assertKeyResultOrdinalDto(KeyResultOrdinal expected, KeyResultOrdinalDto actual, List<Action> actions) {
         assertEquals(KEY_RESULT_TYPE_ORDINAL, actual.keyResultType());
         assertEquals(expected.getKeyResultType(), actual.keyResultType());
 
@@ -102,8 +100,12 @@ public class AssertHelper {
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
 
-        assertEquals(1, actual.getActionList().size());
-        assertActionDto(actions.get(0), actual.getActionList().get(0));
+        assertEquals(1,
+                     actual.getActionList()
+                           .size());
+        assertActionDto(actions.get(0),
+                        actual.getActionList()
+                              .get(0));
     }
 
     public static void assertKeyResultOrdinal(KeyResultOrdinalDto expected, KeyResultOrdinal actual) {
@@ -128,12 +130,14 @@ public class AssertHelper {
         assertEquals(expected.getAction(), actual.action());
         assertEquals(expected.getPriority(), actual.priority());
         assertEquals(expected.isChecked(), actual.isChecked());
-        assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
+        assertEquals(expected.getKeyResult()
+                             .getId(), actual.keyResultId());
     }
 
     private static void assertObjectiveDto(Objective expected, KeyResultObjectiveDto actual) {
         assertEquals(expected.getId(), actual.id());
-        assertEquals(expected.getState().name(), actual.state());
+        assertEquals(expected.getState()
+                             .name(), actual.state());
         assertQuarterDto(expected.getQuarter(), actual.keyResultQuarterDto());
     }
 
@@ -146,7 +150,9 @@ public class AssertHelper {
 
     private static void assertObjective(KeyResultObjectiveDto expected, Objective actual) {
         assertEquals(expected.id(), actual.getId());
-        assertEquals(expected.state(), actual.getState().name());
+        assertEquals(expected.state(),
+                     actual.getState()
+                           .name());
         assertQuarter(expected.keyResultQuarterDto(), actual.getQuarter());
     }
 
@@ -169,8 +175,7 @@ public class AssertHelper {
         assertEquals(expected.lastname(), actual.getLastname());
     }
 
-    private static void assertCheckInMetricDto(KeyResultLastCheckInMetricDto expected,
-            KeyResultLastCheckInMetricDto actual) {
+    private static void assertCheckInMetricDto(KeyResultLastCheckInMetricDto expected, KeyResultLastCheckInMetricDto actual) {
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.version(), actual.version());
         assertEquals(expected.value(), actual.value());
@@ -180,8 +185,7 @@ public class AssertHelper {
         assertEquals(expected.initiatives(), actual.initiatives());
     }
 
-    private static void assertCheckInOrdinalDto(KeyResultLastCheckInOrdinalDto expected,
-            KeyResultLastCheckInOrdinalDto actual) {
+    private static void assertCheckInOrdinalDto(KeyResultLastCheckInOrdinalDto expected, KeyResultLastCheckInOrdinalDto actual) {
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.version(), actual.version());
         assertEquals(expected.value(), actual.value());

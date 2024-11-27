@@ -15,7 +15,12 @@
               *ngIf="!isComplete && checkIn.writeable"
               [attr.data-testId]="'edit-check-in'"
             >
-              <img ngSrc="assets/icons/edit.svg" alt="edit check-in" width="24" height="24" />
+              <img
+                ngSrc="assets/icons/edit.svg"
+                alt="edit check-in"
+                width="24"
+                height="24"
+              >
             </button>
           </div>
           <div class="okr-form-row row-cols-4">
@@ -48,7 +53,12 @@
 
   <ng-container actions>
     <div class="col-auto">
-      <button [attr.data-testId]="'closeButton'" mat-flat-button color="primary" mat-dialog-close>Schliessen</button>
+      <button
+        [attr.data-testId]="'closeButton'"
+        mat-flat-button
+        color="primary"
+        mat-dialog-close
+      >Schliessen</button>
     </div>
   </ng-container>
 </app-dialog-template-core>

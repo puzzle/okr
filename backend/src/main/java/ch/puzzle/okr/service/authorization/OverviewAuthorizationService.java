@@ -1,14 +1,15 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import ch.puzzle.okr.models.overview.Overview;
-import ch.puzzle.okr.service.business.OverviewBusinessService;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.overview.Overview;
+import ch.puzzle.okr.service.business.OverviewBusinessService;
+
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 
@@ -18,16 +19,17 @@ public class OverviewAuthorizationService {
     private final OverviewBusinessService overviewBusinessService;
     private final AuthorizationService authorizationService;
 
-    public OverviewAuthorizationService(OverviewBusinessService overviewBusinessService,
-            AuthorizationService authorizationService) {
+    public OverviewAuthorizationService(OverviewBusinessService overviewBusinessService, AuthorizationService authorizationService) {
         this.overviewBusinessService = overviewBusinessService;
         this.authorizationService = authorizationService;
     }
 
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
-                authorizationUser);
+        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId,
+                                                                               teamIds,
+                                                                               objectiveQuery,
+                                                                               authorizationUser);
         setRoleCreateOrUpdateTeam(overviews, authorizationUser);
         return overviews;
     }
@@ -39,18 +41,19 @@ public class OverviewAuthorizationService {
         }
     }
 
-    private void setRoleCreateOrUpdateTeam(Overview overview, AuthorizationUser authorizationUser,
-            Map<Long, Boolean> teamAccess) {
+    private void setRoleCreateOrUpdateTeam(Overview overview, AuthorizationUser authorizationUser, Map<Long, Boolean> teamAccess) {
         if (hasOverviewTeamIdAndObjectiveId(overview)) {
-            Long teamId = overview.getOverviewId().getTeamId();
+            Long teamId = overview.getOverviewId()
+                                  .getTeamId();
             teamAccess.putIfAbsent(teamId, isWriteable(authorizationUser, overview));
             overview.setWriteable(teamAccess.get(teamId));
         }
     }
 
     private boolean hasOverviewTeamIdAndObjectiveId(Overview overview) {
-        return overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null
-                && overview.getOverviewId().getTeamId() != null;
+        return overview.getOverviewId() != null && overview.getOverviewId()
+                                                           .getObjectiveId() != null && overview.getOverviewId()
+                                                                                                .getTeamId() != null;
     }
 
     public boolean hasWriteAllAccess() {
@@ -59,6 +62,8 @@ public class OverviewAuthorizationService {
     }
 
     private boolean isWriteable(AuthorizationUser authorizationUser, Overview overview) {
-        return AuthorizationService.hasRoleWriteForTeam(authorizationUser, overview.getOverviewId().getTeamId());
+        return AuthorizationService.hasRoleWriteForTeam(authorizationUser,
+                                                        overview.getOverviewId()
+                                                                .getTeamId());
     }
 }

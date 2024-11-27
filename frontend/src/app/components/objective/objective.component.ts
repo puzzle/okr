@@ -1,21 +1,20 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
-import { Router } from '@angular/router';
-import { distinct, map, ReplaySubject, take } from 'rxjs';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { ObjectiveService } from '../../services/objective.service';
-import { trackByFn } from '../../shared/common';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
-import { TranslateService } from '@ngx-translate/core';
-import { DialogService } from '../../services/dialog.service';
-import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/objective-menu-actions.service';
-import { State } from '../../shared/types/enums/State';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { Component, Input, ViewChild } from "@angular/core";
+import { ObjectiveMin } from "../../shared/types/model/ObjectiveMin";
+import { Router } from "@angular/router";
+import { distinct, map, ReplaySubject, take } from "rxjs";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { trackByFn } from "../../shared/common";
+import { KeyresultDialogComponent } from "../keyresult-dialog/keyresult-dialog.component";
+import { TranslateService } from "@ngx-translate/core";
+import { DialogService } from "../../services/dialog.service";
+import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from "../../services/objective-menu-actions.service";
+import { State } from "../../shared/types/enums/State";
+import { MatMenuTrigger } from "@angular/material/menu";
 
 @Component({
-  selector: 'app-objective-column',
-  templateUrl: './objective.component.html',
-  styleUrls: ['./objective.component.scss'],
+  selector: "app-objective-column",
+  templateUrl: "./objective.component.html",
+  styleUrls: ["./objective.component.scss"],
 })
 export class ObjectiveComponent {
   @Input() isWritable!: boolean;
@@ -40,7 +39,7 @@ export class ObjectiveComponent {
 
   getStateTooltip(stateString: string): string {
     const state = this.getStateByValue(stateString);
-    return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP', { state: state });
+    return this.translate.instant("INFORMATION.OBJECTIVE_STATE_TOOLTIP", { state: state });
   }
 
   redirect(menuEntry: ObjectiveMenuEntry, objectiveMin: ObjectiveMin) {
@@ -57,7 +56,7 @@ export class ObjectiveComponent {
   }
 
   openObjectiveDetail(objectiveId: number) {
-    this.router.navigate(['details/objective', objectiveId]);
+    this.router.navigate(["details/objective", objectiveId]);
   }
 
   openAddKeyResultDialog(objective: ObjectiveMin) {
@@ -82,6 +81,7 @@ export class ObjectiveComponent {
   }
 
   getStateByValue(value: string): string {
-    return Object.keys(State).find((key) => State[key as keyof typeof State] === value) ?? '';
+    return Object.keys(State)
+      .find((key) => State[key as keyof typeof State] === value) ?? "";
   }
 }

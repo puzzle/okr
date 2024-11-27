@@ -1,6 +1,7 @@
 package ch.puzzle.okr;
 
 import ch.puzzle.okr.multitenancy.FlywayMultitenantMigrationInitializer;
+
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;

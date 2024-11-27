@@ -29,9 +29,11 @@ public class CacheService {
     }
 
     public void emptyAllCaches() {
-        cacheManager.getCacheNames().forEach(cacheName -> {
-            cacheManager.getCache(cacheName).clear();
-            logger.info("emptying {} cache", cacheName);
-        });
+        cacheManager.getCacheNames()
+                    .forEach(cacheName -> {
+                        cacheManager.getCache(cacheName)
+                                    .clear();
+                        logger.info("emptying {} cache", cacheName);
+                    });
     }
 }

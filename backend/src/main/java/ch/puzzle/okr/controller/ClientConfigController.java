@@ -1,8 +1,10 @@
 package ch.puzzle.okr.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.service.clientconfig.ClientConfigService;
-import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,7 @@ public class ClientConfigController {
     @GetMapping("/config")
     public ResponseEntity<ClientConfigDto> getConfig(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
+                             .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 
     @RequestMapping(value = "/**/{[path:[^\\.]*}")

@@ -1,12 +1,13 @@
 package ch.puzzle.okr.service.authorization;
 
+import java.util.List;
+
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.ActionBusinessService;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ActionAuthorizationService {
@@ -14,8 +15,7 @@ public class ActionAuthorizationService {
     private final ActionBusinessService actionBusinessService;
     private final AuthorizationService authorizationService;
 
-    public ActionAuthorizationService(ActionBusinessService actionBusinessService,
-            AuthorizationService authorizationService) {
+    public ActionAuthorizationService(ActionBusinessService actionBusinessService, AuthorizationService authorizationService) {
         this.actionBusinessService = actionBusinessService;
         this.authorizationService = authorizationService;
     }

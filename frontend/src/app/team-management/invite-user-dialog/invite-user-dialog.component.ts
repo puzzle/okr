@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { NewUser } from '../../shared/types/model/NewUser';
-import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { DialogRef } from '@angular/cdk/dialog';
-import { NewUserForm } from '../../shared/types/model/NewUserForm';
-import { UniqueEmailValidator } from '../new-user/unique-mail.validator';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component } from "@angular/core";
+import { NewUser } from "../../shared/types/model/NewUser";
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from "@angular/forms";
+import { UserService } from "../../services/user.service";
+import { DialogRef } from "@angular/cdk/dialog";
+import { NewUserForm } from "../../shared/types/model/NewUserForm";
+import { UniqueEmailValidator } from "../new-user/unique-mail.validator";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
-  selector: 'app-invite-user-dialog',
-  templateUrl: './invite-user-dialog.component.html',
-  styleUrl: './invite-user-dialog.component.scss',
+  selector: "app-invite-user-dialog",
+  templateUrl: "./invite-user-dialog.component.html",
+  styleUrl: "./invite-user-dialog.component.scss",
 })
 export class InviteUserDialogComponent {
   form: FormArray<FormGroup<NewUserForm<FormControl>>>;
@@ -33,7 +33,8 @@ export class InviteUserDialogComponent {
     if (!this.form.valid) {
       return;
     }
-    this.userService.createUsers(this.extractFormValue()).subscribe(() => this.dialogRef.close());
+    this.userService.createUsers(this.extractFormValue())
+      .subscribe(() => this.dialogRef.close());
   }
 
   private extractFormValue(): NewUser[] {
@@ -50,9 +51,9 @@ export class InviteUserDialogComponent {
 
   private createUserFormGroup() {
     return this.formBuilder.group({
-      firstname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
-      lastname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
-      email: this.formBuilder.control('', [
+      firstname: this.formBuilder.control("", [Validators.required, Validators.minLength(1)]),
+      lastname: this.formBuilder.control("", [Validators.required, Validators.minLength(1)]),
+      email: this.formBuilder.control("", [
         Validators.required,
         Validators.minLength(1),
         Validators.email,

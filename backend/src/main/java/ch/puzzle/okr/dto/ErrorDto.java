@@ -1,8 +1,8 @@
 package ch.puzzle.okr.dto;
 
-import ch.puzzle.okr.ErrorKey;
-
 import java.util.List;
+
+import ch.puzzle.okr.ErrorKey;
 
 public record ErrorDto(String errorKey, List<String> params) {
 
@@ -15,6 +15,9 @@ public record ErrorDto(String errorKey, List<String> params) {
     }
 
     public static ErrorDto of(String messageKey, List<Object> params) {
-        return new ErrorDto(messageKey, params.stream().map(Object::toString).toList());
+        return new ErrorDto(messageKey,
+                            params.stream()
+                                  .map(Object::toString)
+                                  .toList());
     }
 }

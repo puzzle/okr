@@ -1,20 +1,21 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.TeamDto;
+import java.util.List;
+
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("api/v2/quarters")
@@ -27,18 +28,18 @@ public class QuarterController {
     }
 
     @Operation(summary = "Get quarters", description = "Get a List of quarters depending on current date")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned a List of quarters", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class)) }) })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned a List of quarters", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class))})})
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getQuarters());
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(this.quarterBusinessService.getQuarters());
     }
 
     @Operation(summary = "Get current quarter", description = "Get the current quarter depending on current date")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned the current quarter", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class)) }) })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned the current quarter", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class))})})
     @GetMapping("/current")
     public ResponseEntity<Quarter> getCurrentQuarter() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getCurrentQuarter());
+        return ResponseEntity.status(HttpStatus.OK)
+                             .body(this.quarterBusinessService.getCurrentQuarter());
     }
 }

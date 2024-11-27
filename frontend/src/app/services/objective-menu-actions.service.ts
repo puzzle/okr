@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { DialogService } from './dialog.service';
-import { MatDialogRef } from '@angular/material/dialog';
-import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
-import { State } from '../shared/types/enums/State';
-import { ObjectiveMenuAfterActions } from '../components/objective/ObjectiveMenuAfterActions';
-import { ObjectiveService } from './objective.service';
-import { RefreshDataService } from './refresh-data.service';
-import { ObjectiveMenuActions } from '../components/objective/ObjectiveMenuActions';
-import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
-import { CompletedService } from './completed.servce';
+import { Injectable } from "@angular/core";
+import { DialogService } from "./dialog.service";
+import { MatDialogRef } from "@angular/material/dialog";
+import { ObjectiveMin } from "../shared/types/model/ObjectiveMin";
+import { State } from "../shared/types/enums/State";
+import { ObjectiveMenuAfterActions } from "../components/objective/ObjectiveMenuAfterActions";
+import { ObjectiveService } from "./objective.service";
+import { RefreshDataService } from "./refresh-data.service";
+import { ObjectiveMenuActions } from "../components/objective/ObjectiveMenuActions";
+import { GJ_REGEX_PATTERN } from "../shared/constantLibary";
+import { CompletedService } from "./completed.servce";
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
 export type ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult: any) => any;
@@ -20,7 +20,7 @@ export interface ObjectiveMenuEntry {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ObjectiveMenuActionsService {
   afterActions: ObjectiveMenuAfterActions;
@@ -47,7 +47,7 @@ export class ObjectiveMenuActionsService {
     } else if (objective.state === State.DRAFT) {
       return this.getDraftMenuActions(objective);
     }
-    throw new Error('Objective invalid');
+    throw new Error("Objective invalid");
   }
 
   private getDefaultActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

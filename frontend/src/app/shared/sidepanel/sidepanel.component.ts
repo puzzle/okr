@@ -7,28 +7,28 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ConnectedPosition } from "@angular/cdk/overlay"; // ESM
 
 @Component({
-  selector: 'app-sidepanel',
-  templateUrl: './sidepanel.component.html',
-  styleUrls: ['./sidepanel.component.scss'],
+  selector: "app-sidepanel",
+  templateUrl: "./sidepanel.component.html",
+  styleUrls: ["./sidepanel.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
-  leaveKeys = ['Escape'];
-  right = '-100%';
+  leaveKeys = ["Escape"];
+  right = "-100%";
   loaded = false;
-  @ViewChild('sidebar')
+  @ViewChild("sidebar")
   sidebar!: ElementRef<HTMLDivElement>;
   position: ConnectedPosition[] = [
     {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
+      originX: "end",
+      originY: "bottom",
+      overlayX: "end",
+      overlayY: "top",
     },
   ];
 
@@ -40,18 +40,18 @@ export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnInit(): void {}
   ngAfterContentInit(): void {
-    document.body.classList.add('disable-scrolling');
-    this.right = '0';
+    document.body.classList.add("disable-scrolling");
+    this.right = "0";
     this.loaded = true;
     this.cd.markForCheck();
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('disable-scrolling');
+    document.body.classList.remove("disable-scrolling");
   }
 
   close() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(["../"], { relativeTo: this.route });
   }
 
   closeOnKeydown($event: KeyboardEvent) {

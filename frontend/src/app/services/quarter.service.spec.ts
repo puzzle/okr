@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { QuarterService } from './quarter.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { QuarterService } from "./quarter.service";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
-describe('QuarterService', () => {
+describe("QuarterService", () => {
   let service: QuarterService;
 
   beforeEach(() => {
@@ -13,7 +13,8 @@ describe('QuarterService', () => {
     service = TestBed.inject(QuarterService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it("should be created", () => {
+    expect(service)
+      .toBeTruthy();
   });
 });

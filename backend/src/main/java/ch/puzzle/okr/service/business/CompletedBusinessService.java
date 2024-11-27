@@ -1,9 +1,11 @@
 package ch.puzzle.okr.service.business;
 
+import jakarta.transaction.Transactional;
+
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import ch.puzzle.okr.service.validation.CompletedValidationService;
-import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,8 +13,7 @@ public class CompletedBusinessService {
     private final CompletedPersistenceService completedPersistenceService;
     private final CompletedValidationService validator;
 
-    public CompletedBusinessService(CompletedPersistenceService completedPersistenceService,
-            CompletedValidationService validator) {
+    public CompletedBusinessService(CompletedPersistenceService completedPersistenceService, CompletedValidationService validator) {
         this.completedPersistenceService = completedPersistenceService;
         this.validator = validator;
     }

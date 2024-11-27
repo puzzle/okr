@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Team } from '../../shared/types/model/Team';
-import { TeamService } from '../../services/team.service';
-import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
-import { UserTeam } from '../../shared/types/model/UserTeam';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { Team } from "../../shared/types/model/Team";
+import { TeamService } from "../../services/team.service";
+import { combineLatest, map, Observable, Subject, takeUntil } from "rxjs";
+import { UserTeam } from "../../shared/types/model/UserTeam";
 
 @Component({
-  selector: 'app-add-user-team',
-  templateUrl: './add-user-team.component.html',
-  styleUrl: './add-user-team.component.scss',
+  selector: "app-add-user-team",
+  templateUrl: "./add-user-team.component.html",
+  styleUrl: "./add-user-team.component.scss",
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
   @Output()
@@ -25,22 +25,22 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
   constructor(private readonly teamService: TeamService) {}
 
   ngOnInit() {
-    this.allAdminTeams$ = this.teamService.getAllTeams().pipe(
-      takeUntil(this.unsubscribe$),
-      map((teams) => {
-        return teams.filter((t) => t.writeable);
-      }),
-    );
+    this.allAdminTeams$ = this.teamService.getAllTeams()
+      .pipe(
+        takeUntil(this.unsubscribe$), map((teams) => {
+          return teams.filter((t) => t.writeable);
+        }),
+      );
 
-    this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$, this.currentTeams$]).pipe(
-      takeUntil(this.unsubscribe$),
-      map(([allTeams, userTeams]) => {
-        const currentTeamIds = userTeams.map((ut) => ut.team.id);
-        return allTeams.filter((t) => {
-          return !currentTeamIds.includes(t.id);
-        });
-      }),
-    );
+    this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$, this.currentTeams$])
+      .pipe(
+        takeUntil(this.unsubscribe$), map(([allTeams, userTeams]) => {
+          const currentTeamIds = userTeams.map((ut) => ut.team.id);
+          return allTeams.filter((t) => {
+            return !currentTeamIds.includes(t.id);
+          });
+        }),
+      );
   }
 
   ngOnDestroy() {
@@ -57,7 +57,7 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
 
   save(): void {
     if (!this.userTeam) {
-      throw new Error('UserTeam should be defined here');
+      throw new Error("UserTeam should be defined here");
     }
     this.addUserTeam.next(this.userTeam);
     this.userTeam = undefined;

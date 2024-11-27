@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { UserTeam } from '../../shared/types/model/UserTeam';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from "@angular/core";
+import { UserTeam } from "../../shared/types/model/UserTeam";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-show-edit-role',
-  templateUrl: './show-edit-role.component.html',
-  styleUrl: './show-edit-role.component.scss',
+  selector: "app-show-edit-role",
+  templateUrl: "./show-edit-role.component.html",
+  styleUrl: "./show-edit-role.component.scss",
 })
 export class ShowEditRoleComponent {
   @Input({ required: true }) userTeam!: UserTeam;
@@ -21,7 +21,7 @@ export class ShowEditRoleComponent {
     private readonly cd: ChangeDetectorRef,
   ) {}
 
-  @HostListener('document:click', ['$event'])
+  @HostListener("document:click", ["$event"])
   clickOutside(event: MouseEvent) {
     if (this.elementRef.nativeElement.contains(event.target)) {
       return;
@@ -46,9 +46,9 @@ export class ShowEditRoleComponent {
 
   getRole(): string {
     if (this.userTeam.isTeamAdmin) {
-      return this.translate.instant('USER_ROLE.TEAM_ADMIN');
+      return this.translate.instant("USER_ROLE.TEAM_ADMIN");
     }
-    return this.translate.instant('USER_ROLE.TEAM_MEMBER');
+    return this.translate.instant("USER_ROLE.TEAM_MEMBER");
   }
 
   isEditable() {

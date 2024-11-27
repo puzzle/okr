@@ -12,6 +12,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,18 +37,41 @@ class CheckInBusinessServiceTest {
     @InjectMocks
     private CheckInBusinessService checkInBusinessService;
 
-    private User user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
-            .build();
-    private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
-            .withStretchZone("Wald").withId(7L).withTitle("Keyresult Ordinal").build();
-    private KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(10D).withStretchGoal(50D)
-            .withUnit(Unit.CHF).withId(8L).withTitle("Keyresult Metric").build();
-    private CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withConfidence(5)
-            .withChangeInfo("ChangeInfo1").withInitiatives("Initiatives1").withCreatedBy(user)
-            .withKeyResult(metricKeyResult).build();
-    private CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withConfidence(5)
-            .withChangeInfo("ChangeInfo2").withInitiatives("Initiatives2").withCreatedBy(user)
-            .withKeyResult(ordinalKeyResult).build();
+    private User user = User.Builder.builder()
+                                    .withEmail("Email")
+                                    .withFirstname("Firstname")
+                                    .withLastname("Lastname")
+                                    .build();
+    private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder()
+                                                                 .withCommitZone("Baum")
+                                                                 .withStretchZone("Wald")
+                                                                 .withId(7L)
+                                                                 .withTitle("Keyresult Ordinal")
+                                                                 .build();
+    private KeyResult metricKeyResult = KeyResultMetric.Builder.builder()
+                                                               .withBaseline(10D)
+                                                               .withStretchGoal(50D)
+                                                               .withUnit(Unit.CHF)
+                                                               .withId(8L)
+                                                               .withTitle("Keyresult Metric")
+                                                               .build();
+    private CheckIn checkInMetric = CheckInMetric.Builder.builder()
+                                                         .withValue(30D)
+                                                         .withId(1L)
+                                                         .withConfidence(5)
+                                                         .withChangeInfo("ChangeInfo1")
+                                                         .withInitiatives("Initiatives1")
+                                                         .withCreatedBy(user)
+                                                         .withKeyResult(metricKeyResult)
+                                                         .build();
+    private CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder()
+                                                           .withZone(Zone.COMMIT)
+                                                           .withConfidence(5)
+                                                           .withChangeInfo("ChangeInfo2")
+                                                           .withInitiatives("Initiatives2")
+                                                           .withCreatedBy(user)
+                                                           .withKeyResult(ordinalKeyResult)
+                                                           .build();
 
     @Test
     void shouldGetMetricCheckIn() {
@@ -132,8 +156,8 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldGetCheckInsByKeyResultId() {
         checkInBusinessService.getCheckInsByKeyResultId(this.metricKeyResult.getId());
-        verify(checkInPersistenceService, times(1))
-                .getCheckInsByKeyResultIdOrderByCheckInDateDesc(this.metricKeyResult.getId());
+        verify(checkInPersistenceService, times(1)).getCheckInsByKeyResultIdOrderByCheckInDateDesc(this.metricKeyResult
+                                                                                                                       .getId());
     }
 
     @Test

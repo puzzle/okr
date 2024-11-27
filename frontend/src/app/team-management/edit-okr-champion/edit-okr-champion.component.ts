@@ -1,12 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { User } from '../../shared/types/model/User';
-import { UserService } from '../../services/user.service';
-import { TeamService } from '../../services/team.service';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from "@angular/core";
+import { User } from "../../shared/types/model/User";
+import { UserService } from "../../services/user.service";
+import { TeamService } from "../../services/team.service";
 
 @Component({
-  selector: 'app-edit-okr-champion',
-  templateUrl: './edit-okr-champion.component.html',
-  styleUrl: './edit-okr-champion.component.scss',
+  selector: "app-edit-okr-champion",
+  templateUrl: "./edit-okr-champion.component.html",
+  styleUrl: "./edit-okr-champion.component.scss",
 })
 export class EditOkrChampionComponent {
   @Input({ required: true }) user!: User;
@@ -21,7 +21,7 @@ export class EditOkrChampionComponent {
     private elementRef: ElementRef,
   ) {}
 
-  @HostListener('document:click', ['$event'])
+  @HostListener("document:click", ["$event"])
   clickOutside(event: MouseEvent) {
     if (this.elementRef.nativeElement.contains(event.target)) {
       return;

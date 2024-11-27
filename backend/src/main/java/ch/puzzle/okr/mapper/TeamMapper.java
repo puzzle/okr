@@ -2,6 +2,7 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Team;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +16,10 @@ public class TeamMapper {
     }
 
     public Team toTeam(TeamDto teamDto) {
-        return Team.Builder.builder().withId(teamDto.id()).withVersion(teamDto.version()).withName(teamDto.name())
-                .build();
+        return Team.Builder.builder()
+                           .withId(teamDto.id())
+                           .withVersion(teamDto.version())
+                           .withName(teamDto.name())
+                           .build();
     }
 }

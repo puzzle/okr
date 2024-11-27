@@ -1,17 +1,18 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
+import java.util.List;
+
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 import static ch.puzzle.okr.test.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,8 +66,10 @@ class AuthorizationCriteriaIT {
     void appendOverviewShouldReturnObjectiveWhenFirstLevelRoleAndTeamIdsEmpty() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(), "",
-                authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId,
+                                                                                  List.of(),
+                                                                                  "",
+                                                                                  authorizationUser);
 
         assertEquals(18L, overviews.size());
     }
@@ -75,8 +78,10 @@ class AuthorizationCriteriaIT {
     void appendOverviewShouldReturnObjectiveWhenSecondLevelRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",
-                authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId,
+                                                                                  List.of(5L),
+                                                                                  "",
+                                                                                  authorizationUser);
 
         assertEquals(6L, overviews.size());
     }
@@ -85,8 +90,10 @@ class AuthorizationCriteriaIT {
     void appendOverviewShouldReturnObjectiveWhenMemberRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",
-                authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId,
+                                                                                  List.of(5L),
+                                                                                  "",
+                                                                                  authorizationUser);
 
         assertEquals(6L, overviews.size());
     }

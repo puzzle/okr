@@ -1,5 +1,5 @@
-import { State } from '../enums/State';
-import { User } from './User';
+import { State } from "../enums/State";
+import { User } from "./User";
 
 export interface Objective {
   id: number;

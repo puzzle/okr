@@ -6,14 +6,14 @@ import {
   Input,
   Output,
   ViewChild,
-} from '@angular/core';
-import { ControlContainer, FormControl, FormGroup, NgForm } from '@angular/forms';
-import { NewUserForm } from '../../shared/types/model/NewUserForm';
+} from "@angular/core";
+import { ControlContainer, FormControl, FormGroup, NgForm } from "@angular/forms";
+import { NewUserForm } from "../../shared/types/model/NewUserForm";
 
 @Component({
-  selector: 'app-new-user',
-  templateUrl: './new-user.component.html',
-  styleUrl: './new-user.component.scss',
+  selector: "app-new-user",
+  templateUrl: "./new-user.component.html",
+  styleUrl: "./new-user.component.scss",
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   changeDetection: ChangeDetectionStrategy.Default,
 })
@@ -30,7 +30,7 @@ export class NewUserComponent implements AfterViewInit {
   @Output()
   removeUser: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild('firstInput') firstInput: any;
+  @ViewChild("firstInput") firstInput: any;
 
   ngAfterViewInit(): void {
     this.firstInput.nativeElement.focus();

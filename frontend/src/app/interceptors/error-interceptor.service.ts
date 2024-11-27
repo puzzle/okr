@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { catchError, filter, Observable, tap, throwError } from 'rxjs';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
+import { catchError, filter, Observable, tap, throwError } from "rxjs";
+import { Router } from "@angular/router";
 import {
   DRAWER_ROUTES,
   ERROR_MESSAGE_KEY_PREFIX,
   GJ_REGEX_PATTERN,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP,
-} from '../shared/constantLibary';
-import { ToasterService } from '../services/toaster.service';
-import { TranslateService } from '@ngx-translate/core';
-import { HttpType } from '../shared/types/enums/HttpType';
-import { ToasterType } from '../shared/types/enums/ToasterType';
+} from "../shared/constantLibary";
+import { ToasterService } from "../services/toaster.service";
+import { TranslateService } from "@ngx-translate/core";
+import { HttpType } from "../shared/types/enums/HttpType";
+import { ToasterType } from "../shared/types/enums/ToasterType";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -23,27 +23,27 @@ export class ErrorInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      filter((event) => event instanceof HttpResponse),
-      tap((response) => {
-        if (this.checkForToaster(response)) {
-          const method = HttpType[request.method as keyof typeof HttpType];
-          this.handleSuccessToaster(response, method);
-        }
-      }),
-      catchError((response) => {
-        if (this.checkForToaster(response)) {
-          this.handleErrorToaster(response);
-        }
-        this.handleDrawerError(request);
-        return throwError(() => new Error(response));
-      }),
-    );
+    return next.handle(request)
+      .pipe(
+        filter((event) => event instanceof HttpResponse), tap((response) => {
+          if (this.checkForToaster(response)) {
+            const method = HttpType[request.method as keyof typeof HttpType];
+            this.handleSuccessToaster(response, method);
+          }
+        }), catchError((response) => {
+          if (this.checkForToaster(response)) {
+            this.handleErrorToaster(response);
+          }
+          this.handleDrawerError(request);
+          return throwError(() => new Error(response));
+        }),
+      );
   }
 
   handleErrorToaster(response: any) {
     const errors = response.error.errors.map((error: any) =>
-      this.translate.instant(ERROR_MESSAGE_KEY_PREFIX + error.errorKey).format(error.params),
+      this.translate.instant(ERROR_MESSAGE_KEY_PREFIX + error.errorKey)
+        .format(error.params),
     );
 
     errors.forEach((error: string) => this.toasterService.showError(error));
@@ -51,7 +51,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   handleDrawerError(request: any) {
     if (DRAWER_ROUTES.some((route) => request.url.includes(route))) {
-      this.router.navigate(['']);
+      this.router.navigate([""]);
     }
   }
 
@@ -60,9 +60,9 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (!successMessageObj) return;
 
     let messageKey = successMessageObj.key;
-    let isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
-    if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
-      messageKey += '_BACKLOG';
+    const isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
+    if (messageKey == "OBJECTIVE.POST" && isBacklogQuarter) {
+      messageKey += "_BACKLOG";
     }
     const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + messageKey);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
@@ -75,13 +75,13 @@ export class ErrorInterceptor implements HttpInterceptor {
 
       for (const toasterMessage of value.methods) {
         if (toasterMessage.method == method) {
-          for (let codeKey of toasterMessage.keysForCode || []) {
+          for (const codeKey of toasterMessage.keysForCode || []) {
             if (codeKey.code == statusCode) {
-              const messageKey = value.KEY + '.' + codeKey.key;
+              const messageKey = value.KEY + "." + codeKey.key;
               return { key: messageKey, toasterType: codeKey.toaster };
             }
           }
-          const messageKey = value.KEY + '.' + method;
+          const messageKey = value.KEY + "." + method;
           return { key: messageKey, toasterType: ToasterType.SUCCESS };
         }
       }
@@ -91,6 +91,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   checkForToaster(response: any): boolean {
     const requestURL = new URL(response.url);
-    return window.location.hostname == requestURL.hostname && requestURL.pathname.startsWith('/api');
+    return window.location.hostname == requestURL.hostname && requestURL.pathname.startsWith("/api");
   }
 }

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { filter, map, merge, mergeMap, Observable, of, take, timeout } from 'rxjs';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { Injectable } from "@angular/core";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { filter, map, merge, mergeMap, Observable, of, take, timeout } from "rxjs";
+import { OAuthService } from "angular-oauth2-oidc";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class OauthInterceptor implements HttpInterceptor {
   constructor(private oauthService: OAuthService) {}
@@ -14,24 +14,22 @@ export class OauthInterceptor implements HttpInterceptor {
     }
 
     return merge(
-      of(this.oauthService.getAccessToken()).pipe(filter((token) => !!token)),
-      this.oauthService.events.pipe(
-        filter((e) => e.type === 'token_received'),
-        timeout(500),
-        map((_) => this.oauthService.getAccessToken()),
+      of(this.oauthService.getAccessToken())
+        .pipe(filter((token) => !!token)), this.oauthService.events.pipe(
+        filter((e) => e.type === "token_received"), timeout(500), map((_) => this.oauthService.getAccessToken()),
       ),
-    ).pipe(
-      take(1),
-      mergeMap((token) => {
-        if (token) {
-          const header = 'Bearer ' + token;
-          const headers = req.headers.set('Authorization', header);
-          req = req.clone({ headers });
-        }
+    )
+      .pipe(
+        take(1), mergeMap((token) => {
+          if (token) {
+            const header = "Bearer " + token;
+            const headers = req.headers.set("Authorization", header);
+            req = req.clone({ headers });
+          }
 
-        return next.handle(req);
+          return next.handle(req);
         // .pipe(catchError((err) => this.errorHandler.handleError(err)));
-      }),
-    );
+        }),
+      );
   }
 }

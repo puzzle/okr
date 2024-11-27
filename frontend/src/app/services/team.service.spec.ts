@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { TeamService } from './team.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TeamService } from "./team.service";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
-describe('TeamService', () => {
+describe("TeamService", () => {
   let service: TeamService;
 
   beforeEach(() => {
@@ -13,7 +13,8 @@ describe('TeamService', () => {
     service = TestBed.inject(TeamService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it("should be created", () => {
+    expect(service)
+      .toBeTruthy();
   });
 });

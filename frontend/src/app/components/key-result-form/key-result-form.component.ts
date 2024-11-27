@@ -1,20 +1,20 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { getFullNameFromUser, User } from '../../shared/types/model/User';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
-import { UserService } from '../../services/user.service';
-import { Action } from '../../shared/types/model/Action';
-import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { FormGroup } from "@angular/forms";
+import { getFullNameFromUser, User } from "../../shared/types/model/User";
+import { KeyResult } from "../../shared/types/model/KeyResult";
+import { KeyResultMetric } from "../../shared/types/model/KeyResultMetric";
+import { KeyResultOrdinal } from "../../shared/types/model/KeyResultOrdinal";
+import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from "rxjs";
+import { UserService } from "../../services/user.service";
+import { Action } from "../../shared/types/model/Action";
+import { formInputCheck, hasFormFieldErrors } from "../../shared/common";
+import { OAuthService } from "angular-oauth2-oidc";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-key-result-form',
-  templateUrl: './key-result-form.component.html',
-  styleUrls: ['./key-result-form.component.scss'],
+  selector: "app-key-result-form",
+  templateUrl: "./key-result-form.component.html",
+  styleUrls: ["./key-result-form.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeyResultFormComponent implements OnInit, OnDestroy {
@@ -38,17 +38,15 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
-    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(
-      startWith(''),
-      filter((value) => typeof value === 'string'),
-      switchMap((value) => this.filter(value as string)),
+    this.filteredUsers$ = this.keyResultForm.get("owner")?.valueChanges.pipe(
+      startWith(""), filter((value) => typeof value === "string"), switchMap((value) => this.filter(value as string)),
     );
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
-      this.keyResultForm.controls['title'].setValue(this.keyResult.title);
-      this.keyResultForm.controls['description'].setValue(this.keyResult.description);
-      this.keyResultForm.controls['owner'].setValue(this.keyResult.owner);
-      this.keyResultForm.controls['keyResultType'].setValue(this.keyResult.keyResultType);
+      this.keyResultForm.controls["title"].setValue(this.keyResult.title);
+      this.keyResultForm.controls["description"].setValue(this.keyResult.description);
+      this.keyResultForm.controls["owner"].setValue(this.keyResult.owner);
+      this.keyResultForm.controls["keyResultType"].setValue(this.keyResult.keyResultType);
       this.isMetricKeyResult()
         ? this.setMetricValuesInForm(this.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.keyResult as KeyResultOrdinal);
@@ -57,19 +55,20 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     }
     if (!this.keyResult) {
       this.actionList$ = new BehaviorSubject<Action[] | null>([
-        { id: null, version: 1, action: '', priority: 0, keyResultId: null, isChecked: false },
-        { id: null, version: 1, action: '', priority: 1, keyResultId: null, isChecked: false },
-        { id: null, version: 1, action: '', priority: 2, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: "", priority: 0, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: "", priority: 1, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: "", priority: 2, keyResultId: null, isChecked: false },
       ]);
 
-      this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
-        const loggedInUser = this.getLoggedInUserName();
-        users.forEach((user) => {
-          if (getFullNameFromUser(user) === loggedInUser) {
-            this.keyResultForm.controls['owner'].setValue(user);
-          }
+      this.users$.pipe(takeUntil(this.unsubscribe$))
+        .subscribe((users) => {
+          const loggedInUser = this.getLoggedInUserName();
+          users.forEach((user) => {
+            if (getFullNameFromUser(user) === loggedInUser) {
+              this.keyResultForm.controls["owner"].setValue(user);
+            }
+          });
         });
-      });
     }
 
     this.actionList$.subscribe((value) => {
@@ -83,19 +82,19 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   }
 
   isMetricKeyResult() {
-    return this.keyResultForm.controls['keyResultType'].value === 'metric';
+    return this.keyResultForm.controls["keyResultType"].value === "metric";
   }
 
   setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
-    this.keyResultForm.controls['unit'].setValue(keyResultMetric.unit);
-    this.keyResultForm.controls['baseline'].setValue(keyResultMetric.baseline);
-    this.keyResultForm.controls['stretchGoal'].setValue(keyResultMetric.stretchGoal);
+    this.keyResultForm.controls["unit"].setValue(keyResultMetric.unit);
+    this.keyResultForm.controls["baseline"].setValue(keyResultMetric.baseline);
+    this.keyResultForm.controls["stretchGoal"].setValue(keyResultMetric.stretchGoal);
   }
 
   setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {
-    this.keyResultForm.controls['commitZone'].setValue(keyResultOrdinal.commitZone);
-    this.keyResultForm.controls['targetZone'].setValue(keyResultOrdinal.targetZone);
-    this.keyResultForm.controls['stretchZone'].setValue(keyResultOrdinal.stretchZone);
+    this.keyResultForm.controls["commitZone"].setValue(keyResultOrdinal.commitZone);
+    this.keyResultForm.controls["targetZone"].setValue(keyResultOrdinal.targetZone);
+    this.keyResultForm.controls["stretchZone"].setValue(keyResultOrdinal.stretchZone);
   }
 
   isTouchedOrDirty(name: string) {
@@ -103,25 +102,28 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   }
 
   getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
+    return field + this.translate.instant("DIALOG_ERRORS." + error)
+      .format(firstNumber, secondNumber);
   }
 
   filter(value: string): Observable<User[]> {
     const filterValue = value.toLowerCase();
     return this.users$.pipe(
-      map((users) => users.filter((user) => getFullNameFromUser(user).toLowerCase().includes(filterValue))),
+      map((users) => users.filter((user) => getFullNameFromUser(user)
+        .toLowerCase()
+        .includes(filterValue))),
     );
   }
 
   invalidOwner(): boolean {
     return (
-      !!this.isTouchedOrDirty('owner') &&
-      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
+      !!this.isTouchedOrDirty("owner") &&
+      (typeof this.keyResultForm.value.owner === "string" || !this.keyResultForm.value.owner)
     );
   }
 
   getUserNameFromUser(user: User): string {
-    return user ? getFullNameFromUser(user) : '';
+    return user ? getFullNameFromUser(user) : "";
   }
 
   getKeyResultId(): number | null {

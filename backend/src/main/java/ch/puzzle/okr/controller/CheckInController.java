@@ -33,7 +33,7 @@ public class CheckInController {
     @GetMapping("/{id}")
     public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(checkInMapper.toDto(this.checkInAuthorizationService.getEntityById(id)));
+                .body(checkInMapper.toDto(this.checkInAuthorizationService.getEntityById(id)));
     }
 
     @Operation(summary = "Update Check-in", description = "Update a Check-in by ID")
@@ -43,8 +43,7 @@ public class CheckInController {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         CheckInDto updatedCheckIn = this.checkInMapper.toDto(this.checkInAuthorizationService.updateEntity(id,
                                                                                                            checkIn));
-        return ResponseEntity.status(HttpStatus.OK)
-                             .body(updatedCheckIn);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedCheckIn);
     }
 
     @Operation(summary = "Create Check-in", description = "Create a new Check-in")
@@ -53,8 +52,7 @@ public class CheckInController {
     public ResponseEntity<CheckInDto> createCheckIn(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to create a new Check-in.", required = true) @RequestBody CheckInDto checkInDto) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         CheckInDto createdCheckIn = checkInMapper.toDto(checkInAuthorizationService.createEntity(checkIn));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(createdCheckIn);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdCheckIn);
     }
 
     @Operation(summary = "Delete Check-in by ID", description = "Delete Check-in by ID")

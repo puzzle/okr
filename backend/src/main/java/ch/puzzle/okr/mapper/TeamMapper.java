@@ -17,9 +17,9 @@ public class TeamMapper {
 
     public Team toTeam(TeamDto teamDto) {
         return Team.Builder.builder()
-                           .withId(teamDto.id())
-                           .withVersion(teamDto.version())
-                           .withName(teamDto.name())
-                           .build();
+                .withId(teamDto.id())
+                .withVersion(teamDto.version())
+                .withName(teamDto.name())
+                .build();
     }
 }

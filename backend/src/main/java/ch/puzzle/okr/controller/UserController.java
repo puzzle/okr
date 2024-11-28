@@ -36,18 +36,14 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned all Users.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),})
     @GetMapping
     public List<UserDto> getAllUsers() {
-        return userAuthorizationService.getAllUsers()
-                                       .stream()
-                                       .map(userMapper::toDto)
-                                       .toList();
+        return userAuthorizationService.getAllUsers().stream().map(userMapper::toDto).toList();
     }
 
     @Operation(summary = "Get Current User", description = "Get all current logged in user.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned current logged in user.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),})
     @GetMapping(path = "/current")
     public UserDto getCurrentUser() {
-        var currentUser = this.authorizationService.updateOrAddAuthorizationUser()
-                                                   .user();
+        var currentUser = this.authorizationService.updateOrAddAuthorizationUser().user();
         return userMapper.toDto(currentUser);
     }
 

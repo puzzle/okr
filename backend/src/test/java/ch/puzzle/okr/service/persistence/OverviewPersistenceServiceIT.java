@@ -105,8 +105,6 @@ class OverviewPersistenceServiceIT {
     }
 
     private List<OverviewId> getOverviewIds(List<Overview> overviewList) {
-        return overviewList.stream()
-                           .map(Overview::getOverviewId)
-                           .toList();
+        return overviewList.stream().map(Overview::getOverviewId).toList();
     }
 }

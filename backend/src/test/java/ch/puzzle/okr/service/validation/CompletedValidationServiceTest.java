@@ -45,37 +45,31 @@ class CompletedValidationServiceTest {
     @BeforeEach
     void setUp() {
         this.user = User.Builder.builder()
-                                .withId(1L)
-                                .withFirstname("Bob")
-                                .withLastname("Kaufmann")
-                                .withEmail("kaufmann@puzzle.ch")
-                                .build();
-        this.team = Team.Builder.builder()
-                                .withId(1L)
-                                .withName("Team1")
-                                .build();
-        this.quarter = Quarter.Builder.builder()
-                                      .withId(1L)
-                                      .withLabel("GJ 22/23-Q2")
-                                      .build();
+                .withId(1L)
+                .withFirstname("Bob")
+                .withLastname("Kaufmann")
+                .withEmail("kaufmann@puzzle.ch")
+                .build();
+        this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
+        this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
 
         this.objective = Objective.Builder.builder()
-                                          .withId(1L)
-                                          .withTitle("Objective 1")
-                                          .withCreatedBy(user)
-                                          .withTeam(team)
-                                          .withQuarter(quarter)
-                                          .withDescription("This is our description")
-                                          .withModifiedOn(LocalDateTime.MAX)
-                                          .withState(State.DRAFT)
-                                          .withModifiedBy(user)
-                                          .withCreatedOn(LocalDateTime.MAX)
-                                          .build();
+                .withId(1L)
+                .withTitle("Objective 1")
+                .withCreatedBy(user)
+                .withTeam(team)
+                .withQuarter(quarter)
+                .withDescription("This is our description")
+                .withModifiedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withModifiedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .build();
 
         this.validCompleted = Completed.Builder.builder()
-                                               .withObjective(this.objective)
-                                               .withComment("Valid Comment")
-                                               .build();
+                .withObjective(this.objective)
+                .withComment("Valid Comment")
+                .build();
 
         when(completedPersistenceService.getCompletedByObjectiveId(1L)).thenReturn(this.validCompleted);
         when(completedPersistenceService.getModelName()).thenReturn("Completed");
@@ -83,7 +77,7 @@ class CompletedValidationServiceTest {
                                             String.format("%s with id %s not found",
                                                           completedPersistenceService.getModelName(),
                                                           2L))).when(completedPersistenceService)
-                                                               .getCompletedByObjectiveId(2L);
+                .getCompletedByObjectiveId(2L);
     }
 
     @Spy @InjectMocks
@@ -117,10 +111,10 @@ class CompletedValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
         Completed completed = Completed.Builder.builder() //
-                                               .withId(300L) //
-                                               .withObjective(this.objective) //
-                                               .withComment("Not valid") //
-                                               .build();
+                .withId(300L) //
+                .withObjective(this.objective) //
+                .withComment("Not valid") //
+                .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -135,9 +129,9 @@ class CompletedValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         // arrange
         Completed completed = Completed.Builder.builder() //
-                                               .withObjective(this.objective) //
-                                               .withComment(comment) //
-                                               .build();
+                .withObjective(this.objective) //
+                .withComment(comment) //
+                .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -150,10 +144,10 @@ class CompletedValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
         Completed completedInvalid = Completed.Builder.builder() //
-                                                      .withId(null) //
-                                                      .withComment("Valid comment") //
-                                                      .withObjective(null) //
-                                                      .build();
+                .withId(null) //
+                .withComment("Valid comment") //
+                .withObjective(null) //
+                .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -168,8 +162,7 @@ class CompletedValidationServiceTest {
     void validateOnUpdateShouldThrowException() {
         // arrange
         Long id = 1L;
-        Completed completed = Completed.Builder.builder()
-                                               .build();
+        Completed completed = Completed.Builder.builder().build();
 
         // act + assert
         assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(id, completed));

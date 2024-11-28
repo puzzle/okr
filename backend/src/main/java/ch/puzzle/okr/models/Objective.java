@@ -166,14 +166,21 @@ public class Objective implements WriteableInterface {
             return false;
         Objective objective = (Objective) o;
         return Objects.equals(id, objective.id) && version == objective.version && Objects.equals(title,
-                                                                                                  objective.title) && Objects.equals(createdBy,
-                                                                                                                                     objective.createdBy) && Objects.equals(team,
-                                                                                                                                                                            objective.team) && Objects.equals(quarter,
-                                                                                                                                                                                                              objective.quarter) && Objects.equals(description,
-                                                                                                                                                                                                                                                   objective.description) && Objects.equals(modifiedOn,
-                                                                                                                                                                                                                                                                                            objective.modifiedOn) && state == objective.state && Objects.equals(createdOn,
-                                                                                                                                                                                                                                                                                                                                                                objective.createdOn) && Objects.equals(modifiedBy,
-                                                                                                                                                                                                                                                                                                                                                                                                       objective.modifiedBy);
+                                                                                                  objective.title) && Objects
+                                                                                                          .equals(createdBy,
+                                                                                                                  objective.createdBy) && Objects
+                                                                                                                          .equals(team,
+                                                                                                                                  objective.team) && Objects
+                                                                                                                                          .equals(quarter,
+                                                                                                                                                  objective.quarter) && Objects
+                                                                                                                                                          .equals(description,
+                                                                                                                                                                  objective.description) && Objects
+                                                                                                                                                                          .equals(modifiedOn,
+                                                                                                                                                                                  objective.modifiedOn) && state == objective.state && Objects
+                                                                                                                                                                                          .equals(createdOn,
+                                                                                                                                                                                                  objective.createdOn) && Objects
+                                                                                                                                                                                                          .equals(modifiedBy,
+                                                                                                                                                                                                                  objective.modifiedBy);
     }
 
     @Override

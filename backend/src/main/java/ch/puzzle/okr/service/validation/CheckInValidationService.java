@@ -38,10 +38,7 @@ public class CheckInValidationService extends ValidationBase<CheckIn, Long, Chec
     }
 
     private static void throwExceptionWhenKeyResultHasChanged(CheckIn checkIn, CheckIn savedCheckIn) {
-        if (!Objects.equals(checkIn.getKeyResult()
-                                   .getId(),
-                            savedCheckIn.getKeyResult()
-                                        .getId())) {
+        if (!Objects.equals(checkIn.getKeyResult().getId(), savedCheckIn.getKeyResult().getId())) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
                                                  List.of(Constants.KEY_RESULT, Constants.CHECK_IN));

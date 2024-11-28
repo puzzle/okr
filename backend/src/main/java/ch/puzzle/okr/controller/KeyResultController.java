@@ -58,10 +58,7 @@ public class KeyResultController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned all Check-ins from KeyResult.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class))}), @ApiResponse(responseCode = "401", description = "Not authorized to read Check-ins from a KeyResult", content = @Content), @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Check-ins from.", content = @Content)})
     @GetMapping("/{id}/checkins")
     public List<CheckInDto> getCheckInsFromKeyResult(@Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
-        return keyResultAuthorizationService.getAllCheckInsByKeyResult(id)
-                                            .stream()
-                                            .map(checkInMapper::toDto)
-                                            .toList();
+        return keyResultAuthorizationService.getAllCheckInsByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
@@ -72,8 +69,7 @@ public class KeyResultController {
         List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList(), keyResult);
         List<Action> savedActions = actionAuthorizationService.createEntities(actionList);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult, savedActions);
-        return ResponseEntity.status(CREATED)
-                             .body(createdKeyResult);
+        return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
 
     @Operation(summary = "Update KeyResult", description = "Update a KeyResult by ID.")
@@ -87,7 +83,7 @@ public class KeyResultController {
                                                                                                 keyResult,
                                                                                                 actionList);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK)
-                             .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
+                .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
     }
 
     @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")

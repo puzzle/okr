@@ -70,8 +70,9 @@ public class Quarter {
             return false;
         Quarter quarter = (Quarter) o;
         return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label) && Objects.equals(startDate,
-                                                                                                        quarter.startDate) && Objects.equals(endDate,
-                                                                                                                                             quarter.endDate);
+                                                                                                        quarter.startDate) && Objects
+                                                                                                                .equals(endDate,
+                                                                                                                        quarter.endDate);
     }
 
     @Override

@@ -68,24 +68,24 @@ public class QuarterBusinessService {
 
         return StringUtils.replaceEach(quarterFormat,
                                        new String[]{"xxxx", "yyyy", "xx", "yy", "zz"},
-                                       new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart), shortenYear(yearEnd), String.valueOf(quarter)});
+                                       new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(
+                                                                                                                    yearStart), shortenYear(yearEnd), String
+                                                                                                                            .valueOf(quarter)});
     }
 
     private int getStartOfBusinessYear(YearMonth startOfQuarter, int quarter) {
         // Subtract the amount of months, based on the quarter we are in
         // i.e. quarter=2, subtract (2 - 1) * 3 = 3 Months to get start
-        return startOfQuarter.minusMonths((quarter - 1) * 3L)
-                             .getYear();
+        return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
     private void generateQuarter(LocalDateTime start, String label) {
         YearMonth yearMonth = YearMonth.from(start);
         Quarter quarter = Quarter.Builder.builder()
-                                         .withLabel(label)
-                                         .withStartDate(start.toLocalDate())
-                                         .withEndDate(yearMonth.plusMonths(2)
-                                                               .atEndOfMonth())
-                                         .build();
+                .withLabel(label)
+                .withStartDate(start.toLocalDate())
+                .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
+                .build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }
@@ -125,8 +125,7 @@ public class QuarterBusinessService {
         if (inLastMonthOfQuarter(currentQuarter, nextQuarter)) {
             logger.info("Generated quarters on last day of month");
             String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
-            generateQuarter(nextQuarterYearMonth.atDay(1)
-                                                .atStartOfDay(), label);
+            generateQuarter(nextQuarterYearMonth.atDay(1).atStartOfDay(), label);
         }
     }
 }

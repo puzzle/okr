@@ -53,26 +53,10 @@ public class UserAuthorizationServiceTest {
         when(teamAuthorizationService.isUserWriteAllowed(memberTeamId)).thenReturn(false);
 
         List<User> users = userAuthorizationService.getAllUsers();
-        assertTrue(users.get(0)
-                        .getUserTeamList()
-                        .get(0)
-                        .getTeam()
-                        .isWriteable());
-        assertFalse(users.get(0)
-                         .getUserTeamList()
-                         .get(1)
-                         .getTeam()
-                         .isWriteable());
-        assertTrue(users.get(1)
-                        .getUserTeamList()
-                        .get(0)
-                        .getTeam()
-                        .isWriteable());
-        assertFalse(users.get(1)
-                         .getUserTeamList()
-                         .get(1)
-                         .getTeam()
-                         .isWriteable());
+        assertTrue(users.get(0).getUserTeamList().get(0).getTeam().isWriteable());
+        assertFalse(users.get(0).getUserTeamList().get(1).getTeam().isWriteable());
+        assertTrue(users.get(1).getUserTeamList().get(0).getTeam().isWriteable());
+        assertFalse(users.get(1).getUserTeamList().get(1).getTeam().isWriteable());
     }
 
     @Test

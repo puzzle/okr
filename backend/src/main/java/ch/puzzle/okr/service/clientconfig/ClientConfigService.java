@@ -47,29 +47,21 @@ public class ClientConfigService {
                                                                                                      domainPrefixByHyphen);
 
         if (tenantClientCustomization.isEmpty()) {
-            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant client customization for subdomain:{0}",
+            throw new EntityNotFoundException(MessageFormat.format(
+                                                                   "Could not find tenant client customization for subdomain:{0}",
                                                                    subdomain));
         }
 
         return new ClientConfigDto(activeProfile, //
-                                   tenantConfig.get()
-                                               .issuerUrl(), //
-                                   tenantConfig.get()
-                                               .clientId(), //
-                                   tenantClientCustomization.get()
-                                                            .favicon(), //
-                                   tenantClientCustomization.get()
-                                                            .logo(), //
-                                   tenantClientCustomization.get()
-                                                            .triangles(), //
-                                   tenantClientCustomization.get()
-                                                            .backgroundLogo(), //
-                                   tenantClientCustomization.get()
-                                                            .title(), //
-                                   tenantClientCustomization.get()
-                                                            .helpSiteUrl(), //
-                                   tenantClientCustomization.get()
-                                                            .customStyles()); //
+                                   tenantConfig.get().issuerUrl(), //
+                                   tenantConfig.get().clientId(), //
+                                   tenantClientCustomization.get().favicon(), //
+                                   tenantClientCustomization.get().logo(), //
+                                   tenantClientCustomization.get().triangles(), //
+                                   tenantClientCustomization.get().backgroundLogo(), //
+                                   tenantClientCustomization.get().title(), //
+                                   tenantClientCustomization.get().helpSiteUrl(), //
+                                   tenantClientCustomization.get().customStyles()); //
     }
 
     private Optional<TenantConfigProvider.TenantConfig> getTenantConfig(String hostname, String... tenantsFromUrl) {
@@ -87,7 +79,8 @@ public class ClientConfigService {
 
     private Optional<TenantClientCustomization> getTenantClientCustomization(String hostname, String... tenantsFromUrl) {
         for (String tenant : tenantsFromUrl) {
-            Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider.getTenantClientCustomizationsById(tenant);
+            Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider
+                    .getTenantClientCustomizationsById(tenant);
             if (tenantCustomization.isPresent()) {
                 logger.info("get client customization for " + tenant + ": OK");
                 return tenantCustomization;

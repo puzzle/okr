@@ -42,8 +42,7 @@ public abstract class PersistenceBase<T, ID, R> {
 
     public T findById(ID id) throws OkrResponseStatusException {
         checkIdNull(id);
-        return repository.findById(id)
-                         .orElseThrow(() -> createEntityNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> createEntityNotFoundException(id));
     }
 
     public void checkIdNull(ID id) {
@@ -79,7 +78,6 @@ public abstract class PersistenceBase<T, ID, R> {
 
     private List<T> iteratorToList(Iterable<T> iterable) {
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED),
-                                    false)
-                            .toList();
+                                    false).toList();
     }
 }

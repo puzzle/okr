@@ -18,8 +18,7 @@ public class CompletedAuthorizationService {
 
     public Completed createCompleted(Completed completed) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        authorizationService.hasRoleCreateOrUpdateByObjectiveId(completed.getObjective()
-                                                                         .getId(), authorizationUser);
+        authorizationService.hasRoleCreateOrUpdateByObjectiveId(completed.getObjective().getId(), authorizationUser);
         return completedBusinessService.createCompleted(completed);
     }
 

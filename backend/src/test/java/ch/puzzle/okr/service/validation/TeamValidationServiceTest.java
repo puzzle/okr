@@ -38,31 +38,18 @@ class TeamValidationServiceTest {
 
     @BeforeEach
     void setUp() {
-        team1 = Team.Builder.builder()
-                            .withId(1L)
-                            .withName("Team 1")
-                            .build();
-        team2 = Team.Builder.builder()
-                            .withId(2L)
-                            .withName("Team 2")
-                            .build();
-        teamWithIdNull = Team.Builder.builder()
-                                     .withId(null)
-                                     .withName("Team null")
-                                     .build();
-        teamWithoutName = Team.Builder.builder()
-                                      .build();
-        teamWithoutNameWithId = Team.Builder.builder()
-                                            .withId(1L)
-                                            .build();
+        team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
+        team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
+        teamWithIdNull = Team.Builder.builder().withId(null).withName("Team null").build();
+        teamWithoutName = Team.Builder.builder().build();
+        teamWithoutNameWithId = Team.Builder.builder().withId(1L).build();
 
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         when(teamPersistenceService.getModelName()).thenReturn("Team");
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
                                             String.format("%s with id %s not found",
                                                           teamPersistenceService.getModelName(),
-                                                          2L))).when(teamPersistenceService)
-                                                               .findById(2L);
+                                                          2L))).when(teamPersistenceService).findById(2L);
     }
 
     @Spy @InjectMocks
@@ -86,8 +73,7 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -108,8 +94,7 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -121,14 +106,12 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenTeamAlreadyExists() {
-        BDDMockito.given(teamPersistenceService.findTeamsByName(anyString()))
-                  .willReturn(List.of(team1));
+        BDDMockito.given(teamPersistenceService.findTeamsByName(anyString())).willReturn(List.of(team1));
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(teamWithIdNull));
 
@@ -136,8 +119,7 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -149,8 +131,7 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -165,8 +146,7 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -180,8 +160,7 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -193,15 +172,14 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNameIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(teamWithoutNameWithId.getId(),
-                                                                                             teamWithoutNameWithId));
+                                                            () -> validator.validateOnUpdate(teamWithoutNameWithId
+                                                                    .getId(), teamWithoutNameWithId));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutNameWithId);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithoutNameWithId.getId());
         verify(validator, times(1)).validate(teamWithoutNameWithId);
@@ -210,7 +188,6 @@ class TeamValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

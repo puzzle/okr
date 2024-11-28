@@ -23,9 +23,9 @@ public class CompletedMapper {
 
     public Completed toCompleted(CompletedDto completedDto) {
         return Completed.Builder.builder() //
-                                .withId(completedDto.id()) //
-                                .withObjective(objectiveMapper.toObjective(completedDto.objective())) //
-                                .withComment(completedDto.comment()) //
-                                .build();
+                .withId(completedDto.id()) //
+                .withObjective(objectiveMapper.toObjective(completedDto.objective())) //
+                .withComment(completedDto.comment()) //
+                .build();
     }
 }

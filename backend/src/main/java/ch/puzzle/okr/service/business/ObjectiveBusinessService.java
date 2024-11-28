@@ -84,8 +84,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
     private boolean hasAlreadyCheckIns(Objective savedObjective) {
         return keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())
-                                       .stream()
-                                       .anyMatch(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId()));
+                .stream()
+                .anyMatch(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId()));
     }
 
     private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
@@ -123,12 +123,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult, Objective duplicatedObjective) {
-        if (keyResult.getKeyResultType()
-                     .equals(KEY_RESULT_TYPE_METRIC)) {
+        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
             KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
             keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-        } else if (keyResult.getKeyResultType()
-                            .equals(KEY_RESULT_TYPE_ORDINAL)) {
+        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
             KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
             keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
         }
@@ -136,26 +134,26 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
     private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
         return KeyResultMetric.Builder.builder() //
-                                      .withObjective(duplicatedObjective) //
-                                      .withTitle(keyResult.getTitle()) //
-                                      .withDescription(keyResult.getDescription()) //
-                                      .withOwner(keyResult.getOwner()) //
-                                      .withUnit(((KeyResultMetric) keyResult).getUnit()) //
-                                      .withBaseline(0D) //
-                                      .withStretchGoal(1D) //
-                                      .build();
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withUnit(((KeyResultMetric) keyResult).getUnit()) //
+                .withBaseline(0D) //
+                .withStretchGoal(1D) //
+                .build();
     }
 
     private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
         return KeyResultOrdinal.Builder.builder() //
-                                       .withObjective(duplicatedObjective) //
-                                       .withTitle(keyResult.getTitle()) //
-                                       .withDescription(keyResult.getDescription()) //
-                                       .withOwner(keyResult.getOwner()) //
-                                       .withCommitZone("-") //
-                                       .withTargetZone("-") //
-                                       .withStretchZone("-") //
-                                       .build();
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withCommitZone("-") //
+                .withTargetZone("-") //
+                .withStretchZone("-") //
+                .build();
     }
 
     @Transactional
@@ -163,8 +161,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         validator.validateOnDelete(id);
         completedBusinessService.deleteCompletedByObjectiveId(id);
         keyResultBusinessService //
-                                .getAllKeyResultsByObjective(id) //
-                                .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
+                .getAllKeyResultsByObjective(id) //
+                .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);
     }
 }

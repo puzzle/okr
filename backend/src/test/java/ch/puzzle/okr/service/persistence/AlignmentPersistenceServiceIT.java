@@ -31,14 +31,10 @@ class AlignmentPersistenceServiceIT {
 
     private static ObjectiveAlignment createObjectiveAlignment(Long id) {
         return ObjectiveAlignment.Builder.builder()
-                                         .withId(id)
-                                         .withAlignedObjective(Objective.Builder.builder()
-                                                                                .withId(5L)
-                                                                                .build())
-                                         .withTargetObjective(Objective.Builder.builder()
-                                                                               .withId(4L)
-                                                                               .build())
-                                         .build();
+                .withId(id)
+                .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
+                .withTargetObjective(Objective.Builder.builder().withId(4L).build())
+                .build();
     }
 
     private static KeyResultAlignment createKeyResultAlignment(Long id) {
@@ -47,15 +43,11 @@ class AlignmentPersistenceServiceIT {
 
     private static KeyResultAlignment createKeyResultAlignment(Long id, int version) {
         return KeyResultAlignment.Builder.builder()
-                                         .withId(id)
-                                         .withVersion(version)
-                                         .withAlignedObjective(Objective.Builder.builder()
-                                                                                .withId(5L)
-                                                                                .build())
-                                         .withTargetKeyResult(KeyResultMetric.Builder.builder()
-                                                                                     .withId(8L)
-                                                                                     .build())
-                                         .build();
+                .withId(id)
+                .withVersion(version)
+                .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
+                .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build())
+                .build();
     }
 
     @BeforeEach
@@ -85,12 +77,8 @@ class AlignmentPersistenceServiceIT {
         createdAlignment = alignmentPersistenceService.save(alignment);
 
         assertNotNull(createdAlignment.getId());
-        assertEquals(5L,
-                     createdAlignment.getAlignedObjective()
-                                     .getId());
-        assertEquals(4L,
-                     ((ObjectiveAlignment) createdAlignment).getAlignmentTarget()
-                                                            .getId());
+        assertEquals(5L, createdAlignment.getAlignedObjective().getId());
+        assertEquals(4L, ((ObjectiveAlignment) createdAlignment).getAlignmentTarget().getId());
     }
 
     @Test
@@ -100,21 +88,15 @@ class AlignmentPersistenceServiceIT {
         createdAlignment = alignmentPersistenceService.save(alignment);
 
         assertNotNull(createdAlignment.getId());
-        assertEquals(5L,
-                     createdAlignment.getAlignedObjective()
-                                     .getId());
-        assertEquals(8L,
-                     ((KeyResultAlignment) createdAlignment).getAlignmentTarget()
-                                                            .getId());
+        assertEquals(5L, createdAlignment.getAlignedObjective().getId());
+        assertEquals(8L, ((KeyResultAlignment) createdAlignment).getAlignmentTarget().getId());
     }
 
     @Test
     void updateAlignmentShouldSaveKeyResultAlignment() {
         createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
         Alignment updateAlignment = createKeyResultAlignment(createdAlignment.getId(), createdAlignment.getVersion());
-        updateAlignment.setAlignedObjective(Objective.Builder.builder()
-                                                             .withId(8L)
-                                                             .build());
+        updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
 
         Alignment updatedAlignment = alignmentPersistenceService.save(updateAlignment);
 
@@ -126,9 +108,7 @@ class AlignmentPersistenceServiceIT {
     void updateAlignmentShouldThrowExceptionWhenAlreadyUpdated() {
         createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
         Alignment updateAlignment = createKeyResultAlignment(createdAlignment.getId(), 0);
-        updateAlignment.setAlignedObjective(Objective.Builder.builder()
-                                                             .withId(8L)
-                                                             .build());
+        updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> alignmentPersistenceService.save(updateAlignment));
@@ -137,8 +117,7 @@ class AlignmentPersistenceServiceIT {
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -177,21 +156,13 @@ class AlignmentPersistenceServiceIT {
 
     private void assertAlignment(ObjectiveAlignment objectiveAlignment) {
         assertEquals(1L, objectiveAlignment.getId());
-        assertEquals(3L,
-                     objectiveAlignment.getAlignmentTarget()
-                                       .getId());
-        assertEquals(4L,
-                     objectiveAlignment.getAlignedObjective()
-                                       .getId());
+        assertEquals(3L, objectiveAlignment.getAlignmentTarget().getId());
+        assertEquals(4L, objectiveAlignment.getAlignedObjective().getId());
     }
 
     private void assertAlignment(KeyResultAlignment keyResultAlignment) {
         assertEquals(2L, keyResultAlignment.getId());
-        assertEquals(8L,
-                     keyResultAlignment.getAlignmentTarget()
-                                       .getId());
-        assertEquals(4L,
-                     keyResultAlignment.getAlignedObjective()
-                                       .getId());
+        assertEquals(8L, keyResultAlignment.getAlignmentTarget().getId());
+        assertEquals(4L, keyResultAlignment.getAlignedObjective().getId());
     }
 }

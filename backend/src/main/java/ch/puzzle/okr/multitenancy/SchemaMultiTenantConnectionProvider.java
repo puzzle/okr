@@ -36,8 +36,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         String schema = convertTenantIdToSchemaName(tenantIdentifier);
         logger.debug("Setting schema to {}", schema);
 
-        connection.createStatement()
-                  .execute(String.format("SET SCHEMA '%s';", schema));
+        connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
         return connection;
     }
 
@@ -59,26 +58,27 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
 
     protected ConnectionProvider getConnectionProvider(String tenantIdentifier) {
         return Optional.ofNullable(tenantIdentifier) //
-                       .map(connectionProviderMap::get) //
-                       .orElseGet(() -> createNewConnectionProvider(tenantIdentifier));
+                .map(connectionProviderMap::get) //
+                .orElseGet(() -> createNewConnectionProvider(tenantIdentifier));
     }
 
     private ConnectionProvider createNewConnectionProvider(String tenantIdentifier) {
         return Optional.ofNullable(tenantIdentifier) //
-                       .map(this::createConnectionProvider) //
-                       .map(connectionProvider -> {
-                           connectionProviderMap.put(tenantIdentifier, connectionProvider);
-                           return connectionProvider;
-                       }) //
-                       .orElseThrow(() -> new ConnectionProviderException(String.format("Cannot create new connection provider for tenant: %s",
-                                                                                        tenantIdentifier)));
+                .map(this::createConnectionProvider) //
+                .map(connectionProvider -> {
+                    connectionProviderMap.put(tenantIdentifier, connectionProvider);
+                    return connectionProvider;
+                }) //
+                .orElseThrow(() -> new ConnectionProviderException(String.format(
+                                                                                 "Cannot create new connection provider for tenant: %s",
+                                                                                 tenantIdentifier)));
     }
 
     private ConnectionProvider createConnectionProvider(String tenantIdentifier) {
         return Optional.ofNullable(tenantIdentifier) //
-                       .map(this::getHibernatePropertiesForTenantIdentifier) //
-                       .map(this::initConnectionProvider) //
-                       .orElse(null);
+                .map(this::getHibernatePropertiesForTenantIdentifier) //
+                .map(this::initConnectionProvider) //
+                .orElse(null);
     }
 
     protected Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {

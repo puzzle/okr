@@ -68,8 +68,9 @@ public class Completed {
             return false;
         Completed completed = (Completed) o;
         return Objects.equals(id, completed.id) && version == completed.version && Objects.equals(objective,
-                                                                                                  completed.objective) && Objects.equals(comment,
-                                                                                                                                         completed.comment);
+                                                                                                  completed.objective) && Objects
+                                                                                                          .equals(comment,
+                                                                                                                  completed.comment);
     }
 
     @Override

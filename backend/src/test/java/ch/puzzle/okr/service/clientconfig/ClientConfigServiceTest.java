@@ -83,11 +83,11 @@ public class ClientConfigServiceTest {
 
         TenantClientCustomizationProvider tenantCustomizationProvider = mock(TenantClientCustomizationProvider.class);
         when(tenantCustomizationProvider.getTenantClientCustomizationsById(tenantId)) //
-                                                                                     .thenReturn(Optional.ofNullable(tenantCustomization));
+                .thenReturn(Optional.ofNullable(tenantCustomization));
 
         TenantConfigProvider tenantConfigProvider = mock(TenantConfigProvider.class);
         when(tenantConfigProvider.getTenantConfigById(tenantId)) //
-                                                                .thenReturn(Optional.ofNullable(tenantConfig));
+                .thenReturn(Optional.ofNullable(tenantConfig));
 
         return new ClientConfigService(tenantCustomizationProvider, tenantConfigProvider);
     }

@@ -58,20 +58,20 @@ class CompletedControllerIT {
     private CompletedMapper completedMapper;
 
     private final Completed successfulCompleted = Completed.Builder.builder() //
-                                                                   .withId(COMPLETED_ID) //
-                                                                   .withObjective(Objective.Builder.builder() //
-                                                                                                   .withId(OBJECTIVE_ID) //
-                                                                                                   .build()) //
-                                                                   .withComment(COMPLETED_COMMENT) //
-                                                                   .build();
+            .withId(COMPLETED_ID) //
+            .withObjective(Objective.Builder.builder() //
+                    .withId(OBJECTIVE_ID) //
+                    .build()) //
+            .withComment(COMPLETED_COMMENT) //
+            .build();
 
     private final CompletedDto completedDto = CompletedDtoBuilder.builder() //
-                                                                 .withId(COMPLETED_ID) //
-                                                                 .withComment(COMPLETED_COMMENT) //
-                                                                 .withObjectiveDto(ObjectiveDtoBuilder.builder() //
-                                                                                                      .withId(OBJECTIVE_ID) //
-                                                                                                      .build()) //
-                                                                 .build();
+            .withId(COMPLETED_ID) //
+            .withComment(COMPLETED_COMMENT) //
+            .withObjectiveDto(ObjectiveDtoBuilder.builder() //
+                    .withId(OBJECTIVE_ID) //
+                    .build()) //
+            .build();
 
     String baseUrl = "/api/v2/completed";
     @Autowired
@@ -79,36 +79,31 @@ class CompletedControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(completedMapper.toDto(any()))
-                  .willReturn(completedDto);
-        BDDMockito.given(completedMapper.toCompleted(any()))
-                  .willReturn(successfulCompleted);
+        BDDMockito.given(completedMapper.toDto(any())).willReturn(completedDto);
+        BDDMockito.given(completedMapper.toCompleted(any())).willReturn(successfulCompleted);
     }
 
     @DisplayName("create() should create complete")
     @Test
     void createShouldCreateCompleted() throws Exception {
-        BDDMockito.given(this.completedAuthorizationService.createCompleted(any()))
-                  .willReturn(successfulCompleted);
+        BDDMockito.given(this.completedAuthorizationService.createCompleted(any())).willReturn(successfulCompleted);
 
         mvc.perform(post(baseUrl) //
-                                 .content(SUCCESSFUL_CREATE_BODY) //
-                                 .contentType(MediaType.APPLICATION_JSON) //
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())) //
-           .andExpect(MockMvcResultMatchers.status()
-                                           .is2xxSuccessful()) //
-           .andExpect(jsonPath(JSON_PATH_ID, Is.is(COMPLETED_ID_AS_INT))) //
-           .andExpect(jsonPath("$.id", Is.is(COMPLETED_ID_AS_INT))) //
-           .andExpect(jsonPath("$.objective.id", Is.is(OBJECTIVE_ID_AS_INT))) //
-           .andExpect(jsonPath("$.comment", Is.is(COMPLETED_COMMENT)));
+                .content(SUCCESSFUL_CREATE_BODY) //
+                .contentType(MediaType.APPLICATION_JSON) //
+                .with(SecurityMockMvcRequestPostProcessors.csrf())) //
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()) //
+                .andExpect(jsonPath(JSON_PATH_ID, Is.is(COMPLETED_ID_AS_INT))) //
+                .andExpect(jsonPath("$.id", Is.is(COMPLETED_ID_AS_INT))) //
+                .andExpect(jsonPath("$.objective.id", Is.is(OBJECTIVE_ID_AS_INT))) //
+                .andExpect(jsonPath("$.comment", Is.is(COMPLETED_COMMENT)));
     }
 
     @DisplayName("delete() should delete Completed")
     @Test
     void deleteShouldDeleteCompleted() throws Exception {
         mvc.perform(delete("/api/v2/completed/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @DisplayName("delete() should throw exception when Completed with id cant be found")
@@ -116,10 +111,9 @@ class CompletedControllerIT {
     void deleteShouldThrowExceptionWhenCompletedWithIdCantBeFound() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found")).when(
                                                                                                completedAuthorizationService)
-                                                                                         .deleteCompletedByObjectiveId(anyLong());
+                .deleteCompletedByObjectiveId(anyLong());
 
         mvc.perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

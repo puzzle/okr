@@ -31,8 +31,7 @@ public class QuarterValidationService extends ValidationBase<Quarter, Long, Quar
     }
 
     public static void throwExceptionWhenStartEndDateQuarterIsNull(Quarter model) {
-        if (!model.getLabel()
-                  .equals(BACK_LOG_QUARTER_LABEL)) {
+        if (!model.getLabel().equals(BACK_LOG_QUARTER_LABEL)) {
             if (model.getStartDate() == null) {
                 throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                      ErrorKey.ATTRIBUTE_NULL,

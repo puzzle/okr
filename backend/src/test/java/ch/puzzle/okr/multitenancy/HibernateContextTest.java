@@ -44,8 +44,7 @@ public class HibernateContextTest {
 
         // act + assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> setHibernateConfig(dbConfig));
-        assertTrue(exception.getMessage()
-                            .startsWith("Invalid hibernate configuration"));
+        assertTrue(exception.getMessage().startsWith("Invalid hibernate configuration"));
     }
 
     private static Stream<Arguments> invalidDbConfig() {

@@ -85,9 +85,11 @@ public class UserTeam {
         }
         UserTeam userTeam = (UserTeam) o;
         return version == userTeam.version && isTeamAdmin == userTeam.isTeamAdmin && Objects.equals(id,
-                                                                                                    userTeam.id) && Objects.equals(user,
-                                                                                                                                   userTeam.user) && Objects.equals(team,
-                                                                                                                                                                    userTeam.team);
+                                                                                                    userTeam.id) && Objects
+                                                                                                            .equals(user,
+                                                                                                                    userTeam.user) && Objects
+                                                                                                                            .equals(team,
+                                                                                                                                    userTeam.team);
     }
 
     @Override

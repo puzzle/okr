@@ -80,13 +80,9 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long, 
     }
 
     private boolean isInvalidBacklogObjective(Objective model) {
-        return model.getQuarter()
-                    .getLabel()
-                    .equals(BACK_LOG_QUARTER_LABEL) //
-                && model.getQuarter()
-                        .getStartDate() == null //
-                && model.getQuarter()
-                        .getEndDate() == null //
+        return model.getQuarter().getLabel().equals(BACK_LOG_QUARTER_LABEL) //
+                && model.getQuarter().getStartDate() == null //
+                && model.getQuarter().getEndDate() == null //
                 && (model.getState() != State.DRAFT);
     }
 }

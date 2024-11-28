@@ -64,8 +64,7 @@ public class KeyResultDeserializerTest {
                             }
                             """;
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
@@ -140,8 +139,7 @@ public class KeyResultDeserializerTest {
 
                             """;
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
@@ -185,8 +183,7 @@ public class KeyResultDeserializerTest {
                             }
                             """;
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert
@@ -210,8 +207,7 @@ public class KeyResultDeserializerTest {
                             }
                             """;
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert

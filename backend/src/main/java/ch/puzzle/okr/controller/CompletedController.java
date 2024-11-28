@@ -33,8 +33,7 @@ public class CompletedController {
     public ResponseEntity<CompletedDto> createCompleted(@RequestBody CompletedDto completedDto) {
         Completed completed = completedMapper.toCompleted(completedDto);
         Completed createdCompleted = completedAuthorizationService.createCompleted(completed);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(completedMapper.toDto(createdCompleted));
+        return ResponseEntity.status(HttpStatus.CREATED).body(completedMapper.toDto(createdCompleted));
     }
 
     @Operation(summary = "Delete Completed by Objective Id", description = "Delete Completed Reference by Objective Id")

@@ -42,9 +42,7 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
 
     public List<KeyResult> getKeyResultsOwnedByUser(long userId) {
         return findAll().stream() //
-                        .filter(keyResult -> keyResult.getOwner()
-                                                      .getId()
-                                                      .equals(userId)) //
-                        .toList();
+                .filter(keyResult -> keyResult.getOwner().getId().equals(userId)) //
+                .toList();
     }
 }

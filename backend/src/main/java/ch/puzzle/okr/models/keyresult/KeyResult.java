@@ -144,14 +144,21 @@ public abstract class KeyResult implements WriteableInterface {
             return false;
         KeyResult keyResult = (KeyResult) o;
         return Objects.equals(id, keyResult.id) && version == keyResult.version && Objects.equals(objective,
-                                                                                                  keyResult.objective) && Objects.equals(title,
-                                                                                                                                         keyResult.title) && Objects.equals(description,
-                                                                                                                                                                            keyResult.description) && Objects.equals(owner,
-                                                                                                                                                                                                                     keyResult.owner) && Objects.equals(createdBy,
-                                                                                                                                                                                                                                                        keyResult.createdBy) && Objects.equals(createdOn,
-                                                                                                                                                                                                                                                                                               keyResult.createdOn) && Objects.equals(modifiedOn,
-                                                                                                                                                                                                                                                                                                                                      keyResult.modifiedOn) && Objects.equals(keyResultType,
-                                                                                                                                                                                                                                                                                                                                                                              keyResult.keyResultType);
+                                                                                                  keyResult.objective) && Objects
+                                                                                                          .equals(title,
+                                                                                                                  keyResult.title) && Objects
+                                                                                                                          .equals(description,
+                                                                                                                                  keyResult.description) && Objects
+                                                                                                                                          .equals(owner,
+                                                                                                                                                  keyResult.owner) && Objects
+                                                                                                                                                          .equals(createdBy,
+                                                                                                                                                                  keyResult.createdBy) && Objects
+                                                                                                                                                                          .equals(createdOn,
+                                                                                                                                                                                  keyResult.createdOn) && Objects
+                                                                                                                                                                                          .equals(modifiedOn,
+                                                                                                                                                                                                  keyResult.modifiedOn) && Objects
+                                                                                                                                                                                                          .equals(keyResultType,
+                                                                                                                                                                                                                  keyResult.keyResultType);
     }
 
     @Override

@@ -71,9 +71,7 @@ public class TeamAuthorizationService {
 
     public void removeUserFromTeam(long entityId, long userId) {
         // user is allowed to remove own membership of any team
-        if (userId != authorizationService.updateOrAddAuthorizationUser()
-                                          .user()
-                                          .getId()) {
+        if (userId != authorizationService.updateOrAddAuthorizationUser().user().getId()) {
             checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
         }
         teamBusinessService.removeUserFromTeam(entityId, userId);

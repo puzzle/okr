@@ -36,10 +36,7 @@ public class TeamController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned all Teams", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class))}),})
     @GetMapping
     public List<TeamDto> getAllTeams() {
-        return teamAuthorizationService.getAllTeams()
-                                       .stream()
-                                       .map(teamMapper::toDto)
-                                       .toList();
+        return teamAuthorizationService.getAllTeams().stream().map(teamMapper::toDto).toList();
     }
 
     @Operation(summary = "Create Team", description = "Create a new Team")
@@ -47,8 +44,7 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<TeamDto> createTeam(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody TeamDto teamDto) {
         Team createdTeam = teamAuthorizationService.createEntity(teamMapper.toTeam(teamDto));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(teamMapper.toDto(createdTeam));
+        return ResponseEntity.status(HttpStatus.CREATED).body(teamMapper.toDto(createdTeam));
     }
 
     @Operation(summary = "Update Team", description = "Update a Team by ID.")
@@ -56,8 +52,7 @@ public class TeamController {
     @PutMapping("/{id}")
     public ResponseEntity<TeamDto> updateTeam(@Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id, @RequestBody TeamDto teamDto) {
         Team updatedTeam = teamAuthorizationService.updateEntity(teamMapper.toTeam(teamDto), id);
-        return ResponseEntity.status(OK)
-                             .body(teamMapper.toDto(updatedTeam));
+        return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam));
     }
 
     @Operation(summary = "Delete Team by ID", description = "Delete Team by ID")
@@ -71,9 +66,7 @@ public class TeamController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Added users to team"), @ApiResponse(responseCode = "401", description = "Not authorized to add users to the team", content = @Content), @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID")})
     @PutMapping("/{id}/addusers")
     public void addUsersToTeam(@Parameter(description = "The ID of an Team to add to users to it.", required = true) @PathVariable long id, @RequestBody List<UserDto> userDtoList) {
-        var userIds = userDtoList.stream()
-                                 .map(UserDto::id)
-                                 .toList();
+        var userIds = userDtoList.stream().map(UserDto::id).toList();
         teamAuthorizationService.addUsersToTeam(id, userIds);
     }
 

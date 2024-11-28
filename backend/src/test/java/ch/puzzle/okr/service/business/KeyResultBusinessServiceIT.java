@@ -58,76 +58,60 @@ class KeyResultBusinessServiceIT {
 
     private static KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder.builder()
-                                      .withBaseline(3.0)
-                                      .withStretchGoal(5.0)
-                                      .withUnit(Unit.FTE)
-                                      .withId(id)
-                                      .withTitle("Title")
-                                      .withCreatedBy(User.Builder.builder()
-                                                                 .withId(1L)
-                                                                 .build())
-                                      .withOwner(User.Builder.builder()
-                                                             .withId(1L)
-                                                             .build())
-                                      .withObjective(Objective.Builder.builder()
-                                                                      .withId(4L)
-                                                                      .build())
-                                      .withCreatedOn(LocalDateTime.now())
-                                      .build();
+                .withBaseline(3.0)
+                .withStretchGoal(5.0)
+                .withUnit(Unit.FTE)
+                .withId(id)
+                .withTitle("Title")
+                .withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withOwner(User.Builder.builder().withId(1L).build())
+                .withObjective(Objective.Builder.builder().withId(4L).build())
+                .withCreatedOn(LocalDateTime.now())
+                .build();
     }
 
     private static KeyResult createKeyResultOrdinal(Long id) {
         return KeyResultOrdinal.Builder.builder()
-                                       .withCommitZone("Hamster")
-                                       .withTargetZone("Katze")
-                                       .withId(id)
-                                       .withTitle("Ordinal KeyResult")
-                                       .withStretchZone("ZOO")
-                                       .withCreatedBy(User.Builder.builder()
-                                                                  .withId(1L)
-                                                                  .build())
-                                       .withOwner(User.Builder.builder()
-                                                              .withId(1L)
-                                                              .build())
-                                       .withObjective(Objective.Builder.builder()
-                                                                       .withId(4L)
-                                                                       .build())
-                                       .withCreatedOn(LocalDateTime.now())
-                                       .build();
+                .withCommitZone("Hamster")
+                .withTargetZone("Katze")
+                .withId(id)
+                .withTitle("Ordinal KeyResult")
+                .withStretchZone("ZOO")
+                .withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withOwner(User.Builder.builder().withId(1L).build())
+                .withObjective(Objective.Builder.builder().withId(4L).build())
+                .withCreatedOn(LocalDateTime.now())
+                .build();
     }
 
     private static CheckIn createCheckInMetric(KeyResult keyResult) {
-        return CheckInMetric.Builder.builder()
-                                    .withKeyResult(keyResult)
-                                    .withConfidence(5)
-                                    .withValue(7.5)
-                                    .build();
+        return CheckInMetric.Builder.builder().withKeyResult(keyResult).withConfidence(5).withValue(7.5).build();
     }
 
     private static CheckIn createCheckInOrdinal(KeyResult keyResult) {
         return CheckInOrdinal.Builder.builder()
-                                     .withKeyResult(keyResult)
-                                     .withConfidence(5)
-                                     .withZone(Zone.COMMIT)
-                                     .build();
+                .withKeyResult(keyResult)
+                .withConfidence(5)
+                .withZone(Zone.COMMIT)
+                .build();
     }
 
     private static Action createAction1(KeyResult keyResult) {
         return Action.Builder.builder()
-                             .withIsChecked(false)
-                             .withAction("Neuer Drucker")
-                             .withPriority(0)
-                             .withKeyResult(keyResult)
-                             .build();
+                .withIsChecked(false)
+                .withAction("Neuer Drucker")
+                .withPriority(0)
+                .withKeyResult(keyResult)
+                .build();
     }
 
     private static Action createAction2(KeyResult keyResult) {
         return Action.Builder.builder()
-                             .withIsChecked(false)
-                             .withAction("Neues Papier")
-                             .withPriority(0)
-                             .withKeyResult(keyResult)
-                             .build();
+                .withIsChecked(false)
+                .withAction("Neues Papier")
+                .withPriority(0)
+                .withKeyResult(keyResult)
+                .build();
     }
 
     @BeforeEach
@@ -347,8 +331,7 @@ class KeyResultBusinessServiceIT {
     private void assertSameActions(List<Action> expected, KeyResultWithActionList actual) {
         assertSameKeyResultIds(expected, actual);
         expected.forEach(this::removeKeyResult);
-        actual.actionList()
-              .forEach(this::removeKeyResult);
+        actual.actionList().forEach(this::removeKeyResult);
         assertThat(expected).hasSameElementsAs(actual.actionList());
     }
 
@@ -359,37 +342,20 @@ class KeyResultBusinessServiceIT {
     }
 
     private void assertSameKeyResultIds(List<Action> expected, KeyResultWithActionList actual) {
-        List<Long> expectedIds = expected.stream()
-                                         .map(action -> action.getKeyResult()
-                                                              .getId())
-                                         .toList();
-        List<Long> updatedIds = actual.actionList()
-                                      .stream()
-                                      .map(action -> action.getKeyResult()
-                                                           .getId())
-                                      .toList();
+        List<Long> expectedIds = expected.stream().map(action -> action.getKeyResult().getId()).toList();
+        List<Long> updatedIds = actual.actionList().stream().map(action -> action.getKeyResult().getId()).toList();
         assertThat(expectedIds).hasSameElementsAs(updatedIds);
     }
 
     private void assertSameActionIds(List<Action> expected, KeyResultWithActionList actual) {
-        List<Long> expectedIds = expected.stream()
-                                         .map(Action::getId)
-                                         .toList();
-        List<Long> updatedIds = actual.actionList()
-                                      .stream()
-                                      .map(Action::getId)
-                                      .toList();
+        List<Long> expectedIds = expected.stream().map(Action::getId).toList();
+        List<Long> updatedIds = actual.actionList().stream().map(Action::getId).toList();
         assertThat(expectedIds).hasSameElementsAs(updatedIds);
     }
 
     private void assertUpdateVersions(List<Action> expected, KeyResultWithActionList actual) {
-        List<Integer> expectedVersions = expected.stream()
-                                                 .map(action -> action.getVersion() + 1)
-                                                 .toList();
-        List<Integer> updatedVerisons = actual.actionList()
-                                              .stream()
-                                              .map(Action::getVersion)
-                                              .toList();
+        List<Integer> expectedVersions = expected.stream().map(action -> action.getVersion() + 1).toList();
+        List<Integer> updatedVerisons = actual.actionList().stream().map(Action::getVersion).toList();
         assertThat(expectedVersions).hasSameElementsAs(updatedVerisons);
     }
 

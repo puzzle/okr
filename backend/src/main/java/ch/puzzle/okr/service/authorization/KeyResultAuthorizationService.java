@@ -52,17 +52,16 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
     @Override
     public KeyResult updateEntity(Long id, KeyResult keyResult) {
         throw new ResponseStatusException(BAD_REQUEST,
-                                          "unsupported method in class " + getClass().getSimpleName() + ", use updateEntities() instead");
+                                          "unsupported method in class " + getClass()
+                                                  .getSimpleName() + ", use updateEntities() instead");
     }
 
     public KeyResultWithActionList updateEntities(Long id, KeyResult entity, List<Action> actionList) {
         AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
         KeyResultWithActionList updatedEntities = getBusinessService().updateEntities(id, entity, actionList);
-        updatedEntities.keyResult()
-                       .setWriteable(true);
-        updatedEntities.actionList()
-                       .forEach(action -> action.setWriteable(true));
+        updatedEntities.keyResult().setWriteable(true);
+        updatedEntities.actionList().forEach(action -> action.setWriteable(true));
         return updatedEntities;
     }
 

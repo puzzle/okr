@@ -34,8 +34,7 @@ public class AuthorizationCriteria<T> {
         }
         String authorizationWhereClause = append(user, alias, "objectiveState", "overviewId.teamId");
         if (!authorizationWhereClause.isEmpty()) {
-            sb.append("\n")
-              .append(authorizationWhereClause.substring(0, authorizationWhereClause.length() - 1));
+            sb.append("\n").append(authorizationWhereClause.substring(0, authorizationWhereClause.length() - 1));
             sb.append(format(" or %s.overviewId.objectiveId = -1)", alias));
         }
         return sb.toString();
@@ -62,9 +61,7 @@ public class AuthorizationCriteria<T> {
         // all users can read published state
         sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
         if (!sb.isEmpty()) {
-            sb.delete(0, 4)
-              .insert(0, " and (")
-              .append(")");
+            sb.delete(0, 4).insert(0, " and (").append(")");
         }
         return sb.toString();
     }

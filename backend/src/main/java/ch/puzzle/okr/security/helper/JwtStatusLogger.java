@@ -17,14 +17,12 @@ public class JwtStatusLogger {
         if (isOk) {
             logger.info("Tenant: get claim '{}' from {}{}",
                         claim,
-                        context.getClass()
-                               .getSimpleName(),
+                        context.getClass().getSimpleName(),
                         statusToSymbol(isOk));
         } else {
             logger.warn("Tenant: get claim '{}' from {}{}",
                         claim,
-                        context.getClass()
-                               .getSimpleName(),
+                        context.getClass().getSimpleName(),
                         statusToSymbol(isOk));
         }
     }
@@ -32,8 +30,7 @@ public class JwtStatusLogger {
     public static void logStatus(String claim, Object context, ParseException e) {
         logger.warn("Tenant: get claim '{}' from {}{}",
                     claim,
-                    context.getClass()
-                           .getSimpleName(),
+                    context.getClass().getSimpleName(),
                     statusToSymbol(false),
                     e);
     }

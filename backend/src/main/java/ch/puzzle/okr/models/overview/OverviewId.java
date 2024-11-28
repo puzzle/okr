@@ -60,8 +60,9 @@ public class OverviewId implements Comparable<OverviewId>, Serializable {
         OverviewId that = (OverviewId) o;
         return Objects.equals(teamId, that.teamId) && Objects.equals(objectiveId, that.objectiveId) && Objects.equals(
                                                                                                                       keyResultId,
-                                                                                                                      that.keyResultId) && Objects.equals(checkInId,
-                                                                                                                                                          that.checkInId);
+                                                                                                                      that.keyResultId) && Objects
+                                                                                                                              .equals(checkInId,
+                                                                                                                                      that.checkInId);
     }
 
     @Override

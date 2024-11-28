@@ -57,7 +57,8 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                                                                             () -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+                                                                             () -> QuarterValidationService
+                                                                                     .throwExceptionWhenStartEndDateQuarterIsNull(quarter));
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
@@ -72,7 +73,8 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                                                                             () -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+                                                                             () -> QuarterValidationService
+                                                                                     .throwExceptionWhenStartEndDateQuarterIsNull(quarter));
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
@@ -114,7 +116,8 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                                                                             () -> validator.validateOnGeneration(quarter));
+                                                                             () -> validator.validateOnGeneration(
+                                                                                                                  quarter));
 
         assertOkrResponseStatusException( //
                                          okrResponseStatusException, //
@@ -132,7 +135,8 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                                                                             () -> validator.validateOnGeneration(quarter));
+                                                                             () -> validator.validateOnGeneration(
+                                                                                                                  quarter));
 
         assertOkrResponseStatusException( //
                                          okrResponseStatusException, //
@@ -156,8 +160,7 @@ class QuarterValidationServiceTest {
     private void assertOkrResponseStatusException(OkrResponseStatusException exception, List<ErrorDto> expectedErrors) {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
 }

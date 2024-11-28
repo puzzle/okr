@@ -34,25 +34,25 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @ExtendWith(MockitoExtension.class)
 class ActionValidationServiceTest {
     private final KeyResult keyResult = KeyResultMetric.Builder.builder() //
-                                                               .withId(10L) //
-                                                               .withTitle("KR Title")
-                                                               .build(); //
+            .withId(10L) //
+            .withTitle("KR Title")
+            .build(); //
 
     private final Action action1 = Action.Builder.builder() //
-                                                 .withId(null) //
-                                                 .withAction("Neue Katze") //
-                                                 .withIsChecked(false) //
-                                                 .withPriority(0) //
-                                                 .withKeyResult(keyResult)
-                                                 .build();
+            .withId(null) //
+            .withAction("Neue Katze") //
+            .withIsChecked(false) //
+            .withPriority(0) //
+            .withKeyResult(keyResult)
+            .build();
 
     private final Action action2 = Action.Builder.builder() //
-                                                 .withId(2L) //
-                                                 .withAction("Neues Lama") //
-                                                 .withIsChecked(true) // //
-                                                 .withPriority(1)
-                                                 .withKeyResult(keyResult)
-                                                 .build();
+            .withId(2L) //
+            .withAction("Neues Lama") //
+            .withIsChecked(true) // //
+            .withPriority(1)
+            .withKeyResult(keyResult)
+            .build();
 
     @Mock
     ActionPersistenceService actionPersistenceService;
@@ -76,69 +76,64 @@ class ActionValidationServiceTest {
     // generate Pairs of Actions with and without KeyResults
     private static Stream<Arguments> actionPairArgument() {
         Long id = 3L;
-        KeyResult keyResult = KeyResultMetric.Builder.builder()
-                                                     .withId(10L)
-                                                     .withTitle("KR Title")
-                                                     .build(); //
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build(); //
 
         return Stream.of( //
                          Arguments.of(new ActionPair( //
                                                      Action.Builder.builder() //
-                                                                   .withId(id)
-                                                                   .withAction("Action")
-                                                                   .withIsChecked(false)
-                                                                   .withPriority(1) //
-                                                                   .withKeyResult(null)
-                                                                   .build(),
+                                                             .withId(id)
+                                                             .withAction("Action")
+                                                             .withIsChecked(false)
+                                                             .withPriority(1) //
+                                                             .withKeyResult(null)
+                                                             .build(),
 
                                                      Action.Builder.builder() //
-                                                                   .withId(id)
-                                                                   .withAction("Action")
-                                                                   .withIsChecked(false)
-                                                                   .withPriority(1) //
-                                                                   .withKeyResult(null)
-                                                                   .build())),
-
-                         Arguments.of(new ActionPair( //
-                                                     Action.Builder.builder() //
-                                                                   .withId(id)
-                                                                   .withAction("Action")
-                                                                   .withIsChecked(false)
-                                                                   .withPriority(1) //
-                                                                   .withKeyResult(keyResult)
-                                                                   .build(),
-
-                                                     Action.Builder.builder() //
-                                                                   .withId(id)
-                                                                   .withAction("Action")
-                                                                   .withIsChecked(false)
-                                                                   .withPriority(1) //
-                                                                   .withKeyResult(null)
-                                                                   .build())),
+                                                             .withId(id)
+                                                             .withAction("Action")
+                                                             .withIsChecked(false)
+                                                             .withPriority(1) //
+                                                             .withKeyResult(null)
+                                                             .build())),
 
                          Arguments.of(new ActionPair( //
                                                      Action.Builder.builder() //
-                                                                   .withId(id)
-                                                                   .withAction("Action")
-                                                                   .withIsChecked(false)
-                                                                   .withPriority(1) //
-                                                                   .withKeyResult(null)
-                                                                   .build(),
+                                                             .withId(id)
+                                                             .withAction("Action")
+                                                             .withIsChecked(false)
+                                                             .withPriority(1) //
+                                                             .withKeyResult(keyResult)
+                                                             .build(),
 
                                                      Action.Builder.builder() //
-                                                                   .withId(id)
-                                                                   .withAction("Action")
-                                                                   .withIsChecked(false)
-                                                                   .withPriority(1)
-                                                                   .withKeyResult(keyResult)
-                                                                   .build())));
+                                                             .withId(id)
+                                                             .withAction("Action")
+                                                             .withIsChecked(false)
+                                                             .withPriority(1) //
+                                                             .withKeyResult(null)
+                                                             .build())),
+
+                         Arguments.of(new ActionPair( //
+                                                     Action.Builder.builder() //
+                                                             .withId(id)
+                                                             .withAction("Action")
+                                                             .withIsChecked(false)
+                                                             .withPriority(1) //
+                                                             .withKeyResult(null)
+                                                             .build(),
+
+                                                     Action.Builder.builder() //
+                                                             .withId(id)
+                                                             .withAction("Action")
+                                                             .withIsChecked(false)
+                                                             .withPriority(1)
+                                                             .withKeyResult(keyResult)
+                                                             .build())));
     }
 
     @BeforeEach
     void setUp() {
-        Mockito.lenient()
-               .when(actionPersistenceService.getModelName())
-               .thenReturn("Action");
+        Mockito.lenient().when(actionPersistenceService.getModelName()).thenReturn("Action");
     }
 
     @Test
@@ -178,12 +173,12 @@ class ActionValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenActionIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
         Action action = Action.Builder.builder()
-                                      .withId(null)
-                                      .withAction(actionText)
-                                      .withIsChecked(false)
-                                      .withPriority(1)
-                                      .withKeyResult(keyResult)
-                                      .build();
+                .withId(null)
+                .withAction(actionText)
+                .withIsChecked(false)
+                .withPriority(1)
+                .withKeyResult(keyResult)
+                .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -195,9 +190,7 @@ class ActionValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
-        Action actionInvalid = Action.Builder.builder()
-                                             .withIsChecked(true)
-                                             .build();
+        Action actionInvalid = Action.Builder.builder().withIsChecked(true).build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -314,15 +307,12 @@ class ActionValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenKeyResultIdHasChanged() {
         // arrange
         Action action = Action.Builder.builder()
-                                      .withId(action2.getId())
-                                      .withAction("Action")
-                                      .withIsChecked(false)
-                                      .withPriority(1)
-                                      .withKeyResult(KeyResultMetric.Builder.builder()
-                                                                            .withId(11L)
-                                                                            .withTitle("KR Title")
-                                                                            .build())
-                                      .build();
+                .withId(action2.getId())
+                .withAction("Action")
+                .withIsChecked(false)
+                .withPriority(1)
+                .withKeyResult(KeyResultMetric.Builder.builder().withId(11L).withTitle("KR Title").build())
+                .build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(action2);
 
         // act + assert
@@ -344,12 +334,12 @@ class ActionValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
         Action action = Action.Builder.builder()
-                                      .withId(3L)
-                                      .withAction(actionText)
-                                      .withIsChecked(false)
-                                      .withPriority(1)
-                                      .withKeyResult(keyResult)
-                                      .build();
+                .withId(3L)
+                .withAction(actionText)
+                .withIsChecked(false)
+                .withPriority(1)
+                .withKeyResult(keyResult)
+                .build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(action);
 
         // act + assert
@@ -361,10 +351,7 @@ class ActionValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenKeyResultIsMissing() {
         // arrange
-        Action actionInvalid = Action.Builder.builder()
-                                             .withId(11L)
-                                             .withIsChecked(true)
-                                             .build();
+        Action actionInvalid = Action.Builder.builder().withId(11L).withIsChecked(true).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert
@@ -380,10 +367,10 @@ class ActionValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
         Action actionInvalid = Action.Builder.builder()
-                                             .withId(11L)
-                                             .withIsChecked(true)
-                                             .withKeyResult(keyResult)
-                                             .build();
+                .withId(11L)
+                .withIsChecked(true)
+                .withKeyResult(keyResult)
+                .build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert
@@ -400,8 +387,7 @@ class ActionValidationServiceTest {
     void validateOnGetByKeyResultIdShouldBeSuccessfulWhenIdIsNotNull() {
         // arrange
         Long id = 1L;
-        doNothing().when(keyResultValidationService)
-                   .validateOnGet(id);
+        doNothing().when(keyResultValidationService).validateOnGet(id);
 
         // act + assert
         assertDoesNotThrow(() -> validator.validateOnGetByKeyResultId(id));
@@ -413,8 +399,7 @@ class ActionValidationServiceTest {
     void validateOnGetByKeyResultIdShouldThrowExceptionWhenIdIsNull() {
         // arrange
         Long id = null;
-        doThrow(OkrResponseStatusException.class).when(keyResultValidationService)
-                                                 .validateOnGet(id);
+        doThrow(OkrResponseStatusException.class).when(keyResultValidationService).validateOnGet(id);
 
         // act + assert
         assertThrows(OkrResponseStatusException.class, () -> validator.validateOnGetByKeyResultId(id));

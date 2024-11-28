@@ -32,33 +32,19 @@ public class KeyResultOrdinalMapper {
 
     public KeyResultDto toDto(KeyResultOrdinal keyResult, List<Action> actionList) {
         KeyResultUserDto ownerDto = new KeyResultUserDto( //
-                                                         keyResult.getOwner()
-                                                                  .getId(), //
-                                                         keyResult.getOwner()
-                                                                  .getFirstname(), //
-                                                         keyResult.getOwner()
-                                                                  .getLastname());
+                                                         keyResult.getOwner().getId(), //
+                                                         keyResult.getOwner().getFirstname(), //
+                                                         keyResult.getOwner().getLastname());
 
         KeyResultQuarterDto quarterDto = new KeyResultQuarterDto( //
-                                                                 keyResult.getObjective()
-                                                                          .getQuarter()
-                                                                          .getId(), //
-                                                                 keyResult.getObjective()
-                                                                          .getQuarter()
-                                                                          .getLabel(), //
-                                                                 keyResult.getObjective()
-                                                                          .getQuarter()
-                                                                          .getStartDate(), //
-                                                                 keyResult.getObjective()
-                                                                          .getQuarter()
-                                                                          .getEndDate());
+                                                                 keyResult.getObjective().getQuarter().getId(), //
+                                                                 keyResult.getObjective().getQuarter().getLabel(), //
+                                                                 keyResult.getObjective().getQuarter().getStartDate(), //
+                                                                 keyResult.getObjective().getQuarter().getEndDate());
 
         KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto( //
-                                                                       keyResult.getObjective()
-                                                                                .getId(), //
-                                                                       keyResult.getObjective()
-                                                                                .getState()
-                                                                                .toString(), //
+                                                                       keyResult.getObjective().getId(), //
+                                                                       keyResult.getObjective().getState().toString(), //
                                                                        quarterDto);
 
         KeyResultLastCheckInOrdinalDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
@@ -78,27 +64,23 @@ public class KeyResultOrdinalMapper {
                                        keyResult.getCreatedOn(), //
                                        keyResult.getModifiedOn(), //
                                        keyResult.isWriteable(), //
-                                       actionList.stream()
-                                                 .map(actionMapper::toDto)
-                                                 .toList());
+                                       actionList.stream().map(actionMapper::toDto).toList());
     }
 
     public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {
         return KeyResultOrdinal.Builder.builder() //
-                                       .withCommitZone(keyResultOrdinalDto.commitZone()) //
-                                       .withTargetZone(keyResultOrdinalDto.targetZone()) //
-                                       .withStretchZone(keyResultOrdinalDto.stretchZone()) //
-                                       .withId(keyResultOrdinalDto.id()) //
-                                       .withVersion(keyResultOrdinalDto.version()) //
-                                       .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective()
-                                                                                                                .id())) //
-                                       .withTitle(keyResultOrdinalDto.title()) //
-                                       .withDescription(keyResultOrdinalDto.description()) //
-                                       .withOwner(userBusinessService.getUserById(keyResultOrdinalDto.owner()
-                                                                                                     .id())) //
-                                       .withCreatedOn(keyResultOrdinalDto.createdOn()) //
-                                       .withModifiedOn(keyResultOrdinalDto.modifiedOn()) //
-                                       .build();
+                .withCommitZone(keyResultOrdinalDto.commitZone()) //
+                .withTargetZone(keyResultOrdinalDto.targetZone()) //
+                .withStretchZone(keyResultOrdinalDto.stretchZone()) //
+                .withId(keyResultOrdinalDto.id()) //
+                .withVersion(keyResultOrdinalDto.version()) //
+                .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective().id())) //
+                .withTitle(keyResultOrdinalDto.title()) //
+                .withDescription(keyResultOrdinalDto.description()) //
+                .withOwner(userBusinessService.getUserById(keyResultOrdinalDto.owner().id())) //
+                .withCreatedOn(keyResultOrdinalDto.createdOn()) //
+                .withModifiedOn(keyResultOrdinalDto.modifiedOn()) //
+                .build();
     }
 
     public KeyResultLastCheckInOrdinalDto getLastCheckInDto(Long keyResultId) {

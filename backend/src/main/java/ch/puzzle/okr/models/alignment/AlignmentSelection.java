@@ -61,10 +61,13 @@ public class AlignmentSelection {
             return false;
         AlignmentSelection alignmentSelection = (AlignmentSelection) o;
         return Objects.equals(alignmentSelectionId, alignmentSelection.alignmentSelectionId) && Objects.equals(teamId,
-                                                                                                               alignmentSelection.teamId) && Objects.equals(objectiveTitle,
-                                                                                                                                                            alignmentSelection.objectiveTitle) && Objects.equals(quarterId,
-                                                                                                                                                                                                                 alignmentSelection.quarterId) && Objects.equals(keyResultTitle,
-                                                                                                                                                                                                                                                                 alignmentSelection.keyResultTitle);
+                                                                                                               alignmentSelection.teamId) && Objects
+                                                                                                                       .equals(objectiveTitle,
+                                                                                                                               alignmentSelection.objectiveTitle) && Objects
+                                                                                                                                       .equals(quarterId,
+                                                                                                                                               alignmentSelection.quarterId) && Objects
+                                                                                                                                                       .equals(keyResultTitle,
+                                                                                                                                                               alignmentSelection.keyResultTitle);
     }
 
     @Override

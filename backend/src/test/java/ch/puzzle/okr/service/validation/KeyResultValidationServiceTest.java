@@ -41,60 +41,54 @@ class KeyResultValidationServiceTest {
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
 
     private final User user = User.Builder.builder()
-                                          .withId(1L)
-                                          .withFirstname("Bob")
-                                          .withLastname("Kaufmann")
-                                          .withEmail("kaufmann@puzzle.ch")
-                                          .build();
-    private final Quarter quarter = Quarter.Builder.builder()
-                                                   .withId(1L)
-                                                   .withLabel("GJ 22/23-Q2")
-                                                   .build();
-    private final Team team = Team.Builder.builder()
-                                          .withId(1L)
-                                          .withName("Team1")
-                                          .build();
+            .withId(1L)
+            .withFirstname("Bob")
+            .withLastname("Kaufmann")
+            .withEmail("kaufmann@puzzle.ch")
+            .build();
+    private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+    private final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Objective objective = Objective.Builder.builder()
-                                                         .withId(1L)
-                                                         .withTitle("Objective 1")
-                                                         .withCreatedBy(user)
-                                                         .withTeam(team)
-                                                         .withQuarter(quarter)
-                                                         .withDescription("This is our description")
-                                                         .withModifiedOn(LocalDateTime.MAX)
-                                                         .withState(State.DRAFT)
-                                                         .withModifiedBy(user)
-                                                         .withCreatedOn(LocalDateTime.MAX)
-                                                         .build();
+            .withId(1L)
+            .withTitle("Objective 1")
+            .withCreatedBy(user)
+            .withTeam(team)
+            .withQuarter(quarter)
+            .withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX)
+            .withState(State.DRAFT)
+            .withModifiedBy(user)
+            .withCreatedOn(LocalDateTime.MAX)
+            .build();
     private final KeyResult keyResultMetric = KeyResultMetric.Builder.builder()
-                                                                     .withBaseline(4.0)
-                                                                     .withStretchGoal(7.0)
-                                                                     .withUnit(Unit.NUMBER)
-                                                                     .withId(5L)
-                                                                     .withTitle("Keyresult Metric")
-                                                                     .withObjective(objective)
-                                                                     .withOwner(user)
-                                                                     .build();
+            .withBaseline(4.0)
+            .withStretchGoal(7.0)
+            .withUnit(Unit.NUMBER)
+            .withId(5L)
+            .withTitle("Keyresult Metric")
+            .withObjective(objective)
+            .withOwner(user)
+            .build();
     private final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder()
-                                                                       .withCommitZone("Ein Baum")
-                                                                       .withTargetZone("Zwei Bäume")
-                                                                       .withTitle("Keyresult Ordinal")
-                                                                       .withObjective(objective)
-                                                                       .withOwner(user)
-                                                                       .build();
+            .withCommitZone("Ein Baum")
+            .withTargetZone("Zwei Bäume")
+            .withTitle("Keyresult Ordinal")
+            .withObjective(objective)
+            .withOwner(user)
+            .build();
     private final KeyResult fullKeyResult = KeyResultMetric.Builder.builder()
-                                                                   .withBaseline(4.0)
-                                                                   .withStretchGoal(7.0)
-                                                                   .withUnit(Unit.FTE)
-                                                                   .withId(null)
-                                                                   .withTitle("Keyresult Metric")
-                                                                   .withObjective(objective)
-                                                                   .withOwner(user)
-                                                                   .withCreatedOn(LocalDateTime.MIN)
-                                                                   .withModifiedOn(LocalDateTime.MAX)
-                                                                   .withDescription("Description")
-                                                                   .withCreatedBy(user)
-                                                                   .build();
+            .withBaseline(4.0)
+            .withStretchGoal(7.0)
+            .withUnit(Unit.FTE)
+            .withId(null)
+            .withTitle("Keyresult Metric")
+            .withObjective(objective)
+            .withOwner(user)
+            .withCreatedOn(LocalDateTime.MIN)
+            .withModifiedOn(LocalDateTime.MAX)
+            .withDescription("Description")
+            .withCreatedBy(user)
+            .build();
 
     @BeforeEach
     void setUp() {
@@ -183,16 +177,16 @@ class KeyResultValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
         KeyResult keyResult = KeyResultMetric.Builder.builder() //
-                                                     .withBaseline(3.0) //
-                                                     .withStretchGoal(5.0) //
-                                                     .withUnit(Unit.EUR) //
-                                                     .withId(null) //
-                                                     .withTitle(title) //
-                                                     .withOwner(user) //
-                                                     .withObjective(objective) //
-                                                     .withCreatedBy(user) //
-                                                     .withCreatedOn(LocalDateTime.MIN) //
-                                                     .build();
+                .withBaseline(3.0) //
+                .withStretchGoal(5.0) //
+                .withUnit(Unit.EUR) //
+                .withId(null) //
+                .withTitle(title) //
+                .withOwner(user) //
+                .withObjective(objective) //
+                .withCreatedBy(user) //
+                .withCreatedOn(LocalDateTime.MIN) //
+                .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -204,9 +198,9 @@ class KeyResultValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
         KeyResult keyResultInvalid = KeyResultMetric.Builder.builder() //
-                                                            .withId(null) //
-                                                            .withTitle("Title") //
-                                                            .build();
+                .withId(null) //
+                .withTitle("Title") //
+                .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -228,18 +222,18 @@ class KeyResultValidationServiceTest {
         // arrange
         Long id = 5L;
         KeyResult keyResult = KeyResultMetric.Builder.builder()
-                                                     .withBaseline(4.0)
-                                                     .withStretchGoal(7.0)
-                                                     .withUnit(Unit.EUR)
-                                                     .withId(id)
-                                                     .withTitle("Keyresult Metric")
-                                                     .withObjective(objective)
-                                                     .withOwner(user)
-                                                     .withCreatedOn(LocalDateTime.MIN)
-                                                     .withModifiedOn(LocalDateTime.MAX)
-                                                     .withDescription("Description")
-                                                     .withCreatedBy(user)
-                                                     .build();
+                .withBaseline(4.0)
+                .withStretchGoal(7.0)
+                .withUnit(Unit.EUR)
+                .withId(id)
+                .withTitle("Keyresult Metric")
+                .withObjective(objective)
+                .withOwner(user)
+                .withCreatedOn(LocalDateTime.MIN)
+                .withModifiedOn(LocalDateTime.MAX)
+                .withDescription("Description")
+                .withCreatedBy(user)
+                .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
         // act
@@ -295,16 +289,16 @@ class KeyResultValidationServiceTest {
         // arrange
         Long id = 3L;
         KeyResult keyResult = KeyResultMetric.Builder.builder() //
-                                                     .withBaseline(3.0) //
-                                                     .withStretchGoal(5.0) //
-                                                     .withUnit(Unit.FTE) //
-                                                     .withId(id) //
-                                                     .withTitle(title) //
-                                                     .withOwner(user) //
-                                                     .withObjective(objective) //
-                                                     .withCreatedBy(user) //
-                                                     .withCreatedOn(LocalDateTime.MIN) //
-                                                     .build();
+                .withBaseline(3.0) //
+                .withStretchGoal(5.0) //
+                .withUnit(Unit.FTE) //
+                .withId(id) //
+                .withTitle(title) //
+                .withOwner(user) //
+                .withObjective(objective) //
+                .withCreatedBy(user) //
+                .withCreatedOn(LocalDateTime.MIN) //
+                .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
         // act + assert
@@ -319,10 +313,10 @@ class KeyResultValidationServiceTest {
         // arrange
         Long id = 11L;
         KeyResult keyResultInvalid = KeyResultMetric.Builder.builder() //
-                                                            .withId(id) //
-                                                            .withTitle("Title") //
-                                                            .withObjective(objective) //
-                                                            .build();
+                .withId(id) //
+                .withTitle("Title") //
+                .withObjective(objective) //
+                .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResultInvalid);
 
         // act + assert
@@ -365,22 +359,18 @@ class KeyResultValidationServiceTest {
         // arrange
         Long keyResultId = 1L;
         Long objectiveId = 2L;
-        Objective objective = Objective.Builder.builder()
-                                               .withId(objectiveId)
-                                               .build();
+        Objective objective = Objective.Builder.builder().withId(objectiveId).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder() //
-                                                     .withId(keyResultId) //
-                                                     .withObjective(objective)
-                                                     .build();
+                .withId(keyResultId) //
+                .withObjective(objective)
+                .build();
 
         Long savedObjectiveId = 3L;
-        Objective savedObjective = Objective.Builder.builder()
-                                                    .withId(savedObjectiveId)
-                                                    .build();
+        Objective savedObjective = Objective.Builder.builder().withId(savedObjectiveId).build();
         KeyResult savedKeyResultWithDifferentObjectiveId = KeyResultMetric.Builder.builder() //
-                                                                                  .withId(keyResultId) //
-                                                                                  .withObjective(savedObjective)
-                                                                                  .build();
+                .withId(keyResultId) //
+                .withObjective(savedObjective)
+                .build();
 
         when(keyResultPersistenceService.findById(keyResultId)).thenReturn(savedKeyResultWithDifferentObjectiveId);
 

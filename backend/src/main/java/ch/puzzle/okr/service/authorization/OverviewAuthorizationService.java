@@ -43,17 +43,16 @@ public class OverviewAuthorizationService {
 
     private void setRoleCreateOrUpdateTeam(Overview overview, AuthorizationUser authorizationUser, Map<Long, Boolean> teamAccess) {
         if (hasOverviewTeamIdAndObjectiveId(overview)) {
-            Long teamId = overview.getOverviewId()
-                                  .getTeamId();
+            Long teamId = overview.getOverviewId().getTeamId();
             teamAccess.putIfAbsent(teamId, isWriteable(authorizationUser, overview));
             overview.setWriteable(teamAccess.get(teamId));
         }
     }
 
     private boolean hasOverviewTeamIdAndObjectiveId(Overview overview) {
-        return overview.getOverviewId() != null && overview.getOverviewId()
-                                                           .getObjectiveId() != null && overview.getOverviewId()
-                                                                                                .getTeamId() != null;
+        return overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null && overview
+                .getOverviewId()
+                .getTeamId() != null;
     }
 
     public boolean hasWriteAllAccess() {
@@ -62,8 +61,6 @@ public class OverviewAuthorizationService {
     }
 
     private boolean isWriteable(AuthorizationUser authorizationUser, Overview overview) {
-        return AuthorizationService.hasRoleWriteForTeam(authorizationUser,
-                                                        overview.getOverviewId()
-                                                                .getTeamId());
+        return AuthorizationService.hasRoleWriteForTeam(authorizationUser, overview.getOverviewId().getTeamId());
     }
 }

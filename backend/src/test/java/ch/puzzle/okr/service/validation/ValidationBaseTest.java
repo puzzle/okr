@@ -58,8 +58,7 @@ class ValidationBaseTest {
     void validateOnGetShouldThrowExceptionWhenIdIsNull() {
         // arrange
         Long id = null;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -75,10 +74,7 @@ class ValidationBaseTest {
     void validateOnDeleteShouldBeSuccessfulWhenIdIsValid() {
         // arrange
         Long id = 1L;
-        Quarter quarter = Quarter.Builder.builder()
-                                         .withId(id)
-                                         .withLabel("Quarter")
-                                         .build();
+        Quarter quarter = Quarter.Builder.builder().withId(id).withLabel("Quarter").build();
         when(quarterPersistenceService.findById(id)).thenReturn(quarter);
 
         // act
@@ -93,8 +89,7 @@ class ValidationBaseTest {
     void validateOnDeleteShouldThrowExceptionWhenIdIsNull() {
         // arrange
         Long id = null;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -110,10 +105,7 @@ class ValidationBaseTest {
     void throwExceptionWhenModelIsNullShouldBeSuccessfulWhenModelIsValid() {
         // act
         Long id = 1L;
-        Quarter model = Quarter.Builder.builder()
-                                       .withId(id)
-                                       .withLabel("Quarter")
-                                       .build();
+        Quarter model = Quarter.Builder.builder().withId(id).withLabel("Quarter").build();
 
         // act + assert
         assertDoesNotThrow(() -> validator.throwExceptionWhenModelIsNull(model));
@@ -125,8 +117,7 @@ class ValidationBaseTest {
     void throwExceptionWhenModelIsNullShouldThrowExceptionWhenModelIsNull() {
         // arrange
         Quarter model = null;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -150,8 +141,7 @@ class ValidationBaseTest {
     void throwExceptionWhenIdIsNotNullShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
         long id = 1L;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -177,8 +167,7 @@ class ValidationBaseTest {
         // arrange
         Long id = 1L;
         Long modelId = 2L;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -195,11 +184,8 @@ class ValidationBaseTest {
     @Test
     void validateShouldBeSuccessfulWhenConstraintInModelClassIsNotViolated() {
         // arrange
-        Quarter quarterWithValidLabel = Quarter.Builder.builder()
-                                                       .withLabel("Quarter")
-                                                       .build();
-        Mockito.when(objectivePersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Quarter quarterWithValidLabel = Quarter.Builder.builder().withLabel("Quarter").build();
+        Mockito.when(objectivePersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
         assertDoesNotThrow(() -> validator.validate(quarterWithValidLabel));
@@ -211,11 +197,8 @@ class ValidationBaseTest {
     void validateShouldThrowExceptionWhenWhenConstraintInModelClassIsViolated() {
         // arrange
         // Quarter which violates the NotNull constraint in Quarter model class
-        Quarter quarterWithNullLabel = Quarter.Builder.builder()
-                                                      .withLabel(null)
-                                                      .build();
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Quarter quarterWithNullLabel = Quarter.Builder.builder().withLabel(null).build();
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -230,11 +213,8 @@ class ValidationBaseTest {
     void validateShouldThrowExceptionWhenOneOfSeveralConstraintsInModelClassIsViolated() {
         // arrange
         // Objective which violates several constraints in Objective model class
-        Objective objective = Objective.Builder.builder()
-                                               .withTitle("X")
-                                               .build();
-        Mockito.when(objectivePersistenceService.getModelName())
-               .thenReturn("Objective");
+        Objective objective = Objective.Builder.builder().withTitle("X").build();
+        Mockito.when(objectivePersistenceService.getModelName()).thenReturn("Objective");
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

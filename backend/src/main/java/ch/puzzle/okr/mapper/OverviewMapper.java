@@ -28,22 +28,15 @@ public class OverviewMapper {
     }
 
     private Optional<OverviewDto> getMatchingOverviewDto(Long teamId, List<OverviewDto> result) {
-        return result.stream()
-                     .filter(overviewDto -> Objects.equals(teamId,
-                                                           overviewDto.team()
-                                                                      .id()))
-                     .findFirst();
+        return result.stream().filter(overviewDto -> Objects.equals(teamId, overviewDto.team().id())).findFirst();
     }
 
     private Optional<OverviewObjectiveDto> getMatchingObjectiveDto(Long objectiveId, List<OverviewObjectiveDto> objectives) {
-        return objectives.stream()
-                         .filter(objectiveDto -> Objects.equals(objectiveId, objectiveDto.id()))
-                         .findFirst();
+        return objectives.stream().filter(objectiveDto -> Objects.equals(objectiveId, objectiveDto.id())).findFirst();
     }
 
     private void processTeams(List<OverviewDto> overviewDtos, Overview overview) {
-        Optional<OverviewDto> overviewDto = getMatchingOverviewDto(overview.getOverviewId()
-                                                                           .getTeamId(), overviewDtos);
+        Optional<OverviewDto> overviewDto = getMatchingOverviewDto(overview.getOverviewId().getTeamId(), overviewDtos);
         if (overviewDto.isPresent()) {
             processObjectives(overviewDto.get(), overview);
         } else {
@@ -53,41 +46,34 @@ public class OverviewMapper {
 
     private void processObjectives(OverviewDto overviewDto, Overview overview) {
         Optional<OverviewObjectiveDto> overviewObjectiveDto = getMatchingObjectiveDto(overview.getOverviewId()
-                                                                                              .getObjectiveId(),
-                                                                                      overviewDto.objectives());
+                .getObjectiveId(), overviewDto.objectives());
         if (overviewObjectiveDto.isPresent()) {
             processKeyResults(overviewObjectiveDto.get(), overview);
         } else {
-            overviewDto.objectives()
-                       .add(createObjectiveDto(overview));
+            overviewDto.objectives().add(createObjectiveDto(overview));
         }
     }
 
     private void processKeyResults(OverviewObjectiveDto overviewObjectiveDto, Overview overview) {
-        overviewObjectiveDto.keyResults()
-                            .add(createKeyResultDto(overview));
+        overviewObjectiveDto.keyResults().add(createKeyResultDto(overview));
     }
 
     private OverviewDto createOverviewDto(Overview overview) {
         List<OverviewObjectiveDto> objectives = new ArrayList<>();
-        if (isValidId(overview.getOverviewId()
-                              .getObjectiveId())) {
+        if (isValidId(overview.getOverviewId().getObjectiveId())) {
             objectives.add(createObjectiveDto(overview));
         }
-        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId()
-                                                           .getTeamId(), overview.getTeamName()),
+        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName()),
                                objectives,
                                overview.isWriteable());
     }
 
     private OverviewObjectiveDto createObjectiveDto(Overview overview) {
         List<OverviewKeyResultDto> keyResults = new ArrayList<>();
-        if (isValidId(overview.getOverviewId()
-                              .getKeyResultId())) {
+        if (isValidId(overview.getOverviewId().getKeyResultId())) {
             keyResults.add(createKeyResultDto(overview));
         }
-        return new OverviewObjectiveDto(overview.getOverviewId()
-                                                .getObjectiveId(),
+        return new OverviewObjectiveDto(overview.getOverviewId().getObjectiveId(),
                                         overview.getObjectiveTitle(),
                                         overview.getObjectiveState(),
                                         new OverviewQuarterDto(overview.getQuarterId(), overview.getQuarterLabel()),
@@ -108,16 +94,13 @@ public class OverviewMapper {
 
     private OverviewKeyResultMetricDto createKeyResultMetricDto(Overview overview) {
         OverviewLastCheckInMetricDto lastCheckIn = null;
-        if (isValidId(overview.getOverviewId()
-                              .getCheckInId())) {
-            lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId()
-                                                                   .getCheckInId(),
+        if (isValidId(overview.getOverviewId().getCheckInId())) {
+            lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId().getCheckInId(),
                                                            overview.getCheckInValue(),
                                                            overview.getConfidence(),
                                                            overview.getCheckInCreatedOn());
         }
-        return new OverviewKeyResultMetricDto(overview.getOverviewId()
-                                                      .getKeyResultId(),
+        return new OverviewKeyResultMetricDto(overview.getOverviewId().getKeyResultId(),
                                               overview.getKeyResultTitle(),
                                               overview.getKeyResultType(),
                                               overview.getUnit(),
@@ -128,16 +111,13 @@ public class OverviewMapper {
 
     private OverviewKeyResultOrdinalDto createKeyResultOrdinalDto(Overview overview) {
         OverviewLastCheckInOrdinalDto lastCheckIn = null;
-        if (isValidId(overview.getOverviewId()
-                              .getCheckInId())) {
-            lastCheckIn = new OverviewLastCheckInOrdinalDto(overview.getOverviewId()
-                                                                    .getCheckInId(),
+        if (isValidId(overview.getOverviewId().getCheckInId())) {
+            lastCheckIn = new OverviewLastCheckInOrdinalDto(overview.getOverviewId().getCheckInId(),
                                                             overview.getCheckInZone(),
                                                             overview.getConfidence(),
                                                             overview.getCheckInCreatedOn());
         }
-        return new OverviewKeyResultOrdinalDto(overview.getOverviewId()
-                                                       .getKeyResultId(),
+        return new OverviewKeyResultOrdinalDto(overview.getOverviewId().getKeyResultId(),
                                                overview.getKeyResultTitle(),
                                                overview.getKeyResultType(),
                                                overview.getCommitZone(),

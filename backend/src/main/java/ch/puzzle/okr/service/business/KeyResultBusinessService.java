@@ -98,9 +98,9 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         checkInBusinessService.getCheckInsByKeyResultId(id)
-                              .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
+                .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
         actionBusinessService.getActionsByKeyResultId(id)
-                             .forEach(action -> actionBusinessService.deleteEntityById(action.getId()));
+                .forEach(action -> actionBusinessService.deleteEntityById(action.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 
@@ -114,14 +114,13 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     }
 
     public boolean hasKeyResultAnyCheckIns(Long id) {
-        return !checkInBusinessService.getCheckInsByKeyResultId(id)
-                                      .isEmpty();
+        return !checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty();
     }
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
         return hasKeyResultAnyCheckIns(id) && !keyResultPersistenceService.findById(id)
-                                                                          .getKeyResultType()
-                                                                          .equals(keyResult.getKeyResultType());
+                .getKeyResultType()
+                .equals(keyResult.getKeyResultType());
     }
 
     private boolean isKeyResultTypeChangeable(Long id) {

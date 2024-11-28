@@ -53,10 +53,7 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
                                                  List.of(Constants.KEY_RESULT, Constants.ACTION));
         }
 
-        if (!Objects.equals(action.getKeyResult()
-                                  .getId(),
-                            savedAction.getKeyResult()
-                                       .getId())) {
+        if (!Objects.equals(action.getKeyResult().getId(), savedAction.getKeyResult().getId())) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
                                                  List.of(Constants.KEY_RESULT, Constants.ACTION));

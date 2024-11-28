@@ -75,35 +75,31 @@ class QuarterBusinessServiceTest {
     @Test
     void shouldGetBacklogQuarter() {
         Quarter realQuarter1 = Quarter.Builder.builder()
-                                              .withId(1L)
-                                              .withLabel("GJ-22/23-Q3")
-                                              .withStartDate(LocalDate.of(2022, 4, 1))
-                                              .withEndDate(LocalDate.of(2022, 7, 31))
-                                              .build();
+                .withId(1L)
+                .withLabel("GJ-22/23-Q3")
+                .withStartDate(LocalDate.of(2022, 4, 1))
+                .withEndDate(LocalDate.of(2022, 7, 31))
+                .build();
         Quarter realQuarter2 = Quarter.Builder.builder()
-                                              .withId(2L)
-                                              .withLabel("GJ-22/23-Q4")
-                                              .withStartDate(LocalDate.of(2022, 8, 1))
-                                              .withEndDate(LocalDate.of(2022, 11, 30))
-                                              .build();
+                .withId(2L)
+                .withLabel("GJ-22/23-Q4")
+                .withStartDate(LocalDate.of(2022, 8, 1))
+                .withEndDate(LocalDate.of(2022, 11, 30))
+                .build();
         List<Quarter> quarterList = new ArrayList<>(Arrays.asList(realQuarter1, realQuarter2));
 
         Quarter backlogQuarter = Quarter.Builder.builder()
-                                                .withId(BACK_LOG_QUARTER_ID)
-                                                .withLabel(BACK_LOG_QUARTER_LABEL)
-                                                .build();
+                .withId(BACK_LOG_QUARTER_ID)
+                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
         when(quarterPersistenceService.findByLabel(BACK_LOG_QUARTER_LABEL)).thenReturn(backlogQuarter);
 
         quarterList = quarterBusinessService.getQuarters();
         assertEquals(3, quarterList.size());
-        assertEquals(BACK_LOG_QUARTER_LABEL,
-                     quarterList.get(0)
-                                .getLabel());
-        assertNull(quarterList.get(0)
-                              .getStartDate());
-        assertNull(quarterList.get(0)
-                              .getEndDate());
+        assertEquals(BACK_LOG_QUARTER_LABEL, quarterList.get(0).getLabel());
+        assertNull(quarterList.get(0).getStartDate());
+        assertNull(quarterList.get(0).getEndDate());
     }
 
     @ParameterizedTest
@@ -111,8 +107,7 @@ class QuarterBusinessServiceTest {
     void shouldNotGenerateQuarterIfNotLastMonth(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
-        Mockito.when(quarterBusinessService.getCurrentYearMonth())
-               .thenReturn(YearMonth.of(2030, month));
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, never()).save(any());
     }
@@ -122,8 +117,7 @@ class QuarterBusinessServiceTest {
     void shouldGenerateQuarterIfLastMonth(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
-        Mockito.when(quarterBusinessService.getCurrentYearMonth())
-               .thenReturn(YearMonth.of(2030, month));
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, times(1)).save(any());
     }
@@ -144,22 +138,19 @@ class QuarterBusinessServiceTest {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", quarterFormat);
 
         int monthsToNextQuarterStart = 4;
-        LocalDate expectedStart = currentYearMonth.plusMonths(monthsToNextQuarterStart)
-                                                  .atDay(1);
+        LocalDate expectedStart = currentYearMonth.plusMonths(monthsToNextQuarterStart).atDay(1);
 
         int monthsToNextQuarterEnd = 6;
-        LocalDate expectedEnd = currentYearMonth.plusMonths(monthsToNextQuarterEnd)
-                                                .atEndOfMonth();
+        LocalDate expectedEnd = currentYearMonth.plusMonths(monthsToNextQuarterEnd).atEndOfMonth();
 
         Quarter expectedQuarter = Quarter.Builder.builder()
-                                                 .withId(null)
-                                                 .withLabel(expectedLabel)
-                                                 .withStartDate(expectedStart)
-                                                 .withEndDate(expectedEnd)
-                                                 .build();
+                .withId(null)
+                .withLabel(expectedLabel)
+                .withStartDate(expectedStart)
+                .withEndDate(expectedEnd)
+                .build();
 
-        Mockito.when(quarterBusinessService.getCurrentYearMonth())
-               .thenReturn(currentYearMonth);
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(currentYearMonth);
 
         quarterBusinessService.scheduledGenerationQuarters();
 
@@ -203,8 +194,7 @@ class QuarterBusinessServiceTest {
 
     @Test
     void shouldReturnNullWhenNoQuarterGenerationNeeded() {
-        Mockito.when(quarterBusinessService.getCurrentYearMonth())
-               .thenReturn(YearMonth.of(2030, 4));
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 4));
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, times(0)).save(any());
     }

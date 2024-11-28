@@ -43,41 +43,33 @@ public class CheckInTestHelpers {
     public static final String JSON_PATH_ZONE = "$.value";
 
     /* Test entities */
-    static final Objective objective = Objective.Builder.builder()
-                                                        .withId(1L)
-                                                        .build();
+    static final Objective objective = Objective.Builder.builder().withId(1L).build();
     public static final CheckIn checkInMetric = CheckInMetric.Builder.builder()
-                                                                     .withValue(30D)
-                                                                     .withConfidence(5)
-                                                                     .withChangeInfo(CHANGE_INFO)
-                                                                     .withInitiatives(INITIATIVES)
-                                                                     .withCreatedBy(User.Builder.builder()
-                                                                                                .withId(1L)
-                                                                                                .withFirstname("Frank")
-                                                                                                .build())
-                                                                     .withKeyResult(KeyResultMetric.Builder.builder()
-                                                                                                           .withBaseline(3.0)
-                                                                                                           .withStretchGoal(6.0)
-                                                                                                           .withId(8L)
-                                                                                                           .withObjective(objective)
-                                                                                                           .build())
-                                                                     .build();
+            .withValue(30D)
+            .withConfidence(5)
+            .withChangeInfo(CHANGE_INFO)
+            .withInitiatives(INITIATIVES)
+            .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
+            .withKeyResult(KeyResultMetric.Builder.builder()
+                    .withBaseline(3.0)
+                    .withStretchGoal(6.0)
+                    .withId(8L)
+                    .withObjective(objective)
+                    .build())
+            .build();
     public static final CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder()
-                                                                       .withZone(Zone.COMMIT)
-                                                                       .withId(4L)
-                                                                       .withCreatedBy(User.Builder.builder()
-                                                                                                  .withId(2L)
-                                                                                                  .withFirstname("Robert")
-                                                                                                  .build())
-                                                                       .withCreatedOn(LocalDateTime.MAX)
-                                                                       .withChangeInfo(CHANGE_INFO)
-                                                                       .withInitiatives(INITIATIVES)
-                                                                       .withKeyResult(KeyResultOrdinal.Builder.builder()
-                                                                                                              .withCommitZone("Baum")
-                                                                                                              .withTargetZone("Wald")
-                                                                                                              .withId(9L)
-                                                                                                              .build())
-                                                                       .build();
+            .withZone(Zone.COMMIT)
+            .withId(4L)
+            .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
+            .withCreatedOn(LocalDateTime.MAX)
+            .withChangeInfo(CHANGE_INFO)
+            .withInitiatives(INITIATIVES)
+            .withKeyResult(KeyResultOrdinal.Builder.builder()
+                    .withCommitZone("Baum")
+                    .withTargetZone("Wald")
+                    .withId(9L)
+                    .build())
+            .build();
 
     /* Test DTOs */
     public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L,

@@ -139,14 +139,21 @@ public abstract class CheckIn implements WriteableInterface {
             return false;
         CheckIn checkIn = (CheckIn) o;
         return Objects.equals(id, checkIn.id) && version == checkIn.version && Objects.equals(changeInfo,
-                                                                                              checkIn.changeInfo) && Objects.equals(initiatives,
-                                                                                                                                    checkIn.initiatives) && Objects.equals(confidence,
-                                                                                                                                                                           checkIn.confidence) && Objects.equals(keyResult,
-                                                                                                                                                                                                                 checkIn.keyResult) && Objects.equals(createdBy,
-                                                                                                                                                                                                                                                      checkIn.createdBy) && Objects.equals(createdOn,
-                                                                                                                                                                                                                                                                                           checkIn.createdOn) && Objects.equals(modifiedOn,
-                                                                                                                                                                                                                                                                                                                                checkIn.modifiedOn) && Objects.equals(checkInType,
-                                                                                                                                                                                                                                                                                                                                                                      checkIn.checkInType);
+                                                                                              checkIn.changeInfo) && Objects
+                                                                                                      .equals(initiatives,
+                                                                                                              checkIn.initiatives) && Objects
+                                                                                                                      .equals(confidence,
+                                                                                                                              checkIn.confidence) && Objects
+                                                                                                                                      .equals(keyResult,
+                                                                                                                                              checkIn.keyResult) && Objects
+                                                                                                                                                      .equals(createdBy,
+                                                                                                                                                              checkIn.createdBy) && Objects
+                                                                                                                                                                      .equals(createdOn,
+                                                                                                                                                                              checkIn.createdOn) && Objects
+                                                                                                                                                                                      .equals(modifiedOn,
+                                                                                                                                                                                              checkIn.modifiedOn) && Objects
+                                                                                                                                                                                                      .equals(checkInType,
+                                                                                                                                                                                                              checkIn.checkInType);
     }
 
     @Override

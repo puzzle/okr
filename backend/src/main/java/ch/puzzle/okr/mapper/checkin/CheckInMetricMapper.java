@@ -21,8 +21,7 @@ public class CheckInMetricMapper {
                                     checkInMetric.getChangeInfo(), //
                                     checkInMetric.getInitiatives(), //
                                     checkInMetric.getConfidence(), //
-                                    checkInMetric.getKeyResult()
-                                                 .getId(), //
+                                    checkInMetric.getKeyResult().getId(), //
                                     checkInMetric.getCreatedOn(), //
                                     checkInMetric.getModifiedOn(), //
                                     checkInMetric.getValue(), //
@@ -31,15 +30,15 @@ public class CheckInMetricMapper {
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {
         return CheckInMetric.Builder.builder() //
-                                    .withValue(checkInMetricDto.value()) //
-                                    .withId(checkInMetricDto.id()) //
-                                    .withVersion(checkInMetricDto.version()) //
-                                    .withChangeInfo(checkInMetricDto.changeInfo()) //
-                                    .withInitiatives(checkInMetricDto.initiatives()) //
-                                    .withConfidence(checkInMetricDto.confidence()) //
-                                    .withCreatedOn(checkInMetricDto.createdOn()) //
-                                    .withModifiedOn(checkInMetricDto.modifiedOn()) //
-                                    .withKeyResult(keyResultBusinessService.getEntityById(checkInMetricDto.keyResultId())) //
-                                    .build();
+                .withValue(checkInMetricDto.value()) //
+                .withId(checkInMetricDto.id()) //
+                .withVersion(checkInMetricDto.version()) //
+                .withChangeInfo(checkInMetricDto.changeInfo()) //
+                .withInitiatives(checkInMetricDto.initiatives()) //
+                .withConfidence(checkInMetricDto.confidence()) //
+                .withCreatedOn(checkInMetricDto.createdOn()) //
+                .withModifiedOn(checkInMetricDto.modifiedOn()) //
+                .withKeyResult(keyResultBusinessService.getEntityById(checkInMetricDto.keyResultId())) //
+                .build();
     }
 }

@@ -233,12 +233,8 @@ class ObjectivePersistenceServiceIT {
     @Test
     void countByTeamAndQuarterShouldReturnNumberOfObjectivesForCurrentQuarter() {
         // arrange: there are 3 objectives for the current quarter (id 2) for team with id 6
-        var team = Team.Builder.builder()
-                               .withId(ID_OF_TEAM_6)
-                               .build();
-        var quarter = Quarter.Builder.builder()
-                                     .withId(CURRENT_QUARTER_ID)
-                                     .build();
+        var team = Team.Builder.builder().withId(ID_OF_TEAM_6).build();
+        var quarter = Quarter.Builder.builder().withId(CURRENT_QUARTER_ID).build();
 
         // act
         var count = objectivePersistenceService.countByTeamAndQuarter(team, quarter);
@@ -259,18 +255,10 @@ class ObjectivePersistenceServiceIT {
     }
 
     private static Stream<Arguments> invalidTeamsAndQuarters() {
-        var validTeam = Team.Builder.builder()
-                                    .withId(ID_OF_TEAM_6)
-                                    .build();
-        var invalidTeam = Team.Builder.builder()
-                                      .withId(INVALID_TEAM_ID)
-                                      .build();
-        var validQuarter = Quarter.Builder.builder()
-                                          .withId(CURRENT_QUARTER_ID)
-                                          .build();
-        var invalidQuarter = Quarter.Builder.builder()
-                                            .withId(INVALID_QUARTER_ID)
-                                            .build();
+        var validTeam = Team.Builder.builder().withId(ID_OF_TEAM_6).build();
+        var invalidTeam = Team.Builder.builder().withId(INVALID_TEAM_ID).build();
+        var validQuarter = Quarter.Builder.builder().withId(CURRENT_QUARTER_ID).build();
+        var invalidQuarter = Quarter.Builder.builder().withId(INVALID_QUARTER_ID).build();
 
         return Stream.of(
                          // valid team + invalid quarter
@@ -296,8 +284,7 @@ class ObjectivePersistenceServiceIT {
     private void assertResponseStatusException(HttpStatus expectedStatus, List<ErrorDto> expectedErrors, OkrResponseStatusException currentException) {
         assertEquals(expectedStatus, currentException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(currentException.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(currentException.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(currentException.getReason()));
     }
 
     private void assertObjective(Long expectedId, String expectedTitle, Objective currentObjective) {

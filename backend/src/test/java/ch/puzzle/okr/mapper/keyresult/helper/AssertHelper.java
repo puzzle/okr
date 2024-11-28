@@ -47,12 +47,8 @@ public class AssertHelper {
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
 
-        assertEquals(1,
-                     actual.getActionList()
-                           .size());
-        assertActionDto(actions.get(0),
-                        actual.getActionList()
-                              .get(0));
+        assertEquals(1, actual.getActionList().size());
+        assertActionDto(actions.get(0), actual.getActionList().get(0));
     }
 
     public static void assertKeyResultMetric(KeyResultMetricDto expected, KeyResultMetric actual) {
@@ -100,12 +96,8 @@ public class AssertHelper {
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
 
-        assertEquals(1,
-                     actual.getActionList()
-                           .size());
-        assertActionDto(actions.get(0),
-                        actual.getActionList()
-                              .get(0));
+        assertEquals(1, actual.getActionList().size());
+        assertActionDto(actions.get(0), actual.getActionList().get(0));
     }
 
     public static void assertKeyResultOrdinal(KeyResultOrdinalDto expected, KeyResultOrdinal actual) {
@@ -130,14 +122,12 @@ public class AssertHelper {
         assertEquals(expected.getAction(), actual.action());
         assertEquals(expected.getPriority(), actual.priority());
         assertEquals(expected.isChecked(), actual.isChecked());
-        assertEquals(expected.getKeyResult()
-                             .getId(), actual.keyResultId());
+        assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
     }
 
     private static void assertObjectiveDto(Objective expected, KeyResultObjectiveDto actual) {
         assertEquals(expected.getId(), actual.id());
-        assertEquals(expected.getState()
-                             .name(), actual.state());
+        assertEquals(expected.getState().name(), actual.state());
         assertQuarterDto(expected.getQuarter(), actual.keyResultQuarterDto());
     }
 
@@ -150,9 +140,7 @@ public class AssertHelper {
 
     private static void assertObjective(KeyResultObjectiveDto expected, Objective actual) {
         assertEquals(expected.id(), actual.getId());
-        assertEquals(expected.state(),
-                     actual.getState()
-                           .name());
+        assertEquals(expected.state(), actual.getState().name());
         assertQuarter(expected.keyResultQuarterDto(), actual.getQuarter());
     }
 

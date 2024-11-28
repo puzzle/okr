@@ -34,10 +34,7 @@ class TeamAuthorizationServiceTest {
     private TeamAuthorizationService teamAuthorizationService;
 
     private final AuthorizationUser okrChampionUser = new AuthorizationUser(defaultOkrChampion(1L));
-    private final Team teamUnderTest = Team.Builder.builder()
-                                                   .withId(5L)
-                                                   .withName("Team")
-                                                   .build();
+    private final Team teamUnderTest = Team.Builder.builder().withId(5L).withName("Team").build();
     private final AuthorizationUser adminUser = new AuthorizationUser(defaultUserWithTeams(1L,
                                                                                            List.of(teamUnderTest),
                                                                                            List.of()));
@@ -160,7 +157,8 @@ class TeamAuthorizationServiceTest {
         var adminTeamId = 1L;
         var adminTeam = defaultTeam(adminTeamId);
         var usersList = List.of(1L, 2L);
-        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(defaultUserWithTeams(1L,
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(defaultUserWithTeams(
+                                                                                                                        1L,
                                                                                                                         List.of(adminTeam),
                                                                                                                         List.of())));
         teamAuthorizationService.addUsersToTeam(adminTeamId, usersList);

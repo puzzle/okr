@@ -38,12 +38,12 @@ public class AuthorizationCriteriaTest {
     void appendObjectiveShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
         var user = User.Builder.builder() //
-                               .withId(23L) //
-                               .withFirstname("Hanna") //
-                               .withLastname("muster") //
-                               .withEmail("hanna.muster@example.com") //
-                               .withOkrChampion(true) //
-                               .build();
+                .withId(23L) //
+                .withFirstname("Hanna") //
+                .withLastname("muster") //
+                .withEmail("hanna.muster@example.com") //
+                .withOkrChampion(true) //
+                .build();
         var criteria = new AuthorizationCriteria<Objective>();
 
         // act

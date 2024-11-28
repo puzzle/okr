@@ -15,9 +15,6 @@ public record ErrorDto(String errorKey, List<String> params) {
     }
 
     public static ErrorDto of(String messageKey, List<Object> params) {
-        return new ErrorDto(messageKey,
-                            params.stream()
-                                  .map(Object::toString)
-                                  .toList());
+        return new ErrorDto(messageKey, params.stream().map(Object::toString).toList());
     }
 }

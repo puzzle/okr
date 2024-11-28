@@ -35,7 +35,7 @@ public class ObjectiveController {
     @GetMapping("/{id}")
     public ResponseEntity<ObjectiveDto> getObjective(@Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
+                .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -51,8 +51,7 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> createObjective(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto createdObjective = objectiveMapper.toDto(objectiveAuthorizationService.createEntity(objective));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(createdObjective);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
     @Operation(summary = "Duplicate Objective", description = "Duplicate a given Objective")
@@ -62,8 +61,7 @@ public class ObjectiveController {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto duplicatedObjectiveDto = objectiveMapper.toDto(objectiveAuthorizationService.duplicateEntity(id,
                                                                                                                   objective));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(duplicatedObjectiveDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 
     @Operation(summary = "Update Objective", description = "Update Objective by ID")
@@ -74,7 +72,6 @@ public class ObjectiveController {
         boolean isObjectiveImUsed = objectiveAuthorizationService.isImUsed(objective);
         ObjectiveDto updatedObjective = objectiveMapper.toDto(objectiveAuthorizationService.updateEntity(id,
                                                                                                          objective));
-        return ResponseEntity.status(isObjectiveImUsed ? IM_USED : OK)
-                             .body(updatedObjective);
+        return ResponseEntity.status(isObjectiveImUsed ? IM_USED : OK).body(updatedObjective);
     }
 }

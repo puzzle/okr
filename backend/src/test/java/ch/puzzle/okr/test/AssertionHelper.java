@@ -23,8 +23,7 @@ public class AssertionHelper {
 
         assertEquals(statusCode, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        Assertions.assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                                        .contains(exception.getReason()));
+        Assertions.assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
 }

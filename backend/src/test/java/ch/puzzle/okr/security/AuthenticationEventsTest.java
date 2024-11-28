@@ -29,8 +29,7 @@ public class AuthenticationEventsTest {
         Jwt tokenMock = mock(Jwt.class);
 
         AuthenticationSuccessEvent successEvent = new AuthenticationSuccessEvent(mock(Authentication.class));
-        when(successEvent.getAuthentication()
-                         .getPrincipal()).thenReturn(tokenMock);
+        when(successEvent.getAuthentication().getPrincipal()).thenReturn(tokenMock);
 
         JwtHelper jwtHelperMock = mock(JwtHelper.class);
         when(jwtHelperMock.getTenantFromToken(tokenMock)).thenReturn(TENANT_FROM_TOKEN);

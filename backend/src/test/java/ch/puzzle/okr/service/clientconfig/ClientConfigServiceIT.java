@@ -66,9 +66,7 @@ class ClientConfigServiceIT {
         assertEquals("assets/images/triangles-okr-header.svg", clientConfig.triangles());
         assertEquals("assets/images/puzzle-p.svg", clientConfig.backgroundLogo());
         assertEquals("Puzzle OKR", clientConfig.title());
-        assertEquals("#1e5a96",
-                     clientConfig.customStyles()
-                                 .get("okr-topbar-background-color"));
+        assertEquals("#1e5a96", clientConfig.customStyles().get("okr-topbar-background-color"));
     }
 
 }

@@ -76,52 +76,48 @@ class ObjectiveValidationServiceTest {
     @BeforeEach
     void setUp() {
         this.user = User.Builder.builder()
-                                .withId(1L)
-                                .withFirstname("Bob")
-                                .withLastname("Kaufmann")
-                                .withEmail("kaufmann@puzzle.ch")
-                                .build();
-        this.team = Team.Builder.builder()
-                                .withId(1L)
-                                .withName("Team1")
-                                .build();
+                .withId(1L)
+                .withFirstname("Bob")
+                .withLastname("Kaufmann")
+                .withEmail("kaufmann@puzzle.ch")
+                .build();
+        this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
         this.quarter = Quarter.Builder.builder()
-                                      .withId(1L)
-                                      .withLabel("GJ 22/23-Q2")
-                                      .withStartDate(LocalDate.of(2022, 1, 1))
-                                      .withEndDate(LocalDate.of(2022, 3, 31))
-                                      .build();
+                .withId(1L)
+                .withLabel("GJ 22/23-Q2")
+                .withStartDate(LocalDate.of(2022, 1, 1))
+                .withEndDate(LocalDate.of(2022, 3, 31))
+                .build();
 
         this.objective1 = Objective.Builder.builder()
-                                           .withId(1L)
-                                           .withTitle("Objective 1")
-                                           .withCreatedBy(user)
-                                           .withTeam(team)
-                                           .withQuarter(quarter)
-                                           .withDescription("This is our description")
-                                           .withModifiedOn(LocalDateTime.MAX)
-                                           .withState(State.DRAFT)
-                                           .withModifiedBy(user)
-                                           .withCreatedOn(LocalDateTime.MAX)
-                                           .build();
+                .withId(1L)
+                .withTitle("Objective 1")
+                .withCreatedBy(user)
+                .withTeam(team)
+                .withQuarter(quarter)
+                .withDescription("This is our description")
+                .withModifiedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withModifiedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .build();
 
         this.objectiveMinimal = Objective.Builder.builder()
-                                                 .withId(null)
-                                                 .withTitle("Objective 2")
-                                                 .withCreatedBy(user)
-                                                 .withTeam(team)
-                                                 .withQuarter(quarter)
-                                                 .withState(State.DRAFT)
-                                                 .withCreatedOn(LocalDateTime.MAX)
-                                                 .build();
+                .withId(null)
+                .withTitle("Objective 2")
+                .withCreatedBy(user)
+                .withTeam(team)
+                .withQuarter(quarter)
+                .withState(State.DRAFT)
+                .withCreatedOn(LocalDateTime.MAX)
+                .build();
 
         when(objectivePersistenceService.findById(1L)).thenReturn(objective1);
         when(objectivePersistenceService.getModelName()).thenReturn("Objective");
         doThrow(new OkrResponseStatusException(HttpStatus.NOT_FOUND,
                                                String.format("%s with id %s not found",
                                                              objectivePersistenceService.getModelName(),
-                                                             2L))).when(objectivePersistenceService)
-                                                                  .findById(2L);
+                                                             2L))).when(objectivePersistenceService).findById(2L);
     }
 
     @Test
@@ -142,8 +138,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -163,8 +158,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -176,41 +170,39 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder()
-                                               .withId(null)
-                                               .withTitle(title)
-                                               .withCreatedBy(this.user)
-                                               .withTeam(this.team)
-                                               .withQuarter(this.quarter)
-                                               .withDescription("This is our description 2")
-                                               .withModifiedOn(LocalDateTime.MAX)
-                                               .withState(State.DRAFT)
-                                               .withCreatedOn(LocalDateTime.MAX)
-                                               .build();
+                .withId(null)
+                .withTitle(title)
+                .withCreatedBy(this.user)
+                .withTeam(this.team)
+                .withQuarter(this.quarter)
+                .withDescription("This is our description 2")
+                .withModifiedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withCreatedOn(LocalDateTime.MAX)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(objective));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         Objective objectiveInvalid = Objective.Builder.builder()
-                                                      .withId(null)
-                                                      .withTitle("Title")
-                                                      .withQuarter(quarter)
-                                                      .build();
+                .withId(null)
+                .withTitle("Title")
+                .withQuarter(quarter)
+                .build();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(objectiveInvalid));
 
@@ -221,22 +213,21 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrModifiedByIsSet() {
         Objective objectiveInvalid = Objective.Builder.builder()
-                                                      .withId(null)
-                                                      .withTitle("ModifiedBy is not null on create")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(State.DRAFT)
-                                                      .withTeam(team)
-                                                      .withQuarter(quarter)
-                                                      .withModifiedBy(user)
-                                                      .build();
+                .withId(null)
+                .withTitle("ModifiedBy is not null on create")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(quarter)
+                .withModifiedBy(user)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(objectiveInvalid));
@@ -246,26 +237,25 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenStartDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder()
-                                                .withId(1L)
-                                                .withLabel("GJ-22/23-Q3")
-                                                .withEndDate(LocalDate.of(2022, 7, 31))
-                                                .build();
+                .withId(1L)
+                .withLabel("GJ-22/23-Q3")
+                .withEndDate(LocalDate.of(2022, 7, 31))
+                .build();
         Objective objectiveInvalid = Objective.Builder.builder()
-                                                      .withId(null)
-                                                      .withTitle("Start date is missing")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(State.DRAFT)
-                                                      .withTeam(team)
-                                                      .withQuarter(invalidQuarter)
-                                                      .build();
+                .withId(null)
+                .withTitle("Start date is missing")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(invalidQuarter)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(objectiveInvalid));
@@ -273,26 +263,25 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenEndDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder()
-                                                .withId(1L)
-                                                .withLabel("GJ-22/23-Q3")
-                                                .withStartDate(LocalDate.of(2022, 4, 1))
-                                                .build();
+                .withId(1L)
+                .withLabel("GJ-22/23-Q3")
+                .withStartDate(LocalDate.of(2022, 4, 1))
+                .build();
         Objective objectiveInvalid = Objective.Builder.builder()
-                                                      .withId(null)
-                                                      .withTitle("End date is missing")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(State.DRAFT)
-                                                      .withTeam(team)
-                                                      .withQuarter(invalidQuarter)
-                                                      .build();
+                .withId(null)
+                .withTitle("End date is missing")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(invalidQuarter)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(objectiveInvalid));
@@ -300,8 +289,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -323,8 +311,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -338,8 +325,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -354,25 +340,24 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder()
-                                               .withId(3L)
-                                               .withTitle(title)
-                                               .withCreatedBy(this.user)
-                                               .withTeam(this.team)
-                                               .withQuarter(this.quarter)
-                                               .withDescription("This is our description 2")
-                                               .withModifiedOn(LocalDateTime.MAX)
-                                               .withState(State.DRAFT)
-                                               .withModifiedBy(this.user)
-                                               .withCreatedOn(LocalDateTime.MAX)
-                                               .build();
+                .withId(3L)
+                .withTitle(title)
+                .withCreatedBy(this.user)
+                .withTeam(this.team)
+                .withQuarter(this.quarter)
+                .withDescription("This is our description 2")
+                .withModifiedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withModifiedBy(this.user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .build();
         when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -380,18 +365,17 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         Objective objective = Objective.Builder.builder()
-                                               .withId(5L)
-                                               .withTitle("Title")
-                                               .withQuarter(quarter)
-                                               .withModifiedBy(user)
-                                               .build();
+                .withId(5L)
+                .withTitle("Title")
+                .withQuarter(quarter)
+                .withModifiedBy(user)
+                .build();
         when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -403,22 +387,21 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrModifiedByIsNotSet() {
         Objective objectiveInvalid = Objective.Builder.builder()
-                                                      .withId(1L)
-                                                      .withTitle("ModifiedBy is not null on create")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(State.DRAFT)
-                                                      .withTeam(team)
-                                                      .withQuarter(quarter)
-                                                      .withModifiedBy(null)
-                                                      .build();
+                .withId(1L)
+                .withTitle("ModifiedBy is not null on create")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(quarter)
+                .withModifiedBy(null)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, objectiveInvalid));
@@ -427,27 +410,26 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(INTERNAL_SERVER_ERROR, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenStartDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder()
-                                                .withId(1L)
-                                                .withLabel("GJ-22/23-Q3")
-                                                .withEndDate(LocalDate.of(2022, 7, 31))
-                                                .build();
+                .withId(1L)
+                .withLabel("GJ-22/23-Q3")
+                .withEndDate(LocalDate.of(2022, 7, 31))
+                .build();
         Objective objectiveInvalid = Objective.Builder.builder()
-                                                      .withId(1L)
-                                                      .withTitle("Start date is missing")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(State.DRAFT)
-                                                      .withTeam(team)
-                                                      .withQuarter(invalidQuarter)
-                                                      .withModifiedBy(user)
-                                                      .build();
+                .withId(1L)
+                .withTitle("Start date is missing")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(invalidQuarter)
+                .withModifiedBy(user)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, objectiveInvalid));
@@ -455,27 +437,26 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenEndDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder()
-                                                .withId(1L)
-                                                .withLabel("GJ-22/23-Q3")
-                                                .withStartDate(LocalDate.of(2022, 4, 1))
-                                                .build();
+                .withId(1L)
+                .withLabel("GJ-22/23-Q3")
+                .withStartDate(LocalDate.of(2022, 4, 1))
+                .build();
         Objective objectiveInvalid = Objective.Builder.builder()
-                                                      .withId(1L)
-                                                      .withTitle("End date is missing")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(State.DRAFT)
-                                                      .withTeam(team)
-                                                      .withQuarter(invalidQuarter)
-                                                      .withModifiedBy(user)
-                                                      .build();
+                .withId(1L)
+                .withTitle("End date is missing")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(invalidQuarter)
+                .withModifiedBy(user)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, objectiveInvalid));
@@ -483,35 +464,31 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWheTeamHasChanged() {
         Objective savedObjective = Objective.Builder.builder()
-                                                    .withId(1L)
-                                                    .withTitle("Team has changed")
-                                                    .withCreatedBy(user)
-                                                    .withCreatedOn(LocalDateTime.MAX)
-                                                    .withState(State.DRAFT)
-                                                    .withTeam(team)
-                                                    .withQuarter(quarter)
-                                                    .withModifiedBy(null)
-                                                    .build();
+                .withId(1L)
+                .withTitle("Team has changed")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(quarter)
+                .withModifiedBy(null)
+                .build();
         Objective updatedObjective = Objective.Builder.builder()
-                                                      .withId(1L)
-                                                      .withTitle("Team has changed")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(State.DRAFT)
-                                                      .withTeam(Team.Builder.builder()
-                                                                            .withId(2L)
-                                                                            .withName("other team")
-                                                                            .build())
-                                                      .withQuarter(quarter)
-                                                      .withModifiedBy(user)
-                                                      .build();
+                .withId(1L)
+                .withTitle("Team has changed")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(Team.Builder.builder().withId(2L).withName("other team").build())
+                .withQuarter(quarter)
+                .withModifiedBy(user)
+                .build();
         when(objectivePersistenceService.findById(savedObjective.getId())).thenReturn(savedObjective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -520,28 +497,27 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @EnumSource(value = State.class, names = {"DRAFT"}, mode = EnumSource.Mode.EXCLUDE)
     void validateOnCreateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
         Quarter backlogQuarter = Quarter.Builder.builder()
-                                                .withId(BACK_LOG_QUARTER_ID)
-                                                .withLabel(BACK_LOG_QUARTER_LABEL)
-                                                .withStartDate(null)
-                                                .withEndDate(null)
-                                                .build();
+                .withId(BACK_LOG_QUARTER_ID)
+                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .withStartDate(null)
+                .withEndDate(null)
+                .build();
 
         Objective invalidObjective = Objective.Builder.builder()
-                                                      .withTitle("Invalid Objective")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(state)
-                                                      .withTeam(team)
-                                                      .withQuarter(backlogQuarter)
-                                                      .build();
+                .withTitle("Invalid Objective")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(state)
+                .withTeam(team)
+                .withQuarter(backlogQuarter)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(invalidObjective));
@@ -550,30 +526,29 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @EnumSource(value = State.class, names = {"DRAFT"}, mode = EnumSource.Mode.EXCLUDE)
     void validateOnUpdateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
         Quarter backlogQuarter = Quarter.Builder.builder()
-                                                .withId(BACK_LOG_QUARTER_ID)
-                                                .withLabel(BACK_LOG_QUARTER_LABEL)
-                                                .withStartDate(null)
-                                                .withEndDate(null)
-                                                .build();
+                .withId(BACK_LOG_QUARTER_ID)
+                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .withStartDate(null)
+                .withEndDate(null)
+                .build();
 
         Objective invalidObjective = Objective.Builder.builder()
-                                                      .withId(1L)
-                                                      .withTitle("Invalid Objective")
-                                                      .withCreatedBy(user)
-                                                      .withCreatedOn(LocalDateTime.MAX)
-                                                      .withState(state)
-                                                      .withTeam(team)
-                                                      .withQuarter(backlogQuarter)
-                                                      .withModifiedBy(user)
-                                                      .build();
+                .withId(1L)
+                .withTitle("Invalid Objective")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(state)
+                .withTeam(team)
+                .withQuarter(backlogQuarter)
+                .withModifiedBy(user)
+                .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, invalidObjective));
@@ -582,29 +557,28 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldPassWhenQuarterIsBacklogAndStateIsDraft() {
         Quarter backlogQuarter = Quarter.Builder.builder()
-                                                .withId(BACK_LOG_QUARTER_ID)
-                                                .withLabel(BACK_LOG_QUARTER_LABEL)
-                                                .withStartDate(null)
-                                                .withEndDate(null)
-                                                .build();
+                .withId(BACK_LOG_QUARTER_ID)
+                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .withStartDate(null)
+                .withEndDate(null)
+                .build();
 
         Objective validObjective = Objective.Builder.builder()
-                                                    .withId(1L)
-                                                    .withTitle("Invalid Objective")
-                                                    .withCreatedBy(user)
-                                                    .withCreatedOn(LocalDateTime.MAX)
-                                                    .withState(State.DRAFT)
-                                                    .withTeam(team)
-                                                    .withQuarter(backlogQuarter)
-                                                    .withModifiedBy(user)
-                                                    .build();
+                .withId(1L)
+                .withTitle("Invalid Objective")
+                .withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT)
+                .withTeam(team)
+                .withQuarter(backlogQuarter)
+                .withModifiedBy(user)
+                .build();
 
         assertDoesNotThrow(() -> validator.validateOnUpdate(1L, validObjective));
     }
@@ -627,7 +601,6 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

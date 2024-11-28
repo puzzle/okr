@@ -33,12 +33,8 @@ class TeamPersistenceServiceIT {
         List<Team> teams = teamPersistenceService.findTeamsByName("LoremIpsum");
 
         assertEquals(1, teams.size());
-        assertEquals(6,
-                     teams.get(0)
-                          .getId());
-        assertEquals("LoremIpsum",
-                     teams.get(0)
-                          .getName());
+        assertEquals(6, teams.get(0).getId());
+        assertEquals("LoremIpsum", teams.get(0).getName());
     }
 
     @DisplayName("getModelName() should return Team")

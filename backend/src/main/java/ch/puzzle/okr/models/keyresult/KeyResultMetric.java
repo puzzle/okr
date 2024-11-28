@@ -52,8 +52,9 @@ public class KeyResultMetric extends KeyResult {
         if (o instanceof KeyResultMetric) {
             return super.equals(o) && Objects.equals(baseline, ((KeyResultMetric) o).baseline) && Objects.equals(
                                                                                                                  stretchGoal,
-                                                                                                                 ((KeyResultMetric) o).stretchGoal) && Objects.equals(unit,
-                                                                                                                                                                      ((KeyResultMetric) o).unit);
+                                                                                                                 ((KeyResultMetric) o).stretchGoal) && Objects
+                                                                                                                         .equals(unit,
+                                                                                                                                 ((KeyResultMetric) o).unit);
         }
         return false;
     }

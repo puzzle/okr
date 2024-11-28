@@ -100,7 +100,7 @@ export const quarterBacklog: Quarter = new Quarter(999, 'GJ 23/24-Q1', null, nul
 
 export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
 
-export const checkInMetric: CheckInMin = {
+export const checkInMetric: CheckInMinMetric = {
   id: 815,
   version: 1,
   value: 15,
@@ -109,9 +109,9 @@ export const checkInMetric: CheckInMin = {
   initiatives: 'Initiatives metric',
   changeInfo: 'Changeinfo metric',
   writeable: true,
-} as CheckInMin;
+} as CheckInMinMetric;
 
-export const checkInMetricWriteableFalse: CheckInMin = {
+export const checkInMetricWriteableFalse: CheckInMinMetric = {
   id: 815,
   version: 1,
   value: 15,
@@ -120,18 +120,18 @@ export const checkInMetricWriteableFalse: CheckInMin = {
   initiatives: 'Initiatives metric writeable false',
   changeInfo: 'Changeinfo metric writeable false',
   writeable: false,
-} as CheckInMin;
+} as CheckInMinMetric;
 
-export const checkInOrdinal: CheckInMin = {
+export const checkInOrdinal: CheckInMinOrdinal = {
   id: 816,
   version: 2,
-  value: 'COMMIT',
+  zone: 'COMMIT',
   confidence: 7,
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
   initiatives: 'Initiatives ordinal',
   changeInfo: 'Changeinfo ordinal',
   writeable: true,
-} as CheckInMin;
+} as CheckInMinOrdinal;
 
 export const keyResultMetricMin: KeyResultMetricMin = {
   id: 201,

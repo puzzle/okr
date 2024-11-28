@@ -1,28 +1,24 @@
 package ch.puzzle.okr.multitenancy.customization;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Component
 public class TenantClientCustomizationProvider {
     private static final String CUSTOM_STYLES_PREFIX = "okr.tenants.{0}.clientcustomization.customstyles";
-    private static final String TOPBAR_BACKGROUND_COLOR = ".okr-topbar-background-color";
-    private static final String BANNER_BACKGROUND_COLOR = ".okr-banner-background-color";
-    private static final String OVERVIEW_BACKGROUND_COLOR = ".okr-overview-background-color";
-    private static final String TEAM_HEADER_TEXT_COLOR = ".okr-team-header-color";
-    private static final String ADD_OBJECTIVE_TEXT_COLOR = ".okr-add-objective-text-color";
 
     private final Map<String, TenantClientCustomization> tenantCustomizations = new HashMap<>();
-    private final List<String> customCssStyles = List.of(TOPBAR_BACKGROUND_COLOR, BANNER_BACKGROUND_COLOR,
-            OVERVIEW_BACKGROUND_COLOR, TEAM_HEADER_TEXT_COLOR, ADD_OBJECTIVE_TEXT_COLOR);
+
     private final Environment env;
 
     public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {
@@ -46,19 +42,15 @@ public class TenantClientCustomizationProvider {
     }
 
     private Map<String, String> getCustomCssStyles(String tenantId) {
-        Map<String, String> styles = new HashMap<>();
-        for (String customStyle : customCssStyles) {
-            String propertyName = formatWithTenant(CUSTOM_STYLES_PREFIX + customStyle, tenantId);
-            CssConfigItem cssPropertyNameAndValue = getCssPropertyNameAndValue(propertyName, tenantId);
-            styles.put(cssPropertyNameAndValue.cssName(), cssPropertyNameAndValue.cssValue());
-        }
-        return styles;
-    }
+        MutablePropertySources propSrcs = ((AbstractEnvironment) env).getPropertySources();
+        Map<String, String> styles = StreamSupport.stream(propSrcs.spliterator(), false)
+                .filter(ps -> ps instanceof EnumerablePropertySource)
+                .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames()).flatMap(Arrays::<String> stream)
+                .filter(propName -> propName.contains(formatWithTenant(CUSTOM_STYLES_PREFIX, tenantId)))
+                .collect(Collectors.toMap(propName -> extractCssNameFromPropertyName(propName, tenantId),
+                        propName -> env.getProperty(propName)));
 
-    private CssConfigItem getCssPropertyNameAndValue(String propertyName, String tenantId) {
-        String cssName = extractCssNameFromPropertyName(propertyName, tenantId);
-        String cssValue = env.getProperty(formatWithTenant(propertyName, tenantId));
-        return new CssConfigItem(cssName, cssValue);
+        return styles;
     }
 
     public Optional<TenantClientCustomization> getTenantClientCustomizationsById(String tenantId) {
@@ -80,6 +72,4 @@ public class TenantClientCustomizationProvider {
         return MessageFormat.format(stringWithTenantPlaceholder, tenantId);
     }
 
-    record CssConfigItem(String cssName, String cssValue) implements Serializable {
-    }
 }

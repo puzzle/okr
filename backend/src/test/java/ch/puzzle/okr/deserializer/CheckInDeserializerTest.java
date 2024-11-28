@@ -9,8 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -23,6 +22,8 @@ class CheckInDeserializerTest {
     private CheckInDeserializer checkInDeserializer;
     @Mock
     private DeserializerHelper deserializerHelper;
+    @Mock
+    DeserializationContext deserializationContext;
 
     private ObjectMapper objectMapper;
 
@@ -35,15 +36,13 @@ class CheckInDeserializerTest {
     @Test
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
         // arrange
-
         when(deserializerHelper.deserializeMetricOrdinal(any(), any(), any())) //
                 .thenReturn(null);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(CheckInTestHelpers.CHECK_IN_METRIC_JSON);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
-        checkInDeserializer.deserialize(jsonParser, ctxt);
+        checkInDeserializer.deserialize(jsonParser, deserializationContext);
 
         // assert
         verify(deserializerHelper, times(1)).deserializeMetricOrdinal(jsonParser, Constants.CHECK_IN_MAP,

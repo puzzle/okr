@@ -1,8 +1,6 @@
 package ch.puzzle.okr.deserializer;
 
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
@@ -15,10 +13,7 @@ import java.util.Map;
 @Component
 public class DeserializerHelper {
 
-    private final KeyResultBusinessService keyResultBusinessService;
-
-    public DeserializerHelper(KeyResultBusinessService keyResultBusinessService) {
-        this.keyResultBusinessService = keyResultBusinessService;
+    public DeserializerHelper() {
     }
 
     public <T> T deserializeMetricOrdinal(JsonParser jsonParser, Map<String, Class<? extends T>> map,

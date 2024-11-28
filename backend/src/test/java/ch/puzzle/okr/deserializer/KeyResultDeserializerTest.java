@@ -9,8 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -25,6 +24,9 @@ class KeyResultDeserializerTest {
     @Mock
     private DeserializerHelper deserializerHelper;
 
+    @Mock
+    DeserializationContext deserializationContext;
+
     private ObjectMapper objectMapper;
 
     @BeforeEach
@@ -38,12 +40,10 @@ class KeyResultDeserializerTest {
 
         when(deserializerHelper.deserializeMetricOrdinal(any(), any(), any())) //
                 .thenReturn(null);
-
         JsonParser jsonParser = objectMapper.getFactory().createParser(KeyResultTestHelpers.KEY_RESULT_METRIC_JSON);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
-        keyResultDeserializer.deserialize(jsonParser, ctxt);
+        keyResultDeserializer.deserialize(jsonParser, deserializationContext);
 
         // assert
         verify(deserializerHelper, times(1)).deserializeMetricOrdinal(jsonParser, Constants.KEY_RESULT_MAP,

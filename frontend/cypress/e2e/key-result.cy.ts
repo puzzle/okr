@@ -146,6 +146,8 @@ describe('OKR Overview', () => {
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
       .checkForDialogTextOrdinal()
       .fillKeyResultDescription('This is my description')
+      .addActionPlanElement('Action 1')
+      .addActionPlanElement('Action 2')
       .submit();
     keyResultDetailPage.visit('Here we want to change keyresult title').editKeyResult();
 
@@ -170,6 +172,33 @@ describe('OKR Overview', () => {
     cy.contains('Metrisch');
     cy.contains('Jaya Norris');
     cy.contains('This is my new description');
+    cy.contains('Action 1');
+    cy.contains('Action 2');
+  });
+
+  it('A KeyResult should not be able to change type after a checkin', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('Here we want to create a checkin')
+      .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
+      .checkForDialogTextOrdinal()
+      .fillKeyResultDescription('This is my description')
+      .addActionPlanElement('Action 1')
+      .addActionPlanElement('Action 2')
+      .submit();
+
+    keyResultDetailPage
+      .visit('Here we want to create a checkin')
+      .createCheckIn()
+      .selectOrdinalCheckInZone('commit')
+      .setCheckInConfidence(6)
+      .submit();
+
+    keyResultDetailPage.close();
+
+    keyResultDetailPage.visit('Here we want to create a checkin').editKeyResult();
+
+    cy.getByTestId('metricTab').should('have.class', 'non-active');
   });
 
   it('Check validation in keyresult dialog', () => {

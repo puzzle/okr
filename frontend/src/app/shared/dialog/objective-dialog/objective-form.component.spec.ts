@@ -200,6 +200,7 @@ describe('ObjectiveDialogComponent', () => {
         team: 0,
         relation: 0,
         createKeyResults: false,
+        keyResults: [],
       });
 
       objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
@@ -226,6 +227,7 @@ describe('ObjectiveDialogComponent', () => {
         team: 1,
         relation: 0,
         createKeyResults: false,
+        keyResults: [],
       });
 
       objectiveService.updateObjective.mockReturnValue(of({ ...objective, state: 'ONGOING' }));

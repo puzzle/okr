@@ -10,13 +10,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { formInputCheck, getValueFromQuery, hasFormFieldErrors } from '../../common';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
-import { KeyresultService } from '../../../services/keyresult.service';
 import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
+import { KeyResult } from '../../types/model/KeyResult';
+import { KeyresultService } from '../../../services/keyresult.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -71,6 +73,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
     let objectiveDTO: Objective = {
+      id: this.data.objective.objectiveId,
       version: this.version,
       quarterId: value.quarter,
       description: value.description,
@@ -86,19 +89,21 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const isCreating: boolean = !!this.data.objective.objectiveId;
+    const isEditing: boolean = !!this.data.objective.objectiveId;
     this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
-    this.keyResults$ = this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId!);
-    const objective$ = isCreating
+    this.keyResults$ = !isEditing
+      ? of([])
+      : this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId || -1);
+    const objective$ = isEditing
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
     forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$]).subscribe(
-      ([objective, quarters, currentQuarter, keyResults]) => {
+      ([objective, quarters, currentQuarter, keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]]) => {
         this.quarters = quarters;
-        const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-        const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
+        const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
+        const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
         let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
         if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {

@@ -70,7 +70,11 @@
             <label class="okr-form-label okr-form-col">Keyresults übernehmen</label>
             <div class="okr-form-input pe-5 w-100">
               <ng-container *ngIf="keyResults$ | async as keyResults" formArrayName="keyResults">
-                <mat-checkbox *ngFor="let keyResult of keyResults; let i = index" [formControlName]="i">
+                <mat-checkbox
+                  *ngFor="let keyResult of keyResults; let i = index"
+                  [formControlName]="i"
+                  [checked]="true"
+                >
                   {{ keyResult.title }}
                 </mat-checkbox>
               </ng-container>

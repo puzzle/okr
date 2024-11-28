@@ -56,14 +56,14 @@ public class ObjectiveController {
                 .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
     }
 
-    @Operation(summary = "Get KeyResult from Objective", description = "Get all KeyResults from one Objective by ObjectiveId.")
+    @Operation(summary = "Get KeyResults from Objective", description = "Get all KeyResults from one Objective by ObjectiveId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all KeyResult from Objective.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
             @ApiResponse(responseCode = "401", description = "Not authorized to read KeyResult from a Objective", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find a Objective with a specified ID to get KeyResults from.", content = @Content) })
     @GetMapping("/{id}/keyResults")
-    public ResponseEntity<List<KeyResultDto>> getCheckInsFromKeyResult(
+    public ResponseEntity<List<KeyResultDto>> getKeyResultsFromObjective(
             @Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
         return ResponseEntity.status(OK)
                 .body(objectiveAuthorizationService.getAllKeyResultsByObjective(id).stream().map(keyResult -> {

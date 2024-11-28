@@ -9,7 +9,7 @@ body.okr {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--overview-bg);
+  background-color: var(--okr-overview-background-color);
   font-family: Roboto, "sans-serif";
   --bs-body-font-family: Roboto;
 
@@ -121,7 +121,7 @@ body.okr {
 }
 
 .bg-grey {
-  background-color: var(--overview-bg);
+  background-color: var(--okr-overview-background-color);
 }
 
 body pzsh-backdrop {

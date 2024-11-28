@@ -168,6 +168,7 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(metricKeyResult);
         BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultMetricDto);
         BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_METRIC).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))

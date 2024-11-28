@@ -2,14 +2,15 @@ package ch.puzzle.okr.deserializer;
 
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
 import static ch.puzzle.okr.Constants.*;
 
-public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
+public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> implements MetricOrdinalDeserializer {
 
     private final DeserializerHelper deserializerHelper;
 
@@ -22,6 +23,14 @@ public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
             throws IOException {
 
         String keyResultIdAttribute = "id";
-        return deserializerHelper.deserializeMetricOrdinal(keyResultIdAttribute, jsonParser, KEY_RESULT_MAP);
+        return deserializerHelper.deserializeMetricOrdinal(keyResultIdAttribute, jsonParser, KEY_RESULT_MAP, this);
+    }
+
+    @Override
+    public String getKeyResultType(JsonNode root) {
+        if (!root.has("keyResultType")) {
+            return null;
+        }
+        return root.get("keyResultType").asText();
     }
 }

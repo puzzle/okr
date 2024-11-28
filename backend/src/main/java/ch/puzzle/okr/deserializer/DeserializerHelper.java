@@ -1,5 +1,6 @@
 package ch.puzzle.okr.deserializer;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import com.fasterxml.jackson.core.JsonParser;
@@ -13,6 +14,7 @@ import org.springframework.web.context.request.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -24,38 +26,23 @@ public class DeserializerHelper {
         this.keyResultBusinessService = keyResultBusinessService;
     }
 
-    public <T> T deserializeMetricOrdinal(String identifier, JsonParser jsonParser, Map<String, Class<? extends T>> map)
-            throws IOException {
+    public <T> T deserializeMetricOrdinal(String identifier, JsonParser jsonParser, Map<String, Class<? extends T>> map,
+            MetricOrdinalDeserializer deserializer) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
         JsonNode keyResultIdNode = root.get(identifier);
-        Long idFromPath = getIdFromPath();
-        if (keyResultIdNode == null && idFromPath == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "missing keyResult ID to deserialize keyResult DTO");
-        }
-        long id = keyResultIdNode == null ? idFromPath : keyResultIdNode.asLong();
-        KeyResult keyResult = keyResultBusinessService.getEntityById(id);
 
-        if (keyResult.getKeyResultType() == null || !map.containsKey(keyResult.getKeyResultType())) {
+        String keyResultType = deserializer.getKeyResultType(keyResultIdNode);
+        // TODO invert if statement and method
+        if (!isKeyResultTypeValid(keyResultType, map)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported entity DTO to deserialize");
         }
 
-        Class<? extends T> aClass = map.get(keyResult.getKeyResultType());
+        Class<? extends T> aClass = map.get(keyResultType);
         return mapper.readValue(root.toString(), aClass);
     }
 
-    private Long getIdFromPath() {
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        if (requestAttributes == null) {
-            return null;
-        }
-        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        Map attributes = (Map) request.getAttribute("org.springframework.web.servlet.View.pathVariables");
-        if (attributes == null) {
-            return null;
-        }
-
-        return (Long) attributes.getOrDefault("id", null);
+    private <T> boolean isKeyResultTypeValid(String type, Map<String, Class<? extends T>> map) {
+        return type != null && map.containsKey(type);
     }
 }

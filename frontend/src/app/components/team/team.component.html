@@ -12,7 +12,7 @@
       mat-button
     >
       <span id="add-objective" class="d-flex align-items-center add-text">
-        <img alt="Add key-result button" class="add-cross-button" src="../../../assets/icons/new-icon.svg" />
+        <img alt="Add key-result button" class="add-cross-button" src="{{ addIconSrc | async }}" />
         Objective hinzufügen
       </span>
     </button>
@@ -30,7 +30,6 @@
       class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
       id="objective-column"
     ></app-objective-column>
-
     <div *ngFor="let placeholder of [].constructor(2)" class="col-xs-12 col-md-6 col-xl-4 column-width h-0"></div>
   </div>
 </div>

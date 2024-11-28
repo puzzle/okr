@@ -46,7 +46,6 @@ class KeyResultDeserializerTest {
         keyResultDeserializer.deserialize(jsonParser, ctxt);
 
         // assert
-        verify(deserializerHelper, times(1)).deserializeMetricOrdinal("keyResultId", jsonParser,
-                Constants.CHECK_IN_MAP);
+        verify(deserializerHelper, times(1)).deserializeMetricOrdinal("id", jsonParser, Constants.KEY_RESULT_MAP);
     }
 }

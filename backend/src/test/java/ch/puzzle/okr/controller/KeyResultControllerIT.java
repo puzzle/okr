@@ -1,13 +1,15 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.deserializer.DeserializerHelper;
 import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
-import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
+import ch.puzzle.okr.models.keyresult.*;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.hamcrest.Matchers;
@@ -20,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -61,6 +64,10 @@ class KeyResultControllerIT {
     UserPersistenceService userPersistenceService;
     @MockBean
     ObjectivePersistenceService objectivePersistenceService;
+    @MockBean
+    private KeyResultBusinessService keyResultBusinessService;
+    @SpyBean
+    DeserializerHelper deserializerHelper;
     @Autowired
     private MockMvc mvc;
 
@@ -277,6 +284,8 @@ class KeyResultControllerIT {
     void createEntityShouldThrowErrorWhenInvalidDto() throws Exception {
         BDDMockito.given(keyResultMapper.toKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
+        BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
+                .willReturn(KeyResultOrdinal.Builder.builder().withId(1L).build());
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -292,7 +301,9 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultAuthorizationService.isImUsed(any(), any())).willReturn(false);
         BDDMockito.given(keyResultAuthorizationService.updateEntities(anyLong(), any(), anyList()))
                 .willReturn(new KeyResultWithActionList(metricKeyResult, List.of()));
-        BDDMockito.given(actionAuthorizationService.getActionsByKeyResult(any())).willReturn(anyList());
+
+        BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
+                .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
 
         mvc.perform(put(URL_TO_KEY_RESULT_1).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))

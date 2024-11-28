@@ -50,7 +50,7 @@ class OkrArchitectureTest {
     void businessServiceAccessedByControllerOrAuthorizationServiceOrMapper() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..service.business..").should().onlyBeAccessed()
-                .byAnyPackage("..controller..", "..authorization..", "..mapper..", "..business");
+                .byAnyPackage("..controller..", "..authorization..", "..mapper..", "..business", "..deserializer");
 
         rule.check(importedClasses);
     }
@@ -141,11 +141,13 @@ class OkrArchitectureTest {
                 .layer("PersistenceService").definedBy("..service.persistence..") //
                 .layer("Repository").definedBy("..repository..") //
                 .layer("Mapper").definedBy("..mapper..") //
+                .layer("Deserializer").definedBy("..deserializer..") //
 
                 .whereLayer("Controller").mayNotBeAccessedByAnyLayer() //
                 .whereLayer("AuthorizationService").mayOnlyBeAccessedByLayers("Controller") //
                 .whereLayer("BusinessService")
-                .mayOnlyBeAccessedByLayers("Controller", "AuthorizationService", "Mapper", "BusinessService") //
+                .mayOnlyBeAccessedByLayers("Controller", "AuthorizationService", "Mapper", "BusinessService",
+                        "Deserializer") //
                 .whereLayer("ValidationService").mayOnlyBeAccessedByLayers("BusinessService") //
                 .whereLayer("PersistenceService")
                 .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService") //

@@ -5,8 +5,12 @@ import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,5 +107,13 @@ public class TestHelper {
 
     public static List<String> getAllErrorKeys(List<ErrorDto> errors) {
         return errors.stream().map(ErrorDto::errorKey).toList();
+    }
+
+    public static JsonParser createJsonParser(String json) throws IOException {
+        return new ObjectMapper().getFactory().createParser(json);
+    }
+
+    public static JsonNode getJsonNode(String json) throws IOException {
+        return new ObjectMapper().readTree(json);
     }
 }

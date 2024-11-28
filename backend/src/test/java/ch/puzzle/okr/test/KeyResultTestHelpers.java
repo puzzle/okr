@@ -262,6 +262,62 @@ public class KeyResultTestHelpers {
             }
             """;
 
+    public static final String KEY_RESULT_ORDINAL_JSON = """
+            {
+              "id": 43,
+              "version": 0,
+              "keyResultType": "ordinal",
+              "title": "TITLE_ORDINAL",
+              "description": "BESCHREIBUNG",
+              "commitZone": "1",
+              "targetZone": "3",
+              "stretchZone": "5",
+              "owner": {
+                "id": 1000,
+                "firstname": "Jaya",
+                "lastname": "Norris"
+              },
+              "objective": {
+                "id": 1000,
+                "state": "ongoing-icon.svg",
+                "keyResultQuarterDto": null
+              },
+              "lastCheckIn": null,
+              "createdOn": null,
+              "modifiedOn": null,
+              "writeable": false,
+              "actionList": []
+            }
+            """;
+
+    public static final String KEY_RESULT_METRIC_JSON = """
+            {
+              "id": 42,
+              "version": 0,
+              "keyResultType": "metric",
+              "title": "TITLE_METRIC",
+              "description": "BESCHREIBUNG",
+              "baseline": 1.0,
+              "stretchGoal": 5.0,
+              "unit": "NUMBER",
+              "owner": {
+                "id": 1000,
+                "firstname": "Jaya",
+                "lastname": "Norris"
+              },
+              "objective": {
+                "id": 1000,
+                "state": "ongoing-icon.svg",
+                "keyResultQuarterDto": null
+              },
+              "lastCheckIn": null,
+              "createdOn": null,
+              "modifiedOn": null,
+              "writeable": false,
+              "actionList": []
+            }
+            """;
+
     private KeyResultTestHelpers() {
     }
 }

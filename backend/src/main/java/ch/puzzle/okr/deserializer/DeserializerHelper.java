@@ -52,7 +52,10 @@ public class DeserializerHelper {
         }
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
         Map attributes = (Map) request.getAttribute("org.springframework.web.servlet.View.pathVariables");
-        ;
+        if (attributes == null) {
+            return null;
+        }
+
         return (Long) attributes.getOrDefault("id", null);
     }
 }

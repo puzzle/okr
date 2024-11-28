@@ -4,39 +4,55 @@ import ch.puzzle.okr.dto.checkin.*;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.checkin.Zone;
-import ch.puzzle.okr.models.keyresult.*;
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.test.CheckInTestHelpers;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.convert.DtoInstantiatingConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Map;
 
 import static ch.puzzle.okr.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DeserializerHelperTest {
 
-    @Mock
-    private KeyResultBusinessService keyResultBusinessService;
-
     @InjectMocks
     @Spy
     private DeserializerHelper deserializerHelper;
 
+    @Mock
+    private MetricOrdinalDeserializer deserializer;
     private ObjectMapper objectMapper;
+
+    private static void assertCheckInMetricDto(CheckInMetricDto checkInMetricDto) {
+        assertEquals(42L, checkInMetricDto.id());
+        assertEquals("Change_Info", checkInMetricDto.changeInfo());
+        assertEquals("Initiatives", checkInMetricDto.initiatives());
+        assertEquals(5, checkInMetricDto.confidence());
+        assertEquals(1000, checkInMetricDto.keyResultId());
+        assertEquals(23, checkInMetricDto.value());
+    }
+
+    private static void assertOwner(KeyResultUserDto owner) {
+        assertNotNull(owner);
+        assertEquals(1000, owner.id());
+        assertEquals("Jaya", owner.firstname());
+        assertEquals("Norris", owner.lastname());
+    }
+
+    private static void assertObjective(KeyResultObjectiveDto objective) {
+        assertNotNull(objective);
+        assertEquals(1000, objective.id());
+    }
 
     @BeforeEach
     void setUp() {
@@ -47,16 +63,11 @@ class DeserializerHelperTest {
     @Test
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
         // arrange
-
-        when(keyResultBusinessService.getEntityById(1000L)) //
-                .thenReturn(KeyResultMetric.Builder.builder() //
-                        .withId(1000L) //
-                        .build());
-
+        when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_METRIC);
         JsonParser jsonParser = objectMapper.getFactory().createParser(CheckInTestHelpers.CHECK_IN_METRIC_JSON);
 
         // act
-        CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal("keyResultId", jsonParser, CHECK_IN_MAP);
+        CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, CHECK_IN_MAP, deserializer);
 
         // assert
         assertInstanceOf(CheckInMetricDto.class, checkInDto);
@@ -67,35 +78,29 @@ class DeserializerHelperTest {
     @Test
     void deserializeShouldReturnCheckInOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
-        when(keyResultBusinessService.getEntityById(1001L)) //
-                .thenReturn(KeyResultOrdinal.Builder.builder() //
-                        .withId(1001L) //
-                        .build());
+        when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_ORDINAL);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(CheckInTestHelpers.CHECK_IN_ORDINAL_JSON);
 
         // act
-        CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal("keyResultId", jsonParser, CHECK_IN_MAP);
+        CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, CHECK_IN_MAP, deserializer);
 
         // assert
         assertInstanceOf(CheckInOrdinalDto.class, checkInDto);
         assertCheckInOrdinalDto((CheckInOrdinalDto) checkInDto);
-
     }
 
     @DisplayName("deserialize() should return KeyResultMetricDto for metric json")
     @Test
     void deserializeShouldReturnKeyResultMetricDtoForMetricJson() throws Exception {
 
-        when(keyResultBusinessService.getEntityById(42L)) //
-                .thenReturn(KeyResultMetric.Builder.builder() //
-                        .withId(42L) //
-                        .build());
+        when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_METRIC);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(KeyResultTestHelpers.KEY_RESULT_METRIC_JSON);
 
         // act
-        KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal("id", jsonParser, KEY_RESULT_MAP);
+        KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, KEY_RESULT_MAP,
+                deserializer);
 
         // assert
         assertInstanceOf(KeyResultMetricDto.class, keyResultDto);
@@ -107,22 +112,20 @@ class DeserializerHelperTest {
     void deserializeShouldReturnKeyResultOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
 
-        when(keyResultBusinessService.getEntityById(43L)) //
-                .thenReturn(KeyResultOrdinal.Builder.builder() //
-                        .withId(43L) //
-                        .build());
+        when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_ORDINAL);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(KeyResultTestHelpers.KEY_RESULT_ORDINAL_JSON);
 
         // act
-        KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal("id", jsonParser, KEY_RESULT_MAP);
+        KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, KEY_RESULT_MAP,
+                deserializer);
 
         // assert
         assertInstanceOf(KeyResultOrdinalDto.class, keyResultDto);
         assertKeyResultOrdinalDto((KeyResultOrdinalDto) keyResultDto);
     }
 
-    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult id")
+    @DisplayName("CheckIn deserialize() should throw ResponseStatusException if json has no KeyResult id")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() throws Exception {
 
@@ -135,25 +138,22 @@ class DeserializerHelperTest {
                 }
                 """;
 
+        when(deserializer.getKeyResultType(any())).thenReturn(null);
+
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
 
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            deserializerHelper.deserializeMetricOrdinal("id", jsonParser, CHECK_IN_MAP);
+            deserializerHelper.deserializeMetricOrdinal(jsonParser, CHECK_IN_MAP, deserializer);
         });
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("missing keyResult ID to deserialize keyResult DTO", exception.getReason());
+        assertEquals("unsupported entity DTO to deserialize", exception.getReason());
     }
 
     @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Type")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultType() throws Exception {
-
-        when(keyResultBusinessService.getEntityById(45L)) //
-                .thenReturn(KeyResultOrdinal.Builder.builder() //
-                        .withId(45L) //
-                        .build());
         // arrange
         String jsonMetric = """
                 {
@@ -163,25 +163,17 @@ class DeserializerHelperTest {
                   "description": "BESCHREIBUNG"
                 }
                 """;
+        when(deserializer.getKeyResultType(any())).thenReturn(null);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
 
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            deserializerHelper.deserializeMetricOrdinal("id", jsonParser, Map.of("", CheckInOrdinalDto.class));
+            deserializerHelper.deserializeMetricOrdinal(jsonParser, Map.of("", CheckInOrdinalDto.class), deserializer);
         });
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("unsupported entity DTO to deserialize", exception.getReason());
-    }
-
-    private static void assertCheckInMetricDto(CheckInMetricDto checkInMetricDto) {
-        assertEquals(42L, checkInMetricDto.id());
-        assertEquals("Change_Info", checkInMetricDto.changeInfo());
-        assertEquals("Initiatives", checkInMetricDto.initiatives());
-        assertEquals(5, checkInMetricDto.confidence());
-        assertEquals(1000, checkInMetricDto.keyResultId());
-        assertEquals(23, checkInMetricDto.value());
     }
 
     private void assertCheckInOrdinalDto(CheckInOrdinalDto checkInOrdinalDto) {
@@ -223,18 +215,6 @@ class DeserializerHelperTest {
 
         KeyResultObjectiveDto objective = keyResultOrdinalDto.objective();
         assertObjective(objective);
-    }
-
-    private static void assertOwner(KeyResultUserDto owner) {
-        assertNotNull(owner);
-        assertEquals(1000, owner.id());
-        assertEquals("Jaya", owner.firstname());
-        assertEquals("Norris", owner.lastname());
-    }
-
-    private static void assertObjective(KeyResultObjectiveDto objective) {
-        assertNotNull(objective);
-        assertEquals(1000, objective.id());
     }
 
 }

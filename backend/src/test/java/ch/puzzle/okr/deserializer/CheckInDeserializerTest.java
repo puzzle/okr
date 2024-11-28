@@ -2,7 +2,6 @@ package ch.puzzle.okr.deserializer;
 
 import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.test.CheckInTestHelpers;
-import ch.puzzle.okr.test.KeyResultTestHelpers;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +21,6 @@ class CheckInDeserializerTest {
 
     @InjectMocks
     private CheckInDeserializer checkInDeserializer;
-
     @Mock
     private DeserializerHelper deserializerHelper;
 
@@ -48,7 +46,7 @@ class CheckInDeserializerTest {
         checkInDeserializer.deserialize(jsonParser, ctxt);
 
         // assert
-        verify(deserializerHelper, times(1)).deserializeMetricOrdinal("keyResultId", jsonParser,
-                Constants.CHECK_IN_MAP);
+        verify(deserializerHelper, times(1)).deserializeMetricOrdinal(jsonParser, Constants.CHECK_IN_MAP,
+                checkInDeserializer);
     }
 }

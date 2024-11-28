@@ -13,24 +13,21 @@ import java.util.Map;
 @Component
 public class DeserializerHelper {
 
-    public DeserializerHelper() {
-    }
-
-    public <T> T deserializeMetricOrdinal(JsonParser jsonParser, Map<String, Class<? extends T>> map,
+    public <T> T deserializeMetricOrdinal(JsonParser jsonParser, Map<String, Class<? extends T>> validTypes,
             MetricOrdinalDeserializer deserializer) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
 
         String keyResultType = deserializer.getKeyResultType(root);
-        if (isKeyResultTypeInvalid(keyResultType, map)) {
+        if (isKeyResultTypeInvalid(keyResultType, validTypes)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported entity DTO to deserialize");
         }
 
-        Class<? extends T> aClass = map.get(keyResultType);
-        return mapper.readValue(root.toString(), aClass);
+        Class<? extends T> targetClass = validTypes.get(keyResultType);
+        return mapper.readValue(root.toString(), targetClass);
     }
 
-    private <T> boolean isKeyResultTypeInvalid(String type, Map<String, Class<? extends T>> map) {
-        return type == null || !map.containsKey(type);
+    private <T> boolean isKeyResultTypeInvalid(String type, Map<String, Class<? extends T>> validTypes) {
+        return type == null || !validTypes.containsKey(type);
     }
 }

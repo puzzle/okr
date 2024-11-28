@@ -3,7 +3,6 @@ package ch.puzzle.okr.service.validation;
 import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.repository.AlignmentRepository;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +15,7 @@ public class AlignmentValidationService
 
     @Override
     public void validateOnCreate(Alignment model) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override

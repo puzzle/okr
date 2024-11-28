@@ -16,11 +16,13 @@ public class TenantClientCustomizationProvider {
     private static final String CUSTOM_STYLES_PREFIX = "okr.tenants.{0}.clientcustomization.customstyles";
     private static final String TOPBAR_BACKGROUND_COLOR = ".okr-topbar-background-color";
     private static final String BANNER_BACKGROUND_COLOR = ".okr-banner-background-color";
-    private static final String OVERVIEW_BACKGROUND_COLOR = ".overview-bg";
+    private static final String OVERVIEW_BACKGROUND_COLOR = ".okr-overview-background-color";
+    private static final String TEAM_HEADER_TEXT_COLOR = ".okr-team-header-color";
+    private static final String ADD_OBJECTIVE_TEXT_COLOR = ".okr-add-objective-text-color";
 
     private final Map<String, TenantClientCustomization> tenantCustomizations = new HashMap<>();
     private final List<String> customCssStyles = List.of(TOPBAR_BACKGROUND_COLOR, BANNER_BACKGROUND_COLOR,
-            OVERVIEW_BACKGROUND_COLOR);
+            OVERVIEW_BACKGROUND_COLOR, TEAM_HEADER_TEXT_COLOR, ADD_OBJECTIVE_TEXT_COLOR);
     private final Environment env;
 
     public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {

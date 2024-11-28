@@ -1,7 +1,7 @@
 <div *ngIf="overviewEntity as OVEntity" class="bg-grey justify-content-between pt-3">
   <section class="team-header">
     <div class="d-flex align-items-center gap-2 flex-row">
-      <h1 class="team-title">{{ OVEntity.team.name }}</h1>
+      <h1 id="overview-team-title" class="team-title">{{ OVEntity.team.name }}</h1>
     </div>
     <button
       (click)="createObjective()"
@@ -11,7 +11,7 @@
       color="primary"
       mat-button
     >
-      <span class="d-flex align-items-center add-text">
+      <span id="add-objective" class="d-flex align-items-center add-text">
         <img alt="Add key-result button" class="add-cross-button" src="../../../assets/icons/new-icon.svg" />
         Objective hinzufügen
       </span>

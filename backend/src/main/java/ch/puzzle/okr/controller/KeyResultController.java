@@ -101,7 +101,6 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
-
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList(), keyResult);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);

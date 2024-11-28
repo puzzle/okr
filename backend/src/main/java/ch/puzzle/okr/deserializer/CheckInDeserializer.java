@@ -25,14 +25,12 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> implements
     @Override
     public CheckInDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException {
-        String keyResultIdAttribute = "keyResultId";
-        return deserializerHelper.deserializeMetricOrdinal(keyResultIdAttribute, jsonParser, CHECK_IN_MAP, this);
+        return deserializerHelper.deserializeMetricOrdinal(jsonParser, CHECK_IN_MAP, this);
     }
 
     @Override
     public String getKeyResultType(JsonNode root) {
-        String identifier = "keyResultId";
-        JsonNode keyResultIdNode = root.get(identifier);
+        JsonNode keyResultIdNode = root.get(CHECK_IN_KEY_RESULT_ID_ATTRIBUTE_NAME);
         if (keyResultIdNode == null) {
             return null;
         }

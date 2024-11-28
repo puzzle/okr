@@ -26,6 +26,8 @@ public class Constants {
     public static final String USER_TEAM = "UserTeam";
 
     public static final String BACK_LOG_QUARTER_LABEL = "Backlog";
+    public static final String CHECK_IN_KEY_RESULT_ID_ATTRIBUTE_NAME = "keyResultId";
+    public static final String KEY_RESULT_TYPE_ATTRIBUTE_NAME = "keyResultType";
 
     public static final Map<String, Class<? extends KeyResultDto>> KEY_RESULT_MAP = Map.ofEntries(
             entry(KEY_RESULT_TYPE_METRIC, KeyResultMetricDto.class),

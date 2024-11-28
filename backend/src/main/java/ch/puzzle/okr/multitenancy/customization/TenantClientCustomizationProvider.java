@@ -16,13 +16,12 @@ public class TenantClientCustomizationProvider {
     private static final String CUSTOM_STYLES_PREFIX = "okr.tenants.{0}.clientcustomization.customstyles";
     private static final String TOPBAR_BACKGROUND_COLOR = ".okr-topbar-background-color";
     private static final String BANNER_BACKGROUND_COLOR = ".okr-banner-background-color";
+    private static final String OVERVIEW_BACKGROUND_COLOR = ".overview-bg";
 
     private final Map<String, TenantClientCustomization> tenantCustomizations = new HashMap<>();
-    private final List<String> customCssStyles = List.of(TOPBAR_BACKGROUND_COLOR, BANNER_BACKGROUND_COLOR);
+    private final List<String> customCssStyles = List.of(TOPBAR_BACKGROUND_COLOR, BANNER_BACKGROUND_COLOR,
+            OVERVIEW_BACKGROUND_COLOR);
     private final Environment env;
-
-    record CssConfigItem(String cssName, String cssValue) implements Serializable {
-    }
 
     public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {
         this.env = env;
@@ -77,5 +76,8 @@ public class TenantClientCustomizationProvider {
 
     private String formatWithTenant(String stringWithTenantPlaceholder, String tenantId) {
         return MessageFormat.format(stringWithTenantPlaceholder, tenantId);
+    }
+
+    record CssConfigItem(String cssName, String cssValue) implements Serializable {
     }
 }

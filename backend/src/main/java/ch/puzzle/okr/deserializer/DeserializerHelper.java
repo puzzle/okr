@@ -33,7 +33,7 @@ public class DeserializerHelper {
         }
         KeyResult keyResult = keyResultBusinessService.getEntityById(keyResultId.asLong());
 
-        if (!map.containsKey(keyResult.getKeyResultType())) {
+        if (keyResult.getKeyResultType() == null || !map.containsKey(keyResult.getKeyResultType())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported entity DTO to deserialize");
         }
 

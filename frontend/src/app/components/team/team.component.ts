@@ -8,7 +8,6 @@ import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { DialogService } from '../../services/dialog.service';
 import { ConfigService } from '../../services/config.service';
 import { ClientConfig } from '../../shared/types/model/ClientConfig';
-import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 @Component({
@@ -21,11 +20,7 @@ export class TeamComponent implements OnInit {
   @Input({ required: true })
   public overviewEntity!: OverviewEntity;
   protected addIconSrc: Observable<string> = this.configService.config$.pipe(
-    map((config: ClientConfig) =>
-      config.customStyles['okr-add-objective-text-color'] === '#ffffff'
-        ? '../../../assets/icons/new-icon-demo.svg'
-        : '../../../assets/icons/new-icon.svg',
-    ),
+    map((config: ClientConfig) => config.customStyles['okr-add-objective-icon'] ?? '/assets/icons/new-icon.svg'),
   );
 
   constructor(

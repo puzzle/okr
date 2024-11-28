@@ -17,4 +17,4 @@ jobs:
           distribution: 'adopt'
 
       - name: Use Maven to run unittests and integration tests
-        run: mvn clean verify -X
+        run: mvn clean verify

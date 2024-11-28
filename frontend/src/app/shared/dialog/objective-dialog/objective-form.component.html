@@ -65,7 +65,7 @@
             </mat-checkbox>
           </div>
         </div>
-        <div *ngIf="data.action === 'duplicate'" class="col align-self-end w-100">
+        <div *ngIf="data.action === 'duplicate' && (keyResults$ | async)?.length" class="col align-self-end w-100">
           <div class="okr-form-row okr-form-label-input-container w-100">
             <label class="okr-form-label okr-form-col">Keyresults übernehmen</label>
             <div class="okr-form-input pe-5 w-100">

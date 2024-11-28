@@ -216,5 +216,4 @@ class DeserializerHelperTest {
         assertNotNull(objective);
         assertEquals(1000, objective.id());
     }
-
 }

@@ -33,27 +33,6 @@ class DeserializerHelperTest {
     private MetricOrdinalDeserializer deserializer;
     private ObjectMapper objectMapper;
 
-    private static void assertCheckInMetricDto(CheckInMetricDto checkInMetricDto) {
-        assertEquals(42L, checkInMetricDto.id());
-        assertEquals("Change_Info", checkInMetricDto.changeInfo());
-        assertEquals("Initiatives", checkInMetricDto.initiatives());
-        assertEquals(5, checkInMetricDto.confidence());
-        assertEquals(1000, checkInMetricDto.keyResultId());
-        assertEquals(23, checkInMetricDto.value());
-    }
-
-    private static void assertOwner(KeyResultUserDto owner) {
-        assertNotNull(owner);
-        assertEquals(1000, owner.id());
-        assertEquals("Jaya", owner.firstname());
-        assertEquals("Norris", owner.lastname());
-    }
-
-    private static void assertObjective(KeyResultObjectiveDto objective) {
-        assertNotNull(objective);
-        assertEquals(1000, objective.id());
-    }
-
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
@@ -215,6 +194,27 @@ class DeserializerHelperTest {
 
         KeyResultObjectiveDto objective = keyResultOrdinalDto.objective();
         assertObjective(objective);
+    }
+
+    private static void assertCheckInMetricDto(CheckInMetricDto checkInMetricDto) {
+        assertEquals(42L, checkInMetricDto.id());
+        assertEquals("Change_Info", checkInMetricDto.changeInfo());
+        assertEquals("Initiatives", checkInMetricDto.initiatives());
+        assertEquals(5, checkInMetricDto.confidence());
+        assertEquals(1000, checkInMetricDto.keyResultId());
+        assertEquals(23, checkInMetricDto.value());
+    }
+
+    private static void assertOwner(KeyResultUserDto owner) {
+        assertNotNull(owner);
+        assertEquals(1000, owner.id());
+        assertEquals("Jaya", owner.firstname());
+        assertEquals("Norris", owner.lastname());
+    }
+
+    private static void assertObjective(KeyResultObjectiveDto objective) {
+        assertNotNull(objective);
+        assertEquals(1000, objective.id());
     }
 
 }

@@ -13,6 +13,7 @@ public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> implem
     private final DeserializerHelper deserializerHelper;
 
     public KeyResultDeserializer(DeserializerHelper deserializerHelper) {
+
         this.deserializerHelper = deserializerHelper;
     }
 

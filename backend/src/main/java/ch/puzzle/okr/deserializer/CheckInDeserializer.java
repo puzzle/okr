@@ -33,8 +33,7 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
 
     @Override
     public CheckInDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                                                                                                        throws IOException,
-                                                                                                        JacksonException {
+            throws IOException, JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
         if (root.has("keyResultId")) {

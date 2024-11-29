@@ -1,7 +1,10 @@
 package ch.puzzle.okr;
 
 import java.io.IOException;
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -14,8 +17,7 @@ public class ForwardFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-                                                                                                                  throws IOException,
-                                                                                                                  ServletException {
+            throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(servletRequest, servletResponse);

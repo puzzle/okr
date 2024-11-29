@@ -22,8 +22,7 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
     @Override
     public KeyResultDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                                                                                                          throws IOException,
-                                                                                                          JacksonException {
+            throws IOException, JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
         String keyResultAttribute = "keyResultType";

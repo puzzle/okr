@@ -23,7 +23,9 @@ public class HibernateContextTest {
         resetHibernateConfig();
     }
 
-    @DisplayName("setHibernateConfig() should throw exception if db config is null")
+    @DisplayName(
+        "setHibernateConfig() should throw exception if db config is null"
+    )
     @Test
     void setHibernateConfigShouldThrowExceptionIfDbConfigIsNull() {
         // arrange
@@ -34,11 +36,17 @@ public class HibernateContextTest {
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
 
-    @DisplayName("setHibernateConfig() should throw exception if db config has null or empty values")
+    @DisplayName(
+        "setHibernateConfig() should throw exception if db config has null or empty values"
+    )
     @ParameterizedTest
-    @MethodSource("invalidDbConfig")
-    void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username,
-            String password, String tenant) {
+    @MethodSource(
+        "invalidDbConfig"
+    )
+    void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url,
+                                                                              String username,
+                                                                              String password,
+                                                                              String tenant) {
 
         // arrange
         DbConfig dbConfig = new DbConfig(url, username, password, tenant);
@@ -50,15 +58,18 @@ public class HibernateContextTest {
 
     private static Stream<Arguments> invalidDbConfig() {
         return Stream.of(Arguments.of(null, "username", "password", "multiTenancy"),
-                Arguments.of("", "username", "password", "multiTenancy"),
-                Arguments.of("url", null, "password", "multiTenancy"),
-                Arguments.of("url", "", "password", "multiTenancy"),
-                Arguments.of("url", "username", null, "multiTenancy"),
-                Arguments.of("url", "username", "", "multiTenancy"), Arguments.of("url", "username", "password", null),
-                Arguments.of("url", "username", "password", ""));
+                         Arguments.of("", "username", "password", "multiTenancy"),
+                         Arguments.of("url", null, "password", "multiTenancy"),
+                         Arguments.of("url", "", "password", "multiTenancy"),
+                         Arguments.of("url", "username", null, "multiTenancy"),
+                         Arguments.of("url", "username", "", "multiTenancy"),
+                         Arguments.of("url", "username", "password", null),
+                         Arguments.of("url", "username", "password", ""));
     }
 
-    @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and set it")
+    @DisplayName(
+        "extractAndSetHibernateConfig() should extract hibernate properties from environment and set it"
+    )
     @Test
     void extractAndSetHibernateConfigShouldExtractHibernatePropertiesFromEnvironmentAndSetIt() {
         // arrange
@@ -79,7 +90,9 @@ public class HibernateContextTest {
         assertProperties(url, username, password, multiTenancy, hibernateProperties);
     }
 
-    @DisplayName("getHibernateConfig() should throw exception if setHibernateConfig() is not called before with valid configuration")
+    @DisplayName(
+        "getHibernateConfig() should throw exception if setHibernateConfig() is not called before with valid configuration"
+    )
     @Test
     void getHibernateConfigShouldThrowExceptionIfSetHibernateConfigIsNotCalledBeforeWithValidConfiguration() {
         // arrange
@@ -89,7 +102,9 @@ public class HibernateContextTest {
         assertEquals("No cached hibernate configuration found", exception.getMessage());
     }
 
-    @DisplayName("getHibernateConfig() should return hibernate config as properties if db config is valid")
+    @DisplayName(
+        "getHibernateConfig() should return hibernate config as properties if db config is valid"
+    )
     @Test
     void getHibernateConfigShouldReturnHibernateConfigAsPropertiesIfDbConfigIsValid() {
         // arrange
@@ -105,8 +120,11 @@ public class HibernateContextTest {
         assertProperties(url, username, password, multiTenancy, hibernateProperties);
     }
 
-    private void assertProperties(String url, String username, String password, String multiTenancy,
-            Properties properties) {
+    private void assertProperties(String url,
+                                  String username,
+                                  String password,
+                                  String multiTenancy,
+                                  Properties properties) {
 
         assertEquals(url, properties.get(HIBERNATE_CONNECTION_URL));
         assertEquals(username, properties.get(HIBERNATE_CONNECTION_USERNAME));

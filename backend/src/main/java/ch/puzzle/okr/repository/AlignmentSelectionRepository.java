@@ -10,7 +10,15 @@ import org.springframework.data.repository.query.Param;
 
 public interface AlignmentSelectionRepository extends ReadOnlyRepository<AlignmentSelection, AlignmentSelectionId> {
 
-    @Query(value = "from AlignmentSelection where quarterId = :quarter_id and teamId != :ignoredTeamId")
-    List<AlignmentSelection> getAlignmentSelectionByQuarterIdAndTeamIdNot(@Param("quarter_id") Long quarterId,
-            @Param("ignoredTeamId") Long ignoredTeamId);
+    @Query(
+            value = "from AlignmentSelection where quarterId = :quarter_id and teamId != :ignoredTeamId"
+    )
+    List<AlignmentSelection> getAlignmentSelectionByQuarterIdAndTeamIdNot(@Param(
+        "quarter_id"
+    )
+    Long quarterId,
+                                                                          @Param(
+                                                                              "ignoredTeamId"
+                                                                          )
+                                                                          Long ignoredTeamId);
 }

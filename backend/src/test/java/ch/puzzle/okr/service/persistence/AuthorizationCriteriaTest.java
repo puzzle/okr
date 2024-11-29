@@ -19,7 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AuthorizationCriteriaTest {
 
-    @DisplayName("appendObjective() should be successful with default authorization user")
+    @DisplayName(
+        "appendObjective() should be successful with default authorization user"
+    )
     @Test
     void appendObjectiveShouldBeSuccessfulWithDefaultAuthorizationUser() {
         // arrange
@@ -33,12 +35,19 @@ public class AuthorizationCriteriaTest {
         assertEquals(expected, current);
     }
 
-    @DisplayName("appendObjective() should be successful when user is okrChampion")
+    @DisplayName(
+        "appendObjective() should be successful when user is okrChampion"
+    )
     @Test
     void appendObjectiveShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
-        var user = User.Builder.builder().withId(23L).withFirstname("Hanna").withLastname("muster")
-                .withEmail("hanna.muster@example.com").withOkrChampion(true).build();
+        var user = User.Builder.builder()
+                               .withId(23L)
+                               .withFirstname("Hanna")
+                               .withLastname("muster")
+                               .withEmail("hanna.muster@example.com")
+                               .withOkrChampion(true)
+                               .build();
         var criteria = new AuthorizationCriteria<Objective>();
 
         // act
@@ -49,11 +58,15 @@ public class AuthorizationCriteriaTest {
         assertEquals(expected, current);
     }
 
-    @DisplayName("appendOverview() should be successful when team ids or objective query are empty")
+    @DisplayName(
+        "appendOverview() should be successful when team ids or objective query are empty"
+    )
     @ParameterizedTest
-    @MethodSource("provideListAndString")
+    @MethodSource(
+        "provideListAndString"
+    )
     void appendOverviewShouldBeSuccessfulWhenTeamIdsOrObjectiveQueryAreEmpty(List<Long> teamIds,
-            String objectiveQuery) {
+                                                                             String objectiveQuery) {
         // arrange
         var criteria = new AuthorizationCriteria<Objective>();
 
@@ -66,11 +79,15 @@ public class AuthorizationCriteriaTest {
     }
 
     private static Stream<Arguments> provideListAndString() {
-        return Stream.of(Arguments.of(List.of(), null), Arguments.of(List.of(), ""), Arguments.of(null, null),
-                Arguments.of(null, ""));
+        return Stream.of(Arguments.of(List.of(), null),
+                         Arguments.of(List.of(), ""),
+                         Arguments.of(null, null),
+                         Arguments.of(null, ""));
     }
 
-    @DisplayName("appendOverview() should be successful when team ids and objective query are not empty")
+    @DisplayName(
+        "appendOverview() should be successful when team ids and objective query are not empty"
+    )
     @Test
     void appendOverviewShouldBeSuccessfulWhenTeamIdsAndObjectiveQueryAreNotEmpty() {
         // arrange
@@ -84,11 +101,10 @@ public class AuthorizationCriteriaTest {
         var current = criteria.appendOverview(anyTeamIds, anyNonEmptyString, defaultAuthorizationUser());
 
         // assert
-        var expected = startingNewLine + singleSpace
-                + """
-                        and o.overviewId.teamId in (:teamIds)
-                         and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:objectiveQuery,'%'))
-                         and ((o.objectiveState=:teamDraftState and o.overviewId.teamId IN (:userTeamIds)) or o.objectiveState IN (:publishedStates) or o.overviewId.objectiveId = -1)""";
+        var expected = startingNewLine + singleSpace + """
+                                                       and o.overviewId.teamId in (:teamIds)
+                                                        and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:objectiveQuery,'%'))
+                                                        and ((o.objectiveState=:teamDraftState and o.overviewId.teamId IN (:userTeamIds)) or o.objectiveState IN (:publishedStates) or o.overviewId.objectiveId = -1)""";
 
         assertEquals(expected, current);
         assertFalse(current.contains(anyNonEmptyString));

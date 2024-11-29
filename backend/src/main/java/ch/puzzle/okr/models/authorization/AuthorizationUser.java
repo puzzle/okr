@@ -14,7 +14,8 @@ public record AuthorizationUser(User user) {
     }
 
     public boolean isUserAdminInTeam(Long teamId) {
-        return this.user.getUserTeamList().stream()
-                .anyMatch(ut -> ut.isTeamAdmin() && ut.getTeam().getId().equals(teamId));
+        return this.user.getUserTeamList()
+                        .stream()
+                        .anyMatch(ut -> ut.isTeamAdmin() && ut.getTeam().getId().equals(teamId));
     }
 }

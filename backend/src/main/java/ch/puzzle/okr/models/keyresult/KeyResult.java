@@ -13,38 +13,76 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "key_result_type")
+@Inheritance(
+        strategy = InheritanceType.SINGLE_TABLE
+)
+@DiscriminatorColumn(
+        name = "key_result_type"
+)
 public abstract class KeyResult implements WriteableInterface {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
-    @SequenceGenerator(name = "sequence_key_result", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_key_result"
+    )
+    @SequenceGenerator(
+            name = "sequence_key_result",
+            allocationSize = 1
+    )
     private Long id;
 
     @Version
     private int version;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @ManyToOne
     private Objective objective;
 
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(
+            message = MessageKey.ATTRIBUTE_NOT_BLANK
+    )
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Size(
+            min = 2,
+            max = 250,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String title;
 
-    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(
+            max = 4096,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String description;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @ManyToOne
     private User owner;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @ManyToOne
     private User createdBy;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private LocalDateTime createdOn;
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
 
-    @Column(name = "key_result_type", insertable = false, updatable = false)
+    @Column(
+            name = "key_result_type",
+            insertable = false,
+            updatable = false
+    )
     private String keyResultType;
 
     private transient boolean writeable;
@@ -133,10 +171,7 @@ public abstract class KeyResult implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title
-                + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy
-                + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType
-                + ", writeable=" + writeable + '\'' + '}';
+        return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -146,18 +181,29 @@ public abstract class KeyResult implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         KeyResult keyResult = (KeyResult) o;
-        return Objects.equals(id, keyResult.id) && version == keyResult.version
-                && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title)
-                && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner)
-                && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn)
-                && Objects.equals(modifiedOn, keyResult.modifiedOn)
-                && Objects.equals(keyResultType, keyResult.keyResultType);
+        return Objects.equals(id, keyResult.id) && version == keyResult.version && Objects.equals(objective,
+                                                                                                  keyResult.objective) && Objects.equals(title,
+                                                                                                                                         keyResult.title) && Objects.equals(description,
+                                                                                                                                                                            keyResult.description) && Objects.equals(owner,
+                                                                                                                                                                                                                     keyResult.owner) && Objects.equals(createdBy,
+                                                                                                                                                                                                                                                        keyResult.createdBy) && Objects.equals(createdOn,
+                                                                                                                                                                                                                                                                                               keyResult.createdOn) && Objects.equals(modifiedOn,
+                                                                                                                                                                                                                                                                                                                                      keyResult.modifiedOn) && Objects.equals(keyResultType,
+                                                                                                                                                                                                                                                                                                                                                                              keyResult.keyResultType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, objective, title, description, owner, createdBy, createdOn, modifiedOn,
-                keyResultType);
+        return Objects.hash(id,
+                            version,
+                            objective,
+                            title,
+                            description,
+                            owner,
+                            createdBy,
+                            createdOn,
+                            modifiedOn,
+                            keyResultType);
     }
 
     protected KeyResult() {
@@ -176,7 +222,9 @@ public abstract class KeyResult implements WriteableInterface {
         setKeyResultType(builder.keyResultType);
     }
 
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings(
+            value = "unchecked"
+    )
     public abstract static class Builder<T> {
         private Long id;
         private int version;

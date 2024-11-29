@@ -18,7 +18,9 @@ import static ch.puzzle.okr.test.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class UserAuthorizationServiceTest {
     @Mock
     UserBusinessService userBusinessService;
@@ -81,7 +83,7 @@ public class UserAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
         assertThrows(OkrResponseStatusException.class,
-                () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
+                     () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
     }
 
     @Test
@@ -106,10 +108,12 @@ public class UserAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
         assertThrows(OkrResponseStatusException.class,
-                () -> userAuthorizationService.createUsers(List.of(user, user2)));
+                     () -> userAuthorizationService.createUsers(List.of(user, user2)));
     }
 
-    @DisplayName("isUserMemberOfTeams() should return false if user is not member of teams")
+    @DisplayName(
+        "isUserMemberOfTeams() should return false if user is not member of teams"
+    )
     @Test
     void isUserMemberOfTeamsShouldReturnFalseIfUserIsNotMemberOfTeams() {
         // arrange
@@ -124,7 +128,9 @@ public class UserAuthorizationServiceTest {
         assertFalse(isUserMemberOfTeams);
     }
 
-    @DisplayName("isUserMemberOfTeams() should return true if user is member of teams")
+    @DisplayName(
+        "isUserMemberOfTeams() should return true if user is member of teams"
+    )
     @Test
     void isUserMemberOfTeamsShouldReturnTrueIfUserIsMemberOfTeams() {
         // arrange

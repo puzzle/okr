@@ -36,7 +36,9 @@ class QuarterPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("getMostCurrentQuarters() should return current quarter and future quarter and GJForTests quarter")
+    @DisplayName(
+        "getMostCurrentQuarters() should return current quarter and future quarter and GJForTests quarter"
+    )
     @Test
     void getMostCurrentQuartersShouldReturnCurrentQuarterAndFutureQuarterAndGJForTestsQuarter() {
         List<Quarter> quarterListFromFunction = quarterPersistenceService.getMostCurrentQuarters();
@@ -48,13 +50,17 @@ class QuarterPersistenceServiceIT {
 
     private void assertGJForTestsQuarterIsFoundOnce(List<Quarter> quarters) {
         long foundGJForTestsQuartersCount = quarters.stream()
-                .filter(quarter -> quarter.getLabel().equals(GJ_FOR_TEST_QUARTER_LABEL)).count();
+                                                    .filter(quarter -> quarter.getLabel()
+                                                                              .equals(GJ_FOR_TEST_QUARTER_LABEL))
+                                                    .count();
         assertEquals(1, foundGJForTestsQuartersCount);
     }
 
     private void assertCurrentQuarterIsFoundOnce(List<Quarter> quarters) {
         long foundCurrentQuartersCount = quarters.stream()
-                .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter)).count();
+                                                 .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(),
+                                                                                                       quarter))
+                                                 .count();
         assertEquals(1, foundCurrentQuartersCount);
     }
 
@@ -70,7 +76,9 @@ class QuarterPersistenceServiceIT {
         assertNotNull(quarter.getLabel());
     }
 
-    @DisplayName("findByLabel() should return single Quarter when label is valid")
+    @DisplayName(
+        "findByLabel() should return single Quarter when label is valid"
+    )
     @Test
     void findByLabelShouldReturnSingleQuarterWhenLabelIsValid() {
         // arrange + act
@@ -83,7 +91,9 @@ class QuarterPersistenceServiceIT {
         assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
     }
 
-    @DisplayName("findByLabel() should return null when label is not valid")
+    @DisplayName(
+        "findByLabel() should return null when label is not valid"
+    )
     @Test
     void findByLabelShouldReturnNullWhenLabelIsNotValid() {
         // arrange + act
@@ -93,7 +103,9 @@ class QuarterPersistenceServiceIT {
         assertNull(returnedQuarter);
     }
 
-    @DisplayName("findByLabel() should return null when label is null")
+    @DisplayName(
+        "findByLabel() should return null when label is null"
+    )
     @Test
     void findByLabelShouldReturnNullWhenLabelIsNull() {
         // arrange + act
@@ -103,7 +115,9 @@ class QuarterPersistenceServiceIT {
         assertNull(returnedQuarter);
     }
 
-    @DisplayName("getModelName() should return Quarter")
+    @DisplayName(
+        "getModelName() should return Quarter"
+    )
     @Test
     void getModelNameShouldReturnQuarter() {
         assertEquals(QUARTER, quarterPersistenceService.getModelName());

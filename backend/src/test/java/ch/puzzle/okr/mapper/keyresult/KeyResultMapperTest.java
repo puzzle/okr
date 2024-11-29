@@ -31,7 +31,9 @@ import static ch.puzzle.okr.mapper.keyresult.helper.TestDataHelper.keyResultOrdi
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class KeyResultMapperTest {
 
     private KeyResultMapper keyResultMapper;
@@ -47,15 +49,21 @@ public class KeyResultMapperTest {
     @BeforeEach
     void setup() {
         KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService,
-                objectiveBusinessService, checkInBusinessService, actionMapper);
+                                                                                objectiveBusinessService,
+                                                                                checkInBusinessService,
+                                                                                actionMapper);
 
         KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService,
-                objectiveBusinessService, checkInBusinessService, actionMapper);
+                                                                                   objectiveBusinessService,
+                                                                                   checkInBusinessService,
+                                                                                   actionMapper);
 
         keyResultMapper = new KeyResultMapper(keyResultOrdinalMapper, keyResultMetricMapper);
     }
 
-    @DisplayName("toDto() should map KeyResultMetric to KeyResultMetricDto")
+    @DisplayName(
+        "toDto() should map KeyResultMetric to KeyResultMetricDto"
+    )
     @Test
     void toDtoShouldMapKeyResultMetricToKeyResultMetricDto() {
         // arrange
@@ -69,7 +77,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultMetricDto.class, keyResultDto.getClass());
     }
 
-    @DisplayName("toDto() should map KeyResultOrdinal to KeyResultOrdinalDto")
+    @DisplayName(
+        "toDto() should map KeyResultOrdinal to KeyResultOrdinalDto"
+    )
     @Test
     void toDtoShouldMapKeyResultOrdinalToKeyResultOrdinalDto() {
         // arrange
@@ -83,7 +93,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultOrdinalDto.class, keyResultDto.getClass());
     }
 
-    @DisplayName("toKeyResult() should map KeyResultMetricDto to KeyResultMetric")
+    @DisplayName(
+        "toKeyResult() should map KeyResultMetricDto to KeyResultMetric"
+    )
     @Test
     void toKeyResultShouldMapKeyResultMetricDtoToKeyResultMetric() {
         // arrange
@@ -96,7 +108,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultMetric.class, keyResult.getClass());
     }
 
-    @DisplayName("toKeyResult() should map KeyResultOrdinalDto to KeyResultOrdinal")
+    @DisplayName(
+        "toKeyResult() should map KeyResultOrdinalDto to KeyResultOrdinal"
+    )
     @Test
     void toKeyResultShouldMapKeyResultOrdinalDtoToKeyResultOrdinal() {
         // arrange
@@ -109,7 +123,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultOrdinal.class, keyResult.getClass());
     }
 
-    @DisplayName("toDto() should throw Exception if KeyResult is not Metric or Ordinal")
+    @DisplayName(
+        "toDto() should throw Exception if KeyResult is not Metric or Ordinal"
+    )
     @Test
     void toDtoShouldThrowExceptionIfKeyResultIsNotMetricOrOrdinal() {
         // arrange
@@ -119,11 +135,13 @@ public class KeyResultMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                () -> keyResultMapper.toDto(keyResult, actions));
+                                                                       () -> keyResultMapper.toDto(keyResult, actions));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
-    @DisplayName("toKeyResult() should throw Exception if KeyResultDto is not MetricDto or OrdinalDto")
+    @DisplayName(
+        "toKeyResult() should throw Exception if KeyResultDto is not MetricDto or OrdinalDto"
+    )
     @Test
     void toKeyResultShouldThrowExceptionIfKeyResultDtoIsNotMetricOrOrdinal() {
         // arrange
@@ -131,7 +149,7 @@ public class KeyResultMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                () -> keyResultMapper.toKeyResult(keyResultDto));
+                                                                       () -> keyResultMapper.toKeyResult(keyResultDto));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 }

@@ -39,7 +39,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class AuthorizationServiceTest {
     @InjectMocks
     private AuthorizationService authorizationService;
@@ -51,11 +53,11 @@ class AuthorizationServiceTest {
     JwtHelper jwtHelper;
 
     private final List<Team> adminTeams = List.of(Team.Builder.builder().withName("Team 1").withId(1L).build(),
-            Team.Builder.builder().withName("Team 2").withId(2L).build());
+                                                  Team.Builder.builder().withName("Team 2").withId(2L).build());
     private final List<Team> memberTeams = List.of(Team.Builder.builder().withName("Team 3").withId(3L).build(),
-            Team.Builder.builder().withName("Team 4").withId(4L).build());
+                                                   Team.Builder.builder().withName("Team 4").withId(4L).build());
     private final List<Team> otherTeams = List.of(Team.Builder.builder().withName("Team 5").withId(5L).build(),
-            Team.Builder.builder().withName("Team 6").withId(6L).build());
+                                                  Team.Builder.builder().withName("Team 6").withId(6L).build());
 
     private final User user = defaultUserWithTeams(1L, adminTeams, memberTeams);
     private final User okrChampion = defaultOkrChampion(1L);
@@ -113,8 +115,8 @@ class AuthorizationServiceTest {
     void hasRoleReadByObjectiveIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any()))
-                .thenReturn(new Objective());
+        when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(
+                                                                                                             new Objective());
 
         authorizationService.hasRoleReadByObjectiveId(id, authorizationUser);
     }
@@ -124,13 +126,14 @@ class AuthorizationServiceTest {
         Long id = 13L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
         OkrResponseStatusException expectedException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
-                "KeyResult");
+                                                                                     "KeyResult");
 
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any()))
-                .thenThrow(expectedException);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any())).thenThrow(
+                                                                                                                     expectedException);
 
         OkrResponseStatusException actualException = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleReadByKeyResultId(id, authorizationUser));
+                                                                  () -> authorizationService.hasRoleReadByKeyResultId(id,
+                                                                                                                      authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_READ, "KeyResult"));
 
@@ -144,9 +147,9 @@ class AuthorizationServiceTest {
         Long id = 13L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
         OkrResponseStatusException expectedException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
-                "KeyResult");
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any()))
-                .thenReturn(new Objective());
+                                                                                     "KeyResult");
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any())).thenReturn(
+                                                                                                                      new Objective());
 
         authorizationService.hasRoleReadByKeyResultId(id, authorizationUser);
     }
@@ -157,12 +160,13 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         OkrResponseStatusException expectedException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
-                "Check-in");
-        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
-                .thenThrow(expectedException);
+                                                                                     "Check-in");
+        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any())).thenThrow(
+                                                                                                                   expectedException);
 
         OkrResponseStatusException actualException = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleReadByCheckInId(id, authorizationUser));
+                                                                  () -> authorizationService.hasRoleReadByCheckInId(id,
+                                                                                                                    authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_READ, "Check-in"));
 
@@ -176,10 +180,10 @@ class AuthorizationServiceTest {
         Long id = 13L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
         OkrResponseStatusException expectedException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
-                "Check-in");
+                                                                                     "Check-in");
 
-        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
-                .thenReturn(new Objective());
+        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any())).thenReturn(
+                                                                                                                    new Objective());
 
         authorizationService.hasRoleReadByCheckInId(id, authorizationUser);
     }
@@ -215,7 +219,8 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
+                                                            () -> authorizationService.hasRoleCreateOrUpdate(objective,
+                                                                                                             authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_WRITE, "Objective"));
 
@@ -230,8 +235,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
-        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
-                any())).thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()),
+                                                           eq(authorizationUser),
+                                                           any())).thenReturn(objective);
 
         authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser);
     }
@@ -243,8 +249,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
-                any())).thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()),
+                                                           eq(authorizationUser),
+                                                           any())).thenReturn(objective);
 
         authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser);
     }
@@ -256,11 +263,13 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
-                any())).thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()),
+                                                           eq(authorizationUser),
+                                                           any())).thenReturn(objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser));
+                                                            () -> authorizationService.hasRoleCreateOrUpdate(keyResult,
+                                                                                                             authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_WRITE, "KeyResult"));
 
@@ -278,7 +287,8 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getObjective().getId()),
-                eq(authorizationUser), any())).thenReturn(objective);
+                                                                    eq(authorizationUser),
+                                                                    any())).thenReturn(objective);
 
         authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser);
     }
@@ -292,7 +302,8 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getObjective().getId()),
-                eq(authorizationUser), any())).thenReturn(objective);
+                                                                    eq(authorizationUser),
+                                                                    any())).thenReturn(objective);
 
         authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser);
     }
@@ -306,10 +317,12 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getObjective().getId()),
-                eq(authorizationUser), any())).thenReturn(objective);
+                                                                    eq(authorizationUser),
+                                                                    any())).thenReturn(objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser));
+                                                            () -> authorizationService.hasRoleCreateOrUpdate(checkIn,
+                                                                                                             authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_WRITE, "Check-in"));
 
@@ -360,7 +373,8 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser));
+                                                            () -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id,
+                                                                                                                          authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_WRITE, "Objective"));
 
@@ -411,8 +425,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
-        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
-                any())).thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()),
+                                                           eq(authorizationUser),
+                                                           any())).thenReturn(objective);
 
         assertTrue(authorizationService.hasRoleWriteForTeam(keyResult, authorizationUser));
     }
@@ -424,8 +439,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
-                any())).thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()),
+                                                           eq(authorizationUser),
+                                                           any())).thenReturn(objective);
 
         assertTrue(authorizationService.hasRoleWriteForTeam(keyResult, authorizationUser));
     }
@@ -436,8 +452,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(user);
 
-        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser),
-                any())).thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveById(eq(keyResult.getObjective().getId()),
+                                                           eq(authorizationUser),
+                                                           any())).thenReturn(objective);
 
         assertFalse(authorizationService.hasRoleWriteForTeam(keyResult, authorizationUser));
     }
@@ -450,7 +467,8 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getId()),
-                eq(authorizationUser), any())).thenReturn(objective);
+                                                                    eq(authorizationUser),
+                                                                    any())).thenReturn(objective);
 
         assertTrue(authorizationService.hasRoleWriteForTeam(checkIn, authorizationUser));
     }
@@ -464,7 +482,8 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getId()),
-                eq(authorizationUser), any())).thenReturn(objective);
+                                                                    eq(authorizationUser),
+                                                                    any())).thenReturn(objective);
 
         assertTrue(authorizationService.hasRoleWriteForTeam(checkIn, authorizationUser));
     }
@@ -477,7 +496,8 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getId()),
-                eq(authorizationUser), any())).thenReturn(objective);
+                                                                    eq(authorizationUser),
+                                                                    any())).thenReturn(objective);
 
         assertFalse(authorizationService.hasRoleWriteForTeam(checkIn, authorizationUser));
     }
@@ -499,8 +519,8 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any()))
-                .thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any())).thenReturn(
+                                                                                                                      objective);
 
         authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser);
     }
@@ -511,8 +531,8 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
-                .thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any())).thenReturn(
+                                                                                                                    objective);
 
         authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser);
     }
@@ -523,8 +543,8 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
-                .thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any())).thenReturn(
+                                                                                                                    objective);
 
         authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser);
     }
@@ -532,11 +552,12 @@ class AuthorizationServiceTest {
     @Test
     void hasRoleDeleteByKeyResultIdShouldPassThroughWhenOkrChampion() {
         var otherTeamId = otherTeams.get(0).getId();
-        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
-                .build();
+        Objective objective = Objective.Builder.builder()
+                                               .withTeam(Team.Builder.builder().withId(otherTeamId).build())
+                                               .build();
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
-                .thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any())).thenReturn(
+                                                                                                                      objective);
 
         authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
     }
@@ -544,11 +565,12 @@ class AuthorizationServiceTest {
     @Test
     void hasRoleDeleteByKeyResultIdShouldPassThroughWhenAdmin() {
         var otherTeamId = adminTeams.get(0).getId();
-        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
-                .build();
+        Objective objective = Objective.Builder.builder()
+                                               .withTeam(Team.Builder.builder().withId(otherTeamId).build())
+                                               .build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
-                .thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any())).thenReturn(
+                                                                                                                      objective);
 
         authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
     }
@@ -556,11 +578,12 @@ class AuthorizationServiceTest {
     @Test
     void hasRoleDeleteByKeyResultIdShouldPassThroughWhenMember() {
         var otherTeamId = memberTeams.get(0).getId();
-        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
-                .build();
+        Objective objective = Objective.Builder.builder()
+                                               .withTeam(Team.Builder.builder().withId(otherTeamId).build())
+                                               .build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
-                .thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any())).thenReturn(
+                                                                                                                      objective);
 
         authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
     }
@@ -568,14 +591,16 @@ class AuthorizationServiceTest {
     @Test
     void hasRoleDeleteByKeyResultIdShouldThrowExceptionWhenNotInTeam() {
         var otherTeamId = otherTeams.get(0).getId();
-        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(otherTeamId).build())
-                .build();
+        Objective objective = Objective.Builder.builder()
+                                               .withTeam(Team.Builder.builder().withId(otherTeamId).build())
+                                               .build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
-                .thenReturn(objective);
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any())).thenReturn(
+                                                                                                                      objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
+                                                            () -> authorizationService.hasRoleDeleteByKeyResultId(1L,
+                                                                                                                  authorizationUser));
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_DELETE, "KeyResult"));
 

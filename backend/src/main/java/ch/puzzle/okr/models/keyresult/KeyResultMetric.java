@@ -10,13 +10,26 @@ import ch.puzzle.okr.models.Unit;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 
 @Entity
-@DiscriminatorValue(KEY_RESULT_TYPE_METRIC)
+@DiscriminatorValue(
+    KEY_RESULT_TYPE_METRIC
+)
 public class KeyResultMetric extends KeyResult {
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private Double baseline;
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    private Double baseline;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private Double stretchGoal;
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    private Double stretchGoal;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Enumerated(EnumType.STRING)
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Enumerated(
+        EnumType.STRING
+    )
     private Unit unit;
 
     public Double getBaseline() {
@@ -50,9 +63,10 @@ public class KeyResultMetric extends KeyResult {
     @Override
     public boolean equals(Object o) {
         if (o instanceof KeyResultMetric) {
-            return super.equals(o) && Objects.equals(baseline, ((KeyResultMetric) o).baseline)
-                    && Objects.equals(stretchGoal, ((KeyResultMetric) o).stretchGoal)
-                    && Objects.equals(unit, ((KeyResultMetric) o).unit);
+            return super.equals(o) && Objects.equals(baseline, ((KeyResultMetric) o).baseline) && Objects.equals(
+                                                                                                                 stretchGoal,
+                                                                                                                 ((KeyResultMetric) o).stretchGoal) && Objects.equals(unit,
+                                                                                                                                                                      ((KeyResultMetric) o).unit);
         }
         return false;
     }
@@ -64,8 +78,7 @@ public class KeyResultMetric extends KeyResult {
 
     @Override
     public String toString() {
-        return super.toString() + "KeyResultMetric{" + "baseline=" + baseline + ", stretchGoal=" + stretchGoal
-                + ", unit='" + unit + '\'' + '}';
+        return super.toString() + "KeyResultMetric{" + "baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\'' + '}';
     }
 
     private KeyResultMetric(Builder builder) {

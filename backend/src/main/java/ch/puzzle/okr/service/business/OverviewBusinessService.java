@@ -18,14 +18,17 @@ public class OverviewBusinessService {
     private final OverviewValidationService validator;
 
     public OverviewBusinessService(OverviewPersistenceService overviewPersistenceService,
-            QuarterBusinessService quarterBusinessService, OverviewValidationService validator) {
+                                   QuarterBusinessService quarterBusinessService,
+                                   OverviewValidationService validator) {
         this.overviewPersistenceService = overviewPersistenceService;
         this.quarterBusinessService = quarterBusinessService;
         this.validator = validator;
     }
 
-    public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery,
-            AuthorizationUser authorizationUser) {
+    public List<Overview> getFilteredOverview(Long quarterId,
+                                              List<Long> teamIds,
+                                              String objectiveQuery,
+                                              AuthorizationUser authorizationUser) {
         if (Objects.isNull(quarterId)) {
             quarterId = quarterBusinessService.getCurrentQuarter().getId();
         }
@@ -36,8 +39,10 @@ public class OverviewBusinessService {
             return List.of();
         }
 
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
-                authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId,
+                                                                                  teamIds,
+                                                                                  objectiveQuery,
+                                                                                  authorizationUser);
         return sortOverview(overviews, authorizationUser);
     }
 

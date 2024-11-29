@@ -23,7 +23,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class ObjectiveMapperTest {
 
     private static final long TEAM_ID = 23L;
@@ -55,13 +57,23 @@ public class ObjectiveMapperTest {
         objectiveMapper = new ObjectiveMapper(teamBusinessService, quarterBusinessService);
     }
 
-    @DisplayName("toDto() should map Objective to Dto")
+    @DisplayName(
+        "toDto() should map Objective to Dto"
+    )
     @Test
     void toDtoShouldMapObjectiveToDto() {
         // arrange
-        Objective objective = Objective.Builder.builder().withId(ID).withVersion(VERSION).withTitle(TITLE)
-                .withTeam(team).withQuarter(quarter).withDescription(DESCRIPTION).withState(STATE)
-                .withCreatedOn(CREATE_DATE_TIME).withModifiedOn(MODIFIED_DATE_TIME).build();
+        Objective objective = Objective.Builder.builder()
+                                               .withId(ID)
+                                               .withVersion(VERSION)
+                                               .withTitle(TITLE)
+                                               .withTeam(team)
+                                               .withQuarter(quarter)
+                                               .withDescription(DESCRIPTION)
+                                               .withState(STATE)
+                                               .withCreatedOn(CREATE_DATE_TIME)
+                                               .withModifiedOn(MODIFIED_DATE_TIME)
+                                               .build();
         objective.setWriteable(IS_WRITEABLE);
 
         // act

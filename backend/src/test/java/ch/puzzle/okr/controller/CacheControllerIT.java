@@ -17,9 +17,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@WithMockUser(value = "spring")
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(CacheController.class)
+@WithMockUser(
+        value = "spring"
+)
+@ExtendWith(
+    MockitoExtension.class
+)
+@WebMvcTest(
+    CacheController.class
+)
 class CacheControllerIT {
     @Autowired
     private MockMvc mvc;
@@ -28,16 +34,15 @@ class CacheControllerIT {
 
     @Test
     void shouldEmptyAuthorisationUsersCache() throws Exception {
-        mvc.perform(
-                post("/api/v2/caches/emptyAuthorizationUsersCache").with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+        mvc.perform(post("/api/v2/caches/emptyAuthorizationUsersCache").with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
     @Test
     void shouldEmptyAllCaches() throws Exception {
         mvc.perform(post("/api/v2/caches/emptyAllCaches").with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+           .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         verify(cacheService, times(1)).emptyAllCaches();
     }
 }

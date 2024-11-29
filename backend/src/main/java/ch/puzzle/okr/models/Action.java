@@ -10,21 +10,42 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 @Entity
 public class Action implements WriteableInterface {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_action")
-    @SequenceGenerator(name = "sequence_action", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_action"
+    )
+    @SequenceGenerator(
+            name = "sequence_action",
+            allocationSize = 1
+    )
     private Long id;
 
     @Version
     private int version;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Size(
+            max = 4096,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String action;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private int priority;
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    private int priority;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private boolean isChecked;
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    private boolean isChecked;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @ManyToOne
     private KeyResult keyResult;
 
     private transient boolean writeable;
@@ -101,8 +122,7 @@ public class Action implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Action{" + "id=" + id + ", version=" + version + ", action='" + action + '\'' + ", priority=" + priority
-                + ", isChecked=" + isChecked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
+        return "Action{" + "id=" + id + ", version=" + version + ", action='" + action + '\'' + ", priority=" + priority + ", isChecked=" + isChecked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
     }
 
     @Override
@@ -112,9 +132,10 @@ public class Action implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         Action action1 = (Action) o;
-        return version == action1.version && priority == action1.priority && isChecked == action1.isChecked
-                && writeable == action1.writeable && Objects.equals(id, action1.id)
-                && Objects.equals(action, action1.action) && Objects.equals(keyResult, action1.keyResult);
+        return version == action1.version && priority == action1.priority && isChecked == action1.isChecked && writeable == action1.writeable && Objects.equals(id,
+                                                                                                                                                                action1.id) && Objects.equals(action,
+                                                                                                                                                                                              action1.action) && Objects.equals(keyResult,
+                                                                                                                                                                                                                                action1.keyResult);
     }
 
     @Override

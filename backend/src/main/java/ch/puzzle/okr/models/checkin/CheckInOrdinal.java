@@ -12,9 +12,16 @@ import ch.puzzle.okr.models.MessageKey;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Entity
-@DiscriminatorValue(KEY_RESULT_TYPE_ORDINAL)
+@DiscriminatorValue(
+    KEY_RESULT_TYPE_ORDINAL
+)
 public class CheckInOrdinal extends CheckIn {
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Enumerated(EnumType.STRING)
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Enumerated(
+        EnumType.STRING
+    )
     private Zone zone;
 
     /* Getter and Setter */

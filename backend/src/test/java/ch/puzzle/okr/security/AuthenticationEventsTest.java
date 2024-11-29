@@ -22,7 +22,9 @@ public class AuthenticationEventsTest {
         TenantContext.setCurrentTenant(DEFAULT_TENANT_ID);
     }
 
-    @DisplayName("onSuccess() puts Token from AuthenticationSuccessEvent in TenantContext")
+    @DisplayName(
+        "onSuccess() puts Token from AuthenticationSuccessEvent in TenantContext"
+    )
     @Test
     void onSuccessPutsTokenFromAuthenticationSuccessEventInTenantContext() {
         // arrange
@@ -55,7 +57,7 @@ public class AuthenticationEventsTest {
     }
 
     private void verifyGetTenantFromTokenIsCalledWithTokenFromAuthenticationSuccessEvent(JwtHelper jwtHelper,
-            Jwt token) {
+                                                                                         Jwt token) {
         verify(jwtHelper).getTenantFromToken(token);
     }
 

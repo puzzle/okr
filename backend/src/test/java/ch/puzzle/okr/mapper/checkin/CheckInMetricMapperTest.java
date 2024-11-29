@@ -23,7 +23,9 @@ import static ch.puzzle.okr.mapper.checkin.helper.TestDataHelper.checkInMetric;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class CheckInMetricMapperTest {
 
     private CheckInMetricMapper checkInMetricMapper;
@@ -39,7 +41,9 @@ public class CheckInMetricMapperTest {
         checkInMetricMapper = new CheckInMetricMapper(keyResultBusinessService);
     }
 
-    @DisplayName("toDto() should map CheckInMetric to Dto")
+    @DisplayName(
+        "toDto() should map CheckInMetric to Dto"
+    )
     @Test
     void toDtoShouldMapCheckInMetricToDto() {
         // arrange
@@ -53,7 +57,9 @@ public class CheckInMetricMapperTest {
         assertCheckInMetricDto(checkInMetric, checkInMetricDto);
     }
 
-    @DisplayName("toCheckInMetric() should map Dto to checkInMetric")
+    @DisplayName(
+        "toCheckInMetric() should map Dto to checkInMetric"
+    )
     @Test
     void toCheckInMetricShouldMapDtoToCheckInMetric() {
         // arrange

@@ -35,29 +35,62 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class KeyResultValidationServiceTest {
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
 
-    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-            .withEmail("kaufmann@puzzle.ch").build();
+    private final User user = User.Builder.builder()
+                                          .withId(1L)
+                                          .withFirstname("Bob")
+                                          .withLastname("Kaufmann")
+                                          .withEmail("kaufmann@puzzle.ch")
+                                          .build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
-    private final Objective objective = Objective.Builder.builder().withId(1L).withTitle("Objective 1")
-            .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
-            .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
-            .withCreatedOn(LocalDateTime.MAX).build();
-    private final KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
-            .withUnit(Unit.NUMBER).withId(5L).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
-            .build();
-    private final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Ein Baum")
-            .withTargetZone("Zwei Bäume").withTitle("Keyresult Ordinal").withObjective(objective).withOwner(user)
-            .build();
-    private final KeyResult fullKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
-            .withUnit(Unit.FTE).withId(null).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
-            .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
-            .withCreatedBy(user).build();
+    private final Objective objective = Objective.Builder.builder()
+                                                         .withId(1L)
+                                                         .withTitle("Objective 1")
+                                                         .withCreatedBy(user)
+                                                         .withTeam(team)
+                                                         .withQuarter(quarter)
+                                                         .withDescription("This is our description")
+                                                         .withModifiedOn(LocalDateTime.MAX)
+                                                         .withState(State.DRAFT)
+                                                         .withModifiedBy(user)
+                                                         .withCreatedOn(LocalDateTime.MAX)
+                                                         .build();
+    private final KeyResult keyResultMetric = KeyResultMetric.Builder.builder()
+                                                                     .withBaseline(4.0)
+                                                                     .withStretchGoal(7.0)
+                                                                     .withUnit(Unit.NUMBER)
+                                                                     .withId(5L)
+                                                                     .withTitle("Keyresult Metric")
+                                                                     .withObjective(objective)
+                                                                     .withOwner(user)
+                                                                     .build();
+    private final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder()
+                                                                       .withCommitZone("Ein Baum")
+                                                                       .withTargetZone("Zwei Bäume")
+                                                                       .withTitle("Keyresult Ordinal")
+                                                                       .withObjective(objective)
+                                                                       .withOwner(user)
+                                                                       .build();
+    private final KeyResult fullKeyResult = KeyResultMetric.Builder.builder()
+                                                                   .withBaseline(4.0)
+                                                                   .withStretchGoal(7.0)
+                                                                   .withUnit(Unit.FTE)
+                                                                   .withId(null)
+                                                                   .withTitle("Keyresult Metric")
+                                                                   .withObjective(objective)
+                                                                   .withOwner(user)
+                                                                   .withCreatedOn(LocalDateTime.MIN)
+                                                                   .withModifiedOn(LocalDateTime.MAX)
+                                                                   .withDescription("Description")
+                                                                   .withCreatedBy(user)
+                                                                   .build();
 
     @BeforeEach
     void setUp() {
@@ -73,20 +106,25 @@ class KeyResultValidationServiceTest {
     private KeyResultValidationService validator;
 
     private static Stream<Arguments> nameValidationArguments() {
-        return Stream.of(
-                arguments(StringUtils.repeat('1', 251),
-                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")))),
-                arguments(StringUtils.repeat('1', 1),
-                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")))),
-                arguments("",
-                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")),
-                                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
-                arguments(" ",
-                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")),
-                                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
-                arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
-                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("title", "KeyResult")),
-                        new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))));
+        return Stream.of(arguments(StringUtils.repeat('1', 251),
+                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
+                                                        List.of("title", "KeyResult", "2", "250")))),
+                         arguments(StringUtils.repeat('1', 1),
+                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
+                                                        List.of("title", "KeyResult", "2", "250")))),
+                         arguments("",
+                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
+                                                        List.of("title", "KeyResult", "2", "250")),
+                                           new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
+                         arguments(" ",
+                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
+                                                        List.of("title", "KeyResult", "2", "250")),
+                                           new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
+                         arguments("         ",
+                                   List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
+                         arguments(null,
+                                   List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("title", "KeyResult")),
+                                           new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))));
     }
 
     @Test
@@ -101,7 +139,7 @@ class KeyResultValidationServiceTest {
     void validateOnGetShouldThrowExceptionIfKeyResultIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
+                                                            () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
@@ -121,7 +159,7 @@ class KeyResultValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnCreate(null));
+                                                            () -> validator.validateOnCreate(null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("KeyResult")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -131,23 +169,33 @@ class KeyResultValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnCreate(keyResultMetric));
+                                                            () -> validator.validateOnCreate(keyResultMetric));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "KeyResult")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @ParameterizedTest
-    @MethodSource("nameValidationArguments")
+    @MethodSource(
+        "nameValidationArguments"
+    )
     void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
-                .withUnit(Unit.EUR).withId(null).withTitle(title).withOwner(user).withObjective(objective)
-                .withCreatedBy(user).withCreatedOn(LocalDateTime.MIN).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder()
+                                                     .withBaseline(3.0)
+                                                     .withStretchGoal(5.0)
+                                                     .withUnit(Unit.EUR)
+                                                     .withId(null)
+                                                     .withTitle(title)
+                                                     .withOwner(user)
+                                                     .withObjective(objective)
+                                                     .withCreatedBy(user)
+                                                     .withCreatedOn(LocalDateTime.MIN)
+                                                     .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnCreate(keyResult));
+                                                            () -> validator.validateOnCreate(keyResult));
         assertOkrResponseStatusException(exception, errors);
     }
 
@@ -158,15 +206,15 @@ class KeyResultValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnCreate(keyResultInvalid));
+                                                            () -> validator.validateOnCreate(keyResultInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")));
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -174,10 +222,19 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldBeSuccessfulWhenKeyResultIsValid() {
         // arrange
         Long id = 5L;
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
-                .withUnit(Unit.EUR).withId(id).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
-                .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
-                .withCreatedBy(user).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder()
+                                                     .withBaseline(4.0)
+                                                     .withStretchGoal(7.0)
+                                                     .withUnit(Unit.EUR)
+                                                     .withId(id)
+                                                     .withTitle("Keyresult Metric")
+                                                     .withObjective(objective)
+                                                     .withOwner(user)
+                                                     .withCreatedOn(LocalDateTime.MIN)
+                                                     .withModifiedOn(LocalDateTime.MAX)
+                                                     .withDescription("Description")
+                                                     .withCreatedBy(user)
+                                                     .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
         // act
@@ -194,7 +251,7 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(1L, null));
+                                                            () -> validator.validateOnUpdate(1L, null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("KeyResult")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -204,7 +261,7 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(null, keyResultOrdinal));
+                                                            () -> validator.validateOnUpdate(null, keyResultOrdinal));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResultOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
@@ -217,7 +274,7 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(1L, keyResultMetric));
+                                                            () -> validator.validateOnUpdate(1L, keyResultMetric));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResultMetric);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(keyResultMetric.getId());
@@ -228,18 +285,28 @@ class KeyResultValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("nameValidationArguments")
+    @MethodSource(
+        "nameValidationArguments"
+    )
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
         Long id = 3L;
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
-                .withUnit(Unit.FTE).withId(id).withTitle(title).withOwner(user).withObjective(objective)
-                .withCreatedBy(user).withCreatedOn(LocalDateTime.MIN).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder()
+                                                     .withBaseline(3.0)
+                                                     .withStretchGoal(5.0)
+                                                     .withUnit(Unit.FTE)
+                                                     .withId(id)
+                                                     .withTitle(title)
+                                                     .withOwner(user)
+                                                     .withObjective(objective)
+                                                     .withCreatedBy(user)
+                                                     .withCreatedOn(LocalDateTime.MIN)
+                                                     .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(id, keyResult));
+                                                            () -> validator.validateOnUpdate(id, keyResult));
 
         assertOkrResponseStatusException(exception, errors);
     }
@@ -248,20 +315,23 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
         Long id = 11L;
-        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder().withId(id).withTitle("Title")
-                .withObjective(objective).build();
+        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder()
+                                                            .withId(id)
+                                                            .withTitle("Title")
+                                                            .withObjective(objective)
+                                                            .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResultInvalid);
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(id, keyResultInvalid));
+                                                            () -> validator.validateOnUpdate(id, keyResultInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")));
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -277,7 +347,7 @@ class KeyResultValidationServiceTest {
     void validateOnDeleteShouldThrowExceptionIfKeyResultIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
+                                                            () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
@@ -285,7 +355,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResuslt) has changed")
+    @DisplayName(
+        "validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResuslt) has changed"
+    )
     @Test
     void validateOnUpdateShouldThrowExceptionWhenObjectiveIdOfKeyResultHasChanged() {
         // arrange
@@ -296,17 +368,19 @@ class KeyResultValidationServiceTest {
 
         Long savedObjectiveId = 3L;
         Objective savedObjective = Objective.Builder.builder().withId(savedObjectiveId).build();
-        KeyResult savedKeyResultWithDifferentObjectiveId = KeyResultMetric.Builder.builder().withId(keyResultId)
-                .withObjective(savedObjective).build();
+        KeyResult savedKeyResultWithDifferentObjectiveId = KeyResultMetric.Builder.builder()
+                                                                                  .withId(keyResultId)
+                                                                                  .withObjective(savedObjective)
+                                                                                  .build();
 
         when(keyResultPersistenceService.findById(keyResultId)).thenReturn(savedKeyResultWithDifferentObjectiveId);
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(keyResultId, keyResult));
+                                                            () -> validator.validateOnUpdate(keyResultId, keyResult));
 
-        List<ErrorDto> expectedErrors = List
-                .of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of(OBJECTIVE, KEY_RESULT)));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE",
+                                                             List.of(OBJECTIVE, KEY_RESULT)));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 

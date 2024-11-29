@@ -30,9 +30,11 @@ class AlignmentPersistenceServiceIT {
     private Alignment createdAlignment;
 
     private static ObjectiveAlignment createObjectiveAlignment(Long id) {
-        return ObjectiveAlignment.Builder.builder().withId(id)
-                .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
-                .withTargetObjective(Objective.Builder.builder().withId(4L).build()).build();
+        return ObjectiveAlignment.Builder.builder()
+                                         .withId(id)
+                                         .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
+                                         .withTargetObjective(Objective.Builder.builder().withId(4L).build())
+                                         .build();
     }
 
     private static KeyResultAlignment createKeyResultAlignment(Long id) {
@@ -40,9 +42,12 @@ class AlignmentPersistenceServiceIT {
     }
 
     private static KeyResultAlignment createKeyResultAlignment(Long id, int version) {
-        return KeyResultAlignment.Builder.builder().withId(id).withVersion(version)
-                .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
-                .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build()).build();
+        return KeyResultAlignment.Builder.builder()
+                                         .withId(id)
+                                         .withVersion(version)
+                                         .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
+                                         .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build())
+                                         .build();
     }
 
     @BeforeEach
@@ -106,7 +111,7 @@ class AlignmentPersistenceServiceIT {
         updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> alignmentPersistenceService.save(updateAlignment));
+                                                            () -> alignmentPersistenceService.save(updateAlignment));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Alignment")));
 

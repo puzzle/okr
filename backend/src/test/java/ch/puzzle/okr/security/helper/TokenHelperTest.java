@@ -26,7 +26,9 @@ public class TokenHelperTest {
         helper = new TokenHelper();
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimTenant() return tenant if claim tenant is found")
+    @DisplayName(
+        "getTenantFromTokenUsingClaimTenant() return tenant if claim tenant is found"
+    )
     @Test
     void getTenantFromTokenUsingClaimTenantReturnTenantIfClaimTenantFound() {
         // arrange
@@ -41,7 +43,9 @@ public class TokenHelperTest {
         assertEquals(PITC, tenant.get());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimTenant() return empty if claim tenant not found")
+    @DisplayName(
+        "getTenantFromTokenUsingClaimTenant() return empty if claim tenant not found"
+    )
     @Test
     void getTenantFromTokenUsingClaimTenantReturnEmptyIfClaimTenantNotFound() {
         // arrange
@@ -54,7 +58,9 @@ public class TokenHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimTenant() return empty if claim tenant is found but value is null")
+    @DisplayName(
+        "getTenantFromTokenUsingClaimTenant() return empty if claim tenant is found but value is null"
+    )
     @Test
     void getTenantFromTokenUsingClaimTenantReturnEmptyIfClaimTenantFoundButValueIsNull() {
         // arrange
@@ -68,9 +74,13 @@ public class TokenHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimIss() return tenant if claim iss is found")
+    @DisplayName(
+        "getTenantFromTokenUsingClaimIss() return tenant if claim iss is found"
+    )
     @ParameterizedTest
-    @ValueSource(strings = {"https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc"})
+    @ValueSource(
+            strings = {"https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc"}
+    )
     void getTenantFromTokenUsingClaimIssReturnTenantIfClaimIssFound(String issUrl) {
         // arrange
         Jwt tokenMock = mock(Jwt.class);
@@ -84,7 +94,9 @@ public class TokenHelperTest {
         assertEquals(PITC, tenant.get());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimIss() return empty if claim iss is not found")
+    @DisplayName(
+        "getTenantFromTokenUsingClaimIss() return empty if claim iss is not found"
+    )
     @Test
     void getTenantFromTokenUsingClaimIssReturnEmptyIfClaimIssNotFound() {
         // arrange
@@ -97,7 +109,9 @@ public class TokenHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimIss() return empty if claim iss is found but value is null")
+    @DisplayName(
+        "getTenantFromTokenUsingClaimIss() return empty if claim iss is found but value is null"
+    )
     @Test
     void getTenantFromTokenUsingClaimIssReturnEmptyIfClaimIssFoundButValueIsNull() {
         // arrange

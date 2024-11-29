@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Profile;
  * This class is used for testing purposes only. Do NOT use this class in
  * production mode.
  */
-@Profile("integration-test")
+@Profile(
+    "integration-test"
+)
 public record QuarterData(String label, LocalDate startDate, LocalDate endDate) {
 
     public String startDateAsIsoString() {
@@ -30,8 +32,7 @@ public record QuarterData(String label, LocalDate startDate, LocalDate endDate) 
 
     @Override
     public String toString() {
-        return "(" + "'" + label() + "', " + "'" + startDateAsIsoString() + "', " + "'" + endDateAsIsoString() + "'"
-                + ")";
+        return "(" + "'" + label() + "', " + "'" + startDateAsIsoString() + "', " + "'" + endDateAsIsoString() + "'" + ")";
     }
 
 }

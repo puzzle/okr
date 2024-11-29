@@ -24,9 +24,13 @@ class ClientConfigServiceIT {
     private ClientConfigService clientConfigService;
 
     @ParameterizedTest
-    @MethodSource("tenantConfigs")
-    void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname, String activeProfile,
-            String issuer, String clientId) {
+    @MethodSource(
+        "tenantConfigs"
+    )
+    void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname,
+                                                                             String activeProfile,
+                                                                             String issuer,
+                                                                             String clientId) {
 
         // arrange + act
         ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv(hostname);
@@ -38,15 +42,20 @@ class ClientConfigServiceIT {
     }
 
     private static Stream<Arguments> tenantConfigs() {
-        return Stream.of(
-                Arguments.of("pitc.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "pitc_okr_staging"),
-                Arguments.of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
+        return Stream.of(Arguments.of("pitc.okr.puzzle.ch",
+                                      "prod",
+                                      "http://localhost:8544/realms/pitc",
+                                      "pitc_okr_staging"),
+                         Arguments.of("acme.okr.puzzle.ch",
+                                      "prod",
+                                      "http://localhost:8544/realms/pitc",
+                                      "acme_okr_staging"));
     }
 
     @Test
     void getConfigBasedOnActiveEnv_invalidSubdomain_throwsException() {
         assertThrowsExactly(EntityNotFoundException.class,
-                () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
+                            () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
     }
 
     @Test

@@ -23,9 +23,15 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(value = "spring")
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(ClientConfigController.class)
+@WithMockUser(
+        value = "spring"
+)
+@ExtendWith(
+    MockitoExtension.class
+)
+@WebMvcTest(
+    ClientConfigController.class
+)
 public class ClientConfigControllerIT {
 
     @Autowired
@@ -38,25 +44,33 @@ public class ClientConfigControllerIT {
         BDDMockito.given(configService.getConfigBasedOnActiveEnv(anyString())).willReturn(createClientConfigDto());
 
         mvc.perform(get("/config").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.aMapWithSize(10)))
-                .andExpect(jsonPath("$.activeProfile", Matchers.is("Active_Profile")))
-                .andExpect(jsonPath("$.issuer", Matchers.is("Issuer")))
-                .andExpect(jsonPath("$.clientId", Matchers.is("Client_Id")))
-                .andExpect(jsonPath("$.favicon", Matchers.is("Favicon")))
-                .andExpect(jsonPath("$.logo", Matchers.is("Logo")))
-                .andExpect(jsonPath("$.triangles", Matchers.is("Triangles")))
-                .andExpect(jsonPath("$.backgroundLogo", Matchers.is("Background_Logo")))
-                .andExpect(jsonPath("$.title", Matchers.is("Title")))
-                .andExpect(jsonPath("$.helpSiteUrl", Matchers.is("helpSiteUrl")))
-                .andExpect(jsonPath("$.customStyles.font-family", Matchers.is("verdana")))
-                .andExpect(jsonPath("$.customStyles.font-size", Matchers.is("20px")));
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.aMapWithSize(10)))
+           .andExpect(jsonPath("$.activeProfile", Matchers.is("Active_Profile")))
+           .andExpect(jsonPath("$.issuer", Matchers.is("Issuer")))
+           .andExpect(jsonPath("$.clientId", Matchers.is("Client_Id")))
+           .andExpect(jsonPath("$.favicon", Matchers.is("Favicon")))
+           .andExpect(jsonPath("$.logo", Matchers.is("Logo")))
+           .andExpect(jsonPath("$.triangles", Matchers.is("Triangles")))
+           .andExpect(jsonPath("$.backgroundLogo", Matchers.is("Background_Logo")))
+           .andExpect(jsonPath("$.title", Matchers.is("Title")))
+           .andExpect(jsonPath("$.helpSiteUrl", Matchers.is("helpSiteUrl")))
+           .andExpect(jsonPath("$.customStyles.font-family", Matchers.is("verdana")))
+           .andExpect(jsonPath("$.customStyles.font-size", Matchers.is("20px")));
     }
 
     private ClientConfigDto createClientConfigDto() {
         Map<String, String> customStyles = Map.of("font-family", "verdana", "font-size", "20px");
-        return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo", "Triangles",
-                "Background_Logo", "Title", "helpSiteUrl", customStyles);
+        return new ClientConfigDto("Active_Profile",
+                                   "Issuer",
+                                   "Client_Id",
+                                   "Favicon",
+                                   "Logo",
+                                   "Triangles",
+                                   "Background_Logo",
+                                   "Title",
+                                   "helpSiteUrl",
+                                   customStyles);
     }
 
 }

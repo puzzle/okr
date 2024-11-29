@@ -20,7 +20,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class ActionMapperTest {
 
     private static final long ID = 0L;
@@ -45,12 +47,20 @@ public class ActionMapperTest {
         actionMapper = new ActionMapper(keyResultBusinessService);
     }
 
-    @DisplayName("toDto() should map Action to Dto")
+    @DisplayName(
+        "toDto() should map Action to Dto"
+    )
     @Test
     void toDtoShouldMapActionToDto() {
         // arrange
-        Action action = Action.Builder.builder().withId(ID).withVersion(VERSION).withAction(ACTION)
-                .withPriority(PRIORITY).withIsChecked(IS_CHECKED).withKeyResult(keyResult).build();
+        Action action = Action.Builder.builder()
+                                      .withId(ID)
+                                      .withVersion(VERSION)
+                                      .withAction(ACTION)
+                                      .withPriority(PRIORITY)
+                                      .withIsChecked(IS_CHECKED)
+                                      .withKeyResult(keyResult)
+                                      .build();
         action.setWriteable(IS_WRITEABLE);
 
         // act
@@ -96,13 +106,20 @@ public class ActionMapperTest {
         assertListOfActionsWithKeyResultId(actionDtoList, actionList);
     }
 
-    @DisplayName("toActions() with KeyResult Parameter should map List of Dtos (without a KeyResultId) to list of Actions")
+    @DisplayName(
+        "toActions() with KeyResult Parameter should map List of Dtos (without a KeyResultId) to list of Actions"
+    )
     @Test
     void toActionsWithKeyResultParameterShouldMapListOfDtosToListOfActions() {
         // arrange
         KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
-        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, VERSION, ACTION, PRIORITY, IS_CHECKED, null, // keyResultId
-                IS_WRITEABLE);
+        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID,
+                                                                 VERSION,
+                                                                 ACTION,
+                                                                 PRIORITY,
+                                                                 IS_CHECKED,
+                                                                 null, // keyResultId
+                                                                 IS_WRITEABLE);
 
         // act
         List<ActionDto> actionDtoList = List.of(actionDtoWithKeyResultIdIsNull);
@@ -122,8 +139,9 @@ public class ActionMapperTest {
         assertEquals(expectedDtoList.get(0).keyResultId(), actualList.get(0).getKeyResult().getId());
     }
 
-    private void assertListOfActionsAndKeyResultParameter(List<ActionDto> expectedDtoList, List<Action> actualList,
-            Long keyResultId) {
+    private void assertListOfActionsAndKeyResultParameter(List<ActionDto> expectedDtoList,
+                                                          List<Action> actualList,
+                                                          Long keyResultId) {
         assertListsAndFirstAction(expectedDtoList, actualList);
         assertEquals(keyResultId, actualList.get(0).getKeyResult().getId());
     }

@@ -16,7 +16,9 @@ import static ch.puzzle.okr.test.TestConstants.TEAM_PUZZLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class AlignmentSelectionBusinessServiceTest {
 
     @InjectMocks
@@ -25,9 +27,15 @@ class AlignmentSelectionBusinessServiceTest {
     AlignmentSelectionPersistenceService alignmentSelectionPersistenceService;
 
     private static AlignmentSelection createAlignmentSelection() {
-        return AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(9L, 15L))
-                .withTeamId(5L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 9").withQuarterId(2L)
-                .withQuarterLabel("GJ 23/24-Q1").withKeyResultTitle("Key Result 15").build();
+        return AlignmentSelection.Builder.builder()
+                                         .withAlignmentSelectionId(AlignmentSelectionId.of(9L, 15L))
+                                         .withTeamId(5L)
+                                         .withTeamName(TEAM_PUZZLE)
+                                         .withObjectiveTitle("Objective 9")
+                                         .withQuarterId(2L)
+                                         .withQuarterLabel("GJ 23/24-Q1")
+                                         .withKeyResultTitle("Key Result 15")
+                                         .build();
     }
 
     @Test

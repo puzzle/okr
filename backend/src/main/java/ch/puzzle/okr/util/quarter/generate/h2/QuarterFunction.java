@@ -19,7 +19,9 @@ import org.springframework.stereotype.Component;
  * production mode.
  */
 @Component
-@Profile("integration-test")
+@Profile(
+    "integration-test"
+)
 public class QuarterFunction {
     public static final int CURRENT_QUARTER_DB_ID = 2;
     public static final int NEXT_QUARTER_DB_ID = 3;

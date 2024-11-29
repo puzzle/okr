@@ -17,7 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class UserMapperTest {
 
     private static final long USER_TEAM_ID = 100L;
@@ -33,11 +35,19 @@ public class UserMapperTest {
     @InjectMocks
     private TeamMapper teamMapper;
 
-    private final User user = User.Builder.builder().withId(ID).withVersion(VERSION).withFirstname(FIRSTNAME)
-            .withLastname(LASTNAME).withEmail(EMAIL)
-            .withUserTeamList(List.of(
-                    UserTeam.Builder.builder().withId(USER_TEAM_ID).withTeam(Team.Builder.builder().build()).build()))
-            .withOkrChampion(IS_OKR_CHAMPION).build();
+    private final User user = User.Builder.builder()
+                                          .withId(ID)
+                                          .withVersion(VERSION)
+                                          .withFirstname(FIRSTNAME)
+                                          .withLastname(LASTNAME)
+                                          .withEmail(EMAIL)
+                                          .withUserTeamList(List.of(UserTeam.Builder.builder()
+                                                                                    .withId(USER_TEAM_ID)
+                                                                                    .withTeam(Team.Builder.builder()
+                                                                                                          .build())
+                                                                                    .build()))
+                                          .withOkrChampion(IS_OKR_CHAMPION)
+                                          .build();
 
     private final NewUserDto userDto = new NewUserDto(FIRSTNAME, LASTNAME, EMAIL);
 
@@ -46,18 +56,28 @@ public class UserMapperTest {
         userMapper = new UserMapper(teamMapper);
     }
 
-    @DisplayName("toDto() without TeamList throws NullPointerException")
+    @DisplayName(
+        "toDto() without TeamList throws NullPointerException"
+    )
     @Test
     void toDtoWithoutTeamListThrowsException() {
         // arrange
-        User user = User.Builder.builder().withId(ID).withVersion(VERSION).withFirstname(FIRSTNAME)
-                .withLastname(LASTNAME).withEmail(EMAIL).withOkrChampion(IS_OKR_CHAMPION).build();
+        User user = User.Builder.builder()
+                                .withId(ID)
+                                .withVersion(VERSION)
+                                .withFirstname(FIRSTNAME)
+                                .withLastname(LASTNAME)
+                                .withEmail(EMAIL)
+                                .withOkrChampion(IS_OKR_CHAMPION)
+                                .build();
 
         // act + assert
         assertThrows(NullPointerException.class, () -> userMapper.toDto(user));
     }
 
-    @DisplayName("toDto() should map User to Dto")
+    @DisplayName(
+        "toDto() should map User to Dto"
+    )
     @Test
     void toDtoShouldMapUserToDto() {
         // act
@@ -68,7 +88,9 @@ public class UserMapperTest {
         assertUserDto(user, userDto);
     }
 
-    @DisplayName("toDtos() should map list of Users to Dtos")
+    @DisplayName(
+        "toDtos() should map list of Users to Dtos"
+    )
     @Test
     void toDtosShouldMapListOfUsersToDtos() {
         // act
@@ -90,7 +112,9 @@ public class UserMapperTest {
         assertEquals(expected.getUserTeamList().get(0).getId(), actual.userTeamList().get(0).id());
     }
 
-    @DisplayName("toUser() should map UserDto to User")
+    @DisplayName(
+        "toUser() should map UserDto to User"
+    )
     @Test
     void toUserShouldMapUserDtoToUser() {
         // act
@@ -101,7 +125,9 @@ public class UserMapperTest {
         assertUser(userDto, user);
     }
 
-    @DisplayName("toUserList() should map List of UserDtos to List of Users")
+    @DisplayName(
+        "toUserList() should map List of UserDtos to List of Users"
+    )
     @Test
     void toUserListShouldMapUserDtoListToUserList() {
         // act

@@ -20,7 +20,9 @@ public class TenantJwtIssuerValidatorTest {
     private static final String PITC = "pitc";
     private static final String ISSUER_URL = "issuerUrl";
 
-    @DisplayName("validate() throws exception if TenantConfig is not found for Tenant PITC")
+    @DisplayName(
+        "validate() throws exception if TenantConfig is not found for Tenant PITC"
+    )
     @Test
     void validateThrowsExceptionIfTenantConfigNotFound() {
         // arrange
@@ -34,12 +36,14 @@ public class TenantJwtIssuerValidatorTest {
         // act + assert
         TenantJwtIssuerValidator validator = new TenantJwtIssuerValidator(emptyTenantConfigProvider, jwtHelper);
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
-                () -> validator.validate(token));
+                                                                         () -> validator.validate(token));
 
         assertEquals("unknown tenant", illegalArgumentException.getLocalizedMessage());
     }
 
-    @DisplayName("validate() return OAuth2TokenValidatorResult if TenantConfig with IssuerUrl is found for Tenant PITC")
+    @DisplayName(
+        "validate() return OAuth2TokenValidatorResult if TenantConfig with IssuerUrl is found for Tenant PITC"
+    )
     @Test
     void validateReturnOAuth2TokenValidatorResultIfTenantConfigWithIssuerUrlIsFound() {
         // arrange
@@ -49,12 +53,15 @@ public class TenantJwtIssuerValidatorTest {
         when(jwtHelper.getTenantFromToken(token)).thenReturn(PITC);
 
         TenantConfigProvider tenantConfigProviderWithPitcConfig = mock(TenantConfigProvider.class);
-        when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC))
-                .thenReturn(Optional.of(new TenantConfigProvider.TenantConfig(PITC, new String[]{}, "jwkSetUri",
-                        ISSUER_URL, "clientId", null)));
+        when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC)).thenReturn(Optional.of(new TenantConfigProvider.TenantConfig(PITC,
+                                                                                                                                        new String[]{},
+                                                                                                                                        "jwkSetUri",
+                                                                                                                                        ISSUER_URL,
+                                                                                                                                        "clientId",
+                                                                                                                                        null)));
 
-        TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(
-                tenantConfigProviderWithPitcConfig, jwtHelper) {
+        TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(tenantConfigProviderWithPitcConfig,
+                                                                                         jwtHelper) {
 
             @Override
             JwtIssuerValidator createValidator(String issuer) {

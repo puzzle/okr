@@ -35,7 +35,9 @@ public abstract class PersistenceBase<T, ID, R> {
         this.repository = repository;
     }
 
-    @SuppressWarnings(value = "unchecked casts")
+    @SuppressWarnings(
+            value = "unchecked casts"
+    )
     public R getRepository() {
         return (R) repository;
     }

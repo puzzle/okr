@@ -24,7 +24,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class OverviewAuthorizationServiceTest {
     @Mock
     OverviewBusinessService overviewBusinessService;
@@ -48,7 +50,9 @@ class OverviewAuthorizationServiceTest {
                                                       .withObjectiveTitle("Objective 1")
                                                       .build();
 
-    @DisplayName("getFilteredOverview() should do nothing when OverviewId is null")
+    @DisplayName(
+        "getFilteredOverview() should do nothing when OverviewId is null"
+    )
     @Test
     void getFilteredOverviewShouldDoNothingWhenOverviewIdIsNull() {
         // arrange
@@ -66,7 +70,9 @@ class OverviewAuthorizationServiceTest {
         verify(overviewWithoutOverviewId, never()).setWriteable(anyBoolean());
     }
 
-    @DisplayName("getFilteredOverview() should do nothing when TeamId is null")
+    @DisplayName(
+        "getFilteredOverview() should do nothing when TeamId is null"
+    )
     @Test
     void getFilteredOverviewShouldDoNothingWhenTeamIdIsNull() {
         // arrange
@@ -86,7 +92,9 @@ class OverviewAuthorizationServiceTest {
         verify(overviewWithoutTeamId, never()).setWriteable(anyBoolean());
     }
 
-    @DisplayName("getFilteredOverview() should do nothing when ObjectiveId is null")
+    @DisplayName(
+        "getFilteredOverview() should do nothing when ObjectiveId is null"
+    )
     @Test
     void getFilteredOverviewShouldDoNothingWhenObjectiveIdIsNull() {
         // arrange
@@ -150,7 +158,9 @@ class OverviewAuthorizationServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(
+            booleans = {true, false}
+    )
     void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
         if (hasRoleWriteAll) {
             when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);

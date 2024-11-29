@@ -32,7 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class TeamBusinessServiceTest {
     @MockBean
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);

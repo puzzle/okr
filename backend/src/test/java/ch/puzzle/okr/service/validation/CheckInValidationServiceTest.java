@@ -33,7 +33,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class CheckInValidationServiceTest {
     @MockBean
     CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
@@ -174,7 +176,9 @@ class CheckInValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("confidenceValidationArguments")
+    @MethodSource(
+        "confidenceValidationArguments"
+    )
     void validateOnCreateShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence, List<ErrorDto> expectedErrors) {
 
         // arrange
@@ -262,7 +266,9 @@ class CheckInValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("confidenceValidationArguments")
+    @MethodSource(
+        "confidenceValidationArguments"
+    )
     void validateOnUpdateShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence, List<ErrorDto> expectedErrors) {
 
         // arrange

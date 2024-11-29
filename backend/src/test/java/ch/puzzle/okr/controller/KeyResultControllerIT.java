@@ -43,9 +43,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WithMockUser(value = "spring")
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(KeyResultController.class)
+@WithMockUser(
+        value = "spring"
+)
+@ExtendWith(
+    MockitoExtension.class
+)
+@WebMvcTest(
+    KeyResultController.class
+)
 class KeyResultControllerIT {
 
     @MockBean

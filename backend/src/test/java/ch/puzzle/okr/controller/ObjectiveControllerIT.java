@@ -32,9 +32,15 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(value = "spring")
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(ObjectiveController.class)
+@WithMockUser(
+        value = "spring"
+)
+@ExtendWith(
+    MockitoExtension.class
+)
+@WebMvcTest(
+    ObjectiveController.class
+)
 class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";

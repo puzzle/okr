@@ -11,7 +11,9 @@ public class FlywayMultitenantMigrationInitializer {
     private final TenantConfigProviderInterface tenantConfigProvider;
     private final String[] scriptLocations;
 
-    public FlywayMultitenantMigrationInitializer(TenantConfigProviderInterface tenantConfigProvider, final @Value("${spring.flyway.locations}") String[] scriptLocations) {
+    public FlywayMultitenantMigrationInitializer(TenantConfigProviderInterface tenantConfigProvider, final @Value(
+        "${spring.flyway.locations}"
+    ) String[] scriptLocations) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.scriptLocations = scriptLocations;
     }

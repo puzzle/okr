@@ -13,38 +13,73 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "key_result_type")
+@Inheritance(
+        strategy = InheritanceType.SINGLE_TABLE
+)
+@DiscriminatorColumn(
+        name = "key_result_type"
+)
 public abstract class KeyResult implements WriteableInterface {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
-    @SequenceGenerator(name = "sequence_key_result", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_key_result"
+    )
+    @SequenceGenerator(
+            name = "sequence_key_result",
+            allocationSize = 1
+    )
     private Long id;
 
     @Version
     private int version;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    ) @ManyToOne
     private Objective objective;
 
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(
+            message = MessageKey.ATTRIBUTE_NOT_BLANK
+    )
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Size(
+            min = 2,
+            max = 250,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String title;
 
-    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(
+            max = 4096,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String description;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    ) @ManyToOne
     private User owner;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    ) @ManyToOne
     private User createdBy;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private LocalDateTime createdOn;
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
 
-    @Column(name = "key_result_type", insertable = false, updatable = false)
+    @Column(
+            name = "key_result_type",
+            insertable = false,
+            updatable = false
+    )
     private String keyResultType;
 
     private transient boolean writeable;
@@ -211,7 +246,9 @@ public abstract class KeyResult implements WriteableInterface {
         setKeyResultType(builder.keyResultType);
     }
 
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings(
+            value = "unchecked"
+    )
     public abstract static class Builder<T> {
         private Long id;
         private int version;

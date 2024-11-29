@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 
 @Entity
-@DiscriminatorValue("keyResult")
+@DiscriminatorValue(
+    "keyResult"
+)
 public class KeyResultAlignment extends Alignment implements AlignmentInterface<KeyResult> {
 
     @ManyToOne

@@ -31,7 +31,9 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class ActionValidationServiceTest {
     private final KeyResult keyResult = KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build();
     private final Action action1 = Action.Builder.builder()
@@ -158,7 +160,9 @@ class ActionValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("actionValidationArguments")
+    @MethodSource(
+        "actionValidationArguments"
+    )
     void validateOnCreateShouldThrowExceptionWhenActionIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
         Action action = Action.Builder.builder()
@@ -264,9 +268,13 @@ class ActionValidationServiceTest {
         assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
     }
 
-    @DisplayName("validateOnUpdate() should throw exception when KeyResult is not set")
+    @DisplayName(
+        "validateOnUpdate() should throw exception when KeyResult is not set"
+    )
     @ParameterizedTest
-    @MethodSource("actionPairArgument")
+    @MethodSource(
+        "actionPairArgument"
+    )
     void validateOnUpdateShouldThrowExceptionWhenKeyResultNotSet(ActionPair actionPair) {
         // arrange
         Action action = actionPair.action();
@@ -316,7 +324,9 @@ class ActionValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("actionValidationArguments")
+    @MethodSource(
+        "actionValidationArguments"
+    )
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
         Action action = Action.Builder.builder()
@@ -366,7 +376,9 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnGetByKeyResultId() should be successful when id is not null")
+    @DisplayName(
+        "validateOnGetByKeyResultId() should be successful when id is not null"
+    )
     @Test
     void validateOnGetByKeyResultIdShouldBeSuccessfulWhenIdIsNotNull() {
         // arrange
@@ -378,7 +390,9 @@ class ActionValidationServiceTest {
         verify(actionPersistenceService, never()).getModelName();
     }
 
-    @DisplayName("validateOnGetByKeyResultId() should throw exception when id is null")
+    @DisplayName(
+        "validateOnGetByKeyResultId() should throw exception when id is null"
+    )
     @Test
     void validateOnGetByKeyResultIdShouldThrowExceptionWhenIdIsNull() {
         // arrange

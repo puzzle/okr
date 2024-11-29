@@ -24,7 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class QuarterValidationServiceTest {
     @MockBean
     QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
@@ -32,7 +34,9 @@ class QuarterValidationServiceTest {
     @Spy @InjectMocks
     private QuarterValidationService validator;
 
-    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull() should do nothing when Quarter Label is Backlog")
+    @DisplayName(
+        "throwExceptionWhenStartEndDateQuarterIsNull() should do nothing when Quarter Label is Backlog"
+    )
     @Test
     void throwExceptionWhenStartEndDateQuarterIsNullShouldDoNothingWhenQuarterLabelIsBacklog() {
         // arrange
@@ -47,7 +51,9 @@ class QuarterValidationServiceTest {
         verify(quarter, never()).getEndDate();
     }
 
-    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull() should throw Exception when StartDate is null")
+    @DisplayName(
+        "throwExceptionWhenStartEndDateQuarterIsNull() should throw Exception when StartDate is null"
+    )
     @Test
     void throwExceptionWhenStartEndDateQuarterIsNullShouldThrowExceptionWhenStartDateIsNull() {
         // arrange
@@ -61,7 +67,9 @@ class QuarterValidationServiceTest {
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
-    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull() should throw Exception when EndDate is null")
+    @DisplayName(
+        "throwExceptionWhenStartEndDateQuarterIsNull() should throw Exception when EndDate is null"
+    )
     @Test
     void throwExceptionWhenStartEndDateQuarterIsNullShouldThrowExceptionWhenEndDateIsNull() {
         // arrange
@@ -76,7 +84,9 @@ class QuarterValidationServiceTest {
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
-    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull should do nothing when both dates are not null")
+    @DisplayName(
+        "throwExceptionWhenStartEndDateQuarterIsNull should do nothing when both dates are not null"
+    )
     @Test
     void throwExceptionWhenStartEndDateQuarterIsNullShouldDoNothingWhenBothDatesAreNotNull() {
         // arrange
@@ -104,7 +114,9 @@ class QuarterValidationServiceTest {
         assertEquals("This method must not be called because there is no update of quarters", exception.getMessage());
     }
 
-    @DisplayName("validateOnGeneration() should throw exception when StartDate is null")
+    @DisplayName(
+        "validateOnGeneration() should throw exception when StartDate is null"
+    )
     @Test
     void validateOnGenerationShouldThrowExceptionWhenStartDateIsNull() {
         // arrange
@@ -120,7 +132,9 @@ class QuarterValidationServiceTest {
                                          List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "Any Label"))));
     }
 
-    @DisplayName("validateOnGeneration() should throw exception when EndDate is null")
+    @DisplayName(
+        "validateOnGeneration() should throw exception when EndDate is null"
+    )
     @Test
     void validateOnGenerationShouldThrowExceptionWhenEndDateIsNull() {
         // arrange
@@ -137,7 +151,9 @@ class QuarterValidationServiceTest {
                                          List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "Any Label"))));
     }
 
-    @DisplayName("validateOnGeneration() should do nothing when both dates are not null")
+    @DisplayName(
+        "validateOnGeneration() should do nothing when both dates are not null"
+    )
     @Test
     void validateOnGenerationShouldDoNothingWhenBothDatesAreNotNull() {
         // arrange

@@ -18,7 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class ForwardFilterTest {
     @InjectMocks
     ForwardFilter forwardFilter;

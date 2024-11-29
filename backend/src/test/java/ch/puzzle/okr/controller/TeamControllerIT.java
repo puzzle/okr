@@ -33,9 +33,15 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(value = "spring")
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(TeamController.class)
+@WithMockUser(
+        value = "spring"
+)
+@ExtendWith(
+    MockitoExtension.class
+)
+@WebMvcTest(
+    TeamController.class
+)
 class TeamControllerIT {
 
     private static final String BASE_URL = "/api/v2/teams";

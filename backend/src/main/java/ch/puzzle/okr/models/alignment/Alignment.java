@@ -7,17 +7,29 @@ import jakarta.validation.constraints.NotNull;
 import ch.puzzle.okr.models.Objective;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "alignment_type")
+@Inheritance(
+        strategy = InheritanceType.SINGLE_TABLE
+)
+@DiscriminatorColumn(
+        name = "alignment_type"
+)
 public abstract class Alignment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_alignment")
-    @SequenceGenerator(name = "sequence_alignment", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_alignment"
+    )
+    @SequenceGenerator(
+            name = "sequence_alignment",
+            allocationSize = 1
+    )
     private Long id;
     @Version
     private int version;
-    @NotNull(message = "Aligned objective must not be null") @ManyToOne
+    @NotNull(
+            message = "Aligned objective must not be null"
+    ) @ManyToOne
     private Objective alignedObjective;
 
     protected Alignment() {
@@ -67,7 +79,9 @@ public abstract class Alignment {
         return Objects.hash(id, version, alignedObjective);
     }
 
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings(
+            value = "unchecked"
+    )
     public abstract static class Builder<T> {
         private Long id;
         private int version;

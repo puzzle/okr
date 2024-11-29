@@ -32,7 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class KeyResultMetricMapperTest {
 
     private KeyResultMetricMapper keyResultMetricMapper;
@@ -60,7 +62,9 @@ public class KeyResultMetricMapperTest {
                                                           actionMapper);
     }
 
-    @DisplayName("toDto() should map a KeyResultMetric to a Dto")
+    @DisplayName(
+        "toDto() should map a KeyResultMetric to a Dto"
+    )
     @Test
     void toDtoShouldMapKeyResultMetricToDtoWithCheckIn() {
         // arrange
@@ -79,7 +83,9 @@ public class KeyResultMetricMapperTest {
         assertKeyResultMetricDtoWithCheckIn(keyResultMetric, keyResultMetricDto, actions);
     }
 
-    @DisplayName("toDto() should map KeyResultMetric to a Dto without CheckIn")
+    @DisplayName(
+        "toDto() should map KeyResultMetric to a Dto without CheckIn"
+    )
     @Test
     void toDtoShouldMapKeyResultMetricToDtoWithoutCheckIn() {
         // arrange

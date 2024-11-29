@@ -25,7 +25,9 @@ public class TenantJWSKeySelectorTest {
     private static final String MOCK_ALGORITHM = "mock_algorithm";
     private static final String UNKNOWN_TENANT = "unknown tenant";
 
-    @DisplayName("selectKeys() throws Exception if JwkSetUri not found in TenantConfigProvider")
+    @DisplayName(
+        "selectKeys() throws Exception if JwkSetUri not found in TenantConfigProvider"
+    )
     @Test
     void selectKeysThrowsExceptionIfTenantConfigIsNotFound() {
         // arrange
@@ -49,7 +51,9 @@ public class TenantJWSKeySelectorTest {
         assertEquals(UNKNOWN_TENANT, illegalArgumentException.getLocalizedMessage());
     }
 
-    @DisplayName("selectKeys() return Key with Mock Algorithm if JwkSetUri is found in TenantConfigProvider")
+    @DisplayName(
+        "selectKeys() return Key with Mock Algorithm if JwkSetUri is found in TenantConfigProvider"
+    )
     @Test
     void selectKeysReturnKeyWithMockAlgorithmIfJwkSetUriIsFound() throws KeySourceException {
         // arrange

@@ -154,10 +154,8 @@ class ObjectiveAuthorizationServiceTest {
         String reason = "junit test reason";
         Objective objective = Objective.Builder.builder().build();
 
-        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withTitle("This is my keyResult!").build();
-
         List<KeyResult> keyResults = new ArrayList<>();
-        keyResults.add(newKeyResult);
+        keyResults.add(metricKeyResult);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)

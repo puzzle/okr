@@ -29,11 +29,11 @@ public class ClientConfigService {
         this.tenantClientCustomizationProvider = clientCustomizationProvider;
     }
 
-    public ClientConfigDto getConfigBasedOnActiveEnv(String hostName) {
-        String subdomain = hostName.split("\\.")[0];
-        String domainPrefixByHyphen = hostName.split("-")[0];
+    public ClientConfigDto getConfigBasedOnActiveEnv(String hostname) {
+        String subdomain = hostname.split("\\.")[0];
+        String domainPrefixByHyphen = hostname.split("-")[0];
 
-        Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostName, subdomain,
+        Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostname, subdomain,
                 domainPrefixByHyphen);
 
         if (tenantConfig.isEmpty()) {
@@ -41,7 +41,7 @@ public class ClientConfigService {
                     MessageFormat.format("Could not find tenant config for subdomain:{0}", subdomain));
         }
 
-        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostName,
+        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostname,
                 subdomain, domainPrefixByHyphen);
 
         if (tenantClientCustomization.isEmpty()) {

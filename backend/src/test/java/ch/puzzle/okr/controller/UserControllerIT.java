@@ -73,16 +73,20 @@ class UserControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
-        BDDMockito.given(userMapper.toDto(userBob)).willReturn(userBobDto);
+        BDDMockito.given(userMapper.toDto(userAlice))
+                  .willReturn(userAliceDto);
+        BDDMockito.given(userMapper.toDto(userBob))
+                  .willReturn(userBobDto);
     }
 
     @Test
     void shouldGetAllUsers() throws Exception {
-        BDDMockito.given(userAuthorizationService.getAllUsers()).willReturn(userList);
+        BDDMockito.given(userAuthorizationService.getAllUsers())
+                  .willReturn(userList);
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(2)))
            .andExpect(jsonPath("$[0].id", Is.is(2)))
            .andExpect(jsonPath("$[0].firstname", Is.is(FIRSTNAME_1)))
@@ -96,10 +100,12 @@ class UserControllerIT {
 
     @Test
     void shouldGetAllUsersIfNoUserExists() throws Exception {
-        BDDMockito.given(userAuthorizationService.getAllUsers()).willReturn(Collections.emptyList());
+        BDDMockito.given(userAuthorizationService.getAllUsers())
+                  .willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
@@ -107,10 +113,12 @@ class UserControllerIT {
     void shouldReturnCurrentUser() throws Exception {
         BDDMockito.given(authorizationService.updateOrAddAuthorizationUser())
                   .willReturn(new AuthorizationUser(userAlice));
-        BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
+        BDDMockito.given(userMapper.toDto(userAlice))
+                  .willReturn(userAliceDto);
 
         mvc.perform(get("/api/v1/users/current").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.aMapWithSize(7)))
            .andExpect(jsonPath("$.id", Is.is(2)))
            .andExpect(jsonPath("$.version", Is.is(3)))
@@ -123,11 +131,14 @@ class UserControllerIT {
 
     @Test
     void shouldReturnUserById() throws Exception {
-        BDDMockito.given(userAuthorizationService.getById(2)).willReturn(userAlice);
-        BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
+        BDDMockito.given(userAuthorizationService.getById(2))
+                  .willReturn(userAlice);
+        BDDMockito.given(userMapper.toDto(userAlice))
+                  .willReturn(userAliceDto);
 
         mvc.perform(get("/api/v1/users/2").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.aMapWithSize(7)))
            .andExpect(jsonPath("$.id", Is.is(2)))
            .andExpect(jsonPath("$.version", Is.is(3)))
@@ -140,13 +151,16 @@ class UserControllerIT {
 
     @Test
     void shouldSetOkrChampion() throws Exception {
-        BDDMockito.given(userAuthorizationService.setIsOkrChampion(2, true)).willReturn(userAlice);
-        BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
+        BDDMockito.given(userAuthorizationService.setIsOkrChampion(2, true))
+                  .willReturn(userAlice);
+        BDDMockito.given(userMapper.toDto(userAlice))
+                  .willReturn(userAliceDto);
 
         mvc.perform(put("/api/v1/users/2/isokrchampion/true").content(SUCCESSFUL_UPDATE_BODY)
                                                              .contentType(MediaType.APPLICATION_JSON)
                                                              .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.aMapWithSize(7)))
            .andExpect(jsonPath("$.id", Is.is(2)))
            .andExpect(jsonPath("$.version", Is.is(3)))
@@ -159,13 +173,16 @@ class UserControllerIT {
 
     @Test
     void shouldCreateUsers() throws Exception {
-        BDDMockito.given(userAuthorizationService.createUsers(any())).willReturn(List.of(userAlice));
-        BDDMockito.given(userMapper.toDtos(List.of(userAlice))).willReturn(List.of(userAliceDto));
+        BDDMockito.given(userAuthorizationService.createUsers(any()))
+                  .willReturn(List.of(userAlice));
+        BDDMockito.given(userMapper.toDtos(List.of(userAlice)))
+                  .willReturn(List.of(userAliceDto));
 
         mvc.perform(post("/api/v1/users/createall").content(SUCCESSFUL_UPDATE_BODY)
                                                    .contentType(MediaType.APPLICATION_JSON)
                                                    .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(1)))
            .andExpect(jsonPath("$[0].id", Is.is(2)))
            .andExpect(jsonPath("$[0].version", Is.is(3)))
@@ -179,7 +196,8 @@ class UserControllerIT {
     @Test
     void shouldDeleteUser() throws Exception {
         mvc.perform(delete("/api/v1/users/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status().isOk());
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk());
     }
 
     @DisplayName("should throw exception when user with id cant be found while deleting")
@@ -189,7 +207,8 @@ class UserControllerIT {
                                                                                     .deleteEntityById(1000);
 
         mvc.perform(delete("/api/v1/users/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status().isNotFound());
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isNotFound());
     }
 
 }

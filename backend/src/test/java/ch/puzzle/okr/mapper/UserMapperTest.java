@@ -100,8 +100,15 @@ public class UserMapperTest {
         assertEquals(expected.isOkrChampion(), actual.isOkrChampion());
         assertEquals(expected.getEmail(), actual.email());
 
-        assertEquals(1, actual.userTeamList().size());
-        assertEquals(expected.getUserTeamList().get(0).getId(), actual.userTeamList().get(0).id());
+        assertEquals(1,
+                     actual.userTeamList()
+                           .size());
+        assertEquals(expected.getUserTeamList()
+                             .get(0)
+                             .getId(),
+                     actual.userTeamList()
+                           .get(0)
+                           .id());
     }
 
     @DisplayName("toUser() should map UserDto to User")

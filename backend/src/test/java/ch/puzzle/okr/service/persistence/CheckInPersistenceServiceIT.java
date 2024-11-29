@@ -53,7 +53,8 @@ class CheckInPersistenceServiceIT {
     }
 
     private void assertFirstIsCreatedAfterSecond(CheckIn first, CheckIn second) {
-        assertTrue(first.getCreatedOn().isAfter(second.getCreatedOn()));
+        assertTrue(first.getCreatedOn()
+                        .isAfter(second.getCreatedOn()));
     }
 
     // uses data from V100_0_0__TestData.sql
@@ -72,7 +73,8 @@ class CheckInPersistenceServiceIT {
     private void assertLastIsCreatedAfterAllOtherCheckIns(CheckIn last, List<CheckIn> allCheckIns) {
         for (CheckIn checkInLoop : allCheckIns) {
             if (!Objects.equals(checkInLoop.getId(), last.getId())) {
-                assertTrue(last.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
+                assertTrue(last.getCreatedOn()
+                               .isAfter(checkInLoop.getCreatedOn()));
             }
         }
     }

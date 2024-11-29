@@ -69,7 +69,8 @@ public class UserBusinessService {
     @Transactional
     public List<User> createUsers(List<User> userList) {
         var userIter = userPersistenceService.saveAll(userList);
-        return StreamSupport.stream(userIter.spliterator(), false).toList();
+        return StreamSupport.stream(userIter.spliterator(), false)
+                            .toList();
     }
 
     @Transactional

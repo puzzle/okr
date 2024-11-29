@@ -70,25 +70,23 @@ class OverviewControllerIT {
                                                                    .withCheckInValue(15.0)
                                                                    .withConfidence(5)
                                                                    .withCheckInCreatedOn(LocalDateTime.now())
-                                                                   .build(), Overview.Builder.builder()
-                                                                                             .withOverviewId(OverviewId.of(1L,
-                                                                                                                           2L,
-                                                                                                                           21L,
-                                                                                                                           41L))
-                                                                                             .withTeamName(PUZZLE)
-                                                                                             .withObjectiveTitle("Objective 1")
-                                                                                             .withObjectiveState(DRAFT)
-                                                                                             .withQuarterId(1L)
-                                                                                             .withQuarterLabel(QUARTER_LABEL)
-                                                                                             .withKeyResultTitle(DESCRIPTION)
-                                                                                             .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                                                             .withUnit(EUR)
-                                                                                             .withBaseline(5.0)
-                                                                                             .withStretchGoal(20.0)
-                                                                                             .withCheckInValue(15.0)
-                                                                                             .withConfidence(5)
-                                                                                             .withCheckInCreatedOn(LocalDateTime.now())
-                                                                                             .build());
+                                                                   .build(),
+                                                   Overview.Builder.builder()
+                                                                   .withOverviewId(OverviewId.of(1L, 2L, 21L, 41L))
+                                                                   .withTeamName(PUZZLE)
+                                                                   .withObjectiveTitle("Objective 1")
+                                                                   .withObjectiveState(DRAFT)
+                                                                   .withQuarterId(1L)
+                                                                   .withQuarterLabel(QUARTER_LABEL)
+                                                                   .withKeyResultTitle(DESCRIPTION)
+                                                                   .withKeyResultType(KEY_RESULT_TYPE_METRIC)
+                                                                   .withUnit(EUR)
+                                                                   .withBaseline(5.0)
+                                                                   .withStretchGoal(20.0)
+                                                                   .withCheckInValue(15.0)
+                                                                   .withConfidence(5)
+                                                                   .withCheckInCreatedOn(LocalDateTime.now())
+                                                                   .build());
     static List<Overview> overviewOKR = List.of(Overview.Builder.builder()
                                                                 .withOverviewId(OverviewId.of(2L, 5L, 20L, 40L))
                                                                 .withTeamName("OKR")
@@ -104,25 +102,23 @@ class OverviewControllerIT {
                                                                 .withCheckInValue(15.0)
                                                                 .withConfidence(5)
                                                                 .withCheckInCreatedOn(LocalDateTime.now())
-                                                                .build(), Overview.Builder.builder()
-                                                                                          .withOverviewId(OverviewId.of(2L,
-                                                                                                                        7L,
-                                                                                                                        21L,
-                                                                                                                        41L))
-                                                                                          .withTeamName("OKR")
-                                                                                          .withObjectiveTitle("Objective 7")
-                                                                                          .withObjectiveState(ONGOING)
-                                                                                          .withQuarterId(1L)
-                                                                                          .withQuarterLabel(QUARTER_LABEL)
-                                                                                          .withKeyResultTitle(DESCRIPTION)
-                                                                                          .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                                                          .withUnit(FTE)
-                                                                                          .withBaseline(5.0)
-                                                                                          .withStretchGoal(20.0)
-                                                                                          .withCheckInValue(15.0)
-                                                                                          .withConfidence(5)
-                                                                                          .withCheckInCreatedOn(LocalDateTime.now())
-                                                                                          .build());
+                                                                .build(),
+                                                Overview.Builder.builder()
+                                                                .withOverviewId(OverviewId.of(2L, 7L, 21L, 41L))
+                                                                .withTeamName("OKR")
+                                                                .withObjectiveTitle("Objective 7")
+                                                                .withObjectiveState(ONGOING)
+                                                                .withQuarterId(1L)
+                                                                .withQuarterLabel(QUARTER_LABEL)
+                                                                .withKeyResultTitle(DESCRIPTION)
+                                                                .withKeyResultType(KEY_RESULT_TYPE_METRIC)
+                                                                .withUnit(FTE)
+                                                                .withBaseline(5.0)
+                                                                .withStretchGoal(20.0)
+                                                                .withCheckInValue(15.0)
+                                                                .withConfidence(5)
+                                                                .withCheckInCreatedOn(LocalDateTime.now())
+                                                                .build());
 
     static Overview overviewKuchen = Overview.Builder.builder()
                                                      .withOverviewId(OverviewId.of(3L, 8L, 20L, 40L))
@@ -154,10 +150,12 @@ class OverviewControllerIT {
         overviews.add(overviewKuchen);
         BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))
                   .willReturn(overviews);
-        BDDMockito.given(overviewAuthorizationService.hasWriteAllAccess()).willReturn(true);
+        BDDMockito.given(overviewAuthorizationService.hasWriteAllAccess())
+                  .willReturn(true);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.hasSize(3)))
            .andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(1)))
            .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(PUZZLE)))
@@ -176,10 +174,12 @@ class OverviewControllerIT {
     void shouldGetAllTeamsWithObjectiveIfNoTeamsExists() throws Exception {
         BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))
                   .willReturn(Collections.emptyList());
-        BDDMockito.given(overviewAuthorizationService.hasWriteAllAccess()).willReturn(true);
+        BDDMockito.given(overviewAuthorizationService.hasWriteAllAccess())
+                  .willReturn(true);
 
         mvc.perform(get("/api/v2/overview").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.hasSize(0)));
     }
 
@@ -191,7 +191,8 @@ class OverviewControllerIT {
                   .willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.hasSize(2)))
            .andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(1)))
            .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(PUZZLE)))
@@ -208,7 +209,8 @@ class OverviewControllerIT {
                   .willReturn(List.of(simpleOverview));
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.hasSize(1)))
            .andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(4)))
            .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(TEAM_KUCHEN)))

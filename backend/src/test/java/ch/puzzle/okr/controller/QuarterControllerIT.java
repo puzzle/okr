@@ -60,29 +60,41 @@ class QuarterControllerIT {
 
     @Test
     void shouldGetAllQuarters() throws Exception {
-        BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(quaterList);
+        BDDMockito.given(quarterBusinessService.getQuarters())
+                  .willReturn(quaterList);
 
         mvc.perform(get("/api/v2/quarters").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(3)))
            .andExpect(jsonPath("$[0].id", Is.is(1)))
            .andExpect(jsonPath("$[0].label", Is.is("GJ 22/23-Q2")))
-           .andExpect(jsonPath("$[0].startDate", Is.is(LocalDate.of(2022, 9, 1).toString())))
-           .andExpect(jsonPath("$[0].endDate", Is.is(LocalDate.of(2022, 12, 31).toString())))
+           .andExpect(jsonPath("$[0].startDate",
+                               Is.is(LocalDate.of(2022, 9, 1)
+                                              .toString())))
+           .andExpect(jsonPath("$[0].endDate",
+                               Is.is(LocalDate.of(2022, 12, 31)
+                                              .toString())))
            .andExpect(jsonPath("$[1].id", Is.is(2)))
            .andExpect(jsonPath("$[1].label", Is.is("GJ 22/23-Q3")))
-           .andExpect(jsonPath("$[1].startDate", Is.is(LocalDate.of(2023, 1, 1).toString())))
-           .andExpect(jsonPath("$[1].endDate", Is.is(LocalDate.of(2023, 3, 31).toString())))
+           .andExpect(jsonPath("$[1].startDate",
+                               Is.is(LocalDate.of(2023, 1, 1)
+                                              .toString())))
+           .andExpect(jsonPath("$[1].endDate",
+                               Is.is(LocalDate.of(2023, 3, 31)
+                                              .toString())))
            .andExpect(jsonPath("$[2].id", Is.is((int) BACK_LOG_QUARTER_ID)))
            .andExpect(jsonPath("$[2].label", Is.is(BACK_LOG_QUARTER_LABEL)));
     }
 
     @Test
     void shouldGetAllTeamsIfNoTeamsExists() throws Exception {
-        BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(Collections.emptyList());
+        BDDMockito.given(quarterBusinessService.getQuarters())
+                  .willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/quarters").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.status()
+                                           .isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
@@ -90,6 +102,7 @@ class QuarterControllerIT {
     void shouldCallCurrentQuarterAfterRequest() throws Exception {
         mvc.perform(get("/api/v2/quarters/current").contentType(MediaType.APPLICATION_JSON));
 
-        BDDMockito.verify(quarterBusinessService, Mockito.times(1)).getCurrentQuarter();
+        BDDMockito.verify(quarterBusinessService, Mockito.times(1))
+                  .getCurrentQuarter();
     }
 }

@@ -37,7 +37,8 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
         if (root.has("keyResultId")) {
-            KeyResult keyResultOfCheckIn = keyResultBusinessService.getEntityById(root.get("keyResultId").asLong());
+            KeyResult keyResultOfCheckIn = keyResultBusinessService.getEntityById(root.get("keyResultId")
+                                                                                      .asLong());
             if (KEY_RESULT_TYPE_METRIC.equals(keyResultOfCheckIn.getKeyResultType())) {
                 return mapper.readValue(root.toString(), CheckInMetricDto.class);
             } else if (KEY_RESULT_TYPE_ORDINAL.equals(keyResultOfCheckIn.getKeyResultType())) {

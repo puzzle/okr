@@ -135,13 +135,23 @@ public class TenantConfigProviderTestIT {
         assertEquals(prefix(tenantId) + JWK_SET_URI, tenantConfig.jwkSetUri());
         assertEquals(prefix(tenantId) + FRONTEND_CLIENT_ISSUER_URL, tenantConfig.issuerUrl());
         assertEquals(prefix(tenantId) + FRONTEND_CLIENT_ID, tenantConfig.clientId());
-        assertEquals(prefix(tenantId) + DATASOURCE_URL, tenantConfig.dataSourceConfig().url());
-        assertEquals(prefix(tenantId) + DATASOURCE_NAME, tenantConfig.dataSourceConfig().name());
-        assertEquals(prefix(tenantId) + DATASOURCE_PASSWORD, tenantConfig.dataSourceConfig().password());
-        assertEquals(prefix(tenantId) + DATASOURCE_SCHEMA, tenantConfig.dataSourceConfig().schema());
+        assertEquals(prefix(tenantId) + DATASOURCE_URL,
+                     tenantConfig.dataSourceConfig()
+                                 .url());
+        assertEquals(prefix(tenantId) + DATASOURCE_NAME,
+                     tenantConfig.dataSourceConfig()
+                                 .name());
+        assertEquals(prefix(tenantId) + DATASOURCE_PASSWORD,
+                     tenantConfig.dataSourceConfig()
+                                 .password());
+        assertEquals(prefix(tenantId) + DATASOURCE_SCHEMA,
+                     tenantConfig.dataSourceConfig()
+                                 .schema());
 
         assertArrayEquals(new String[]{CHAMPION_EMAILS_1, CHAMPION_EMAILS_2}, tenantConfig.okrChampionEmails());
-        assertEquals(DRIVER_CLASS_NAME, tenantConfig.dataSourceConfig().driverClassName());
+        assertEquals(DRIVER_CLASS_NAME,
+                     tenantConfig.dataSourceConfig()
+                                 .driverClassName());
     }
 
 }

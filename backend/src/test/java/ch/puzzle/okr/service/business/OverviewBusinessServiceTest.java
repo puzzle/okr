@@ -62,19 +62,20 @@ class OverviewBusinessServiceTest {
                                                                                                                     21,
                                                                                                                     18,
                                                                                                                     33))
-                                                                           .build(), Overview.Builder.builder()
-                                                                                                     .withOverviewId(OverviewId.Builder.builder()
-                                                                                                                                       .withObjectiveId(index++)
-                                                                                                                                       .withTeamId(222L)
-                                                                                                                                       .build())
-                                                                                                     .withObjectiveTitle("Another Team Objective B")
-                                                                                                     .withTeamName("team-222")
-                                                                                                     .withObjectiveCreatedOn(LocalDateTime.of(2023,
-                                                                                                                                              10,
-                                                                                                                                              1,
-                                                                                                                                              8,
-                                                                                                                                              53))
-                                                                                                     .build()));
+                                                                           .build(),
+                                                           Overview.Builder.builder()
+                                                                           .withOverviewId(OverviewId.Builder.builder()
+                                                                                                             .withObjectiveId(index++)
+                                                                                                             .withTeamId(222L)
+                                                                                                             .build())
+                                                                           .withObjectiveTitle("Another Team Objective B")
+                                                                           .withTeamName("team-222")
+                                                                           .withObjectiveCreatedOn(LocalDateTime.of(2023,
+                                                                                                                    10,
+                                                                                                                    1,
+                                                                                                                    8,
+                                                                                                                    53))
+                                                                           .build()));
 
         for (Long teamId : authorizationUser.extractTeamIds()) {
             overviews.addAll((List.of(Overview.Builder.builder()
@@ -85,33 +86,25 @@ class OverviewBusinessServiceTest {
                                                       .withObjectiveTitle("ZZZ Objective")
                                                       .withTeamName("firstLevelTeam-" + teamId)
                                                       .withObjectiveCreatedOn(LocalDateTime.of(2023, 12, 10, 18, 33))
-                                                      .build(), Overview.Builder.builder()
-                                                                                .withOverviewId(OverviewId.Builder.builder()
-                                                                                                                  .withObjectiveId(index++)
-                                                                                                                  .withTeamId(teamId)
-                                                                                                                  .build())
-                                                                                .withObjectiveTitle("AAA Objective")
-                                                                                .withTeamName("firstLevelTeam-" +
-                                                                                        teamId)
-                                                                                .withObjectiveCreatedOn(LocalDateTime.of(2023,
-                                                                                                                         9,
-                                                                                                                         10,
-                                                                                                                         18,
-                                                                                                                         33))
-                                                                                .build(), Overview.Builder.builder()
-                                                                                                          .withOverviewId(OverviewId.Builder.builder()
-                                                                                                                                            .withObjectiveId(index++)
-                                                                                                                                            .withTeamId(teamId)
-                                                                                                                                            .build())
-                                                                                                          .withObjectiveTitle("AAA Objective")
-                                                                                                          .withTeamName("firstLevelTeam-" +
-                                                                                                                  teamId)
-                                                                                                          .withObjectiveCreatedOn(LocalDateTime.of(2023,
-                                                                                                                                                   9,
-                                                                                                                                                   10,
-                                                                                                                                                   18,
-                                                                                                                                                   33))
-                                                                                                          .build())));
+                                                      .build(),
+                                      Overview.Builder.builder()
+                                                      .withOverviewId(OverviewId.Builder.builder()
+                                                                                        .withObjectiveId(index++)
+                                                                                        .withTeamId(teamId)
+                                                                                        .build())
+                                                      .withObjectiveTitle("AAA Objective")
+                                                      .withTeamName("firstLevelTeam-" + teamId)
+                                                      .withObjectiveCreatedOn(LocalDateTime.of(2023, 9, 10, 18, 33))
+                                                      .build(),
+                                      Overview.Builder.builder()
+                                                      .withOverviewId(OverviewId.Builder.builder()
+                                                                                        .withObjectiveId(index++)
+                                                                                        .withTeamId(teamId)
+                                                                                        .build())
+                                                      .withObjectiveTitle("AAA Objective")
+                                                      .withTeamName("firstLevelTeam-" + teamId)
+                                                      .withObjectiveCreatedOn(LocalDateTime.of(2023, 9, 10, 18, 33))
+                                                      .build())));
         }
         return overviews;
     }
@@ -158,8 +151,10 @@ class OverviewBusinessServiceTest {
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, List.of());
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewPersistenceService, never()).getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser);
-        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(), anyList(), anyString(), eq(
-                                                                                                              authorizationUser));
+        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(),
+                                                                        anyList(),
+                                                                        anyString(),
+                                                                        eq(authorizationUser));
     }
 
     @Test
@@ -167,15 +162,15 @@ class OverviewBusinessServiceTest {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                                                                   .validateOnGet(eq(QUARTER_ID), anyList());
 
-        assertThrows(ResponseStatusException.class, () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, List
-                                                                                                                      .of(),
-                                                                                                      "",
-                                                                                                      authorizationUser));
+        assertThrows(ResponseStatusException.class,
+                     () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser));
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, never()).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(), anyList(), anyString(), eq(
-                                                                                                              authorizationUser));
+        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(),
+                                                                        anyList(),
+                                                                        anyString(),
+                                                                        eq(authorizationUser));
     }
 
     @Test
@@ -183,29 +178,31 @@ class OverviewBusinessServiceTest {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                                                                   .validateOnGet(QUARTER_ID, teamIds);
 
-        assertThrows(ResponseStatusException.class, () -> overviewBusinessService.getFilteredOverview(QUARTER_ID,
-                                                                                                      teamIds, "",
-                                                                                                      authorizationUser));
+        assertThrows(ResponseStatusException.class,
+                     () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser));
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, never()).validateQuarter(QUARTER_ID);
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(), anyList(), any(), eq(
-                                                                                                        authorizationUser));
+        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(),
+                                                                        anyList(),
+                                                                        any(),
+                                                                        eq(authorizationUser));
     }
 
     @Test
     void getFilteredOverviewShouldThrowExceptionWhenTeamIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                                                                   .validateOnGet(QUARTER_ID, teamIds);
-        assertThrows(ResponseStatusException.class, () -> overviewBusinessService.getFilteredOverview(QUARTER_ID,
-                                                                                                      teamIds, "",
-                                                                                                      authorizationUser));
+        assertThrows(ResponseStatusException.class,
+                     () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser));
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(), anyList(), anyString(), eq(
-                                                                                                              authorizationUser));
+        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(),
+                                                                        anyList(),
+                                                                        anyString(),
+                                                                        eq(authorizationUser));
     }
 
     @Test
@@ -217,14 +214,16 @@ class OverviewBusinessServiceTest {
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, null, user);
 
-        assertThat(List.of(OverviewId.of(1L, 4L, null, null), OverviewId.of(1L, 5L, null, null), OverviewId.of(1L, 3L,
-                                                                                                               null,
-                                                                                                               null),
-                           OverviewId.of(111L, 1L, null, null), OverviewId.of(222L, 2L, null, null))).hasSameElementsAs(
-                                                                                                                        getOverviewIds(overviews));
+        assertThat(List.of(OverviewId.of(1L, 4L, null, null),
+                           OverviewId.of(1L, 5L, null, null),
+                           OverviewId.of(1L, 3L, null, null),
+                           OverviewId.of(111L, 1L, null, null),
+                           OverviewId.of(222L, 2L, null, null))).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     private List<OverviewId> getOverviewIds(List<Overview> overviews) {
-        return overviews.stream().map(Overview::getOverviewId).toList();
+        return overviews.stream()
+                        .map(Overview::getOverviewId)
+                        .toList();
     }
 }

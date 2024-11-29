@@ -52,7 +52,8 @@ public class AuthorizationRegistrationService {
 
         public User setOkrChampionFromProperties(User user, TenantConfigProvider.TenantConfig tenantConfig) {
             for (var mail : tenantConfig.okrChampionEmails()) {
-                if (mail.trim().equals(user.getEmail())) {
+                if (mail.trim()
+                        .equals(user.getEmail())) {
                     user.setOkrChampion(true);
                 }
             }

@@ -28,20 +28,10 @@ public class AlignmentController {
         this.alignmentSelectionBusinessService = alignmentSelectionBusinessService;
     }
 
-    @Operation(summary = "Get all objectives and their key results to select the alignment",
-               description = "Get a list of objectives with their key results to select the alignment")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200",
-                                        description = "Returned a list of objectives with their key results to select the alignment",
-                                        content = {@Content(mediaType = "application/json", schema = @Schema(
-                                                                                                             implementation = AlignmentObjectiveDto.class))}), @ApiResponse(responseCode = "400",
-                                                                                                                                                                            description = "Can't return list of objectives with their key results to select the alignment",
-                                                                                                                                                                            content = @Content)})
+    @Operation(summary = "Get all objectives and their key results to select the alignment", description = "Get a list of objectives with their key results to select the alignment")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned a list of objectives with their key results to select the alignment", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = AlignmentObjectiveDto.class))}), @ApiResponse(responseCode = "400", description = "Can't return list of objectives with their key results to select the alignment", content = @Content)})
     @GetMapping("/selections")
-    public ResponseEntity<List<AlignmentObjectiveDto>> getAlignmentSelections(@RequestParam(required = false,
-                                                                                            defaultValue = "",
-                                                                                            name = "quarter") Long quarterFilter, @RequestParam(required = false,
-                                                                                                                                                defaultValue = "",
-                                                                                                                                                name = "team") Long teamFilter) {
+    public ResponseEntity<List<AlignmentObjectiveDto>> getAlignmentSelections(@RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter, @RequestParam(required = false, defaultValue = "", name = "team") Long teamFilter) {
         List<AlignmentSelection> alignmentSelectionByQuarterIdAndTeamIdNot = alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter,
                                                                                                                                                             teamFilter);
         return ResponseEntity.status(HttpStatus.OK)

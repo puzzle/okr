@@ -123,10 +123,12 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult, Objective duplicatedObjective) {
-        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
+        if (keyResult.getKeyResultType()
+                     .equals(KEY_RESULT_TYPE_METRIC)) {
             KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
             keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
+        } else if (keyResult.getKeyResultType()
+                            .equals(KEY_RESULT_TYPE_ORDINAL)) {
             KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
             keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
         }

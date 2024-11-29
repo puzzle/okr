@@ -104,24 +104,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" +
-                id +
-                ", version=" +
-                version +
-                ", firstname='" +
-                firstname +
-                '\'' +
-                ", lastname='" +
-                lastname +
-                '\'' +
-                ", email='" +
-                email +
-                '\'' +
-                ", isOkrChampion='" +
-                isOkrChampion +
-                '\'' +
-                '}';
+        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
     }
 
     @Override
@@ -131,12 +114,11 @@ public class User {
         if (o == null || getClass() != o.getClass())
             return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(version, user.version) &&
-                Objects.equals(firstname, user.firstname) &&
-                Objects.equals(lastname, user.lastname) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(isOkrChampion, user.isOkrChampion);
+        return Objects.equals(id, user.id) && Objects.equals(version, user.version) && Objects.equals(firstname,
+                                                                                                      user.firstname) && Objects.equals(lastname,
+                                                                                                                                        user.lastname) && Objects.equals(email,
+                                                                                                                                                                         user.email) && Objects.equals(isOkrChampion,
+                                                                                                                                                                                                       user.isOkrChampion);
     }
 
     @Override

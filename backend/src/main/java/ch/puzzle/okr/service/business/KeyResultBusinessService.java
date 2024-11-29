@@ -69,8 +69,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
             if (isKeyResultTypeChangeable(id)) {
                 logger.debug("keyResultType has changed and is changeable, {}", keyResult);
                 validator.validateOnUpdate(id, keyResult);
-                return new KeyResultWithActionList(recreateEntity(id, keyResult, actionList), actionBusinessService
-                                                                                                                   .createEntities(actionList));
+                return new KeyResultWithActionList(recreateEntity(id, keyResult, actionList),
+                                                   actionBusinessService.createEntities(actionList));
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());
                 savedKeyResult.setDescription(keyResult.getDescription());
@@ -114,12 +114,14 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     }
 
     public boolean hasKeyResultAnyCheckIns(Long id) {
-        return !checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty();
+        return !checkInBusinessService.getCheckInsByKeyResultId(id)
+                                      .isEmpty();
     }
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
-        return hasKeyResultAnyCheckIns(id) &&
-                !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
+        return hasKeyResultAnyCheckIns(id) && !keyResultPersistenceService.findById(id)
+                                                                          .getKeyResultType()
+                                                                          .equals(keyResult.getKeyResultType());
     }
 
     private boolean isKeyResultTypeChangeable(Long id) {

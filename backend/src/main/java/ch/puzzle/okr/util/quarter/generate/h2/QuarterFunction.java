@@ -41,38 +41,44 @@ public class QuarterFunction {
     }
 
     public static String currentQuarterLabel() {
-        var label = QUARTERS.get(CURRENT_QUARTER_DB_ID).label();
+        var label = QUARTERS.get(CURRENT_QUARTER_DB_ID)
+                            .label();
         logger.info("currentQuarterLabel    : {}", label);
         return label;
 
     }
 
     public static String currentQuarterStartDate() {
-        var start = QUARTERS.get(CURRENT_QUARTER_DB_ID).startDateAsIsoString();
+        var start = QUARTERS.get(CURRENT_QUARTER_DB_ID)
+                            .startDateAsIsoString();
         logger.info("currentQuarterStartDate: {}", start);
         return start;
     }
 
     public static String currentQuarterEndDate() {
-        var end = QUARTERS.get(CURRENT_QUARTER_DB_ID).endDateAsIsoString();
+        var end = QUARTERS.get(CURRENT_QUARTER_DB_ID)
+                          .endDateAsIsoString();
         logger.info("currentQuarterEndDate  : {}", end);
         return end;
     }
 
     public static String nextQuarterLabel() {
-        var label = QUARTERS.get(NEXT_QUARTER_DB_ID).label();
+        var label = QUARTERS.get(NEXT_QUARTER_DB_ID)
+                            .label();
         logger.info("nextQuarterLabel       : {}", label);
         return label;
     }
 
     public static String nextQuarterStartDate() {
-        var start = QUARTERS.get(NEXT_QUARTER_DB_ID).startDateAsIsoString();
+        var start = QUARTERS.get(NEXT_QUARTER_DB_ID)
+                            .startDateAsIsoString();
         logger.info("nextQuarterStartDate   : {}", start);
         return start;
     }
 
     public static String nextQuarterEndDate() {
-        var end = QUARTERS.get(NEXT_QUARTER_DB_ID).endDateAsIsoString();
+        var end = QUARTERS.get(NEXT_QUARTER_DB_ID)
+                          .endDateAsIsoString();
         logger.info("nextQuarterEndDate     : {}", end);
         return end;
     }

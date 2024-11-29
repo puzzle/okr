@@ -133,33 +133,7 @@ public abstract class KeyResult implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "KeyResult{" +
-                "id=" +
-                id +
-                ", version=" +
-                version +
-                ", objective=" +
-                objective +
-                ", title='" +
-                title +
-                '\'' +
-                ", description='" +
-                description +
-                '\'' +
-                ", owner=" +
-                owner +
-                ", createdBy=" +
-                createdBy +
-                ", createdOn=" +
-                createdOn +
-                ", modifiedOn=" +
-                modifiedOn +
-                ", keyResultType='" +
-                keyResultType +
-                ", writeable=" +
-                writeable +
-                '\'' +
-                '}';
+        return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -169,21 +143,28 @@ public abstract class KeyResult implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         KeyResult keyResult = (KeyResult) o;
-        return Objects.equals(id, keyResult.id) &&
-                version == keyResult.version &&
-                Objects.equals(objective, keyResult.objective) &&
-                Objects.equals(title, keyResult.title) &&
-                Objects.equals(description, keyResult.description) &&
-                Objects.equals(owner, keyResult.owner) &&
-                Objects.equals(createdBy, keyResult.createdBy) &&
-                Objects.equals(createdOn, keyResult.createdOn) &&
-                Objects.equals(modifiedOn, keyResult.modifiedOn) &&
-                Objects.equals(keyResultType, keyResult.keyResultType);
+        return Objects.equals(id, keyResult.id) && version == keyResult.version && Objects.equals(objective,
+                                                                                                  keyResult.objective) && Objects.equals(title,
+                                                                                                                                         keyResult.title) && Objects.equals(description,
+                                                                                                                                                                            keyResult.description) && Objects.equals(owner,
+                                                                                                                                                                                                                     keyResult.owner) && Objects.equals(createdBy,
+                                                                                                                                                                                                                                                        keyResult.createdBy) && Objects.equals(createdOn,
+                                                                                                                                                                                                                                                                                               keyResult.createdOn) && Objects.equals(modifiedOn,
+                                                                                                                                                                                                                                                                                                                                      keyResult.modifiedOn) && Objects.equals(keyResultType,
+                                                                                                                                                                                                                                                                                                                                                                              keyResult.keyResultType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, objective, title, description, owner, createdBy, createdOn, modifiedOn,
+        return Objects.hash(id,
+                            version,
+                            objective,
+                            title,
+                            description,
+                            owner,
+                            createdBy,
+                            createdOn,
+                            modifiedOn,
                             keyResultType);
     }
 

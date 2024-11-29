@@ -26,8 +26,9 @@ public class OverviewPersistenceService {
     }
 
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery, AuthorizationUser authorizationUser) {
-        String queryString = SELECT_OVERVIEW +
-                authorizationCriteria.appendOverview(teamIds, objectiveQuery, authorizationUser);
+        String queryString = SELECT_OVERVIEW + authorizationCriteria.appendOverview(teamIds,
+                                                                                    objectiveQuery,
+                                                                                    authorizationUser);
         logger.debug("select overview by quarterId={} and teamIds={}: {}", quarterId, teamIds, queryString);
         TypedQuery<Overview> typedQuery = entityManager.createQuery(queryString, Overview.class);
         typedQuery.setParameter("quarterId", quarterId);

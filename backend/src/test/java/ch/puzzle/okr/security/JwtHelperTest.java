@@ -39,11 +39,16 @@ public class JwtHelperTest {
     void getUserFromJwtExtractsUserDataFromToken() {
         // arrange
         Jwt tokenWithUserDataMock = mock(Jwt.class);
-        when(tokenWithUserDataMock.getClaims()).thenReturn(Map.of(TOKEN_CLAIMS_KEY_FIRSTNAME, HANS,
-                                                                  TOKEN_CLAIMS_KEY_LASTNAME, MUSTER,
-                                                                  TOKEN_CLAIMS_KEY_EMAIL, EMAIL));
+        when(tokenWithUserDataMock.getClaims()).thenReturn(Map.of(TOKEN_CLAIMS_KEY_FIRSTNAME,
+                                                                  HANS,
+                                                                  TOKEN_CLAIMS_KEY_LASTNAME,
+                                                                  MUSTER,
+                                                                  TOKEN_CLAIMS_KEY_EMAIL,
+                                                                  EMAIL));
 
-        JwtHelper jwtHelper = new JwtHelper(null, TOKEN_CLAIMS_KEY_FIRSTNAME, TOKEN_CLAIMS_KEY_LASTNAME,
+        JwtHelper jwtHelper = new JwtHelper(null,
+                                            TOKEN_CLAIMS_KEY_FIRSTNAME,
+                                            TOKEN_CLAIMS_KEY_LASTNAME,
                                             TOKEN_CLAIMS_KEY_EMAIL);
 
         // act
@@ -62,7 +67,9 @@ public class JwtHelperTest {
         // arrange
         Jwt tokenWithNoUserDataMock = mock(Jwt.class);
 
-        JwtHelper jwtHelper = new JwtHelper(null, TOKEN_CLAIMS_KEY_FIRSTNAME, TOKEN_CLAIMS_KEY_LASTNAME,
+        JwtHelper jwtHelper = new JwtHelper(null,
+                                            TOKEN_CLAIMS_KEY_FIRSTNAME,
+                                            TOKEN_CLAIMS_KEY_LASTNAME,
                                             TOKEN_CLAIMS_KEY_EMAIL);
 
         // act + assert

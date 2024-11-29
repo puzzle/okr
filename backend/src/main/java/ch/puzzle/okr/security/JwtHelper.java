@@ -30,11 +30,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class JwtHelper {
     public static final String CLAIM_TENANT = "tenant";
     public static final String CLAIM_ISS = "iss";
-    public static final String ERROR_MESSAGE = "Missing `" +
-            CLAIM_TENANT +
-            "` and '" +
-            CLAIM_ISS +
-            "' claims in JWT token!";
+    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS + "' claims in JWT token!";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
@@ -56,9 +52,12 @@ public class JwtHelper {
 
         try {
             return User.Builder.builder()
-                               .withFirstname(claims.get(firstname).toString())
-                               .withLastname(claims.get(lastname).toString())
-                               .withEmail(claims.get(email).toString())
+                               .withFirstname(claims.get(firstname)
+                                                    .toString())
+                               .withLastname(claims.get(lastname)
+                                                   .toString())
+                               .withEmail(claims.get(email)
+                                                .toString())
                                .build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);

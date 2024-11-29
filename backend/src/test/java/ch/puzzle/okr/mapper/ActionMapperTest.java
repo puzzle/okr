@@ -30,7 +30,9 @@ public class ActionMapperTest {
     private static final boolean IS_CHECKED = true;
     private static final boolean IS_WRITEABLE = true;
     public static final long KEY_RESULT_ID = 10L;
-    private final KeyResult keyResult = KeyResultMetric.Builder.builder().withId(KEY_RESULT_ID).build();
+    private final KeyResult keyResult = KeyResultMetric.Builder.builder()
+                                                               .withId(KEY_RESULT_ID)
+                                                               .build();
 
     private ActionMapper actionMapper;
     @Mock
@@ -73,7 +75,8 @@ public class ActionMapperTest {
         assertEquals(expected.getAction(), actual.action());
         assertEquals(expected.getPriority(), actual.priority());
         assertEquals(expected.isChecked(), actual.isChecked());
-        assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
+        assertEquals(expected.getKeyResult()
+                             .getId(), actual.keyResultId());
         assertEquals(expected.isWriteable(), actual.writeable());
     }
 
@@ -106,8 +109,15 @@ public class ActionMapperTest {
     @Test
     void toActionsWithKeyResultParameterShouldMapListOfDtosToListOfActions() {
         // arrange
-        KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
-        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, VERSION, ACTION, PRIORITY, IS_CHECKED, null, // keyResultId
+        KeyResult keyResultParameter = KeyResultMetric.Builder.builder()
+                                                              .withId(20L)
+                                                              .build();
+        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID,
+                                                                 VERSION,
+                                                                 ACTION,
+                                                                 PRIORITY,
+                                                                 IS_CHECKED,
+                                                                 null, // keyResultId
                                                                  IS_WRITEABLE);
 
         // act
@@ -124,12 +134,19 @@ public class ActionMapperTest {
 
     private void assertListOfActionsWithKeyResultId(List<ActionDto> expectedDtoList, List<Action> actualList) {
         assertListsAndFirstAction(expectedDtoList, actualList);
-        assertEquals(expectedDtoList.get(0).keyResultId(), actualList.get(0).getKeyResult().getId());
+        assertEquals(expectedDtoList.get(0)
+                                    .keyResultId(),
+                     actualList.get(0)
+                               .getKeyResult()
+                               .getId());
     }
 
     private void assertListOfActionsAndKeyResultParameter(List<ActionDto> expectedDtoList, List<Action> actualList, Long keyResultId) {
         assertListsAndFirstAction(expectedDtoList, actualList);
-        assertEquals(keyResultId, actualList.get(0).getKeyResult().getId());
+        assertEquals(keyResultId,
+                     actualList.get(0)
+                               .getKeyResult()
+                               .getId());
     }
 
     private void assertListsAndFirstAction(List<ActionDto> expectedDtoList, List<Action> actualList) {

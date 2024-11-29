@@ -24,7 +24,9 @@ public class TestDataHelper {
         return (CheckInOrdinal) TestDataHelper.checkInOrdinal;
     }
 
-    private static final KeyResult keyResult = KeyResultMetric.Builder.builder().withId(KEY_RESULT_ID).build();
+    private static final KeyResult keyResult = KeyResultMetric.Builder.builder()
+                                                                      .withId(KEY_RESULT_ID)
+                                                                      .build();
 
     private static final CheckIn checkInMetric = CheckInMetric.Builder.builder()
                                                                       .withId(CHECK_IN_ID)

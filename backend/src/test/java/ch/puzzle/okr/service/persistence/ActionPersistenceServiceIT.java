@@ -110,7 +110,8 @@ class ActionPersistenceServiceIT {
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
+                             .contains(exception.getReason()));
     }
 
     @Test
@@ -125,9 +126,15 @@ class ActionPersistenceServiceIT {
         List<Action> actions = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(6L);
 
         assertEquals(3, actions.size());
-        assertEquals(1, actions.get(0).getPriority());
-        assertEquals(2, actions.get(1).getPriority());
-        assertEquals(3, actions.get(2).getPriority());
+        assertEquals(1,
+                     actions.get(0)
+                            .getPriority());
+        assertEquals(2,
+                     actions.get(1)
+                            .getPriority());
+        assertEquals(3,
+                     actions.get(2)
+                            .getPriority());
     }
 
     @Test
@@ -138,7 +145,9 @@ class ActionPersistenceServiceIT {
         assertEquals("Neues Haus", action.getAction());
         assertEquals(1, action.getPriority());
         assertTrue(action.isChecked());
-        assertEquals(8L, action.getKeyResult().getId());
+        assertEquals(8L,
+                     action.getKeyResult()
+                           .getId());
     }
 
     @Test

@@ -50,8 +50,14 @@ class CompletedValidationServiceTest {
                                 .withLastname("Kaufmann")
                                 .withEmail("kaufmann@puzzle.ch")
                                 .build();
-        this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
-        this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+        this.team = Team.Builder.builder()
+                                .withId(1L)
+                                .withName("Team1")
+                                .build();
+        this.quarter = Quarter.Builder.builder()
+                                      .withId(1L)
+                                      .withLabel("GJ 22/23-Q2")
+                                      .build();
 
         this.objective = Objective.Builder.builder()
                                           .withId(1L)
@@ -73,21 +79,20 @@ class CompletedValidationServiceTest {
 
         when(completedPersistenceService.getCompletedByObjectiveId(1L)).thenReturn(this.validCompleted);
         when(completedPersistenceService.getModelName()).thenReturn("Completed");
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("%s with id %s not found",
-                                                                                completedPersistenceService.getModelName(),
-                                                                                2L))).when(completedPersistenceService)
-                                                                                     .getCompletedByObjectiveId(2L);
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                            String.format("%s with id %s not found",
+                                                          completedPersistenceService.getModelName(),
+                                                          2L))).when(completedPersistenceService)
+                                                               .getCompletedByObjectiveId(2L);
     }
 
     @Spy @InjectMocks
     private CompletedValidationService validator;
 
     private static Stream<Arguments> nameValidationArguments() {
-        return Stream.of(arguments(StringUtils.repeat('1', 5000), List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List
-                                                                                                                     .of("comment",
-                                                                                                                         "Completed",
-                                                                                                                         "0",
-                                                                                                                         "4096")))));
+        return Stream.of(arguments(StringUtils.repeat('1', 5000),
+                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
+                                                        List.of("comment", "Completed", "0", "4096")))));
     }
 
     @Test
@@ -101,8 +106,8 @@ class CompletedValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .validateOnCreate(null));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Completed")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -118,8 +123,8 @@ class CompletedValidationServiceTest {
                                                .build();
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .validateOnCreate(completed));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(completed));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Completed")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -129,11 +134,14 @@ class CompletedValidationServiceTest {
     @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         // arrange
-        Completed completed = Completed.Builder.builder().withObjective(this.objective).withComment(comment).build();
+        Completed completed = Completed.Builder.builder()
+                                               .withObjective(this.objective)
+                                               .withComment(comment)
+                                               .build();
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .validateOnCreate(completed));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(completed));
 
         assertOkrResponseStatusException(exception, expectedErrors);
     }
@@ -148,8 +156,8 @@ class CompletedValidationServiceTest {
                                                       .build();
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .validateOnCreate(completedInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(completedInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "Completed")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -160,7 +168,8 @@ class CompletedValidationServiceTest {
     void validateOnUpdateShouldThrowException() {
         // arrange
         Long id = 1L;
-        Completed completed = Completed.Builder.builder().build();
+        Completed completed = Completed.Builder.builder()
+                                               .build();
 
         // act + assert
         assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(id, completed));

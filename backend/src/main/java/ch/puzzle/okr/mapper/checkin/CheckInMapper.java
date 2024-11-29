@@ -27,9 +27,9 @@ public class CheckInMapper {
         } else if (checkIn instanceof CheckInOrdinal checkInOrdinal) {
             return checkInOrdinalMapper.toDto(checkInOrdinal);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
-                                                                                    "The CheckIn %s can't be converted to a metric or ordinal CheckIn",
-                                                                                    checkIn));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                              String.format("The CheckIn %s can't be converted to a metric or ordinal CheckIn",
+                                                            checkIn));
         }
     }
 
@@ -39,9 +39,9 @@ public class CheckInMapper {
         } else if (checkInDto instanceof CheckInOrdinalDto) {
             return checkInOrdinalMapper.toCheckInOrdinal((CheckInOrdinalDto) checkInDto);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
-                                                                                    "The provided CheckInDto %s is neither metric nor ordinal",
-                                                                                    checkInDto));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                              String.format("The provided CheckInDto %s is neither metric nor ordinal",
+                                                            checkInDto));
         }
     }
 }

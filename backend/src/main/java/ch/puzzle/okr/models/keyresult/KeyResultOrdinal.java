@@ -51,10 +51,10 @@ public class KeyResultOrdinal extends KeyResult {
     @Override
     public boolean equals(Object o) {
         if (o instanceof KeyResultOrdinal) {
-            return super.equals(o) &&
-                    Objects.equals(commitZone, ((KeyResultOrdinal) o).commitZone) &&
-                    Objects.equals(targetZone, ((KeyResultOrdinal) o).targetZone) &&
-                    Objects.equals(stretchZone, ((KeyResultOrdinal) o).stretchZone);
+            return super.equals(o) && Objects.equals(commitZone, ((KeyResultOrdinal) o).commitZone) && Objects.equals(
+                                                                                                                      targetZone,
+                                                                                                                      ((KeyResultOrdinal) o).targetZone) && Objects.equals(stretchZone,
+                                                                                                                                                                           ((KeyResultOrdinal) o).stretchZone);
         }
         return false;
     }
@@ -66,18 +66,7 @@ public class KeyResultOrdinal extends KeyResult {
 
     @Override
     public String toString() {
-        return super.toString() +
-                "KeyResultOrdinal{" +
-                "commitZone='" +
-                commitZone +
-                '\'' +
-                ", targetZone='" +
-                targetZone +
-                '\'' +
-                ", stretchZone='" +
-                stretchZone +
-                '\'' +
-                '}';
+        return super.toString() + "KeyResultOrdinal{" + "commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + '}';
     }
 
     private KeyResultOrdinal(Builder builder) {

@@ -15,17 +15,26 @@ public class JwtStatusLogger {
 
     public static void logStatus(String claim, Object context, boolean isOk) {
         if (isOk) {
-            logger.info("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(), statusToSymbol(
-                                                                                                                      isOk));
+            logger.info("Tenant: get claim '{}' from {}{}",
+                        claim,
+                        context.getClass()
+                               .getSimpleName(),
+                        statusToSymbol(isOk));
         } else {
-            logger.warn("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(), statusToSymbol(
-                                                                                                                      isOk));
+            logger.warn("Tenant: get claim '{}' from {}{}",
+                        claim,
+                        context.getClass()
+                               .getSimpleName(),
+                        statusToSymbol(isOk));
         }
     }
 
     public static void logStatus(String claim, Object context, ParseException e) {
-        logger.warn("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(), statusToSymbol(
-                                                                                                                  false),
+        logger.warn("Tenant: get claim '{}' from {}{}",
+                    claim,
+                    context.getClass()
+                           .getSimpleName(),
+                    statusToSymbol(false),
                     e);
     }
 

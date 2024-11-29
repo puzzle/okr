@@ -21,12 +21,20 @@ public class ObjectiveMapper {
     }
 
     public ObjectiveDto toDto(Objective objective) {
-        return new ObjectiveDto(objective.getId(), objective.getVersion(), objective.getTitle(), objective.getTeam()
-                                                                                                          .getId(),
-                                objective.getQuarter().getId(), objective.getQuarter().getLabel(), objective
-                                                                                                            .getDescription(),
-                                objective.getState(), objective.getCreatedOn(), objective.getModifiedOn(), objective
-                                                                                                                    .isWriteable());
+        return new ObjectiveDto(objective.getId(),
+                                objective.getVersion(),
+                                objective.getTitle(),
+                                objective.getTeam()
+                                         .getId(),
+                                objective.getQuarter()
+                                         .getId(),
+                                objective.getQuarter()
+                                         .getLabel(),
+                                objective.getDescription(),
+                                objective.getState(),
+                                objective.getCreatedOn(),
+                                objective.getModifiedOn(),
+                                objective.isWriteable());
     }
 
     public Objective toObjective(ObjectiveDto objectiveDto) {

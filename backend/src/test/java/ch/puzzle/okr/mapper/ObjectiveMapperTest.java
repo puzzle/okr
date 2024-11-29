@@ -39,8 +39,13 @@ public class ObjectiveMapperTest {
     private static final LocalDateTime CREATE_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 20, 12, 35, 0);
     private static final LocalDateTime MODIFIED_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 21, 8, 0, 0);
 
-    private final Team team = Team.Builder.builder().withId(TEAM_ID).build();
-    private final Quarter quarter = Quarter.Builder.builder().withId(QUARTER_ID).withLabel(QUARTER_LABEL).build();
+    private final Team team = Team.Builder.builder()
+                                          .withId(TEAM_ID)
+                                          .build();
+    private final Quarter quarter = Quarter.Builder.builder()
+                                                   .withId(QUARTER_ID)
+                                                   .withLabel(QUARTER_LABEL)
+                                                   .build();
 
     private ObjectiveMapper objectiveMapper;
 
@@ -84,9 +89,12 @@ public class ObjectiveMapperTest {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
         assertEquals(expected.getTitle(), actual.title());
-        assertEquals(expected.getTeam().getId(), actual.teamId());
-        assertEquals(expected.getQuarter().getId(), actual.quarterId());
-        assertEquals(expected.getQuarter().getLabel(), actual.quarterLabel());
+        assertEquals(expected.getTeam()
+                             .getId(), actual.teamId());
+        assertEquals(expected.getQuarter()
+                             .getId(), actual.quarterId());
+        assertEquals(expected.getQuarter()
+                             .getLabel(), actual.quarterLabel());
         assertEquals(expected.getDescription(), actual.description());
         assertEquals(expected.getState(), actual.state());
         assertEquals(expected.getCreatedOn(), actual.createdOn());
@@ -131,9 +139,15 @@ public class ObjectiveMapperTest {
         assertEquals(expected.id(), actual.getId());
         assertEquals(expected.version(), actual.getVersion());
         assertEquals(expected.title(), actual.getTitle());
-        assertEquals(expected.teamId(), actual.getTeam().getId());
-        assertEquals(expected.quarterId(), actual.getQuarter().getId());
-        assertEquals(expected.quarterLabel(), actual.getQuarter().getLabel());
+        assertEquals(expected.teamId(),
+                     actual.getTeam()
+                           .getId());
+        assertEquals(expected.quarterId(),
+                     actual.getQuarter()
+                           .getId());
+        assertEquals(expected.quarterLabel(),
+                     actual.getQuarter()
+                           .getLabel());
         assertEquals(expected.description(), actual.getDescription());
         assertEquals(expected.state(), actual.getState());
         assertEquals(expected.createdOn(), actual.getCreatedOn());

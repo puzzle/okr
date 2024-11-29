@@ -74,8 +74,12 @@ class CompletedPersistenceServiceIT {
 
         assertNotNull(createdCompleted.getId());
         assertEquals(WIR_HABEN_ES_GUT_GESCHAFFT, createdCompleted.getComment());
-        assertEquals(OBJECTIVE_ID, createdCompleted.getObjective().getId());
-        assertEquals(GUTE_LERNENDE, createdCompleted.getObjective().getTitle());
+        assertEquals(OBJECTIVE_ID,
+                     createdCompleted.getObjective()
+                                     .getId());
+        assertEquals(GUTE_LERNENDE,
+                     createdCompleted.getObjective()
+                                     .getTitle());
     }
 
     @Test
@@ -104,7 +108,8 @@ class CompletedPersistenceServiceIT {
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
+                             .contains(exception.getReason()));
     }
 
     @Test
@@ -113,9 +118,9 @@ class CompletedPersistenceServiceIT {
 
         assertNotNull(savedCompleted.getId());
         assertEquals("War leider nicht moeglich", savedCompleted.getComment());
-        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.", savedCompleted
-                                                                                                                   .getObjective()
-                                                                                                                   .getTitle());
+        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.",
+                     savedCompleted.getObjective()
+                                   .getTitle());
     }
 
     @Test
@@ -130,7 +135,8 @@ class CompletedPersistenceServiceIT {
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
+                             .contains(exception.getReason()));
     }
 
     @Test
@@ -146,6 +152,7 @@ class CompletedPersistenceServiceIT {
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
+                             .contains(exception.getReason()));
     }
 }

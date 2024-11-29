@@ -11,7 +11,8 @@ public class TenantContext {
     private static final ThreadLocal<String> CURRENT_TENANT = new ThreadLocal<>();
 
     public static String getCurrentTenant() {
-        return Optional.ofNullable(CURRENT_TENANT.get()).orElse(DEFAULT_TENANT_ID);
+        return Optional.ofNullable(CURRENT_TENANT.get())
+                       .orElse(DEFAULT_TENANT_ID);
     }
 
     public static void setCurrentTenant(String tenant) {

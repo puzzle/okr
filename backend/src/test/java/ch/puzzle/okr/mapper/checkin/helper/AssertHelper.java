@@ -16,7 +16,8 @@ public class AssertHelper {
         assertEquals(expected.getChangeInfo(), actual.changeInfo());
         assertEquals(expected.getInitiatives(), actual.initiatives());
         assertEquals(expected.getConfidence(), actual.confidence());
-        assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
+        assertEquals(expected.getKeyResult()
+                             .getId(), actual.keyResultId());
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
         assertEquals(expected.getValue(), actual.value());
@@ -29,7 +30,9 @@ public class AssertHelper {
         assertEquals(expected.changeInfo(), actual.getChangeInfo());
         assertEquals(expected.initiatives(), actual.getInitiatives());
         assertEquals(expected.confidence(), actual.getConfidence());
-        assertEquals(expected.keyResultId(), actual.getKeyResult().getId());
+        assertEquals(expected.keyResultId(),
+                     actual.getKeyResult()
+                           .getId());
         assertEquals(expected.createdOn(), actual.getCreatedOn());
         assertEquals(expected.modifiedOn(), actual.getModifiedOn());
         assertEquals(expected.value(), actual.getValue());
@@ -42,7 +45,8 @@ public class AssertHelper {
         assertEquals(expected.getChangeInfo(), actual.changeInfo());
         assertEquals(expected.getInitiatives(), actual.initiatives());
         assertEquals(expected.getConfidence(), actual.confidence());
-        assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
+        assertEquals(expected.getKeyResult()
+                             .getId(), actual.keyResultId());
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
         assertEquals(expected.getZone(), actual.value());
@@ -55,7 +59,9 @@ public class AssertHelper {
         assertEquals(checkInOrdinalDto.changeInfo(), checkInOrdinal.getChangeInfo());
         assertEquals(checkInOrdinalDto.initiatives(), checkInOrdinal.getInitiatives());
         assertEquals(checkInOrdinalDto.confidence(), checkInOrdinal.getConfidence());
-        assertEquals(checkInOrdinalDto.keyResultId(), checkInOrdinal.getKeyResult().getId());
+        assertEquals(checkInOrdinalDto.keyResultId(),
+                     checkInOrdinal.getKeyResult()
+                                   .getId());
         assertEquals(checkInOrdinalDto.createdOn(), checkInOrdinal.getCreatedOn());
         assertEquals(checkInOrdinalDto.modifiedOn(), checkInOrdinal.getModifiedOn());
         assertEquals(checkInOrdinalDto.value(), checkInOrdinal.getZone());

@@ -46,7 +46,8 @@ public class TenantClientCustomizationProviderTestIT {
         mockProperty("okr.tenants.{0}.clientcustomization.favicon", FAVICON, id);
         mockProperty("okr.tenants.{0}.clientcustomization.title", TITLE, id);
         mockProperty("okr.tenants.{0}.clientcustomization.helpSiteUrl", HELP_SITE_URL, id);
-        mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color", CUSTOM_STYLE_VALUE,
+        mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color",
+                     CUSTOM_STYLE_VALUE,
                      id);
     }
 
@@ -86,9 +87,11 @@ public class TenantClientCustomizationProviderTestIT {
 
     private void assertCustomStyles(TenantClientCustomization customization, String tenantId) {
         assertNotNull(customization.customStyles());
-        assertFalse(customization.customStyles().isEmpty());
+        assertFalse(customization.customStyles()
+                                 .isEmpty());
 
-        String customStyleValue = customization.customStyles().get(CUSTOM_STYLE_NAME);
+        String customStyleValue = customization.customStyles()
+                                               .get(CUSTOM_STYLE_NAME);
         assertEquals(prefix(tenantId) + CUSTOM_STYLE_VALUE, customStyleValue);
     }
 }

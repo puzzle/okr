@@ -75,7 +75,10 @@ public class CompletedMapperTest {
     private void assertCompletedDto(Completed expected, CompletedDto actual) {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getComment(), actual.comment());
-        assertEquals(expected.getObjective().getId(), actual.objective().id());
+        assertEquals(expected.getObjective()
+                             .getId(),
+                     actual.objective()
+                           .id());
     }
 
     @DisplayName("toCompleted() should map Dto to Completed")
@@ -101,7 +104,10 @@ public class CompletedMapperTest {
     private void assertCompleted(CompletedDto expected, Completed actual) {
         assertEquals(expected.id(), actual.getId());
         assertEquals(expected.comment(), actual.getComment());
-        assertEquals(expected.objective().id(), actual.getObjective().getId());
+        assertEquals(expected.objective()
+                             .id(),
+                     actual.getObjective()
+                           .getId());
     }
 
 }

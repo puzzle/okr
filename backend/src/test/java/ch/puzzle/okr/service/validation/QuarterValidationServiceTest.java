@@ -99,8 +99,8 @@ class QuarterValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowException() {
-        Exception exception = assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(anyLong(),
-                                                                                                          any()));
+        Exception exception = assertThrows(IllegalCallerException.class,
+                                           () -> validator.validateOnUpdate(anyLong(), any()));
         assertEquals("This method must not be called because there is no update of quarters", exception.getMessage());
     }
 
@@ -116,9 +116,8 @@ class QuarterValidationServiceTest {
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
                                                                              () -> validator.validateOnGeneration(quarter));
 
-        assertOkrResponseStatusException(okrResponseStatusException, List.of(new ErrorDto("ATTRIBUTE_NULL", List.of(
-                                                                                                                    "StartDate",
-                                                                                                                    "Any Label"))));
+        assertOkrResponseStatusException(okrResponseStatusException,
+                                         List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "Any Label"))));
     }
 
     @DisplayName("validateOnGeneration() should throw exception when EndDate is null")
@@ -134,9 +133,8 @@ class QuarterValidationServiceTest {
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
                                                                              () -> validator.validateOnGeneration(quarter));
 
-        assertOkrResponseStatusException(okrResponseStatusException, List.of(new ErrorDto("ATTRIBUTE_NULL", List.of(
-                                                                                                                    "EndDate",
-                                                                                                                    "Any Label"))));
+        assertOkrResponseStatusException(okrResponseStatusException,
+                                         List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "Any Label"))));
     }
 
     @DisplayName("validateOnGeneration() should do nothing when both dates are not null")
@@ -156,7 +154,8 @@ class QuarterValidationServiceTest {
     private void assertOkrResponseStatusException(OkrResponseStatusException exception, List<ErrorDto> expectedErrors) {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
+                             .contains(exception.getReason()));
     }
 
 }

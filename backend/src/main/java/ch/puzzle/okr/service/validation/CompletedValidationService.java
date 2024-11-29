@@ -7,8 +7,7 @@ import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CompletedValidationService extends
-                                        ValidationBase<Completed, Long, CompletedRepository, CompletedPersistenceService> {
+public class CompletedValidationService extends ValidationBase<Completed, Long, CompletedRepository, CompletedPersistenceService> {
 
     public CompletedValidationService(CompletedPersistenceService completedPersistenceService) {
         super(completedPersistenceService);

@@ -17,7 +17,8 @@ public class AuthenticationEvents {
 
     @EventListener
     public void onSuccess(AuthenticationSuccessEvent success) {
-        Jwt token = (Jwt) success.getAuthentication().getPrincipal();
+        Jwt token = (Jwt) success.getAuthentication()
+                                 .getPrincipal();
 
         TenantContext.setCurrentTenant(jwtHelper.getTenantFromToken(token));
     }

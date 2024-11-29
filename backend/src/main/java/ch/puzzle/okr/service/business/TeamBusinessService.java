@@ -107,7 +107,7 @@ public class TeamBusinessService {
         Team team = teamPersistenceService.findById(teamId);
         for (Long userId : userIdList) {
             User user = userPersistenceService.findById(userId);
-            UserTeam userTeam = UserTeam.Builder.builder().withTeam(team).withUser(user).withTeamAdmin(false).build();
+            UserTeam userTeam = UserTeam.Builder.builder().withTeam(team).withUser(user).withIsTeamAdmin(false).build();
             user.getUserTeamList().add(userTeam);
             userPersistenceService.save(user);
         }
@@ -166,7 +166,7 @@ public class TeamBusinessService {
 
     private void addTeamMembership(long teamId, boolean isAdmin, User user, List<UserTeam> userTeamList) {
         Team team = teamPersistenceService.findById(teamId);
-        UserTeam userTeam = UserTeam.Builder.builder().withTeam(team).withTeamAdmin(isAdmin).withUser(user).build();
+        UserTeam userTeam = UserTeam.Builder.builder().withTeam(team).withIsTeamAdmin(isAdmin).withUser(user).build();
         userTeamList.add(userTeam);
     }
 

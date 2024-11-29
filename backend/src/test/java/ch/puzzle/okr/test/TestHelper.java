@@ -39,7 +39,7 @@ public class TestHelper {
     public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
         var user = defaultUser(userId);
         var adminUserTeams = adminTeams.stream()
-                .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
+                .map(t -> UserTeam.Builder.builder().withIsTeamAdmin(true).withTeam(t).withUser(user).build());
         var memberUserTeams = memberTeams.stream()
                 .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
         user.setUserTeamList(
@@ -71,7 +71,7 @@ public class TestHelper {
                 .withFirstname(firstname) //
                 .withLastname(lastname) //
                 .withEmail(email) //
-                .withOkrChampion(isOkrChampion) //
+                .withIsOkrChampion(isOkrChampion) //
                 .build();
         user.setUserTeamList(List.of(defaultUserTeam(1L, user)));
         return new AuthorizationUser(user);

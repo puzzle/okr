@@ -66,12 +66,12 @@ class TeamBusinessServiceTest {
     void setUp() {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
         this.team1.setUserTeamList(List.of(
-                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(2L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).withTeamAdmin(false).build()));
+                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(2L)).withIsTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).withIsTeamAdmin(false).build()));
         this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
         this.team2.setUserTeamList(List.of(
-                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withTeamAdmin(true).build()));
+                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).withIsTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withIsTeamAdmin(true).build()));
         this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
         this.team3.setUserTeamList(List.of());
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();

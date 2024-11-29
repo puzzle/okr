@@ -43,7 +43,7 @@ public class User {
     private List<UserTeam> userTeamList = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isOkrChampion = false;
+    private boolean okrChampion = false;
 
     public User() {
     }
@@ -55,7 +55,7 @@ public class User {
         setLastname(builder.lastname);
         setEmail(builder.email);
         setUserTeamList(builder.userTeamList);
-        setOkrChampion(builder.isOkrChampion);
+        setOkrChampion(builder.okrChampion);
     }
 
     public Long getId() {
@@ -99,17 +99,17 @@ public class User {
     }
 
     public boolean isOkrChampion() {
-        return isOkrChampion;
+        return okrChampion;
     }
 
     public void setOkrChampion(boolean okrChampion) {
-        isOkrChampion = okrChampion;
+        this.okrChampion = okrChampion;
     }
 
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
-                + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
+                + lastname + '\'' + ", email='" + email + '\'' + ", okrChampion='" + okrChampion + '\'' + '}';
     }
 
     @Override
@@ -121,12 +121,12 @@ public class User {
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(version, user.version)
                 && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
-                && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
+                && Objects.equals(email, user.email) && Objects.equals(okrChampion, user.okrChampion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, firstname, lastname, email, isOkrChampion);
+        return Objects.hash(id, version, firstname, lastname, email, okrChampion);
     }
 
     public static final class Builder {
@@ -136,7 +136,7 @@ public class User {
         private String lastname;
         private String email;
         private List<UserTeam> userTeamList;
-        private boolean isOkrChampion;
+        private boolean okrChampion;
 
         private Builder() {
         }
@@ -175,8 +175,8 @@ public class User {
             return this;
         }
 
-        public Builder withOkrChampion(boolean isOkrChampion) {
-            this.isOkrChampion = isOkrChampion;
+        public Builder withIsOkrChampion(boolean okrChampion) {
+            this.okrChampion = okrChampion;
             return this;
         }
 

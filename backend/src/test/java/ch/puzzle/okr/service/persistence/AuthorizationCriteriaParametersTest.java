@@ -48,7 +48,7 @@ public class AuthorizationCriteriaParametersTest {
                 .withFirstname("Hanna") //
                 .withLastname("muster") //
                 .withEmail("hanna.muster@example.com") //
-                .withOkrChampion(true) //
+                .withIsOkrChampion(true) //
                 .build();
         var criteria = new AuthorizationCriteria<Objective>();
         TypedQueryMock<Objective> typedQueryMock = new TypedQueryMock<>();

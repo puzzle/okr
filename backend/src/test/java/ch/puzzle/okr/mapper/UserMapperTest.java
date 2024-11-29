@@ -42,7 +42,7 @@ public class UserMapperTest {
                     .withId(USER_TEAM_ID) //
                     .withTeam(Team.Builder.builder().build()) //
                     .build())) //
-            .withOkrChampion(IS_OKR_CHAMPION) //
+            .withIsOkrChampion(IS_OKR_CHAMPION) //
             .build();
 
     private final NewUserDto userDto = new NewUserDto(FIRSTNAME, LASTNAME, EMAIL);
@@ -62,7 +62,7 @@ public class UserMapperTest {
                 .withFirstname(FIRSTNAME) //
                 .withLastname(LASTNAME) //
                 .withEmail(EMAIL) //
-                .withOkrChampion(IS_OKR_CHAMPION) //
+                .withIsOkrChampion(IS_OKR_CHAMPION) //
                 .build();
 
         // act + assert

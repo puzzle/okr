@@ -27,9 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class KeyResultAuthorizationServiceTest {
     @InjectMocks
     private KeyResultAuthorizationService keyResultAuthorizationService;
@@ -54,10 +52,10 @@ class KeyResultAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleCreateOrUpdate(metricKeyResult,
-                                                                                                    authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> keyResultAuthorizationService.createEntity(metricKeyResult));
+                () -> keyResultAuthorizationService.createEntity(metricKeyResult));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -90,10 +88,10 @@ class KeyResultAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleReadByKeyResultId(id,
-                                                                                                       authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> keyResultAuthorizationService.getEntityById(id));
+                () -> keyResultAuthorizationService.getEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -103,12 +101,10 @@ class KeyResultAuthorizationServiceTest {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.updateEntities(id, metricKeyResult, List.of())).thenReturn(
-                                                                                                 new KeyResultWithActionList(metricKeyResult,
-                                                                                                                             List.of()));
+                new KeyResultWithActionList(metricKeyResult, List.of()));
 
-        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id,
-                                                                                         metricKeyResult,
-                                                                                         List.of());
+        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id, metricKeyResult,
+                List.of());
         assertEquals(metricKeyResult, KeyResult.keyResult());
     }
 
@@ -119,12 +115,10 @@ class KeyResultAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleCreateOrUpdate(metricKeyResult,
-                                                                                                    authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> keyResultAuthorizationService.updateEntities(id,
-                                                                                                            metricKeyResult,
-                                                                                                            List.of()));
+                () -> keyResultAuthorizationService.updateEntities(id, metricKeyResult, List.of()));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -132,11 +126,10 @@ class KeyResultAuthorizationServiceTest {
     @Test
     void updateEntityShouldThrowException() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> keyResultAuthorizationService.updateEntity(1L,
-                                                                                                          metricKeyResult));
+                () -> keyResultAuthorizationService.updateEntity(1L, metricKeyResult));
         assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("unsupported method in class " + KeyResultAuthorizationService.class.getSimpleName() + ", use updateEntities() instead",
-                     exception.getReason());
+        assertEquals("unsupported method in class " + KeyResultAuthorizationService.class.getSimpleName()
+                + ", use updateEntities() instead", exception.getReason());
     }
 
     @Test
@@ -154,10 +147,10 @@ class KeyResultAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleDeleteByKeyResultId(id,
-                                                                                                         authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> keyResultAuthorizationService.deleteEntityById(id));
+                () -> keyResultAuthorizationService.deleteEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -172,9 +165,7 @@ class KeyResultAuthorizationServiceTest {
         assertThat(List.of(checkIn1, checkIn1)).hasSameElementsAs(checkIns);
     }
 
-    @DisplayName(
-        "getAllCheckInsByKeyResult() should return empty List if no Checkins are found"
-    )
+    @DisplayName("getAllCheckInsByKeyResult() should return empty List if no Checkins are found")
     @Test
     void getAllCheckInsByKeyResultShouldReturnEmptyListIfNoCheckinsAreFound() {
         long id = 13L;

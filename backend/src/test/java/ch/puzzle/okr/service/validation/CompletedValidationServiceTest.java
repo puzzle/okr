@@ -30,9 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class CompletedValidationServiceTest {
     @MockBean
     CompletedPersistenceService completedPersistenceService = Mockito.mock(CompletedPersistenceService.class);
@@ -76,10 +74,8 @@ class CompletedValidationServiceTest {
         when(completedPersistenceService.getCompletedByObjectiveId(1L)).thenReturn(this.validCompleted);
         when(completedPersistenceService.getModelName()).thenReturn("Completed");
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                            String.format("%s with id %s not found",
-                                                          completedPersistenceService.getModelName(),
-                                                          2L))).when(completedPersistenceService)
-                                                               .getCompletedByObjectiveId(2L);
+                String.format("%s with id %s not found", completedPersistenceService.getModelName(), 2L))).when(
+                        completedPersistenceService).getCompletedByObjectiveId(2L);
     }
 
     @Spy
@@ -88,8 +84,7 @@ class CompletedValidationServiceTest {
 
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(arguments(StringUtils.repeat('1', 5000),
-                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                        List.of("comment", "Completed", "0", "4096")))));
+                List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("comment", "Completed", "0", "4096")))));
     }
 
     @Test
@@ -104,7 +99,7 @@ class CompletedValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(null));
+                () -> validator.validateOnCreate(null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Completed")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -121,23 +116,21 @@ class CompletedValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(completed));
+                () -> validator.validateOnCreate(completed));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Completed")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     @ParameterizedTest
-    @MethodSource(
-        "nameValidationArguments"
-    )
+    @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         // arrange
         Completed completed = Completed.Builder.builder().withObjective(this.objective).withComment(comment).build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(completed));
+                () -> validator.validateOnCreate(completed));
 
         assertOkrResponseStatusException(exception, expectedErrors);
     }
@@ -153,15 +146,13 @@ class CompletedValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(completedInvalid));
+                () -> validator.validateOnCreate(completedInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "Completed")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName(
-        "validateOnUpdate() should throw exception"
-    )
+    @DisplayName("validateOnUpdate() should throw exception")
     @Test
     void validateOnUpdateShouldThrowException() {
         // arrange

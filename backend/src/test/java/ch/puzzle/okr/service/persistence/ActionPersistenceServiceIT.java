@@ -38,14 +38,14 @@ class ActionPersistenceServiceIT {
                              .withAction("Neue Katze")
                              .withPriority(0)
                              .withIsChecked(false)
-                             .withKeyResult(KeyResultMetric.Builder.builder()
-                                                                   .withBaseline(1.0)
-                                                                   .withStretchGoal(13.0)
-                                                                   .withId(8L)
-                                                                   .withObjective(Objective.Builder.builder()
-                                                                                                   .withId(1L)
-                                                                                                   .build())
-                                                                   .build())
+                             .withKeyResult(
+                                     KeyResultMetric.Builder.builder()
+                                                            .withBaseline(1.0)
+                                                            .withStretchGoal(13.0)
+                                                            .withId(8L)
+                                                            .withObjective(
+                                                                    Objective.Builder.builder().withId(1L).build())
+                                                            .build())
                              .build();
     }
 
@@ -105,7 +105,7 @@ class ActionPersistenceServiceIT {
         changedAction.setAction(UPDATED_ACTION);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> actionPersistenceService.save(changedAction));
+                () -> actionPersistenceService.save(changedAction));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Action")));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());

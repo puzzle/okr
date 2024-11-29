@@ -21,9 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 public class CompletedMapperTest {
     private static final long COMPLETED_ID = 0L;
     private static final String COMPLETED_COMMENT = "some comment";
@@ -48,24 +46,23 @@ public class CompletedMapperTest {
         completedMapper = new CompletedMapper(objectiveMapper);
     }
 
-    @DisplayName(
-        "toDo() should map Completed to Dto"
-    )
+    @DisplayName("toDo() should map Completed to Dto")
     @Test
     void toDtoShouldMapCompletedToDto() {
         // arrange
         var completed = Completed.Builder.builder()
                                          .withId(COMPLETED_ID)
                                          .withComment(COMPLETED_COMMENT)
-                                         .withObjective(Objective.Builder.builder()
-                                                                         .withId(OBJECTIVE_ID)
-                                                                         .withTeam(Team.Builder.builder()
-                                                                                               .withId(NOT_USED_LONG)
-                                                                                               .build())
-                                                                         .withQuarter(Quarter.Builder.builder()
-                                                                                                     .withId(NOT_USED_LONG)
-                                                                                                     .build())
-                                                                         .build())
+                                         .withObjective(
+                                                 Objective.Builder.builder()
+                                                                  .withId(OBJECTIVE_ID)
+                                                                  .withTeam(Team.Builder.builder()
+                                                                                        .withId(NOT_USED_LONG)
+                                                                                        .build())
+                                                                  .withQuarter(Quarter.Builder.builder()
+                                                                                              .withId(NOT_USED_LONG)
+                                                                                              .build())
+                                                                  .build())
                                          .build();
 
         // act
@@ -82,18 +79,15 @@ public class CompletedMapperTest {
         assertEquals(expected.getObjective().getId(), actual.objective().id());
     }
 
-    @DisplayName(
-        "toCompleted() should map Dto to Completed"
-    )
+    @DisplayName("toCompleted() should map Dto to Completed")
     @Test
     void toCompletedShouldMapDtoToCompleted() {
         // arrange
         var completedDto = CompletedDtoBuilder.builder()
                                               .withId(COMPLETED_ID)
                                               .withComment(COMPLETED_COMMENT)
-                                              .withObjectiveDto(ObjectiveDtoBuilder.builder()
-                                                                                   .withId(OBJECTIVE_ID)
-                                                                                   .build())
+                                              .withObjectiveDto(
+                                                      ObjectiveDtoBuilder.builder().withId(OBJECTIVE_ID).build())
                                               .build();
 
         // act

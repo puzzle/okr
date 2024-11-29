@@ -60,11 +60,11 @@ public class AlignmentSelection {
         if (o == null || getClass() != o.getClass())
             return false;
         AlignmentSelection alignmentSelection = (AlignmentSelection) o;
-        return Objects.equals(alignmentSelectionId, alignmentSelection.alignmentSelectionId) && Objects.equals(teamId,
-                                                                                                               alignmentSelection.teamId) && Objects.equals(objectiveTitle,
-                                                                                                                                                            alignmentSelection.objectiveTitle) && Objects.equals(quarterId,
-                                                                                                                                                                                                                 alignmentSelection.quarterId) && Objects.equals(keyResultTitle,
-                                                                                                                                                                                                                                                                 alignmentSelection.keyResultTitle);
+        return Objects.equals(alignmentSelectionId, alignmentSelection.alignmentSelectionId)
+                && Objects.equals(teamId, alignmentSelection.teamId)
+                && Objects.equals(objectiveTitle, alignmentSelection.objectiveTitle)
+                && Objects.equals(quarterId, alignmentSelection.quarterId)
+                && Objects.equals(keyResultTitle, alignmentSelection.keyResultTitle);
     }
 
     @Override
@@ -74,7 +74,10 @@ public class AlignmentSelection {
 
     @Override
     public String toString() {
-        return "AlignmentSelection{" + "alignmentSelectionId=" + alignmentSelectionId + ", teamId='" + teamId + ", teamName='" + teamName + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", quarterId=" + quarterId + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + '}';
+        return "AlignmentSelection{" + "alignmentSelectionId=" + alignmentSelectionId + ", teamId='" + teamId
+                + ", teamName='" + teamName + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", quarterId="
+                + quarterId + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
+                + '}';
     }
 
     public static final class Builder {

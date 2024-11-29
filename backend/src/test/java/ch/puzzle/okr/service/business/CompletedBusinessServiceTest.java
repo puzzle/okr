@@ -17,9 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class CompletedBusinessServiceTest {
     @Mock
     CompletedPersistenceService completedPersistenceService;
@@ -44,10 +42,12 @@ class CompletedBusinessServiceTest {
         Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
 
         Completed completed = Completed.Builder.builder()
-                                               .withObjective(Objective.Builder.builder()
-                                                                               .withId(4L)
-                                                                               .withTitle("Build a company culture that kills the competition.")
-                                                                               .build())
+                                               .withObjective(
+                                                       Objective.Builder.builder()
+                                                                        .withId(4L)
+                                                                        .withTitle(
+                                                                                "Build a company culture that kills the competition.")
+                                                                        .build())
                                                .withComment("Das ist gut")
                                                .build();
 
@@ -59,10 +59,12 @@ class CompletedBusinessServiceTest {
     @Test
     void shouldBePossibleToSaveCompletedWithoutComment() {
         Completed completed = Completed.Builder.builder()
-                                               .withObjective(Objective.Builder.builder()
-                                                                               .withId(4L)
-                                                                               .withTitle("Build a company culture that kills the competition.")
-                                                                               .build())
+                                               .withObjective(
+                                                       Objective.Builder.builder()
+                                                                        .withId(4L)
+                                                                        .withTitle(
+                                                                                "Build a company culture that kills the competition.")
+                                                                        .build())
                                                .build();
 
         Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);

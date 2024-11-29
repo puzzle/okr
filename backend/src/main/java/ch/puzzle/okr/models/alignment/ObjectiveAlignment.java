@@ -8,9 +8,7 @@ import jakarta.persistence.ManyToOne;
 import ch.puzzle.okr.models.Objective;
 
 @Entity
-@DiscriminatorValue(
-    "objective"
-)
+@DiscriminatorValue("objective")
 public class ObjectiveAlignment extends Alignment implements AlignmentInterface<Objective> {
 
     @ManyToOne

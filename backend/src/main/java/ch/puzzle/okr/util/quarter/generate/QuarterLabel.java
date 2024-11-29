@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Profile;
  * This class is used for testing purposes only. Do NOT use this class in
  * production mode.
  */
-@Profile(
-    "integration-test"
-)
+@Profile("integration-test")
 public class QuarterLabel {
     private final LocalDate date;
 
@@ -21,7 +19,8 @@ public class QuarterLabel {
     }
 
     public String label() {
-        return "GJ " + formatYearAs2Digits(firstYearOfGeschaeftsJahr()) + "/" + formatYearAs2Digits(secondYearOfGeschaeftsJahr()) + "-Q" + getQuarterDigit();
+        return "GJ " + formatYearAs2Digits(firstYearOfGeschaeftsJahr()) + "/"
+                + formatYearAs2Digits(secondYearOfGeschaeftsJahr()) + "-Q" + getQuarterDigit();
     }
 
     private int getQuarterDigit() {

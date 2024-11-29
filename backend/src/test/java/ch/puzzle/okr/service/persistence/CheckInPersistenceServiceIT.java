@@ -39,13 +39,12 @@ class CheckInPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName(
-        "getCheckInsByKeyResultIdOrderByCheckInDate() should get checkIns by keyResultId and order them by date desc"
-    )
+    @DisplayName("getCheckInsByKeyResultIdOrderByCheckInDate() should get checkIns by keyResultId and order them by date desc")
     @Test
     void getCheckInsByKeyResultIdOrderByCheckInDateShouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
         // act
-        List<CheckIn> checkIns = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
+        List<CheckIn> checkIns = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(
+                KEY_RESULT_ID);
 
         // assert
         assertThat(2, greaterThanOrEqualTo(checkIns.size()));
@@ -59,9 +58,7 @@ class CheckInPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName(
-        "getLastCheckInOfKeyResult() should get last checkIn of keyResult"
-    )
+    @DisplayName("getLastCheckInOfKeyResult() should get last checkIn of keyResult")
     @Test
     void getLastCheckInOfKeyResultShouldGetLastCheckInOfKeyResult() {
         // act
@@ -81,9 +78,7 @@ class CheckInPersistenceServiceIT {
         }
     }
 
-    @DisplayName(
-        "getModelName() should return checkIn"
-    )
+    @DisplayName("getModelName() should return checkIn")
     @Test
     void getModelNameShouldReturnCheckIn() {
         assertEquals(CHECK_IN, checkInPersistenceService.getModelName());

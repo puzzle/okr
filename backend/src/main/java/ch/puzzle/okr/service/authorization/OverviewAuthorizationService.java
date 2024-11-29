@@ -20,17 +20,15 @@ public class OverviewAuthorizationService {
     private final AuthorizationService authorizationService;
 
     public OverviewAuthorizationService(OverviewBusinessService overviewBusinessService,
-                                        AuthorizationService authorizationService) {
+            AuthorizationService authorizationService) {
         this.overviewBusinessService = overviewBusinessService;
         this.authorizationService = authorizationService;
     }
 
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId,
-                                                                               teamIds,
-                                                                               objectiveQuery,
-                                                                               authorizationUser);
+        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
+                authorizationUser);
         setRoleCreateOrUpdateTeam(overviews, authorizationUser);
         return overviews;
     }
@@ -42,9 +40,8 @@ public class OverviewAuthorizationService {
         }
     }
 
-    private void setRoleCreateOrUpdateTeam(Overview overview,
-                                           AuthorizationUser authorizationUser,
-                                           Map<Long, Boolean> teamAccess) {
+    private void setRoleCreateOrUpdateTeam(Overview overview, AuthorizationUser authorizationUser,
+            Map<Long, Boolean> teamAccess) {
         if (hasOverviewTeamIdAndObjectiveId(overview)) {
             Long teamId = overview.getOverviewId().getTeamId();
             teamAccess.putIfAbsent(teamId, isWriteable(authorizationUser, overview));
@@ -53,9 +50,8 @@ public class OverviewAuthorizationService {
     }
 
     private boolean hasOverviewTeamIdAndObjectiveId(Overview overview) {
-        return overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null && overview
-                                                                                                                .getOverviewId()
-                                                                                                                .getTeamId() != null;
+        return overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null
+                && overview.getOverviewId().getTeamId() != null;
     }
 
     public boolean hasWriteAllAccess() {

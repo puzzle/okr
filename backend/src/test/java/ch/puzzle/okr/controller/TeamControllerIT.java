@@ -33,15 +33,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    TeamController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(TeamController.class)
 class TeamControllerIT {
 
     private static final String BASE_URL = "/api/v2/teams";
@@ -55,27 +49,27 @@ class TeamControllerIT {
     static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", false);
 
     private static final String CREATE_NEW_TEAM = """
-                                                  {
-                                                  "id": null, "name": "OKR-Team", "organisations": []
-                                                  }
-                                                  """;
+            {
+            "id": null, "name": "OKR-Team", "organisations": []
+            }
+            """;
     private static final String CREATE_NEW_TEAM_WITH_NULL_VALUES = """
-                                                                   {
-                                                                   "id": null, "name": null, "organisations": null
-                                                                   }
-                                                                   """;
+            {
+            "id": null, "name": null, "organisations": null
+            }
+            """;
     private static final String RESPONSE_NEW_TEAM = """
-                                                    {"id":7,"version":4,"name":"OKR","writeable":false}""";
+            {"id":7,"version":4,"name":"OKR","writeable":false}""";
 
     private static final String UPDATE_TEAM = """
-                                              {
-                                              "id": 1, "name": "OKR-Team", "organisations": []
-                                              }
-                                              """;
+            {
+            "id": 1, "name": "OKR-Team", "organisations": []
+            }
+            """;
 
     private static final String ADD_USERS = """
-                                            [{"id":31,"version":1,"firstname":"Findus","lastname":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstname":"Paco","lastname":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
-                                            """;
+            [{"id":31,"version":1,"firstname":"Findus","lastname":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstname":"Paco","lastname":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
+            """;
 
     @Autowired
     private MockMvc mvc;
@@ -135,7 +129,7 @@ class TeamControllerIT {
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(teamAuthorizationService.createEntity(any()))
                   .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                         "Missing attribute name when creating team"));
+                          "Missing attribute name when creating team"));
 
         mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON)
                                   .content(CREATE_NEW_TEAM_WITH_NULL_VALUES)
@@ -214,9 +208,8 @@ class TeamControllerIT {
 
     @Test
     void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
-        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true").contentType(MediaType.APPLICATION_JSON)
-                                                                                      .content(ADD_USERS)
-                                                                                      .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true").contentType(
+                MediaType.APPLICATION_JSON).content(ADD_USERS).with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

@@ -28,8 +28,10 @@ public class CheckInTestHelpers {
 
     public static final String JSON_CHANGE_INFO = "changeinfo";
     public static final String JSON_INITIATIVES = "initiatives";
-    public static final String JSON = "{\"" + JSON_CHANGE_INFO + "\":" + "\"" + CHANGE_INFO_1 + "\"" + ", \"keyResultId\":  1}";
-    public static final String JSON_WITHOUT_KEY_RESULT_ID = "{\"" + JSON_CHANGE_INFO + "\":" + "\"" + CHANGE_INFO_1 + "\"}";
+    public static final String JSON = "{\"" + JSON_CHANGE_INFO + "\":" + "\"" + CHANGE_INFO_1 + "\""
+            + ", \"keyResultId\":  1}";
+    public static final String JSON_WITHOUT_KEY_RESULT_ID = "{\"" + JSON_CHANGE_INFO + "\":" + "\"" + CHANGE_INFO_1
+            + "\"}";
 
     public static final String JSON_PATH_ID = "$.id";
     public static final String JSON_PATH_CHANGE_INFO = "$.changeInfo";
@@ -53,51 +55,42 @@ public class CheckInTestHelpers {
                                                                                                 .withId(1L)
                                                                                                 .withFirstname("Frank")
                                                                                                 .build())
-                                                                     .withKeyResult(KeyResultMetric.Builder.builder()
-                                                                                                           .withBaseline(3.0)
-                                                                                                           .withStretchGoal(6.0)
-                                                                                                           .withId(8L)
-                                                                                                           .withObjective(objective)
-                                                                                                           .build())
+                                                                     .withKeyResult(
+                                                                             KeyResultMetric.Builder.builder()
+                                                                                                    .withBaseline(3.0)
+                                                                                                    .withStretchGoal(
+                                                                                                            6.0)
+                                                                                                    .withId(8L)
+                                                                                                    .withObjective(
+                                                                                                            objective)
+                                                                                                    .build())
                                                                      .build();
     public static final CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder()
                                                                        .withZone(Zone.COMMIT)
                                                                        .withId(4L)
-                                                                       .withCreatedBy(User.Builder.builder()
-                                                                                                  .withId(2L)
-                                                                                                  .withFirstname("Robert")
-                                                                                                  .build())
+                                                                       .withCreatedBy(
+                                                                               User.Builder.builder()
+                                                                                           .withId(2L)
+                                                                                           .withFirstname("Robert")
+                                                                                           .build())
                                                                        .withCreatedOn(LocalDateTime.MAX)
                                                                        .withChangeInfo(CHANGE_INFO)
                                                                        .withInitiatives(INITIATIVES)
-                                                                       .withKeyResult(KeyResultOrdinal.Builder.builder()
-                                                                                                              .withCommitZone("Baum")
-                                                                                                              .withTargetZone("Wald")
-                                                                                                              .withId(9L)
-                                                                                                              .build())
+                                                                       .withKeyResult(
+                                                                               KeyResultOrdinal.Builder.builder()
+                                                                                                       .withCommitZone(
+                                                                                                               "Baum")
+                                                                                                       .withTargetZone(
+                                                                                                               "Wald")
+                                                                                                       .withId(9L)
+                                                                                                       .build())
                                                                        .build();
 
     /* Test DTOs */
-    public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L,
-                                                                           1,
-                                                                           CHANGE_INFO_1,
-                                                                           INITIATIVES_1,
-                                                                           6,
-                                                                           1L,
-                                                                           LocalDateTime.MAX,
-                                                                           LocalDateTime.MAX,
-                                                                           46D,
-                                                                           true);
-    public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L,
-                                                                             1,
-                                                                             CHANGE_INFO_2,
-                                                                             INITIATIVES_2,
-                                                                             5,
-                                                                             2L,
-                                                                             LocalDateTime.MAX,
-                                                                             LocalDateTime.MAX,
-                                                                             Zone.COMMIT,
-                                                                             true);
+    public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L, 1, CHANGE_INFO_1, INITIATIVES_1, 6, 1L,
+            LocalDateTime.MAX, LocalDateTime.MAX, 46D, true);
+    public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, 1, CHANGE_INFO_2, INITIATIVES_2, 5, 2L,
+            LocalDateTime.MAX, LocalDateTime.MAX, Zone.COMMIT, true);
 
     private CheckInTestHelpers() {
     }

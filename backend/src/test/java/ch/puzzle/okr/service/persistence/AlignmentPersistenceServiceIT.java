@@ -111,7 +111,7 @@ class AlignmentPersistenceServiceIT {
         updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> alignmentPersistenceService.save(updateAlignment));
+                () -> alignmentPersistenceService.save(updateAlignment));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Alignment")));
 

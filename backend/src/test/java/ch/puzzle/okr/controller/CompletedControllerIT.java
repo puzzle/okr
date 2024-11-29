@@ -34,15 +34,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    CompletedController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(CompletedController.class)
 class CompletedControllerIT {
     private static final long COMPLETED_ID = 22L;
     private static final int COMPLETED_ID_AS_INT = (int) COMPLETED_ID;
@@ -51,12 +45,12 @@ class CompletedControllerIT {
     private static final String COMPLETED_COMMENT = "Wir haben es gut geschafft";
 
     private static final String SUCCESSFUL_CREATE_BODY = """
-                                                         {
-                                                             "id":null,
-                                                             "objectiveId":%d,
-                                                             "comment":"%s"
-                                                         }
-                                                         """.formatted(OBJECTIVE_ID, COMPLETED_COMMENT);
+            {
+                "id":null,
+                "objectiveId":%d,
+                "comment":"%s"
+            }
+            """.formatted(OBJECTIVE_ID, COMPLETED_COMMENT);
 
     @MockBean
     CompletedAuthorizationService completedAuthorizationService;
@@ -74,9 +68,10 @@ class CompletedControllerIT {
     private final CompletedDto completedDto = CompletedDtoBuilder.builder()
                                                                  .withId(COMPLETED_ID)
                                                                  .withComment(COMPLETED_COMMENT)
-                                                                 .withObjectiveDto(ObjectiveDtoBuilder.builder()
-                                                                                                      .withId(OBJECTIVE_ID)
-                                                                                                      .build())
+                                                                 .withObjectiveDto(
+                                                                         ObjectiveDtoBuilder.builder()
+                                                                                            .withId(OBJECTIVE_ID)
+                                                                                            .build())
                                                                  .build();
 
     String baseUrl = "/api/v2/completed";
@@ -89,9 +84,7 @@ class CompletedControllerIT {
         BDDMockito.given(completedMapper.toCompleted(any())).willReturn(successfulCompleted);
     }
 
-    @DisplayName(
-        "create() should create complete"
-    )
+    @DisplayName("create() should create complete")
     @Test
     void createShouldCreateCompleted() throws Exception {
         BDDMockito.given(this.completedAuthorizationService.createCompleted(any())).willReturn(successfulCompleted);
@@ -106,23 +99,18 @@ class CompletedControllerIT {
            .andExpect(jsonPath("$.comment", Is.is(COMPLETED_COMMENT)));
     }
 
-    @DisplayName(
-        "delete() should delete Completed"
-    )
+    @DisplayName("delete() should delete Completed")
     @Test
     void deleteShouldDeleteCompleted() throws Exception {
         mvc.perform(delete("/api/v2/completed/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    @DisplayName(
-        "delete() should throw exception when Completed with id cant be found"
-    )
+    @DisplayName("delete() should throw exception when Completed with id cant be found")
     @Test
     void deleteShouldThrowExceptionWhenCompletedWithIdCantBeFound() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found")).when(
-                                                                                               completedAuthorizationService)
-                                                                                         .deleteCompletedByObjectiveId(anyLong());
+                completedAuthorizationService).deleteCompletedByObjectiveId(anyLong());
 
         mvc.perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isNotFound());

@@ -8,76 +8,36 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(
-        indexes = {@Index(
-                name = "idx_objective_title",
-                columnList = "title"
-        )}
-)
+@Table(indexes = {@Index(name = "idx_objective_title", columnList = "title")})
 public class Objective implements WriteableInterface {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO,
-            generator = "sequence_objective"
-    )
-    @SequenceGenerator(
-            name = "sequence_objective",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
+    @SequenceGenerator(name = "sequence_objective", allocationSize = 1)
     private Long id;
 
     @Version
     private int version;
 
-    @NotBlank(
-            message = MessageKey.ATTRIBUTE_NOT_BLANK
-    )
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Size(
-            min = 2,
-            max = 250,
-            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
-    )
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String title;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Enumerated(
-        EnumType.STRING
-    )
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Enumerated(EnumType.STRING)
     private State state;
 
-    @Size(
-            max = 4096,
-            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
-    )
+    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String description;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @ManyToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
     private Team team;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @ManyToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
     private Quarter quarter;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @ManyToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
     private User createdBy;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    private LocalDateTime createdOn;
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
 
@@ -195,7 +155,10 @@ public class Objective implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy=" + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\'' + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy=" + modifiedBy + ", writeable=" + writeable + '\'' + '}';
+        return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
+                + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
+                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
+                + modifiedBy + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -205,30 +168,18 @@ public class Objective implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         Objective objective = (Objective) o;
-        return Objects.equals(id, objective.id) && version == objective.version && Objects.equals(title,
-                                                                                                  objective.title) && Objects.equals(createdBy,
-                                                                                                                                     objective.createdBy) && Objects.equals(team,
-                                                                                                                                                                            objective.team) && Objects.equals(quarter,
-                                                                                                                                                                                                              objective.quarter) && Objects.equals(description,
-                                                                                                                                                                                                                                                   objective.description) && Objects.equals(modifiedOn,
-                                                                                                                                                                                                                                                                                            objective.modifiedOn) && state == objective.state && Objects.equals(createdOn,
-                                                                                                                                                                                                                                                                                                                                                                objective.createdOn) && Objects.equals(modifiedBy,
-                                                                                                                                                                                                                                                                                                                                                                                                       objective.modifiedBy);
+        return Objects.equals(id, objective.id) && version == objective.version
+                && Objects.equals(title, objective.title) && Objects.equals(createdBy, objective.createdBy)
+                && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter)
+                && Objects.equals(description, objective.description)
+                && Objects.equals(modifiedOn, objective.modifiedOn) && state == objective.state
+                && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,
-                            version,
-                            title,
-                            createdBy,
-                            team,
-                            quarter,
-                            description,
-                            modifiedOn,
-                            state,
-                            createdOn,
-                            modifiedBy);
+        return Objects.hash(id, version, title, createdBy, team, quarter, description, modifiedOn, state, createdOn,
+                modifiedBy);
     }
 
     public static final class Builder {

@@ -10,37 +10,18 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Team implements WriteableInterface {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO,
-            generator = "sequence_team"
-    )
-    @SequenceGenerator(
-            name = "sequence_team",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_team")
+    @SequenceGenerator(name = "sequence_team", allocationSize = 1)
     private Long id;
 
-    @NotBlank(
-            message = MessageKey.ATTRIBUTE_NOT_BLANK
-    )
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Size(
-            min = 2,
-            max = 250,
-            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
-    )
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String name;
 
     @Version
     private int version;
 
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "team",
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team", cascade = CascadeType.ALL)
     private List<UserTeam> userTeamList;
 
     private transient boolean writeable;
@@ -101,9 +82,8 @@ public class Team implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         Team team = (Team) o;
-        return Objects.equals(id, team.id) && Objects.equals(version, team.version) && Objects.equals(name,
-                                                                                                      team.name) && Objects.equals(writeable,
-                                                                                                                                   team.writeable);
+        return Objects.equals(id, team.id) && Objects.equals(version, team.version) && Objects.equals(name, team.name)
+                && Objects.equals(writeable, team.writeable);
     }
 
     @Override

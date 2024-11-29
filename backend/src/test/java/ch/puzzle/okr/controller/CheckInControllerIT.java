@@ -34,15 +34,9 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    CheckInController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(CheckInController.class)
 class CheckInControllerIT {
     @Autowired
     private MockMvc mvc;
@@ -126,7 +120,8 @@ class CheckInControllerIT {
 
         mvc.perform(put(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON)
                                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                       .content(JSON)).andExpect(MockMvcResultMatchers.status().isNotFound());
+                                       .content(JSON))
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -177,9 +172,7 @@ class CheckInControllerIT {
            .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
-    @DisplayName(
-        "Should return client error for KeyResult not of type metric or ordinal"
-    )
+    @DisplayName("Should return client error for KeyResult not of type metric or ordinal")
     @Test
     void shouldReturnClientErrorForKeyResultNotOfTypeMetricOrOrdinal() throws Exception {
         class NonMetricOrOrdinalKeyResult extends KeyResult {
@@ -190,7 +183,8 @@ class CheckInControllerIT {
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                           .content(JSON)).andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                                           .content(JSON))
+           .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test

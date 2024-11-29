@@ -83,16 +83,15 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(user.getId());
     }
 
-    @DisplayName(
-        "registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false"
-    )
+    @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
     @Test
     void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
         // arrange
         User user = User.Builder.builder()
                                 .withFirstname("Richard")
                                 .withLastname("Eberhard")
-                                .withEmail("richard.eberhard@puzzle.ch") // email not found in application-integration-test.properties
+                                .withEmail("richard.eberhard@puzzle.ch") // email not found in
+                                                                         // application-integration-test.properties
                                 .build();
 
         userPersistenceService.getOrCreateUser(user); // updates input user with id from DB !!!
@@ -122,9 +121,7 @@ class AuthorizationRegistrationServiceIT {
      * tearDown method) </pre>
      */
     @Test
-    @DisplayName(
-        "registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true"
-    )
+    @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
         // arrange
         assertOkrChampionStatusInDb(EMAIL_WUNDERLAND, false); // pre-condition
@@ -133,13 +130,14 @@ class AuthorizationRegistrationServiceIT {
         // load user from db (by email) and set OkrChampion status based on property
         // "okr.tenants.pitc.user.champion.emails" from
         // application-integration-test.properties file
-        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(User.Builder.builder()
-                                                                                                                    .withFirstname("Alice")
-                                                                                                                    .withLastname("Wunderland")
-                                                                                                                    .withEmail(EMAIL_WUNDERLAND) // user.champion.emails
-                                                                                                                    // from
-                                                                                                                    // application-integration-test.properties
-                                                                                                                    .build());
+        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(
+                User.Builder.builder()
+                            .withFirstname("Alice")
+                            .withLastname("Wunderland")
+                            .withEmail(EMAIL_WUNDERLAND) // user.champion.emails
+                            // from
+                            // application-integration-test.properties
+                            .build());
 
         // assert
         assertTrue(processedUser.user().isOkrChampion());

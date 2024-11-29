@@ -12,7 +12,7 @@ public class CompletedAuthorizationService {
     private final AuthorizationService authorizationService;
 
     public CompletedAuthorizationService(CompletedBusinessService completedBusinessService,
-                                         AuthorizationService authorizationService) {
+            AuthorizationService authorizationService) {
         this.completedBusinessService = completedBusinessService;
         this.authorizationService = authorizationService;
     }

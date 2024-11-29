@@ -17,8 +17,7 @@ public class ForwardFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-                                                                                                                  throws IOException,
-                                                                                                                  ServletException {
+            throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(servletRequest, servletResponse);

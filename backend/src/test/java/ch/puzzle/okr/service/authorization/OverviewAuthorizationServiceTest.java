@@ -24,9 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class OverviewAuthorizationServiceTest {
     @Mock
     OverviewBusinessService overviewBusinessService;
@@ -38,9 +36,8 @@ class OverviewAuthorizationServiceTest {
     private final long adminTeamId = 5L;
     private final long memberTeamId = 6L;
 
-    private final AuthorizationUser authorizationUser = new AuthorizationUser(defaultUserWithTeams(1L,
-                                                                                                   List.of(defaultTeam(adminTeamId)),
-                                                                                                   List.of(defaultTeam(memberTeamId))));
+    private final AuthorizationUser authorizationUser = new AuthorizationUser(
+            defaultUserWithTeams(1L, List.of(defaultTeam(adminTeamId)), List.of(defaultTeam(memberTeamId))));
     private final AuthorizationUser okrChampionUser = new AuthorizationUser(defaultOkrChampion(2L));
     private final Overview overview = Overview.Builder.builder()
                                                       .withOverviewId(OverviewId.Builder.builder()
@@ -50,9 +47,7 @@ class OverviewAuthorizationServiceTest {
                                                       .withObjectiveTitle("Objective 1")
                                                       .build();
 
-    @DisplayName(
-        "getFilteredOverview() should do nothing when OverviewId is null"
-    )
+    @DisplayName("getFilteredOverview() should do nothing when OverviewId is null")
     @Test
     void getFilteredOverviewShouldDoNothingWhenOverviewIdIsNull() {
         // arrange
@@ -60,8 +55,8 @@ class OverviewAuthorizationServiceTest {
         when(overviewWithoutOverviewId.getOverviewId()).thenReturn(null);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(List
-                                                                                                                     .of(overviewWithoutOverviewId));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(
+                List.of(overviewWithoutOverviewId));
 
         // act
         overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
@@ -70,9 +65,7 @@ class OverviewAuthorizationServiceTest {
         verify(overviewWithoutOverviewId, never()).setWriteable(anyBoolean());
     }
 
-    @DisplayName(
-        "getFilteredOverview() should do nothing when TeamId is null"
-    )
+    @DisplayName("getFilteredOverview() should do nothing when TeamId is null")
     @Test
     void getFilteredOverviewShouldDoNothingWhenTeamIdIsNull() {
         // arrange
@@ -82,8 +75,8 @@ class OverviewAuthorizationServiceTest {
         when(overviewWithoutTeamId.getOverviewId()).thenReturn(overviewId);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(List
-                                                                                                                     .of(overviewWithoutTeamId));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(
+                List.of(overviewWithoutTeamId));
 
         // act
         overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
@@ -92,9 +85,7 @@ class OverviewAuthorizationServiceTest {
         verify(overviewWithoutTeamId, never()).setWriteable(anyBoolean());
     }
 
-    @DisplayName(
-        "getFilteredOverview() should do nothing when ObjectiveId is null"
-    )
+    @DisplayName("getFilteredOverview() should do nothing when ObjectiveId is null")
     @Test
     void getFilteredOverviewShouldDoNothingWhenObjectiveIdIsNull() {
         // arrange
@@ -104,8 +95,8 @@ class OverviewAuthorizationServiceTest {
         when(overviewWithoutObjectiveId.getOverviewId()).thenReturn(overviewId);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(List
-                                                                                                                     .of(overviewWithoutObjectiveId));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser))).thenReturn(
+                List.of(overviewWithoutObjectiveId));
 
         // act
         overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
@@ -158,14 +149,13 @@ class OverviewAuthorizationServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            booleans = {true, false}
-    )
+    @ValueSource(booleans = {true, false})
     void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
         if (hasRoleWriteAll) {
             when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         } else {
-            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(mockAuthorizationUser(defaultUser(adminTeamId)));
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(
+                    mockAuthorizationUser(defaultUser(adminTeamId)));
         }
 
         assertEquals(hasRoleWriteAll, overviewAuthorizationService.hasWriteAllAccess());

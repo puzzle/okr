@@ -76,147 +76,117 @@ class ObjectivePersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName(
-        "findObjectiveById() should return objective properly"
-    )
+    @DisplayName("findObjectiveById() should return objective properly")
     @Test
     void findObjectiveByIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveById(ID_OF_OBJECTIVE_3,
-                                                                      authorizationUser,
-                                                                      NO_RESULT_EXCEPTION);
+        var objective = objectivePersistenceService.findObjectiveById(ID_OF_OBJECTIVE_3, authorizationUser,
+                NO_RESULT_EXCEPTION);
 
         // assert
         assertObjective(ID_OF_OBJECTIVE_3, TITLE_OF_OBJECTIVE_3, objective);
     }
 
-    @DisplayName(
-        "findObjectiveById() should throw exception when objective not found"
-    )
+    @DisplayName("findObjectiveById() should throw exception when objective not found")
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveById(INVALID_OBJECTIVE_ID,
-                                                                                         authorizationUser,
-                                                                                         NO_RESULT_EXCEPTION));
+                () -> objectivePersistenceService.findObjectiveById(INVALID_OBJECTIVE_ID, authorizationUser,
+                        NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
         assertResponseStatusException(UNAUTHORIZED, expectedErrors, exception);
     }
 
-    @DisplayName(
-        "findObjectiveById() should throw exception when objective id is null"
-    )
+    @DisplayName("findObjectiveById() should throw exception when objective id is null")
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveById(null,
-                                                                                         authorizationUser,
-                                                                                         NO_RESULT_EXCEPTION));
+                () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName(
-        "findObjectiveByKeyResultId() should return objective properly"
-    )
+    @DisplayName("findObjectiveByKeyResultId() should return objective properly")
     @Test
     void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveByKeyResultId(ID_OF_KEY_RESULT_5,
-                                                                               authorizationUser,
-                                                                               NO_RESULT_EXCEPTION);
+        var objective = objectivePersistenceService.findObjectiveByKeyResultId(ID_OF_KEY_RESULT_5, authorizationUser,
+                NO_RESULT_EXCEPTION);
 
         // assert
         assertObjective(ID_OF_OBJECTIVE_3, TITLE_OF_OBJECTIVE_3, objective);
     }
 
-    @DisplayName(
-        "findObjectiveByKeyResultId() should throw exception when objective not found"
-    )
+    @DisplayName("findObjectiveByKeyResultId() should throw exception when objective not found")
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByKeyResultId(INVALID_KEY_RESULT_ID,
-                                                                                                  authorizationUser,
-                                                                                                  NO_RESULT_EXCEPTION));
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(INVALID_KEY_RESULT_ID, authorizationUser,
+                        NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
         assertResponseStatusException(UNAUTHORIZED, expectedErrors, exception);
     }
 
-    @DisplayName(
-        "findObjectiveByKeyResultId() should throw exception when objective id is null"
-    )
+    @DisplayName("findObjectiveByKeyResultId() should throw exception when objective id is null")
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByKeyResultId(null,
-                                                                                                  authorizationUser,
-                                                                                                  NO_RESULT_EXCEPTION));
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser,
+                        NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName(
-        "findObjectiveByCheckInId() should return objective properly"
-    )
+    @DisplayName("findObjectiveByCheckInId() should return objective properly")
     @Test
     void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveByCheckInId(ID_OF_CHECK_IN_7,
-                                                                             authorizationUser,
-                                                                             NO_RESULT_EXCEPTION);
+        var objective = objectivePersistenceService.findObjectiveByCheckInId(ID_OF_CHECK_IN_7, authorizationUser,
+                NO_RESULT_EXCEPTION);
 
         // assert
         assertObjective(ID_OF_OBJECTIVE_3, TITLE_OF_OBJECTIVE_3, objective);
     }
 
-    @DisplayName(
-        "findObjectiveByCheckInId() should throw exception when objective not found"
-    )
+    @DisplayName("findObjectiveByCheckInId() should throw exception when objective not found")
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByCheckInId(INVALID_CHECK_IN_ID,
-                                                                                                authorizationUser,
-                                                                                                NO_RESULT_EXCEPTION));
+                () -> objectivePersistenceService.findObjectiveByCheckInId(INVALID_CHECK_IN_ID, authorizationUser,
+                        NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
         assertResponseStatusException(UNAUTHORIZED, expectedErrors, exception);
     }
 
-    @DisplayName(
-        "findObjectiveByCheckInId() should throw exception when objective id is null"
-    )
+    @DisplayName("findObjectiveByCheckInId() should throw exception when objective id is null")
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByCheckInId(null,
-                                                                                                authorizationUser,
-                                                                                                ObjectivePersistenceServiceIT.NO_RESULT_EXCEPTION));
+                () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser,
+                        ObjectivePersistenceServiceIT.NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName(
-        "findObjectiveByTeamId() should return objectives of team properly"
-    )
+    @DisplayName("findObjectiveByTeamId() should return objectives of team properly")
     @Test
     void findObjectiveByTeamIdShouldReturnObjectivesOfTeamProperly() {
         // act
@@ -229,9 +199,7 @@ class ObjectivePersistenceServiceIT {
         assertObjective(ID_OF_OBJECTIVE_10, TITLE_OF_OBJECTIVE_10, objectives.get(2));
     }
 
-    @DisplayName(
-        "findObjectiveByTeamId() should return empty list when objective not found"
-    )
+    @DisplayName("findObjectiveByTeamId() should return empty list when objective not found")
     @Test
     void findObjectiveByTeamIdShouldReturnEmptyListWhenObjectiveNotFound() {
         // act
@@ -241,9 +209,7 @@ class ObjectivePersistenceServiceIT {
         assertTrue(objectives.isEmpty());
     }
 
-    @DisplayName(
-        "findObjectiveByTeamId() should return empty list when objective id is null"
-    )
+    @DisplayName("findObjectiveByTeamId() should return empty list when objective id is null")
     @Test
     void findObjectiveByTeamIdShouldReturnEmptyListWhenObjectiveIdIsNull() {
         // act
@@ -253,9 +219,7 @@ class ObjectivePersistenceServiceIT {
         assertTrue(objectives.isEmpty());
     }
 
-    @DisplayName(
-        "countByTeamAndQuarter() should return number of objectives for current quarter"
-    )
+    @DisplayName("countByTeamAndQuarter() should return number of objectives for current quarter")
     @Test
     void countByTeamAndQuarterShouldReturnNumberOfObjectivesForCurrentQuarter() {
         // arrange: there are 3 objectives for the current quarter (id 2) for team with
@@ -270,13 +234,9 @@ class ObjectivePersistenceServiceIT {
         assertEquals(3, count);
     }
 
-    @DisplayName(
-        "countByTeamAndQuarter() should return zero when team or quarter is not valid or null"
-    )
+    @DisplayName("countByTeamAndQuarter() should return zero when team or quarter is not valid or null")
     @ParameterizedTest
-    @MethodSource(
-        "invalidTeamsAndQuarters"
-    )
+    @MethodSource("invalidTeamsAndQuarters")
     void countByTeamAndQuarterShouldReturnZeroWhenTeamOrQuarterIsNotValidOrNull(Team team, Quarter quarter) {
         // act
         var count = objectivePersistenceService.countByTeamAndQuarter(team, quarter);
@@ -292,31 +252,28 @@ class ObjectivePersistenceServiceIT {
         var invalidQuarter = Quarter.Builder.builder().withId(INVALID_QUARTER_ID).build();
 
         return Stream.of(
-                         // valid team + invalid quarter
-                         arguments(validTeam, invalidQuarter),
-                         // valid team + null quarter
-                         arguments(validTeam, null),
-                         // invalid team + valid quarter
-                         arguments(invalidTeam, validQuarter),
-                         // invalid team + null quarter
-                         arguments(null, validQuarter),
-                         // invalid team + invalid quarter
-                         arguments(invalidTeam, invalidQuarter),
-                         // null team + null quarter
-                         arguments(null, null));
+                // valid team + invalid quarter
+                arguments(validTeam, invalidQuarter),
+                // valid team + null quarter
+                arguments(validTeam, null),
+                // invalid team + valid quarter
+                arguments(invalidTeam, validQuarter),
+                // invalid team + null quarter
+                arguments(null, validQuarter),
+                // invalid team + invalid quarter
+                arguments(invalidTeam, invalidQuarter),
+                // null team + null quarter
+                arguments(null, null));
     }
 
-    @DisplayName(
-        "getModelName() should return Objective"
-    )
+    @DisplayName("getModelName() should return Objective")
     @Test
     void getModelNameShouldReturnObjective() {
         assertEquals(OBJECTIVE, objectivePersistenceService.getModelName());
     }
 
-    private void assertResponseStatusException(HttpStatus expectedStatus,
-                                               List<ErrorDto> expectedErrors,
-                                               OkrResponseStatusException currentException) {
+    private void assertResponseStatusException(HttpStatus expectedStatus, List<ErrorDto> expectedErrors,
+            OkrResponseStatusException currentException) {
         assertEquals(expectedStatus, currentException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(currentException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(currentException.getReason()));

@@ -19,9 +19,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class CheckInAuthorizationServiceTest {
     @InjectMocks
     private CheckInAuthorizationService checkInAuthorizationService;
@@ -60,10 +58,10 @@ class CheckInAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleReadByCheckInId(id,
-                                                                                                     authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.getEntityById(id));
+                () -> checkInAuthorizationService.getEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -83,10 +81,10 @@ class CheckInAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleCreateOrUpdate(checkInMetric,
-                                                                                                    authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.createEntity(checkInMetric));
+                () -> checkInAuthorizationService.createEntity(checkInMetric));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -108,11 +106,10 @@ class CheckInAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleCreateOrUpdate(checkInMetric,
-                                                                                                    authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.updateEntity(id,
-                                                                                                        checkInMetric));
+                () -> checkInAuthorizationService.updateEntity(id, checkInMetric));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -132,10 +129,10 @@ class CheckInAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                                                                              .hasRoleDeleteByCheckInId(id,
-                                                                                                       authorizationUser);
+                                                                                     authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.deleteEntityById(id));
+                () -> checkInAuthorizationService.deleteEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }

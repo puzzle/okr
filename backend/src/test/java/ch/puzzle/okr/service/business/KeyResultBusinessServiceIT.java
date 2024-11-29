@@ -158,8 +158,7 @@ class KeyResultBusinessServiceIT {
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
-                                                                                           createdKeyResult,
-                                                                                           List.of());
+                createdKeyResult, List.of());
 
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
@@ -172,8 +171,7 @@ class KeyResultBusinessServiceIT {
         action2 = actionBusinessService.createEntity(createAction2(createdKeyResult));
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
-                                                                                           createdKeyResult,
-                                                                                           List.of(action1, action2));
+                createdKeyResult, List.of(action1, action2));
 
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
         assertSameActions(List.of(action1, action2), updatedKeyResult);
@@ -185,8 +183,7 @@ class KeyResultBusinessServiceIT {
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
-                                                                                           createdKeyResult,
-                                                                                           List.of());
+                createdKeyResult, List.of());
 
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
@@ -194,13 +191,12 @@ class KeyResultBusinessServiceIT {
     @Test
     void updateEntitiesShouldRecreateKeyResultMetric() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
-                                                                         authorizationUser);
+                authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
         KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
@@ -209,15 +205,14 @@ class KeyResultBusinessServiceIT {
     @Test
     void updateEntitiesShouldRecreateKeyResultMetricWithActionList() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
-                                                                         authorizationUser);
+                authorizationUser);
         action1 = actionBusinessService.createEntity(createAction1(savedKeyResult));
         action2 = actionBusinessService.createEntity(createAction2(savedKeyResult));
         KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
         Long createdKeyResultId = changedKeyResult.getId();
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of(action1, action2));
+                changedKeyResult, List.of(action1, action2));
         createdKeyResult = updatedKeyResult.keyResult();
 
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
@@ -227,13 +222,12 @@ class KeyResultBusinessServiceIT {
     @Test
     void updateEntitiesShouldRecreateKeyResultOrdinal() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
-                                                                         authorizationUser);
+                authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
         KeyResult changedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
@@ -247,8 +241,7 @@ class KeyResultBusinessServiceIT {
         KeyResult changedKeyResult = createKeyResultMetric(createdKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                changedKeyResult, List.of());
 
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }
@@ -265,8 +258,7 @@ class KeyResultBusinessServiceIT {
         action2.setChecked(true);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of(action1, action2));
+                changedKeyResult, List.of(action1, action2));
 
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
         assertUpdatedActions(List.of(action1, action2), updatedKeyResult);
@@ -280,8 +272,7 @@ class KeyResultBusinessServiceIT {
         KeyResult changedKeyResult = createKeyResultOrdinal(createdKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                changedKeyResult, List.of());
 
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }

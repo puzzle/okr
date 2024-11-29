@@ -20,9 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthorizationCriteriaParametersTest {
 
-    @DisplayName(
-        "setParameters() should be successful with default authorization user"
-    )
+    @DisplayName("setParameters() should be successful with default authorization user")
     @Test
     void setParametersShouldBeSuccessfulWithDefaultAuthorizationUser() {
         // arrange
@@ -34,17 +32,15 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       teamDraftState, State=DRAFT
-                       userTeamIds, ListN=[1]
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                teamDraftState, State=DRAFT
+                userTeamIds, ListN=[1]
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    @DisplayName(
-        "setParameters() should be successful when user is okr champion"
-    )
+    @DisplayName("setParameters() should be successful when user is okr champion")
     @Test
     void setParametersShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
@@ -63,20 +59,16 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       allDraftState, State=DRAFT
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                allDraftState, State=DRAFT
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    @DisplayName(
-        "setParameters() should be successful when team ids or objective query are empty"
-    )
+    @DisplayName("setParameters() should be successful when team ids or objective query are empty")
     @ParameterizedTest
-    @MethodSource(
-        "provideListAndString"
-    )
+    @MethodSource("provideListAndString")
     void setParametersShouldBeSuccessfulWhenTeamIdsOrObjectiveQueryAreEmpty(List<Long> teamIds, String objectiveQuery) {
         // arrange
         var criteria = new AuthorizationCriteria<Objective>();
@@ -87,24 +79,20 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       teamDraftState, State=DRAFT
-                       userTeamIds, ListN=[1]
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                teamDraftState, State=DRAFT
+                userTeamIds, ListN=[1]
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
 
     private static Stream<Arguments> provideListAndString() {
-        return Stream.of(Arguments.of(List.of(), null),
-                         Arguments.of(List.of(), ""),
-                         Arguments.of(null, null),
-                         Arguments.of(null, ""));
+        return Stream.of(Arguments.of(List.of(), null), Arguments.of(List.of(), ""), Arguments.of(null, null),
+                Arguments.of(null, ""));
     }
 
-    @DisplayName(
-        "setParameters() should be successful when team ids and objective query are not empty"
-    )
+    @DisplayName("setParameters() should be successful when team ids and objective query are not empty")
     @Test
     void setParametersShouldBeSuccessfulWhenTeamIdsAndObjectiveQueryAreNotEmpty() {
         // arrange
@@ -118,12 +106,12 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       teamIds, List12=[99]
-                       objectiveQuery, String=OBJECTIVEQUERY
-                       teamDraftState, State=DRAFT
-                       userTeamIds, ListN=[1]
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                teamIds, List12=[99]
+                objectiveQuery, String=OBJECTIVEQUERY
+                teamDraftState, State=DRAFT
+                userTeamIds, ListN=[1]
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
@@ -153,9 +141,8 @@ public class AuthorizationCriteriaParametersTest {
         }
 
         @Override
-        public TypedQuery<Objective> setParameter(Parameter<Calendar> parameter,
-                                                  Calendar calendar,
-                                                  TemporalType temporalType) {
+        public TypedQuery<Objective> setParameter(Parameter<Calendar> parameter, Calendar calendar,
+                TemporalType temporalType) {
             log.append(parameter.getName())
                .append(", ")
                .append(calendar.getTime())

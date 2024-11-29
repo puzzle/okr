@@ -23,15 +23,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    ClientConfigController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ClientConfigController.class)
 public class ClientConfigControllerIT {
 
     @Autowired
@@ -61,16 +55,8 @@ public class ClientConfigControllerIT {
 
     private ClientConfigDto createClientConfigDto() {
         Map<String, String> customStyles = Map.of("font-family", "verdana", "font-size", "20px");
-        return new ClientConfigDto("Active_Profile",
-                                   "Issuer",
-                                   "Client_Id",
-                                   "Favicon",
-                                   "Logo",
-                                   "Triangles",
-                                   "Background_Logo",
-                                   "Title",
-                                   "helpSiteUrl",
-                                   customStyles);
+        return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo", "Triangles",
+                "Background_Logo", "Title", "helpSiteUrl", customStyles);
     }
 
 }

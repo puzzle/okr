@@ -29,48 +29,42 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    ActionController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ActionController.class)
 class ActionControllerIT {
     public static final String SUCCESSFUL_UPDATE_BODY = """
-                                                        [
-                                                            {
-                                                                "id":1,
-                                                                "version":1,
-                                                                "action":"Neuer Drucker",
-                                                                "priority":0,
-                                                                "isChecked":true,
-                                                                "keyResultId":8
-                                                            },
-                                                            {
-                                                                "id":2,
-                                                                "version":1,
-                                                                "action":"Neues Papier",
-                                                                "priority":1,
-                                                                "isChecked":false,
-                                                                "keyResultId":8
-                                                            }
-                                                        ]
-                                                        """;
+            [
+                {
+                    "id":1,
+                    "version":1,
+                    "action":"Neuer Drucker",
+                    "priority":0,
+                    "isChecked":true,
+                    "keyResultId":8
+                },
+                {
+                    "id":2,
+                    "version":1,
+                    "action":"Neues Papier",
+                    "priority":1,
+                    "isChecked":false,
+                    "keyResultId":8
+                }
+            ]
+            """;
     public static final String SUCCESSFUL_UPDATE_BODY_SINGLE_ACTION = """
-                                                                      [
-                                                                          {
-                                                                              "id":1,
-                                                                              "version":1,
-                                                                              "action":"Neuer Drucker",
-                                                                              "priority":0,
-                                                                              "isChecked":true,
-                                                                              "keyResultId":8
-                                                                          }
-                                                                      ]
-                                                                      """;
+            [
+                {
+                    "id":1,
+                    "version":1,
+                    "action":"Neuer Drucker",
+                    "priority":0,
+                    "isChecked":true,
+                    "keyResultId":8
+                }
+            ]
+            """;
     @MockBean
     ActionAuthorizationService actionAuthorizationService;
     @MockBean
@@ -125,7 +119,8 @@ class ActionControllerIT {
     @Test
     void throwExceptionWhenActionWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Action not found")).when(actionAuthorizationService)
-                                                                                      .deleteActionByActionId(anyLong());
+                                                                                      .deleteActionByActionId(
+                                                                                              anyLong());
 
         mvc.perform(delete("/api/v2/action/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isNotFound());

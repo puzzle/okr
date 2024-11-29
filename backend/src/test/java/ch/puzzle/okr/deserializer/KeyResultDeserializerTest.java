@@ -19,9 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 public class KeyResultDeserializerTest {
 
     @InjectMocks
@@ -34,39 +32,37 @@ public class KeyResultDeserializerTest {
         objectMapper = new ObjectMapper();
     }
 
-    @DisplayName(
-        "deserialize() should return KeyResultMetricDto for metric json"
-    )
+    @DisplayName("deserialize() should return KeyResultMetricDto for metric json")
     @Test
     void deserializeShouldReturnKeyResultMetricDtoForMetricJson() throws Exception {
         // arrange
         String jsonMetric = """
-                            {
-                              "id": 42,
-                              "version": 0,
-                              "keyResultType": "metric",
-                              "title": "TITLE_METRIC",
-                              "description": "BESCHREIBUNG",
-                              "baseline": 1.0,
-                              "stretchGoal": 5.0,
-                              "unit": "NUMBER",
-                              "owner": {
-                                "id": 1000,
-                                "firstname": "Jaya",
-                                "lastname": "Norris"
-                              },
-                              "objective": {
-                                "id": 1000,
-                                "state": "ongoing-icon.svg",
-                                "keyResultQuarterDto": null
-                              },
-                              "lastCheckIn": null,
-                              "createdOn": null,
-                              "modifiedOn": null,
-                              "writeable": false,
-                              "actionList": []
-                            }
-                            """;
+                {
+                  "id": 42,
+                  "version": 0,
+                  "keyResultType": "metric",
+                  "title": "TITLE_METRIC",
+                  "description": "BESCHREIBUNG",
+                  "baseline": 1.0,
+                  "stretchGoal": 5.0,
+                  "unit": "NUMBER",
+                  "owner": {
+                    "id": 1000,
+                    "firstname": "Jaya",
+                    "lastname": "Norris"
+                  },
+                  "objective": {
+                    "id": 1000,
+                    "state": "ongoing-icon.svg",
+                    "keyResultQuarterDto": null
+                  },
+                  "lastCheckIn": null,
+                  "createdOn": null,
+                  "modifiedOn": null,
+                  "writeable": false,
+                  "actionList": []
+                }
+                """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
@@ -110,40 +106,38 @@ public class KeyResultDeserializerTest {
         assertEquals(1000, objective.id());
     }
 
-    @DisplayName(
-        "deserialize() should return KeyResultOrdinalDto for ordinal json"
-    )
+    @DisplayName("deserialize() should return KeyResultOrdinalDto for ordinal json")
     @Test
     void deserializeShouldReturnKeyResultOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
         String jsonMetric = """
-                            {
-                              "id": 43,
-                              "version": 0,
-                              "keyResultType": "ordinal",
-                              "title": "TITLE_ORDINAL",
-                              "description": "BESCHREIBUNG",
-                              "commitZone": "1",
-                              "targetZone": "3",
-                              "stretchZone": "5",
-                              "owner": {
-                                "id": 1000,
-                                "firstname": "Jaya",
-                                "lastname": "Norris"
-                              },
-                              "objective": {
-                                "id": 1000,
-                                "state": "ongoing-icon.svg",
-                                "keyResultQuarterDto": null
-                              },
-                              "lastCheckIn": null,
-                              "createdOn": null,
-                              "modifiedOn": null,
-                              "writeable": false,
-                              "actionList": []
-                            }
+                {
+                  "id": 43,
+                  "version": 0,
+                  "keyResultType": "ordinal",
+                  "title": "TITLE_ORDINAL",
+                  "description": "BESCHREIBUNG",
+                  "commitZone": "1",
+                  "targetZone": "3",
+                  "stretchZone": "5",
+                  "owner": {
+                    "id": 1000,
+                    "firstname": "Jaya",
+                    "lastname": "Norris"
+                  },
+                  "objective": {
+                    "id": 1000,
+                    "state": "ongoing-icon.svg",
+                    "keyResultQuarterDto": null
+                  },
+                  "lastCheckIn": null,
+                  "createdOn": null,
+                  "modifiedOn": null,
+                  "writeable": false,
+                  "actionList": []
+                }
 
-                            """;
+                """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
@@ -175,21 +169,19 @@ public class KeyResultDeserializerTest {
         assertObjective(objective);
     }
 
-    @DisplayName(
-        "deserialize() should throw ResponseStatusException if KeyResult is of unsupported type"
-    )
+    @DisplayName("deserialize() should throw ResponseStatusException if KeyResult is of unsupported type")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfKeyResultIsUnsupportedType() throws Exception {
         // arrange
         String jsonMetric = """
-                            {
-                              "id": 44,
-                              "version": 0,
-                              "keyResultType": "unsupported",
-                              "title": "TITLE_UNSUPPORTED",
-                              "description": "BESCHREIBUNG"
-                            }
-                            """;
+                {
+                  "id": 44,
+                  "version": 0,
+                  "keyResultType": "unsupported",
+                  "title": "TITLE_UNSUPPORTED",
+                  "description": "BESCHREIBUNG"
+                }
+                """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
@@ -202,20 +194,18 @@ public class KeyResultDeserializerTest {
         assertBadRequest(exception);
     }
 
-    @DisplayName(
-        "deserialize() should throw ResponseStatusException if json has no KeyResult Type"
-    )
+    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Type")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultType() throws Exception {
         // arrange
         String jsonMetric = """
-                            {
-                              "id": 45,
-                              "version": 0,
-                              "title": "NO_KEY_RESULT_TYPE",
-                              "description": "BESCHREIBUNG"
-                            }
-                            """;
+                {
+                  "id": 45,
+                  "version": 0,
+                  "title": "NO_KEY_RESULT_TYPE",
+                  "description": "BESCHREIBUNG"
+                }
+                """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);

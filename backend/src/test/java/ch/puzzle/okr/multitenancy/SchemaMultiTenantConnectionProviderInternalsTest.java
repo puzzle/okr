@@ -27,9 +27,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         }
     }
 
-    @DisplayName(
-        "getConnectionProvider() return ConnectionProvider if TenantId is registered"
-    )
+    @DisplayName("getConnectionProvider() return ConnectionProvider if TenantId is registered")
     @Test
     void getConnectionProviderReturnConnectionProviderIfTenantIdIsRegistered() {
         // arrange
@@ -43,9 +41,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         Assertions.assertNotNull(foundConnectionProvider);
     }
 
-    @DisplayName(
-        "getConnectionProvider() throws Exception when lookup TenantId is null"
-    )
+    @DisplayName("getConnectionProvider() throws Exception when lookup TenantId is null")
     @Test
     void getConnectionProviderThrowsExceptionWhenLookupTenantIdIsNull() {
         // arrange
@@ -55,9 +51,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         Assertions.assertThrows(ConnectionProviderException.class, () -> mockProvider.getConnectionProvider(null));
     }
 
-    @DisplayName(
-        "selectConnectionProvider() return ConnectionProvider if TenantId is registered"
-    )
+    @DisplayName("selectConnectionProvider() return ConnectionProvider if TenantId is registered")
     @Test
     void selectConnectionProviderReturnConnectionProviderIfTenantIdIsRegistered() {
         // arrange
@@ -71,9 +65,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         Assertions.assertNotNull(foundConnectionProvider);
     }
 
-    @DisplayName(
-        "getAnyConnectionProvider() return ConnectionProvider for TenantId public"
-    )
+    @DisplayName("getAnyConnectionProvider() return ConnectionProvider for TenantId public")
     @Test
     void getAnyConnectionProviderReturnConnectionProviderForTenantIdPublic() {
         // arrange
@@ -87,9 +79,7 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         Assertions.assertNotNull(foundConnectionProvider);
     }
 
-    @DisplayName(
-        "getConnectionProviderShouldThrowRuntimeExceptionWhenNoPropertiesAreFound"
-    )
+    @DisplayName("getConnectionProviderShouldThrowRuntimeExceptionWhenNoPropertiesAreFound")
     @Test
     void getConnectionProviderShouldThrowRuntimeExceptionWhenNoPropertiesAreFound() {
         ConfigurableConnectionProviderMock mockProvider = new ConfigurableConnectionProviderMock();

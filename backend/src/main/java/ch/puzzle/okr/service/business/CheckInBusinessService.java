@@ -17,7 +17,7 @@ public class CheckInBusinessService implements BusinessServiceInterface<Long, Ch
     private final CheckInValidationService validator;
 
     public CheckInBusinessService(CheckInPersistenceService checkInPersistenceService,
-                                  CheckInValidationService validator) {
+            CheckInValidationService validator) {
         this.checkInPersistenceService = checkInPersistenceService;
         this.validator = validator;
     }

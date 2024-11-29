@@ -30,9 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     @InjectMocks
@@ -141,9 +139,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            booleans = {false, true}
-    )
+    @ValueSource(booleans = {false, true})
     void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";
@@ -183,13 +179,12 @@ class ObjectiveBusinessServiceTest {
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
-        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(),
-                                                                        changedObjective,
-                                                                        authorizationUser);
+        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
+                authorizationUser);
 
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
         assertEquals(hasKeyResultAnyCheckIns ? savedObjective.getQuarter() : changedObjective.getQuarter(),
-                     updatedEntity.getQuarter());
+                updatedEntity.getQuarter());
         assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
     }
@@ -222,13 +217,12 @@ class ObjectiveBusinessServiceTest {
         Objective newObjective = Objective.Builder.builder().withId(42L).withTitle("Objective 2").build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(List.of(keyResultOrdinal,
-                                                                                                 keyResultMetric));
+        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(
+                List.of(keyResultOrdinal, keyResultMetric));
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
-                                                                                    newObjective,
-                                                                                    authorizationUser);
+                newObjective, authorizationUser);
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());

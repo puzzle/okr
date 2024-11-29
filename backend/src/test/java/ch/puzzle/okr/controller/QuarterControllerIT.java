@@ -28,15 +28,9 @@ import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    QuarterController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(QuarterController.class)
 class QuarterControllerIT {
 
     static Quarter quarter1 = Quarter.Builder.builder()

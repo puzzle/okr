@@ -151,13 +151,9 @@ class OkrArchitectureTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(
-            resources = "/repositoriesAndPersistenceServices.csv",
-            numLinesToSkip = 1
-    )
+    @CsvFileSource(resources = "/repositoriesAndPersistenceServices.csv", numLinesToSkip = 1)
     void repositoriesShouldOnlyBeCalledFromPersistenceServicesAndValidationService(String repository,
-                                                                                   String persistenceService,
-                                                                                   String validationService) {
+            String persistenceService, String validationService) {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes().that()
@@ -174,9 +170,7 @@ class OkrArchitectureTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            strings = {"controller", "service", "mapper", "repository", "dto", "exception"}
-    )
+    @ValueSource(strings = {"controller", "service", "mapper", "repository", "dto", "exception"})
     void classesInRightPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 
@@ -197,13 +191,16 @@ class OkrArchitectureTest {
                                                                                      .layer("Controller")
                                                                                      .definedBy("..controller..")
                                                                                      .layer("AuthorizationService")
-                                                                                     .definedBy("..service.authorization..")
+                                                                                     .definedBy(
+                                                                                             "..service.authorization..")
                                                                                      .layer("BusinessService")
                                                                                      .definedBy("..service.business..")
                                                                                      .layer("ValidationService")
-                                                                                     .definedBy("..service.validation..")
+                                                                                     .definedBy(
+                                                                                             "..service.validation..")
                                                                                      .layer("PersistenceService")
-                                                                                     .definedBy("..service.persistence..")
+                                                                                     .definedBy(
+                                                                                             "..service.persistence..")
                                                                                      .layer("Repository")
                                                                                      .definedBy("..repository..")
                                                                                      .layer("Mapper")
@@ -211,20 +208,25 @@ class OkrArchitectureTest {
                                                                                      .whereLayer("Controller")
                                                                                      .mayNotBeAccessedByAnyLayer()
                                                                                      .whereLayer("AuthorizationService")
-                                                                                     .mayOnlyBeAccessedByLayers("Controller")
+                                                                                     .mayOnlyBeAccessedByLayers(
+                                                                                             "Controller")
                                                                                      .whereLayer("BusinessService")
-                                                                                     .mayOnlyBeAccessedByLayers("Controller",
-                                                                                                                "AuthorizationService",
-                                                                                                                "Mapper",
-                                                                                                                "BusinessService")
+                                                                                     .mayOnlyBeAccessedByLayers(
+                                                                                             "Controller",
+                                                                                             "AuthorizationService",
+                                                                                             "Mapper",
+                                                                                             "BusinessService")
                                                                                      .whereLayer("ValidationService")
-                                                                                     .mayOnlyBeAccessedByLayers("BusinessService")
+                                                                                     .mayOnlyBeAccessedByLayers(
+                                                                                             "BusinessService")
                                                                                      .whereLayer("PersistenceService")
-                                                                                     .mayOnlyBeAccessedByLayers("BusinessService",
-                                                                                                                "PersistenceService",
-                                                                                                                "ValidationService")
+                                                                                     .mayOnlyBeAccessedByLayers(
+                                                                                             "BusinessService",
+                                                                                             "PersistenceService",
+                                                                                             "ValidationService")
                                                                                      .whereLayer("Repository")
-                                                                                     .mayOnlyBeAccessedByLayers("PersistenceService");
+                                                                                     .mayOnlyBeAccessedByLayers(
+                                                                                             "PersistenceService");
         layeredArchitecture.check(importedClasses);
     }
 

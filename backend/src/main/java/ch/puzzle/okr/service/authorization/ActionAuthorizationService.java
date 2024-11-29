@@ -16,7 +16,7 @@ public class ActionAuthorizationService {
     private final AuthorizationService authorizationService;
 
     public ActionAuthorizationService(ActionBusinessService actionBusinessService,
-                                      AuthorizationService authorizationService) {
+            AuthorizationService authorizationService) {
         this.actionBusinessService = actionBusinessService;
         this.authorizationService = authorizationService;
     }

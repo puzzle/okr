@@ -32,15 +32,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    ObjectiveController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
@@ -51,27 +45,27 @@ class ObjectiveControllerIT {
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
     private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
     private static final String JSON = """
-                                       {
-                                          "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
-                                          "teamId": 1, "teamName": "Team1", "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020,
-                                          "description": "This is our description", "progress": 33.3
-                                       }
-                                       """;
+            {
+               "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
+               "teamId": 1, "teamName": "Team1", "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020,
+               "description": "This is our description", "progress": 33.3
+            }
+            """;
     private static final String CREATE_NEW_OBJECTIVE = """
-                                                       {
-                                                          "title": "FullObjective", "ownerId": 1, "teamId": 1, "teamName": "Team1",
-                                                          "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020, "description": "This is our description"
-                                                       }
-                                                       """;
+            {
+               "title": "FullObjective", "ownerId": 1, "teamId": 1, "teamName": "Team1",
+               "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020, "description": "This is our description"
+            }
+            """;
     private static final String CREATE_NEW_OBJECTIVE_WITH_NULL_VALUES = """
-                                                                        {
-                                                                           "title": null, "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
-                                                                           "teamId": 1, "teamName": "Team1", "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020,
-                                                                           "description": "This is our description", "progress": 33.3
-                                                                        }
-                                                                        """;
+            {
+               "title": null, "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
+               "teamId": 1, "teamName": "Team1", "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020,
+               "description": "This is our description", "progress": 33.3
+            }
+            """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-                                                         {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder()
                                                                  .withId(5L)
@@ -98,28 +92,10 @@ class ObjectiveControllerIT {
                                                                     .withDescription(DESCRIPTION)
                                                                     .withModifiedOn(LocalDateTime.MAX)
                                                                     .build();
-    private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L,
-                                                                       1,
-                                                                       OBJECTIVE_TITLE_1,
-                                                                       1L,
-                                                                       1L,
-                                                                       "GJ 22/23-Q2",
-                                                                       DESCRIPTION,
-                                                                       State.DRAFT,
-                                                                       LocalDateTime.MAX,
-                                                                       LocalDateTime.MAX,
-                                                                       true);
-    private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L,
-                                                                       1,
-                                                                       OBJECTIVE_TITLE_2,
-                                                                       1L,
-                                                                       1L,
-                                                                       "GJ 22/23-Q2",
-                                                                       DESCRIPTION,
-                                                                       State.DRAFT,
-                                                                       LocalDateTime.MIN,
-                                                                       LocalDateTime.MIN,
-                                                                       true);
+    private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L, "GJ 22/23-Q2",
+            DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true);
+    private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, "GJ 22/23-Q2",
+            DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true);
 
     @Autowired
     private MockMvc mvc;
@@ -157,17 +133,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(null,
-                                                      1,
-                                                      "Program Faster",
-                                                      1L,
-                                                      1L,
-                                                      "GJ 22/23-Q2",
-                                                      "Just be faster",
-                                                      State.DRAFT,
-                                                      null,
-                                                      null,
-                                                      true);
+        ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "GJ 22/23-Q2",
+                "Just be faster", State.DRAFT, null, null, true);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
@@ -184,7 +151,7 @@ class ObjectiveControllerIT {
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.createEntity(any()))
                   .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                         "Missing attribute title when creating objective"));
+                          "Missing attribute title when creating objective"));
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
                                             .content(CREATE_NEW_OBJECTIVE_WITH_NULL_VALUES)
@@ -194,17 +161,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L,
-                                                      1,
-                                                      TITLE,
-                                                      1L,
-                                                      1L,
-                                                      "GJ 22/23-Q2",
-                                                      EVERYTHING_FINE_DESCRIPTION,
-                                                      State.NOTSUCCESSFUL,
-                                                      LocalDateTime.MIN,
-                                                      LocalDateTime.MAX,
-                                                      true);
+        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", EVERYTHING_FINE_DESCRIPTION,
+                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
         Objective objective = Objective.Builder.builder()
                                                .withId(1L)
                                                .withDescription(EVERYTHING_FINE_DESCRIPTION)
@@ -226,17 +184,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnImUsed() throws Exception {
-        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L,
-                                                         1,
-                                                         TITLE,
-                                                         1L,
-                                                         1L,
-                                                         "GJ 22/23-Q2",
-                                                         EVERYTHING_FINE_DESCRIPTION,
-                                                         State.SUCCESSFUL,
-                                                         LocalDateTime.MAX,
-                                                         LocalDateTime.MAX,
-                                                         true);
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2",
+                EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
         Objective objectiveImUsed = Objective.Builder.builder()
                                                      .withId(1L)
                                                      .withDescription(EVERYTHING_FINE_DESCRIPTION)
@@ -261,8 +210,8 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any()))
-                  .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                                         "Failed objective -> Attribut is invalid"));
+                  .willThrow(
+                          new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON)
                                          .content(JSON)
@@ -274,7 +223,7 @@ class ObjectiveControllerIT {
     void shouldReturnBadRequest() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any()))
                   .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                         "Failed objective -> Attribut is invalid"));
+                          "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -289,8 +238,7 @@ class ObjectiveControllerIT {
     @Test
     void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(
-                                                                                               objectiveAuthorizationService)
-                                                                                         .deleteEntityById(anyLong());
+                objectiveAuthorizationService).deleteEntityById(anyLong());
 
         mvc.perform(delete("/api/v2/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -302,9 +250,10 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 
-        mvc.perform(post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
-                                                                       .content(JSON)
-                                                                       .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc.perform(
+                post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
+                                                                   .content(JSON)
+                                                                   .with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isCreated())
            .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
            .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))

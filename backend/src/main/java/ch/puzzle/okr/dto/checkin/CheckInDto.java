@@ -4,9 +4,7 @@ import ch.puzzle.okr.deserializer.CheckInDeserializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(
-        using = CheckInDeserializer.class
-)
+@JsonDeserialize(using = CheckInDeserializer.class)
 public interface CheckInDto {
 
 }

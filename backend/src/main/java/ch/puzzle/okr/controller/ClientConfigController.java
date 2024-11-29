@@ -20,17 +20,13 @@ public class ClientConfigController {
         this.configService = configService;
     }
 
-    @GetMapping(
-        "/config"
-    )
+    @GetMapping("/config")
     public ResponseEntity<ClientConfigDto> getConfig(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                              .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 
-    @RequestMapping(
-            value = "/**/{[path:[^\\.]*}"
-    )
+    @RequestMapping(value = "/**/{[path:[^\\.]*}")
     public String redirect(HttpServletRequest request) {
         String path = request.getRequestURI();
         // Serve static resources or paths containing a dot directly

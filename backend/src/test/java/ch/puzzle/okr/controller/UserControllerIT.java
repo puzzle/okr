@@ -37,15 +37,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    UserController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(UserController.class)
 class UserControllerIT {
     private static final String FIRSTNAME_1 = "Alice";
     private static final String LASTNAME_1 = "Wunderland";
@@ -188,9 +182,7 @@ class UserControllerIT {
            .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    @DisplayName(
-        "should throw exception when user with id cant be found while deleting"
-    )
+    @DisplayName("should throw exception when user with id cant be found while deleting")
     @Test
     void throwExceptionWhenUserWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")).when(userAuthorizationService)

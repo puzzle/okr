@@ -12,12 +12,13 @@ public class AlignmentSelectionBusinessService {
 
     private final AlignmentSelectionPersistenceService alignmentSelectionPersistenceService;
 
-    public AlignmentSelectionBusinessService(AlignmentSelectionPersistenceService alignmentSelectionPersistenceService) {
+    public AlignmentSelectionBusinessService(
+            AlignmentSelectionPersistenceService alignmentSelectionPersistenceService) {
         this.alignmentSelectionPersistenceService = alignmentSelectionPersistenceService;
     }
 
     public List<AlignmentSelection> getAlignmentSelectionByQuarterIdAndTeamIdNot(Long quarterId, Long ignoredTeamId) {
         return alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterId,
-                                                                                                 ignoredTeamId);
+                ignoredTeamId);
     }
 }

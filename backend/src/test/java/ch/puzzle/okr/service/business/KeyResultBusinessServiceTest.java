@@ -31,9 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class KeyResultBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
@@ -131,9 +129,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldThrowExceptionWhenDefaultMethodUsed() {
         IllegalCallerException exception = assertThrows(IllegalCallerException.class,
-                                                        () -> keyResultBusinessService.updateEntity(metricKeyResult.getId(),
-                                                                                                    metricKeyResult,
-                                                                                                    authorizationUser));
+                () -> keyResultBusinessService.updateEntity(metricKeyResult.getId(), metricKeyResult,
+                        authorizationUser));
 
         assertEquals("unsupported method 'updateEntity' use updateEntities() instead", exception.getMessage());
     }
@@ -141,10 +138,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldEditMetricKeyResultWhenNoTypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
-        KeyResult newKeyresult = spy(KeyResultMetric.Builder.builder()
-                                                            .withId(1L)
-                                                            .withTitle("Keyresult Metric update")
-                                                            .build());
+        KeyResult newKeyresult = spy(
+                KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(metricKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setModifiedOn(any());
@@ -160,10 +155,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldEditOrdinalKeyResultWhenNoTypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
-        KeyResult newKeyresult = spy(KeyResultOrdinal.Builder.builder()
-                                                             .withId(1L)
-                                                             .withTitle("Keyresult Ordinal update")
-                                                             .build());
+        KeyResult newKeyresult = spy(
+                KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(ordinalKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setModifiedOn(any());
@@ -179,10 +172,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldEditMetricKeyResultWhenATypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
-        KeyResult newKeyresult = spy(KeyResultMetric.Builder.builder()
-                                                            .withId(1L)
-                                                            .withTitle("Keyresult Metric update")
-                                                            .build());
+        KeyResult newKeyresult = spy(
+                KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(ordinalKeyResult);
         Mockito.when(keyResultPersistenceService.recreateEntity(any(), any())).thenReturn(newKeyresult);
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
@@ -200,10 +191,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldEditOrdinalKeyResultWhenATypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
-        KeyResult newKeyresult = spy(KeyResultOrdinal.Builder.builder()
-                                                             .withId(1L)
-                                                             .withTitle("Keyresult Ordinal update")
-                                                             .build());
+        KeyResult newKeyresult = spy(
+                KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(metricKeyResult);
         Mockito.when(keyResultPersistenceService.recreateEntity(any(), any())).thenReturn(newKeyresult);
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
@@ -220,10 +209,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = checkIns;
-        KeyResult newKeyresult = spy(KeyResultMetric.Builder.builder()
-                                                            .withId(1L)
-                                                            .withTitle("Keyresult Metric update")
-                                                            .build());
+        KeyResult newKeyresult = spy(
+                KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(ordinalKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any())).thenReturn(newKeyresult);
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
@@ -240,10 +227,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = checkIns;
-        KeyResult newKeyresult = spy(KeyResultOrdinal.Builder.builder()
-                                                             .withId(1L)
-                                                             .withTitle("Keyresult Ordinal update")
-                                                             .build());
+        KeyResult newKeyresult = spy(
+                KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(metricKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any())).thenReturn(newKeyresult);
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);

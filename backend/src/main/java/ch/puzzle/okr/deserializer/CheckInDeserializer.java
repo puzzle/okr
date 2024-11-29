@@ -33,8 +33,7 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
 
     @Override
     public CheckInDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                                                                                                        throws IOException,
-                                                                                                        JacksonException {
+            throws IOException, JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
         if (root.has("keyResultId")) {
@@ -48,7 +47,7 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
             }
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                              "missing keyResult ID to deserialize checkIn DTO");
+                    "missing keyResult ID to deserialize checkIn DTO");
         }
     }
 }

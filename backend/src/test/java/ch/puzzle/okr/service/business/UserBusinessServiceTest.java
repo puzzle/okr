@@ -25,9 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class UserBusinessServiceTest {
     @Mock
     UserPersistenceService userPersistenceService;
@@ -149,7 +147,7 @@ class UserBusinessServiceTest {
                .validateOnGetOrCreate(newUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> userBusinessService.getOrCreateUser(newUser));
+                () -> userBusinessService.getOrCreateUser(newUser));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Not allowed to give an id", exception.getReason());

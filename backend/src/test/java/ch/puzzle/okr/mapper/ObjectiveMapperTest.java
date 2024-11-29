@@ -23,9 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 public class ObjectiveMapperTest {
 
     private static final long TEAM_ID = 23L;
@@ -57,9 +55,7 @@ public class ObjectiveMapperTest {
         objectiveMapper = new ObjectiveMapper(teamBusinessService, quarterBusinessService);
     }
 
-    @DisplayName(
-        "toDto() should map Objective to Dto"
-    )
+    @DisplayName("toDto() should map Objective to Dto")
     @Test
     void toDtoShouldMapObjectiveToDto() {
         // arrange

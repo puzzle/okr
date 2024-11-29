@@ -15,14 +15,13 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class AssertionHelper {
 
     public static void assertOkrResponseStatusException(OkrResponseStatusException exception,
-                                                        List<ErrorDto> expectedErrors) {
+            List<ErrorDto> expectedErrors) {
 
         assertOkrResponseStatusException(BAD_REQUEST, exception, expectedErrors);
     }
 
-    public static void assertOkrResponseStatusException(HttpStatus statusCode,
-                                                        OkrResponseStatusException exception,
-                                                        List<ErrorDto> expectedErrors) {
+    public static void assertOkrResponseStatusException(HttpStatus statusCode, OkrResponseStatusException exception,
+            List<ErrorDto> expectedErrors) {
 
         assertEquals(statusCode, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

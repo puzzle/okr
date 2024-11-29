@@ -22,9 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class ActionBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 

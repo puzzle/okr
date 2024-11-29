@@ -11,81 +11,34 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 // table cannot be named "user" since it is a reserved keyword of Postgres
-@Table(
-        name = "person"
-)
+@Table(name = "person")
 public class User {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO,
-            generator = "sequence_person"
-    )
-    @SequenceGenerator(
-            name = "sequence_person",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
+    @SequenceGenerator(name = "sequence_person", allocationSize = 1)
     private Long id;
 
     @Version
     private int version;
 
-    @NotBlank(
-            message = MessageKey.ATTRIBUTE_NOT_BLANK
-    )
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Size(
-            min = 2,
-            max = 50,
-            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
-    )
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String firstname;
 
-    @NotBlank(
-            message = MessageKey.ATTRIBUTE_NOT_BLANK
-    )
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Size(
-            min = 2,
-            max = 50,
-            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
-    )
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String lastname;
 
-    @Column(
-            unique = true,
-            nullable = false
-    )
-    @Email(
-            message = MessageKey.ATTRIBUTE_NOT_VALID
-    )
-    @NotBlank(
-            message = MessageKey.ATTRIBUTE_NOT_BLANK
-    )
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Size(
-            min = 2,
-            max = 250,
-            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
-    )
+    @Column(unique = true, nullable = false)
+    @Email(message = MessageKey.ATTRIBUTE_NOT_VALID)
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String email;
 
-    @OneToMany(
-            fetch = FetchType.EAGER,
-            mappedBy = "user",
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTeam> userTeamList = new ArrayList<>();
 
-    @Column(
-            nullable = false,
-            columnDefinition = "boolean default false"
-    )
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isOkrChampion = false;
 
     public User() {
@@ -151,7 +104,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
+        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
+                + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
     }
 
     @Override
@@ -161,11 +115,9 @@ public class User {
         if (o == null || getClass() != o.getClass())
             return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(version, user.version) && Objects.equals(firstname,
-                                                                                                      user.firstname) && Objects.equals(lastname,
-                                                                                                                                        user.lastname) && Objects.equals(email,
-                                                                                                                                                                         user.email) && Objects.equals(isOkrChampion,
-                                                                                                                                                                                                       user.isOkrChampion);
+        return Objects.equals(id, user.id) && Objects.equals(version, user.version)
+                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
+                && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
     }
 
     @Override

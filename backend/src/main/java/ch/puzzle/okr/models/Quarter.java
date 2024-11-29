@@ -8,22 +8,11 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Quarter {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO,
-            generator = "sequence_quarter"
-    )
-    @SequenceGenerator(
-            name = "sequence_quarter",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
+    @SequenceGenerator(name = "sequence_quarter", allocationSize = 1)
     private Long id;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Column(
-            unique = true
-    )
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Column(unique = true)
     private String label;
 
     private LocalDate startDate;
@@ -70,7 +59,8 @@ public class Quarter {
 
     @Override
     public String toString() {
-        return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate=" + endDate + '}';
+        return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate="
+                + endDate + '}';
     }
 
     @Override
@@ -80,9 +70,8 @@ public class Quarter {
         if (o == null || getClass() != o.getClass())
             return false;
         Quarter quarter = (Quarter) o;
-        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label) && Objects.equals(startDate,
-                                                                                                        quarter.startDate) && Objects.equals(endDate,
-                                                                                                                                             quarter.endDate);
+        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label)
+                && Objects.equals(startDate, quarter.startDate) && Objects.equals(endDate, quarter.endDate);
     }
 
     @Override

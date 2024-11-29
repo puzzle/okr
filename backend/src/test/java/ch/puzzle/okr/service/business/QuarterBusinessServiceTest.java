@@ -31,9 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class QuarterBusinessServiceTest {
     @Mock
     QuarterPersistenceService quarterPersistenceService;
@@ -106,9 +104,7 @@ class QuarterBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            ints = {1, 2, 4, 5, 7, 8, 10, 11}
-    )
+    @ValueSource(ints = {1, 2, 4, 5, 7, 8, 10, 11})
     void shouldNotGenerateQuarterIfNotLastMonth(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
@@ -118,9 +114,7 @@ class QuarterBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            ints = {3, 6, 9, 12}
-    )
+    @ValueSource(ints = {3, 6, 9, 12})
     void shouldGenerateQuarterIfLastMonth(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
@@ -131,21 +125,17 @@ class QuarterBusinessServiceTest {
 
     private static Stream<Arguments> generateQuarterParams() {
         return Stream.of(Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 3), "GJ 30/31-Q1"),
-                         Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 9), "GJ 30/31-Q3"),
-                         Arguments.of(5, "GJ xx/yy-Qzz", YearMonth.of(2030, 4), "GJ 30/31-Q2"),
-                         Arguments.of(1, "GJ xx-Qzz", YearMonth.of(2030, 9), "GJ 31-Q1"),
-                         Arguments.of(1, "GJ xxxx-Qzz", YearMonth.of(2030, 6), "GJ 2030-Q4"),
-                         Arguments.of(2, "xx-yy-xxxx-yyyy-Qzz", YearMonth.of(2030, 1), "30-31-2030-2031-Q2"));
+                Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 9), "GJ 30/31-Q3"),
+                Arguments.of(5, "GJ xx/yy-Qzz", YearMonth.of(2030, 4), "GJ 30/31-Q2"),
+                Arguments.of(1, "GJ xx-Qzz", YearMonth.of(2030, 9), "GJ 31-Q1"),
+                Arguments.of(1, "GJ xxxx-Qzz", YearMonth.of(2030, 6), "GJ 2030-Q4"),
+                Arguments.of(2, "xx-yy-xxxx-yyyy-Qzz", YearMonth.of(2030, 1), "30-31-2030-2031-Q2"));
     }
 
     @ParameterizedTest
-    @MethodSource(
-        "generateQuarterParams"
-    )
-    void shouldGenerateCorrectQuarter(int quarterStart,
-                                      String quarterFormat,
-                                      YearMonth currentYearMonth,
-                                      String expectedLabel) {
+    @MethodSource("generateQuarterParams")
+    void shouldGenerateCorrectQuarter(int quarterStart, String quarterFormat, YearMonth currentYearMonth,
+            String expectedLabel) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", quarterStart);
         ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", quarterFormat);
 
@@ -170,38 +160,16 @@ class QuarterBusinessServiceTest {
     }
 
     private static Stream<Arguments> getQuartersParams() {
-        return Stream.of(Arguments.of(5, 1, 3),
-                         Arguments.of(5, 2, 4),
-                         Arguments.of(5, 3, 4),
-                         Arguments.of(5, 4, 4),
-                         Arguments.of(5, 5, 1),
-                         Arguments.of(5, 6, 1),
-                         Arguments.of(5, 7, 1),
-                         Arguments.of(5, 8, 2),
-                         Arguments.of(5, 9, 2),
-                         Arguments.of(5, 10, 2),
-                         Arguments.of(5, 11, 3),
-                         Arguments.of(5, 12, 3),
-                         Arguments.of(10, 1, 2),
-                         Arguments.of(10, 2, 2),
-                         Arguments.of(10, 3, 2),
-                         Arguments.of(10, 4, 3),
-                         Arguments.of(10, 5, 3),
-                         Arguments.of(10, 6, 3),
-                         Arguments.of(10, 7, 4),
-                         Arguments.of(10, 8, 4),
-                         Arguments.of(10, 9, 4),
-                         Arguments.of(10, 10, 1),
-                         Arguments.of(10, 11, 1),
-                         Arguments.of(10, 12, 1));
+        return Stream.of(Arguments.of(5, 1, 3), Arguments.of(5, 2, 4), Arguments.of(5, 3, 4), Arguments.of(5, 4, 4),
+                Arguments.of(5, 5, 1), Arguments.of(5, 6, 1), Arguments.of(5, 7, 1), Arguments.of(5, 8, 2),
+                Arguments.of(5, 9, 2), Arguments.of(5, 10, 2), Arguments.of(5, 11, 3), Arguments.of(5, 12, 3),
+                Arguments.of(10, 1, 2), Arguments.of(10, 2, 2), Arguments.of(10, 3, 2), Arguments.of(10, 4, 3),
+                Arguments.of(10, 5, 3), Arguments.of(10, 6, 3), Arguments.of(10, 7, 4), Arguments.of(10, 8, 4),
+                Arguments.of(10, 9, 4), Arguments.of(10, 10, 1), Arguments.of(10, 11, 1), Arguments.of(10, 12, 1));
     }
 
-    @ParameterizedTest(
-            name = "Start month={0}, current month={1} => quarter={2}"
-    )
-    @MethodSource(
-        "getQuartersParams"
-    )
+    @ParameterizedTest(name = "Start month={0}, current month={1} => quarter={2}")
+    @MethodSource("getQuartersParams")
     void shouldGetQuartersBasedOnStart(int start, int month, int quarter) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", start);
         Map<Integer, Integer> quarters = quarterBusinessService.generateQuarters();

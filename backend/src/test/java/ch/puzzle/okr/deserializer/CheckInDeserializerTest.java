@@ -27,9 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class CheckInDeserializerTest {
 
     @Mock
@@ -45,30 +43,27 @@ class CheckInDeserializerTest {
         objectMapper = new ObjectMapper();
     }
 
-    @DisplayName(
-        "deserialize() should return CheckInMetricDto for metric json"
-    )
+    @DisplayName("deserialize() should return CheckInMetricDto for metric json")
     @Test
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
         // arrange
         String jsonMetric = """
-                            {
-                              "id": 42,
-                              "version": 0,
-                              "changeInfo": "Change_Info",
-                              "initiatives": "Initiatives",
-                              "confidence": 5,
-                              "keyResultId": 1000,
-                              "createdOn": null,
-                              "modifiedOn": null,
-                              "value": 23.0,
-                              "writeable": false
-                            }
-                            """;
+                {
+                  "id": 42,
+                  "version": 0,
+                  "changeInfo": "Change_Info",
+                  "initiatives": "Initiatives",
+                  "confidence": 5,
+                  "keyResultId": 1000,
+                  "createdOn": null,
+                  "modifiedOn": null,
+                  "value": 23.0,
+                  "writeable": false
+                }
+                """;
 
-        when(keyResultBusinessService.getEntityById(1000L)).thenReturn(KeyResultMetric.Builder.builder()
-                                                                                              .withId(1000L)
-                                                                                              .build());
+        when(keyResultBusinessService.getEntityById(1000L)).thenReturn(
+                KeyResultMetric.Builder.builder().withId(1000L).build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
@@ -93,30 +88,27 @@ class CheckInDeserializerTest {
         assertEquals(23, checkInMetricDto.value());
     }
 
-    @DisplayName(
-        "deserialize() should return CheckInOrdinalDto for ordinal json"
-    )
+    @DisplayName("deserialize() should return CheckInOrdinalDto for ordinal json")
     @Test
     void deserializeShouldReturnCheckInOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
         String jsonOrdinal = """
-                             {
-                               "id": 43,
-                               "version": 0,
-                               "changeInfo": "Change_Info",
-                               "initiatives": "Initiatives",
-                               "confidence": 7,
-                               "keyResultId": 1001,
-                               "createdOn": null,
-                               "modifiedOn": null,
-                               "value": "STRETCH",
-                               "writeable": false
-                             }
-                             """;
+                {
+                  "id": 43,
+                  "version": 0,
+                  "changeInfo": "Change_Info",
+                  "initiatives": "Initiatives",
+                  "confidence": 7,
+                  "keyResultId": 1001,
+                  "createdOn": null,
+                  "modifiedOn": null,
+                  "value": "STRETCH",
+                  "writeable": false
+                }
+                """;
 
-        when(keyResultBusinessService.getEntityById(1001L)).thenReturn(KeyResultOrdinal.Builder.builder()
-                                                                                               .withId(1001L)
-                                                                                               .build());
+        when(keyResultBusinessService.getEntityById(1001L)).thenReturn(
+                KeyResultOrdinal.Builder.builder().withId(1001L).build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonOrdinal);
         DeserializationContext ctxt = mock(DeserializationContext.class);
@@ -141,18 +133,16 @@ class CheckInDeserializerTest {
         assertEquals(Zone.STRETCH, checkInOrdinalDto.value());
     }
 
-    @DisplayName(
-        "deserialize() should throw ResponseStatusException if KeyResult is of unsupported type"
-    )
+    @DisplayName("deserialize() should throw ResponseStatusException if KeyResult is of unsupported type")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfKeyResultIsUnsupportedType() throws Exception {
         // arrange
         String json = """
-                      {
-                        "id": 0,
-                        "keyResultId": 1002
-                      }
-                      """;
+                {
+                  "id": 0,
+                  "keyResultId": 1002
+                }
+                """;
 
         KeyResult unsupportedKeyResult = new KeyResult() {
             @Override
@@ -175,18 +165,16 @@ class CheckInDeserializerTest {
         assertEquals("unsupported checkIn DTO to deserialize", exception.getReason());
     }
 
-    @DisplayName(
-        "deserialize() should throw ResponseStatusException if json has no KeyResult Id"
-    )
+    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Id")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() throws Exception {
         // arrange
         String jsonWithoutKeyResultId = """
-                                        {
-                                          "id": 0,
-                                          "changeInfo": "THIS_JSON_WILL_NOT_BE_USED"
-                                        }
-                                        """;
+                {
+                  "id": 0,
+                  "changeInfo": "THIS_JSON_WILL_NOT_BE_USED"
+                }
+                """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonWithoutKeyResultId);
         DeserializationContext ctxt = mock(DeserializationContext.class);

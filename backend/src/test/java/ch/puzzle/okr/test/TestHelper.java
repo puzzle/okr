@@ -51,8 +51,8 @@ public class TestHelper {
                                                                  .build());
         var memberUserTeams = memberTeams.stream()
                                          .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
-        user.setUserTeamList(Stream.concat(adminUserTeams, memberUserTeams)
-                                   .collect(Collectors.toCollection(ArrayList::new)));
+        user.setUserTeamList(
+                Stream.concat(adminUserTeams, memberUserTeams).collect(Collectors.toCollection(ArrayList::new)));
         return user;
     }
 
@@ -69,18 +69,12 @@ public class TestHelper {
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user) {
-        return mockAuthorizationUser(user.getId(),
-                                     user.getFirstname(),
-                                     user.getLastname(),
-                                     user.getEmail(),
-                                     user.isOkrChampion());
+        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(),
+                user.isOkrChampion());
     }
 
-    public static AuthorizationUser mockAuthorizationUser(Long id,
-                                                          String firstname,
-                                                          String lastname,
-                                                          String email,
-                                                          boolean isOkrChampion) {
+    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email,
+            boolean isOkrChampion) {
         User user = User.Builder.builder()
                                 .withId(id)
                                 .withFirstname(firstname)

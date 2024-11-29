@@ -85,38 +85,44 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const isEditing: boolean = !!this.data.objective.objectiveId;
-    this.initializeObservables(isEditing);
-    this.loadData(isEditing);
-  }
-
-  private initializeObservables(isEditing: boolean): void {
+    const isEditing: boolean = this.data.objective.objectiveId != undefined;
     this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
     this.keyResults$ = isEditing
       ? this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId || -1)
       : of([]);
-  }
-
-  private loadData(isEditing: boolean): void {
     const objective$ = isEditing
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
+    forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$]).subscribe(
+      ([objective, quarters, currentQuarter, keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]]) => {
+        this.quarters = quarters;
+        const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
+        const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
+        let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-    forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$])
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        switchMap(
-          ([objective, quarters, currentQuarter, keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]]) => {
-            this.handleDataInitialization(objective, quarters, currentQuarter, keyResults, isEditing);
-            return this.teams$;
-          },
-        ),
-      )
-      .subscribe((teams) => {
-        this.setCurrentTeam(teams, this.data.objective.teamId!);
-      });
+        if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+          quarterId = quarters[1].id;
+        }
+
+        this.state = objective.state;
+        this.version = objective.version;
+        this.keyResults = keyResults;
+        this.teams$.subscribe((value) => {
+          this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
+        });
+        this.objectiveForm.patchValue({
+          title: objective.title,
+          description: objective.description,
+          team: teamId,
+          quarter: quarterId,
+        });
+        keyResults.forEach((keyResult) => {
+          this.objectiveForm.controls.keyResults.push(new FormControl<boolean>(true));
+        });
+      },
+    );
   }
 
   private handleDataInitialization(

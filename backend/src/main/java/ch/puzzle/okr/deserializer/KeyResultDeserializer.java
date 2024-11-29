@@ -28,9 +28,8 @@ public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
         String keyResultAttribute = "keyResultType";
         if (root.has(keyResultAttribute) && root.get(keyResultAttribute).asText().equals(KEY_RESULT_TYPE_METRIC)) {
             return mapper.readValue(root.toString(), KeyResultMetricDto.class);
-        } else if (root.has(keyResultAttribute) && root.get(keyResultAttribute)
-                                                       .asText()
-                                                       .equals(KEY_RESULT_TYPE_ORDINAL)) {
+        } else if (root.has(keyResultAttribute) &&
+                root.get(keyResultAttribute).asText().equals(KEY_RESULT_TYPE_ORDINAL)) {
             return mapper.readValue(root.toString(), KeyResultOrdinalDto.class);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported keyResult DTO to deserialize");

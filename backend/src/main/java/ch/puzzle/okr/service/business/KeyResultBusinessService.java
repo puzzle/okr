@@ -118,9 +118,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     }
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
-        return hasKeyResultAnyCheckIns(id) && !keyResultPersistenceService.findById(id)
-                                                                          .getKeyResultType()
-                                                                          .equals(keyResult.getKeyResultType());
+        return hasKeyResultAnyCheckIns(id) &&
+                !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
     }
 
     private boolean isKeyResultTypeChangeable(Long id) {

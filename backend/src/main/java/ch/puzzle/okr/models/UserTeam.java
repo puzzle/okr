@@ -84,10 +84,11 @@ public class UserTeam {
             return false;
         }
         UserTeam userTeam = (UserTeam) o;
-        return version == userTeam.version && isTeamAdmin == userTeam.isTeamAdmin && Objects.equals(id,
-                                                                                                    userTeam.id) && Objects.equals(user,
-                                                                                                                                   userTeam.user) && Objects.equals(team,
-                                                                                                                                                                    userTeam.team);
+        return version == userTeam.version &&
+                isTeamAdmin == userTeam.isTeamAdmin &&
+                Objects.equals(id, userTeam.id) &&
+                Objects.equals(user, userTeam.user) &&
+                Objects.equals(team, userTeam.team);
     }
 
     @Override
@@ -97,7 +98,18 @@ public class UserTeam {
 
     @Override
     public String toString() {
-        return "UserTeam{" + "id=" + id + ", version=" + version + ", user=" + user + ", team=" + team + ", isTeamAdmin=" + isTeamAdmin + '}';
+        return "UserTeam{" +
+                "id=" +
+                id +
+                ", version=" +
+                version +
+                ", user=" +
+                user +
+                ", team=" +
+                team +
+                ", isTeamAdmin=" +
+                isTeamAdmin +
+                '}';
     }
 
     public static class Builder {

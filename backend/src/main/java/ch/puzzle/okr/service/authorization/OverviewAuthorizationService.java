@@ -50,9 +50,9 @@ public class OverviewAuthorizationService {
     }
 
     private boolean hasOverviewTeamIdAndObjectiveId(Overview overview) {
-        return overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null && overview
-                                                                                                                .getOverviewId()
-                                                                                                                .getTeamId() != null;
+        return overview.getOverviewId() != null &&
+                overview.getOverviewId().getObjectiveId() != null &&
+                overview.getOverviewId().getTeamId() != null;
     }
 
     public boolean hasWriteAllAccess() {

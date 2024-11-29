@@ -1,5 +1,7 @@
 package ch.puzzle.okr;
 
+import java.text.MessageFormat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -95,11 +97,29 @@ public class SecurityConfig {
     }
 
     private String okrContentSecurityPolicy() {
-        return "default-src 'self';" + "script-src 'self' 'unsafe-inline';" + "        style-src 'self' 'unsafe-inline';" + "        object-src 'none';" + "        base-uri 'self';" + "        connect-src 'self' " + connectSrc + ";" + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self' data: ;" + "        manifest-src 'self';" + "        media-src 'self';" + "        worker-src 'none';";
+        return "default-src 'self';" +
+                "script-src 'self' 'unsafe-inline';" +
+                "style-src 'self' 'unsafe-inline';" +
+                "object-src 'none';" +
+                "base-uri 'self';" +
+                "connect-src 'self' " +
+                MessageFormat.format("{0};", connectSrc) +
+                "font-src 'self';" +
+                "frame-src 'self';" +
+                "img-src 'self' data: ;" +
+                "manifest-src 'self';" +
+                "media-src 'self';" +
+                "worker-src 'none';";
     }
 
     private String okrPermissionPolicy() {
-        return "accelerometer=(), ambient-light-sensor=(), autoplay=(), " + "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), " + "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=()," + " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), " + "midi=(), navigation-override=(), payment=(), picture-in-picture=()," + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), " + "usb=(), web-share=(), xr-spatial-tracking=()";
+        return "accelerometer=(), ambient-light-sensor=(), autoplay=(), " +
+                "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), " +
+                "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=()," +
+                " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), " +
+                "midi=(), navigation-override=(), payment=(), picture-in-picture=()," +
+                " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), " +
+                "usb=(), web-share=(), xr-spatial-tracking=()";
     }
 
     @Bean

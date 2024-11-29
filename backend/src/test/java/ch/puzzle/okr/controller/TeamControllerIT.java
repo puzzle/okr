@@ -208,7 +208,8 @@ class TeamControllerIT {
 
     @Test
     void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
-        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true").contentType(
+                                                                                                   MediaType.APPLICATION_JSON)
                                                                                       .content(ADD_USERS)
                                                                                       .with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isOk());

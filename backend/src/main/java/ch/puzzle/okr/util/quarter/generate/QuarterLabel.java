@@ -18,7 +18,12 @@ public class QuarterLabel {
     }
 
     public String label() {
-        return "GJ " + formatYearAs2Digits(firstYearOfGeschaeftsJahr()) + "/" + formatYearAs2Digits(secondYearOfGeschaeftsJahr()) + "-Q" + getQuarterDigit();
+        return "GJ " +
+                formatYearAs2Digits(firstYearOfGeschaeftsJahr()) +
+                "/" +
+                formatYearAs2Digits(secondYearOfGeschaeftsJahr()) +
+                "-Q" +
+                getQuarterDigit();
     }
 
     private int getQuarterDigit() {

@@ -158,7 +158,15 @@ public class Overview implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Overview{" + "overviewId=" + overviewId + ", teamVersion='" + teamVersion + ", teamName='" + teamName + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='" + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\'' + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\'' + '}';
+        return "Overview{" + "overviewId=" + overviewId + ", teamVersion='" + teamVersion + ", teamName='" + teamName +
+               '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState +
+               ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='" +
+               quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='" +
+               keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit +
+               '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='" +
+               stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\'' +
+               ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\'' +
+               '}';
     }
 
     public static final class Builder {

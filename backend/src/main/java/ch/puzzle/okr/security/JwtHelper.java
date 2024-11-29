@@ -30,7 +30,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class JwtHelper {
     public static final String CLAIM_TENANT = "tenant";
     public static final String CLAIM_ISS = "iss";
-    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS + "' claims in JWT token!";
+    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS +
+                                               "' claims in JWT token!";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 

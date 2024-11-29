@@ -59,7 +59,8 @@ public class Quarter {
 
     @Override
     public String toString() {
-        return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate=" + endDate + '}';
+        return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate=" +
+               endDate + '}';
     }
 
     @Override
@@ -70,9 +71,8 @@ public class Quarter {
             return false;
         Quarter quarter = (Quarter) o;
         return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label) && Objects.equals(startDate,
-                                                                                                        quarter.startDate) && Objects
-                                                                                                                .equals(endDate,
-                                                                                                                        quarter.endDate);
+                                                                                                        quarter.startDate) &&
+               Objects.equals(endDate, quarter.endDate);
     }
 
     @Override

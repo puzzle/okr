@@ -30,7 +30,8 @@ public class AuthorizationCriteria<T> {
             sb.append("\n and o.overviewId.teamId in (:" + PARAM_TEAM_IDS + ")");
         }
         if (shouldAddObjectiveFilter(objectiveQuery)) {
-            sb.append("\n and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:" + PARAM_OBJECTIVE_QUERY + ",'%'))");
+            sb.append("\n and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:" + PARAM_OBJECTIVE_QUERY +
+                      ",'%'))");
         }
         String authorizationWhereClause = append(user, alias, "objectiveState", "overviewId.teamId");
         if (!authorizationWhereClause.isEmpty()) {

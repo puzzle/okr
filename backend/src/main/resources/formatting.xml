@@ -309,19 +309,19 @@
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call" value="82"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression" value="82"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression" value="82"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_multiplicative_operator" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_multiplicative_operator" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_multiplicative_operator" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_additive_operator" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_additive_operator" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_additive_operator" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_string_concatenation" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_string_concatenation" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_string_concatenation" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_shift_operator" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_shift_operator" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_shift_operator" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_relational_operator" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_relational_operator" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_relational_operator" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_bitwise_operator" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_bitwise_operator" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_bitwise_operator" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_logical_operator" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_logical_operator" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_logical_operator" value="false"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_conditional_expression" value="48"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_conditional_expression_chain" value="48"/>

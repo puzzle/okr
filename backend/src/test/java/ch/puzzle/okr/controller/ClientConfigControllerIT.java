@@ -55,8 +55,16 @@ public class ClientConfigControllerIT {
 
     private ClientConfigDto createClientConfigDto() {
         Map<String, String> customStyles = Map.of("font-family", "verdana", "font-size", "20px");
-        return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo", "Triangles",
-                                   "Background_Logo", "Title", "helpSiteUrl", customStyles);
+        return new ClientConfigDto("Active_Profile",
+                                   "Issuer",
+                                   "Client_Id",
+                                   "Favicon",
+                                   "Logo",
+                                   "Triangles",
+                                   "Background_Logo",
+                                   "Title",
+                                   "helpSiteUrl",
+                                   customStyles);
     }
 
 }

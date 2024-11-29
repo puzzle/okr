@@ -128,10 +128,10 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldThrowExceptionWhenDefaultMethodUsed() {
-        IllegalCallerException exception = assertThrows(IllegalCallerException.class, () -> keyResultBusinessService
-                                                                                                                    .updateEntity(metricKeyResult.getId(),
-                                                                                                                                  metricKeyResult,
-                                                                                                                                  authorizationUser));
+        IllegalCallerException exception = assertThrows(IllegalCallerException.class,
+                                                        () -> keyResultBusinessService.updateEntity(metricKeyResult.getId(),
+                                                                                                    metricKeyResult,
+                                                                                                    authorizationUser));
 
         assertEquals("unsupported method 'updateEntity' use updateEntities() instead", exception.getMessage());
     }

@@ -36,7 +36,9 @@ public class OverviewBusinessService {
             return List.of();
         }
 
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId,
+                                                                                  teamIds,
+                                                                                  objectiveQuery,
                                                                                   authorizationUser);
         return sortOverview(overviews, authorizationUser);
     }

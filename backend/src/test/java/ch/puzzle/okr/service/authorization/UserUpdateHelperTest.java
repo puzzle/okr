@@ -49,7 +49,10 @@ public class UserUpdateHelperTest {
         User noChampionUser = User.Builder.builder().withEmail("no@champions.ch").build();
         TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null,
                                                                                                new String[]{"yes@champions.ch"},
-                                                                                               null, null, null, null);
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(noChampionUser, tenantConfig);
@@ -64,7 +67,10 @@ public class UserUpdateHelperTest {
         User championUser = User.Builder.builder().withEmail("yes@champions.ch").build();
         TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null,
                                                                                                new String[]{"yes@champions.ch"},
-                                                                                               null, null, null, null);
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(championUser, tenantConfig);

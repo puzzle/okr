@@ -36,8 +36,8 @@ class OverviewAuthorizationServiceTest {
     private final long adminTeamId = 5L;
     private final long memberTeamId = 6L;
 
-    private final AuthorizationUser authorizationUser = new AuthorizationUser(defaultUserWithTeams(1L, List.of(
-                                                                                                               defaultTeam(adminTeamId)),
+    private final AuthorizationUser authorizationUser = new AuthorizationUser(defaultUserWithTeams(1L,
+                                                                                                   List.of(defaultTeam(adminTeamId)),
                                                                                                    List.of(defaultTeam(memberTeamId))));
     private final AuthorizationUser okrChampionUser = new AuthorizationUser(defaultOkrChampion(2L));
     private final Overview overview = Overview.Builder.builder()

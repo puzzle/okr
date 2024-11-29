@@ -29,8 +29,7 @@ public class QuarterController {
 
     @Operation(summary = "Get quarters", description = "Get a List of quarters depending on current date")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned a List of quarters",
-                                        content = {@Content(mediaType = "application/json", schema = @Schema(
-                                                                                                             implementation = Quarter.class))})})
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class))})})
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getQuarters());
@@ -38,8 +37,7 @@ public class QuarterController {
 
     @Operation(summary = "Get current quarter", description = "Get the current quarter depending on current date")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned the current quarter",
-                                        content = {@Content(mediaType = "application/json", schema = @Schema(
-                                                                                                             implementation = Quarter.class))})})
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class))})})
     @GetMapping("/current")
     public ResponseEntity<Quarter> getCurrentQuarter() {
         return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getCurrentQuarter());

@@ -49,21 +49,14 @@ public class HibernateContextTest {
     }
 
     private static Stream<Arguments> invalidDbConfig() {
-        return Stream.of(Arguments.of(null, "username", "password", "multiTenancy"), Arguments.of("", "username",
-                                                                                                  "password",
-                                                                                                  "multiTenancy"),
-                         Arguments.of("url", null, "password", "multiTenancy"), Arguments.of("url", "", "password",
-                                                                                             "multiTenancy"), Arguments
-                                                                                                                       .of("url",
-                                                                                                                           "username",
-                                                                                                                           null,
-                                                                                                                           "multiTenancy"),
-                         Arguments.of("url", "username", "", "multiTenancy"), Arguments.of("url", "username",
-                                                                                           "password", null), Arguments
-                                                                                                                       .of("url",
-                                                                                                                           "username",
-                                                                                                                           "password",
-                                                                                                                           ""));
+        return Stream.of(Arguments.of(null, "username", "password", "multiTenancy"),
+                         Arguments.of("", "username", "password", "multiTenancy"),
+                         Arguments.of("url", null, "password", "multiTenancy"),
+                         Arguments.of("url", "", "password", "multiTenancy"),
+                         Arguments.of("url", "username", null, "multiTenancy"),
+                         Arguments.of("url", "username", "", "multiTenancy"),
+                         Arguments.of("url", "username", "password", null),
+                         Arguments.of("url", "username", "password", ""));
     }
 
     @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and set it")

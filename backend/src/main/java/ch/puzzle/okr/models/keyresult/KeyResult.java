@@ -158,7 +158,15 @@ public abstract class KeyResult implements WriteableInterface {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, objective, title, description, owner, createdBy, createdOn, modifiedOn,
+        return Objects.hash(id,
+                            version,
+                            objective,
+                            title,
+                            description,
+                            owner,
+                            createdBy,
+                            createdOn,
+                            modifiedOn,
                             keyResultType);
     }
 

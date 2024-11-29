@@ -72,8 +72,8 @@ public class PersistenceBaseTestIT {
     @DisplayName("findById() should throw exception if entity with id does not exist")
     @Test
     void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
-        var exception = assertThrows(ResponseStatusException.class, () -> persistenceBase.findById(
-                                                                                                   NON_EXISTING_USER_ID));
+        var exception = assertThrows(ResponseStatusException.class,
+                                     () -> persistenceBase.findById(NON_EXISTING_USER_ID));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);

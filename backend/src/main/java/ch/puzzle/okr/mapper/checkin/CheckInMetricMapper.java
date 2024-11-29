@@ -16,12 +16,15 @@ public class CheckInMetricMapper {
     }
 
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
-        return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getVersion(), checkInMetric.getChangeInfo(),
-                                    checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric
-                                                                                                                .getKeyResult()
-                                                                                                                .getId(),
-                                    checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric
-                                                                                                              .getValue(),
+        return new CheckInMetricDto(checkInMetric.getId(),
+                                    checkInMetric.getVersion(),
+                                    checkInMetric.getChangeInfo(),
+                                    checkInMetric.getInitiatives(),
+                                    checkInMetric.getConfidence(),
+                                    checkInMetric.getKeyResult().getId(),
+                                    checkInMetric.getCreatedOn(),
+                                    checkInMetric.getModifiedOn(),
+                                    checkInMetric.getValue(),
                                     checkInMetric.isWriteable());
     }
 

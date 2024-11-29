@@ -45,8 +45,8 @@ public class ClientConfigServiceTest {
         ClientConfigService service = getClientConfig(tenantConfig, tenant);
 
         // act + assert
-        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class, () -> service
-                                                                                                                   .getConfigBasedOnActiveEnv(hostname));
+        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
+                                                                       () -> service.getConfigBasedOnActiveEnv(hostname));
 
         String expectedErrorMessage = "Could not find tenant client customization for subdomain:" + subdomain;
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
@@ -62,8 +62,8 @@ public class ClientConfigServiceTest {
         ClientConfigService service = getClientConfig(tenantCustomization, tenant);
 
         // act + assert
-        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class, () -> service
-                                                                                                                   .getConfigBasedOnActiveEnv(hostname));
+        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
+                                                                       () -> service.getConfigBasedOnActiveEnv(hostname));
 
         String expectedErrorMessage = "Could not find tenant config for subdomain:" + subdomain;
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
@@ -96,19 +96,21 @@ public class ClientConfigServiceTest {
     }
 
     private TenantConfigProvider.TenantConfig getTenantConfig(String tenantId) {
-        return new TenantConfigProvider.TenantConfig(prefix(tenantId) + "tenantId", new String[]{}, prefix(tenantId) +
-                                                                                                    "jwkSetUri", prefix(
-                                                                                                                        tenantId) +
-                                                                                                                 "issuerUrl",
-                                                     prefix(tenantId) + "clientId", null);
+        return new TenantConfigProvider.TenantConfig(prefix(tenantId) + "tenantId",
+                                                     new String[]{},
+                                                     prefix(tenantId) + "jwkSetUri",
+                                                     prefix(tenantId) + "issuerUrl",
+                                                     prefix(tenantId) + "clientId",
+                                                     null);
     }
 
     private TenantClientCustomization getTenantClientCustomization(String tenantId) {
-        return new TenantClientCustomization(prefix(tenantId) + "favicon", prefix(tenantId) + "logo", prefix(tenantId) +
-                                                                                                      "triangles",
-                                             prefix(tenantId) + "backgroundLogo", prefix(tenantId) + "title", prefix(
-                                                                                                                     tenantId) +
-                                                                                                              "helpSiteUrl",
+        return new TenantClientCustomization(prefix(tenantId) + "favicon",
+                                             prefix(tenantId) + "logo",
+                                             prefix(tenantId) + "triangles",
+                                             prefix(tenantId) + "backgroundLogo",
+                                             prefix(tenantId) + "title",
+                                             prefix(tenantId) + "helpSiteUrl",
                                              new HashMap<>());
     }
 

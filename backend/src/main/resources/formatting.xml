@@ -300,15 +300,15 @@
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_enum_constants" value="49"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant" value="18"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant" value="82"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_superinterfaces_in_enum_declaration" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_record_components" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_superinterfaces_in_record_declaration" value="18"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation" value="18"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation" value="82"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation" value="82"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call" value="18"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression" value="18"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression" value="18"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call" value="82"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression" value="82"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression" value="82"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_multiplicative_operator" value="18"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_multiplicative_operator" value="false"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_additive_operator" value="18"/>
@@ -345,10 +345,10 @@
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_enum_constant" value="0"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_field" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_method" value="49"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_local_variable" value="48"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_local_variable" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_parameter" value="0"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_type_annotations" value="49"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation" value="18"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_module_statements" value="0"/>
 		<setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="120"/>
 		<setting id="org.eclipse.jdt.core.formatter.comment.count_line_length_from_starting_position" value="false"/>

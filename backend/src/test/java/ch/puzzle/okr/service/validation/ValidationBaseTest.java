@@ -62,8 +62,8 @@ class ValidationBaseTest {
         Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .validateOnGet(id));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnGet(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
@@ -93,8 +93,8 @@ class ValidationBaseTest {
         Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .validateOnDelete(id));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnDelete(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
@@ -121,8 +121,8 @@ class ValidationBaseTest {
         Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .throwExceptionWhenModelIsNull(model));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.throwExceptionWhenModelIsNull(model));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Quarter")));
@@ -145,8 +145,8 @@ class ValidationBaseTest {
         Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .throwExceptionWhenIdIsNotNull(id));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.throwExceptionWhenIdIsNotNull(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Quarter")));
@@ -171,13 +171,13 @@ class ValidationBaseTest {
         Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
-                                                                                                             .throwExceptionWhenIdHasChanged(id,
-                                                                                                                                             modelId));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.throwExceptionWhenIdHasChanged(id,
+                                                                                                           modelId));
 
         // assert
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", id.toString(), modelId
-                                                                                                                      .toString())));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED",
+                                                             List.of("ID", id.toString(), modelId.toString())));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -202,8 +202,8 @@ class ValidationBaseTest {
         Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validate(
-                                                                                                                       quarterWithNullLabel));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validate(quarterWithNullLabel));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("label", "Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -226,8 +226,8 @@ class ValidationBaseTest {
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")),
-                                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective",
-                                                                                               "2", "250")));
+                                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
+                                                             List.of("title", "Objective", "2", "250")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 

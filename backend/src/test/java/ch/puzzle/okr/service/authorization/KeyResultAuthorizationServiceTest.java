@@ -104,8 +104,9 @@ class KeyResultAuthorizationServiceTest {
                                                                                                  new KeyResultWithActionList(metricKeyResult,
                                                                                                                              List.of()));
 
-        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id, metricKeyResult, List
-                                                                                                                  .of());
+        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id,
+                                                                                         metricKeyResult,
+                                                                                         List.of());
         assertEquals(metricKeyResult, KeyResult.keyResult());
     }
 
@@ -133,7 +134,8 @@ class KeyResultAuthorizationServiceTest {
                                                                                                           metricKeyResult));
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("unsupported method in class " + KeyResultAuthorizationService.class.getSimpleName() +
-                     ", use updateEntities() instead", exception.getReason());
+                     ", use updateEntities() instead",
+                     exception.getReason());
     }
 
     @Test

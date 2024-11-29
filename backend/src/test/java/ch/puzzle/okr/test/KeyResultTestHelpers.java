@@ -106,17 +106,34 @@ public class KeyResultTestHelpers {
                                                                 .withChangeInfo(CHANGE_INFO_2)
                                                                 .withInitiatives(INITIATIVES_2)
                                                                 .build();
-    public static final CheckInDto checkInDto1 = new CheckInMetricDto(1L, 1, CHANGE_INFO_1, INITIATIVES_1, 6,
-                                                                      metricKeyResult.getId(), LocalDateTime.MAX,
-                                                                      LocalDateTime.MAX, 23D, true);
-    public static final CheckInDto checkInDto2 = new CheckInMetricDto(4L, 1, CHANGE_INFO_2, INITIATIVES_2, 5,
-                                                                      metricKeyResult.getId(), LocalDateTime.MAX,
-                                                                      LocalDateTime.MAX, 12D, true);
+    public static final CheckInDto checkInDto1 = new CheckInMetricDto(1L,
+                                                                      1,
+                                                                      CHANGE_INFO_1,
+                                                                      INITIATIVES_1,
+                                                                      6,
+                                                                      metricKeyResult.getId(),
+                                                                      LocalDateTime.MAX,
+                                                                      LocalDateTime.MAX,
+                                                                      23D,
+                                                                      true);
+    public static final CheckInDto checkInDto2 = new CheckInMetricDto(4L,
+                                                                      1,
+                                                                      CHANGE_INFO_2,
+                                                                      INITIATIVES_2,
+                                                                      5,
+                                                                      metricKeyResult.getId(),
+                                                                      LocalDateTime.MAX,
+                                                                      LocalDateTime.MAX,
+                                                                      12D,
+                                                                      true);
 
     public static final KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, FIRSTNAME, LASTNAME);
-    public static final KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, QUARTER_LABEL,
-                                                                                          LocalDate.MIN, LocalDate.MAX);
-    public static final KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 1,
+    public static final KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L,
+                                                                                          QUARTER_LABEL,
+                                                                                          LocalDate.MIN,
+                                                                                          LocalDate.MAX);
+    public static final KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L,
+                                                                                                                  1,
                                                                                                                   4.0,
                                                                                                                   6,
                                                                                                                   LocalDateTime.MIN,
@@ -133,26 +150,36 @@ public class KeyResultTestHelpers {
                                                                                                 OBJECTIVE_STATE_ONGOING,
                                                                                                 keyResultQuarterDto);
 
-    public static final KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, 1, KEY_RESULT_TYPE_METRIC,
-                                                                                       TITLE, DESCRIPTION, 1.0, 5.0,
+    public static final KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L,
+                                                                                       1,
+                                                                                       KEY_RESULT_TYPE_METRIC,
+                                                                                       TITLE,
+                                                                                       DESCRIPTION,
+                                                                                       1.0,
+                                                                                       5.0,
                                                                                        KEY_RESULT_UNIT,
                                                                                        keyResultUserDto,
                                                                                        keyResultObjectiveDto,
                                                                                        keyResultLastCheckInDto,
                                                                                        LocalDateTime.MIN,
-                                                                                       LocalDateTime.MAX, true, List
-                                                                                                                    .of());
-    public static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, 1,
+                                                                                       LocalDateTime.MAX,
+                                                                                       true,
+                                                                                       List.of());
+    public static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L,
+                                                                                          1,
                                                                                           KEY_RESULT_TYPE_ORDINAL,
-                                                                                          TITLE, DESCRIPTION,
-                                                                                          COMMIT_ZONE, TARGET_ZONE,
+                                                                                          TITLE,
+                                                                                          DESCRIPTION,
+                                                                                          COMMIT_ZONE,
+                                                                                          TARGET_ZONE,
                                                                                           STRETCH_ZONE,
                                                                                           keyResultUserDto,
                                                                                           keyResultObjectiveDto,
                                                                                           keyResultLastCheckInOrdinalDto,
                                                                                           LocalDateTime.MIN,
-                                                                                          LocalDateTime.MAX, true, List
-                                                                                                                       .of());
+                                                                                          LocalDateTime.MAX,
+                                                                                          true,
+                                                                                          List.of());
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder()
                                                                              .withId(3L)

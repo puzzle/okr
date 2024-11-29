@@ -55,8 +55,10 @@ public class KeyResultOrdinalMapperTest {
     @BeforeEach
     void setup() {
         actionMapper = new ActionMapper(keyResultBusinessService);
-        keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService, objectiveBusinessService,
-                                                            checkInBusinessService, actionMapper);
+        keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService,
+                                                            objectiveBusinessService,
+                                                            checkInBusinessService,
+                                                            actionMapper);
     }
 
     @DisplayName("toDto() should map a KeyResultOrdinal with CheckIn to a Dto")

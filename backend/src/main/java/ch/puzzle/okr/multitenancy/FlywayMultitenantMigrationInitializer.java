@@ -24,7 +24,8 @@ public class FlywayMultitenantMigrationInitializer {
                                                                                               .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
 
             Flyway tenantSchemaFlyway = Flyway.configure()
-                                              .dataSource(dataSourceConfig.url(), dataSourceConfig.name(),
+                                              .dataSource(dataSourceConfig.url(),
+                                                          dataSourceConfig.name(),
                                                           dataSourceConfig.password())
                                               .locations(scriptLocations)
                                               .baselineOnMigrate(Boolean.TRUE)

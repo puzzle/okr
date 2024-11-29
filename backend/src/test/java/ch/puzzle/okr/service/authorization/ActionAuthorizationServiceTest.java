@@ -87,8 +87,8 @@ class ActionAuthorizationServiceTest {
                                                                                                               .getKeyResult(),
                                                                                                     authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService
-                                                                                                                        .createEntities(actionList));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> actionAuthorizationService.createEntities(actionList));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -111,8 +111,8 @@ class ActionAuthorizationServiceTest {
                                                                                                               .getKeyResult(),
                                                                                                     authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService
-                                                                                                                        .updateEntities(actionList));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> actionAuthorizationService.updateEntities(actionList));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -136,8 +136,8 @@ class ActionAuthorizationServiceTest {
                                                                              .hasRoleDeleteByActionId(id,
                                                                                                       authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService
-                                                                                                                        .deleteActionByActionId(id));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> actionAuthorizationService.deleteActionByActionId(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }

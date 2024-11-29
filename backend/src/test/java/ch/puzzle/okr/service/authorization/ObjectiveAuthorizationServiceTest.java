@@ -185,7 +185,8 @@ class ObjectiveAuthorizationServiceTest {
                                                                 .build();
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(objectiveBusinessService.duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults,
+        when(objectiveBusinessService.duplicateObjective(idExistingObjective,
+                                                         newObjectiveWithoutKeyResults,
                                                          authorizationUser)).thenReturn(newObjectiveWithKeyResults);
 
         // act

@@ -179,7 +179,8 @@ class ObjectiveBusinessServiceTest {
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
-        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
+        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(),
+                                                                        changedObjective,
                                                                         authorizationUser);
 
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
@@ -222,7 +223,8 @@ class ObjectiveBusinessServiceTest {
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
-                                                                                    newObjective, authorizationUser);
+                                                                                    newObjective,
+                                                                                    authorizationUser);
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());

@@ -107,7 +107,12 @@ public class ActionMapperTest {
     void toActionsWithKeyResultParameterShouldMapListOfDtosToListOfActions() {
         // arrange
         KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
-        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, VERSION, ACTION, PRIORITY, IS_CHECKED, null, // keyResultId
+        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID,
+                                                                 VERSION,
+                                                                 ACTION,
+                                                                 PRIORITY,
+                                                                 IS_CHECKED,
+                                                                 null, // keyResultId
                                                                  IS_WRITEABLE);
 
         // act

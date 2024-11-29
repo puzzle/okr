@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../../services/objective.service';
-import { marketingTeamWriteable, objective, quarter, quarterList } from '../../testData';
+import { keyResult, marketingTeamWriteable, objective, quarter, quarterList } from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -36,6 +36,7 @@ let objectiveService = {
   createObjective: jest.fn(),
   updateObjective: jest.fn(),
   deleteObjective: jest.fn(),
+  getAllKeyResultsByObjective: jest.fn(),
 };
 
 interface MatDialogDataInterface {
@@ -264,6 +265,7 @@ describe('ObjectiveDialogComponent', () => {
       const routerHarness = await RouterTestingHarness.create();
       await routerHarness.navigateByUrl('/?quarter=2');
       objectiveService.getFullObjective.mockReturnValue(of(objective));
+      objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(keyResult));
       component.ngOnInit();
       const rawFormValue = component.objectiveForm.getRawValue();
       expect(rawFormValue.title).toBe(objective.title);

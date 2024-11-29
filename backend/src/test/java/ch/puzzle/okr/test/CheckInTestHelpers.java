@@ -23,8 +23,8 @@ public class CheckInTestHelpers {
     public static final String INITIATIVES_1 = "Initiatives1";
     public static final String INITIATIVES_2 = "Initiatives2";
 
-    public static final String CHECK_IN_5_URL = "/api/v2/checkIns/5";
-    public static final String CHECK_IN_BASE_URL = "/api/v2/checkIns";
+    public static final String CHECK_IN_5_URL = "/api/v2/checkins/5";
+    public static final String CHECK_IN_BASE_URL = "/api/v2/checkins";
 
     public static final String JSON_CHANGE_INFO = "changeinfo";
     public static final String JSON_INITIATIVES = "initiatives";

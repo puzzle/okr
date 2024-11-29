@@ -22,7 +22,7 @@ public class AuthorizationCriteria<T> {
     private static final String PARAM_TEAM_IDS = "teamIds";
     private static final String PARAM_USER_TEAM_IDS = "userTeamIds";
 
-    public String appendOverview(List<Long> teamIds, String objectiveQuery, AuthorizationUser user) {
+    public String appendOverview(List<Long> teamIds, String objectiveQuery, AuthorizationUser authorizationUser) {
         String alias = "o";
         StringBuilder sb = new StringBuilder(256);
         if (shouldAddTeamFilter(teamIds)) {
@@ -32,7 +32,7 @@ public class AuthorizationCriteria<T> {
             sb.append("\n and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:" + PARAM_OBJECTIVE_QUERY
                     + ",'%'))");
         }
-        String authorizationWhereClause = append(user, alias, "objectiveState", "overviewId.teamId");
+        String authorizationWhereClause = append(authorizationUser, alias, "objectiveState", "overviewId.teamId");
         if (!authorizationWhereClause.isEmpty()) {
             sb.append("\n").append(authorizationWhereClause.substring(0, authorizationWhereClause.length() - 1));
             sb.append(format(" or %s.overviewId.objectiveId = -1)", alias));
@@ -40,13 +40,13 @@ public class AuthorizationCriteria<T> {
         return sb.toString();
     }
 
-    public String appendObjective(AuthorizationUser user) {
-        return append(user, "o", "state", "team.id");
+    public String appendObjective(AuthorizationUser authorizationUser) {
+        return append(authorizationUser, "o", "state", "team.id");
     }
 
-    private String append(AuthorizationUser user, String alias, String stateColumn, String teamIdColumn) {
+    private String append(AuthorizationUser authorizationUser, String alias, String stateColumn, String teamIdColumn) {
         StringBuilder sb = new StringBuilder(256);
-        if (hasRoleWriteAndReadAll(user)) {
+        if (hasRoleWriteAndReadAll(authorizationUser)) {
             sb.append(format(" or %s.%s=:%s", alias, stateColumn, PARAM_ALL_DRAFT_STATE));
         } else {
             // users can read draft state of teams with admin role
@@ -62,22 +62,22 @@ public class AuthorizationCriteria<T> {
     }
 
     public void setParameters(TypedQuery<T> typedQuery, List<Long> teamIds, String objectiveQuery,
-            AuthorizationUser user) {
+            AuthorizationUser authorizationUser) {
         if (shouldAddTeamFilter(teamIds)) {
             typedQuery.setParameter(PARAM_TEAM_IDS, teamIds);
         }
         if (shouldAddObjectiveFilter(objectiveQuery)) {
             typedQuery.setParameter(PARAM_OBJECTIVE_QUERY, objectiveQuery);
         }
-        setParameters(typedQuery, user);
+        setParameters(typedQuery, authorizationUser);
     }
 
-    public void setParameters(TypedQuery<T> typedQuery, AuthorizationUser user) {
-        if (hasRoleWriteAndReadAll(user)) {
+    public void setParameters(TypedQuery<T> typedQuery, AuthorizationUser authorizationUser) {
+        if (hasRoleWriteAndReadAll(authorizationUser)) {
             typedQuery.setParameter(PARAM_ALL_DRAFT_STATE, DRAFT);
         } else {
             typedQuery.setParameter(PARAM_TEAM_DRAFT_STATE, DRAFT);
-            typedQuery.setParameter(PARAM_USER_TEAM_IDS, user.extractTeamIds());
+            typedQuery.setParameter(PARAM_USER_TEAM_IDS, authorizationUser.extractTeamIds());
         }
         typedQuery.setParameter(PARAM_PUBLISHED_STATES, List.of(ONGOING, SUCCESSFUL, NOTSUCCESSFUL));
     }

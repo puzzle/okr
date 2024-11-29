@@ -73,7 +73,7 @@ public class ActionMapperTest {
         assertEquals(expected.getPriority(), actual.priority());
         assertEquals(expected.isChecked(), actual.isChecked());
         assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
-        assertEquals(expected.isWriteable(), actual.writeable());
+        assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
     @DisplayName("toActions() should map List of Dtos with KeyResultId to list of Actions.")

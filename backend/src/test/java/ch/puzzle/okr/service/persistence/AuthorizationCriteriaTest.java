@@ -41,7 +41,7 @@ public class AuthorizationCriteriaTest {
                 .withFirstname("Hanna") //
                 .withLastname("muster") //
                 .withEmail("hanna.muster@example.com") //
-                .withOkrChampion(true) //
+                .withIsOkrChampion(true) //
                 .build();
         var criteria = new AuthorizationCriteria<Objective>();
 

@@ -193,7 +193,7 @@ describe('KeyResultFormComponent', () => {
         unit: 'CHF',
         createdOn: new Date(),
         modifiedOn: new Date(),
-        writeable: true,
+        isWriteable: true,
       };
       component.setMetricValuesInForm(fullKeyResultMetric);
 
@@ -218,7 +218,7 @@ describe('KeyResultFormComponent', () => {
         stretchZone: 'Eine Ziege',
         createdOn: new Date(),
         modifiedOn: new Date(),
-        writeable: true,
+        isWriteable: true,
       };
       component.setOrdinalValuesInForm(fullKeyResultOrdinal);
 

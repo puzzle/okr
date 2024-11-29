@@ -23,7 +23,7 @@ public class UserMapper {
     }
 
     public UserDto toDto(User user) {
-        var userTeams = user.getUserTeamList().stream().map(
+        List<UserTeamDto> userTeams = user.getUserTeamList().stream().map(
                 ut -> new UserTeamDto(ut.getId(), user.getVersion(), teamMapper.toDto(ut.getTeam()), ut.isTeamAdmin()))
                 .collect(Collectors.toList());
 
@@ -36,7 +36,7 @@ public class UserMapper {
     }
 
     public User toUser(NewUserDto newUserDto) {
-        var user = new User();
+        User user = new User();
         user.setFirstname(newUserDto.firstname());
         user.setLastname(newUserDto.lastname());
         user.setEmail(newUserDto.email());

@@ -6,5 +6,5 @@ export interface CheckInMin {
   createdOn: Date;
   changeInfo: string;
   initiatives: string;
-  writeable: boolean;
+  isWriteable: boolean;
 }

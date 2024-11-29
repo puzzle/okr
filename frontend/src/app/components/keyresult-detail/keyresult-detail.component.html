@@ -121,7 +121,7 @@
 
         <div class="d-flex align-items-center flex-row justify-content-start">
           <button
-            *ngIf="!isComplete && keyResult.writeable"
+            *ngIf="!isComplete && keyResult.isWriteable"
             cdkFocusInitial
             color="primary"
             mat-flat-button
@@ -131,7 +131,7 @@
             Check-in erfassen
           </button>
           <button
-            *ngIf="!isComplete && keyResult.writeable"
+            *ngIf="!isComplete && keyResult.isWriteable"
             (click)="openEditKeyResultDialog(keyResult)"
             class="ms-2"
             [attr.data-testId]="'edit-keyResult'"

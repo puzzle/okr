@@ -56,10 +56,10 @@ public class UserBusinessService {
     private void checkAtLeastOneOkrChampionExists(User user) {
         var champions = userPersistenceService.findAllOkrChampions();
         champions.stream()
-                .filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId()))
-                .findAny()
-                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                                  ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION));
+                 .filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId()))
+                 .findAny()
+                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                                   ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION));
     }
 
     public User saveUser(User user) {

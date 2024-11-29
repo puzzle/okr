@@ -46,7 +46,8 @@ public class OverviewMapper {
 
     private void processObjectives(OverviewDto overviewDto, Overview overview) {
         Optional<OverviewObjectiveDto> overviewObjectiveDto = getMatchingObjectiveDto(overview.getOverviewId()
-                .getObjectiveId(), overviewDto.objectives());
+                                                                                              .getObjectiveId(),
+                                                                                      overviewDto.objectives());
         if (overviewObjectiveDto.isPresent()) {
             processKeyResults(overviewObjectiveDto.get(), overview);
         } else {

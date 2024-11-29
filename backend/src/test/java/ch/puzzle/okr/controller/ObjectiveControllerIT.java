@@ -68,30 +68,30 @@ class ObjectiveControllerIT {
                                                          {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder()
-            .withId(5L)
-            .withTitle(OBJECTIVE_TITLE_1)
-            .build();
+                                                                 .withId(5L)
+                                                                 .withTitle(OBJECTIVE_TITLE_1)
+                                                                 .build();
     private static final Objective objective2 = Objective.Builder.builder()
-            .withId(7L)
-            .withTitle(OBJECTIVE_TITLE_2)
-            .build();
+                                                                 .withId(7L)
+                                                                 .withTitle(OBJECTIVE_TITLE_2)
+                                                                 .build();
     private static final User user = User.Builder.builder()
-            .withId(1L)
-            .withFirstname("Bob")
-            .withLastname("Kaufmann")
-            .withEmail("kaufmann@puzzle.ch")
-            .build();
+                                                 .withId(1L)
+                                                 .withFirstname("Bob")
+                                                 .withLastname("Kaufmann")
+                                                 .withEmail("kaufmann@puzzle.ch")
+                                                 .build();
     private static final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     private static final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private static final Objective fullObjective = Objective.Builder.builder()
-            .withId(42L)
-            .withTitle("FullObjective")
-            .withCreatedBy(user)
-            .withTeam(team)
-            .withQuarter(quarter)
-            .withDescription(DESCRIPTION)
-            .withModifiedOn(LocalDateTime.MAX)
-            .build();
+                                                                    .withId(42L)
+                                                                    .withTitle("FullObjective")
+                                                                    .withCreatedBy(user)
+                                                                    .withTeam(team)
+                                                                    .withQuarter(quarter)
+                                                                    .withDescription(DESCRIPTION)
+                                                                    .withModifiedOn(LocalDateTime.MAX)
+                                                                    .build();
     private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L,
                                                                        1,
                                                                        OBJECTIVE_TITLE_1,
@@ -135,18 +135,18 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong())).willReturn(objective1);
 
         mvc.perform(get(URL_OBJECTIVE_5).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(OBJECTIVE_TITLE_1)));
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath("$.id", Is.is(5)))
+           .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(OBJECTIVE_TITLE_1)));
     }
 
     @Test
     void getObjectiveByIdFail() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong()))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+                  .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mvc.perform(get(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -167,23 +167,23 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content(CREATE_NEW_OBJECTIVE))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_OBJECTIVE));
+                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                            .content(CREATE_NEW_OBJECTIVE))
+           .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+           .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_OBJECTIVE));
         verify(objectiveAuthorizationService, times(1)).createEntity(any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.createEntity(any()))
-                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                       "Missing attribute title when creating objective"));
+                  .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                         "Missing attribute title when creating objective"));
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
-                .content(CREATE_NEW_OBJECTIVE_WITH_NULL_VALUES)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                                            .content(CREATE_NEW_OBJECTIVE_WITH_NULL_VALUES)
+                                            .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
@@ -200,22 +200,22 @@ class ObjectiveControllerIT {
                                                       LocalDateTime.MAX,
                                                       true);
         Objective objective = Objective.Builder.builder()
-                .withId(1L)
-                .withDescription(EVERYTHING_FINE_DESCRIPTION)
-                .withTitle(TITLE)
-                .build();
+                                               .withId(1L)
+                                               .withDescription(EVERYTHING_FINE_DESCRIPTION)
+                                               .withTitle(TITLE)
+                                               .build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willReturn(objective);
         BDDMockito.given(objectiveAuthorizationService.isImUsed(any())).willReturn(false);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON)
-                .content(JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(1)))
-                .andExpect(jsonPath("$.description", Is.is(EVERYTHING_FINE_DESCRIPTION)))
-                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(TITLE)));
+                                         .content(JSON)
+                                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath("$.id", Is.is(1)))
+           .andExpect(jsonPath("$.description", Is.is(EVERYTHING_FINE_DESCRIPTION)))
+           .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(TITLE)));
     }
 
     @Test
@@ -232,11 +232,14 @@ class ObjectiveControllerIT {
                                                          LocalDateTime.MAX,
                                                          true);
         Objective objectiveImUsed = Objective.Builder.builder()
-                .withId(1L)
-                .withDescription(EVERYTHING_FINE_DESCRIPTION)
-                .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build())
-                .withTitle(TITLE)
-                .build();
+                                                     .withId(1L)
+                                                     .withDescription(EVERYTHING_FINE_DESCRIPTION)
+                                                     .withQuarter(Quarter.Builder.builder()
+                                                                                 .withId(1L)
+                                                                                 .withLabel("GJ 22/23-Q2")
+                                                                                 .build())
+                                                     .withTitle(TITLE)
+                                                     .build();
 
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objectiveImUsed);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
@@ -244,47 +247,47 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.isImUsed(any())).willReturn(true);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON)
-                .content(JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isImUsed());
+                                         .content(JSON)
+                                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().isImUsed());
     }
 
     @Test
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any()))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                                       "Failed objective -> Attribut is invalid"));
+                  .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                                         "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON)
-                .content(JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                                         .content(JSON)
+                                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     void shouldReturnBadRequest() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any()))
-                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                       "Failed objective -> Attribut is invalid"));
+                  .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                         "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+           .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldDeleteObjective() throws Exception {
         mvc.perform(delete(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+           .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(
                                                                                                objectiveAuthorizationService)
-                .deleteEntityById(anyLong());
+                                                                                         .deleteEntityById(anyLong());
 
         mvc.perform(delete("/api/v2/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -294,12 +297,12 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 
         mvc.perform(post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
-                .content(JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
-                .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
-                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(objective1Dto.title())));
+                                                                       .content(JSON)
+                                                                       .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().isCreated())
+           .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
+           .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
+           .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(objective1Dto.title())));
 
         verify(objectiveMapper, times(1)).toObjective(any());
         verify(objectiveMapper, times(1)).toDto(any());

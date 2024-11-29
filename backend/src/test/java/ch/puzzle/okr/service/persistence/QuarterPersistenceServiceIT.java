@@ -48,15 +48,17 @@ class QuarterPersistenceServiceIT {
 
     private void assertGJForTestsQuarterIsFoundOnce(List<Quarter> quarters) {
         long foundGJForTestsQuartersCount = quarters.stream()
-                .filter(quarter -> quarter.getLabel().equals(GJ_FOR_TEST_QUARTER_LABEL))
-                .count();
+                                                    .filter(quarter -> quarter.getLabel()
+                                                                              .equals(GJ_FOR_TEST_QUARTER_LABEL))
+                                                    .count();
         assertEquals(1, foundGJForTestsQuartersCount);
     }
 
     private void assertCurrentQuarterIsFoundOnce(List<Quarter> quarters) {
         long foundCurrentQuartersCount = quarters.stream()
-                .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter))
-                .count();
+                                                 .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(),
+                                                                                                       quarter))
+                                                 .count();
         assertEquals(1, foundCurrentQuartersCount);
     }
 
@@ -65,10 +67,10 @@ class QuarterPersistenceServiceIT {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
         assertTrue(LocalDate.now().isEqual(quarter.getStartDate()) || //
-                   LocalDate.now().isAfter(quarter.getStartDate()));
+                LocalDate.now().isAfter(quarter.getStartDate()));
 
         assertTrue(LocalDate.now().isEqual(quarter.getEndDate()) || //
-                   LocalDate.now().isBefore(quarter.getEndDate()));
+                LocalDate.now().isBefore(quarter.getEndDate()));
 
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());

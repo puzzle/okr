@@ -33,7 +33,7 @@ public class CheckInController {
     @GetMapping("/{id}")
     public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(checkInMapper.toDto(this.checkInAuthorizationService.getEntityById(id)));
+                             .body(checkInMapper.toDto(this.checkInAuthorizationService.getEntityById(id)));
     }
 
     @Operation(summary = "Update Check-in", description = "Update a Check-in by ID")

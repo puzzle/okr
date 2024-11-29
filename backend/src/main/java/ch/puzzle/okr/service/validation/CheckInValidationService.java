@@ -14,7 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CheckInValidationService extends ValidationBase<CheckIn, Long, CheckInRepository, CheckInPersistenceService> {
+public class CheckInValidationService extends
+                                      ValidationBase<CheckIn, Long, CheckInRepository, CheckInPersistenceService> {
 
     public CheckInValidationService(CheckInPersistenceService checkInPersistenceService) {
         super(checkInPersistenceService);

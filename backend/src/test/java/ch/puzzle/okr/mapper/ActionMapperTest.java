@@ -50,13 +50,13 @@ public class ActionMapperTest {
     void toDtoShouldMapActionToDto() {
         // arrange
         Action action = Action.Builder.builder() //
-                .withId(ID) //
-                .withVersion(VERSION) //
-                .withAction(ACTION) //
-                .withPriority(PRIORITY) //
-                .withIsChecked(IS_CHECKED) //
-                .withKeyResult(keyResult) //
-                .build();
+                                      .withId(ID) //
+                                      .withVersion(VERSION) //
+                                      .withAction(ACTION) //
+                                      .withPriority(PRIORITY) //
+                                      .withIsChecked(IS_CHECKED) //
+                                      .withKeyResult(keyResult) //
+                                      .build();
         action.setWriteable(IS_WRITEABLE);
 
         // act

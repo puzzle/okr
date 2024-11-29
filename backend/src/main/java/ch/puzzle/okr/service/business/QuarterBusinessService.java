@@ -68,9 +68,7 @@ public class QuarterBusinessService {
 
         return StringUtils.replaceEach(quarterFormat,
                                        new String[]{"xxxx", "yyyy", "xx", "yy", "zz"},
-                                       new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(
-                                                                                                                    yearStart), shortenYear(yearEnd), String
-                                                                                                                            .valueOf(quarter)});
+                                       new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart), shortenYear(yearEnd), String.valueOf(quarter)});
     }
 
     private int getStartOfBusinessYear(YearMonth startOfQuarter, int quarter) {
@@ -82,10 +80,10 @@ public class QuarterBusinessService {
     private void generateQuarter(LocalDateTime start, String label) {
         YearMonth yearMonth = YearMonth.from(start);
         Quarter quarter = Quarter.Builder.builder()
-                .withLabel(label)
-                .withStartDate(start.toLocalDate())
-                .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
-                .build();
+                                         .withLabel(label)
+                                         .withStartDate(start.toLocalDate())
+                                         .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
+                                         .build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }

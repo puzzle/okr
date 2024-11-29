@@ -22,16 +22,16 @@ public class UserUpdateHelperTest {
     void updateUserFromWithTokenData() {
         // arrange
         User userFromDB = User.Builder.builder() //
-                .withId(23L) //
-                .withFirstname("firstname_from_db") //
-                .withLastname("lastname_from_db") //
-                .withEmail("a@b.ch") //
-                .build();
+                                      .withId(23L) //
+                                      .withFirstname("firstname_from_db") //
+                                      .withLastname("lastname_from_db") //
+                                      .withEmail("a@b.ch") //
+                                      .build();
 
         User userFromToken = User.Builder.builder() //
-                .withFirstname("firstname_from_token") //
-                .withLastname("lastname_from_token") //
-                .build();
+                                         .withFirstname("firstname_from_token") //
+                                         .withLastname("lastname_from_token") //
+                                         .build();
 
         // act
         User updatedUser = helper.setFirstLastNameFromToken(userFromDB, userFromToken);

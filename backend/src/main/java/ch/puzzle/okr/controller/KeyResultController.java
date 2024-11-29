@@ -83,7 +83,7 @@ public class KeyResultController {
                                                                                                 keyResult,
                                                                                                 actionList);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK)
-                .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
+                             .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
     }
 
     @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")

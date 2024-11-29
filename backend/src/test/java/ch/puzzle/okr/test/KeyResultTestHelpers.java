@@ -79,33 +79,33 @@ public class KeyResultTestHelpers {
     static final String CHANGE_INFO_1 = "Changeinfo1";
     static final String CHANGE_INFO_2 = "Changeinfo2";
     public static final User user = User.Builder.builder()
-            .withId(1L)
-            .withFirstname("Bob")
-            .withLastname("Kaufmann")
-            .withEmail("kaufmann@puzzle.ch")
-            .build();
+                                                .withId(1L)
+                                                .withFirstname("Bob")
+                                                .withLastname("Kaufmann")
+                                                .withEmail("kaufmann@puzzle.ch")
+                                                .build();
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder.builder()
-            .withId(5L)
-            .withTitle(TITLE)
-            .build();
+                                                                           .withId(5L)
+                                                                           .withTitle(TITLE)
+                                                                           .build();
     public static final CheckIn checkIn1 = CheckInMetric.Builder.builder()
-            .withValue(23D)
-            .withId(1L)
-            .withKeyResult(metricKeyResult)
-            .withCreatedBy(user)
-            .withCreatedOn(LocalDateTime.MAX)
-            .withChangeInfo(CHANGE_INFO_1)
-            .withInitiatives(INITIATIVES_1)
-            .build();
+                                                                .withValue(23D)
+                                                                .withId(1L)
+                                                                .withKeyResult(metricKeyResult)
+                                                                .withCreatedBy(user)
+                                                                .withCreatedOn(LocalDateTime.MAX)
+                                                                .withChangeInfo(CHANGE_INFO_1)
+                                                                .withInitiatives(INITIATIVES_1)
+                                                                .build();
     public static final CheckIn checkIn2 = CheckInMetric.Builder.builder()
-            .withValue(12D)
-            .withId(4L)
-            .withKeyResult(metricKeyResult)
-            .withCreatedBy(user)
-            .withCreatedOn(LocalDateTime.MAX)
-            .withChangeInfo(CHANGE_INFO_2)
-            .withInitiatives(INITIATIVES_2)
-            .build();
+                                                                .withValue(12D)
+                                                                .withId(4L)
+                                                                .withKeyResult(metricKeyResult)
+                                                                .withCreatedBy(user)
+                                                                .withCreatedOn(LocalDateTime.MAX)
+                                                                .withChangeInfo(CHANGE_INFO_2)
+                                                                .withInitiatives(INITIATIVES_2)
+                                                                .build();
     public static final CheckInDto checkInDto1 = new CheckInMetricDto(1L,
                                                                       1,
                                                                       CHANGE_INFO_1,
@@ -182,11 +182,11 @@ public class KeyResultTestHelpers {
                                                                                           List.of());
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder()
-            .withId(3L)
-            .withTitle("Keyresult 2")
-            .withOwner(user)
-            .withObjective(objective)
-            .build();
+                                                                             .withId(3L)
+                                                                             .withTitle("Keyresult 2")
+                                                                             .withOwner(user)
+                                                                             .withObjective(objective)
+                                                                             .build();
 
     public static final String CREATE_BODY_METRIC = """
                                                     {

@@ -94,8 +94,7 @@ public class AuthorizationService {
     public void hasRoleCreateOrUpdate(KeyResult keyResult, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(),
                                                                             authorizationUser,
-                                                                            OkrResponseStatusException.of(
-                                                                                                          NOT_AUTHORIZED_TO_READ,
+                                                                            OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                           KEY_RESULT));
 
         hasRoleWriteForTeam(authorizationUser,
@@ -106,8 +105,7 @@ public class AuthorizationService {
     public void hasRoleCreateOrUpdate(CheckIn checkIn, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(),
                                                                                      authorizationUser,
-                                                                                     OkrResponseStatusException.of(
-                                                                                                                   NOT_AUTHORIZED_TO_READ,
+                                                                                     OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                                    CHECK_IN));
 
         hasRoleWriteForTeam(authorizationUser,
@@ -122,8 +120,7 @@ public class AuthorizationService {
     public boolean hasRoleWriteForTeam(KeyResult keyResult, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(),
                                                                             authorizationUser,
-                                                                            OkrResponseStatusException.of(
-                                                                                                          NOT_AUTHORIZED_TO_READ,
+                                                                            OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                           KEY_RESULT));
         return hasRoleWriteForTeam(authorizationUser, objective.getTeam());
     }
@@ -131,8 +128,7 @@ public class AuthorizationService {
     public boolean hasRoleWriteForTeam(CheckIn checkIn, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(),
                                                                                      authorizationUser,
-                                                                                     OkrResponseStatusException.of(
-                                                                                                                   NOT_AUTHORIZED_TO_READ,
+                                                                                     OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                                    CHECK_IN));
 
         return hasRoleWriteForTeam(authorizationUser, objective.getTeam());
@@ -141,8 +137,7 @@ public class AuthorizationService {
     public void hasRoleCreateOrUpdateByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId,
                                                                             authorizationUser,
-                                                                            OkrResponseStatusException.of(
-                                                                                                          NOT_AUTHORIZED_TO_READ,
+                                                                            OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                           OBJECTIVE));
 
         hasRoleWriteForTeam(authorizationUser,
@@ -153,8 +148,7 @@ public class AuthorizationService {
     public void hasRoleDeleteByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId,
                                                                             authorizationUser,
-                                                                            OkrResponseStatusException.of(
-                                                                                                          NOT_AUTHORIZED_TO_READ,
+                                                                            OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                           OBJECTIVE));
 
         hasRoleWriteForTeam(authorizationUser,
@@ -165,8 +159,7 @@ public class AuthorizationService {
     public void hasRoleDeleteByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(keyResultId,
                                                                                      authorizationUser,
-                                                                                     OkrResponseStatusException.of(
-                                                                                                                   NOT_AUTHORIZED_TO_READ,
+                                                                                     OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                                    KEY_RESULT));
 
         hasRoleWriteForTeam(authorizationUser,
@@ -185,8 +178,7 @@ public class AuthorizationService {
     public void hasRoleDeleteByCheckInId(Long checkInId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByCheckInId(checkInId,
                                                                                    authorizationUser,
-                                                                                   OkrResponseStatusException.of(
-                                                                                                                 NOT_AUTHORIZED_TO_READ,
+                                                                                   OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ,
                                                                                                                  CHECK_IN));
 
         hasRoleWriteForTeam(authorizationUser,

@@ -38,40 +38,40 @@ class CheckInBusinessServiceTest {
     private CheckInBusinessService checkInBusinessService;
 
     private User user = User.Builder.builder()
-            .withEmail("Email")
-            .withFirstname("Firstname")
-            .withLastname("Lastname")
-            .build();
+                                    .withEmail("Email")
+                                    .withFirstname("Firstname")
+                                    .withLastname("Lastname")
+                                    .build();
     private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder()
-            .withCommitZone("Baum")
-            .withStretchZone("Wald")
-            .withId(7L)
-            .withTitle("Keyresult Ordinal")
-            .build();
+                                                                 .withCommitZone("Baum")
+                                                                 .withStretchZone("Wald")
+                                                                 .withId(7L)
+                                                                 .withTitle("Keyresult Ordinal")
+                                                                 .build();
     private KeyResult metricKeyResult = KeyResultMetric.Builder.builder()
-            .withBaseline(10D)
-            .withStretchGoal(50D)
-            .withUnit(Unit.CHF)
-            .withId(8L)
-            .withTitle("Keyresult Metric")
-            .build();
+                                                               .withBaseline(10D)
+                                                               .withStretchGoal(50D)
+                                                               .withUnit(Unit.CHF)
+                                                               .withId(8L)
+                                                               .withTitle("Keyresult Metric")
+                                                               .build();
     private CheckIn checkInMetric = CheckInMetric.Builder.builder()
-            .withValue(30D)
-            .withId(1L)
-            .withConfidence(5)
-            .withChangeInfo("ChangeInfo1")
-            .withInitiatives("Initiatives1")
-            .withCreatedBy(user)
-            .withKeyResult(metricKeyResult)
-            .build();
+                                                         .withValue(30D)
+                                                         .withId(1L)
+                                                         .withConfidence(5)
+                                                         .withChangeInfo("ChangeInfo1")
+                                                         .withInitiatives("Initiatives1")
+                                                         .withCreatedBy(user)
+                                                         .withKeyResult(metricKeyResult)
+                                                         .build();
     private CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder()
-            .withZone(Zone.COMMIT)
-            .withConfidence(5)
-            .withChangeInfo("ChangeInfo2")
-            .withInitiatives("Initiatives2")
-            .withCreatedBy(user)
-            .withKeyResult(ordinalKeyResult)
-            .build();
+                                                           .withZone(Zone.COMMIT)
+                                                           .withConfidence(5)
+                                                           .withChangeInfo("ChangeInfo2")
+                                                           .withInitiatives("Initiatives2")
+                                                           .withCreatedBy(user)
+                                                           .withKeyResult(ordinalKeyResult)
+                                                           .build();
 
     @Test
     void shouldGetMetricCheckIn() {
@@ -157,7 +157,7 @@ class CheckInBusinessServiceTest {
     void shouldGetCheckInsByKeyResultId() {
         checkInBusinessService.getCheckInsByKeyResultId(this.metricKeyResult.getId());
         verify(checkInPersistenceService, times(1)).getCheckInsByKeyResultIdOrderByCheckInDateDesc(this.metricKeyResult
-                .getId());
+                                                                                                                       .getId());
     }
 
     @Test

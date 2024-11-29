@@ -69,6 +69,7 @@ class SpringCachingConfigTest {
         User expcetedUser = expectedAuthorizationUser.user();
         User actualUser = actualAuthorizationUser.user();
         assertTrue(expcetedUser.getFirstname().equals(actualUser.getFirstname()) && expcetedUser.getLastname()
-                .equals(actualUser.getLastname()) && expcetedUser.getEmail().equals(actualUser.getEmail()));
+                                                                                                .equals(actualUser.getLastname()) && expcetedUser.getEmail()
+                                                                                                                                                 .equals(actualUser.getEmail()));
     }
 }

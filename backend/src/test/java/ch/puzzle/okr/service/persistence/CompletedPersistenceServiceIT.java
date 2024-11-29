@@ -36,11 +36,14 @@ class CompletedPersistenceServiceIT {
 
     private static Completed createCompleted(Long id, int version) {
         return Completed.Builder.builder()
-                .withId(id)
-                .withVersion(version)
-                .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(GUTE_LERNENDE).build())
-                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT)
-                .build();
+                                .withId(id)
+                                .withVersion(version)
+                                .withObjective(Objective.Builder.builder()
+                                                                .withId(OBJECTIVE_ID)
+                                                                .withTitle(GUTE_LERNENDE)
+                                                                .build())
+                                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT)
+                                .build();
     }
 
     private static final String COMPLETED = "Completed";

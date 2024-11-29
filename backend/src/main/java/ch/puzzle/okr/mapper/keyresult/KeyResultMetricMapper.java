@@ -69,18 +69,19 @@ public class KeyResultMetricMapper {
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
         return KeyResultMetric.Builder.builder() //
-                .withBaseline(keyResultMetricDto.baseline()) //
-                .withStretchGoal(keyResultMetricDto.stretchGoal()) //
-                .withUnit(keyResultMetricDto.unit()) //
-                .withId(keyResultMetricDto.id()) //
-                .withVersion(keyResultMetricDto.version()) //
-                .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id())) //
-                .withTitle(keyResultMetricDto.title()) //
-                .withDescription(keyResultMetricDto.description()) //
-                .withOwner(userBusinessService.getUserById(keyResultMetricDto.owner().id())) //
-                .withCreatedOn(keyResultMetricDto.createdOn()) //
-                .withModifiedOn(keyResultMetricDto.modifiedOn()) //
-                .build();
+                                      .withBaseline(keyResultMetricDto.baseline()) //
+                                      .withStretchGoal(keyResultMetricDto.stretchGoal()) //
+                                      .withUnit(keyResultMetricDto.unit()) //
+                                      .withId(keyResultMetricDto.id()) //
+                                      .withVersion(keyResultMetricDto.version()) //
+                                      .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective()
+                                                                                                              .id())) //
+                                      .withTitle(keyResultMetricDto.title()) //
+                                      .withDescription(keyResultMetricDto.description()) //
+                                      .withOwner(userBusinessService.getUserById(keyResultMetricDto.owner().id())) //
+                                      .withCreatedOn(keyResultMetricDto.createdOn()) //
+                                      .withModifiedOn(keyResultMetricDto.modifiedOn()) //
+                                      .build();
     }
 
     public KeyResultLastCheckInMetricDto getLastCheckInDto(Long keyResultId) {

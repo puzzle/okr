@@ -36,15 +36,15 @@ public class ObjectiveMapper {
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
         return Objective.Builder.builder()
-                .withId(objectiveDto.id())
-                .withVersion(objectiveDto.version())
-                .withTitle(objectiveDto.title())
-                .withTeam(teamBusinessService.getTeamById(objectiveDto.teamId()))
-                .withDescription(objectiveDto.description())
-                .withModifiedOn(LocalDateTime.now())
-                .withState(objectiveDto.state())
-                .withCreatedOn(objectiveDto.createdOn())
-                .withQuarter(quarterBusinessService.getQuarterById(objectiveDto.quarterId()))
-                .build();
+                                .withId(objectiveDto.id())
+                                .withVersion(objectiveDto.version())
+                                .withTitle(objectiveDto.title())
+                                .withTeam(teamBusinessService.getTeamById(objectiveDto.teamId()))
+                                .withDescription(objectiveDto.description())
+                                .withModifiedOn(LocalDateTime.now())
+                                .withState(objectiveDto.state())
+                                .withCreatedOn(objectiveDto.createdOn())
+                                .withQuarter(quarterBusinessService.getQuarterById(objectiveDto.quarterId()))
+                                .build();
     }
 }

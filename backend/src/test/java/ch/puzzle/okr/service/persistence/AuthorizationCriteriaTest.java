@@ -38,12 +38,12 @@ public class AuthorizationCriteriaTest {
     void appendObjectiveShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
         var user = User.Builder.builder() //
-                .withId(23L) //
-                .withFirstname("Hanna") //
-                .withLastname("muster") //
-                .withEmail("hanna.muster@example.com") //
-                .withOkrChampion(true) //
-                .build();
+                               .withId(23L) //
+                               .withFirstname("Hanna") //
+                               .withLastname("muster") //
+                               .withEmail("hanna.muster@example.com") //
+                               .withOkrChampion(true) //
+                               .build();
         var criteria = new AuthorizationCriteria<Objective>();
 
         // act
@@ -91,11 +91,10 @@ public class AuthorizationCriteriaTest {
         var current = criteria.appendOverview(anyTeamIds, anyNonEmptyString, defaultAuthorizationUser());
 
         // assert
-        var expected = startingNewLine + singleSpace +
-                       """
-                       and o.overviewId.teamId in (:teamIds)
-                        and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:objectiveQuery,'%'))
-                        and ((o.objectiveState=:teamDraftState and o.overviewId.teamId IN (:userTeamIds)) or o.objectiveState IN (:publishedStates) or o.overviewId.objectiveId = -1)""";
+        var expected = startingNewLine + singleSpace + """
+                                                       and o.overviewId.teamId in (:teamIds)
+                                                        and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:objectiveQuery,'%'))
+                                                        and ((o.objectiveState=:teamDraftState and o.overviewId.teamId IN (:userTeamIds)) or o.objectiveState IN (:publishedStates) or o.overviewId.objectiveId = -1)""";
 
         assertEquals(expected, current);
         assertFalse(current.contains(anyNonEmptyString));

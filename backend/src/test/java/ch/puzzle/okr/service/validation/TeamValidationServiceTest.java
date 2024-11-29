@@ -178,8 +178,8 @@ class TeamValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNameIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(teamWithoutNameWithId
-                                                                    .getId(), teamWithoutNameWithId));
+                                                            () -> validator.validateOnUpdate(teamWithoutNameWithId.getId(),
+                                                                                             teamWithoutNameWithId));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutNameWithId);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithoutNameWithId.getId());
         verify(validator, times(1)).validate(teamWithoutNameWithId);

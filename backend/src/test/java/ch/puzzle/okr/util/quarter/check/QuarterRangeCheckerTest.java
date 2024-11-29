@@ -105,8 +105,8 @@ public class QuarterRangeCheckerTest {
 
     private Quarter quarter(LocalDate startDate, LocalDate endDate) {
         return Quarter.Builder.builder() //
-                .withStartDate(startDate) //
-                .withEndDate(endDate) //
-                .build();
+                              .withStartDate(startDate) //
+                              .withEndDate(endDate) //
+                              .build();
     }
 }

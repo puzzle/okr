@@ -47,8 +47,7 @@ public class ClientConfigService {
                                                                                                      domainPrefixByHyphen);
 
         if (tenantClientCustomization.isEmpty()) {
-            throw new EntityNotFoundException(MessageFormat.format(
-                                                                   "Could not find tenant client customization for subdomain:{0}",
+            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant client customization for subdomain:{0}",
                                                                    subdomain));
         }
 
@@ -79,8 +78,7 @@ public class ClientConfigService {
 
     private Optional<TenantClientCustomization> getTenantClientCustomization(String hostname, String... tenantsFromUrl) {
         for (String tenant : tenantsFromUrl) {
-            Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider
-                    .getTenantClientCustomizationsById(tenant);
+            Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider.getTenantClientCustomizationsById(tenant);
             if (tenantCustomization.isPresent()) {
                 logger.info("get client customization for " + tenant + ": OK");
                 return tenantCustomization;

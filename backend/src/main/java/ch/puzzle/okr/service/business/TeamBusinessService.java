@@ -71,7 +71,7 @@ public class TeamBusinessService {
     public void deleteTeam(Long id) {
         validator.validateOnDelete(id);
         objectiveBusinessService.getEntitiesByTeamId(id)
-                .forEach(objective -> objectiveBusinessService.deleteEntityById(objective.getId()));
+                                .forEach(objective -> objectiveBusinessService.deleteEntityById(objective.getId()));
         deleteUserTeamList(id);
         cacheService.emptyAuthorizationUsersCache();
         teamPersistenceService.deleteById(id);
@@ -121,10 +121,10 @@ public class TeamBusinessService {
 
         var userTeamList = user.getUserTeamList();
         var userTeamToRemove = userTeamList.stream()
-                .filter(ut -> ut.getTeam().getId() == teamId)
-                .findFirst()
-                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                                  "No team found to remove from userTeam list"));
+                                           .filter(ut -> ut.getTeam().getId() == teamId)
+                                           .findFirst()
+                                           .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                                                             "No team found to remove from userTeam list"));
         userTeamList.remove(userTeamToRemove);
         team.getUserTeamList().remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
@@ -134,11 +134,11 @@ public class TeamBusinessService {
 
     private void checkTeamHasAtLeastOneAdmin(Team team, User user) {
         team.getUserTeamList()
-                .stream()
-                .filter(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId()))
-                .findAny()
-                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                                  ErrorKey.TRIED_TO_DELETE_LAST_ADMIN));
+            .stream()
+            .filter(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId()))
+            .findAny()
+            .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                              ErrorKey.TRIED_TO_DELETE_LAST_ADMIN));
     }
 
     @Transactional

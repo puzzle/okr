@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
 
 @Service
-public class QuarterValidationService extends ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
+public class QuarterValidationService extends
+                                      ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
 
     public QuarterValidationService(QuarterPersistenceService quarterPersistenceService) {
         super(quarterPersistenceService);

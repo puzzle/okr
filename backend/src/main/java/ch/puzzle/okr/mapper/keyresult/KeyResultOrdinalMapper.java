@@ -69,18 +69,19 @@ public class KeyResultOrdinalMapper {
 
     public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {
         return KeyResultOrdinal.Builder.builder() //
-                .withCommitZone(keyResultOrdinalDto.commitZone()) //
-                .withTargetZone(keyResultOrdinalDto.targetZone()) //
-                .withStretchZone(keyResultOrdinalDto.stretchZone()) //
-                .withId(keyResultOrdinalDto.id()) //
-                .withVersion(keyResultOrdinalDto.version()) //
-                .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective().id())) //
-                .withTitle(keyResultOrdinalDto.title()) //
-                .withDescription(keyResultOrdinalDto.description()) //
-                .withOwner(userBusinessService.getUserById(keyResultOrdinalDto.owner().id())) //
-                .withCreatedOn(keyResultOrdinalDto.createdOn()) //
-                .withModifiedOn(keyResultOrdinalDto.modifiedOn()) //
-                .build();
+                                       .withCommitZone(keyResultOrdinalDto.commitZone()) //
+                                       .withTargetZone(keyResultOrdinalDto.targetZone()) //
+                                       .withStretchZone(keyResultOrdinalDto.stretchZone()) //
+                                       .withId(keyResultOrdinalDto.id()) //
+                                       .withVersion(keyResultOrdinalDto.version()) //
+                                       .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective()
+                                                                                                                .id())) //
+                                       .withTitle(keyResultOrdinalDto.title()) //
+                                       .withDescription(keyResultOrdinalDto.description()) //
+                                       .withOwner(userBusinessService.getUserById(keyResultOrdinalDto.owner().id())) //
+                                       .withCreatedOn(keyResultOrdinalDto.createdOn()) //
+                                       .withModifiedOn(keyResultOrdinalDto.modifiedOn()) //
+                                       .build();
     }
 
     public KeyResultLastCheckInOrdinalDto getLastCheckInDto(Long keyResultId) {

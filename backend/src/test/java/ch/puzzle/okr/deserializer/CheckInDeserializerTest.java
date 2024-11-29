@@ -63,9 +63,9 @@ class CheckInDeserializerTest {
                             """;
 
         when(keyResultBusinessService.getEntityById(1000L)) //
-                .thenReturn(KeyResultMetric.Builder.builder() //
-                        .withId(1000L) //
-                        .build());
+                                                           .thenReturn(KeyResultMetric.Builder.builder() //
+                                                                                              .withId(1000L) //
+                                                                                              .build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
@@ -110,9 +110,9 @@ class CheckInDeserializerTest {
                              """;
 
         when(keyResultBusinessService.getEntityById(1001L)) //
-                .thenReturn(KeyResultOrdinal.Builder.builder() //
-                        .withId(1001L) //
-                        .build());
+                                                           .thenReturn(KeyResultOrdinal.Builder.builder() //
+                                                                                               .withId(1001L) //
+                                                                                               .build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonOrdinal);
         DeserializationContext ctxt = mock(DeserializationContext.class);

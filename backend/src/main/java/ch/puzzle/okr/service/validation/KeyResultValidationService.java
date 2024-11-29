@@ -14,7 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KeyResultValidationService extends ValidationBase<KeyResult, Long, KeyResultRepository, KeyResultPersistenceService> {
+public class KeyResultValidationService extends
+                                        ValidationBase<KeyResult, Long, KeyResultRepository, KeyResultPersistenceService> {
 
     public KeyResultValidationService(KeyResultPersistenceService keyResultPersistenceService) {
         super(keyResultPersistenceService);

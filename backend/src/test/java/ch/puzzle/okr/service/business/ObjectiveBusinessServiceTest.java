@@ -47,27 +47,27 @@ class ObjectiveBusinessServiceTest {
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final User user = User.Builder.builder()
-            .withId(1L)
-            .withFirstname("Bob")
-            .withLastname("Kaufmann")
-            .withEmail("kaufmann@puzzle.ch")
-            .build();
+                                          .withId(1L)
+                                          .withFirstname("Bob")
+                                          .withLastname("Kaufmann")
+                                          .withEmail("kaufmann@puzzle.ch")
+                                          .build();
     private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     private final Objective fullObjective = Objective.Builder.builder()
-            .withTitle("FullObjective1")
-            .withCreatedBy(user)
-            .withTeam(team1)
-            .withQuarter(quarter)
-            .withDescription("This is our description")
-            .withModifiedOn(LocalDateTime.MAX)
-            .build();
+                                                             .withTitle("FullObjective1")
+                                                             .withCreatedBy(user)
+                                                             .withTeam(team1)
+                                                             .withQuarter(quarter)
+                                                             .withDescription("This is our description")
+                                                             .withModifiedOn(LocalDateTime.MAX)
+                                                             .build();
     private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder()
-            .withCommitZone("Baum")
-            .withStretchZone("Wald")
-            .withId(5L)
-            .withTitle("Keyresult Ordinal")
-            .withObjective(objective)
-            .build();
+                                                                       .withCommitZone("Baum")
+                                                                       .withStretchZone("Wald")
+                                                                       .withId(5L)
+                                                                       .withTitle("Keyresult Ordinal")
+                                                                       .withObjective(objective)
+                                                                       .build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
     @Test
@@ -102,14 +102,14 @@ class ObjectiveBusinessServiceTest {
     @Test
     void shouldSaveANewObjective() {
         Objective objective = spy(Objective.Builder.builder()
-                .withTitle("Received Objective")
-                .withTeam(team1)
-                .withQuarter(quarter)
-                .withDescription("The description")
-                .withModifiedOn(null)
-                .withModifiedBy(null)
-                .withState(DRAFT)
-                .build());
+                                                   .withTitle("Received Objective")
+                                                   .withTeam(team1)
+                                                   .withQuarter(quarter)
+                                                   .withDescription("The description")
+                                                   .withModifiedOn(null)
+                                                   .withModifiedBy(null)
+                                                   .withState(DRAFT)
+                                                   .build());
 
         doNothing().when(objective).setCreatedOn(any());
 
@@ -124,11 +124,11 @@ class ObjectiveBusinessServiceTest {
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder()
-                .withId(null)
-                .withTitle("Title")
-                .withDescription("Description")
-                .withModifiedOn(LocalDateTime.now())
-                .build();
+                                                .withId(null)
+                                                .withTitle("Title")
+                                                .withDescription("Description")
+                                                .withModifiedOn(LocalDateTime.now())
+                                                .build();
         when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
 
         Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
@@ -145,32 +145,32 @@ class ObjectiveBusinessServiceTest {
         String description = "The description";
         Quarter changedQuarter = Quarter.Builder.builder().withId(2L).withLabel("another quarter").build();
         Objective savedObjective = Objective.Builder.builder()
-                .withId(id)
-                .withTitle(title)
-                .withTeam(team1)
-                .withQuarter(quarter)
-                .withDescription(null)
-                .withModifiedOn(null)
-                .withModifiedBy(null)
-                .build();
+                                                    .withId(id)
+                                                    .withTitle(title)
+                                                    .withTeam(team1)
+                                                    .withQuarter(quarter)
+                                                    .withDescription(null)
+                                                    .withModifiedOn(null)
+                                                    .withModifiedBy(null)
+                                                    .build();
         Objective changedObjective = Objective.Builder.builder()
-                .withId(id)
-                .withTitle(title)
-                .withTeam(team1)
-                .withQuarter(changedQuarter)
-                .withDescription(description)
-                .withModifiedOn(null)
-                .withModifiedBy(null)
-                .build();
+                                                      .withId(id)
+                                                      .withTitle(title)
+                                                      .withTeam(team1)
+                                                      .withQuarter(changedQuarter)
+                                                      .withDescription(description)
+                                                      .withModifiedOn(null)
+                                                      .withModifiedBy(null)
+                                                      .build();
         Objective updatedObjective = Objective.Builder.builder()
-                .withId(id)
-                .withTitle(title)
-                .withTeam(team1)
-                .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter)
-                .withDescription(description)
-                .withModifiedOn(null)
-                .withModifiedBy(null)
-                .build();
+                                                      .withId(id)
+                                                      .withTitle(title)
+                                                      .withTeam(team1)
+                                                      .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter)
+                                                      .withDescription(description)
+                                                      .withModifiedOn(null)
+                                                      .withModifiedBy(null)
+                                                      .build();
 
         when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
@@ -203,24 +203,24 @@ class ObjectiveBusinessServiceTest {
     void shouldDuplicateObjective() {
         // arrange
         Objective sourceObjective = Objective.Builder.builder() //
-                .withId(23L) //
-                .withTitle("Objective 1") //
-                .build();
+                                                     .withId(23L) //
+                                                     .withTitle("Objective 1") //
+                                                     .build();
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder() //
-                .withTitle("Ordinal 1") //
-                .withObjective(sourceObjective) //
-                .build();
+                                                             .withTitle("Ordinal 1") //
+                                                             .withObjective(sourceObjective) //
+                                                             .build();
         KeyResult keyResultMetric = KeyResultMetric.Builder.builder() //
-                .withTitle("Metric 1") //
-                .withObjective(sourceObjective) //
-                .withUnit(Unit.FTE) //
-                .build();
+                                                           .withTitle("Metric 1") //
+                                                           .withObjective(sourceObjective) //
+                                                           .withUnit(Unit.FTE) //
+                                                           .build();
 
         // new Objective with no KeyResults
         Objective newObjective = Objective.Builder.builder() //
-                .withId(42L) //
-                .withTitle("Objective 2") //
-                .build();
+                                                  .withId(42L) //
+                                                  .withTitle("Objective 2") //
+                                                  .build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(List.of(keyResultOrdinal,

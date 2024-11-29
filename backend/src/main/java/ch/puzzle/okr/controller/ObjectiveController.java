@@ -35,7 +35,7 @@ public class ObjectiveController {
     @GetMapping("/{id}")
     public ResponseEntity<ObjectiveDto> getObjective(@Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
+                             .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")

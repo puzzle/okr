@@ -41,9 +41,9 @@ public class ObjectiveMapperTest {
 
     private final Team team = Team.Builder.builder().withId(TEAM_ID).build();
     private final Quarter quarter = Quarter.Builder.builder() //
-            .withId(QUARTER_ID) //
-            .withLabel(QUARTER_LABEL) //
-            .build();
+                                                   .withId(QUARTER_ID) //
+                                                   .withLabel(QUARTER_LABEL) //
+                                                   .build();
 
     private ObjectiveMapper objectiveMapper;
 
@@ -63,16 +63,16 @@ public class ObjectiveMapperTest {
     void toDtoShouldMapObjectiveToDto() {
         // arrange
         Objective objective = Objective.Builder.builder() //
-                .withId(ID) //
-                .withVersion(VERSION) //
-                .withTitle(TITLE) //
-                .withTeam(team) //
-                .withQuarter(quarter) //
-                .withDescription(DESCRIPTION) //
-                .withState(STATE) //
-                .withCreatedOn(CREATE_DATE_TIME) //
-                .withModifiedOn(MODIFIED_DATE_TIME) //
-                .build();
+                                               .withId(ID) //
+                                               .withVersion(VERSION) //
+                                               .withTitle(TITLE) //
+                                               .withTeam(team) //
+                                               .withQuarter(quarter) //
+                                               .withDescription(DESCRIPTION) //
+                                               .withState(STATE) //
+                                               .withCreatedOn(CREATE_DATE_TIME) //
+                                               .withModifiedOn(MODIFIED_DATE_TIME) //
+                                               .build();
         objective.setWriteable(IS_WRITEABLE);
 
         // act

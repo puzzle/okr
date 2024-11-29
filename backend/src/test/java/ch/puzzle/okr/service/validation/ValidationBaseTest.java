@@ -232,7 +232,8 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    static class DummyValidationService extends ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
+    static class DummyValidationService extends
+                                        ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
 
         public DummyValidationService(QuarterPersistenceService quarterPersistenceService) {
             super(quarterPersistenceService);
@@ -247,7 +248,8 @@ class ValidationBaseTest {
         }
     }
 
-    static class DummyValidationServiceWithSeveralConstraints extends ValidationBase<Objective, Long, ObjectiveRepository, ObjectivePersistenceService> {
+    static class DummyValidationServiceWithSeveralConstraints extends
+                                                              ValidationBase<Objective, Long, ObjectiveRepository, ObjectivePersistenceService> {
 
         public DummyValidationServiceWithSeveralConstraints(ObjectivePersistenceService objectivePersistenceService) {
             super(objectivePersistenceService);

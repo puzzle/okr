@@ -26,14 +26,11 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     private OauthConfig readOauthConfig(String tenantId) {
-        return new OauthConfig(env.getProperty(MessageFormat.format(
-                                                                    "okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri",
+        return new OauthConfig(env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri",
                                                                     tenantId)),
-                               env.getProperty(MessageFormat.format(
-                                                                    "okr.tenants.{0}.security.oauth2.frontend.issuer-url",
+                               env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.issuer-url",
                                                                     tenantId)),
-                               env.getProperty(MessageFormat.format(
-                                                                    "okr.tenants.{0}.security.oauth2.frontend.client-id",
+                               env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.client-id",
                                                                     tenantId)));
     }
 
@@ -48,7 +45,7 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
 
     private String[] getOkrChampionEmailsFromTenant(String tenantId) {
         return Arrays.stream(env.getProperty(MessageFormat.format("okr.tenants.{0}.user.champion.emails", tenantId), "")
-                .split(EMAIL_DELIMITER)).map(String::trim).toArray(String[]::new);
+                                .split(EMAIL_DELIMITER)).map(String::trim).toArray(String[]::new);
     }
 
     public List<TenantConfig> getTenantConfigs() {

@@ -31,10 +31,10 @@ class AlignmentPersistenceServiceIT {
 
     private static ObjectiveAlignment createObjectiveAlignment(Long id) {
         return ObjectiveAlignment.Builder.builder()
-                .withId(id)
-                .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
-                .withTargetObjective(Objective.Builder.builder().withId(4L).build())
-                .build();
+                                         .withId(id)
+                                         .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
+                                         .withTargetObjective(Objective.Builder.builder().withId(4L).build())
+                                         .build();
     }
 
     private static KeyResultAlignment createKeyResultAlignment(Long id) {
@@ -43,11 +43,11 @@ class AlignmentPersistenceServiceIT {
 
     private static KeyResultAlignment createKeyResultAlignment(Long id, int version) {
         return KeyResultAlignment.Builder.builder()
-                .withId(id)
-                .withVersion(version)
-                .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
-                .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build())
-                .build();
+                                         .withId(id)
+                                         .withVersion(version)
+                                         .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
+                                         .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build())
+                                         .build();
     }
 
     @BeforeEach

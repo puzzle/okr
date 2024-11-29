@@ -16,9 +16,9 @@ public class QuarterFunctionTest {
 
         // act
         String currentQuarter = "(2, " //
-                                + currentQuarterLabel() + ", " //
-                                + currentQuarterStartDate() + ", " //
-                                + currentQuarterEndDate() + ")";
+                + currentQuarterLabel() + ", " //
+                + currentQuarterStartDate() + ", " //
+                + currentQuarterEndDate() + ")";
 
         // assert
         String expectedCurrent = "(2, GJ 24/25-Q2, 2024-10-01, 2024-12-31)";
@@ -33,9 +33,9 @@ public class QuarterFunctionTest {
 
         // act
         String nextQuarter = "(3, " //
-                             + nextQuarterLabel() + ", " //
-                             + nextQuarterStartDate() + ", " //
-                             + nextQuarterEndDate() + ")";
+                + nextQuarterLabel() + ", " //
+                + nextQuarterStartDate() + ", " //
+                + nextQuarterEndDate() + ")";
 
         // assert
         String expectedNext = "(3, GJ 24/25-Q3, 2025-01-01, 2025-03-31)";

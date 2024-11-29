@@ -30,15 +30,15 @@ public class CheckInOrdinalMapper {
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {
         return CheckInOrdinal.Builder.builder() //
-                .withZone(checkInOrdinalDto.value()) //
-                .withId(checkInOrdinalDto.id()) //
-                .withVersion(checkInOrdinalDto.version()) //
-                .withChangeInfo(checkInOrdinalDto.changeInfo()) //
-                .withInitiatives(checkInOrdinalDto.initiatives()) //
-                .withConfidence(checkInOrdinalDto.confidence()) //
-                .withCreatedOn(checkInOrdinalDto.createdOn()) //
-                .withModifiedOn(checkInOrdinalDto.modifiedOn()) //
-                .withKeyResult(keyResultBusinessService.getEntityById(checkInOrdinalDto.keyResultId())) //
-                .build();
+                                     .withZone(checkInOrdinalDto.value()) //
+                                     .withId(checkInOrdinalDto.id()) //
+                                     .withVersion(checkInOrdinalDto.version()) //
+                                     .withChangeInfo(checkInOrdinalDto.changeInfo()) //
+                                     .withInitiatives(checkInOrdinalDto.initiatives()) //
+                                     .withConfidence(checkInOrdinalDto.confidence()) //
+                                     .withCreatedOn(checkInOrdinalDto.createdOn()) //
+                                     .withModifiedOn(checkInOrdinalDto.modifiedOn()) //
+                                     .withKeyResult(keyResultBusinessService.getEntityById(checkInOrdinalDto.keyResultId())) //
+                                     .build();
     }
 }

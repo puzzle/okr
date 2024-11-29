@@ -51,14 +51,18 @@ public class CompletedMapperTest {
     void toDtoShouldMapCompletedToDto() {
         // arrange
         var completed = Completed.Builder.builder() //
-                .withId(COMPLETED_ID) //
-                .withComment(COMPLETED_COMMENT) //
-                .withObjective(Objective.Builder.builder() //
-                        .withId(OBJECTIVE_ID)//
-                        .withTeam(Team.Builder.builder().withId(NOT_USED_LONG).build()) //
-                        .withQuarter(Quarter.Builder.builder().withId(NOT_USED_LONG).build()) //
-                        .build()) //
-                .build();
+                                         .withId(COMPLETED_ID) //
+                                         .withComment(COMPLETED_COMMENT) //
+                                         .withObjective(Objective.Builder.builder() //
+                                                                         .withId(OBJECTIVE_ID)//
+                                                                         .withTeam(Team.Builder.builder()
+                                                                                               .withId(NOT_USED_LONG)
+                                                                                               .build()) //
+                                                                         .withQuarter(Quarter.Builder.builder()
+                                                                                                     .withId(NOT_USED_LONG)
+                                                                                                     .build()) //
+                                                                         .build()) //
+                                         .build();
 
         // act
         var completedDto = completedMapper.toDto(completed);
@@ -79,10 +83,12 @@ public class CompletedMapperTest {
     void toCompletedShouldMapDtoToCompleted() {
         // arrange
         var completedDto = CompletedDtoBuilder.builder()
-                .withId(COMPLETED_ID)
-                .withComment(COMPLETED_COMMENT)
-                .withObjectiveDto(ObjectiveDtoBuilder.builder().withId(OBJECTIVE_ID).build())
-                .build();
+                                              .withId(COMPLETED_ID)
+                                              .withComment(COMPLETED_COMMENT)
+                                              .withObjectiveDto(ObjectiveDtoBuilder.builder()
+                                                                                   .withId(OBJECTIVE_ID)
+                                                                                   .build())
+                                              .build();
 
         // act
         var completed = completedMapper.toCompleted(completedDto);

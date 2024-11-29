@@ -25,10 +25,13 @@ class CompletedBusinessServiceTest {
     CompletedValidationService validator;
 
     Completed successfulCompleted = Completed.Builder.builder()
-            .withId(1L)
-            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft")
-            .build();
+                                                     .withId(1L)
+                                                     .withObjective(Objective.Builder.builder()
+                                                                                     .withId(3L)
+                                                                                     .withTitle("Gute Lernende")
+                                                                                     .build())
+                                                     .withComment("Wir haben es gut geschafft")
+                                                     .build();
 
     @InjectMocks @Spy
     private CompletedBusinessService completedBusinessService;
@@ -38,12 +41,12 @@ class CompletedBusinessServiceTest {
         Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
 
         Completed completed = Completed.Builder.builder()
-                .withObjective(Objective.Builder.builder()
-                        .withId(4L)
-                        .withTitle("Build a company culture that kills the competition.")
-                        .build())
-                .withComment("Das ist gut")
-                .build();
+                                               .withObjective(Objective.Builder.builder()
+                                                                               .withId(4L)
+                                                                               .withTitle("Build a company culture that kills the competition.")
+                                                                               .build())
+                                               .withComment("Das ist gut")
+                                               .build();
 
         Completed savedCompleted = completedBusinessService.createCompleted(completed);
         verify(completedPersistenceService, times(1)).save(completed);
@@ -53,11 +56,11 @@ class CompletedBusinessServiceTest {
     @Test
     void shouldBePossibleToSaveCompletedWithoutComment() {
         Completed completed = Completed.Builder.builder()
-                .withObjective(Objective.Builder.builder()
-                        .withId(4L)
-                        .withTitle("Build a company culture that kills the competition.")
-                        .build())
-                .build();
+                                               .withObjective(Objective.Builder.builder()
+                                                                               .withId(4L)
+                                                                               .withTitle("Build a company culture that kills the competition.")
+                                                                               .build())
+                                               .build();
 
         Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
 

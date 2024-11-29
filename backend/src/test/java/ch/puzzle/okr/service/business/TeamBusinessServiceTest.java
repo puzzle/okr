@@ -67,35 +67,35 @@ class TeamBusinessServiceTest {
     void setUp() {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
         this.team1.setUserTeamList(List.of(UserTeam.Builder.builder()
-                .withTeam(team1)
-                .withUser(defaultUser(2L))
-                .withTeamAdmin(true)
-                .build(),
+                                                           .withTeam(team1)
+                                                           .withUser(defaultUser(2L))
+                                                           .withTeamAdmin(true)
+                                                           .build(),
                                            UserTeam.Builder.builder()
-                                                   .withTeam(team1)
-                                                   .withUser(defaultUser(3L))
-                                                   .withTeamAdmin(false)
-                                                   .build()));
+                                                           .withTeam(team1)
+                                                           .withUser(defaultUser(3L))
+                                                           .withTeamAdmin(false)
+                                                           .build()));
         this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
         this.team2.setUserTeamList(List.of(UserTeam.Builder.builder()
-                .withTeam(team2)
-                .withUser(defaultUser(4L))
-                .withTeamAdmin(true)
-                .build(),
+                                                           .withTeam(team2)
+                                                           .withUser(defaultUser(4L))
+                                                           .withTeamAdmin(true)
+                                                           .build(),
                                            UserTeam.Builder.builder()
-                                                   .withTeam(team2)
-                                                   .withUser(defaultUser(5L))
-                                                   .withTeamAdmin(true)
-                                                   .build()));
+                                                           .withTeam(team2)
+                                                           .withUser(defaultUser(5L))
+                                                           .withTeamAdmin(true)
+                                                           .build()));
         this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
         this.team3.setUserTeamList(List.of());
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
         this.objectiveCompleted = Objective.Builder.builder()
-                .withId(6L)
-                .withTitle("Objective 1")
-                .withState(SUCCESSFUL)
-                .build();
+                                                   .withId(6L)
+                                                   .withTitle("Objective 1")
+                                                   .withState(SUCCESSFUL)
+                                                   .build();
         this.objectiveList = List.of(objective, objective, objective, objectiveCompleted);
     }
 
@@ -126,17 +126,17 @@ class TeamBusinessServiceTest {
         List<Team> teams = List.of(notUserTeam, userTeam, notUserTeam2);
         User user = defaultUser(13L);
         List<UserTeam> userTeamList = List.of(UserTeam.Builder.builder()
-                .withUser(user)
-                .withTeam(userTeam)
-                .withId(1L)
-                .build());
+                                                              .withUser(user)
+                                                              .withTeam(userTeam)
+                                                              .withId(1L)
+                                                              .build());
         AuthorizationUser authUser = new AuthorizationUser(User.Builder.builder()
-                .withId(user.getId())
-                .withFirstname(user.getFirstname())
-                .withLastname(user.getLastname())
-                .withEmail(user.getEmail())
-                .withUserTeamList(userTeamList)
-                .build());
+                                                                       .withId(user.getId())
+                                                                       .withFirstname(user.getFirstname())
+                                                                       .withLastname(user.getLastname())
+                                                                       .withEmail(user.getEmail())
+                                                                       .withUserTeamList(userTeamList)
+                                                                       .build());
         when(teamPersistenceService.findAll()).thenReturn(teams);
 
         List<Team> sortedList = teamBusinessService.getAllTeams(authUser);
@@ -172,10 +172,10 @@ class TeamBusinessServiceTest {
     void shouldDeleteTeamAndItsObjectives() {
         var team = defaultTeam(1L);
         team.setUserTeamList(List.of(UserTeam.Builder.builder()
-                .withTeam(team)
-                .withUser(new User())
-                .withId(1L)
-                .build()));
+                                                     .withTeam(team)
+                                                     .withUser(new User())
+                                                     .withId(1L)
+                                                     .build()));
         when(objectiveBusinessService.getEntitiesByTeamId(team.getId())).thenReturn(objectiveList);
         when(teamPersistenceService.findById(team.getId())).thenReturn(team);
 

@@ -30,8 +30,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class JwtHelper {
     public static final String CLAIM_TENANT = "tenant";
     public static final String CLAIM_ISS = "iss";
-    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS +
-                                               "' claims in JWT token!";
+    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS + "' claims in JWT token!";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
@@ -53,10 +52,10 @@ public class JwtHelper {
 
         try {
             return User.Builder.builder() //
-                    .withFirstname(claims.get(firstname).toString()) //
-                    .withLastname(claims.get(lastname).toString()) //
-                    .withEmail(claims.get(email).toString()) //
-                    .build();
+                               .withFirstname(claims.get(firstname).toString()) //
+                               .withLastname(claims.get(lastname).toString()) //
+                               .withEmail(claims.get(email).toString()) //
+                               .build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.CONVERT_TOKEN, USER);
@@ -76,12 +75,12 @@ public class JwtHelper {
     private String getFirstMatchingTenantUsingListOfHelperFunctions(Jwt token, List<Function<Jwt, Optional<String>>> getTenantFunctions) {
 
         return getTenantFunctions.stream() //
-                .map(func -> func.apply(token)) //
-                .filter(Optional::isPresent) //
-                .map(Optional::get) //
-                .map(this::getMatchingTenantFromConfigOrThrow) //
-                .findFirst() //
-                .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
+                                 .map(func -> func.apply(token)) //
+                                 .filter(Optional::isPresent) //
+                                 .map(Optional::get) //
+                                 .map(this::getMatchingTenantFromConfigOrThrow) //
+                                 .findFirst() //
+                                 .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
     }
 
     public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
@@ -97,19 +96,20 @@ public class JwtHelper {
     private String getFirstMatchingTenantUsingListOfHelperFunctions(JWTClaimsSet claimSet, List<Function<JWTClaimsSet, Optional<String>>> getTenantFunctions) {
 
         return getTenantFunctions.stream() //
-                .map(func -> func.apply(claimSet)) //
-                .filter(Optional::isPresent) //
-                .map(Optional::get) //
-                .map(this::getMatchingTenantFromConfigOrThrow)
-                .findFirst() //
-                .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
+                                 .map(func -> func.apply(claimSet)) //
+                                 .filter(Optional::isPresent) //
+                                 .map(Optional::get) //
+                                 .map(this::getMatchingTenantFromConfigOrThrow)
+                                 .findFirst() //
+                                 .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
     }
 
     private String getMatchingTenantFromConfigOrThrow(String tenant) {
         // Ensure we return only tenants for realms which really exist
         return this.tenantConfigProvider.getTenantConfigById(tenant)
-                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant {0}", tenant)))
-                .tenantId();
+                                        .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant {0}",
+                                                                                                            tenant)))
+                                        .tenantId();
     }
 
 }

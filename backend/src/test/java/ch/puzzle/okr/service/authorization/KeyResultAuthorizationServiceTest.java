@@ -51,11 +51,11 @@ class KeyResultAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(metricKeyResult, authorizationUser);
+                                                                             .hasRoleCreateOrUpdate(metricKeyResult,
+                                                                                                    authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> keyResultAuthorizationService.createEntity(
-                                                                                                          metricKeyResult));
+                                                         () -> keyResultAuthorizationService.createEntity(metricKeyResult));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -87,7 +87,8 @@ class KeyResultAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleReadByKeyResultId(id, authorizationUser);
+                                                                             .hasRoleReadByKeyResultId(id,
+                                                                                                       authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                                                          () -> keyResultAuthorizationService.getEntityById(id));
@@ -115,7 +116,8 @@ class KeyResultAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(metricKeyResult, authorizationUser);
+                                                                             .hasRoleCreateOrUpdate(metricKeyResult,
+                                                                                                    authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                                                          () -> keyResultAuthorizationService.updateEntities(id,
@@ -131,8 +133,7 @@ class KeyResultAuthorizationServiceTest {
                                                          () -> keyResultAuthorizationService.updateEntity(1L,
                                                                                                           metricKeyResult));
         assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertEquals("unsupported method in class " + KeyResultAuthorizationService.class.getSimpleName() +
-                     ", use updateEntities() instead",
+        assertEquals("unsupported method in class " + KeyResultAuthorizationService.class.getSimpleName() + ", use updateEntities() instead",
                      exception.getReason());
     }
 
@@ -150,7 +151,8 @@ class KeyResultAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleDeleteByKeyResultId(id, authorizationUser);
+                                                                             .hasRoleDeleteByKeyResultId(id,
+                                                                                                         authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                                                          () -> keyResultAuthorizationService.deleteEntityById(id));

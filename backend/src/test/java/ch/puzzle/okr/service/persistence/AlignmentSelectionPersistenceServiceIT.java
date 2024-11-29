@@ -34,12 +34,11 @@ class AlignmentSelectionPersistenceServiceIT {
 
     @Test
     void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnAlignmentSelections() {
-        List<AlignmentSelection> alignmentSelections = alignmentSelectionPersistenceService
-                .getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);
+        List<AlignmentSelection> alignmentSelections = alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L,
+                                                                                                                                         4L);
 
         assertEquals(12, alignmentSelections.size());
-        alignmentSelections.forEach(alignmentSelection -> assertTrue(matchAlignmentSelectionId(alignmentSelection
-                .getAlignmentSelectionId())));
+        alignmentSelections.forEach(alignmentSelection -> assertTrue(matchAlignmentSelectionId(alignmentSelection.getAlignmentSelectionId())));
     }
 
     private boolean matchAlignmentSelectionId(AlignmentSelectionId alignmentSelectionId) {

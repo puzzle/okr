@@ -35,7 +35,7 @@ public class AlignmentController {
     @GetMapping("/selections")
     public ResponseEntity<List<AlignmentObjectiveDto>> getAlignmentSelections(@RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter, @RequestParam(required = false, defaultValue = "", name = "team") Long teamFilter) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(alignmentSelectionMapper.toDto(alignmentSelectionBusinessService
-                        .getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter, teamFilter)));
+                             .body(alignmentSelectionMapper.toDto(alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter,
+                                                                                                                                                 teamFilter)));
     }
 }

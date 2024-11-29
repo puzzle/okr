@@ -58,30 +58,30 @@ class KeyResultBusinessServiceIT {
 
     private static KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder.builder()
-                .withBaseline(3.0)
-                .withStretchGoal(5.0)
-                .withUnit(Unit.FTE)
-                .withId(id)
-                .withTitle("Title")
-                .withCreatedBy(User.Builder.builder().withId(1L).build())
-                .withOwner(User.Builder.builder().withId(1L).build())
-                .withObjective(Objective.Builder.builder().withId(4L).build())
-                .withCreatedOn(LocalDateTime.now())
-                .build();
+                                      .withBaseline(3.0)
+                                      .withStretchGoal(5.0)
+                                      .withUnit(Unit.FTE)
+                                      .withId(id)
+                                      .withTitle("Title")
+                                      .withCreatedBy(User.Builder.builder().withId(1L).build())
+                                      .withOwner(User.Builder.builder().withId(1L).build())
+                                      .withObjective(Objective.Builder.builder().withId(4L).build())
+                                      .withCreatedOn(LocalDateTime.now())
+                                      .build();
     }
 
     private static KeyResult createKeyResultOrdinal(Long id) {
         return KeyResultOrdinal.Builder.builder()
-                .withCommitZone("Hamster")
-                .withTargetZone("Katze")
-                .withId(id)
-                .withTitle("Ordinal KeyResult")
-                .withStretchZone("ZOO")
-                .withCreatedBy(User.Builder.builder().withId(1L).build())
-                .withOwner(User.Builder.builder().withId(1L).build())
-                .withObjective(Objective.Builder.builder().withId(4L).build())
-                .withCreatedOn(LocalDateTime.now())
-                .build();
+                                       .withCommitZone("Hamster")
+                                       .withTargetZone("Katze")
+                                       .withId(id)
+                                       .withTitle("Ordinal KeyResult")
+                                       .withStretchZone("ZOO")
+                                       .withCreatedBy(User.Builder.builder().withId(1L).build())
+                                       .withOwner(User.Builder.builder().withId(1L).build())
+                                       .withObjective(Objective.Builder.builder().withId(4L).build())
+                                       .withCreatedOn(LocalDateTime.now())
+                                       .build();
     }
 
     private static CheckIn createCheckInMetric(KeyResult keyResult) {
@@ -90,28 +90,28 @@ class KeyResultBusinessServiceIT {
 
     private static CheckIn createCheckInOrdinal(KeyResult keyResult) {
         return CheckInOrdinal.Builder.builder()
-                .withKeyResult(keyResult)
-                .withConfidence(5)
-                .withZone(Zone.COMMIT)
-                .build();
+                                     .withKeyResult(keyResult)
+                                     .withConfidence(5)
+                                     .withZone(Zone.COMMIT)
+                                     .build();
     }
 
     private static Action createAction1(KeyResult keyResult) {
         return Action.Builder.builder()
-                .withIsChecked(false)
-                .withAction("Neuer Drucker")
-                .withPriority(0)
-                .withKeyResult(keyResult)
-                .build();
+                             .withIsChecked(false)
+                             .withAction("Neuer Drucker")
+                             .withPriority(0)
+                             .withKeyResult(keyResult)
+                             .build();
     }
 
     private static Action createAction2(KeyResult keyResult) {
         return Action.Builder.builder()
-                .withIsChecked(false)
-                .withAction("Neues Papier")
-                .withPriority(0)
-                .withKeyResult(keyResult)
-                .build();
+                             .withIsChecked(false)
+                             .withAction("Neues Papier")
+                             .withPriority(0)
+                             .withKeyResult(keyResult)
+                             .build();
     }
 
     @BeforeEach

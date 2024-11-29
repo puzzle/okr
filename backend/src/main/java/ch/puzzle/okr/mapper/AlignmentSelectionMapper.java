@@ -26,7 +26,8 @@ public class AlignmentSelectionMapper {
 
     private void processObjectives(List<AlignmentObjectiveDto> objectiveDtos, AlignmentSelection alignment) {
         Optional<AlignmentObjectiveDto> objectiveDto = getMatchingObjectiveDto(alignment.getAlignmentSelectionId()
-                .getObjectiveId(), objectiveDtos);
+                                                                                        .getObjectiveId(),
+                                                                               objectiveDtos);
         if (objectiveDto.isPresent()) {
             processKeyResults(objectiveDto.get(), alignment);
         } else {

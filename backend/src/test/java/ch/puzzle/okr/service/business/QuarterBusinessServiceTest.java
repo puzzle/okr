@@ -75,23 +75,23 @@ class QuarterBusinessServiceTest {
     @Test
     void shouldGetBacklogQuarter() {
         Quarter realQuarter1 = Quarter.Builder.builder()
-                .withId(1L)
-                .withLabel("GJ-22/23-Q3")
-                .withStartDate(LocalDate.of(2022, 4, 1))
-                .withEndDate(LocalDate.of(2022, 7, 31))
-                .build();
+                                              .withId(1L)
+                                              .withLabel("GJ-22/23-Q3")
+                                              .withStartDate(LocalDate.of(2022, 4, 1))
+                                              .withEndDate(LocalDate.of(2022, 7, 31))
+                                              .build();
         Quarter realQuarter2 = Quarter.Builder.builder()
-                .withId(2L)
-                .withLabel("GJ-22/23-Q4")
-                .withStartDate(LocalDate.of(2022, 8, 1))
-                .withEndDate(LocalDate.of(2022, 11, 30))
-                .build();
+                                              .withId(2L)
+                                              .withLabel("GJ-22/23-Q4")
+                                              .withStartDate(LocalDate.of(2022, 8, 1))
+                                              .withEndDate(LocalDate.of(2022, 11, 30))
+                                              .build();
         List<Quarter> quarterList = new ArrayList<>(Arrays.asList(realQuarter1, realQuarter2));
 
         Quarter backlogQuarter = Quarter.Builder.builder()
-                .withId(BACK_LOG_QUARTER_ID)
-                .withLabel(BACK_LOG_QUARTER_LABEL)
-                .build();
+                                                .withId(BACK_LOG_QUARTER_ID)
+                                                .withLabel(BACK_LOG_QUARTER_LABEL)
+                                                .build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
         when(quarterPersistenceService.findByLabel(BACK_LOG_QUARTER_LABEL)).thenReturn(backlogQuarter);
 
@@ -144,11 +144,11 @@ class QuarterBusinessServiceTest {
         LocalDate expectedEnd = currentYearMonth.plusMonths(monthsToNextQuarterEnd).atEndOfMonth();
 
         Quarter expectedQuarter = Quarter.Builder.builder()
-                .withId(null)
-                .withLabel(expectedLabel)
-                .withStartDate(expectedStart)
-                .withEndDate(expectedEnd)
-                .build();
+                                                 .withId(null)
+                                                 .withLabel(expectedLabel)
+                                                 .withStartDate(expectedStart)
+                                                 .withEndDate(expectedEnd)
+                                                 .build();
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(currentYearMonth);
 

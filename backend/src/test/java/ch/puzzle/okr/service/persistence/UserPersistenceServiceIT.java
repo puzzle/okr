@@ -47,11 +47,11 @@ class UserPersistenceServiceIT {
     void saveShouldSaveUserWithEmptyUserTeamList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("muster@puzzle.ch") //
-                .withUserTeamList(List.of())
-                .build();
+                                  .withFirstname("Hans") //
+                                  .withLastname("Muster") //
+                                  .withEmail("muster@puzzle.ch") //
+                                  .withUserTeamList(List.of())
+                                  .build();
 
         // act
         createdUser = userPersistenceService.save(newUser);
@@ -66,11 +66,11 @@ class UserPersistenceServiceIT {
     void saveShouldSaveUserWithNullUserTeamList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("muster@puzzle.ch") //
-                .withUserTeamList(null)
-                .build();
+                                  .withFirstname("Hans") //
+                                  .withLastname("Muster") //
+                                  .withEmail("muster@puzzle.ch") //
+                                  .withUserTeamList(null)
+                                  .build();
 
         // act
         createdUser = userPersistenceService.save(newUser);
@@ -85,10 +85,10 @@ class UserPersistenceServiceIT {
     void saveAllShouldSaveAllUsersInTheInputList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("muster@puzzle.ch") //
-                .build();
+                                  .withFirstname("Hans") //
+                                  .withLastname("Muster") //
+                                  .withEmail("muster@puzzle.ch") //
+                                  .build();
 
         // act
         var createdUsers = iterableToList(userPersistenceService.saveAll(List.of(newUser)));
@@ -119,11 +119,11 @@ class UserPersistenceServiceIT {
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
-                .withEmail("lastname@puzzle.ch") //
-                .build();
+                                  .withId(null) //
+                                  .withFirstname("firstname") //
+                                  .withLastname("lastname") //
+                                  .withEmail("lastname@puzzle.ch") //
+                                  .build();
 
         // act
         createdUser = userPersistenceService.getOrCreateUser(newUser);
@@ -203,11 +203,11 @@ class UserPersistenceServiceIT {
 
     private User createUser() {
         User newUser = User.Builder.builder() //
-                .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
-                .withEmail("lastname@puzzle.ch") //
-                .build();
+                                   .withId(null) //
+                                   .withFirstname("firstname") //
+                                   .withLastname("lastname") //
+                                   .withEmail("lastname@puzzle.ch") //
+                                   .build();
         createdUser = userPersistenceService.getOrCreateUser(newUser);
         assertNotNull(createdUser.getId());
         return createdUser;

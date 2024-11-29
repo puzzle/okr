@@ -8,11 +8,22 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Quarter {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
-    @SequenceGenerator(name = "sequence_quarter", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_quarter"
+    )
+    @SequenceGenerator(
+            name = "sequence_quarter",
+            allocationSize = 1
+    )
     private Long id;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Column(unique = true)
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Column(
+            unique = true
+    )
     private String label;
 
     private LocalDate startDate;

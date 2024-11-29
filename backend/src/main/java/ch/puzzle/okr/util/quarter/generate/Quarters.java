@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Profile;
  * </br>
  * This class is used for testing purposes only. Do NOT use this class in production mode.
  */
-@Profile("integration-test")
+@Profile(
+    "integration-test"
+)
 public class Quarters {
     private record QuarterDateRange(LocalDate startDate, LocalDate endDate) {
     }

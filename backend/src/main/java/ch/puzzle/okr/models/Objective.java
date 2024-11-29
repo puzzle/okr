@@ -8,36 +8,76 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(indexes = {@Index(name = "idx_objective_title", columnList = "title")})
+@Table(
+        indexes = {@Index(
+                name = "idx_objective_title",
+                columnList = "title"
+        )}
+)
 public class Objective implements WriteableInterface {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
-    @SequenceGenerator(name = "sequence_objective", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_objective"
+    )
+    @SequenceGenerator(
+            name = "sequence_objective",
+            allocationSize = 1
+    )
     private Long id;
 
     @Version
     private int version;
 
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(
+            message = MessageKey.ATTRIBUTE_NOT_BLANK
+    )
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Size(
+            min = 2,
+            max = 250,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String title;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Enumerated(EnumType.STRING)
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @Enumerated(
+        EnumType.STRING
+    )
     private State state;
 
-    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(
+            max = 4096,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String description;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @ManyToOne
     private Team team;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @ManyToOne
     private Quarter quarter;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @ManyToOne
     private User createdBy;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private LocalDateTime createdOn;
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
 

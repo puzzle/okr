@@ -21,7 +21,9 @@ public class ClientConfigService {
     private final TenantClientCustomizationProvider tenantClientCustomizationProvider;
     private final TenantConfigProvider tenantConfigProvider;
 
-    @Value("${spring.profiles.active}")
+    @Value(
+        "${spring.profiles.active}"
+    )
     private String activeProfile;
 
     public ClientConfigService(final TenantClientCustomizationProvider clientCustomizationProvider,

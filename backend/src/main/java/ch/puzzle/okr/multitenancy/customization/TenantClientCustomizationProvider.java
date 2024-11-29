@@ -24,7 +24,9 @@ public class TenantClientCustomizationProvider {
     record CssConfigItem(String cssName, String cssValue) implements Serializable {
     }
 
-    public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {
+    public TenantClientCustomizationProvider(final @Value(
+        "${okr.tenant-ids}"
+    ) String[] tenantIds, Environment env) {
         this.env = env;
         for (String tenantId : tenantIds) {
             readClientCustomizationConfig(tenantId);

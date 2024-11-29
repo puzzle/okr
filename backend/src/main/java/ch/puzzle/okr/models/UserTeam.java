@@ -4,26 +4,41 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "person_team")
+@Table(
+        name = "person_team"
+)
 public class UserTeam {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person_team")
-    @SequenceGenerator(name = "sequence_person_team", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_person_team"
+    )
+    @SequenceGenerator(
+            name = "sequence_person_team",
+            allocationSize = 1
+    )
     private Long id;
 
     @Version
     private int version;
 
     @ManyToOne()
-    @JoinColumn(name = "person_id")
+    @JoinColumn(
+            name = "person_id"
+    )
     private User user;
 
     @ManyToOne()
-    @JoinColumn(name = "team_id")
+    @JoinColumn(
+            name = "team_id"
+    )
     private Team team;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
+    @Column(
+            nullable = false,
+            columnDefinition = "boolean default false"
+    )
     private boolean isTeamAdmin = false;
 
     private UserTeam() {

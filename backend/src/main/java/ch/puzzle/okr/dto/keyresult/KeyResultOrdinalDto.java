@@ -7,7 +7,9 @@ import ch.puzzle.okr.dto.ActionDto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = KeyResultOrdinalDto.class)
+@JsonDeserialize(
+        as = KeyResultOrdinalDto.class
+)
 public record KeyResultOrdinalDto(
         Long id, int version, String keyResultType, String title, String description, String commitZone,
         String targetZone, String stretchZone, KeyResultUserDto owner, KeyResultObjectiveDto objective,

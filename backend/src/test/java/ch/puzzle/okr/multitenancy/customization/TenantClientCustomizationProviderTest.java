@@ -10,9 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TenantClientCustomizationProviderTest {
 
-    @DisplayName("extractCssNameFromPropertyName() should return css name for valid property name")
+    @DisplayName(
+        "extractCssNameFromPropertyName() should return css name for valid property name"
+    )
     @ParameterizedTest
-    @CsvSource({"pitc", "acme"})
+    @CsvSource(
+        {"pitc", "acme"}
+    )
     void extractCssNameFromPropertyNameShouldReturnCssNameForValidPropertyName(String tenantId) {
         // arrange
         String propertyNameWithTenant = "okr.tenants." + tenantId +
@@ -26,7 +30,9 @@ public class TenantClientCustomizationProviderTest {
         assertEquals("my-css-property-name", cssName);
     }
 
-    @DisplayName("extractCssNameFromPropertyName() should throw IllegalArgumentException for invalid property name")
+    @DisplayName(
+        "extractCssNameFromPropertyName() should throw IllegalArgumentException for invalid property name"
+    )
     @Test
     void extractCssNameFromPropertyNameShouldThrowIllegalArgumentExceptionForInvalidPropertyName() {
         // arrange

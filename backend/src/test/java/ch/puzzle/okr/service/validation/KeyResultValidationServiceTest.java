@@ -35,7 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class KeyResultValidationServiceTest {
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
@@ -174,7 +176,9 @@ class KeyResultValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("nameValidationArguments")
+    @MethodSource(
+        "nameValidationArguments"
+    )
     void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
         KeyResult keyResult = KeyResultMetric.Builder.builder()
@@ -281,7 +285,9 @@ class KeyResultValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("nameValidationArguments")
+    @MethodSource(
+        "nameValidationArguments"
+    )
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
         Long id = 3L;
@@ -349,7 +355,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResuslt) has changed")
+    @DisplayName(
+        "validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResuslt) has changed"
+    )
     @Test
     void validateOnUpdateShouldThrowExceptionWhenObjectiveIdOfKeyResultHasChanged() {
         // arrange

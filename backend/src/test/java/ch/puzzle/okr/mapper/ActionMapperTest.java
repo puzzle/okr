@@ -20,7 +20,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class ActionMapperTest {
 
     private static final long ID = 0L;
@@ -45,7 +47,9 @@ public class ActionMapperTest {
         actionMapper = new ActionMapper(keyResultBusinessService);
     }
 
-    @DisplayName("toDto() should map Action to Dto")
+    @DisplayName(
+        "toDto() should map Action to Dto"
+    )
     @Test
     void toDtoShouldMapActionToDto() {
         // arrange
@@ -102,7 +106,9 @@ public class ActionMapperTest {
         assertListOfActionsWithKeyResultId(actionDtoList, actionList);
     }
 
-    @DisplayName("toActions() with KeyResult Parameter should map List of Dtos (without a KeyResultId) to list of Actions")
+    @DisplayName(
+        "toActions() with KeyResult Parameter should map List of Dtos (without a KeyResultId) to list of Actions"
+    )
     @Test
     void toActionsWithKeyResultParameterShouldMapListOfDtosToListOfActions() {
         // arrange

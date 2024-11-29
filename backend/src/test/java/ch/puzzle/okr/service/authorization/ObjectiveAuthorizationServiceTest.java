@@ -19,7 +19,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class ObjectiveAuthorizationServiceTest {
     @InjectMocks
     private ObjectiveAuthorizationService objectiveAuthorizationService;
@@ -146,7 +148,9 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
-    @DisplayName("duplicateEntity() should throw exception when not authorized")
+    @DisplayName(
+        "duplicateEntity() should throw exception when not authorized"
+    )
     @Test
     void duplicateEntityShouldThrowExceptionWhenNotAuthorized() {
         // arrange
@@ -169,7 +173,9 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
-    @DisplayName("duplicateEntity() should return duplicated Objective when authorized")
+    @DisplayName(
+        "duplicateEntity() should return duplicated Objective when authorized"
+    )
     @Test
     void duplicateEntityShouldReturnDuplicatedObjectiveWhenAuthorized() {
         // arrange

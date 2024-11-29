@@ -19,9 +19,13 @@ import static org.mockito.Mockito.when;
 
 public class ClientConfigServiceTest {
 
-    @DisplayName("getConfigBasedOnActiveEnv() should be successful when tenant is configured properly")
+    @DisplayName(
+        "getConfigBasedOnActiveEnv() should be successful when tenant is configured properly"
+    )
     @ParameterizedTest
-    @CsvSource({"pitc,pitc.ork.ch", "acme,acme-ork.ch"})
+    @CsvSource(
+        {"pitc,pitc.ork.ch", "acme,acme-ork.ch"}
+    )
     void getConfigBasedOnActiveEnvShouldBeSuccessfulWhenTenantIsConfiguredProperly(String tenant, String hostname) {
         // arrange
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
@@ -35,9 +39,13 @@ public class ClientConfigServiceTest {
         assertClientConfigDto(configBasedOnActiveEnv, tenant);
     }
 
-    @DisplayName("getConfigBasedOnActiveEnv() should throw exception if client customization is not found")
+    @DisplayName(
+        "getConfigBasedOnActiveEnv() should throw exception if client customization is not found"
+    )
     @ParameterizedTest
-    @CsvSource({"pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr"})
+    @CsvSource(
+        {"pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr"}
+    )
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostname,
                                                                                       String subdomain) {
         // arrange
@@ -52,9 +60,13 @@ public class ClientConfigServiceTest {
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
-    @DisplayName("getConfigBasedOnActiveEnv() should throw exception if client config is not found")
+    @DisplayName(
+        "getConfigBasedOnActiveEnv() should throw exception if client config is not found"
+    )
     @ParameterizedTest
-    @CsvSource({"pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr"})
+    @CsvSource(
+        {"pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr"}
+    )
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientConfigIsNotFound(String tenant, String hostname,
                                                                                String subdomain) {
         // arrange

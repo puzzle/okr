@@ -31,7 +31,9 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class UserValidationServiceTest {
     @MockBean
     UserPersistenceService userPersistenceService = Mockito.mock(UserPersistenceService.class);
@@ -211,7 +213,9 @@ class UserValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("firstNameValidationArguments")
+    @MethodSource(
+        "firstNameValidationArguments"
+    )
     void validateOnCreateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder()
                                  .withEmail("max@mail.com")
@@ -228,7 +232,9 @@ class UserValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("lastNameValidationArguments")
+    @MethodSource(
+        "lastNameValidationArguments"
+    )
     void validateOnCreateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder()
                                  .withEmail("max@mail.com")
@@ -245,7 +251,9 @@ class UserValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("emailValidationArguments")
+    @MethodSource(
+        "emailValidationArguments"
+    )
     void validateOnCreateShouldThrowExceptionWhenEmailIsInvalid(String email, List<ErrorDto> errors) {
         User user2 = User.Builder.builder()
                                  .withEmail(email)
@@ -333,7 +341,9 @@ class UserValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("firstNameValidationArguments")
+    @MethodSource(
+        "firstNameValidationArguments"
+    )
     void validateOnUpdateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder()
                                  .withId(3L)
@@ -351,7 +361,9 @@ class UserValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("lastNameValidationArguments")
+    @MethodSource(
+        "lastNameValidationArguments"
+    )
     void validateOnUpdateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder()
                                  .withId(3L)
@@ -369,7 +381,9 @@ class UserValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("emailValidationArguments")
+    @MethodSource(
+        "emailValidationArguments"
+    )
     void validateOnUpdateShouldThrowExceptionWhenEmailIsInvalid(String email, List<ErrorDto> errors) {
         User user2 = User.Builder.builder()
                                  .withId(3L)

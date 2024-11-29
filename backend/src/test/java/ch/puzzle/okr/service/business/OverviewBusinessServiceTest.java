@@ -27,7 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 class OverviewBusinessServiceTest {
 
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();

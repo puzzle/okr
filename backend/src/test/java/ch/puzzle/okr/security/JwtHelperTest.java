@@ -34,7 +34,9 @@ public class JwtHelperTest {
     private static final String PITC = "pitc";
 
     // ok
-    @DisplayName("getUserFromJwt() extracts User data from Token")
+    @DisplayName(
+        "getUserFromJwt() extracts User data from Token"
+    )
     @Test
     void getUserFromJwtExtractsUserDataFromToken() {
         // arrange
@@ -61,7 +63,9 @@ public class JwtHelperTest {
     }
 
     // ok
-    @DisplayName("getUserFromJwt() throws Exception if Token not contains User data")
+    @DisplayName(
+        "getUserFromJwt() throws Exception if Token not contains User data"
+    )
     @Test
     void getUserFromJwtThrowsExceptionIfTokenNotContainsUserData() {
         // arrange
@@ -80,7 +84,9 @@ public class JwtHelperTest {
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
-    @DisplayName("getTenantFromToken() returns Tenant if Tenant found in TenantConfigProvider")
+    @DisplayName(
+        "getTenantFromToken() returns Tenant if Tenant found in TenantConfigProvider"
+    )
     @Test
     void getTenantFromTokenReturnsTenantIfTenantFoundInTenantConfigProvider() {
         // arrange
@@ -104,7 +110,9 @@ public class JwtHelperTest {
         assertEquals(PITC, tenantFromToken);
     }
 
-    @DisplayName("getTenantFromToken() throws Exception if Tenant not found in TenantConfigProvider")
+    @DisplayName(
+        "getTenantFromToken() throws Exception if Tenant not found in TenantConfigProvider"
+    )
     @Test
     void getTenantFromTokenThrowsExceptionIfTenantNotFoundInTenantConfigProvider() {
         // arrange
@@ -119,7 +127,9 @@ public class JwtHelperTest {
         assertThrows(EntityNotFoundException.class, () -> jwtHelper.getTenantFromToken(tokenMock));
     }
 
-    @DisplayName("getTenantFromJWTClaimsSet() returns Tenant if Tenant found in TenantConfigProvider")
+    @DisplayName(
+        "getTenantFromJWTClaimsSet() returns Tenant if Tenant found in TenantConfigProvider"
+    )
     @Test
     void getTenantFromJWTClaimsSetReturnsTenantIfTenantFoundInTenantConfigProvider() throws ParseException {
         // arrange
@@ -143,7 +153,9 @@ public class JwtHelperTest {
         assertEquals(PITC, tenantFromToken);
     }
 
-    @DisplayName("getTenantFromJWTClaimsSet() throws Exception if ClaimSet can not be parsed")
+    @DisplayName(
+        "getTenantFromJWTClaimsSet() throws Exception if ClaimSet can not be parsed"
+    )
     @Test
     void getTenantFromJWTClaimsSetThrowsExceptionIfClaimSetCanNotBeParsed() throws ParseException {
         // arrange

@@ -28,7 +28,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("api/v2/keyresults")
+@RequestMapping(
+    "api/v2/keyresults"
+)
 public class KeyResultController {
 
     private final KeyResultAuthorizationService keyResultAuthorizationService;
@@ -47,44 +49,97 @@ public class KeyResultController {
         this.actionMapper = actionMapper;
     }
 
-    @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Got KeyResult by Id", content = {@Content(
-            mediaType = "application/json", schema = @Schema(
-                    allOf = {KeyResultMetricDto.class, KeyResultOrdinalDto.class}))}), @ApiResponse(
-                            responseCode = "401", description = "Not authorized to read a KeyResult",
-                            content = @Content), @ApiResponse(responseCode = "404",
-                                    description = "Did not find the KeyResult with requested id", content = @Content)})
-    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get KeyResult by Id",
+            description = "Get KeyResult by Id"
+    )
+    @ApiResponses(
+            value = {@ApiResponse(
+                    responseCode = "200",
+                    description = "Got KeyResult by Id",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    allOf = {KeyResultMetricDto.class, KeyResultOrdinalDto.class}
+                            )
+                    )}
+            ), @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorized to read a KeyResult",
+                    content = @Content
+            ), @ApiResponse(
+                    responseCode = "404",
+                    description = "Did not find the KeyResult with requested id",
+                    content = @Content
+            )}
+    )
+    @GetMapping(
+        "/{id}"
+    )
     public KeyResultDto getKeyResultById(@PathVariable long id) {
         KeyResult keyResult = keyResultAuthorizationService.getEntityById(id);
         List<Action> actionList = actionAuthorizationService.getActionsByKeyResult(keyResult);
         return keyResultMapper.toDto(keyResult, actionList);
     }
 
-    @Operation(summary = "Get Check-ins from KeyResult",
-            description = "Get all Check-ins from one KeyResult by keyResultId.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returned all Check-ins from KeyResult.",
-            content = {@Content(mediaType = "application/json", schema = @Schema(
-                    implementation = CheckInDto.class))}), @ApiResponse(responseCode = "401",
-                            description = "Not authorized to read Check-ins from a KeyResult",
-                            content = @Content), @ApiResponse(responseCode = "404",
-                                    description = "Did not find a KeyResult with a specified ID to get Check-ins from.",
-                                    content = @Content)})
-    @GetMapping("/{id}/checkins")
+    @Operation(
+            summary = "Get Check-ins from KeyResult",
+            description = "Get all Check-ins from one KeyResult by keyResultId."
+    )
+    @ApiResponses(
+            value = {@ApiResponse(
+                    responseCode = "200",
+                    description = "Returned all Check-ins from KeyResult.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = CheckInDto.class
+                            )
+                    )}
+            ), @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorized to read Check-ins from a KeyResult",
+                    content = @Content
+            ), @ApiResponse(
+                    responseCode = "404",
+                    description = "Did not find a KeyResult with a specified ID to get Check-ins from.",
+                    content = @Content
+            )}
+    )
+    @GetMapping(
+        "/{id}/checkins"
+    )
     public List<CheckInDto> getCheckInsFromKeyResult(@Parameter(
             description = "The ID for getting all Check-ins from a KeyResult.",
-            required = true) @PathVariable long id) {
+            required = true
+    ) @PathVariable long id) {
         return keyResultAuthorizationService.getAllCheckInsByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 
-    @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Created new KeyResult.",
-            content = {@Content(mediaType = "application/json", schema = @Schema(
-                    allOf = {KeyResultDto.class, KeyResultOrdinalDto.class}))}), @ApiResponse(responseCode = "401",
-                            description = "Not authorized to create a KeyResult", content = @Content), @ApiResponse(
-                                    responseCode = "404",
-                                    description = "Did not find an Objective on which the KeyResult tries to refer to.",
-                                    content = @Content)})
+    @Operation(
+            summary = "Create KeyResult",
+            description = "Create a new KeyResult."
+    )
+    @ApiResponses(
+            value = {@ApiResponse(
+                    responseCode = "201",
+                    description = "Created new KeyResult.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    allOf = {KeyResultDto.class, KeyResultOrdinalDto.class}
+                            )
+                    )}
+            ), @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorized to create a KeyResult",
+                    content = @Content
+            ), @ApiResponse(
+                    responseCode = "404",
+                    description = "Did not find an Objective on which the KeyResult tries to refer to.",
+                    content = @Content
+            )}
+    )
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultAuthorizationService.createEntity(keyResultMapper.toKeyResult(keyResultDto));
@@ -94,22 +149,50 @@ public class KeyResultController {
         return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
 
-    @Operation(summary = "Update KeyResult", description = "Update a KeyResult by ID.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Updated KeyResult in db.",
-            content = {@Content(mediaType = "application/json", schema = @Schema(
-                    allOf = {KeyResultDto.class, KeyResultOrdinalDto.class}))}), @ApiResponse(responseCode = "226",
-                            description = "Updated KeyResult in db but keyResultType was not changed",
-                            content = {@Content(mediaType = "application/json", schema = @Schema(
-                                    allOf = KeyResultDto.class))}), @ApiResponse(responseCode = "401",
-                                            description = "Not authorized to update a KeyResult",
-                                            content = @Content), @ApiResponse(responseCode = "404",
-                                                    description = "Did not find a KeyResult with a specified ID to update.",
-                                                    content = @Content), @ApiResponse(responseCode = "422",
-                                                            description = "Can't update KeyResult since KeyResult was updated or deleted by another user.",
-                                                            content = @Content)})
-    @PutMapping("/{id}")
-    public ResponseEntity<KeyResultDto> updateKeyResult(@Parameter(description = "The ID for updating a KeyResult.",
-            required = true) @PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
+    @Operation(
+            summary = "Update KeyResult",
+            description = "Update a KeyResult by ID."
+    )
+    @ApiResponses(
+            value = {@ApiResponse(
+                    responseCode = "200",
+                    description = "Updated KeyResult in db.",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    allOf = {KeyResultDto.class, KeyResultOrdinalDto.class}
+                            )
+                    )}
+            ), @ApiResponse(
+                    responseCode = "226",
+                    description = "Updated KeyResult in db but keyResultType was not changed",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    allOf = KeyResultDto.class
+                            )
+                    )}
+            ), @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorized to update a KeyResult",
+                    content = @Content
+            ), @ApiResponse(
+                    responseCode = "404",
+                    description = "Did not find a KeyResult with a specified ID to update.",
+                    content = @Content
+            ), @ApiResponse(
+                    responseCode = "422",
+                    description = "Can't update KeyResult since KeyResult was updated or deleted by another user.",
+                    content = @Content
+            )}
+    )
+    @PutMapping(
+        "/{id}"
+    )
+    public ResponseEntity<KeyResultDto> updateKeyResult(@Parameter(
+            description = "The ID for updating a KeyResult.",
+            required = true
+    ) @PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList(), keyResult);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
@@ -120,12 +203,26 @@ public class KeyResultController {
                              .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
     }
 
-    @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Deleted KeyResult by Id"), @ApiResponse(
-            responseCode = "401", description = "Not authorized to delete a KeyResult",
-            content = @Content), @ApiResponse(responseCode = "404",
-                    description = "Did not find the KeyResult with requested id")})
-    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Delete KeyResult by Id",
+            description = "Delete KeyResult by Id"
+    )
+    @ApiResponses(
+            value = {@ApiResponse(
+                    responseCode = "200",
+                    description = "Deleted KeyResult by Id"
+            ), @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorized to delete a KeyResult",
+                    content = @Content
+            ), @ApiResponse(
+                    responseCode = "404",
+                    description = "Did not find the KeyResult with requested id"
+            )}
+    )
+    @DeleteMapping(
+        "/{id}"
+    )
     public void deleteKeyResultById(@PathVariable long id) {
         keyResultAuthorizationService.deleteEntityById(id);
     }

@@ -8,17 +8,29 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Completed {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_completed")
-    @SequenceGenerator(name = "sequence_completed", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "sequence_completed"
+    )
+    @SequenceGenerator(
+            name = "sequence_completed",
+            allocationSize = 1
+    )
     private Long id;
 
     @Version
     private int version;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @OneToOne
+    @NotNull(
+            message = MessageKey.ATTRIBUTE_NOT_NULL
+    )
+    @OneToOne
     private Objective objective;
 
-    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(
+            max = 4096,
+            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
+    )
     private String comment;
 
     public Completed() {

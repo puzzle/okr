@@ -19,7 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(
+    MockitoExtension.class
+)
 public class KeyResultDeserializerTest {
 
     @InjectMocks
@@ -32,7 +34,9 @@ public class KeyResultDeserializerTest {
         objectMapper = new ObjectMapper();
     }
 
-    @DisplayName("deserialize() should return KeyResultMetricDto for metric json")
+    @DisplayName(
+        "deserialize() should return KeyResultMetricDto for metric json"
+    )
     @Test
     void deserializeShouldReturnKeyResultMetricDtoForMetricJson() throws Exception {
         // arrange
@@ -106,7 +110,9 @@ public class KeyResultDeserializerTest {
         assertEquals(1000, objective.id());
     }
 
-    @DisplayName("deserialize() should return KeyResultOrdinalDto for ordinal json")
+    @DisplayName(
+        "deserialize() should return KeyResultOrdinalDto for ordinal json"
+    )
     @Test
     void deserializeShouldReturnKeyResultOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
@@ -169,7 +175,9 @@ public class KeyResultDeserializerTest {
         assertObjective(objective);
     }
 
-    @DisplayName("deserialize() should throw ResponseStatusException if KeyResult is of unsupported type")
+    @DisplayName(
+        "deserialize() should throw ResponseStatusException if KeyResult is of unsupported type"
+    )
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfKeyResultIsUnsupportedType() throws Exception {
         // arrange
@@ -194,7 +202,9 @@ public class KeyResultDeserializerTest {
         assertBadRequest(exception);
     }
 
-    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Type")
+    @DisplayName(
+        "deserialize() should throw ResponseStatusException if json has no KeyResult Type"
+    )
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultType() throws Exception {
         // arrange

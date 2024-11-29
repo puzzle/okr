@@ -26,10 +26,14 @@ public class QuarterBusinessService {
     private final QuarterPersistenceService quarterPersistenceService;
     private final QuarterValidationService validator;
 
-    @Value("${okr.quarter.business.year.start}")
+    @Value(
+        "${okr.quarter.business.year.start}"
+    )
     private int quarterStart;
 
-    @Value("${okr.quarter.label.format}")
+    @Value(
+        "${okr.quarter.label.format}"
+    )
     private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
@@ -111,7 +115,9 @@ public class QuarterBusinessService {
         return quarters;
     }
 
-    @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
+    @Scheduled(
+            cron = "0 59 23 L * ?"
+    ) // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
         Map<Integer, Integer> quarters = generateQuarters();
         YearMonth currentYearMonth = getCurrentYearMonth();

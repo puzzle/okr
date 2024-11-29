@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.puzzle.okr.test.KeyResultTestHelpers.metricKeyResult;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -175,7 +174,8 @@ class ObjectiveBusinessServiceTest {
                 .build();
 
         List<KeyResult> keyResults = new ArrayList<>();
-        keyResults.add(metricKeyResult);
+        keyResults.add(keyResultOrdinal);
+        keyResults.add(keyResultMetric);
 
         // new Objective with no KeyResults
         Objective newObjective = Objective.Builder.builder() //
@@ -184,8 +184,6 @@ class ObjectiveBusinessServiceTest {
                 .build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong()))
-                .thenReturn(List.of(keyResultOrdinal, keyResultMetric));
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
@@ -196,9 +194,8 @@ class ObjectiveBusinessServiceTest {
         assertEquals(newObjective.getId(), duplicatedObjective.getId());
         assertEquals(newObjective.getTitle(), duplicatedObjective.getTitle());
 
-        // called for creating the new Objective
+        // called for creating the new Objective and the new keyResults
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
-        // called for creating the new KeyResults
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
 }

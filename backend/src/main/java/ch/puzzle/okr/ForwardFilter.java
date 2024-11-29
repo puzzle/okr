@@ -1,10 +1,7 @@
 package ch.puzzle.okr;
 
 import java.io.IOException;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;

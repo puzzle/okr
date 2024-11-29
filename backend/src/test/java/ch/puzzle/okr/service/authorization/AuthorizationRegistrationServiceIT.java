@@ -130,14 +130,13 @@ class AuthorizationRegistrationServiceIT {
         // load user from db (by email) and set OkrChampion status based on property
         // "okr.tenants.pitc.user.champion.emails" from
         // application-integration-test.properties file
-        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(
-                User.Builder.builder()
-                            .withFirstname("Alice")
-                            .withLastname("Wunderland")
-                            .withEmail(EMAIL_WUNDERLAND) // user.champion.emails
-                            // from
-                            // application-integration-test.properties
-                            .build());
+        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(User.Builder.builder()
+                                                                                                                    .withFirstname("Alice")
+                                                                                                                    .withLastname("Wunderland")
+                                                                                                                    .withEmail(EMAIL_WUNDERLAND) // user.champion.emails
+                                                                                                                    // from
+                                                                                                                    // application-integration-test.properties
+                                                                                                                    .build());
 
         // assert
         assertTrue(processedUser.user().isOkrChampion());

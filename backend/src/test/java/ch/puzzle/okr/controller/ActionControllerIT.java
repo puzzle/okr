@@ -119,8 +119,7 @@ class ActionControllerIT {
     @Test
     void throwExceptionWhenActionWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Action not found")).when(actionAuthorizationService)
-                                                                                      .deleteActionByActionId(
-                                                                                              anyLong());
+                                                                                      .deleteActionByActionId(anyLong());
 
         mvc.perform(delete("/api/v2/action/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isNotFound());

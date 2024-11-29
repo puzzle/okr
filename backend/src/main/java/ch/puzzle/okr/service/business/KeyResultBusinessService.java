@@ -65,14 +65,12 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         if (Objects.equals(keyResult.getKeyResultType(), savedKeyResult.getKeyResultType())) {
             logger.debug("keyResultType is identically, {}", keyResult);
             validator.validateOnUpdate(id, keyResult);
-            return new KeyResultWithActionList(keyResultPersistenceService.updateEntity(keyResult),
-                    actionBusinessService.updateEntities(actionList));
+            return new KeyResultWithActionList(keyResultPersistenceService.updateEntity(keyResult), actionBusinessService.updateEntities(actionList));
         } else {
             if (isKeyResultTypeChangeable(id)) {
                 logger.debug("keyResultType has changed and is changeable, {}", keyResult);
                 validator.validateOnUpdate(id, keyResult);
-                return new KeyResultWithActionList(recreateEntity(id, keyResult, actionList),
-                        actionBusinessService.createEntities(actionList));
+                return new KeyResultWithActionList(recreateEntity(id, keyResult, actionList), actionBusinessService.createEntities(actionList));
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());
                 savedKeyResult.setDescription(keyResult.getDescription());
@@ -80,8 +78,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
                 savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
                 logger.debug("keyResultType has changed and is NOT changeable, {}", savedKeyResult);
                 validator.validateOnUpdate(id, keyResult);
-                return new KeyResultWithActionList(keyResultPersistenceService.updateEntity(savedKeyResult),
-                        actionBusinessService.updateEntities(actionList));
+                return new KeyResultWithActionList(keyResultPersistenceService.updateEntity(savedKeyResult), actionBusinessService.updateEntities(actionList));
             }
         }
     }
@@ -121,7 +118,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
         return hasKeyResultAnyCheckIns(id)
-                && !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
+               && !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
     }
 
     private boolean isKeyResultTypeChangeable(Long id) {

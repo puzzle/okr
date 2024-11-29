@@ -156,9 +156,9 @@ public class Objective implements WriteableInterface {
     @Override
     public String toString() {
         return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
-                + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
-                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
-                + modifiedBy + ", writeable=" + writeable + '\'' + '}';
+               + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
+               + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
+               + modifiedBy + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -169,17 +169,16 @@ public class Objective implements WriteableInterface {
             return false;
         Objective objective = (Objective) o;
         return Objects.equals(id, objective.id) && version == objective.version
-                && Objects.equals(title, objective.title) && Objects.equals(createdBy, objective.createdBy)
-                && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter)
-                && Objects.equals(description, objective.description)
-                && Objects.equals(modifiedOn, objective.modifiedOn) && state == objective.state
-                && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy);
+               && Objects.equals(title, objective.title) && Objects.equals(createdBy, objective.createdBy)
+               && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter)
+               && Objects.equals(description, objective.description) && Objects.equals(modifiedOn, objective.modifiedOn)
+               && state == objective.state && Objects.equals(createdOn, objective.createdOn)
+               && Objects.equals(modifiedBy, objective.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, title, createdBy, team, quarter, description, modifiedOn, state, createdOn,
-                modifiedBy);
+        return Objects.hash(id, version, title, createdBy, team, quarter, description, modifiedOn, state, createdOn, modifiedBy);
     }
 
     public static final class Builder {

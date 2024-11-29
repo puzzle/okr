@@ -44,7 +44,6 @@ public class OverviewController {
             @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
             @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(overviewMapper.toDto(overviewAuthorizationService.getFilteredOverview(quarterFilter,
-                                     teamFilter, objectiveQuery)));
+                             .body(overviewMapper.toDto(overviewAuthorizationService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)));
     }
 }

@@ -102,7 +102,7 @@ public class Action implements WriteableInterface {
     @Override
     public String toString() {
         return "Action{" + "id=" + id + ", version=" + version + ", action='" + action + '\'' + ", priority=" + priority
-                + ", isChecked=" + isChecked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
+               + ", isChecked=" + isChecked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
     }
 
     @Override
@@ -113,8 +113,8 @@ public class Action implements WriteableInterface {
             return false;
         Action action1 = (Action) o;
         return version == action1.version && priority == action1.priority && isChecked == action1.isChecked
-                && writeable == action1.writeable && Objects.equals(id, action1.id)
-                && Objects.equals(action, action1.action) && Objects.equals(keyResult, action1.keyResult);
+               && writeable == action1.writeable && Objects.equals(id, action1.id)
+               && Objects.equals(action, action1.action) && Objects.equals(keyResult, action1.keyResult);
     }
 
     @Override

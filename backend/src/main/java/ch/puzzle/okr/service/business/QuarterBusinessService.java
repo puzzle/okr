@@ -67,9 +67,9 @@ public class QuarterBusinessService {
         int yearStart = getStartOfBusinessYear(startOfQuarter, quarter);
         int yearEnd = yearStart + 1;
 
-        return StringUtils.replaceEach(quarterFormat, new String[]{"xxxx", "yyyy", "xx", "yy", "zz"},
-                new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
-                        shortenYear(yearEnd), String.valueOf(quarter)});
+        return StringUtils.replaceEach(quarterFormat, new String[]{"xxxx", "yyyy", "xx", "yy", "zz"}, new String[]{
+                String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart), shortenYear(yearEnd),
+                String.valueOf(quarter)});
     }
 
     private int getStartOfBusinessYear(YearMonth startOfQuarter, int quarter) {

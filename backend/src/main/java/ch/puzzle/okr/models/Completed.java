@@ -58,7 +58,7 @@ public class Completed {
     @Override
     public String toString() {
         return "Completed{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", comment='" + comment
-                + '\'' + '}';
+               + '\'' + '}';
     }
 
     @Override
@@ -69,7 +69,7 @@ public class Completed {
             return false;
         Completed completed = (Completed) o;
         return Objects.equals(id, completed.id) && version == completed.version
-                && Objects.equals(objective, completed.objective) && Objects.equals(comment, completed.comment);
+               && Objects.equals(objective, completed.objective) && Objects.equals(comment, completed.comment);
     }
 
     @Override

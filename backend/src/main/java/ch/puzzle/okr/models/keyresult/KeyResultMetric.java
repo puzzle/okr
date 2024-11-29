@@ -51,8 +51,8 @@ public class KeyResultMetric extends KeyResult {
     public boolean equals(Object o) {
         if (o instanceof KeyResultMetric) {
             return super.equals(o) && Objects.equals(baseline, ((KeyResultMetric) o).baseline)
-                    && Objects.equals(stretchGoal, ((KeyResultMetric) o).stretchGoal)
-                    && Objects.equals(unit, ((KeyResultMetric) o).unit);
+                   && Objects.equals(stretchGoal, ((KeyResultMetric) o).stretchGoal)
+                   && Objects.equals(unit, ((KeyResultMetric) o).unit);
         }
         return false;
     }
@@ -65,7 +65,7 @@ public class KeyResultMetric extends KeyResult {
     @Override
     public String toString() {
         return super.toString() + "KeyResultMetric{" + "baseline=" + baseline + ", stretchGoal=" + stretchGoal
-                + ", unit='" + unit + '\'' + '}';
+               + ", unit='" + unit + '\'' + '}';
     }
 
     private KeyResultMetric(Builder builder) {

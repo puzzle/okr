@@ -81,8 +81,7 @@ public class ObjectiveDtoBuilder {
     }
 
     public ObjectiveDto build() {
-        return new ObjectiveDto(id, version, title, teamId, quarterId, quarterLabel, description, state, createdOn,
-                modifiedOn, writeable);
+        return new ObjectiveDto(id, version, title, teamId, quarterId, quarterLabel, description, state, createdOn, modifiedOn, writeable);
     }
 
 }

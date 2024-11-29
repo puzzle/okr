@@ -47,8 +47,8 @@ public class UserUpdateHelperTest {
     void updateUserAsNoChampion() {
         // arrange
         User noChampionUser = User.Builder.builder().withEmail("no@champions.ch").build();
-        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null,
-                new String[]{"yes@champions.ch"}, null, null, null, null);
+        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, new String[]{
+                "yes@champions.ch"}, null, null, null, null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(noChampionUser, tenantConfig);
@@ -61,8 +61,8 @@ public class UserUpdateHelperTest {
     void updateUserAsChampion() {
         // arrange
         User championUser = User.Builder.builder().withEmail("yes@champions.ch").build();
-        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null,
-                new String[]{"yes@champions.ch"}, null, null, null, null);
+        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, new String[]{
+                "yes@champions.ch"}, null, null, null, null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(championUser, tenantConfig);

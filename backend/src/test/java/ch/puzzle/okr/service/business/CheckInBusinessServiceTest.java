@@ -156,8 +156,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldGetCheckInsByKeyResultId() {
         checkInBusinessService.getCheckInsByKeyResultId(this.metricKeyResult.getId());
-        verify(checkInPersistenceService, times(1)).getCheckInsByKeyResultIdOrderByCheckInDateDesc(
-                this.metricKeyResult.getId());
+        verify(checkInPersistenceService, times(1)).getCheckInsByKeyResultIdOrderByCheckInDateDesc(this.metricKeyResult.getId());
     }
 
     @Test

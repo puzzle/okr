@@ -41,8 +41,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     private String convertTenantIdToSchemaName(String tenantIdentifier) {
-        return Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)
-                ? tenantIdentifier
+        return Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID) ? tenantIdentifier
                 : MessageFormat.format("okr_{0}", tenantIdentifier);
     }
 
@@ -67,8 +66,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
             connectionProviderMap.put(tenantIdentifier, connectionProvider);
             return connectionProvider;
         })
-                       .orElseThrow(() -> new ConnectionProviderException(String.format(
-                               "Cannot create new connection provider for tenant: %s", tenantIdentifier)));
+                       .orElseThrow(() -> new ConnectionProviderException(String.format("Cannot create new connection provider for tenant: %s", tenantIdentifier)));
     }
 
     private ConnectionProvider createConnectionProvider(String tenantIdentifier) {

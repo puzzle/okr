@@ -66,13 +66,25 @@ class TeamBusinessServiceTest {
     @BeforeEach
     void setUp() {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
-        this.team1.setUserTeamList(List.of(
-                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(2L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).withTeamAdmin(false).build()));
+        this.team1.setUserTeamList(List.of(UserTeam.Builder.builder()
+                                                           .withTeam(team1)
+                                                           .withUser(defaultUser(2L))
+                                                           .withTeamAdmin(true)
+                                                           .build(), UserTeam.Builder.builder()
+                                                                                     .withTeam(team1)
+                                                                                     .withUser(defaultUser(3L))
+                                                                                     .withTeamAdmin(false)
+                                                                                     .build()));
         this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
-        this.team2.setUserTeamList(List.of(
-                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withTeamAdmin(true).build()));
+        this.team2.setUserTeamList(List.of(UserTeam.Builder.builder()
+                                                           .withTeam(team2)
+                                                           .withUser(defaultUser(4L))
+                                                           .withTeamAdmin(true)
+                                                           .build(), UserTeam.Builder.builder()
+                                                                                     .withTeam(team2)
+                                                                                     .withUser(defaultUser(5L))
+                                                                                     .withTeamAdmin(true)
+                                                                                     .build()));
         this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
         this.team3.setUserTeamList(List.of());
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();
@@ -111,8 +123,11 @@ class TeamBusinessServiceTest {
         Team notUserTeam2 = Team.Builder.builder().withId(3L).withName("NOTUserTeam2").withVersion(1).build();
         List<Team> teams = List.of(notUserTeam, userTeam, notUserTeam2);
         User user = defaultUser(13L);
-        List<UserTeam> userTeamList = List.of(
-                UserTeam.Builder.builder().withUser(user).withTeam(userTeam).withId(1L).build());
+        List<UserTeam> userTeamList = List.of(UserTeam.Builder.builder()
+                                                              .withUser(user)
+                                                              .withTeam(userTeam)
+                                                              .withId(1L)
+                                                              .build());
         AuthorizationUser authUser = new AuthorizationUser(User.Builder.builder()
                                                                        .withId(user.getId())
                                                                        .withFirstname(user.getFirstname())
@@ -154,8 +169,11 @@ class TeamBusinessServiceTest {
     @Test
     void shouldDeleteTeamAndItsObjectives() {
         var team = defaultTeam(1L);
-        team.setUserTeamList(
-                List.of(UserTeam.Builder.builder().withTeam(team).withUser(new User()).withId(1L).build()));
+        team.setUserTeamList(List.of(UserTeam.Builder.builder()
+                                                     .withTeam(team)
+                                                     .withUser(new User())
+                                                     .withId(1L)
+                                                     .build()));
         when(objectiveBusinessService.getEntitiesByTeamId(team.getId())).thenReturn(objectiveList);
         when(teamPersistenceService.findById(team.getId())).thenReturn(team);
 
@@ -199,8 +217,10 @@ class TeamBusinessServiceTest {
 
         teamBusinessService.removeUserFromTeam(team2.getId(), user.getId());
         assertEquals(2, user.getUserTeamList().size());
-        assertEquals(user.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList(),
-                List.of(team1.getId(), team3.getId()));
+        assertEquals(user.getUserTeamList()
+                         .stream()
+                         .map(ut -> ut.getTeam().getId())
+                         .toList(), List.of(team1.getId(), team3.getId()));
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
@@ -219,9 +239,7 @@ class TeamBusinessServiceTest {
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
 
-        assertThrows(OkrResponseStatusException.class,
-                () -> teamBusinessService.removeUserFromTeam(team1.getId(), user.getId()),
-                ErrorKey.TRIED_TO_DELETE_LAST_ADMIN.toString());
+        assertThrows(OkrResponseStatusException.class, () -> teamBusinessService.removeUserFromTeam(team1.getId(), user.getId()), ErrorKey.TRIED_TO_DELETE_LAST_ADMIN.toString());
     }
 
     @Test
@@ -242,8 +260,7 @@ class TeamBusinessServiceTest {
 
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
 
-        assertThrows(OkrResponseStatusException.class,
-                () -> teamBusinessService.updateOrAddTeamMembership(team1.getId(), user.getId(), false));
+        assertThrows(OkrResponseStatusException.class, () -> teamBusinessService.updateOrAddTeamMembership(team1.getId(), user.getId(), false));
     }
 
     @Test

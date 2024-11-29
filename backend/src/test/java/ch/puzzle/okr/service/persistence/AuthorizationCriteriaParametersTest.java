@@ -88,8 +88,7 @@ public class AuthorizationCriteriaParametersTest {
     }
 
     private static Stream<Arguments> provideListAndString() {
-        return Stream.of(Arguments.of(List.of(), null), Arguments.of(List.of(), ""), Arguments.of(null, null),
-                Arguments.of(null, ""));
+        return Stream.of(Arguments.of(List.of(), null), Arguments.of(List.of(), ""), Arguments.of(null, null), Arguments.of(null, ""));
     }
 
     @DisplayName("setParameters() should be successful when team ids and objective query are not empty")

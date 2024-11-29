@@ -27,8 +27,7 @@ public class OverviewAuthorizationService {
 
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
-                authorizationUser);
+        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery, authorizationUser);
         setRoleCreateOrUpdateTeam(overviews, authorizationUser);
         return overviews;
     }
@@ -51,7 +50,7 @@ public class OverviewAuthorizationService {
 
     private boolean hasOverviewTeamIdAndObjectiveId(Overview overview) {
         return overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null
-                && overview.getOverviewId().getTeamId() != null;
+               && overview.getOverviewId().getTeamId() != null;
     }
 
     public boolean hasWriteAllAccess() {

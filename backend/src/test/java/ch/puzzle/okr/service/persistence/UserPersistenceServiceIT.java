@@ -195,8 +195,7 @@ class UserPersistenceServiceIT {
         userPersistenceService.deleteById(user.getId());
 
         // assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> userPersistenceService.findById(createdUser.getId()));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> userPersistenceService.findById(createdUser.getId()));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
@@ -216,8 +215,7 @@ class UserPersistenceServiceIT {
     @DisplayName("deleteById() should throw exception when Id is null")
     @Test
     void deleteByIdShouldThrowExceptionWhenIdIsNull() {
-        InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class,
-                () -> userPersistenceService.deleteById(null));
+        InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, () -> userPersistenceService.deleteById(null));
 
         assertEquals("The given id must not be null", exception.getMessage());
     }

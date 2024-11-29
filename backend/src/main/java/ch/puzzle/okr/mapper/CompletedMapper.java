@@ -15,8 +15,7 @@ public class CompletedMapper {
     }
 
     public CompletedDto toDto(Completed completed) {
-        return new CompletedDto(completed.getId(), objectiveMapper.toDto(completed.getObjective()),
-                completed.getComment());
+        return new CompletedDto(completed.getId(), objectiveMapper.toDto(completed.getObjective()), completed.getComment());
     }
 
     public Completed toCompleted(CompletedDto completedDto) {

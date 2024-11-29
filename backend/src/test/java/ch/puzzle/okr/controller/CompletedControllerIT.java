@@ -68,10 +68,9 @@ class CompletedControllerIT {
     private final CompletedDto completedDto = CompletedDtoBuilder.builder()
                                                                  .withId(COMPLETED_ID)
                                                                  .withComment(COMPLETED_COMMENT)
-                                                                 .withObjectiveDto(
-                                                                         ObjectiveDtoBuilder.builder()
-                                                                                            .withId(OBJECTIVE_ID)
-                                                                                            .build())
+                                                                 .withObjectiveDto(ObjectiveDtoBuilder.builder()
+                                                                                                      .withId(OBJECTIVE_ID)
+                                                                                                      .build())
                                                                  .build();
 
     String baseUrl = "/api/v2/completed";
@@ -109,8 +108,8 @@ class CompletedControllerIT {
     @DisplayName("delete() should throw exception when Completed with id cant be found")
     @Test
     void deleteShouldThrowExceptionWhenCompletedWithIdCantBeFound() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found")).when(
-                completedAuthorizationService).deleteCompletedByObjectiveId(anyLong());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found")).when(completedAuthorizationService)
+                                                                                         .deleteCompletedByObjectiveId(anyLong());
 
         mvc.perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isNotFound());

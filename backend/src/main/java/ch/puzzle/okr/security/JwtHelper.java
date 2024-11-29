@@ -31,7 +31,7 @@ public class JwtHelper {
     public static final String CLAIM_TENANT = "tenant";
     public static final String CLAIM_ISS = "iss";
     public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS
-            + "' claims in JWT token!";
+                                               + "' claims in JWT token!";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
@@ -68,8 +68,7 @@ public class JwtHelper {
 
     public String getTenantFromToken(Jwt token) {
         TokenHelper helper = new TokenHelper();
-        List<Function<Jwt, Optional<String>>> getTenantFromTokenFunctions = Arrays.asList(
-                helper::getTenantFromTokenUsingClaimIss, helper::getTenantFromTokenUsingClaimTenant);
+        List<Function<Jwt, Optional<String>>> getTenantFromTokenFunctions = Arrays.asList(helper::getTenantFromTokenUsingClaimIss, helper::getTenantFromTokenUsingClaimTenant);
 
         return getFirstMatchingTenantUsingListOfHelperFunctions(token, getTenantFromTokenFunctions);
     }
@@ -88,8 +87,7 @@ public class JwtHelper {
 
     public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
         ClaimHelper helper = new ClaimHelper();
-        List<Function<JWTClaimsSet, Optional<String>>> getTenantFromClaimsSetFunctions = Arrays.asList(
-                helper::getTenantFromClaimsSetUsingClaimIss, helper::getTenantFromClaimsSetUsingClaimTenant);
+        List<Function<JWTClaimsSet, Optional<String>>> getTenantFromClaimsSetFunctions = Arrays.asList(helper::getTenantFromClaimsSetUsingClaimIss, helper::getTenantFromClaimsSetUsingClaimTenant);
 
         return getFirstMatchingTenantUsingListOfHelperFunctions(claimSet, getTenantFromClaimsSetFunctions);
     }
@@ -109,8 +107,7 @@ public class JwtHelper {
     private String getMatchingTenantFromConfigOrThrow(String tenant) {
         // Ensure we return only tenants for realms which really exist
         return this.tenantConfigProvider.getTenantConfigById(tenant)
-                                        .orElseThrow(() -> new EntityNotFoundException(
-                                                MessageFormat.format("Cannot find tenant {0}", tenant)))
+                                        .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant {0}", tenant)))
                                         .tenantId();
     }
 

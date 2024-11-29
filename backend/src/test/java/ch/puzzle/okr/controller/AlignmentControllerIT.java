@@ -40,44 +40,35 @@ class AlignmentControllerIT {
     private AlignmentSelectionMapper alignmentSelectionMapper;
 
     static String alignmentObjectiveName = "Objective 5";
-    static List<AlignmentSelection> alignmentSelectionPuzzle = List.of(
-            AlignmentSelection.Builder.builder()
-                                      .withAlignmentSelectionId(AlignmentSelectionId.of(1L, 20L))
-                                      .withObjectiveTitle("Objective 1")
-                                      .withKeyResultTitle("KeyResult 20")
-                                      .build(),
-            AlignmentSelection.Builder.builder()
-                                      .withAlignmentSelectionId(AlignmentSelectionId.of(1L, 40L))
-                                      .withObjectiveTitle("Objective 1")
-                                      .withKeyResultTitle("KeyResult 40")
-                                      .build());
-    static List<AlignmentSelection> alignmentSelectionOKR = List.of(
-            AlignmentSelection.Builder.builder()
-                                      .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 21L))
-                                      .withObjectiveTitle(alignmentObjectiveName)
-                                      .withKeyResultTitle("KeyResult 21")
-                                      .build(),
-            AlignmentSelection.Builder.builder()
-                                      .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 41L))
-                                      .withObjectiveTitle(alignmentObjectiveName)
-                                      .withKeyResultTitle("KeyResult 41")
-                                      .build(),
-            AlignmentSelection.Builder.builder()
-                                      .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 61L))
-                                      .withObjectiveTitle(alignmentObjectiveName)
-                                      .withKeyResultTitle("KeyResult 61")
-                                      .build(),
-            AlignmentSelection.Builder.builder()
-                                      .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 81L))
-                                      .withObjectiveTitle(alignmentObjectiveName)
-                                      .withKeyResultTitle("KeyResult 81")
-                                      .build());
+    static List<AlignmentSelection> alignmentSelectionPuzzle = List.of(AlignmentSelection.Builder.builder()
+                                                                                                 .withAlignmentSelectionId(AlignmentSelectionId.of(1L, 20L))
+                                                                                                 .withObjectiveTitle("Objective 1")
+                                                                                                 .withKeyResultTitle("KeyResult 20")
+                                                                                                 .build(), AlignmentSelection.Builder.builder()
+                                                                                                                                     .withAlignmentSelectionId(AlignmentSelectionId.of(1L, 40L))
+                                                                                                                                     .withObjectiveTitle("Objective 1")
+                                                                                                                                     .withKeyResultTitle("KeyResult 40")
+                                                                                                                                     .build());
+    static List<AlignmentSelection> alignmentSelectionOKR = List.of(AlignmentSelection.Builder.builder()
+                                                                                              .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 21L))
+                                                                                              .withObjectiveTitle(alignmentObjectiveName)
+                                                                                              .withKeyResultTitle("KeyResult 21")
+                                                                                              .build(), AlignmentSelection.Builder.builder()
+                                                                                                                                  .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 41L))
+                                                                                                                                  .withObjectiveTitle(alignmentObjectiveName)
+                                                                                                                                  .withKeyResultTitle("KeyResult 41")
+                                                                                                                                  .build(), AlignmentSelection.Builder.builder()
+                                                                                                                                                                      .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 61L))
+                                                                                                                                                                      .withObjectiveTitle(alignmentObjectiveName)
+                                                                                                                                                                      .withKeyResultTitle("KeyResult 61")
+                                                                                                                                                                      .build(), AlignmentSelection.Builder.builder()
+                                                                                                                                                                                                          .withAlignmentSelectionId(AlignmentSelectionId.of(5L, 81L))
+                                                                                                                                                                                                          .withObjectiveTitle(alignmentObjectiveName)
+                                                                                                                                                                                                          .withKeyResultTitle("KeyResult 81")
+                                                                                                                                                                                                          .build());
     static AlignmentSelection alignmentSelectionEmptyKeyResults = AlignmentSelection.Builder.builder()
-                                                                                            .withAlignmentSelectionId(
-                                                                                                    AlignmentSelectionId.of(
-                                                                                                            8L, null))
-                                                                                            .withObjectiveTitle(
-                                                                                                    "Objective 8")
+                                                                                            .withAlignmentSelectionId(AlignmentSelectionId.of(8L, null))
+                                                                                            .withObjectiveTitle("Objective 8")
                                                                                             .build();
 
     @Test

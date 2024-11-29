@@ -108,7 +108,7 @@ public class ActionMapperTest {
         // arrange
         KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
         ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, VERSION, ACTION, PRIORITY, IS_CHECKED, null, // keyResultId
-                IS_WRITEABLE);
+                                                                 IS_WRITEABLE);
 
         // act
         List<ActionDto> actionDtoList = List.of(actionDtoWithKeyResultIdIsNull);

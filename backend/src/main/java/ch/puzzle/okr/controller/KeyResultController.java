@@ -106,8 +106,7 @@ public class KeyResultController {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList(), keyResult);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
-        KeyResultWithActionList updatedKeyResult = keyResultAuthorizationService.updateEntities(id, keyResult,
-                actionList);
+        KeyResultWithActionList updatedKeyResult = keyResultAuthorizationService.updateEntities(id, keyResult, actionList);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK)
                              .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
     }

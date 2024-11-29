@@ -16,10 +16,8 @@ public class CheckInOrdinalMapper {
     }
 
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
-        return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getVersion(),
-                checkInOrdinal.getChangeInfo(), checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(),
-                checkInOrdinal.getKeyResult().getId(), checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(),
-                checkInOrdinal.getZone(), checkInOrdinal.isWriteable());
+        return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getVersion(), checkInOrdinal.getChangeInfo(), checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(), checkInOrdinal.getKeyResult()
+                                                                                                                                                                                                         .getId(), checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(), checkInOrdinal.getZone(), checkInOrdinal.isWriteable());
     }
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {
@@ -32,8 +30,7 @@ public class CheckInOrdinalMapper {
                                      .withConfidence(checkInOrdinalDto.confidence())
                                      .withCreatedOn(checkInOrdinalDto.createdOn())
                                      .withModifiedOn(checkInOrdinalDto.modifiedOn())
-                                     .withKeyResult(
-                                             keyResultBusinessService.getEntityById(checkInOrdinalDto.keyResultId()))
+                                     .withKeyResult(keyResultBusinessService.getEntityById(checkInOrdinalDto.keyResultId()))
                                      .build();
     }
 }

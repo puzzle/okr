@@ -26,8 +26,8 @@ public class AlignmentSelectionMapper {
     }
 
     private void processObjectives(List<AlignmentObjectiveDto> objectiveDtos, AlignmentSelection alignment) {
-        Optional<AlignmentObjectiveDto> objectiveDto = getMatchingObjectiveDto(
-                alignment.getAlignmentSelectionId().getObjectiveId(), objectiveDtos);
+        Optional<AlignmentObjectiveDto> objectiveDto = getMatchingObjectiveDto(alignment.getAlignmentSelectionId()
+                                                                                        .getObjectiveId(), objectiveDtos);
         if (objectiveDto.isPresent()) {
             processKeyResults(objectiveDto.get(), alignment);
         } else {
@@ -44,13 +44,13 @@ public class AlignmentSelectionMapper {
     }
 
     private AlignmentObjectiveDto createObjectiveDto(AlignmentSelection alignment) {
-        return new AlignmentObjectiveDto(alignment.getAlignmentSelectionId().getObjectiveId(),
-                alignment.getObjectiveTitle(), new ArrayList<>());
+        return new AlignmentObjectiveDto(alignment.getAlignmentSelectionId()
+                                                  .getObjectiveId(), alignment.getObjectiveTitle(), new ArrayList<>());
     }
 
     private AlignmentKeyResultDto createKeyResultDto(AlignmentSelection alignment) {
-        return new AlignmentKeyResultDto(alignment.getAlignmentSelectionId().getKeyResultId(),
-                alignment.getKeyResultTitle());
+        return new AlignmentKeyResultDto(alignment.getAlignmentSelectionId()
+                                                  .getKeyResultId(), alignment.getKeyResultTitle());
     }
 
     private boolean isValidId(Long id) {

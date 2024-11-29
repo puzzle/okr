@@ -63,29 +63,25 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     public void throwExceptionWhenModelIsNull(T model) {
         if (model == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.MODEL_NULL,
-                    persistenceService.getModelName());
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.MODEL_NULL, persistenceService.getModelName());
         }
     }
 
     public void throwExceptionWhenIdIsNull(ID id) {
         if (id == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                    List.of("ID", persistenceService.getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL, List.of("ID", persistenceService.getModelName()));
         }
     }
 
     protected void throwExceptionWhenIdIsNotNull(ID id) {
         if (id != null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, MessageKey.ATTRIBUTE_NOT_NULL,
-                    List.of("ID", persistenceService.getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, MessageKey.ATTRIBUTE_NOT_NULL, List.of("ID", persistenceService.getModelName()));
         }
     }
 
     protected void throwExceptionWhenIdHasChanged(ID id, ID modelId) {
         if (!Objects.equals(id, modelId)) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CHANGED,
-                    List.of("ID", id, modelId));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CHANGED, List.of("ID", id, modelId));
         }
     }
 

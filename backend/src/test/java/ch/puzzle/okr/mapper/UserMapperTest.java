@@ -39,11 +39,11 @@ public class UserMapperTest {
                                           .withFirstname(FIRSTNAME)
                                           .withLastname(LASTNAME)
                                           .withEmail(EMAIL)
-                                          .withUserTeamList(
-                                                  List.of(UserTeam.Builder.builder()
-                                                                          .withId(USER_TEAM_ID)
-                                                                          .withTeam(Team.Builder.builder().build())
-                                                                          .build()))
+                                          .withUserTeamList(List.of(UserTeam.Builder.builder()
+                                                                                    .withId(USER_TEAM_ID)
+                                                                                    .withTeam(Team.Builder.builder()
+                                                                                                          .build())
+                                                                                    .build()))
                                           .withOkrChampion(IS_OKR_CHAMPION)
                                           .build();
 

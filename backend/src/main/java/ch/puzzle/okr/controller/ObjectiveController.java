@@ -76,8 +76,7 @@ public class ObjectiveController {
             @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto duplicatedObjectiveDto = objectiveMapper.toDto(
-                objectiveAuthorizationService.duplicateEntity(id, objective));
+        ObjectiveDto duplicatedObjectiveDto = objectiveMapper.toDto(objectiveAuthorizationService.duplicateEntity(id, objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 
@@ -97,8 +96,7 @@ public class ObjectiveController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         boolean isObjectiveImUsed = objectiveAuthorizationService.isImUsed(objective);
-        ObjectiveDto updatedObjective = objectiveMapper.toDto(
-                objectiveAuthorizationService.updateEntity(id, objective));
+        ObjectiveDto updatedObjective = objectiveMapper.toDto(objectiveAuthorizationService.updateEntity(id, objective));
         return ResponseEntity.status(isObjectiveImUsed ? IM_USED : OK).body(updatedObjective);
     }
 }

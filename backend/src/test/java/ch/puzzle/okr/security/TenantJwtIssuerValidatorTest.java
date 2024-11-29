@@ -33,8 +33,7 @@ public class TenantJwtIssuerValidatorTest {
 
         // act + assert
         TenantJwtIssuerValidator validator = new TenantJwtIssuerValidator(emptyTenantConfigProvider, jwtHelper);
-        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
-                () -> validator.validate(token));
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> validator.validate(token));
 
         assertEquals("unknown tenant", illegalArgumentException.getLocalizedMessage());
     }
@@ -49,12 +48,9 @@ public class TenantJwtIssuerValidatorTest {
         when(jwtHelper.getTenantFromToken(token)).thenReturn(PITC);
 
         TenantConfigProvider tenantConfigProviderWithPitcConfig = mock(TenantConfigProvider.class);
-        when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC)).thenReturn(
-                Optional.of(new TenantConfigProvider.TenantConfig(PITC, new String[]{}, "jwkSetUri", ISSUER_URL,
-                        "clientId", null)));
+        when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC)).thenReturn(Optional.of(new TenantConfigProvider.TenantConfig(PITC, new String[]{}, "jwkSetUri", ISSUER_URL, "clientId", null)));
 
-        TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(
-                tenantConfigProviderWithPitcConfig, jwtHelper) {
+        TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(tenantConfigProviderWithPitcConfig, jwtHelper) {
 
             @Override
             JwtIssuerValidator createValidator(String issuer) {

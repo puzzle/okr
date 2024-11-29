@@ -54,8 +54,7 @@ public class KeyResultMetricMapperTest {
     @BeforeEach
     void setup() {
         actionMapper = new ActionMapper(keyResultBusinessService);
-        keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService, objectiveBusinessService,
-                checkInBusinessService, actionMapper);
+        keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService, objectiveBusinessService, checkInBusinessService, actionMapper);
     }
 
     @DisplayName("toDto() should map a KeyResultMetric to a Dto")

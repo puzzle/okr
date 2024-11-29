@@ -56,8 +56,7 @@ class QuarterPersistenceServiceIT {
 
     private void assertCurrentQuarterIsFoundOnce(List<Quarter> quarters) {
         long foundCurrentQuartersCount = quarters.stream()
-                                                 .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(),
-                                                         quarter))
+                                                 .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter))
                                                  .count();
         assertEquals(1, foundCurrentQuartersCount);
     }

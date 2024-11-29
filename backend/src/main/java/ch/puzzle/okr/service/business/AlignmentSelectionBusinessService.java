@@ -18,7 +18,6 @@ public class AlignmentSelectionBusinessService {
     }
 
     public List<AlignmentSelection> getAlignmentSelectionByQuarterIdAndTeamIdNot(Long quarterId, Long ignoredTeamId) {
-        return alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterId,
-                ignoredTeamId);
+        return alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterId, ignoredTeamId);
     }
 }

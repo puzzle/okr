@@ -33,23 +33,31 @@ public class KeyResultMetricMapper {
     }
 
     public KeyResultDto toDto(KeyResultMetric keyResult, List<Action> actionList) {
-        KeyResultUserDto ownerDto = new KeyResultUserDto(keyResult.getOwner().getId(),
-                keyResult.getOwner().getFirstname(), keyResult.getOwner().getLastname());
+        KeyResultUserDto ownerDto = new KeyResultUserDto(keyResult.getOwner()
+                                                                  .getId(), keyResult.getOwner()
+                                                                                     .getFirstname(), keyResult.getOwner()
+                                                                                                               .getLastname());
 
-        KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(keyResult.getObjective().getQuarter().getId(),
-                keyResult.getObjective().getQuarter().getLabel(), keyResult.getObjective().getQuarter().getStartDate(),
-                keyResult.getObjective().getQuarter().getEndDate());
+        KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(keyResult.getObjective()
+                                                                          .getQuarter()
+                                                                          .getId(), keyResult.getObjective()
+                                                                                             .getQuarter()
+                                                                                             .getLabel(), keyResult.getObjective()
+                                                                                                                   .getQuarter()
+                                                                                                                   .getStartDate(), keyResult.getObjective()
+                                                                                                                                             .getQuarter()
+                                                                                                                                             .getEndDate());
 
-        KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective().getId(),
-                keyResult.getObjective().getState().toString(), quarterDto);
+        KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective()
+                                                                                .getId(), keyResult.getObjective()
+                                                                                                   .getState()
+                                                                                                   .toString(), quarterDto);
 
         KeyResultLastCheckInMetricDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
 
-        return new KeyResultMetricDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
-                keyResult.getTitle(), keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(),
-                keyResult.getUnit(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn(), keyResult.isWriteable(),
-                actionList.stream().map(actionMapper::toDto).toList());
+        return new KeyResultMetricDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(), keyResult.getTitle(), keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(), keyResult.getUnit(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn(), keyResult.isWriteable(), actionList.stream()
+                                                                                                                                                                                                                                                                                                                                                                           .map(actionMapper::toDto)
+                                                                                                                                                                                                                                                                                                                                                                           .toList());
     }
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
@@ -59,8 +67,8 @@ public class KeyResultMetricMapper {
                                       .withUnit(keyResultMetricDto.unit())
                                       .withId(keyResultMetricDto.id())
                                       .withVersion(keyResultMetricDto.version())
-                                      .withObjective(objectiveBusinessService.getEntityById(
-                                              keyResultMetricDto.objective().id()))
+                                      .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective()
+                                                                                                              .id()))
                                       .withTitle(keyResultMetricDto.title())
                                       .withDescription(keyResultMetricDto.description())
                                       .withOwner(userBusinessService.getUserById(keyResultMetricDto.owner().id()))
@@ -74,8 +82,6 @@ public class KeyResultMetricMapper {
         if (lastCheckIn == null) {
             return null;
         }
-        return new KeyResultLastCheckInMetricDto(lastCheckIn.getId(), lastCheckIn.getVersion(),
-                ((CheckInMetric) lastCheckIn).getValue(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(),
-                lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
+        return new KeyResultLastCheckInMetricDto(lastCheckIn.getId(), lastCheckIn.getVersion(), ((CheckInMetric) lastCheckIn).getValue(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(), lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
     }
 }

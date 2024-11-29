@@ -46,8 +46,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
                                       .filter(team -> !Objects.equals(team.getId(), id))
                                       .toList();
         if (!filteredTeam.isEmpty()) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALREADY_EXISTS_SAME_NAME,
-                    List.of(TEAM, name));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALREADY_EXISTS_SAME_NAME, List.of(TEAM, name));
         }
     }
 }

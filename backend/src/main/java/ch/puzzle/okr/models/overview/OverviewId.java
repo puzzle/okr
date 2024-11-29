@@ -49,7 +49,7 @@ public class OverviewId implements Comparable<OverviewId>, Serializable {
     @Override
     public String toString() {
         return "OverviewId{" + "teamId=" + teamId + ", objectiveId=" + objectiveId + ", keyResultId=" + keyResultId
-                + ", checkInId=" + checkInId + '}';
+               + ", checkInId=" + checkInId + '}';
     }
 
     @Override
@@ -60,7 +60,7 @@ public class OverviewId implements Comparable<OverviewId>, Serializable {
             return false;
         OverviewId that = (OverviewId) o;
         return Objects.equals(teamId, that.teamId) && Objects.equals(objectiveId, that.objectiveId)
-                && Objects.equals(keyResultId, that.keyResultId) && Objects.equals(checkInId, that.checkInId);
+               && Objects.equals(keyResultId, that.keyResultId) && Objects.equals(checkInId, that.checkInId);
     }
 
     @Override

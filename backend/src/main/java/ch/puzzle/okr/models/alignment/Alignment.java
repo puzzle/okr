@@ -58,7 +58,7 @@ public abstract class Alignment {
             return false;
         Alignment alignment = (Alignment) o;
         return Objects.equals(id, alignment.id) && version == alignment.version
-                && Objects.equals(alignedObjective, alignment.alignedObjective);
+               && Objects.equals(alignedObjective, alignment.alignedObjective);
     }
 
     @Override

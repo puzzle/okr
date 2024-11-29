@@ -46,11 +46,9 @@ public class KeyResultMapperTest {
 
     @BeforeEach
     void setup() {
-        KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService,
-                objectiveBusinessService, checkInBusinessService, actionMapper);
+        KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService, objectiveBusinessService, checkInBusinessService, actionMapper);
 
-        KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService,
-                objectiveBusinessService, checkInBusinessService, actionMapper);
+        KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService, objectiveBusinessService, checkInBusinessService, actionMapper);
 
         keyResultMapper = new KeyResultMapper(keyResultOrdinalMapper, keyResultMetricMapper);
     }
@@ -118,8 +116,7 @@ public class KeyResultMapperTest {
         List<Action> actions = List.of();
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                () -> keyResultMapper.toDto(keyResult, actions));
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> keyResultMapper.toDto(keyResult, actions));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
@@ -130,8 +127,7 @@ public class KeyResultMapperTest {
         KeyResultDto keyResultDto = List::of;
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                () -> keyResultMapper.toKeyResult(keyResultDto));
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> keyResultMapper.toKeyResult(keyResultDto));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 }

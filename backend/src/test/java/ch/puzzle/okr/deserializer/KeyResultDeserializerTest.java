@@ -57,7 +57,7 @@ public class KeyResultDeserializerTest {
                   "lastCheckIn": null,
                   "createdOn": null,
                   "modifiedOn": null,
-                  "writeable": false,
+                  "isWriteable": false,
                   "actionList": []
                 }
                 """;
@@ -131,7 +131,7 @@ public class KeyResultDeserializerTest {
                   "lastCheckIn": null,
                   "createdOn": null,
                   "modifiedOn": null,
-                  "writeable": false,
+                  "isWriteable": false,
                   "actionList": []
                 }
 

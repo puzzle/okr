@@ -56,7 +56,7 @@ class CheckInDeserializerTest {
                   "createdOn": null,
                   "modifiedOn": null,
                   "value": 23.0,
-                  "writeable": false
+                  "isWriteable": false
                 }
                 """;
 
@@ -103,7 +103,7 @@ class CheckInDeserializerTest {
                   "createdOn": null,
                   "modifiedOn": null,
                   "value": "STRETCH",
-                  "writeable": false
+                  "isWriteable": false
                 }
                 """;
 

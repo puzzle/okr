@@ -33,7 +33,7 @@ public class QuarterBusinessService {
     private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-                                  QuarterValidationService validator) {
+            QuarterValidationService validator) {
         this.quarterPersistenceService = quarterPersistenceService;
         this.validator = validator;
     }
@@ -67,9 +67,9 @@ public class QuarterBusinessService {
         int yearStart = getStartOfBusinessYear(startOfQuarter, quarter);
         int yearEnd = yearStart + 1;
 
-        return StringUtils.replaceEach(quarterFormat,
-                                       new String[]{"xxxx", "yyyy", "xx", "yy", "zz"},
-                                       new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart), shortenYear(yearEnd), String.valueOf(quarter)});
+        return StringUtils.replaceEach(quarterFormat, new String[]{"xxxx", "yyyy", "xx", "yy", "zz"},
+                new String[]{String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
+                        shortenYear(yearEnd), String.valueOf(quarter)});
     }
 
     private int getStartOfBusinessYear(YearMonth startOfQuarter, int quarter) {
@@ -80,11 +80,8 @@ public class QuarterBusinessService {
 
     private void generateQuarter(LocalDateTime start, String label) {
         YearMonth yearMonth = YearMonth.from(start);
-        Quarter quarter = Quarter.Builder.builder()
-                                         .withLabel(label)
-                                         .withStartDate(start.toLocalDate())
-                                         .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
-                                         .build();
+        Quarter quarter = Quarter.Builder.builder().withLabel(label).withStartDate(start.toLocalDate())
+                .withEndDate(yearMonth.plusMonths(2).atEndOfMonth()).build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }

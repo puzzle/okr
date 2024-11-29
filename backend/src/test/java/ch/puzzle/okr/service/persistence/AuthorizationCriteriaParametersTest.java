@@ -32,10 +32,10 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       teamDraftState, State=DRAFT
-                       userTeamIds, ListN=[1]
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                teamDraftState, State=DRAFT
+                userTeamIds, ListN=[1]
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
@@ -44,13 +44,8 @@ public class AuthorizationCriteriaParametersTest {
     @Test
     void setParametersShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
-        var user = User.Builder.builder()
-                               .withId(23L)
-                               .withFirstname("Hanna")
-                               .withLastname("muster")
-                               .withEmail("hanna.muster@example.com")
-                               .withOkrChampion(true)
-                               .build();
+        var user = User.Builder.builder().withId(23L).withFirstname("Hanna").withLastname("muster")
+                .withEmail("hanna.muster@example.com").withOkrChampion(true).build();
         var criteria = new AuthorizationCriteria<Objective>();
         TypedQueryMock<Objective> typedQueryMock = new TypedQueryMock<>();
 
@@ -59,9 +54,9 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       allDraftState, State=DRAFT
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                allDraftState, State=DRAFT
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
@@ -79,19 +74,17 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       teamDraftState, State=DRAFT
-                       userTeamIds, ListN=[1]
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                teamDraftState, State=DRAFT
+                userTeamIds, ListN=[1]
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
 
     private static Stream<Arguments> provideListAndString() {
-        return Stream.of(Arguments.of(List.of(), null),
-                         Arguments.of(List.of(), ""),
-                         Arguments.of(null, null),
-                         Arguments.of(null, ""));
+        return Stream.of(Arguments.of(List.of(), null), Arguments.of(List.of(), ""), Arguments.of(null, null),
+                Arguments.of(null, ""));
     }
 
     @DisplayName("setParameters() should be successful when team ids and objective query are not empty")
@@ -108,18 +101,20 @@ public class AuthorizationCriteriaParametersTest {
 
         // assert
         var expected = """
-                       teamIds, List12=[99]
-                       objectiveQuery, String=OBJECTIVEQUERY
-                       teamDraftState, State=DRAFT
-                       userTeamIds, ListN=[1]
-                       publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
-                       """;
+                teamIds, List12=[99]
+                objectiveQuery, String=OBJECTIVEQUERY
+                teamDraftState, State=DRAFT
+                userTeamIds, ListN=[1]
+                publishedStates, ListN=[ONGOING, SUCCESSFUL, NOTSUCCESSFUL]
+                """;
 
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    // TypedQuery implementation for testing. The setParameterX() methods calls are logged in an internal StringBuilder
-    // which is return by getLog(). This log can be used for checking the internal state of the TypedQuery. All other
+    // TypedQuery implementation for testing. The setParameterX() methods calls are
+    // logged in an internal StringBuilder
+    // which is return by getLog(). This log can be used for checking the internal
+    // state of the TypedQuery. All other
     // methods are not implemented.
     private static class TypedQueryMock<Objective> implements TypedQuery<Objective> {
 
@@ -131,35 +126,23 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public <T> TypedQuery<Objective> setParameter(Parameter<T> parameter, T t) {
-            log.append(parameter.getName())
-               .append(", ")
-               .append(t.getClass().getSimpleName())
-               .append("=")
-               .append(t)
-               .append("\n");
+            log.append(parameter.getName()).append(", ").append(t.getClass().getSimpleName()).append("=").append(t)
+                    .append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(Parameter<Calendar> parameter, Calendar calendar,
-                                                  TemporalType temporalType) {
-            log.append(parameter.getName())
-               .append(", ")
-               .append(calendar.getTime())
-               .append(", ")
-               .append(temporalType.name())
-               .append("\n");
+                TemporalType temporalType) {
+            log.append(parameter.getName()).append(", ").append(calendar.getTime()).append(", ")
+                    .append(temporalType.name()).append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(Parameter<Date> parameter, Date date, TemporalType temporalType) {
-            log.append(parameter.getName())
-               .append(", ")
-               .append(date)
-               .append(", ")
-               .append(temporalType.name())
-               .append("\n");
+            log.append(parameter.getName()).append(", ").append(date).append(", ").append(temporalType.name())
+                    .append("\n");
             return null;
         }
 

@@ -59,17 +59,9 @@ public class ObjectiveMapperTest {
     @Test
     void toDtoShouldMapObjectiveToDto() {
         // arrange
-        Objective objective = Objective.Builder.builder()
-                                               .withId(ID)
-                                               .withVersion(VERSION)
-                                               .withTitle(TITLE)
-                                               .withTeam(team)
-                                               .withQuarter(quarter)
-                                               .withDescription(DESCRIPTION)
-                                               .withState(STATE)
-                                               .withCreatedOn(CREATE_DATE_TIME)
-                                               .withModifiedOn(MODIFIED_DATE_TIME)
-                                               .build();
+        Objective objective = Objective.Builder.builder().withId(ID).withVersion(VERSION).withTitle(TITLE)
+                .withTeam(team).withQuarter(quarter).withDescription(DESCRIPTION).withState(STATE)
+                .withCreatedOn(CREATE_DATE_TIME).withModifiedOn(MODIFIED_DATE_TIME).build();
         objective.setWriteable(IS_WRITEABLE);
 
         // act

@@ -25,8 +25,7 @@ public class UserAuthorizationService {
     private final KeyResultBusinessService keyResultBusinessService;
 
     public UserAuthorizationService(UserBusinessService userBusinessService, AuthorizationService authorizationService,
-                                    TeamAuthorizationService teamAuthorizationService,
-                                    KeyResultBusinessService keyResultBusinessService) {
+            TeamAuthorizationService teamAuthorizationService, KeyResultBusinessService keyResultBusinessService) {
         this.userBusinessService = userBusinessService;
         this.authorizationService = authorizationService;
         this.teamAuthorizationService = teamAuthorizationService;
@@ -57,15 +56,13 @@ public class UserAuthorizationService {
     public User setIsOkrChampion(long id, boolean isOkrChampion) {
         var user = userBusinessService.getUserById(id);
         AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
-                                                      OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE,
-                                                                                    USER));
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
         return userBusinessService.setIsOkrChampion(user, isOkrChampion);
     }
 
     public List<User> createUsers(List<User> userList) {
         AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
-                                                      OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE,
-                                                                                    USER));
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
         return userBusinessService.createUsers(userList);
     }
 
@@ -76,8 +73,7 @@ public class UserAuthorizationService {
 
     public void deleteEntityById(long id) {
         AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
-                                                      OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE,
-                                                                                    USER));
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, USER));
 
         userBusinessService.deleteEntityById(id);
     }

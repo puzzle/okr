@@ -16,11 +16,7 @@ public class UserOkrDataMapper {
     }
 
     private List<UserKeyResultDataDto> toUserKeyResultDataDtos(List<KeyResult> keyResults) {
-        return keyResults.stream()
-                         .map(keyResult -> new UserKeyResultDataDto(keyResult.getId(),
-                                                                    keyResult.getTitle(),
-                                                                    keyResult.getObjective().getId(),
-                                                                    keyResult.getObjective().getTitle()))
-                         .toList();
+        return keyResults.stream().map(keyResult -> new UserKeyResultDataDto(keyResult.getId(), keyResult.getTitle(),
+                keyResult.getObjective().getId(), keyResult.getObjective().getTitle())).toList();
     }
 }

@@ -15,8 +15,8 @@ public class TenantClientCustomizationProviderTest {
     @CsvSource({"pitc", "acme"})
     void extractCssNameFromPropertyNameShouldReturnCssNameForValidPropertyName(String tenantId) {
         // arrange
-        String propertyNameWithTenant = "okr.tenants." + tenantId +
-                                        ".clientcustomization.customstyles.my-css-property-name";
+        String propertyNameWithTenant = "okr.tenants." + tenantId
+                + ".clientcustomization.customstyles.my-css-property-name";
         TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[]{}, null);
 
         // act
@@ -35,6 +35,6 @@ public class TenantClientCustomizationProviderTest {
 
         // act + assert
         assertThrows(IllegalArgumentException.class,
-                     () -> provider.extractCssNameFromPropertyName(propertyNameWithoutTenant, "pitc"));
+                () -> provider.extractCssNameFromPropertyName(propertyNameWithoutTenant, "pitc"));
     }
 }

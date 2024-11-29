@@ -38,7 +38,7 @@ public class HibernateContextTest {
     @ParameterizedTest
     @MethodSource("invalidDbConfig")
     void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username,
-                                                                              String password, String tenant) {
+            String password, String tenant) {
 
         // arrange
         DbConfig dbConfig = new DbConfig(url, username, password, tenant);
@@ -50,13 +50,12 @@ public class HibernateContextTest {
 
     private static Stream<Arguments> invalidDbConfig() {
         return Stream.of(Arguments.of(null, "username", "password", "multiTenancy"),
-                         Arguments.of("", "username", "password", "multiTenancy"),
-                         Arguments.of("url", null, "password", "multiTenancy"),
-                         Arguments.of("url", "", "password", "multiTenancy"),
-                         Arguments.of("url", "username", null, "multiTenancy"),
-                         Arguments.of("url", "username", "", "multiTenancy"),
-                         Arguments.of("url", "username", "password", null),
-                         Arguments.of("url", "username", "password", ""));
+                Arguments.of("", "username", "password", "multiTenancy"),
+                Arguments.of("url", null, "password", "multiTenancy"),
+                Arguments.of("url", "", "password", "multiTenancy"),
+                Arguments.of("url", "username", null, "multiTenancy"),
+                Arguments.of("url", "username", "", "multiTenancy"), Arguments.of("url", "username", "password", null),
+                Arguments.of("url", "username", "password", ""));
     }
 
     @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and set it")
@@ -107,7 +106,7 @@ public class HibernateContextTest {
     }
 
     private void assertProperties(String url, String username, String password, String multiTenancy,
-                                  Properties properties) {
+            Properties properties) {
 
         assertEquals(url, properties.get(HIBERNATE_CONNECTION_URL));
         assertEquals(username, properties.get(HIBERNATE_CONNECTION_USERNAME));

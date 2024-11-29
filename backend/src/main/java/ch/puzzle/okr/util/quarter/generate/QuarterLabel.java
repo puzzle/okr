@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Profile;
 /**
  * Quarter label for H2 database.</br>
  * </br>
- * This class is used for testing purposes only. Do NOT use this class in production mode.
+ * This class is used for testing purposes only. Do NOT use this class in
+ * production mode.
  */
 @Profile("integration-test")
 public class QuarterLabel {
@@ -18,9 +19,8 @@ public class QuarterLabel {
     }
 
     public String label() {
-        return "GJ " + formatYearAs2Digits(firstYearOfGeschaeftsJahr()) + "/" + formatYearAs2Digits(
-                                                                                                    secondYearOfGeschaeftsJahr()) +
-               "-Q" + getQuarterDigit();
+        return "GJ " + formatYearAs2Digits(firstYearOfGeschaeftsJahr()) + "/"
+                + formatYearAs2Digits(secondYearOfGeschaeftsJahr()) + "-Q" + getQuarterDigit();
     }
 
     private int getQuarterDigit() {

@@ -57,11 +57,10 @@ class CheckInAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleReadByCheckInId(id,
-                                                                                                     authorizationUser);
+                .hasRoleReadByCheckInId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.getEntityById(id));
+                () -> checkInAuthorizationService.getEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -80,11 +79,10 @@ class CheckInAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleCreateOrUpdate(checkInMetric,
-                                                                                                    authorizationUser);
+                .hasRoleCreateOrUpdate(checkInMetric, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.createEntity(checkInMetric));
+                () -> checkInAuthorizationService.createEntity(checkInMetric));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -105,12 +103,10 @@ class CheckInAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleCreateOrUpdate(checkInMetric,
-                                                                                                    authorizationUser);
+                .hasRoleCreateOrUpdate(checkInMetric, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.updateEntity(id,
-                                                                                                        checkInMetric));
+                () -> checkInAuthorizationService.updateEntity(id, checkInMetric));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -129,11 +125,10 @@ class CheckInAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleDeleteByCheckInId(id,
-                                                                                                       authorizationUser);
+                .hasRoleDeleteByCheckInId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> checkInAuthorizationService.deleteEntityById(id));
+                () -> checkInAuthorizationService.deleteEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }

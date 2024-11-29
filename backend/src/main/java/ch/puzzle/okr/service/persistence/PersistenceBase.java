@@ -19,11 +19,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * @param <T>
- *             the Type or entity of the repository
+ *            the Type or entity of the repository
  * @param <ID>
- *             the Identifier or primary key of the entity
+ *            the Identifier or primary key of the entity
  * @param <R>
- *             the Repository of the entity
+ *            the Repository of the entity
  */
 public abstract class PersistenceBase<T, ID, R> {
 
@@ -60,9 +60,8 @@ public abstract class PersistenceBase<T, ID, R> {
             return repository.save(model);
         } catch (OptimisticLockingFailureException ex) {
             logger.info("optimistic locking exception while saving {}", model, ex);
-            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                                 ErrorKey.DATA_HAS_BEEN_UPDATED,
-                                                 getModelName());
+            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorKey.DATA_HAS_BEEN_UPDATED,
+                    getModelName());
         }
     }
 
@@ -77,7 +76,7 @@ public abstract class PersistenceBase<T, ID, R> {
     public abstract String getModelName();
 
     private List<T> iteratorToList(Iterable<T> iterable) {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED),
-                                    false).toList();
+        return StreamSupport
+                .stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED), false).toList();
     }
 }

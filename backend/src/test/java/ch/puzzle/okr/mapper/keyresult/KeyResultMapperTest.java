@@ -47,14 +47,10 @@ public class KeyResultMapperTest {
     @BeforeEach
     void setup() {
         KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService,
-                                                                                objectiveBusinessService,
-                                                                                checkInBusinessService,
-                                                                                actionMapper);
+                objectiveBusinessService, checkInBusinessService, actionMapper);
 
         KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService,
-                                                                                   objectiveBusinessService,
-                                                                                   checkInBusinessService,
-                                                                                   actionMapper);
+                objectiveBusinessService, checkInBusinessService, actionMapper);
 
         keyResultMapper = new KeyResultMapper(keyResultOrdinalMapper, keyResultMetricMapper);
     }
@@ -123,7 +119,7 @@ public class KeyResultMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                                                                       () -> keyResultMapper.toDto(keyResult, actions));
+                () -> keyResultMapper.toDto(keyResult, actions));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
@@ -135,7 +131,7 @@ public class KeyResultMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                                                                       () -> keyResultMapper.toKeyResult(keyResultDto));
+                () -> keyResultMapper.toKeyResult(keyResultDto));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 }

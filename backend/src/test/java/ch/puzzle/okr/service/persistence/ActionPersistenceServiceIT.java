@@ -32,21 +32,11 @@ class ActionPersistenceServiceIT {
     }
 
     private static Action createAction(Long id, int version) {
-        return Action.Builder.builder()
-                             .withId(id)
-                             .withVersion(version)
-                             .withAction("Neue Katze")
-                             .withPriority(0)
-                             .withIsChecked(false)
-                             .withKeyResult(KeyResultMetric.Builder.builder()
-                                                                   .withBaseline(1.0)
-                                                                   .withStretchGoal(13.0)
-                                                                   .withId(8L)
-                                                                   .withObjective(Objective.Builder.builder()
-                                                                                                   .withId(1L)
-                                                                                                   .build())
-                                                                   .build())
-                             .build();
+        return Action.Builder.builder().withId(id).withVersion(version).withAction("Neue Katze").withPriority(0)
+                .withIsChecked(false)
+                .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
+                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
+                .build();
     }
 
     private static final String UPDATED_ACTION = "Updated Action";
@@ -105,7 +95,7 @@ class ActionPersistenceServiceIT {
         changedAction.setAction(UPDATED_ACTION);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> actionPersistenceService.save(changedAction));
+                () -> actionPersistenceService.save(changedAction));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Action")));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());

@@ -25,7 +25,7 @@ public class UserBusinessService {
     private final CacheService cacheService;
 
     public UserBusinessService(UserPersistenceService userPersistenceService, UserValidationService validationService,
-                               CacheService cacheService) {
+            CacheService cacheService) {
         this.userPersistenceService = userPersistenceService;
         this.validationService = validationService;
         this.cacheService = cacheService;
@@ -56,11 +56,9 @@ public class UserBusinessService {
     // checks if at least one okr champion remains after removing given one
     private void checkAtLeastOneOkrChampionExists(User user) {
         var champions = userPersistenceService.findAllOkrChampions();
-        champions.stream()
-                 .filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId()))
-                 .findAny()
-                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                                   ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION));
+        champions.stream().filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId())).findAny()
+                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                        ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION));
     }
 
     public User saveUser(User user) {

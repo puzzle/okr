@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long, Objective, ObjectiveBusinessService> {
 
     public ObjectiveAuthorizationService(ObjectiveBusinessService objectiveBusinessService,
-                                         AuthorizationService authorizationService) {
+            AuthorizationService authorizationService) {
         super(objectiveBusinessService, authorizationService);
     }
 

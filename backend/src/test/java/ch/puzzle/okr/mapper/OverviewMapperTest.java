@@ -41,11 +41,7 @@ class OverviewMapperTest {
     @Test
     void toDtoShouldReturnEmptyListWhenTeamFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withTeamId(2L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .build());
+                .withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build()).withTeamName(TEAM_PUZZLE).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -55,13 +51,8 @@ class OverviewMapperTest {
     @Test
     void toDtoShouldReturnOneElementWhenObjectiveFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .build());
+                .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).build())
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -72,16 +63,10 @@ class OverviewMapperTest {
     @Test
     void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(3L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 1")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                           .build());
+                .withOverviewId(
+                        OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L).build())
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                .withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -92,19 +77,10 @@ class OverviewMapperTest {
     @Test
     void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultAndCheckInsFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(3L)
-                                                                                             .withCheckInId(4L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 1")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                           .withCheckInValue(27.5)
-                                                           .withConfidence(5)
-                                                           .build());
+                .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
+                        .withCheckInId(4L).build())
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                .withKeyResultType(KEY_RESULT_TYPE_METRIC).withCheckInValue(27.5).withConfidence(5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -114,30 +90,17 @@ class OverviewMapperTest {
 
     @Test
     void toDtoShouldReturnOneElementWhenObjectiveWithTwoKeyResultAndCheckInFound() {
-        List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(3L)
-                                                                                             .withCheckInId(4L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 1")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
-                                                           .withCheckInZone("COMMIT")
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(5L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 5")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                           .build());
+        List<Overview> overviews = List.of(
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
+                                .withKeyResultId(3L).withCheckInId(4L).build())
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                        .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withCheckInZone("COMMIT").build(),
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
+                                .withKeyResultId(5L).build())
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 5")
+                        .withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -147,38 +110,19 @@ class OverviewMapperTest {
 
     @Test
     void toDtoShouldReturnOneElementWhenTwoObjectivesWithKeyResultAndCheckInFound() {
-        List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(3L)
-                                                                                             .withCheckInId(4L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 1")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                           .withBaseline(20.0)
-                                                           .withStretchGoal(37.0)
-                                                           .withUnit("TCHF")
-                                                           .withCheckInValue(27.5)
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(5L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(6L)
-                                                                                             .withCheckInId(7L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 5")
-                                                           .withKeyResultTitle("Key Result 6")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
-                                                           .withCommitZone("commit")
-                                                           .withTargetZone("target")
-                                                           .withStretchZone("stretch")
-                                                           .withCheckInZone("checkIn")
-                                                           .build());
+        List<Overview> overviews = List.of(
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
+                                .withKeyResultId(3L).withCheckInId(4L).build())
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                        .withKeyResultType(KEY_RESULT_TYPE_METRIC).withBaseline(20.0).withStretchGoal(37.0)
+                        .withUnit("TCHF").withCheckInValue(27.5).build(),
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(2L)
+                                .withKeyResultId(6L).withCheckInId(7L).build())
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
+                        .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withCommitZone("commit").withTargetZone("target")
+                        .withStretchZone("stretch").withCheckInZone("checkIn").build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -204,41 +148,22 @@ class OverviewMapperTest {
 
     @Test
     void toDtoShouldReturnOneElementWhenTwoTeamsWithObjectivesAndKeyResultsFound() {
-        List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(3L)
-                                                                                             .withCheckInId(4L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 1")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
-                                                           .withCheckInZone("TARGET")
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(5L)
-                                                                                             .withTeamId(4L)
-                                                                                             .withKeyResultId(6L)
-                                                                                             .build())
-                                                           .withTeamName("/BBT")
-                                                           .withObjectiveTitle("Objective 5")
-                                                           .withKeyResultTitle("Key Result 6")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(5L)
-                                                                                             .withTeamId(4L)
-                                                                                             .withKeyResultId(8L)
-                                                                                             .build())
-                                                           .withTeamName("/BBT")
-                                                           .withObjectiveTitle("Objective 5")
-                                                           .withKeyResultTitle("Key Result 8")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
-                                                           .build());
+        List<Overview> overviews = List.of(
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
+                                .withKeyResultId(3L).withCheckInId(4L).build())
+                        .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                        .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withCheckInZone("TARGET").build(),
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(4L)
+                                .withKeyResultId(6L).build())
+                        .withTeamName("/BBT").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
+                        .withKeyResultType(KEY_RESULT_TYPE_METRIC).build(),
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(4L)
+                                .withKeyResultId(8L).build())
+                        .withTeamName("/BBT").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 8")
+                        .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(2, overviewDtos.size());
@@ -251,21 +176,13 @@ class OverviewMapperTest {
     @Test
     void toDtoShouldThrowExceptionWhenKeyResultTypeNotSupported() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(3L)
-                                                                                             .withCheckInId(4L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 1")
-                                                           .withKeyResultType("unknown")
-                                                           .withCheckInZone("TARGET")
-                                                           .build());
+                .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
+                        .withCheckInId(4L).build())
+                .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
+                .withKeyResultType("unknown").withCheckInZone("TARGET").build());
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> overviewMapper.toDto(overviews));
+                () -> overviewMapper.toDto(overviews));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
 

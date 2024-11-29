@@ -35,15 +35,9 @@ class CompletedPersistenceServiceIT {
     }
 
     private static Completed createCompleted(Long id, int version) {
-        return Completed.Builder.builder()
-                                .withId(id)
-                                .withVersion(version)
-                                .withObjective(Objective.Builder.builder()
-                                                                .withId(OBJECTIVE_ID)
-                                                                .withTitle(GUTE_LERNENDE)
-                                                                .build())
-                                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT)
-                                .build();
+        return Completed.Builder.builder().withId(id).withVersion(version)
+                .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(GUTE_LERNENDE).build())
+                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT).build();
     }
 
     private static final String COMPLETED = "Completed";
@@ -98,7 +92,7 @@ class CompletedPersistenceServiceIT {
         updateCompleted.setComment("Updated completed");
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> completedPersistenceService.save(updateCompleted));
+                () -> completedPersistenceService.save(updateCompleted));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(COMPLETED)));
 
@@ -114,7 +108,7 @@ class CompletedPersistenceServiceIT {
         assertNotNull(savedCompleted.getId());
         assertEquals("War leider nicht moeglich", savedCompleted.getComment());
         assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.",
-                     savedCompleted.getObjective().getTitle());
+                savedCompleted.getObjective().getTitle());
     }
 
     @Test
@@ -123,7 +117,7 @@ class CompletedPersistenceServiceIT {
         completedPersistenceService.deleteById(3L);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> completedPersistenceService.findById(3L));
+                () -> completedPersistenceService.findById(3L));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "3")));
 
@@ -139,7 +133,7 @@ class CompletedPersistenceServiceIT {
 
         Long completedId = createdCompleted.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> completedPersistenceService.findById(completedId));
+                () -> completedPersistenceService.findById(completedId));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "200")));
 

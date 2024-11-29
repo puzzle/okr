@@ -38,86 +38,40 @@ class CheckInValidationServiceTest {
     @MockBean
     CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
 
-    private final User user = User.Builder.builder()
-                                          .withId(1L)
-                                          .withFirstname("Ruedi")
-                                          .withLastname("Grochde")
-                                          .withEmail("grochde@puzzle.ch")
-                                          .build();
+    private final User user = User.Builder.builder().withId(1L).withFirstname("Ruedi").withLastname("Grochde")
+            .withEmail("grochde@puzzle.ch").build();
     private final Team team = Team.Builder.builder().withId(1L).withName("Team4").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    private final Objective objective = Objective.Builder.builder()
-                                                         .withId(1L)
-                                                         .withTitle("Objective 1")
-                                                         .withCreatedBy(user)
-                                                         .withTeam(team)
-                                                         .withQuarter(quarter)
-                                                         .withDescription("This is our description")
-                                                         .withModifiedOn(LocalDateTime.MAX)
-                                                         .withState(State.DRAFT)
-                                                         .withModifiedBy(user)
-                                                         .withCreatedOn(LocalDateTime.MAX)
-                                                         .build();
-    private final KeyResult keyResultMetric = KeyResultMetric.Builder.builder()
-                                                                     .withBaseline(13D)
-                                                                     .withStretchGoal(25D)
-                                                                     .withUnit(Unit.NUMBER)
-                                                                     .withId(8L)
-                                                                     .withTitle("Keyresult Metric")
-                                                                     .withObjective(objective)
-                                                                     .withOwner(user)
-                                                                     .build();
-    private final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder()
-                                                                       .withCommitZone("Commit Zone")
-                                                                       .withTargetZone("Target Zone")
-                                                                       .withTitle("Keyresult Ordinal")
-                                                                       .withObjective(objective)
-                                                                       .withOwner(user)
-                                                                       .build();
-    private final CheckIn checkInMetric = CheckInMetric.Builder.builder()
-                                                               .withValue(45D)
-                                                               .withChangeInfo("ChangeInfo")
-                                                               .withInitiatives("Initiatives")
-                                                               .withConfidence(10)
-                                                               .withKeyResult(keyResultMetric)
-                                                               .withCreatedOn(LocalDateTime.MAX)
-                                                               .withModifiedOn(LocalDateTime.MAX)
-                                                               .withCreatedBy(user)
-                                                               .build();
-    private final CheckIn checkInOrdinal = CheckInMetric.Builder.builder()
-                                                                .withValue(27D)
-                                                                .withId(1L)
-                                                                .withChangeInfo("ChangeInfoMetric")
-                                                                .withInitiatives("InitiativesMetric")
-                                                                .withConfidence(8)
-                                                                .withKeyResult(keyResultOrdinal)
-                                                                .withCreatedOn(LocalDateTime.MAX)
-                                                                .withModifiedOn(LocalDateTime.MAX)
-                                                                .withCreatedBy(user)
-                                                                .build();
-    private final CheckIn fullCheckIn = CheckInOrdinal.Builder.builder()
-                                                              .withZone(Zone.STRETCH)
-                                                              .withId(1L)
-                                                              .withChangeInfo("ChangeInfoMetric")
-                                                              .withInitiatives("InitiativesMetric")
-                                                              .withConfidence(8)
-                                                              .withKeyResult(keyResultMetric)
-                                                              .withCreatedOn(LocalDateTime.MAX)
-                                                              .withModifiedOn(LocalDateTime.MAX)
-                                                              .withCreatedBy(user)
-                                                              .build();
+    private final Objective objective = Objective.Builder.builder().withId(1L).withTitle("Objective 1")
+            .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
+            .withCreatedOn(LocalDateTime.MAX).build();
+    private final KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(13D).withStretchGoal(25D)
+            .withUnit(Unit.NUMBER).withId(8L).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
+            .build();
+    private final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Commit Zone")
+            .withTargetZone("Target Zone").withTitle("Keyresult Ordinal").withObjective(objective).withOwner(user)
+            .build();
+    private final CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(45D).withChangeInfo("ChangeInfo")
+            .withInitiatives("Initiatives").withConfidence(10).withKeyResult(keyResultMetric)
+            .withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();
+    private final CheckIn checkInOrdinal = CheckInMetric.Builder.builder().withValue(27D).withId(1L)
+            .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withConfidence(8)
+            .withKeyResult(keyResultOrdinal).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+            .withCreatedBy(user).build();
+    private final CheckIn fullCheckIn = CheckInOrdinal.Builder.builder().withZone(Zone.STRETCH).withId(1L)
+            .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withConfidence(8)
+            .withKeyResult(keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+            .withCreatedBy(user).build();
     @Spy
     @InjectMocks
     private CheckInValidationService validator;
 
     private static Stream<Arguments> confidenceValidationArguments() {
-        return Stream.of(arguments(-1,
-                                   List.of(new ErrorDto("ATTRIBUTE_MIN_VALUE", List.of("confidence", "CheckIn", "0")))),
-                         arguments(11,
-                                   List.of(new ErrorDto("ATTRIBUTE_MAX_VALUE",
-                                                        List.of("confidence", "CheckIn", "10")))),
-                         arguments(null,
-                                   List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")))));
+        return Stream.of(
+                arguments(-1, List.of(new ErrorDto("ATTRIBUTE_MIN_VALUE", List.of("confidence", "CheckIn", "0")))),
+                arguments(11, List.of(new ErrorDto("ATTRIBUTE_MAX_VALUE", List.of("confidence", "CheckIn", "10")))),
+                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")))));
     }
 
     @BeforeEach
@@ -135,7 +89,7 @@ class CheckInValidationServiceTest {
     void validateOnGetShouldThrowExceptionIfCheckInIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnGet(null));
+                () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
@@ -158,7 +112,7 @@ class CheckInValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(null));
+                () -> validator.validateOnCreate(null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("CheckIn")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -168,7 +122,7 @@ class CheckInValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(fullCheckIn));
+                () -> validator.validateOnCreate(fullCheckIn));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "CheckIn")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -177,23 +131,17 @@ class CheckInValidationServiceTest {
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence,
-                                                                     List<ErrorDto> expectedErrors) {
+            List<ErrorDto> expectedErrors) {
 
         // arrange
-        CheckIn checkIn = CheckInMetric.Builder.builder()
-                                               .withValue(40.9)
-                                               .withChangeInfo("ChangeInfo")
-                                               .withInitiatives("Initiatives")
-                                               .withConfidence(confidence)
-                                               .withCreatedBy(user)
-                                               .withKeyResult(keyResultMetric)
-                                               .withCreatedOn(LocalDateTime.MAX)
-                                               .withModifiedOn(LocalDateTime.MAX)
-                                               .build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(user)
+                .withKeyResult(keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(checkIn));
+                () -> validator.validateOnCreate(checkIn));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -204,13 +152,13 @@ class CheckInValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(checkInInvalid));
+                () -> validator.validateOnCreate(checkInInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")),
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "CheckIn")),
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "CheckIn")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -230,7 +178,7 @@ class CheckInValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(1L, null));
+                () -> validator.validateOnUpdate(1L, null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("CheckIn")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -240,7 +188,7 @@ class CheckInValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(null, checkInOrdinal));
+                () -> validator.validateOnUpdate(null, checkInOrdinal));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(checkInOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
@@ -253,7 +201,7 @@ class CheckInValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenIdIsHasChanged() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(2L, checkInOrdinal));
+                () -> validator.validateOnUpdate(2L, checkInOrdinal));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(checkInOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(2L);
@@ -266,26 +214,19 @@ class CheckInValidationServiceTest {
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence,
-                                                                     List<ErrorDto> expectedErrors) {
+            List<ErrorDto> expectedErrors) {
 
         // arrange
         Long id = 2L;
-        CheckIn checkIn = CheckInMetric.Builder.builder()
-                                               .withValue(40.9)
-                                               .withId(id)
-                                               .withChangeInfo("ChangeInfo")
-                                               .withInitiatives("Initiatives")
-                                               .withConfidence(confidence)
-                                               .withCreatedBy(user)
-                                               .withKeyResult(keyResultMetric)
-                                               .withCreatedOn(LocalDateTime.MAX)
-                                               .withModifiedOn(LocalDateTime.MAX)
-                                               .build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(id).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(user)
+                .withKeyResult(keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .build();
         when(checkInPersistenceService.findById(id)).thenReturn(checkIn);
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(id, checkIn));
+                () -> validator.validateOnUpdate(id, checkIn));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -293,38 +234,24 @@ class CheckInValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenCheckInsOfKeyResultIsEmpty() {
         // arrange
         Long id = 2L;
-        CheckIn checkIn = CheckInMetric.Builder.builder()
-                                               .withValue(40.9)
-                                               .withId(id)
-                                               .withChangeInfo("ChangeInfo")
-                                               .withInitiatives("Initiatives")
-                                               .withConfidence(2)
-                                               .withCreatedBy(user)
-                                               .withKeyResult(keyResultMetric)
-                                               .withCreatedOn(LocalDateTime.MAX)
-                                               .withModifiedOn(LocalDateTime.MAX)
-                                               .build();
-        CheckIn savedCheckIn = CheckInMetric.Builder.builder()
-                                                    .withId(id)
-                                                    .withChangeInfo("")
-                                                    .withInitiatives("Initiatives")
-                                                    .withCreatedBy(user)
-                                                    .withKeyResult(KeyResultMetric.Builder.builder()
-                                                                                          .withId(13L)
-                                                                                          .build())
-                                                    .build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(id).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withConfidence(2).withCreatedBy(user).withKeyResult(keyResultMetric)
+                .withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX).build();
+        CheckIn savedCheckIn = CheckInMetric.Builder.builder().withId(id).withChangeInfo("")
+                .withInitiatives("Initiatives").withCreatedBy(user)
+                .withKeyResult(KeyResultMetric.Builder.builder().withId(13L).build()).build();
         when(checkInPersistenceService.findById(id)).thenReturn(savedCheckIn);
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(id, checkIn));
+                () -> validator.validateOnUpdate(id, checkIn));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(checkIn);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(checkIn.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(checkIn.getId(), checkIn.getId());
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE",
-                                                             List.of("KeyResult", "Check-in")));
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of("KeyResult", "Check-in")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -332,23 +259,18 @@ class CheckInValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
         Long id = 11L;
-        CheckIn checkInInvalid = CheckInMetric.Builder.builder()
-                                                      .withId(id)
-                                                      .withChangeInfo("ChangeInfo")
-                                                      .withKeyResult(KeyResultMetric.Builder.builder()
-                                                                                            .withId(13L)
-                                                                                            .build())
-                                                      .build();
+        CheckIn checkInInvalid = CheckInMetric.Builder.builder().withId(id).withChangeInfo("ChangeInfo")
+                .withKeyResult(KeyResultMetric.Builder.builder().withId(13L).build()).build();
         when(checkInPersistenceService.findById(id)).thenReturn(checkInInvalid);
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(id, checkInInvalid));
+                () -> validator.validateOnUpdate(id, checkInInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")),
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -363,7 +285,7 @@ class CheckInValidationServiceTest {
     void validateOnDeleteShouldThrowExceptionIfKeyResultIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnDelete(null));
+                () -> validator.validateOnDelete(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 

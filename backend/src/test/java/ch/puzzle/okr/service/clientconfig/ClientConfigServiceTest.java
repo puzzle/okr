@@ -39,14 +39,14 @@ public class ClientConfigServiceTest {
     @ParameterizedTest
     @CsvSource({"pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr"})
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostname,
-                                                                                      String subdomain) {
+            String subdomain) {
         // arrange
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
         ClientConfigService service = getClientConfig(tenantConfig, tenant);
 
         // act + assert
         EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
-                                                                       () -> service.getConfigBasedOnActiveEnv(hostname));
+                () -> service.getConfigBasedOnActiveEnv(hostname));
 
         String expectedErrorMessage = "Could not find tenant client customization for subdomain:" + subdomain;
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
@@ -56,21 +56,21 @@ public class ClientConfigServiceTest {
     @ParameterizedTest
     @CsvSource({"pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr"})
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientConfigIsNotFound(String tenant, String hostname,
-                                                                               String subdomain) {
+            String subdomain) {
         // arrange
         TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
         ClientConfigService service = getClientConfig(tenantCustomization, tenant);
 
         // act + assert
         EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
-                                                                       () -> service.getConfigBasedOnActiveEnv(hostname));
+                () -> service.getConfigBasedOnActiveEnv(hostname));
 
         String expectedErrorMessage = "Could not find tenant config for subdomain:" + subdomain;
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
     private ClientConfigService getClientConfig(TenantConfigProvider.TenantConfig tenantConfig,
-                                                TenantClientCustomization tenantClientCustomization, String tenantId) {
+            TenantClientCustomization tenantClientCustomization, String tenantId) {
         return mockClientConfigService(tenantConfig, tenantClientCustomization, tenantId);
     }
 
@@ -83,11 +83,11 @@ public class ClientConfigServiceTest {
     }
 
     private ClientConfigService mockClientConfigService(TenantConfigProvider.TenantConfig tenantConfig,
-                                                        TenantClientCustomization tenantCustomization,
-                                                        String tenantId) {
+            TenantClientCustomization tenantCustomization, String tenantId) {
 
         TenantClientCustomizationProvider tenantCustomizationProvider = mock(TenantClientCustomizationProvider.class);
-        when(tenantCustomizationProvider.getTenantClientCustomizationsById(tenantId)).thenReturn(Optional.ofNullable(tenantCustomization));
+        when(tenantCustomizationProvider.getTenantClientCustomizationsById(tenantId))
+                .thenReturn(Optional.ofNullable(tenantCustomization));
 
         TenantConfigProvider tenantConfigProvider = mock(TenantConfigProvider.class);
         when(tenantConfigProvider.getTenantConfigById(tenantId)).thenReturn(Optional.ofNullable(tenantConfig));
@@ -96,22 +96,14 @@ public class ClientConfigServiceTest {
     }
 
     private TenantConfigProvider.TenantConfig getTenantConfig(String tenantId) {
-        return new TenantConfigProvider.TenantConfig(prefix(tenantId) + "tenantId",
-                                                     new String[]{},
-                                                     prefix(tenantId) + "jwkSetUri",
-                                                     prefix(tenantId) + "issuerUrl",
-                                                     prefix(tenantId) + "clientId",
-                                                     null);
+        return new TenantConfigProvider.TenantConfig(prefix(tenantId) + "tenantId", new String[]{},
+                prefix(tenantId) + "jwkSetUri", prefix(tenantId) + "issuerUrl", prefix(tenantId) + "clientId", null);
     }
 
     private TenantClientCustomization getTenantClientCustomization(String tenantId) {
-        return new TenantClientCustomization(prefix(tenantId) + "favicon",
-                                             prefix(tenantId) + "logo",
-                                             prefix(tenantId) + "triangles",
-                                             prefix(tenantId) + "backgroundLogo",
-                                             prefix(tenantId) + "title",
-                                             prefix(tenantId) + "helpSiteUrl",
-                                             new HashMap<>());
+        return new TenantClientCustomization(prefix(tenantId) + "favicon", prefix(tenantId) + "logo",
+                prefix(tenantId) + "triangles", prefix(tenantId) + "backgroundLogo", prefix(tenantId) + "title",
+                prefix(tenantId) + "helpSiteUrl", new HashMap<>());
     }
 
     private void assertClientConfigDto(ClientConfigDto clientConfigDto, String tenant) {

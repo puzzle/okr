@@ -33,8 +33,7 @@ public class KeyResultMapper {
             return keyResultOrdinalMapper.toDto(keyResultOrdinal, actionList);
         } else {
             throw new ResponseStatusException(BAD_REQUEST,
-                                              String.format("The KeyResult %s can't be converted to a metric or ordinal KeyResult",
-                                                            keyResult));
+                    String.format("The KeyResult %s can't be converted to a metric or ordinal KeyResult", keyResult));
         }
     }
 
@@ -45,8 +44,7 @@ public class KeyResultMapper {
             return keyResultOrdinalMapper.toKeyResultOrdinal((KeyResultOrdinalDto) keyResultDto);
         } else {
             throw new ResponseStatusException(BAD_REQUEST,
-                                              String.format("The provided KeyResultDto %s is neither metric nor ordinal",
-                                                            keyResultDto));
+                    String.format("The provided KeyResultDto %s is neither metric nor ordinal", keyResultDto));
         }
     }
 }

@@ -27,12 +27,8 @@ public class TestHelper {
     private static final String EMAIL = "kaufmann@puzzle.ch";
 
     public static User defaultUser(Long id) {
-        return User.Builder.builder()
-                           .withId(id)
-                           .withFirstname(FIRSTNAME)
-                           .withLastname(LASTNAME)
-                           .withEmail(EMAIL)
-                           .build();
+        return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withEmail(EMAIL)
+                .build();
     }
 
     public static User defaultOkrChampion(Long id) {
@@ -44,15 +40,11 @@ public class TestHelper {
     public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
         var user = defaultUser(userId);
         var adminUserTeams = adminTeams.stream()
-                                       .map(t -> UserTeam.Builder.builder()
-                                                                 .withTeamAdmin(true)
-                                                                 .withTeam(t)
-                                                                 .withUser(user)
-                                                                 .build());
+                .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
         var memberUserTeams = memberTeams.stream()
-                                         .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
-        user.setUserTeamList(Stream.concat(adminUserTeams, memberUserTeams)
-                                   .collect(Collectors.toCollection(ArrayList::new)));
+                .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
+        user.setUserTeamList(
+                Stream.concat(adminUserTeams, memberUserTeams).collect(Collectors.toCollection(ArrayList::new)));
         return user;
     }
 
@@ -69,22 +61,14 @@ public class TestHelper {
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user) {
-        return mockAuthorizationUser(user.getId(),
-                                     user.getFirstname(),
-                                     user.getLastname(),
-                                     user.getEmail(),
-                                     user.isOkrChampion());
+        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(),
+                user.isOkrChampion());
     }
 
     public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email,
-                                                          boolean isOkrChampion) {
-        User user = User.Builder.builder()
-                                .withId(id)
-                                .withFirstname(firstname)
-                                .withLastname(lastname)
-                                .withEmail(email)
-                                .withOkrChampion(isOkrChampion)
-                                .build();
+            boolean isOkrChampion) {
+        User user = User.Builder.builder().withId(id).withFirstname(firstname).withLastname(lastname).withEmail(email)
+                .withOkrChampion(isOkrChampion).build();
         user.setUserTeamList(List.of(defaultUserTeam(1L, user)));
         return new AuthorizationUser(user);
     }

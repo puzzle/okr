@@ -22,7 +22,7 @@ public class AuthorizationRegistrationService {
     private final UserUpdateHelper helper = new UserUpdateHelper();
 
     public AuthorizationRegistrationService(UserBusinessService userBusinessService,
-                                            TenantConfigProvider tenantConfigProvider) {
+            TenantConfigProvider tenantConfigProvider) {
         this.userBusinessService = userBusinessService;
         this.tenantConfigProvider = tenantConfigProvider;
     }
@@ -43,8 +43,9 @@ public class AuthorizationRegistrationService {
 
     // okr champion is set in application properties
     private User setOkrChampionFromProperties(User user) {
-        TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider.getTenantConfigById(TenantContext.getCurrentTenant())
-                                                                                  .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
+        TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider
+                .getTenantConfigById(TenantContext.getCurrentTenant())
+                .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
 
         return helper.setOkrChampionFromProperties(user, tenantConfig);
     }

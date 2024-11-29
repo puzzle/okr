@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 /**
  * Quarter functions for H2 database.</br>
  * </br>
- * This class is used for testing purposes only. Do NOT use this class in production mode.
+ * This class is used for testing purposes only. Do NOT use this class in
+ * production mode.
  */
 @Component
 @Profile("integration-test")

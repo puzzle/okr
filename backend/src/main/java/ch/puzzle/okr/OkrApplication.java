@@ -10,6 +10,6 @@ public class OkrApplication {
     public static void main(String[] args) {
 
         new SpringApplicationBuilder(OkrApplication.class).initializers(new OkrApplicationContextInitializer())
-                                                          .run(args);
+                .run(args);
     }
 }

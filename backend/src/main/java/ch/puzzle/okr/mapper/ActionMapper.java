@@ -19,13 +19,8 @@ public class ActionMapper {
     }
 
     public ActionDto toDto(Action action) {
-        return new ActionDto(action.getId(),
-                             action.getVersion(),
-                             action.getAction(),
-                             action.getPriority(),
-                             action.isChecked(),
-                             action.getKeyResult().getId(),
-                             action.isWriteable());
+        return new ActionDto(action.getId(), action.getVersion(), action.getAction(), action.getPriority(),
+                action.isChecked(), action.getKeyResult().getId(), action.isWriteable());
     }
 
     public List<Action> toActions(List<ActionDto> actionDtos, KeyResult keyResult) {
@@ -34,19 +29,13 @@ public class ActionMapper {
 
     public List<Action> toActions(List<ActionDto> actionDtos) {
         return actionDtos.stream()
-                         .map(actionDto -> toAction(actionDto,
-                                                    keyResultBusinessService.getEntityById(actionDto.keyResultId())))
-                         .toList();
+                .map(actionDto -> toAction(actionDto, keyResultBusinessService.getEntityById(actionDto.keyResultId())))
+                .toList();
     }
 
     private Action toAction(ActionDto actionDto, KeyResult keyResult) {
-        return Action.Builder.builder()
-                             .withId(actionDto.id())
-                             .withVersion(actionDto.version())
-                             .withAction(actionDto.action())
-                             .withPriority(actionDto.priority())
-                             .withIsChecked(actionDto.isChecked())
-                             .withKeyResult(keyResult)
-                             .build();
+        return Action.Builder.builder().withId(actionDto.id()).withVersion(actionDto.version())
+                .withAction(actionDto.action()).withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked())
+                .withKeyResult(keyResult).build();
     }
 }

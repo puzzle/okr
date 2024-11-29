@@ -21,14 +21,13 @@ public class AlignmentSelectionMapper {
     }
 
     private Optional<AlignmentObjectiveDto> getMatchingObjectiveDto(Long objectiveId,
-                                                                    List<AlignmentObjectiveDto> objectives) {
+            List<AlignmentObjectiveDto> objectives) {
         return objectives.stream().filter(objectiveDto -> Objects.equals(objectiveId, objectiveDto.id())).findFirst();
     }
 
     private void processObjectives(List<AlignmentObjectiveDto> objectiveDtos, AlignmentSelection alignment) {
-        Optional<AlignmentObjectiveDto> objectiveDto = getMatchingObjectiveDto(alignment.getAlignmentSelectionId()
-                                                                                        .getObjectiveId(),
-                                                                               objectiveDtos);
+        Optional<AlignmentObjectiveDto> objectiveDto = getMatchingObjectiveDto(
+                alignment.getAlignmentSelectionId().getObjectiveId(), objectiveDtos);
         if (objectiveDto.isPresent()) {
             processKeyResults(objectiveDto.get(), alignment);
         } else {
@@ -46,13 +45,12 @@ public class AlignmentSelectionMapper {
 
     private AlignmentObjectiveDto createObjectiveDto(AlignmentSelection alignment) {
         return new AlignmentObjectiveDto(alignment.getAlignmentSelectionId().getObjectiveId(),
-                                         alignment.getObjectiveTitle(),
-                                         new ArrayList<>());
+                alignment.getObjectiveTitle(), new ArrayList<>());
     }
 
     private AlignmentKeyResultDto createKeyResultDto(AlignmentSelection alignment) {
         return new AlignmentKeyResultDto(alignment.getAlignmentSelectionId().getKeyResultId(),
-                                         alignment.getKeyResultTitle());
+                alignment.getKeyResultTitle());
     }
 
     private boolean isValidId(Long id) {

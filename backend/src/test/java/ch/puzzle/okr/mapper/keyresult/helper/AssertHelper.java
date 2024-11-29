@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AssertHelper {
 
     public static void assertKeyResultMetricDtoWithCheckIn(KeyResultMetric expected, KeyResultMetricDto actual,
-                                                           List<Action> actions) {
+            List<Action> actions) {
         assertKeyResultMetricDto(expected, actual, actions);
         // checkIn is only available on KeyResultMetricDto (and not on KeyResultMetric).
         // So check actual against the checkInMetricDto from TestDataDtoHelper
@@ -28,13 +28,13 @@ public class AssertHelper {
     }
 
     public static void assertKeyResultMetricDtoWithoutCheckIn(KeyResultMetric expected, KeyResultMetricDto actual,
-                                                              List<Action> actions) {
+            List<Action> actions) {
         assertKeyResultMetricDto(expected, actual, actions);
         assertNull(actual.lastCheckIn());
     }
 
     private static void assertKeyResultMetricDto(KeyResultMetric expected, KeyResultMetricDto actual,
-                                                 List<Action> actions) {
+            List<Action> actions) {
         assertEquals(KEY_RESULT_TYPE_METRIC, actual.keyResultType());
         assertEquals(expected.getKeyResultType(), actual.keyResultType());
 
@@ -71,22 +71,23 @@ public class AssertHelper {
     }
 
     public static void assertKeyResultOrdinalDtoWithCheckIn(KeyResultOrdinal expected, KeyResultOrdinalDto actual,
-                                                            List<Action> actions) {
+            List<Action> actions) {
         assertKeyResultOrdinalDto(expected, actual, actions);
         assertNotNull(actual.lastCheckIn());
         assertCheckInOrdinalDto(TestDataDtoHelper.lastCheckInOrdinalDto(), actual.lastCheckIn());
     }
 
     public static void assertKeyResultOrdinalDtoWithoutCheckIn(KeyResultOrdinal expected, KeyResultOrdinalDto actual,
-                                                               List<Action> actions) {
+            List<Action> actions) {
         assertKeyResultOrdinalDto(expected, actual, actions);
-        // checkIn is only available on KeyResultOrdinalDto (and not on KeyResultOrdinal).
+        // checkIn is only available on KeyResultOrdinalDto (and not on
+        // KeyResultOrdinal).
         // So check actual against the KeyResultOrdinalDto from TestDataDtoHelper
         assertNull(actual.lastCheckIn());
     }
 
     private static void assertKeyResultOrdinalDto(KeyResultOrdinal expected, KeyResultOrdinalDto actual,
-                                                  List<Action> actions) {
+            List<Action> actions) {
         assertEquals(KEY_RESULT_TYPE_ORDINAL, actual.keyResultType());
         assertEquals(expected.getKeyResultType(), actual.keyResultType());
 
@@ -170,7 +171,7 @@ public class AssertHelper {
     }
 
     private static void assertCheckInMetricDto(KeyResultLastCheckInMetricDto expected,
-                                               KeyResultLastCheckInMetricDto actual) {
+            KeyResultLastCheckInMetricDto actual) {
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.version(), actual.version());
         assertEquals(expected.value(), actual.value());
@@ -181,7 +182,7 @@ public class AssertHelper {
     }
 
     private static void assertCheckInOrdinalDto(KeyResultLastCheckInOrdinalDto expected,
-                                                KeyResultLastCheckInOrdinalDto actual) {
+            KeyResultLastCheckInOrdinalDto actual) {
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.version(), actual.version());
         assertEquals(expected.value(), actual.value());

@@ -25,8 +25,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.*;
 
 /**
- * Testing the functionality of the abstract PersistenceBase and use UserRepository as example of a CrudRepository
- * implementation.
+ * Testing the functionality of the abstract PersistenceBase and use
+ * UserRepository as example of a CrudRepository implementation.
  * <p>
  * Tests depending on data from V100_0_0__TestData.sql
  */
@@ -37,11 +37,8 @@ public class PersistenceBaseTestIT {
 
     private static final long NON_EXISTING_USER_ID = 321L;
     private static final long USER_PACO_ID = 1L;
-    private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder()
-                                                                     .withFirstname("Hans")
-                                                                     .withLastname("Muster")
-                                                                     .withEmail("hans.muster@puzzle.ch")
-                                                                     .build();
+    private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder().withFirstname("Hans")
+            .withLastname("Muster").withEmail("hans.muster@puzzle.ch").build();
 
     @Autowired
     private PersistenceBase<User, Long, UserRepository> persistenceBase;
@@ -73,7 +70,7 @@ public class PersistenceBaseTestIT {
     @Test
     void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
         var exception = assertThrows(ResponseStatusException.class,
-                                     () -> persistenceBase.findById(NON_EXISTING_USER_ID));
+                () -> persistenceBase.findById(NON_EXISTING_USER_ID));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
@@ -164,7 +161,7 @@ public class PersistenceBaseTestIT {
     }
 
     private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail,
-                                   User currentUser) {
+            User currentUser) {
         assertEquals(expectedFirstName, currentUser.getFirstname());
         assertEquals(expectedLastName, currentUser.getLastname());
         assertEquals(expectedEmail, currentUser.getEmail());

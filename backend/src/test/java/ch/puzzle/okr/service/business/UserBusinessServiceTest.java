@@ -39,19 +39,11 @@ class UserBusinessServiceTest {
 
     @BeforeEach
     void setUp() {
-        User userAlice = User.Builder.builder()
-                                     .withId(2L)
-                                     .withFirstname("Alice")
-                                     .withLastname("Wunderland")
-                                     .withEmail("wunderland@puzzle.ch")
-                                     .build();
+        User userAlice = User.Builder.builder().withId(2L).withFirstname("Alice").withLastname("Wunderland")
+                .withEmail("wunderland@puzzle.ch").build();
 
-        User userBob = User.Builder.builder()
-                                   .withId(9L)
-                                   .withFirstname("Bob")
-                                   .withLastname("Baumeister")
-                                   .withEmail("baumeister@puzzle.ch")
-                                   .build();
+        User userBob = User.Builder.builder().withId(9L).withFirstname("Bob").withLastname("Baumeister")
+                .withEmail("baumeister@puzzle.ch").build();
 
         userList = Arrays.asList(userAlice, userBob);
     }
@@ -82,12 +74,8 @@ class UserBusinessServiceTest {
 
     @Test
     void shouldReturnSingleUserWhenFindingOwnerByValidId() {
-        User owner = User.Builder.builder()
-                                 .withId(1L)
-                                 .withFirstname("Bob")
-                                 .withLastname("Kaufmann")
-                                 .withEmail("kaufmann@puzzle.ch")
-                                 .build();
+        User owner = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
 
         User returnedUser = userBusinessService.getUserById(1L);
@@ -100,12 +88,8 @@ class UserBusinessServiceTest {
 
     @Test
     void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
-        User newUser = User.Builder.builder()
-                                   .withId(1L)
-                                   .withFirstname("Bob")
-                                   .withLastname("Kaufmann")
-                                   .withEmail("kaufmann@puzzle.ch")
-                                   .build();
+        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(any())).thenReturn(newUser);
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
@@ -118,12 +102,8 @@ class UserBusinessServiceTest {
 
     @Test
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
-        User newUser = User.Builder.builder()
-                                   .withId(1L)
-                                   .withFirstname("Bob")
-                                   .withLastname("Kaufmann")
-                                   .withEmail("kaufmann@puzzle.ch")
-                                   .build();
+        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(newUser)).thenReturn(newUser);
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
@@ -136,18 +116,13 @@ class UserBusinessServiceTest {
 
     @Test
     void getOrCreateUserShouldThrowResponseStatusExceptionWhenInvalidUser() {
-        User newUser = User.Builder.builder()
-                                   .withId(1L)
-                                   .withFirstname("Bob")
-                                   .withLastname("Kaufmann")
-                                   .withEmail("kaufmann@puzzle.ch")
-                                   .build();
+        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withEmail("kaufmann@puzzle.ch").build();
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))
-               .when(validationService)
-               .validateOnGetOrCreate(newUser);
+                .when(validationService).validateOnGetOrCreate(newUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> userBusinessService.getOrCreateUser(newUser));
+                () -> userBusinessService.getOrCreateUser(newUser));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Not allowed to give an id", exception.getReason());

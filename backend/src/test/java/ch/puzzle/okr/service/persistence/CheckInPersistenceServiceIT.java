@@ -43,7 +43,8 @@ class CheckInPersistenceServiceIT {
     @Test
     void getCheckInsByKeyResultIdOrderByCheckInDateShouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
         // act
-        List<CheckIn> checkIns = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
+        List<CheckIn> checkIns = checkInPersistenceService
+                .getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
 
         // assert
         assertThat(2, greaterThanOrEqualTo(checkIns.size()));

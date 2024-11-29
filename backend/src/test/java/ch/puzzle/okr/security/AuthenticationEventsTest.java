@@ -55,7 +55,7 @@ public class AuthenticationEventsTest {
     }
 
     private void verifyGetTenantFromTokenIsCalledWithTokenFromAuthenticationSuccessEvent(JwtHelper jwtHelper,
-                                                                                         Jwt token) {
+            Jwt token) {
         verify(jwtHelper).getTenantFromToken(token);
     }
 

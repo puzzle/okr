@@ -40,15 +40,11 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
     }
 
     private void checkIfTeamWithNameAlreadyExists(String name, Long id) {
-        List<Team> filteredTeam = this.getPersistenceService()
-                                      .findTeamsByName(name)
-                                      .stream()
-                                      .filter(team -> !Objects.equals(team.getId(), id))
-                                      .toList();
+        List<Team> filteredTeam = this.getPersistenceService().findTeamsByName(name).stream()
+                .filter(team -> !Objects.equals(team.getId(), id)).toList();
         if (!filteredTeam.isEmpty()) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.ALREADY_EXISTS_SAME_NAME,
-                                                 List.of(TEAM, name));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ALREADY_EXISTS_SAME_NAME,
+                    List.of(TEAM, name));
         }
     }
 }

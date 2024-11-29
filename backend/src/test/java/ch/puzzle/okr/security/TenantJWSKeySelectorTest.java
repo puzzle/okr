@@ -42,9 +42,7 @@ public class TenantJWSKeySelectorTest {
         // act + assert
         TenantJWSKeySelector selector = new TenantJWSKeySelector(emptyTenantConfigProviderMock, jwtHelperMock);
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
-                                                                         () -> selector.selectKeys(jwsHeaderMock,
-                                                                                                   jwtClaimsSetMock,
-                                                                                                   securityContext));
+                () -> selector.selectKeys(jwsHeaderMock, jwtClaimsSetMock, securityContext));
 
         assertEquals(UNKNOWN_TENANT, illegalArgumentException.getLocalizedMessage());
     }
@@ -68,9 +66,7 @@ public class TenantJWSKeySelectorTest {
 
             @Override
             JWSKeySelector<SecurityContext> fromUri(String uri) {
-                return (
-                        jwsHeader, securityContext
-                ) -> List.of(new Key() {
+                return (jwsHeader, securityContext) -> List.of(new Key() {
                     @Override
                     public String getAlgorithm() {
                         return MOCK_ALGORITHM;

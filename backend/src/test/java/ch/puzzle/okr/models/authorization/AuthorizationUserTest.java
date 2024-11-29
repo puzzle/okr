@@ -12,26 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AuthorizationUserTest {
 
-    private final List<UserTeam> userTeamList = List.of(UserTeam.Builder.builder()
-                                                                        .withTeam(TestHelper.defaultTeam(1L))
-                                                                        .withTeamAdmin(true)
-                                                                        .build(),
-                                                        UserTeam.Builder.builder()
-                                                                        .withTeam(TestHelper.defaultTeam(2L))
-                                                                        .withTeamAdmin(false)
-                                                                        .build(),
-                                                        UserTeam.Builder.builder()
-                                                                        .withTeam(TestHelper.defaultTeam(3L))
-                                                                        .withTeamAdmin(true)
-                                                                        .build(),
-                                                        UserTeam.Builder.builder()
-                                                                        .withTeam(TestHelper.defaultTeam(4L))
-                                                                        .withTeamAdmin(false)
-                                                                        .build(),
-                                                        UserTeam.Builder.builder()
-                                                                        .withTeam(TestHelper.defaultTeam(5L))
-                                                                        .withTeamAdmin(false)
-                                                                        .build());
+    private final List<UserTeam> userTeamList = List.of(
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(1L)).withTeamAdmin(true).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(2L)).withTeamAdmin(false).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(3L)).withTeamAdmin(true).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(4L)).withTeamAdmin(false).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(5L)).withTeamAdmin(false).build());
     private final User user = User.Builder.builder().withUserTeamList(userTeamList).build();
     private final AuthorizationUser authorizationUser = new AuthorizationUser(user);
 

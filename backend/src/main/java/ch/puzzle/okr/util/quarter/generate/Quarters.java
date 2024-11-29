@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Profile;
 /**
  * Static initialize quarters for H2 database.</br>
  * </br>
- * This class is used for testing purposes only. Do NOT use this class in production mode.
+ * This class is used for testing purposes only. Do NOT use this class in
+ * production mode.
  */
 @Profile("integration-test")
 public class Quarters {

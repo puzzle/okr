@@ -52,7 +52,7 @@ public class TenantClientCustomizationProviderTestIT {
     }
 
     private void mockProperty(String propertyName, String propertyValue, String tenantId) {
-        when(env.getProperty(MessageFormat.format(propertyName, tenantId))) //
+        when(env.getProperty(MessageFormat.format(propertyName, tenantId))) 
                 .thenReturn(prefix(tenantId) + propertyValue);
     }
 

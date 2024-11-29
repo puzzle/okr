@@ -9,8 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class OkrApplication {
     public static void main(String[] args) {
 
-        new SpringApplicationBuilder(OkrApplication.class) //
-                                                          .initializers(new OkrApplicationContextInitializer()) //
+        new SpringApplicationBuilder(OkrApplication.class).initializers(new OkrApplicationContextInitializer())
                                                           .run(args);
     }
 }

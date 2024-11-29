@@ -17,22 +17,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtValidators;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.header.writers.CrossOriginOpenerPolicyHeaderWriter;
-import org.springframework.security.web.header.writers.CrossOriginResourcePolicyHeaderWriter;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.security.web.header.writers.*;
 
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
-import com.nimbusds.jwt.proc.DefaultJWTProcessor;
-import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
-import com.nimbusds.jwt.proc.JWTProcessor;
+import com.nimbusds.jwt.proc.*;
 
 import static org.springframework.security.web.header.writers.CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP;
 import static org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER;
@@ -103,18 +95,7 @@ public class SecurityConfig {
     }
 
     private String okrContentSecurityPolicy() {
-        return "default-src 'self';" //
-                + "script-src 'self' 'unsafe-inline';" //
-                + "        style-src 'self' 'unsafe-inline';" //
-                + "        object-src 'none';" //
-                + "        base-uri 'self';" //
-                + "        connect-src 'self' " + connectSrc + ";" //
-                + "        font-src 'self';" //
-                + "        frame-src 'self';" //
-                + "        img-src 'self' data: ;" //
-                + "        manifest-src 'self';" //
-                + "        media-src 'self';" //
-                + "        worker-src 'none';"; //
+        return "default-src 'self';" + "script-src 'self' 'unsafe-inline';" + "        style-src 'self' 'unsafe-inline';" + "        object-src 'none';" + "        base-uri 'self';" + "        connect-src 'self' " + connectSrc + ";" + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self' data: ;" + "        manifest-src 'self';" + "        media-src 'self';" + "        worker-src 'none';";
     }
 
     private String okrPermissionPolicy() {

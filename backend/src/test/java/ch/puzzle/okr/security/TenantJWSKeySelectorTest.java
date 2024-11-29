@@ -41,7 +41,7 @@ public class TenantJWSKeySelectorTest {
 
         // act + assert
         TenantJWSKeySelector selector = new TenantJWSKeySelector(emptyTenantConfigProviderMock, jwtHelperMock);
-        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, //
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
                                                                          () -> selector.selectKeys(jwsHeaderMock,
                                                                                                    jwtClaimsSetMock,
                                                                                                    securityContext));

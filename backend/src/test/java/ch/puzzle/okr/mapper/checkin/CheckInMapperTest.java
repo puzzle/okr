@@ -110,8 +110,7 @@ public class CheckInMapperTest {
         };
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows( //
-                                                                       ResponseStatusException.class, //
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
                                                                        () -> checkInMapper.toDto(checkIn));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
@@ -124,8 +123,7 @@ public class CheckInMapperTest {
         };
 
         // act + assert
-        ResponseStatusException responseStatusException = assertThrows( //
-                                                                       ResponseStatusException.class, //
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
                                                                        () -> checkInMapper.toCheckIn(checkInDto));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }

@@ -22,13 +22,13 @@ public class FlywayMultitenantMigrationInitializer {
                                                                                               .map(TenantConfigProvider.TenantConfig::dataSourceConfig)
                                                                                               .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
 
-            Flyway tenantSchemaFlyway = Flyway.configure() //
+            Flyway tenantSchemaFlyway = Flyway.configure()
                                               .dataSource(dataSourceConfig.url(),
                                                           dataSourceConfig.name(),
-                                                          dataSourceConfig.password()) //
-                                              .locations(scriptLocations) //
-                                              .baselineOnMigrate(Boolean.TRUE) //
-                                              .schemas(dataSourceConfig.schema()) //
+                                                          dataSourceConfig.password())
+                                              .locations(scriptLocations)
+                                              .baselineOnMigrate(Boolean.TRUE)
+                                              .schemas(dataSourceConfig.schema())
                                               .load();
 
             tenantSchemaFlyway.migrate();

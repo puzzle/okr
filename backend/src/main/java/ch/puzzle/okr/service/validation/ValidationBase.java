@@ -106,16 +106,13 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
     }
 
     private List<ErrorDto> createErrorDtos(Set<ConstraintViolation<T>> violations) {
-        return violations.stream() //
-                         .map(e -> { //
-                             String path = e.getPropertyPath().toString(); //
-                             List<Object> attributes = new ArrayList<>(List.of(path,
-                                                                               persistenceService.getModelName())); //
-                             attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate())); //
-                             String errorKey = e.getMessageTemplate().replaceAll("_\\{.*", ""); //
-                             return ErrorDto.of(errorKey, attributes); //
-                         })
-                         .toList();
+        return violations.stream().map(e -> {
+            String path = e.getPropertyPath().toString();
+            List<Object> attributes = new ArrayList<>(List.of(path, persistenceService.getModelName()));
+            attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate()));
+            String errorKey = e.getMessageTemplate().replaceAll("_\\{.*", "");
+            return ErrorDto.of(errorKey, attributes);
+        }).toList();
     }
 
     // example:

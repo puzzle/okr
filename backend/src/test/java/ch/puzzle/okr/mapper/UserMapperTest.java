@@ -33,18 +33,18 @@ public class UserMapperTest {
     @InjectMocks
     private TeamMapper teamMapper;
 
-    private final User user = User.Builder.builder() //
-                                          .withId(ID) //
-                                          .withVersion(VERSION) //
-                                          .withFirstname(FIRSTNAME) //
-                                          .withLastname(LASTNAME) //
-                                          .withEmail(EMAIL) //
-                                          .withUserTeamList(List.of(UserTeam.Builder.builder() //
-                                                                                    .withId(USER_TEAM_ID) //
+    private final User user = User.Builder.builder()
+                                          .withId(ID)
+                                          .withVersion(VERSION)
+                                          .withFirstname(FIRSTNAME)
+                                          .withLastname(LASTNAME)
+                                          .withEmail(EMAIL)
+                                          .withUserTeamList(List.of(UserTeam.Builder.builder()
+                                                                                    .withId(USER_TEAM_ID)
                                                                                     .withTeam(Team.Builder.builder()
-                                                                                                          .build()) //
-                                                                                    .build())) //
-                                          .withOkrChampion(IS_OKR_CHAMPION) //
+                                                                                                          .build())
+                                                                                    .build()))
+                                          .withOkrChampion(IS_OKR_CHAMPION)
                                           .build();
 
     private final NewUserDto userDto = new NewUserDto(FIRSTNAME, LASTNAME, EMAIL);
@@ -58,13 +58,13 @@ public class UserMapperTest {
     @Test
     void toDtoWithoutTeamListThrowsException() {
         // arrange
-        User user = User.Builder.builder() //
-                                .withId(ID) //
-                                .withVersion(VERSION) //
-                                .withFirstname(FIRSTNAME) //
-                                .withLastname(LASTNAME) //
-                                .withEmail(EMAIL) //
-                                .withOkrChampion(IS_OKR_CHAMPION) //
+        User user = User.Builder.builder()
+                                .withId(ID)
+                                .withVersion(VERSION)
+                                .withFirstname(FIRSTNAME)
+                                .withLastname(LASTNAME)
+                                .withEmail(EMAIL)
+                                .withOkrChampion(IS_OKR_CHAMPION)
                                 .build();
 
         // act + assert

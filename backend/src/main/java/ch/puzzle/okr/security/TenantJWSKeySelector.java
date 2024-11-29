@@ -34,7 +34,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     @Override
     public List<? extends Key> selectKeys(JWSHeader jwsHeader, JWTClaimsSet jwtClaimsSet, SecurityContext securityContext) throws KeySourceException {
 
-        return this.selectors.computeIfAbsent(toTenant(jwtClaimsSet), this::fromTenant) //
+        return this.selectors.computeIfAbsent(toTenant(jwtClaimsSet), this::fromTenant)
                              .selectJWSKeys(jwsHeader, securityContext);
     }
 
@@ -43,8 +43,8 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     }
 
     private JWSKeySelector<SecurityContext> fromTenant(String tenantId) {
-        return this.tenantConfigProvider.getJwkSetUri(tenantId)//
-                                        .map(this::fromUri) //
+        return this.tenantConfigProvider.getJwkSetUri(tenantId)
+                                        .map(this::fromUri)
                                         .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }
 

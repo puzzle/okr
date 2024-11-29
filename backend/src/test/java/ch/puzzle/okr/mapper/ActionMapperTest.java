@@ -49,13 +49,13 @@ public class ActionMapperTest {
     @Test
     void toDtoShouldMapActionToDto() {
         // arrange
-        Action action = Action.Builder.builder() //
-                                      .withId(ID) //
-                                      .withVersion(VERSION) //
-                                      .withAction(ACTION) //
-                                      .withPriority(PRIORITY) //
-                                      .withIsChecked(IS_CHECKED) //
-                                      .withKeyResult(keyResult) //
+        Action action = Action.Builder.builder()
+                                      .withId(ID)
+                                      .withVersion(VERSION)
+                                      .withAction(ACTION)
+                                      .withPriority(PRIORITY)
+                                      .withIsChecked(IS_CHECKED)
+                                      .withKeyResult(keyResult)
                                       .build();
         action.setWriteable(IS_WRITEABLE);
 
@@ -83,14 +83,14 @@ public class ActionMapperTest {
         // arrange
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);
 
-        ActionDto actionDto = new ActionDto( //
-                ID, //
-                VERSION, //
-                ACTION, //
-                PRIORITY, //
-                IS_CHECKED, //
-                keyResult.getId(), //
-                IS_WRITEABLE //
+        ActionDto actionDto = new ActionDto( 
+                ID, 
+                VERSION, 
+                ACTION, 
+                PRIORITY, 
+                IS_CHECKED, 
+                keyResult.getId(), 
+                IS_WRITEABLE 
         );
 
         // act
@@ -107,14 +107,13 @@ public class ActionMapperTest {
     void toActionsWithKeyResultParameterShouldMapListOfDtosToListOfActions() {
         // arrange
         KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
-        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, //
-                                                                 VERSION, //
-                                                                 ACTION, //
-                                                                 PRIORITY, //
-                                                                 IS_CHECKED, //
+        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID,
+                                                                 VERSION,
+                                                                 ACTION,
+                                                                 PRIORITY,
+                                                                 IS_CHECKED,
                                                                  null, // keyResultId
-                                                                 IS_WRITEABLE //
-        );
+                                                                 IS_WRITEABLE);
 
         // act
         List<ActionDto> actionDtoList = List.of(actionDtoWithKeyResultIdIsNull);

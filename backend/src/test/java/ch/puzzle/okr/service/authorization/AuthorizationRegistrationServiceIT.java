@@ -87,9 +87,9 @@ class AuthorizationRegistrationServiceIT {
     @Test
     void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
         // arrange
-        User user = User.Builder.builder() //
-                                .withFirstname("Richard") //
-                                .withLastname("Eberhard") //
+        User user = User.Builder.builder()
+                                .withFirstname("Richard")
+                                .withLastname("Eberhard")
                                 .withEmail("richard.eberhard@puzzle.ch") // email not found in application-integration-test.properties
                                 .build();
 
@@ -125,9 +125,9 @@ class AuthorizationRegistrationServiceIT {
         // act
         // load user from db (by email) and set OkrChampion status based on property
         // "okr.tenants.pitc.user.champion.emails" from application-integration-test.properties file
-        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(User.Builder.builder() //
-                                                                                                                    .withFirstname("Alice") //
-                                                                                                                    .withLastname("Wunderland") //
+        AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(User.Builder.builder()
+                                                                                                                    .withFirstname("Alice")
+                                                                                                                    .withLastname("Wunderland")
                                                                                                                     .withEmail(EMAIL_WUNDERLAND) // user.champion.emails from
                                                                                                                     // application-integration-test.properties
                                                                                                                     .build());
@@ -140,19 +140,19 @@ class AuthorizationRegistrationServiceIT {
     @Test
     void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
         // arrange
-        User user = User.Builder.builder() //
-                                .withFirstname("Richard") //
-                                .withLastname("Eberhard") //
-                                .withEmail("richard.eberhard@puzzle.ch") //
+        User user = User.Builder.builder()
+                                .withFirstname("Richard")
+                                .withLastname("Eberhard")
+                                .withEmail("richard.eberhard@puzzle.ch")
                                 .build();
         userPersistenceService.save(user);
 
         String firstNameFromToken = "Richu";
         String lastNameFromToken = "von Gunten";
-        User userFromToken = User.Builder.builder() //
-                                         .withFirstname(firstNameFromToken) //
-                                         .withLastname(lastNameFromToken) //
-                                         .withEmail("richard.eberhard@puzzle.ch") //
+        User userFromToken = User.Builder.builder()
+                                         .withFirstname(firstNameFromToken)
+                                         .withLastname(lastNameFromToken)
+                                         .withEmail("richard.eberhard@puzzle.ch")
                                          .build();
 
         // act

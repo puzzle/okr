@@ -50,18 +50,18 @@ public class CompletedMapperTest {
     @Test
     void toDtoShouldMapCompletedToDto() {
         // arrange
-        var completed = Completed.Builder.builder() //
-                                         .withId(COMPLETED_ID) //
-                                         .withComment(COMPLETED_COMMENT) //
-                                         .withObjective(Objective.Builder.builder() //
-                                                                         .withId(OBJECTIVE_ID)//
+        var completed = Completed.Builder.builder()
+                                         .withId(COMPLETED_ID)
+                                         .withComment(COMPLETED_COMMENT)
+                                         .withObjective(Objective.Builder.builder()
+                                                                         .withId(OBJECTIVE_ID)
                                                                          .withTeam(Team.Builder.builder()
                                                                                                .withId(NOT_USED_LONG)
-                                                                                               .build()) //
+                                                                                               .build())
                                                                          .withQuarter(Quarter.Builder.builder()
                                                                                                      .withId(NOT_USED_LONG)
-                                                                                                     .build()) //
-                                                                         .build()) //
+                                                                                                     .build())
+                                                                         .build())
                                          .build();
 
         // act

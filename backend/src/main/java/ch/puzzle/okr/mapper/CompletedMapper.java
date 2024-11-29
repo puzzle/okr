@@ -15,17 +15,16 @@ public class CompletedMapper {
     }
 
     public CompletedDto toDto(Completed completed) {
-        return new CompletedDto( //
-                                completed.getId(), //
-                                objectiveMapper.toDto(completed.getObjective()), //
+        return new CompletedDto(completed.getId(),
+                                objectiveMapper.toDto(completed.getObjective()),
                                 completed.getComment());
     }
 
     public Completed toCompleted(CompletedDto completedDto) {
-        return Completed.Builder.builder() //
-                                .withId(completedDto.id()) //
-                                .withObjective(objectiveMapper.toObjective(completedDto.objective())) //
-                                .withComment(completedDto.comment()) //
+        return Completed.Builder.builder()
+                                .withId(completedDto.id())
+                                .withObjective(objectiveMapper.toObjective(completedDto.objective()))
+                                .withComment(completedDto.comment())
                                 .build();
     }
 }

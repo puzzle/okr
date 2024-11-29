@@ -40,10 +40,7 @@ public class ObjectiveMapperTest {
     private static final LocalDateTime MODIFIED_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 21, 8, 0, 0);
 
     private final Team team = Team.Builder.builder().withId(TEAM_ID).build();
-    private final Quarter quarter = Quarter.Builder.builder() //
-                                                   .withId(QUARTER_ID) //
-                                                   .withLabel(QUARTER_LABEL) //
-                                                   .build();
+    private final Quarter quarter = Quarter.Builder.builder().withId(QUARTER_ID).withLabel(QUARTER_LABEL).build();
 
     private ObjectiveMapper objectiveMapper;
 
@@ -62,16 +59,16 @@ public class ObjectiveMapperTest {
     @Test
     void toDtoShouldMapObjectiveToDto() {
         // arrange
-        Objective objective = Objective.Builder.builder() //
-                                               .withId(ID) //
-                                               .withVersion(VERSION) //
-                                               .withTitle(TITLE) //
-                                               .withTeam(team) //
-                                               .withQuarter(quarter) //
-                                               .withDescription(DESCRIPTION) //
-                                               .withState(STATE) //
-                                               .withCreatedOn(CREATE_DATE_TIME) //
-                                               .withModifiedOn(MODIFIED_DATE_TIME) //
+        Objective objective = Objective.Builder.builder()
+                                               .withId(ID)
+                                               .withVersion(VERSION)
+                                               .withTitle(TITLE)
+                                               .withTeam(team)
+                                               .withQuarter(quarter)
+                                               .withDescription(DESCRIPTION)
+                                               .withState(STATE)
+                                               .withCreatedOn(CREATE_DATE_TIME)
+                                               .withModifiedOn(MODIFIED_DATE_TIME)
                                                .build();
         objective.setWriteable(IS_WRITEABLE);
 
@@ -103,18 +100,18 @@ public class ObjectiveMapperTest {
         when(teamBusinessService.getTeamById(TEAM_ID)).thenReturn(team);
         when(quarterBusinessService.getQuarterById(QUARTER_ID)).thenReturn(quarter);
 
-        ObjectiveDto objectiveDto = new ObjectiveDto( //
-                ID, //
-                VERSION, //
-                TITLE, //
-                TEAM_ID, //
-                QUARTER_ID, //
-                QUARTER_LABEL, //
-                DESCRIPTION, //
-                STATE, //
-                CREATE_DATE_TIME, //
-                MODIFIED_DATE_TIME, //
-                IS_WRITEABLE //
+        ObjectiveDto objectiveDto = new ObjectiveDto( 
+                ID, 
+                VERSION, 
+                TITLE, 
+                TEAM_ID, 
+                QUARTER_ID, 
+                QUARTER_LABEL, 
+                DESCRIPTION, 
+                STATE, 
+                CREATE_DATE_TIME, 
+                MODIFIED_DATE_TIME, 
+                IS_WRITEABLE 
         );
 
         // mock (LocalDateTime.now()) + act + assert

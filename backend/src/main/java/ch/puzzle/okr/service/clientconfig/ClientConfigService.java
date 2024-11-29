@@ -51,16 +51,16 @@ public class ClientConfigService {
                                                                    subdomain));
         }
 
-        return new ClientConfigDto(activeProfile, //
-                                   tenantConfig.get().issuerUrl(), //
-                                   tenantConfig.get().clientId(), //
-                                   tenantClientCustomization.get().favicon(), //
-                                   tenantClientCustomization.get().logo(), //
-                                   tenantClientCustomization.get().triangles(), //
-                                   tenantClientCustomization.get().backgroundLogo(), //
-                                   tenantClientCustomization.get().title(), //
-                                   tenantClientCustomization.get().helpSiteUrl(), //
-                                   tenantClientCustomization.get().customStyles()); //
+        return new ClientConfigDto(activeProfile,
+                                   tenantConfig.get().issuerUrl(),
+                                   tenantConfig.get().clientId(),
+                                   tenantClientCustomization.get().favicon(),
+                                   tenantClientCustomization.get().logo(),
+                                   tenantClientCustomization.get().triangles(),
+                                   tenantClientCustomization.get().backgroundLogo(),
+                                   tenantClientCustomization.get().title(),
+                                   tenantClientCustomization.get().helpSiteUrl(),
+                                   tenantClientCustomization.get().customStyles());
     }
 
     private Optional<TenantConfigProvider.TenantConfig> getTenantConfig(String hostname, String... tenantsFromUrl) {

@@ -175,11 +175,11 @@ class ObjectiveAuthorizationServiceTest {
         // arrange
         Long idExistingObjective = 13L;
 
-        Objective newObjectiveWithoutKeyResults = Objective.Builder.builder() //
+        Objective newObjectiveWithoutKeyResults = Objective.Builder.builder()
                                                                    .withTitle("Objective without KeyResults")
                                                                    .build();
 
-        Objective newObjectiveWithKeyResults = Objective.Builder.builder() //
+        Objective newObjectiveWithKeyResults = Objective.Builder.builder()
                                                                 .withId(42L)
                                                                 .withTitle("Objective with Id and KeyResults")
                                                                 .build();

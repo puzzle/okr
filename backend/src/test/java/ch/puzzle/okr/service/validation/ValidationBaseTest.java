@@ -220,15 +220,13 @@ class ValidationBaseTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validatorWithSeveralConstraints.validate(objective));
 
-        List<ErrorDto> expectedErrors = List.of( //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")), //
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                             List.of("title", "Objective", "2", "250")) //
-        );
+                                                             List.of("title", "Objective", "2", "250")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 

@@ -202,25 +202,19 @@ class ObjectiveBusinessServiceTest {
     @Test
     void shouldDuplicateObjective() {
         // arrange
-        Objective sourceObjective = Objective.Builder.builder() //
-                                                     .withId(23L) //
-                                                     .withTitle("Objective 1") //
-                                                     .build();
-        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder() //
-                                                             .withTitle("Ordinal 1") //
-                                                             .withObjective(sourceObjective) //
+        Objective sourceObjective = Objective.Builder.builder().withId(23L).withTitle("Objective 1").build();
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder()
+                                                             .withTitle("Ordinal 1")
+                                                             .withObjective(sourceObjective)
                                                              .build();
-        KeyResult keyResultMetric = KeyResultMetric.Builder.builder() //
-                                                           .withTitle("Metric 1") //
-                                                           .withObjective(sourceObjective) //
-                                                           .withUnit(Unit.FTE) //
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder()
+                                                           .withTitle("Metric 1")
+                                                           .withObjective(sourceObjective)
+                                                           .withUnit(Unit.FTE)
                                                            .build();
 
         // new Objective with no KeyResults
-        Objective newObjective = Objective.Builder.builder() //
-                                                  .withId(42L) //
-                                                  .withTitle("Objective 2") //
-                                                  .build();
+        Objective newObjective = Objective.Builder.builder().withId(42L).withTitle("Objective 2").build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(List.of(keyResultOrdinal,

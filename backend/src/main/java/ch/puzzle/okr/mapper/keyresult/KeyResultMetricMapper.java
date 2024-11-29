@@ -31,56 +31,52 @@ public class KeyResultMetricMapper {
     }
 
     public KeyResultDto toDto(KeyResultMetric keyResult, List<Action> actionList) {
-        KeyResultUserDto ownerDto = new KeyResultUserDto( //
-                                                         keyResult.getOwner().getId(), //
-                                                         keyResult.getOwner().getFirstname(), //
+        KeyResultUserDto ownerDto = new KeyResultUserDto(keyResult.getOwner().getId(),
+                                                         keyResult.getOwner().getFirstname(),
                                                          keyResult.getOwner().getLastname());
 
-        KeyResultQuarterDto quarterDto = new KeyResultQuarterDto( //
-                                                                 keyResult.getObjective().getQuarter().getId(), //
-                                                                 keyResult.getObjective().getQuarter().getLabel(), //
-                                                                 keyResult.getObjective().getQuarter().getStartDate(), //
+        KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(keyResult.getObjective().getQuarter().getId(),
+                                                                 keyResult.getObjective().getQuarter().getLabel(),
+                                                                 keyResult.getObjective().getQuarter().getStartDate(),
                                                                  keyResult.getObjective().getQuarter().getEndDate());
 
-        KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto( //
-                                                                       keyResult.getObjective().getId(), //
-                                                                       keyResult.getObjective().getState().toString(), //
+        KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective().getId(),
+                                                                       keyResult.getObjective().getState().toString(),
                                                                        quarterDto);
 
         KeyResultLastCheckInMetricDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
 
-        return new KeyResultMetricDto( //
-                                      keyResult.getId(), //
-                                      keyResult.getVersion(), //
-                                      keyResult.getKeyResultType(), //
-                                      keyResult.getTitle(), //
-                                      keyResult.getDescription(), //
-                                      keyResult.getBaseline(), //
-                                      keyResult.getStretchGoal(), //
-                                      keyResult.getUnit(), //
+        return new KeyResultMetricDto(keyResult.getId(),
+                                      keyResult.getVersion(),
+                                      keyResult.getKeyResultType(),
+                                      keyResult.getTitle(),
+                                      keyResult.getDescription(),
+                                      keyResult.getBaseline(),
+                                      keyResult.getStretchGoal(),
+                                      keyResult.getUnit(),
                                       ownerDto,
-                                      objectiveDto, //
-                                      lastCheckInDto, //
-                                      keyResult.getCreatedOn(), //
-                                      keyResult.getModifiedOn(), //
-                                      keyResult.isWriteable(), //
+                                      objectiveDto,
+                                      lastCheckInDto,
+                                      keyResult.getCreatedOn(),
+                                      keyResult.getModifiedOn(),
+                                      keyResult.isWriteable(),
                                       actionList.stream().map(actionMapper::toDto).toList());
     }
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
-        return KeyResultMetric.Builder.builder() //
-                                      .withBaseline(keyResultMetricDto.baseline()) //
-                                      .withStretchGoal(keyResultMetricDto.stretchGoal()) //
-                                      .withUnit(keyResultMetricDto.unit()) //
-                                      .withId(keyResultMetricDto.id()) //
-                                      .withVersion(keyResultMetricDto.version()) //
+        return KeyResultMetric.Builder.builder()
+                                      .withBaseline(keyResultMetricDto.baseline())
+                                      .withStretchGoal(keyResultMetricDto.stretchGoal())
+                                      .withUnit(keyResultMetricDto.unit())
+                                      .withId(keyResultMetricDto.id())
+                                      .withVersion(keyResultMetricDto.version())
                                       .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective()
-                                                                                                              .id())) //
-                                      .withTitle(keyResultMetricDto.title()) //
-                                      .withDescription(keyResultMetricDto.description()) //
-                                      .withOwner(userBusinessService.getUserById(keyResultMetricDto.owner().id())) //
-                                      .withCreatedOn(keyResultMetricDto.createdOn()) //
-                                      .withModifiedOn(keyResultMetricDto.modifiedOn()) //
+                                                                                                              .id()))
+                                      .withTitle(keyResultMetricDto.title())
+                                      .withDescription(keyResultMetricDto.description())
+                                      .withOwner(userBusinessService.getUserById(keyResultMetricDto.owner().id()))
+                                      .withCreatedOn(keyResultMetricDto.createdOn())
+                                      .withModifiedOn(keyResultMetricDto.modifiedOn())
                                       .build();
     }
 

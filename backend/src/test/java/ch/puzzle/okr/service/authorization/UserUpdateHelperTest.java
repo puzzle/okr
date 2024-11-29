@@ -21,16 +21,16 @@ public class UserUpdateHelperTest {
     @Test
     void updateUserFromWithTokenData() {
         // arrange
-        User userFromDB = User.Builder.builder() //
-                                      .withId(23L) //
-                                      .withFirstname("firstname_from_db") //
-                                      .withLastname("lastname_from_db") //
-                                      .withEmail("a@b.ch") //
+        User userFromDB = User.Builder.builder()
+                                      .withId(23L)
+                                      .withFirstname("firstname_from_db")
+                                      .withLastname("lastname_from_db")
+                                      .withEmail("a@b.ch")
                                       .build();
 
-        User userFromToken = User.Builder.builder() //
-                                         .withFirstname("firstname_from_token") //
-                                         .withLastname("lastname_from_token") //
+        User userFromToken = User.Builder.builder()
+                                         .withFirstname("firstname_from_token")
+                                         .withLastname("lastname_from_token")
                                          .build();
 
         // act
@@ -47,7 +47,7 @@ public class UserUpdateHelperTest {
     void updateUserAsNoChampion() {
         // arrange
         User noChampionUser = User.Builder.builder().withEmail("no@champions.ch").build();
-        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, //
+        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null,
                                                                                                new String[]{"yes@champions.ch"},
                                                                                                null,
                                                                                                null,
@@ -65,7 +65,7 @@ public class UserUpdateHelperTest {
     void updateUserAsChampion() {
         // arrange
         User championUser = User.Builder.builder().withEmail("yes@champions.ch").build();
-        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, //
+        TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null,
                                                                                                new String[]{"yes@champions.ch"},
                                                                                                null,
                                                                                                null,

@@ -178,15 +178,15 @@ class CheckInValidationServiceTest {
     void validateOnCreateShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence, List<ErrorDto> expectedErrors) {
 
         // arrange
-        CheckIn checkIn = CheckInMetric.Builder.builder() //
-                                               .withValue(40.9) //
-                                               .withChangeInfo("ChangeInfo") //
-                                               .withInitiatives("Initiatives") //
-                                               .withConfidence(confidence) //
-                                               .withCreatedBy(user) //
-                                               .withKeyResult(keyResultMetric) //
-                                               .withCreatedOn(LocalDateTime.MAX) //
-                                               .withModifiedOn(LocalDateTime.MAX) //
+        CheckIn checkIn = CheckInMetric.Builder.builder()
+                                               .withValue(40.9)
+                                               .withChangeInfo("ChangeInfo")
+                                               .withInitiatives("Initiatives")
+                                               .withConfidence(confidence)
+                                               .withCreatedBy(user)
+                                               .withKeyResult(keyResultMetric)
+                                               .withCreatedOn(LocalDateTime.MAX)
+                                               .withModifiedOn(LocalDateTime.MAX)
                                                .build();
 
         // act + assert
@@ -198,20 +198,16 @@ class CheckInValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
-        CheckIn checkInInvalid = CheckInMetric.Builder.builder() //
-                                                      .withId(null) //
-                                                      .withChangeInfo("ChangeInfo")
-                                                      .build();
+        CheckIn checkInInvalid = CheckInMetric.Builder.builder().withId(null).withChangeInfo("ChangeInfo").build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(checkInInvalid));
 
-        List<ErrorDto> expectedErrors = List.of( //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "CheckIn")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")), //
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "CheckIn")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
@@ -333,12 +329,12 @@ class CheckInValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
         Long id = 11L;
-        CheckIn checkInInvalid = CheckInMetric.Builder.builder() //
-                                                      .withId(id) //
-                                                      .withChangeInfo("ChangeInfo") //
+        CheckIn checkInInvalid = CheckInMetric.Builder.builder()
+                                                      .withId(id)
+                                                      .withChangeInfo("ChangeInfo")
                                                       .withKeyResult(KeyResultMetric.Builder.builder()
                                                                                             .withId(13L)
-                                                                                            .build()) //
+                                                                                            .build())
                                                       .build();
         when(checkInPersistenceService.findById(id)).thenReturn(checkInInvalid);
 
@@ -346,10 +342,9 @@ class CheckInValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(id, checkInInvalid));
 
-        List<ErrorDto> expectedErrors = List.of( //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")), //
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "CheckIn")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "CheckIn")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("valueMetric", "CheckIn")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }

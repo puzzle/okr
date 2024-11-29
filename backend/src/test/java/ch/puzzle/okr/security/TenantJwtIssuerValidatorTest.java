@@ -33,8 +33,8 @@ public class TenantJwtIssuerValidatorTest {
 
         // act + assert
         TenantJwtIssuerValidator validator = new TenantJwtIssuerValidator(emptyTenantConfigProvider, jwtHelper);
-        IllegalArgumentException illegalArgumentException = //
-                assertThrows(IllegalArgumentException.class, () -> validator.validate(token));
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
+                                                                         () -> validator.validate(token));
 
         assertEquals("unknown tenant", illegalArgumentException.getLocalizedMessage());
     }
@@ -49,11 +49,9 @@ public class TenantJwtIssuerValidatorTest {
         when(jwtHelper.getTenantFromToken(token)).thenReturn(PITC);
 
         TenantConfigProvider tenantConfigProviderWithPitcConfig = mock(TenantConfigProvider.class);
-        when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC)).thenReturn(Optional.of( //
-                                                                                                  new TenantConfigProvider.TenantConfig( //
-                                                                                                                                        PITC,
+        when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC)).thenReturn(Optional.of(new TenantConfigProvider.TenantConfig(PITC,
                                                                                                                                         new String[]{},
-                                                                                                                                        "jwkSetUri", //
+                                                                                                                                        "jwkSetUri",
                                                                                                                                         ISSUER_URL,
                                                                                                                                         "clientId",
                                                                                                                                         null)));

@@ -103,7 +103,7 @@ export class DeleteUserComponent implements OnInit {
 
   dialogDetailsUserTeams() {
     if (this.userOkrData) {
-      return this.user.userTeamList //
+      return this.user.userTeamList 
         .map((userTeam) => userTeam.team.name)
         .join(", ");
     }

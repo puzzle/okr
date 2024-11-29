@@ -46,10 +46,10 @@ class UserPersistenceServiceIT {
     @Test
     void saveShouldSaveUserWithEmptyUserTeamList() {
         // arrange
-        var newUser = User.Builder.builder() //
-                                  .withFirstname("Hans") //
-                                  .withLastname("Muster") //
-                                  .withEmail("muster@puzzle.ch") //
+        var newUser = User.Builder.builder()
+                                  .withFirstname("Hans")
+                                  .withLastname("Muster")
+                                  .withEmail("muster@puzzle.ch")
                                   .withUserTeamList(List.of())
                                   .build();
 
@@ -65,10 +65,10 @@ class UserPersistenceServiceIT {
     @Test
     void saveShouldSaveUserWithNullUserTeamList() {
         // arrange
-        var newUser = User.Builder.builder() //
-                                  .withFirstname("Hans") //
-                                  .withLastname("Muster") //
-                                  .withEmail("muster@puzzle.ch") //
+        var newUser = User.Builder.builder()
+                                  .withFirstname("Hans")
+                                  .withLastname("Muster")
+                                  .withEmail("muster@puzzle.ch")
                                   .withUserTeamList(null)
                                   .build();
 
@@ -84,10 +84,10 @@ class UserPersistenceServiceIT {
     @Test
     void saveAllShouldSaveAllUsersInTheInputList() {
         // arrange
-        var newUser = User.Builder.builder() //
-                                  .withFirstname("Hans") //
-                                  .withLastname("Muster") //
-                                  .withEmail("muster@puzzle.ch") //
+        var newUser = User.Builder.builder()
+                                  .withFirstname("Hans")
+                                  .withLastname("Muster")
+                                  .withEmail("muster@puzzle.ch")
                                   .build();
 
         // act
@@ -118,11 +118,11 @@ class UserPersistenceServiceIT {
     @Test
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         // arrange
-        var newUser = User.Builder.builder() //
-                                  .withId(null) //
-                                  .withFirstname("firstname") //
-                                  .withLastname("lastname") //
-                                  .withEmail("lastname@puzzle.ch") //
+        var newUser = User.Builder.builder()
+                                  .withId(null)
+                                  .withFirstname("firstname")
+                                  .withLastname("lastname")
+                                  .withEmail("lastname@puzzle.ch")
                                   .build();
 
         // act
@@ -195,18 +195,18 @@ class UserPersistenceServiceIT {
         userPersistenceService.deleteById(user.getId());
 
         // assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, //
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> userPersistenceService.findById(createdUser.getId()));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     private User createUser() {
-        User newUser = User.Builder.builder() //
-                                   .withId(null) //
-                                   .withFirstname("firstname") //
-                                   .withLastname("lastname") //
-                                   .withEmail("lastname@puzzle.ch") //
+        User newUser = User.Builder.builder()
+                                   .withId(null)
+                                   .withFirstname("firstname")
+                                   .withLastname("lastname")
+                                   .withEmail("lastname@puzzle.ch")
                                    .build();
         createdUser = userPersistenceService.getOrCreateUser(newUser);
         assertNotNull(createdUser.getId());
@@ -216,7 +216,7 @@ class UserPersistenceServiceIT {
     @DisplayName("deleteById() should throw exception when Id is null")
     @Test
     void deleteByIdShouldThrowExceptionWhenIdIsNull() {
-        InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, //
+        InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class,
                                                                     () -> userPersistenceService.deleteById(null));
 
         assertEquals("The given id must not be null", exception.getMessage());

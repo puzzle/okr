@@ -116,8 +116,7 @@ class QuarterValidationServiceTest {
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
                                                                              () -> validator.validateOnGeneration(quarter));
 
-        assertOkrResponseStatusException( //
-                                         okrResponseStatusException, //
+        assertOkrResponseStatusException(okrResponseStatusException,
                                          List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "Any Label"))));
     }
 
@@ -134,8 +133,7 @@ class QuarterValidationServiceTest {
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
                                                                              () -> validator.validateOnGeneration(quarter));
 
-        assertOkrResponseStatusException( //
-                                         okrResponseStatusException, //
+        assertOkrResponseStatusException(okrResponseStatusException,
                                          List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "Any Label"))));
     }
 

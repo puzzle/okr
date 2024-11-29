@@ -37,10 +37,10 @@ public class PersistenceBaseTestIT {
 
     private static final long NON_EXISTING_USER_ID = 321L;
     private static final long USER_PACO_ID = 1L;
-    private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder() //
-                                                                     .withFirstname("Hans") //
-                                                                     .withLastname("Muster") //
-                                                                     .withEmail("hans.muster@puzzle.ch") //
+    private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder()
+                                                                     .withFirstname("Hans")
+                                                                     .withLastname("Muster")
+                                                                     .withEmail("hans.muster@puzzle.ch")
                                                                      .build();
 
     @Autowired

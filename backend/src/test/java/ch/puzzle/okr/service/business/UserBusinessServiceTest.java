@@ -39,18 +39,18 @@ class UserBusinessServiceTest {
 
     @BeforeEach
     void setUp() {
-        User userAlice = User.Builder.builder() //
-                                     .withId(2L) //
-                                     .withFirstname("Alice") //
-                                     .withLastname("Wunderland") //
-                                     .withEmail("wunderland@puzzle.ch") //
+        User userAlice = User.Builder.builder()
+                                     .withId(2L)
+                                     .withFirstname("Alice")
+                                     .withLastname("Wunderland")
+                                     .withEmail("wunderland@puzzle.ch")
                                      .build();
 
-        User userBob = User.Builder.builder() //
-                                   .withId(9L) //
-                                   .withFirstname("Bob") //
-                                   .withLastname("Baumeister") //
-                                   .withEmail("baumeister@puzzle.ch") //
+        User userBob = User.Builder.builder()
+                                   .withId(9L)
+                                   .withFirstname("Bob")
+                                   .withLastname("Baumeister")
+                                   .withEmail("baumeister@puzzle.ch")
                                    .build();
 
         userList = Arrays.asList(userAlice, userBob);

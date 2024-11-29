@@ -176,16 +176,16 @@ class KeyResultValidationServiceTest {
     @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
-        KeyResult keyResult = KeyResultMetric.Builder.builder() //
-                                                     .withBaseline(3.0) //
-                                                     .withStretchGoal(5.0) //
-                                                     .withUnit(Unit.EUR) //
-                                                     .withId(null) //
-                                                     .withTitle(title) //
-                                                     .withOwner(user) //
-                                                     .withObjective(objective) //
-                                                     .withCreatedBy(user) //
-                                                     .withCreatedOn(LocalDateTime.MIN) //
+        KeyResult keyResult = KeyResultMetric.Builder.builder()
+                                                     .withBaseline(3.0)
+                                                     .withStretchGoal(5.0)
+                                                     .withUnit(Unit.EUR)
+                                                     .withId(null)
+                                                     .withTitle(title)
+                                                     .withOwner(user)
+                                                     .withObjective(objective)
+                                                     .withCreatedBy(user)
+                                                     .withCreatedOn(LocalDateTime.MIN)
                                                      .build();
 
         // act + assert
@@ -197,22 +197,18 @@ class KeyResultValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
-        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder() //
-                                                            .withId(null) //
-                                                            .withTitle("Title") //
-                                                            .build();
+        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder().withId(null).withTitle("Title").build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(keyResultInvalid));
 
-        List<ErrorDto> expectedErrors = List.of( //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")), //
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
@@ -288,16 +284,16 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
         Long id = 3L;
-        KeyResult keyResult = KeyResultMetric.Builder.builder() //
-                                                     .withBaseline(3.0) //
-                                                     .withStretchGoal(5.0) //
-                                                     .withUnit(Unit.FTE) //
-                                                     .withId(id) //
-                                                     .withTitle(title) //
-                                                     .withOwner(user) //
-                                                     .withObjective(objective) //
-                                                     .withCreatedBy(user) //
-                                                     .withCreatedOn(LocalDateTime.MIN) //
+        KeyResult keyResult = KeyResultMetric.Builder.builder()
+                                                     .withBaseline(3.0)
+                                                     .withStretchGoal(5.0)
+                                                     .withUnit(Unit.FTE)
+                                                     .withId(id)
+                                                     .withTitle(title)
+                                                     .withOwner(user)
+                                                     .withObjective(objective)
+                                                     .withCreatedBy(user)
+                                                     .withCreatedOn(LocalDateTime.MIN)
                                                      .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
@@ -312,10 +308,10 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
         Long id = 11L;
-        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder() //
-                                                            .withId(id) //
-                                                            .withTitle("Title") //
-                                                            .withObjective(objective) //
+        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder()
+                                                            .withId(id)
+                                                            .withTitle("Title")
+                                                            .withObjective(objective)
                                                             .build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResultInvalid);
 
@@ -323,12 +319,11 @@ class KeyResultValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(id, keyResultInvalid));
 
-        List<ErrorDto> expectedErrors = List.of( //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")), //
-                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")), //
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
@@ -360,15 +355,12 @@ class KeyResultValidationServiceTest {
         Long keyResultId = 1L;
         Long objectiveId = 2L;
         Objective objective = Objective.Builder.builder().withId(objectiveId).build();
-        KeyResult keyResult = KeyResultMetric.Builder.builder() //
-                                                     .withId(keyResultId) //
-                                                     .withObjective(objective)
-                                                     .build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(keyResultId).withObjective(objective).build();
 
         Long savedObjectiveId = 3L;
         Objective savedObjective = Objective.Builder.builder().withId(savedObjectiveId).build();
-        KeyResult savedKeyResultWithDifferentObjectiveId = KeyResultMetric.Builder.builder() //
-                                                                                  .withId(keyResultId) //
+        KeyResult savedKeyResultWithDifferentObjectiveId = KeyResultMetric.Builder.builder()
+                                                                                  .withId(keyResultId)
                                                                                   .withObjective(savedObjective)
                                                                                   .build();
 

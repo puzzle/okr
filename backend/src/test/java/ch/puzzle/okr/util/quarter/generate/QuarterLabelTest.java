@@ -21,8 +21,7 @@ public class QuarterLabelTest {
     }
 
     private static Stream<Arguments> datesAndLabels() {
-        return Stream.of( //
-                         Arguments.of(LocalDate.of(2024, 7, 1), "GJ 24/25-Q1"),
+        return Stream.of(Arguments.of(LocalDate.of(2024, 7, 1), "GJ 24/25-Q1"),
                          Arguments.of(LocalDate.of(2024, 7, 2), "GJ 24/25-Q1"),
                          Arguments.of(LocalDate.of(2024, 7, 15), "GJ 24/25-Q1"),
                          Arguments.of(LocalDate.of(2024, 9, 15), "GJ 24/25-Q1"),

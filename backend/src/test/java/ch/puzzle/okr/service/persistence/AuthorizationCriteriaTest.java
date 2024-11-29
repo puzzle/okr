@@ -37,12 +37,12 @@ public class AuthorizationCriteriaTest {
     @Test
     void appendObjectiveShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
-        var user = User.Builder.builder() //
-                               .withId(23L) //
-                               .withFirstname("Hanna") //
-                               .withLastname("muster") //
-                               .withEmail("hanna.muster@example.com") //
-                               .withOkrChampion(true) //
+        var user = User.Builder.builder()
+                               .withId(23L)
+                               .withFirstname("Hanna")
+                               .withLastname("muster")
+                               .withEmail("hanna.muster@example.com")
+                               .withOkrChampion(true)
                                .build();
         var criteria = new AuthorizationCriteria<Objective>();
 
@@ -70,10 +70,9 @@ public class AuthorizationCriteriaTest {
     }
 
     private static Stream<Arguments> provideListAndString() {
-        return Stream.of( //
-                         Arguments.of(List.of(), null), //
-                         Arguments.of(List.of(), ""), //
-                         Arguments.of(null, null), //
+        return Stream.of(Arguments.of(List.of(), null),
+                         Arguments.of(List.of(), ""),
+                         Arguments.of(null, null),
                          Arguments.of(null, ""));
     }
 

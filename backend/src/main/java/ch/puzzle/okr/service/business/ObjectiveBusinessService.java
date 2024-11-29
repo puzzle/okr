@@ -133,26 +133,26 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
-        return KeyResultMetric.Builder.builder() //
-                                      .withObjective(duplicatedObjective) //
-                                      .withTitle(keyResult.getTitle()) //
-                                      .withDescription(keyResult.getDescription()) //
-                                      .withOwner(keyResult.getOwner()) //
-                                      .withUnit(((KeyResultMetric) keyResult).getUnit()) //
-                                      .withBaseline(0D) //
-                                      .withStretchGoal(1D) //
+        return KeyResultMetric.Builder.builder()
+                                      .withObjective(duplicatedObjective)
+                                      .withTitle(keyResult.getTitle())
+                                      .withDescription(keyResult.getDescription())
+                                      .withOwner(keyResult.getOwner())
+                                      .withUnit(((KeyResultMetric) keyResult).getUnit())
+                                      .withBaseline(0D)
+                                      .withStretchGoal(1D)
                                       .build();
     }
 
     private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
-        return KeyResultOrdinal.Builder.builder() //
-                                       .withObjective(duplicatedObjective) //
-                                       .withTitle(keyResult.getTitle()) //
-                                       .withDescription(keyResult.getDescription()) //
-                                       .withOwner(keyResult.getOwner()) //
-                                       .withCommitZone("-") //
-                                       .withTargetZone("-") //
-                                       .withStretchZone("-") //
+        return KeyResultOrdinal.Builder.builder()
+                                       .withObjective(duplicatedObjective)
+                                       .withTitle(keyResult.getTitle())
+                                       .withDescription(keyResult.getDescription())
+                                       .withOwner(keyResult.getOwner())
+                                       .withCommitZone("-")
+                                       .withTargetZone("-")
+                                       .withStretchZone("-")
                                        .build();
     }
 
@@ -160,8 +160,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         completedBusinessService.deleteCompletedByObjectiveId(id);
-        keyResultBusinessService //
-                                .getAllKeyResultsByObjective(id) //
+        keyResultBusinessService.getAllKeyResultsByObjective(id)
                                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);
     }

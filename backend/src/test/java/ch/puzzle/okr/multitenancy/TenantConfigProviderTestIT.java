@@ -59,7 +59,7 @@ public class TenantConfigProviderTestIT {
     }
 
     private void mockProperty(String propertyName, String propertyValue, String tenantId) {
-        when(env.getProperty(MessageFormat.format(propertyName, tenantId))) //
+        when(env.getProperty(MessageFormat.format(propertyName, tenantId))) 
                 .thenReturn(prefix(tenantId) + propertyValue);
     }
 
@@ -68,7 +68,7 @@ public class TenantConfigProviderTestIT {
     }
 
     private void mockPropertyWithDefaultValue(String propertyName, String propertyValue, String id) {
-        when(env.getProperty(MessageFormat.format(propertyName, id), "")) //
+        when(env.getProperty(MessageFormat.format(propertyName, id), "")) 
                 .thenReturn(propertyValue);
     }
 

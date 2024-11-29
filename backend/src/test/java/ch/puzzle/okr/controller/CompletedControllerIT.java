@@ -57,20 +57,20 @@ class CompletedControllerIT {
     @MockBean
     private CompletedMapper completedMapper;
 
-    private final Completed successfulCompleted = Completed.Builder.builder() //
-                                                                   .withId(COMPLETED_ID) //
-                                                                   .withObjective(Objective.Builder.builder() //
-                                                                                                   .withId(OBJECTIVE_ID) //
-                                                                                                   .build()) //
-                                                                   .withComment(COMPLETED_COMMENT) //
+    private final Completed successfulCompleted = Completed.Builder.builder()
+                                                                   .withId(COMPLETED_ID)
+                                                                   .withObjective(Objective.Builder.builder()
+                                                                                                   .withId(OBJECTIVE_ID)
+                                                                                                   .build())
+                                                                   .withComment(COMPLETED_COMMENT)
                                                                    .build();
 
-    private final CompletedDto completedDto = CompletedDtoBuilder.builder() //
-                                                                 .withId(COMPLETED_ID) //
-                                                                 .withComment(COMPLETED_COMMENT) //
-                                                                 .withObjectiveDto(ObjectiveDtoBuilder.builder() //
-                                                                                                      .withId(OBJECTIVE_ID) //
-                                                                                                      .build()) //
+    private final CompletedDto completedDto = CompletedDtoBuilder.builder()
+                                                                 .withId(COMPLETED_ID)
+                                                                 .withComment(COMPLETED_COMMENT)
+                                                                 .withObjectiveDto(ObjectiveDtoBuilder.builder()
+                                                                                                      .withId(OBJECTIVE_ID)
+                                                                                                      .build())
                                                                  .build();
 
     String baseUrl = "/api/v2/completed";
@@ -88,14 +88,13 @@ class CompletedControllerIT {
     void createShouldCreateCompleted() throws Exception {
         BDDMockito.given(this.completedAuthorizationService.createCompleted(any())).willReturn(successfulCompleted);
 
-        mvc.perform(post(baseUrl) //
-                                 .content(SUCCESSFUL_CREATE_BODY) //
-                                 .contentType(MediaType.APPLICATION_JSON) //
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())) //
-           .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()) //
-           .andExpect(jsonPath(JSON_PATH_ID, Is.is(COMPLETED_ID_AS_INT))) //
-           .andExpect(jsonPath("$.id", Is.is(COMPLETED_ID_AS_INT))) //
-           .andExpect(jsonPath("$.objective.id", Is.is(OBJECTIVE_ID_AS_INT))) //
+        mvc.perform(post(baseUrl).content(SUCCESSFUL_CREATE_BODY)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+           .andExpect(jsonPath(JSON_PATH_ID, Is.is(COMPLETED_ID_AS_INT)))
+           .andExpect(jsonPath("$.id", Is.is(COMPLETED_ID_AS_INT)))
+           .andExpect(jsonPath("$.objective.id", Is.is(OBJECTIVE_ID_AS_INT)))
            .andExpect(jsonPath("$.comment", Is.is(COMPLETED_COMMENT)));
     }
 

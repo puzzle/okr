@@ -45,8 +45,7 @@ public class TenantClientCustomizationProvider {
                                                                                   tenantId)),
                                              env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.helpSiteUrl",
                                                                                   tenantId)),
-                                             getCustomCssStyles(tenantId) //
-        );
+                                             getCustomCssStyles(tenantId));
     }
 
     private Map<String, String> getCustomCssStyles(String tenantId) {

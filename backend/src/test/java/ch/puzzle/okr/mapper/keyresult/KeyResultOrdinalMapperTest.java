@@ -55,10 +55,9 @@ public class KeyResultOrdinalMapperTest {
     @BeforeEach
     void setup() {
         actionMapper = new ActionMapper(keyResultBusinessService);
-        keyResultOrdinalMapper = new KeyResultOrdinalMapper( //
-                                                            userBusinessService, //
-                                                            objectiveBusinessService, //
-                                                            checkInBusinessService, //
+        keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService,
+                                                            objectiveBusinessService,
+                                                            checkInBusinessService,
                                                             actionMapper);
     }
 

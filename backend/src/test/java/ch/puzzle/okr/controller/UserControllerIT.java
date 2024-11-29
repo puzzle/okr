@@ -110,14 +110,14 @@ class UserControllerIT {
         BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
 
         mvc.perform(get("/api/v1/users/current").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk()) //
-           .andExpect(jsonPath("$", Matchers.aMapWithSize(7))) //
-           .andExpect(jsonPath("$.id", Is.is(2))) //
-           .andExpect(jsonPath("$.version", Is.is(3))) //
-           .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1))) //
-           .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1))) //
-           .andExpect(jsonPath("$.email", Is.is(EMAIL_1))) //
-           .andExpect(jsonPath("$.userTeamList", Matchers.empty())) //
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath("$", Matchers.aMapWithSize(7)))
+           .andExpect(jsonPath("$.id", Is.is(2)))
+           .andExpect(jsonPath("$.version", Is.is(3)))
+           .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1)))
+           .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1)))
+           .andExpect(jsonPath("$.email", Is.is(EMAIL_1)))
+           .andExpect(jsonPath("$.userTeamList", Matchers.empty()))
            .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
     }
 
@@ -126,15 +126,15 @@ class UserControllerIT {
         BDDMockito.given(userAuthorizationService.getById(2)).willReturn(userAlice);
         BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
 
-        mvc.perform(get("/api/v1/users/2").contentType(MediaType.APPLICATION_JSON)) //
-           .andExpect(MockMvcResultMatchers.status().isOk()) //
-           .andExpect(jsonPath("$", Matchers.aMapWithSize(7))) //
-           .andExpect(jsonPath("$.id", Is.is(2))) //
-           .andExpect(jsonPath("$.version", Is.is(3))) //
-           .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1))) //
-           .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1))) //
-           .andExpect(jsonPath("$.email", Is.is(EMAIL_1))) //
-           .andExpect(jsonPath("$.userTeamList", Matchers.empty())) //
+        mvc.perform(get("/api/v1/users/2").contentType(MediaType.APPLICATION_JSON))
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath("$", Matchers.aMapWithSize(7)))
+           .andExpect(jsonPath("$.id", Is.is(2)))
+           .andExpect(jsonPath("$.version", Is.is(3)))
+           .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1)))
+           .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1)))
+           .andExpect(jsonPath("$.email", Is.is(EMAIL_1)))
+           .andExpect(jsonPath("$.userTeamList", Matchers.empty()))
            .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
     }
 
@@ -143,19 +143,17 @@ class UserControllerIT {
         BDDMockito.given(userAuthorizationService.setIsOkrChampion(2, true)).willReturn(userAlice);
         BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
 
-        mvc.perform(put("/api/v1/users/2/isokrchampion/true") //
-                                                             .content(SUCCESSFUL_UPDATE_BODY) //
-                                                             .contentType(MediaType.APPLICATION_JSON) //
-                                                             .with(SecurityMockMvcRequestPostProcessors.csrf()) //
-        ) //
-           .andExpect(MockMvcResultMatchers.status().isOk()) //
-           .andExpect(jsonPath("$", Matchers.aMapWithSize(7))) //
-           .andExpect(jsonPath("$.id", Is.is(2))) //
-           .andExpect(jsonPath("$.version", Is.is(3))) //
-           .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1))) //
-           .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1))) //
-           .andExpect(jsonPath("$.email", Is.is(EMAIL_1))) //
-           .andExpect(jsonPath("$.userTeamList", Matchers.empty())) //
+        mvc.perform(put("/api/v1/users/2/isokrchampion/true").content(SUCCESSFUL_UPDATE_BODY)
+                                                             .contentType(MediaType.APPLICATION_JSON)
+                                                             .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath("$", Matchers.aMapWithSize(7)))
+           .andExpect(jsonPath("$.id", Is.is(2)))
+           .andExpect(jsonPath("$.version", Is.is(3)))
+           .andExpect(jsonPath("$.firstname", Is.is(FIRSTNAME_1)))
+           .andExpect(jsonPath("$.lastname", Is.is(LASTNAME_1)))
+           .andExpect(jsonPath("$.email", Is.is(EMAIL_1)))
+           .andExpect(jsonPath("$.userTeamList", Matchers.empty()))
            .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
     }
 
@@ -164,19 +162,17 @@ class UserControllerIT {
         BDDMockito.given(userAuthorizationService.createUsers(any())).willReturn(List.of(userAlice));
         BDDMockito.given(userMapper.toDtos(List.of(userAlice))).willReturn(List.of(userAliceDto));
 
-        mvc.perform(post("/api/v1/users/createall") //
-                                                   .content(SUCCESSFUL_UPDATE_BODY) //
-                                                   .contentType(MediaType.APPLICATION_JSON) //
-                                                   .with(SecurityMockMvcRequestPostProcessors.csrf()) //
-        ) //
-           .andExpect(MockMvcResultMatchers.status().isOk()) //
-           .andExpect(jsonPath("$", Matchers.hasSize(1))) //
-           .andExpect(jsonPath("$[0].id", Is.is(2))) //
-           .andExpect(jsonPath("$[0].version", Is.is(3))) //
-           .andExpect(jsonPath("$[0].firstname", Is.is(FIRSTNAME_1))) //
-           .andExpect(jsonPath("$[0].lastname", Is.is(LASTNAME_1))) //
-           .andExpect(jsonPath("$[0].email", Is.is(EMAIL_1))) //
-           .andExpect(jsonPath("$[0].userTeamList", Matchers.empty())) //
+        mvc.perform(post("/api/v1/users/createall").content(SUCCESSFUL_UPDATE_BODY)
+                                                   .contentType(MediaType.APPLICATION_JSON)
+                                                   .with(SecurityMockMvcRequestPostProcessors.csrf()))
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath("$", Matchers.hasSize(1)))
+           .andExpect(jsonPath("$[0].id", Is.is(2)))
+           .andExpect(jsonPath("$[0].version", Is.is(3)))
+           .andExpect(jsonPath("$[0].firstname", Is.is(FIRSTNAME_1)))
+           .andExpect(jsonPath("$[0].lastname", Is.is(LASTNAME_1)))
+           .andExpect(jsonPath("$[0].email", Is.is(EMAIL_1)))
+           .andExpect(jsonPath("$[0].userTeamList", Matchers.empty()))
            .andExpect(jsonPath("$[0].isOkrChampion", Is.is(false)));
     }
 

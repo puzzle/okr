@@ -110,10 +110,10 @@ class CompletedValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
-        Completed completed = Completed.Builder.builder() //
-                                               .withId(300L) //
-                                               .withObjective(this.objective) //
-                                               .withComment("Not valid") //
+        Completed completed = Completed.Builder.builder()
+                                               .withId(300L)
+                                               .withObjective(this.objective)
+                                               .withComment("Not valid")
                                                .build();
 
         // act + assert
@@ -128,10 +128,7 @@ class CompletedValidationServiceTest {
     @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         // arrange
-        Completed completed = Completed.Builder.builder() //
-                                               .withObjective(this.objective) //
-                                               .withComment(comment) //
-                                               .build();
+        Completed completed = Completed.Builder.builder().withObjective(this.objective).withComment(comment).build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -143,10 +140,10 @@ class CompletedValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
-        Completed completedInvalid = Completed.Builder.builder() //
-                                                      .withId(null) //
-                                                      .withComment("Valid comment") //
-                                                      .withObjective(null) //
+        Completed completedInvalid = Completed.Builder.builder()
+                                                      .withId(null)
+                                                      .withComment("Valid comment")
+                                                      .withObjective(null)
                                                       .build();
 
         // act + assert

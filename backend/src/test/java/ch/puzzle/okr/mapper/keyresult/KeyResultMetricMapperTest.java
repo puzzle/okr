@@ -54,10 +54,9 @@ public class KeyResultMetricMapperTest {
     @BeforeEach
     void setup() {
         actionMapper = new ActionMapper(keyResultBusinessService);
-        keyResultMetricMapper = new KeyResultMetricMapper( //
-                                                          userBusinessService, //
-                                                          objectiveBusinessService, //
-                                                          checkInBusinessService, //
+        keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService,
+                                                          objectiveBusinessService,
+                                                          checkInBusinessService,
                                                           actionMapper);
     }
 

@@ -77,12 +77,12 @@ public class TestHelper {
     }
 
     public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email, boolean isOkrChampion) {
-        User user = User.Builder.builder() //
-                                .withId(id) //
-                                .withFirstname(firstname) //
-                                .withLastname(lastname) //
-                                .withEmail(email) //
-                                .withOkrChampion(isOkrChampion) //
+        User user = User.Builder.builder()
+                                .withId(id)
+                                .withFirstname(firstname)
+                                .withLastname(lastname)
+                                .withEmail(email)
+                                .withOkrChampion(isOkrChampion)
                                 .build();
         user.setUserTeamList(List.of(defaultUserTeam(1L, user)));
         return new AuthorizationUser(user);

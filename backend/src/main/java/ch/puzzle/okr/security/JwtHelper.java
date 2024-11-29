@@ -51,10 +51,10 @@ public class JwtHelper {
         logger.debug("claims {}", claims);
 
         try {
-            return User.Builder.builder() //
-                               .withFirstname(claims.get(firstname).toString()) //
-                               .withLastname(claims.get(lastname).toString()) //
-                               .withEmail(claims.get(email).toString()) //
+            return User.Builder.builder()
+                               .withFirstname(claims.get(firstname).toString())
+                               .withLastname(claims.get(lastname).toString())
+                               .withEmail(claims.get(email).toString())
                                .build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
@@ -64,43 +64,39 @@ public class JwtHelper {
 
     public String getTenantFromToken(Jwt token) {
         TokenHelper helper = new TokenHelper();
-        List<Function<Jwt, Optional<String>>> getTenantFromTokenFunctions = Arrays.asList( //
-                                                                                          helper::getTenantFromTokenUsingClaimIss, //
-                                                                                          helper::getTenantFromTokenUsingClaimTenant //
-        );
+        List<Function<Jwt, Optional<String>>> getTenantFromTokenFunctions = Arrays.asList(helper::getTenantFromTokenUsingClaimIss,
+                                                                                          helper::getTenantFromTokenUsingClaimTenant);
 
         return getFirstMatchingTenantUsingListOfHelperFunctions(token, getTenantFromTokenFunctions);
     }
 
     private String getFirstMatchingTenantUsingListOfHelperFunctions(Jwt token, List<Function<Jwt, Optional<String>>> getTenantFunctions) {
 
-        return getTenantFunctions.stream() //
-                                 .map(func -> func.apply(token)) //
-                                 .filter(Optional::isPresent) //
-                                 .map(Optional::get) //
-                                 .map(this::getMatchingTenantFromConfigOrThrow) //
-                                 .findFirst() //
+        return getTenantFunctions.stream()
+                                 .map(func -> func.apply(token))
+                                 .filter(Optional::isPresent)
+                                 .map(Optional::get)
+                                 .map(this::getMatchingTenantFromConfigOrThrow)
+                                 .findFirst()
                                  .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
     }
 
     public String getTenantFromJWTClaimsSet(JWTClaimsSet claimSet) {
         ClaimHelper helper = new ClaimHelper();
-        List<Function<JWTClaimsSet, Optional<String>>> getTenantFromClaimsSetFunctions = Arrays.asList( //
-                                                                                                       helper::getTenantFromClaimsSetUsingClaimIss, //
-                                                                                                       helper::getTenantFromClaimsSetUsingClaimTenant //
-        );
+        List<Function<JWTClaimsSet, Optional<String>>> getTenantFromClaimsSetFunctions = Arrays.asList(helper::getTenantFromClaimsSetUsingClaimIss,
+                                                                                                       helper::getTenantFromClaimsSetUsingClaimTenant);
 
         return getFirstMatchingTenantUsingListOfHelperFunctions(claimSet, getTenantFromClaimsSetFunctions);
     }
 
     private String getFirstMatchingTenantUsingListOfHelperFunctions(JWTClaimsSet claimSet, List<Function<JWTClaimsSet, Optional<String>>> getTenantFunctions) {
 
-        return getTenantFunctions.stream() //
-                                 .map(func -> func.apply(claimSet)) //
-                                 .filter(Optional::isPresent) //
-                                 .map(Optional::get) //
+        return getTenantFunctions.stream()
+                                 .map(func -> func.apply(claimSet))
+                                 .filter(Optional::isPresent)
+                                 .map(Optional::get)
                                  .map(this::getMatchingTenantFromConfigOrThrow)
-                                 .findFirst() //
+                                 .findFirst()
                                  .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE));
     }
 

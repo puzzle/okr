@@ -4,21 +4,18 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
-import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
 import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
-import { KeyResult } from '../../types/model/KeyResult';
-import { KeyresultService } from '../../../services/keyresult.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -55,7 +52,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     private teamService: TeamService,
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
-    private keyResultService: KeyresultService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
     private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA)
@@ -90,43 +86,76 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const isEditing: boolean = !!this.data.objective.objectiveId;
+    this.initializeObservables(isEditing);
+    this.loadData(isEditing);
+  }
+
+  private initializeObservables(isEditing: boolean): void {
     this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
-    this.keyResults$ = !isEditing
-      ? of([])
-      : this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId || -1);
+    this.keyResults$ = isEditing
+      ? this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId || -1)
+      : of([]);
+  }
+
+  private loadData(isEditing: boolean): void {
     const objective$ = isEditing
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
-    forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$]).subscribe(
-      ([objective, quarters, currentQuarter, keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]]) => {
-        this.quarters = quarters;
-        const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
-        const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
-        let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-        if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
-          quarterId = quarters[1].id;
-        }
+    forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$])
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        switchMap(
+          ([objective, quarters, currentQuarter, keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]]) => {
+            this.handleDataInitialization(objective, quarters, currentQuarter, keyResults, isEditing);
+            return this.teams$;
+          },
+        ),
+      )
+      .subscribe((teams) => {
+        this.setCurrentTeam(teams, this.data.objective.teamId!);
+      });
+  }
 
-        this.state = objective.state;
-        this.version = objective.version;
-        this.keyResults = keyResults;
-        this.teams$.subscribe((value) => {
-          this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
-        });
-        this.objectiveForm.patchValue({
-          title: objective.title,
-          description: objective.description,
-          team: teamId,
-          quarter: quarterId,
-        });
-        keyResults.forEach((keyResult) => {
-          this.objectiveForm.controls.keyResults.push(new FormControl<boolean>(true));
-        });
-      },
-    );
+  private handleDataInitialization(
+    objective: Objective,
+    quarters: Quarter[],
+    currentQuarter: Quarter,
+    keyResults: KeyResultDTO[],
+    isEditing: boolean,
+  ): void {
+    this.quarters = quarters;
+    const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
+    const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
+    let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
+
+    if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+      quarterId = quarters[1].id;
+    }
+
+    this.state = objective.state;
+    this.version = objective.version;
+    this.keyResults = keyResults;
+
+    this.objectiveForm.patchValue({
+      title: objective.title,
+      description: objective.description,
+      team: teamId,
+      quarter: quarterId,
+    });
+
+    keyResults.forEach(() => {
+      this.objectiveForm.controls.keyResults.push(new FormControl<boolean>(true));
+    });
+  }
+
+  private setCurrentTeam(teams: Team[], teamId: number): void {
+    const currentTeam = teams.find((team) => team.id == teamId);
+    if (currentTeam) {
+      this.currentTeam.next(currentTeam);
+    }
   }
 
   ngOnDestroy() {
@@ -262,6 +291,4 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
     return '';
   }
-
-  protected readonly Observable = Observable;
 }

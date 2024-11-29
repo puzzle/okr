@@ -12,13 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuarterLabelTest {
 
-    @DisplayName(
-        "label() should return label with year and quarter info"
-    )
+    @DisplayName("label() should return label with year and quarter info")
     @ParameterizedTest
-    @MethodSource(
-        "datesAndLabels"
-    )
+    @MethodSource("datesAndLabels")
     void labelShouldReturnLabelWithYearAndQuarterInfo(LocalDate date, String expectedLabel) {
         QuarterLabel quarterLabel = new QuarterLabel(date);
         assertEquals(expectedLabel, quarterLabel.label());

@@ -22,9 +22,7 @@ public class AuthenticationEventsTest {
         TenantContext.setCurrentTenant(DEFAULT_TENANT_ID);
     }
 
-    @DisplayName(
-        "onSuccess() puts Token from AuthenticationSuccessEvent in TenantContext"
-    )
+    @DisplayName("onSuccess() puts Token from AuthenticationSuccessEvent in TenantContext")
     @Test
     void onSuccessPutsTokenFromAuthenticationSuccessEventInTenantContext() {
         // arrange

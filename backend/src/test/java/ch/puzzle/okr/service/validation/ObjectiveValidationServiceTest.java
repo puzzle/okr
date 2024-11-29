@@ -35,9 +35,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class ObjectiveValidationServiceTest {
     @MockBean
     ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
@@ -177,9 +175,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource(
-        "nameValidationArguments"
-    )
+    @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder()
                                                .withId(null)
@@ -349,9 +345,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource(
-        "nameValidationArguments"
-    )
+    @MethodSource("nameValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder()
                                                .withId(3L)
@@ -511,11 +505,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @ParameterizedTest
-    @EnumSource(
-            value = State.class,
-            names = {"DRAFT"},
-            mode = EnumSource.Mode.EXCLUDE
-    )
+    @EnumSource(value = State.class, names = {"DRAFT"}, mode = EnumSource.Mode.EXCLUDE)
     void validateOnCreateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
         Quarter backlogQuarter = Quarter.Builder.builder()
                                                 .withId(BACK_LOG_QUARTER_ID)
@@ -544,11 +534,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @ParameterizedTest
-    @EnumSource(
-            value = State.class,
-            names = {"DRAFT"},
-            mode = EnumSource.Mode.EXCLUDE
-    )
+    @EnumSource(value = State.class, names = {"DRAFT"}, mode = EnumSource.Mode.EXCLUDE)
     void validateOnUpdateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
         Quarter backlogQuarter = Quarter.Builder.builder()
                                                 .withId(BACK_LOG_QUARTER_ID)

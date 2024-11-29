@@ -22,13 +22,8 @@ public class CacheService {
         this.cacheManager = cacheManager;
     }
 
-    @CacheEvict(
-            value = AUTHORIZATION_USER_CACHE,
-            allEntries = true
-    )
-    @Scheduled(
-            fixedRateString = "${caching.authorization.users.TTL}"
-    )
+    @CacheEvict(value = AUTHORIZATION_USER_CACHE, allEntries = true)
+    @Scheduled(fixedRateString = "${caching.authorization.users.TTL}")
     public void emptyAuthorizationUsersCache() {
         logger.info("emptying authorization users cache");
     }

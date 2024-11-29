@@ -11,9 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 public class TeamMapperTest {
 
     private static final long ID = 0L;
@@ -24,9 +22,7 @@ public class TeamMapperTest {
     @InjectMocks
     private TeamMapper teamMapper;
 
-    @DisplayName(
-        "toDto() should map Team to Dto"
-    )
+    @DisplayName("toDto() should map Team to Dto")
     @Test
     void toDtoShouldMapTeamToDto() {
         // arrange
@@ -48,9 +44,7 @@ public class TeamMapperTest {
         assertEquals(expected.isWriteable(), actual.writeable());
     }
 
-    @DisplayName(
-        "toTeam() should map Dto to Team"
-    )
+    @DisplayName("toTeam() should map Dto to Team")
     @Test
     void toTeamShouldMapDtoToTeam() {
         // arrange

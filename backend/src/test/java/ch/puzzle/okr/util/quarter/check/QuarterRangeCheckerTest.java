@@ -12,9 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QuarterRangeCheckerTest {
 
-    @DisplayName(
-        "nowIsInQuarter() should return false if Quarter is null"
-    )
+    @DisplayName("nowIsInQuarter() should return false if Quarter is null")
     @Test
     void nowIsInQuarterShouldReturnFalseIfQuarterIsNull() {
         // arrange
@@ -25,9 +23,7 @@ public class QuarterRangeCheckerTest {
         assertFalse(QuarterRangeChecker.nowIsInQuarter(now, quarter));
     }
 
-    @DisplayName(
-        "nowIsInQuarter() should return false if now is null"
-    )
+    @DisplayName("nowIsInQuarter() should return false if now is null")
     @Test
     void nowIsInQuarterShouldReturnFalseIfNowIsNull() {
         // arrange
@@ -38,9 +34,7 @@ public class QuarterRangeCheckerTest {
         assertFalse(QuarterRangeChecker.nowIsInQuarter(now, quarter));
     }
 
-    @DisplayName(
-        "nowIsInQuarter() should return true if now matches Quarter StartDate"
-    )
+    @DisplayName("nowIsInQuarter() should return true if now matches Quarter StartDate")
     @Test
     void nowIsInQuarterShouldReturnTrueIfNowMatchesQuarterStartDate() {
         // arrange
@@ -53,9 +47,7 @@ public class QuarterRangeCheckerTest {
         assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchesQuarterStartDate, quarter));
     }
 
-    @DisplayName(
-        "nowIsInQuarter() should return true if now matches Quarter EndDate"
-    )
+    @DisplayName("nowIsInQuarter() should return true if now matches Quarter EndDate")
     @Test
     void nowIsInQuarterShouldReturnTrueIfNowMatchesQuarterEndDate() {
         // arrange
@@ -69,9 +61,7 @@ public class QuarterRangeCheckerTest {
         assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchesQuarterEndDate, quarter));
     }
 
-    @DisplayName(
-        "nowIsInQuarter() should return true if now is between Quarter StartDate and EndDate"
-    )
+    @DisplayName("nowIsInQuarter() should return true if now is between Quarter StartDate and EndDate")
     @Test
     void nowIsInQuarterShouldReturnTrueIfNowIsBetweenQuarterStartDateAndEndDate() {
         // arrange
@@ -85,9 +75,7 @@ public class QuarterRangeCheckerTest {
         assertTrue(QuarterRangeChecker.nowIsInQuarter(nowBetweenQuarterStartEndDate, quarter));
     }
 
-    @DisplayName(
-        "nowIsInQuarter() should return false if now is before Quarter StartDate"
-    )
+    @DisplayName("nowIsInQuarter() should return false if now is before Quarter StartDate")
     @Test
     void nowIsInQuarterShouldReturnFalseIfNowIsBeforeQuarterStartDate() {
         // arrange
@@ -101,9 +89,7 @@ public class QuarterRangeCheckerTest {
         assertFalse(QuarterRangeChecker.nowIsInQuarter(nowBeforeQuarterStartDate, quarter));
     }
 
-    @DisplayName(
-        "nowIsInQuarter() should return false if now is after Quarter EndDate"
-    )
+    @DisplayName("nowIsInQuarter() should return false if now is after Quarter EndDate")
     @Test
     void nowIsInQuarterShouldReturnFalseIfNowIsAfterQuarterEndDate() {
         // arrange

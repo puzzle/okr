@@ -7,9 +7,7 @@ import ch.puzzle.okr.dto.ActionDto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(
-        using = KeyResultDeserializer.class
-)
+@JsonDeserialize(using = KeyResultDeserializer.class)
 public interface KeyResultDto {
     List<ActionDto> getActionList();
 }

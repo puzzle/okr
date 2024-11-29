@@ -30,9 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     @InjectMocks
@@ -141,9 +139,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            booleans = {false, true}
-    )
+    @ValueSource(booleans = {false, true})
     void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";

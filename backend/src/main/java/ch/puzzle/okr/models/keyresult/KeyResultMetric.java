@@ -10,26 +10,13 @@ import ch.puzzle.okr.models.Unit;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 
 @Entity
-@DiscriminatorValue(
-    KEY_RESULT_TYPE_METRIC
-)
+@DiscriminatorValue(KEY_RESULT_TYPE_METRIC)
 public class KeyResultMetric extends KeyResult {
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    private Double baseline;
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private Double baseline;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    private Double stretchGoal;
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private Double stretchGoal;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Enumerated(
-        EnumType.STRING
-    )
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Enumerated(EnumType.STRING)
     private Unit unit;
 
     public Double getBaseline() {

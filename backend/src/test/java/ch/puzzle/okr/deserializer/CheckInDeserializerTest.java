@@ -27,9 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class CheckInDeserializerTest {
 
     @Mock
@@ -45,9 +43,7 @@ class CheckInDeserializerTest {
         objectMapper = new ObjectMapper();
     }
 
-    @DisplayName(
-        "deserialize() should return CheckInMetricDto for metric json"
-    )
+    @DisplayName("deserialize() should return CheckInMetricDto for metric json")
     @Test
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
         // arrange
@@ -93,9 +89,7 @@ class CheckInDeserializerTest {
         assertEquals(23, checkInMetricDto.value());
     }
 
-    @DisplayName(
-        "deserialize() should return CheckInOrdinalDto for ordinal json"
-    )
+    @DisplayName("deserialize() should return CheckInOrdinalDto for ordinal json")
     @Test
     void deserializeShouldReturnCheckInOrdinalDtoForOrdinalJson() throws Exception {
         // arrange
@@ -141,9 +135,7 @@ class CheckInDeserializerTest {
         assertEquals(Zone.STRETCH, checkInOrdinalDto.value());
     }
 
-    @DisplayName(
-        "deserialize() should throw ResponseStatusException if KeyResult is of unsupported type"
-    )
+    @DisplayName("deserialize() should throw ResponseStatusException if KeyResult is of unsupported type")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfKeyResultIsUnsupportedType() throws Exception {
         // arrange
@@ -175,9 +167,7 @@ class CheckInDeserializerTest {
         assertEquals("unsupported checkIn DTO to deserialize", exception.getReason());
     }
 
-    @DisplayName(
-        "deserialize() should throw ResponseStatusException if json has no KeyResult Id"
-    )
+    @DisplayName("deserialize() should throw ResponseStatusException if json has no KeyResult Id")
     @Test
     void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() throws Exception {
         // arrange

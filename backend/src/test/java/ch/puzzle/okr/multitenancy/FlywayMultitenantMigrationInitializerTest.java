@@ -97,9 +97,7 @@ public class FlywayMultitenantMigrationInitializerTest {
         }
     };
 
-    @DisplayName(
-        "Flyway.configure() should return FluentConfiguration which we can assert"
-    )
+    @DisplayName("Flyway.configure() should return FluentConfiguration which we can assert")
     @Test
     void flywayConfigureShouldReturnFluentConfigurationWhichWeCanAssert() {
         try (MockedStatic<Flyway> mockedStatic = Mockito.mockStatic(Flyway.class)) {

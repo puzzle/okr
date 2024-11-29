@@ -40,13 +40,10 @@ public class JwtHelper {
     private final String lastname;
     private final String email;
 
-    public JwtHelper(TenantConfigProvider tenantConfigProvider, @Value(
-        "${okr.jwt.claim.firstname}"
-    ) final String tokenClaimsKeyFirstname, @Value(
-        "${okr.jwt.claim.lastname}"
-    ) final String tokenClaimsKeyLastname, @Value(
-        "${okr.jwt.claim.email}"
-    ) final String tokenClaimsKeyEmail) {
+    public JwtHelper(TenantConfigProvider tenantConfigProvider,
+                     @Value("${okr.jwt.claim.firstname}") final String tokenClaimsKeyFirstname,
+                     @Value("${okr.jwt.claim.lastname}") final String tokenClaimsKeyLastname,
+                     @Value("${okr.jwt.claim.email}") final String tokenClaimsKeyEmail) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.firstname = tokenClaimsKeyFirstname;
         this.lastname = tokenClaimsKeyLastname;

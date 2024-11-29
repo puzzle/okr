@@ -25,9 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class TeamValidationServiceTest {
     @MockBean
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);

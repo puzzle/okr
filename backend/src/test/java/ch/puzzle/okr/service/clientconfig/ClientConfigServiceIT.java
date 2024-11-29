@@ -24,9 +24,7 @@ class ClientConfigServiceIT {
     private ClientConfigService clientConfigService;
 
     @ParameterizedTest
-    @MethodSource(
-        "tenantConfigs"
-    )
+    @MethodSource("tenantConfigs")
     void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname, String activeProfile,
                                                                              String issuer, String clientId) {
 

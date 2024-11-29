@@ -13,9 +13,7 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     private final Map<String, TenantConfig> tenantConfigs = new HashMap<>();
     private final Environment env;
 
-    public TenantConfigProvider(final @Value(
-        "${okr.tenant-ids}"
-    ) String[] tenantIds, Environment env) {
+    public TenantConfigProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {
         this.env = env;
         for (String tenantId : tenantIds) {
             OauthConfig c = readOauthConfig(tenantId);

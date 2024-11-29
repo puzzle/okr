@@ -30,9 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class CompletedValidationServiceTest {
     @MockBean
     CompletedPersistenceService completedPersistenceService = Mockito.mock(CompletedPersistenceService.class);
@@ -128,9 +126,7 @@ class CompletedValidationServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource(
-        "nameValidationArguments"
-    )
+    @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         // arrange
         Completed completed = Completed.Builder.builder().withObjective(this.objective).withComment(comment).build();
@@ -159,9 +155,7 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName(
-        "validateOnUpdate() should throw exception"
-    )
+    @DisplayName("validateOnUpdate() should throw exception")
     @Test
     void validateOnUpdateShouldThrowException() {
         // arrange

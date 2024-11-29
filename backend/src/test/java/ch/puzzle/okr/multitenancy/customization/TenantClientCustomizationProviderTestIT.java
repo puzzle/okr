@@ -60,13 +60,9 @@ public class TenantClientCustomizationProviderTestIT {
         return tenantId + "_";
     }
 
-    @DisplayName(
-        "getTenantClientCustomizationsById() should return TenantClientCustomization"
-    )
+    @DisplayName("getTenantClientCustomizationsById() should return TenantClientCustomization")
     @ParameterizedTest
-    @CsvSource(
-        {"pitc", "acme"}
-    )
+    @CsvSource({"pitc", "acme"})
     void getTenantClientCustomizationsByIdShouldReturnTenantClientCustomization(String tenantId) {
         // arrange
         TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(tenantIds, env);

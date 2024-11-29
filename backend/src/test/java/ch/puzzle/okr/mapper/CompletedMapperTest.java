@@ -21,9 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 public class CompletedMapperTest {
     private static final long COMPLETED_ID = 0L;
     private static final String COMPLETED_COMMENT = "some comment";
@@ -48,9 +46,7 @@ public class CompletedMapperTest {
         completedMapper = new CompletedMapper(objectiveMapper);
     }
 
-    @DisplayName(
-        "toDo() should map Completed to Dto"
-    )
+    @DisplayName("toDo() should map Completed to Dto")
     @Test
     void toDtoShouldMapCompletedToDto() {
         // arrange
@@ -82,9 +78,7 @@ public class CompletedMapperTest {
         assertEquals(expected.getObjective().getId(), actual.objective().id());
     }
 
-    @DisplayName(
-        "toCompleted() should map Dto to Completed"
-    )
+    @DisplayName("toCompleted() should map Dto to Completed")
     @Test
     void toCompletedShouldMapDtoToCompleted() {
         // arrange

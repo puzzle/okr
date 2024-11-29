@@ -23,9 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class TeamAuthorizationServiceTest {
 
     @Mock
@@ -132,9 +130,7 @@ class TeamAuthorizationServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            booleans = {true, false}
-    )
+    @ValueSource(booleans = {true, false})
     void getAllTeamsShouldReturnAllTeams(boolean isWriteable) {
         List<Team> teamList = List.of(teamUnderTest, teamUnderTest);
         if (isWriteable) {

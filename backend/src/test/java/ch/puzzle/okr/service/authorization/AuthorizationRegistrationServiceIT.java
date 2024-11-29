@@ -83,9 +83,7 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(user.getId());
     }
 
-    @DisplayName(
-        "registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false"
-    )
+    @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
     @Test
     void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
         // arrange
@@ -119,9 +117,7 @@ class AuthorizationRegistrationServiceIT {
      * champion. - the OkrChampion status must manually be reset (in the tearDown method) </pre>
      */
     @Test
-    @DisplayName(
-        "registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true"
-    )
+    @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
     void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
         // arrange
         assertOkrChampionStatusInDb(EMAIL_WUNDERLAND, false); // pre-condition

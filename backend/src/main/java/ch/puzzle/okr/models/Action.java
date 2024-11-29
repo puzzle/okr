@@ -10,42 +10,21 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 @Entity
 public class Action implements WriteableInterface {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO,
-            generator = "sequence_action"
-    )
-    @SequenceGenerator(
-            name = "sequence_action",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_action")
+    @SequenceGenerator(name = "sequence_action", allocationSize = 1)
     private Long id;
 
     @Version
     private int version;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @Size(
-            max = 4096,
-            message = MessageKey.ATTRIBUTE_SIZE_BETWEEN
-    )
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String action;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    private int priority;
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private int priority;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    private boolean isChecked;
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) private boolean isChecked;
 
-    @NotNull(
-            message = MessageKey.ATTRIBUTE_NOT_NULL
-    )
-    @ManyToOne
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) @ManyToOne
     private KeyResult keyResult;
 
     private transient boolean writeable;

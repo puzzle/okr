@@ -17,9 +17,7 @@ public class UserUpdateHelperTest {
         helper = new AuthorizationRegistrationService.UserUpdateHelper();
     }
 
-    @DisplayName(
-        "update userFromDB with Firstname and Lastname from token"
-    )
+    @DisplayName("update userFromDB with Firstname and Lastname from token")
     @Test
     void updateUserFromWithTokenData() {
         // arrange

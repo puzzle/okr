@@ -15,9 +15,7 @@ public class FlywayMultitenantConfig {
         return flyway -> flywayMigration.migrateFlyway();
     }
 
-    @Bean(
-        "customKeyGenerator"
-    )
+    @Bean("customKeyGenerator")
     public KeyGenerator keyGenerator() {
         return new UserKeyGenerator();
     }

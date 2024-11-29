@@ -23,9 +23,7 @@ public class HibernateContextTest {
         resetHibernateConfig();
     }
 
-    @DisplayName(
-        "setHibernateConfig() should throw exception if db config is null"
-    )
+    @DisplayName("setHibernateConfig() should throw exception if db config is null")
     @Test
     void setHibernateConfigShouldThrowExceptionIfDbConfigIsNull() {
         // arrange
@@ -36,13 +34,9 @@ public class HibernateContextTest {
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
 
-    @DisplayName(
-        "setHibernateConfig() should throw exception if db config has null or empty values"
-    )
+    @DisplayName("setHibernateConfig() should throw exception if db config has null or empty values")
     @ParameterizedTest
-    @MethodSource(
-        "invalidDbConfig"
-    )
+    @MethodSource("invalidDbConfig")
     void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username,
                                                                               String password, String tenant) {
 
@@ -65,9 +59,7 @@ public class HibernateContextTest {
                          Arguments.of("url", "username", "password", ""));
     }
 
-    @DisplayName(
-        "extractAndSetHibernateConfig() should extract hibernate properties from environment and set it"
-    )
+    @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and set it")
     @Test
     void extractAndSetHibernateConfigShouldExtractHibernatePropertiesFromEnvironmentAndSetIt() {
         // arrange
@@ -88,9 +80,7 @@ public class HibernateContextTest {
         assertProperties(url, username, password, multiTenancy, hibernateProperties);
     }
 
-    @DisplayName(
-        "getHibernateConfig() should throw exception if setHibernateConfig() is not called before with valid configuration"
-    )
+    @DisplayName("getHibernateConfig() should throw exception if setHibernateConfig() is not called before with valid configuration")
     @Test
     void getHibernateConfigShouldThrowExceptionIfSetHibernateConfigIsNotCalledBeforeWithValidConfiguration() {
         // arrange
@@ -100,9 +90,7 @@ public class HibernateContextTest {
         assertEquals("No cached hibernate configuration found", exception.getMessage());
     }
 
-    @DisplayName(
-        "getHibernateConfig() should return hibernate config as properties if db config is valid"
-    )
+    @DisplayName("getHibernateConfig() should return hibernate config as properties if db config is valid")
     @Test
     void getHibernateConfigShouldReturnHibernateConfigAsPropertiesIfDbConfigIsValid() {
         // arrange

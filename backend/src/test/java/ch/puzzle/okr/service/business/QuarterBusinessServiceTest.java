@@ -31,9 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class QuarterBusinessServiceTest {
     @Mock
     QuarterPersistenceService quarterPersistenceService;
@@ -106,9 +104,7 @@ class QuarterBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            ints = {1, 2, 4, 5, 7, 8, 10, 11}
-    )
+    @ValueSource(ints = {1, 2, 4, 5, 7, 8, 10, 11})
     void shouldNotGenerateQuarterIfNotLastMonth(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
@@ -118,9 +114,7 @@ class QuarterBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            ints = {3, 6, 9, 12}
-    )
+    @ValueSource(ints = {3, 6, 9, 12})
     void shouldGenerateQuarterIfLastMonth(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
@@ -139,9 +133,7 @@ class QuarterBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource(
-        "generateQuarterParams"
-    )
+    @MethodSource("generateQuarterParams")
     void shouldGenerateCorrectQuarter(int quarterStart, String quarterFormat, YearMonth currentYearMonth,
                                       String expectedLabel) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", quarterStart);
@@ -194,12 +186,8 @@ class QuarterBusinessServiceTest {
                          Arguments.of(10, 12, 1));
     }
 
-    @ParameterizedTest(
-            name = "Start month={0}, current month={1} => quarter={2}"
-    )
-    @MethodSource(
-        "getQuartersParams"
-    )
+    @ParameterizedTest(name = "Start month={0}, current month={1} => quarter={2}")
+    @MethodSource("getQuartersParams")
     void shouldGetQuartersBasedOnStart(int start, int month, int quarter) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", start);
         Map<Integer, Integer> quarters = quarterBusinessService.generateQuarters();

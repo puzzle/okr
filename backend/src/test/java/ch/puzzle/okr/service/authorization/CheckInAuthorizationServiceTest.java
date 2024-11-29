@@ -19,9 +19,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class CheckInAuthorizationServiceTest {
     @InjectMocks
     private CheckInAuthorizationService checkInAuthorizationService;

@@ -20,9 +20,7 @@ public class Overview implements WriteableInterface {
     private String teamName;
     private int teamVersion;
     private String objectiveTitle;
-    @Enumerated(
-        EnumType.STRING
-    )
+    @Enumerated(EnumType.STRING)
     private State objectiveState;
     private LocalDateTime objectiveCreatedOn;
     private Long quarterId;

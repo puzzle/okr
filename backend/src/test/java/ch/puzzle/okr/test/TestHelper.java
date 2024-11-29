@@ -69,11 +69,8 @@ public class TestHelper {
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user) {
-        return mockAuthorizationUser(user.getId(),
-                                     user.getFirstname(),
-                                     user.getLastname(),
-                                     user.getEmail(),
-                                     user.isOkrChampion());
+        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), user
+                                                                                                                 .isOkrChampion());
     }
 
     public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email, boolean isOkrChampion) {

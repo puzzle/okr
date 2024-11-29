@@ -113,8 +113,9 @@ class CompletedPersistenceServiceIT {
 
         assertNotNull(savedCompleted.getId());
         assertEquals("War leider nicht moeglich", savedCompleted.getComment());
-        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.",
-                     savedCompleted.getObjective().getTitle());
+        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.", savedCompleted
+                                                                                                                   .getObjective()
+                                                                                                                   .getTitle());
     }
 
     @Test

@@ -25,9 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class ActionAuthorizationServiceTest {
     @InjectMocks
     private ActionAuthorizationService actionAuthorizationService;
@@ -55,9 +53,7 @@ class ActionAuthorizationServiceTest {
     private final List<Action> actionList = List.of(action1, action2);
 
     @ParameterizedTest
-    @ValueSource(
-            booleans = {true, false}
-    )
+    @ValueSource(booleans = {true, false})
     void getActionsByKeyResultShouldReturnListOfActions(boolean isWriteable) {
         keyResult.setWriteable(isWriteable);
         when(actionBusinessService.getActionsByKeyResultId(anyLong())).thenReturn(actionList);
@@ -91,8 +87,8 @@ class ActionAuthorizationServiceTest {
                                                                                                               .getKeyResult(),
                                                                                                     authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> actionAuthorizationService.createEntities(actionList));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService
+                                                                                                                        .createEntities(actionList));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -115,8 +111,8 @@ class ActionAuthorizationServiceTest {
                                                                                                               .getKeyResult(),
                                                                                                     authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> actionAuthorizationService.updateEntities(actionList));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService
+                                                                                                                        .updateEntities(actionList));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -140,8 +136,8 @@ class ActionAuthorizationServiceTest {
                                                                              .hasRoleDeleteByActionId(id,
                                                                                                       authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> actionAuthorizationService.deleteActionByActionId(id));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService
+                                                                                                                        .deleteActionByActionId(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }

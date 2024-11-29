@@ -44,14 +44,14 @@ public class AlignmentSelectionMapper {
     }
 
     private AlignmentObjectiveDto createObjectiveDto(AlignmentSelection alignment) {
-        return new AlignmentObjectiveDto(alignment.getAlignmentSelectionId().getObjectiveId(),
-                                         alignment.getObjectiveTitle(),
+        return new AlignmentObjectiveDto(alignment.getAlignmentSelectionId().getObjectiveId(), alignment
+                                                                                                        .getObjectiveTitle(),
                                          new ArrayList<>());
     }
 
     private AlignmentKeyResultDto createKeyResultDto(AlignmentSelection alignment) {
-        return new AlignmentKeyResultDto(alignment.getAlignmentSelectionId().getKeyResultId(),
-                                         alignment.getKeyResultTitle());
+        return new AlignmentKeyResultDto(alignment.getAlignmentSelectionId().getKeyResultId(), alignment
+                                                                                                        .getKeyResultTitle());
     }
 
     private boolean isValidId(Long id) {

@@ -151,10 +151,7 @@ class OkrArchitectureTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(
-            resources = "/repositoriesAndPersistenceServices.csv",
-            numLinesToSkip = 1
-    )
+    @CsvFileSource(resources = "/repositoriesAndPersistenceServices.csv", numLinesToSkip = 1)
     void repositoriesShouldOnlyBeCalledFromPersistenceServicesAndValidationService(String repository, String persistenceService, String validationService) {
         JavaClasses importedClasses = getMainSourceClasses();
 
@@ -172,9 +169,7 @@ class OkrArchitectureTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            strings = {"controller", "service", "mapper", "repository", "dto", "exception"}
-    )
+    @ValueSource(strings = {"controller", "service", "mapper", "repository", "dto", "exception"})
     void classesInRightPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 

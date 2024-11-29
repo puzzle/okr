@@ -69,8 +69,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
             if (isKeyResultTypeChangeable(id)) {
                 logger.debug("keyResultType has changed and is changeable, {}", keyResult);
                 validator.validateOnUpdate(id, keyResult);
-                return new KeyResultWithActionList(recreateEntity(id, keyResult, actionList),
-                                                   actionBusinessService.createEntities(actionList));
+                return new KeyResultWithActionList(recreateEntity(id, keyResult, actionList), actionBusinessService
+                                                                                                                   .createEntities(actionList));
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());
                 savedKeyResult.setDescription(keyResult.getDescription());

@@ -48,15 +48,15 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
 
     void throwExceptionWhenKeyResultHasChanged(Action action, Action savedAction) {
         if (action.getKeyResult() == null || savedAction.getKeyResult() == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 MessageKey.ATTRIBUTE_NOT_NULL,
-                                                 List.of(Constants.KEY_RESULT, Constants.ACTION));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, MessageKey.ATTRIBUTE_NOT_NULL, List.of(
+                                                                                                                Constants.KEY_RESULT,
+                                                                                                                Constants.ACTION));
         }
 
         if (!Objects.equals(action.getKeyResult().getId(), savedAction.getKeyResult().getId())) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
-                                                 List.of(Constants.KEY_RESULT, Constants.ACTION));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE, List.of(
+                                                                                                                   Constants.KEY_RESULT,
+                                                                                                                   Constants.ACTION));
         }
     }
 }

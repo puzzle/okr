@@ -30,9 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     @InjectMocks @Spy
@@ -140,9 +138,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            booleans = {false, true}
-    )
+    @ValueSource(booleans = {false, true})
     void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";
@@ -182,8 +178,7 @@ class ObjectiveBusinessServiceTest {
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
-        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(),
-                                                                        changedObjective,
+        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
                                                                         authorizationUser);
 
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
@@ -226,8 +221,7 @@ class ObjectiveBusinessServiceTest {
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
-                                                                                    newObjective,
-                                                                                    authorizationUser);
+                                                                                    newObjective, authorizationUser);
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());

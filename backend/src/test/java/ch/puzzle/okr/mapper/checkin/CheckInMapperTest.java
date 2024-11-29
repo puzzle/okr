@@ -26,9 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 public class CheckInMapperTest {
 
     private CheckInMapper checkInMapper;
@@ -46,9 +44,7 @@ public class CheckInMapperTest {
         checkInMapper = new CheckInMapper(checkInMetricMapper, checkInOrdinalMapper);
     }
 
-    @DisplayName(
-        "toDto() should map CheckInMetric to CheckInMetricDto"
-    )
+    @DisplayName("toDto() should map CheckInMetric to CheckInMetricDto")
     @Test
     void toDtoShouldMapCheckInMetricToCheckInMetricDto() {
         // arrange
@@ -61,9 +57,7 @@ public class CheckInMapperTest {
         assertEquals(CheckInMetricDto.class, checkInDto.getClass());
     }
 
-    @DisplayName(
-        "toDto() should map CheckInOrdinal to a CheckInOrdinalDto"
-    )
+    @DisplayName("toDto() should map CheckInOrdinal to a CheckInOrdinalDto")
     @Test
     void toDtoShouldMapCheckInOrdinalToCheckInOrdinalDto() {
         // arrange
@@ -76,9 +70,7 @@ public class CheckInMapperTest {
         assertEquals(CheckInOrdinalDto.class, checkInDto.getClass());
     }
 
-    @DisplayName(
-        "toCheckIn() should map Dto to CheckInMetric"
-    )
+    @DisplayName("toCheckIn() should map Dto to CheckInMetric")
     @Test
     void toCheckInShouldMapDtoToCheckInMetric() {
         // arrange
@@ -94,9 +86,7 @@ public class CheckInMapperTest {
         assertEquals(CheckInMetric.class, check.getClass());
     }
 
-    @DisplayName(
-        "toCheckIn() should map Dto to CheckInOrdinal"
-    )
+    @DisplayName("toCheckIn() should map Dto to CheckInOrdinal")
     @Test
     void toCheckInShouldMapDtoToCheckInOrdinal() {
         // arrange
@@ -112,9 +102,7 @@ public class CheckInMapperTest {
         assertEquals(CheckInOrdinal.class, check.getClass());
     }
 
-    @DisplayName(
-        "toDto() should throw Exception if CheckIn is not Metric or Ordinal"
-    )
+    @DisplayName("toDto() should throw Exception if CheckIn is not Metric or Ordinal")
     @Test
     void toDtoShouldThrowExceptionIfCheckInIsNotMetricOrOrdinal() {
         // arrange
@@ -127,9 +115,7 @@ public class CheckInMapperTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
-    @DisplayName(
-        "toCheckIn() should throw Exception if CheckIn is not MetricDto or OrdinalDto"
-    )
+    @DisplayName("toCheckIn() should throw Exception if CheckIn is not MetricDto or OrdinalDto")
     @Test
     void toCheckInShouldThrowExceptionIfCheckInIsNotMetricOrOrdinal() {
         // arrange

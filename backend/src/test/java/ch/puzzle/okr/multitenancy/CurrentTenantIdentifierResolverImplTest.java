@@ -8,9 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CurrentTenantIdentifierResolverImplTest {
 
-    @DisplayName(
-        "current TenantId is TenantId from TenantContext"
-    )
+    @DisplayName("current TenantId is TenantId from TenantContext")
     @Test
     void currentTenantIdIsTenantIdFromTenantContext() {
         CurrentTenantIdentifierResolverImpl resolver = new CurrentTenantIdentifierResolverImpl();
@@ -18,9 +16,7 @@ public class CurrentTenantIdentifierResolverImplTest {
         assertEquals(TenantContext.getCurrentTenant(), tenantIdentifier);
     }
 
-    @DisplayName(
-        "validateExistingCurrentSessions is true"
-    )
+    @DisplayName("validateExistingCurrentSessions is true")
     @Test
     void validateExistingCurrentSessionsIsTrue() {
         CurrentTenantIdentifierResolverImpl resolver = new CurrentTenantIdentifierResolverImpl();

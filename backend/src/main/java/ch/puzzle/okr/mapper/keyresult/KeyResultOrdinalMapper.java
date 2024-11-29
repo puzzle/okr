@@ -31,8 +31,8 @@ public class KeyResultOrdinalMapper {
     }
 
     public KeyResultDto toDto(KeyResultOrdinal keyResult, List<Action> actionList) {
-        KeyResultUserDto ownerDto = new KeyResultUserDto(keyResult.getOwner().getId(),
-                                                         keyResult.getOwner().getFirstname(),
+        KeyResultUserDto ownerDto = new KeyResultUserDto(keyResult.getOwner().getId(), keyResult.getOwner()
+                                                                                                .getFirstname(),
                                                          keyResult.getOwner().getLastname());
 
         KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(keyResult.getObjective().getQuarter().getId(),
@@ -40,26 +40,19 @@ public class KeyResultOrdinalMapper {
                                                                  keyResult.getObjective().getQuarter().getStartDate(),
                                                                  keyResult.getObjective().getQuarter().getEndDate());
 
-        KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective().getId(),
-                                                                       keyResult.getObjective().getState().toString(),
+        KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective().getId(), keyResult
+                                                                                                                  .getObjective()
+                                                                                                                  .getState()
+                                                                                                                  .toString(),
                                                                        quarterDto);
 
         KeyResultLastCheckInOrdinalDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
 
-        return new KeyResultOrdinalDto(keyResult.getId(),
-                                       keyResult.getVersion(),
-                                       keyResult.getKeyResultType(),
-                                       keyResult.getTitle(),
-                                       keyResult.getDescription(),
-                                       keyResult.getCommitZone(),
-                                       keyResult.getTargetZone(),
-                                       keyResult.getStretchZone(),
-                                       ownerDto,
-                                       objectiveDto,
-                                       lastCheckInDto,
-                                       keyResult.getCreatedOn(),
-                                       keyResult.getModifiedOn(),
-                                       keyResult.isWriteable(),
+        return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
+                                       keyResult.getTitle(), keyResult.getDescription(), keyResult.getCommitZone(),
+                                       keyResult.getTargetZone(), keyResult.getStretchZone(), ownerDto, objectiveDto,
+                                       lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn(), keyResult
+                                                                                                                     .isWriteable(),
                                        actionList.stream().map(actionMapper::toDto).toList());
     }
 
@@ -85,12 +78,9 @@ public class KeyResultOrdinalMapper {
         if (lastCheckIn == null) {
             return null;
         }
-        return new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(),
-                                                  lastCheckIn.getVersion(),
-                                                  ((CheckInOrdinal) lastCheckIn).getZone(),
-                                                  lastCheckIn.getConfidence(),
-                                                  lastCheckIn.getCreatedOn(),
-                                                  lastCheckIn.getChangeInfo(),
-                                                  lastCheckIn.getInitiatives());
+        return new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(), lastCheckIn.getVersion(),
+                                                  ((CheckInOrdinal) lastCheckIn).getZone(), lastCheckIn.getConfidence(),
+                                                  lastCheckIn.getCreatedOn(), lastCheckIn.getChangeInfo(), lastCheckIn
+                                                                                                                      .getInitiatives());
     }
 }

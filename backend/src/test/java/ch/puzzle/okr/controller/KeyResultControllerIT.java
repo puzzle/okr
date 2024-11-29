@@ -43,15 +43,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    KeyResultController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(KeyResultController.class)
 class KeyResultControllerIT {
 
     @MockBean
@@ -381,8 +375,7 @@ class KeyResultControllerIT {
     void shouldReturnNotFoundWhenUpdatingKeyResult() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(
                                                                                                keyResultAuthorizationService)
-                                                                                         .updateEntities(any(),
-                                                                                                         any(),
+                                                                                         .updateEntities(any(), any(),
                                                                                                          anyList());
 
         mvc.perform(put(URL_TO_KEY_RESULT_1000).content(PUT_BODY_METRIC)

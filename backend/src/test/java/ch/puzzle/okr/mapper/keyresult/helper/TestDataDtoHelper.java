@@ -25,13 +25,11 @@ public class TestDataDtoHelper {
 
     private static final KeyResultUserDto ownerDto = new KeyResultUserDto(USER_ID, USER_FIRSTNAME, USER_LASTNAME);
 
-    private static final KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(QUARTER_ID,
-                                                                                  QUARTER_LABEL,
-                                                                                  QUARTER_START_DATE,
-                                                                                  QUARTER_END_DATE);
+    private static final KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(QUARTER_ID, QUARTER_LABEL,
+                                                                                  QUARTER_START_DATE, QUARTER_END_DATE);
 
-    private static final KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(OBJECTIVE_ID,
-                                                                                        OBJECTIVE_STATE.name(),
+    private static final KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(OBJECTIVE_ID, OBJECTIVE_STATE
+                                                                                                                     .name(),
                                                                                         quarterDto);
 
     private static final KeyResultLastCheckInMetricDto lastCheckInMetricDto = new KeyResultLastCheckInMetricDto(CHECK_IN_ID,
@@ -57,14 +55,12 @@ public class TestDataDtoHelper {
                                                                                         KEY_RESULT_DESCRIPTION,
                                                                                         KEY_RESULT_BASELINE,
                                                                                         KEY_RESULT_STRETCH_GOAL,
-                                                                                        KEY_RESULT_UNIT,
-                                                                                        ownerDto,
+                                                                                        KEY_RESULT_UNIT, ownerDto,
                                                                                         objectiveDto,
                                                                                         lastCheckInMetricDto,
                                                                                         CHECK_IN_CREATED_ON,
                                                                                         CHECK_IN_MODIFIED_ON,
-                                                                                        CHECK_IN_IS_WRITABLE,
-                                                                                        null // actionList; ony used for keyResultMetric + action -> dto BUT NOT FOR dto -> keyResultMetric
+                                                                                        CHECK_IN_IS_WRITABLE, null // actionList; ony used for keyResultMetric + action -> dto BUT NOT FOR dto -> keyResultMetric
     );
 
     private static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(KEY_RESULT_ID,
@@ -75,13 +71,11 @@ public class TestDataDtoHelper {
                                                                                            KEY_RESULT_COMMIT_ZONE,
                                                                                            KEY_RESULT_TARGET_ZONE,
                                                                                            KEY_RESULT_STRETCH_ZONE,
-                                                                                           ownerDto,
-                                                                                           objectiveDto,
+                                                                                           ownerDto, objectiveDto,
                                                                                            lastCheckInOrdinalDto,
                                                                                            CHECK_IN_CREATED_ON,
                                                                                            CHECK_IN_MODIFIED_ON,
-                                                                                           CHECK_IN_IS_WRITABLE,
-                                                                                           null // actionList; ony used for keyResultOrdinal + action -> dto BUT NOT FOR dto -> keyResultOrdinal
+                                                                                           CHECK_IN_IS_WRITABLE, null // actionList; ony used for keyResultOrdinal + action -> dto BUT NOT FOR dto -> keyResultOrdinal
     );
 
 }

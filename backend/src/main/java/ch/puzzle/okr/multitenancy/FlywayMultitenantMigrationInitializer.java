@@ -11,9 +11,7 @@ public class FlywayMultitenantMigrationInitializer {
     private final TenantConfigProviderInterface tenantConfigProvider;
     private final String[] scriptLocations;
 
-    public FlywayMultitenantMigrationInitializer(TenantConfigProviderInterface tenantConfigProvider, final @Value(
-        "${spring.flyway.locations}"
-    ) String[] scriptLocations) {
+    public FlywayMultitenantMigrationInitializer(TenantConfigProviderInterface tenantConfigProvider, final @Value("${spring.flyway.locations}") String[] scriptLocations) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.scriptLocations = scriptLocations;
     }
@@ -25,8 +23,7 @@ public class FlywayMultitenantMigrationInitializer {
                                                                                               .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
 
             Flyway tenantSchemaFlyway = Flyway.configure()
-                                              .dataSource(dataSourceConfig.url(),
-                                                          dataSourceConfig.name(),
+                                              .dataSource(dataSourceConfig.url(), dataSourceConfig.name(),
                                                           dataSourceConfig.password())
                                               .locations(scriptLocations)
                                               .baselineOnMigrate(Boolean.TRUE)

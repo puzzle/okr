@@ -20,9 +20,7 @@ public class TenantJwtIssuerValidatorTest {
     private static final String PITC = "pitc";
     private static final String ISSUER_URL = "issuerUrl";
 
-    @DisplayName(
-        "validate() throws exception if TenantConfig is not found for Tenant PITC"
-    )
+    @DisplayName("validate() throws exception if TenantConfig is not found for Tenant PITC")
     @Test
     void validateThrowsExceptionIfTenantConfigNotFound() {
         // arrange
@@ -35,15 +33,13 @@ public class TenantJwtIssuerValidatorTest {
 
         // act + assert
         TenantJwtIssuerValidator validator = new TenantJwtIssuerValidator(emptyTenantConfigProvider, jwtHelper);
-        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
-                                                                         () -> validator.validate(token));
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> validator
+                                                                                                                        .validate(token));
 
         assertEquals("unknown tenant", illegalArgumentException.getLocalizedMessage());
     }
 
-    @DisplayName(
-        "validate() return OAuth2TokenValidatorResult if TenantConfig with IssuerUrl is found for Tenant PITC"
-    )
+    @DisplayName("validate() return OAuth2TokenValidatorResult if TenantConfig with IssuerUrl is found for Tenant PITC")
     @Test
     void validateReturnOAuth2TokenValidatorResultIfTenantConfigWithIssuerUrlIsFound() {
         // arrange

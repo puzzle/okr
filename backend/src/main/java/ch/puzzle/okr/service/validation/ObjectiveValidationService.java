@@ -50,33 +50,32 @@ public class ObjectiveValidationService extends
 
     private void throwExceptionWhenModifiedByIsSet(Objective model) {
         if (model.getModifiedBy() != null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.ATTRIBUTE_SET_FORBIDDEN,
-                                                 List.of("ModifiedBy", model.getModifiedBy()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_SET_FORBIDDEN, List.of(
+                                                                                                                   "ModifiedBy",
+                                                                                                                   model.getModifiedBy()));
         }
     }
 
     private void throwExceptionWhenModifiedByIsNull(Objective model) {
         if (model.getModifiedBy() == null) {
-            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                                                 ErrorKey.ATTRIBUTE_NOT_SET,
+            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorKey.ATTRIBUTE_NOT_SET,
                                                  "modifiedBy");
         }
     }
 
     private void throwExceptionWhenTeamHasChanged(Team team, Team savedTeam) {
         if (!Objects.equals(team, savedTeam)) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
-                                                 List.of(TEAM, OBJECTIVE));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE, List.of(TEAM,
+                                                                                                                   OBJECTIVE));
         }
     }
 
     private void throwExceptionWhenNotDraftInBacklogQuarter(Objective model) {
         if (isInvalidBacklogObjective(model)) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.ATTRIBUTE_MUST_BE_DRAFT,
-                                                 List.of(OBJECTIVE, STATE_DRAFT, model.getState()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_MUST_BE_DRAFT, List.of(
+                                                                                                                   OBJECTIVE,
+                                                                                                                   STATE_DRAFT,
+                                                                                                                   model.getState()));
         }
     }
 

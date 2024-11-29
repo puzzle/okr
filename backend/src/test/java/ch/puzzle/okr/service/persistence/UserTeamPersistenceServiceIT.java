@@ -34,9 +34,7 @@ public class UserTeamPersistenceServiceIT {
         TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
     }
 
-    @DisplayName(
-        "delete() should remove single user from team"
-    )
+    @DisplayName("delete() should remove single user from team")
     @Test
     @Transactional
     void deleteShouldRemoveSingleUserFromTeam() {
@@ -59,9 +57,7 @@ public class UserTeamPersistenceServiceIT {
         assertUserIsRemovedFromTeam(ID_OF_USER_ALICE, ID_OF_TEAM_LOREM, 2);
     }
 
-    @DisplayName(
-        "deleteAll() should remove list of users from team"
-    )
+    @DisplayName("deleteAll() should remove list of users from team")
     @Test
     @Transactional
     void deleteAllShouldRemoveListOfUsersFromTeam() {

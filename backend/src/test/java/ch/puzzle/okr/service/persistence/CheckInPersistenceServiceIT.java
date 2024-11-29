@@ -39,9 +39,7 @@ class CheckInPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName(
-        "getCheckInsByKeyResultIdOrderByCheckInDate() should get checkIns by keyResultId and order them by date desc"
-    )
+    @DisplayName("getCheckInsByKeyResultIdOrderByCheckInDate() should get checkIns by keyResultId and order them by date desc")
     @Test
     void getCheckInsByKeyResultIdOrderByCheckInDateShouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
         // act
@@ -59,9 +57,7 @@ class CheckInPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName(
-        "getLastCheckInOfKeyResult() should get last checkIn of keyResult"
-    )
+    @DisplayName("getLastCheckInOfKeyResult() should get last checkIn of keyResult")
     @Test
     void getLastCheckInOfKeyResultShouldGetLastCheckInOfKeyResult() {
         // act
@@ -81,9 +77,7 @@ class CheckInPersistenceServiceIT {
         }
     }
 
-    @DisplayName(
-        "getModelName() should return checkIn"
-    )
+    @DisplayName("getModelName() should return checkIn")
     @Test
     void getModelNameShouldReturnCheckIn() {
         assertEquals(CHECK_IN, checkInPersistenceService.getModelName());

@@ -27,9 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@ExtendWith(
-    MockitoExtension.class
-)
+@ExtendWith(MockitoExtension.class)
 class KeyResultAuthorizationServiceTest {
     @InjectMocks
     private KeyResultAuthorizationService keyResultAuthorizationService;
@@ -106,9 +104,8 @@ class KeyResultAuthorizationServiceTest {
                                                                                                  new KeyResultWithActionList(metricKeyResult,
                                                                                                                              List.of()));
 
-        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id,
-                                                                                         metricKeyResult,
-                                                                                         List.of());
+        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id, metricKeyResult, List
+                                                                                                                  .of());
         assertEquals(metricKeyResult, KeyResult.keyResult());
     }
 
@@ -173,9 +170,7 @@ class KeyResultAuthorizationServiceTest {
         assertThat(List.of(checkIn1, checkIn1)).hasSameElementsAs(checkIns);
     }
 
-    @DisplayName(
-        "getAllCheckInsByKeyResult() should return empty List if no Checkins are found"
-    )
+    @DisplayName("getAllCheckInsByKeyResult() should return empty List if no Checkins are found")
     @Test
     void getAllCheckInsByKeyResultShouldReturnEmptyListIfNoCheckinsAreFound() {
         long id = 13L;

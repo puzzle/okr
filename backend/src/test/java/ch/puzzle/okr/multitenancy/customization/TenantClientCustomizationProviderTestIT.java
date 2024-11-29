@@ -46,8 +46,7 @@ public class TenantClientCustomizationProviderTestIT {
         mockProperty("okr.tenants.{0}.clientcustomization.favicon", FAVICON, id);
         mockProperty("okr.tenants.{0}.clientcustomization.title", TITLE, id);
         mockProperty("okr.tenants.{0}.clientcustomization.helpSiteUrl", HELP_SITE_URL, id);
-        mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color",
-                     CUSTOM_STYLE_VALUE,
+        mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color", CUSTOM_STYLE_VALUE,
                      id);
     }
 
@@ -60,13 +59,9 @@ public class TenantClientCustomizationProviderTestIT {
         return tenantId + "_";
     }
 
-    @DisplayName(
-        "getTenantClientCustomizationsById() should return TenantClientCustomization"
-    )
+    @DisplayName("getTenantClientCustomizationsById() should return TenantClientCustomization")
     @ParameterizedTest
-    @CsvSource(
-        {"pitc", "acme"}
-    )
+    @CsvSource({"pitc", "acme"})
     void getTenantClientCustomizationsByIdShouldReturnTenantClientCustomization(String tenantId) {
         // arrange
         TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(tenantIds, env);

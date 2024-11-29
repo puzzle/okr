@@ -32,15 +32,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    ObjectiveController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
@@ -98,28 +92,12 @@ class ObjectiveControllerIT {
                                                                     .withDescription(DESCRIPTION)
                                                                     .withModifiedOn(LocalDateTime.MAX)
                                                                     .build();
-    private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L,
-                                                                       1,
-                                                                       OBJECTIVE_TITLE_1,
-                                                                       1L,
-                                                                       1L,
-                                                                       "GJ 22/23-Q2",
-                                                                       DESCRIPTION,
-                                                                       State.DRAFT,
-                                                                       LocalDateTime.MAX,
-                                                                       LocalDateTime.MAX,
-                                                                       true);
-    private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L,
-                                                                       1,
-                                                                       OBJECTIVE_TITLE_2,
-                                                                       1L,
-                                                                       1L,
-                                                                       "GJ 22/23-Q2",
-                                                                       DESCRIPTION,
-                                                                       State.DRAFT,
-                                                                       LocalDateTime.MIN,
-                                                                       LocalDateTime.MIN,
-                                                                       true);
+    private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L, "GJ 22/23-Q2",
+                                                                       DESCRIPTION, State.DRAFT, LocalDateTime.MAX,
+                                                                       LocalDateTime.MAX, true);
+    private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, "GJ 22/23-Q2",
+                                                                       DESCRIPTION, State.DRAFT, LocalDateTime.MIN,
+                                                                       LocalDateTime.MIN, true);
 
     @Autowired
     private MockMvc mvc;
@@ -157,17 +135,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(null,
-                                                      1,
-                                                      "Program Faster",
-                                                      1L,
-                                                      1L,
-                                                      "GJ 22/23-Q2",
-                                                      "Just be faster",
-                                                      State.DRAFT,
-                                                      null,
-                                                      null,
-                                                      true);
+        ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "GJ 22/23-Q2",
+                                                      "Just be faster", State.DRAFT, null, null, true);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
@@ -194,17 +163,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L,
-                                                      1,
-                                                      TITLE,
-                                                      1L,
-                                                      1L,
-                                                      "GJ 22/23-Q2",
-                                                      EVERYTHING_FINE_DESCRIPTION,
-                                                      State.NOTSUCCESSFUL,
-                                                      LocalDateTime.MIN,
-                                                      LocalDateTime.MAX,
-                                                      true);
+        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", EVERYTHING_FINE_DESCRIPTION,
+                                                      State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
         Objective objective = Objective.Builder.builder()
                                                .withId(1L)
                                                .withDescription(EVERYTHING_FINE_DESCRIPTION)
@@ -226,17 +186,9 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnImUsed() throws Exception {
-        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L,
-                                                         1,
-                                                         TITLE,
-                                                         1L,
-                                                         1L,
-                                                         "GJ 22/23-Q2",
-                                                         EVERYTHING_FINE_DESCRIPTION,
-                                                         State.SUCCESSFUL,
-                                                         LocalDateTime.MAX,
-                                                         LocalDateTime.MAX,
-                                                         true);
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2",
+                                                         EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL,
+                                                         LocalDateTime.MAX, LocalDateTime.MAX, true);
         Objective objectiveImUsed = Objective.Builder.builder()
                                                      .withId(1L)
                                                      .withDescription(EVERYTHING_FINE_DESCRIPTION)

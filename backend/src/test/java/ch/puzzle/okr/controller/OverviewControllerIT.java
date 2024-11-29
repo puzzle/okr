@@ -32,15 +32,9 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WithMockUser(
-        value = "spring"
-)
-@ExtendWith(
-    MockitoExtension.class
-)
-@WebMvcTest(
-    OverviewController.class
-)
+@WithMockUser(value = "spring")
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(OverviewController.class)
 class OverviewControllerIT {
     @Autowired
     private MockMvc mvc;
@@ -76,23 +70,25 @@ class OverviewControllerIT {
                                                                    .withCheckInValue(15.0)
                                                                    .withConfidence(5)
                                                                    .withCheckInCreatedOn(LocalDateTime.now())
-                                                                   .build(),
-                                                   Overview.Builder.builder()
-                                                                   .withOverviewId(OverviewId.of(1L, 2L, 21L, 41L))
-                                                                   .withTeamName(PUZZLE)
-                                                                   .withObjectiveTitle("Objective 1")
-                                                                   .withObjectiveState(DRAFT)
-                                                                   .withQuarterId(1L)
-                                                                   .withQuarterLabel(QUARTER_LABEL)
-                                                                   .withKeyResultTitle(DESCRIPTION)
-                                                                   .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                                   .withUnit(EUR)
-                                                                   .withBaseline(5.0)
-                                                                   .withStretchGoal(20.0)
-                                                                   .withCheckInValue(15.0)
-                                                                   .withConfidence(5)
-                                                                   .withCheckInCreatedOn(LocalDateTime.now())
-                                                                   .build());
+                                                                   .build(), Overview.Builder.builder()
+                                                                                             .withOverviewId(OverviewId.of(1L,
+                                                                                                                           2L,
+                                                                                                                           21L,
+                                                                                                                           41L))
+                                                                                             .withTeamName(PUZZLE)
+                                                                                             .withObjectiveTitle("Objective 1")
+                                                                                             .withObjectiveState(DRAFT)
+                                                                                             .withQuarterId(1L)
+                                                                                             .withQuarterLabel(QUARTER_LABEL)
+                                                                                             .withKeyResultTitle(DESCRIPTION)
+                                                                                             .withKeyResultType(KEY_RESULT_TYPE_METRIC)
+                                                                                             .withUnit(EUR)
+                                                                                             .withBaseline(5.0)
+                                                                                             .withStretchGoal(20.0)
+                                                                                             .withCheckInValue(15.0)
+                                                                                             .withConfidence(5)
+                                                                                             .withCheckInCreatedOn(LocalDateTime.now())
+                                                                                             .build());
     static List<Overview> overviewOKR = List.of(Overview.Builder.builder()
                                                                 .withOverviewId(OverviewId.of(2L, 5L, 20L, 40L))
                                                                 .withTeamName("OKR")
@@ -108,23 +104,25 @@ class OverviewControllerIT {
                                                                 .withCheckInValue(15.0)
                                                                 .withConfidence(5)
                                                                 .withCheckInCreatedOn(LocalDateTime.now())
-                                                                .build(),
-                                                Overview.Builder.builder()
-                                                                .withOverviewId(OverviewId.of(2L, 7L, 21L, 41L))
-                                                                .withTeamName("OKR")
-                                                                .withObjectiveTitle("Objective 7")
-                                                                .withObjectiveState(ONGOING)
-                                                                .withQuarterId(1L)
-                                                                .withQuarterLabel(QUARTER_LABEL)
-                                                                .withKeyResultTitle(DESCRIPTION)
-                                                                .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                                .withUnit(FTE)
-                                                                .withBaseline(5.0)
-                                                                .withStretchGoal(20.0)
-                                                                .withCheckInValue(15.0)
-                                                                .withConfidence(5)
-                                                                .withCheckInCreatedOn(LocalDateTime.now())
-                                                                .build());
+                                                                .build(), Overview.Builder.builder()
+                                                                                          .withOverviewId(OverviewId.of(2L,
+                                                                                                                        7L,
+                                                                                                                        21L,
+                                                                                                                        41L))
+                                                                                          .withTeamName("OKR")
+                                                                                          .withObjectiveTitle("Objective 7")
+                                                                                          .withObjectiveState(ONGOING)
+                                                                                          .withQuarterId(1L)
+                                                                                          .withQuarterLabel(QUARTER_LABEL)
+                                                                                          .withKeyResultTitle(DESCRIPTION)
+                                                                                          .withKeyResultType(KEY_RESULT_TYPE_METRIC)
+                                                                                          .withUnit(FTE)
+                                                                                          .withBaseline(5.0)
+                                                                                          .withStretchGoal(20.0)
+                                                                                          .withCheckInValue(15.0)
+                                                                                          .withConfidence(5)
+                                                                                          .withCheckInCreatedOn(LocalDateTime.now())
+                                                                                          .build());
 
     static Overview overviewKuchen = Overview.Builder.builder()
                                                      .withOverviewId(OverviewId.of(3L, 8L, 20L, 40L))

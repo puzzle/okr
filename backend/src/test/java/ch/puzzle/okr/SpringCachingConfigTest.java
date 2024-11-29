@@ -65,7 +65,7 @@ class SpringCachingConfigTest {
     }
 
     private void assertEqualUsers(AuthorizationUser expectedAuthorizationUser,
-            AuthorizationUser actualAuthorizationUser) {
+                                  AuthorizationUser actualAuthorizationUser) {
 
         User expcetedUser = expectedAuthorizationUser.user();
         User actualUser = actualAuthorizationUser.user();

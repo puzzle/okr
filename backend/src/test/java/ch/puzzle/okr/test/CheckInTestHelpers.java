@@ -80,8 +80,26 @@ public class CheckInTestHelpers {
                                                                        .build();
 
     /* Test DTOs */
-    public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L, 1, CHANGE_INFO_1, INITIATIVES_1, 6, 1L, LocalDateTime.MAX, LocalDateTime.MAX, 46D, true);
-    public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, 1, CHANGE_INFO_2, INITIATIVES_2, 5, 2L, LocalDateTime.MAX, LocalDateTime.MAX, Zone.COMMIT, true);
+    public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L,
+                                                                           1,
+                                                                           CHANGE_INFO_1,
+                                                                           INITIATIVES_1,
+                                                                           6,
+                                                                           1L,
+                                                                           LocalDateTime.MAX,
+                                                                           LocalDateTime.MAX,
+                                                                           46D,
+                                                                           true);
+    public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L,
+                                                                             1,
+                                                                             CHANGE_INFO_2,
+                                                                             INITIATIVES_2,
+                                                                             5,
+                                                                             2L,
+                                                                             LocalDateTime.MAX,
+                                                                             LocalDateTime.MAX,
+                                                                             Zone.COMMIT,
+                                                                             true);
 
     private CheckInTestHelpers() {
     }

@@ -41,7 +41,9 @@ public class KeyResultValidationService
 
     private static void throwExceptionWhenObjectiveHasChanged(KeyResult keyResult, KeyResult savedKeyResult) {
         if (!Objects.equals(keyResult.getObjective().getId(), savedKeyResult.getObjective().getId())) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE, List.of(Constants.OBJECTIVE, Constants.KEY_RESULT));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
+                                                 List.of(Constants.OBJECTIVE, Constants.KEY_RESULT));
         }
     }
 }

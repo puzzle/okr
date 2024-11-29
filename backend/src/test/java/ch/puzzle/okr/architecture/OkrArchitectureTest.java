@@ -153,7 +153,8 @@ class OkrArchitectureTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/repositoriesAndPersistenceServices.csv", numLinesToSkip = 1)
     void repositoriesShouldOnlyBeCalledFromPersistenceServicesAndValidationService(String repository,
-            String persistenceService, String validationService) {
+                                                                                   String persistenceService,
+                                                                                   String validationService) {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes().that()
@@ -207,11 +208,16 @@ class OkrArchitectureTest {
                                                                                      .whereLayer("AuthorizationService")
                                                                                      .mayOnlyBeAccessedByLayers("Controller")
                                                                                      .whereLayer("BusinessService")
-                                                                                     .mayOnlyBeAccessedByLayers("Controller", "AuthorizationService", "Mapper", "BusinessService")
+                                                                                     .mayOnlyBeAccessedByLayers("Controller",
+                                                                                                                "AuthorizationService",
+                                                                                                                "Mapper",
+                                                                                                                "BusinessService")
                                                                                      .whereLayer("ValidationService")
                                                                                      .mayOnlyBeAccessedByLayers("BusinessService")
                                                                                      .whereLayer("PersistenceService")
-                                                                                     .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService")
+                                                                                     .mayOnlyBeAccessedByLayers("BusinessService",
+                                                                                                                "PersistenceService",
+                                                                                                                "ValidationService")
                                                                                      .whereLayer("Repository")
                                                                                      .mayOnlyBeAccessedByLayers("PersistenceService");
         layeredArchitecture.check(importedClasses);

@@ -35,9 +35,13 @@ public class QuarterValidationService
     public static void throwExceptionWhenStartEndDateQuarterIsNull(Quarter model) {
         if (!model.getLabel().equals(BACK_LOG_QUARTER_LABEL)) {
             if (model.getStartDate() == null) {
-                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL, List.of("StartDate", model.getLabel()));
+                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                     ErrorKey.ATTRIBUTE_NULL,
+                                                     List.of("StartDate", model.getLabel()));
             } else if (model.getEndDate() == null) {
-                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL, List.of("EndDate", model.getLabel()));
+                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                     ErrorKey.ATTRIBUTE_NULL,
+                                                     List.of("EndDate", model.getLabel()));
             }
 
         }
@@ -45,9 +49,13 @@ public class QuarterValidationService
 
     public void validateOnGeneration(Quarter quarter) {
         if (quarter.getStartDate() == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL, List.of("StartDate", quarter.getLabel()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.ATTRIBUTE_NULL,
+                                                 List.of("StartDate", quarter.getLabel()));
         } else if (quarter.getEndDate() == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL, List.of("EndDate", quarter.getLabel()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.ATTRIBUTE_NULL,
+                                                 List.of("EndDate", quarter.getLabel()));
         }
     }
 }

@@ -373,8 +373,9 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnNotFoundWhenUpdatingKeyResult() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultAuthorizationService)
-                                                                                         .updateEntities(any(), any(), anyList());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                            "Keyresult not found")).when(keyResultAuthorizationService)
+                                                                   .updateEntities(any(), any(), anyList());
 
         mvc.perform(put(URL_TO_KEY_RESULT_1000).content(PUT_BODY_METRIC)
                                                .contentType(MediaType.APPLICATION_JSON)
@@ -385,7 +386,8 @@ class KeyResultControllerIT {
     @Test
     void shouldReturnBadRequestWhenUpdatingKeyResult() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.updateEntity(any(), any()))
-                  .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request while updating keyresult"));
+                  .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                         "Bad request while updating keyresult"));
 
         mvc.perform(put(URL_TO_KEY_RESULT_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -399,8 +401,9 @@ class KeyResultControllerIT {
 
     @Test
     void throwExceptionWhenKeyResultWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultAuthorizationService)
-                                                                                         .deleteEntityById(anyLong());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                            "Keyresult not found")).when(keyResultAuthorizationService)
+                                                                   .deleteEntityById(anyLong());
 
         mvc.perform(delete(URL_TO_KEY_RESULT_1000).with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isNotFound());

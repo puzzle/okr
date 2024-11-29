@@ -80,7 +80,9 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveById(ID_OF_OBJECTIVE_3, authorizationUser, NO_RESULT_EXCEPTION);
+        var objective = objectivePersistenceService.findObjectiveById(ID_OF_OBJECTIVE_3,
+                                                                      authorizationUser,
+                                                                      NO_RESULT_EXCEPTION);
 
         // assert
         assertObjective(ID_OF_OBJECTIVE_3, TITLE_OF_OBJECTIVE_3, objective);
@@ -90,7 +92,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService.findObjectiveById(INVALID_OBJECTIVE_ID, authorizationUser, NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class,
+                                     () -> objectivePersistenceService.findObjectiveById(INVALID_OBJECTIVE_ID,
+                                                                                         authorizationUser,
+                                                                                         NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
@@ -101,7 +106,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class,
+                                     () -> objectivePersistenceService.findObjectiveById(null,
+                                                                                         authorizationUser,
+                                                                                         NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
@@ -112,7 +120,9 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveByKeyResultId(ID_OF_KEY_RESULT_5, authorizationUser, NO_RESULT_EXCEPTION);
+        var objective = objectivePersistenceService.findObjectiveByKeyResultId(ID_OF_KEY_RESULT_5,
+                                                                               authorizationUser,
+                                                                               NO_RESULT_EXCEPTION);
 
         // assert
         assertObjective(ID_OF_OBJECTIVE_3, TITLE_OF_OBJECTIVE_3, objective);
@@ -122,7 +132,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService.findObjectiveByKeyResultId(INVALID_KEY_RESULT_ID, authorizationUser, NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class,
+                                     () -> objectivePersistenceService.findObjectiveByKeyResultId(INVALID_KEY_RESULT_ID,
+                                                                                                  authorizationUser,
+                                                                                                  NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
@@ -133,7 +146,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class,
+                                     () -> objectivePersistenceService.findObjectiveByKeyResultId(null,
+                                                                                                  authorizationUser,
+                                                                                                  NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
@@ -144,7 +160,9 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveByCheckInId(ID_OF_CHECK_IN_7, authorizationUser, NO_RESULT_EXCEPTION);
+        var objective = objectivePersistenceService.findObjectiveByCheckInId(ID_OF_CHECK_IN_7,
+                                                                             authorizationUser,
+                                                                             NO_RESULT_EXCEPTION);
 
         // assert
         assertObjective(ID_OF_OBJECTIVE_3, TITLE_OF_OBJECTIVE_3, objective);
@@ -154,7 +172,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService.findObjectiveByCheckInId(INVALID_CHECK_IN_ID, authorizationUser, NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class,
+                                     () -> objectivePersistenceService.findObjectiveByCheckInId(INVALID_CHECK_IN_ID,
+                                                                                                authorizationUser,
+                                                                                                NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
@@ -165,7 +186,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, ObjectivePersistenceServiceIT.NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class,
+                                     () -> objectivePersistenceService.findObjectiveByCheckInId(null,
+                                                                                                authorizationUser,
+                                                                                                ObjectivePersistenceServiceIT.NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
@@ -259,7 +283,7 @@ class ObjectivePersistenceServiceIT {
     }
 
     private void assertResponseStatusException(HttpStatus expectedStatus, List<ErrorDto> expectedErrors,
-            OkrResponseStatusException currentException) {
+                                               OkrResponseStatusException currentException) {
         assertEquals(expectedStatus, currentException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(currentException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(currentException.getReason()));

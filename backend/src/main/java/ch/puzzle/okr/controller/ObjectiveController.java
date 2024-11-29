@@ -26,7 +26,7 @@ public class ObjectiveController {
     private final ObjectiveMapper objectiveMapper;
 
     public ObjectiveController(ObjectiveAuthorizationService objectiveAuthorizationService,
-            ObjectiveMapper objectiveMapper) {
+                               ObjectiveMapper objectiveMapper) {
         this.objectiveAuthorizationService = objectiveAuthorizationService;
         this.objectiveMapper = objectiveMapper;
     }
@@ -38,8 +38,7 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "401", description = "Not authorized to read an Objective", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID", content = @Content)})
     @GetMapping("/{id}")
-    public ResponseEntity<ObjectiveDto> getObjective(
-            @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
+    public ResponseEntity<ObjectiveDto> getObjective(@Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                              .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
     }
@@ -49,8 +48,7 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "401", description = "Not authorized to delete an Objective", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Objective with requested ID")})
     @DeleteMapping("/{id}")
-    public void deleteObjectiveById(
-            @Parameter(description = "The ID of an Objective to delete it.", required = true) @PathVariable long id) {
+    public void deleteObjectiveById(@Parameter(description = "The ID of an Objective to delete it.", required = true) @PathVariable long id) {
         objectiveAuthorizationService.deleteEntityById(id);
     }
 
@@ -61,8 +59,7 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "400", description = "Can't create new Objective, not allowed to give an ID", content = @Content),
             @ApiResponse(responseCode = "401", description = "Not authorized to create an Objective", content = @Content)})
     @PostMapping
-    public ResponseEntity<ObjectiveDto> createObjective(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
+    public ResponseEntity<ObjectiveDto> createObjective(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto createdObjective = objectiveMapper.toDto(objectiveAuthorizationService.createEntity(objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
@@ -72,11 +69,11 @@ public class ObjectiveController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Duplicated a given Objective", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class))})})
     @PostMapping("/{id}")
-    public ResponseEntity<ObjectiveDto> duplicateObjective(
-            @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO) {
+    public ResponseEntity<ObjectiveDto> duplicateObjective(@Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
+                                                           @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto duplicatedObjectiveDto = objectiveMapper.toDto(objectiveAuthorizationService.duplicateEntity(id, objective));
+        ObjectiveDto duplicatedObjectiveDto = objectiveMapper.toDto(objectiveAuthorizationService.duplicateEntity(id,
+                                                                                                                  objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 
@@ -91,12 +88,12 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found", content = @Content),
             @ApiResponse(responseCode = "422", description = "Can't update Objective since Objective was updated or deleted by another user.", content = @Content)})
     @PutMapping("/{id}")
-    public ResponseEntity<ObjectiveDto> updateObjective(
-            @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
+    public ResponseEntity<ObjectiveDto> updateObjective(@Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
+                                                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         boolean isObjectiveImUsed = objectiveAuthorizationService.isImUsed(objective);
-        ObjectiveDto updatedObjective = objectiveMapper.toDto(objectiveAuthorizationService.updateEntity(id, objective));
+        ObjectiveDto updatedObjective = objectiveMapper.toDto(objectiveAuthorizationService.updateEntity(id,
+                                                                                                         objective));
         return ResponseEntity.status(isObjectiveImUsed ? IM_USED : OK).body(updatedObjective);
     }
 }

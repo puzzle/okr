@@ -25,7 +25,7 @@ public class ClientConfigService {
     private String activeProfile;
 
     public ClientConfigService(final TenantClientCustomizationProvider clientCustomizationProvider,
-            final TenantConfigProvider tenantConfigProvider) {
+                               final TenantConfigProvider tenantConfigProvider) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.tenantClientCustomizationProvider = clientCustomizationProvider;
     }
@@ -34,28 +34,34 @@ public class ClientConfigService {
         String subdomain = hostName.split("\\.")[0];
         String domainPrefixByHyphen = hostName.split("-")[0];
 
-        Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostName, subdomain, domainPrefixByHyphen);
+        Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostName,
+                                                                                   subdomain,
+                                                                                   domainPrefixByHyphen);
 
         if (tenantConfig.isEmpty()) {
-            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant config for subdomain:{0}", subdomain));
+            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant config for subdomain:{0}",
+                                                                   subdomain));
         }
 
-        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostName, subdomain, domainPrefixByHyphen);
+        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostName,
+                                                                                                     subdomain,
+                                                                                                     domainPrefixByHyphen);
 
         if (tenantClientCustomization.isEmpty()) {
-            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant client customization for subdomain:{0}", subdomain));
+            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant client customization for subdomain:{0}",
+                                                                   subdomain));
         }
 
-        return new ClientConfigDto(activeProfile, tenantConfig.get()
-                                                              .issuerUrl(), tenantConfig.get()
-                                                                                        .clientId(), tenantClientCustomization.get()
-                                                                                                                              .favicon(), tenantClientCustomization.get()
-                                                                                                                                                                   .logo(), tenantClientCustomization.get()
-                                                                                                                                                                                                     .triangles(), tenantClientCustomization.get()
-                                                                                                                                                                                                                                            .backgroundLogo(), tenantClientCustomization.get()
-                                                                                                                                                                                                                                                                                        .title(), tenantClientCustomization.get()
-                                                                                                                                                                                                                                                                                                                           .helpSiteUrl(), tenantClientCustomization.get()
-                                                                                                                                                                                                                                                                                                                                                                    .customStyles());
+        return new ClientConfigDto(activeProfile,
+                                   tenantConfig.get().issuerUrl(),
+                                   tenantConfig.get().clientId(),
+                                   tenantClientCustomization.get().favicon(),
+                                   tenantClientCustomization.get().logo(),
+                                   tenantClientCustomization.get().triangles(),
+                                   tenantClientCustomization.get().backgroundLogo(),
+                                   tenantClientCustomization.get().title(),
+                                   tenantClientCustomization.get().helpSiteUrl(),
+                                   tenantClientCustomization.get().customStyles());
     }
 
     private Optional<TenantConfigProvider.TenantConfig> getTenantConfig(String hostname, String... tenantsFromUrl) {
@@ -72,7 +78,7 @@ public class ClientConfigService {
     }
 
     private Optional<TenantClientCustomization> getTenantClientCustomization(String hostname,
-            String... tenantsFromUrl) {
+                                                                             String... tenantsFromUrl) {
         for (String tenant : tenantsFromUrl) {
             Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider.getTenantClientCustomizationsById(tenant);
             if (tenantCustomization.isPresent()) {

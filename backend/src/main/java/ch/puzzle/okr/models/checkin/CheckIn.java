@@ -150,7 +150,16 @@ public abstract class CheckIn implements WriteableInterface {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, changeInfo, initiatives, confidence, keyResult, createdBy, createdOn, modifiedOn, checkInType);
+        return Objects.hash(id,
+                            version,
+                            changeInfo,
+                            initiatives,
+                            confidence,
+                            keyResult,
+                            createdBy,
+                            createdOn,
+                            modifiedOn,
+                            checkInType);
     }
 
     /* Constructor */

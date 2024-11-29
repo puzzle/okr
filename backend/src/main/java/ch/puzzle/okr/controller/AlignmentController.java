@@ -24,7 +24,7 @@ public class AlignmentController {
     private final AlignmentSelectionBusinessService alignmentSelectionBusinessService;
 
     public AlignmentController(AlignmentSelectionMapper alignmentSelectionMapper,
-            AlignmentSelectionBusinessService alignmentSelectionBusinessService) {
+                               AlignmentSelectionBusinessService alignmentSelectionBusinessService) {
         this.alignmentSelectionMapper = alignmentSelectionMapper;
         this.alignmentSelectionBusinessService = alignmentSelectionBusinessService;
     }
@@ -35,10 +35,10 @@ public class AlignmentController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = AlignmentObjectiveDto.class))}),
             @ApiResponse(responseCode = "400", description = "Can't return list of objectives with their key results to select the alignment", content = @Content)})
     @GetMapping("/selections")
-    public ResponseEntity<List<AlignmentObjectiveDto>> getAlignmentSelections(
-            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
-            @RequestParam(required = false, defaultValue = "", name = "team") Long teamFilter) {
-        List<AlignmentSelection> alignmentSelectionByQuarterIdAndTeamIdNot = alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter, teamFilter);
+    public ResponseEntity<List<AlignmentObjectiveDto>> getAlignmentSelections(@RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
+                                                                              @RequestParam(required = false, defaultValue = "", name = "team") Long teamFilter) {
+        List<AlignmentSelection> alignmentSelectionByQuarterIdAndTeamIdNot = alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter,
+                                                                                                                                                            teamFilter);
         return ResponseEntity.status(HttpStatus.OK)
                              .body(alignmentSelectionMapper.toDto(alignmentSelectionByQuarterIdAndTeamIdNot));
     }

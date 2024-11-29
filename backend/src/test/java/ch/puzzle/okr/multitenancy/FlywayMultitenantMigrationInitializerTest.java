@@ -73,10 +73,19 @@ public class FlywayMultitenantMigrationInitializerTest {
 
     private final TenantConfigProviderInterface providerInterfaceMock = new TenantConfigProviderInterface() {
 
-        private final TenantConfigProvider.DataSourceConfig dataSourceConfig = new TenantConfigProvider.DataSourceConfig(NOT_USED, URL, NAME, PASSWORD, SCHEMA);
+        private final TenantConfigProvider.DataSourceConfig dataSourceConfig = new TenantConfigProvider.DataSourceConfig(NOT_USED,
+                                                                                                                         URL,
+                                                                                                                         NAME,
+                                                                                                                         PASSWORD,
+                                                                                                                         SCHEMA);
 
-        private final TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(NOT_USED, new String[]{
-                NOT_USED}, NOT_USED, NOT_USED, NOT_USED, dataSourceConfig);
+        private final TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(NOT_USED,
+                                                                                                             new String[]{
+                                                                                                                     NOT_USED},
+                                                                                                             NOT_USED,
+                                                                                                             NOT_USED,
+                                                                                                             NOT_USED,
+                                                                                                             dataSourceConfig);
 
         @Override
         public List<TenantConfigProvider.TenantConfig> getTenantConfigs() {
@@ -102,8 +111,9 @@ public class FlywayMultitenantMigrationInitializerTest {
             FluentConfigurationSpy fluentConfiguration = new FluentConfigurationSpy();
             mockedStatic.when(Flyway::configure).thenReturn(fluentConfiguration);
 
-            FlywayMultitenantMigrationInitializer migrationInitializer = new FlywayMultitenantMigrationInitializer(providerInterfaceMock, new String[]{
-                    SCRIPT_LOCATION});
+            FlywayMultitenantMigrationInitializer migrationInitializer = new FlywayMultitenantMigrationInitializer(providerInterfaceMock,
+                                                                                                                   new String[]{
+                                                                                                                           SCRIPT_LOCATION});
 
             // act
             migrationInitializer.migrateFlyway();

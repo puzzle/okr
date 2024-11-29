@@ -22,7 +22,7 @@ public class AuthorizationRegistrationService {
     private final UserUpdateHelper helper = new UserUpdateHelper();
 
     public AuthorizationRegistrationService(UserBusinessService userBusinessService,
-            TenantConfigProvider tenantConfigProvider) {
+                                            TenantConfigProvider tenantConfigProvider) {
         this.userBusinessService = userBusinessService;
         this.tenantConfigProvider = tenantConfigProvider;
     }

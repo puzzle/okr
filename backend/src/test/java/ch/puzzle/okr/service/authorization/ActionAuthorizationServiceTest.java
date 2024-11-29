@@ -82,11 +82,13 @@ class ActionAuthorizationServiceTest {
     void createEntityShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleCreateOrUpdate(actionList.get(0)
-                                                                                                              .getKeyResult(), authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                            reason)).when(authorizationService)
+                                                    .hasRoleCreateOrUpdate(actionList.get(0).getKeyResult(),
+                                                                           authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService.createEntities(actionList));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> actionAuthorizationService.createEntities(actionList));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -104,11 +106,13 @@ class ActionAuthorizationServiceTest {
     void updateEntitiesShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleCreateOrUpdate(actionList.get(0)
-                                                                                                              .getKeyResult(), authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                            reason)).when(authorizationService)
+                                                    .hasRoleCreateOrUpdate(actionList.get(0).getKeyResult(),
+                                                                           authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService.updateEntities(actionList));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> actionAuthorizationService.updateEntities(actionList));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -128,10 +132,12 @@ class ActionAuthorizationServiceTest {
         Long id = 8L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleDeleteByActionId(id, authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                            reason)).when(authorizationService)
+                                                    .hasRoleDeleteByActionId(id, authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> actionAuthorizationService.deleteActionByActionId(id));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> actionAuthorizationService.deleteActionByActionId(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }

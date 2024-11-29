@@ -52,10 +52,12 @@ class CompletedAuthorizationServiceTest {
     void createCompletedShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleCreateOrUpdateByObjectiveId(objectiveId, authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                            reason)).when(authorizationService)
+                                                    .hasRoleCreateOrUpdateByObjectiveId(objectiveId, authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> completedAuthorizationService.createCompleted(newCompleted));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> completedAuthorizationService.createCompleted(newCompleted));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -71,10 +73,12 @@ class CompletedAuthorizationServiceTest {
     void deleteCompletedByObjectiveIdShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                                                                             .hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                            reason)).when(authorizationService)
+                                                    .hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> completedAuthorizationService.deleteCompletedByObjectiveId(objectiveId));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> completedAuthorizationService.deleteCompletedByObjectiveId(objectiveId));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }

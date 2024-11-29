@@ -47,7 +47,8 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported checkIn DTO to deserialize");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "missing keyResult ID to deserialize checkIn DTO");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                              "missing keyResult ID to deserialize checkIn DTO");
         }
     }
 }

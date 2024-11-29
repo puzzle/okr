@@ -108,8 +108,9 @@ class CompletedControllerIT {
     @DisplayName("delete() should throw exception when Completed with id cant be found")
     @Test
     void deleteShouldThrowExceptionWhenCompletedWithIdCantBeFound() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found")).when(completedAuthorizationService)
-                                                                                         .deleteCompletedByObjectiveId(anyLong());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                            "Completed not found")).when(completedAuthorizationService)
+                                                                   .deleteCompletedByObjectiveId(anyLong());
 
         mvc.perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
            .andExpect(MockMvcResultMatchers.status().isNotFound());

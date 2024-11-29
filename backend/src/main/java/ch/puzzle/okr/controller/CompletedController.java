@@ -23,7 +23,7 @@ public class CompletedController {
     private final CompletedMapper completedMapper;
 
     public CompletedController(CompletedAuthorizationService completedAuthorizationService,
-            CompletedMapper completedMapper) {
+                               CompletedMapper completedMapper) {
         this.completedAuthorizationService = completedAuthorizationService;
         this.completedMapper = completedMapper;
     }

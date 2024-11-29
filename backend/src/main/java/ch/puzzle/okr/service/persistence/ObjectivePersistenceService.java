@@ -30,7 +30,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
     private final AuthorizationCriteria<Objective> authorizationCriteria;
 
     protected ObjectivePersistenceService(ObjectiveRepository repository, EntityManager entityManager,
-            AuthorizationCriteria<Objective> authorizationCriteria) {
+                                          AuthorizationCriteria<Objective> authorizationCriteria) {
         super(repository);
         this.entityManager = entityManager;
         this.authorizationCriteria = authorizationCriteria;
@@ -58,7 +58,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
     }
 
     public Objective findObjectiveById(Long objectiveId, AuthorizationUser authorizationUser,
-            OkrResponseStatusException noResultException) {
+                                       OkrResponseStatusException noResultException) {
         return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID, noResultException);
     }
 
@@ -67,17 +67,17 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
     }
 
     public Objective findObjectiveByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser,
-            OkrResponseStatusException noResultException) {
+                                                OkrResponseStatusException noResultException) {
         return findByAnyId(keyResultId, authorizationUser, SELECT_OBJECTIVE_BY_KEY_RESULT_ID, noResultException);
     }
 
     public Objective findObjectiveByCheckInId(Long checkInId, AuthorizationUser authorizationUser,
-            OkrResponseStatusException noResultException) {
+                                              OkrResponseStatusException noResultException) {
         return findByAnyId(checkInId, authorizationUser, SELECT_OBJECTIVE_BY_CHECK_IN_ID, noResultException);
     }
 
     private Objective findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString,
-            OkrResponseStatusException noResultException) {
+                                  OkrResponseStatusException noResultException) {
         checkIdNull(id);
         String fullQueryString = queryString + authorizationCriteria.appendObjective(authorizationUser);
         logger.debug("select objective by id={}: {}", id, fullQueryString);

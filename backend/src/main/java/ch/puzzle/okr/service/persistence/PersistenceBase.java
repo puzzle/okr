@@ -60,7 +60,9 @@ public abstract class PersistenceBase<T, ID, R> {
             return repository.save(model);
         } catch (OptimisticLockingFailureException ex) {
             logger.info("optimistic locking exception while saving {}", model, ex);
-            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorKey.DATA_HAS_BEEN_UPDATED, getModelName());
+            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                                 ErrorKey.DATA_HAS_BEEN_UPDATED,
+                                                 getModelName());
         }
     }
 
@@ -75,7 +77,8 @@ public abstract class PersistenceBase<T, ID, R> {
     public abstract String getModelName();
 
     private List<T> iteratorToList(Iterable<T> iterable) {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED), false)
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED),
+                                    false)
                             .toList();
     }
 }

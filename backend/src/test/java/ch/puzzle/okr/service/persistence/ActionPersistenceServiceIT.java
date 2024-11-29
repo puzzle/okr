@@ -104,7 +104,8 @@ class ActionPersistenceServiceIT {
         Action changedAction = createAction(createdAction.getId(), 0);
         changedAction.setAction(UPDATED_ACTION);
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> actionPersistenceService.save(changedAction));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> actionPersistenceService.save(changedAction));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Action")));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());

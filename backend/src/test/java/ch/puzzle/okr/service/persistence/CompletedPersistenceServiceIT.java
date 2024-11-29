@@ -97,7 +97,8 @@ class CompletedPersistenceServiceIT {
         Completed updateCompleted = createCompleted(createdCompleted.getId(), 0);
         updateCompleted.setComment("Updated completed");
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> completedPersistenceService.save(updateCompleted));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> completedPersistenceService.save(updateCompleted));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(COMPLETED)));
 
@@ -112,8 +113,8 @@ class CompletedPersistenceServiceIT {
 
         assertNotNull(savedCompleted.getId());
         assertEquals("War leider nicht moeglich", savedCompleted.getComment());
-        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.", savedCompleted.getObjective()
-                                                                                                                   .getTitle());
+        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.",
+                     savedCompleted.getObjective().getTitle());
     }
 
     @Test
@@ -121,7 +122,8 @@ class CompletedPersistenceServiceIT {
 
         completedPersistenceService.deleteById(3L);
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> completedPersistenceService.findById(3L));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> completedPersistenceService.findById(3L));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "3")));
 
@@ -136,7 +138,8 @@ class CompletedPersistenceServiceIT {
         completedPersistenceService.deleteById(createdCompleted.getId());
 
         Long completedId = createdCompleted.getId();
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> completedPersistenceService.findById(completedId));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> completedPersistenceService.findById(completedId));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "200")));
 

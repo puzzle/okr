@@ -68,16 +68,17 @@ class AlignmentSelectionMapperTest {
                                                                                          .withTeamName(TEAM_PUZZLE)
                                                                                          .withObjectiveTitle("Objective 1")
                                                                                          .withKeyResultTitle("Key Result 3")
-                                                                                         .build(), AlignmentSelection.Builder.builder()
-                                                                                                                             .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder()
-                                                                                                                                                                                   .withObjectiveId(1L)
-                                                                                                                                                                                   .withKeyResultId(5L)
-                                                                                                                                                                                   .build())
-                                                                                                                             .withTeamId(2L)
-                                                                                                                             .withTeamName(TEAM_PUZZLE)
-                                                                                                                             .withObjectiveTitle("Objective 1")
-                                                                                                                             .withKeyResultTitle("Key Result 5")
-                                                                                                                             .build());
+                                                                                         .build(),
+                                                               AlignmentSelection.Builder.builder()
+                                                                                         .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder()
+                                                                                                                                               .withObjectiveId(1L)
+                                                                                                                                               .withKeyResultId(5L)
+                                                                                                                                               .build())
+                                                                                         .withTeamId(2L)
+                                                                                         .withTeamName(TEAM_PUZZLE)
+                                                                                         .withObjectiveTitle("Objective 1")
+                                                                                         .withKeyResultTitle("Key Result 5")
+                                                                                         .build());
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertEquals(1, alignmentObjectiveDtos.size());
@@ -95,25 +96,27 @@ class AlignmentSelectionMapperTest {
                                                                                          .withTeamName(TEAM_PUZZLE)
                                                                                          .withObjectiveTitle("Objective 1")
                                                                                          .withKeyResultTitle("Key Result 3")
-                                                                                         .build(), AlignmentSelection.Builder.builder()
-                                                                                                                             .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder()
-                                                                                                                                                                                   .withObjectiveId(5L)
-                                                                                                                                                                                   .withKeyResultId(6L)
-                                                                                                                                                                                   .build())
-                                                                                                                             .withTeamId(2L)
-                                                                                                                             .withTeamName(TEAM_PUZZLE)
-                                                                                                                             .withObjectiveTitle("Objective 5")
-                                                                                                                             .withKeyResultTitle("Key Result 6")
-                                                                                                                             .build(), AlignmentSelection.Builder.builder()
-                                                                                                                                                                 .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder()
-                                                                                                                                                                                                                       .withObjectiveId(1L)
-                                                                                                                                                                                                                       .withKeyResultId(9L)
-                                                                                                                                                                                                                       .build())
-                                                                                                                                                                 .withTeamId(2L)
-                                                                                                                                                                 .withTeamName(TEAM_PUZZLE)
-                                                                                                                                                                 .withObjectiveTitle("Objective 1")
-                                                                                                                                                                 .withKeyResultTitle("Key Result 9")
-                                                                                                                                                                 .build());
+                                                                                         .build(),
+                                                               AlignmentSelection.Builder.builder()
+                                                                                         .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder()
+                                                                                                                                               .withObjectiveId(5L)
+                                                                                                                                               .withKeyResultId(6L)
+                                                                                                                                               .build())
+                                                                                         .withTeamId(2L)
+                                                                                         .withTeamName(TEAM_PUZZLE)
+                                                                                         .withObjectiveTitle("Objective 5")
+                                                                                         .withKeyResultTitle("Key Result 6")
+                                                                                         .build(),
+                                                               AlignmentSelection.Builder.builder()
+                                                                                         .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder()
+                                                                                                                                               .withObjectiveId(1L)
+                                                                                                                                               .withKeyResultId(9L)
+                                                                                                                                               .build())
+                                                                                         .withTeamId(2L)
+                                                                                         .withTeamName(TEAM_PUZZLE)
+                                                                                         .withObjectiveTitle("Objective 1")
+                                                                                         .withKeyResultTitle("Key Result 9")
+                                                                                         .build());
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertEquals(2, alignmentObjectiveDtos.size());

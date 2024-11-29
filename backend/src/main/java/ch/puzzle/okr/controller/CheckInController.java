@@ -49,9 +49,8 @@ public class CheckInController {
             @ApiResponse(responseCode = "404", description = "Given ID of Check-in wasn't found.", content = @Content),
             @ApiResponse(responseCode = "422", description = "Can't update Check-in since Check-in was updated or deleted by another user.", content = @Content)})
     @PutMapping("/{id}")
-    public ResponseEntity<CheckInDto> updateCheckIn(
-            @Parameter(description = "The ID for updating a Check-in.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to update an existing Check-in.", required = true) @RequestBody CheckInDto checkInDto) {
+    public ResponseEntity<CheckInDto> updateCheckIn(@Parameter(description = "The ID for updating a Check-in.", required = true) @PathVariable Long id,
+                                                    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to update an existing Check-in.", required = true) @RequestBody CheckInDto checkInDto) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         checkIn = this.checkInAuthorizationService.updateEntity(id, checkIn);
         CheckInDto updatedCheckIn = this.checkInMapper.toDto(checkIn);
@@ -65,8 +64,7 @@ public class CheckInController {
             @ApiResponse(responseCode = "400", description = "Can't create new Check-in, not allowed to give an ID", content = @Content),
             @ApiResponse(responseCode = "401", description = "Not authorized to create Check-in", content = @Content)})
     @PostMapping
-    public ResponseEntity<CheckInDto> createCheckIn(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to create a new Check-in.", required = true) @RequestBody CheckInDto checkInDto) {
+    public ResponseEntity<CheckInDto> createCheckIn(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to create a new Check-in.", required = true) @RequestBody CheckInDto checkInDto) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         CheckInDto createdCheckIn = checkInMapper.toDto(checkInAuthorizationService.createEntity(checkIn));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCheckIn);
@@ -77,8 +75,7 @@ public class CheckInController {
             @ApiResponse(responseCode = "401", description = "Not authorized to delete Check-in", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Check-in with requested ID")})
     @DeleteMapping("/{id}")
-    public void deleteCheckInById(
-            @Parameter(description = "The ID of an Check-in to delete it.", required = true) @PathVariable long id) {
+    public void deleteCheckInById(@Parameter(description = "The ID of an Check-in to delete it.", required = true) @PathVariable long id) {
         this.checkInAuthorizationService.deleteEntityById(id);
     }
 }

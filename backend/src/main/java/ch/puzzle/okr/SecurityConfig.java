@@ -76,7 +76,8 @@ public class SecurityConfig {
     @Bean
     JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor, OAuth2TokenValidator<Jwt> jwtValidator) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
-        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(JwtValidators.createDefault(), jwtValidator);
+        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(JwtValidators.createDefault(),
+                                                                                   jwtValidator);
         decoder.setJwtValidator(validator);
         return decoder;
     }
@@ -86,7 +87,8 @@ public class SecurityConfig {
                                               .crossOriginEmbedderPolicy(c -> c.policy(REQUIRE_CORP))
                                               .crossOriginOpenerPolicy(c -> c.policy(OPENER_SAME_ORIGIN))
                                               .crossOriginResourcePolicy(c -> c.policy(RESOURCE_SAME_ORIGIN))
-                                              .addHeaderWriter(new StaticHeadersWriter("X-Permitted-Cross-Domain-Policies", "none"))
+                                              .addHeaderWriter(new StaticHeadersWriter("X-Permitted-Cross-Domain-Policies",
+                                                                                       "none"))
                                               .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
                                               .xssProtection(c -> c.headerValue(ENABLED_MODE_BLOCK))
                                               .httpStrictTransportSecurity(c -> c.includeSubDomains(true)
@@ -113,8 +115,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationEventPublisher authenticationEventPublisher(
-            ApplicationEventPublisher applicationEventPublisher) {
+    public AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
 

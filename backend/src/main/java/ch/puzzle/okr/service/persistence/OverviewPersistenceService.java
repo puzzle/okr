@@ -21,13 +21,13 @@ public class OverviewPersistenceService {
     private final AuthorizationCriteria<Overview> authorizationCriteria;
 
     public OverviewPersistenceService(EntityManager entityManager,
-            AuthorizationCriteria<Overview> authorizationCriteria) {
+                                      AuthorizationCriteria<Overview> authorizationCriteria) {
         this.entityManager = entityManager;
         this.authorizationCriteria = authorizationCriteria;
     }
 
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery,
-            AuthorizationUser authorizationUser) {
+                                              AuthorizationUser authorizationUser) {
         String queryString = SELECT_OVERVIEW
                              + authorizationCriteria.appendOverview(teamIds, objectiveQuery, authorizationUser);
         logger.debug("select overview by quarterId={} and teamIds={}: {}", quarterId, teamIds, queryString);

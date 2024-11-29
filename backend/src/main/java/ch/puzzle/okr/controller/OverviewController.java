@@ -26,7 +26,7 @@ public class OverviewController {
     private final OverviewAuthorizationService overviewAuthorizationService;
 
     public OverviewController(OverviewMapper overviewMapper,
-            OverviewAuthorizationService overviewAuthorizationService) {
+                              OverviewAuthorizationService overviewAuthorizationService) {
         this.overviewMapper = overviewMapper;
         this.overviewAuthorizationService = overviewAuthorizationService;
     }
@@ -39,11 +39,12 @@ public class OverviewController {
             @ApiResponse(responseCode = "401", description = "Not authorized to read teams with their objectives", content = @Content),
             @ApiResponse(responseCode = "404", description = "The quarter or one of the teams were not found", content = @Content)})
     @GetMapping("")
-    public ResponseEntity<List<OverviewDto>> getOverview(
-            @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
-            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
-            @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
+    public ResponseEntity<List<OverviewDto>> getOverview(@RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
+                                                         @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
+                                                         @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(overviewMapper.toDto(overviewAuthorizationService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)));
+                             .body(overviewMapper.toDto(overviewAuthorizationService.getFilteredOverview(quarterFilter,
+                                                                                                         teamFilter,
+                                                                                                         objectiveQuery)));
     }
 }

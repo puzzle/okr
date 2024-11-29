@@ -66,7 +66,8 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
             connectionProviderMap.put(tenantIdentifier, connectionProvider);
             return connectionProvider;
         })
-                       .orElseThrow(() -> new ConnectionProviderException(String.format("Cannot create new connection provider for tenant: %s", tenantIdentifier)));
+                       .orElseThrow(() -> new ConnectionProviderException(String.format("Cannot create new connection provider for tenant: %s",
+                                                                                        tenantIdentifier)));
     }
 
     private ConnectionProvider createConnectionProvider(String tenantIdentifier) {

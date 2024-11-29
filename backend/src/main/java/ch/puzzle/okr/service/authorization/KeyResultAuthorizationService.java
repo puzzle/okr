@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Service
 public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long, KeyResult, KeyResultBusinessService> {
     public KeyResultAuthorizationService(KeyResultBusinessService keyResultBusinessService,
-            AuthorizationService authorizationService) {
+                                         AuthorizationService authorizationService) {
         super(keyResultBusinessService, authorizationService);
     }
 
@@ -52,7 +52,8 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
 
     @Override
     public KeyResult updateEntity(Long id, KeyResult keyResult) {
-        throw new ResponseStatusException(BAD_REQUEST, "unsupported method in class " + getClass().getSimpleName()
+        throw new ResponseStatusException(BAD_REQUEST,
+                                          "unsupported method in class " + getClass().getSimpleName()
                                                        + ", use updateEntities() instead");
     }
 

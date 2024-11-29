@@ -47,8 +47,7 @@ public class TeamController {
             @ApiResponse(responseCode = "400", description = "Can't create new Team, not allowed to give an ID", content = @Content),
             @ApiResponse(responseCode = "401", description = "Not authorized to create a Team", content = @Content)})
     @PostMapping
-    public ResponseEntity<TeamDto> createTeam(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody TeamDto teamDto) {
+    public ResponseEntity<TeamDto> createTeam(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody TeamDto teamDto) {
         Team createdTeam = teamAuthorizationService.createEntity(teamMapper.toTeam(teamDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(teamMapper.toDto(createdTeam));
     }
@@ -61,9 +60,8 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Did not find a Team with a specified ID to update.", content = @Content),
             @ApiResponse(responseCode = "422", description = "Can't update Team since Team was updated or deleted by another user.", content = @Content)})
     @PutMapping("/{id}")
-    public ResponseEntity<TeamDto> updateTeam(
-            @Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id,
-            @RequestBody TeamDto teamDto) {
+    public ResponseEntity<TeamDto> updateTeam(@Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id,
+                                              @RequestBody TeamDto teamDto) {
         Team updatedTeam = teamAuthorizationService.updateEntity(teamMapper.toTeam(teamDto), id);
         return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam));
     }
@@ -73,8 +71,7 @@ public class TeamController {
             @ApiResponse(responseCode = "401", description = "Not authorized to delete an Team", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID")})
     @DeleteMapping("/{id}")
-    public void deleteTeamById(
-            @Parameter(description = "The ID of an Team to delete it.", required = true) @PathVariable long id) {
+    public void deleteTeamById(@Parameter(description = "The ID of an Team to delete it.", required = true) @PathVariable long id) {
         teamAuthorizationService.deleteEntity(id);
     }
 
@@ -83,9 +80,8 @@ public class TeamController {
             @ApiResponse(responseCode = "401", description = "Not authorized to add users to the team", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID")})
     @PutMapping("/{id}/addusers")
-    public void addUsersToTeam(
-            @Parameter(description = "The ID of an Team to add to users to it.", required = true) @PathVariable long id,
-            @RequestBody List<UserDto> userDtoList) {
+    public void addUsersToTeam(@Parameter(description = "The ID of an Team to add to users to it.", required = true) @PathVariable long id,
+                               @RequestBody List<UserDto> userDtoList) {
         var userIds = userDtoList.stream().map(UserDto::id).toList();
         teamAuthorizationService.addUsersToTeam(id, userIds);
     }
@@ -95,9 +91,8 @@ public class TeamController {
             @ApiResponse(responseCode = "401", description = "Not authorized to remove user from team", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID")})
     @PutMapping("/{id}/user/{userId}/removeuser")
-    public void removeUserFromTeam(
-            @Parameter(description = "The ID of an team to remove the user from it.", required = true) @PathVariable long id,
-            @Parameter(description = "The User ID to remove from the team.", required = true) @PathVariable long userId) {
+    public void removeUserFromTeam(@Parameter(description = "The ID of an team to remove the user from it.", required = true) @PathVariable long id,
+                                   @Parameter(description = "The User ID to remove from the team.", required = true) @PathVariable long userId) {
         teamAuthorizationService.removeUserFromTeam(id, userId);
     }
 
@@ -107,10 +102,9 @@ public class TeamController {
             @ApiResponse(responseCode = "401", description = "Not authorized to update or add team membership", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID")})
     @PutMapping("/{id}/user/{userId}/updateaddteammembership/{isAdmin}")
-    public void updateOrAddTeamMembership(
-            @Parameter(description = "The ID of an team to update or add membership", required = true) @PathVariable long id,
-            @Parameter(description = "The User ID to update or add membership", required = true) @PathVariable long userId,
-            @Parameter(description = "The parameter if user should be admin or not", required = true) @PathVariable boolean isAdmin) {
+    public void updateOrAddTeamMembership(@Parameter(description = "The ID of an team to update or add membership", required = true) @PathVariable long id,
+                                          @Parameter(description = "The User ID to update or add membership", required = true) @PathVariable long userId,
+                                          @Parameter(description = "The parameter if user should be admin or not", required = true) @PathVariable boolean isAdmin) {
         teamAuthorizationService.updateOrAddTeamMembership(id, userId, isAdmin);
     }
 }

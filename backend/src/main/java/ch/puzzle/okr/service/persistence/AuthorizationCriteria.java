@@ -51,7 +51,13 @@ public class AuthorizationCriteria<T> {
             sb.append(format(" or %s.%s=:%s", alias, stateColumn, PARAM_ALL_DRAFT_STATE));
         } else {
             // users can read draft state of teams with admin role
-            sb.append(format(" or (%s.%s=:%s and %s.%s IN (:%s))", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias, teamIdColumn, PARAM_USER_TEAM_IDS));
+            sb.append(format(" or (%s.%s=:%s and %s.%s IN (:%s))",
+                             alias,
+                             stateColumn,
+                             PARAM_TEAM_DRAFT_STATE,
+                             alias,
+                             teamIdColumn,
+                             PARAM_USER_TEAM_IDS));
         }
         // all users can read published state
         sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
@@ -62,7 +68,7 @@ public class AuthorizationCriteria<T> {
     }
 
     public void setParameters(TypedQuery<T> typedQuery, List<Long> teamIds, String objectiveQuery,
-            AuthorizationUser user) {
+                              AuthorizationUser user) {
         if (shouldAddTeamFilter(teamIds)) {
             typedQuery.setParameter(PARAM_TEAM_IDS, teamIds);
         }

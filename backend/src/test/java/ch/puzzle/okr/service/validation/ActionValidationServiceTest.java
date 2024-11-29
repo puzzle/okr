@@ -61,7 +61,10 @@ class ActionValidationServiceTest {
     private ActionValidationService validator;
 
     private static Stream<Arguments> actionValidationArguments() {
-        return Stream.of(arguments(StringUtils.repeat('1', 5000), List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("action", "Action", "0", "4096")))), arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")))));
+        return Stream.of(arguments(StringUtils.repeat('1', 5000),
+                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
+                                                        List.of("action", "Action", "0", "4096")))),
+                         arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")))));
     }
 
     private record ActionPair(Action action, Action saveAction) {
@@ -136,7 +139,8 @@ class ActionValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // arrange
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnCreate(null));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(null));
 
         // act + assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Action")));
@@ -146,7 +150,8 @@ class ActionValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnCreate(action2));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(action2));
 
         // act + assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Action")));
@@ -166,7 +171,8 @@ class ActionValidationServiceTest {
                                       .build();
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnCreate(action));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(action));
 
         assertOkrResponseStatusException(exception, errors);
     }
@@ -177,9 +183,11 @@ class ActionValidationServiceTest {
         Action actionInvalid = Action.Builder.builder().withIsChecked(true).build();
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnCreate(actionInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnCreate(actionInvalid));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")), new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "Action")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")),
+                                                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "Action")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -203,7 +211,8 @@ class ActionValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         // arrange
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(1L, null));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(1L, null));
 
         // act + assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Action")));
@@ -213,7 +222,8 @@ class ActionValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(null, action1));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(null, action1));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
@@ -225,7 +235,8 @@ class ActionValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(1L, action2));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(1L, action2));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action2);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action2.getId());
@@ -239,10 +250,12 @@ class ActionValidationServiceTest {
     void validateOnUpdateShouldThrowExceptionWhenEntityDoesNotExist() {
         // arrange
         String reason = "MODEL_WITH_ID_NOT_FOUND";
-        when(actionPersistenceService.findById(anyLong())).thenThrow(new OkrResponseStatusException(BAD_REQUEST, reason));
+        when(actionPersistenceService.findById(anyLong())).thenThrow(new OkrResponseStatusException(BAD_REQUEST,
+                                                                                                    reason));
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(action2.getId(), action2));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(action2.getId(), action2));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action2);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action2.getId());
@@ -264,7 +277,8 @@ class ActionValidationServiceTest {
         when(actionPersistenceService.findById(id)).thenReturn(saveAction);
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(id, action));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(id, action));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action.getId());
@@ -290,13 +304,15 @@ class ActionValidationServiceTest {
         when(actionPersistenceService.findById(anyLong())).thenReturn(action2);
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(action.getId(), action));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(action.getId(), action));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(action.getId(), action2.getId());
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of("KeyResult", "Action")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE",
+                                                             List.of("KeyResult", "Action")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -314,7 +330,8 @@ class ActionValidationServiceTest {
         when(actionPersistenceService.findById(anyLong())).thenReturn(action);
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(3L, action));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(3L, action));
         assertOkrResponseStatusException(exception, errors);
     }
 
@@ -325,7 +342,8 @@ class ActionValidationServiceTest {
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(11L, actionInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(11L, actionInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("KeyResult", "Action")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -342,7 +360,8 @@ class ActionValidationServiceTest {
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validateOnUpdate(11L, actionInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> validator.validateOnUpdate(11L, actionInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")));
         assertOkrResponseStatusException(exception, expectedErrors);

@@ -107,7 +107,12 @@ public class ActionMapperTest {
     void toActionsWithKeyResultParameterShouldMapListOfDtosToListOfActions() {
         // arrange
         KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
-        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, VERSION, ACTION, PRIORITY, IS_CHECKED, null, // keyResultId
+        ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID,
+                                                                 VERSION,
+                                                                 ACTION,
+                                                                 PRIORITY,
+                                                                 IS_CHECKED,
+                                                                 null, // keyResultId
                                                                  IS_WRITEABLE);
 
         // act
@@ -129,7 +134,7 @@ public class ActionMapperTest {
     }
 
     private void assertListOfActionsAndKeyResultParameter(List<ActionDto> expectedDtoList, List<Action> actualList,
-            Long keyResultId) {
+                                                          Long keyResultId) {
         assertListsAndFirstAction(expectedDtoList, actualList);
         assertEquals(keyResultId, actualList.get(0).getKeyResult().getId());
     }

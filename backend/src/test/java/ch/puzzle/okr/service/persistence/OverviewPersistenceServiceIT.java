@@ -59,7 +59,10 @@ class OverviewPersistenceServiceIT {
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenTeamIdsSet() {
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(5L, 6L, 8L), "", authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L,
+                                                                                  List.of(5L, 6L, 8L),
+                                                                                  "",
+                                                                                  authorizationUser);
 
         assertThat(expectedOverviewIds.subList(5, 18)).hasSameElementsAs(getOverviewIds(overviews));
     }
@@ -73,21 +76,30 @@ class OverviewPersistenceServiceIT {
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenObjectiveQuery() {
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(5L, 6L, 8L), "kundenzufriedenheit", authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L,
+                                                                                  List.of(5L, 6L, 8L),
+                                                                                  "kundenzufriedenheit",
+                                                                                  authorizationUser);
 
         assertThat(expectedOverviewIds.subList(5, 8)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenQuarterWithoutObjectives() {
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(3L, List.of(5L, 6L, 8L), null, authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(3L,
+                                                                                  List.of(5L, 6L, 8L),
+                                                                                  null,
+                                                                                  authorizationUser);
 
         assertThat(expectedOverviewIds.subList(17, 20)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenQuarterWithoutObjectivesAndObjectiveQuery() {
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(3L, List.of(5L, 6L, 8L), "kundenzufriedenheit", authorizationUser);
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(3L,
+                                                                                  List.of(5L, 6L, 8L),
+                                                                                  "kundenzufriedenheit",
+                                                                                  authorizationUser);
 
         assertTrue(overviews.isEmpty());
     }

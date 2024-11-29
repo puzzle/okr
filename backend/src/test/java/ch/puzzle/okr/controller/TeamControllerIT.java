@@ -128,7 +128,8 @@ class TeamControllerIT {
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(teamAuthorizationService.createEntity(any()))
-                  .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
+                  .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                         "Missing attribute name when creating team"));
 
         mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON)
                                   .content(CREATE_NEW_TEAM_WITH_NULL_VALUES)

@@ -178,7 +178,17 @@ public class Objective implements WriteableInterface {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, title, createdBy, team, quarter, description, modifiedOn, state, createdOn, modifiedBy);
+        return Objects.hash(id,
+                            version,
+                            title,
+                            createdBy,
+                            team,
+                            quarter,
+                            description,
+                            modifiedOn,
+                            state,
+                            createdOn,
+                            modifiedBy);
     }
 
     public static final class Builder {

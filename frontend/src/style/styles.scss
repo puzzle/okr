@@ -1,7 +1,7 @@
 @import "custom_angular";
 @import "_variables";
 @import "custom_bootstrap";
-@import "fonts/OpenSans";
+@import "fonts/Roboto";
 @import "fonts/MaterialIcons";
 
 html,
@@ -10,55 +10,68 @@ body.okr {
   margin: 0;
   padding: 0;
   background-color: $overview-bg;
-  font-family: OpenSans, sans-serif;
-  --bs-body-font-family: OpenSans;
+  font-family: Roboto, "sans-serif";
+  --bs-body-font-family: Roboto;
 
   h1 {
+    font-family: Roboto, "sans-serif";
     font-size: 1.5rem;
-    font-weight: 600;
+    font-variation-settings: "wght" 600;
   }
 
   h2 {
+    font-family: Roboto, "sans-serif";
     font-size: 1.25rem;
-    font-weight: 600;
+    font-variation-settings: "wght" 600;
     word-wrap: anywhere;
     @extend .linebreak;
     margin-bottom: 0;
   }
 
   h3 {
+    font-family: Roboto, "sans-serif";
     font-size: 1rem;
-    font-weight: 400;
+    font-variation-settings: "wght" 400;
     word-wrap: anywhere;
     margin-bottom: 0;
   }
 
   h4 {
+    font-family: Roboto, "sans-serif";
     font-size: 0.875rem;
     font-weight: 400;
     margin-bottom: 0;
   }
 
   h5 {
+    font-family: Roboto, "sans-serif";
     font-size: 0.875rem;
     margin-bottom: 0;
     font-weight: 400;
   }
 
   p {
+    font-family: Roboto, "sans-serif";
+    font-variation-settings: "wght" 400;
     margin: 0;
     font-size: 14px;
   }
 
   span {
+    font-family: Roboto, "sans-serif";
+    font-variation-settings: "wght" 400;
     font-size: 14px;
   }
 
   .quarter-filter-text span {
+    font-family: Roboto, "sans-serif";
+    font-variation-settings: "wght" 400;
     font-size: 16px;
   }
 
   a {
+    font-family: Roboto, "sans-serif";
+    font-variation-settings: "wght" 400;
     color: $pz-dark-blue;
     text-decoration: none;
     font-size: 0.875rem;
@@ -66,13 +79,16 @@ body.okr {
   }
 
   .font-size-14 {
+    font-family: Roboto, "sans-serif";
+    font-variation-settings: "wght" 400;
     font-size: 0.875rem;
   }
 }
 
 // TODO: Find a better way to override the Angular Material default font once Angular 19 is installed. https://material.angular.io/guide/theming
 * {
-  font-family: OpenSans, sans-serif;
+  font-family: Roboto, "sans-serif";
+  font-variation-settings: "wght" 400;
 }
 
 .linebreak {
@@ -113,11 +129,15 @@ body pzsh-backdrop {
 }
 
 .text-small {
+  font-family: Roboto, "sans-serif";
+  font-variation-settings: "wght" 400;
   font-size: 1rem;
 }
 
 @media screen and (max-width: 580px) {
   .text-small {
+    font-family: Roboto, "sans-serif";
+    font-variation-settings: "wght" 400;
     font-size: 0.8rem;
   }
 }
@@ -170,6 +190,8 @@ input[type="text"] {
 }
 
 .mat-mdc-checkbox .mdc-form-field {
+  font-family: Roboto, "sans-serif";
+  font-variation-settings: "wght" 400;
   font-size: 1rem !important;
 }
 
@@ -244,6 +266,8 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 }
 
 .sub-title-keyresult {
+  font-family: Roboto, "sans-serif";
+  font-variation-settings: "wght" 400;
   font-size: 0.9rem !important;
 }
 
@@ -257,9 +281,10 @@ img.add-cross-button {
 }
 
 .add-text {
+  font-family: Roboto, "sans-serif";
+  font-variation-settings: "wght" 500;
   margin-top: 1px;
   height: 2rem;
-  font-weight: 500;
 }
 
 .align-new-icon {
@@ -316,9 +341,10 @@ table.okr-table {
       background-color: $light-grey;
     }
     > th {
+      font-family: Roboto, "sans-serif";
+      font-variation-settings: "wght" 700;
       vertical-align: bottom;
       font-size: 0.75rem;
-      font-weight: bold;
       border: none;
       background-color: white;
     }

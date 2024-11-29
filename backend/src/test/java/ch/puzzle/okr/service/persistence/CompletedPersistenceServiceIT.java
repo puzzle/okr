@@ -127,17 +127,21 @@ class CompletedPersistenceServiceIT {
 
     @Test
     void deleteCompletedShouldThrowExceptionWhenCompletedNotFound() {
-        createdCompleted = completedPersistenceService.save(createCompleted(33L));
-        completedPersistenceService.deleteById(createdCompleted.getId());
+        long noExistentId = getNonExistentId();
 
-        Long completedId = createdCompleted.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> completedPersistenceService.findById(completedId));
+                () -> completedPersistenceService.findById(noExistentId));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "200")));
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, String.valueOf(noExistentId))));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    private long getNonExistentId() {
+        long id = completedPersistenceService.findAll().stream().mapToLong(Completed::getId).max().orElse(10L);
+        return id + 1;
     }
 }

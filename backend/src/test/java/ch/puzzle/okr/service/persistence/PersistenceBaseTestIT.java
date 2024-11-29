@@ -14,6 +14,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ch.puzzle.okr.test.TestHelper.getAllErrorKeys;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,11 +37,7 @@ public class PersistenceBaseTestIT {
 
     private static final long NON_EXISTING_USER_ID = 321L;
     private static final long USER_PACO_ID = 1L;
-    private static final User USER_WITHOUT_CONSTRAINTS = User.Builder.builder() //
-            .withFirstname("Hans") //
-            .withLastname("Muster") //
-            .withEmail("hans.muster@puzzle.ch") //
-            .build();
+    private static final User USER_WITHOUT_CONSTRAINTS = createUserWithUniqueName("Hans");
 
     @Autowired
     private PersistenceBase<User, Long, UserRepository> persistenceBase;
@@ -98,10 +95,11 @@ public class PersistenceBaseTestIT {
     @DisplayName("save() should add new entity")
     @Test
     void saveShouldAddNewEntity() throws ResponseStatusException {
-        createdUser = persistenceBase.save(USER_WITHOUT_CONSTRAINTS);
+        User uniqueUser = createUserWithUniqueName("Fritz");
+        createdUser = persistenceBase.save(uniqueUser);
 
         assertNotNull(createdUser);
-        assertUser("Hans", "Muster", "hans.muster@puzzle.ch", createdUser);
+        assertUser("Fritz", "Muster", "hans.muster@puzzle.ch", createdUser);
     }
 
     @DisplayName("save() should throw exception in the case of optimistic locking failure")
@@ -130,12 +128,13 @@ public class PersistenceBaseTestIT {
     @Test
     void saveExistingEntityWithDifferentDataShouldUpdateExistingEntity() throws ResponseStatusException {
         // arrange
-        createdUser = persistenceBase.save(USER_WITHOUT_CONSTRAINTS);
+        User uniqueUser = createUserWithUniqueName("Ueli");
+        createdUser = persistenceBase.save(uniqueUser);
         var createdUserId = createdUser.getId();
         var foundUser = persistenceBase.findById(createdUserId);
 
         // pro-condition
-        assertEquals("Hans", createdUser.getFirstname());
+        assertEquals("Ueli", createdUser.getFirstname());
 
         // act
         foundUser.setFirstname("Pekka");
@@ -178,5 +177,10 @@ public class PersistenceBaseTestIT {
         var exception = assertThrows(ResponseStatusException.class, () -> persistenceBase.findById(entityId));
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
+    }
+
+    private static User createUserWithUniqueName(String name) {
+        return User.Builder.builder().withFirstname(name).withLastname("Muster").withEmail("hans.muster@puzzle.ch")
+                .build();
     }
 }

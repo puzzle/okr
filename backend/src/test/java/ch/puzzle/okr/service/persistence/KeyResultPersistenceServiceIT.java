@@ -37,15 +37,9 @@ class KeyResultPersistenceServiceIT {
                                       .withUnit(Unit.FTE)
                                       .withId(id)
                                       .withTitle("Title")
-                                      .withCreatedBy(User.Builder.builder()
-                                                                 .withId(1L)
-                                                                 .build())
-                                      .withOwner(User.Builder.builder()
-                                                             .withId(1L)
-                                                             .build())
-                                      .withObjective(Objective.Builder.builder()
-                                                                      .withId(4L)
-                                                                      .build())
+                                      .withCreatedBy(User.Builder.builder().withId(1L).build())
+                                      .withOwner(User.Builder.builder().withId(1L).build())
+                                      .withObjective(Objective.Builder.builder().withId(4L).build())
                                       .withCreatedOn(LocalDateTime.now())
                                       .build();
     }
@@ -62,15 +56,9 @@ class KeyResultPersistenceServiceIT {
                                        .withId(id)
                                        .withVersion(version)
                                        .withTitle("Ordinal KeyResult")
-                                       .withCreatedBy(User.Builder.builder()
-                                                                  .withId(1L)
-                                                                  .build())
-                                       .withOwner(User.Builder.builder()
-                                                              .withId(1L)
-                                                              .build())
-                                       .withObjective(Objective.Builder.builder()
-                                                                       .withId(4L)
-                                                                       .build())
+                                       .withCreatedBy(User.Builder.builder().withId(1L).build())
+                                       .withOwner(User.Builder.builder().withId(1L).build())
+                                       .withObjective(Objective.Builder.builder().withId(4L).build())
                                        .withCreatedOn(LocalDateTime.now())
                                        .build();
     }
@@ -131,8 +119,7 @@ class KeyResultPersistenceServiceIT {
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -144,8 +131,7 @@ class KeyResultPersistenceServiceIT {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -160,14 +146,8 @@ class KeyResultPersistenceServiceIT {
 
         assertNotNull(createdKeyResult.getId());
         assertEquals(KEY_RESULT_UPDATED, recreatedKeyResult.getTitle());
-        assertEquals(createdKeyResult.getOwner()
-                                     .getId(),
-                     recreatedKeyResult.getOwner()
-                                       .getId());
-        assertEquals(createdKeyResult.getObjective()
-                                     .getId(),
-                     recreatedKeyResult.getObjective()
-                                       .getId());
+        assertEquals(createdKeyResult.getOwner().getId(), recreatedKeyResult.getOwner().getId());
+        assertEquals(createdKeyResult.getObjective().getId(), recreatedKeyResult.getObjective().getId());
 
         // Should delete the old KeyResult
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -177,8 +157,7 @@ class KeyResultPersistenceServiceIT {
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
@@ -205,15 +184,9 @@ class KeyResultPersistenceServiceIT {
                                                                                   keyResultOrdinal);
 
         assertNotNull(createdKeyResult.getId());
-        assertEquals(createdKeyResult.getObjective()
-                                     .getId(),
-                     recreatedKeyResult.getObjective()
-                                       .getId());
+        assertEquals(createdKeyResult.getObjective().getId(), recreatedKeyResult.getObjective().getId());
         assertEquals(KEY_RESULT_UPDATED, recreatedKeyResult.getTitle());
-        assertEquals(createdKeyResult.getOwner()
-                                     .getId(),
-                     recreatedKeyResult.getOwner()
-                                       .getId());
+        assertEquals(createdKeyResult.getOwner().getId(), recreatedKeyResult.getOwner().getId());
 
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
@@ -224,8 +197,7 @@ class KeyResultPersistenceServiceIT {
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
@@ -245,14 +217,8 @@ class KeyResultPersistenceServiceIT {
         assertEquals(createdKeyResult.getVersion() + 1, updatedKeyResult.getVersion());
         assertEquals(KEY_RESULT_UPDATED, updatedKeyResult.getTitle());
         assertEquals(THIS_IS_DESCRIPTION, updatedKeyResult.getDescription());
-        assertEquals(createdKeyResult.getOwner()
-                                     .getId(),
-                     updatedKeyResult.getOwner()
-                                     .getId());
-        assertEquals(createdKeyResult.getObjective()
-                                     .getId(),
-                     updatedKeyResult.getObjective()
-                                     .getId());
+        assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
+        assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
         assertEquals(createdKeyResult.getModifiedOn(), updatedKeyResult.getModifiedOn());
     }
 
@@ -270,8 +236,7 @@ class KeyResultPersistenceServiceIT {
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -295,8 +260,7 @@ class KeyResultPersistenceServiceIT {
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -313,8 +277,7 @@ class KeyResultPersistenceServiceIT {
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     private void execute() {

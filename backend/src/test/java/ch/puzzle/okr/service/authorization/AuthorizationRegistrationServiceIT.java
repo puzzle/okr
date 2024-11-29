@@ -50,11 +50,9 @@ class AuthorizationRegistrationServiceIT {
         Optional<User> userFromDb = userPersistenceService.findByEmail(EMAIL_WUNDERLAND);
         assertTrue(userFromDb.isPresent());
 
-        userFromDb.get()
-                  .setOkrChampion(false);
+        userFromDb.get().setOkrChampion(false);
         userPersistenceService.save(userFromDb.get());
-        assertOkrChampionStatusInDb(userFromDb.get()
-                                              .getEmail(), false);
+        assertOkrChampionStatusInDb(userFromDb.get().getEmail(), false);
     }
 
     private void clearCache() {
@@ -66,9 +64,7 @@ class AuthorizationRegistrationServiceIT {
     private void assertOkrChampionStatusInDb(String email, boolean expectedOkrChampionStatus) {
         var userInDb = userPersistenceService.findByEmail(email);
         assertTrue(userInDb.isPresent());
-        assertEquals(expectedOkrChampionStatus,
-                     userInDb.get()
-                             .isOkrChampion());
+        assertEquals(expectedOkrChampionStatus, userInDb.get().isOkrChampion());
     }
 
     @Test
@@ -103,17 +99,14 @@ class AuthorizationRegistrationServiceIT {
         AuthorizationUser processedUser = authorizationRegistrationService.updateOrAddAuthorizationUser(user);
 
         // assert
-        assertFalse(processedUser.user()
-                                 .isOkrChampion());
+        assertFalse(processedUser.user().isOkrChampion());
         Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
 
         assertTrue(userFromDB.isPresent());
-        assertFalse(userFromDB.get()
-                              .isOkrChampion());
+        assertFalse(userFromDB.get().isOkrChampion());
 
         // cleanup
-        userPersistenceService.deleteById(userFromDB.get()
-                                                    .getId());
+        userPersistenceService.deleteById(userFromDB.get().getId());
     }
 
     /*
@@ -140,10 +133,8 @@ class AuthorizationRegistrationServiceIT {
                                                                                                                     .build());
 
         // assert
-        assertTrue(processedUser.user()
-                                .isOkrChampion());
-        assertOkrChampionStatusInDb(processedUser.user()
-                                                 .getEmail(), true);
+        assertTrue(processedUser.user().isOkrChampion());
+        assertOkrChampionStatusInDb(processedUser.user().getEmail(), true);
     }
 
     @Test
@@ -170,13 +161,10 @@ class AuthorizationRegistrationServiceIT {
         // assert
         Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
         assertTrue(userFromDB.isPresent());
-        assertEquals(userFromDB.get()
-                               .getFirstname(), firstNameFromToken);
-        assertEquals(userFromDB.get()
-                               .getLastname(), lastNameFromToken);
+        assertEquals(userFromDB.get().getFirstname(), firstNameFromToken);
+        assertEquals(userFromDB.get().getLastname(), lastNameFromToken);
 
         // cleanup
-        userPersistenceService.deleteById(userFromDB.get()
-                                                    .getId());
+        userPersistenceService.deleteById(userFromDB.get().getId());
     }
 }

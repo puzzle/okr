@@ -48,8 +48,7 @@ public class KeyResultMapperTest {
     void setup() {
         KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper(userBusinessService,
                                                                                 objectiveBusinessService,
-                                                                                checkInBusinessService,
-                                                                                actionMapper);
+                                                                                checkInBusinessService, actionMapper);
 
         KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper(userBusinessService,
                                                                                    objectiveBusinessService,

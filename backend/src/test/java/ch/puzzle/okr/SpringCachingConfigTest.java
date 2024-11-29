@@ -39,8 +39,7 @@ class SpringCachingConfigTest {
     @AfterEach
     void tearDown() {
         TenantContext.setCurrentTenant(null);
-        cacheManager.getCache(AUTHORIZATION_USER_CACHE)
-                    .clear();
+        cacheManager.getCache(AUTHORIZATION_USER_CACHE).clear();
     }
 
     @DisplayName("before calling updateOrAddAuthorizationUser the User is not in the cache")
@@ -65,13 +64,13 @@ class SpringCachingConfigTest {
         assertEqualUsers(expectedUser, cachedUser);
     }
 
-    private void assertEqualUsers(AuthorizationUser expectedAuthorizationUser, AuthorizationUser actualAuthorizationUser) {
+    private void assertEqualUsers(AuthorizationUser expectedAuthorizationUser,
+                                  AuthorizationUser actualAuthorizationUser) {
 
         User expcetedUser = expectedAuthorizationUser.user();
         User actualUser = actualAuthorizationUser.user();
-        assertTrue(expcetedUser.getFirstname()
-                               .equals(actualUser.getFirstname()) && expcetedUser.getLastname()
-                                                                                 .equals(actualUser.getLastname()) && expcetedUser.getEmail()
-                                                                                                                                  .equals(actualUser.getEmail()));
+        assertTrue(expcetedUser.getFirstname().equals(actualUser.getFirstname()) && expcetedUser.getLastname()
+                                                                                                .equals(actualUser.getLastname()) &&
+                   expcetedUser.getEmail().equals(actualUser.getEmail()));
     }
 }

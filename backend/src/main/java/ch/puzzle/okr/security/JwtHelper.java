@@ -30,7 +30,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class JwtHelper {
     public static final String CLAIM_TENANT = "tenant";
     public static final String CLAIM_ISS = "iss";
-    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS + "' claims in JWT token!";
+    public static final String ERROR_MESSAGE = "Missing `" + CLAIM_TENANT + "` and '" + CLAIM_ISS +
+                                               "' claims in JWT token!";
 
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
@@ -39,7 +40,10 @@ public class JwtHelper {
     private final String lastname;
     private final String email;
 
-    public JwtHelper(TenantConfigProvider tenantConfigProvider, @Value("${okr.jwt.claim.firstname}") final String tokenClaimsKeyFirstname, @Value("${okr.jwt.claim.lastname}") final String tokenClaimsKeyLastname, @Value("${okr.jwt.claim.email}") final String tokenClaimsKeyEmail) {
+    public JwtHelper(TenantConfigProvider tenantConfigProvider,
+                     @Value("${okr.jwt.claim.firstname}") final String tokenClaimsKeyFirstname,
+                     @Value("${okr.jwt.claim.lastname}") final String tokenClaimsKeyLastname,
+                     @Value("${okr.jwt.claim.email}") final String tokenClaimsKeyEmail) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.firstname = tokenClaimsKeyFirstname;
         this.lastname = tokenClaimsKeyLastname;
@@ -52,12 +56,9 @@ public class JwtHelper {
 
         try {
             return User.Builder.builder()
-                               .withFirstname(claims.get(firstname)
-                                                    .toString())
-                               .withLastname(claims.get(lastname)
-                                                   .toString())
-                               .withEmail(claims.get(email)
-                                                .toString())
+                               .withFirstname(claims.get(firstname).toString())
+                               .withLastname(claims.get(lastname).toString())
+                               .withEmail(claims.get(email).toString())
                                .build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
@@ -73,7 +74,8 @@ public class JwtHelper {
         return getFirstMatchingTenantUsingListOfHelperFunctions(token, getTenantFromTokenFunctions);
     }
 
-    private String getFirstMatchingTenantUsingListOfHelperFunctions(Jwt token, List<Function<Jwt, Optional<String>>> getTenantFunctions) {
+    private String getFirstMatchingTenantUsingListOfHelperFunctions(Jwt token,
+                                                                    List<Function<Jwt, Optional<String>>> getTenantFunctions) {
 
         return getTenantFunctions.stream()
                                  .map(func -> func.apply(token))
@@ -92,7 +94,8 @@ public class JwtHelper {
         return getFirstMatchingTenantUsingListOfHelperFunctions(claimSet, getTenantFromClaimsSetFunctions);
     }
 
-    private String getFirstMatchingTenantUsingListOfHelperFunctions(JWTClaimsSet claimSet, List<Function<JWTClaimsSet, Optional<String>>> getTenantFunctions) {
+    private String getFirstMatchingTenantUsingListOfHelperFunctions(JWTClaimsSet claimSet,
+                                                                    List<Function<JWTClaimsSet, Optional<String>>> getTenantFunctions) {
 
         return getTenantFunctions.stream()
                                  .map(func -> func.apply(claimSet))

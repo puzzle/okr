@@ -18,7 +18,8 @@ public class TeamAuthorizationService {
     private final TeamBusinessService teamBusinessService;
     private final AuthorizationService authorizationService;
 
-    public TeamAuthorizationService(TeamBusinessService teamBusinessService, AuthorizationService authorizationService) {
+    public TeamAuthorizationService(TeamBusinessService teamBusinessService,
+                                    AuthorizationService authorizationService) {
         this.teamBusinessService = teamBusinessService;
         this.authorizationService = authorizationService;
     }
@@ -71,9 +72,7 @@ public class TeamAuthorizationService {
 
     public void removeUserFromTeam(long entityId, long userId) {
         // user is allowed to remove own membership of any team
-        if (userId != authorizationService.updateOrAddAuthorizationUser()
-                                          .user()
-                                          .getId()) {
+        if (userId != authorizationService.updateOrAddAuthorizationUser().user().getId()) {
             checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
         }
         teamBusinessService.removeUserFromTeam(entityId, userId);

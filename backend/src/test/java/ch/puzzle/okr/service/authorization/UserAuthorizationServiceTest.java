@@ -53,26 +53,10 @@ public class UserAuthorizationServiceTest {
         when(teamAuthorizationService.isUserWriteAllowed(memberTeamId)).thenReturn(false);
 
         List<User> users = userAuthorizationService.getAllUsers();
-        assertTrue(users.get(0)
-                        .getUserTeamList()
-                        .get(0)
-                        .getTeam()
-                        .isWriteable());
-        assertFalse(users.get(0)
-                         .getUserTeamList()
-                         .get(1)
-                         .getTeam()
-                         .isWriteable());
-        assertTrue(users.get(1)
-                        .getUserTeamList()
-                        .get(0)
-                        .getTeam()
-                        .isWriteable());
-        assertFalse(users.get(1)
-                         .getUserTeamList()
-                         .get(1)
-                         .getTeam()
-                         .isWriteable());
+        assertTrue(users.get(0).getUserTeamList().get(0).getTeam().isWriteable());
+        assertFalse(users.get(0).getUserTeamList().get(1).getTeam().isWriteable());
+        assertTrue(users.get(1).getUserTeamList().get(0).getTeam().isWriteable());
+        assertFalse(users.get(1).getUserTeamList().get(1).getTeam().isWriteable());
     }
 
     @Test
@@ -96,8 +80,8 @@ public class UserAuthorizationServiceTest {
         when(userBusinessService.getUserById(user.getId())).thenReturn(user);
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
-        assertThrows(OkrResponseStatusException.class,
-                     () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
+        assertThrows(OkrResponseStatusException.class, () -> userAuthorizationService.setIsOkrChampion(user.getId(),
+                                                                                                       true));
     }
 
     @Test
@@ -121,8 +105,8 @@ public class UserAuthorizationServiceTest {
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
-        assertThrows(OkrResponseStatusException.class,
-                     () -> userAuthorizationService.createUsers(List.of(user, user2)));
+        assertThrows(OkrResponseStatusException.class, () -> userAuthorizationService.createUsers(List.of(user,
+                                                                                                          user2)));
     }
 
     @DisplayName("isUserMemberOfTeams() should return false if user is not member of teams")

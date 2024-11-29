@@ -25,7 +25,8 @@ class ClientConfigServiceIT {
 
     @ParameterizedTest
     @MethodSource("tenantConfigs")
-    void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname, String activeProfile, String issuer, String clientId) {
+    void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname, String activeProfile,
+                                                                             String issuer, String clientId) {
 
         // arrange + act
         ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv(hostname);
@@ -37,20 +38,16 @@ class ClientConfigServiceIT {
     }
 
     private static Stream<Arguments> tenantConfigs() {
-        return Stream.of(Arguments.of("pitc.okr.puzzle.ch",
-                                      "prod",
-                                      "http://localhost:8544/realms/pitc",
-                                      "pitc_okr_staging"),
-                         Arguments.of("acme.okr.puzzle.ch",
-                                      "prod",
-                                      "http://localhost:8544/realms/pitc",
-                                      "acme_okr_staging"));
+        return Stream.of(Arguments.of("pitc.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc",
+                                      "pitc_okr_staging"), Arguments.of("acme.okr.puzzle.ch", "prod",
+                                                                        "http://localhost:8544/realms/pitc",
+                                                                        "acme_okr_staging"));
     }
 
     @Test
     void getConfigBasedOnActiveEnv_invalidSubdomain_throwsException() {
-        assertThrowsExactly(EntityNotFoundException.class,
-                            () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
+        assertThrowsExactly(EntityNotFoundException.class, () -> clientConfigService.getConfigBasedOnActiveEnv(
+                                                                                                               "foobar.okr.puzzle.ch"));
     }
 
     @Test
@@ -66,9 +63,7 @@ class ClientConfigServiceIT {
         assertEquals("assets/images/triangles-okr-header.svg", clientConfig.triangles());
         assertEquals("assets/images/puzzle-p.svg", clientConfig.backgroundLogo());
         assertEquals("Puzzle OKR", clientConfig.title());
-        assertEquals("#1e5a96",
-                     clientConfig.customStyles()
-                                 .get("okr-topbar-background-color"));
+        assertEquals("#1e5a96", clientConfig.customStyles().get("okr-topbar-background-color"));
     }
 
 }

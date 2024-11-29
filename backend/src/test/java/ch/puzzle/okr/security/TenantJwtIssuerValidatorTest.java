@@ -33,8 +33,8 @@ public class TenantJwtIssuerValidatorTest {
 
         // act + assert
         TenantJwtIssuerValidator validator = new TenantJwtIssuerValidator(emptyTenantConfigProvider, jwtHelper);
-        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
-                                                                         () -> validator.validate(token));
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> validator
+                                                                                                                        .validate(token));
 
         assertEquals("unknown tenant", illegalArgumentException.getLocalizedMessage());
     }

@@ -66,13 +66,9 @@ class QuarterPersistenceServiceIT {
     void shouldReturnCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
-        assertTrue(LocalDate.now()
-                            .isEqual(quarter.getStartDate()) || LocalDate.now()
-                                                                         .isAfter(quarter.getStartDate()));
+        assertTrue(LocalDate.now().isEqual(quarter.getStartDate()) || LocalDate.now().isAfter(quarter.getStartDate()));
 
-        assertTrue(LocalDate.now()
-                            .isEqual(quarter.getEndDate()) || LocalDate.now()
-                                                                       .isBefore(quarter.getEndDate()));
+        assertTrue(LocalDate.now().isEqual(quarter.getEndDate()) || LocalDate.now().isBefore(quarter.getEndDate()));
 
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());

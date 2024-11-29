@@ -32,7 +32,8 @@ class ValidationBaseTest {
     @MockBean
     ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
 
-    @Spy @InjectMocks
+    @Spy
+    @InjectMocks
     private DummyValidationService validator;
 
     @InjectMocks
@@ -58,12 +59,11 @@ class ValidationBaseTest {
     void validateOnGetShouldThrowExceptionWhenIdIsNull() {
         // arrange
         Long id = null;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnGet(id));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnGet(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
@@ -75,10 +75,7 @@ class ValidationBaseTest {
     void validateOnDeleteShouldBeSuccessfulWhenIdIsValid() {
         // arrange
         Long id = 1L;
-        Quarter quarter = Quarter.Builder.builder()
-                                         .withId(id)
-                                         .withLabel("Quarter")
-                                         .build();
+        Quarter quarter = Quarter.Builder.builder().withId(id).withLabel("Quarter").build();
         when(quarterPersistenceService.findById(id)).thenReturn(quarter);
 
         // act
@@ -93,12 +90,11 @@ class ValidationBaseTest {
     void validateOnDeleteShouldThrowExceptionWhenIdIsNull() {
         // arrange
         Long id = null;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnDelete(id));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnDelete(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
@@ -110,10 +106,7 @@ class ValidationBaseTest {
     void throwExceptionWhenModelIsNullShouldBeSuccessfulWhenModelIsValid() {
         // act
         Long id = 1L;
-        Quarter model = Quarter.Builder.builder()
-                                       .withId(id)
-                                       .withLabel("Quarter")
-                                       .build();
+        Quarter model = Quarter.Builder.builder().withId(id).withLabel("Quarter").build();
 
         // act + assert
         assertDoesNotThrow(() -> validator.throwExceptionWhenModelIsNull(model));
@@ -125,12 +118,11 @@ class ValidationBaseTest {
     void throwExceptionWhenModelIsNullShouldThrowExceptionWhenModelIsNull() {
         // arrange
         Quarter model = null;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.throwExceptionWhenModelIsNull(model));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .throwExceptionWhenModelIsNull(model));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Quarter")));
@@ -150,12 +142,11 @@ class ValidationBaseTest {
     void throwExceptionWhenIdIsNotNullShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
         long id = 1L;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.throwExceptionWhenIdIsNotNull(id));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .throwExceptionWhenIdIsNotNull(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Quarter")));
@@ -177,17 +168,16 @@ class ValidationBaseTest {
         // arrange
         Long id = 1L;
         Long modelId = 2L;
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.throwExceptionWhenIdHasChanged(id,
-                                                                                                           modelId));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .throwExceptionWhenIdHasChanged(id,
+                                                                                                                                             modelId));
 
         // assert
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED",
-                                                             List.of("ID", id.toString(), modelId.toString())));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", id.toString(), modelId
+                                                                                                                      .toString())));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
@@ -195,11 +185,8 @@ class ValidationBaseTest {
     @Test
     void validateShouldBeSuccessfulWhenConstraintInModelClassIsNotViolated() {
         // arrange
-        Quarter quarterWithValidLabel = Quarter.Builder.builder()
-                                                       .withLabel("Quarter")
-                                                       .build();
-        Mockito.when(objectivePersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Quarter quarterWithValidLabel = Quarter.Builder.builder().withLabel("Quarter").build();
+        Mockito.when(objectivePersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
         assertDoesNotThrow(() -> validator.validate(quarterWithValidLabel));
@@ -211,15 +198,12 @@ class ValidationBaseTest {
     void validateShouldThrowExceptionWhenWhenConstraintInModelClassIsViolated() {
         // arrange
         // Quarter which violates the NotNull constraint in Quarter model class
-        Quarter quarterWithNullLabel = Quarter.Builder.builder()
-                                                      .withLabel(null)
-                                                      .build();
-        Mockito.when(quarterPersistenceService.getModelName())
-               .thenReturn("Quarter");
+        Quarter quarterWithNullLabel = Quarter.Builder.builder().withLabel(null).build();
+        Mockito.when(quarterPersistenceService.getModelName()).thenReturn("Quarter");
 
         // act + assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validate(quarterWithNullLabel));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator.validate(
+                                                                                                                       quarterWithNullLabel));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("label", "Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -230,11 +214,8 @@ class ValidationBaseTest {
     void validateShouldThrowExceptionWhenOneOfSeveralConstraintsInModelClassIsViolated() {
         // arrange
         // Objective which violates several constraints in Objective model class
-        Objective objective = Objective.Builder.builder()
-                                               .withTitle("X")
-                                               .build();
-        Mockito.when(objectivePersistenceService.getModelName())
-               .thenReturn("Objective");
+        Objective objective = Objective.Builder.builder().withTitle("X").build();
+        Mockito.when(objectivePersistenceService.getModelName()).thenReturn("Objective");
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -245,12 +226,13 @@ class ValidationBaseTest {
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")),
-                                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                             List.of("title", "Objective", "2", "250")));
+                                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective",
+                                                                                               "2", "250")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    static class DummyValidationService extends ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
+    static class DummyValidationService extends
+                                        ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
 
         public DummyValidationService(QuarterPersistenceService quarterPersistenceService) {
             super(quarterPersistenceService);
@@ -265,7 +247,8 @@ class ValidationBaseTest {
         }
     }
 
-    static class DummyValidationServiceWithSeveralConstraints extends ValidationBase<Objective, Long, ObjectiveRepository, ObjectivePersistenceService> {
+    static class DummyValidationServiceWithSeveralConstraints extends
+                                                              ValidationBase<Objective, Long, ObjectiveRepository, ObjectivePersistenceService> {
 
         public DummyValidationServiceWithSeveralConstraints(ObjectivePersistenceService objectivePersistenceService) {
             super(objectivePersistenceService);

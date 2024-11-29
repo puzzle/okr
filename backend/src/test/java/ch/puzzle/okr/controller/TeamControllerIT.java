@@ -42,14 +42,8 @@ class TeamControllerIT {
     private static final String URL_TEAM_1 = "/api/v2/teams/1";
     public static final String PUZZLE = "Puzzle";
     public static final String SUB_URL_USER_5 = "/user/5";
-    static Team teamPuzzle = Team.Builder.builder()
-                                         .withId(5L)
-                                         .withName(PUZZLE)
-                                         .build();
-    static Team teamOKR = Team.Builder.builder()
-                                      .withId(7L)
-                                      .withName("OKR")
-                                      .build();
+    static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
+    static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
     static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, false);
     static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", false);
@@ -86,20 +80,16 @@ class TeamControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(teamMapper.toDto(teamPuzzle))
-                  .willReturn(teamPuzzleDto);
-        BDDMockito.given(teamMapper.toDto(teamOKR))
-                  .willReturn(teamOkrDto);
+        BDDMockito.given(teamMapper.toDto(teamPuzzle)).willReturn(teamPuzzleDto);
+        BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
     }
 
     @Test
     void shouldGetAllTeams() throws Exception {
-        BDDMockito.given(teamAuthorizationService.getAllTeams())
-                  .willReturn(teamList);
+        BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
 
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk())
+           .andExpect(MockMvcResultMatchers.status().isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(2)))
            .andExpect(jsonPath("$[0].id", Is.is(5)))
            .andExpect(jsonPath("$[0].name", Is.is(PUZZLE)))
@@ -109,39 +99,30 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
-        BDDMockito.given(teamAuthorizationService.getAllTeams())
-                  .willReturn(teamList);
-        mvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON))
-           .andExpectAll();
-        BDDMockito.verify(teamMapper)
-                  .toDto(teamOKR);
-        BDDMockito.verify(teamMapper)
-                  .toDto(teamPuzzle);
+        BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
+        mvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON)).andExpectAll();
+        BDDMockito.verify(teamMapper).toDto(teamOKR);
+        BDDMockito.verify(teamMapper).toDto(teamPuzzle);
     }
 
     @Test
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
-        BDDMockito.given(teamAuthorizationService.getAllTeams())
-                  .willReturn(Collections.emptyList());
+        BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk())
+           .andExpect(MockMvcResultMatchers.status().isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
     void shouldReturnCreatedTeam() throws Exception {
-        BDDMockito.given(teamAuthorizationService.createEntity(any()))
-                  .willReturn(teamOKR);
+        BDDMockito.given(teamAuthorizationService.createEntity(any())).willReturn(teamOKR);
 
         mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON)
                                   .content(CREATE_NEW_TEAM)
                                   .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isCreated())
-           .andExpect(MockMvcResultMatchers.content()
-                                           .string(RESPONSE_NEW_TEAM));
+           .andExpect(MockMvcResultMatchers.status().isCreated())
+           .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_TEAM));
     }
 
     @Test
@@ -153,31 +134,22 @@ class TeamControllerIT {
         mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON)
                                   .content(CREATE_NEW_TEAM_WITH_NULL_VALUES)
                                   .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isBadRequest());
+           .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldReturnUpdatedTeam() throws Exception {
         TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", false);
-        Team team = Team.Builder.builder()
-                                .withId(1L)
-                                .withName("OKR-Team")
-                                .build();
+        Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
-        BDDMockito.given(teamMapper.toDto(any()))
-                  .willReturn(teamDto);
-        BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong()))
-                  .willReturn(team);
+        BDDMockito.given(teamMapper.toDto(any())).willReturn(teamDto);
+        BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong())).willReturn(team);
 
         mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON)
                                    .content(UPDATE_TEAM)
                                    .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk())
-           .andExpect(jsonPath("$.id",
-                               Is.is(teamDto.id()
-                                            .intValue())))
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(jsonPath("$.id", Is.is(teamDto.id().intValue())))
            .andExpect(jsonPath("$.version", Is.is(teamDto.version())))
            .andExpect(jsonPath("$.name", Is.is(teamDto.name())));
     }
@@ -190,8 +162,7 @@ class TeamControllerIT {
         mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON)
                                    .content(UPDATE_TEAM)
                                    .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isNotFound());
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -202,15 +173,13 @@ class TeamControllerIT {
         mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON)
                                    .content(UPDATE_TEAM)
                                    .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isBadRequest());
+           .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldDeleteTeam() throws Exception {
         mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk());
+           .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -218,8 +187,7 @@ class TeamControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found")).when(teamAuthorizationService)
                                                                                     .deleteEntity(anyLong());
         mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isNotFound());
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -227,8 +195,7 @@ class TeamControllerIT {
         mvc.perform(put(URL_TEAM_1 + "/addusers").contentType(MediaType.APPLICATION_JSON)
                                                  .content(ADD_USERS)
                                                  .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk());
+           .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -236,16 +203,15 @@ class TeamControllerIT {
         mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser").contentType(MediaType.APPLICATION_JSON)
                                                                     .content(ADD_USERS)
                                                                     .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk());
+           .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
-        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true").contentType(
+                                                                                                   MediaType.APPLICATION_JSON)
                                                                                       .content(ADD_USERS)
                                                                                       .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk());
+           .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

@@ -105,9 +105,7 @@ class UserPersistenceServiceIT {
     @Test
     void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
         // arrange
-        var existingUser = User.Builder.builder()
-                                       .withEmail("wunderland@puzzle.ch")
-                                       .build();
+        var existingUser = User.Builder.builder().withEmail("wunderland@puzzle.ch").build();
 
         // act
         var returnedUser = userPersistenceService.getOrCreateUser(existingUser);
@@ -142,26 +140,20 @@ class UserPersistenceServiceIT {
         Optional<User> user = userPersistenceService.findByEmail("gl@gl.com");
 
         assertTrue(user.isPresent());
-        assertEquals("Jaya",
-                     user.get()
-                         .getFirstname());
-        assertEquals("Norris",
-                     user.get()
-                         .getLastname());
+        assertEquals("Jaya", user.get().getFirstname());
+        assertEquals("Norris", user.get().getLastname());
     }
 
     @DisplayName("findByEmail() should return empty optional if email is not found")
     @Test
     void findByEmailShouldReturnEmptyOptionalIfEmailIsNotFound() {
-        assertTrue(userPersistenceService.findByEmail("not_valid@gl.com")
-                                         .isEmpty());
+        assertTrue(userPersistenceService.findByEmail("not_valid@gl.com").isEmpty());
     }
 
     @DisplayName("findByEmail() should return empty optional if email is null")
     @Test
     void findByEmailShouldReturnEmptyOptionalIfEmailIsNull() {
-        assertTrue(userPersistenceService.findByEmail(null)
-                                         .isEmpty());
+        assertTrue(userPersistenceService.findByEmail(null).isEmpty());
     }
 
     // uses data from V100_0_0__TestData.sql

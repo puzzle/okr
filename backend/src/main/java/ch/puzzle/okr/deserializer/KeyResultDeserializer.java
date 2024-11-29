@@ -21,14 +21,13 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
     @Override
-    public KeyResultDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException,
+    public KeyResultDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                                                                                                          throws IOException,
                                                                                                           JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
         String keyResultAttribute = "keyResultType";
-        if (root.has(keyResultAttribute) && root.get(keyResultAttribute)
-                                                .asText()
-                                                .equals(KEY_RESULT_TYPE_METRIC)) {
+        if (root.has(keyResultAttribute) && root.get(keyResultAttribute).asText().equals(KEY_RESULT_TYPE_METRIC)) {
             return mapper.readValue(root.toString(), KeyResultMetricDto.class);
         } else if (root.has(keyResultAttribute) && root.get(keyResultAttribute)
                                                        .asText()

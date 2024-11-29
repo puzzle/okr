@@ -92,8 +92,7 @@ class AlignmentControllerIT {
                   .willReturn(alignmentSelections);
 
         mvc.perform(get("/api/v2/alignments/selections?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk())
+           .andExpect(MockMvcResultMatchers.status().isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(3)))
            .andExpect(jsonPath("$[0].id", Is.is(1)))
            .andExpect(jsonPath("$[0].keyResults[0].id", Is.is(20)))
@@ -113,8 +112,7 @@ class AlignmentControllerIT {
                   .willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/alignments/selections").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk())
+           .andExpect(MockMvcResultMatchers.status().isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
@@ -124,8 +122,7 @@ class AlignmentControllerIT {
                   .willReturn(List.of(alignmentSelectionEmptyKeyResults));
 
         mvc.perform(get("/api/v2/alignments/selections?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk())
+           .andExpect(MockMvcResultMatchers.status().isOk())
            .andExpect(jsonPath("$", Matchers.hasSize(1)))
            .andExpect(jsonPath("$[0].id", Is.is(8)))
            .andExpect(jsonPath("$[0].keyResults.size()", Is.is(0)));

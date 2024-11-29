@@ -33,13 +33,13 @@ class CompletedBusinessServiceTest {
                                                      .withComment("Wir haben es gut geschafft")
                                                      .build();
 
-    @InjectMocks @Spy
+    @InjectMocks
+    @Spy
     private CompletedBusinessService completedBusinessService;
 
     @Test
     void saveSuccessFulCompleted() {
-        Mockito.when(completedPersistenceService.save(any()))
-               .thenReturn(successfulCompleted);
+        Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
 
         Completed completed = Completed.Builder.builder()
                                                .withObjective(Objective.Builder.builder()
@@ -63,8 +63,7 @@ class CompletedBusinessServiceTest {
                                                                                .build())
                                                .build();
 
-        Mockito.when(completedPersistenceService.save(any()))
-               .thenReturn(successfulCompleted);
+        Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
 
         Completed savedCompleted = completedBusinessService.createCompleted(completed);
         verify(completedPersistenceService, times(1)).save(completed);

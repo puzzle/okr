@@ -103,8 +103,7 @@ public class FlywayMultitenantMigrationInitializerTest {
         try (MockedStatic<Flyway> mockedStatic = Mockito.mockStatic(Flyway.class)) {
             // arrange
             FluentConfigurationSpy fluentConfiguration = new FluentConfigurationSpy();
-            mockedStatic.when(Flyway::configure)
-                        .thenReturn(fluentConfiguration);
+            mockedStatic.when(Flyway::configure).thenReturn(fluentConfiguration);
 
             FlywayMultitenantMigrationInitializer migrationInitializer = new FlywayMultitenantMigrationInitializer(providerInterfaceMock,
                                                                                                                    new String[]{SCRIPT_LOCATION});

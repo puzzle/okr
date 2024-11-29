@@ -30,7 +30,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
 
-    public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService, ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService, CompletedBusinessService completedBusinessService) {
+    public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
+                                    ObjectiveValidationService validator,
+                                    ObjectivePersistenceService objectivePersistenceService,
+                                    CompletedBusinessService completedBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
@@ -122,13 +125,12 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         return duplicatedObjective;
     }
 
-    private void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult, Objective duplicatedObjective) {
-        if (keyResult.getKeyResultType()
-                     .equals(KEY_RESULT_TYPE_METRIC)) {
+    private void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
+                                    Objective duplicatedObjective) {
+        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
             KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
             keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-        } else if (keyResult.getKeyResultType()
-                            .equals(KEY_RESULT_TYPE_ORDINAL)) {
+        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
             KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
             keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
         }

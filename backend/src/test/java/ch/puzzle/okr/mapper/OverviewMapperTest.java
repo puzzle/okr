@@ -49,10 +49,7 @@ class OverviewMapperTest {
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
-        assertEquals(0,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .size());
+        assertEquals(0, overviewDtos.get(0).objectives().size());
     }
 
     @Test
@@ -68,16 +65,8 @@ class OverviewMapperTest {
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .size());
-        assertEquals(0,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .get(0)
-                                 .keyResults()
-                                 .size());
+        assertEquals(1, overviewDtos.get(0).objectives().size());
+        assertEquals(0, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
     @Test
@@ -96,16 +85,8 @@ class OverviewMapperTest {
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .get(0)
-                                 .keyResults()
-                                 .size());
+        assertEquals(1, overviewDtos.get(0).objectives().size());
+        assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
     @Test
@@ -127,16 +108,8 @@ class OverviewMapperTest {
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .get(0)
-                                 .keyResults()
-                                 .size());
+        assertEquals(1, overviewDtos.get(0).objectives().size());
+        assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
     @Test
@@ -153,31 +126,22 @@ class OverviewMapperTest {
                                                            .withKeyResultTitle("Key Result 1")
                                                            .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
                                                            .withCheckInZone("COMMIT")
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(1L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(5L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 1")
-                                                           .withKeyResultTitle("Key Result 5")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                           .build());
+                                                           .build(), Overview.Builder.builder()
+                                                                                     .withOverviewId(OverviewId.Builder.builder()
+                                                                                                                       .withObjectiveId(1L)
+                                                                                                                       .withTeamId(2L)
+                                                                                                                       .withKeyResultId(5L)
+                                                                                                                       .build())
+                                                                                     .withTeamName(TEAM_PUZZLE)
+                                                                                     .withObjectiveTitle("Objective 1")
+                                                                                     .withKeyResultTitle("Key Result 5")
+                                                                                     .withKeyResultType(KEY_RESULT_TYPE_METRIC)
+                                                                                     .build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .size());
-        assertEquals(2,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .get(0)
-                                 .keyResults()
-                                 .size());
+        assertEquals(1, overviewDtos.get(0).objectives().size());
+        assertEquals(2, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
     @Test
@@ -197,70 +161,43 @@ class OverviewMapperTest {
                                                            .withStretchGoal(37.0)
                                                            .withUnit("TCHF")
                                                            .withCheckInValue(27.5)
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(5L)
-                                                                                             .withTeamId(2L)
-                                                                                             .withKeyResultId(6L)
-                                                                                             .withCheckInId(7L)
-                                                                                             .build())
-                                                           .withTeamName(TEAM_PUZZLE)
-                                                           .withObjectiveTitle("Objective 5")
-                                                           .withKeyResultTitle("Key Result 6")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
-                                                           .withCommitZone("commit")
-                                                           .withTargetZone("target")
-                                                           .withStretchZone("stretch")
-                                                           .withCheckInZone("checkIn")
-                                                           .build());
+                                                           .build(), Overview.Builder.builder()
+                                                                                     .withOverviewId(OverviewId.Builder.builder()
+                                                                                                                       .withObjectiveId(5L)
+                                                                                                                       .withTeamId(2L)
+                                                                                                                       .withKeyResultId(6L)
+                                                                                                                       .withCheckInId(7L)
+                                                                                                                       .build())
+                                                                                     .withTeamName(TEAM_PUZZLE)
+                                                                                     .withObjectiveTitle("Objective 5")
+                                                                                     .withKeyResultTitle("Key Result 6")
+                                                                                     .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
+                                                                                     .withCommitZone("commit")
+                                                                                     .withTargetZone("target")
+                                                                                     .withStretchZone("stretch")
+                                                                                     .withCheckInZone("checkIn")
+                                                                                     .build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
-        assertEquals(2,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .get(0)
-                                 .keyResults()
-                                 .size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .get(1)
-                                 .keyResults()
-                                 .size());
+        assertEquals(2, overviewDtos.get(0).objectives().size());
+        assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
+        assertEquals(1, overviewDtos.get(0).objectives().get(1).keyResults().size());
 
-        OverviewKeyResultDto keyResultDto = overviewDtos.get(0)
-                                                        .objectives()
-                                                        .get(0)
-                                                        .keyResults()
-                                                        .get(0);
+        OverviewKeyResultDto keyResultDto = overviewDtos.get(0).objectives().get(0).keyResults().get(0);
         assertTrue(keyResultDto instanceof OverviewKeyResultMetricDto);
         assertEquals(KEY_RESULT_TYPE_METRIC, keyResultDto.keyResultType());
         assertEquals(20.0, ((OverviewKeyResultMetricDto) keyResultDto).baseline(), 0.1);
         assertEquals(37.0, ((OverviewKeyResultMetricDto) keyResultDto).stretchGoal(), 0.1);
-        assertEquals(27.5,
-                     ((OverviewKeyResultMetricDto) keyResultDto).lastCheckIn()
-                                                                .value(),
-                     0.1);
+        assertEquals(27.5, ((OverviewKeyResultMetricDto) keyResultDto).lastCheckIn().value(), 0.1);
 
-        keyResultDto = overviewDtos.get(0)
-                                   .objectives()
-                                   .get(1)
-                                   .keyResults()
-                                   .get(0);
+        keyResultDto = overviewDtos.get(0).objectives().get(1).keyResults().get(0);
         assertTrue(keyResultDto instanceof OverviewKeyResultOrdinalDto);
         assertEquals(KEY_RESULT_TYPE_ORDINAL, keyResultDto.keyResultType());
         assertEquals("commit", ((OverviewKeyResultOrdinalDto) keyResultDto).commitZone());
         assertEquals("target", ((OverviewKeyResultOrdinalDto) keyResultDto).targetZone());
         assertEquals("stretch", ((OverviewKeyResultOrdinalDto) keyResultDto).stretchZone());
-        assertEquals("checkIn",
-                     ((OverviewKeyResultOrdinalDto) keyResultDto).lastCheckIn()
-                                                                 .value());
+        assertEquals("checkIn", ((OverviewKeyResultOrdinalDto) keyResultDto).lastCheckIn().value());
     }
 
     @Test
@@ -277,52 +214,35 @@ class OverviewMapperTest {
                                                            .withKeyResultTitle("Key Result 1")
                                                            .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
                                                            .withCheckInZone("TARGET")
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(5L)
-                                                                                             .withTeamId(4L)
-                                                                                             .withKeyResultId(6L)
-                                                                                             .build())
-                                                           .withTeamName("/BBT")
-                                                           .withObjectiveTitle("Objective 5")
-                                                           .withKeyResultTitle("Key Result 6")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_METRIC)
-                                                           .build(),
-                                           Overview.Builder.builder()
-                                                           .withOverviewId(OverviewId.Builder.builder()
-                                                                                             .withObjectiveId(5L)
-                                                                                             .withTeamId(4L)
-                                                                                             .withKeyResultId(8L)
-                                                                                             .build())
-                                                           .withTeamName("/BBT")
-                                                           .withObjectiveTitle("Objective 5")
-                                                           .withKeyResultTitle("Key Result 8")
-                                                           .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
-                                                           .build());
+                                                           .build(), Overview.Builder.builder()
+                                                                                     .withOverviewId(OverviewId.Builder.builder()
+                                                                                                                       .withObjectiveId(5L)
+                                                                                                                       .withTeamId(4L)
+                                                                                                                       .withKeyResultId(6L)
+                                                                                                                       .build())
+                                                                                     .withTeamName("/BBT")
+                                                                                     .withObjectiveTitle("Objective 5")
+                                                                                     .withKeyResultTitle("Key Result 6")
+                                                                                     .withKeyResultType(KEY_RESULT_TYPE_METRIC)
+                                                                                     .build(), Overview.Builder
+                                                                                                               .builder()
+                                                                                                               .withOverviewId(OverviewId.Builder.builder()
+                                                                                                                                                 .withObjectiveId(5L)
+                                                                                                                                                 .withTeamId(4L)
+                                                                                                                                                 .withKeyResultId(8L)
+                                                                                                                                                 .build())
+                                                                                                               .withTeamName("/BBT")
+                                                                                                               .withObjectiveTitle("Objective 5")
+                                                                                                               .withKeyResultTitle("Key Result 8")
+                                                                                                               .withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
+                                                                                                               .build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(2, overviewDtos.size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .size());
-        assertEquals(1,
-                     overviewDtos.get(0)
-                                 .objectives()
-                                 .get(0)
-                                 .keyResults()
-                                 .size());
-        assertEquals(1,
-                     overviewDtos.get(1)
-                                 .objectives()
-                                 .size());
-        assertEquals(2,
-                     overviewDtos.get(1)
-                                 .objectives()
-                                 .get(0)
-                                 .keyResults()
-                                 .size());
+        assertEquals(1, overviewDtos.get(0).objectives().size());
+        assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
+        assertEquals(1, overviewDtos.get(1).objectives().size());
+        assertEquals(2, overviewDtos.get(1).objectives().get(0).keyResults().size());
     }
 
     @Test
@@ -341,8 +261,8 @@ class OverviewMapperTest {
                                                            .withCheckInZone("TARGET")
                                                            .build());
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> overviewMapper.toDto(overviews));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> overviewMapper
+                                                                                                                  .toDto(overviews));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
 
@@ -350,7 +270,6 @@ class OverviewMapperTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

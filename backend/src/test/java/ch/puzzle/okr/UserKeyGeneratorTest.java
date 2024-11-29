@@ -20,8 +20,7 @@ class UserKeyGeneratorTest {
     @Test
     void generate_shouldReturnTenantAndUserInfo() {
         Object notUsedObject = new Object();
-        Method notUsedMethod = notUsedObject.getClass()
-                                            .getEnclosingMethod();
+        Method notUsedMethod = notUsedObject.getClass().getEnclosingMethod();
 
         UserKeyGenerator generator = new UserKeyGenerator();
         String userKey = (String) generator.generate(notUsedObject, notUsedMethod, user);

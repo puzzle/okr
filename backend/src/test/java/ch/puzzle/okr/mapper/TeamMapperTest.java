@@ -26,11 +26,7 @@ public class TeamMapperTest {
     @Test
     void toDtoShouldMapTeamToDto() {
         // arrange
-        Team team = Team.Builder.builder()
-                                .withId(ID)
-                                .withVersion(VERSION)
-                                .withName(NAME)
-                                .build();
+        Team team = Team.Builder.builder().withId(ID).withVersion(VERSION).withName(NAME).build();
         team.setWriteable(IS_WRITEABLE);
 
         // act

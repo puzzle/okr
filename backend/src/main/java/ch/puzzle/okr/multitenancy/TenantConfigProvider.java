@@ -17,52 +17,44 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
         this.env = env;
         for (String tenantId : tenantIds) {
             OauthConfig c = readOauthConfig(tenantId);
-            tenantConfigs.put(tenantId,
-                              createTenantConfig(c.jwkSetUri(),
-                                                 c.frontendClientIssuerUrl(),
-                                                 c.frontendClientId(),
-                                                 tenantId));
+            tenantConfigs.put(tenantId, createTenantConfig(c.jwkSetUri(), c.frontendClientIssuerUrl(), c
+                                                                                                        .frontendClientId(),
+                                                           tenantId));
         }
     }
 
     private OauthConfig readOauthConfig(String tenantId) {
         return new OauthConfig(env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri",
-                                                                    tenantId)),
-                               env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.issuer-url",
-                                                                    tenantId)),
+                                                                    tenantId)), env.getProperty(MessageFormat.format(
+                                                                                                                     "okr.tenants.{0}.security.oauth2.frontend.issuer-url",
+                                                                                                                     tenantId)),
                                env.getProperty(MessageFormat.format("okr.tenants.{0}.security.oauth2.frontend.client-id",
                                                                     tenantId)));
     }
 
-    private TenantConfig createTenantConfig(String jwkSetUriTemplate, String frontendClientIssuerUrl, String frontendClientId, String tenantId) {
-        return new TenantConfig(tenantId,
-                                getOkrChampionEmailsFromTenant(tenantId),
-                                jwkSetUriTemplate,
-                                frontendClientIssuerUrl,
-                                frontendClientId,
-                                this.readDataSourceConfig(tenantId));
+    private TenantConfig createTenantConfig(String jwkSetUriTemplate, String frontendClientIssuerUrl,
+                                            String frontendClientId, String tenantId) {
+        return new TenantConfig(tenantId, getOkrChampionEmailsFromTenant(tenantId), jwkSetUriTemplate,
+                                frontendClientIssuerUrl, frontendClientId, this.readDataSourceConfig(tenantId));
     }
 
     private String[] getOkrChampionEmailsFromTenant(String tenantId) {
         return Arrays.stream(env.getProperty(MessageFormat.format("okr.tenants.{0}.user.champion.emails", tenantId), "")
-                                .split(EMAIL_DELIMITER))
-                     .map(String::trim)
-                     .toArray(String[]::new);
+                                .split(EMAIL_DELIMITER)).map(String::trim).toArray(String[]::new);
     }
 
     public List<TenantConfig> getTenantConfigs() {
-        return this.tenantConfigs.values()
-                                 .stream()
-                                 .toList();
+        return this.tenantConfigs.values().stream().toList();
     }
 
     private DataSourceConfig readDataSourceConfig(String tenantId) {
-        return new DataSourceConfig(env.getProperty("okr.datasource.driver-class-name"),
-                                    env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.url", tenantId)),
+        return new DataSourceConfig(env.getProperty("okr.datasource.driver-class-name"), env.getProperty(MessageFormat
+                                                                                                                      .format("okr.tenants.{0}.datasource.url",
+                                                                                                                              tenantId)),
                                     env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.username",
-                                                                         tenantId)),
-                                    env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.password",
-                                                                         tenantId)),
+                                                                         tenantId)), env.getProperty(MessageFormat
+                                                                                                                  .format("okr.tenants.{0}.datasource.password",
+                                                                                                                          tenantId)),
                                     env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.schema",
                                                                          tenantId)));
     }

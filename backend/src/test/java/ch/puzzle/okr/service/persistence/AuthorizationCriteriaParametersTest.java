@@ -88,10 +88,9 @@ public class AuthorizationCriteriaParametersTest {
     }
 
     private static Stream<Arguments> provideListAndString() {
-        return Stream.of(Arguments.of(List.of(), null),
-                         Arguments.of(List.of(), ""),
-                         Arguments.of(null, null),
-                         Arguments.of(null, ""));
+        return Stream.of(Arguments.of(List.of(), null), Arguments.of(List.of(), ""), Arguments.of(null, null), Arguments
+                                                                                                                        .of(null,
+                                                                                                                            ""));
     }
 
     @DisplayName("setParameters() should be successful when team ids and objective query are not empty")
@@ -133,8 +132,7 @@ public class AuthorizationCriteriaParametersTest {
         public <T> TypedQuery<Objective> setParameter(Parameter<T> parameter, T t) {
             log.append(parameter.getName())
                .append(", ")
-               .append(t.getClass()
-                        .getSimpleName())
+               .append(t.getClass().getSimpleName())
                .append("=")
                .append(t)
                .append("\n");
@@ -142,7 +140,8 @@ public class AuthorizationCriteriaParametersTest {
         }
 
         @Override
-        public TypedQuery<Objective> setParameter(Parameter<Calendar> parameter, Calendar calendar, TemporalType temporalType) {
+        public TypedQuery<Objective> setParameter(Parameter<Calendar> parameter, Calendar calendar,
+                                                  TemporalType temporalType) {
             log.append(parameter.getName())
                .append(", ")
                .append(calendar.getTime())
@@ -165,69 +164,37 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setParameter(String s, Object o) {
-            log.append(s)
-               .append(", ")
-               .append(o.getClass()
-                        .getSimpleName())
-               .append("=")
-               .append(o)
-               .append("\n");
+            log.append(s).append(", ").append(o.getClass().getSimpleName()).append("=").append(o).append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(String s, Calendar calendar, TemporalType temporalType) {
-            log.append(s)
-               .append(", ")
-               .append(calendar.getTime())
-               .append(", ")
-               .append(temporalType.name())
-               .append("\n");
+            log.append(s).append(", ").append(calendar.getTime()).append(", ").append(temporalType.name()).append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(String s, Date date, TemporalType temporalType) {
-            log.append(s)
-               .append(", ")
-               .append(date)
-               .append(", ")
-               .append(temporalType.name())
-               .append("\n");
+            log.append(s).append(", ").append(date).append(", ").append(temporalType.name()).append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(int i, Object o) {
-            log.append(i)
-               .append(", ")
-               .append(o.getClass()
-                        .getSimpleName())
-               .append("=")
-               .append(o)
-               .append("\n");
+            log.append(i).append(", ").append(o.getClass().getSimpleName()).append("=").append(o).append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(int i, Calendar calendar, TemporalType temporalType) {
-            log.append(i)
-               .append(", ")
-               .append(calendar.getTime())
-               .append(", ")
-               .append(temporalType.name())
-               .append("\n");
+            log.append(i).append(", ").append(calendar.getTime()).append(", ").append(temporalType.name()).append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(int i, Date date, TemporalType temporalType) {
-            log.append(i)
-               .append(", ")
-               .append(date)
-               .append(", ")
-               .append(temporalType.name())
-               .append("\n");
+            log.append(i).append(", ").append(date).append(", ").append(temporalType.name()).append("\n");
             return null;
         }
 

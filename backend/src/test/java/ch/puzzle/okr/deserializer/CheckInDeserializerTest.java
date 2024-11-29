@@ -66,8 +66,7 @@ class CheckInDeserializerTest {
                                                                                               .withId(1000L)
                                                                                               .build());
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
@@ -113,8 +112,7 @@ class CheckInDeserializerTest {
                                                                                                .withId(1001L)
                                                                                                .build());
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(jsonOrdinal);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonOrdinal);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act
@@ -157,8 +155,7 @@ class CheckInDeserializerTest {
 
         when(keyResultBusinessService.getEntityById(1002L)).thenReturn(unsupportedKeyResult);
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(json);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(json);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert
@@ -181,8 +178,7 @@ class CheckInDeserializerTest {
                                         }
                                         """;
 
-        JsonParser jsonParser = objectMapper.getFactory()
-                                            .createParser(jsonWithoutKeyResultId);
+        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonWithoutKeyResultId);
         DeserializationContext ctxt = mock(DeserializationContext.class);
 
         // act + assert

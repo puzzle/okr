@@ -63,15 +63,9 @@ class KeyResultBusinessServiceIT {
                                       .withUnit(Unit.FTE)
                                       .withId(id)
                                       .withTitle("Title")
-                                      .withCreatedBy(User.Builder.builder()
-                                                                 .withId(1L)
-                                                                 .build())
-                                      .withOwner(User.Builder.builder()
-                                                             .withId(1L)
-                                                             .build())
-                                      .withObjective(Objective.Builder.builder()
-                                                                      .withId(4L)
-                                                                      .build())
+                                      .withCreatedBy(User.Builder.builder().withId(1L).build())
+                                      .withOwner(User.Builder.builder().withId(1L).build())
+                                      .withObjective(Objective.Builder.builder().withId(4L).build())
                                       .withCreatedOn(LocalDateTime.now())
                                       .build();
     }
@@ -83,25 +77,15 @@ class KeyResultBusinessServiceIT {
                                        .withId(id)
                                        .withTitle("Ordinal KeyResult")
                                        .withStretchZone("ZOO")
-                                       .withCreatedBy(User.Builder.builder()
-                                                                  .withId(1L)
-                                                                  .build())
-                                       .withOwner(User.Builder.builder()
-                                                              .withId(1L)
-                                                              .build())
-                                       .withObjective(Objective.Builder.builder()
-                                                                       .withId(4L)
-                                                                       .build())
+                                       .withCreatedBy(User.Builder.builder().withId(1L).build())
+                                       .withOwner(User.Builder.builder().withId(1L).build())
+                                       .withObjective(Objective.Builder.builder().withId(4L).build())
                                        .withCreatedOn(LocalDateTime.now())
                                        .build();
     }
 
     private static CheckIn createCheckInMetric(KeyResult keyResult) {
-        return CheckInMetric.Builder.builder()
-                                    .withKeyResult(keyResult)
-                                    .withConfidence(5)
-                                    .withValue(7.5)
-                                    .build();
+        return CheckInMetric.Builder.builder().withKeyResult(keyResult).withConfidence(5).withValue(7.5).build();
     }
 
     private static CheckIn createCheckInOrdinal(KeyResult keyResult) {
@@ -174,8 +158,7 @@ class KeyResultBusinessServiceIT {
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
-                                                                                           createdKeyResult,
-                                                                                           List.of());
+                                                                                           createdKeyResult, List.of());
 
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
@@ -188,8 +171,9 @@ class KeyResultBusinessServiceIT {
         action2 = actionBusinessService.createEntity(createAction2(createdKeyResult));
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
-                                                                                           createdKeyResult,
-                                                                                           List.of(action1, action2));
+                                                                                           createdKeyResult, List.of(
+                                                                                                                     action1,
+                                                                                                                     action2));
 
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
         assertSameActions(List.of(action1, action2), updatedKeyResult);
@@ -201,8 +185,7 @@ class KeyResultBusinessServiceIT {
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
-                                                                                           createdKeyResult,
-                                                                                           List.of());
+                                                                                           createdKeyResult, List.of());
 
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
@@ -215,8 +198,7 @@ class KeyResultBusinessServiceIT {
         KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                                                                                           changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
@@ -232,8 +214,9 @@ class KeyResultBusinessServiceIT {
         Long createdKeyResultId = changedKeyResult.getId();
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of(action1, action2));
+                                                                                           changedKeyResult, List.of(
+                                                                                                                     action1,
+                                                                                                                     action2));
         createdKeyResult = updatedKeyResult.keyResult();
 
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
@@ -248,8 +231,7 @@ class KeyResultBusinessServiceIT {
         KeyResult changedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                                                                                           changedKeyResult, List.of());
         createdKeyResult = updatedKeyResult.keyResult();
 
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
@@ -263,8 +245,7 @@ class KeyResultBusinessServiceIT {
         KeyResult changedKeyResult = createKeyResultMetric(createdKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                                                                                           changedKeyResult, List.of());
 
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }
@@ -281,8 +262,9 @@ class KeyResultBusinessServiceIT {
         action2.setChecked(true);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of(action1, action2));
+                                                                                           changedKeyResult, List.of(
+                                                                                                                     action1,
+                                                                                                                     action2));
 
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
         assertUpdatedActions(List.of(action1, action2), updatedKeyResult);
@@ -296,8 +278,7 @@ class KeyResultBusinessServiceIT {
         KeyResult changedKeyResult = createKeyResultOrdinal(createdKeyResult.getId());
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
-                                                                                           changedKeyResult,
-                                                                                           List.of());
+                                                                                           changedKeyResult, List.of());
 
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }
@@ -347,8 +328,7 @@ class KeyResultBusinessServiceIT {
     private void assertSameActions(List<Action> expected, KeyResultWithActionList actual) {
         assertSameKeyResultIds(expected, actual);
         expected.forEach(this::removeKeyResult);
-        actual.actionList()
-              .forEach(this::removeKeyResult);
+        actual.actionList().forEach(this::removeKeyResult);
         assertThat(expected).hasSameElementsAs(actual.actionList());
     }
 
@@ -359,37 +339,20 @@ class KeyResultBusinessServiceIT {
     }
 
     private void assertSameKeyResultIds(List<Action> expected, KeyResultWithActionList actual) {
-        List<Long> expectedIds = expected.stream()
-                                         .map(action -> action.getKeyResult()
-                                                              .getId())
-                                         .toList();
-        List<Long> updatedIds = actual.actionList()
-                                      .stream()
-                                      .map(action -> action.getKeyResult()
-                                                           .getId())
-                                      .toList();
+        List<Long> expectedIds = expected.stream().map(action -> action.getKeyResult().getId()).toList();
+        List<Long> updatedIds = actual.actionList().stream().map(action -> action.getKeyResult().getId()).toList();
         assertThat(expectedIds).hasSameElementsAs(updatedIds);
     }
 
     private void assertSameActionIds(List<Action> expected, KeyResultWithActionList actual) {
-        List<Long> expectedIds = expected.stream()
-                                         .map(Action::getId)
-                                         .toList();
-        List<Long> updatedIds = actual.actionList()
-                                      .stream()
-                                      .map(Action::getId)
-                                      .toList();
+        List<Long> expectedIds = expected.stream().map(Action::getId).toList();
+        List<Long> updatedIds = actual.actionList().stream().map(Action::getId).toList();
         assertThat(expectedIds).hasSameElementsAs(updatedIds);
     }
 
     private void assertUpdateVersions(List<Action> expected, KeyResultWithActionList actual) {
-        List<Integer> expectedVersions = expected.stream()
-                                                 .map(action -> action.getVersion() + 1)
-                                                 .toList();
-        List<Integer> updatedVerisons = actual.actionList()
-                                              .stream()
-                                              .map(Action::getVersion)
-                                              .toList();
+        List<Integer> expectedVersions = expected.stream().map(action -> action.getVersion() + 1).toList();
+        List<Integer> updatedVerisons = actual.actionList().stream().map(Action::getVersion).toList();
         assertThat(expectedVersions).hasSameElementsAs(updatedVerisons);
     }
 

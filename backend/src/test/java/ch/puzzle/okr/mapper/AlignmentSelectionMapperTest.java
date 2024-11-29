@@ -36,10 +36,7 @@ class AlignmentSelectionMapperTest {
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertEquals(1, alignmentObjectiveDtos.size());
-        assertEquals(0,
-                     alignmentObjectiveDtos.get(0)
-                                           .keyResults()
-                                           .size());
+        assertEquals(0, alignmentObjectiveDtos.get(0).keyResults().size());
     }
 
     @Test
@@ -57,10 +54,7 @@ class AlignmentSelectionMapperTest {
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertEquals(1, alignmentObjectiveDtos.size());
-        assertEquals(1,
-                     alignmentObjectiveDtos.get(0)
-                                           .keyResults()
-                                           .size());
+        assertEquals(1, alignmentObjectiveDtos.get(0).keyResults().size());
     }
 
     @Test
@@ -88,10 +82,7 @@ class AlignmentSelectionMapperTest {
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertEquals(1, alignmentObjectiveDtos.size());
-        assertEquals(2,
-                     alignmentObjectiveDtos.get(0)
-                                           .keyResults()
-                                           .size());
+        assertEquals(2, alignmentObjectiveDtos.get(0).keyResults().size());
     }
 
     @Test
@@ -129,13 +120,7 @@ class AlignmentSelectionMapperTest {
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertEquals(2, alignmentObjectiveDtos.size());
-        assertEquals(2,
-                     alignmentObjectiveDtos.get(0)
-                                           .keyResults()
-                                           .size());
-        assertEquals(1,
-                     alignmentObjectiveDtos.get(1)
-                                           .keyResults()
-                                           .size());
+        assertEquals(2, alignmentObjectiveDtos.get(0).keyResults().size());
+        assertEquals(1, alignmentObjectiveDtos.get(1).keyResults().size());
     }
 }

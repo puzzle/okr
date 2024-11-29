@@ -27,8 +27,7 @@ public class QuarterRangeCheckerTest {
     @Test
     void nowIsInQuarterShouldReturnFalseIfNowIsNull() {
         // arrange
-        Quarter quarter = Quarter.Builder.builder()
-                                         .build();
+        Quarter quarter = Quarter.Builder.builder().build();
         LocalDate now = null;
 
         // act + assert
@@ -105,9 +104,6 @@ public class QuarterRangeCheckerTest {
     }
 
     private Quarter quarter(LocalDate startDate, LocalDate endDate) {
-        return Quarter.Builder.builder()
-                              .withStartDate(startDate)
-                              .withEndDate(endDate)
-                              .build();
+        return Quarter.Builder.builder().withStartDate(startDate).withEndDate(endDate).build();
     }
 }

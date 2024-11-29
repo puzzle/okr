@@ -128,7 +128,10 @@ public abstract class CheckIn implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "CheckIn{" + "id=" + id + ", version=" + version + ", changeInfo='" + changeInfo + '\'' + ", initiatives='" + initiatives + '\'' + ", confidence=" + confidence + ", keyResult=" + keyResult + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", checkInType='" + checkInType + '\'' + ", writeable=" + writeable + '\'' + '}';
+        return "CheckIn{" + "id=" + id + ", version=" + version + ", changeInfo='" + changeInfo + '\'' +
+               ", initiatives='" + initiatives + '\'' + ", confidence=" + confidence + ", keyResult=" + keyResult +
+               ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn +
+               ", checkInType='" + checkInType + '\'' + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -139,28 +142,18 @@ public abstract class CheckIn implements WriteableInterface {
             return false;
         CheckIn checkIn = (CheckIn) o;
         return Objects.equals(id, checkIn.id) && version == checkIn.version && Objects.equals(changeInfo,
-                                                                                              checkIn.changeInfo) && Objects.equals(initiatives,
-                                                                                                                                    checkIn.initiatives) && Objects.equals(confidence,
-                                                                                                                                                                           checkIn.confidence) && Objects.equals(keyResult,
-                                                                                                                                                                                                                 checkIn.keyResult) && Objects.equals(createdBy,
-                                                                                                                                                                                                                                                      checkIn.createdBy) && Objects.equals(createdOn,
-                                                                                                                                                                                                                                                                                           checkIn.createdOn) && Objects.equals(modifiedOn,
-                                                                                                                                                                                                                                                                                                                                checkIn.modifiedOn) && Objects.equals(checkInType,
-                                                                                                                                                                                                                                                                                                                                                                      checkIn.checkInType);
+                                                                                              checkIn.changeInfo) &&
+               Objects.equals(initiatives, checkIn.initiatives) && Objects.equals(confidence, checkIn.confidence) &&
+               Objects.equals(keyResult, checkIn.keyResult) && Objects.equals(createdBy, checkIn.createdBy) && Objects
+                                                                                                                      .equals(createdOn,
+                                                                                                                              checkIn.createdOn) &&
+               Objects.equals(modifiedOn, checkIn.modifiedOn) && Objects.equals(checkInType, checkIn.checkInType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,
-                            version,
-                            changeInfo,
-                            initiatives,
-                            confidence,
-                            keyResult,
-                            createdBy,
-                            createdOn,
-                            modifiedOn,
-                            checkInType);
+        return Objects.hash(id, version, changeInfo, initiatives, confidence, keyResult, createdBy, createdOn,
+                            modifiedOn, checkInType);
     }
 
     /* Constructor */

@@ -45,32 +45,36 @@ class ObjectiveValidationServiceTest {
     User user;
     Quarter quarter;
     Team team;
-    @Spy @InjectMocks
+    @Spy
+    @InjectMocks
     private ObjectiveValidationService validator;
 
     private static Stream<Arguments> nameValidationArguments() {
-        return Stream.of(arguments(StringUtils.repeat('1', 251),
-                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                        List.of("title", "Objective", "2", "250")))),
-                         arguments(StringUtils.repeat('1', 1),
-                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                        List.of("title", "Objective", "2", "250")))),
+        return Stream.of(arguments(StringUtils.repeat('1', 251), List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of(
+                                                                                                                        "title",
+                                                                                                                        "Objective",
+                                                                                                                        "2",
+                                                                                                                        "250")))),
+                         arguments(StringUtils.repeat('1', 1), List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of(
+                                                                                                                      "title",
+                                                                                                                      "Objective",
+                                                                                                                      "2",
+                                                                                                                      "250")))),
 
-                         arguments("",
-                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                        List.of("title", "Objective", "2", "250")),
-                                           new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")))),
+                         arguments("", List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective", "2",
+                                                                                              "250")), new ErrorDto(
+                                                                                                                    "ATTRIBUTE_NOT_BLANK",
+                                                                                                                    List.of("title",
+                                                                                                                            "Objective")))),
 
-                         arguments(" ",
-                                   List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                        List.of("title", "Objective", "2", "250")),
-                                           new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")))),
+                         arguments(" ", List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective",
+                                                                                               "2", "250")),
+                                                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")))),
 
-                         arguments("         ",
-                                   List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")))),
-                         arguments(null,
-                                   List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")),
-                                           new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("title", "Objective")))));
+                         arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title",
+                                                                                                    "Objective")))),
+                         arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")),
+                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("title", "Objective")))));
     }
 
     @BeforeEach
@@ -81,10 +85,7 @@ class ObjectiveValidationServiceTest {
                                 .withLastname("Kaufmann")
                                 .withEmail("kaufmann@puzzle.ch")
                                 .build();
-        this.team = Team.Builder.builder()
-                                .withId(1L)
-                                .withName("Team1")
-                                .build();
+        this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
         this.quarter = Quarter.Builder.builder()
                                       .withId(1L)
                                       .withLabel("GJ 22/23-Q2")
@@ -117,11 +118,10 @@ class ObjectiveValidationServiceTest {
 
         when(objectivePersistenceService.findById(1L)).thenReturn(objective1);
         when(objectivePersistenceService.getModelName()).thenReturn("Objective");
-        doThrow(new OkrResponseStatusException(HttpStatus.NOT_FOUND,
-                                               String.format("%s with id %s not found",
-                                                             objectivePersistenceService.getModelName(),
-                                                             2L))).when(objectivePersistenceService)
-                                                                  .findById(2L);
+        doThrow(new OkrResponseStatusException(HttpStatus.NOT_FOUND, String.format("%s with id %s not found",
+                                                                                   objectivePersistenceService.getModelName(),
+                                                                                   2L))).when(objectivePersistenceService)
+                                                                                        .findById(2L);
     }
 
     @Test
@@ -134,16 +134,15 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnGetShouldThrowExceptionIfObjectiveIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnGet(null));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -156,28 +155,26 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(null));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(objective1));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(objective1));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
@@ -195,13 +192,12 @@ class ObjectiveValidationServiceTest {
                                                .withCreatedOn(LocalDateTime.MAX)
                                                .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(objective));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(objective));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -211,8 +207,8 @@ class ObjectiveValidationServiceTest {
                                                       .withTitle("Title")
                                                       .withQuarter(quarter)
                                                       .build();
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(objectiveInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(objectiveInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")),
@@ -221,8 +217,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -238,16 +233,14 @@ class ObjectiveValidationServiceTest {
                                                       .withModifiedBy(user)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(objectiveInvalid));
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_SET_FORBIDDEN",
-                                                             List.of("ModifiedBy",
-                                                                     "User{id=1, version=0, firstname='Bob', lastname='Kaufmann', email='kaufmann@puzzle.ch', isOkrChampion='false'}")));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(objectiveInvalid));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_SET_FORBIDDEN", List.of("ModifiedBy",
+                                                                                                "User{id=1, version=0, firstname='Bob', lastname='Kaufmann', email='kaufmann@puzzle.ch', isOkrChampion='false'}")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -267,14 +260,13 @@ class ObjectiveValidationServiceTest {
                                                       .withQuarter(invalidQuarter)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(objectiveInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(objectiveInvalid));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "GJ-22/23-Q3")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -294,14 +286,13 @@ class ObjectiveValidationServiceTest {
                                                       .withQuarter(invalidQuarter)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(objectiveInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(objectiveInvalid));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "GJ-22/23-Q3")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -316,21 +307,22 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(1L, null));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(1L,
+                                                                                                                               null));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(null, objectiveMinimal));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(null,
+                                                                                                                               objectiveMinimal));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(objectiveMinimal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
@@ -338,14 +330,14 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(7L, objective1));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(7L,
+                                                                                                                               objective1));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(objective1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(objective1.getId());
@@ -354,8 +346,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
@@ -375,13 +366,13 @@ class ObjectiveValidationServiceTest {
                                                .build();
         when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(3L, objective));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(3L,
+                                                                                                                               objective));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -394,8 +385,9 @@ class ObjectiveValidationServiceTest {
                                                .build();
         when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(5L, objective));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(5L,
+                                                                                                                               objective));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")),
                                                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")),
@@ -403,8 +395,7 @@ class ObjectiveValidationServiceTest {
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -420,15 +411,15 @@ class ObjectiveValidationServiceTest {
                                                       .withModifiedBy(null)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(1L, objectiveInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(1L,
+                                                                                                                               objectiveInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("modifiedBy")));
 
         assertEquals(INTERNAL_SERVER_ERROR, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -449,14 +440,14 @@ class ObjectiveValidationServiceTest {
                                                       .withModifiedBy(user)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(1L, objectiveInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(1L,
+                                                                                                                               objectiveInvalid));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "GJ-22/23-Q3")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -477,14 +468,14 @@ class ObjectiveValidationServiceTest {
                                                       .withModifiedBy(user)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(1L, objectiveInvalid));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(1L,
+                                                                                                                               objectiveInvalid));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "GJ-22/23-Q3")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -514,14 +505,14 @@ class ObjectiveValidationServiceTest {
                                                       .build();
         when(objectivePersistenceService.findById(savedObjective.getId())).thenReturn(savedObjective);
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(1L, updatedObjective));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(1L,
+                                                                                                                               updatedObjective));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of("Team", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
@@ -543,15 +534,14 @@ class ObjectiveValidationServiceTest {
                                                       .withQuarter(backlogQuarter)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(invalidObjective));
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_MUST_BE_DRAFT",
-                                                             List.of("Objective", "Draft", state.toString())));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnCreate(invalidObjective));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_MUST_BE_DRAFT", List.of("Objective", "Draft",
+                                                                                                state.toString())));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
@@ -575,15 +565,15 @@ class ObjectiveValidationServiceTest {
                                                       .withModifiedBy(user)
                                                       .build();
 
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(1L, invalidObjective));
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_MUST_BE_DRAFT",
-                                                             List.of("Objective", "Draft", state.toString())));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnUpdate(1L,
+                                                                                                                               invalidObjective));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_MUST_BE_DRAFT", List.of("Objective", "Draft",
+                                                                                                state.toString())));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -619,15 +609,14 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnGet(null));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, () -> validator
+                                                                                                             .validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(exception.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

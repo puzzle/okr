@@ -20,33 +20,22 @@ public class UserMapper {
     }
 
     public List<UserDto> toDtos(List<User> userList) {
-        return userList.stream()
-                       .map(this::toDto)
-                       .toList();
+        return userList.stream().map(this::toDto).toList();
     }
 
     public UserDto toDto(User user) {
         var userTeams = user.getUserTeamList()
                             .stream()
-                            .map(ut -> new UserTeamDto(ut.getId(),
-                                                       user.getVersion(),
-                                                       teamMapper.toDto(ut.getTeam()),
-                                                       ut.isTeamAdmin()))
+                            .map(ut -> new UserTeamDto(ut.getId(), user.getVersion(), teamMapper.toDto(ut.getTeam()), ut
+                                                                                                                        .isTeamAdmin()))
                             .collect(Collectors.toList());
 
-        return new UserDto(user.getId(),
-                           user.getVersion(),
-                           user.getFirstname(),
-                           user.getLastname(),
-                           user.getEmail(),
-                           userTeams,
-                           user.isOkrChampion());
+        return new UserDto(user.getId(), user.getVersion(), user.getFirstname(), user.getLastname(), user.getEmail(),
+                           userTeams, user.isOkrChampion());
     }
 
     public List<User> toUserList(List<NewUserDto> newUserList) {
-        return newUserList.stream()
-                          .map(this::toUser)
-                          .toList();
+        return newUserList.stream().map(this::toUser).toList();
     }
 
     public User toUser(NewUserDto newUserDto) {

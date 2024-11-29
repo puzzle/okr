@@ -19,26 +19,19 @@ public class ActionMapper {
     }
 
     public ActionDto toDto(Action action) {
-        return new ActionDto(action.getId(),
-                             action.getVersion(),
-                             action.getAction(),
-                             action.getPriority(),
-                             action.isChecked(),
-                             action.getKeyResult()
-                                   .getId(),
-                             action.isWriteable());
+        return new ActionDto(action.getId(), action.getVersion(), action.getAction(), action.getPriority(), action
+                                                                                                                  .isChecked(),
+                             action.getKeyResult().getId(), action.isWriteable());
     }
 
     public List<Action> toActions(List<ActionDto> actionDtos, KeyResult keyResult) {
-        return actionDtos.stream()
-                         .map(actionDto -> toAction(actionDto, keyResult))
-                         .toList();
+        return actionDtos.stream().map(actionDto -> toAction(actionDto, keyResult)).toList();
     }
 
     public List<Action> toActions(List<ActionDto> actionDtos) {
         return actionDtos.stream()
-                         .map(actionDto -> toAction(actionDto,
-                                                    keyResultBusinessService.getEntityById(actionDto.keyResultId())))
+                         .map(actionDto -> toAction(actionDto, keyResultBusinessService.getEntityById(actionDto
+                                                                                                               .keyResultId())))
                          .toList();
     }
 

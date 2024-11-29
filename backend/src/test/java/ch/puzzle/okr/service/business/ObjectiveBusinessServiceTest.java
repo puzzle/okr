@@ -33,7 +33,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
-    @InjectMocks @Spy
+    @InjectMocks
+    @Spy
     ObjectiveBusinessService objectiveBusinessService;
     @Mock
     ObjectivePersistenceService objectivePersistenceService;
@@ -44,24 +45,15 @@ class ObjectiveBusinessServiceTest {
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
 
-    private final Team team1 = Team.Builder.builder()
-                                           .withId(1L)
-                                           .withName("Team1")
-                                           .build();
-    private final Quarter quarter = Quarter.Builder.builder()
-                                                   .withId(1L)
-                                                   .withLabel("GJ 22/23-Q2")
-                                                   .build();
+    private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
+    private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final User user = User.Builder.builder()
                                           .withId(1L)
                                           .withFirstname("Bob")
                                           .withLastname("Kaufmann")
                                           .withEmail("kaufmann@puzzle.ch")
                                           .build();
-    private final Objective objective = Objective.Builder.builder()
-                                                         .withId(5L)
-                                                         .withTitle("Objective 1")
-                                                         .build();
+    private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     private final Objective fullObjective = Objective.Builder.builder()
                                                              .withTitle("FullObjective1")
                                                              .withCreatedBy(user)
@@ -120,8 +112,7 @@ class ObjectiveBusinessServiceTest {
                                                    .withState(DRAFT)
                                                    .build());
 
-        doNothing().when(objective)
-                   .setCreatedOn(any());
+        doNothing().when(objective).setCreatedOn(any());
 
         objectiveBusinessService.createEntity(objective, authorizationUser);
 
@@ -144,9 +135,7 @@ class ObjectiveBusinessServiceTest {
         Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
-        assertEquals("Bob",
-                     savedObjective.getCreatedBy()
-                                   .getFirstname());
+        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
     }
 
     @ParameterizedTest
@@ -155,10 +144,7 @@ class ObjectiveBusinessServiceTest {
         Long id = 27L;
         String title = "Received Objective";
         String description = "The description";
-        Quarter changedQuarter = Quarter.Builder.builder()
-                                                .withId(2L)
-                                                .withLabel("another quarter")
-                                                .build();
+        Quarter changedQuarter = Quarter.Builder.builder().withId(2L).withLabel("another quarter").build();
         Objective savedObjective = Objective.Builder.builder()
                                                     .withId(id)
                                                     .withTitle(title)
@@ -193,8 +179,7 @@ class ObjectiveBusinessServiceTest {
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
-        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(),
-                                                                        changedObjective,
+        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
                                                                         authorizationUser);
 
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
@@ -217,10 +202,7 @@ class ObjectiveBusinessServiceTest {
     @Test
     void shouldDuplicateObjective() {
         // arrange
-        Objective sourceObjective = Objective.Builder.builder()
-                                                     .withId(23L)
-                                                     .withTitle("Objective 1")
-                                                     .build();
+        Objective sourceObjective = Objective.Builder.builder().withId(23L).withTitle("Objective 1").build();
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder()
                                                              .withTitle("Ordinal 1")
                                                              .withObjective(sourceObjective)
@@ -232,10 +214,7 @@ class ObjectiveBusinessServiceTest {
                                                            .build();
 
         // new Objective with no KeyResults
-        Objective newObjective = Objective.Builder.builder()
-                                                  .withId(42L)
-                                                  .withTitle("Objective 2")
-                                                  .build();
+        Objective newObjective = Objective.Builder.builder().withId(42L).withTitle("Objective 2").build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(List.of(keyResultOrdinal,
@@ -243,8 +222,7 @@ class ObjectiveBusinessServiceTest {
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
-                                                                                    newObjective,
-                                                                                    authorizationUser);
+                                                                                    newObjective, authorizationUser);
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());

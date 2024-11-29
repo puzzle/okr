@@ -20,10 +20,9 @@ public class AlignmentSelectionMapper {
         return alignmentDtos;
     }
 
-    private Optional<AlignmentObjectiveDto> getMatchingObjectiveDto(Long objectiveId, List<AlignmentObjectiveDto> objectives) {
-        return objectives.stream()
-                         .filter(objectiveDto -> Objects.equals(objectiveId, objectiveDto.id()))
-                         .findFirst();
+    private Optional<AlignmentObjectiveDto> getMatchingObjectiveDto(Long objectiveId,
+                                                                    List<AlignmentObjectiveDto> objectives) {
+        return objectives.stream().filter(objectiveDto -> Objects.equals(objectiveId, objectiveDto.id())).findFirst();
     }
 
     private void processObjectives(List<AlignmentObjectiveDto> objectiveDtos, AlignmentSelection alignment) {
@@ -40,21 +39,20 @@ public class AlignmentSelectionMapper {
     }
 
     private void processKeyResults(AlignmentObjectiveDto objectiveDto, AlignmentSelection alignment) {
-        if (isValidId(alignment.getAlignmentSelectionId()
-                               .getKeyResultId())) {
-            objectiveDto.keyResults()
-                        .add(createKeyResultDto(alignment));
+        if (isValidId(alignment.getAlignmentSelectionId().getKeyResultId())) {
+            objectiveDto.keyResults().add(createKeyResultDto(alignment));
         }
     }
 
     private AlignmentObjectiveDto createObjectiveDto(AlignmentSelection alignment) {
-        return new AlignmentObjectiveDto(alignment.getAlignmentSelectionId()
-                                                  .getObjectiveId(), alignment.getObjectiveTitle(), new ArrayList<>());
+        return new AlignmentObjectiveDto(alignment.getAlignmentSelectionId().getObjectiveId(), alignment
+                                                                                                        .getObjectiveTitle(),
+                                         new ArrayList<>());
     }
 
     private AlignmentKeyResultDto createKeyResultDto(AlignmentSelection alignment) {
-        return new AlignmentKeyResultDto(alignment.getAlignmentSelectionId()
-                                                  .getKeyResultId(), alignment.getKeyResultTitle());
+        return new AlignmentKeyResultDto(alignment.getAlignmentSelectionId().getKeyResultId(), alignment
+                                                                                                        .getKeyResultTitle());
     }
 
     private boolean isValidId(Long id) {

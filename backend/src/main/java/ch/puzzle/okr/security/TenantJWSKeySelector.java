@@ -32,7 +32,8 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     }
 
     @Override
-    public List<? extends Key> selectKeys(JWSHeader jwsHeader, JWTClaimsSet jwtClaimsSet, SecurityContext securityContext) throws KeySourceException {
+    public List<? extends Key> selectKeys(JWSHeader jwsHeader, JWTClaimsSet jwtClaimsSet,
+                                          SecurityContext securityContext) throws KeySourceException {
 
         return this.selectors.computeIfAbsent(toTenant(jwtClaimsSet), this::fromTenant)
                              .selectJWSKeys(jwsHeader, securityContext);

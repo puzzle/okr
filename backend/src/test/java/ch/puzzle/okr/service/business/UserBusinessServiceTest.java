@@ -58,45 +58,26 @@ class UserBusinessServiceTest {
 
     @Test
     void shouldReturnAllUsersCorrect() throws ResponseStatusException {
-        Mockito.when(userPersistenceService.findAll())
-               .thenReturn(userList);
+        Mockito.when(userPersistenceService.findAll()).thenReturn(userList);
 
         List<User> userList = userBusinessService.getAllUsers();
 
-        Assertions.assertThat(userList.size())
-                  .isEqualTo(2);
-        Assertions.assertThat(userList.getFirst()
-                                      .getId())
-                  .isEqualTo(2);
-        Assertions.assertThat(userList.getFirst()
-                                      .getFirstname())
-                  .isEqualTo("Alice");
-        Assertions.assertThat(userList.get(0)
-                                      .getLastname())
-                  .isEqualTo("Wunderland");
-        Assertions.assertThat(userList.get(0)
-                                      .getEmail())
-                  .isEqualTo("wunderland@puzzle.ch");
-        Assertions.assertThat(userList.get(1)
-                                      .getId())
-                  .isEqualTo(9);
-        Assertions.assertThat(userList.get(1)
-                                      .getFirstname())
-                  .isEqualTo("Bob");
-        Assertions.assertThat(userList.get(1)
-                                      .getLastname())
-                  .isEqualTo("Baumeister");
-        Assertions.assertThat(userList.get(1)
-                                      .getEmail())
-                  .isEqualTo("baumeister@puzzle.ch");
+        Assertions.assertThat(userList.size()).isEqualTo(2);
+        Assertions.assertThat(userList.getFirst().getId()).isEqualTo(2);
+        Assertions.assertThat(userList.getFirst().getFirstname()).isEqualTo("Alice");
+        Assertions.assertThat(userList.get(0).getLastname()).isEqualTo("Wunderland");
+        Assertions.assertThat(userList.get(0).getEmail()).isEqualTo("wunderland@puzzle.ch");
+        Assertions.assertThat(userList.get(1).getId()).isEqualTo(9);
+        Assertions.assertThat(userList.get(1).getFirstname()).isEqualTo("Bob");
+        Assertions.assertThat(userList.get(1).getLastname()).isEqualTo("Baumeister");
+        Assertions.assertThat(userList.get(1).getEmail()).isEqualTo("baumeister@puzzle.ch");
     }
 
     @Test
     void shouldReturnEmptyUsers() throws ResponseStatusException {
         List<User> userList = userBusinessService.getAllUsers();
 
-        Assertions.assertThat(userList.size())
-                  .isEqualTo(0);
+        Assertions.assertThat(userList.size()).isEqualTo(0);
     }
 
     @Test
@@ -107,8 +88,7 @@ class UserBusinessServiceTest {
                                  .withLastname("Kaufmann")
                                  .withEmail("kaufmann@puzzle.ch")
                                  .build();
-        Mockito.when(userPersistenceService.findById(any()))
-               .thenReturn(owner);
+        Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
 
         User returnedUser = userBusinessService.getUserById(1L);
 
@@ -126,8 +106,7 @@ class UserBusinessServiceTest {
                                    .withLastname("Kaufmann")
                                    .withEmail("kaufmann@puzzle.ch")
                                    .build();
-        Mockito.when(userPersistenceService.getOrCreateUser(any()))
-               .thenReturn(newUser);
+        Mockito.when(userPersistenceService.getOrCreateUser(any())).thenReturn(newUser);
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
@@ -145,8 +124,7 @@ class UserBusinessServiceTest {
                                    .withLastname("Kaufmann")
                                    .withEmail("kaufmann@puzzle.ch")
                                    .build();
-        Mockito.when(userPersistenceService.getOrCreateUser(newUser))
-               .thenReturn(newUser);
+        Mockito.when(userPersistenceService.getOrCreateUser(newUser)).thenReturn(newUser);
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
@@ -168,8 +146,8 @@ class UserBusinessServiceTest {
                .when(validationService)
                .validateOnGetOrCreate(newUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                                                         () -> userBusinessService.getOrCreateUser(newUser));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userBusinessService
+                                                                                                                 .getOrCreateUser(newUser));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Not allowed to give an id", exception.getReason());

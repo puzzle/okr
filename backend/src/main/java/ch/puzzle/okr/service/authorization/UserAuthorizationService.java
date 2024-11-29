@@ -24,7 +24,9 @@ public class UserAuthorizationService {
     private final TeamAuthorizationService teamAuthorizationService;
     private final KeyResultBusinessService keyResultBusinessService;
 
-    public UserAuthorizationService(UserBusinessService userBusinessService, AuthorizationService authorizationService, TeamAuthorizationService teamAuthorizationService, KeyResultBusinessService keyResultBusinessService) {
+    public UserAuthorizationService(UserBusinessService userBusinessService, AuthorizationService authorizationService,
+                                    TeamAuthorizationService teamAuthorizationService,
+                                    KeyResultBusinessService keyResultBusinessService) {
         this.userBusinessService = userBusinessService;
         this.authorizationService = authorizationService;
         this.teamAuthorizationService = teamAuthorizationService;
@@ -38,8 +40,7 @@ public class UserAuthorizationService {
     }
 
     private void setTeamWritableForUser(User user) {
-        user.getUserTeamList()
-            .forEach(this::setTeamWritableForUserTeam);
+        user.getUserTeamList().forEach(this::setTeamWritableForUserTeam);
     }
 
     private void setTeamWritableForUserTeam(UserTeam userTeam) {
@@ -69,8 +70,7 @@ public class UserAuthorizationService {
     }
 
     public boolean isUserMemberOfTeams(long id) {
-        List<UserTeam> userTeamList = userBusinessService.getUserById(id)
-                                                         .getUserTeamList();
+        List<UserTeam> userTeamList = userBusinessService.getUserById(id).getUserTeamList();
         return userTeamList != null && !userTeamList.isEmpty();
     }
 

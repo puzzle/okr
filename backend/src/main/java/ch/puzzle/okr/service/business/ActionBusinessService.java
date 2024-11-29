@@ -32,9 +32,7 @@ public class ActionBusinessService {
 
     @Transactional
     public List<Action> createEntities(List<Action> actionList) {
-        return actionList.stream()
-                         .map(this::createEntity)
-                         .toList();
+        return actionList.stream().map(this::createEntity).toList();
     }
 
     @Transactional
@@ -48,8 +46,7 @@ public class ActionBusinessService {
         List<Action> savedActions = new ArrayList<>();
         actionList.forEach(action -> {
             if (action.getKeyResult() == null) {
-                action.setKeyResult(actionPersistenceService.findById(action.getId())
-                                                            .getKeyResult());
+                action.setKeyResult(actionPersistenceService.findById(action.getId()).getKeyResult());
             }
             if (action.getId() == null) {
                 savedActions.add(createEntity(action));

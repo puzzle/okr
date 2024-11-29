@@ -52,9 +52,7 @@ public class OkrResponseStatusException extends ResponseStatusException {
     }
 
     public OkrResponseStatusException(HttpStatus status, List<ErrorDto> errors) {
-        super(status,
-              errors.get(0)
-                    .errorKey());
+        super(status, errors.get(0).errorKey());
         this.errors = errors;
     }
 

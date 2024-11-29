@@ -13,7 +13,8 @@ public class CompletedBusinessService {
     private final CompletedPersistenceService completedPersistenceService;
     private final CompletedValidationService validator;
 
-    public CompletedBusinessService(CompletedPersistenceService completedPersistenceService, CompletedValidationService validator) {
+    public CompletedBusinessService(CompletedPersistenceService completedPersistenceService,
+                                    CompletedValidationService validator) {
         this.completedPersistenceService = completedPersistenceService;
         this.validator = validator;
     }

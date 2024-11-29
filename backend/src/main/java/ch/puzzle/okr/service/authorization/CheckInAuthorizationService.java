@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CheckInAuthorizationService extends AuthorizationServiceBase<Long, CheckIn, CheckInBusinessService> {
 
-    public CheckInAuthorizationService(CheckInBusinessService checkInBusinessService, AuthorizationService authorizationService) {
+    public CheckInAuthorizationService(CheckInBusinessService checkInBusinessService,
+                                       AuthorizationService authorizationService) {
         super(checkInBusinessService, authorizationService);
     }
 

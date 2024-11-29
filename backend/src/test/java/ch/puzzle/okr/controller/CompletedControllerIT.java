@@ -79,23 +79,19 @@ class CompletedControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(completedMapper.toDto(any()))
-                  .willReturn(completedDto);
-        BDDMockito.given(completedMapper.toCompleted(any()))
-                  .willReturn(successfulCompleted);
+        BDDMockito.given(completedMapper.toDto(any())).willReturn(completedDto);
+        BDDMockito.given(completedMapper.toCompleted(any())).willReturn(successfulCompleted);
     }
 
     @DisplayName("create() should create complete")
     @Test
     void createShouldCreateCompleted() throws Exception {
-        BDDMockito.given(this.completedAuthorizationService.createCompleted(any()))
-                  .willReturn(successfulCompleted);
+        BDDMockito.given(this.completedAuthorizationService.createCompleted(any())).willReturn(successfulCompleted);
 
         mvc.perform(post(baseUrl).content(SUCCESSFUL_CREATE_BODY)
                                  .contentType(MediaType.APPLICATION_JSON)
                                  .with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .is2xxSuccessful())
+           .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
            .andExpect(jsonPath(JSON_PATH_ID, Is.is(COMPLETED_ID_AS_INT)))
            .andExpect(jsonPath("$.id", Is.is(COMPLETED_ID_AS_INT)))
            .andExpect(jsonPath("$.objective.id", Is.is(OBJECTIVE_ID_AS_INT)))
@@ -106,8 +102,7 @@ class CompletedControllerIT {
     @Test
     void deleteShouldDeleteCompleted() throws Exception {
         mvc.perform(delete("/api/v2/completed/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isOk());
+           .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @DisplayName("delete() should throw exception when Completed with id cant be found")
@@ -118,7 +113,6 @@ class CompletedControllerIT {
                                                                                          .deleteCompletedByObjectiveId(anyLong());
 
         mvc.perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
-           .andExpect(MockMvcResultMatchers.status()
-                                           .isNotFound());
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

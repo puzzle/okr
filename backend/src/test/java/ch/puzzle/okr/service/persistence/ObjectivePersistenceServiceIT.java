@@ -80,8 +80,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveById(ID_OF_OBJECTIVE_3,
-                                                                      authorizationUser,
+        var objective = objectivePersistenceService.findObjectiveById(ID_OF_OBJECTIVE_3, authorizationUser,
                                                                       NO_RESULT_EXCEPTION);
 
         // assert
@@ -92,10 +91,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveById(INVALID_OBJECTIVE_ID,
-                                                                                         authorizationUser,
-                                                                                         NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
+                                                                                                        .findObjectiveById(INVALID_OBJECTIVE_ID,
+                                                                                                                           authorizationUser,
+                                                                                                                           NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
@@ -106,10 +105,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveById(null,
-                                                                                         authorizationUser,
-                                                                                         NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
+                                                                                                        .findObjectiveById(null,
+                                                                                                                           authorizationUser,
+                                                                                                                           NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
@@ -120,8 +119,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveByKeyResultId(ID_OF_KEY_RESULT_5,
-                                                                               authorizationUser,
+        var objective = objectivePersistenceService.findObjectiveByKeyResultId(ID_OF_KEY_RESULT_5, authorizationUser,
                                                                                NO_RESULT_EXCEPTION);
 
         // assert
@@ -132,10 +130,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByKeyResultId(INVALID_KEY_RESULT_ID,
-                                                                                                  authorizationUser,
-                                                                                                  NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
+                                                                                                        .findObjectiveByKeyResultId(INVALID_KEY_RESULT_ID,
+                                                                                                                                    authorizationUser,
+                                                                                                                                    NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
@@ -146,10 +144,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByKeyResultId(null,
-                                                                                                  authorizationUser,
-                                                                                                  NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
+                                                                                                        .findObjectiveByKeyResultId(null,
+                                                                                                                                    authorizationUser,
+                                                                                                                                    NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
@@ -160,8 +158,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
         // act
-        var objective = objectivePersistenceService.findObjectiveByCheckInId(ID_OF_CHECK_IN_7,
-                                                                             authorizationUser,
+        var objective = objectivePersistenceService.findObjectiveByCheckInId(ID_OF_CHECK_IN_7, authorizationUser,
                                                                              NO_RESULT_EXCEPTION);
 
         // assert
@@ -172,10 +169,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByCheckInId(INVALID_CHECK_IN_ID,
-                                                                                                authorizationUser,
-                                                                                                NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
+                                                                                                        .findObjectiveByCheckInId(INVALID_CHECK_IN_ID,
+                                                                                                                                  authorizationUser,
+                                                                                                                                  NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(REASON_UNAUTHORIZED, List.of()));
@@ -186,10 +183,10 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
-        var exception = assertThrows(OkrResponseStatusException.class,
-                                     () -> objectivePersistenceService.findObjectiveByCheckInId(null,
-                                                                                                authorizationUser,
-                                                                                                ObjectivePersistenceServiceIT.NO_RESULT_EXCEPTION));
+        var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
+                                                                                                        .findObjectiveByCheckInId(null,
+                                                                                                                                  authorizationUser,
+                                                                                                                                  ObjectivePersistenceServiceIT.NO_RESULT_EXCEPTION));
 
         // assert
         var expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
@@ -233,12 +230,8 @@ class ObjectivePersistenceServiceIT {
     @Test
     void countByTeamAndQuarterShouldReturnNumberOfObjectivesForCurrentQuarter() {
         // arrange: there are 3 objectives for the current quarter (id 2) for team with id 6
-        var team = Team.Builder.builder()
-                               .withId(ID_OF_TEAM_6)
-                               .build();
-        var quarter = Quarter.Builder.builder()
-                                     .withId(CURRENT_QUARTER_ID)
-                                     .build();
+        var team = Team.Builder.builder().withId(ID_OF_TEAM_6).build();
+        var quarter = Quarter.Builder.builder().withId(CURRENT_QUARTER_ID).build();
 
         // act
         var count = objectivePersistenceService.countByTeamAndQuarter(team, quarter);
@@ -259,18 +252,10 @@ class ObjectivePersistenceServiceIT {
     }
 
     private static Stream<Arguments> invalidTeamsAndQuarters() {
-        var validTeam = Team.Builder.builder()
-                                    .withId(ID_OF_TEAM_6)
-                                    .build();
-        var invalidTeam = Team.Builder.builder()
-                                      .withId(INVALID_TEAM_ID)
-                                      .build();
-        var validQuarter = Quarter.Builder.builder()
-                                          .withId(CURRENT_QUARTER_ID)
-                                          .build();
-        var invalidQuarter = Quarter.Builder.builder()
-                                            .withId(INVALID_QUARTER_ID)
-                                            .build();
+        var validTeam = Team.Builder.builder().withId(ID_OF_TEAM_6).build();
+        var invalidTeam = Team.Builder.builder().withId(INVALID_TEAM_ID).build();
+        var validQuarter = Quarter.Builder.builder().withId(CURRENT_QUARTER_ID).build();
+        var invalidQuarter = Quarter.Builder.builder().withId(INVALID_QUARTER_ID).build();
 
         return Stream.of(
                          // valid team + invalid quarter
@@ -293,11 +278,11 @@ class ObjectivePersistenceServiceIT {
         assertEquals(OBJECTIVE, objectivePersistenceService.getModelName());
     }
 
-    private void assertResponseStatusException(HttpStatus expectedStatus, List<ErrorDto> expectedErrors, OkrResponseStatusException currentException) {
+    private void assertResponseStatusException(HttpStatus expectedStatus, List<ErrorDto> expectedErrors,
+                                               OkrResponseStatusException currentException) {
         assertEquals(expectedStatus, currentException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(currentException.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors)
-                             .contains(currentException.getReason()));
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(currentException.getReason()));
     }
 
     private void assertObjective(Long expectedId, String expectedTitle, Objective currentObjective) {

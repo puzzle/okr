@@ -36,8 +36,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         String schema = convertTenantIdToSchemaName(tenantIdentifier);
         logger.debug("Setting schema to {}", schema);
 
-        connection.createStatement()
-                  .execute(String.format("SET SCHEMA '%s';", schema));
+        connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
         return connection;
     }
 
@@ -64,12 +63,10 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     private ConnectionProvider createNewConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier)
-                       .map(this::createConnectionProvider)
-                       .map(connectionProvider -> {
-                           connectionProviderMap.put(tenantIdentifier, connectionProvider);
-                           return connectionProvider;
-                       })
+        return Optional.ofNullable(tenantIdentifier).map(this::createConnectionProvider).map(connectionProvider -> {
+            connectionProviderMap.put(tenantIdentifier, connectionProvider);
+            return connectionProvider;
+        })
                        .orElseThrow(() -> new ConnectionProviderException(String.format("Cannot create new connection provider for tenant: %s",
                                                                                         tenantIdentifier)));
     }

@@ -29,7 +29,8 @@ public record QuarterData(String label, LocalDate startDate, LocalDate endDate) 
 
     @Override
     public String toString() {
-        return "(" + "'" + label() + "', " + "'" + startDateAsIsoString() + "', " + "'" + endDateAsIsoString() + "'" + ")";
+        return "(" + "'" + label() + "', " + "'" + startDateAsIsoString() + "', " + "'" + endDateAsIsoString() + "'" +
+               ")";
     }
 
 }

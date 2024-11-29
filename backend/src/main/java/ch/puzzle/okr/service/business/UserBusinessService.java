@@ -24,7 +24,8 @@ public class UserBusinessService {
 
     private final CacheService cacheService;
 
-    public UserBusinessService(UserPersistenceService userPersistenceService, UserValidationService validationService, CacheService cacheService) {
+    public UserBusinessService(UserPersistenceService userPersistenceService, UserValidationService validationService,
+                               CacheService cacheService) {
         this.userPersistenceService = userPersistenceService;
         this.validationService = validationService;
         this.cacheService = cacheService;
@@ -69,8 +70,7 @@ public class UserBusinessService {
     @Transactional
     public List<User> createUsers(List<User> userList) {
         var userIter = userPersistenceService.saveAll(userList);
-        return StreamSupport.stream(userIter.spliterator(), false)
-                            .toList();
+        return StreamSupport.stream(userIter.spliterator(), false).toList();
     }
 
     @Transactional

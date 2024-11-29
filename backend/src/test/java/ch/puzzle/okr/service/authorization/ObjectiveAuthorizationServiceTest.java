@@ -29,10 +29,7 @@ class ObjectiveAuthorizationServiceTest {
     AuthorizationService authorizationService;
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
-    private final Objective newObjective = Objective.Builder.builder()
-                                                            .withId(5L)
-                                                            .withTitle("Objective 1")
-                                                            .build();
+    private final Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
     @Test
     void createEntityShouldReturnObjectiveWhenAuthorized() {
@@ -155,8 +152,7 @@ class ObjectiveAuthorizationServiceTest {
         // arrange
         Long idExistingObjective = 13L;
         String reason = "junit test reason";
-        Objective objective = Objective.Builder.builder()
-                                               .build();
+        Objective objective = Objective.Builder.builder().build();
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
@@ -189,8 +185,7 @@ class ObjectiveAuthorizationServiceTest {
                                                                 .build();
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(objectiveBusinessService.duplicateObjective(idExistingObjective,
-                                                         newObjectiveWithoutKeyResults,
+        when(objectiveBusinessService.duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults,
                                                          authorizationUser)).thenReturn(newObjectiveWithKeyResults);
 
         // act

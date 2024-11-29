@@ -2,6 +2,8 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static ch.puzzle.okr.test.KeyResultTestHelpers.metricKeyResult;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
@@ -148,6 +154,11 @@ class ObjectiveAuthorizationServiceTest {
         String reason = "junit test reason";
         Objective objective = Objective.Builder.builder().build();
 
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withTitle("This is my keyResult!").build();
+
+        List<KeyResult> keyResults = new ArrayList<>();
+        keyResults.add(newKeyResult);
+
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdate(objective, authorizationUser);
@@ -172,6 +183,9 @@ class ObjectiveAuthorizationServiceTest {
 
         Objective newObjectiveWithKeyResults = Objective.Builder.builder() //
                 .withId(42L).withTitle("Objective with Id and KeyResults").build();
+
+        List<KeyResult> keyResults = new ArrayList<>();
+        keyResults.add(metricKeyResult);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults,

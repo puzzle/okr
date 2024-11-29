@@ -1,7 +1,17 @@
+@font-face {
+  font-family: Roboto;
+  src: url("./Roboto/RobotoFlex-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap
+}
+
+
 
 @font-face {
   font-family: Roboto;
-  src: url('./Roboto/RobotoFlex[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght].ttf') format('truetype');
+  src: url('./Roboto/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }

@@ -3,6 +3,8 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import org.hamcrest.core.Is;
@@ -24,7 +26,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import static ch.puzzle.okr.test.KeyResultTestHelpers.metricKeyResult;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -212,6 +217,9 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
+        List<KeyResult> keyResults = new ArrayList<>();
+        keyResults.add(metricKeyResult);
+
         BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any(), keyResults))
                 .willReturn(objective1);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);

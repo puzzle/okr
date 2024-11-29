@@ -19,8 +19,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import static ch.puzzle.okr.test.KeyResultTestHelpers.metricKeyResult;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -171,6 +173,9 @@ class ObjectiveBusinessServiceTest {
                 .withObjective(sourceObjective) //
                 .withUnit(Unit.FTE) //
                 .build();
+
+        List<KeyResult> keyResults = new ArrayList<>();
+        keyResults.add(metricKeyResult);
 
         // new Objective with no KeyResults
         Objective newObjective = Objective.Builder.builder() //

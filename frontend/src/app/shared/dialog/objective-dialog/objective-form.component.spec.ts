@@ -58,8 +58,8 @@ const quarterService = {
 const teamService = {
   getAllTeams(): Observable<Team[]> {
     return of([
-      { id: 1, version: 2, name: marketingTeamWriteable.name, writeable: true, organisations: [] },
-      { id: 4, version: 5, name: 'team2', writeable: true, organisations: [] },
+      { id: 1, version: 2, name: marketingTeamWriteable.name, isWriteable: true, organisations: [] },
+      { id: 4, version: 5, name: 'team2', isWriteable: true, organisations: [] },
     ]);
   },
 };

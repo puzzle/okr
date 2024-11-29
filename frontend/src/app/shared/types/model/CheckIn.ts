@@ -8,5 +8,5 @@ export interface CheckIn {
   createdOn: Date;
   modifiedOn: Date;
   value: string | number;
-  writeable: boolean;
+  isWriteable: boolean;
 }

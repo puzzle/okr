@@ -23,25 +23,25 @@ const teams: Team[] = [
     id: 1,
     version: 1,
     name: 'ZZ the Puzzle Team - Keyword',
-    writeable: false,
+    isWriteable: false,
   },
   {
     id: 2,
     version: 1,
     name: 'The Puzzle Team - Keyword',
-    writeable: false,
+    isWriteable: false,
   },
   {
     id: 3,
     version: 1,
     name: 'Puzzle Team - No',
-    writeable: false,
+    isWriteable: false,
   },
   {
     id: 4,
     version: 1,
     name: 'Team Ruedi - Noname',
-    writeable: false,
+    isWriteable: false,
   },
 ];
 

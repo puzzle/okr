@@ -46,6 +46,18 @@
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_conditional_expression_chain" value="48"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_conditional_operator" value="true"/>
 
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_constructor_declaration" value="18"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration" value="18"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation" value="82"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call" value="82"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression" value="82"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression" value="82"/>
+
+
+
+
+
+
 
 
 

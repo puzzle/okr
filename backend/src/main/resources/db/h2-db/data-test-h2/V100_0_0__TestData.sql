@@ -103,7 +103,7 @@ insert into key_result (id, version, baseline, description, modified_on, stretch
 values  (10,1, 465, '', '2023-07-25 08:23:02.273028', 60, 'Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten', 1, 5, 1, 'metric', '2023-07-25 08:23:02.273028', 'PERCENT', null, null, null),
     (8,1, 213425, '', '2023-07-25 08:19:44.351252', 80, 'High employee satisfaction scores (80%+) throughout the year.', 1, 4, 1, 'metric', '2023-07-25 08:19:44.351252', 'PERCENT', null, null, null),
     (7,1, 84, '', '2023-07-25 08:19:13.569300', 4, 'Monthly town halls between our people and leadership teams over the next four months.', 1, 4, 1, 'metric', '2023-07-25 08:19:13.569300', 'PERCENT', null, null, null),
-    (6,1, 5, '', '2023-07-25 08:18:44.087674', 1, 'New structure that rewards funny guys and innovation before the end of Q1. ', 1, 4, 1, 'metric', '2023-07-25 08:18:44.087674', 'PERCENT', null, null, null),
+    (6,1, 5, '', '2023-07-25 08:18:44.087674', 1, 'New structure that rewards funny guys and innovation before the end of Q1.', 1, 4, 1, 'metric', '2023-07-25 08:18:44.087674', 'PERCENT', null, null, null),
     (15,1, 0, 'asf', '2023-07-25 08:40:49.412684', 1, ' Lorem ipsum dolor sit amet', 1, 9, 1, 'metric', '2023-07-25 08:40:49.412684', 'PERCENT', null, null, null),
     (5,1, null, '', '2023-07-25 08:16:24.466383', null, 'Kundenzufriedenheitsumfrage soll mindestens einmal pro 2 Wochen durchgeführt werden. ', 1, 3, 1, 'ordinal', '2023-07-25 08:16:24.466383', 'PERCENT', 'Fisch', 'Hai', 'MEG'),
     (12,1, 0, '', '2023-07-25 08:28:45.110759', 80, 'Wir wollen bereits nach Q1  rund 80% des Redesigns vom OKR-Tool abgeschlossen haben. ', 1, 6, 1, 'metric', '2023-07-25 08:28:45.110759', 'PERCENT', null, null, null),

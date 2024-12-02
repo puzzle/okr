@@ -92,6 +92,10 @@ export default class CyOverviewPage extends Page {
     return cy.get('@team');
   }
 
+  getKeyresultOfObjective(objectiveName: string, keyResultName: string) {
+    return this.getObjectiveByName(objectiveName).last().find('.key-result').filter(filterByKeyResultName(keyResultName)).last();
+  }
+
   getObjectivesByName(objectiveName: string) {
     return getObjectiveColumns().filter(filterByObjectiveName(objectiveName));
   }

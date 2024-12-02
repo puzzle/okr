@@ -93,7 +93,11 @@ export default class CyOverviewPage extends Page {
   }
 
   getKeyresultOfObjective(objectiveName: string, keyResultName: string) {
-    return this.getObjectiveByName(objectiveName).last().find('.key-result').filter(filterByKeyResultName(keyResultName)).last();
+    return this.getObjectiveByName(objectiveName)
+      .last()
+      .find('.key-result')
+      .filter(filterByKeyResultName(keyResultName))
+      .last();
   }
 
   getObjectivesByName(objectiveName: string) {

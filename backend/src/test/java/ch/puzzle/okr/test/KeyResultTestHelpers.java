@@ -57,7 +57,7 @@ public class KeyResultTestHelpers {
     public static final String JSON_PATH_TARGET_ZONE = "$.targetZone";
     public static final String JSON_PATH_STRETCH_ZONE = "$.stretchZone";
     public static final String JSON_PATH_LAST_CHECK_IN_ID = "$.lastCheckIn.id";
-    public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.value";
+    public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.zone";
     public static final String JSON_PATH_QUARTER_LABEL = "$.objective.keyResultQuarterDto.label";
     public static final String JSON_PATH_QUARTER_START_DATE = "$.objective.keyResultQuarterDto.startDate";
     public static final String JSON = """

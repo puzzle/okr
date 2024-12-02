@@ -43,8 +43,8 @@
     "tslib": "^2.8.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.9",
-    "@angular/cli": "~18.2.9",
+    "@angular-devkit/build-angular": "^19.0.0",
+    "@angular/cli": "~19.0.0",
     "@angular/compiler-cli": "^18.2.8",
     "@cypress/schematic": "^2.5.2",
     "@cypress/skip-test": "^2.6.1",

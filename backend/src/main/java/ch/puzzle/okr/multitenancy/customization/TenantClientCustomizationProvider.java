@@ -7,9 +7,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -44,12 +46,19 @@ public class TenantClientCustomizationProvider {
     private Map<String, String> getCustomCssStyles(String tenantId) {
         MutablePropertySources propSrcs = ((AbstractEnvironment) env).getPropertySources();
         Map<String, String> styles = StreamSupport.stream(propSrcs.spliterator(), false)
-                .filter(ps -> ps instanceof EnumerablePropertySource)
-                .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames()).flatMap(Arrays::<String> stream)
-                .filter(propName -> propName.contains(formatWithTenant(CUSTOM_STYLES_PREFIX, tenantId)))
-                .collect(Collectors.toMap(propName -> extractCssNameFromPropertyName(propName, tenantId),
-                        propName -> env.getProperty(propName)));
-
+                .filter(ps -> ps instanceof EnumerablePropertySource) // Filtert alle PropertySources
+                .map(ps -> ((EnumerablePropertySource<?>) ps).getPropertyNames()).flatMap(Arrays::stream) // Stream
+                                                                                                          // aller
+                                                                                                          // Propertynamen
+                .filter(propName -> propName.contains(formatWithTenant(CUSTOM_STYLES_PREFIX, tenantId))) // Filtert alle
+                                                                                                         // CustomStyles
+                                                                                                         // für den
+                                                                                                         // Tenant
+                .collect(Collectors.toMap(propName -> extractCssNameFromPropertyName(propName, tenantId), // Collected
+                                                                                                          // alle
+                                                                                                          // CustomStyles
+                                                                                                          // in eine Map
+                        env::getProperty));
         return styles;
     }
 

@@ -53,7 +53,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldGetMetricCheckInWithId() throws Exception {
+    void shouldGetMetricCheckInById() throws Exception {
         BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong())).willReturn(checkInMetric);
 
         mvc.perform(get(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON))
@@ -67,7 +67,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldGetOrdinalCheckInWithId() throws Exception {
+    void shouldGetOrdinalCheckInById() throws Exception {
         BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong())).willReturn(checkInOrdinal);
 
         mvc.perform(get(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON))
@@ -81,7 +81,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldNotFindTheCheckInWithId() throws Exception {
+    void shouldThrowNotFoundWhenGettingCheckInByNonExistingId() throws Exception {
         BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -90,7 +90,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldReturnUpdatedCheckIn() throws Exception {
+    void shouldReturnUpdatedCheckInAfterSuccessfulUpdate() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInAuthorizationService.updateEntity(anyLong(), any())).willReturn(checkInMetric);
@@ -106,7 +106,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldReturnNotFound() throws Exception {
+    void shouldThrowNotFoundWhenTryingToUpdateNonExistentCheckIn() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkInMetric);
@@ -119,7 +119,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldCreateKeyResultMetric() throws Exception {
+    void shouldSuccessfullyCreateKeyResultMetric() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInMetric);
@@ -135,7 +135,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldCreateKeyResultOrdinal() throws Exception {
+    void shouldSuccessfullyCreateKeyResultOrdinal() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultOrdinal.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInOrdinal);
@@ -151,7 +151,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldThrowExceptionWhenKeyResultIdMissing() throws Exception {
+    void shouldThrowClientErrorWhenCreatingCheckInButKeyResultIdMissing() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInOrdinal);
@@ -161,9 +161,9 @@ class CheckInControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
-    @DisplayName("Should return client error for KeyResult not of type metric or ordinal")
+    @DisplayName("Should throw client error for KeyResult not of type metric or ordinal")
     @Test
-    void shouldReturnClientErrorForKeyResultNotOfTypeMetricOrOrdinal() throws Exception {
+    void shouldThrowClientErrorForKeyResultNotOfTypeMetricOrOrdinal() throws Exception {
         class NonMetricOrOrdinalKeyResult extends KeyResult {
         }
 
@@ -176,7 +176,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldDeleteCheckInById() throws Exception {
+    void shouldSuccessfullyDeleteCheckInById() throws Exception {
         mvc.perform(delete(CHECK_IN_5_URL).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

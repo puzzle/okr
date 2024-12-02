@@ -9,7 +9,6 @@ import { Observable, of } from 'rxjs';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { DialogService } from '../../services/dialog.service';
-import { CheckIn } from '../../shared/types/model/CheckIn';
 
 @Component({
   selector: 'app-check-in-history-dialog',

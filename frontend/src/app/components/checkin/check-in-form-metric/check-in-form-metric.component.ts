@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { KeyResultMetric } from '../../../shared/types/model/KeyResultMetric';
-import { CheckInMin, CheckInMinMetric, CheckInMinOrdinal } from '../../../shared/types/model/CheckInMin';
+import { CheckInMin, CheckInMinMetric } from '../../../shared/types/model/CheckInMin';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
 

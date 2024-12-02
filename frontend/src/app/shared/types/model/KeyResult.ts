@@ -2,6 +2,7 @@ import { KeyResultObjective } from './KeyResultObjective';
 import { CheckIn, CheckInMetric, CheckInOrdinal } from './CheckIn';
 import { User } from './User';
 import { Action } from './Action';
+import { CheckInMin } from './CheckInMin';
 
 export interface KeyResult {
   id: number;
@@ -12,7 +13,8 @@ export interface KeyResult {
 
   owner: User;
   objective: KeyResultObjective;
-  lastCheckIn: CheckInMetric | CheckInOrdinal | null;
+  // lastCheckIn<T extends CheckIn>(cls: { new (): T }): T | null;
+  // lastCheckIn: CheckInMetric | CheckInOrdinal | null;
   createdOn: Date;
   modifiedOn: Date;
   actionList: Action[] | null;

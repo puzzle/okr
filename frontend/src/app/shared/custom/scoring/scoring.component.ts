@@ -17,6 +17,8 @@ import { Observable, of } from 'rxjs';
 import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common';
 import { CheckInMinOrdinal } from '../../types/model/CheckInMin';
 import { CheckInService } from '../../../services/check-in.service';
+import { KeyResultMetric } from '../../types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 
 @Component({
   selector: 'app-scoring',
@@ -53,12 +55,12 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit() {
     this.stretched = false;
-    if (this.keyResult.lastCheckIn) {
-      if (this.keyResult.keyResultType === 'metric') {
-        this.calculatePercentageMetric();
-      } else {
-        this.calculatePercentageOrdinal();
-      }
+    if (this.keyResult.keyResultType === 'metric') {
+      this.keyResult = this.keyResult as KeyResultMetric;
+      this.calculatePercentageMetric();
+    } else {
+      this.keyResult = this.keyResult as KeyResultOrdinal;
+      this.calculatePercentageOrdinal();
     }
   }
 
@@ -91,7 +93,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageOrdinal() {
-    switch ((this.keyResult.lastCheckIn as CheckInMinOrdinal).zone!) {
+    switch ((this.keyResult as KeyResultOrdinal).lastCheckIn!.zone!) {
       case Zone.STRETCH:
         this.stretched = true;
         break;
@@ -114,7 +116,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageMetric() {
-    if (this.keyResult.lastCheckIn !== null) {
+    if ((this.keyResult as KeyResultMetric).lastCheckIn !== null) {
       let keyResultMetric: KeyResultMetricMin = this.castToMetric();
       let percentage = calculateCurrentPercentage(keyResultMetric);
       this.labelPercentage = of(percentage);

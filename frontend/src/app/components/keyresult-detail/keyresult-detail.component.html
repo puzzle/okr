@@ -24,7 +24,7 @@
           <span class="text-small d-flex align-items-center flex-column ms-3 confidence-container">
             <h4 class="confidence-label">Confidence</h4>
             <app-confidence
-              [checkIn]="keyResult.lastCheckIn!"
+              [checkIn]="getKeyResultWithRightType(keyResult).lastCheckIn!"
               [edit]="false"
               class="bg-display-element"
             ></app-confidence>

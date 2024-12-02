@@ -11,7 +11,9 @@
     <div class="d-flex justify-content-center align-items-center flex-wrap">
       <h4 class="text-nowrap me-2">Letztes Check-in</h4>
       <span class="keyResult-attribute-show">{{
-        keyResult.lastCheckIn == null ? "Keines" : (keyResult!.lastCheckIn!.createdOn | date: DATE_FORMAT)
+        getKeyResultWithRightType().lastCheckIn == null
+          ? "Keines"
+          : (getKeyResultWithRightType().lastCheckIn!.createdOn | date: DATE_FORMAT)
       }}</span>
     </div>
 
@@ -20,7 +22,7 @@
       <app-confidence
         [edit]="false"
         [isDetail]="false"
-        [checkIn]="keyResult.lastCheckIn!"
+        [checkIn]="getKeyResultWithRightType().lastCheckIn!"
         class="bg-keyResult-attribute"
       ></app-confidence>
     </div>

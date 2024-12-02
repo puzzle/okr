@@ -68,8 +68,11 @@ export class CheckInFormComponent implements OnInit {
       return;
     }
     /* If KeyResult has lastCheckIn set checkIn to this value */
-    if (this.keyResult.lastCheckIn != null) {
-      this.checkIn = { ...this.keyResult.lastCheckIn, id: undefined };
+    if ((this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn != null) {
+      this.checkIn = {
+        ...(this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn,
+        id: undefined,
+      } as CheckInMin;
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       return;
     }

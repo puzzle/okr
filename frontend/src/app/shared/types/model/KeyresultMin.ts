@@ -1,9 +1,9 @@
-import { CheckInMinMetric, CheckInMinOrdinal } from './CheckInMin';
+import { CheckInMin, CheckInMinMetric, CheckInMinOrdinal } from './CheckInMin';
 
 export interface KeyresultMin {
   id: number;
   version: number;
   title: string;
   keyResultType: string;
-  lastCheckIn: CheckInMinOrdinal | CheckInMinMetric | null;
+  // lastCheckIn<T extends CheckInMin>(cls: { new (): T }): T | null;
 }

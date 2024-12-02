@@ -147,5 +147,13 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     return lastCheckIn as CheckInMetric;
   }
 
+  getKeyResultWithRightType(keyResult: KeyResult): KeyResultOrdinal | KeyResultMetric {
+    if (keyResult.keyResultType === 'metric') {
+      return keyResult as KeyResultMetric;
+    } else {
+      return keyResult as KeyResultOrdinal;
+    }
+  }
+
   protected readonly calculateCurrentPercentage = calculateCurrentPercentage;
 }

@@ -2,7 +2,10 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
 import { Router } from '@angular/router';
 import { DATE_FORMAT } from '../../shared/constantLibary';
-import { CheckInMinOrdinal } from '../../shared/types/model/CheckInMin';
+import { CheckInMinMetric, CheckInMinOrdinal } from '../../shared/types/model/CheckInMin';
+import { keyResult } from '../../shared/testData';
+import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 
 @Component({
   selector: 'app-keyresult',
@@ -16,18 +19,15 @@ export class KeyresultComponent {
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    if (this.keyResult.lastCheckIn) {
-      const lastCheckIn = this.keyResult.lastCheckIn as { value: any };
-      this.keyResult.lastCheckIn as CheckInMinOrdinal;
-      this.keyResult.lastCheckIn = {
-        ...this.keyResult.lastCheckIn,
-        zone: lastCheckIn.value,
-      };
-    }
-  }
-
   openDrawer() {
     this.router.navigate(['details/keyresult', this.keyResult.id]);
+  }
+
+  getKeyResultWithRightType() {
+    if (this.keyResult.keyResultType === 'metric') {
+      return this.keyResult as KeyResultMetric;
+    } else {
+      return this.keyResult as KeyResultOrdinal;
+    }
   }
 }

@@ -1,7 +1,7 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
-import ObjectiveDialog from "../support/helper/dom-helper/dialogs/objectiveDialog";
+import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
 
 let overviewPage = new CyOverviewPage();
 
@@ -13,26 +13,62 @@ beforeEach(() => {
 describe('Functionality of duplicating objectives and their belonging keyresults', () => {
   it('Should be able to duplicate a objective into this quarter, including all keyresults', () => {
     const duplicatedTitle = 'This is a duplicated objective with all keyResults';
-    overviewPage.getObjectiveByName('Build a company culture that kills the competition.').findByTestId('three-dot-menu').click();
+    overviewPage
+      .getObjectiveByName('Build a company culture that kills the competition.')
+      .findByTestId('three-dot-menu')
+      .click();
     overviewPage.selectFromThreeDotMenu('Objective duplizieren');
     ObjectiveDialog.do().fillObjectiveTitle(duplicatedTitle).submit();
 
     cy.contains('This is a default duplicated objective');
-    overviewPage.getKeyresultOfObjective('This is a duplicated objective with all keyResults', 'New structure that rewards funny guys and innovation before the end of Q1.').should('exist');
-    overviewPage.getKeyresultOfObjective('This is a duplicated objective with all keyResults', 'Monthly town halls between our people and leadership teams over the next four months.').should('exist');
-    overviewPage.getKeyresultOfObjective('This is a duplicated objective with all keyResults', 'High employee satisfaction scores (80%+) throughout the year.').should('exist');
+    overviewPage
+      .getKeyresultOfObjective(
+        'This is a duplicated objective with all keyResults',
+        'New structure that rewards funny guys and innovation before the end of Q1.',
+      )
+      .should('exist');
+    overviewPage
+      .getKeyresultOfObjective(
+        'This is a duplicated objective with all keyResults',
+        'Monthly town halls between our people and leadership teams over the next four months.',
+      )
+      .should('exist');
+    overviewPage
+      .getKeyresultOfObjective(
+        'This is a duplicated objective with all keyResults',
+        'High employee satisfaction scores (80%+) throughout the year.',
+      )
+      .should('exist');
   });
 
   it('Should be able to duplicate a objective into this quarter, only including one keyresult', () => {
     const duplicatedTitle = 'This is a duplicated objective with one keyResult';
-    overviewPage.getObjectiveByName('Build a company culture that kills the competition.').findByTestId('three-dot-menu').click();
+    overviewPage
+      .getObjectiveByName('Build a company culture that kills the competition.')
+      .findByTestId('three-dot-menu')
+      .click();
     overviewPage.selectFromThreeDotMenu('Objective duplizieren');
     ObjectiveDialog.do().fillObjectiveTitle(duplicatedTitle).submit();
 
     cy.contains('This is a duplicated objective with one keyResult');
-    overviewPage.getKeyresultOfObjective('This is a duplicated objective with one keyResult', 'New structure that rewards funny guys and innovation before the end of Q1.').should('exist');
-    overviewPage.getKeyresultOfObjective('This is a duplicated objective with one keyResult', 'Monthly town halls between our people and leadership teams over the next four months.').should('not.exist');
-    overviewPage.getKeyresultOfObjective('This is a duplicated objective with one keyResult', 'High employee satisfaction scores (80%+) throughout the year.').should('not.exist');
+    overviewPage
+      .getKeyresultOfObjective(
+        'This is a duplicated objective with one keyResult',
+        'New structure that rewards funny guys and innovation before the end of Q1.',
+      )
+      .should('exist');
+    overviewPage
+      .getKeyresultOfObjective(
+        'This is a duplicated objective with one keyResult',
+        'Monthly town halls between our people and leadership teams over the next four months.',
+      )
+      .should('not.exist');
+    overviewPage
+      .getKeyresultOfObjective(
+        'This is a duplicated objective with one keyResult',
+        'High employee satisfaction scores (80%+) throughout the year.',
+      )
+      .should('not.exist');
   });
 });
 

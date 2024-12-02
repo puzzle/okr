@@ -6,12 +6,13 @@
     <button
       (click)="createObjective()"
       *ngIf="OVEntity.writeable"
+      id="add-objective"
       [attr.data-testId]="'add-objective'"
       class="px-0 mt-1 mb-3 pe-2 h-50 align-new-icon"
       color="primary"
       mat-button
     >
-      <span id="add-objective" class="d-flex align-items-center add-text">
+      <span id="add-objective-span" class="d-flex align-items-center add-text">
         <img alt="Add key-result button" class="add-cross-button" src="{{ addIconSrc | async }}" />
         Objective hinzufügen
       </span>

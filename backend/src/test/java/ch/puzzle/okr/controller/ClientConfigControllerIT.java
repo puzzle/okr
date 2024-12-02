@@ -47,7 +47,7 @@ public class ClientConfigControllerIT {
                 .andExpect(jsonPath("$.triangles", Matchers.is("Triangles")))
                 .andExpect(jsonPath("$.backgroundLogo", Matchers.is("Background_Logo")))
                 .andExpect(jsonPath("$.title", Matchers.is("Title")))
-                .andExpect(jsonPath("$.helpSiteUrl", Matchers.is("helpSiteUrl")))
+                .andExpect(jsonPath("$.helpSiteUrl", Matchers.is("Help_Site_Url")))
                 .andExpect(jsonPath("$.customStyles.font-family", Matchers.is("verdana")))
                 .andExpect(jsonPath("$.customStyles.font-size", Matchers.is("20px")));
     }
@@ -55,7 +55,7 @@ public class ClientConfigControllerIT {
     private ClientConfigDto createClientConfigDto() {
         Map<String, String> customStyles = Map.of("font-family", "verdana", "font-size", "20px");
         return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo", "Triangles",
-                "Background_Logo", "Title", "helpSiteUrl", customStyles);
+                "Background_Logo", "Title", "Help_Site_Url", customStyles);
     }
 
 }

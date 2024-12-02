@@ -8,7 +8,7 @@ import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { DialogService } from '../../services/dialog.service';
 import { ConfigService } from '../../services/config.service';
 import { ClientConfig } from '../../shared/types/model/ClientConfig';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-team',
@@ -19,15 +19,17 @@ import { map, Observable } from 'rxjs';
 export class TeamComponent implements OnInit {
   @Input({ required: true })
   public overviewEntity!: OverviewEntity;
-  protected addIconSrc: Observable<string> = this.configService.config$.pipe(
-    map((config: ClientConfig) => config.customStyles['okr-add-objective-icon'] ?? '/assets/icons/new-icon.svg'),
-  );
+  protected addIconSrc: BehaviorSubject<string> = new BehaviorSubject('assets/images/new-icon.png');
 
   constructor(
     private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
     private configService: ConfigService,
-  ) {}
+  ) {
+    this.configService.config$.subscribe((config: ClientConfig) => {
+      this.addIconSrc.next(config.customStyles['okr-add-objective-icon']);
+    });
+  }
 
   ngOnInit(): void {}
 

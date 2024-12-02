@@ -20,7 +20,11 @@
         </section>
 
         <section class="scoring-section mb-2-rem">
-          <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
+          <app-scoring
+            class="scoring-detail"
+            [keyResult]="getKeyResultWithRightType(keyResult)"
+            [isDetail]="true"
+          ></app-scoring>
           <span class="text-small d-flex align-items-center flex-column ms-3 confidence-container">
             <h4 class="confidence-label">Confidence</h4>
             <app-confidence

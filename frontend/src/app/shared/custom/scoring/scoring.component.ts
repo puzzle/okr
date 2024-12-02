@@ -19,6 +19,7 @@ import { CheckInMinOrdinal } from '../../types/model/CheckInMin';
 import { CheckInService } from '../../../services/check-in.service';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
+import { keyResult } from '../../testData';
 
 @Component({
   selector: 'app-scoring',
@@ -27,7 +28,7 @@ import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
-  @Input() keyResult!: KeyresultMin;
+  @Input() keyResult!: KeyResultOrdinal | KeyResultMetric;
   @Input() isDetail!: boolean;
   iconPath: string = 'empty';
   failPercent: number = 0;
@@ -56,10 +57,8 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit() {
     this.stretched = false;
     if (this.keyResult.keyResultType === 'metric') {
-      this.keyResult = this.keyResult as KeyResultMetric;
       this.calculatePercentageMetric();
     } else {
-      this.keyResult = this.keyResult as KeyResultOrdinal;
       this.calculatePercentageOrdinal();
     }
   }

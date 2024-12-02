@@ -6,7 +6,11 @@
   tabindex="0"
 >
   <h3 class="linebreak mb-3">{{ keyResult.title }}</h3>
-  <app-scoring [keyResult]="keyResult" [isDetail]="false" [attr.data-testId]="'scoring-component'"></app-scoring>
+  <app-scoring
+    [keyResult]="getKeyResultWithRightType()"
+    [isDetail]="false"
+    [attr.data-testId]="'scoring-component'"
+  ></app-scoring>
   <div class="d-flex justify-content-between mt-2">
     <div class="d-flex justify-content-center align-items-center flex-wrap">
       <h4 class="text-nowrap me-2">Letztes Check-in</h4>

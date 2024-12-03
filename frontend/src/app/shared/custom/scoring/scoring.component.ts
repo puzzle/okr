@@ -20,6 +20,7 @@ import { CheckInService } from '../../../services/check-in.service';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 import { keyResult } from '../../testData';
+import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
 
 @Component({
   selector: 'app-scoring',
@@ -28,7 +29,7 @@ import { keyResult } from '../../testData';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
-  @Input() keyResult!: KeyResultOrdinal | KeyResultMetric;
+  @Input() keyResult!: KeyResultOrdinalMin | KeyResultMetricMin;
   @Input() isDetail!: boolean;
   iconPath: string = 'empty';
   failPercent: number = 0;
@@ -92,7 +93,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageOrdinal() {
-    switch ((this.keyResult as KeyResultOrdinal).lastCheckIn!.zone!) {
+    switch ((this.keyResult as KeyResultOrdinalMin).lastCheckIn!.zone!) {
       case Zone.STRETCH:
         this.stretched = true;
         break;

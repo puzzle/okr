@@ -4,6 +4,7 @@ import { keyResultMetricMin } from '../../shared/testData';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ConfidenceComponent } from '../confidence/confidence.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('KeyresultComponent', () => {
   let component: KeyresultComponent;
@@ -13,6 +14,7 @@ describe('KeyresultComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [KeyresultComponent, ScoringComponent, ConfidenceComponent],
       imports: [MatDialogModule],
+      providers: [provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KeyresultComponent);

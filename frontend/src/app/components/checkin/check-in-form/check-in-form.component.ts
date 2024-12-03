@@ -11,6 +11,7 @@ import { ActionService } from '../../../services/action.service';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
 import { keyResult } from '../../../shared/testData';
+import { CheckIn } from '../../../shared/types/model/CheckIn';
 
 @Component({
   selector: 'app-check-in-form',
@@ -57,7 +58,7 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
-      if (keyResult.keyResultType === 'metric') {
+      if ((this.checkIn as CheckInMinMetric).value != null) {
         this.dialogForm.controls.value.setValue(this.getCheckInMetric().value!.toString());
       } else {
         this.dialogForm.controls.value.setValue(this.getCheckInOrdinal().zone!);
@@ -86,24 +87,19 @@ export class CheckInFormComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-    let checkIn: any;
-    if (keyResult.keyResultType === 'metric') {
-      checkIn = {
-        ...this.dialogForm.value,
-        id: this.checkIn.id,
-        version: this.checkIn.version,
-        keyResultId: this.keyResult.id,
-        value: this.dialogForm.controls.value.value,
-      };
-    } else {
-      checkIn = {
-        ...this.dialogForm.value,
-        id: this.checkIn.id,
-        version: this.checkIn.version,
-        keyResultId: this.keyResult.id,
-        zone: this.dialogForm.controls.value.value,
-      };
-    }
+    const baseCheckIn: any = {
+      id: this.checkIn.id,
+      version: this.checkIn.version,
+      keyResultId: this.keyResult.id,
+      confidence: this.dialogForm.controls.confidence.value,
+      changeInfo: this.dialogForm.controls.changeInfo.value,
+      initiatives: this.dialogForm.controls.initiatives.value,
+      actionList: this.dialogForm.controls.actionList.value,
+    };
+    const checkIn: CheckIn = {
+      ...baseCheckIn,
+      [this.keyResult.keyResultType === 'ordinal' ? 'zone' : 'value']: this.dialogForm.controls.value.value,
+    };
 
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
       this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {

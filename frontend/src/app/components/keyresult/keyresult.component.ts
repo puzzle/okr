@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
 import { Router } from '@angular/router';
 import { DATE_FORMAT } from '../../shared/constantLibary';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
+import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
+import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
 
 @Component({
   selector: 'app-keyresult',
@@ -21,8 +21,8 @@ export class KeyresultComponent {
     this.router.navigate(['details/keyresult', this.keyResult.id]);
   }
 
-  getKeyResultWithRightType(): KeyResultOrdinal | KeyResultMetric {
-    if (this.keyResult.keyResultType === 'metric') return this.keyResult as KeyResultMetric;
-    else return this.keyResult as KeyResultOrdinal;
+  getKeyResultWithRightType(): KeyResultOrdinalMin | KeyResultMetricMin {
+    if (this.keyResult.keyResultType === 'metric') return this.keyResult as KeyResultMetricMin;
+    else return this.keyResult as KeyResultOrdinalMin;
   }
 }

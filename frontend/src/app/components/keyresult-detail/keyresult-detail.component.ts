@@ -15,6 +15,9 @@ import { calculateCurrentPercentage, isLastCheckInNegative } from '../../shared/
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 import { CheckInMetric, CheckInOrdinal } from '../../shared/types/model/CheckIn';
+import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
+import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
+import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -147,11 +150,11 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     return lastCheckIn as CheckInMetric;
   }
 
-  getKeyResultWithRightType(keyResult: KeyResult): KeyResultOrdinal | KeyResultMetric {
+  getKeyResultWithRightType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
     if (keyResult.keyResultType === 'metric') {
-      return keyResult as KeyResultMetric;
+      return keyResult as KeyresultMin as KeyResultMetricMin;
     } else {
-      return keyResult as KeyResultOrdinal;
+      return keyResult as KeyresultMin as KeyResultOrdinalMin;
     }
   }
 

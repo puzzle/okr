@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Inherited
 @SpringBootTest
 @ContextConfiguration(initializers = TestContextInitializer.class)
-@ActiveProfiles(value = "integration-test")
+@ActiveProfiles(value = "integration-test-maven")
 public @interface SpringIntegrationTest {
 }

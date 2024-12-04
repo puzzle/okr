@@ -32,6 +32,13 @@ export default class ObjectiveDialog extends Dialog {
     cy.getByTestId('save-draft').click();
   }
 
+  excludeKeyResults(keyResults: string[]) {
+    keyResults.forEach((keyResult) => {
+      cy.get('label').contains(keyResult.slice(0, 15)).click();
+    });
+    return this;
+  }
+
   getPage(): Chainable {
     return cy.get('app-objective-form').should('exist');
   }

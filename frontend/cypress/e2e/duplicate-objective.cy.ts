@@ -10,111 +10,117 @@ beforeEach(() => {
   cy.loginAsUser(users.gl);
 });
 
-describe('Functionality of duplicating objectives and their belonging keyresults', () => {
-  it('Should be able to duplicate a objective into this quarter, including all keyresults', () => {
-    const duplicatedTitle = 'This is a duplicated objective with all keyResults';
-    overviewPage
-      .getObjectiveByName('Build a company culture that kills the competition.')
-      .findByTestId('three-dot-menu')
-      .click();
-    overviewPage.selectFromThreeDotMenu('Objective duplizieren');
-    ObjectiveDialog.do().fillObjectiveTitle(duplicatedTitle).submit();
+describe('Functionality of duplicating objectives and their belonging keyResults', () => {
+  const firstKeyResultName = 'New structure that rewards funny guys and innovation before the end of Q1.';
+  const secondKeyResultName = 'Monthly town halls between our people and leadership teams over the next four months.';
+  const thirdKeyResultName = 'High employee satisfaction scores (80%+) throughout the year.';
 
-    cy.contains('This is a default duplicated objective');
+  it('Should be able to duplicate a objective into this quarter, including all keyResults', () => {
+    const duplicatedTitle = 'This is a duplicated objective with all keyResults';
+
     overviewPage
-      .getKeyresultOfObjective(
-        'This is a duplicated objective with all keyResults',
-        'New structure that rewards funny guys and innovation before the end of Q1.',
-      )
-      .should('exist');
-    overviewPage
-      .getKeyresultOfObjective(
-        'This is a duplicated objective with all keyResults',
-        'Monthly town halls between our people and leadership teams over the next four months.',
-      )
-      .should('exist');
-    overviewPage
-      .getKeyresultOfObjective(
-        'This is a duplicated objective with all keyResults',
-        'High employee satisfaction scores (80%+) throughout the year.',
-      )
-      .should('exist');
+      .duplicateObjective('Build a company culture that kills the competition.')
+      .fillObjectiveTitle(duplicatedTitle)
+      .submit();
+
+    cy.contains(duplicatedTitle);
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName).should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, secondKeyResultName).should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, thirdKeyResultName).should('exist');
   });
 
-  it('Should be able to duplicate a objective into this quarter, only including one keyresult', () => {
+  it('Should be able to duplicate a objective into this quarter, only including one keyResult', () => {
     const duplicatedTitle = 'This is a duplicated objective with one keyResult';
-    overviewPage
-      .getObjectiveByName('Build a company culture that kills the competition.')
-      .findByTestId('three-dot-menu')
-      .click();
-    overviewPage.selectFromThreeDotMenu('Objective duplizieren');
-    ObjectiveDialog.do().fillObjectiveTitle(duplicatedTitle).submit();
 
-    cy.contains('This is a duplicated objective with one keyResult');
     overviewPage
-      .getKeyresultOfObjective(
-        'This is a duplicated objective with one keyResult',
-        'New structure that rewards funny guys and innovation before the end of Q1.',
-      )
-      .should('exist');
+      .duplicateObjective('Build a company culture that kills the competition.')
+      .fillObjectiveTitle(duplicatedTitle)
+      .excludeKeyResults([secondKeyResultName, thirdKeyResultName])
+      .submit();
+
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName);
+
     overviewPage
-      .getKeyresultOfObjective(
-        'This is a duplicated objective with one keyResult',
-        'Monthly town halls between our people and leadership teams over the next four months.',
-      )
-      .should('not.exist');
+      .getAllKeyResultsOfObjective(duplicatedTitle)
+      .should('not.contain', secondKeyResultName)
+      .should('not.contain', thirdKeyResultName);
+  });
+
+  it('Should be able to duplicate a objective into the next quarter, including all keyResults', () => {
+    const duplicatedTitle = 'This is a default objective with all keyResults in quarter 3!';
+
     overviewPage
-      .getKeyresultOfObjective(
-        'This is a duplicated objective with one keyResult',
-        'High employee satisfaction scores (80%+) throughout the year.',
-      )
-      .should('not.exist');
+      .duplicateObjective('Build a company culture that kills the competition.')
+      .fillObjectiveTitle(duplicatedTitle)
+      .selectQuarter('3')
+      .submit();
+
+    overviewPage.visitNextQuarter();
+
+    cy.contains(duplicatedTitle);
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName).should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, secondKeyResultName).should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, thirdKeyResultName).should('exist');
+  });
+
+  it('Should not duplicate objective when cancel button is clicked', () => {
+    const duplicatedTitle = 'This is a never existing objective';
+
+    overviewPage
+      .duplicateObjective('Build a company culture that kills the competition.')
+      .fillObjectiveTitle(duplicatedTitle)
+      .fillObjectiveDescription('Wow this is a very nice description!')
+      .cancel();
+
+    cy.contains(duplicatedTitle).should('not.exist');
   });
 });
 
-// describe('e2e test for scoring adjustment on duplicate objective', () => {
-//   it('Duplicate ordinal checkin and validate value of scoring component', () => {
-//     overviewPage
-//       .addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
-//       .fillKeyResultTitle('stretch keyresult for testing')
-//       .withOrdinalValues('Ex. val', 'Ex. val', 'Ex. val')
-//       .submit();
-//
-//     cy.contains('stretch keyresult for testing');
-//     keyresultDetailPage
-//       .visit('stretch keyresult for testing')
-//       .createCheckIn()
-//       .selectOrdinalCheckInZone('stretch')
-//       .setCheckInConfidence(8)
-//       .fillCheckInCommentary('Testveränderungen')
-//       .fillCheckInInitiatives('Testmassnahmen')
-//       .submit();
-//
-//     cy.intercept('GET', '**/overview?*').as('indexPage');
-//     keyresultDetailPage.close();
-//     cy.wait('@indexPage');
-//
-//     overviewPage
-//       .duplicateObjective('Wir wollen die Kundenzufriedenheit steigern')
-//       .fillObjectiveTitle('A duplicated Objective for this tool')
-//       .selectQuarter('3')
-//       .submit();
-//
-//     overviewPage.checkForToaster('Das Objective wurde erfolgreich erstellt.', 'success');
-//
-//     overviewPage.visitNextQuarter();
-//
-//     overviewPage
-//       .getKeyResultByName('stretch keyresult for testing')
-//       .findByTestId('scoring-component')
-//       .findByTestId('fail')
-//       .as('fail-area');
-//
-//     cy.get('@fail-area').should(($fail) => {
-//       expect($fail).not.to.have.css('score-red');
-//       expect($fail).not.to.have.css('score-yellow');
-//       expect($fail).not.to.have.css('score-green');
-//       expect($fail).not.to.have.css('score-stretch');
-//     });
-//   });
-// });
+describe('e2e test for scoring adjustment on duplicate objective', () => {
+  let keyresultDetailPage = new KeyResultDetailPage();
+
+  it('Duplicate ordinal checkin and validate value of scoring component', () => {
+    overviewPage
+      .addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
+      .fillKeyResultTitle('stretch keyresult for testing')
+      .withOrdinalValues('Ex. val', 'Ex. val', 'Ex. val')
+      .submit();
+
+    cy.contains('stretch keyresult for testing');
+    keyresultDetailPage
+      .visit('stretch keyresult for testing')
+      .createCheckIn()
+      .selectOrdinalCheckInZone('stretch')
+      .setCheckInConfidence(8)
+      .fillCheckInCommentary('Testveränderungen')
+      .fillCheckInInitiatives('Testmassnahmen')
+      .submit();
+
+    cy.intercept('GET', '**/overview?*').as('indexPage');
+    keyresultDetailPage.close();
+    cy.wait('@indexPage');
+
+    overviewPage
+      .duplicateObjective('Wir wollen die Kundenzufriedenheit steigern')
+      .fillObjectiveTitle('A duplicated Objective for this tool')
+      .selectQuarter('3')
+      .submit();
+
+    overviewPage.checkForToaster('Das Objective wurde erfolgreich erstellt.', 'success');
+
+    overviewPage.visitNextQuarter();
+
+    overviewPage
+      .getKeyResultByName('stretch keyresult for testing')
+      .findByTestId('scoring-component')
+      .findByTestId('fail')
+      .as('fail-area');
+
+    cy.get('@fail-area').should(($fail) => {
+      expect($fail).not.to.have.css('score-red');
+      expect($fail).not.to.have.css('score-yellow');
+      expect($fail).not.to.have.css('score-green');
+      expect($fail).not.to.have.css('score-stretch');
+    });
+  });
+});

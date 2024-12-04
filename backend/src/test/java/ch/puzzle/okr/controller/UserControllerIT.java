@@ -83,7 +83,7 @@ class UserControllerIT {
     }
 
     @Test
-    void shouldGetAllUsersIfNoUserExists() throws Exception {
+    void shouldGetEmptyUserListIfNoUserExists() throws Exception {
         BDDMockito.given(userAuthorizationService.getAllUsers()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
@@ -147,7 +147,7 @@ class UserControllerIT {
     }
 
     @Test
-    void shouldCreateUsers() throws Exception {
+    void shouldSuccessfullyCreateUsers() throws Exception {
         BDDMockito.given(userAuthorizationService.createUsers(any())).willReturn(List.of(userAlice));
         BDDMockito.given(userMapper.toDtos(List.of(userAlice))).willReturn(List.of(userAliceDto));
 
@@ -168,14 +168,14 @@ class UserControllerIT {
     }
 
     @Test
-    void shouldDeleteUser() throws Exception {
+    void shouldSuccessfullyDeleteUser() throws Exception {
         mvc.perform(delete("/api/v1/users/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @DisplayName("should throw exception when user with id cant be found while deleting")
     @Test
-    void throwExceptionWhenUserWithIdCantBeFoundWhileDeleting() throws Exception {
+    void shouldThrowExceptionWhenUserWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")).when(userAuthorizationService)
                 .deleteEntityById(1000);
 

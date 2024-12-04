@@ -21,12 +21,12 @@ class AuthorizationUserTest {
     private final AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
     @Test
-    public void extractTeamIds_shouldReturnAllIds() {
+    public void shouldReturnAllTeamIdsWhenExtractingTeamIdsOfUser() {
         assertEquals(List.of(1L, 2L, 3L, 4L, 5L), authorizationUser.extractTeamIds());
     }
 
     @Test
-    public void isUserMemberInTeam_shouldContainAllUsers() {
+    public void shouldCorrectlyCheckIfUserIsMemberInTeam() {
         assertTrue(authorizationUser.isUserMemberInTeam(1L));
         assertTrue(authorizationUser.isUserMemberInTeam(2L));
         assertTrue(authorizationUser.isUserMemberInTeam(3L));
@@ -36,7 +36,7 @@ class AuthorizationUserTest {
     }
 
     @Test
-    public void isUserAdminInTeam_shouldContainAllAdminUsers() {
+    public void shouldCorrectlyCheckIfUserIsAdminInTeam() {
         assertTrue(authorizationUser.isUserAdminInTeam(1L));
         assertTrue(authorizationUser.isUserAdminInTeam(3L));
         assertFalse(authorizationUser.isUserAdminInTeam(2L));

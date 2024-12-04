@@ -66,10 +66,10 @@ class CheckInDeserializerTest {
                         .build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act
-        CheckInDto checkInDto = checkInDeserializer.deserialize(jsonParser, ctxt);
+        CheckInDto checkInDto = checkInDeserializer.deserialize(jsonParser, context);
 
         // assert
         assertNotNull(checkInDto);
@@ -113,10 +113,10 @@ class CheckInDeserializerTest {
                         .build());
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonOrdinal);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act
-        CheckInDto checkInDto = checkInDeserializer.deserialize(jsonParser, ctxt);
+        CheckInDto checkInDto = checkInDeserializer.deserialize(jsonParser, context);
 
         // assert
         assertNotNull(checkInDto);
@@ -156,11 +156,11 @@ class CheckInDeserializerTest {
         when(keyResultBusinessService.getEntityById(1002L)).thenReturn(unsupportedKeyResult);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(json);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            checkInDeserializer.deserialize(jsonParser, ctxt);
+            checkInDeserializer.deserialize(jsonParser, context);
         });
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
@@ -179,11 +179,11 @@ class CheckInDeserializerTest {
                 """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonWithoutKeyResultId);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            checkInDeserializer.deserialize(jsonParser, ctxt);
+            checkInDeserializer.deserialize(jsonParser, context);
         });
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());

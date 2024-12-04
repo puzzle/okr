@@ -63,10 +63,10 @@ public class KeyResultDeserializerTest {
                 """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act
-        KeyResultDto keyResultDto = keyResultDeserializer.deserialize(jsonParser, ctxt);
+        KeyResultDto keyResultDto = keyResultDeserializer.deserialize(jsonParser, context);
 
         // assert
         assertNotNull(keyResultDto);
@@ -138,10 +138,10 @@ public class KeyResultDeserializerTest {
                 """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act
-        KeyResultDto keyResultDto = keyResultDeserializer.deserialize(jsonParser, ctxt);
+        KeyResultDto keyResultDto = keyResultDeserializer.deserialize(jsonParser, context);
 
         // assert
         assertNotNull(keyResultDto);
@@ -182,11 +182,11 @@ public class KeyResultDeserializerTest {
                 """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            keyResultDeserializer.deserialize(jsonParser, ctxt);
+            keyResultDeserializer.deserialize(jsonParser, context);
         });
 
         assertBadRequest(exception);
@@ -206,11 +206,11 @@ public class KeyResultDeserializerTest {
                 """;
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
-        DeserializationContext ctxt = mock(DeserializationContext.class);
+        DeserializationContext context = mock(DeserializationContext.class);
 
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            keyResultDeserializer.deserialize(jsonParser, ctxt);
+            keyResultDeserializer.deserialize(jsonParser, context);
         });
 
         assertBadRequest(exception);

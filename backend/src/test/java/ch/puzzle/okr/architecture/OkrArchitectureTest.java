@@ -47,7 +47,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void businessServicesShouldOnlyBeAccessedByThemselvesOrControllersAndAuthorizationOrMappers() {
+    void businessServicesShouldOnlyBeAccessedByThemselvesAndControllersAndAuthorizationAndMappers() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..service.business..").should().onlyBeAccessed()
                 .byAnyPackage("..controller..", "..authorization..", "..mapper..", "..business");

@@ -56,7 +56,7 @@ public class JwtHelperTest {
     }
 
     // ok
-    @DisplayName("getUserFromJwt() throws Exception if Token not contains User data")
+    @DisplayName("getUserFromJwt() throws Exception if Token doesnt contain User data")
     @Test
     void getUserFromJwtThrowsExceptionIfTokenNotContainsUserData() {
         // arrange
@@ -134,7 +134,7 @@ public class JwtHelperTest {
         assertEquals(PITC, tenantFromToken);
     }
 
-    @DisplayName("getTenantFromJWTClaimsSet() throws Exception if ClaimSet can not be parsed")
+    @DisplayName("getTenantFromJWTClaimsSet() throws Exception if ClaimSet cannot be parsed")
     @Test
     void getTenantFromJWTClaimsSetThrowsExceptionIfClaimSetCanNotBeParsed() throws ParseException {
         // arrange

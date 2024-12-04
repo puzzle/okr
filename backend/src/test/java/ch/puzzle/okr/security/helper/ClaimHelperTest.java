@@ -27,9 +27,9 @@ public class ClaimHelperTest {
         helper = new ClaimHelper();
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() return tenant if claim tenant is found")
+    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() returns tenant if claim tenant is found")
     @Test
-    void getTenantFromClaimsSetUsingClaimTenantReturnTenantIfClaimTenantFound() throws ParseException {
+    void getTenantFromClaimsSetUsingClaimTenantReturnsTenantIfClaimTenantFound() throws ParseException {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);
         when(claimsSetMock.getStringClaim(CLAIM_TENANT)).thenReturn(PITC);
@@ -55,9 +55,9 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() return empty if claim tenant is found but value is null")
+    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() returns empty if claim tenant is found but value is null")
     @Test
-    void getTenantFromClaimsSetUsingClaimTenantReturnEmptyIfClaimTenantFoundButValueIsNull() throws ParseException {
+    void getTenantFromClaimsSetUsingClaimTenantReturnsEmptyIfClaimTenantFoundButValueIsNull() throws ParseException {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);
         when(claimsSetMock.getStringClaim(CLAIM_TENANT)).thenReturn(null);
@@ -69,9 +69,9 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() return empty if claim tenant is found but parsing of claim failed")
+    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() returns empty if claim tenant is found but parsing of claim failed")
     @Test
-    void getTenantFromClaimsSetUsingClaimTenantReturnEmptyIfParsingOfClaimFailed() throws ParseException {
+    void getTenantFromClaimsSetUsingClaimTenantReturnsEmptyIfParsingOfClaimFailed() throws ParseException {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);
         when(claimsSetMock.getStringClaim(CLAIM_TENANT)).thenThrow(new ParseException("", 0));
@@ -83,10 +83,10 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() return tenant if claim iss is found")
+    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns tenant if claim iss is found")
     @ParameterizedTest
     @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
-    void getTenantFromClaimsSetUsingClaimIssReturnTenantIfClaimIssFound(String issUrl) throws ParseException {
+    void getTenantFromClaimsSetUsingClaimIssReturnsTenantIfClaimIssFound(String issUrl) throws ParseException {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);
         when(claimsSetMock.getStringClaim(CLAIM_ISS)).thenReturn(issUrl);
@@ -99,9 +99,9 @@ public class ClaimHelperTest {
         assertEquals(PITC, tenant.get());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() return empty if claim iss is not found")
+    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns empty if claim iss is not found")
     @Test
-    void getTenantFromClaimsSetUsingClaimIssReturnEmptyIfClaimIssNotFound() {
+    void getTenantFromClaimsSetUsingClaimIssReturnsEmptyIfClaimIssNotFound() {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);
 
@@ -112,9 +112,9 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() return empty if claim iss is found but value is null")
+    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns empty if claim iss is found but value is null")
     @Test
-    void getTenantFromClaimsSetUsingClaimIssReturnEmptyIfClaimIssFoundButValueIsNull() throws ParseException {
+    void getTenantFromClaimsSetUsingClaimIssReturnsEmptyIfClaimIssFoundButValueIsNull() throws ParseException {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);
         when(claimsSetMock.getStringClaim(CLAIM_ISS)).thenReturn(null);
@@ -126,9 +126,9 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() return empty if parsing of claim failed")
+    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns empty if parsing of claim failed")
     @Test
-    void getTenantFromClaimsSetUsingClaimIssReturnEmptyIfParsingOfClaimFailed() throws ParseException {
+    void getTenantFromClaimsSetUsingClaimIssReturnsEmptyIfParsingOfClaimFailed() throws ParseException {
         // arrange
         JWTClaimsSet claimsSetMock = mock(JWTClaimsSet.class);
         when(claimsSetMock.getStringClaim(CLAIM_ISS)).thenThrow(new ParseException("", 0));

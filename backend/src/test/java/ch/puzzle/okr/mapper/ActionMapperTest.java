@@ -28,7 +28,7 @@ public class ActionMapperTest {
     private static final int PRIORITY = 42;
     private static final boolean IS_CHECKED = true;
     private static final boolean IS_WRITEABLE = true;
-    public static final long KEY_RESULT_ID = 10L;
+    private static final long KEY_RESULT_ID = 10L;
     private final KeyResult keyResult = KeyResultMetric.Builder.builder().withId(KEY_RESULT_ID).build();
 
     private ActionMapper actionMapper;
@@ -78,7 +78,7 @@ public class ActionMapperTest {
 
     @DisplayName("toActions() should map List of Dtos with KeyResultId to list of Actions.")
     @Test
-    void toActionsShouldMapListOfDtosWithKeyResltIdToListOfActions() {
+    void toActionsShouldMapListOfDtosWithKeyResultIdToListOfActions() {
         // arrange
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);
 

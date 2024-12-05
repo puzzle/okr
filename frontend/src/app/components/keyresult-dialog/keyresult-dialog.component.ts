@@ -48,7 +48,7 @@ export class KeyresultDialogComponent {
       ? ({ ...value, objective: this.data.objective } as KeyResultMetricDTO)
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
-    keyResult.version = this.data.keyResult?.version;
+    keyResult.version = this.data.keyResult?.version!;
     keyResult.actionList = keyResult.actionList!.filter((action: Action) => action.action !== '');
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({

@@ -147,10 +147,6 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['']);
   }
 
-  getCheckInMetric(lastCheckIn: CheckInOrdinal | CheckInMetric | null): CheckInMetric {
-    return lastCheckIn as CheckInMetric;
-  }
-
   getKeyResultWithRightType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
     if (keyResult.keyResultType === 'metric') {
       return keyResult as KeyresultMin as KeyResultMetricMin;

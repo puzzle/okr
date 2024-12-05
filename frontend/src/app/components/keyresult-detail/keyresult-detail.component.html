@@ -51,7 +51,7 @@
                 <span class="text-error" *ngIf="calculateCurrentPercentage(keyResultMetric) < 1">!</span>
                 Aktuell:
                 <span>
-                  {{ +getCheckInMetric(lastCheckIn).value | unitTransformation: keyResultMetric.unit }}
+                  {{ +lastCheckIn.value | unitTransformation: keyResultMetric.unit }}
                 </span>
               </p>
               <p class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center">

@@ -106,7 +106,7 @@
           </div>
         </section>
 
-        <section *ngIf="keyResult.lastCheckIn as checkIn" class="mb-2-rem">
+        <section *ngIf="getKeyResultWithRightType(keyResult).lastCheckIn as checkIn" class="mb-2-rem">
           <h3 class="mb-1">Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})</h3>
           <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
           <span class="d-flex justify-content-start all-checkins-button">

@@ -85,4 +85,11 @@ describe('TeamComponent', () => {
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
     expect(button).toBeFalsy();
   });
+
+  it('should display right add objective icon', () => {
+    component.overviewEntity = { ...overViewEntity2 };
+    component.overviewEntity.writeable = true;
+    component.ngOnInit();
+    expect(component.addIconSrc.value).toBe('/assets/icons/new-icon.svg');
+  });
 });

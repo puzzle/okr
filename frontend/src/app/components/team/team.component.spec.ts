@@ -92,4 +92,13 @@ describe('TeamComponent', () => {
     component.ngOnInit();
     expect(component.addIconSrc.value).toBe('/assets/icons/new-icon.svg');
   });
+
+  it('should still show add objective icon if next value is null', () => {
+    component.overviewEntity = { ...overViewEntity2 };
+    component.overviewEntity.writeable = true;
+    component.ngOnInit();
+    //@ts-ignore
+    component.addIconSrc.next(undefined);
+    expect(component.addIconSrc).toBe('/assets/icons/new-icon.svg');
+  });
 });

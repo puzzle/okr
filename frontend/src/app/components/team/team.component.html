@@ -13,7 +13,11 @@
       mat-button
     >
       <span id="add-objective-span" class="d-flex align-items-center add-text">
-        <img alt="Add key-result button" class="add-cross-button" src="{{ addIconSrc | async }}" />
+        <img
+          alt="Add key-result button"
+          class="add-cross-button"
+          src="{{ (addIconSrc | async) ?? '/assets/icons/new-icon.svg' }}"
+        />
         Objective hinzufügen
       </span>
     </button>

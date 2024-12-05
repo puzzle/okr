@@ -90,7 +90,7 @@ public class CheckInTestHelpers {
             "keyResultId": 1001,
             "createdOn": null,
             "modifiedOn": null,
-            "value": "STRETCH",
+            "zone": "STRETCH",
             "writeable": false
             }
             """;

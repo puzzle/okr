@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { Zone } from '../../types/enums/Zone';
-import {CheckInOrdinalMin} from "../../types/model/CheckInOrdinalMin";
+import { CheckInOrdinalMin } from '../../types/model/CheckInOrdinalMin';
 
 describe('ScoringComponent', () => {
   let component: ScoringComponent;

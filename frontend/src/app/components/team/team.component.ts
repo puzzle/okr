@@ -27,7 +27,7 @@ export class TeamComponent implements OnInit {
     private configService: ConfigService,
   ) {
     this.configService.config$.subscribe((config: ClientConfig) => {
-      this.addIconSrc.next(config.customStyles['okr-add-objective-icon']);
+      this.addIconSrc.next(config.customStyles['okr-add-objective-icon'] ?? 'assets/images/new-icon.png');
     });
   }
 

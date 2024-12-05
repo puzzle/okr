@@ -1,5 +1,4 @@
 import { State } from './types/enums/State';
-import { CheckInMin, CheckInMinMetric, CheckInMinOrdinal } from './types/model/CheckInMin';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
 import { KeyresultMin } from './types/model/KeyresultMin';
@@ -8,13 +7,16 @@ import { OverviewEntity } from './types/model/OverviewEntity';
 import { KeyResultObjective } from './types/model/KeyResultObjective';
 import { Quarter } from './types/model/Quarter';
 import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
-import { CheckIn, CheckInMetric, CheckInOrdinal } from './types/model/CheckIn';
 import { Objective } from './types/model/Objective';
 import { User } from './types/model/User';
 import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
+import { CheckInOrdinal } from './types/model/CheckInOrdinal';
+import { CheckInMetric } from './types/model/CheckInMetric';
+import { CheckInOrdinalMin } from './types/model/CheckInOrdinalMin';
+import { CheckInMetricMin } from './types/model/CheckInMetricMin';
 
 export const teamFormObject = {
   name: 'newTeamName',
@@ -100,7 +102,7 @@ export const quarterBacklog: Quarter = new Quarter(999, 'GJ 23/24-Q1', null, nul
 
 export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
 
-export const checkInMetric: CheckInMinMetric = {
+export const checkInMetric: CheckInMetricMin = {
   id: 815,
   version: 1,
   value: 15,
@@ -109,9 +111,9 @@ export const checkInMetric: CheckInMinMetric = {
   initiatives: 'Initiatives metric',
   changeInfo: 'Changeinfo metric',
   writeable: true,
-} as CheckInMinMetric;
+} as CheckInMetricMin;
 
-export const checkInMetricWriteableFalse: CheckInMinMetric = {
+export const checkInMetricWriteableFalse: CheckInMetricMin = {
   id: 815,
   version: 1,
   value: 15,
@@ -120,9 +122,9 @@ export const checkInMetricWriteableFalse: CheckInMinMetric = {
   initiatives: 'Initiatives metric writeable false',
   changeInfo: 'Changeinfo metric writeable false',
   writeable: false,
-} as CheckInMinMetric;
+} as CheckInMetricMin;
 
-export const checkInOrdinal: CheckInMinOrdinal = {
+export const checkInOrdinal: CheckInOrdinalMin = {
   id: 816,
   version: 2,
   zone: 'COMMIT',
@@ -131,7 +133,7 @@ export const checkInOrdinal: CheckInMinOrdinal = {
   initiatives: 'Initiatives ordinal',
   changeInfo: 'Changeinfo ordinal',
   writeable: true,
-} as CheckInMinOrdinal;
+} as CheckInOrdinalMin;
 
 export const keyResultMetricMin: KeyResultMetricMin = {
   id: 201,
@@ -205,7 +207,7 @@ export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
     createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
     initiatives: 'Initiatives of ordinal',
     changeInfo: 'Changeinfo ordinal',
-  } as CheckInMinOrdinal,
+  } as CheckInOrdinalMin,
 } as KeyResultOrdinalMin;
 
 export const keyResultOrdinalMin: KeyResultOrdinalMin = {
@@ -333,7 +335,7 @@ export const objectiveWriteableFalse: Objective = {
   writeable: false,
 };
 
-export const firstCheckIn: CheckInMinMetric = {
+export const firstCheckIn: CheckInMetricMin = {
   id: 1,
   version: 1,
   value: 77,
@@ -344,7 +346,7 @@ export const firstCheckIn: CheckInMinMetric = {
   writeable: true,
 };
 
-export const secondCheckIn: CheckInMinMetric = {
+export const secondCheckIn: CheckInMetricMin = {
   id: 2,
   version: 1,
   value: 89,

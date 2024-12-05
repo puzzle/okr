@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { CheckInMin, CheckInMinMetric, CheckInMinOrdinal } from '../../shared/types/model/CheckInMin';
+import { CheckInMin } from '../../shared/types/model/CheckInMin';
 import { CheckInService } from '../../services/check-in.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DATE_FORMAT } from '../../shared/constantLibary';
@@ -9,6 +9,8 @@ import { Observable, of } from 'rxjs';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { DialogService } from '../../services/dialog.service';
+import { CheckInMetricMin } from '../../shared/types/model/CheckInMetricMin';
+import { CheckInOrdinalMin } from '../../shared/types/model/CheckInOrdinalMin';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -61,11 +63,11 @@ export class CheckInHistoryDialogComponent implements OnInit {
     return this.keyResult as KeyResultMetric;
   }
 
-  getCheckInMetric(checkIn: CheckInMin): CheckInMinMetric {
-    return checkIn as CheckInMinMetric;
+  getCheckInMetric(checkIn: CheckInMin): CheckInMetricMin {
+    return checkIn as CheckInMetricMin;
   }
 
-  getCheckInOrdinal(checkIn: CheckInMin): CheckInMinOrdinal {
-    return checkIn as CheckInMinOrdinal;
+  getCheckInOrdinal(checkIn: CheckInMin): CheckInOrdinalMin {
+    return checkIn as CheckInOrdinalMin;
   }
 }

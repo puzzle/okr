@@ -1,9 +1,9 @@
 import { KeyresultMin } from './KeyresultMin';
-import { CheckInMinMetric } from './CheckInMin';
+import { CheckInMetricMin } from './CheckInMetricMin';
 
 export interface KeyResultMetricMin extends KeyresultMin {
   baseline: number;
   stretchGoal: number;
   unit: string;
-  lastCheckIn: CheckInMinMetric | null;
+  lastCheckIn: CheckInMetricMin | null;
 }

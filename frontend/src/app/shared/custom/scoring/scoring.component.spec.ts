@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { Zone } from '../../types/enums/Zone';
-import { CheckInMinOrdinal } from '../../types/model/CheckInMin';
+import {CheckInOrdinalMin} from "../../types/model/CheckInOrdinalMin";
 
 describe('ScoringComponent', () => {
   let component: ScoringComponent;
@@ -123,7 +123,7 @@ describe('ScoringComponent', () => {
       component.failPercent = 0;
 
       //Set zone
-      (component.keyResult.lastCheckIn as CheckInMinOrdinal)!.zone! = object.zoneValue;
+      (component.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone! = object.zoneValue;
       component.calculatePercentageOrdinal();
 
       //Verify if percentage was set correctly

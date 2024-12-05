@@ -4,14 +4,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../../shared/types/model/KeyResult';
 import { KeyResultOrdinal } from '../../../shared/types/model/KeyResultOrdinal';
-import { CheckInMin, CheckInMinMetric, CheckInMinOrdinal } from '../../../shared/types/model/CheckInMin';
+import { CheckInMin } from '../../../shared/types/model/CheckInMin';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../shared/types/model/Action';
 import { ActionService } from '../../../services/action.service';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
-import { keyResult } from '../../../shared/testData';
 import { CheckIn } from '../../../shared/types/model/CheckIn';
+import { CheckInMetricMin } from '../../../shared/types/model/CheckInMetricMin';
+import { CheckInOrdinalMin } from '../../../shared/types/model/CheckInOrdinalMin';
 
 @Component({
   selector: 'app-check-in-form',
@@ -58,7 +59,7 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
-      if ((this.checkIn as CheckInMinMetric).value != null) {
+      if ((this.checkIn as CheckInMetricMin).value != null) {
         this.dialogForm.controls.value.setValue(this.getCheckInMetric().value!.toString());
       } else {
         this.dialogForm.controls.value.setValue(this.getCheckInOrdinal().zone!);
@@ -108,12 +109,12 @@ export class CheckInFormComponent implements OnInit {
     });
   }
 
-  getCheckInMetric(): CheckInMinMetric {
-    return this.checkIn as CheckInMinMetric;
+  getCheckInMetric(): CheckInMetricMin {
+    return this.checkIn as CheckInMetricMin;
   }
 
-  getCheckInOrdinal(): CheckInMinOrdinal {
-    return this.checkIn as CheckInMinOrdinal;
+  getCheckInOrdinal(): CheckInOrdinalMin {
+    return this.checkIn as CheckInOrdinalMin;
   }
 
   getKeyResultMetric(): KeyResultMetric {

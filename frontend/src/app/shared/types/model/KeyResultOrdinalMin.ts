@@ -1,9 +1,9 @@
 import { KeyresultMin } from './KeyresultMin';
-import { CheckInMinOrdinal } from './CheckInMin';
+import { CheckInOrdinalMin } from './CheckInOrdinalMin';
 
 export interface KeyResultOrdinalMin extends KeyresultMin {
   commitZone: string;
   targetZone: string;
   stretchGoal: string;
-  lastCheckIn: CheckInMinOrdinal | null;
+  lastCheckIn: CheckInOrdinalMin | null;
 }

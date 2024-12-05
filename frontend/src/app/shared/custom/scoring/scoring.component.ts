@@ -10,16 +10,12 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 import { Observable, of } from 'rxjs';
 import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common';
-import { CheckInMinOrdinal } from '../../types/model/CheckInMin';
 import { CheckInService } from '../../../services/check-in.service';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
-import { keyResult } from '../../testData';
 import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
 
 @Component({

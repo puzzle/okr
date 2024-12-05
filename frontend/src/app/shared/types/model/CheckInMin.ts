@@ -7,9 +7,3 @@ export interface CheckInMin {
   initiatives: string;
   writeable: boolean;
 }
-export interface CheckInMinOrdinal extends CheckInMin {
-  zone: string | undefined;
-}
-export interface CheckInMinMetric extends CheckInMin {
-  value: number | undefined;
-}

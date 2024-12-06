@@ -22,7 +22,10 @@ export class KeyresultComponent {
   }
 
   getKeyResultWithCorrectType(): KeyResultOrdinalMin | KeyResultMetricMin {
-    if (this.keyResult.keyResultType === 'metric') return this.keyResult as KeyResultMetricMin;
-    else return this.keyResult as KeyResultOrdinalMin;
+    if (this.keyResult.keyResultType === 'metric') {
+      return this.keyResult as KeyResultMetricMin;
+    } else {
+      return this.keyResult as KeyResultOrdinalMin;
+    }
   }
 }

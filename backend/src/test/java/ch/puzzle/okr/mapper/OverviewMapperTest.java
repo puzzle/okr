@@ -142,7 +142,7 @@ class OverviewMapperTest {
         assertEquals("commit", ((OverviewKeyResultOrdinalDto) keyResultDto).commitZone());
         assertEquals("target", ((OverviewKeyResultOrdinalDto) keyResultDto).targetZone());
         assertEquals("stretch", ((OverviewKeyResultOrdinalDto) keyResultDto).stretchZone());
-        assertEquals("checkIn", ((OverviewKeyResultOrdinalDto) keyResultDto).lastCheckIn().value());
+        assertEquals("checkIn", ((OverviewKeyResultOrdinalDto) keyResultDto).lastCheckIn().zone());
     }
 
     @Test

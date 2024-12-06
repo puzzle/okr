@@ -42,7 +42,7 @@ public class CheckInTestHelpers {
     public static final String JSON_PATH_CREATED_ON = "$.createdOn";
 
     public static final String JSON_PATH_VALUE = "$.value";
-    public static final String JSON_PATH_ZONE = "$.value";
+    public static final String JSON_PATH_ZONE = "$.zone";
 
     /* Test entities */
     static final Objective objective = Objective.Builder.builder().withId(1L).build();
@@ -90,7 +90,7 @@ public class CheckInTestHelpers {
             "keyResultId": 1001,
             "createdOn": null,
             "modifiedOn": null,
-            "value": "STRETCH",
+            "zone": "STRETCH",
             "writeable": false
             }
             """;

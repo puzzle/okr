@@ -10,6 +10,9 @@ import { Action } from '../../../shared/types/model/Action';
 import { ActionService } from '../../../services/action.service';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
+import { CheckIn } from '../../../shared/types/model/CheckIn';
+import { CheckInMetricMin } from '../../../shared/types/model/CheckInMetricMin';
+import { CheckInOrdinalMin } from '../../../shared/types/model/CheckInOrdinalMin';
 
 @Component({
   selector: 'app-check-in-form',
@@ -56,15 +59,18 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
-      this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());
+      this.dialogForm.controls.value.setValue(this.getCheckInValue());
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
       this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
       return;
     }
     /* If KeyResult has lastCheckIn set checkIn to this value */
-    if (this.keyResult.lastCheckIn != null) {
-      this.checkIn = { ...this.keyResult.lastCheckIn, id: undefined };
+    if ((this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn != null) {
+      this.checkIn = {
+        ...(this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn,
+        id: undefined,
+      } as CheckInMin;
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       return;
     }
@@ -78,11 +84,18 @@ export class CheckInFormComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-    let checkIn: any = {
-      ...this.dialogForm.value,
+    const baseCheckIn: any = {
       id: this.checkIn.id,
       version: this.checkIn.version,
       keyResultId: this.keyResult.id,
+      confidence: this.dialogForm.controls.confidence.value,
+      changeInfo: this.dialogForm.controls.changeInfo.value,
+      initiatives: this.dialogForm.controls.initiatives.value,
+      actionList: this.dialogForm.controls.actionList.value,
+    };
+    const checkIn: CheckIn = {
+      ...baseCheckIn,
+      [this.keyResult.keyResultType === 'ordinal' ? 'zone' : 'value']: this.dialogForm.controls.value.value,
     };
 
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
@@ -90,6 +103,14 @@ export class CheckInFormComponent implements OnInit {
         this.dialogRef.close();
       });
     });
+  }
+
+  getCheckInValue(): string {
+    if ((this.checkIn as CheckInMetricMin).value != null) {
+      return (this.checkIn as CheckInMetricMin).value!.toString();
+    } else {
+      return (this.checkIn as CheckInOrdinalMin).zone!;
+    }
   }
 
   getKeyResultMetric(): KeyResultMetric {

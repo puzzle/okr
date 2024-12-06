@@ -4,6 +4,7 @@ import { KeyResultMetric } from '../../../shared/types/model/KeyResultMetric';
 import { CheckInMin } from '../../../shared/types/model/CheckInMin';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
+import { CheckInMetricMin } from '../../../shared/types/model/CheckInMetricMin';
 
 @Component({
   selector: 'app-check-in-form-metric',
@@ -44,5 +45,9 @@ export class CheckInFormMetricComponent implements OnInit {
 
   getErrorMessage(error: string, field: string): string {
     return field + this.translate.instant('DIALOG_ERRORS.' + error);
+  }
+
+  getCheckInMetric(): CheckInMetricMin {
+    return this.checkIn as CheckInMetricMin;
   }
 }

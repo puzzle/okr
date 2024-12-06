@@ -21,11 +21,13 @@
           <div class="okr-form-row row-cols-4">
             <h4 class="col-auto">Wert:</h4>
             <span class="col">
-              <ng-container *ngIf="keyResult.keyResultType === 'metric'">
-                {{ +checkIn.value! | unitTransformation: getMetricKeyResult().unit }}
+              <ng-container *ngIf="keyResult.keyResultType === 'metric' && getCheckInMetric(checkIn) as metricCheckIn">
+                {{ metricCheckIn.value! | unitTransformation: getMetricKeyResult().unit }}
               </ng-container>
-              <ng-container *ngIf="keyResult.keyResultType === 'ordinal'">
-                {{ checkIn.value }}
+              <ng-container
+                *ngIf="keyResult.keyResultType === 'ordinal' && getCheckInOrdinal(checkIn) as ordinalCheckIn"
+              >
+                {{ ordinalCheckIn.zone! }}
               </ng-container>
             </span>
             <h4 class="col-auto">Confidence:</h4>

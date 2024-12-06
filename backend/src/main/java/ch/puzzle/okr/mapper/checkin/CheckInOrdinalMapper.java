@@ -28,7 +28,7 @@ public class CheckInOrdinalMapper {
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {
         return CheckInOrdinal.Builder.builder() //
-                .withZone(checkInOrdinalDto.value()) //
+                .withZone(checkInOrdinalDto.zone()) //
                 .withId(checkInOrdinalDto.id()) //
                 .withVersion(checkInOrdinalDto.version()) //
                 .withChangeInfo(checkInOrdinalDto.changeInfo()) //

@@ -7,6 +7,5 @@ export interface CheckIn {
   createdBy: string;
   createdOn: Date;
   modifiedOn: Date;
-  value: string | number;
   writeable: boolean;
 }

@@ -25,10 +25,10 @@
   </div>
 
   <div class="col">
-    <div *ngIf="checkIn.value" class="okr-form-row okr-form-label-input-container">
+    <div *ngIf="getCheckInMetric() as metricCheckIn" class="okr-form-row okr-form-label-input-container">
       <p class="okr-form-label okr-form-col">Letzter Wert</p>
       <div class="okr-form-col text-black">
-        <div class="dialog-data-show dialog-form-field py-2">{{ checkIn.value }}{{ generateUnitLabel() }}</div>
+        <div class="dialog-data-show dialog-form-field py-2">{{ metricCheckIn.value }}{{ generateUnitLabel() }}</div>
       </div>
     </div>
   </div>

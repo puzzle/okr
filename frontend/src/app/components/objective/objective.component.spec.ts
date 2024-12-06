@@ -22,6 +22,7 @@ import * as de from '../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { ObjectiveService } from '../../services/objective.service';
 import { CompletedService } from '../../services/completed.servce';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
@@ -61,6 +62,7 @@ describe('ObjectiveColumnComponent', () => {
         { provide: OverviewService, useValue: overviewServiceMock },
         { provide: ObjectiveService, useValue: objectiveServiceMock },
         { provide: CompletedService, useValue: completedServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
       ],
     }).compileComponents();
 

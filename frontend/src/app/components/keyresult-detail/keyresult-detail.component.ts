@@ -14,6 +14,11 @@ import { DATE_FORMAT } from '../../shared/constantLibary';
 import { calculateCurrentPercentage, isLastCheckInNegative } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { DialogService } from '../../services/dialog.service';
+import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
+import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
+import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
+import { CheckInOrdinal } from '../../shared/types/model/CheckInOrdinal';
+import { CheckInMetric } from '../../shared/types/model/CheckInMetric';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -140,6 +145,14 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
 
   backToOverview() {
     this.router.navigate(['']);
+  }
+
+  getKeyResultWithCorrectType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
+    if (keyResult.keyResultType === 'metric') {
+      return keyResult as KeyresultMin as KeyResultMetricMin;
+    } else {
+      return keyResult as KeyresultMin as KeyResultOrdinalMin;
+    }
   }
 
   protected readonly calculateCurrentPercentage = calculateCurrentPercentage;

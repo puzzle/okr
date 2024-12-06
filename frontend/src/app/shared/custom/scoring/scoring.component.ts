@@ -10,11 +10,13 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 import { Observable, of } from 'rxjs';
 import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common';
+import { KeyResultMetric } from '../../types/model/KeyResultMetric';
+import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
+import { CheckInOrdinalMin } from '../../types/model/CheckInOrdinalMin';
 
 @Component({
   selector: 'app-scoring',
@@ -23,7 +25,7 @@ import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
-  @Input() keyResult!: KeyresultMin;
+  @Input() keyResult!: KeyResultOrdinalMin | KeyResultMetricMin;
   @Input() isDetail!: boolean;
   iconPath: string = 'empty';
   failPercent: number = 0;
@@ -86,7 +88,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageOrdinal() {
-    switch (this.keyResult.lastCheckIn?.value) {
+    switch ((this.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone!) {
       case Zone.STRETCH:
         this.stretched = true;
         break;
@@ -111,7 +113,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   calculatePercentageMetric() {
     if (this.keyResult.lastCheckIn !== null) {
       let keyResultMetric: KeyResultMetricMin = this.castToMetric();
-
       let percentage = calculateCurrentPercentage(keyResultMetric);
       this.labelPercentage = of(percentage);
       if (percentage < 30) {

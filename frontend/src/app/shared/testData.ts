@@ -1,5 +1,4 @@
 import { State } from './types/enums/State';
-import { CheckInMin } from './types/model/CheckInMin';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
 import { KeyresultMin } from './types/model/KeyresultMin';
@@ -8,13 +7,16 @@ import { OverviewEntity } from './types/model/OverviewEntity';
 import { KeyResultObjective } from './types/model/KeyResultObjective';
 import { Quarter } from './types/model/Quarter';
 import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
-import { CheckIn } from './types/model/CheckIn';
 import { Objective } from './types/model/Objective';
 import { User } from './types/model/User';
 import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
+import { CheckInOrdinal } from './types/model/CheckInOrdinal';
+import { CheckInMetric } from './types/model/CheckInMetric';
+import { CheckInOrdinalMin } from './types/model/CheckInOrdinalMin';
+import { CheckInMetricMin } from './types/model/CheckInMetricMin';
 
 export const teamFormObject = {
   name: 'newTeamName',
@@ -100,7 +102,7 @@ export const quarterBacklog: Quarter = new Quarter(999, 'GJ 23/24-Q1', null, nul
 
 export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
 
-export const checkInMetric: CheckInMin = {
+export const checkInMetric: CheckInMetricMin = {
   id: 815,
   version: 1,
   value: 15,
@@ -109,9 +111,9 @@ export const checkInMetric: CheckInMin = {
   initiatives: 'Initiatives metric',
   changeInfo: 'Changeinfo metric',
   writeable: true,
-} as CheckInMin;
+} as CheckInMetricMin;
 
-export const checkInMetricWriteableFalse: CheckInMin = {
+export const checkInMetricWriteableFalse: CheckInMetricMin = {
   id: 815,
   version: 1,
   value: 15,
@@ -120,18 +122,18 @@ export const checkInMetricWriteableFalse: CheckInMin = {
   initiatives: 'Initiatives metric writeable false',
   changeInfo: 'Changeinfo metric writeable false',
   writeable: false,
-} as CheckInMin;
+} as CheckInMetricMin;
 
-export const checkInOrdinal: CheckInMin = {
+export const checkInOrdinal: CheckInOrdinalMin = {
   id: 816,
   version: 2,
-  value: 'COMMIT',
+  zone: 'COMMIT',
   confidence: 7,
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
   initiatives: 'Initiatives ordinal',
   changeInfo: 'Changeinfo ordinal',
   writeable: true,
-} as CheckInMin;
+} as CheckInOrdinalMin;
 
 export const keyResultMetricMin: KeyResultMetricMin = {
   id: 201,
@@ -200,12 +202,12 @@ export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
   lastCheckIn: {
     id: 830,
     version: 1,
-    value: 'COMMIT',
+    zone: 'COMMIT',
     confidence: 8,
     createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
     initiatives: 'Initiatives of ordinal',
     changeInfo: 'Changeinfo ordinal',
-  } as CheckInMin,
+  } as CheckInOrdinalMin,
 } as KeyResultOrdinalMin;
 
 export const keyResultOrdinalMin: KeyResultOrdinalMin = {
@@ -333,7 +335,7 @@ export const objectiveWriteableFalse: Objective = {
   writeable: false,
 };
 
-export const firstCheckIn: CheckInMin = {
+export const firstCheckIn: CheckInMetricMin = {
   id: 1,
   version: 1,
   value: 77,
@@ -344,7 +346,7 @@ export const firstCheckIn: CheckInMin = {
   writeable: true,
 };
 
-export const secondCheckIn: CheckInMin = {
+export const secondCheckIn: CheckInMetricMin = {
   id: 2,
   version: 1,
   value: 89,
@@ -418,14 +420,14 @@ export const keyResult: KeyResultOrdinal = {
   lastCheckIn: {
     id: 745,
     version: 1,
-    value: 'FAIL',
+    zone: 'FAIL',
     confidence: 8,
     createdOn: new Date(),
     modifiedOn: new Date(),
     changeInfo: 'info',
     initiatives: 'some',
     writeable: true,
-  } as CheckIn,
+  } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: null,
@@ -452,14 +454,14 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   lastCheckIn: {
     id: 746,
     version: 1,
-    value: 'FAIL',
+    zone: 'FAIL',
     confidence: 3,
     createdOn: new Date(),
     modifiedOn: new Date(),
     changeInfo: 'Does not look good',
     initiatives: 'We have to be faster',
     writeable: true,
-  } as CheckIn,
+  } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [],
@@ -486,14 +488,14 @@ export const keyResultWriteableFalse: KeyResultOrdinal = {
   lastCheckIn: {
     id: 746,
     version: 1,
-    value: 'FAIL',
+    zone: 'FAIL',
     confidence: 3,
     createdOn: new Date(),
     modifiedOn: new Date(),
     changeInfo: 'Also not writeable',
     initiatives: 'Perhaps make it writeable',
     writeable: false,
-  } as CheckIn,
+  } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [],
@@ -527,7 +529,7 @@ export const keyResultMetric: KeyResultMetric = {
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
     writeable: true,
-  } as CheckIn,
+  } as CheckInMetric,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [action1, action2],
@@ -559,7 +561,7 @@ export const keyResultActions: KeyResultMetric = {
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
     writeable: true,
-  } as CheckIn,
+  } as CheckInMetric,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [action1, action2],

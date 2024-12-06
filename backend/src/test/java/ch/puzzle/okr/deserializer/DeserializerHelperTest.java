@@ -161,7 +161,7 @@ class DeserializerHelperTest {
         assertEquals("Initiatives", checkInOrdinalDto.initiatives());
         assertEquals(7, checkInOrdinalDto.confidence());
         assertEquals(1001, checkInOrdinalDto.keyResultId());
-        assertEquals(Zone.STRETCH, checkInOrdinalDto.value());
+        assertEquals(Zone.STRETCH, checkInOrdinalDto.zone());
     }
 
     private void assertKeyResultMetricDto(KeyResultMetricDto keyResultMetricDto) {

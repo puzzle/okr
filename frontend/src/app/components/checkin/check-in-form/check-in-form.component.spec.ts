@@ -115,19 +115,20 @@ describe('CheckInFormComponent', () => {
   it('should save check-in correctly if key result is ordinal', waitForAsync(async () => {
     component.checkIn = checkInOrdinal;
     component.keyResult = keyResultOrdinal;
-    component.dialogForm.controls['value'].setValue(checkInOrdinal?.value as string);
+    component.dialogForm.controls['value'].setValue(checkInOrdinal?.zone!.toString());
     component.dialogForm.controls['confidence'].setValue(checkInOrdinal.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInOrdinal.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInOrdinal.initiatives);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInOrdinal));
+    actionServiceMock.updateActions.mockReturnValue(of(action2));
     component.saveCheckIn();
 
     expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
       id: checkInOrdinal.id,
       version: checkInOrdinal.version,
       confidence: checkInOrdinal.confidence,
-      value: checkInOrdinal.value,
+      zone: checkInOrdinal.zone,
       changeInfo: checkInOrdinal.changeInfo,
       initiatives: checkInOrdinal.initiatives,
       keyResultId: keyResultOrdinal.id,

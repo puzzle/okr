@@ -26,7 +26,7 @@ export class KeyresultTypeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.keyresult) {
-      this.typeChangeAllowed = this.keyresult.lastCheckIn?.id == null;
+      this.typeChangeAllowed = (this.keyresult as KeyResultMetric | KeyResultOrdinal).lastCheckIn?.id == null;
       this.isMetric = this.keyresult.keyResultType == 'metric';
       this.isMetric
         ? this.keyResultForm.patchValue({ ...this.castToMetric(this.keyresult) })

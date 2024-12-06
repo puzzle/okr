@@ -9,6 +9,8 @@ import { Observable, of } from 'rxjs';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { DialogService } from '../../services/dialog.service';
+import { CheckInMetricMin } from '../../shared/types/model/CheckInMetricMin';
+import { CheckInOrdinalMin } from '../../shared/types/model/CheckInOrdinalMin';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -59,5 +61,13 @@ export class CheckInHistoryDialogComponent implements OnInit {
 
   getMetricKeyResult(): KeyResultMetric {
     return this.keyResult as KeyResultMetric;
+  }
+
+  getCheckInMetric(checkIn: CheckInMin): CheckInMetricMin {
+    return checkIn as CheckInMetricMin;
+  }
+
+  getCheckInOrdinal(checkIn: CheckInMin): CheckInOrdinalMin {
+    return checkIn as CheckInOrdinalMin;
   }
 }

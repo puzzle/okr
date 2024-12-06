@@ -184,7 +184,7 @@ public class AssertHelper {
             KeyResultLastCheckInOrdinalDto actual) {
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.version(), actual.version());
-        assertEquals(expected.value(), actual.value());
+        assertEquals(expected.zone(), actual.zone());
         assertEquals(expected.confidence(), actual.confidence());
         assertEquals(expected.createdOn(), actual.createdOn());
         assertEquals(expected.changeInfo(), actual.changeInfo());

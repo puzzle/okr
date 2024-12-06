@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -18,9 +17,28 @@ import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DialogService } from '../../services/dialog.service';
+import { ConfigService } from '../../services/config.service';
+import { of } from 'rxjs';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const dialogService = {
   open: jest.fn(),
+};
+
+const configServiceDefined = {
+  config$: of({
+    customStyles: {
+      'okr-add-objective-icon': 'new-icon-from-config-service.svg',
+    },
+  }),
+};
+
+const configServiceUndefined = {
+  config$: of({
+    customStyles: {
+      'okr-add-objective-icon': undefined,
+    },
+  }),
 };
 
 const refreshDataServiceMock = {
@@ -37,7 +55,6 @@ describe('TeamComponent', () => {
         RouterTestingModule,
         MatMenuModule,
         MatDialogModule,
-        HttpClientTestingModule,
         MatTooltipModule,
         TranslateTestingModule.withTranslations({
           de: de,
@@ -51,9 +68,14 @@ describe('TeamComponent', () => {
           useValue: dialogService,
         },
         {
+          provide: ConfigService,
+          useValue: configServiceDefined,
+        },
+        {
           provide: RefreshDataService,
           useValue: refreshDataServiceMock,
         },
+        provideHttpClient(withInterceptorsFromDi()),
       ],
     })
       .overrideComponent(TeamComponent, {
@@ -84,5 +106,50 @@ describe('TeamComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
     expect(button).toBeFalsy();
+  });
+
+  it('should set value of addIconSrc if src from config service is defined', () => {
+    expect(component.addIconSrc.value).toBe('new-icon-from-config-service.svg');
+    const addObjectiveIcon = fixture.debugElement.query(By.css('[data-testId="add-objective-icon"]'));
+    expect(addObjectiveIcon.attributes['src']).toBe('new-icon-from-config-service.svg');
+  });
+});
+
+describe('TeamComponent undefined values in config service', () => {
+  let component: TeamComponent;
+  let fixture: ComponentFixture<TeamComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        MatMenuModule,
+        TranslateTestingModule.withTranslations({
+          de: de,
+        }),
+      ],
+      declarations: [TeamComponent],
+      providers: [
+        {
+          provide: ConfigService,
+          useValue: configServiceUndefined,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+      ],
+    })
+      .overrideComponent(TeamComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(TeamComponent);
+    component = fixture.componentInstance;
+    component.overviewEntity = overViewEntity1;
+    fixture.detectChanges();
+  });
+
+  it('should keep default value of addIconSrc if src from config service is undefined', () => {
+    expect(component.addIconSrc.value).toBe('assets/icons/new-icon.svg');
+    const addObjectiveIcon = fixture.debugElement.query(By.css('[data-testId="add-objective-icon"]'));
+    expect(addObjectiveIcon.attributes['src']).toBe('assets/icons/new-icon.svg');
   });
 });

@@ -2,7 +2,7 @@
 
 .overview-container {
   overflow-x: hidden;
-  background-color: $overview-bg;
+  background: var(--okr-overview-background-color);
   transition: 0.5s;
 }
 

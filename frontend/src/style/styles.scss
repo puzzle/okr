@@ -9,7 +9,7 @@ body.okr {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  background-color: $overview-bg;
+  background: var(--okr-overview-background-color);
   font-family: Roboto, "sans-serif";
   --bs-body-font-family: Roboto;
 
@@ -118,10 +118,6 @@ body.okr {
   @extend .fw-normal;
   @extend .px-2;
   @extend .py-1;
-}
-
-.bg-grey {
-  background-color: $overview-bg;
 }
 
 body pzsh-backdrop {
@@ -319,7 +315,7 @@ img.add-cross-button {
   height: min-content;
   z-index: 100;
   transition: 0.5s;
-  background-color: var(--okr-banner-background-color);
+  background: var(--okr-banner-background-color);
 }
 
 app-team-management-banner > #okrBanner {
@@ -331,6 +327,7 @@ table.okr-table {
   border-spacing: 0 0.5rem;
   border: none;
   box-shadow: none;
+
   tr {
     $table-height: 40px;
     height: $table-height;
@@ -340,6 +337,7 @@ table.okr-table {
       border: none;
       background-color: $light-grey;
     }
+
     > th {
       font-family: Roboto, "sans-serif";
       font-variation-settings: "wght" 700;
@@ -349,6 +347,7 @@ table.okr-table {
       background-color: white;
     }
   }
+
   tbody {
     tr:hover {
       box-shadow: 0 0 0 1px $dark-grey;
@@ -359,6 +358,7 @@ table.okr-table {
 .search-form {
   button {
     border-radius: 0 4px 4px 0;
+
     mat-icon {
       display: flex;
       align-items: center;
@@ -366,11 +366,13 @@ table.okr-table {
       transform: scale(1.25);
     }
   }
+
   .mdc-notched-outline__trailing {
     border-bottom-right-radius: 0 !important;
     border-top-right-radius: 0 !important;
   }
 }
+
 .mat-mdc-autocomplete-panel {
   &.autocomplete-bigger {
     max-height: 480px;

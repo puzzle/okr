@@ -10,3 +10,16 @@
   align-items: center;
   justify-content: center;
 }
+
+.team-title {
+  color: var(--okr-team-header-color);
+}
+
+#add-objective-span {
+  color: var(--okr-add-objective-text-color);
+}
+
+#add-objective:hover,
+#add-objective:focus {
+  outline: 1px solid var(--okr-add-objective-outline-color);
+}

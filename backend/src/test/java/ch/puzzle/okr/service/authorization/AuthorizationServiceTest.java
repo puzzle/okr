@@ -72,25 +72,25 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleWriteForTeam_shouldReturnTrueWhenOkrChampion() {
+    void hasRoleWriteForTeamShouldReturnTrueWhenOkrChampion() {
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
         assertTrue(hasRoleWriteForTeam(authorizationUser, 3L));
     }
 
     @Test
-    void hasRoleWriteForTeam_shouldReturnTrueWhenUserIsAdmin() {
+    void hasRoleWriteForTeamShouldReturnTrueWhenUserIsAdmin() {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
         assertTrue(hasRoleWriteForTeam(authorizationUser, 1L));
     }
 
     @Test
-    void hasRoleWriteForTeam_shouldReturnTrueWhenUserIsInTeam() {
+    void hasRoleWriteForTeamShouldReturnTrueWhenUserIsInTeam() {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
         assertTrue(hasRoleWriteForTeam(authorizationUser, 3L));
     }
 
     @Test
-    void hasRoleWriteForTeam_shouldReturnFalseWhenUserIsNotInTeam() {
+    void hasRoleWriteForTeamShouldReturnFalseWhenUserIsNotInTeam() {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
         assertFalse(hasRoleWriteForTeam(authorizationUser, 5L));
     }

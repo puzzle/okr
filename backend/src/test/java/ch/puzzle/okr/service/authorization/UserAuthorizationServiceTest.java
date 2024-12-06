@@ -45,7 +45,7 @@ public class UserAuthorizationServiceTest {
     }
 
     @Test
-    void getAllUsers_shouldSetTeamWritableCorrectly() {
+    void getAllUsersShouldSetTeamWritableCorrectly() {
         List<User> userList = List.of(user, user2);
         when(userBusinessService.getAllUsers()).thenReturn(userList);
         when(teamAuthorizationService.isUserWriteAllowed(adminTeamId)).thenReturn(true);
@@ -59,7 +59,7 @@ public class UserAuthorizationServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldCallBusinessService() {
+    void setOkrChampionShouldCallBusinessService() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(true);
 
@@ -72,7 +72,7 @@ public class UserAuthorizationServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
+    void setOkrChampionShouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(false);
 
@@ -84,7 +84,7 @@ public class UserAuthorizationServiceTest {
     }
 
     @Test
-    void createUsers_shouldCallBusinessService() {
+    void createUsersShouldCallBusinessService() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(true);
 
@@ -98,7 +98,7 @@ public class UserAuthorizationServiceTest {
     }
 
     @Test
-    void createUsers_shouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
+    void createUsersShouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(false);
 

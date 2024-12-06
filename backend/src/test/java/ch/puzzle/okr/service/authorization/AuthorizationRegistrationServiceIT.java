@@ -84,7 +84,7 @@ class AuthorizationRegistrationServiceIT {
 
     @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
     @Test
-    void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
+    void registerAuthorizationUserShouldSetOkrChampionsToFalse() {
         // arrange
         User user = User.Builder.builder() //
                 .withFirstname("Richard") //
@@ -138,7 +138,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
+    void registerAuthorizationUserShouldSetFirstnameAndLastnameFromToken() {
         // arrange
         User user = User.Builder.builder() //
                 .withFirstname("Richard") //

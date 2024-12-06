@@ -9,7 +9,7 @@ body.okr {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--okr-overview-background-color);
+  background: var(--okr-overview-background-color);
   font-family: Roboto, "sans-serif";
   --bs-body-font-family: Roboto;
 
@@ -118,10 +118,6 @@ body.okr {
   @extend .fw-normal;
   @extend .px-2;
   @extend .py-1;
-}
-
-.bg-color {
-  background-color: var(--okr-overview-background-color);
 }
 
 body pzsh-backdrop {
@@ -319,7 +315,7 @@ img.add-cross-button {
   height: min-content;
   z-index: 100;
   transition: 0.5s;
-  background-color: var(--okr-banner-background-color);
+  background: var(--okr-banner-background-color);
 }
 
 app-team-management-banner > #okrBanner {

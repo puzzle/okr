@@ -115,7 +115,7 @@ describe('TeamComponent', () => {
   });
 });
 
-describe('Test', () => {
+describe('TeamComponent undefined values in config service', () => {
   let component: TeamComponent;
   let fixture: ComponentFixture<TeamComponent>;
 

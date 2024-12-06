@@ -147,7 +147,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['']);
   }
 
-  getKeyResultWithRightType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
+  getKeyResultWithCorrectType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
     if (keyResult.keyResultType === 'metric') {
       return keyResult as KeyresultMin as KeyResultMetricMin;
     } else {

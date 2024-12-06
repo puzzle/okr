@@ -22,13 +22,13 @@
         <section class="scoring-section mb-2-rem">
           <app-scoring
             class="scoring-detail"
-            [keyResult]="getKeyResultWithRightType(keyResult)"
+            [keyResult]="getKeyResultWithCorrectType(keyResult)"
             [isDetail]="true"
           ></app-scoring>
           <span class="text-small d-flex align-items-center flex-column ms-3 confidence-container">
             <h4 class="confidence-label">Confidence</h4>
             <app-confidence
-              [checkIn]="getKeyResultWithRightType(keyResult).lastCheckIn!"
+              [checkIn]="getKeyResultWithCorrectType(keyResult).lastCheckIn!"
               [edit]="false"
               class="bg-display-element"
             ></app-confidence>
@@ -106,7 +106,7 @@
           </div>
         </section>
 
-        <section *ngIf="getKeyResultWithRightType(keyResult).lastCheckIn as checkIn" class="mb-2-rem">
+        <section *ngIf="getKeyResultWithCorrectType(keyResult).lastCheckIn as checkIn" class="mb-2-rem">
           <h3 class="mb-1">Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})</h3>
           <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
           <span class="d-flex justify-content-start all-checkins-button">

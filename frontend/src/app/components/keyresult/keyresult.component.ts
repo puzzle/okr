@@ -21,7 +21,7 @@ export class KeyresultComponent {
     this.router.navigate(['details/keyresult', this.keyResult.id]);
   }
 
-  getKeyResultWithRightType(): KeyResultOrdinalMin | KeyResultMetricMin {
+  getKeyResultWithCorrectType(): KeyResultOrdinalMin | KeyResultMetricMin {
     if (this.keyResult.keyResultType === 'metric') return this.keyResult as KeyResultMetricMin;
     else return this.keyResult as KeyResultOrdinalMin;
   }

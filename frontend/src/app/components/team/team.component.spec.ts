@@ -18,9 +18,19 @@ import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DialogService } from '../../services/dialog.service';
+import { ConfigService } from '../../services/config.service';
+import { of } from 'rxjs';
 
 const dialogService = {
   open: jest.fn(),
+};
+
+let configService = {
+  config$: of({
+    customStyles: {
+      'okr-add-objective-icon': 'new-icon-from-config-service.svg',
+    },
+  }),
 };
 
 const refreshDataServiceMock = {
@@ -49,6 +59,10 @@ describe('TeamComponent', () => {
         {
           provide: DialogService,
           useValue: dialogService,
+        },
+        {
+          provide: ConfigService,
+          useValue: configService,
         },
         {
           provide: RefreshDataService,
@@ -86,19 +100,9 @@ describe('TeamComponent', () => {
     expect(button).toBeFalsy();
   });
 
-  it('should display right add objective icon', () => {
-    component.overviewEntity = { ...overViewEntity2 };
-    component.overviewEntity.writeable = true;
-    component.ngOnInit();
-    expect(component.addIconSrc.value).toBe('/assets/icons/new-icon.svg');
-  });
-
-  it('should still show add objective icon if next value is null', () => {
-    component.overviewEntity = { ...overViewEntity2 };
-    component.overviewEntity.writeable = true;
-    component.ngOnInit();
-    //@ts-ignore
-    component.addIconSrc.next(undefined);
-    expect(component.addIconSrc).toBe('/assets/icons/new-icon.svg');
+  it('should set value of addIconSrc if src from config service is defined', () => {
+    const addObjectiveIcon = fixture.debugElement.query(By.css('[data-testId="add-objective-icon"]'));
+    expect(component.addIconSrc.value).toBe('new-icon-from-config-service.svg');
+    expect(addObjectiveIcon.attributes['src']).toBe('new-icon-from-config-service.svg');
   });
 });

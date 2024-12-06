@@ -14,9 +14,10 @@
     >
       <span id="add-objective-span" class="d-flex align-items-center add-text">
         <img
-          alt="Add key-result button"
+          alt="Add objective button"
           class="add-cross-button"
-          src="{{ (addIconSrc | async) ?? '/assets/icons/new-icon.svg' }}"
+          [attr.data-testId]="'add-objective-icon'"
+          src="{{ addIconSrc | async }}"
         />
         Objective hinzufügen
       </span>

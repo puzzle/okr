@@ -19,7 +19,7 @@ import { BehaviorSubject } from 'rxjs';
 export class TeamComponent implements OnInit {
   @Input({ required: true })
   public overviewEntity!: OverviewEntity;
-  addIconSrc: BehaviorSubject<string> = new BehaviorSubject('/assets/icons/new-icon.svg');
+  addIconSrc: BehaviorSubject<string> = new BehaviorSubject('assets/icons/new-icon.svg');
 
   constructor(
     private dialogService: DialogService,
@@ -27,7 +27,8 @@ export class TeamComponent implements OnInit {
     private configService: ConfigService,
   ) {
     this.configService.config$.subscribe((config: ClientConfig) => {
-      this.addIconSrc.next(config.customStyles['okr-add-objective-icon']);
+      const configuredIconSrc = config.customStyles['okr-add-objective-icon'];
+      if (configuredIconSrc) this.addIconSrc.next(configuredIconSrc);
     });
   }
 

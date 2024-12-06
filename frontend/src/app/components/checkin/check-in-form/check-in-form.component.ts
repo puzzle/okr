@@ -59,11 +59,7 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
-      if ((this.checkIn as CheckInMetricMin).value != null) {
-        this.dialogForm.controls.value.setValue(this.getCheckInMetric().value!.toString());
-      } else {
-        this.dialogForm.controls.value.setValue(this.getCheckInOrdinal().zone!);
-      }
+      this.dialogForm.controls.value.setValue(this.getCheckInValue());
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
       this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
@@ -109,12 +105,12 @@ export class CheckInFormComponent implements OnInit {
     });
   }
 
-  getCheckInMetric(): CheckInMetricMin {
-    return this.checkIn as CheckInMetricMin;
-  }
-
-  getCheckInOrdinal(): CheckInOrdinalMin {
-    return this.checkIn as CheckInOrdinalMin;
+  getCheckInValue(): string {
+    if ((this.checkIn as CheckInMetricMin).value != null) {
+      return (this.checkIn as CheckInMetricMin).value!.toString();
+    } else {
+      return (this.checkIn as CheckInOrdinalMin).zone!;
+    }
   }
 
   getKeyResultMetric(): KeyResultMetric {

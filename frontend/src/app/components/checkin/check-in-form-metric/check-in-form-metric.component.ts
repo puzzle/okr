@@ -11,6 +11,7 @@ import { CheckInMetricMin } from '../../../shared/types/model/CheckInMetricMin';
   templateUrl: './check-in-form-metric.component.html',
   styleUrls: ['./check-in-form-metric.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CheckInFormMetricComponent implements OnInit {
   @Input()

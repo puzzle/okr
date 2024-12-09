@@ -14,6 +14,7 @@ import { DialogService } from '../../../services/dialog.service';
   selector: 'app-member-list-table',
   templateUrl: './member-list-table.component.html',
   styleUrl: './member-list-table.component.scss',
+  standalone: false,
 })
 export class MemberListTableComponent implements OnInit, OnDestroy {
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;

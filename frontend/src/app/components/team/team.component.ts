@@ -12,6 +12,7 @@ import { DialogService } from '../../services/dialog.service';
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TeamComponent implements OnInit {
   @Input({ required: true })

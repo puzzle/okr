@@ -16,6 +16,7 @@ import { NewUserForm } from '../../shared/types/model/NewUserForm';
   styleUrl: './new-user.component.scss',
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: false,
 })
 export class NewUserComponent implements AfterViewInit {
   @Input({ required: true })

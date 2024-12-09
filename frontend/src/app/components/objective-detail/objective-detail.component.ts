@@ -13,6 +13,7 @@ import { DialogService } from '../../services/dialog.service';
   templateUrl: './objective-detail.component.html',
   styleUrl: 'objective-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ObjectiveDetailComponent {
   objectiveId!: number;

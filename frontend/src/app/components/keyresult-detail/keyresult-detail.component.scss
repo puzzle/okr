@@ -1,11 +1,11 @@
-@import "../style/variables";
+@use "../style/variables";
 
 :host {
   flex: 1;
 }
 
 .keyResult-detail-attribute-show {
-  background-color: $display-element;
+  background-color: variables.$display-element;
   height: auto;
 }
 

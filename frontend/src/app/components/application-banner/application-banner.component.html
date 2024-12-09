@@ -33,7 +33,9 @@
                   }}</span>
                   <span *ngIf="!panelOpenState">Filter</span>
                 </div>
-                <ng-template #openedPanel><p>Filter</p></ng-template>
+                <ng-template #openedPanel>
+                  <p class="mb-2">Filter</p>
+                </ng-template>
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="d-flex gap-2 flex-column filter-container">

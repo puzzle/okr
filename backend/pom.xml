@@ -248,10 +248,10 @@
                         <eclipse>
                             <version>4.26</version>
                             <file>${project.basedir}/src/main/resources/formatting.xml</file>
+<!--                            <file>${project.basedir}/src/main/resources/formatters/Default-2.xml</file>-->
                         </eclipse>
                         <removeUnusedImports />
                         <importOrder />
-                        <formatAnnotations />
                     </java>
                 </configuration>
             </plugin>

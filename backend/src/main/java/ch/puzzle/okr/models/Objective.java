@@ -1,14 +1,12 @@
 package ch.puzzle.okr.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(indexes = { @Index(name = "idx_objective_title", columnList = "title") })
+@Table(indexes = {@Index(name = "idx_objective_title", columnList = "title")})
 public class Objective implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
@@ -169,10 +167,12 @@ public class Objective implements WriteableInterface {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         Objective objective = (Objective) o;
         return Objects.equals(id, objective.id) && version == objective.version
                && Objects.equals(title, objective.title) && Objects.equals(createdBy, objective.createdBy)
@@ -184,18 +184,17 @@ public class Objective implements WriteableInterface {
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(id,
-                      version,
-                      title,
-                      createdBy,
-                      team,
-                      quarter,
-                      description,
-                      modifiedOn,
-                      state,
-                      createdOn,
-                      modifiedBy);
+        return Objects.hash(id,
+                            version,
+                            title,
+                            createdBy,
+                            team,
+                            quarter,
+                            description,
+                            modifiedOn,
+                            state,
+                            createdOn,
+                            modifiedBy);
     }
 
     public static final class Builder {

@@ -268,24 +268,24 @@
 		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_package" value="insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_type" value="insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_enum_constant" value="do not insert"/>
-		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_parameter" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_parameter" value="insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_method" value="insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_local_variable" value="insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_type_annotation" value="do not insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_field" value="insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.keep_loop_body_block_on_one_line" value="one_line_never"/>
 		<setting id="org.eclipse.jdt.core.formatter.keep_if_then_body_block_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_lambda_body_block_on_one_line" value="one_line_never"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_lambda_body_block_on_one_line" value="one_line_preserve"/>
 		<setting id="org.eclipse.jdt.core.formatter.keep_code_block_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_method_body_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_simple_getter_setter_on_one_line" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_type_declaration_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_anonymous_type_declaration_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_enum_declaration_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_enum_constant_declaration_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_record_declaration_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_record_constructor_on_one_line" value="one_line_never"/>
-		<setting id="org.eclipse.jdt.core.formatter.keep_annotation_declaration_on_one_line" value="one_line_never"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_method_body_on_one_line" value="one_line_preserve"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_simple_getter_setter_on_one_line" value="true"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_type_declaration_on_one_line" value="one_line_preserve"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_anonymous_type_declaration_on_one_line" value="one_line_preserve"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_enum_declaration_on_one_line" value="one_line_preserve"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_enum_constant_declaration_on_one_line" value="one_line_preserve"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_record_declaration_on_one_line" value="one_line_preserve"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_record_constructor_on_one_line" value="one_line_preserve"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_annotation_declaration_on_one_line" value="one_line_preserve"/>
 		<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
 		<setting id="org.eclipse.jdt.core.formatter.continuation_indentation" value="2"/>
 		<setting id="org.eclipse.jdt.core.formatter.continuation_indentation_for_array_initializer" value="2"/>
@@ -343,11 +343,11 @@
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_package" value="0"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_type" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_enum_constant" value="0"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_field" value="48"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_field" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_method" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_local_variable" value="49"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_parameter" value="0"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_type_annotations" value="48"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_parameter" value="49"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_type_annotations" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation" value="0"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_module_statements" value="0"/>
 		<setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="120"/>

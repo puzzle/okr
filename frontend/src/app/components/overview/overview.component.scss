@@ -1,5 +1,3 @@
-@import "../style/variables";
-
 .overview-container {
   overflow-x: hidden;
   background: var(--okr-overview-background-color);
@@ -12,4 +10,7 @@
 
 .puzzle-logo {
   filter: invert(38%) sepia(31%) saturate(216%) hue-rotate(167deg) brightness(96%) contrast(85%);
+}
+#no-team-text {
+  color: var(--okr-team-header-color);
 }

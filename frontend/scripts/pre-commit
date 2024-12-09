@@ -5,7 +5,8 @@ addedFiles=$(git diff --cached --name-only --diff-filter=d)
 
 echo "*****Running prettier******"
 cd $gitBasePath/frontend
-npm run format
+npm run esl-format-specific $addedFiles
+npm run prettier-format $addedFiles
 echo "*****Finish running prettier******"
 
 echo "*****Running maven formatter******"

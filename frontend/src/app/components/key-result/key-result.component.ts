@@ -9,7 +9,8 @@ import { KeyResultOrdinalMin } from '../../shared/types/model/key-result-ordinal
   selector: 'app-key-result',
   templateUrl: './key-result.component.html',
   styleUrls: ['./key-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class KeyResultComponent {
   @Input() keyResult!: KeyResultMin;

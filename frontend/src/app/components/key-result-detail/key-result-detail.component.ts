@@ -22,7 +22,8 @@ import { KeyResultOrdinalMin } from '../../shared/types/model/key-result-ordinal
   selector: 'app-key-result-detail',
   templateUrl: './key-result-detail.component.html',
   styleUrls: ['./key-result-detail.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class KeyResultDetailComponent implements OnInit, OnDestroy {
   @Input() keyResultId!: number;

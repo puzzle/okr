@@ -18,7 +18,8 @@ import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
   styleUrls: ['./check-in-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class CheckInFormComponent implements OnInit {
   keyResult: KeyResult;

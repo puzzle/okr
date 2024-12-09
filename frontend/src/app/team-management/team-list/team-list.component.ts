@@ -7,7 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-team-list',
   templateUrl: './team-list.component.html',
-  styleUrl: './team-list.component.scss'
+  styleUrl: './team-list.component.scss',
+  standalone: false
 })
 export class TeamListComponent implements OnInit, OnDestroy {
   public teams$: Observable<Team[]>;

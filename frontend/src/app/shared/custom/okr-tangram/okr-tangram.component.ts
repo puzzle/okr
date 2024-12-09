@@ -5,7 +5,8 @@ import { map, Observable } from 'rxjs';
 @Component({
   selector: 'app-okr-tangram',
   templateUrl: 'okr-tangram.component.html',
-  styleUrl: 'okr-tangram.component.scss'
+  styleUrl: 'okr-tangram.component.scss',
+  standalone: false
 })
 export class OkrTangramComponent {
   private readonly DEFAULT_TRIANGLE_SRC = 'assets/images/empty.svg';

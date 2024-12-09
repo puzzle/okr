@@ -10,7 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-key-result-type',
   templateUrl: './key-result-type.component.html',
-  styleUrls: ['./key-result-type.component.scss']
+  styleUrls: ['./key-result-type.component.scss'],
+  standalone: false
 })
 export class KeyResultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;

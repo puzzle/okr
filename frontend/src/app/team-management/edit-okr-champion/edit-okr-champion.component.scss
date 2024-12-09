@@ -1,8 +1,8 @@
-@import 'variables';
+@use "variables";
 
 :host {
   height: 40px;
-  background-color: $light-grey;
+  background-color: variables.$light-grey;
   display: flex;
   align-items: center;
 }

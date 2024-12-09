@@ -9,7 +9,8 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-action-plan',
   templateUrl: './action-plan.component.html',
-  styleUrls: ['./action-plan.component.scss']
+  styleUrls: ['./action-plan.component.scss'],
+  standalone: false
 })
 export class ActionPlanComponent {
   @Input() control: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([]);

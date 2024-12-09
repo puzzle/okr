@@ -1,6 +1,6 @@
 <mat-chip-listbox class="chip-list overflow-hidden w-100 d-grid">
   <button (click)="toggleAll()" class="icon-button focus-outline mt-1 me-1">
-    <mat-chip [highlighted]="activeTeams.length == (this.teams$ | async)?.length" color="primary">
+    <mat-chip [highlighted]="activeTeams.length == (teams$ | async)?.length" color="primary">
       <p>Alle</p>
     </mat-chip>
   </button>

@@ -10,7 +10,8 @@ import { getFullNameOfUser } from '../../shared/types/model/user';
   selector: 'app-application-top-bar',
   templateUrl: './application-top-bar.component.html',
   styleUrls: ['./application-top-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   userFullName = '';

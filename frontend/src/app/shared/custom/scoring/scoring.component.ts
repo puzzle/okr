@@ -21,7 +21,8 @@ import { CheckInOrdinalMin } from '../../types/model/check-in-ordinal-min';
   selector: 'app-scoring',
   templateUrl: './scoring.component.html',
   styleUrls: ['./scoring.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() keyResult!: KeyResultOrdinalMin | KeyResultMetricMin;

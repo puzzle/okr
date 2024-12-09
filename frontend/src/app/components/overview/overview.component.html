@@ -9,7 +9,7 @@
   <div *ngIf="(overviewEntities$ | async)?.length === 0" class="d-flex align-items-center flex-column pt-5 gap-5">
     <p id="no-team-text">Kein Team ausgewählt</p>
     <img
-      src="{{ this.backgroundLogoSrc$ | async }}"
+      src="{{ backgroundLogoSrc$ | async }}"
       alt="Greyed out company logo"
       width="242"
       class="puzzle-logo"

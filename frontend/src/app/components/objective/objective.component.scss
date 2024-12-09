@@ -1,4 +1,4 @@
-@import '../style/variables';
+@use "variables";
 
 .objective {
   max-width: 750px;
@@ -20,7 +20,7 @@
 }
 
 .three-dot-menu {
-  color: $pz-dark-blue;
+  color: variables.$pz-dark-blue;
   display: flex;
   justify-content: center;
   align-items: center;

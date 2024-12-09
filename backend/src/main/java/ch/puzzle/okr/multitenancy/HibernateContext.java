@@ -1,10 +1,15 @@
 package ch.puzzle.okr.multitenancy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Properties;
 
 public class HibernateContext {
+
+    private static final Logger logger = LoggerFactory.getLogger(HibernateContext.class);
+
     public static final String HIBERNATE_CONNECTION_URL = "hibernate.connection.url";
     public static final String HIBERNATE_CONNECTION_USERNAME = "hibernate.connection.username";
     public static final String HIBERNATE_CONNECTION_PASSWORD = "hibernate.connection.password";
@@ -44,6 +49,8 @@ public class HibernateContext {
     }
 
     private static DbConfig extractHibernateConfig(ConfigurableEnvironment environment) {
+        String profile = environment.getProperty("spring.profiles.active");
+        logger.info("*** used profile: {}", profile);
         String url = environment.getProperty(HibernateContext.HIBERNATE_CONNECTION_URL);
         String username = environment.getProperty(HibernateContext.HIBERNATE_CONNECTION_USERNAME);
         String password = environment.getProperty(HibernateContext.HIBERNATE_CONNECTION_PASSWORD);

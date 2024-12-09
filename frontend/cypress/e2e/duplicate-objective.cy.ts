@@ -46,6 +46,18 @@ describe('Functionality of duplicating objectives and their belonging keyResults
       .should('not.contain', thirdKeyResultName);
   });
 
+  it('Should not show option to select keyResults when objective with no keyResults is being duplicated', () => {
+    const duplicatedTitle = 'This is a duplicated objective without any keyResult';
+
+    overviewPage.duplicateObjective(
+      'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    );
+    cy.contains('Key Results:').should('not.exist');
+    ObjectiveDialog.do().fillObjectiveTitle(duplicatedTitle).submit();
+
+    overviewPage.getObjectiveByName(duplicatedTitle).should('exist');
+  });
+
   it('Should be able to duplicate a objective into the next quarter, including all keyResults', () => {
     const duplicatedTitle = 'This is a default objective with all keyResults in quarter 3!';
 

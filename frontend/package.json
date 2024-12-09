@@ -15,6 +15,7 @@
     "cypress:run-test": "npm run build && concurrently \"npm run serve:dist\" \"cypress run\"",
     "format": "npm run esl-format && npm run prettier-format",
     "check": "npm run es-check && npm run prettier-check",
+    "esl-format-specific": "eslint --fix ",
     "esl-format": "eslint --fix .",
     "es-check": "eslint .",
     "prettier-format": "prettier --write \"./**/*.{json,css,scss,md,yaml,yml}\"",

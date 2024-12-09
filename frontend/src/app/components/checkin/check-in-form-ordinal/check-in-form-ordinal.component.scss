@@ -1,13 +1,13 @@
-@import '../style/variables';
+@use "variables";
 
 .submit {
-  background-color: $pz-dark-blue;
+  background-color: variables.$pz-dark-blue;
   border-radius: 8px;
 }
 
 .cancel {
   background-color: white;
-  color: $pz-dark-blue;
+  color: variables.$pz-dark-blue;
 }
 
 span {
@@ -17,6 +17,6 @@ mat-label {
   color: black;
 }
 .radio-text-container {
-  background: $display-element;
+  background: variables.$display-element;
   height: auto;
 }

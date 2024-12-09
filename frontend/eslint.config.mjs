@@ -85,7 +85,7 @@ export default tsEslint.config(
           allowDeclarations: true,
         },
       ],
-      '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
+      '@typescript-eslint/no-empty-function': ['error', {allow: ['arrowFunctions', 'constructors']}],
       //Turned off to allow ! in the code
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
@@ -98,15 +98,15 @@ export default tsEslint.config(
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/dot-location': ['error', 'property'],
-      '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
+      '@stylistic/newline-per-chained-call': ['error', {ignoreChainWithDepth: 1}],
       '@stylistic/indent': ['error', 2],
       '@stylistic/quote-props': ['error', 'as-needed'],
       '@stylistic/object-property-newline': ['error'],
       '@stylistic/multiline-ternary': ['off'],
       '@stylistic/object-curly-spacing': ['error', 'always'],
-      '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
+      '@stylistic/array-bracket-newline': ['error', {minItems: 4}],
       '@stylistic/semi-style': ['error'],
-      '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
+      '@stylistic/function-paren-newline': ['error', {minItems: 4}],
       '@stylistic/space-before-function-paren': ['error', 'never'],
       // Disabled because it's an unnecessary rule in our case
       '@stylistic/lines-around-comment': 'off',
@@ -130,6 +130,8 @@ export default tsEslint.config(
           style: 'kebab-case',
         },
       ],
+      // Off because angular our files are not standalone
+      '@angular-eslint/prefer-standalone': 'off'
     },
   },
   {
@@ -158,7 +160,7 @@ export default tsEslint.config(
       // Must be defined. If not, all recommended rules will be lost
       '@html-eslint/require-img-alt': 'off',
       '@html-eslint/indent': ['error', 2],
-      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
+      '@html-eslint/require-closing-tags': ['error', {selfClosing: 'always'}],
       //Doesn't work with Angular 17+
       '@html-eslint/element-newline': 'off',
     },

@@ -15,7 +15,8 @@ import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/co
   selector: 'app-application-banner',
   templateUrl: './application-banner.component.html',
   styleUrls: ['./application-banner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('okrBanner') okrBanner!: ElementRef;

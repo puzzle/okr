@@ -1,4 +1,4 @@
-@import '../style/variables';
+@use "variables";
 
 :host {
   flex: 1;
@@ -9,7 +9,7 @@ h3 {
 }
 
 .key-result-detail-attribute-show {
-  background-color: $display-element;
+  background-color: variables.$display-element;
   height: auto;
 }
 

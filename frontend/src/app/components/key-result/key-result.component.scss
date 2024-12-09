@@ -1,7 +1,7 @@
-@import '../style/variables';
+@use "variables";
 .key-result {
-  background-color: $soft-grey;
-  border: 1px solid $dark-grey-border;
+  background-color: variables.$soft-grey;
+  border: 1px solid variables.$dark-grey-border;
   word-wrap: break-word;
 
   &:hover {

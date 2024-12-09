@@ -15,7 +15,8 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
-  styleUrl: './member-list.component.scss'
+  styleUrl: './member-list.component.scss',
+  standalone: false
 })
 export class MemberListComponent implements OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);

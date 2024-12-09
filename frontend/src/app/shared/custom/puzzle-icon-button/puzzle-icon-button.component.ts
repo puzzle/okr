@@ -3,7 +3,8 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-puzzle-icon-button',
   templateUrl: './puzzle-icon-button.component.html',
-  styleUrl: './puzzle-icon-button.component.scss'
+  styleUrl: './puzzle-icon-button.component.scss',
+  standalone: false
 })
 export class PuzzleIconButtonComponent {
   @Input({ required: true })

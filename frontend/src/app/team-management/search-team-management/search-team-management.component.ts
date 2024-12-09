@@ -22,7 +22,8 @@ export interface FilteredTeam extends Team {
 @Component({
   selector: 'app-search-team-management',
   templateUrl: './search-team-management.component.html',
-  styleUrl: './search-team-management.component.scss'
+  styleUrl: './search-team-management.component.scss',
+  standalone: false
 })
 export class SearchTeamManagementComponent {
   static MAX_SUGGESTIONS = 3;

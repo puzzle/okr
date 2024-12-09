@@ -1,8 +1,9 @@
-@import 'custom_angular';
-@import '_variables';
-@import 'custom_bootstrap';
-@import 'fonts/Roboto';
-@import 'fonts/MaterialIcons';
+@use "custom_angular";
+@use "variables";
+@use "fonts/Roboto";
+@use "fonts/MaterialIcons";
+@use "custom_bootstrap";
+@use "bootstrap";
 
 html,
 body.okr {
@@ -72,7 +73,7 @@ body.okr {
   a {
     font-family: Roboto, 'sans-serif';
     font-variation-settings: 'wght' 400;
-    color: $pz-dark-blue;
+    color: variables.$pz-dark-blue;
     text-decoration: none;
     font-size: 0.875rem;
   }
@@ -99,20 +100,20 @@ body.okr {
 }
 
 .key-result-attribute-show {
-  background-color: $key-result-attribute-bg;
+  background-color: variables.$key-result-attribute-bg;
   padding: 0.25em 0.75rem;
   border-radius: 2px;
 }
 
 .key-result-attribute-edit {
   @extend .key-result-attribute-show;
-  border: solid $key-result-attribute-edit-border 1px;
+  border: solid variables.$key-result-attribute-edit-border 1px;
 }
 
 .dialog-data-show {
   @extend .okr-form-label;
   @extend .linebreak;
-  @extend .bg-display-element;
+  @extend .bg-display-element !optional;
   @extend .fs-6;
   @extend .fw-normal;
   @extend .px-2;
@@ -147,7 +148,7 @@ body pzsh-backdrop {
 }
 
 .backdrop {
-  margin-top: $top-bar-height;
+  margin-top: variables.$top-bar-height;
 }
 
 input textarea {
@@ -165,7 +166,7 @@ input textarea {
 }
 
 .mat-mdc-form-field-error {
-  color: $error-color;
+  color: variables.$error-color;
 }
 
 textarea,
@@ -192,7 +193,7 @@ input[type='text'] {
 
 .dialog-form-field-error {
   resize: none;
-  outline: $error-color 2px solid !important;
+  outline: variables.$error-color 2px solid !important;
   outline-offset: -2px;
 }
 
@@ -213,7 +214,7 @@ mat-radio-button:focus,
 app-objective-column:focus,
 app-keyresult:focus,
 .focus-outline:focus {
-  outline: $pz-dark-blue solid 2px;
+  outline: variables.$pz-dark-blue solid 2px;
 }
 
 select,
@@ -227,7 +228,7 @@ input {
 }
 
 .border-error {
-  border: 1px solid $error;
+  border: 1px solid variables.$error;
 }
 
 .dialog-padding {
@@ -286,7 +287,7 @@ img.add-cross-button {
 }
 
 .team-header {
-  @include media-breakpoint-down(sm) {
+  @include bootstrap.media-breakpoint-down(sm) {
     padding-left: 22px;
   }
 }
@@ -333,7 +334,7 @@ table.okr-table {
     > td {
       height: $table-height;
       border: none;
-      background-color: $light-grey;
+      background-color: variables.$light-grey;
     }
 
     > th {
@@ -348,7 +349,7 @@ table.okr-table {
 
   tbody {
     tr:hover {
-      box-shadow: 0 0 0 1px $dark-grey;
+      box-shadow: 0 0 0 1px variables.$dark-grey;
     }
   }
 }
@@ -394,7 +395,7 @@ table.okr-table {
     align-items: center;
     overflow: hidden;
     width: 100%;
-    background: $soft-grey;
+    background: variables.$soft-grey;
     padding: 4px;
   }
 
@@ -407,15 +408,13 @@ table.okr-table {
   padding-left: 2px;
 }
 
-@import 'custom_bootstrap';
-
 .spinner-container {
   @extend .mt-5;
 }
 
 .okr-dialog-panel {
-  margin-top: $top-bar-height;
-  max-height: calc(100vh - $top-bar-height);
+  margin-top: variables.$top-bar-height;
+  max-height: calc(100vh - #{variables.$top-bar-height});
   @extend .col-12;
 }
 
@@ -425,7 +424,7 @@ table.okr-table {
   @extend .col-md-6;
   @extend .col-lg-5;
   @extend .col-xxl-4;
-  @include media-breakpoint-down(sm) {
+  @include bootstrap.media-breakpoint-down(sm) {
     height: 100%;
   }
 }

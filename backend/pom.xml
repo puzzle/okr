@@ -250,10 +250,7 @@
                             <file>${project.basedir}/src/main/resources/formatting.xml</file>
                         </eclipse>
                         <removeUnusedImports />
-                        <importOrder>
-                            <order>java|jakarta,ch.puzzle,org,com,com.diffplug,,\#com.diffplug,\#</order>
-                            <semanticSort>true</semanticSort>
-                        </importOrder>
+                        <importOrder />
                         <formatAnnotations />
                     </java>
                 </configuration>

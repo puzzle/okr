@@ -26,8 +26,8 @@
 		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_comma_in_method_declaration_parameters" value="do not insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_invocation_arguments" value="insert"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation" value="82"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_constructor_declaration" value="81"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration" value="81"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_constructor_declaration" value="16"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_enum_constants" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant" value="2"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation" value="2"/>

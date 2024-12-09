@@ -1,7 +1,7 @@
 <app-dialog-template-core [title]="'Objective abschliessen'">
   <ng-container content>
     <div class="okr-form-row">
-      <h4 class="okr-form-label okr-form-col">Objective</h4>
+      <label class="okr-form-label okr-form-col">Objective</label>
       <span class="okr-form-col">
         <p class="dialog-data-show">{{ data.objectiveTitle }}</p>
       </span>
@@ -9,7 +9,7 @@
 
     <form [formGroup]="completeForm">
       <div class="okr-form-row okr-form-label-input-container">
-        <p class="okr-form-label okr-form-col">Bewertung</p>
+        <label class="okr-form-label okr-form-col">Bewertung</label>
         <div class="okr-form-row mx-0">
           <button
             class="col successful valuation-card card-hover-successful"

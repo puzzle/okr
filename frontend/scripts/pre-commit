@@ -17,7 +17,8 @@ frontend_files=$(get_changed_files "$FRONTEND_PATH")
 backend_files=$(get_changed_files "$BACKEND_PATH")
 echo "*****Running prettier******"
 cd $gitBasePath/frontend
-npm run format
+npm run esl-format-specific $addedFiles
+npm run prettier-format $addedFiles
 echo "*****Finish running prettier******"
 
 echo "---------------------------------------------------------"

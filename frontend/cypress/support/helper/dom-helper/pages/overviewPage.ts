@@ -92,6 +92,18 @@ export default class CyOverviewPage extends Page {
     return cy.get('@team');
   }
 
+  getKeyResultOfObjective(objectiveName: string, keyResultName: string) {
+    return this.getObjectiveByName(objectiveName)
+      .last()
+      .find('.key-result')
+      .filter(filterByKeyResultName(keyResultName))
+      .last();
+  }
+
+  getAllKeyResultsOfObjective(objectiveName: string) {
+    return this.getObjectiveByName(objectiveName).find('.key-result');
+  }
+
   getObjectivesByName(objectiveName: string) {
     return getObjectiveColumns().filter(filterByObjectiveName(objectiveName));
   }
@@ -122,8 +134,10 @@ export default class CyOverviewPage extends Page {
   }
 
   duplicateObjective(objectiveName: string) {
+    cy.intercept('GET', '**/objectives/*/keyResults').as('keyResults');
     this.getObjectiveByName(objectiveName).findByTestId('three-dot-menu').click();
     this.selectFromThreeDotMenu('Objective duplizieren');
+    cy.wait('@keyResults');
     return new ObjectiveDialog();
   }
 

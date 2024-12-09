@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
@@ -172,6 +173,10 @@ class ObjectiveBusinessServiceTest {
                 .withUnit(Unit.FTE) //
                 .build();
 
+        List<KeyResult> keyResults = new ArrayList<>();
+        keyResults.add(keyResultOrdinal);
+        keyResults.add(keyResultMetric);
+
         // new Objective with no KeyResults
         Objective newObjective = Objective.Builder.builder() //
                 .withId(42L) //
@@ -179,21 +184,18 @@ class ObjectiveBusinessServiceTest {
                 .build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong()))
-                .thenReturn(List.of(keyResultOrdinal, keyResultMetric));
 
         // act
         Objective duplicatedObjective = objectiveBusinessService.duplicateObjective(sourceObjective.getId(),
-                newObjective, authorizationUser);
+                newObjective, authorizationUser, keyResults);
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());
         assertEquals(newObjective.getId(), duplicatedObjective.getId());
         assertEquals(newObjective.getTitle(), duplicatedObjective.getTitle());
 
-        // called for creating the new Objective
+        // called for creating the new Objective and the new keyResults
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
-        // called for creating the new KeyResults
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
 }

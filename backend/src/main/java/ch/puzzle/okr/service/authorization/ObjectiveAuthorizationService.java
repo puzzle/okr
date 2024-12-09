@@ -2,8 +2,12 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 @Service
 public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long, Objective, ObjectiveBusinessService> {
@@ -13,10 +17,18 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
         super(objectiveBusinessService, authorizationService);
     }
 
-    public Objective duplicateEntity(Long id, Objective objective) {
+    public Objective duplicateEntity(Long id, Objective objective, List<KeyResult> keyResults) {
         AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(objective, authorizationUser);
-        return getBusinessService().duplicateObjective(id, objective, authorizationUser);
+        return getBusinessService().duplicateObjective(id, objective, authorizationUser, keyResults);
+    }
+
+    public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
+        AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
+        getAuthorizationService().hasRoleReadByObjectiveId(objectiveId, authorizationUser);
+        List<KeyResult> keyResults = getBusinessService().getAllCheckInsByKeyResult(objectiveId);
+        setRoleCreateOrUpdateKeyResult(keyResults, authorizationUser);
+        return keyResults;
     }
 
     @Override
@@ -42,4 +54,12 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
     public boolean isImUsed(Objective objective) {
         return getBusinessService().isImUsed(objective);
     }
+
+    private void setRoleCreateOrUpdateKeyResult(List<KeyResult> keyResults, AuthorizationUser authorizationUser) {
+        if (!CollectionUtils.isEmpty(keyResults)) {
+            boolean isWriteable = getAuthorizationService().hasRoleWriteForTeam(keyResults.get(0), authorizationUser);
+            keyResults.forEach(c -> c.setWriteable(isWriteable));
+        }
+    }
+
 }

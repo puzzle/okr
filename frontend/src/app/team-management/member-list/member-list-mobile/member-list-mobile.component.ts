@@ -10,6 +10,7 @@ import { getRouteToUserDetails } from '../../../shared/routeUtils';
   selector: 'app-member-list-mobile',
   templateUrl: './member-list-mobile.component.html',
   styleUrl: './member-list-mobile.component.scss',
+  standalone: false,
 })
 export class MemberListMobileComponent implements OnInit {
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;

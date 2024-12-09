@@ -16,6 +16,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
   templateUrl: './sidepanel.component.html',
   styleUrls: ['./sidepanel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
   leaveKeys = ['Escape'];

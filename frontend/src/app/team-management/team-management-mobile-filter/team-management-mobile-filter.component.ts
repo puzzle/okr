@@ -9,6 +9,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-team-management-mobile-filter',
   templateUrl: './team-management-mobile-filter.component.html',
+  standalone: false,
 })
 export class TeamManagementMobileFilterComponent {
   readonly ALL_TEAMS = 'alle';

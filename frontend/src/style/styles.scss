@@ -1,15 +1,15 @@
-@import "custom_angular";
-@import "_variables";
-@import "custom_bootstrap";
-@import "fonts/Roboto";
-@import "fonts/MaterialIcons";
+@use "custom_angular";
+@use "_variables";
+@use "../assets/fonts/Roboto";
+@use "../assets/fonts/MaterialIcons";
+@use "custom_bootstrap";
 
 html,
 body.okr {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  background-color: $overview-bg;
+  background-color: variables.$overview-bg;
   font-family: Roboto, "sans-serif";
   --bs-body-font-family: Roboto;
 
@@ -72,7 +72,7 @@ body.okr {
   a {
     font-family: Roboto, "sans-serif";
     font-variation-settings: "wght" 400;
-    color: $pz-dark-blue;
+    color: variables.$pz-dark-blue;
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 700;
@@ -100,14 +100,14 @@ body.okr {
 }
 
 .keyResult-attribute-show {
-  background-color: $keyResult-attribute-bg;
+  background-color: variables.$keyResult-attribute-bg;
   padding: 0.25em 0.75rem;
   border-radius: 2px;
 }
 
 .keyResult-attribute-edit {
   @extend .keyResult-attribute-show;
-  border: solid $keyResult-attribute-edit-border 1px;
+  border: solid variables.$keyResult-attribute-edit-border 1px;
 }
 
 .dialog-data-show {
@@ -121,7 +121,7 @@ body.okr {
 }
 
 .bg-grey {
-  background-color: $overview-bg;
+  background-color: variables.$overview-bg;
 }
 
 body pzsh-backdrop {
@@ -152,7 +152,7 @@ body pzsh-backdrop {
 }
 
 .backdrop {
-  margin-top: $top-bar-height;
+  margin-top: variables.$top-bar-height;
 }
 
 input textarea {
@@ -170,7 +170,7 @@ input textarea {
 }
 
 .mat-mdc-form-field-error {
-  color: $error-color;
+  color: variables.$error-color;
 }
 
 textarea,
@@ -197,7 +197,7 @@ input[type="text"] {
 
 .dialog-form-field-error {
   resize: none;
-  outline: $error-color 2px solid !important;
+  outline: variables.$error-color 2px solid !important;
   outline-offset: -2px;
 }
 
@@ -218,7 +218,7 @@ mat-radio-button:focus,
 app-objective-column:focus,
 app-keyresult:focus,
 .focus-outline:focus {
-  outline: $pz-dark-blue solid 2px;
+  outline: variables.$pz-dark-blue solid 2px;
 }
 
 select,
@@ -232,7 +232,7 @@ input {
 }
 
 .border-error {
-  border: 1px solid $error;
+  border: 1px solid variables.$error;
 }
 
 .dialog-padding {
@@ -331,6 +331,7 @@ table.okr-table {
   border-spacing: 0 0.5rem;
   border: none;
   box-shadow: none;
+
   tr {
     $table-height: 40px;
     height: $table-height;
@@ -338,8 +339,9 @@ table.okr-table {
     > td {
       height: $table-height;
       border: none;
-      background-color: $light-grey;
+      background-color: variables.$light-grey;
     }
+
     > th {
       font-family: Roboto, "sans-serif";
       font-variation-settings: "wght" 700;
@@ -349,9 +351,10 @@ table.okr-table {
       background-color: white;
     }
   }
+
   tbody {
     tr:hover {
-      box-shadow: 0 0 0 1px $dark-grey;
+      box-shadow: 0 0 0 1px variables.$dark-grey;
     }
   }
 }
@@ -359,6 +362,7 @@ table.okr-table {
 .search-form {
   button {
     border-radius: 0 4px 4px 0;
+
     mat-icon {
       display: flex;
       align-items: center;
@@ -366,26 +370,26 @@ table.okr-table {
       transform: scale(1.25);
     }
   }
+
   .mdc-notched-outline__trailing {
     border-bottom-right-radius: 0 !important;
     border-top-right-radius: 0 !important;
   }
 }
+
 .mat-mdc-autocomplete-panel {
   &.autocomplete-bigger {
     max-height: 480px;
   }
 }
 
-@import "custom_bootstrap";
-
 .spinner-container {
   @extend .mt-5;
 }
 
 .okr-dialog-panel {
-  margin-top: $top-bar-height;
-  max-height: calc(100vh - $top-bar-height);
+  margin-top: variables.$top-bar-height;
+  max-height: calc(100vh - variables.$top-bar-height);
   @extend .col-12;
 }
 

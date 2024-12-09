@@ -10,6 +10,7 @@ import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMi
   templateUrl: './keyresult.component.html',
   styleUrls: ['./keyresult.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;

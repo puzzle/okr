@@ -22,6 +22,7 @@ import { DialogService } from '../../../services/dialog.service';
   templateUrl: './objective-form.component.html',
   styleUrls: ['./objective-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   objectiveForm = new FormGroup({

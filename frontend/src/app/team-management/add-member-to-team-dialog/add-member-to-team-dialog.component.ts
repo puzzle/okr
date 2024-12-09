@@ -18,6 +18,7 @@ export type AddMemberToTeamDialogComponentData = {
   selector: 'app-add-member-to-team-dialog',
   templateUrl: './add-member-to-team-dialog.component.html',
   styleUrl: './add-member-to-team-dialog.component.scss',
+  standalone: false,
 })
 export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;

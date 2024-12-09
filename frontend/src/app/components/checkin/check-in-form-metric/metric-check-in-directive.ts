@@ -10,6 +10,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class MetricCheckInDirective implements ControlValueAccessor {
   private onChange: (value: number | null) => void = () => {};

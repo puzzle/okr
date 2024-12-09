@@ -32,7 +32,7 @@ echo "---------------------------------------------------------"
 
 echo "*****Running maven formatter******"
 cd $gitBasePath/backend
-mvn spotless:apply
+mvn spotless:apply -DspotlessFiles=$addedFiles
 echo "*****Finish running maven formatter******"
 
 echo "---------------------------------------------------------"

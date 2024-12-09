@@ -346,7 +346,7 @@
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_field" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_method" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_local_variable" value="49"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_parameter" value="49"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_parameter" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_type_annotations" value="49"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation" value="0"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_module_statements" value="0"/>

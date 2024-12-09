@@ -49,8 +49,7 @@ https://github.com/diffplug/spotless
 - Open `Go to Settings -> Editor -> Code styles -> Java` 
 - Select the default project config and export it to a file
 - Then make the changes you want to the code style config ***HIT APPLY*** and then export it to a file
-- Then run the following command `git --no-pager diff --no-index -U0 default.xml changed.xml | egrep '^.[[[:digit:]]+m\+' | less -R | diff-so-fancy` to see the changes
--  
+- Then run the following command `git --no-pager diff --no-index -U0 default.xml changed.xml | egrep '^\+' | diff-so-fancy` to see the changes
 - then copy all additions to the formatter file in the backend project
 ## Build
 _tbd_

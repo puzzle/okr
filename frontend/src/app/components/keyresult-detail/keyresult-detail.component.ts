@@ -25,6 +25,7 @@ import { CheckInMetric } from '../../shared/types/model/CheckInMetric';
   templateUrl: './keyresult-detail.component.html',
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class KeyresultDetailComponent implements OnInit, OnDestroy {
   @Input() keyResultId!: number;

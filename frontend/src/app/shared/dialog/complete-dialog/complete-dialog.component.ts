@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-complete-dialog',
   templateUrl: './complete-dialog.component.html',
   styleUrls: ['./complete-dialog.component.scss'],
+  standalone: false,
 })
 export class CompleteDialogComponent {
   completeForm = new FormGroup({

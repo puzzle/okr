@@ -16,6 +16,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
   selector: 'app-objective-column',
   templateUrl: './objective.component.html',
   styleUrls: ['./objective.component.scss'],
+  standalone: false,
 })
 export class ObjectiveComponent {
   @Input() isWritable!: boolean;

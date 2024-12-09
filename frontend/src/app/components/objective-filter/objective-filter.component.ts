@@ -8,6 +8,7 @@ import { debounceTime, map, Subject } from 'rxjs';
   templateUrl: './objective-filter.component.html',
   styleUrls: ['./objective-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ObjectiveFilterComponent implements OnInit {
   refresh: Subject<void> = new Subject();

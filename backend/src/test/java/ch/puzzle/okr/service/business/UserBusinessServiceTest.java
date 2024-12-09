@@ -56,7 +56,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnAllUsersCorrect() throws ResponseStatusException {
+    void shouldReturnAllUsersCorrectly() throws ResponseStatusException {
         Mockito.when(userPersistenceService.findAll()).thenReturn(userList);
 
         List<User> userList = userBusinessService.getAllUsers();
@@ -73,14 +73,14 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyUsers() throws ResponseStatusException {
+    void shouldReturnEmptyListOfUsers() throws ResponseStatusException {
         List<User> userList = userBusinessService.getAllUsers();
 
         Assertions.assertThat(userList.size()).isEqualTo(0);
     }
 
     @Test
-    void shouldReturnSingleUserWhenFindingOwnerByValidId() {
+    void getUserByIdShouldReturnSingleUserWhenUserFound() {
         User owner = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
@@ -136,7 +136,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldSetOkrChampionCorrectly() {
+    void setOkrChampionShouldSetOkrChampionCorrectly() {
         var user = TestHelper.defaultUser(1L);
         user.setOkrChampion(false);
 
@@ -147,7 +147,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldThrowExceptionIfLastOkrChampIsRemoved() {
+    void setOkrChampionShouldThrowExceptionIfLastOkrChampionIsRemoved() {
         var user = TestHelper.defaultUser(1L);
         var user2 = TestHelper.defaultUser(2L);
         user.setOkrChampion(true);
@@ -157,7 +157,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldNotThrowExceptionIfSecondLastOkrChampIsRemoved() {
+    void setOkrChampionShouldNotThrowExceptionIfPenultimateOkrChampionIsRemoved() {
         var user = TestHelper.defaultUser(1L);
         var user2 = TestHelper.defaultUser(2L);
         user.setOkrChampion(true);

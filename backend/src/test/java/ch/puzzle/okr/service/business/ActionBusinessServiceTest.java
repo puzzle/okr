@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Unit;
-import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
@@ -15,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,8 +21,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ActionBusinessServiceTest {
-    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
-
     @Mock
     ActionPersistenceService actionPersistenceService;
     @Mock
@@ -86,7 +82,7 @@ class ActionBusinessServiceTest {
     }
 
     @Test
-    void shouldUpdateMultipleActionsNormal() {
+    void shouldUpdateMultipleActions() {
         actionBusinessService.updateEntities(actionList);
 
         verify(actionPersistenceService, times(1)).save(action1);

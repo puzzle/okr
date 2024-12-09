@@ -106,8 +106,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldEditMetricKeyResultWhenNoTypeChange() {
-        List<CheckIn> emptyList = Collections.emptyList();
+    void shouldEditMetricKeyResultWithoutTypeChange() {
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(metricKeyResult);
@@ -123,8 +122,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldEditOrdinalKeyResultWhenNoTypeChange() {
-        List<CheckIn> emptyList = Collections.emptyList();
+    void shouldEditOrdinalKeyResultWithoutTypeChange() {
         KeyResult newKeyresult = spy(
                 KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(ordinalKeyResult);
@@ -140,7 +138,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldEditMetricKeyResultWhenATypeChange() {
+    void shouldEditMetricKeyResultWithTypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
@@ -159,7 +157,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldEditOrdinalKeyResultWhenATypeChange() {
+    void shouldEditOrdinalKeyResultWithTypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
@@ -213,7 +211,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void saveMetricKeyResult() {
+    void shouldSaveMetricKeyResult() {
         KeyResult newKeyresult = spy(KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(8.0).withId(1L)
                 .withTitle("Keyresult Metric save").withDescription("The description").build());
         Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
@@ -225,7 +223,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void saveOrdinalKeyResult() {
+    void shouldSaveOrdinalKeyResult() {
         KeyResult newKeyresult = spy(
                 KeyResultOrdinal.Builder.builder().withCommitZone("Eine Pflanze").withTargetZone("Ein Baum").withId(1L)
                         .withTitle("Keyresult ordinal save").withDescription("The description").build());
@@ -306,7 +304,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenGetcheckInsFromNonExistingKeyResult() {
+    void shouldThrowExceptionWhenGettingCheckInsFromNonExistentKeyResult() {
         when(keyResultPersistenceService.findById(1L))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -328,7 +326,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperlyFalse1() {
+    void shouldReturnFalseForImUsedOnMetricKeyResult() {
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = keyResultBusinessService.isImUsed(1L, metricKeyResult);
@@ -337,7 +335,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperlyFalse2() {
+    void shouldReturnFalseForImUsedOnOrdinalKeyResult() {
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = keyResultBusinessService.isImUsed(1L, ordinalKeyResult);
@@ -346,7 +344,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperlyFalse3() {
+    void shouldReturnFalseForImUsedOnMetricKeyResultWithCheckIns() {
         when(keyResultPersistenceService.findById(any())).thenReturn(metricKeyResult);
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 
@@ -356,7 +354,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperlyTrue1() {
+    void shouldReturnTrueForImUsedOnKeyResultWithCheckInsAfterTypeChange() {
         when(keyResultPersistenceService.findById(any())).thenReturn(metricKeyResult);
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 

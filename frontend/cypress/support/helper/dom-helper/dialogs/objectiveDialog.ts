@@ -34,7 +34,7 @@ export default class ObjectiveDialog extends Dialog {
 
   excludeKeyResults(keyResults: string[]) {
     keyResults.forEach((keyResult) => {
-      cy.get('label').contains(keyResult.slice(0, 15)).click();
+      cy.get('label').contains(keyResult.slice(0, 30)).click();
     });
     return this;
   }

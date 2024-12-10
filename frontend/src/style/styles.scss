@@ -1,8 +1,9 @@
 @use "custom_angular";
-@use "_variables";
+@use "variables";
 @use "fonts/Roboto";
 @use "fonts/MaterialIcons";
 @use "custom_bootstrap";
+@use "bootstrap";
 
 html,
 body.okr {
@@ -113,7 +114,7 @@ body.okr {
 .dialog-data-show {
   @extend .okr-form-label;
   @extend .linebreak;
-  @extend .bg-display-element;
+  @extend .bg-display-element !optional;
   @extend .fs-6;
   @extend .fw-normal;
   @extend .px-2;
@@ -288,7 +289,7 @@ img.add-cross-button {
 }
 
 .team-header {
-  @include media-breakpoint-down(sm) {
+  @include bootstrap.media-breakpoint-down(sm) {
     padding-left: 22px;
   }
 }
@@ -421,7 +422,7 @@ table.okr-table {
   @extend .col-md-6;
   @extend .col-lg-5;
   @extend .col-xxl-4;
-  @include media-breakpoint-down(sm) {
+  @include bootstrap.media-breakpoint-down(sm) {
     height: 100%;
   }
 }

@@ -171,20 +171,20 @@ class UserPersistenceServiceIT {
         assertEquals(USER, userPersistenceService.getModelName());
     }
 
-    private void assertUser(Long id, String firstName, String lastName, String email, User currentUser) {
+    private void assertUser(Long id, String firstname, String lastname, String email, User currentUser) {
         assertEquals(id, currentUser.getId());
-        assertUser(firstName, lastName, email, currentUser);
+        assertUser(firstname, lastname, email, currentUser);
     }
 
-    private void assertUser(String firstName, String lastName, String email, User currentUser) {
-        assertEquals(firstName, currentUser.getFirstname());
-        assertEquals(lastName, currentUser.getLastname());
+    private void assertUser(String firstname, String lastname, String email, User currentUser) {
+        assertEquals(firstname, currentUser.getFirstname());
+        assertEquals(lastname, currentUser.getLastname());
         assertEquals(email, currentUser.getEmail());
     }
 
-    @DisplayName("deleteById() should delete user when user found")
+    @DisplayName("deleteById() should delete user when user exists")
     @Test
-    void deleteByIdShouldDeleteUserWhenUserFound() {
+    void deleteByIdShouldDeleteUserWhenUserExists() {
         // arrange
         User user = createUser();
 

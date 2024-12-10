@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -69,58 +70,102 @@ public class Objective implements WriteableInterface {
         setModifiedBy(builder.modifiedBy);
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public String getTitle() { return title; }
+    public String getTitle() {
+        return title;
+    }
 
-    public void setTitle(String title) { this.title = title; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public User getCreatedBy() { return createdBy; }
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
-    public Team getTeam() { return team; }
+    public Team getTeam() {
+        return team;
+    }
 
-    public void setTeam(Team team) { this.team = team; }
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
-    public Quarter getQuarter() { return quarter; }
+    public Quarter getQuarter() {
+        return quarter;
+    }
 
-    public void setQuarter(Quarter quarter) { this.quarter = quarter; }
+    public void setQuarter(Quarter quarter) {
+        this.quarter = quarter;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public LocalDateTime getModifiedOn() { return modifiedOn; }
+    public LocalDateTime getModifiedOn() {
+        return modifiedOn;
+    }
 
-    public void setModifiedOn(LocalDateTime modifiedOn) { this.modifiedOn = modifiedOn; }
+    public void setModifiedOn(LocalDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
 
-    public State getState() { return state; }
+    public State getState() {
+        return state;
+    }
 
-    public void setState(State state) { this.state = state; }
+    public void setState(State state) {
+        this.state = state;
+    }
 
-    public LocalDateTime getCreatedOn() { return createdOn; }
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
 
-    public void setCreatedOn(LocalDateTime createdOn) { this.createdOn = createdOn; }
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
 
-    public User getModifiedBy() { return modifiedBy; }
+    public User getModifiedBy() {
+        return modifiedBy;
+    }
 
-    public void setModifiedBy(User modifiedBy) { this.modifiedBy = modifiedBy; }
+    public void setModifiedBy(User modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
     @Override
-    public boolean isWriteable() { return writeable; }
+    public boolean isWriteable() {
+        return writeable;
+    }
 
     @Override
-    public void setWriteable(boolean writeable) { this.writeable = writeable; }
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
 
     @Override
     public String toString() {
         return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
-               + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
-               + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
-               + modifiedBy + ", writeable=" + writeable + '\'' + '}';
+                + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
+                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
+                + modifiedBy + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -131,27 +176,17 @@ public class Objective implements WriteableInterface {
             return false;
         Objective objective = (Objective) o;
         return Objects.equals(id, objective.id) && version == objective.version
-               && Objects.equals(title, objective.title) && Objects.equals(createdBy, objective.createdBy)
-               && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter)
-               && Objects.equals(description, objective.description) && Objects.equals(modifiedOn, objective.modifiedOn)
-               && state == objective.state && Objects.equals(createdOn, objective.createdOn)
-               && Objects.equals(modifiedBy, objective.modifiedBy);
+                && Objects.equals(title, objective.title) && Objects.equals(createdBy, objective.createdBy)
+                && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter)
+                && Objects.equals(description, objective.description)
+                && Objects.equals(modifiedOn, objective.modifiedOn) && state == objective.state
+                && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(id,
-                      version,
-                      title,
-                      createdBy,
-                      team,
-                      quarter,
-                      description,
-                      modifiedOn,
-                      state,
-                      createdOn,
-                      modifiedBy);
+        return Objects.hash(id, version, title, createdBy, team, quarter, description, modifiedOn, state, createdOn,
+                modifiedBy);
     }
 
     public static final class Builder {

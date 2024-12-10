@@ -1,14 +1,7 @@
 <div id="topBarHeight">
   <div id="okrTopbar">
     <a routerLink="/" queryParamsHandling="preserve" class="d-flex h-100 align-items-center ps-4">
-      <img
-        [attr.data-testId]="'logo'"
-        alt="okr-logo"
-        height="32"
-        ngSrc="{{ this.logoSrc$ | async }}"
-        width="140"
-        priority
-      />
+      <img [attr.data-testId]="'logo'" alt="okr-logo" height="32" ngSrc="{{ logoSrc$ | async }}" width="140" priority />
     </a>
     <div class="d-flex align-items-center me-md-5 me-1">
       <button
@@ -22,7 +15,7 @@
       </button>
 
       <button
-        *ngIf="this.helpSiteUrl | async as helpSiteUrl"
+        *ngIf="helpSiteUrl | async as helpSiteUrl"
         id="hilfeButton"
         class="topBarEntry btn"
         [attr.data-testId]="'help-button'"

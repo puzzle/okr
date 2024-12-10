@@ -1,6 +1,9 @@
 {
   "name": "frontend",
   "version": "2.0.0",
+  "overrides": {
+    "glob": "11.0.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

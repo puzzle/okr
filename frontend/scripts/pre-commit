@@ -21,14 +21,14 @@ backend_files=$(get_changed_files "$BACKEND_PATH")
 
 echo "*****Running prettier******"
 cd "$FRONTEND_PATH" || exit
-has_changed "$frontend_files" && npm run prettier-format "$frontend_files"
+has_changed "$frontend_files" && npm run prettier-format "$frontend_files" || echo "No files found to format"
 echo "*****Finish running prettier******"
 
 echo "---------------------------------------------------------"
 
 echo "*****Running eslint******"
 cd "$FRONTEND_PATH" || exit
-has_changed "$frontend_files" && npm run esl-format-specific "$frontend_files"
+has_changed "$frontend_files" && npm run esl-format-specific "$frontend_files" || echo "No files found to format"
 echo "*****Finish running eslint******"
 
 echo "---------------------------------------------------------"
@@ -36,7 +36,7 @@ echo "---------------------------------------------------------"
 echo "*****Running maven formatter******"
 cd "$GIT_BASE_PATH" || exit
 # shellcheck disable=SC2091
-has_changed "$backend_files" && mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$backend_files"
+has_changed "$backend_files" && mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$backend_files" || echo "No files found to format"
 echo "*****Finish running maven formatter******"
 
 echo "---------------------------------------------------------"
@@ -44,8 +44,8 @@ echo "---------------------------------------------------------"
 echo "*****Adding changes to git******"
 cd "$GIT_BASE_PATH" || exit
 # shellcheck disable=SC2086
-git add "$frontend_files"
-git add "$backend_files"
+has_changed "$frontend_files" && git add "$frontend_files" || echo "No frontend files changed, nothing to add"
+has_changed "$backend_files" && git add "$backend_files" || echo "No backend_files files changed, nothing to add"
 echo "*****Formatted files added again******"
 
 status=$?

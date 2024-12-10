@@ -1,21 +1,22 @@
 #!/bin/sh
 
 gitBasePath=$(git rev-parse --show-toplevel)
-addedFiles=$(git diff --cached --name-only --diff-filter=d)
+addedFiles=$(git diff --cached --name-only --diff-filter=d --line-prefix="${gitBasePath}"/)
 
 echo "*****Running prettier******"
-cd $gitBasePath/frontend
-npm run esl-format-specific $addedFiles
-npm run prettier-format $addedFiles
+cd "$gitBasePath"/frontend || exit
+npm run esl-format-specific "$addedFiles"
+npm run prettier-format "$addedFiles"
 echo "*****Finish running prettier******"
 
 echo "*****Running maven formatter******"
-cd $gitBasePath/backend
-mvn spotless:apply -DspotlessFiles=$addedFiles
+cd "$gitBasePath" || exit
+mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$addedFiles"
 echo "*****Finish running maven formatter******"
 
 echo "*****Adding changes to git******"
-cd $gitBasePath
+cd "$gitBasePath" || exit
+# shellcheck disable=SC2086
 git add $addedFiles
 echo "*****Formatted files added again******"
 

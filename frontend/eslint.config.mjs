@@ -6,6 +6,8 @@ import html from "@html-eslint/eslint-plugin";
 import angular from "angular-eslint";
 import angularTemplateParser from "@angular-eslint/template-parser";
 import scssConfig from "stylelint-config-standard-scss"
+import jsonConfig from "eslint-plugin-i18n-json"
+
 
 export default tsEslint.config(
     {
@@ -81,10 +83,18 @@ export default tsEslint.config(
         },
     },
     {
+        files: ["**/*.json"],
+        processor: jsonConfig.processors[".json"],
+        rules: {
+            ...jsonConfig.configs.recommended.rules
+        }
+    },
+    {
         plugins: {
             "unused-imports": unusedImports,
             "@stylistic": stylistic,
             "@html-eslint": html,
+            "i18n-json": jsonConfig
         },
     },
 );

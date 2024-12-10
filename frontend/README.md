@@ -30,8 +30,8 @@ Build:
 
 ## Formatting
 
-We use the **prettier** code formatter for the frontend code:
-https://www.npmjs.com/package/prettier
+We use the **EsLint** code formatter for the frontend code:
+https://eslint.org/
 
 ## Test Coverage
 

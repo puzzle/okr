@@ -19,13 +19,6 @@ has_changed() {
 frontend_files=$(get_changed_files "$FRONTEND_PATH")
 backend_files=$(get_changed_files "$BACKEND_PATH")
 
-echo "*****Running prettier******"
-cd "$FRONTEND_PATH" || exit
-has_changed "$frontend_files" && npm run prettier-format "$frontend_files" || echo "No files found to format"
-echo "*****Finish running prettier******"
-
-echo "---------------------------------------------------------"
-
 echo "*****Running eslint******"
 cd "$FRONTEND_PATH" || exit
 has_changed "$frontend_files" && npm run lint:format:specific "$frontend_files" || echo "No files found to format"

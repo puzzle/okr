@@ -51,7 +51,47 @@ export default tsEslint.config(
         files:
             ["**/*.html"],
         rules:
-            {}
+            {
+                "@typescript-eslint/naming-convention": [
+                    "error",
+                    {
+                        "selector": "default",
+                        "format": ["camelCase"],
+                        "leadingUnderscore": "allow"
+                    },
+                    {
+                        "selector": "variable",
+                        "format": ["camelCase", "UPPER_CASE"]
+                    },
+                    {
+                        "selector": "function",
+                        "format": ["camelCase"]
+                    },
+                    {
+                        "selector": ["class", "interface", "typeAlias", "enum"],
+                        "format": ["PascalCase"]
+                    },
+                    {
+                        "selector": "enumMember",
+                        "format": ["UPPER_CASE"]
+                    },
+                    {
+                        "selector": "property",
+                        "modifiers": ["private"],
+                        "format": ["camelCase"],
+                        "leadingUnderscore": "require"
+                    },
+                    {
+                        "selector": "method",
+                        "format": ["camelCase"]
+                    },
+                    {
+                        "selector": "typeParameter",
+                        "format": ["PascalCase"],
+                        "prefix": ["T"]
+                    }
+                ]
+            }
     }
     ,
     {
@@ -60,7 +100,27 @@ export default tsEslint.config(
         files:
             ["**/*.scss"],
         rules:
-            {}
+            {
+                "@typescript-eslint/naming-convention": [
+                    "error",
+                    {
+                        "selector": "default",
+                        "format": ["kebab-case"]
+                    },
+                    {
+                        "selector": "variable",
+                        "format": ["kebab-case"]
+                    },
+                    {
+                        "selector": "class",
+                        "format": ["kebab-case"]
+                    },
+                    {
+                        "selector": "id",
+                        "format": ["kebab-case"]
+                    }
+                ]
+            }
     }
     ,
     {

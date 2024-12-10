@@ -412,7 +412,7 @@ table.okr-table {
 
 .okr-dialog-panel {
   margin-top: variables.$top-bar-height;
-  max-height: calc(100vh - variables.$top-bar-height);
+  max-height: calc(100vh - variables.$top-bar-height); //Intellij shows an error here, but it is correct
   @extend .col-12;
 }
 

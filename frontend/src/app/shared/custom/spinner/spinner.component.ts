@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-spinner',
   templateUrl: './spinner.component.html',
   styleUrl: './spinner.component.scss',
+  standalone: false,
 })
 export class SpinnerComponent {
   @Input({ required: false })

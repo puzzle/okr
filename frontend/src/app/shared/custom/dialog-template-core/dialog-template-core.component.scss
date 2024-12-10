@@ -1,8 +1,13 @@
-@import "custom_bootstrap";
+@use "variables";
+@use "custom_bootstrap";
+@use "bootstrap";
 
 mat-dialog-content {
   //scrollbar-gutter: stable both-edges;
   $dialog-header-height: 48px;
+  $top-bar-height: variables.$top-bar-height;
+  $dialog-content-padding-y: variables.$dialog-content-padding-y;
+  $dialog-action-buttons-div-height: variables.$dialog-action-buttons-div-height;
   $full-dialog-content-height: calc(
     100vh - $top-bar-height - $dialog-header-height - $dialog-content-padding-y - $dialog-action-buttons-div-height
   );
@@ -12,7 +17,7 @@ mat-dialog-content {
   @extend .container-fluid;
   max-height: $full-dialog-content-height !important;
 
-  @include media-breakpoint-down(sm) {
+  @include bootstrap.media-breakpoint-down(sm) {
     height: $full-dialog-content-height !important;
   }
 }
@@ -20,5 +25,5 @@ mat-dialog-content {
 mat-dialog-actions {
   @extend .d-flex;
   @extend .justify-content-between;
-  height: $dialog-action-buttons-div-height !important;
+  height: variables.$dialog-action-buttons-div-height !important;
 }

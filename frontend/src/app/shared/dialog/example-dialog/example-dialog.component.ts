@@ -7,6 +7,7 @@ import { formInputCheck } from '../../common';
 @Component({
   selector: 'app-example-dialog',
   templateUrl: './example-dialog.component.html',
+  standalone: false,
 })
 export class ExampleDialogComponent {
   hobbies = ['fishing', 'football', 'videogames', 'tennis', 'other'];

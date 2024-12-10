@@ -10,6 +10,7 @@ import { getValueFromQuery } from '../../shared/common';
   selector: 'app-quarter-filter',
   templateUrl: './quarter-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class QuarterFilterComponent implements OnInit {
   quarters: BehaviorSubject<Quarter[]> = new BehaviorSubject<Quarter[]>([]);

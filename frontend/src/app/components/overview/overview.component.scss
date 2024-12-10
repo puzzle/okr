@@ -1,8 +1,8 @@
-@import "../style/variables";
+@use "../style/variables";
 
 .overview-container {
   overflow-x: hidden;
-  background-color: $overview-bg;
+  background-color: variables.$overview-bg;
   transition: 0.5s;
 }
 

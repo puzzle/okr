@@ -43,9 +43,9 @@ echo "---------------------------------------------------------"
 
 echo "*****Adding changes to git******"
 cd "$GIT_BASE_PATH" || exit
-git status
+
 has_changed "$frontend_files" && git add "$frontend_files" -v || echo "No frontend files changed, nothing to add"
-has_changed "$backend_files" && git add "$backend_files" -v || echo "No backend_files files changed, nothing to add"
+has_changed "$backend_files" && git add "$backend_files" -v || echo "No backend files files changed, nothing to add"
 echo "*****Formatted files added again******"
 
 status=$?

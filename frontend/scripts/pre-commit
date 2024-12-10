@@ -5,7 +5,7 @@ FRONTEND_PATH="$GIT_BASE_PATH"/frontend
 FORMATTED_FILE_EXTENSIONS="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
 
 gitBasePath=$(git rev-parse --show-toplevel)
-addedFiles=$(git diff --cached --name-only --diff-filter=d)
+addedFiles=$(git diff --cached --name-only --diff-filter=d --line-prefix="${gitBasePath}"/)
 
 has_changed() {
     files=$1
@@ -16,9 +16,9 @@ has_changed() {
 frontend_files=$(get_changed_files "$FRONTEND_PATH")
 backend_files=$(get_changed_files "$BACKEND_PATH")
 echo "*****Running prettier******"
-cd $gitBasePath/frontend
-npm run esl-format-specific $addedFiles
-npm run prettier-format $addedFiles
+cd "$gitBasePath"/frontend || exit
+npm run esl-format-specific "$addedFiles"
+npm run prettier-format "$addedFiles"
 echo "*****Finish running prettier******"
 
 echo "---------------------------------------------------------"
@@ -31,14 +31,15 @@ echo "*****Finish running eslint******"
 echo "---------------------------------------------------------"
 
 echo "*****Running maven formatter******"
-cd $gitBasePath/backend
-mvn spotless:apply -DspotlessFiles=$addedFiles
+cd "$gitBasePath" || exit
+mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$addedFiles"
 echo "*****Finish running maven formatter******"
 
 echo "---------------------------------------------------------"
 
 echo "*****Adding changes to git******"
-cd $gitBasePath
+cd "$gitBasePath" || exit
+# shellcheck disable=SC2086
 git add $addedFiles
 echo "*****Formatted files added again******"
 

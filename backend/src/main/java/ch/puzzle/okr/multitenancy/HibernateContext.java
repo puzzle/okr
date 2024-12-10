@@ -1,8 +1,7 @@
 package ch.puzzle.okr.multitenancy;
 
-import org.springframework.core.env.ConfigurableEnvironment;
-
 import java.util.Properties;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 public class HibernateContext {
     public static final String HIBERNATE_CONNECTION_URL = "hibernate.connection.url";
@@ -16,9 +15,7 @@ public class HibernateContext {
 
     public record DbConfig(String url, String username, String password, String multiTenancy) {
 
-        public boolean isValid() {
-            return !hasNullValues() && !hasEmptyValues();
-        }
+        public boolean isValid() { return !hasNullValues() && !hasEmptyValues(); }
 
         private boolean hasNullValues() {
             return url() == null || username() == null || password() == null || multiTenancy() == null;

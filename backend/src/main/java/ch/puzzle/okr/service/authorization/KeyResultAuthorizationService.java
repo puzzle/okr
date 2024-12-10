@@ -1,23 +1,22 @@
 package ch.puzzle.okr.service.authorization;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 @Service
 public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long, KeyResult, KeyResultBusinessService> {
     public KeyResultAuthorizationService(KeyResultBusinessService keyResultBusinessService,
-            AuthorizationService authorizationService) {
+                                         AuthorizationService authorizationService) {
         super(keyResultBusinessService, authorizationService);
     }
 
@@ -52,7 +51,8 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
     @Override
     public KeyResult updateEntity(Long id, KeyResult keyResult) {
         throw new ResponseStatusException(BAD_REQUEST,
-                "unsupported method in class " + getClass().getSimpleName() + ", use updateEntities() instead");
+                                          "unsupported method in class " + getClass().getSimpleName()
+                                                       + ", use updateEntities() instead");
     }
 
     public KeyResultWithActionList updateEntities(Long id, KeyResult entity, List<Action> actionList) {

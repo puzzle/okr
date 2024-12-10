@@ -1,12 +1,11 @@
 package ch.puzzle.okr.deserializer;
 
+import static ch.puzzle.okr.Constants.*;
+
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
-
 import java.io.IOException;
-
-import static ch.puzzle.okr.Constants.*;
 
 public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> implements MetricOrdinalDeserializer {
 

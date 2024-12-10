@@ -1,14 +1,13 @@
 package ch.puzzle.okr.security.helper;
 
-import com.nimbusds.jwt.JWTClaimsSet;
-
-import java.text.ParseException;
-import java.util.Optional;
-
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_ISS;
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_TENANT;
 import static ch.puzzle.okr.security.helper.JwtStatusLogger.logStatus;
 import static ch.puzzle.okr.security.helper.UrlHelper.extractTenantFromIssUrl;
+
+import com.nimbusds.jwt.JWTClaimsSet;
+import java.text.ParseException;
+import java.util.Optional;
 
 public class ClaimHelper {
 

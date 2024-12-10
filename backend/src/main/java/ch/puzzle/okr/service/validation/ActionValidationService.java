@@ -7,11 +7,10 @@ import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.repository.ActionRepository;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ActionValidationService extends ValidationBase<Action, Long, ActionRepository, ActionPersistenceService> {
@@ -19,7 +18,7 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
     private final KeyResultValidationService keyResultValidationService;
 
     public ActionValidationService(ActionPersistenceService actionPersistenceService,
-            KeyResultValidationService keyResultValidationService) {
+                                   KeyResultValidationService keyResultValidationService) {
         super(actionPersistenceService);
         this.keyResultValidationService = keyResultValidationService;
     }
@@ -48,13 +47,15 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
 
     void throwExceptionWhenKeyResultHasChanged(Action action, Action savedAction) {
         if (action.getKeyResult() == null || savedAction.getKeyResult() == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, MessageKey.ATTRIBUTE_NOT_NULL,
-                    List.of(Constants.KEY_RESULT, Constants.ACTION));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 MessageKey.ATTRIBUTE_NOT_NULL,
+                                                 List.of(Constants.KEY_RESULT, Constants.ACTION));
         }
 
         if (!Objects.equals(action.getKeyResult().getId(), savedAction.getKeyResult().getId())) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
-                    List.of(Constants.KEY_RESULT, Constants.ACTION));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
+                                                 List.of(Constants.KEY_RESULT, Constants.ACTION));
         }
     }
 }

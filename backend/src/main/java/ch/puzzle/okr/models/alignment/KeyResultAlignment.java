@@ -1,7 +1,6 @@
 package ch.puzzle.okr.models.alignment;
 
 import ch.puzzle.okr.models.keyresult.KeyResult;
-
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -22,14 +21,10 @@ public class KeyResultAlignment extends Alignment implements AlignmentInterface<
     }
 
     @Override
-    public KeyResult getAlignmentTarget() {
-        return targetKeyResult;
-    }
+    public KeyResult getAlignmentTarget() { return targetKeyResult; }
 
     @Override
-    public void setAlignmentTarget(KeyResult alignmentTarget) {
-        this.targetKeyResult = alignmentTarget;
-    }
+    public void setAlignmentTarget(KeyResult alignmentTarget) { this.targetKeyResult = alignmentTarget; }
 
     @Override
     public boolean equals(Object o) {

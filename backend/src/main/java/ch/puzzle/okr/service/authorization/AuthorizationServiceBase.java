@@ -17,7 +17,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
     private final AuthorizationService authorizationService;
 
     protected AuthorizationServiceBase(BusinessServiceInterface<ID, T> businessService,
-            AuthorizationService authorizationService) {
+                                       AuthorizationService authorizationService) {
         this.businessService = businessService;
         this.authorizationService = authorizationService;
     }
@@ -60,12 +60,8 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
         businessService.deleteEntityById(id);
     }
 
-    public AuthorizationService getAuthorizationService() {
-        return authorizationService;
-    }
+    public AuthorizationService getAuthorizationService() { return authorizationService; }
 
-    public BS getBusinessService() {
-        return (BS) businessService;
-    }
+    public BS getBusinessService() { return (BS) businessService; }
 
 }

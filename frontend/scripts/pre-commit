@@ -1,22 +1,46 @@
 #!/bin/sh
+GIT_BASE_PATH=$(git rev-parse --show-toplevel)
+BACKEND_PATH="$GIT_BASE_PATH"/backend
+FRONTEND_PATH="$GIT_BASE_PATH"/frontend
 
-projectPath=$PWD
-addedFiles=$(git diff --cached --name-only --diff-filter=a)
+get_changed_files() {
+    GIT_BASE_PATH=$(git rev-parse --show-toplevel)
+    path=$1
+    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path"
+}
 
-echo "*****Running prettier******"
-cd $projectPath/frontend
-npm run format
-echo "*****Finish running prettier******"
+has_changed() {
+    files=$1
+    echo "$files" | grep -q .
+}
+
+
+
+frontend_files=$(get_changed_files "$FRONTEND_PATH")
+backend_files=$(get_changed_files "$BACKEND_PATH")
+
+echo "*****Running eslint******"
+cd "$FRONTEND_PATH" || exit
+has_changed "$frontend_files" && npm run lint:format:specific "$frontend_files" || echo "No files found to format"
+echo "*****Finish running eslint******"
+
+echo "---------------------------------------------------------"
 
 echo "*****Running maven formatter******"
-cd $projectPath/backend
-mvn formatter:format
+cd "$GIT_BASE_PATH" || exit
+# shellcheck disable=SC2091
+has_changed "$backend_files" && mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$backend_files" || echo "No files found to format"
 echo "*****Finish running maven formatter******"
 
+echo "---------------------------------------------------------"
+
 echo "*****Adding changes to git******"
-cd $projectPath
-git add $addedFiles
+cd "$GIT_BASE_PATH" || exit
+
+has_changed "$frontend_files" && git add "$frontend_files" -v || echo "No frontend files changed, nothing to add"
+has_changed "$backend_files" && git add "$backend_files" -v || echo "No backend files files changed, nothing to add"
 echo "*****Formatted files added again******"
 
 status=$?
 exit $status
+

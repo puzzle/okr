@@ -1,12 +1,12 @@
 package ch.puzzle.okr.service.authorization;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class UserUpdateHelperTest {
     private AuthorizationRegistrationService.UserUpdateHelper helper;
@@ -21,16 +21,16 @@ public class UserUpdateHelperTest {
     void updateUserFromWithTokenData() {
         // arrange
         User userFromDB = User.Builder.builder() //
-                .withId(23L) //
-                .withFirstname("firstname_from_db") //
-                .withLastname("lastname_from_db") //
-                .withEmail("a@b.ch") //
-                .build();
+                                      .withId(23L) //
+                                      .withFirstname("firstname_from_db") //
+                                      .withLastname("lastname_from_db") //
+                                      .withEmail("a@b.ch") //
+                                      .build();
 
         User userFromToken = User.Builder.builder() //
-                .withFirstname("firstname_from_token") //
-                .withLastname("lastname_from_token") //
-                .build();
+                                         .withFirstname("firstname_from_token") //
+                                         .withLastname("lastname_from_token") //
+                                         .build();
 
         // act
         User updatedUser = helper.setFirstLastNameFromToken(userFromDB, userFromToken);
@@ -47,7 +47,12 @@ public class UserUpdateHelperTest {
         // arrange
         User noChampionUser = User.Builder.builder().withEmail("no@champions.ch").build();
         TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, //
-                new String[] { "yes@champions.ch" }, null, null, null, null);
+                                                                                               new String[]{
+                                                                                                       "yes@champions.ch"},
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(noChampionUser, tenantConfig);
@@ -61,7 +66,12 @@ public class UserUpdateHelperTest {
         // arrange
         User championUser = User.Builder.builder().withEmail("yes@champions.ch").build();
         TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, //
-                new String[] { "yes@champions.ch" }, null, null, null, null);
+                                                                                               new String[]{
+                                                                                                       "yes@champions.ch"},
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(championUser, tenantConfig);

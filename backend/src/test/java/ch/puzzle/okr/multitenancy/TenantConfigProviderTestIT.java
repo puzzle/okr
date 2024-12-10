@@ -1,6 +1,12 @@
 package ch.puzzle.okr.multitenancy;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,13 +15,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.core.env.Environment;
-
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringIntegrationTest
 @SpringBootConfiguration
@@ -32,7 +31,7 @@ public class TenantConfigProviderTestIT {
     private static final String CHAMPION_EMAILS_2 = "b@pitc.ch";
     private static final String CHAMPION_EMAILS = CHAMPION_EMAILS_1 + "," + CHAMPION_EMAILS_2;
 
-    private final String[] tenantIds = { "pitc", "acme" };
+    private final String[] tenantIds = {"pitc", "acme"};
 
     @Mock
     private Environment env;
@@ -87,7 +86,7 @@ public class TenantConfigProviderTestIT {
 
     @DisplayName("getTenantConfigById returns for an existing TenantId the TenantConfig as Optional")
     @ParameterizedTest
-    @CsvSource({ "pitc, acme" })
+    @CsvSource({"pitc, acme"})
     void testGetTenantConfigByIdForExistingTenantId(String tenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         Optional<TenantConfigProvider.TenantConfig> config = configProvider.getTenantConfigById(tenantId);
@@ -97,7 +96,7 @@ public class TenantConfigProviderTestIT {
 
     @DisplayName("getTenantConfigById returns for a non existing TenantId an empty Optional")
     @ParameterizedTest
-    @CsvSource({ "PITC-London" })
+    @CsvSource({"PITC-London"})
     void testGetTenantConfigByIdForNonExistingTenantId(String nonExistingTenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         Optional<TenantConfigProvider.TenantConfig> config = configProvider.getTenantConfigById(nonExistingTenantId);
@@ -106,7 +105,7 @@ public class TenantConfigProviderTestIT {
 
     @DisplayName("getJwkSetUri returns for an existing TenantId the JwkSetUri as Optional")
     @ParameterizedTest
-    @CsvSource({ "pitc", "acme" })
+    @CsvSource({"pitc", "acme"})
     void testGetJwkSetUriForExistingTenantId(String tenantId) {
         // arrange
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
@@ -121,7 +120,7 @@ public class TenantConfigProviderTestIT {
 
     @DisplayName("getJwkSetUri returns for a non existing TenantId an empty Optional")
     @ParameterizedTest
-    @CsvSource({ "PITC-London" })
+    @CsvSource({"PITC-London"})
     void testGetJwkSetUriForNonExistingTenantId(String nonExistingTenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         Optional<String> jwkSetUri = configProvider.getJwkSetUri(nonExistingTenantId);
@@ -139,7 +138,7 @@ public class TenantConfigProviderTestIT {
         assertEquals(prefix(tenantId) + DATASOURCE_PASSWORD, tenantConfig.dataSourceConfig().password());
         assertEquals(prefix(tenantId) + DATASOURCE_SCHEMA, tenantConfig.dataSourceConfig().schema());
 
-        assertArrayEquals(new String[] { CHAMPION_EMAILS_1, CHAMPION_EMAILS_2 }, tenantConfig.okrChampionEmails());
+        assertArrayEquals(new String[]{CHAMPION_EMAILS_1, CHAMPION_EMAILS_2}, tenantConfig.okrChampionEmails());
         assertEquals(DRIVER_CLASS_NAME, tenantConfig.dataSourceConfig().driverClassName());
     }
 

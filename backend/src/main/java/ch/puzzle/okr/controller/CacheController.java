@@ -18,14 +18,14 @@ public class CacheController {
     }
 
     @Operation(summary = "Delete authorization users cache", description = "Delete authorization users cache")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authorization users cache deleted") })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authorization users cache deleted")})
     @PostMapping("emptyAuthorizationUsersCache")
     public void emptyAuthorizationUsersCache() {
         cacheService.emptyAuthorizationUsersCache();
     }
 
     @Operation(summary = "Delete all caches", description = "Delete all caches")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "All caches deleted") })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All caches deleted")})
     @PostMapping("emptyAllCaches")
     public void emptyAllCaches() {
         cacheService.emptyAllCaches();

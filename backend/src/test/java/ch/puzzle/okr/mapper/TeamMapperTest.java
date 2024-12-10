@@ -1,5 +1,7 @@
 package ch.puzzle.okr.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Team;
 import org.junit.jupiter.api.DisplayName;
@@ -7,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TeamMapperTest {
@@ -26,10 +26,10 @@ public class TeamMapperTest {
     void toDtoShouldMapTeamToDto() {
         // arrange
         Team team = Team.Builder.builder() //
-                .withId(ID) //
-                .withVersion(VERSION) //
-                .withName(NAME) //
-                .build();
+                                .withId(ID) //
+                                .withVersion(VERSION) //
+                                .withName(NAME) //
+                                .build();
         team.setWriteable(IS_WRITEABLE);
 
         // act

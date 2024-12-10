@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -58,58 +57,34 @@ public class User {
         setOkrChampion(builder.isOkrChampion);
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public int getVersion() {
-        return version;
-    }
+    public int getVersion() { return version; }
 
-    public String getFirstname() {
-        return firstname;
-    }
+    public String getFirstname() { return firstname; }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
+    public void setFirstname(String firstname) { this.firstname = firstname; }
 
-    public String getLastname() {
-        return lastname;
-    }
+    public String getLastname() { return lastname; }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
-    public List<UserTeam> getUserTeamList() {
-        return userTeamList;
-    }
+    public List<UserTeam> getUserTeamList() { return userTeamList; }
 
-    public void setUserTeamList(List<UserTeam> userTeamList) {
-        this.userTeamList = userTeamList;
-    }
+    public void setUserTeamList(List<UserTeam> userTeamList) { this.userTeamList = userTeamList; }
 
-    public boolean isOkrChampion() {
-        return isOkrChampion;
-    }
+    public boolean isOkrChampion() { return isOkrChampion; }
 
-    public void setOkrChampion(boolean okrChampion) {
-        isOkrChampion = okrChampion;
-    }
+    public void setOkrChampion(boolean okrChampion) { isOkrChampion = okrChampion; }
 
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
-                + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
+               + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
     }
 
     @Override
@@ -120,8 +95,8 @@ public class User {
             return false;
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(version, user.version)
-                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
-                && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
+               && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
+               && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
     }
 
     @Override

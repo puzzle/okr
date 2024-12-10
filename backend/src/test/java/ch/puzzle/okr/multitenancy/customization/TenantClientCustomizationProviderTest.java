@@ -1,23 +1,23 @@
 package ch.puzzle.okr.multitenancy.customization;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 public class TenantClientCustomizationProviderTest {
 
     @DisplayName("extractCssNameFromPropertyName() should return css name for valid property name")
     @ParameterizedTest
-    @CsvSource({ "pitc", "acme" })
+    @CsvSource({"pitc", "acme"})
     void extractCssNameFromPropertyNameShouldReturnCssNameForValidPropertyName(String tenantId) {
         // arrange
         String propertyNameWithTenant = "okr.tenants." + tenantId
-                + ".clientcustomization.customstyles.my-css-property-name";
-        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[] {}, null);
+                                        + ".clientcustomization.customstyles.my-css-property-name";
+        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[]{}, null);
 
         // act
         String cssName = provider.extractCssNameFromPropertyName(propertyNameWithTenant, tenantId);
@@ -31,10 +31,10 @@ public class TenantClientCustomizationProviderTest {
     void extractCssNameFromPropertyNameShouldThrowIllegalArgumentExceptionForInvalidPropertyName() {
         // arrange
         String propertyNameWithoutTenant = "okr.tenants.clientcustomization.customstyles.my-css-property-name";
-        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[] {}, null);
+        TenantClientCustomizationProvider provider = new TenantClientCustomizationProvider(new String[]{}, null);
 
         // act + assert
         assertThrows(IllegalArgumentException.class,
-                () -> provider.extractCssNameFromPropertyName(propertyNameWithoutTenant, "pitc"));
+                     () -> provider.extractCssNameFromPropertyName(propertyNameWithoutTenant, "pitc"));
     }
 }

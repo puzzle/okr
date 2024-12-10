@@ -1,12 +1,12 @@
 package ch.puzzle.okr.mapper.checkin.helper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
 import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AssertHelper {
 

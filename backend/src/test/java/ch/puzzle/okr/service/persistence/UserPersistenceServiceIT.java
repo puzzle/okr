@@ -1,9 +1,15 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.USER;
+import static ch.puzzle.okr.util.CollectionUtils.iterableToList;
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
-
-import java.util.List;
-import java.util.Optional;
-
-import static ch.puzzle.okr.Constants.USER;
-import static ch.puzzle.okr.util.CollectionUtils.iterableToList;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
@@ -46,10 +45,11 @@ class UserPersistenceServiceIT {
     void saveShouldSaveUserWithEmptyUserTeamList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("muster@puzzle.ch") //
-                .withUserTeamList(List.of()).build();
+                                  .withFirstname("Hans") //
+                                  .withLastname("Muster") //
+                                  .withEmail("muster@puzzle.ch") //
+                                  .withUserTeamList(List.of())
+                                  .build();
 
         // act
         createdUser = userPersistenceService.save(newUser);
@@ -64,10 +64,11 @@ class UserPersistenceServiceIT {
     void saveShouldSaveUserWithNullUserTeamList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("muster@puzzle.ch") //
-                .withUserTeamList(null).build();
+                                  .withFirstname("Hans") //
+                                  .withLastname("Muster") //
+                                  .withEmail("muster@puzzle.ch") //
+                                  .withUserTeamList(null)
+                                  .build();
 
         // act
         createdUser = userPersistenceService.save(newUser);
@@ -82,10 +83,10 @@ class UserPersistenceServiceIT {
     void saveAllShouldSaveAllUsersInTheInputList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
-                .withEmail("muster@puzzle.ch") //
-                .build();
+                                  .withFirstname("Hans") //
+                                  .withLastname("Muster") //
+                                  .withEmail("muster@puzzle.ch") //
+                                  .build();
 
         // act
         var createdUsers = iterableToList(userPersistenceService.saveAll(List.of(newUser)));
@@ -116,11 +117,11 @@ class UserPersistenceServiceIT {
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
-                .withEmail("lastname@puzzle.ch") //
-                .build();
+                                  .withId(null) //
+                                  .withFirstname("firstname") //
+                                  .withLastname("lastname") //
+                                  .withEmail("lastname@puzzle.ch") //
+                                  .build();
 
         // act
         createdUser = userPersistenceService.getOrCreateUser(newUser);
@@ -193,18 +194,18 @@ class UserPersistenceServiceIT {
 
         // assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, //
-                () -> userPersistenceService.findById(createdUser.getId()));
+                                                            () -> userPersistenceService.findById(createdUser.getId()));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     private User createUser() {
         User newUser = User.Builder.builder() //
-                .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
-                .withEmail("lastname@puzzle.ch") //
-                .build();
+                                   .withId(null) //
+                                   .withFirstname("firstname") //
+                                   .withLastname("lastname") //
+                                   .withEmail("lastname@puzzle.ch") //
+                                   .build();
         createdUser = userPersistenceService.getOrCreateUser(newUser);
         assertNotNull(createdUser.getId());
         return createdUser;
@@ -214,7 +215,7 @@ class UserPersistenceServiceIT {
     @Test
     void deleteByIdShouldThrowExceptionWhenIdIsNull() {
         InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, //
-                () -> userPersistenceService.deleteById(null));
+                                                                    () -> userPersistenceService.deleteById(null));
 
         assertEquals("The given id must not be null", exception.getMessage());
     }

@@ -1,18 +1,17 @@
 package ch.puzzle.okr.security;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class TenantJwtIssuerValidatorTest {
 
@@ -49,12 +48,16 @@ public class TenantJwtIssuerValidatorTest {
 
         TenantConfigProvider tenantConfigProviderWithPitcConfig = mock(TenantConfigProvider.class);
         when(tenantConfigProviderWithPitcConfig.getTenantConfigById(PITC)).thenReturn(Optional.of( //
-                new TenantConfigProvider.TenantConfig( //
-                        PITC, new String[] {}, "jwkSetUri", //
-                        ISSUER_URL, "clientId", null)));
+                                                                                                  new TenantConfigProvider.TenantConfig( //
+                                                                                                                                        PITC,
+                                                                                                                                        new String[]{},
+                                                                                                                                        "jwkSetUri", //
+                                                                                                                                        ISSUER_URL,
+                                                                                                                                        "clientId",
+                                                                                                                                        null)));
 
-        TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(
-                tenantConfigProviderWithPitcConfig, jwtHelper) {
+        TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(tenantConfigProviderWithPitcConfig,
+                                                                                         jwtHelper) {
 
             @Override
             JwtIssuerValidator createValidator(String issuer) {

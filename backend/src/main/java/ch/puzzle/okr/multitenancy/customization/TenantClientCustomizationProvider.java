@@ -1,15 +1,14 @@
 package ch.puzzle.okr.multitenancy.customization;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TenantClientCustomizationProvider {
@@ -24,7 +23,8 @@ public class TenantClientCustomizationProvider {
     record CssConfigItem(String cssName, String cssValue) implements Serializable {
     }
 
-    public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {
+    public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}")
+    String[] tenantIds, Environment env) {
         this.env = env;
         for (String tenantId : tenantIds) {
             readClientCustomizationConfig(tenantId);
@@ -33,14 +33,19 @@ public class TenantClientCustomizationProvider {
     }
 
     private TenantClientCustomization readClientCustomizationConfig(String tenantId) {
-        return new TenantClientCustomization(
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.favicon", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.logo", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.triangles", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.background-logo", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.title", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.helpSiteUrl", tenantId)),
-                getCustomCssStyles(tenantId) //
+        return new TenantClientCustomization(env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.favicon",
+                                                                                  tenantId)),
+                                             env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.logo",
+                                                                                  tenantId)),
+                                             env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.triangles",
+                                                                                  tenantId)),
+                                             env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.background-logo",
+                                                                                  tenantId)),
+                                             env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.title",
+                                                                                  tenantId)),
+                                             env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.helpSiteUrl",
+                                                                                  tenantId)),
+                                             getCustomCssStyles(tenantId) //
         );
     }
 

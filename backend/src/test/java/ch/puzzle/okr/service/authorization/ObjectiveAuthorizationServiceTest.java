@@ -1,5 +1,11 @@
 package ch.puzzle.okr.service.authorization;
 
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
@@ -11,12 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveAuthorizationServiceTest {
@@ -44,10 +44,11 @@ class ObjectiveAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(newObjective, authorizationUser);
+                                                                             .hasRoleCreateOrUpdate(newObjective,
+                                                                                                    authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.createEntity(newObjective));
+                                                         () -> objectiveAuthorizationService.createEntity(newObjective));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -78,11 +79,12 @@ class ObjectiveAuthorizationServiceTest {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleReadByObjectiveId(id, authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                            reason)).when(authorizationService)
+                                                    .hasRoleReadByObjectiveId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.getEntityById(id));
+                                                         () -> objectiveAuthorizationService.getEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -103,10 +105,12 @@ class ObjectiveAuthorizationServiceTest {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(newObjective, authorizationUser);
+                                                                             .hasRoleCreateOrUpdate(newObjective,
+                                                                                                    authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.updateEntity(id, newObjective));
+                                                         () -> objectiveAuthorizationService.updateEntity(id,
+                                                                                                          newObjective));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -131,11 +135,12 @@ class ObjectiveAuthorizationServiceTest {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleDeleteByObjectiveId(id, authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                            reason)).when(authorizationService)
+                                                    .hasRoleDeleteByObjectiveId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.deleteEntityById(id));
+                                                         () -> objectiveAuthorizationService.deleteEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -150,11 +155,13 @@ class ObjectiveAuthorizationServiceTest {
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(objective, authorizationUser);
+                                                                             .hasRoleCreateOrUpdate(objective,
+                                                                                                    authorizationUser);
 
         // act
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.duplicateEntity(idExistingObjective, objective));
+                                                         () -> objectiveAuthorizationService.duplicateEntity(idExistingObjective,
+                                                                                                             objective));
 
         // assert
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
@@ -168,18 +175,22 @@ class ObjectiveAuthorizationServiceTest {
         Long idExistingObjective = 13L;
 
         Objective newObjectiveWithoutKeyResults = Objective.Builder.builder() //
-                .withTitle("Objective without KeyResults").build();
+                                                                   .withTitle("Objective without KeyResults")
+                                                                   .build();
 
         Objective newObjectiveWithKeyResults = Objective.Builder.builder() //
-                .withId(42L).withTitle("Objective with Id and KeyResults").build();
+                                                                .withId(42L)
+                                                                .withTitle("Objective with Id and KeyResults")
+                                                                .build();
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-        when(objectiveBusinessService.duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults,
-                authorizationUser)).thenReturn(newObjectiveWithKeyResults);
+        when(objectiveBusinessService.duplicateObjective(idExistingObjective,
+                                                         newObjectiveWithoutKeyResults,
+                                                         authorizationUser)).thenReturn(newObjectiveWithKeyResults);
 
         // act
         Objective objective = objectiveAuthorizationService.duplicateEntity(idExistingObjective,
-                newObjectiveWithoutKeyResults);
+                                                                            newObjectiveWithoutKeyResults);
 
         // assert
         assertEquals(newObjectiveWithKeyResults, objective);

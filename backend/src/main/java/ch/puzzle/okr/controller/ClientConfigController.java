@@ -21,7 +21,7 @@ public class ClientConfigController {
     @GetMapping("/config")
     public ResponseEntity<ClientConfigDto> getConfig(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
+                             .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 
     @RequestMapping(value = "/**/{[path:[^\\.]*}")

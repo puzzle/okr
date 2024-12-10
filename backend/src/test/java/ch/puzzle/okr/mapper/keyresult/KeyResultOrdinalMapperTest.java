@@ -1,5 +1,11 @@
 package ch.puzzle.okr.mapper.keyresult;
 
+import static ch.puzzle.okr.mapper.keyresult.helper.AssertHelper.*;
+import static ch.puzzle.okr.mapper.keyresult.helper.TestDataHelper.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.ActionMapper;
@@ -15,6 +21,7 @@ import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,14 +29,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static ch.puzzle.okr.mapper.keyresult.helper.AssertHelper.*;
-import static ch.puzzle.okr.mapper.keyresult.helper.TestDataHelper.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class KeyResultOrdinalMapperTest {
@@ -55,10 +54,10 @@ public class KeyResultOrdinalMapperTest {
     void setup() {
         actionMapper = new ActionMapper(keyResultBusinessService);
         keyResultOrdinalMapper = new KeyResultOrdinalMapper( //
-                userBusinessService, //
-                objectiveBusinessService, //
-                checkInBusinessService, //
-                actionMapper);
+                                                            userBusinessService, //
+                                                            objectiveBusinessService, //
+                                                            checkInBusinessService, //
+                                                            actionMapper);
     }
 
     @DisplayName("toDto() should map a KeyResultOrdinal with CheckIn to a Dto")

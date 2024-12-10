@@ -1,24 +1,53 @@
 #!/bin/sh
+GIT_BASE_PATH=$(git rev-parse --show-toplevel)
+BACKEND_PATH="$GIT_BASE_PATH"/backend
+FRONTEND_PATH="$GIT_BASE_PATH"/frontend
 
-gitBasePath=$(git rev-parse --show-toplevel)
-addedFiles=$(git diff --cached --name-only --diff-filter=d --line-prefix="${gitBasePath}"/)
+get_changed_files() {
+    GIT_BASE_PATH=$(git rev-parse --show-toplevel)
+    path=$1
+    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path"
+}
+
+has_changed() {
+    files=$1
+    echo "$files" | grep -q .
+}
+
+
+
+frontend_files=$(get_changed_files "$FRONTEND_PATH")
+backend_files=$(get_changed_files "$BACKEND_PATH")
 
 echo "*****Running prettier******"
-cd "$gitBasePath"/frontend || exit
-npm run esl-format-specific "$addedFiles"
-npm run prettier-format "$addedFiles"
+cd "$FRONTEND_PATH" || exit
+has_changed "$frontend_files" && npm run prettier-format "$frontend_files"
 echo "*****Finish running prettier******"
 
+echo "---------------------------------------------------------"
+
+echo "*****Running eslint******"
+cd "$FRONTEND_PATH" || exit
+has_changed "$frontend_files" && npm run esl-format-specific "$frontend_files"
+echo "*****Finish running eslint******"
+
+echo "---------------------------------------------------------"
+
 echo "*****Running maven formatter******"
-cd "$gitBasePath" || exit
-mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$addedFiles"
+cd "$GIT_BASE_PATH" || exit
+# shellcheck disable=SC2091
+has_changed "$backend_files" && mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$backend_files"
 echo "*****Finish running maven formatter******"
 
+echo "---------------------------------------------------------"
+
 echo "*****Adding changes to git******"
-cd "$gitBasePath" || exit
+cd "$GIT_BASE_PATH" || exit
 # shellcheck disable=SC2086
-git add $addedFiles
+git add "$frontend_files"
+git add "$backend_files"
 echo "*****Formatted files added again******"
 
 status=$?
 exit $status
+

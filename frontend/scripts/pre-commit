@@ -28,7 +28,7 @@ echo "---------------------------------------------------------"
 
 echo "*****Running eslint******"
 cd "$FRONTEND_PATH" || exit
-has_changed "$frontend_files" && npm run esl-format-specific "$frontend_files" || echo "No files found to format"
+has_changed "$frontend_files" && npm run lint:format:specific "$frontend_files" || echo "No files found to format"
 echo "*****Finish running eslint******"
 
 echo "---------------------------------------------------------"

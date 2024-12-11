@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
 import io.swagger.v3.oas.annotations.Operation;

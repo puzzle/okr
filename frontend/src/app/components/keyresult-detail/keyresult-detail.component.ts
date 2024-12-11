@@ -17,8 +17,6 @@ import { DialogService } from '../../services/dialog.service';
 import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
 import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
-import { CheckInOrdinal } from '../../shared/types/model/CheckInOrdinal';
-import { CheckInMetric } from '../../shared/types/model/CheckInMetric';
 
 @Component({
   selector: 'app-keyresult-detail',

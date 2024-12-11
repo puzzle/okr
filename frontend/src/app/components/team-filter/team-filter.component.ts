@@ -7,7 +7,7 @@ import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { UserService } from '../../services/user.service';
 import { extractTeamsFromUser } from '../../shared/types/model/User';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-team-filter',

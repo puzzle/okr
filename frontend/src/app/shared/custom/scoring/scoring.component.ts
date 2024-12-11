@@ -14,7 +14,6 @@ import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 import { Observable, of } from 'rxjs';
 import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common';
-import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
 import { CheckInOrdinalMin } from '../../types/model/CheckInOrdinalMin';
 

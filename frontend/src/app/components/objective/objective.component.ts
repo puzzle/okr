@@ -3,7 +3,6 @@ import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { distinct, map, ReplaySubject, take } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { ObjectiveService } from '../../services/objective.service';
 import { trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';

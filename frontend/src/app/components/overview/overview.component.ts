@@ -1,16 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
-import {
-  BehaviorSubject,
-  catchError,
-  combineLatest,
-  EMPTY,
-  ReplaySubject,
-  Subject,
-  Subscription,
-  take,
-  takeUntil,
-} from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, EMPTY, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../../services/refresh-data.service';

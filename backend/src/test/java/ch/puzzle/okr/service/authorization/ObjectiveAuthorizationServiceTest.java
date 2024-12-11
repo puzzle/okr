@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ch.puzzle.okr.test.KeyResultTestHelpers.metricKeyResult;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.ordinalKeyResult;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
@@ -195,5 +196,15 @@ class ObjectiveAuthorizationServiceTest {
 
         // assert
         assertEquals(newObjectiveWithKeyResults, objective);
+    }
+
+    @Test
+    void getAllKeyResultsByObjectiveIdShouldReturnCorrectKeyResults() {
+        Long id = 13L;
+        when(objectiveBusinessService.getAllKeyResultsByObjective(id))
+                .thenReturn(List.of(metricKeyResult, ordinalKeyResult));
+
+        List<KeyResult> keyResults = objectiveAuthorizationService.getAllKeyResultsByObjective(id);
+        assertEquals(keyResults, List.of(metricKeyResult, ordinalKeyResult));
     }
 }

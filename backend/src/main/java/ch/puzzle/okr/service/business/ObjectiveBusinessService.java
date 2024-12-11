@@ -51,7 +51,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         return objectivePersistenceService.findObjectiveByTeamId(id);
     }
 
-    public List<KeyResult> getAllCheckInsByKeyResult(Long objectiveId) {
+    public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
         Objective objective = objectivePersistenceService.findById(objectiveId);
         return keyResultBusinessService.getAllKeyResultsByObjective(objective.getId());
     }

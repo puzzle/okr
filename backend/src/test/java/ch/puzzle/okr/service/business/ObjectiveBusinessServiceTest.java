@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
@@ -197,5 +198,27 @@ class ObjectiveBusinessServiceTest {
         // called for creating the new Objective and the new keyResults
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
+    }
+
+    @Test
+    void testGetAllKeyResultsByObjective() {
+        Long objectiveId = 5L;
+
+        KeyResult keyResult1 = new KeyResultMetric();
+        KeyResult keyResult2 = new KeyResultMetric();
+        List<KeyResult> mockKeyResults = List.of(keyResult1, keyResult2);
+
+        when(objectivePersistenceService.findById(objectiveId)).thenReturn(objective);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(objectiveId)).thenReturn(mockKeyResults);
+
+        List<KeyResult> result = objectiveBusinessService.getAllKeyResultsByObjective(objectiveId);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertSame(keyResult1, result.get(0));
+        assertSame(keyResult2, result.get(1));
+
+        verify(objectivePersistenceService).findById(objectiveId);
+        verify(keyResultBusinessService).getAllKeyResultsByObjective(objectiveId);
     }
 }

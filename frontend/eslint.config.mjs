@@ -6,90 +6,47 @@ export default tsEslint.config(
       extends: [tsEslint.configs.base],
   },
   {
-      files: ["**/*.ts"],
+    files: ["**/*.ts"], languageOptions: {
+      parserOptions: {
+        projectService: true, tsconfigRootDir: import.meta.dirname
+      }
+    },
       rules: {
-          "@typescript-eslint/naming-convention": [
-              "error",
-              {
-                  selector: "variable",
-                  format: ["camelCase"]
-              },
-              {
-                  selector: "enum",
-                  format: ["PascalCase"]
-              },
-              {
-                  selector: "enumMember",
-                  format: ["UPPER_CASE"]
-              },
-              {
-                  selector: ["class", "interface"],
-                  format: ["PascalCase"]
-              },
-              // {
-              //     selector: "class",
-              //     format: ["PascalCase"],
-              //     filter: {
-              //         regex: "^e2e/.*\\.ts$",
-              //         match: true
-              //     }
-              // }
+        "@typescript-eslint/naming-convention": ["error", {
+
+          selector: ["class", "interface"], format: ["PascalCase"]
+        }, {
+          selector: "typeProperty", types: ["string"], format: ["UPPER_CASE"]
+        }, {
+          selector: "variable", modifiers: ["const"], types: ["string"], format: ["UPPER_CASE"]
+        }, {
+          selector: "variable", format: ["camelCase"]
+        }, {
+          selector: "enum", format: ["PascalCase"]
+        }, {
+          selector: "enumMember", format: ["UPPER_CASE"]
+        }, {
+          selector: ["method", "function"], format: ["camelCase"]
+        }, {
+          selector: "property", format: ["camelCase"]
+        }, {
+          selector: "typeParameter", format: ["PascalCase"], prefix: ["T"]
+        }
           ]
       }
-  },
-  // {
-  //     ...html.configs["flat/recommended"],
-  //     files: ["**/*.html"],
-  //     // rules: {
-  //     //     "@typescript-eslint/naming-convention": [
-  //     //         "error",
-  //     //         {
-  //     //             selector: "default",
-  //     //             format: ["camelCase"],
-  //     //             leadingUnderscore: "allow"
-  //     //         },
-  //     //         {
-  //     //             selector: "variable",
-  //     //             format: ["camelCase", "UPPER_CASE"]
-  //     //         },
-  //     //         {
-  //     //             selector: "function",
-  //     //             format: ["camelCase"]
-  //     //         },
-  //     //         {
-  //     //             selector: ["class", "interface", "typeAlias", "enum"],
-  //     //             format: ["PascalCase"]
-  //     //         },
-  //     //         {
-  //     //             selector: "enumMember",
-  //     //             format: ["UPPER_CASE"]
-  //     //         },
-  //     //         {
-  //     //             selector: "property",
-  //     //             modifiers: ["private"],
-  //     //             format: ["camelCase"],
-  //     //             leadingUnderscore: "require"
-  //     //         },
-  //     //         {
-  //     //             selector: "method",
-  //     //             format: ["camelCase"]
-  //     //         },
-  //     //         {
-  //     //             selector: "typeParameter",
-  //     //             format: ["PascalCase"],
-  //     //             prefix: ["T"]
-  //     //         }
-  //     //     ]
-  //     // }
-  // },
-  {
+  }, {
     ...html.configs["flat/recommended"],
-      files: ["**/*.scss"],
-      rules: {
-          "@html-eslint/id-naming-convention": [
-              "error",
-              "kebab-case"
-          ]
-      }
+    files: ["**/*.html"],
+    rules: {
+      "@html-eslint/id-naming-convention": ["error", "kebab-case"],
+      // "@typescript-eslint/naming-convention": ["error", {
+      //
+      //   selector: ["class", "interface", "typeAlias"], format: ["PascalCase"]
+      // }
+      // ]
+    }
+  },
+  {
+      files: ["**/*.scss"], rules: {}
   },
 );

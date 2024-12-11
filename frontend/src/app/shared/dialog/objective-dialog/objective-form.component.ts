@@ -111,6 +111,8 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     isEditing: boolean,
   ): void {
     this.quarters = quarters;
+
+    // Determine the team ID to set in the form: existing team for editing or default team for new objectives
     const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
     const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
     let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
@@ -123,6 +125,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     this.version = objective.version;
     this.keyResults = keyResults;
 
+    // Subscribe to teams$ to find and update the current team
     this.teams$.subscribe((teams) => {
       const currentTeam = teams.find((team) => team.id === teamId);
       this.currentTeam.next(currentTeam!);

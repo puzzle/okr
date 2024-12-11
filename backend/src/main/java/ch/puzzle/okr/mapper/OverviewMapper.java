@@ -17,8 +17,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class OverviewMapper {
-    public OverviewMapper() {
-    }
 
     public List<OverviewDto> toDto(List<Overview> overviews) {
         List<OverviewDto> overviewDtos = new ArrayList<>();

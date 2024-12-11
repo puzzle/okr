@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.deserializer.DeserializerHelper;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
@@ -9,7 +10,6 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
-import org.apache.coyote.Request;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,17 +20,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
@@ -111,6 +108,8 @@ class ObjectiveControllerIT {
     private ObjectiveMapper objectiveMapper;
     @MockBean
     private KeyResultMapper keyResultMapper;
+    @MockBean
+    private DeserializerHelper deserializerHelper;
 
     @BeforeEach
     void setUp() {
@@ -239,19 +238,13 @@ class ObjectiveControllerIT {
         BDDMockito.given(keyResultMapper.toDto(any(KeyResultOrdinal.class), any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
-        System.out.println(DUPLICATE_OBJECTIVE);
-        // mvc.perform(post("/api/v2/objectives/5")
-        // .with(SecurityMockMvcRequestPostProcessors.csrf()).content("").contentType(MediaType.APPLICATION_JSON))
-        //
-        // .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
-        // .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
-        // .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(objective1Dto.title())));
 
-        MvcResult a = mvc
-                .perform(post(URL_DUPLICATE_OBJECTIVE_5).contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()).content(DUPLICATE_OBJECTIVE))
-                .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
-        System.out.println(a.getRequest().getContentType());
+        mvc.perform(post(URL_DUPLICATE_OBJECTIVE_5).with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(DUPLICATE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
+                .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
+                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(objective1Dto.title())));
+
         verify(objectiveMapper, times(1)).toObjective(any());
         verify(objectiveMapper, times(1)).toDto(any());
     }

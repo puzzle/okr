@@ -83,7 +83,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     protected Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
         Properties properties = getHibernateProperties();
         if (properties == null || properties.isEmpty()) {
-            throw new RuntimeException("Cannot load hibernate properties from application.properties)");
+            throw new ConnectionProviderException("Cannot load hibernate properties from application.properties)");
         }
         if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
             properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));

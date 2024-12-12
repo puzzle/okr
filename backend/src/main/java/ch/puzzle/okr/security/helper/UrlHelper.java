@@ -4,6 +4,9 @@ import java.util.Optional;
 
 public class UrlHelper {
 
+    private UrlHelper() {
+    }
+
     public static Optional<String> extractTenantFromIssUrl(String issUrl) {
         if (issUrl == null)
             return Optional.empty();

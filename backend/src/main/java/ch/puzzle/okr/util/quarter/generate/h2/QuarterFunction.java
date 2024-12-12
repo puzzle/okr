@@ -25,6 +25,9 @@ public class QuarterFunction {
     private static final Map<Integer, QuarterData> QUARTERS = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(QuarterFunction.class);
 
+    private QuarterFunction() {
+    }
+
     public static void initQuarterData() {
         LocalDate now = LocalDate.now();
         registerCurrentQuarterForDate(now, CURRENT_QUARTER_DB_ID);

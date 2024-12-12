@@ -8,6 +8,9 @@ import java.text.ParseException;
 public class JwtStatusLogger {
     private static final Logger logger = LoggerFactory.getLogger(JwtStatusLogger.class);
 
+    private JwtStatusLogger() {
+    }
+
     public static void logStatus(String claim, Object context, String result) {
         logStatus(claim, context, result != null);
     }

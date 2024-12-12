@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 public class JwtStatusLogger {
     private static final Logger logger = LoggerFactory.getLogger(JwtStatusLogger.class);
+    private static final String LOG_MESSAGE = "Tenant: get claim '{}' from {}{}";
 
     private JwtStatusLogger() {
     }
@@ -17,26 +18,16 @@ public class JwtStatusLogger {
     public static void logStatus(String claim, Object context, boolean isOk) {
         if (isOk) {
             logger
-                    .atInfo().log("Tenant: get claim '{}' from {}{}",
-                          claim,
-                          context.getClass().getSimpleName(),
-                          statusToSymbol(isOk));
+                    .atInfo().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(isOk));
         } else {
             logger
-                    .atInfo().log("Tenant: get claim '{}' from {}{}",
-                          claim,
-                          context.getClass().getSimpleName(),
-                          statusToSymbol(isOk));
+                    .atWarn().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(isOk));
         }
     }
 
     public static void logStatus(String claim, Object context, ParseException e) {
         logger
-                .atWarn().log("Tenant: get claim '{}' from {}{}",
-                      claim,
-                      context.getClass().getSimpleName(),
-                      statusToSymbol(false),
-                      e);
+                .atWarn().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(false), e);
     }
 
     private static String statusToSymbol(boolean isOk) {

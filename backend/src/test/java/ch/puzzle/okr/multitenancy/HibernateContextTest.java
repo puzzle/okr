@@ -1,5 +1,6 @@
 package ch.puzzle.okr.multitenancy;
 
+import ch.puzzle.okr.exception.HibernateContextException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,8 @@ public class HibernateContextTest {
         DbConfig dbConfig = null;
 
         // act + assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> setHibernateConfig(dbConfig));
+        HibernateContextException exception = assertThrows(HibernateContextException.class,
+                () -> setHibernateConfig(dbConfig));
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
 
@@ -44,7 +46,8 @@ public class HibernateContextTest {
         DbConfig dbConfig = new DbConfig(url, username, password, tenant);
 
         // act + assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> setHibernateConfig(dbConfig));
+        HibernateContextException exception = assertThrows(HibernateContextException.class,
+                () -> setHibernateConfig(dbConfig));
         assertTrue(exception.getMessage().startsWith("Invalid hibernate configuration"));
     }
 
@@ -87,7 +90,8 @@ public class HibernateContextTest {
         // arrange
 
         // act + assert
-        RuntimeException exception = assertThrows(RuntimeException.class, HibernateContext::getHibernateConfig);
+        HibernateContextException exception = assertThrows(HibernateContextException.class,
+                HibernateContext::getHibernateConfig);
         assertEquals("No cached hibernate configuration found", exception.getMessage());
     }
 

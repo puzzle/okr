@@ -1,5 +1,6 @@
 package ch.puzzle.okr.multitenancy;
 
+import ch.puzzle.okr.exception.HibernateContextException;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Properties;
@@ -33,7 +34,7 @@ public class HibernateContext {
 
     public static void setHibernateConfig(DbConfig dbConfig) {
         if (dbConfig == null || !dbConfig.isValid()) {
-            throw new RuntimeException("Invalid hibernate configuration " + dbConfig);
+            throw new HibernateContextException("Invalid hibernate configuration " + dbConfig);
         }
         cachedHibernateConfig = dbConfig;
     }
@@ -58,7 +59,7 @@ public class HibernateContext {
 
     public static Properties getHibernateConfig() {
         if (cachedHibernateConfig == null) {
-            throw new RuntimeException("No cached hibernate configuration found");
+            throw new HibernateContextException("No cached hibernate configuration found");
         }
         return getConfigAsProperties(cachedHibernateConfig);
     }

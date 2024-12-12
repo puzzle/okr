@@ -3,17 +3,23 @@ import { ToasterType } from './types/enums/ToasterType';
 import { HttpStatusCode } from '@angular/common/http';
 
 interface MessageKeyMap {
-  [key: string]: {
-    KEY: string;
-    methods: {
-      method: HttpType;
-      keysForCode?: {
-        code: number;
-        toaster?: ToasterType;
-        key: string;
-      }[];
-    }[];
-  };
+  [key: string]: MessageEntry;
+}
+
+export interface MessageEntry {
+  KEY: string;
+  methods: MessageMethod[];
+}
+
+export interface MessageMethod {
+  method: HttpType;
+  keysForCode?: MessageStatusCode[];
+}
+
+export interface MessageStatusCode {
+  code: number;
+  toaster?: ToasterType;
+  key: string;
 }
 
 export const PUZZLE_TOP_BAR_HEIGHT: number = 48;

@@ -48,10 +48,12 @@ public class Quarters {
         return LocalDate.parse(year + "-" + monthDay);
     }
 
+    // Runtime exception is okay here, because the class is only used for testing purposes
+    @SuppressWarnings("java:S112")
     public QuarterData currentQuarter(LocalDate date) {
+        String label = new QuarterLabel(date).label();
         for (QuarterDateRange quarter : quarters) {
             if (isDateInQuarter(date, quarter.startDate(), quarter.endDate())) {
-                String label = new QuarterLabel(date).label();
                 return new QuarterData(label, quarter.startDate(), quarter.endDate());
             }
         }

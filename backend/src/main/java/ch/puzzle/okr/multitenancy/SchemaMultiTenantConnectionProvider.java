@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -35,7 +36,10 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         String schema = convertTenantIdToSchemaName(tenantIdentifier);
         logger.debug("Setting schema to {}", schema);
 
-        connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
+        try (Statement sqlStatement = connection.createStatement()) {
+            sqlStatement.execute(String.format("SET SCHEMA '%s';", schema));
+        }
+
         return connection;
     }
 

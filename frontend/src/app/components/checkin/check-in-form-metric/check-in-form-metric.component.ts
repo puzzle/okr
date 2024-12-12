@@ -9,7 +9,6 @@ import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-mi
 @Component({
   selector: 'app-check-in-form-metric',
   templateUrl: './check-in-form-metric.component.html',
-  styleUrls: ['./check-in-form-metric.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })

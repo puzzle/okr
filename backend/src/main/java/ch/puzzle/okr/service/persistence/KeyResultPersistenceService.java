@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long, KeyResultRepository> {
-    private static final Logger logger = LoggerFactory.getLogger(KeyResultPersistenceService.class);
 
     protected KeyResultPersistenceService(KeyResultRepository repository) {
         super(repository);

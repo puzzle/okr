@@ -15,9 +15,15 @@ has_changed() {
 }
 
 
-
 frontend_files=$(get_changed_files "$FRONTEND_PATH")
 backend_files=$(get_changed_files "$BACKEND_PATH")
+
+echo "*****Running prettier******"
+cd "$FRONTEND_PATH" || exit
+has_changed "$frontend_files" && npm run prettier:lint:format:specific "$frontend_files" || echo "No files found to format"
+echo "*****Finish running eslint******"
+
+echo "---------------------------------------------------------"
 
 echo "*****Running eslint******"
 cd "$FRONTEND_PATH" || exit
@@ -27,9 +33,9 @@ echo "*****Finish running eslint******"
 echo "---------------------------------------------------------"
 
 echo "*****Running maven formatter******"
-cd "$GIT_BASE_PATH" || exit
+cd "$BACKEND_PATH" || exit
 # shellcheck disable=SC2091
-has_changed "$backend_files" && mvn -f backend/pom.xml spotless:apply -DspotlessFiles="$backend_files" || echo "No files found to format"
+has_changed "$backend_files" && mvn -f pom.xml spotless:apply -DspotlessFiles="$backend_files" || echo "No files found to format"
 echo "*****Finish running maven formatter******"
 
 echo "---------------------------------------------------------"

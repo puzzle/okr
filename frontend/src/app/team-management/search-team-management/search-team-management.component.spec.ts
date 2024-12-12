@@ -204,7 +204,7 @@ describe('SearchTeamManagementComponent', () => {
   it('should stay on current root page when a user is selected', () => {
     activatedRouteMock!.snapshot!.params = {};
 
-    component.selectUser(users[1]);
+    component.selectUser(users[0]);
 
     expect(navigateSpy)
       .toHaveBeenCalledWith('/team-management/details/member/2');

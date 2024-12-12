@@ -5,7 +5,6 @@ import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
 import angularTemplateParser from '@angular-eslint/template-parser'
-import scssConfig from 'stylelint-config-standard-scss'
 
 export default tsEslint.config(
     {
@@ -78,11 +77,6 @@ export default tsEslint.config(
             '@html-eslint/indent': ['error', 2],
         },
     },
-    {
-        // files: ["**/*.scss"],
-        ...Object.fromEntries(Object.entries(scssConfig).filter(([k]) => k === '0')),
-    },
-
     {
         plugins: {
             'unused-imports': unusedImports,

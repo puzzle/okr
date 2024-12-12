@@ -21,7 +21,7 @@ public class JwtStatusLogger {
             logger.atInfo().log("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
                     statusToSymbol(isOk));
         } else {
-            logger.warn("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
+            logger.atInfo().log("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
                     statusToSymbol(isOk));
         }
     }

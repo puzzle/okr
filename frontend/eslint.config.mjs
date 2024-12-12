@@ -6,7 +6,6 @@ import html from "@html-eslint/eslint-plugin";
 import angular from "angular-eslint";
 import angularTemplateParser from "@angular-eslint/template-parser";
 import scssConfig from "stylelint-config-standard-scss"
-import jsonConfig from "eslint-plugin-i18n-json"
 
 
 export default tsEslint.config(
@@ -38,6 +37,7 @@ export default tsEslint.config(
             "@stylistic/indent": ["error", 2],
             "@stylistic/quotes": ["error", "double"],
             "@stylistic/multiline-ternary": ["off"],
+            "@stylistic/object-curly-spacing": ["error", "always"],
             "@angular-eslint/directive-selector": [
                 "error",
                 {
@@ -64,9 +64,6 @@ export default tsEslint.config(
         },
     },
     {
-        ...Object.fromEntries(Object.entries(scssConfig).filter(([k]) => k === "0"))
-    },
-    {
         files: ["**/*.html"],
         extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
         processor: angular.processInlineTemplates,
@@ -83,18 +80,16 @@ export default tsEslint.config(
         },
     },
     {
-        files: ["**/*.json"],
-        processor: jsonConfig.processors[".json"],
-        rules: {
-            ...jsonConfig.configs.recommended.rules
-        }
+        // files: ["**/*.scss"],
+        ...Object.fromEntries(Object.entries(scssConfig).filter(([k]) => k === "0"))
     },
+
+
     {
         plugins: {
             "unused-imports": unusedImports,
             "@stylistic": stylistic,
             "@html-eslint": html,
-            "i18n-json": jsonConfig
         },
     },
 );

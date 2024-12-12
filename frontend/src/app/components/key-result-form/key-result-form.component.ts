@@ -14,7 +14,6 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-key-result-form',
   templateUrl: './key-result-form.component.html',
-  styleUrls: ['./key-result-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeyResultFormComponent implements OnInit, OnDestroy {

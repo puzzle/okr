@@ -14,7 +14,6 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-keyresult-dialog',
   templateUrl: './keyresult-dialog.component.html',
-  styleUrls: ['./keyresult-dialog.component.scss'],
 })
 export class KeyresultDialogComponent {
   keyResultForm = new FormGroup({

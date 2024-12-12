@@ -20,7 +20,6 @@ import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
 @Component({
   selector: 'app-objective-form',
   templateUrl: './objective-form.component.html',
-  styleUrls: ['./objective-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {

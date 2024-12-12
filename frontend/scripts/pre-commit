@@ -2,11 +2,12 @@
 GIT_BASE_PATH=$(git rev-parse --show-toplevel)
 BACKEND_PATH="$GIT_BASE_PATH"/backend
 FRONTEND_PATH="$GIT_BASE_PATH"/frontend
+FORMATTED_FILE_EXTENSIONS="java|ts|html|xml|json|yml|yaml|mjs"
 
 get_changed_files() {
     GIT_BASE_PATH=$(git rev-parse --show-toplevel)
     path=$1
-    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" | tr '\n' ' '
+    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" | tr '\n' ' ' | xargs | grep "\.($FORMATTED_FILE_EXTENSIONS)$"
 }
 
 has_changed() {

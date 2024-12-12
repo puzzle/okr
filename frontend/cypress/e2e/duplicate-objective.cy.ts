@@ -47,7 +47,7 @@ describe('Functionality of duplicating objectives and their belonging keyResults
   });
 
   it('Should not show option to select keyResults when objective with no keyResults is being duplicated', () => {
-    const duplicatedTitle = 'This is a duplicated objective without any keyResult';
+    const duplicatedTitle = 'This is a duplicated objective without any keyResults';
 
     overviewPage.duplicateObjective(
       'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.',

@@ -1,3 +1,2 @@
-src/assets/
-dist/
-.angular/
+!**/*.json
+!**/*.css

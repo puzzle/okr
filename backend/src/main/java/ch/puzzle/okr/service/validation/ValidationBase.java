@@ -20,43 +20,43 @@ import org.springframework.http.HttpStatus;
 /**
  * @param <T>
  *            the Type or entity of the repository
- * @param <ID>
+ * @param <I>
  *            the Identifier or primary key of the entity
  * @param <R>
  *            the Repository of the entity
- * @param <PS>
+ * @param <P>
  *            the Persistence Service of this repository and entity
  */
-public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID, R>> {
+public abstract class ValidationBase<T, I, R, P extends PersistenceBase<T, I, R>> {
     private final Validator validator;
-    private final PS persistenceService;
+    private final P persistenceService;
 
-    ValidationBase(PS persistenceService) {
+    ValidationBase(P persistenceService) {
         this.persistenceService = persistenceService;
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();
         }
     }
 
-    public PS getPersistenceService() {
+    public P getPersistenceService() {
         return persistenceService;
     }
 
-    public void validateOnGet(ID id) {
-        throwExceptionWhenIdIsNull(id);
+    public void validateOnGet(I i) {
+        throwExceptionWhenIdIsNull(i);
     }
 
     public abstract void validateOnCreate(T model);
 
-    public abstract void validateOnUpdate(ID id, T model);
+    public abstract void validateOnUpdate(I i, T model);
 
-    public T validateOnDelete(ID id) {
-        throwExceptionWhenIdIsNull(id);
-        return doesEntityExist(id);
+    public T validateOnDelete(I i) {
+        throwExceptionWhenIdIsNull(i);
+        return doesEntityExist(i);
     }
 
-    public T doesEntityExist(ID id) {
-        return persistenceService.findById(id);
+    public T doesEntityExist(I i) {
+        return persistenceService.findById(i);
     }
 
     public void throwExceptionWhenModelIsNull(T model) {
@@ -67,27 +67,27 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         }
     }
 
-    public void throwExceptionWhenIdIsNull(ID id) {
-        if (id == null) {
+    public void throwExceptionWhenIdIsNull(I i) {
+        if (i == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_NULL,
                                                  List.of("ID", persistenceService.getModelName()));
         }
     }
 
-    protected void throwExceptionWhenIdIsNotNull(ID id) {
-        if (id != null) {
+    protected void throwExceptionWhenIdIsNotNull(I i) {
+        if (i != null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  MessageKey.ATTRIBUTE_NOT_NULL,
                                                  List.of("ID", persistenceService.getModelName()));
         }
     }
 
-    protected void throwExceptionWhenIdHasChanged(ID id, ID modelId) {
-        if (!Objects.equals(id, modelId)) {
+    protected void throwExceptionWhenIdHasChanged(I i, I modelI) {
+        if (!Objects.equals(i, modelI)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_CHANGED,
-                                                 List.of("ID", id, modelId));
+                                                 List.of("ID", i, modelI));
         }
     }
 

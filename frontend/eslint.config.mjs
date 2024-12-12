@@ -22,6 +22,8 @@ export default tsEslint.config(
         }, {
           selector: "variable", format: ["camelCase"]
         }, {
+          selector: "variable", modifiers: [], format: ["camelCase"]
+        }, {
           selector: "enum", format: ["PascalCase"]
         }, {
           selector: "enumMember", format: ["UPPER_CASE"]
@@ -35,15 +37,12 @@ export default tsEslint.config(
           ]
       }
   }, {
+
     ...html.configs["flat/recommended"],
     files: ["**/*.html"],
+
     rules: {
       "@html-eslint/id-naming-convention": ["error", "kebab-case"],
-      // "@typescript-eslint/naming-convention": ["error", {
-      //
-      //   selector: ["class", "interface", "typeAlias"], format: ["PascalCase"]
-      // }
-      // ]
     }
   },
   {

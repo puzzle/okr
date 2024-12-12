@@ -119,7 +119,7 @@ export class SearchTeamManagementComponent {
 
   private updateTeamsAndUsers(teams: Team[], users: User[]) {
     this.teams = [...teams].sort((a, b) => a.name.localeCompare(b.name));
-    this.users = users.sort((a, b) => (a.firstName + a.lastName).localeCompare(b.firstName + b.lastName));
+    this.users = [...users].sort((a, b) => (a.firstName + a.lastName).localeCompare(b.firstName + b.lastName));
     this.applyFilter(this.searchValue$.getValue());
   }
 

@@ -72,7 +72,7 @@ export class UserService {
     return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`, {});
   }
 
-  isUserMemberOfTeams(user: User): Observable<Boolean> {
-    return this.httpClient.get<Boolean>(`${this.API_URL}/${user.id}/ismemberofteams`, {});
+  isUserMemberOfTeams(user: User): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.API_URL}/${user.id}/ismemberofteams`, {});
   }
 }

@@ -15,7 +15,7 @@ import { getFullNameFromUser } from '../../shared/types/model/User';
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   userFullName: string = '';
   menuIsOpen = false;
-  logoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+  logoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
   helpSiteUrl = new BehaviorSubject<string>('https://en.wikipedia.org/wiki/Objectives_and_key_results');
   private subscription?: Subscription;
 

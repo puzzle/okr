@@ -19,7 +19,7 @@ export class DeleteUserComponent implements OnInit {
 
   okrUser: User | undefined;
   userOkrData: UserOkrData | undefined;
-  userIsMemberOfTeams: Boolean | undefined;
+  userIsMemberOfTeams: boolean | undefined;
 
   unsubscribe$ = new Subject<void>();
 

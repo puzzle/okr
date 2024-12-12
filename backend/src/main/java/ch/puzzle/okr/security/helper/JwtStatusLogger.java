@@ -5,8 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JwtStatusLogger {
-
-    private static final Logger logger = LoggerFactory.getLogger(ClaimHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtStatusLogger.class);
 
     public static void logStatus(String claim, Object context, String result) {
         logStatus(claim, context, result != null);

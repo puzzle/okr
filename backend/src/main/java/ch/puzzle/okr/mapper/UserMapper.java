@@ -29,7 +29,7 @@ public class UserMapper {
                                            user.getVersion(),
                                            teamMapper.toDto(ut.getTeam()),
                                            ut.isTeamAdmin()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new UserDto(user.getId(),
                            user.getVersion(),

@@ -26,9 +26,7 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
     public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
         AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         getAuthorizationService().hasRoleReadByObjectiveId(objectiveId, authorizationUser);
-        List<KeyResult> keyResults = getBusinessService().getAllKeyResultsByObjective(objectiveId);
-        setRoleCreateOrUpdateKeyResult(keyResults, authorizationUser);
-        return keyResults;
+        return getBusinessService().getAllKeyResultsByObjective(objectiveId);
     }
 
     @Override
@@ -54,13 +52,4 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
     public boolean isImUsed(Objective objective) {
         return getBusinessService().isImUsed(objective);
     }
-
-    private void setRoleCreateOrUpdateKeyResult(List<KeyResult> keyResults, AuthorizationUser authorizationUser) {
-        if (!CollectionUtils.isEmpty(keyResults)) {
-            boolean isWriteable = getAuthorizationService().hasRoleWriteForTeam(keyResults.getFirst(),
-                    authorizationUser);
-            keyResults.forEach(c -> c.setWriteable(isWriteable));
-        }
-    }
-
 }

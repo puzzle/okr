@@ -8,7 +8,7 @@ import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
-import java.net.URL;
+import java.net.URI;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
 
     JWSKeySelector<SecurityContext> fromUri(String uri) {
         try {
-            return JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(new URL(uri));
+            return JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(URI.create(uri).toURL());
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex);
         }

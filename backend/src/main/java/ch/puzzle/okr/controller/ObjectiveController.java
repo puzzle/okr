@@ -58,13 +58,13 @@ public class ObjectiveController {
 
     @Operation(summary = "Get KeyResults from Objective", description = "Get all KeyResults from one Objective by ObjectiveId.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all KeyResult from Objective.", content = {
+            @ApiResponse(responseCode = "200", description = "Returned all KeyResults from Objective.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
-            @ApiResponse(responseCode = "401", description = "Not authorized to read KeyResult from a Objective", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Did not find a Objective with a specified ID to get KeyResults from.", content = @Content) })
+            @ApiResponse(responseCode = "401", description = "Not authorized to read KeyResults from an Objective", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find an Objective with the specified ID to get KeyResults from.", content = @Content) })
     @GetMapping("/{id}/keyResults")
     public ResponseEntity<List<KeyResultDto>> getKeyResultsFromObjective(
-            @Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
+            @Parameter(description = "The ID for getting all KeyResults of an Objective", required = true) @PathVariable long id) {
         return ResponseEntity.status(OK)
                 .body(objectiveAuthorizationService.getAllKeyResultsByObjective(id).stream().map(keyResult -> {
                     List<Action> actionList = actionAuthorizationService.getActionsByKeyResult(keyResult);
@@ -102,7 +102,7 @@ public class ObjectiveController {
     @PostMapping("/{id}")
     public ResponseEntity<ObjectiveDto> duplicateObjective(
             @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as JSON", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
         Objective objective = objectiveMapper.toObjective(duplicateObjectiveDto.objective());
         List<KeyResult> keyResults = duplicateObjectiveDto.keyResults().stream().map(keyResultMapper::toKeyResult)
                 .toList();

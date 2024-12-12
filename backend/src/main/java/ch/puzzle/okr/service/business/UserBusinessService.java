@@ -54,10 +54,11 @@ public class UserBusinessService {
 
     // checks if at least one okr champion remains after removing given one
     private void checkAtLeastOneOkrChampionExists(User user) {
-        var champions = userPersistenceService.findAllOkrChampions();
-        champions.stream().filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId())).findAny()
-                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                        ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION));
+        boolean championExists = userPersistenceService.findAllOkrChampions().stream()
+                .anyMatch(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId()));
+        if (!championExists) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION);
+        }
     }
 
     public User saveUser(User user) {

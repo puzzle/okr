@@ -1,3 +1,5 @@
+@import "custom_bootstrap";
+
 .active {
   border-left: #909090 1px solid;
   border-top: #909090 1px solid;
@@ -18,7 +20,7 @@
 }
 
 .tab-title {
-  @extend .p-2 !optional;
+  @extend .p-2;
   @extend .tab-focus;
 }
 
@@ -28,6 +30,7 @@
 
 .tab-focus {
   outline: none;
+
   &:focus-visible {
     border-radius: 5px;
     border: 2px solid #1a4e83;

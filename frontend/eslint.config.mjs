@@ -8,7 +8,7 @@ export default tsEslint.config(
   {
     files: ["**/*.ts"], languageOptions: {
       parserOptions: {
-        projectService: true, tsconfigRootDir: import.meta.dirname
+        project: [ "./tsconfig.json","./tsconfig.spec.json"],
       }
     },
       rules: {
@@ -45,7 +45,7 @@ export default tsEslint.config(
       "@html-eslint/id-naming-convention": ["error", "kebab-case"],
     }
   },
-  {
-      files: ["**/*.scss"], rules: {}
-  },
+  // {
+  //     files: ["**/*.scss"], rules: {}
+  // },
 );

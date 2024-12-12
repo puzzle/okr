@@ -116,18 +116,29 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
                 .toList();
     }
 
-    // example:
-    // message : ATTRIBUTE_SIZE_BETWEEN_2_200
-    // messageTemplate: ATTRIBUTE_SIZE_BETWEEN_{min}_{max}
-    // returns: [2, 200]
+    /**
+     * See below for an example
+     *
+     * @param message
+     *            ATTRIBUTE_SIZE_BETWEEN_2_200
+     * @param messageTemplate
+     *            ATTRIBUTE_SIZE_BETWEEN_{min}_{max}
+     *
+     * @return [2, 200]
+     */
     private List<String> getAttributes(String message, String messageTemplate) {
         String patternString = convertMessageTemplateToRegexStringWithGroups(messageTemplate);
         return extractAttributeValuesFromRegexGroups(message, patternString);
     }
 
-    // example:
-    // messageTemplate: ATTRIBUTE_SIZE_BETWEEN_{min}_{max}
-    // returns: ATTRIBUTE_SIZE_BETWEEN_(.*)_(.*)
+    /**
+     * See below for an example
+     *
+     * @param messageTemplate
+     *            ATTRIBUTE_SIZE_BETWEEN_{min}_{max}
+     *
+     * @return ATTRIBUTE_SIZE_BETWEEN_(.*)_(.*)
+     */
     private String convertMessageTemplateToRegexStringWithGroups(String messageTemplate) {
         return messageTemplate.replaceAll("\\{([^}]*)\\}", "(.*)");
     }

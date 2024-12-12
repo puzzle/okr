@@ -34,7 +34,10 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         String schema = convertTenantIdToSchemaName(tenantIdentifier);
         logger.debug("Setting schema to {}", schema);
 
-        connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
+        try (Statement sqlStatement = connection.createStatement()) {
+            sqlStatement.execute(String.format("SET SCHEMA '%s';", schema));
+        }
+
         return connection;
     }
 

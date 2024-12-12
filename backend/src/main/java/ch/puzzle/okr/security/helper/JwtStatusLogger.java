@@ -2,6 +2,7 @@ package ch.puzzle.okr.security.helper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.spi.LoggingEventBuilder;
 
 import java.text.ParseException;
 
@@ -17,7 +18,7 @@ public class JwtStatusLogger {
 
     public static void logStatus(String claim, Object context, boolean isOk) {
         if (isOk) {
-            logger.info("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
+            logger.atInfo().log("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
                     statusToSymbol(isOk));
         } else {
             logger.warn("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
@@ -26,7 +27,7 @@ public class JwtStatusLogger {
     }
 
     public static void logStatus(String claim, Object context, ParseException e) {
-        logger.warn("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
+        logger.atWarn().log("Tenant: get claim '{}' from {}{}", claim, context.getClass().getSimpleName(),
                 statusToSymbol(false), e);
     }
 

@@ -4,6 +4,7 @@
 mat-dialog-content {
   //scrollbar-gutter: stable both-edges;
   $dialog-header-height: 48px;
+  // Intellij shows error here but it isn't an error
   $full-dialog-content-height: calc(
     100vh - variables.$top-bar-height - $dialog-header-height - variables.$dialog-content-padding-y -
       variables.$dialog-action-buttons-div-height

@@ -4,11 +4,9 @@
 mat-dialog-content {
   //scrollbar-gutter: stable both-edges;
   $dialog-header-height: 48px;
-  $top-bar-height: variables.$top-bar-height;
-  $dialog-content-padding-y: variables.$dialog-content-padding-y;
-  $dialog-action-buttons-div-height: variables.$dialog-action-buttons-div-height;
   $full-dialog-content-height: calc(
-    100vh - $top-bar-height - $dialog-header-height - $dialog-content-padding-y - $dialog-action-buttons-div-height
+    100vh - variables.$top-bar-height - $dialog-header-height - variables.$dialog-content-padding-y -
+      variables.$dialog-action-buttons-div-height
   );
   @extend .d-flex;
   @extend .flex-column;

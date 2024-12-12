@@ -12,13 +12,13 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 
 public class ForwardFilter extends GenericFilterBean {
-    private static final Logger logger = LoggerFactory.getLogger(ForwardFilter.class);
+    private static final Logger beanFilterLogger = LoggerFactory.getLogger(ForwardFilter.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        logger.debug("====> pass through the filter '{}'", request.getRequestURI());
+        beanFilterLogger.debug("====> pass through the filter '{}'", request.getRequestURI());
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

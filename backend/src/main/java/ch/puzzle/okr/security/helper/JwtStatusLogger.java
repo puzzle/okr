@@ -3,7 +3,6 @@ package ch.puzzle.okr.security.helper;
 import java.text.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.spi.LoggingEventBuilder;
 
 public class JwtStatusLogger {
     private static final Logger logger = LoggerFactory.getLogger(JwtStatusLogger.class);

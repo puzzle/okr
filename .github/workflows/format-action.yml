@@ -21,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Format frontend
-        run: npm run check
+        run: npm run check-linting:all
 
   backend:
     runs-on: ubuntu-latest

@@ -19,7 +19,6 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   menuIsOpen = false;
 
   logoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
-
   helpSiteUrl = new BehaviorSubject<string>('https://en.wikipedia.org/wiki/Objectives_and_key_results');
 
   private subscription?: Subscription;

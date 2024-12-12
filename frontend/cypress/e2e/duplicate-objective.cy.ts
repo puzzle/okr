@@ -88,7 +88,7 @@ describe('Functionality of duplicating objectives and their belonging keyResults
   });
 });
 
-describe('e2e test for scoring adjustment on duplicate objective', () => {
+describe('Verify functionality of scoring adjustment on duplicated objectives', () => {
   let keyresultDetailPage = new KeyResultDetailPage();
 
   it('Duplicate ordinal checkin and validate value of scoring component', () => {

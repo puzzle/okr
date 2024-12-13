@@ -30,8 +30,12 @@ Build:
 
 ## Formatting
 
-We use the **EsLint** code formatter for the frontend code:
+
+We use **EsLint** and a variety of plugins to format html and ts files:
 https://eslint.org/
+
+We use **prettier** to format scss json and yaml files:
+https://prettier.io/
 
 ## Test Coverage
 

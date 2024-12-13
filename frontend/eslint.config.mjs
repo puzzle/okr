@@ -34,8 +34,12 @@ export default tsEslint.config(
             '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
             '@stylistic/indent': ['error', 2],
             '@stylistic/quotes': ['error', 'double'],
+            '@stylistic/quote-props': ['error', 'as-needed'],
+            '@stylistic/object-property-newline': ['error'],
             '@stylistic/multiline-ternary': ['off'],
             '@stylistic/object-curly-spacing': ['error', 'always'],
+            '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
+            '@stylistic/semi-style': ['error'],
             '@angular-eslint/directive-selector': [
                 'error',
                 {

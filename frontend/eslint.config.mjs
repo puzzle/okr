@@ -27,6 +27,7 @@ export default tsEslint.config(
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-namespace': 'off',
             'prefer-rest-params': 'off',
+            '@typescript-eslint-no-empty-function': ['error', { allow: ['constructors'] }],
             //stylistic rules
             '@stylistic/function-call-argument-newline': ['error', 'never'],
             '@stylistic/padded-blocks': ['error', 'never'],

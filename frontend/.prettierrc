@@ -5,7 +5,7 @@
     "singleQuote": true,
     "overrides": [
         {
-            "files": "**/*.json",
+            "files": "**/*.{json,scss}",
             "options": {
                 "tabWidth": 2
             }

@@ -2,6 +2,8 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static ch.puzzle.okr.test.KeyResultTestHelpers.metricKeyResult;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.ordinalKeyResult;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
@@ -148,13 +155,16 @@ class ObjectiveAuthorizationServiceTest {
         String reason = "junit test reason";
         Objective objective = Objective.Builder.builder().build();
 
+        List<KeyResult> keyResults = new ArrayList<>();
+        keyResults.add(metricKeyResult);
+
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdate(objective, authorizationUser);
 
         // act
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.duplicateEntity(idExistingObjective, objective));
+                () -> objectiveAuthorizationService.duplicateEntity(idExistingObjective, objective, keyResults));
 
         // assert
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
@@ -173,15 +183,28 @@ class ObjectiveAuthorizationServiceTest {
         Objective newObjectiveWithKeyResults = Objective.Builder.builder() //
                 .withId(42L).withTitle("Objective with Id and KeyResults").build();
 
+        List<KeyResult> keyResults = new ArrayList<>();
+        keyResults.add(metricKeyResult);
+
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults,
-                authorizationUser)).thenReturn(newObjectiveWithKeyResults);
+                authorizationUser, keyResults)).thenReturn(newObjectiveWithKeyResults);
 
         // act
         Objective objective = objectiveAuthorizationService.duplicateEntity(idExistingObjective,
-                newObjectiveWithoutKeyResults);
+                newObjectiveWithoutKeyResults, keyResults);
 
         // assert
         assertEquals(newObjectiveWithKeyResults, objective);
+    }
+
+    @Test
+    void getAllKeyResultsByObjectiveIdShouldReturnCorrectKeyResults() {
+        Long id = 13L;
+        when(objectiveBusinessService.getAllKeyResultsByObjective(id))
+                .thenReturn(List.of(metricKeyResult, ordinalKeyResult));
+
+        List<KeyResult> keyResults = objectiveAuthorizationService.getAllKeyResultsByObjective(id);
+        assertEquals(keyResults, List.of(metricKeyResult, ordinalKeyResult));
     }
 }

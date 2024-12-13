@@ -1,8 +1,13 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.deserializer.DeserializerHelper;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
+import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import org.hamcrest.core.Is;
@@ -23,9 +28,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -44,6 +49,7 @@ class ObjectiveControllerIT {
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
     private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
+    private static final String URL_DUPLICATE_OBJECTIVE_5 = "/api/v2/objectives/5";
     private static final String JSON = """
             {
                "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
@@ -51,6 +57,13 @@ class ObjectiveControllerIT {
                "description": "This is our description", "progress": 33.3
             }
             """;
+    private static final String DUPLICATE_OBJECTIVE = """
+            {
+                "objective": %s,
+                "keyResults": [%s,%s]
+            }
+            """.formatted(JSON, KEY_RESULT_METRIC_JSON, KEY_RESULT_ORDINAL_JSON);
+
     private static final String CREATE_NEW_OBJECTIVE = """
             {
                "title": "FullObjective", "ownerId": 1, "teamId": 1, "teamName": "Team1",
@@ -90,7 +103,13 @@ class ObjectiveControllerIT {
     @Mock
     private AuthorizationService authorizationService;
     @MockBean
+    private ActionAuthorizationService actionAuthorizationService;
+    @MockBean
     private ObjectiveMapper objectiveMapper;
+    @MockBean
+    private KeyResultMapper keyResultMapper;
+    @MockBean
+    private DeserializerHelper deserializerHelper;
 
     @BeforeEach
     void setUp() {
@@ -213,13 +232,15 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any())).willReturn(objective1);
+        BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any(), anyList()))
+                .willReturn(objective1);
+        BDDMockito.given(keyResultMapper.toDto(any(KeyResultMetric.class), any())).willReturn(keyResultMetricDto);
+        BDDMockito.given(keyResultMapper.toDto(any(KeyResultOrdinal.class), any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 
-        mvc.perform(post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
-                .content(JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+        mvc.perform(post(URL_DUPLICATE_OBJECTIVE_5).with(SecurityMockMvcRequestPostProcessors.csrf())
+                .content(DUPLICATE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
                 .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(objective1Dto.title())));

@@ -22,12 +22,11 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
+    private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
-
-    private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
             ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService,
@@ -38,6 +37,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         this.completedBusinessService = completedBusinessService;
     }
 
+    private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
+        return !Objects.equals(objective.getQuarter(), savedObjective.getQuarter());
+    }
+
     public Objective getEntityById(Long id) {
         validator.validateOnGet(id);
         return objectivePersistenceService.findById(id);
@@ -46,6 +49,11 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     public List<Objective> getEntitiesByTeamId(Long id) {
         validator.validateOnGet(id);
         return objectivePersistenceService.findObjectiveByTeamId(id);
+    }
+
+    public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
+        Objective objective = objectivePersistenceService.findById(objectiveId);
+        return keyResultBusinessService.getAllKeyResultsByObjective(objective.getId());
     }
 
     @Transactional
@@ -88,10 +96,6 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .anyMatch(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId()));
     }
 
-    private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
-        return !Objects.equals(objective.getQuarter(), savedObjective.getQuarter());
-    }
-
     @Transactional
     public Objective createEntity(Objective objective, AuthorizationUser authorizationUser) {
         objective.setCreatedBy(authorizationUser.user());
@@ -110,13 +114,16 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
      *            New Objective with no KeyResults
      * @param authorizationUser
      *            AuthorizationUser
+     * @param keyResults
+     *            KeyResults to copy
      *
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
-    public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
+    public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser,
+            List<KeyResult> keyResults) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
-        for (KeyResult keyResult : keyResultBusinessService.getAllKeyResultsByObjective(id)) {
+        for (KeyResult keyResult : keyResults) {
             duplicateKeyResult(authorizationUser, keyResult, duplicatedObjective);
         }
         return duplicatedObjective;

@@ -1,8 +1,15 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.checkin.CheckInDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
+import ch.puzzle.okr.dto.DuplicateObjectiveDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
+import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.IM_USED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -22,11 +31,16 @@ import static org.springframework.http.HttpStatus.OK;
 public class ObjectiveController {
     private final ObjectiveAuthorizationService objectiveAuthorizationService;
     private final ObjectiveMapper objectiveMapper;
+    private final KeyResultMapper keyResultMapper;
+    private final ActionAuthorizationService actionAuthorizationService;
 
     public ObjectiveController(ObjectiveAuthorizationService objectiveAuthorizationService,
-            ObjectiveMapper objectiveMapper) {
+            ObjectiveMapper objectiveMapper, KeyResultMapper keyResultMapper,
+            ActionAuthorizationService actionAuthorizationService) {
         this.objectiveAuthorizationService = objectiveAuthorizationService;
         this.objectiveMapper = objectiveMapper;
+        this.keyResultMapper = keyResultMapper;
+        this.actionAuthorizationService = actionAuthorizationService;
     }
 
     @Operation(summary = "Get Objective", description = "Get an Objective by ID")
@@ -40,6 +54,22 @@ public class ObjectiveController {
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
+    }
+
+    @Operation(summary = "Get KeyResults from Objective", description = "Get all KeyResults from one Objective by ObjectiveId.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all KeyResults from Objective.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to read KeyResults from an Objective", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find an Objective with the specified ID to get KeyResults from.", content = @Content) })
+    @GetMapping("/{id}/keyResults")
+    public ResponseEntity<List<KeyResultDto>> getKeyResultsFromObjective(
+            @Parameter(description = "The ID for getting all KeyResults of an Objective", required = true) @PathVariable long id) {
+        return ResponseEntity.status(OK)
+                .body(objectiveAuthorizationService.getAllKeyResultsByObjective(id).stream().map(keyResult -> {
+                    List<Action> actionList = actionAuthorizationService.getActionsByKeyResult(keyResult);
+                    return keyResultMapper.toDto(keyResult, actionList);
+                }).toList());
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -72,10 +102,12 @@ public class ObjectiveController {
     @PostMapping("/{id}")
     public ResponseEntity<ObjectiveDto> duplicateObjective(
             @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO) {
-        Objective objective = objectiveMapper.toObjective(objectiveDTO);
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as JSON", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
+        Objective objective = objectiveMapper.toObjective(duplicateObjectiveDto.objective());
+        List<KeyResult> keyResults = duplicateObjectiveDto.keyResults().stream().map(keyResultMapper::toKeyResult)
+                .toList();
         ObjectiveDto duplicatedObjectiveDto = objectiveMapper
-                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective));
+                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective, keyResults));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 

@@ -9,14 +9,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../../services/objective.service';
-import { marketingTeamWriteable, objective, quarter, quarterList } from '../../testData';
+import { keyResult, marketingTeamWriteable, objective, quarter, quarterList } from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Quarter } from '../../types/model/Quarter';
 import { QuarterService } from '../../../services/quarter.service';
-import { Team } from '../../types/model/Team';
 import { TeamService } from '../../../services/team.service';
 import { State } from '../../types/enums/State';
 import { By } from '@angular/platform-browser';
@@ -30,12 +29,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { Team } from '../../types/model/Team';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
   createObjective: jest.fn(),
   updateObjective: jest.fn(),
   deleteObjective: jest.fn(),
+  getAllKeyResultsByObjective: jest.fn(),
 };
 
 interface MatDialogDataInterface {
@@ -56,13 +57,16 @@ const quarterService = {
 };
 
 const teamService = {
-  getAllTeams(): Observable<Team[]> {
-    return of([
-      { id: 1, version: 2, name: marketingTeamWriteable.name, writeable: true, organisations: [] },
-      { id: 4, version: 5, name: 'team2', writeable: true, organisations: [] },
-    ]);
-  },
+  getAllTeams: jest.fn(),
 };
+
+// Mock the return value of getAllTeams
+teamService.getAllTeams.mockReturnValue(
+  of([
+    { id: 1, version: 2, name: 'Marketing Team', writeable: true, organisations: [] },
+    { id: 4, version: 5, name: 'Team 2', writeable: true, organisations: [] },
+  ]),
+);
 
 const dialogMock = {
   close: jest.fn(),
@@ -136,7 +140,7 @@ describe('ObjectiveDialogComponent', () => {
         let createKeyresults: boolean = true;
         let quarter: number = 0;
         let team: number = 0;
-        teamService.getAllTeams().subscribe((teams) => {
+        teamService.getAllTeams().subscribe((teams: { id: number }[]) => {
           team = teams[0].id;
         });
         quarterService.getAllQuarters().subscribe((quarters) => {
@@ -200,6 +204,7 @@ describe('ObjectiveDialogComponent', () => {
         team: 0,
         relation: 0,
         createKeyResults: false,
+        keyResults: [],
       });
 
       objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
@@ -226,6 +231,7 @@ describe('ObjectiveDialogComponent', () => {
         team: 1,
         relation: 0,
         createKeyResults: false,
+        keyResults: [],
       });
 
       objectiveService.updateObjective.mockReturnValue(of({ ...objective, state: 'ONGOING' }));
@@ -262,12 +268,39 @@ describe('ObjectiveDialogComponent', () => {
       const routerHarness = await RouterTestingHarness.create();
       await routerHarness.navigateByUrl('/?quarter=2');
       objectiveService.getFullObjective.mockReturnValue(of(objective));
+      objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(keyResult));
       component.ngOnInit();
       const rawFormValue = component.objectiveForm.getRawValue();
       expect(rawFormValue.title).toBe(objective.title);
       expect(rawFormValue.description).toBe(objective.description);
       expect(rawFormValue.team).toBe(objective.teamId);
       expect(rawFormValue.quarter).toBe(objective.quarterId);
+    });
+
+    it('should set teams$ observable correctly on ngOnInit', () => {
+      const mockTeams = [
+        { id: 1, name: 'Team A' },
+        { id: 2, name: 'Team B' },
+      ];
+      teamService.getAllTeams.mockReturnValue(of(mockTeams));
+
+      component.ngOnInit();
+
+      component.teams$.subscribe((teams: Team[]) => {
+        expect(teams).toEqual(mockTeams);
+      });
+    });
+
+    it('should set keyResults$ observable correctly when objectiveId is defined', () => {
+      const mockKeyResults = [{ id: 1, name: 'Key Result A' }];
+      matDataMock.objective.objectiveId = 1;
+      objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(mockKeyResults));
+
+      component.ngOnInit();
+
+      component.keyResults$.subscribe((keyResults) => {
+        expect(keyResults).toEqual(mockKeyResults);
+      });
     });
 
     it('should return correct value if allowed to save to backlog', async () => {

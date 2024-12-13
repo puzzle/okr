@@ -379,6 +379,30 @@ table.okr-table {
   }
 }
 
+.keyResult-checkbox {
+  display: flex;
+  align-items: center;
+
+  span {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  .mdc-label {
+    overflow: hidden;
+    width: 100%;
+    background: $soft-grey;
+    padding: 4px;
+  }
+
+  .mdc-form-field {
+    width: 100%;
+  }
+}
+
 @import "custom_bootstrap";
 
 .spinner-container {

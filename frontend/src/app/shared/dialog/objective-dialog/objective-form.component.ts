@@ -1,21 +1,21 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
-import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
+import { formInputCheck, getValueFromQuery, hasFormFieldErrors } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
+import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
 
 @Component({
   selector: 'app-objective-form',
@@ -30,6 +30,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     quarter: new FormControl<number>(0, [Validators.required]),
     team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
     relation: new FormControl<number>({ value: 0, disabled: true }),
+    keyResults: new FormArray<FormControl<boolean | null>>([]),
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
@@ -38,6 +39,9 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   teams$: Observable<Team[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
+  keyResults$: Observable<KeyResultDTO[]> = of([]);
+  keyResults: KeyResultDTO[] = [];
+
   version!: number;
   protected readonly formInputCheck = formInputCheck;
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
@@ -74,42 +78,68 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       state: state,
     } as unknown as Objective;
 
-    const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
-    submitFunction.subscribe((savedObjective: Objective) =>
-      this.closeDialog(savedObjective, false, value.createKeyResults!),
-    );
+    const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId!, objectiveDTO);
+    submitFunction.subscribe((savedObjective: Objective) => {
+      this.closeDialog(savedObjective, false, value.createKeyResults!);
+    });
   }
 
   ngOnInit(): void {
-    const isCreating: boolean = !!this.data.objective.objectiveId;
+    const isEditing: boolean = this.data.objective.objectiveId != undefined;
     this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
-    const objective$ = isCreating
+    this.keyResults$ = isEditing
+      ? this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId || -1)
+      : of([]);
+    const objective$ = isEditing
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
-    forkJoin([objective$, this.quarters$, this.currentQuarter$]).subscribe(([objective, quarters, currentQuarter]) => {
-      this.quarters = quarters;
-      const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
-      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-      if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
-        quarterId = quarters[1].id;
-      }
+    forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$]).subscribe(
+      ([objective, quarters, currentQuarter, keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]]) => {
+        this.handleDataInitialization(objective, quarters, currentQuarter, keyResults, isEditing);
+      },
+    );
+  }
 
-      this.state = objective.state;
-      this.version = objective.version;
-      this.teams$.subscribe((value) => {
-        this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
-      });
+  private handleDataInitialization(
+    objective: Objective,
+    quarters: Quarter[],
+    currentQuarter: Quarter,
+    keyResults: KeyResultDTO[],
+    isEditing: boolean,
+  ): void {
+    this.quarters = quarters;
 
-      this.objectiveForm.patchValue({
-        title: objective.title,
-        description: objective.description,
-        team: teamId,
-        quarter: quarterId,
-      });
+    // Determine the team ID to set in the form: existing team for editing or default team for new objectives
+    const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
+    const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
+    let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
+
+    if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+      quarterId = quarters[1].id;
+    }
+
+    this.state = objective.state;
+    this.version = objective.version;
+    this.keyResults = keyResults;
+
+    // Subscribe to teams$ to find and update the current team
+    this.teams$.subscribe((teams) => {
+      const currentTeam = teams.find((team) => team.id === teamId);
+      this.currentTeam.next(currentTeam!);
+    });
+
+    this.objectiveForm.patchValue({
+      title: objective.title,
+      description: objective.description,
+      team: teamId,
+      quarter: quarterId,
+    });
+
+    keyResults.forEach(() => {
+      this.objectiveForm.controls.keyResults.push(new FormControl<boolean>(true));
     });
   }
 
@@ -122,12 +152,21 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     if (this.data.action == 'duplicate') {
       objectiveDTO.id = null;
       objectiveDTO.state = 'DRAFT' as State;
-      return this.objectiveService.duplicateObjective(id, objectiveDTO);
+      return this.objectiveService.duplicateObjective(id, {
+        objective: objectiveDTO,
+        keyResults: this.keyResults
+          .filter((keyResult, index) =>
+            this.objectiveForm.value.keyResults ? this.objectiveForm.value.keyResults[index] : false,
+          )
+          .map((result) => ({ ...result, id: undefined })),
+      });
     } else {
       if (this.data.action == 'releaseBacklog') objectiveDTO.state = 'ONGOING' as State;
-      return id
-        ? this.objectiveService.updateObjective(objectiveDTO)
-        : this.objectiveService.createObjective(objectiveDTO);
+      if (this.data.objective.objectiveId) {
+        objectiveDTO.id = id;
+        return this.objectiveService.updateObjective(objectiveDTO);
+      }
+      return this.objectiveService.createObjective(objectiveDTO);
     }
   }
 

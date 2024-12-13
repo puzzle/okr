@@ -1,4 +1,4 @@
-<div *ngIf="overviewEntity as OVEntity" class="bg-grey justify-content-between pt-3">
+<div *ngIf="overviewEntity as OVEntity" class="justify-content-between pt-3">
   <section class="team-header">
     <div class="d-flex align-items-center gap-2 flex-row">
       <h1 class="team-title">{{ OVEntity.team.name }}</h1>
@@ -6,13 +6,19 @@
     <button
       (click)="createObjective()"
       *ngIf="OVEntity.writeable"
+      id="add-objective"
       [attr.data-testId]="'add-objective'"
       class="px-0 mt-1 mb-3 pe-2 h-50 align-new-icon"
       color="primary"
       mat-button
     >
-      <span class="d-flex align-items-center add-text">
-        <img alt="Add key-result button" class="add-cross-button" src="../../../assets/icons/new-icon.svg" />
+      <span id="add-objective-span" class="d-flex align-items-center add-text">
+        <img
+          alt="Add objective button"
+          class="add-cross-button"
+          [attr.data-testId]="'add-objective-icon'"
+          src="{{ addIconSrc | async }}"
+        />
         Objective hinzufügen
       </span>
     </button>
@@ -30,7 +36,6 @@
       class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
       id="objective-column"
     ></app-objective-column>
-
     <div *ngFor="let placeholder of [].constructor(2)" class="col-xs-12 col-md-6 col-xl-4 column-width h-0"></div>
   </div>
 </div>

@@ -6,7 +6,7 @@
   >
   </app-team>
   <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
-    <p>Kein Team ausgewählt</p>
+    <p id="no-team-text">Kein Team ausgewählt</p>
     <img src="{{ this.backgroundLogoSrc$ | async }}" alt="Greyed out company logo" width="242" class="puzzle-logo" />
   </div>
 </div>

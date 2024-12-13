@@ -6,6 +6,9 @@ import { Objective } from '../../shared/types/model/Objective';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { DialogService } from '../../services/dialog.service';
+import { ConfigService } from '../../services/config.service';
+import { ClientConfig } from '../../shared/types/model/ClientConfig';
+import { BehaviorSubject, first } from 'rxjs';
 
 @Component({
   selector: 'app-team',
@@ -13,18 +16,23 @@ import { DialogService } from '../../services/dialog.service';
   styleUrls: ['./team.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamComponent implements OnInit {
+export class TeamComponent {
   @Input({ required: true })
   public overviewEntity!: OverviewEntity;
+  addIconSrc: BehaviorSubject<string> = new BehaviorSubject('assets/icons/new-icon.svg');
 
   constructor(
     private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
-  ) {}
+    private configService: ConfigService,
+  ) {
+    this.configService.config$.pipe(first()).subscribe((config: ClientConfig) => {
+      const configuredIconSrc = config.customStyles['okr-add-objective-icon'];
+      if (configuredIconSrc) this.addIconSrc.next(configuredIconSrc);
+    });
+  }
 
   trackByObjectiveId: TrackByFunction<ObjectiveMin> = (index, objective) => objective.id;
-
-  ngOnInit(): void {}
 
   createObjective() {
     const matDialogRef = this.dialogService.open(ObjectiveFormComponent, {

@@ -18,9 +18,9 @@ export default tsEslint.config(
         }, {
           selector: "typeProperty", types: ["string"], format: ["UPPER_CASE"]
         }, {
-          selector: "variable", modifiers: ["const"], types: ["string"], format: ["UPPER_CASE"]
+          selector: "classProperty", modifiers: ["readonly"], format: ["UPPER_CASE"]
         }, {
-          selector: "variable", format: ["camelCase"]
+          selector: "variable", modifiers: ["const"], types: ["string"], format: ["UPPER_CASE"]
         }, {
           selector: "variable", modifiers: [], format: ["camelCase"]
         }, {
@@ -34,7 +34,11 @@ export default tsEslint.config(
         }, {
           selector: "typeParameter", format: ["PascalCase"], prefix: ["T"]
         }
-          ]
+          ],
+//        "id-match": [
+//          "error",
+//          "(?i:key.*result)?^(?:(?!KeyResult).)*"
+//        ],
       }
   }, {
 

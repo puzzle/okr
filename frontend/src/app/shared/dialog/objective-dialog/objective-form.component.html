@@ -68,15 +68,19 @@
         <div *ngIf="data.action === 'duplicate' && (keyResults$ | async)?.length" class="mt-2 col align-self-end w-100">
           <div class="okr-form-row okr-form-label-input-container">
             <label class="okr-form-label okr-form-col">Key Results:</label>
-            <div class="d-flex flex-column okr-form-input pe-5">
+            <div class="d-flex flex-column okr-form-input">
               <ng-container *ngIf="keyResults$ | async as keyResults" formArrayName="keyResults">
                 <mat-checkbox
                   *ngFor="let keyResult of keyResults; let i = index"
                   [formControlName]="i"
                   [checked]="true"
-                  class="keyResult-checkbox text-truncate"
+                  [matTooltip]="keyResult.title"
+                  matTooltipPosition="above"
+                  class="keyResult-checkbox"
                 >
-                  {{ keyResult.title }}
+                  <span>
+                    {{ keyResult.title }}
+                  </span>
                 </mat-checkbox>
               </ng-container>
             </div>

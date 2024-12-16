@@ -395,7 +395,7 @@ table.okr-table {
   .mdc-label {
     overflow: hidden;
     width: 100%;
-    background: $soft-grey;
+    background: variables.$soft-grey;
     padding: 4px;
   }
 
@@ -403,9 +403,6 @@ table.okr-table {
     width: 100%;
   }
 }
-
-@import "custom_bootstrap";
-
 .spinner-container {
   @extend .mt-5;
 }

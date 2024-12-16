@@ -24,10 +24,7 @@
     </button>
   </section>
 
-  <div
-    class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2"
-    [attr.data-testId]="'objective-container'"
-  >
+  <div class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2" [attr.data-testId]="'objective-container'">
     <app-objective-column
       *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
       [attr.data-testId]="'objective'"

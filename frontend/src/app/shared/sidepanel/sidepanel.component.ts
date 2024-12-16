@@ -6,55 +6,57 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
+  ViewChild
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ConnectedPosition } from "@angular/cdk/overlay"; // ESM
 
 @Component({
-  selector: 'app-sidepanel',
-  templateUrl: './sidepanel.component.html',
-  styleUrls: ['./sidepanel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: "app-sidepanel",
+  templateUrl: "./sidepanel.component.html",
+  styleUrls: ["./sidepanel.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
-  leaveKeys = ['Escape'];
-  right = '-100%';
+  leaveKeys = ["Escape"];
+
+  right = "-100%";
+
   loaded = false;
-  @ViewChild('sidebar')
+
+  @ViewChild("sidebar")
   sidebar!: ElementRef<HTMLDivElement>;
-  position: ConnectedPosition[] = [
-    {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
-    },
-  ];
 
-  constructor(
-    private router: Router,
+  position: ConnectedPosition[] = [{
+    originX: "end",
+    originY: "bottom",
+    overlayX: "end",
+    overlayY: "top"
+  }];
+
+  constructor (private router: Router,
     private cd: ChangeDetectorRef,
-    private route: ActivatedRoute,
-  ) {}
+    private route: ActivatedRoute) {}
 
-  ngOnInit(): void {}
-  ngAfterContentInit(): void {
-    document.body.classList.add('disable-scrolling');
-    this.right = '0';
+  ngOnInit (): void {}
+
+  ngAfterContentInit (): void {
+    document.body.classList.add("disable-scrolling");
+    this.right = "0";
     this.loaded = true;
     this.cd.markForCheck();
   }
 
-  ngOnDestroy() {
-    document.body.classList.remove('disable-scrolling');
+  ngOnDestroy () {
+    document.body.classList.remove("disable-scrolling");
   }
 
-  close() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  close () {
+    this.router.navigate(["../"],
+      { relativeTo: this.route });
   }
 
-  closeOnKeydown($event: KeyboardEvent) {
+  closeOnKeydown ($event: KeyboardEvent) {
     if (this.leaveKeys.includes($event.key)) {
       this.close();
     }

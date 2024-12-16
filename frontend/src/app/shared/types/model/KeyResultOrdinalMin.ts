@@ -1,5 +1,5 @@
-import { KeyresultMin } from './KeyresultMin';
-import { CheckInOrdinalMin } from './CheckInOrdinalMin';
+import { KeyresultMin } from "./KeyresultMin";
+import { CheckInOrdinalMin } from "./CheckInOrdinalMin";
 
 export interface KeyResultOrdinalMin extends KeyresultMin {
   commitZone: string;

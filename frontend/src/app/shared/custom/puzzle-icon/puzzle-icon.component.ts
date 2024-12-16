@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-puzzle-icon',
-  templateUrl: './puzzle-icon.component.html',
+  selector: "app-puzzle-icon",
+  templateUrl: "./puzzle-icon.component.html"
 })
 export class PuzzleIconComponent {
   @Input({ required: true })
@@ -12,5 +12,5 @@ export class PuzzleIconComponent {
   alt!: string;
 
   @Input({ required: false })
-  size: number = 16;
+  size = 16;
 }

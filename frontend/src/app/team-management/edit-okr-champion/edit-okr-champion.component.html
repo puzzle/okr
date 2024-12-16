@@ -1,28 +1,28 @@
 <div>
   @if (edit) {
-    <mat-checkbox
-      [ngModel]="user.isOkrChampion"
-      (ngModelChange)="setOkrChampion($event)"
-      [attr.data-testId]="'edit-okr-champion-checkbox'"
-      >OKR Champion
-    </mat-checkbox>
+  <mat-checkbox
+    [ngModel]="user.isOkrChampion"
+    (ngModelChange)="setOkrChampion($event)"
+    [attr.data-testId]="'edit-okr-champion-checkbox'"
+  >OKR Champion
+  </mat-checkbox>
   } @else {
-    <div class="d-flex align-items-center px-2" [attr.data-testId]="'edit-okr-champion-readonly'">
-      <span>OKR Champion:&nbsp;</span>
-      @if (user.isOkrChampion) {
-        <span>Ja</span>
-      } @else {
-        <span>Nein</span>
-      }
-      @if (okrChampionEditable()) {
-        <app-puzzle-icon-button
-          class="mx-2"
-          icon="edit.svg"
-          alt="Edit okr champion icon"
-          [attr.data-testId]="'edit-okr-champion-edit'"
-          (click)="setEditAsync(true)"
-        ></app-puzzle-icon-button>
-      }
-    </div>
+  <div class="d-flex align-items-center px-2" [attr.data-testId]="'edit-okr-champion-readonly'">
+    <span>OKR Champion:&nbsp;</span>
+    @if (user.isOkrChampion) {
+    <span>Ja</span>
+    } @else {
+    <span>Nein</span>
+    }
+    @if (okrChampionEditable()) {
+    <app-puzzle-icon-button
+      class="mx-2"
+      icon="edit.svg"
+      alt="Edit okr champion icon"
+      [attr.data-testId]="'edit-okr-champion-edit'"
+      (click)="setEditAsync(true)"
+    ></app-puzzle-icon-button>
+    }
+  </div>
   }
 </div>

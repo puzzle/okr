@@ -1,5 +1,5 @@
-import './commands';
-import { keyCodeDefinitions } from 'cypress-real-events/keyCodeDefinitions';
+import "./commands";
+import { keyCodeDefinitions } from "cypress-real-events/keyCodeDefinitions";
 
 declare global {
   namespace Cypress {

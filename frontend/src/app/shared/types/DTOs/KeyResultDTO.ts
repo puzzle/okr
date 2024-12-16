@@ -1,7 +1,7 @@
-import { User } from '../model/User';
-import { Objective } from '../model/Objective';
-import { CheckIn } from '../model/CheckIn';
-import { Action } from '../model/Action';
+import { User } from "../model/User";
+import { Objective } from "../model/Objective";
+import { CheckIn } from "../model/CheckIn";
+import { Action } from "../model/Action";
 
 export interface KeyResultDTO {
   id: number | undefined;

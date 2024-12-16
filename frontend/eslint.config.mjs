@@ -103,6 +103,7 @@ export default tsEslint.config(
       '@html-eslint/indent': ['error', 2],
       '@html-eslint/require-img-alt': 'off',
       '@html-eslint/element-newline': 'off',
+      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
     },
   },
   {

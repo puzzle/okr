@@ -5,7 +5,7 @@ export abstract class PageObjectMapperBase {
     return new this();
   }
 
-  run (arg: any) {
+  run (_arg: any) {
     return this;
   }
 

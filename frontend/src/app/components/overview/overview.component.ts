@@ -22,6 +22,7 @@ import { ConfigService } from '../../services/config.service';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();

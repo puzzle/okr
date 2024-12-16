@@ -11,6 +11,7 @@ import { getFullNameFromUser } from '../../shared/types/model/User';
   templateUrl: './application-top-bar.component.html',
   styleUrls: ['./application-top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   userFullName: string = '';

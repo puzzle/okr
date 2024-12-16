@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'unitTransformation',
+  standalone: false,
 })
 export class UnitTransformationPipe implements PipeTransform {
   transform(value: number, label: string): string {

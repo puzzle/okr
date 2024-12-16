@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   selector: 'app-add-edit-team-dialog',
   templateUrl: './add-edit-team-dialog.component.html',
   styleUrls: ['./add-edit-team-dialog.component.scss'],
+  standalone: false,
 })
 export class AddEditTeamDialog implements OnInit {
   teamForm = new FormGroup({

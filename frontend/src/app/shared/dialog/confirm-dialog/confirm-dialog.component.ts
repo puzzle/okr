@@ -1,17 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmDialogData } from '../../../services/dialog.service';
-import { ButtonState } from '../../types/enums/ButtonState';
+import { Component, Inject, OnInit } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { ConfirmDialogData } from "../../../services/dialog.service";
+import { ButtonState } from "../../types/enums/ButtonState";
 
 @Component({
-  selector: 'app-confirm-dialog',
-  templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss']
+  selector: "app-confirm-dialog",
+  templateUrl: "./confirm-dialog.component.html",
+  styleUrls: ["./confirm-dialog.component.scss"]
 })
 export class ConfirmDialogComponent implements OnInit {
-  dialogTitle = '';
+  dialogTitle = "";
 
-  dialogText = '';
+  dialogText = "";
 
   yesButtonState?: ButtonState;
 
@@ -19,10 +19,10 @@ export class ConfirmDialogComponent implements OnInit {
 
   closeButtonState?: ButtonState;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
+  constructor (@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
     public dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
 
-  ngOnInit() {
+  ngOnInit () {
     this.dialogTitle = this.data.title;
     this.dialogText = this.data.text;
     this.yesButtonState = this.data.yesButtonState ?? ButtonState.VisibleEnabled;
@@ -30,33 +30,33 @@ export class ConfirmDialogComponent implements OnInit {
     this.closeButtonState = this.data.closeButtonState ?? ButtonState.Hidden;
   }
 
-  closeAndDelete() {
+  closeAndDelete () {
     this.dialogRef.close(true);
   }
 
-  isYesButtonVisible() {
+  isYesButtonVisible () {
     return this.yesButtonState === ButtonState.VisibleEnabled || this.yesButtonState === ButtonState.VisibleDisabled;
   }
 
-  isYesButtonDisabled() {
+  isYesButtonDisabled () {
     return this.yesButtonState === ButtonState.VisibleDisabled;
   }
 
-  isNoButtonVisible() {
+  isNoButtonVisible () {
     return this.noButtonState === ButtonState.VisibleEnabled || this.noButtonState === ButtonState.VisibleDisabled;
   }
 
-  isNoButtonDisabled() {
+  isNoButtonDisabled () {
     return this.noButtonState === ButtonState.VisibleDisabled;
   }
 
-  isCloseButtonVisible() {
+  isCloseButtonVisible () {
     return (
       this.closeButtonState === ButtonState.VisibleEnabled || this.closeButtonState === ButtonState.VisibleDisabled
     );
   }
 
-  isCloseButtonDisabled() {
+  isCloseButtonDisabled () {
     return this.closeButtonState === ButtonState.VisibleDisabled;
   }
 }

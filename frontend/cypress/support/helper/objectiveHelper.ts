@@ -1,9 +1,11 @@
-export function filterByObjectiveName(objectiveName: string) {
-  return (index: number, element: HTMLElement) => isObjectiveName(element, objectiveName);
+export function filterByObjectiveName (objectiveName: string) {
+  return (index: number, element: HTMLElement) => isObjectiveName(element,
+    objectiveName);
 }
 
-export function filterByObjectiveState(icon: string) {
-  return (index: number, element: HTMLElement) => isObjectiveState(element, icon);
+export function filterByObjectiveState (icon: string) {
+  return (index: number, element: HTMLElement) => isObjectiveState(element,
+    icon);
 }
 
 const isObjectiveState = (element: HTMLElement, icon: string) => {
@@ -16,6 +18,6 @@ const isObjectiveName = (element: HTMLElement, objectiveName: string) => {
     .find(`:contains("${objectiveName}")`).length > 0;
 };
 
-export function getObjectiveColumns() {
-  return cy.get('.objective');
+export function getObjectiveColumns () {
+  return cy.get(".objective");
 }

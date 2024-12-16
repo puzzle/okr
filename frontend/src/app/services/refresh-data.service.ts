@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { DEFAULT_HEADER_HEIGHT_PX } from '../shared/constantLibary';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Subject } from "rxjs";
+import { DEFAULT_HEADER_HEIGHT_PX } from "../shared/constantLibary";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class RefreshDataService {
   public reloadOverviewSubject = new Subject<void>();
@@ -16,7 +16,7 @@ export class RefreshDataService {
 
   public okrBannerHeightSubject: BehaviorSubject<number> = new BehaviorSubject<number>(DEFAULT_HEADER_HEIGHT_PX);
 
-  markDataRefresh() {
+  markDataRefresh () {
     this.reloadOverviewSubject.next();
   }
 }

@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ApplicationTopBarComponent } from './application-top-bar.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { MatMenuModule } from '@angular/material/menu';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatMenuHarness } from '@angular/material/menu/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import { NavigationEnd, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { testUser } from '../../shared/testData';
-import { UserService } from '../../services/user.service';
-import { ConfigService } from '../../services/config.service';
-import { DialogService } from '../../services/dialog.service';
+import { ApplicationTopBarComponent } from "./application-top-bar.component";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from "angular-oauth2-oidc";
+import { HttpClient, HttpHandler } from "@angular/common/http";
+import { MatMenuModule } from "@angular/material/menu";
+import { HarnessLoader } from "@angular/cdk/testing";
+import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";
+import { MatMenuHarness } from "@angular/material/menu/testing";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { MatDialogModule } from "@angular/material/dialog";
+import { NavigationEnd, Router } from "@angular/router";
+import { of } from "rxjs";
+import { testUser } from "../../shared/testData";
+import { UserService } from "../../services/user.service";
+import { ConfigService } from "../../services/config.service";
+import { DialogService } from "../../services/dialog.service";
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),
@@ -28,7 +28,9 @@ const dialogServiceMock = {
 };
 
 const routerMock = {
-  events: of(new NavigationEnd(1, '', '')),
+  events: of(new NavigationEnd(1,
+    "",
+    "")),
   navigateByUrl: jest.fn()
 };
 
@@ -40,73 +42,77 @@ const configServiceMock = {
   config$: of({})
 };
 
-describe('ApplicationTopBarComponent', () => {
-  let component: ApplicationTopBarComponent;
-  let fixture: ComponentFixture<ApplicationTopBarComponent>;
-  let loader: HarnessLoader;
+describe("ApplicationTopBarComponent",
+  () => {
+    let component: ApplicationTopBarComponent;
+    let fixture: ComponentFixture<ApplicationTopBarComponent>;
+    let loader: HarnessLoader;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [MatMenuModule,
-        NoopAnimationsModule,
-        MatDialogModule],
-      declarations: [ApplicationTopBarComponent],
-      providers: [
-        { provide: OAuthService,
-          useValue: oAuthMock },
-        { provide: HttpClient },
-        { provide: HttpHandler },
-        { provide: UrlHelperService },
-        { provide: OAuthLogger },
-        { provide: DateTimeProvider },
-        {
-          provide: DialogService,
-          useValue: dialogServiceMock
-        },
-        {
-          provide: Router,
-          useValue: routerMock
-        },
-        {
-          provide: UserService,
-          useValue: userServiceMock
-        },
-        {
-          provide: ConfigService,
-          useValue: configServiceMock
-        }
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [MatMenuModule,
+          NoopAnimationsModule,
+          MatDialogModule],
+        declarations: [ApplicationTopBarComponent],
+        providers: [
+          { provide: OAuthService,
+            useValue: oAuthMock },
+          { provide: HttpClient },
+          { provide: HttpHandler },
+          { provide: UrlHelperService },
+          { provide: OAuthLogger },
+          { provide: DateTimeProvider },
+          {
+            provide: DialogService,
+            useValue: dialogServiceMock
+          },
+          {
+            provide: Router,
+            useValue: routerMock
+          },
+          {
+            provide: UserService,
+            useValue: userServiceMock
+          },
+          {
+            provide: ConfigService,
+            useValue: configServiceMock
+          }
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      })
+        .compileComponents();
 
-    fixture = TestBed.createComponent(ApplicationTopBarComponent);
-    component = fixture.componentInstance;
-    loader = TestbedHarnessEnvironment.loader(fixture);
-    component.ngOnInit();
-  });
+      fixture = TestBed.createComponent(ApplicationTopBarComponent);
+      component = fixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(fixture);
+      component.ngOnInit();
+    });
 
-  it('should create', () => {
-    expect(component)
-      .toBeTruthy();
-  });
+    it("should create",
+      () => {
+        expect(component)
+          .toBeTruthy();
+      });
 
-  it('should set full name from user service', () => {
-    expect(component.userFullName)
-      .toBe('Bob Baumeister');
-  });
+    it("should set full name from user service",
+      () => {
+        expect(component.userFullName)
+          .toBe("Bob Baumeister");
+      });
 
-  it('logout function should get called on button click', async() => {
-    routerMock.navigateByUrl.mockReturnValue(of()
-      .toPromise());
-    const harness = await loader.getHarness(MatMenuHarness);
-    await harness.open();
-    fixture.detectChanges();
-    harness.getItems()
-      .then((items) => {
-        items[0].click();
-        expect(oAuthMock.logOut)
-          .toBeCalledTimes(1);
+    it("logout function should get called on button click",
+      async () => {
+        routerMock.navigateByUrl.mockReturnValue(of()
+          .toPromise());
+        const harness = await loader.getHarness(MatMenuHarness);
+        await harness.open();
+        fixture.detectChanges();
+        harness.getItems()
+          .then((items) => {
+            items[0].click();
+            expect(oAuthMock.logOut)
+              .toBeCalledTimes(1);
+          });
       });
   });
-});

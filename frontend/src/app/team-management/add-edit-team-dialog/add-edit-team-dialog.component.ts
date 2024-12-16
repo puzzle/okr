@@ -1,30 +1,31 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TeamService } from '../../services/team.service';
-import { Team } from '../../shared/types/model/Team';
-import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
+import { Component, Inject, OnInit } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { formInputCheck, hasFormFieldErrors } from "../../shared/common";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { TeamService } from "../../services/team.service";
+import { Team } from "../../shared/types/model/Team";
+import { TranslateService } from "@ngx-translate/core";
+import { UserService } from "../../services/user.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-add-edit-team-dialog',
-  templateUrl: './add-edit-team-dialog.component.html',
-  styleUrls: ['./add-edit-team-dialog.component.scss']
+  selector: "app-add-edit-team-dialog",
+  templateUrl: "./add-edit-team-dialog.component.html",
+  styleUrls: ["./add-edit-team-dialog.component.scss"]
 })
 export class AddEditTeamDialog implements OnInit {
   teamForm = new FormGroup({
-    name: new FormControl<string>('', [Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250)])
+    name: new FormControl<string>("",
+      [Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(250)])
   });
 
   protected readonly formInputCheck = formInputCheck;
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor(
+  constructor (
     public dialogRef: MatDialogRef<AddEditTeamDialog>,
     private teamService: TeamService,
     private userService: UserService,
@@ -38,7 +39,7 @@ export class AddEditTeamDialog implements OnInit {
     private translate: TranslateService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     if (this.data) {
       this.teamForm.setValue({
         name: this.data.team.name
@@ -46,7 +47,7 @@ export class AddEditTeamDialog implements OnInit {
     }
   }
 
-  saveTeam() {
+  saveTeam () {
     if (!this.data) {
       this.createNewTeam();
     } else {
@@ -54,7 +55,7 @@ export class AddEditTeamDialog implements OnInit {
     }
   }
 
-  private createNewTeam() {
+  private createNewTeam () {
     const newTeam: Team = this.teamForm.value as Team;
     this.teamService.createTeam(newTeam)
       .subscribe((result) => {
@@ -62,11 +63,11 @@ export class AddEditTeamDialog implements OnInit {
         this.userService.reloadCurrentUser()
           .subscribe();
         this.dialogRef.close(result);
-        this.router.navigateByUrl('/team-management/' + result.id);
+        this.router.navigateByUrl("/team-management/" + result.id);
       });
   }
 
-  private updateTeam() {
+  private updateTeam () {
     const updatedTeam: Team = {
       ...this.teamForm.value,
       id: this.data!.team.id,
@@ -78,14 +79,15 @@ export class AddEditTeamDialog implements OnInit {
       });
   }
 
-  getErrorMessage(
+  getErrorMessage (
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error)
-      .format(firstNumber, secondNumber);
+    return field + this.translate.instant("DIALOG_ERRORS." + error)
+      .format(firstNumber,
+        secondNumber);
   }
 
-  getDialogTitle(): string {
-    return this.data ? 'Team bearbeiten' : 'Team erfassen';
+  getDialogTitle (): string {
+    return this.data ? "Team bearbeiten" : "Team erfassen";
   }
 }

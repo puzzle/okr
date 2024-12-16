@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Team } from '../../shared/types/model/Team';
-import { TeamService } from '../../services/team.service';
-import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
-import { UserTeam } from '../../shared/types/model/UserTeam';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { Team } from "../../shared/types/model/Team";
+import { TeamService } from "../../services/team.service";
+import { combineLatest, map, Observable, Subject, takeUntil } from "rxjs";
+import { UserTeam } from "../../shared/types/model/UserTeam";
 
 @Component({
-  selector: 'app-add-user-team',
-  templateUrl: './add-user-team.component.html',
-  styleUrl: './add-user-team.component.scss'
+  selector: "app-add-user-team",
+  templateUrl: "./add-user-team.component.html",
+  styleUrl: "./add-user-team.component.scss"
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
   @Output()
@@ -25,9 +25,9 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private readonly teamService: TeamService) {}
+  constructor (private readonly teamService: TeamService) {}
 
-  ngOnInit() {
+  ngOnInit () {
     this.allAdminTeams$ = this.teamService.getAllTeams()
       .pipe(takeUntil(this.unsubscribe$),
         map((teams) => {
@@ -46,31 +46,31 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
         }));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy () {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  createUserTeam(team: Team) {
+  createUserTeam (team: Team) {
     this.userTeam = {
       team,
       isTeamAdmin: false
     };
   }
 
-  save(): void {
+  save (): void {
     if (!this.userTeam) {
-      throw new Error('UserTeam should be defined here');
+      throw new Error("UserTeam should be defined here");
     }
     this.addUserTeam.next(this.userTeam);
     this.userTeam = undefined;
   }
 
-  showAddButton(adminTeams: Team[] | null) {
+  showAddButton (adminTeams: Team[] | null) {
     return !this.userTeam && adminTeams?.length;
   }
 
-  addButtonDisabled(selectableAdminTeams: Team[] | null) {
+  addButtonDisabled (selectableAdminTeams: Team[] | null) {
     return !selectableAdminTeams?.length;
   }
 }

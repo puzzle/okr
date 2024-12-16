@@ -1,17 +1,17 @@
-import { Objective } from '../../shared/types/model/Objective';
-import { State } from '../../shared/types/enums/State';
-import { Completed } from '../../shared/types/model/Completed';
-import { ObjectiveService } from '../../services/objective.service';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
-import { CompletedService } from '../../services/completed.servce';
+import { Objective } from "../../shared/types/model/Objective";
+import { State } from "../../shared/types/enums/State";
+import { Completed } from "../../shared/types/model/Completed";
+import { ObjectiveService } from "../../services/objective.service";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { ObjectiveMin } from "../../shared/types/model/ObjectiveMin";
+import { CompletedService } from "../../services/completed.servce";
 
 export class ObjectiveMenuAfterActions {
-  constructor(private readonly objectiveService: ObjectiveService,
+  constructor (private readonly objectiveService: ObjectiveService,
     private readonly completedService: CompletedService,
     private readonly refreshDataService: RefreshDataService) {}
 
-  completeObjective(objectiveMin: ObjectiveMin, result: { endState: string;
+  completeObjective (objectiveMin: ObjectiveMin, result: { endState: string;
     comment: string | null;
     objective: any; }) {
     this.objectiveService.getFullObjective(objectiveMin.id)
@@ -33,10 +33,10 @@ export class ObjectiveMenuAfterActions {
       });
   }
 
-  releaseFromQuarter(objectiveMin: ObjectiveMin) {
+  releaseFromQuarter (objectiveMin: ObjectiveMin) {
     this.objectiveService.getFullObjective(objectiveMin.id)
       .subscribe((objective: Objective) => {
-        objective.state = 'ONGOING' as State;
+        objective.state = "ONGOING" as State;
         this.objectiveService.updateObjective(objective)
           .subscribe(() => {
             this.refreshDataService.markDataRefresh();
@@ -44,10 +44,10 @@ export class ObjectiveMenuAfterActions {
       });
   }
 
-  objectiveBackToDraft(objectiveMin: ObjectiveMin) {
+  objectiveBackToDraft (objectiveMin: ObjectiveMin) {
     this.objectiveService.getFullObjective(objectiveMin.id)
       .subscribe((objective: Objective) => {
-        objective.state = 'DRAFT' as State;
+        objective.state = "DRAFT" as State;
         this.objectiveService.updateObjective(objective)
           .subscribe(() => {
             this.refreshDataService.markDataRefresh();
@@ -55,10 +55,10 @@ export class ObjectiveMenuAfterActions {
       });
   }
 
-  objectiveReopen(objectiveMin: ObjectiveMin) {
+  objectiveReopen (objectiveMin: ObjectiveMin) {
     this.objectiveService.getFullObjective(objectiveMin.id)
       .subscribe((objective: Objective) => {
-        objective.state = 'ONGOING' as State;
+        objective.state = "ONGOING" as State;
         this.objectiveService.updateObjective(objective)
           .subscribe(() => {
             this.completedService.deleteCompleted(objective.id)

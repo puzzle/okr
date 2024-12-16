@@ -1,5 +1,6 @@
-export function filterByKeyResultName(keyResultName: string) {
-  return (index: number, element: HTMLElement) => isKeyResultName(element, keyResultName);
+export function filterByKeyResultName (keyResultName: string) {
+  return (index: number, element: HTMLElement) => isKeyResultName(element,
+    keyResultName);
 }
 
 const isKeyResultName = (element: HTMLElement, keyResultName: string) => {
@@ -7,6 +8,6 @@ const isKeyResultName = (element: HTMLElement, keyResultName: string) => {
     .find(`:contains("${keyResultName}")`).length > 0;
 };
 
-export function getKeyResults() {
-  return cy.get('.key-result');
+export function getKeyResults () {
+  return cy.get(".key-result");
 }

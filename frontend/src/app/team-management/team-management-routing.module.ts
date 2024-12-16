@@ -1,25 +1,25 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { TeamManagementComponent } from './team-management.component';
-import { SidepanelComponent } from '../shared/sidepanel/sidepanel.component';
-import { MemberDetailComponent } from './member-detail/member-detail.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { TeamManagementComponent } from "./team-management.component";
+import { SidepanelComponent } from "../shared/sidepanel/sidepanel.component";
+import { MemberDetailComponent } from "./member-detail/member-detail.component";
 
 const children = [{
-  path: 'details',
+  path: "details",
   component: SidepanelComponent,
   children: [{
-    path: 'member/:id',
+    path: "member/:id",
     component: MemberDetailComponent
   }]
 }];
 
 const routes: Routes = [{
-  path: '',
+  path: "",
   component: TeamManagementComponent,
   children
 },
 {
-  path: ':teamId',
+  path: ":teamId",
   component: TeamManagementComponent,
   children
 }];

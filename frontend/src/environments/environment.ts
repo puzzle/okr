@@ -4,7 +4,7 @@
  * The list of file replacements can be found in `angular.json`.
  */
 
-import { AuthConfig } from 'angular-oauth2-oidc';
+import { AuthConfig } from "angular-oauth2-oidc";
 
 export const environment = {
   production: false,
@@ -12,12 +12,12 @@ export const environment = {
   oauth: {
     decreaseExpirationBySec: 30,
     clearHashAfterLogin: true,
-    issuer: '',
+    issuer: "",
     strictDiscoveryDocumentValidation: false,
     redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}`,
-    scope: 'openid profile',
-    clientId: '',
-    responseType: 'code',
+    scope: "openid profile",
+    clientId: "",
+    responseType: "code",
     showDebugInformation: true
   } as AuthConfig
 };

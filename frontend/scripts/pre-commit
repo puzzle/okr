@@ -8,7 +8,7 @@ get_changed_files() {
     path=$1
     GIT_BASE_PATH=$(git rev-parse --show-toplevel)
     # shellcheck disable=SC1087
-    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" | grep -E "\.($FORMATTED_FILE_EXTENSIONS)$"  | tr '\n' ' ' | xargs
+    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" | grep -E "\.($FORMATTED_FILE_EXTENSIONS)$"  | tr '\n' ' '
 }
 
 has_changed() {

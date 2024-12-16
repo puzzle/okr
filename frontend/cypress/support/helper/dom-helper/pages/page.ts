@@ -1,7 +1,7 @@
 import { PageObjectMapperBase } from "../pageObjectMapperBase";
 
 export abstract class Page extends PageObjectMapperBase {
-  visit (arg?: any): this {
+  visit (_arg?: any): this {
     this.doVisit();
     return this.afterVisit();
   }

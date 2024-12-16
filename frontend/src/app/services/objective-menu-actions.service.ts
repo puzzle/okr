@@ -48,7 +48,7 @@ export class ObjectiveMenuActionsService {
 
   private getSpecificMenuEntries (objective: ObjectiveMin): ObjectiveMenuEntry[] {
     if (this.isObjectiveComplete(objective)) {
-      return this.getCompletedMenuActions(objective);
+      return this.getCompletedMenuActions();
     } else if (objective.state === State.ONGOING) {
       return this.getOngoingMenuActions(objective);
     } else if (objective.state === State.DRAFT) {
@@ -72,14 +72,14 @@ export class ObjectiveMenuActionsService {
       this.actions.objectiveBackToDraft()];
   }
 
-  private getCompletedMenuActions (objective: ObjectiveMin): ObjectiveMenuEntry[] {
+  private getCompletedMenuActions (): ObjectiveMenuEntry[] {
     return [this.actions.objectiveReopen()];
   }
 
   private getReleaseAction (objective: ObjectiveMin): ObjectiveMenuEntry {
     return this.isInBacklogQuarter(objective)
       ? this.actions.releaseFromBacklogAction(objective)
-      : this.actions.releaseFromQuarterAction(objective);
+      : this.actions.releaseFromQuarterAction();
   }
 
   private isObjectiveComplete (objective: ObjectiveMin): boolean {

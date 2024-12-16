@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ConfidenceComponent } from "./confidence.component";
-import { HarnessLoader } from "@angular/cdk/testing";
-import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";
 import { checkInMetric } from "../../shared/testData";
 import { MatSliderModule } from "@angular/material/slider";
 import { CheckInMin } from "../../shared/types/model/CheckInMin";
@@ -14,7 +12,6 @@ describe("ConfidenceComponent",
   () => {
     let component: ConfidenceComponent;
     let fixture: ComponentFixture<ConfidenceComponent>;
-    let loader: HarnessLoader;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -26,7 +23,6 @@ describe("ConfidenceComponent",
 
       fixture = TestBed.createComponent(ConfidenceComponent);
       component = fixture.componentInstance;
-      loader = TestbedHarnessEnvironment.loader(fixture);
       component.checkIn = checkInMetric;
       component.edit = true;
     });

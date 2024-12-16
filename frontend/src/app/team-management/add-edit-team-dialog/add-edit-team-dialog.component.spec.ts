@@ -1,6 +1,5 @@
 import { AddEditTeamDialog } from "./add-edit-team-dialog.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { HarnessLoader } from "@angular/cdk/testing";
 import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
@@ -10,7 +9,6 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";
 import { TeamService } from "../../services/team.service";
 import { of } from "rxjs";
 import { marketingTeamWriteable, teamFormObject } from "../../shared/testData";
@@ -40,7 +38,6 @@ describe("TeamManagementComponent",
   () => {
     let component: AddEditTeamDialog;
     let fixture: ComponentFixture<AddEditTeamDialog>;
-    let loader: HarnessLoader;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -84,7 +81,6 @@ describe("TeamManagementComponent",
       fixture = TestBed.createComponent(AddEditTeamDialog);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      loader = TestbedHarnessEnvironment.loader(fixture);
     });
 
     it("should create",

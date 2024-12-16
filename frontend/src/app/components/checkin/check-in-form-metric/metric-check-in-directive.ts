@@ -1,4 +1,4 @@
-import { Directive, HostListener, forwardRef } from "@angular/core";
+import { Directive, forwardRef, HostListener } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Directive({
@@ -10,11 +10,12 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
   }]
 })
 export class MetricCheckInDirective implements ControlValueAccessor {
-  private onChange: (value: number | null) => void = () => {};
+  private onChange: (value: number | null) => void = () => {
+  };
 
   protected readonly CHAR_REGEX = /[^0-9.]/g;
 
-  writeValue (value: any): void {
+  writeValue (): void {
     // does not need to be implemented because the display value does not need to be modified
   }
 
@@ -22,7 +23,7 @@ export class MetricCheckInDirective implements ControlValueAccessor {
     this.onChange = fn;
   }
 
-  registerOnTouched (fn: () => void): void {
+  registerOnTouched (): void {
     // does not need to be implemented
   }
 

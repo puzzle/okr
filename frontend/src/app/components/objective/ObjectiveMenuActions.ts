@@ -15,9 +15,9 @@ export class ObjectiveMenuActions {
     private readonly refreshDataService: RefreshDataService,
     private readonly afterActions: ObjectiveMenuAfterActions) {}
 
-  releaseFromQuarterAction (objective: ObjectiveMin): ObjectiveMenuEntry {
+  releaseFromQuarterAction (): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog("CONFIRMATION.RELEASE");
-    const afterAction: ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult) => this.afterActions.releaseFromQuarter(objective);
+    const afterAction: ObjectiveMenuAfterAction = (objective: ObjectiveMin) => this.afterActions.releaseFromQuarter(objective);
     return { displayName: "Objective veröffentlichen",
       action: action,
       afterAction: afterAction };
@@ -73,7 +73,7 @@ export class ObjectiveMenuActions {
 
   objectiveBackToDraft (): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog("CONFIRMATION.TO_DRAFT");
-    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) => this.afterActions.objectiveBackToDraft(obj);
+    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin) => this.afterActions.objectiveBackToDraft(obj);
 
     return { displayName: "Objective als Draft speichern",
       action: action,
@@ -82,7 +82,7 @@ export class ObjectiveMenuActions {
 
   objectiveReopen (): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog("CONFIRMATION.REOPEN");
-    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) => this.afterActions.objectiveReopen(obj);
+    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin) => this.afterActions.objectiveReopen(obj);
 
     return { displayName: "Objective wiedereröffnen",
       action: action,

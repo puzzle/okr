@@ -8,8 +8,6 @@ describe("TeamListComponent",
   () => {
     let component: TeamListComponent;
     let fixture: ComponentFixture<TeamListComponent>;
-    let teamService: TeamService;
-    let route: ActivatedRoute;
     const paramTeamId = 1;
 
     const teamServiceMock = {
@@ -37,8 +35,6 @@ describe("TeamListComponent",
     beforeEach(() => {
       fixture = TestBed.createComponent(TeamListComponent);
       component = fixture.componentInstance;
-      teamService = TestBed.inject(TeamService);
-      route = TestBed.inject(ActivatedRoute);
       fixture.detectChanges();
     });
 

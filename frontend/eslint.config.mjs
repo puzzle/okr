@@ -22,7 +22,7 @@ export default tsEslint.config(
       'unused-imports/no-unused-imports': 'error',
 
       // ToDo: Disable rules so eslint passes, fix in followup ticket
-      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-unused-expressions': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       'no-undef': 'off',

@@ -11,7 +11,7 @@ import { convertFromUser, convertFromUsers, UserTableEntry } from "../../shared/
 import { UserRole } from "../../shared/types/enums/UserRole";
 import { TeamService } from "../../services/team.service";
 import { AddMemberToTeamDialogComponent } from "../add-member-to-team-dialog/add-member-to-team-dialog.component";
-import { AddEditTeamDialog } from "../add-edit-team-dialog/add-edit-team-dialog.component";
+import { AddEditTeamDialogComponent } from "../add-edit-team-dialog/add-edit-team-dialog.component";
 import { TranslateTestingModule } from "ngx-translate-testing";
 import { MatTableDataSource } from "@angular/material/table";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -314,7 +314,7 @@ describe("MemberListComponent",
         component.editTeam();
 
         expect(dialogService.open)
-          .toBeCalledWith(AddEditTeamDialog,
+          .toBeCalledWith(AddEditTeamDialogComponent,
             expect.objectContaining({
               data: {
                 team: team1

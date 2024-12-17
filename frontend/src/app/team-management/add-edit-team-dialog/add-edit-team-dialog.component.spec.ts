@@ -1,4 +1,4 @@
-import { AddEditTeamDialog } from "./add-edit-team-dialog.component";
+import { AddEditTeamDialogComponent } from "./add-edit-team-dialog.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
@@ -36,8 +36,8 @@ const teamServiceMock = {
 
 describe("TeamManagementComponent",
   () => {
-    let component: AddEditTeamDialog;
-    let fixture: ComponentFixture<AddEditTeamDialog>;
+    let component: AddEditTeamDialogComponent;
+    let fixture: ComponentFixture<AddEditTeamDialogComponent>;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -52,7 +52,7 @@ describe("TeamManagementComponent",
           MatCheckboxModule,
           MatDividerModule
         ],
-        declarations: [AddEditTeamDialog,
+        declarations: [AddEditTeamDialogComponent,
           DialogTemplateCoreComponent],
         providers: [
           provideRouter([]),
@@ -78,7 +78,7 @@ describe("TeamManagementComponent",
             useValue: {} }
         ]
       });
-      fixture = TestBed.createComponent(AddEditTeamDialog);
+      fixture = TestBed.createComponent(AddEditTeamDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });

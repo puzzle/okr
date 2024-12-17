@@ -4,7 +4,7 @@ import { ConfirmDialogData, DialogService } from "./dialog.service";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "../shared/dialog/confirm-dialog/confirm-dialog.component";
-import { AddEditTeamDialog } from "../team-management/add-edit-team-dialog/add-edit-team-dialog.component";
+import { AddEditTeamDialogComponent } from "../team-management/add-edit-team-dialog/add-edit-team-dialog.component";
 import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { provideHttpClient } from "@angular/common/http";
 import { ButtonState } from "../shared/types/enums/ButtonState";
@@ -78,7 +78,7 @@ describe("DialogService",
 
     it("should open dialog",
       () => {
-        const dialog = service.open(AddEditTeamDialog,
+        const dialog = service.open(AddEditTeamDialogComponent,
           {
             data: {
               aProperty: "aValue"
@@ -87,10 +87,10 @@ describe("DialogService",
         expect(dialog)
           .toBeInstanceOf(MatDialogRef);
         expect(dialog.componentInstance)
-          .toBeInstanceOf(AddEditTeamDialog);
+          .toBeInstanceOf(AddEditTeamDialogComponent);
 
         expect(matDialogSpy.open)
-          .toHaveBeenCalledWith(AddEditTeamDialog,
+          .toHaveBeenCalledWith(AddEditTeamDialogComponent,
             {
               panelClass: service.DIALOG_PANEL_CLASS_DEFAULT,
               ...service.DIALOG_CONFIG,

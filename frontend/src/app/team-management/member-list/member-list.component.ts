@@ -7,7 +7,7 @@ import { convertFromUsers, UserTableEntry } from "../../shared/types/model/UserT
 import { TeamService } from "../../services/team.service";
 import { Team } from "../../shared/types/model/Team";
 import { AddMemberToTeamDialogComponent } from "../add-member-to-team-dialog/add-member-to-team-dialog.component";
-import { AddEditTeamDialog } from "../add-edit-team-dialog/add-edit-team-dialog.component";
+import { AddEditTeamDialogComponent } from "../add-edit-team-dialog/add-edit-team-dialog.component";
 import { MatTableDataSource } from "@angular/material/table";
 import { InviteUserDialogComponent } from "../invite-user-dialog/invite-user-dialog.component";
 import { DialogService } from "../../services/dialog.service";
@@ -138,7 +138,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   }
 
   editTeam (): void {
-    const dialogRef = this.dialogService.open(AddEditTeamDialog,
+    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent,
       { data: { team: this.selectedTeam$.value } });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());

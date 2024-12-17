@@ -79,7 +79,7 @@ export default tsEslint.config(
       '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
       '@stylistic/lines-around-comment': ['error'],
       '@angular-eslint/no-empty-lifecycle-method': 'error',
-      '@angular-eslint/component-class-suffix': 'off',
+      '@angular-eslint/component-class-suffix': 'error',
       '@angular-eslint/template/eqeqeq': 'off',
       '@angular-eslint/template/interactive-supports-focus': 'off',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',

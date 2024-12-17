@@ -13,7 +13,7 @@ import { Router } from "@angular/router";
   templateUrl: "./add-edit-team-dialog.component.html",
   styleUrls: ["./add-edit-team-dialog.component.scss"]
 })
-export class AddEditTeamDialog implements OnInit {
+export class AddEditTeamDialogComponent implements OnInit {
   teamForm = new FormGroup({
     name: new FormControl<string>("",
       [Validators.required,
@@ -26,7 +26,7 @@ export class AddEditTeamDialog implements OnInit {
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor (
-    public dialogRef: MatDialogRef<AddEditTeamDialog>,
+    public dialogRef: MatDialogRef<AddEditTeamDialogComponent>,
     private teamService: TeamService,
     private userService: UserService,
     private router: Router,

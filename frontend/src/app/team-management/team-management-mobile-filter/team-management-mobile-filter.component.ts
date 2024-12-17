@@ -28,11 +28,8 @@ export class TeamManagementMobileFilterComponent {
         params));
   }
 
-  navigate (team: Team) {
-    if (this.ALL_TEAMS) {
-      this.navigateToAllTeams();
-    }
-    this.navigateToTeam(team);
+  navigate (team: Team | "alle") {
+    team == this.ALL_TEAMS ? this.navigateToAllTeams() : this.navigateToTeam(team);
   }
 
   private navigateToTeam (team: Team) {

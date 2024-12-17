@@ -13,7 +13,6 @@ export function createRegexForWords(wordList) {
     part1List.push(part1);
     part2List.push(part2);
   });
-
   return `(${part1List.join('|')})|(${part2List.join('')})`;
 }
 
@@ -37,6 +36,13 @@ function transformToUnderscoreUppercase(word) {
     .toUpperCase();
 }
 
+function transformToHyphenLowercase(word) {
+  return word
+    .split(/(?=[A-Z])/) // Split at uppercase letters without removing them
+    .join('-')
+    .toLowerCase();
+}
+
 function getWordRegexWithOptionalLetters(word) {
   return word.replace(/(\[[^\[\]]+\])(?![.?])/g, "$1?"); // Puts a "?" between the case-insensitive braces if there is no "?" or "." already
 }
@@ -46,7 +52,8 @@ function createRegexToCheckIfWordLookAlike(word) {
   wordLooksLikeRegex = getWordRegexWithOptionalLetters(wordLooksLikeRegex)
   const wordCorrectRegex = getCaseInsensitiveRegexForChar(word[0]) + word.slice(1);
   const wordInUpperCase = transformToUnderscoreUppercase(word)
-  return `(?=.*${wordLooksLikeRegex}.*)(.*${wordCorrectRegex}.*|[A-Z_]*${wordInUpperCase}[A-Z_]*)`;
+  const wordInLowerCase = transformToHyphenLowercase(word)
+  return `(?=.*${wordLooksLikeRegex}.*)(.*${wordCorrectRegex}.*|[A-Z_]*${wordInUpperCase}[A-Z_]*|[a-z-]*${wordInLowerCase}[a-z-]*)`;
 }
 
 function createFallbackRegex(word) {

@@ -42,25 +42,16 @@ export default tsEslint.config(
        "id-match": [
          "error",
          createRegexForWords(["KeyResult", "CheckIn", "TeamManagement", "StretchGoal"])
-         // "((?=.*[Kk]?[Ee]?[Yy].?[Rr]?[Ee]?[Ss]?[Uu]?[Ll]?[Tt]?.*)(.*[Kk]eyResult.*|[A-Z_]*KEY_RESULT[A-Z_]*)|(?=.*[Cc]?[Hh]?[Ee]?[Cc]?[Kk].?[Ii]?[Nn]?.*)(.*[Cc]heckIn.*|[A-Z_]*CHECK_IN[A-Z_]*))|((?=^(?!.*[Kk][Ee][Yy].?[Rr][Ee][Ss][Uu][Ll][Tt]).*)(?=^(?!.*[Cc][Hh][Ee][Cc][Kk].?[Ii][Nn]).*))"
-         // "((?=.*[Ss]?[Tt]?[Rr]?[Ee]?[Tt]?[Cc]?[Hh].?[Gg]?[Oo]?[Aa]?[Ll]?.*)(.*[Ss]tretchGoal.*|[A-Z_]*STRETCH_GOAL[A-Z_]*)|^(?!.*[Ss][Tt][Rr][Ee][Tt][Cc][Hh].?[Gg][Oo][Aa][Ll]).*)"
-         // "((?=.*[Kk]?[Ee]?[Yy].?[Rr]?[Ee]?[Ss]?[Uu]?[Ll]?[Tt]?.*)(.*[Kk]eyResult.*|[A-Z_]*KEY_RESULT[A-Z_]*)|^(?!.*[Kk][Ee][Yy].?[Rr][Ee][Ss][Uu][Ll][Tt]).*)"
-         // "((?=.*[Cc]?[Hh]?[Ee]?[Cc]?[Kk].?[Ii]?[Nn]?.*)(.*[Cc]heckIn.*|[A-Z_]*CHECK_IN[A-Z_]*)|^(?!.*[Cc][Hh][Ee][Cc][Kk].?[Ii][Nn]).*)"
-         // "((?=.*[Tt]?[Ee]?[Aa]?[Mm].?[Mm]?[Aa]?[Nn]?[Aa]?[Gg]?[Ee]?[Mm]?[Ee]?[Nn]?[Tt]?.*)(.*[Tt]eamManagement.*|[A-Z_]*TEAM_MANAGEMENT[A-Z_]*)|^(?!.*[Tt][Ee][Aa][Mm].?[Mm][Aa][Nn][Aa][Gg][Ee][Mm][Ee][Nn][Tt]).*)"
        ]
       }
   }, {
 
     ...html.configs["flat/recommended"],
     files: ["**/*.html"],
-
     rules: {
-      "@html-eslint/id-naming-convention": ["error", "kebab-case"],
+      "@html-eslint/id-naming-convention": ["error", "regex", {pattern: `(?=(^[a-z]+(-[a-z]+)*$))(?=(${createRegexForWords(["KeyResult", "CheckIn", "TeamManagement", "StretchGoal"])}))`}],
     }
   },
-  // {
-  //     files: ["**/*.scss"], rules: {}
-  // },
 );
 
 

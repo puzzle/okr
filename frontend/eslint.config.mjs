@@ -72,7 +72,7 @@ export default tsEslint.config(
       '@typescript-eslint/no-namespace': ['error',{
         allowDeclarations: true,
       }],
-      'prefer-rest-params': 'off',
+      'prefer-rest-params': 'error',
       '@typescript-eslint/no-empty-function': ['off'],
       '@stylistic/lines-around-comment': ['off'],
       '@angular-eslint/no-empty-lifecycle-method': 'off',

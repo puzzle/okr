@@ -78,7 +78,7 @@ export default tsEslint.config(
       'prefer-rest-params': 'error',
       '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
       '@stylistic/lines-around-comment': ['error'],
-      '@angular-eslint/no-empty-lifecycle-method': 'off',
+      '@angular-eslint/no-empty-lifecycle-method': 'error',
       '@angular-eslint/component-class-suffix': 'off',
       '@angular-eslint/template/eqeqeq': 'off',
       '@angular-eslint/template/interactive-supports-focus': 'off',

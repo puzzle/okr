@@ -1,5 +1,7 @@
 import tsEslint from "typescript-eslint";
 import html from "@html-eslint/eslint-plugin";
+import { createRegexForWords } from "./eslintHelper.mjs"
+
 
 export default tsEslint.config(
   {
@@ -62,50 +64,3 @@ export default tsEslint.config(
 );
 
 
-//Creates a big regex to check the right spelling on Words in the List
-function createRegexForWords(wordList) {
-// This function builds a case-insensitive regex pattern for a given word.
-  function makeRegexForWord(word, ignoreQuestionMark = false) {
-    return word
-      .split('')
-      .map((char, index) => {
-        const regex = `[${char.toUpperCase()}${char.toLowerCase()}]`;
-
-        if (index === 0) return regex;
-        if (index === word.length - 1) return ignoreQuestionMark ? regex : `?${regex}?`;
-        if (char.match(/[A-Z]/)) return `.?${regex}`;
-
-        return ignoreQuestionMark ? regex : `?${regex}`;
-      })
-      .join('');
-  }
-
-  function transformToUnderscoreUppercase(word) {
-    return word
-      .split(/(?=[A-Z])/) // Split at uppercase letters without removing them
-      .join('_')
-      .toUpperCase();
-  }
-
-  function buildPart2(word) {
-    const flexibleWord = makeRegexForWord(word, true);
-    return `(?=^(?!.*${flexibleWord}).*)`;
-  }
-
-  function buildPart1(word) {
-    const flexibleWord = makeRegexForWord(word, false);
-    const wordPart = `[${word[0]}${word[0].toLowerCase()}]${word.slice(1)}`; // Make the first character case-insensitive
-    return `(?=.*${flexibleWord}.*)(.*${wordPart}.*|[A-Z_]*${transformToUnderscoreUppercase(word)}[A-Z_]*)`;
-  }
-  const part1List = [];
-  const part2List = [];
-
-  wordList.forEach(word => {
-    const part1 = buildPart1(word);
-    const part2 = buildPart2(word);
-    part1List.push(part1);
-    part2List.push(part2);
-  });
-
-  return `(${part1List.join('|')})|(${part2List.join('')})`;
-}

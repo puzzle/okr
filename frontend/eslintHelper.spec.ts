@@ -2,9 +2,9 @@ import * as eslintHelper from "./eslintHelper.mjs"
 import { $locationShim } from "@angular/common/upgrade";
 
 describe("eslintHelper", () => {
-  const combinedRegex:string   = "((?=.*[Kk]?[Ee]?[Yy].?[Rr]?[Ee]?[Ss]?[Uu]?[Ll]?[Tt]?.*)(.*[Kk]eyResult.*|[A-Z_]*KEY_RESULT[A-Z_]*)|(?=.*[Cc]?[Hh]?[Ee]?[Cc]?[Kk].?[Ii]?[Nn]?.*)(.*[Cc]heckIn.*|[A-Z_]*CHECK_IN[A-Z_]*))|((?=^(?!.*[Kk][Ee][Yy].?[Rr][Ee][Ss][Uu][Ll][Tt]).*)(?=^(?!.*[Cc][Hh][Ee][Cc][Kk].?[Ii][Nn]).*))"
-  const keyResultRegex:string   = "((?=.*[Kk]?[Ee]?[Yy].?[Rr]?[Ee]?[Ss]?[Uu]?[Ll]?[Tt]?.*)(.*[Kk]eyResult.*|[A-Z_]*KEY_RESULT[A-Z_]*))|((?=^(?!.*[Kk][Ee][Yy].?[Rr][Ee][Ss][Uu][Ll][Tt]).*))"
-  const checkInRegex:string   = "((?=.*[Cc]?[Hh]?[Ee]?[Cc]?[Kk].?[Ii]?[Nn]?.*)(.*[Cc]heckIn.*|[A-Z_]*CHECK_IN[A-Z_]*))|((?=^(?!.*[Cc][Hh][Ee][Cc][Kk].?[Ii][Nn]).*))"
+  const combinedRegex:string   = "((?=.*[Kk]?[Ee]?[Yy].?[Rr]?[Ee]?[Ss]?[Uu]?[Ll]?[Tt]?.*)(.*[Kk]eyResult.*|[A-Z_]*KEY_RESULT[A-Z_]*|[a-z-]*key-result[a-z-]*)|(?=.*[Cc]?[Hh]?[Ee]?[Cc]?[Kk].?[Ii]?[Nn]?.*)(.*[Cc]heckIn.*|[A-Z_]*CHECK_IN[A-Z_]*|[a-z-]*check-in[a-z-]*))|((?=^(?!.*[Kk][Ee][Yy].?[Rr][Ee][Ss][Uu][Ll][Tt]).*)(?=^(?!.*[Cc][Hh][Ee][Cc][Kk].?[Ii][Nn]).*))"
+  const keyResultRegex:string   = "((?=.*[Kk]?[Ee]?[Yy].?[Rr]?[Ee]?[Ss]?[Uu]?[Ll]?[Tt]?.*)(.*[Kk]eyResult.*|[A-Z_]*KEY_RESULT[A-Z_]*|[a-z-]*key-result[a-z-]*))|((?=^(?!.*[Kk][Ee][Yy].?[Rr][Ee][Ss][Uu][Ll][Tt]).*))"
+  const checkInRegex:string   = "((?=.*[Cc]?[Hh]?[Ee]?[Cc]?[Kk].?[Ii]?[Nn]?.*)(.*[Cc]heckIn.*|[A-Z_]*CHECK_IN[A-Z_]*|[a-z-]*check-in[a-z-]*))|((?=^(?!.*[Cc][Hh][Ee][Cc][Kk].?[Ii][Nn]).*))"
 
   it.each([
     [["KeyResult"], keyResultRegex],

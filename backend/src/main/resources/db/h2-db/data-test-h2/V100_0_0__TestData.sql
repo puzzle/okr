@@ -24,7 +24,7 @@ ALTER SEQUENCE sequence_quarter RESTART WITH 200;
 ALTER SEQUENCE sequence_team RESTART WITH 200;
 ALTER SEQUENCE sequence_person_team RESTART WITH 200;
 
-INSERT INTO person (id, version, email, firstname, lastname, is_okr_champion)
+INSERT INTO person (id, version, email, first_name, last_name, okr_champion)
 VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),
        (11, 1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', FALSE),
        (21, 1, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', FALSE),
@@ -56,7 +56,7 @@ values (4, 1, '/BBT'),
        (6, 1, 'LoremIpsum');
 
 -- map existing users to teams
-INSERT INTO person_team (id, version, person_id, team_id, is_team_admin)
+INSERT INTO person_team (id, version, person_id, team_id, team_admin)
 -- peggimann@puzzle.ch
 VALUES (1, 1, 1, 4, TRUE),
        (2, 1, 1, 5, FALSE),
@@ -147,7 +147,7 @@ insert into completed (id, version, objective_id, comment) values
        (2,1, 6, 'War leider nicht moeglich'),
        (3,1, 10, 'Schade');
 
-insert into action (id, version, action, priority, is_checked, key_result_id) values
+insert into action (id, version, action, priority, checked, key_result_id) values
                                                       (1,  1, 'Neues Haus', 1, true, 8),
                                                       (2,  1, 'Neue Katze', 2, true, 8),
                                                       (3,  1, 'Neuer Garten', 3, true, 10),

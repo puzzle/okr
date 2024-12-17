@@ -20,7 +20,7 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 class OkrArchitectureTest {
 
     @Test
-    void repositoryAccessedOnlyByPersistenceService() {
+    void repositoriesShouldOnlyBeAccessedByPersistenceServices() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..repository..").should().onlyBeAccessed()
                 .byAnyPackage("..service.persistence..").andShould().beInterfaces();
@@ -29,7 +29,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void mapperAccessedByControllerOrAuthorization() {
+    void mappersShouldOnlyBeAccessedByThemselvesAndControllersAndAuthorization() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..mapper..").should().onlyBeAccessed()
                 .byAnyPackage("..controller..", "..mapper..", "..authorization..");
@@ -38,7 +38,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void authorizationServiceAccessedByControllerOrAuthorization() {
+    void authorizationServiceShouldOnlyBeAccessedByItselfAndControllers() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..service.authorization..").should().onlyBeAccessed()
                 .byAnyPackage("..controller..", "..authorization..");
@@ -47,7 +47,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void businessServiceAccessedByControllerOrAuthorizationServiceOrMapper() {
+    void businessServicesShouldOnlyBeAccessedByThemselvesAndControllersAndAuthorizationAndMappers() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..service.business..").should().onlyBeAccessed()
                 .byAnyPackage("..controller..", "..authorization..", "..mapper..", "..business", "..deserializer");
@@ -56,7 +56,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void controllerCallsNoRepository() {
+    void controllersShouldCallNoRepositories() {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = noClasses().that().resideInAPackage("ch.puzzle.okr.controller..").should().dependOnClassesThat()
@@ -66,7 +66,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void repositoryCallsNoService() {
+    void repositoriesShouldCallNoServices() {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = noClasses().that().resideInAPackage("ch.puzzle.okr.repository").should().dependOnClassesThat()
@@ -76,7 +76,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void servicesAreAnnotatedWithService() {
+    void servicesShouldBeAnnotatedWithService() {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes().that().areNotAnonymousClasses().and().resideInAPackage("ch.puzzle.okr.service")
@@ -86,7 +86,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void controllersAreAnnotatedWithRestController() {
+    void controllersShouldBeAnnotatedWithRestController() {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes().that().areNotAnonymousClasses().and().resideInAPackage("ch.puzzle.okr.controller..")
@@ -97,7 +97,7 @@ class OkrArchitectureTest {
     }
 
     @Test
-    void mappersAreAnnotatedWithComponent() {
+    void mappersShouldBeAnnotatedWithComponent() {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes().that().areNotAnonymousClasses().and().resideInAPackage("ch.puzzle.okr.mapper")
@@ -108,7 +108,7 @@ class OkrArchitectureTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/repositoriesAndPersistenceServices.csv", numLinesToSkip = 1)
-    void repositoriesShouldOnlyBeCalledFromPersistenceServicesAndValidationService(String repository,
+    void repositoriesShouldOnlyBeAccessedByThemselvesAndPersistenceServicesAndValidationServices(String repository,
             String persistenceService, String validationService) {
         JavaClasses importedClasses = getMainSourceClasses();
 
@@ -121,7 +121,7 @@ class OkrArchitectureTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "controller", "service", "mapper", "repository", "dto", "exception" })
-    void classesInRightPackages(String passedName) {
+    void classesShouldBeInRightPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleNameEndingWith(StringUtils.capitalize(passedName)).and()

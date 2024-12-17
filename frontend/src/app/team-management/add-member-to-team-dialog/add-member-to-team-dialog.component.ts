@@ -92,7 +92,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
     if (!user) {
       return '';
     }
-    return `${user.firstname} ${user.lastname} (${user.email})`;
+    return `${user.firstName} ${user.lastName} (${user.email})`;
   }
 
   selectUser(user: User) {

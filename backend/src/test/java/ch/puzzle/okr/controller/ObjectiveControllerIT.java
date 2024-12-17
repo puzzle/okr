@@ -78,13 +78,13 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"isWriteable":true}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
     private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
             .build();
-    private static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    private static final User user = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch").build();
     private static final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     private static final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
@@ -118,7 +118,7 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void getObjectiveById() throws Exception {
+    void shouldGetObjectiveById() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong())).willReturn(objective1);
 
         mvc.perform(get(URL_OBJECTIVE_5).contentType(MediaType.APPLICATION_JSON))
@@ -127,7 +127,7 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void getObjectiveByIdFail() throws Exception {
+    void shouldThrowNotFoundWhenGettingObjectiveWithNonExistentId() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -136,7 +136,7 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
+    void shouldReturnCreatedObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "GJ 22/23-Q2",
                 "Just be faster", State.DRAFT, null, null, true);
 
@@ -151,7 +151,7 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
+    void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
@@ -161,7 +161,7 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void shouldReturnUpdatedObjective() throws Exception {
+    void shouldReturnUpdatedObjectiveWhenUpdatingObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", EVERYTHING_FINE_DESCRIPTION,
                 State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
@@ -197,7 +197,7 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void shouldReturnNotFound() throws Exception {
+    void shouldReturnNotFoundWhenUpdatingObjectiveByNonExistentId() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
@@ -216,13 +216,13 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void shouldDeleteObjective() throws Exception {
+    void shouldSuccessfullyDeleteObjective() throws Exception {
         mvc.perform(delete(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
+    void shouldThrowExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found"))
                 .when(objectiveAuthorizationService).deleteEntityById(anyLong());
 

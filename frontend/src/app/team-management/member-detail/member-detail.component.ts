@@ -118,7 +118,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   isDeletable(userTeam: UserTeam): boolean {
-    return userTeam.team.writeable || this.selectedUserIsLoggedInUser;
+    return userTeam.team.isWriteable || this.selectedUserIsLoggedInUser;
   }
 
   navigateBack() {

@@ -3,7 +3,7 @@ import { uniqueSuffix } from '../../utils';
 import Chainable = Cypress.Chainable;
 
 export default class InviteMembersDialog extends Dialog {
-  private readonly firstnames: string[] = [];
+  private readonly firstNames: string[] = [];
 
   override validatePage() {
     super.validatePage();
@@ -13,9 +13,9 @@ export default class InviteMembersDialog extends Dialog {
   enterUser(firstName: string, lastName: string, email: string) {
     firstName = uniqueSuffix(firstName);
     email = uniqueSuffix(email);
-    this.firstnames.push(firstName);
-    const firstNameInput = cy.get('[formcontrolname="firstname"]').last();
-    const lastNameInput = cy.get('[formcontrolname="lastname"]').last();
+    this.firstNames.push(firstName);
+    const firstNameInput = cy.get('[formcontrolname="firstName"]').last();
+    const lastNameInput = cy.get('[formcontrolname="lastName"]').last();
     const emailInput = cy.get('[formcontrolname="email"]').last();
     this.fillInput(firstNameInput, firstName);
     this.fillInput(lastNameInput, lastName);
@@ -27,13 +27,13 @@ export default class InviteMembersDialog extends Dialog {
     cy.contains('Weiterer Member hinzufügen').click();
     return this;
   }
-  getFirstNames() {
-    return this.firstnames;
+  getFirstnames() {
+    return this.firstNames;
   }
 
   override submit() {
     cy.getByTestId('invite').click();
-    return this.firstnames;
+    return this.firstNames;
   }
 
   getPage(): Chainable {

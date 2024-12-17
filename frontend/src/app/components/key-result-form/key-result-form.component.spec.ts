@@ -38,7 +38,7 @@ describe('KeyResultFormComponent', () => {
 
   const oauthMockService = {
     getIdentityClaims() {
-      return { name: users[1].firstname + ' ' + users[1].lastname };
+      return { name: users[1].firstName + ' ' + users[1].lastName };
     },
   };
 
@@ -193,7 +193,7 @@ describe('KeyResultFormComponent', () => {
         unit: 'CHF',
         createdOn: new Date(),
         modifiedOn: new Date(),
-        writeable: true,
+        isWriteable: true,
       };
       component.setMetricValuesInForm(fullKeyResultMetric);
 
@@ -218,7 +218,7 @@ describe('KeyResultFormComponent', () => {
         stretchZone: 'Eine Ziege',
         createdOn: new Date(),
         modifiedOn: new Date(),
-        writeable: true,
+        isWriteable: true,
       };
       component.setOrdinalValuesInForm(fullKeyResultOrdinal);
 
@@ -246,7 +246,7 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should get username from oauthService  right', () => {
-      expect(component.getLoggedInUserName()).toEqual(testUser.firstname + ' ' + testUser.lastname);
+      expect(component.getLoggedInUserName()).toEqual(testUser.firstName + ' ' + testUser.lastName);
     });
   });
 });

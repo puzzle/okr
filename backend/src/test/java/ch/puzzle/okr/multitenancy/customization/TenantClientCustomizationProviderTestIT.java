@@ -21,7 +21,7 @@ public class TenantClientCustomizationProviderTestIT {
     private static final String BACKGROUND_LOGO = "background-logo";
     private static final String FAVICON = "favicon";
     private static final String TITLE = "title";
-    private static final String HELP_SITE_URL = "helpSiteUrl";
+    private static final String HELP_SITE_URL = "help-site-url";
 
     private static final String CUSTOM_STYLE_NAME = "okr-topbar-background-color";
     private static final String CUSTOM_STYLE_VALUE = "css-custom-value";
@@ -44,7 +44,7 @@ public class TenantClientCustomizationProviderTestIT {
         mockProperty("okr.tenants.{0}.clientcustomization.background-logo", BACKGROUND_LOGO, id);
         mockProperty("okr.tenants.{0}.clientcustomization.favicon", FAVICON, id);
         mockProperty("okr.tenants.{0}.clientcustomization.title", TITLE, id);
-        mockProperty("okr.tenants.{0}.clientcustomization.helpSiteUrl", HELP_SITE_URL, id);
+        mockProperty("okr.tenants.{0}.clientcustomization.help-site-url", HELP_SITE_URL, id);
         mockProperty("okr.tenants.{0}.clientcustomization.customstyles.okr-topbar-background-color", CUSTOM_STYLE_VALUE,
                 id);
     }

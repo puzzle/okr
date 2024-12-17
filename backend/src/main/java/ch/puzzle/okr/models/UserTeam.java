@@ -25,7 +25,7 @@ public class UserTeam {
     private Team team;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isTeamAdmin = false;
+    private boolean teamAdmin = false;
 
     private UserTeam() {
     }
@@ -35,7 +35,7 @@ public class UserTeam {
         this.version = builder.version;
         this.user = builder.user;
         this.team = builder.team;
-        this.isTeamAdmin = builder.isTeamAdmin;
+        this.teamAdmin = builder.teamAdmin;
     }
 
     public Long getId() {
@@ -71,11 +71,11 @@ public class UserTeam {
     }
 
     public boolean isTeamAdmin() {
-        return isTeamAdmin;
+        return teamAdmin;
     }
 
     public void setTeamAdmin(boolean teamAdmin) {
-        isTeamAdmin = teamAdmin;
+        this.teamAdmin = teamAdmin;
     }
 
     @Override
@@ -87,19 +87,19 @@ public class UserTeam {
             return false;
         }
         UserTeam userTeam = (UserTeam) o;
-        return version == userTeam.version && isTeamAdmin == userTeam.isTeamAdmin && Objects.equals(id, userTeam.id)
+        return version == userTeam.version && teamAdmin == userTeam.teamAdmin && Objects.equals(id, userTeam.id)
                 && Objects.equals(user, userTeam.user) && Objects.equals(team, userTeam.team);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, user, team, isTeamAdmin);
+        return Objects.hash(id, version, user, team, teamAdmin);
     }
 
     @Override
     public String toString() {
-        return "UserTeam{" + "id=" + id + ", version=" + version + ", user=" + user + ", team=" + team
-                + ", isTeamAdmin=" + isTeamAdmin + '}';
+        return "UserTeam{" + "id=" + id + ", version=" + version + ", user=" + user + ", team=" + team + ", teamAdmin="
+                + teamAdmin + '}';
     }
 
     public static class Builder {
@@ -107,7 +107,7 @@ public class UserTeam {
         private int version;
         private User user;
         private Team team;
-        private boolean isTeamAdmin;
+        private boolean teamAdmin;
 
         public static Builder builder() {
             return new Builder();
@@ -133,8 +133,8 @@ public class UserTeam {
             return this;
         }
 
-        public Builder withTeamAdmin(boolean isAdmin) {
-            this.isTeamAdmin = isAdmin;
+        public Builder isTeamAdmin(boolean teamAdmin) {
+            this.teamAdmin = teamAdmin;
             return this;
         }
 

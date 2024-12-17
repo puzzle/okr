@@ -25,12 +25,12 @@ public class TestHelper {
 
     public static final String SCHEMA_PITC = "pitc";
 
-    private static final String FIRSTNAME = "Bob";
-    private static final String LASTNAME = "Kaufmann";
+    private static final String FIRST_NAME = "Bob";
+    private static final String LAST_NAME = "Kaufmann";
     private static final String EMAIL = "kaufmann@puzzle.ch";
 
     public static User defaultUser(Long id) {
-        return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withEmail(EMAIL)
+        return User.Builder.builder().withId(id).withFirstName(FIRST_NAME).withLastName(LAST_NAME).withEmail(EMAIL)
                 .build();
     }
 
@@ -43,7 +43,7 @@ public class TestHelper {
     public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
         var user = defaultUser(userId);
         var adminUserTeams = adminTeams.stream()
-                .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
+                .map(t -> UserTeam.Builder.builder().isTeamAdmin(true).withTeam(t).withUser(user).build());
         var memberUserTeams = memberTeams.stream()
                 .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
         user.setUserTeamList(
@@ -60,36 +60,36 @@ public class TestHelper {
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
-        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL, false);
+        return mockAuthorizationUser(1L, FIRST_NAME, LAST_NAME, EMAIL, false);
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user) {
-        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(),
+        return mockAuthorizationUser(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
                 user.isOkrChampion());
     }
 
-    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email,
+    public static AuthorizationUser mockAuthorizationUser(Long id, String firstName, String lastName, String email,
             boolean isOkrChampion) {
         User user = User.Builder.builder() //
                 .withId(id) //
-                .withFirstname(firstname) //
-                .withLastname(lastname) //
+                .withFirstName(firstName) //
+                .withLastName(lastName) //
                 .withEmail(email) //
-                .withOkrChampion(isOkrChampion) //
+                .isOkrChampion(isOkrChampion) //
                 .build();
         user.setUserTeamList(List.of(defaultUserTeam(1L, user)));
         return new AuthorizationUser(user);
     }
 
     public static Jwt defaultJwtToken() {
-        return mockJwtToken(FIRSTNAME, LASTNAME, EMAIL);
+        return mockJwtToken(FIRST_NAME, LAST_NAME, EMAIL);
     }
 
     public static Jwt mockJwtToken(User user) {
-        return mockJwtToken(user.getFirstname(), user.getLastname(), user.getEmail());
+        return mockJwtToken(user.getFirstName(), user.getLastName(), user.getEmail());
     }
 
-    public static Jwt mockJwtToken(String firstname, String lastname, String email) {
+    public static Jwt mockJwtToken(String firstName, String lastName, String email) {
         String exampleToken = "MockToken";
 
         Map<String, Object> headers = new HashMap<>();
@@ -97,8 +97,8 @@ public class TestHelper {
         headers.put("typ", "JWT");
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("given_name", firstname);
-        claims.put("family_name", lastname);
+        claims.put("given_name", firstName);
+        claims.put("family_name", lastName);
         claims.put("email", email);
         claims.put("exp", Instant.now().plusSeconds(3600).getEpochSecond()); // Expires in 1 hour
 

@@ -75,9 +75,8 @@ class ObjectivePersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("findObjectiveById() should return objective properly")
     @Test
-    void findObjectiveByIdShouldReturnObjectiveProperly() {
+    void shouldFindObjectiveById() {
         // act
         var objective = objectivePersistenceService.findObjectiveById(ID_OF_OBJECTIVE_3, authorizationUser,
                 NO_RESULT_EXCEPTION);
@@ -110,9 +109,8 @@ class ObjectivePersistenceServiceIT {
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName("findObjectiveByKeyResultId() should return objective properly")
     @Test
-    void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
+    void shouldFindObjectiveByKeyResultId() {
         // act
         var objective = objectivePersistenceService.findObjectiveByKeyResultId(ID_OF_KEY_RESULT_5, authorizationUser,
                 NO_RESULT_EXCEPTION);
@@ -145,9 +143,8 @@ class ObjectivePersistenceServiceIT {
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName("findObjectiveByCheckInId() should return objective properly")
     @Test
-    void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
+    void shouldFindObjectiveByCheckInId() {
         // act
         var objective = objectivePersistenceService.findObjectiveByCheckInId(ID_OF_CHECK_IN_7, authorizationUser,
                 NO_RESULT_EXCEPTION);
@@ -180,9 +177,8 @@ class ObjectivePersistenceServiceIT {
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName("findObjectiveByTeamId() should return objectives of team properly")
     @Test
-    void findObjectiveByTeamIdShouldReturnObjectivesOfTeamProperly() {
+    void shouldFindObjectivesByTeamId() {
         // act
         var objectives = objectivePersistenceService.findObjectiveByTeamId(ID_OF_TEAM_6);
 

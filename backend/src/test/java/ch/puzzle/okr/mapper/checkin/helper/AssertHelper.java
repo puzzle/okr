@@ -20,7 +20,7 @@ public class AssertHelper {
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
         assertEquals(expected.getValue(), actual.value());
-        assertEquals(expected.isWriteable(), actual.writeable());
+        assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
     public static void assertCheckInMetric(CheckInMetricDto expected, CheckInMetric actual) {
@@ -46,7 +46,7 @@ public class AssertHelper {
         assertEquals(expected.getCreatedOn(), actual.createdOn());
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
         assertEquals(expected.getZone(), actual.zone());
-        assertEquals(expected.isWriteable(), actual.writeable());
+        assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
     public static void assertCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto, CheckInOrdinal checkInOrdinal) {

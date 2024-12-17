@@ -42,20 +42,15 @@ class QuarterBusinessServiceTest {
     @Spy
     private QuarterBusinessService quarterBusinessService;
 
-    private static Stream<Arguments> shouldGetFirstMonthFromQuarter() {
-        return Stream.of(Arguments.of(1, 1), Arguments.of(2, 4), Arguments.of(3, 7), Arguments.of(4, 10));
-    }
-
     @Test
     void shouldReturnProperQuarter() {
         quarterBusinessService.getQuarterById(3L);
         verify(quarterValidationService, times(1)).validateOnGet(3L);
         verify(quarterPersistenceService, times(1)).findById(3L);
-
     }
 
     @Test
-    void shouldReturnExceptionWhenIdIsNullOnGetQuarter() {
+    void shouldThrowExceptionWhenIdIsNullOnGetQuarter() {
         quarterBusinessService.getQuarterById(null);
         verify(quarterValidationService, times(1)).validateOnGet(null);
     }
@@ -67,7 +62,7 @@ class QuarterBusinessServiceTest {
     }
 
     @Test
-    void shouldCallGetQuarters() {
+    void shouldCallGetMostCurrentQuarters() {
         quarterBusinessService.getQuarters();
         verify(quarterPersistenceService).getMostCurrentQuarters();
     }
@@ -94,7 +89,7 @@ class QuarterBusinessServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 4, 5, 7, 8, 10, 11 })
-    void shouldNotGenerateQuarterIfNotLastMonth(int month) {
+    void shouldNotGenerateQuarterIfNotLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
@@ -104,7 +99,7 @@ class QuarterBusinessServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 3, 6, 9, 12 })
-    void shouldGenerateQuarterIfLastMonth(int month) {
+    void shouldGenerateQuarterIfLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));

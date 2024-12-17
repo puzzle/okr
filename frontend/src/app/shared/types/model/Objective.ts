@@ -13,5 +13,5 @@ export interface Objective {
   createdOn?: Date;
   modifiedOn?: Date;
   createdBy?: User;
-  writeable: boolean;
+  isWriteable: boolean;
 }

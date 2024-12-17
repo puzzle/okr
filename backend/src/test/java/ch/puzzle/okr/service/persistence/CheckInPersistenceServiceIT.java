@@ -66,13 +66,12 @@ class CheckInPersistenceServiceIT {
         // assert
         var allCheckins = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
         assertLastIsCreatedAfterAllOtherCheckIns(lastCheckIn, allCheckins);
-
     }
 
     private void assertLastIsCreatedAfterAllOtherCheckIns(CheckIn last, List<CheckIn> allCheckIns) {
-        for (CheckIn checkInLoop : allCheckIns) {
-            if (!Objects.equals(checkInLoop.getId(), last.getId())) {
-                assertTrue(last.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
+        for (CheckIn checkIn : allCheckIns) {
+            if (!Objects.equals(checkIn.getId(), last.getId())) {
+                assertTrue(last.getCreatedOn().isAfter(checkIn.getCreatedOn()));
             }
         }
     }
@@ -82,5 +81,4 @@ class CheckInPersistenceServiceIT {
     void getModelNameShouldReturnCheckIn() {
         assertEquals(CHECK_IN, checkInPersistenceService.getModelName());
     }
-
 }

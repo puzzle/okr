@@ -14,12 +14,12 @@ export abstract class PageObjectMapperBase {
     return this;
   }
 
-  validateUrlParameter(key: string, value: any[]) {
+  validateUrlParameter(key: string, values: any[]) {
     cy.url().then((url) => {
       const params = new URL(url).searchParams;
       const queryParamValues = params.get(key)?.split(',');
-      expect(queryParamValues).to.have.length(value.length);
-      value.forEach((v) => expect(queryParamValues).to.include(v));
+      expect(queryParamValues).to.have.length(values.length);
+      values.forEach((v) => expect(queryParamValues).to.include(v));
     });
   }
 }

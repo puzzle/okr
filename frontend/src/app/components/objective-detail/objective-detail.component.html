@@ -25,7 +25,7 @@
           *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
         >
           <button
-            *ngIf="objective.writeable"
+            *ngIf="objective.isWriteable"
             mat-flat-button
             (click)="openAddKeyResultDialog()"
             [attr.data-testId]="'add-keyResult-objective-detail'"
@@ -38,7 +38,7 @@
           </button>
           <button
             (click)="openEditObjectiveDialog()"
-            *ngIf="objective.writeable"
+            *ngIf="objective.isWriteable"
             class="ms-2"
             [attr.data-testId]="'edit-objective'"
             color="primary"

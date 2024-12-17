@@ -34,8 +34,8 @@ public class KeyResultTestHelpers {
     public static final String STRETCH_ZONE = "Ein Wald";
     public static final String QUARTER_LABEL = "GJ 22/23-Q4";
     public static final Zone LAST_CHECK_IN_ZONE = Zone.COMMIT;
-    public static final String FIRSTNAME = "Johnny";
-    public static final String LASTNAME = "Appleseed";
+    public static final String FIRST_NAME = "Johnny";
+    public static final String LAST_NAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
     public static final Unit KEY_RESULT_UNIT = Unit.FTE;
     public static final String KEY_RESULT_CREATED_ON = "-999999999-01-01T00:00:00";
@@ -48,7 +48,7 @@ public class KeyResultTestHelpers {
     public static final String JSON_PATH_DESCRIPTION = "$.description";
     public static final String JSON_PATH_KEY_RESULT_TYPE = "$.keyResultType";
     public static final String JSON_PATH_STRETCH_GOAL = "$.stretchGoal";
-    public static final String JSON_PATH_OWNER_FIRSTNAME = "$.owner.firstname";
+    public static final String JSON_PATH_OWNER_FIRST_NAME = "$.owner.firstName";
     public static final String JSON_PATH_OBJECTIVE_STATE = "$.objective.state";
     public static final String JSON_PATH_ID_LAST_CHECK_IN_VALUE = "$.lastCheckIn.value";
     public static final String JSON_PATH_LAST_CHECK_IN_CONFIDENCE = "$.lastCheckIn.confidence";
@@ -78,7 +78,7 @@ public class KeyResultTestHelpers {
     static final String INITIATIVES_2 = "Initiatives2";
     static final String CHANGE_INFO_1 = "Changeinfo1";
     static final String CHANGE_INFO_2 = "Changeinfo2";
-    public static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    public static final User user = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch").build();
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle(TITLE)
             .build();
@@ -93,7 +93,7 @@ public class KeyResultTestHelpers {
     public static final CheckInDto checkInDto2 = new CheckInMetricDto(4L, 1, CHANGE_INFO_2, INITIATIVES_2, 5,
             metricKeyResult.getId(), LocalDateTime.MAX, LocalDateTime.MAX, 12D, true);
 
-    public static final KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, FIRSTNAME, LASTNAME);
+    public static final KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, FIRST_NAME, LAST_NAME);
     public static final KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, QUARTER_LABEL,
             LocalDate.MIN, LocalDate.MAX);
     public static final KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 1,

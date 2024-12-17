@@ -32,7 +32,7 @@ class CompletedBusinessServiceTest {
     private CompletedBusinessService completedBusinessService;
 
     @Test
-    void saveSuccessFulCompleted() {
+    void shouldSuccessfullyCreateCompleted() {
         Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
 
         Completed completed = Completed.Builder.builder()

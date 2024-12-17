@@ -76,7 +76,7 @@ class QuarterValidationServiceTest {
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
-    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull should do nothing when both dates are not null")
+    @DisplayName("throwExceptionWhenStartEndDateQuarterIsNull() should do nothing when both dates are not null")
     @Test
     void throwExceptionWhenStartEndDateQuarterIsNullShouldDoNothingWhenBothDatesAreNotNull() {
         // arrange

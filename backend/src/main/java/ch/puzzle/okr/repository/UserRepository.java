@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    List<User> findByIsOkrChampion(boolean okrChampion);
+    List<User> findByOkrChampion(boolean isOkrChampion);
 }

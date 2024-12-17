@@ -90,8 +90,8 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "401", description = "Not authorized to create an Objective", content = @Content) })
     @PostMapping
     public ResponseEntity<ObjectiveDto> createObjective(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
-        Objective objective = objectiveMapper.toObjective(objectiveDTO);
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDto) {
+        Objective objective = objectiveMapper.toObjective(objectiveDto);
         ObjectiveDto createdObjective = objectiveMapper.toDto(objectiveAuthorizationService.createEntity(objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
@@ -124,8 +124,8 @@ public class ObjectiveController {
     @PutMapping("/{id}")
     public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
-        Objective objective = objectiveMapper.toObjective(objectiveDTO);
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDto) {
+        Objective objective = objectiveMapper.toObjective(objectiveDto);
         boolean isObjectiveImUsed = objectiveAuthorizationService.isImUsed(objective);
         ObjectiveDto updatedObjective = objectiveMapper
                 .toDto(objectiveAuthorizationService.updateEntity(id, objective));

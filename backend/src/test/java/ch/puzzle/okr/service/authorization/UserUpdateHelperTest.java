@@ -22,14 +22,14 @@ public class UserUpdateHelperTest {
         // arrange
         User userFromDB = User.Builder.builder() //
                 .withId(23L) //
-                .withFirstname("firstname_from_db") //
-                .withLastname("lastname_from_db") //
+                .withFirstName("firstname_from_db") //
+                .withLastName("lastname_from_db") //
                 .withEmail("a@b.ch") //
                 .build();
 
         User userFromToken = User.Builder.builder() //
-                .withFirstname("firstname_from_token") //
-                .withLastname("lastname_from_token") //
+                .withFirstName("firstname_from_token") //
+                .withLastName("lastname_from_token") //
                 .build();
 
         // act
@@ -38,8 +38,8 @@ public class UserUpdateHelperTest {
         // assert
         assertEquals(23L, updatedUser.getId());
         assertEquals("a@b.ch", updatedUser.getEmail());
-        assertEquals("firstname_from_token", updatedUser.getFirstname());
-        assertEquals("lastname_from_token", updatedUser.getLastname());
+        assertEquals("firstname_from_token", updatedUser.getFirstName());
+        assertEquals("lastname_from_token", updatedUser.getLastName());
     }
 
     @Test

@@ -3,7 +3,7 @@ import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
-describe('Tab workflow tests', () => {
+describe('tabbing workflows', () => {
   let overviewPage = new CyOverviewPage();
   beforeEach(() => {
     cy.loginAsUser(users.gl);
@@ -52,7 +52,7 @@ describe('Tab workflow tests', () => {
     tabAndCheck('add-keyResult', 'Key Result hinzufügen');
   });
 
-  describe('Objective', () => {
+  describe('objective', () => {
     it('should be able to tab objective dialog', () => {
       tabAndCheck('add-objective', 'Objective hinzufügen');
       cy.realPress('Enter');
@@ -148,8 +148,8 @@ describe('Tab workflow tests', () => {
     });
   });
 
-  describe('Keyresult & Check-In', () => {
-    it('Should be able to tab Keyresult dialog', () => {
+  describe('keyresult & checkin', () => {
+    it('should be able to tab key-result dialog', () => {
       tabAndCheck('add-keyResult', 'Key Result hinzufügen');
       cy.realPress('Enter');
       focusedShouldHaveTestId('close-dialog');
@@ -160,7 +160,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('stretchGoal');
       tabAndCheck('ownerInput');
       tabAndCheck('descriptionInput');
-      tabAndCheck('actionInput');
+      tabAndCheck('action-input');
       tabAndCheck('add-action-plan-line', 'Weitere Action hinzufügen');
       tabAndCheck('ordinalTab', 'Ordinal');
       cy.realPress('Enter');
@@ -175,7 +175,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('cancel', 'Abbrechen');
     });
 
-    it('Should tab keyresult detail view', () => {
+    it('should tab key-result detail view', () => {
       overviewPage.getObjectiveByState('ongoing').findByTestId('key-result').first().focus();
       cy.realPress('Enter').tabForward();
       focusedShouldHaveTestId('close-drawer');
@@ -190,7 +190,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('edit-keyResult', 'Key Result bearbeiten');
     });
 
-    it('Should tab create-check-in metric', () => {
+    it('should tab create check-in metric', () => {
       overviewPage
         .addOngoingKeyResult()
         .fillKeyResultTitle('A metric Keyresult for tabbing tests')
@@ -213,7 +213,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('cancel', 'Abbrechen');
     });
 
-    it('Should tab create-check-in ordinal', () => {
+    it('should tab create check-in ordinal', () => {
       overviewPage
         .addOngoingKeyResult()
         .fillKeyResultTitle('A ordinal Keyresult for tabbing tests')
@@ -243,8 +243,8 @@ describe('Tab workflow tests', () => {
     });
   });
 
-  describe('Team management', () => {
-    it('Should tab team management', () => {
+  describe('team-management', () => {
+    it('should tab team-management', () => {
       tabAndCheck('team-management', 'Teamverwaltung');
       cy.realPress('Enter');
       tabAndCheck('routerLink-to-overview', 'Zurück zur OKR Übersicht');
@@ -253,7 +253,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('all-teams-selector', 'Alle Teams (4)');
       tabAndCheck('invite-member', 'Member registrieren');
     });
-    it('Should tab create team', () => {
+    it('should tab create team', () => {
       cy.getByTestId('team-management').click();
       tabAndCheck('add-team');
       cy.realPress('Enter');
@@ -264,7 +264,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('save', 'Speichern');
       tabAndCheck('cancel', 'Abbrechen');
     });
-    it('Should tab register member', () => {
+    it('should tab register member', () => {
       cy.getByTestId('team-management').click();
       tabAndCheck('invite-member');
       cy.realPress('Enter');
@@ -279,7 +279,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('invite', 'Einladen');
       tabAndCheck('new-member-cancel', 'Abbrechen');
     });
-    it('Should tab edit member', () => {
+    it('should tab edit member', () => {
       cy.getByTestId('team-management').click();
       cy.pressUntilContains('Alice Wunderland', 'Tab');
       cy.tabForward();

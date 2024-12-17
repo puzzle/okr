@@ -12,12 +12,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
 
 @Component({
-  selector: 'app-sidepanel',
-  templateUrl: './sidepanel.component.html',
-  styleUrls: ['./sidepanel.component.scss'],
+  selector: 'app-side-panel',
+  templateUrl: './side-panel.component.html',
+  styleUrls: ['./side-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
+export class SidePanelComponent implements OnInit, AfterContentInit, OnDestroy {
   leaveKeys = ['Escape'];
   right = '-100%';
   loaded = false;

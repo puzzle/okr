@@ -40,15 +40,15 @@ class UserBusinessServiceTest {
     void setUp() {
         User userAlice = User.Builder.builder() //
                 .withId(2L) //
-                .withFirstname("Alice") //
-                .withLastname("Wunderland") //
+                .withFirstName("Alice") //
+                .withLastName("Wunderland") //
                 .withEmail("wunderland@puzzle.ch") //
                 .build();
 
         User userBob = User.Builder.builder() //
                 .withId(9L) //
-                .withFirstname("Bob") //
-                .withLastname("Baumeister") //
+                .withFirstName("Bob") //
+                .withLastName("Baumeister") //
                 .withEmail("baumeister@puzzle.ch") //
                 .build();
 
@@ -56,74 +56,74 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnAllUsersCorrect() throws ResponseStatusException {
+    void shouldReturnAllUsersCorrectly() throws ResponseStatusException {
         Mockito.when(userPersistenceService.findAll()).thenReturn(userList);
 
         List<User> userList = userBusinessService.getAllUsers();
 
         Assertions.assertThat(userList.size()).isEqualTo(2);
         Assertions.assertThat(userList.getFirst().getId()).isEqualTo(2);
-        Assertions.assertThat(userList.getFirst().getFirstname()).isEqualTo("Alice");
-        Assertions.assertThat(userList.get(0).getLastname()).isEqualTo("Wunderland");
+        Assertions.assertThat(userList.getFirst().getFirstName()).isEqualTo("Alice");
+        Assertions.assertThat(userList.get(0).getLastName()).isEqualTo("Wunderland");
         Assertions.assertThat(userList.get(0).getEmail()).isEqualTo("wunderland@puzzle.ch");
         Assertions.assertThat(userList.get(1).getId()).isEqualTo(9);
-        Assertions.assertThat(userList.get(1).getFirstname()).isEqualTo("Bob");
-        Assertions.assertThat(userList.get(1).getLastname()).isEqualTo("Baumeister");
+        Assertions.assertThat(userList.get(1).getFirstName()).isEqualTo("Bob");
+        Assertions.assertThat(userList.get(1).getLastName()).isEqualTo("Baumeister");
         Assertions.assertThat(userList.get(1).getEmail()).isEqualTo("baumeister@puzzle.ch");
     }
 
     @Test
-    void shouldReturnEmptyUsers() throws ResponseStatusException {
+    void shouldReturnEmptyListOfUsers() throws ResponseStatusException {
         List<User> userList = userBusinessService.getAllUsers();
 
         Assertions.assertThat(userList.size()).isEqualTo(0);
     }
 
     @Test
-    void shouldReturnSingleUserWhenFindingOwnerByValidId() {
-        User owner = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    void getUserByIdShouldReturnSingleUserWhenUserFound() {
+        User owner = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
 
         User returnedUser = userBusinessService.getUserById(1L);
 
         assertEquals(1L, returnedUser.getId());
-        assertEquals("Bob", returnedUser.getFirstname());
-        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("Bob", returnedUser.getFirstName());
+        assertEquals("Kaufmann", returnedUser.getLastName());
         assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
     }
 
     @Test
     void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
-        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+        User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(any())).thenReturn(newUser);
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
         assertEquals(1L, returnedUser.getId());
-        assertEquals("Bob", returnedUser.getFirstname());
-        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("Bob", returnedUser.getFirstName());
+        assertEquals("Kaufmann", returnedUser.getLastName());
         assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
     }
 
     @Test
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
-        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+        User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(newUser)).thenReturn(newUser);
 
         User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
         assertEquals(1L, returnedUser.getId());
-        assertEquals("Bob", returnedUser.getFirstname());
-        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("Bob", returnedUser.getFirstName());
+        assertEquals("Kaufmann", returnedUser.getLastName());
         assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
     }
 
     @Test
     void getOrCreateUserShouldThrowResponseStatusExceptionWhenInvalidUser() {
-        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+        User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))
                 .when(validationService).validateOnGetOrCreate(newUser);
@@ -136,7 +136,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldSetOkrChampionCorrectly() {
+    void setOkrChampionShouldSetOkrChampionCorrectly() {
         var user = TestHelper.defaultUser(1L);
         user.setOkrChampion(false);
 
@@ -147,7 +147,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldThrowExceptionIfLastOkrChampIsRemoved() {
+    void setOkrChampionShouldThrowExceptionIfLastOkrChampionIsRemoved() {
         var user = TestHelper.defaultUser(1L);
         var user2 = TestHelper.defaultUser(2L);
         user.setOkrChampion(true);
@@ -157,7 +157,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void setOkrChampion_shouldNotThrowExceptionIfSecondLastOkrChampIsRemoved() {
+    void setOkrChampionShouldNotThrowExceptionIfPenultimateOkrChampionIsRemoved() {
         var user = TestHelper.defaultUser(1L);
         var user2 = TestHelper.defaultUser(2L);
         user.setOkrChampion(true);

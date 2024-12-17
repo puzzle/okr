@@ -26,9 +26,9 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
         }
     }
 
-    @DisplayName("getConnectionProvider() return ConnectionProvider if TenantId is registered")
+    @DisplayName("getConnectionProvider() returns ConnectionProvider if TenantId is registered")
     @Test
-    void getConnectionProviderReturnConnectionProviderIfTenantIdIsRegistered() {
+    void getConnectionProviderReturnsConnectionProviderIfTenantIdIsRegistered() {
         // arrange
         ConfigurableConnectionProviderMock mockProvider = new ConfigurableConnectionProviderMock();
         mockProvider.registerProvider(TENANT_ID, mock(ConnectionProvider.class));

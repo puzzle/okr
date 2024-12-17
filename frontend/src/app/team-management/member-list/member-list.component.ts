@@ -121,7 +121,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showAddMemberToTeam() {
-    return this.selectedTeam$.value?.writeable;
+    return this.selectedTeam$.value?.isWriteable;
   }
 
   editTeam(): void {

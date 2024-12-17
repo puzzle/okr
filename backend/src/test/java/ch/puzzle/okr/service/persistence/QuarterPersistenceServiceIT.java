@@ -58,7 +58,7 @@ class QuarterPersistenceServiceIT {
     }
 
     @Test
-    void shouldReturnCurrentQuarter() {
+    void shouldGetCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
         assertTrue(LocalDate.now().isEqual(quarter.getStartDate()) || //

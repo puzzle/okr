@@ -140,14 +140,14 @@ class TeamAuthorizationServiceTest {
     }
 
     @Test
-    void addUsersToTeam_shouldThrowExceptionIfUserNotAuthorized() {
+    void addUsersToTeamShouldThrowExceptionIfUserNotAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser())
                 .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of())));
         assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, List.of()));
     }
 
     @Test
-    void addUsersToTeam_shouldCallTeamBusinessService() {
+    void addUsersToTeamShouldCallTeamBusinessService() {
         var adminTeamId = 1L;
         var adminTeam = defaultTeam(adminTeamId);
         var usersList = List.of(1L, 2L);

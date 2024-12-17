@@ -25,8 +25,8 @@ class CompletedPersistenceServiceIT {
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
     private Completed createdCompleted;
-    private static final String WIR_HABEN_ES_GUT_GESCHAFFT = "Wir haben es gut geschafft";
-    public static final String GUTE_LERNENDE = "Gute Lernende";
+    private static final String OBJECTIVE_COMMENT = "Wir haben es gut geschafft";
+    public static final String OBJECTIVE_TITLE = "Gute Lernende";
     public static final long OBJECTIVE_ID = 3L;
 
     private static Completed createCompleted(Long id) {
@@ -35,8 +35,8 @@ class CompletedPersistenceServiceIT {
 
     private static Completed createCompleted(Long id, int version) {
         return Completed.Builder.builder().withId(id).withVersion(version)
-                .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(GUTE_LERNENDE).build())
-                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT).build();
+                .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(OBJECTIVE_TITLE).build())
+                .withComment(OBJECTIVE_COMMENT).build();
     }
 
     private static final String COMPLETED = "Completed";
@@ -66,9 +66,9 @@ class CompletedPersistenceServiceIT {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
 
         assertNotNull(createdCompleted.getId());
-        assertEquals(WIR_HABEN_ES_GUT_GESCHAFFT, createdCompleted.getComment());
+        assertEquals(OBJECTIVE_COMMENT, createdCompleted.getComment());
         assertEquals(OBJECTIVE_ID, createdCompleted.getObjective().getId());
-        assertEquals(GUTE_LERNENDE, createdCompleted.getObjective().getTitle());
+        assertEquals(OBJECTIVE_TITLE, createdCompleted.getObjective().getTitle());
     }
 
     @Test
@@ -111,7 +111,7 @@ class CompletedPersistenceServiceIT {
     }
 
     @Test
-    void deleteCompletedIdShouldDeleteExistingCompletedByObjectiveId() {
+    void deleteByIdShouldDeleteExistingCompletedByObjectiveId() {
 
         completedPersistenceService.deleteById(3L);
 

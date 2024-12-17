@@ -17,7 +17,7 @@ public class TenantContextTest {
     }
 
     @Test
-    void whenTenantIsSetThenReturnIt() {
+    void shouldGetTenantFromContextAfterItWasSet() {
         String tenant = "okr_acme";
         TenantContext.setCurrentTenant(tenant);
         Assertions.assertEquals(tenant, TenantContext.getCurrentTenant());

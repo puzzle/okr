@@ -102,7 +102,7 @@ describe('TeamComponent', () => {
 
   it('should not display add objective button if writeable is false', () => {
     component.overviewEntity = { ...overViewEntity2 };
-    component.overviewEntity.writeable = false;
+    component.overviewEntity.isWriteable = false;
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
     expect(button).toBeFalsy();

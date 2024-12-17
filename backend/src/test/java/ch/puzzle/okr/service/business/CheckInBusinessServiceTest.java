@@ -36,7 +36,7 @@ class CheckInBusinessServiceTest {
     @InjectMocks
     private CheckInBusinessService checkInBusinessService;
 
-    private User user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
+    private User user = User.Builder.builder().withEmail("Email").withFirstName("Firstname").withLastName("Lastname")
             .build();
     private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
             .withStretchZone("Wald").withId(7L).withTitle("Keyresult Ordinal").build();

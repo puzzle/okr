@@ -95,8 +95,8 @@ describe('MemberListComponent', () => {
     let userTableEntry = convertFromUser(user);
 
     expect(userTableEntry.id).toBe(user.id);
-    expect(userTableEntry.firstname).toBe(user.firstname);
-    expect(userTableEntry.lastname).toBe(user.lastname);
+    expect(userTableEntry.firstName).toBe(user.firstName);
+    expect(userTableEntry.lastName).toBe(user.lastName);
     expect(userTableEntry.email).toBe(user.email);
     expect(userTableEntry.roles).toStrictEqual([UserRole.TEAM_MEMBER]);
     expect(userTableEntry.isOkrChampion).toBeFalsy();
@@ -154,7 +154,7 @@ describe('MemberListComponent', () => {
     // test that it makes a deep copy
     expect(userTableEntries).not.toBe(usersCopy);
     // should be sorted
-    expect(userTableEntries.map((ut) => ut.firstname)).toStrictEqual(['Bob', 'Key Result', 'Paco', 'Robin']);
+    expect(userTableEntries.map((ut) => ut.firstName)).toStrictEqual(['Bob', 'Key Result', 'Paco', 'Robin']);
   });
 
   it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
@@ -238,10 +238,10 @@ describe('MemberListComponent', () => {
     component.selectedTeam$.next(undefined);
     expect(component.showAddMemberToTeam()).toBeFalsy();
     const teamCopy = { ...team1 };
-    teamCopy.writeable = false;
+    teamCopy.isWriteable = false;
     component.selectedTeam$.next(teamCopy);
     expect(component.showAddMemberToTeam()).toBeFalsy();
-    teamCopy.writeable = true;
+    teamCopy.isWriteable = true;
     expect(component.showAddMemberToTeam()).toBeTruthy();
   });
 

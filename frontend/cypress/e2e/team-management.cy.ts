@@ -1,30 +1,30 @@
 import * as users from '../fixtures/users.json';
 import { uniqueSuffix } from '../support/helper/utils';
 import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
-import TeammanagementPage from '../support/helper/dom-helper/pages/teammanagementPage';
+import TeamManagementPage from '../support/helper/dom-helper/pages/teamManagementPage';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import InviteMembersDialog from '../support/helper/dom-helper/dialogs/inviteMembersDialog';
 import FilterHelper from '../support/helper/dom-helper/filterHelper';
 
-describe('Team management tests', () => {
+describe('okr team-management', () => {
   const teamName = uniqueSuffix('New Team');
   const nameEsha = users.bl.name;
 
-  describe('Routing to overview', () => {
+  describe('routing to overview', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
     });
 
-    it('should preserve team filter', () => {
+    it('should preserve team-filter', () => {
       CyOverviewPage.do().visitViaURL();
       FilterHelper.do().toggleOption('/BBT').toggleOption('Puzzle ITC');
       checkTeamsSelected();
-      CyOverviewPage.do().visitTeammanagement();
+      CyOverviewPage.do().visitTeamManagement();
       checkTeamsSelected();
-      TeammanagementPage.do().backToOverview();
+      TeamManagementPage.do().backToOverview();
       checkTeamsSelected();
-      CyOverviewPage.do().visitTeammanagement();
-      TeammanagementPage.do().visitOverview();
+      CyOverviewPage.do().visitTeamManagement();
+      TeamManagementPage.do().visitOverview();
       checkTeamsSelected();
     });
 
@@ -33,8 +33,8 @@ describe('Team management tests', () => {
     }
   });
 
-  describe('As GL', () => {
-    let teammanagementPage: TeammanagementPage;
+  describe('as "GL"', () => {
+    let teamManagementPage: TeamManagementPage;
     before(() => {
       // login as bl to ensure this user exists in database
       cy.loginAsUser(users.bl);
@@ -44,18 +44,18 @@ describe('Team management tests', () => {
 
     beforeEach(() => {
       cy.loginAsUser(users.gl);
-      teammanagementPage = TeammanagementPage.do().visitViaURL();
+      teamManagementPage = TeamManagementPage.do().visitViaURL();
     });
 
-    it('Create team', () => {
+    it('should create team', () => {
       cy.intercept('POST', '**/teams').as('addTeam');
 
-      teammanagementPage.addTeam().fillName(teamName).submit();
+      teamManagementPage.addTeam().fillName(teamName).submit();
       cy.wait('@addTeam');
       cy.contains(teamName);
     });
 
-    it('Try to remove last admin of team should not work', () => {
+    it('should not be able to remove last admin from team', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
@@ -72,7 +72,7 @@ describe('Team management tests', () => {
       cy.contains('Der letzte Administrator eines Teams kann nicht entfernt werden').should('exist');
     });
 
-    it('clicking cancel in dialog when removing user should not remove user', () => {
+    it('should not remove user when canceling in confirm dialog', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
@@ -90,7 +90,7 @@ describe('Team management tests', () => {
       });
     });
 
-    it('Edit team', () => {
+    it('should edit team', () => {
       cy.intercept('GET', '**/users').as('getUsers');
       cy.intercept('GET', '**/teams').as('getTeams');
 
@@ -107,17 +107,17 @@ describe('Team management tests', () => {
       editTeamNameAndTest('LoremIpsum');
     });
 
-    it('Delete team', () => {
+    it('should delete team', () => {
       //Click delete button and cancel
-      teammanagementPage.deleteTeam(teamName).cancel();
+      teamManagementPage.deleteTeam(teamName).cancel();
 
       // try again and confirm dialog
-      teammanagementPage.deleteTeam(teamName).submit();
+      teamManagementPage.deleteTeam(teamName).submit();
     });
 
-    describe('Search', () => {
-      it('Search user', () => {
-        teammanagementPage.elements
+    describe('search', () => {
+      it('should search and find user', () => {
+        teamManagementPage.elements
           .teamSearch()
           .fill('pa')
           .shouldHaveOption('Paco Eggimann (peggimann@puzzle.ch)')
@@ -127,14 +127,14 @@ describe('Team management tests', () => {
         cy.contains('app-member-detail h2', 'Robin Papierer');
       });
 
-      it('Search team', () => {
-        teammanagementPage.elements.teamSearch().fill('we are').selectOption('we are cube.³');
+      it('should search and find team', () => {
+        teamManagementPage.elements.teamSearch().fill('we are').selectOption('we are cube.³');
 
         cy.contains('app-member-list h2', 'we are cube.³');
       });
 
-      it('Search mixed', () => {
-        teammanagementPage.elements
+      it('should find users and teams when search matches both', () => {
+        teamManagementPage.elements
           .teamSearch()
           .fill('puz')
           .shouldHaveLabel('Members')
@@ -147,14 +147,14 @@ describe('Team management tests', () => {
     });
 
     describe('invite members', () => {
-      it('invite two members', () => {
-        teammanagementPage.elements.registerMember().click();
+      it('should invite two members', () => {
+        teamManagementPage.elements.registerMember().click();
         const firstNames = InviteMembersDialog.do()
           .enterUser('Claudia', 'Meier', 'claudia.meier@test.ch')
           .addAnotherUser()
           .enterUser('Stefan', 'Schmidt', 'stefan.schmidt@test.ch')
           .addAnotherUser()
-          .getFirstNames();
+          .getFirstnames();
 
         // test error messages
         fillOutNewUser('Robin', '', 'papierer');
@@ -182,7 +182,7 @@ describe('Team management tests', () => {
       });
     });
 
-    it('Navigate to Bobs profile and add him to BBT and LoremIpsum', () => {
+    it('should navigate to bobs profile and add him to "BBT" and "LoremIpsum"', () => {
       cy.intercept('PUT', '**/updateaddteammembership/*').as('updateEsha');
 
       navigateToUser(nameEsha);
@@ -234,7 +234,7 @@ describe('Team management tests', () => {
         });
     });
 
-    it('Navigate to user Esha and set as okr champion', () => {
+    it('should navigate to user "Esha" and set as okr champion', () => {
       navigateToUser(nameEsha);
       cy.getByTestId('edit-okr-champion-readonly').contains('OKR Champion:');
       cy.getByTestId('edit-okr-champion-readonly').contains('Nein');
@@ -260,14 +260,14 @@ describe('Team management tests', () => {
     });
   });
 
-  describe('As BL', () => {
+  describe('as "BL"', () => {
     beforeEach(() => {
       cy.loginAsUser(users.bl);
       cy.getByTestId('team-management').click();
       cy.intercept('GET', '**/users/*').as('getEsha');
     });
 
-    it('should check if correct roles for BL are set', () => {
+    it('should have correct roles on user "Esha"', () => {
       cy.get('td').contains(nameEsha).click();
       cy.wait('@getEsha');
 
@@ -275,7 +275,7 @@ describe('Team management tests', () => {
       closeOverlay();
     });
 
-    it('should check if team loremIpsum cannot be edited', () => {
+    it('should not be able to edit team "LoremIpsum"', () => {
       cy.get('app-team-management').contains('LoremIpsum').click();
       cy.getByTestId('teamMoreButton').should('not.exist');
       cy.getByTestId('editTeamButton').should('not.exist');
@@ -283,7 +283,7 @@ describe('Team management tests', () => {
       cy.getByTestId('edit-role').should('not.exist');
     });
 
-    it('should check if team /BBT can be edited and edit name', () => {
+    it('should be able to edit team "/BBT" and edit its name', () => {
       cy.get('app-team-management').contains('/BBT').click();
       cy.getByTestId('teamMoreButton').should('exist');
       editTeamNameAndTest('/BBT_edit');
@@ -291,7 +291,7 @@ describe('Team management tests', () => {
       editTeamNameAndTest('/BBT');
     });
 
-    it('should add members to team /BBT', () => {
+    it('should add members to team "/BBT"', () => {
       cy.get('app-team-management').contains('/BBT').click();
       cy.getByTestId('add-team-member').click();
       cy.getByTestId('search-member-to-add').click();
@@ -324,7 +324,7 @@ describe('Team management tests', () => {
       cy.getByTestId('save').click();
     });
 
-    it('should change role of Findus Peterson to Team Admin', () => {
+    it('should change role of "Findus Peterson" to team "Admin"', () => {
       cy.get('app-team-management').contains('/BBT').click();
 
       cy.get('app-member-list tbody tr')
@@ -344,7 +344,7 @@ describe('Team management tests', () => {
         });
     });
 
-    it('should test that Findus Peterson cannot be added to further teams', () => {
+    it('should not be able to add "Findus Peterson" to further teams', () => {
       navigateToUser('Findus Peterson');
 
       // current user BL (Esha Harris) is only admin in /BBT team.
@@ -352,7 +352,7 @@ describe('Team management tests', () => {
       cy.get('app-member-detail').getByTestId('add-user').should('be.disabled');
     });
 
-    it('should remove BBT membership of findus', () => {
+    it('should remove "BBT" membership from "Findus Peterson"', () => {
       navigateToUser('Findus Peterson');
       cy.getByTestId('delete-team-member').click();
 
@@ -364,7 +364,7 @@ describe('Team management tests', () => {
       cy.get('app-member-detail').contains('/BBT').should('not.exist');
     });
 
-    it('should remove added memberships from esha', () => {
+    it('should remove added memberships from "Esha"', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       navigateToUser(nameEsha);
@@ -387,7 +387,7 @@ describe('Team management tests', () => {
       cy.get('app-member-detail').should('not.contain', '/BBT').and('not.contain', 'LoremIpsum');
     });
 
-    it('Navigate to user Esha and check if okr champion is not editable', () => {
+    it('should not be able to edit okr champion state of user "Esha"', () => {
       navigateToUser(nameEsha);
       cy.getByTestId('edit-okr-champion-readonly').should('exist');
       cy.getByTestId('edit-okr-champion-edit').should('not.exist');
@@ -415,16 +415,16 @@ function editTeamNameAndTest(teamName: string) {
   cy.contains(teamName);
 }
 
-function navigateToUser(userName: string) {
+function navigateToUser(username: string) {
   cy.intercept('GET', '**/users/*').as('getUser');
-  cy.get('td').contains(userName).click();
+  cy.get('td').contains(username).click();
   cy.wait('@getUser');
 }
 
-function fillOutNewUser(firstname: string, lastname: string, email: string) {
-  cy.realType(firstname);
+function fillOutNewUser(firstName: string, lastName: string, email: string) {
+  cy.realType(firstName);
   cy.tabForward();
-  cy.realType(lastname);
+  cy.realType(lastName);
   cy.tabForward();
   cy.realType(email);
 }

@@ -58,7 +58,7 @@ class TeamControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"version":4,"name":"OKR","writeable":false}""";
+            {"id":7,"version":4,"name":"OKR","isWriteable":false}""";
 
     private static final String UPDATE_TEAM = """
             {
@@ -67,7 +67,7 @@ class TeamControllerIT {
             """;
 
     private static final String ADD_USERS = """
-            [{"id":31,"version":1,"firstname":"Findus","lastname":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstname":"Paco","lastname":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
+            [{"id":31,"version":1,"firstName":"Findus","lastName":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstName":"Paco","lastName":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
             """;
 
     @Autowired
@@ -110,7 +110,7 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldReturnCreatedTeam() throws Exception {
+    void shouldReturnCreatedTeamAfterCreatingTeam() throws Exception {
         BDDMockito.given(teamAuthorizationService.createEntity(any())).willReturn(teamOKR);
 
         mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(CREATE_NEW_TEAM)
@@ -130,7 +130,7 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldReturnUpdatedTeam() throws Exception {
+    void shouldReturnUpdatedTeamAfterUpdatingTeam() throws Exception {
         TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", false);
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
@@ -145,7 +145,7 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldReturnNotFound() throws Exception {
+    void shouldReturnNotFoundWhenTeamToUpdateIsNotFound() throws Exception {
         BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed team -> Attribut is invalid"));
 
@@ -155,7 +155,7 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldReturnBadRequest() throws Exception {
+    void shouldReturnBadRequestWhenUpdatingTeamWithInvalidData() throws Exception {
         BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed team -> Attribut is invalid"));
 
@@ -171,7 +171,7 @@ class TeamControllerIT {
     }
 
     @Test
-    void throwExceptionWhenOTeamWithIdCantBeFoundWhileDeleting() throws Exception {
+    void shouldThrowExceptionWhenTeamWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found")).when(teamAuthorizationService)
                 .deleteEntity(anyLong());
         mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -179,20 +179,20 @@ class TeamControllerIT {
     }
 
     @Test
-    void addUsersToTeam_shouldReturnOk() throws Exception {
+    void shouldSuccessfullyAddUserToTeam() throws Exception {
         mvc.perform(put(URL_TEAM_1 + "/addusers").contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void removeUserFromTeam_shouldReturnOk() throws Exception {
+    void shouldSuccessfullyRemoveUserFromTeam() throws Exception {
         mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser").contentType(MediaType.APPLICATION_JSON)
                 .content(ADD_USERS).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
+    void shouldSuccessfullyUpdateOrAddTeamMembership() throws Exception {
         mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true")
                 .contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());

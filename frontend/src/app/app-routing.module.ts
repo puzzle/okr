@@ -2,7 +2,7 @@ import { inject, NgModule } from '@angular/core';
 import { ResolveFn, RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './components/overview/overview.component';
 import { of } from 'rxjs';
-import { SidepanelComponent } from './shared/sidepanel/sidepanel.component';
+import { SidePanelComponent } from './shared/side-panel/side-panel.component';
 import { authGuard } from './guards/auth.guard';
 import { UserService } from './services/user.service';
 import { User } from './shared/types/model/User';
@@ -29,7 +29,7 @@ const routes: Routes = [
     children: [
       {
         path: 'details',
-        component: SidepanelComponent,
+        component: SidePanelComponent,
         children: [
           {
             path: 'objective/:id',

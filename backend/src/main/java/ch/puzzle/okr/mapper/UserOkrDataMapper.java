@@ -1,7 +1,7 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.dto.userOkrData.UserKeyResultDataDto;
-import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
+import ch.puzzle.okr.dto.userokrdata.UserKeyResultDataDto;
+import ch.puzzle.okr.dto.userokrdata.UserOkrDataDto;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import org.springframework.stereotype.Component;
 

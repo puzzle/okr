@@ -44,7 +44,7 @@ public class TeamMapperTest {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
         assertEquals(expected.getName(), actual.name());
-        assertEquals(expected.isWriteable(), actual.writeable());
+        assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
     @DisplayName("toTeam() should map Dto to Team")

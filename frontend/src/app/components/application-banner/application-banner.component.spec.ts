@@ -79,7 +79,7 @@ describe('ApplicationBannerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should should hide banner if scrolled down', fakeAsync(() => {
+  it('should hide banner if scrolled down', fakeAsync(() => {
     //Set bannerHeight to default
     let bannerHeight: number = 160;
     //Scroll more than the height of the banner
@@ -116,7 +116,7 @@ describe('ApplicationBannerComponent', () => {
     );
   }));
 
-  it('should call setOKRBannerStyle() when changing header appearance', () => {
+  it('should call refreshBanner() when changing header appearance', () => {
     jest.spyOn(component, 'refreshBanner').mockReturnValue();
 
     //Set bannerHeight to default and execute header appearance change
@@ -128,7 +128,7 @@ describe('ApplicationBannerComponent', () => {
     expect(component.refreshBanner).toHaveBeenCalled();
   });
 
-  it('should call correct method after call scroll()', () => {
+  it('should call changeHeaderAppearance() after calling scroll()', () => {
     jest.spyOn(component, 'changeHeaderAppearance');
 
     component.scroll();

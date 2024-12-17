@@ -74,13 +74,13 @@ class ActionControllerIT {
 
     @BeforeEach
     void setUp() {
-        Action action = Action.Builder.builder().withId(3L).withAction("Neues Haus").withPriority(1).withIsChecked(true)
+        Action action = Action.Builder.builder().withId(3L).withAction("Neues Haus").withPriority(1).isChecked(true)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build()).build();
         BDDMockito.given(actionMapper.toActions(any())).willReturn(List.of(action, action));
     }
 
     @Test
-    void updateSuccessfulActions() throws Exception {
+    void shouldSuccessfullyUpdateMultipleActions() throws Exception {
         mvc.perform(put(BASEURL).content(SUCCESSFUL_UPDATE_BODY).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
@@ -90,7 +90,7 @@ class ActionControllerIT {
     }
 
     @Test
-    void updateSuccessfulOnlyOneAction() throws Exception {
+    void shouldSuccessfullyUpdateSingleAction() throws Exception {
         mvc.perform(put(BASEURL).content(SUCCESSFUL_UPDATE_BODY_SINGLE_ACTION).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
@@ -100,13 +100,13 @@ class ActionControllerIT {
     }
 
     @Test
-    void shouldDeleteAction() throws Exception {
+    void shouldSuccessfullyDeleteAction() throws Exception {
         mvc.perform(delete("/api/v2/action/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void throwExceptionWhenActionWithIdCantBeFoundWhileDeleting() throws Exception {
+    void shouldThrowExceptionWhenActionWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Action not found")).when(actionAuthorizationService)
                 .deleteActionByActionId(anyLong());
 

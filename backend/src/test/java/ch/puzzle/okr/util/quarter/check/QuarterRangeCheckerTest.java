@@ -40,10 +40,10 @@ public class QuarterRangeCheckerTest {
         LocalDate startDate = LocalDate.of(2024, 7, 1);
         Quarter quarter = quarter(startDate, null);
 
-        LocalDate nowMatchesQuarterStartDate = LocalDate.of(2024, 7, 1);
+        LocalDate nowMatchingQuarterStartDate = LocalDate.of(2024, 7, 1);
 
         // act + assert
-        assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchesQuarterStartDate, quarter));
+        assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchingQuarterStartDate, quarter));
     }
 
     @DisplayName("nowIsInQuarter() should return true if now matches Quarter EndDate")
@@ -54,10 +54,10 @@ public class QuarterRangeCheckerTest {
         LocalDate endDate = LocalDate.of(2024, 9, 30);
         Quarter quarter = quarter(startDate, endDate);
 
-        LocalDate nowMatchesQuarterEndDate = LocalDate.of(2024, 9, 30);
+        LocalDate nowMatchingQuarterEndDate = LocalDate.of(2024, 9, 30);
 
         // act + assert
-        assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchesQuarterEndDate, quarter));
+        assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchingQuarterEndDate, quarter));
     }
 
     @DisplayName("nowIsInQuarter() should return true if now is between Quarter StartDate and EndDate")

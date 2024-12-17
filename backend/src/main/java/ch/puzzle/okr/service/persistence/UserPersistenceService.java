@@ -37,7 +37,7 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
     }
 
     public List<User> findAllOkrChampions() {
-        return getRepository().findByIsOkrChampion(true);
+        return getRepository().findByOkrChampion(true);
     }
 
     public Iterable<User> saveAll(List<User> userList) {

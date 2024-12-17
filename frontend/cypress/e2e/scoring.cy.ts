@@ -4,13 +4,13 @@ import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
-describe('Scoring component e2e tests', () => {
+describe('okr scoring', () => {
   let overviewPage = new CyOverviewPage();
-  let keyresultDetailPage = new KeyResultDetailPage();
+  let keyResultDetailPage = new KeyResultDetailPage();
 
   beforeEach(() => {
     overviewPage = new CyOverviewPage();
-    keyresultDetailPage = new KeyResultDetailPage();
+    keyResultDetailPage = new KeyResultDetailPage();
     cy.loginAsUser(users.gl);
   });
 
@@ -19,19 +19,19 @@ describe('Scoring component e2e tests', () => {
     [0, 100, 31],
     [0, 100, 71],
     [0, 100, 100],
-  ].forEach(([baseline, stretchgoal, value]) => {
-    it('Create metric checkin and validate value of scoring component', () => {
-      setupMetricKR(`Metric kr with check-in value ${value}`, baseline, stretchgoal, value);
-      const percentage = getPercentageMetric(baseline, stretchgoal, value);
+  ].forEach(([baseline, stretchGoal, value]) => {
+    it('should display correct value on scoring component after creating metric check-in', () => {
+      setupMetricKr(`Metric kr with check-in value ${value}`, baseline, stretchGoal, value);
+      const percentage = getPercentageMetric(baseline, stretchGoal, value);
       cy.validateScoring(false, percentage);
-      cy.get('.keyResult-detail-attribute-show')
+      cy.get('.key-result-detail-attribute-show')
         .contains('Aktuell')
         .parent()
         .not(':contains(!)')
         .should('have.css', 'border-color')
         .and('not.equal', 'rgb(186, 56, 56)');
 
-      keyresultDetailPage.close();
+      keyResultDetailPage.close();
       cy.validateScoring(true, percentage);
 
       overviewPage
@@ -43,18 +43,18 @@ describe('Scoring component e2e tests', () => {
   [
     [0, 100, -1],
     [200, 100, 250],
-  ].forEach(([baseline, stretchgoal, value]) => {
+  ].forEach(([baseline, stretchGoal, value]) => {
     it('show indicator that value is negative', () => {
-      setupMetricKR(`Check indicator with value ${value}`, baseline, stretchgoal, value);
+      setupMetricKr(`Check indicator with value ${value}`, baseline, stretchGoal, value);
       cy.validateScoring(false, 0);
-      cy.get('.keyResult-detail-attribute-show')
+      cy.get('.key-result-detail-attribute-show')
         .contains('Aktuell')
         .parent()
         .contains('!')
         .should('have.css', 'border-color')
         .and('equal', 'rgb(186, 56, 56)');
 
-      keyresultDetailPage.close();
+      keyResultDetailPage.close();
       cy.validateScoring(true, 0);
 
       overviewPage.getKeyResultByName(`Check indicator with value ${value}`).get('.scoring-error-badge');
@@ -62,7 +62,7 @@ describe('Scoring component e2e tests', () => {
   });
 
   [['fail'], ['commit'], ['target'], ['stretch']].forEach(([zoneName]) => {
-    it('Create ordinal checkin and validate value of scoring component', () => {
+    it('should create ordinal checkin and validate value of scoring component', () => {
       overviewPage
         .addKeyResult()
         .fillKeyResultTitle('Ordinal scoring keyresult')
@@ -71,7 +71,7 @@ describe('Scoring component e2e tests', () => {
         .fillKeyResultDescription('This is my description')
         .submit();
 
-      keyresultDetailPage
+      keyResultDetailPage
         .visit('Ordinal scoring keyresult')
         .createCheckIn()
         .selectOrdinalCheckInZone(zoneName as 'fail' | 'commit' | 'target' | 'stretch')
@@ -81,17 +81,17 @@ describe('Scoring component e2e tests', () => {
         .submit();
       const percentage = getPercentageOrdinal(zoneName);
       cy.validateScoring(false, percentage);
-      keyresultDetailPage.close();
+      keyResultDetailPage.close();
       cy.validateScoring(true, percentage);
     });
   });
 });
 
-function setupMetricKR(name: string, baseline: number, stretchgoal: number, value: number) {
+function setupMetricKr(name: string, baseline: number, stretchGoal: number, value: number) {
   CyOverviewPage.do()
     .addKeyResult()
     .fillKeyResultTitle(name)
-    .withMetricValues(Unit.PERCENT, baseline.toString(), stretchgoal.toString())
+    .withMetricValues(Unit.PERCENT, baseline.toString(), stretchGoal.toString())
     .submit();
   KeyResultDetailPage.do()
     .visit(name)

@@ -34,7 +34,7 @@ public class ActionMapper {
 
     private Action toAction(ActionDto actionDto, KeyResult keyResult) {
         return Action.Builder.builder().withId(actionDto.id()).withVersion(actionDto.version())
-                .withAction(actionDto.action()).withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked())
+                .withAction(actionDto.action()).withPriority(actionDto.priority()).isChecked(actionDto.isChecked())
                 .withKeyResult(keyResult).build();
     }
 }

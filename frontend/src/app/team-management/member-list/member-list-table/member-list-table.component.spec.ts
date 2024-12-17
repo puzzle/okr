@@ -77,7 +77,7 @@ describe('MemberListTableComponent', () => {
 
   it('should set displayedColumns for admin team correctly', fakeAsync(() => {
     const team = { ...team1 };
-    team.writeable = true;
+    team.isWriteable = true;
     component.selectedTeam$.next(team);
     tick();
     expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'role', 'menu']);

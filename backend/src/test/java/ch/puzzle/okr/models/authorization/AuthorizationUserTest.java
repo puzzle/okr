@@ -12,21 +12,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthorizationUserTest {
 
     private final List<UserTeam> userTeamList = List.of(
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(1L)).withTeamAdmin(true).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(2L)).withTeamAdmin(false).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(3L)).withTeamAdmin(true).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(4L)).withTeamAdmin(false).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(5L)).withTeamAdmin(false).build());
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(1L)).isTeamAdmin(true).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(2L)).isTeamAdmin(false).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(3L)).isTeamAdmin(true).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(4L)).isTeamAdmin(false).build(),
+            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(5L)).isTeamAdmin(false).build());
     private final User user = User.Builder.builder().withUserTeamList(userTeamList).build();
     private final AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
     @Test
-    public void extractTeamIds_shouldReturnAllIds() {
+    public void shouldReturnAllTeamIdsWhenExtractingTeamIdsOfUser() {
         assertEquals(List.of(1L, 2L, 3L, 4L, 5L), authorizationUser.extractTeamIds());
     }
 
     @Test
-    public void isUserMemberInTeam_shouldContainAllUsers() {
+    public void shouldCorrectlyCheckIfUserIsMemberInTeam() {
         assertTrue(authorizationUser.isUserMemberInTeam(1L));
         assertTrue(authorizationUser.isUserMemberInTeam(2L));
         assertTrue(authorizationUser.isUserMemberInTeam(3L));
@@ -36,7 +36,7 @@ class AuthorizationUserTest {
     }
 
     @Test
-    public void isUserAdminInTeam_shouldContainAllAdminUsers() {
+    public void shouldCorrectlyCheckIfUserIsAdminInTeam() {
         assertTrue(authorizationUser.isUserAdminInTeam(1L));
         assertTrue(authorizationUser.isUserAdminInTeam(3L));
         assertFalse(authorizationUser.isUserAdminInTeam(2L));

@@ -38,7 +38,7 @@ export default class KeyResultDialog extends Dialog {
 
   addActionPlanElement(action: string) {
     cy.getByTestId('add-action-plan-line').click();
-    cy.getByTestId('actionInput')
+    cy.getByTestId('action-input')
       .filter((k, el) => {
         return (el as HTMLInputElement).value.trim() === '';
       })

@@ -228,10 +228,10 @@ describe('TeamFilterComponent', () => {
 
   it('should filter teams by toggled priority and then by name', async () => {
     const teams = [
-      { id: 1, version: 0, name: 'Team D', writeable: true },
-      { id: 2, version: 0, name: 'Team C', writeable: true },
-      { id: 3, version: 0, name: 'Team B', writeable: true },
-      { id: 4, version: 0, name: 'Team A', writeable: true },
+      { id: 1, version: 0, name: 'Team D', isWriteable: true },
+      { id: 2, version: 0, name: 'Team C', isWriteable: true },
+      { id: 3, version: 0, name: 'Team B', isWriteable: true },
+      { id: 4, version: 0, name: 'Team A', isWriteable: true },
     ];
 
     component.teams$ = new BehaviorSubject(teams);
@@ -240,10 +240,10 @@ describe('TeamFilterComponent', () => {
     const sortedTeams = component.sortTeamsToggledPriority();
 
     expect(sortedTeams).toEqual([
-      { id: 4, version: 0, name: 'Team A', writeable: true },
-      { id: 3, version: 0, name: 'Team B', writeable: true },
-      { id: 2, version: 0, name: 'Team C', writeable: true },
-      { id: 1, version: 0, name: 'Team D', writeable: true },
+      { id: 4, version: 0, name: 'Team A', isWriteable: true },
+      { id: 3, version: 0, name: 'Team B', isWriteable: true },
+      { id: 2, version: 0, name: 'Team C', isWriteable: true },
+      { id: 1, version: 0, name: 'Team D', isWriteable: true },
     ]);
   });
 });

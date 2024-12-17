@@ -28,7 +28,7 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
     this.allAdminTeams$ = this.teamService.getAllTeams().pipe(
       takeUntil(this.unsubscribe$),
       map((teams) => {
-        return teams.filter((t) => t.writeable);
+        return teams.filter((t) => t.isWriteable);
       }),
     );
 

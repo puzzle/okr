@@ -23,12 +23,12 @@ public class QuartersTest {
         // arrange
         Quarters nowQuarters = new Quarters(date.getYear());
 
-        LocalDate in3Months = date.plusMonths(3);
-        Quarters in3MonthQuarters = new Quarters(in3Months.getYear());
+        LocalDate inThreeMonths = date.plusMonths(3);
+        Quarters inThreeMonthsQuarters = new Quarters(inThreeMonths.getYear());
 
         // act
         QuarterData currentQuarter = nowQuarters.currentQuarter(date);
-        QuarterData nextQuarter = in3MonthQuarters.currentQuarter(in3Months);
+        QuarterData nextQuarter = inThreeMonthsQuarters.currentQuarter(inThreeMonths);
 
         // assert
         assertEquals(expectedLabelFirstYear, currentQuarter.toString());
@@ -91,21 +91,21 @@ public class QuartersTest {
                         "('GJ 25/26-Q2', '2025-10-01', '2025-12-31')"));
     }
 
-    @DisplayName("currentQuarter() should find current quarter for now and 7 months in past")
+    @DisplayName("currentQuarter() should find current quarter for now and seven months in past")
     @ParameterizedTest
     @MethodSource("pastDatesAndLabels")
-    void currentQuarterShouldFindCurrentQuarterForNowAnd7MonthsInPast(LocalDate date, String expectedLabelFirstYear,
+    void currentQuarterShouldFindCurrentQuarterForNowAndSevenMonthsInPast(LocalDate date, String expectedLabelFirstYear,
             String expectedLabelSecondYear) {
 
         // arrange
         Quarters nowQuarters = new Quarters(date.getYear());
 
-        LocalDate in3Months = date.plusMonths(3);
-        Quarters in3MonthsQuarters = new Quarters(in3Months.getYear());
+        LocalDate inThreeMonths = date.plusMonths(3);
+        Quarters inThreeMonthsQuarters = new Quarters(inThreeMonths.getYear());
 
         // act
         QuarterData currentQuarter = nowQuarters.currentQuarter(date);
-        QuarterData nextQuarter = in3MonthsQuarters.currentQuarter(in3Months);
+        QuarterData nextQuarter = inThreeMonthsQuarters.currentQuarter(inThreeMonths);
 
         // assert
         assertEquals(expectedLabelFirstYear, currentQuarter.toString());
@@ -155,11 +155,11 @@ public class QuartersTest {
         LocalDate now = LocalDate.of(2024, 7, 15);
         Quarters allQuartersOfCurrentYear = new Quarters(now.getYear());
 
-        LocalDate in2Years = now.plusYears(2);
+        LocalDate inTwoYears = now.plusYears(2);
 
         // act
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> allQuartersOfCurrentYear.currentQuarter(in2Years));
+                () -> allQuartersOfCurrentYear.currentQuarter(inTwoYears));
 
         // assert
         assertEquals(RuntimeException.class, exception.getClass());

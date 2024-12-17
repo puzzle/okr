@@ -100,7 +100,7 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("throwExceptionWhenModelIsNull() should should be successful when model is valid")
+    @DisplayName("throwExceptionWhenModelIsNull() should be successful when model is valid")
     @Test
     void throwExceptionWhenModelIsNullShouldBeSuccessfulWhenModelIsValid() {
         // act

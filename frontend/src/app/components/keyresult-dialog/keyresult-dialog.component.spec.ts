@@ -36,7 +36,7 @@ describe('KeyresultDialogComponent', () => {
 
   const oauthMockService = {
     getIdentityClaims() {
-      return { name: users[1].firstname + ' ' + users[1].lastname };
+      return { name: users[1].firstName + ' ' + users[1].lastName };
     },
   };
 

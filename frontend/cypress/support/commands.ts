@@ -62,7 +62,7 @@ Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
   cy.intercept('GET', '**/users/current').as('getCurrentUser');
-  cy.origin(Cypress.env('login_url'), { args: { username, password } }, ({ username, password }) => {
+  cy.origin(Cypress.env('LOGIN_URL'), { args: { username, password } }, ({ username, password }) => {
     cy.get('input[name="username"]').type(username);
     cy.get('input[name="password"]').type(password);
     cy.get('button[type="submit"]').click();
@@ -70,8 +70,8 @@ function loginWithCredentials(username: string, password: string) {
   });
   cy.url().then((url) => {
     const currentUrl = new URL(url);
-    const baseURL = new URL(Cypress.config().baseUrl!);
-    expect(currentUrl.pathname).equal(baseURL.pathname);
+    const baseUrl = new URL(Cypress.config().baseUrl!);
+    expect(currentUrl.pathname).equal(baseUrl.pathname);
   });
 }
 

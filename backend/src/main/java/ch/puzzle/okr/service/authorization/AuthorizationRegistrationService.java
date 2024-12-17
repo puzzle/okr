@@ -27,16 +27,16 @@ public class AuthorizationRegistrationService {
 
     @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "T(ch.puzzle.okr.SpringCachingConfig).cacheKey(#userFromToken)")
     public AuthorizationUser updateOrAddAuthorizationUser(User userFromToken) {
-        var userFromDB = userBusinessService.getOrCreateUser(userFromToken);
-        var userFromDBWithTokenData = setFirstLastNameFromToken(userFromDB, userFromToken);
-        var userFromDBWithTokenAndPropertiesData = setOkrChampionFromProperties(userFromDBWithTokenData);
-        userBusinessService.saveUser(userFromDBWithTokenAndPropertiesData);
-        return new AuthorizationUser(userFromDBWithTokenAndPropertiesData);
+        User userFromDb = userBusinessService.getOrCreateUser(userFromToken);
+        User userFromDbWithTokenData = setFirstLastNameFromToken(userFromDb, userFromToken);
+        User userFromDbWithTokenAndPropertiesData = setOkrChampionFromProperties(userFromDbWithTokenData);
+        userBusinessService.saveUser(userFromDbWithTokenAndPropertiesData);
+        return new AuthorizationUser(userFromDbWithTokenAndPropertiesData);
     }
 
     // firstname and lastname comes from JWT token
-    private User setFirstLastNameFromToken(User userFromDB, User userFromToken) {
-        return helper.setFirstLastNameFromToken(userFromDB, userFromToken);
+    private User setFirstLastNameFromToken(User userFromDb, User userFromToken) {
+        return helper.setFirstLastNameFromToken(userFromDb, userFromToken);
     }
 
     // okr champion is set in application properties
@@ -59,10 +59,10 @@ public class AuthorizationRegistrationService {
             return user;
         }
 
-        public User setFirstLastNameFromToken(User userFromDB, User userFromToken) {
-            userFromDB.setFirstname(userFromToken.getFirstname());
-            userFromDB.setLastname(userFromToken.getLastname());
-            return userFromDB;
+        public User setFirstLastNameFromToken(User userFromDb, User userFromToken) {
+            userFromDb.setFirstName(userFromToken.getFirstName());
+            userFromDb.setLastName(userFromToken.getLastName());
+            return userFromDb;
         }
     }
 

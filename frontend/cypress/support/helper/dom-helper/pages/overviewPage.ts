@@ -7,7 +7,7 @@ import { filterByKeyResultName, getKeyResults } from '../../keyResultHelper';
 export default class CyOverviewPage extends Page {
   elements = {
     logo: () => cy.getByTestId('logo'),
-    teammanagement: () => cy.getByTestId('team-management'),
+    teamManagement: () => cy.getByTestId('team-management'),
   };
 
   visitGJForTests() {
@@ -118,8 +118,8 @@ export default class CyOverviewPage extends Page {
     return cy.get('@keyResult');
   }
 
-  getKeyResultsByName(keyresultName: string) {
-    return getKeyResults().filter(filterByKeyResultName(keyresultName));
+  getKeyResultsByName(keyResultName: string) {
+    return getKeyResults().filter(filterByKeyResultName(keyResultName));
   }
 
   selectFromThreeDotMenu(optionName: string) {
@@ -137,8 +137,8 @@ export default class CyOverviewPage extends Page {
     return new ObjectiveDialog();
   }
 
-  visitTeammanagement(): void {
-    this.elements.teammanagement().click();
+  visitTeamManagement(): void {
+    this.elements.teamManagement().click();
   }
 
   getURL(): string {

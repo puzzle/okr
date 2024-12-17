@@ -67,7 +67,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUserShouldAddAuthorizationUserToCache() {
+    void updateOrAddAuthorizationUserShouldAddAuthorizationUserToCache() {
         // arrange
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
 
@@ -82,13 +82,13 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(user.getId());
     }
 
-    @DisplayName("registerAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set OkrChampions to false")
+    @DisplayName("updateOrAddAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set isOkrChampion to false")
     @Test
-    void registerAuthorizationUser_shouldSetOkrChampionsToFalse() {
+    void updateOrAddAuthorizationUserShouldSetIsOkrChampionToFalse() {
         // arrange
         User user = User.Builder.builder() //
-                .withFirstname("Richard") //
-                .withLastname("Eberhard") //
+                .withFirstName("Richard") //
+                .withLastName("Eberhard") //
                 .withEmail("richard.eberhard@puzzle.ch") // email not found in application-integration-test.properties
                 .build();
 
@@ -116,8 +116,8 @@ class AuthorizationRegistrationServiceIT {
      * champion. - the OkrChampion status must manually be reset (in the tearDown method) </pre>
      */
     @Test
-    @DisplayName("registerAuthorizationUser for a user with an email defined in the application-integration-test.properties should set OkrChampions to true")
-    void registerAuthorizationUserShouldSetOkrChampionsToTrue() {
+    @DisplayName("updateOrAddAuthorizationUser for a user with an email defined in the application-integration-test.properties should set isOkrChampion to true")
+    void updateOrAddAuthorizationUserShouldSetIsOkrChampionToTrue() {
         // arrange
         assertOkrChampionStatusInDb(EMAIL_WUNDERLAND, false); // pre-condition
 
@@ -126,8 +126,8 @@ class AuthorizationRegistrationServiceIT {
         // "okr.tenants.pitc.user.champion.emails" from application-integration-test.properties file
         AuthorizationUser processedUser = authorizationRegistrationService
                 .updateOrAddAuthorizationUser(User.Builder.builder() //
-                        .withFirstname("Alice") //
-                        .withLastname("Wunderland") //
+                        .withFirstName("Alice") //
+                        .withLastName("Wunderland") //
                         .withEmail(EMAIL_WUNDERLAND) // user.champion.emails from
                                                      // application-integration-test.properties
                         .build());
@@ -138,11 +138,11 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_shouldSetFirstnameAndLastnameFromToken() {
+    void updateOrAddAuthorizationUserShouldSetFirstnameAndLastnameFromToken() {
         // arrange
         User user = User.Builder.builder() //
-                .withFirstname("Richard") //
-                .withLastname("Eberhard") //
+                .withFirstName("Richard") //
+                .withLastName("Eberhard") //
                 .withEmail("richard.eberhard@puzzle.ch") //
                 .build();
         userPersistenceService.save(user);
@@ -150,8 +150,8 @@ class AuthorizationRegistrationServiceIT {
         String firstNameFromToken = "Richu";
         String lastNameFromToken = "von Gunten";
         User userFromToken = User.Builder.builder() //
-                .withFirstname(firstNameFromToken) //
-                .withLastname(lastNameFromToken) //
+                .withFirstName(firstNameFromToken) //
+                .withLastName(lastNameFromToken) //
                 .withEmail("richard.eberhard@puzzle.ch") //
                 .build();
 
@@ -161,8 +161,8 @@ class AuthorizationRegistrationServiceIT {
         // assert
         Optional<User> userFromDB = userPersistenceService.findByEmail(user.getEmail());
         assertTrue(userFromDB.isPresent());
-        assertEquals(userFromDB.get().getFirstname(), firstNameFromToken);
-        assertEquals(userFromDB.get().getLastname(), lastNameFromToken);
+        assertEquals(userFromDB.get().getFirstName(), firstNameFromToken);
+        assertEquals(userFromDB.get().getLastName(), lastNameFromToken);
 
         // cleanup
         userPersistenceService.deleteById(userFromDB.get().getId());

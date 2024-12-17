@@ -4,8 +4,8 @@ import { UserTeam } from './UserTeam';
 
 export interface UserTableEntry {
   id: number;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   teams: string[];
   roles: string[];
@@ -30,7 +30,7 @@ export const convertFromUsers = (users: User[], teamId: number | null): UserTabl
       .filter((u) => u.userTeamList.length)
       .map((u) => convertFromUser(u));
   }
-  return userTableEntries.sort((a, b) => a.firstname.localeCompare(b.firstname));
+  return userTableEntries.sort((a, b) => a.firstName.localeCompare(b.firstName));
 };
 
 export const convertFromUser = (user: User): UserTableEntry => {
@@ -45,8 +45,8 @@ export const convertFromUser = (user: User): UserTableEntry => {
 
   return {
     id: user.id,
-    firstname: user.firstname,
-    lastname: user.lastname,
+    firstName: user.firstName,
+    lastName: user.lastName,
     email: user.email,
     teams,
     roles,

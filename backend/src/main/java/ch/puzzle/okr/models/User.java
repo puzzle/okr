@@ -25,12 +25,12 @@ public class User {
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
-    private String firstname;
+    private String firstName;
 
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
-    private String lastname;
+    private String lastName;
 
     @Column(unique = true, nullable = false)
     @Email(message = MessageKey.ATTRIBUTE_NOT_VALID)
@@ -43,7 +43,7 @@ public class User {
     private List<UserTeam> userTeamList = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isOkrChampion = false;
+    private boolean okrChampion = false;
 
     public User() {
     }
@@ -51,11 +51,11 @@ public class User {
     private User(Builder builder) {
         id = builder.id;
         version = builder.version;
-        setFirstname(builder.firstname);
-        setLastname(builder.lastname);
+        setFirstName(builder.firstName);
+        setLastName(builder.lastName);
         setEmail(builder.email);
         setUserTeamList(builder.userTeamList);
-        setOkrChampion(builder.isOkrChampion);
+        setOkrChampion(builder.okrChampion);
     }
 
     public Long getId() {
@@ -66,20 +66,20 @@ public class User {
         return version;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -99,17 +99,17 @@ public class User {
     }
 
     public boolean isOkrChampion() {
-        return isOkrChampion;
+        return okrChampion;
     }
 
     public void setOkrChampion(boolean okrChampion) {
-        isOkrChampion = okrChampion;
+        this.okrChampion = okrChampion;
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
-                + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
+        return "User{" + "id=" + id + ", version=" + version + ", firstName='" + firstName + '\'' + ", lastName='"
+                + lastName + '\'' + ", email='" + email + '\'' + ", okrChampion='" + okrChampion + '\'' + '}';
     }
 
     @Override
@@ -120,23 +120,23 @@ public class User {
             return false;
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(version, user.version)
-                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
-                && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
+                && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName)
+                && Objects.equals(email, user.email) && Objects.equals(okrChampion, user.okrChampion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, firstname, lastname, email, isOkrChampion);
+        return Objects.hash(id, version, firstName, lastName, email, okrChampion);
     }
 
     public static final class Builder {
         private Long id;
         private int version;
-        private String firstname;
-        private String lastname;
+        private String firstName;
+        private String lastName;
         private String email;
         private List<UserTeam> userTeamList;
-        private boolean isOkrChampion;
+        private boolean okrChampion;
 
         private Builder() {
         }
@@ -155,13 +155,13 @@ public class User {
             return this;
         }
 
-        public Builder withFirstname(String firstname) {
-            this.firstname = firstname;
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
             return this;
         }
 
-        public Builder withLastname(String lastname) {
-            this.lastname = lastname;
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
             return this;
         }
 
@@ -175,8 +175,8 @@ public class User {
             return this;
         }
 
-        public Builder withOkrChampion(boolean isOkrChampion) {
-            this.isOkrChampion = isOkrChampion;
+        public Builder isOkrChampion(boolean okrChampion) {
+            this.okrChampion = okrChampion;
             return this;
         }
 

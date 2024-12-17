@@ -69,12 +69,15 @@ export default tsEslint.config(
       ],
       'no-undef': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-namespace': ['error',{
-        allowDeclarations: true,
-      }],
+      '@typescript-eslint/no-namespace': [
+        'error',
+        {
+          allowDeclarations: true,
+        },
+      ],
       'prefer-rest-params': 'error',
-      '@typescript-eslint/no-empty-function': ['off'],
-      '@stylistic/lines-around-comment': ['off'],
+      '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
+      '@stylistic/lines-around-comment': ['error'],
       '@angular-eslint/no-empty-lifecycle-method': 'off',
       '@angular-eslint/component-class-suffix': 'off',
       '@angular-eslint/template/eqeqeq': 'off',

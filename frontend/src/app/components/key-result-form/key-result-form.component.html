@@ -15,11 +15,7 @@
     </div>
   </div>
 
-  <app-keyresult-type
-    (formValidityEmitter)="updateFormValidity()"
-    [keyresult]="keyResult"
-    [keyResultForm]="keyResultForm"
-  ></app-keyresult-type>
+  <app-keyresult-type [keyresult]="keyResult" [keyResultForm]="keyResultForm"></app-keyresult-type>
 
   <div class="okr-form-row okr-form-label-input-container">
     <label class="okr-form-label okr-form-col" for="owner">Owner</label>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { KeyResult } from "../../shared/types/model/KeyResult";
 import { FormGroup, Validators } from "@angular/forms";
 import { KeyResultMetric } from "../../shared/types/model/KeyResultMetric";
@@ -16,8 +16,6 @@ export class KeyresultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
 
   @Input() keyresult!: KeyResult | null;
-
-  @Output() formValidityEmitter = new EventEmitter<boolean>();
 
   isMetric = true;
 
@@ -67,7 +65,6 @@ export class KeyresultTypeComponent implements OnInit {
   async updateFormValidity () {
     await new Promise((r) => setTimeout(r,
       100));
-    this.formValidityEmitter.emit(this.keyResultForm.invalid);
   }
 
   setValidatorsMetric () {

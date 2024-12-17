@@ -5,7 +5,6 @@ import {
   Component,
   ElementRef,
   OnDestroy,
-  OnInit,
   ViewChild
 } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -17,7 +16,7 @@ import { ConnectedPosition } from "@angular/cdk/overlay"; // ESM
   styleUrls: ["./sidepanel.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
+export class SidepanelComponent implements AfterContentInit, OnDestroy {
   leaveKeys = ["Escape"];
 
   right = "-100%";
@@ -37,8 +36,6 @@ export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
   constructor (private router: Router,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute) {}
-
-  ngOnInit (): void {}
 
   ngAfterContentInit (): void {
     document.body.classList.add("disable-scrolling");

@@ -5,17 +5,18 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild,
-} from '@angular/core';
-import { ControlContainer, FormControl, FormGroup, NgForm } from '@angular/forms';
-import { NewUserForm } from '../../shared/types/model/NewUserForm';
+  ViewChild
+} from "@angular/core";
+import { ControlContainer, FormControl, FormGroup, NgForm } from "@angular/forms";
+import { NewUserForm } from "../../shared/types/model/NewUserForm";
 
 @Component({
-  selector: 'app-new-user',
-  templateUrl: './new-user.component.html',
-  styleUrl: './new-user.component.scss',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-  changeDetection: ChangeDetectionStrategy.Default,
+  selector: "app-new-user",
+  templateUrl: "./new-user.component.html",
+  styleUrl: "./new-user.component.scss",
+  viewProviders: [{ provide: ControlContainer,
+    useExisting: NgForm }],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class NewUserComponent implements AfterViewInit {
   @Input({ required: true })
@@ -30,25 +31,25 @@ export class NewUserComponent implements AfterViewInit {
   @Output()
   removeUser: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild('firstInput') firstInput: any;
+  @ViewChild("firstInput") firstInput: any;
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit (): void {
     this.firstInput.nativeElement.focus();
   }
 
-  remove() {
+  remove () {
     this.removeUser.emit();
   }
 
-  get firstname() {
+  get firstname () {
     return this.userFormGroup.controls.firstname;
   }
 
-  get lastname() {
+  get lastname () {
     return this.userFormGroup.controls.lastname;
   }
 
-  get email() {
+  get email () {
     return this.userFormGroup.controls.email;
   }
 }

@@ -8,50 +8,60 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
-  ViewChild,
-} from '@angular/core';
-import { Zone } from '../../types/enums/Zone';
-import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
-import { Observable, of } from 'rxjs';
-import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common';
-import { KeyResultMetric } from '../../types/model/KeyResultMetric';
-import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
-import { CheckInOrdinalMin } from '../../types/model/CheckInOrdinalMin';
+  ViewChild
+} from "@angular/core";
+import { Zone } from "../../types/enums/Zone";
+import { KeyResultMetricMin } from "../../types/model/KeyResultMetricMin";
+import { Observable, of } from "rxjs";
+import { calculateCurrentPercentage, isLastCheckInNegative } from "../../common";
+import { KeyResultOrdinalMin } from "../../types/model/KeyResultOrdinalMin";
+import { CheckInOrdinalMin } from "../../types/model/CheckInOrdinalMin";
 
 @Component({
-  selector: 'app-scoring',
-  templateUrl: './scoring.component.html',
-  styleUrls: ['./scoring.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: "app-scoring",
+  templateUrl: "./scoring.component.html",
+  styleUrls: ["./scoring.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() keyResult!: KeyResultOrdinalMin | KeyResultMetricMin;
+
   @Input() isDetail!: boolean;
-  iconPath: string = 'empty';
-  failPercent: number = 0;
-  commitPercent: number = 0;
-  targetPercent: number = 0;
+
+  iconPath = "empty";
+
+  failPercent = 0;
+
+  commitPercent = 0;
+
+  targetPercent = 0;
+
   labelPercentage: Observable<number>;
-  stretched: boolean = false;
+
+  stretched = false;
+
   protected readonly isLastCheckInNegative = isLastCheckInNegative;
 
-  @ViewChild('fail')
+  @ViewChild("fail")
   private failElement: ElementRef<HTMLSpanElement> | undefined = undefined;
-  @ViewChild('commit')
+
+  @ViewChild("commit")
   private commitElement: ElementRef<HTMLSpanElement> | undefined = undefined;
-  @ViewChild('target')
+
+  @ViewChild("target")
   private targetElement: ElementRef<HTMLSpanElement> | undefined = undefined;
-  @ViewChild('valueLabel')
+
+  @ViewChild("valueLabel")
   private valueLabel: ElementRef<HTMLSpanElement> | undefined = undefined;
 
-  constructor(private changeDetectionRef: ChangeDetectorRef) {
+  constructor (private changeDetectionRef: ChangeDetectorRef) {
     this.labelPercentage = new Observable<number>();
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.stretched = false;
     if (this.keyResult.lastCheckIn) {
-      if (this.keyResult.keyResultType === 'metric') {
+      if (this.keyResult.keyResultType === "metric") {
         this.calculatePercentageMetric();
       } else {
         this.calculatePercentageOrdinal();
@@ -59,35 +69,35 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  ngAfterViewInit(): void {
-    //Define width of scoring elements
-    this.failElement!.nativeElement.style.width = this.failPercent + '%';
-    this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
-    this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
+  ngAfterViewInit (): void {
+    // Define width of scoring elements
+    this.failElement!.nativeElement.style.width = this.failPercent + "%";
+    this.commitElement!.nativeElement.style.width = this.commitPercent + "%";
+    this.targetElement!.nativeElement.style.width = this.targetPercent + "%";
 
-    if (this.valueLabel != undefined && this.keyResult.keyResultType == 'metric') {
+    if (this.valueLabel != undefined && this.keyResult.keyResultType == "metric") {
       this.labelPercentage.subscribe((value) => {
-        this.valueLabel!.nativeElement.style.width = value + '%';
+        this.valueLabel!.nativeElement.style.width = value + "%";
         this.changeDetectionRef.detectChanges();
       });
     }
 
     // Set color of scoring component
-    let scoringClass = this.getScoringColorClassAndSetBorder();
+    const scoringClass = this.getScoringColorClassAndSetBorder();
     if (scoringClass !== null) {
       this.targetElement!.nativeElement.classList.add(scoringClass);
       this.commitElement!.nativeElement.classList.add(scoringClass);
       this.failElement!.nativeElement.classList.add(scoringClass);
     }
 
-    //Fill out icon if target percent has reached 100 percent or more
+    // Fill out icon if target percent has reached 100 percent or more
     if (this.stretched) {
-      this.iconPath = 'filled';
+      this.iconPath = "filled";
       this.changeDetectionRef.detectChanges();
     }
   }
 
-  calculatePercentageOrdinal() {
+  calculatePercentageOrdinal () {
     switch ((this.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone!) {
       case Zone.STRETCH:
         this.stretched = true;
@@ -110,72 +120,78 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  calculatePercentageMetric() {
+  calculatePercentageMetric () {
     if (this.keyResult.lastCheckIn !== null) {
-      let keyResultMetric: KeyResultMetricMin = this.castToMetric();
-      let percentage = calculateCurrentPercentage(keyResultMetric);
+      const keyResultMetric: KeyResultMetricMin = this.castToMetric();
+      const percentage = calculateCurrentPercentage(keyResultMetric);
       this.labelPercentage = of(percentage);
       if (percentage < 30) {
         this.stretched = false;
-        this.failPercent = (100 / 30) * percentage;
+        this.failPercent = 100 / 30 * percentage;
       } else if (percentage < 70) {
         this.stretched = false;
         this.failPercent = 100;
-        this.commitPercent = (100 / 40) * (percentage - 30);
+        this.commitPercent = 100 / 40 * (percentage - 30);
       } else if (percentage < 100) {
         this.stretched = false;
         this.failPercent = 100;
         this.commitPercent = 100;
-        this.targetPercent = (100 / 30) * (percentage - 70);
+        this.targetPercent = 100 / 30 * (percentage - 70);
       } else if (percentage >= 100) {
         this.stretched = true;
       }
     }
   }
 
-  getScoringColorClassAndSetBorder(): string | null {
+  getScoringColorClassAndSetBorder (): string | null {
     if (this.targetPercent > 100) {
-      return 'score-stretch';
-    } else if (this.targetPercent > 0 || (this.commitPercent == 100 && this.keyResult.keyResultType === 'metric')) {
-      return 'score-green';
-    } else if (this.commitPercent > 0 || (this.failPercent == 100 && this.keyResult.keyResultType === 'metric')) {
-      return 'score-yellow';
+      return "score-stretch";
+    } else if (this.targetPercent > 0 || this.commitPercent == 100 && this.keyResult.keyResultType === "metric") {
+      return "score-green";
+    } else if (this.commitPercent > 0 || this.failPercent == 100 && this.keyResult.keyResultType === "metric") {
+      return "score-yellow";
     } else if (this.failPercent >= 3.3333) {
       // 3.3333% because if lower fail is not visible in overview and we display !
-      return 'score-red';
+      return "score-red";
     } else {
       return null;
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['keyResult']?.currentValue !== undefined || changes['keyResult']?.currentValue !== null) {
+  ngOnChanges (changes: SimpleChanges): void {
+    if (changes["keyResult"]?.currentValue !== undefined || changes["keyResult"]?.currentValue !== null) {
       if (this.commitElement != undefined) {
         this.resetPercentagesToZero();
         this.removeStyleClass();
-        this.iconPath = 'empty';
+        this.iconPath = "empty";
         this.ngOnInit();
         this.ngAfterViewInit();
       }
     }
   }
 
-  resetPercentagesToZero() {
+  resetPercentagesToZero () {
     this.commitPercent = 0;
     this.targetPercent = 0;
     this.failPercent = 0;
   }
 
-  removeStyleClass() {
-    let classArray: string[] = ['score-red', 'score-green', 'score-yellow', 'score-stretch', 'border-right'];
-    for (let classToRemove of classArray) {
+  removeStyleClass () {
+    const classArray: string[] = [
+      "score-red",
+      "score-green",
+      "score-yellow",
+      "score-stretch",
+      "border-right"
+    ];
+    for (const classToRemove of classArray) {
       this.commitElement?.nativeElement.classList.remove(classToRemove);
       this.targetElement?.nativeElement.classList.remove(classToRemove);
       this.failElement?.nativeElement.classList.remove(classToRemove);
     }
   }
 
-  castToMetric(): KeyResultMetricMin {
+  castToMetric (): KeyResultMetricMin {
     return this.keyResult as KeyResultMetricMin;
   }
 

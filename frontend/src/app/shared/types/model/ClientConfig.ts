@@ -4,9 +4,7 @@ export interface AuthConfig {
   clientId: string;
 }
 
-export interface CustomStyles {
-  [key: string]: string;
-}
+export type CustomStyles = Record<string, string>;
 
 export interface CustomizationConfig {
   title: string;

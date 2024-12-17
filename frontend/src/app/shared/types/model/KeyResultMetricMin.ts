@@ -1,5 +1,5 @@
-import { KeyresultMin } from './KeyresultMin';
-import { CheckInMetricMin } from './CheckInMetricMin';
+import { KeyresultMin } from "./KeyresultMin";
+import { CheckInMetricMin } from "./CheckInMetricMin";
 
 export interface KeyResultMetricMin extends KeyresultMin {
   baseline: number;

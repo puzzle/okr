@@ -1,5 +1,5 @@
-import { KeyResult } from './KeyResult';
-import { CheckInMetric } from './CheckInMetric';
+import { KeyResult } from "./KeyResult";
+import { CheckInMetric } from "./CheckInMetric";
 
 export interface KeyResultMetric extends KeyResult {
   lastCheckIn: CheckInMetric | null;

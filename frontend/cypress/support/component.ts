@@ -1,8 +1,8 @@
-import './commands';
-import { keyCodeDefinitions } from 'cypress-real-events/keyCodeDefinitions';
+import "./commands";
+import { keyCodeDefinitions } from "cypress-real-events/keyCodeDefinitions";
 
 declare global {
-  namespace Cypress {
+  export namespace Cypress {
     interface Chainable {
       loginAsUser(user: any): Chainable;
       getByTestId(testsId: string, text?: string): Chainable;

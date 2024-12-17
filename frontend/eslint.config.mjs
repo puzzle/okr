@@ -4,7 +4,6 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
-import angularTemplateParser from '@angular-eslint/template-parser'
 import htmlParser from '@html-eslint/parser'
 
 export default tsEslint.config(
@@ -17,22 +16,70 @@ export default tsEslint.config(
       ...angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
+    languageOptions: {
+      globals: {
+        //Cypress Undefined
+        cy: 'readonly',
+        Cypress: 'readonly',
+        it: 'readonly',
+        describe: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        before: 'readonly',
+        //Dom undefined
+        localStorage: 'readonly',
+        console: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        //Event undefined
+        MouseEvent: 'readonly',
+        KeyboardEvent: 'readonly',
+        Event: 'readonly',
+        //HTML Elements undefined
+        HTMLDivElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLSpanElement: 'readonly',
+        HTMLElement: 'readonly',
+        //Other undefined
+        ResizeObserver: 'readonly',
+        ResizeObserverEntry: 'readonly',
+        setTimeout: 'readonly',
+        JQuery: 'readonly',
+        Document: 'readonly',
+        URL: 'readonly',
+      },
+    },
     rules: {
       ...stylistic.configs['all-flat'].rules,
       'unused-imports/no-unused-imports': 'error',
 
       // ToDo: Disable rules so eslint passes, fix in followup ticket
-      '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-      'no-undef': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'none',
+        },
+      ],
+      '@typescript-eslint/ban-ts-comment': 'error',
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        {
+          allowTernary: true,
+        },
+      ],
+      'no-undef': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-namespace': 'off',
-      'prefer-rest-params': 'off',
-      '@typescript-eslint/no-empty-function': ['off'],
-      '@stylistic/lines-around-comment': ['off'],
-      '@angular-eslint/no-empty-lifecycle-method': 'off',
-      '@angular-eslint/component-class-suffix': 'off',
+      '@typescript-eslint/no-namespace': [
+        'error',
+        {
+          allowDeclarations: true,
+        },
+      ],
+      'prefer-rest-params': 'error',
+      '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
+      '@stylistic/lines-around-comment': ['error'],
+      '@angular-eslint/no-empty-lifecycle-method': 'error',
+      '@angular-eslint/component-class-suffix': 'error',
       '@angular-eslint/template/eqeqeq': 'off',
       '@angular-eslint/template/interactive-supports-focus': 'off',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
@@ -78,10 +125,12 @@ export default tsEslint.config(
   },
   {
     files: ['**/*.spec.ts'],
+    extends: [...tsEslint.configs.recommended],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       'prefer-rest-params': 'off',
       '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
     },
   },
 

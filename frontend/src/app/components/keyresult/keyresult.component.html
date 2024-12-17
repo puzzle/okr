@@ -15,7 +15,7 @@
     <div class="d-flex justify-content-center align-items-center flex-wrap">
       <h4 class="text-nowrap me-2">Letztes Check-in</h4>
       <span class="keyResult-attribute-show">{{
-        getKeyResultWithCorrectType().lastCheckIn == null
+        getKeyResultWithCorrectType().lastCheckIn === null
         ? "Keines"
         : (getKeyResultWithCorrectType().lastCheckIn!.createdOn | date: DATE_FORMAT)
         }}</span>

@@ -52,7 +52,7 @@
         </section>
 
         <section class="d-flex gap-4 flex-row mb-2-rem">
-          <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
+          <ng-container *ngIf="keyResult.keyResultType === 'metric' && castToMetric(keyResult) as keyResultMetric">
             <div class="d-flex justify-content-start w-100 metric-label-div">
               <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
                 Baseline: {{ keyResultMetric.baseline | unitTransformation: keyResultMetric.unit }}
@@ -76,7 +76,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
+          <ng-container *ngIf="keyResult.keyResultType === 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
             <div class="d-flex justify-content-between w-100 ordinal-div mb-4">
               <div class="ordinal-col h-auto">
                 <h4 class="mb-1">Commit</h4>
@@ -106,7 +106,7 @@
             <p class="linebreak">{{ keyResult.description || "-" }}</p>
           </div>
 
-          <div *ngIf="keyResult.actionList?.length != 0" class="mb-2-rem">
+          <div *ngIf="keyResult.actionList?.length !== 0" class="mb-2-rem">
             <h3>Action Plan</h3>
             <div *ngFor="let action of keyResult.actionList">
               <div *ngIf="action.isChecked">

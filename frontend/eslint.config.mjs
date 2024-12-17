@@ -4,7 +4,6 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
-import htmlParser from '@html-eslint/parser'
 
 export default tsEslint.config(
   {
@@ -76,12 +75,10 @@ export default tsEslint.config(
         },
       ],
       'prefer-rest-params': 'error',
-      '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
+      '@typescript-eslint/no-empty-function': ['error', {allow: ['arrowFunctions', 'constructors']}],
       '@stylistic/lines-around-comment': ['error'],
       '@angular-eslint/no-empty-lifecycle-method': 'error',
       '@angular-eslint/component-class-suffix': 'error',
-      '@angular-eslint/template/eqeqeq': 'off',
-      '@angular-eslint/template/interactive-supports-focus': 'off',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@stylistic/no-extra-parens': 'off',
@@ -95,15 +92,15 @@ export default tsEslint.config(
       // '@stylistic/quotes': ['error', 'double'],
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/dot-location': ['error', 'property'],
-      '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
+      '@stylistic/newline-per-chained-call': ['error', {ignoreChainWithDepth: 1}],
       '@stylistic/indent': ['error', 2],
       '@stylistic/quote-props': ['error', 'as-needed'],
       '@stylistic/object-property-newline': ['error'],
       '@stylistic/multiline-ternary': ['off'],
       '@stylistic/object-curly-spacing': ['error', 'always'],
-      '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
+      '@stylistic/array-bracket-newline': ['error', {minItems: 4}],
       '@stylistic/semi-style': ['error'],
-      '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
+      '@stylistic/function-paren-newline': ['error', {minItems: 4}],
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -136,23 +133,20 @@ export default tsEslint.config(
 
   {
     files: ['**/*.html'],
-    // recommended configuration included in the plugin
-    ...html.configs['flat/recommended'],
-    //extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
-    //processor: angular.processInlineTemplates,
-    //languageOptions: {
-    //parser: angularTemplateParser,
-    //},
+    extends: [
+      ...angular.configs.templateRecommended,
+    ],
     languageOptions: {
-      parser: htmlParser,
+      parser: angular.templateParser,
     },
+
     rules: {
       ...html.configs['flat/recommended'].rules,
-      // Must be defined. If not, all recommended rules will be lost
+      '@angular-eslint/template/eqeqeq': 'error',
       '@html-eslint/indent': ['error', 2],
       '@html-eslint/require-img-alt': 'off',
       '@html-eslint/element-newline': 'off',
-      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
+      '@html-eslint/require-closing-tags': ['error', {selfClosing: 'always'}],
     },
   },
   {

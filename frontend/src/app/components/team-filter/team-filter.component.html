@@ -2,7 +2,7 @@
   <button (click)="toggleAll()" class="icon-button focus-outline mt-1 me-1">
     <mat-chip
       [attr.data-testId]="'team-filter-alle'"
-      [highlighted]="activeTeams.length == (this.teams$ | async)?.length"
+      [highlighted]="activeTeams.length === (this.teams$ | async)?.length"
       color="primary"
     >
       <p>Alle</p>

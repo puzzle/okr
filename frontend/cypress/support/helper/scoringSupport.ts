@@ -64,7 +64,7 @@ function validateScoringWidth (zone: string, percent: number, isOverview: boolea
     .parent()
     .invoke("width")
     .then((parentWidth) => {
-      expect(parentWidth).not.to.be.undefined;
+      expect(parentWidth).not.to.equal(undefined);
       cy.getZone(zone,
         isOverview)
         .invoke("width")

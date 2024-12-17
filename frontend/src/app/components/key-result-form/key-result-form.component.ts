@@ -38,7 +38,8 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   constructor (public userService: UserService,
     private oauthService: OAuthService,
-    private translate: TranslateService) {}
+    private translate: TranslateService) {
+  }
 
   ngOnInit (): void {
     this.users$ = this.userService.getUsers();
@@ -58,24 +59,30 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
       this.actionList$ = new BehaviorSubject<Action[] | null>(this.keyResult.actionList);
     }
     if (!this.keyResult) {
-      this.actionList$ = new BehaviorSubject<Action[] | null>([{ id: null,
+      this.actionList$ = new BehaviorSubject<Action[] | null>([{
+        id: null,
         version: 1,
         action: "",
         priority: 0,
         keyResultId: null,
-        isChecked: false },
-      { id: null,
+        isChecked: false
+      },
+      {
+        id: null,
         version: 1,
         action: "",
         priority: 1,
         keyResultId: null,
-        isChecked: false },
-      { id: null,
+        isChecked: false
+      },
+      {
+        id: null,
         version: 1,
         action: "",
         priority: 2,
         keyResultId: null,
-        isChecked: false }]);
+        isChecked: false
+      }]);
 
       this.users$.pipe(takeUntil(this.unsubscribe$))
         .subscribe((users) => {
@@ -148,7 +155,8 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     return this.keyResult ? this.keyResult.id : null;
   }
 
-  updateFormValidity () {}
+  updateFormValidity () {
+  }
 
   getLoggedInUserName () {
     return this.getUserNameFromUser(this.userService.getCurrentUser());

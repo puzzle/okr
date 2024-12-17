@@ -335,7 +335,7 @@ describe("Team management tests",
                 return true;
               })
               .then(() => {
-                expect(foundEsha).to.be.true;
+                expect(foundEsha).to.equal(true);
               });
           });
 

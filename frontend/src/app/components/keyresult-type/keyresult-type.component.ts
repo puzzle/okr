@@ -29,7 +29,8 @@ export class KeyresultTypeComponent implements OnInit {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor (private translate: TranslateService) {}
+  constructor (private translate: TranslateService) {
+  }
 
   ngOnInit (): void {
     if (this.keyresult) {

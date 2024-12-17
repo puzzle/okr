@@ -38,7 +38,8 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   constructor (private readonly teamService: TeamService,
     private readonly userService: UserService,
-    private readonly dialogService: DialogService) {}
+    private readonly dialogService: DialogService) {
+  }
 
   ngOnInit () {
     this.selectedTeam$.pipe(takeUntil(this.unsubscribe$))

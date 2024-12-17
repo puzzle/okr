@@ -69,7 +69,9 @@ export default tsEslint.config(
       ],
       'no-undef': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-namespace': 'off',
+      '@typescript-eslint/no-namespace': ['error',{
+        allowDeclarations: true,
+      }],
       'prefer-rest-params': 'off',
       '@typescript-eslint/no-empty-function': ['off'],
       '@stylistic/lines-around-comment': ['off'],

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from "rxjs";
@@ -17,7 +17,7 @@ import { DialogService } from "../../services/dialog.service";
   templateUrl: "./member-list.component.html",
   styleUrl: "./member-list.component.scss"
 })
-export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MemberListComponent implements OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
 
   selectedTeam$: BehaviorSubject<Team | undefined> = new BehaviorSubject<Team | undefined>(undefined);
@@ -34,8 +34,6 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly router: Router,
     private readonly dialogService: DialogService
   ) {}
-
-  public ngOnInit (): void {}
 
   public ngAfterViewInit () {
     this.userService

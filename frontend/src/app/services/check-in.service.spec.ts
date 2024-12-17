@@ -26,7 +26,7 @@ describe("CheckInService",
       () => {
         service.getAllCheckInOfKeyResult(keyResultMetricWithIdEight.id)
           .subscribe((checkIns) => {
-            /* Check first CheckIn of this KeyResult */
+            // Check first CheckIn of this KeyResult
             expect(checkIns[0].confidence)
               .toBe(firstCheckIn.confidence);
             expect((checkIns[0] as CheckInMetricMin).value)

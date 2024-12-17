@@ -1,7 +1,9 @@
 import { PageObjectMapperBase } from "./pageObjectMapperBase";
 
 export default class FilterHelper extends PageObjectMapperBase {
-  validatePage (): void {}
+  validatePage (): void {
+    // Does not need to be implemented
+  }
 
   optionShouldBeSelected (text: string, onOverview = true): this {
     if (onOverview) {

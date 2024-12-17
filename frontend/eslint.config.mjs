@@ -16,19 +16,58 @@ export default tsEslint.config(
       ...angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
+    languageOptions: {
+      globals: {
+        //Cypress Undefined
+        cy: 'readonly',
+        Cypress: 'readonly',
+        it: 'readonly',
+        describe: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        before: 'readonly',
+        //Dom undefined
+        localStorage: 'readonly',
+        console: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        //Event undefined
+        MouseEvent: 'readonly',
+        KeyboardEvent: 'readonly',
+        Event: 'readonly',
+        //HTML Elements undefined
+        HTMLDivElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLSpanElement: 'readonly',
+        HTMLElement: 'readonly',
+        //Other undefined
+        ResizeObserver: 'readonly',
+        ResizeObserverEntry: 'readonly',
+        setTimeout: 'readonly',
+        JQuery: 'readonly',
+        Document: 'readonly',
+        URL: 'readonly',
+      },
+    },
     rules: {
       ...stylistic.configs['all-flat'].rules,
       'unused-imports/no-unused-imports': 'error',
 
       // ToDo: Disable rules so eslint passes, fix in followup ticket
-      '@typescript-eslint/no-unused-vars': ['error', {
-        args: "none",
-      }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'none',
+        },
+      ],
       '@typescript-eslint/ban-ts-comment': 'error',
-      '@typescript-eslint/no-unused-expressions':['error',{
-        allowTernary: true,
-      }], // This rule only shows errors that aren't errors
-      'no-undef': 'off',
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        {
+          allowTernary: true,
+        },
+      ],
+      'no-undef': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-namespace': 'off',
       'prefer-rest-params': 'off',
@@ -51,15 +90,15 @@ export default tsEslint.config(
       // '@stylistic/quotes': ['error', 'double'],
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/dot-location': ['error', 'property'],
-      '@stylistic/newline-per-chained-call': ['error', {ignoreChainWithDepth: 1}],
+      '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
       '@stylistic/indent': ['error', 2],
       '@stylistic/quote-props': ['error', 'as-needed'],
       '@stylistic/object-property-newline': ['error'],
       '@stylistic/multiline-ternary': ['off'],
       '@stylistic/object-curly-spacing': ['error', 'always'],
-      '@stylistic/array-bracket-newline': ['error', {minItems: 4}],
+      '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
       '@stylistic/semi-style': ['error'],
-      '@stylistic/function-paren-newline': ['error', {minItems: 4}],
+      '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -81,9 +120,7 @@ export default tsEslint.config(
   },
   {
     files: ['**/*.spec.ts'],
-    extends: [
-      ...tsEslint.configs.recommended
-    ],
+    extends: [...tsEslint.configs.recommended],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       'prefer-rest-params': 'off',
@@ -110,7 +147,7 @@ export default tsEslint.config(
       '@html-eslint/indent': ['error', 2],
       '@html-eslint/require-img-alt': 'off',
       '@html-eslint/element-newline': 'off',
-      '@html-eslint/require-closing-tags': ['error', {selfClosing: 'always'}],
+      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
     },
   },
   {
@@ -119,5 +156,5 @@ export default tsEslint.config(
       '@stylistic': stylistic,
       '@html-eslint': html,
     },
-  },
+  }
 )

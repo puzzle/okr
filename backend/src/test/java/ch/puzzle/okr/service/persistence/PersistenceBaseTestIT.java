@@ -180,7 +180,7 @@ public class PersistenceBaseTestIT {
     }
 
     private static User createUserWithUniqueName(String name) {
-        return User.Builder.builder().withFirstname(name).withLastname("Muster").withEmail("hans.muster@puzzle.ch")
+        return User.Builder.builder().withFirstName(name).withLastName("Muster").withEmail("hans.muster@puzzle.ch")
                 .build();
     }
 }

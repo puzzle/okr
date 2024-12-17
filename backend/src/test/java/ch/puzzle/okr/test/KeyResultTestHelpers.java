@@ -274,8 +274,8 @@ public class KeyResultTestHelpers {
               "stretchZone": "5",
               "owner": {
                 "id": 1000,
-                "firstname": "Jaya",
-                "lastname": "Norris"
+                "firstName": "Jaya",
+                "lastName": "Norris"
               },
               "objective": {
                 "id": 1000,
@@ -285,7 +285,7 @@ public class KeyResultTestHelpers {
               "lastCheckIn": null,
               "createdOn": null,
               "modifiedOn": null,
-              "writeable": false,
+              "isWriteable": false,
               "actionList": []
             }
             """;
@@ -302,8 +302,8 @@ public class KeyResultTestHelpers {
               "unit": "NUMBER",
               "owner": {
                 "id": 1000,
-                "firstname": "Jaya",
-                "lastname": "Norris"
+                "firstName": "Jaya",
+                "lastName": "Norris"
               },
               "objective": {
                 "id": 1000,
@@ -313,7 +313,7 @@ public class KeyResultTestHelpers {
               "lastCheckIn": null,
               "createdOn": null,
               "modifiedOn": null,
-              "writeable": false,
+              "isWriteable": false,
               "actionList": []
             }
             """;

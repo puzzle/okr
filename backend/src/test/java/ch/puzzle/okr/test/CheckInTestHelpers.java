@@ -76,7 +76,7 @@ public class CheckInTestHelpers {
               "createdOn": null,
               "modifiedOn": null,
               "value": 23.0,
-              "writeable": false
+              "isWriteable": false
             }
             """;
 
@@ -91,7 +91,7 @@ public class CheckInTestHelpers {
             "createdOn": null,
             "modifiedOn": null,
             "zone": "STRETCH",
-            "writeable": false
+            "isWriteable": false
             }
             """;
 

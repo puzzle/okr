@@ -82,7 +82,7 @@ class CompletedControllerIT {
         BDDMockito.given(completedMapper.toCompleted(any())).willReturn(successfulCompleted);
     }
 
-    @DisplayName("create() should create complete")
+    @DisplayName("Should create a completed-objective")
     @Test
     void createShouldCreateCompleted() throws Exception {
         BDDMockito.given(this.completedAuthorizationService.createCompleted(any())).willReturn(successfulCompleted);
@@ -98,14 +98,14 @@ class CompletedControllerIT {
                 .andExpect(jsonPath("$.comment", Is.is(COMPLETED_COMMENT)));
     }
 
-    @DisplayName("delete() should delete Completed")
+    @DisplayName("Should delete a completed-objective")
     @Test
     void deleteShouldDeleteCompleted() throws Exception {
         mvc.perform(delete("/api/v2/completed/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    @DisplayName("delete() should throw exception when Completed with id cant be found")
+    @DisplayName("Should throw not found exception when a completed-objective with non existent id can not be found")
     @Test
     void deleteShouldThrowExceptionWhenCompletedWithIdCantBeFound() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found"))

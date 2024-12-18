@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -45,6 +46,7 @@ class QuarterControllerIT {
     @MockBean
     private QuarterBusinessService quarterBusinessService;
 
+    @DisplayName("Should get all quarters")
     @Test
     void shouldGetAllQuarters() throws Exception {
         BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(quaterList);
@@ -61,14 +63,16 @@ class QuarterControllerIT {
                 .andExpect(jsonPath("$[2].label", Is.is(BACK_LOG_QUARTER_LABEL)));
     }
 
+    @DisplayName("Should return an empty list if no quarters exist")
     @Test
-    void shouldGetAllTeamsIfNoTeamsExists() throws Exception {
+    void shouldReturnEmptyListIfNoQuarterExists() throws Exception {
         BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
+    @DisplayName("Should call current-quarter after requesting so")
     @Test
     void shouldCallCurrentQuarterAfterRequest() throws Exception {
         mvc.perform(get("/api/v2/quarters/current").contentType(MediaType.APPLICATION_JSON));

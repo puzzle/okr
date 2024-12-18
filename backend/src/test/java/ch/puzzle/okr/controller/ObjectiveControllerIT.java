@@ -12,6 +12,7 @@ import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -117,6 +118,7 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
     }
 
+    @DisplayName("Should get an objective by id")
     @Test
     void shouldGetObjectiveById() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong())).willReturn(objective1);
@@ -126,6 +128,7 @@ class ObjectiveControllerIT {
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(OBJECTIVE_TITLE_1)));
     }
 
+    @DisplayName("Should throw not found exception when getting a objective with a non existent id")
     @Test
     void shouldThrowNotFoundWhenGettingObjectiveWithNonExistentId() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong()))
@@ -135,6 +138,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return the created objective when creating a new objective")
     @Test
     void shouldReturnCreatedObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "GJ 22/23-Q2",
@@ -150,6 +154,7 @@ class ObjectiveControllerIT {
         verify(objectiveAuthorizationService, times(1)).createEntity(any());
     }
 
+    @DisplayName("Should throw bad request exception when creating a objective with null values")
     @Test
     void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willThrow(
@@ -160,6 +165,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should return the updated objective when updating a objective")
     @Test
     void shouldReturnUpdatedObjectiveWhenUpdatingObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", UPDATED_DESCRIPTION,
@@ -177,6 +183,7 @@ class ObjectiveControllerIT {
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(TITLE)));
     }
 
+    @DisplayName("Should return im used exception")
     @Test
     void shouldReturnImUsed() throws Exception {
         ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", UPDATED_DESCRIPTION,
@@ -195,6 +202,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isImUsed());
     }
 
+    @DisplayName("Should return not found when updating a objective with a non existent id")
     @Test
     void shouldReturnNotFoundWhenUpdatingObjectiveByNonExistentId() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willThrow(
@@ -205,6 +213,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return bad request exception")
     @Test
     void shouldReturnBadRequest() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willThrow(
@@ -214,12 +223,14 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should successfully delete an objective")
     @Test
     void shouldSuccessfullyDeleteObjective() throws Exception {
         mvc.perform(delete(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should throw not found exception when an objective with a given id can not be found while deleting")
     @Test
     void shouldThrowExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found"))
@@ -229,6 +240,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return is created when an ojective was duplicated")
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any(), anyList()))

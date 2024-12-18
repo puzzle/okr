@@ -15,6 +15,7 @@ import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -77,6 +78,7 @@ class KeyResultControllerIT {
         BDDMockito.given(checkInMapper.toDto(checkIn2)).willReturn(checkInDto2);
     }
 
+    @DisplayName("Should get metric key-result by id")
     @Test
     void shouldGetMetricKeyResultById() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong())).willReturn(metricKeyResult);
@@ -97,6 +99,7 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_CREATED_ON, Is.is(KEY_RESULT_CREATED_ON)));
     }
 
+    @DisplayName("Should get ordinal key-result by id")
     @Test
     void shouldGetOrdinalKeyResultById() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong())).willReturn(ordinalKeyResult);
@@ -118,6 +121,7 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_STRETCH_ZONE, Is.is(STRETCH_ZONE)));
     }
 
+    @DisplayName("Should not find key-result if key-result with given id does not exist")
     @Test
     void shouldNotFindKeyResultIfKeyResultWithGivenIdDoesntExist() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong()))
@@ -127,6 +131,7 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
     }
 
+    @DisplayName("Should return check-ins of key-result")
     @Test
     void shouldReturnCheckInsFromKeyResult() throws Exception {
         List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
@@ -145,6 +150,7 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$[1].initiatives", Is.is("Initiatives2")));
     }
 
+    @DisplayName("Should get empty list of check-ins if no check-ins exist on the given key-result")
     @Test
     void shouldGetEmptyListOfCheckInsIfNoCheckInExistsInKeyResult() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong()))
@@ -154,6 +160,7 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
+    @DisplayName("Should return error when key-result does not exist while retrieving check-ins")
     @Test
     void shouldReturnErrorWhenKeyResultDoesntExistWhenGettingCheckInsFromKeyResult() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong()))
@@ -163,6 +170,7 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
     }
 
+    @DisplayName("Should create a metric key-result")
     @Test
     void shouldBeAbleToCreateMetricKeyResult() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(metricKeyResult);
@@ -188,6 +196,7 @@ class KeyResultControllerIT {
         verify(actionAuthorizationService, times(1)).createEntities(List.of());
     }
 
+    @DisplayName("Should create an ordinal key-result")
     @Test
     void shouldBeAbleToCreateOrdinalKeyResult() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
@@ -212,6 +221,7 @@ class KeyResultControllerIT {
         verify(actionAuthorizationService, times(1)).createEntities(List.of());
     }
 
+    @DisplayName("Should create actions when creating a key-result")
     @Test
     void shouldCreateActionsWhenCreatingKeyResult() throws Exception {
         Action action1 = Action.Builder.builder().withVersion(1).withAction("Neue Katze").withPriority(0)
@@ -245,6 +255,7 @@ class KeyResultControllerIT {
         verify(actionAuthorizationService, times(1)).createEntities(actionList);
     }
 
+    @DisplayName("Should throw exception when key-result type is missing")
     @Test
     void shouldThrowExceptionWhenKeyResultTypeMissing() throws Exception {
         mvc.perform(post(URL_BASE).content(CREATE_BODY_KEY_RESULT_TYPE_MISSING).contentType(MediaType.APPLICATION_JSON)
@@ -252,6 +263,7 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
+    @DisplayName("Should throw exception when key-result type is unknown")
     @Test
     void shouldThrowExceptionWhenKeyResultTypeUnknown() throws Exception {
         mvc.perform(post(URL_BASE).content(CREATE_BODY_KEY_RESULT_TYPE_UNKNOWN).contentType(MediaType.APPLICATION_JSON)
@@ -259,6 +271,7 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
+    @DisplayName("Should create an entity with enum keys")
     @Test
     void shouldCreateEntityWithEnumKeys() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
@@ -280,6 +293,7 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_TARGET_ZONE, Is.is(TARGET_ZONE)));
     }
 
+    @DisplayName("Should throw error when creating entity with an invalid DTO")
     @Test
     void shouldThrowErrorWhenCreatingEntityWithInvalidDto() throws Exception {
         BDDMockito.given(keyResultMapper.toKeyResult(any()))
@@ -292,6 +306,7 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return updated key-result when updating key-result")
     @Test
     void shouldReturnUpdatedKeyResultWhenUpdatingKeyResult() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.updateEntities(anyLong(), any(), anyList()))
@@ -321,6 +336,7 @@ class KeyResultControllerIT {
         verify(keyResultAuthorizationService, times(1)).updateEntities(anyLong(), any(), anyList());
     }
 
+    @DisplayName("Should return updated key-result with 'Im Used' status")
     @Test
     void shouldReturnUpdatedKeyResultWithImUsed() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.updateEntities(anyLong(), any(), anyList()))
@@ -345,6 +361,7 @@ class KeyResultControllerIT {
         verify(keyResultAuthorizationService, times(1)).updateEntities(anyLong(), any(), anyList());
     }
 
+    @DisplayName("Should return not found when trying to update key-result by non-existent id")
     @Test
     void shouldReturnNotFoundWhenTryingToUpdateKeyResultByNonExistentId() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"))
@@ -355,6 +372,7 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return bad request when updating key-result")
     @Test
     void shouldReturnBadRequestWhenUpdatingKeyResult() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.updateEntity(any(), any()))
@@ -364,12 +382,14 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should successfully delete a key-result")
     @Test
     void shouldSuccessfullyDeleteKeyResult() throws Exception {
         mvc.perform(delete(URL_TO_KEY_RESULT_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should throw exception when key-result with given id cannot be found while deleting")
     @Test
     void throwExceptionWhenKeyResultWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"))

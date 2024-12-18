@@ -7,6 +7,7 @@ import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -83,6 +84,7 @@ class TeamControllerIT {
         BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
     }
 
+    @DisplayName("Should get all teams for the specified quarter")
     @Test
     void shouldGetAllTeams() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
@@ -93,6 +95,7 @@ class TeamControllerIT {
                 .andExpect(jsonPath("$[1].id", Is.is(7))).andExpect(jsonPath("$[1].name", Is.is("OKR")));
     }
 
+    @DisplayName("Should get all teams when no quarter parameter is passed")
     @Test
     void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
@@ -101,6 +104,7 @@ class TeamControllerIT {
         BDDMockito.verify(teamMapper).toDto(teamPuzzle);
     }
 
+    @DisplayName("Should return empty list if no teams exist")
     @Test
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(Collections.emptyList());
@@ -109,6 +113,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
+    @DisplayName("Should return created team after creating a new team")
     @Test
     void shouldReturnCreatedTeamAfterCreatingTeam() throws Exception {
         BDDMockito.given(teamAuthorizationService.createEntity(any())).willReturn(teamOKR);
@@ -119,6 +124,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_TEAM));
     }
 
+    @DisplayName("Should return bad request when creating a team with null values")
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(teamAuthorizationService.createEntity(any())).willThrow(
@@ -129,6 +135,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should return updated team after updating an existing team")
     @Test
     void shouldReturnUpdatedTeamAfterUpdatingTeam() throws Exception {
         TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", false);
@@ -144,6 +151,7 @@ class TeamControllerIT {
                 .andExpect(jsonPath("$.name", Is.is(teamDto.name())));
     }
 
+    @DisplayName("Should return not found when attempting to update a non-existent team")
     @Test
     void shouldReturnNotFoundWhenTeamToUpdateIsNotFound() throws Exception {
         BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong()))
@@ -154,6 +162,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return bad request when updating team with invalid data")
     @Test
     void shouldReturnBadRequestWhenUpdatingTeamWithInvalidData() throws Exception {
         BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong()))
@@ -164,12 +173,14 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should successfully delete a team")
     @Test
     void shouldDeleteTeam() throws Exception {
         mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should throw exception when deleting a team that does not exist")
     @Test
     void shouldThrowExceptionWhenTeamWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found")).when(teamAuthorizationService)
@@ -178,12 +189,14 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should successfully add a user to a team")
     @Test
     void shouldSuccessfullyAddUserToTeam() throws Exception {
         mvc.perform(put(URL_TEAM_1 + "/addusers").contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should successfully remove a user from a team")
     @Test
     void shouldSuccessfullyRemoveUserFromTeam() throws Exception {
         mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser").contentType(MediaType.APPLICATION_JSON)
@@ -191,6 +204,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should successfully update or add team membership")
     @Test
     void shouldSuccessfullyUpdateOrAddTeamMembership() throws Exception {
         mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true")

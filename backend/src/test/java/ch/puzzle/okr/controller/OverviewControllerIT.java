@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -86,6 +87,7 @@ class OverviewControllerIT {
     static Overview simpleOverview = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))
             .withTeamName(TEAM_KUCHEN).build();
 
+    @DisplayName("Should get all teams with their objectives")
     @Test
     void shouldGetAllTeamsWithObjective() throws Exception {
         List<Overview> overviews = new ArrayList<>();
@@ -110,6 +112,7 @@ class OverviewControllerIT {
                 .andExpect(jsonPath("$[2].objectives[0].id", Is.is(8)));
     }
 
+    @DisplayName("Should return empty list if no teams exist")
     @Test
     void shouldGetAllTeamsWithObjectiveIfNoTeamsExists() throws Exception {
         BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))
@@ -121,6 +124,7 @@ class OverviewControllerIT {
                 .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.hasSize(0)));
     }
 
+    @DisplayName("Should return only objectives filtered by quarter and team")
     @Test
     void shouldReturnOnlyFilteredObjectivesByQuarterAndTeam() throws Exception {
         List<Overview> overviews = new ArrayList<>(overviewPuzzle);
@@ -139,6 +143,7 @@ class OverviewControllerIT {
                 .andExpect(jsonPath("$[1].objectives[0].id", Is.is(8)));
     }
 
+    @DisplayName("Should return team with empty objective list when no objectives exist in the filtered quarter")
     @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
         BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))

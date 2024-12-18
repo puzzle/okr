@@ -56,6 +56,7 @@ class CheckInControllerIT {
         BDDMockito.given(checkInMapper.toDto(checkInOrdinal)).willReturn(checkInOrdinalDto);
     }
 
+    @DisplayName("Should get metric check-in by id")
     @Test
     void shouldGetMetricCheckInById() throws Exception {
         BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong())).willReturn(checkInMetric);
@@ -70,6 +71,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(46D)));
     }
 
+    @DisplayName("Should get ordinal check-in by id")
     @Test
     void shouldGetOrdinalCheckInById() throws Exception {
         BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong())).willReturn(checkInOrdinal);
@@ -84,6 +86,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_ZONE, Is.is(Zone.COMMIT.toString())));
     }
 
+    @DisplayName("Should throw not found exception when getting a check-in with a non existing id")
     @Test
     void shouldThrowNotFoundWhenGettingCheckInByNonExistingId() throws Exception {
         BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong()))
@@ -93,6 +96,7 @@ class CheckInControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return updated check-in after successfully updating it")
     @Test
     void shouldReturnUpdatedCheckInAfterSuccessfulUpdate() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
@@ -109,6 +113,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(1)));
     }
 
+    @DisplayName("Should throw not found exception when trying to update a non existent check-in")
     @Test
     void shouldThrowNotFoundWhenTryingToUpdateNonExistentCheckIn() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
@@ -122,6 +127,7 @@ class CheckInControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should successfully create a new metric key-result")
     @Test
     void shouldSuccessfullyCreateKeyResultMetric() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
@@ -138,6 +144,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(46D)));
     }
 
+    @DisplayName("Should successfully create a new metric key-result")
     @Test
     void shouldSuccessfullyCreateKeyResultOrdinal() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
@@ -154,6 +161,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_ZONE, Is.is(Zone.COMMIT.toString())));
     }
 
+    @DisplayName("Should throw client error when creating a check-in but the key-result id is missing")
     @Test
     void shouldThrowClientErrorWhenCreatingCheckInButKeyResultIdMissing() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
@@ -179,6 +187,7 @@ class CheckInControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
+    @DisplayName("Should successfully delete check-in by id")
     @Test
     void shouldSuccessfullyDeleteCheckInById() throws Exception {
         mvc.perform(delete(CHECK_IN_5_URL).with(SecurityMockMvcRequestPostProcessors.csrf()))

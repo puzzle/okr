@@ -68,6 +68,7 @@ class UserControllerIT {
         BDDMockito.given(userMapper.toDto(userBob)).willReturn(userBobDto);
     }
 
+    @DisplayName("Should get all users")
     @Test
     void shouldGetAllUsers() throws Exception {
         BDDMockito.given(userAuthorizationService.getAllUsers()).willReturn(userList);
@@ -82,6 +83,7 @@ class UserControllerIT {
                 .andExpect(jsonPath("$[1].email", Is.is(EMAIL_2)));
     }
 
+    @DisplayName("Should get an empty list if no users exist")
     @Test
     void shouldGetEmptyUserListIfNoUserExists() throws Exception {
         BDDMockito.given(userAuthorizationService.getAllUsers()).willReturn(Collections.emptyList());
@@ -90,6 +92,7 @@ class UserControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
+    @DisplayName("Should return the current user")
     @Test
     void shouldReturnCurrentUser() throws Exception {
         BDDMockito.given(authorizationService.updateOrAddAuthorizationUser())
@@ -108,6 +111,7 @@ class UserControllerIT {
                 .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
     }
 
+    @DisplayName("Should return the user by id")
     @Test
     void shouldReturnUserById() throws Exception {
         BDDMockito.given(userAuthorizationService.getById(2)).willReturn(userAlice);
@@ -125,6 +129,7 @@ class UserControllerIT {
                 .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
     }
 
+    @DisplayName("Should set the okr champion role")
     @Test
     void shouldSetOkrChampion() throws Exception {
         BDDMockito.given(userAuthorizationService.setIsOkrChampion(2, true)).willReturn(userAlice);
@@ -146,6 +151,7 @@ class UserControllerIT {
                 .andExpect(jsonPath("$.isOkrChampion", Is.is(false)));
     }
 
+    @DisplayName("Should successfully create multiple users")
     @Test
     void shouldSuccessfullyCreateUsers() throws Exception {
         BDDMockito.given(userAuthorizationService.createUsers(any())).willReturn(List.of(userAlice));
@@ -167,13 +173,14 @@ class UserControllerIT {
                 .andExpect(jsonPath("$[0].isOkrChampion", Is.is(false)));
     }
 
+    @DisplayName("Should successfully delete a user")
     @Test
     void shouldSuccessfullyDeleteUser() throws Exception {
         mvc.perform(delete("/api/v1/users/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    @DisplayName("should throw exception when user with id cant be found while deleting")
+    @DisplayName("Should throw exception when user with id cant be found while deleting")
     @Test
     void shouldThrowExceptionWhenUserWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")).when(userAuthorizationService)

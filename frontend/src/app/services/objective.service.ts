@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Objective } from '../shared/types/model/Objective';
 import { Observable } from 'rxjs';
-import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
 import { User } from '../shared/types/model/User';
 import { CheckIn } from '../shared/types/model/CheckIn';

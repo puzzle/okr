@@ -4,7 +4,7 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
-import { forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';

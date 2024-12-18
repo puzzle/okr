@@ -121,7 +121,7 @@ class OkrArchitectureTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "controller", "service", "mapper", "repository", "dto", "exception" })
-    void classesShouldBeInRightPackages(String passedName) {
+    void classesShouldBeInCorrectPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleNameEndingWith(StringUtils.capitalize(passedName)).and()

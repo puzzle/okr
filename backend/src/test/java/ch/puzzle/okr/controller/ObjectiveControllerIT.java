@@ -44,7 +44,7 @@ class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
     private static final String DESCRIPTION = "This is our description";
-    private static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
+    private static final String UPDATED_DESCRIPTION = "This is a updated description";
     private static final String TITLE = "Hunting";
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
@@ -162,9 +162,9 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnUpdatedObjectiveWhenUpdatingObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", EVERYTHING_FINE_DESCRIPTION,
+        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", UPDATED_DESCRIPTION,
                 State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
-        Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
+        Objective objective = Objective.Builder.builder().withId(1L).withDescription(UPDATED_DESCRIPTION)
                 .withTitle(TITLE).build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
@@ -173,16 +173,15 @@ class ObjectiveControllerIT {
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(1)))
-                .andExpect(jsonPath("$.description", Is.is(EVERYTHING_FINE_DESCRIPTION)))
+                .andExpect(jsonPath("$.id", Is.is(1))).andExpect(jsonPath("$.description", Is.is(UPDATED_DESCRIPTION)))
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(TITLE)));
     }
 
     @Test
     void shouldReturnImUsed() throws Exception {
-        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2",
-                EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
-        Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", UPDATED_DESCRIPTION,
+                State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
+        Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(UPDATED_DESCRIPTION)
                 .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle(TITLE)
                 .build();
 

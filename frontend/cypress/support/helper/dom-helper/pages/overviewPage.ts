@@ -41,20 +41,20 @@ export default class CyOverviewPage extends Page {
 
   addKeyResult(teamName?: string, objectiveName?: string) {
     if (teamName && objectiveName) {
-      this.getObjectiveByTeamAndName(teamName, objectiveName).findByTestId('add-keyResult').first().click();
+      this.getObjectiveByTeamAndName(teamName, objectiveName).findByTestId('add-key-result').first().click();
     } else if (teamName) {
-      this.getTeamByName(teamName).findByTestId('add-keyResult').first().click();
+      this.getTeamByName(teamName).findByTestId('add-key-result').first().click();
     } else if (objectiveName) {
-      this.getObjectiveByName(objectiveName).findByTestId('add-keyResult').first().click();
+      this.getObjectiveByName(objectiveName).findByTestId('add-key-result').first().click();
     } else {
-      cy.getByTestId('add-keyResult').first().click();
+      cy.getByTestId('add-key-result').first().click();
     }
 
     return new KeyResultDialog();
   }
 
   addOngoingKeyResult() {
-    this.getObjectiveByState('ongoing').findByTestId('add-keyResult').first().click();
+    this.getObjectiveByState('ongoing').findByTestId('add-key-result').first().click();
 
     return new KeyResultDialog();
   }

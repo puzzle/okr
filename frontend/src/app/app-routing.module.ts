@@ -8,7 +8,7 @@ import { UserService } from './services/user.service';
 import { User } from './shared/types/model/User';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
-import { KeyresultDetailComponent } from './components/keyresult-detail/keyresult-detail.component';
+import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';
 
 const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
@@ -37,7 +37,7 @@ const routes: Routes = [
           },
           {
             path: 'keyresult/:id',
-            component: KeyresultDetailComponent,
+            component: KeyResultDetailComponent,
           },
         ],
       },

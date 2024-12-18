@@ -1,4 +1,4 @@
-import { KeyresultDialogComponent } from './keyresult-dialog.component';
+import { KeyResultDialogComponent } from './key-result-dialog.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { KeyresultService } from '../../services/keyresult.service';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { KeyresultTypeComponent } from '../keyresult-type/keyresult-type.component';
+import { KeyResultTypeComponent } from '../key-result-type/key-result-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -29,12 +29,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/Quarter';
 
-describe('KeyresultDialogComponent', () => {
-  let component: KeyresultDialogComponent;
-  let fixture: ComponentFixture<KeyresultDialogComponent>;
+describe('KeyResultDialogComponent', () => {
+  let component: KeyResultDialogComponent;
+  let fixture: ComponentFixture<KeyResultDialogComponent>;
   let keyResultService: KeyresultService;
 
-  const oauthMockService = {
+  const oAuthMockService = {
     getIdentityClaims() {
       return { name: users[1].firstName + ' ' + users[1].lastName };
     },
@@ -286,19 +286,19 @@ describe('KeyresultDialogComponent', () => {
           },
           {
             provide: OAuthService,
-            useValue: oauthMockService,
+            useValue: oAuthMockService,
           },
         ],
         declarations: [
-          KeyresultDialogComponent,
+          KeyResultDialogComponent,
           KeyResultFormComponent,
-          KeyresultTypeComponent,
+          KeyResultTypeComponent,
           ActionPlanComponent,
           DialogTemplateCoreComponent,
         ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyresultDialogComponent);
+      fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
 
       userService.getCurrentUser.mockReturnValue(testUser);
@@ -434,7 +434,7 @@ describe('KeyresultDialogComponent', () => {
           },
           {
             provide: OAuthService,
-            useValue: oauthMockService,
+            useValue: oAuthMockService,
           },
           {
             provide: MAT_DIALOG_DATA,
@@ -442,15 +442,15 @@ describe('KeyresultDialogComponent', () => {
           },
         ],
         declarations: [
-          KeyresultDialogComponent,
+          KeyResultDialogComponent,
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
           ActionPlanComponent,
-          KeyresultTypeComponent,
+          KeyResultTypeComponent,
         ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyresultDialogComponent);
+      fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -461,7 +461,7 @@ describe('KeyresultDialogComponent', () => {
       mockUserService.getUsers.mockReset();
     });
 
-    it('should use KeyResult value from data input', waitForAsync(() => {
+    it('should use key-result value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
       expect(formObject.title).toBe('Der Titel ist hier');
       expect(formObject.description).toBe('Die Beschreibung');
@@ -580,7 +580,7 @@ describe('KeyresultDialogComponent', () => {
           },
           {
             provide: OAuthService,
-            useValue: oauthMockService,
+            useValue: oAuthMockService,
           },
           {
             provide: MAT_DIALOG_DATA,
@@ -588,15 +588,15 @@ describe('KeyresultDialogComponent', () => {
           },
         ],
         declarations: [
-          KeyresultDialogComponent,
+          KeyResultDialogComponent,
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
           ActionPlanComponent,
-          KeyresultTypeComponent,
+          KeyResultTypeComponent,
         ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyresultDialogComponent);
+      fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -606,7 +606,7 @@ describe('KeyresultDialogComponent', () => {
       mockUserService.getUsers.mockReset();
     });
 
-    it('should use KeyResult value from data input', waitForAsync(() => {
+    it('should use key-result value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
       expect(formObject.title).toBe('Der Titel ist hier');
       expect(formObject.description).toBe('Die Beschreibung');

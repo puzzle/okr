@@ -7,7 +7,7 @@ describe('okr login', () => {
 
   it('should display correct username after login', () => {
     cy.title().should('equal', 'Puzzle OKR');
-    cy.getByTestId('user-name').contains(users.gl.name);
+    cy.getByTestId('username').contains(users.gl.name);
   });
 
   it('should login and logout', () => {
@@ -25,7 +25,7 @@ describe('okr login', () => {
       cy.stub(win, 'open').as('openWindow');
     });
 
-    cy.get('#hilfeButton').click();
+    cy.get('#help-button').click();
     cy.get('@openWindow').should('be.calledWith', 'https://wiki.puzzle.ch/Puzzle/OKRs');
   });
 });

@@ -14,6 +14,6 @@ export const extractTeamsFromUser = (user: User) => {
   return user.userTeamList.map((u) => u.team);
 };
 
-export const getFullNameFromUser = (user: User | UserTableEntry) => {
+export const getFullNameOfUser = (user: User | UserTableEntry) => {
   return `${user.firstName} ${user.lastName}`;
 };

@@ -187,13 +187,13 @@ describe('okr objective', () => {
       cy.scrollTo(0, 0);
       cy.wait(500);
 
-      cy.getByTestId('objectiveSearch').first().click();
-      cy.getByTestId('objectiveSearch').first().type('Search after').wait(350);
+      cy.getByTestId('objective-search').first().click();
+      cy.getByTestId('objective-search').first().type('Search after').wait(350);
 
       cy.contains('Search after this objective');
       cy.contains('We dont want to search for this').should('not.exist');
 
-      cy.getByTestId('objectiveSearch').first().as('objective-search').clear();
+      cy.getByTestId('objective-search').first().as('objective-search').clear();
       cy.get('@objective-search').type('this').wait(350);
 
       cy.contains('Search after this objective');

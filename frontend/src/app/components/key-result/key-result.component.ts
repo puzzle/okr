@@ -6,12 +6,12 @@ import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin'
 import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
 
 @Component({
-  selector: 'app-keyresult',
-  templateUrl: './keyresult.component.html',
-  styleUrls: ['./keyresult.component.scss'],
+  selector: 'app-key-result',
+  templateUrl: './key-result.component.html',
+  styleUrls: ['./key-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultComponent {
+export class KeyResultComponent {
   @Input() keyResult!: KeyresultMin;
   protected readonly DATE_FORMAT = DATE_FORMAT;
 

@@ -3,7 +3,7 @@ import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { Objective } from '../../shared/types/model/Objective';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { DialogService } from '../../services/dialog.service';
 import { ConfigService } from '../../services/config.service';
@@ -52,7 +52,7 @@ export class TeamComponent {
 
   openAddKeyResultDialog(objective: Objective) {
     this.dialogService
-      .open(KeyresultDialogComponent, {
+      .open(KeyResultDialogComponent, {
         data: {
           objective: objective,
           keyResult: null,

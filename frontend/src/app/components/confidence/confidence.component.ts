@@ -10,7 +10,7 @@ import { CheckInMin } from '../../shared/types/model/CheckInMin';
 export class ConfidenceComponent implements OnChanges {
   min: number = 0;
   max: number = 10;
-  @Input() edit: boolean = true;
+  @Input() isEdit: boolean = true;
   @Input() isDetail: boolean = true;
   @Input() checkIn!: CheckInMin;
 

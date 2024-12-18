@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KeyresultDetailComponent } from './keyresult-detail.component';
+import { KeyResultDetailComponent } from './key-result-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
@@ -26,14 +26,14 @@ const activatedRouteMock = {
   },
 };
 
-describe('KeyresultDetailComponent', () => {
-  let component: KeyresultDetailComponent;
-  let fixture: ComponentFixture<KeyresultDetailComponent>;
+describe('KeyResultDetailComponent', () => {
+  let component: KeyResultDetailComponent;
+  let fixture: ComponentFixture<KeyResultDetailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, MatDialogModule, MatIconModule, TranslateModule.forRoot()],
-      declarations: [KeyresultDetailComponent, ScoringComponent, ConfidenceComponent],
+      declarations: [KeyResultDetailComponent, ScoringComponent, ConfidenceComponent],
       providers: [
         {
           provide: KeyresultService,
@@ -49,7 +49,7 @@ describe('KeyresultDetailComponent', () => {
     jest.spyOn(keyResultServiceMock, 'getFullKeyResult').mockReturnValue(of(keyResult));
     activatedRouteMock.snapshot.paramMap.get.mockReturnValue(of(1));
 
-    fixture = TestBed.createComponent(KeyresultDetailComponent);
+    fixture = TestBed.createComponent(KeyResultDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -63,12 +63,12 @@ describe('KeyresultDetailComponent', () => {
     expect(() => component.ngOnInit()).toThrowError('keyresult id is undefined');
   });
 
-  it('should display edit keyresult button if writeable is true', async () => {
+  it('should display edit key-result button if writeable is true', async () => {
     const button = fixture.debugElement.query(By.css('[data-testId="edit-keyResult"]'));
     expect(button).toBeTruthy();
   });
 
-  it('should not display edit keyresult button if writeable is false', async () => {
+  it('should not display edit key-result button if writeable is false', async () => {
     jest.spyOn(keyResultServiceMock, 'getFullKeyResult').mockReturnValue(of(keyResultWriteableFalse));
     component.ngOnInit();
     fixture.detectChanges();

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
-import { getFullNameFromUser, User } from '../../shared/types/model/User';
+import { getFullNameOfUser, User } from '../../shared/types/model/User';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/Team';
 import { UserTeam } from '../../shared/types/model/UserTeam';
@@ -26,7 +26,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   userTeamEditId: number | undefined;
 
   readonly displayedColumns = ['team', 'role', 'delete'];
-  readonly getFullNameFromUser = getFullNameFromUser;
+  readonly getFullNameFromUser = getFullNameOfUser;
 
   constructor(
     private readonly userService: UserService,
@@ -79,7 +79,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   removeUserFromTeam(userTeam: UserTeam, user: User) {
     const i18nData = {
-      user: getFullNameFromUser(user),
+      user: getFullNameOfUser(user),
       team: userTeam.team.name,
     };
     this.dialogService

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { getFullNameFromUser, User } from '../../shared/types/model/User';
+import { getFullNameOfUser, User } from '../../shared/types/model/User';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
@@ -32,7 +32,6 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   constructor(
     public userService: UserService,
-    private oauthService: OAuthService,
     private translate: TranslateService,
   ) {}
 
@@ -63,9 +62,9 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
       ]);
 
       this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
-        const loggedInUser = this.getLoggedInUserName();
+        const loggedInUser = this.getFullNameOfLoggedInUser();
         users.forEach((user) => {
-          if (getFullNameFromUser(user) === loggedInUser) {
+          if (getFullNameOfUser(user) === loggedInUser) {
             this.keyResultForm.controls['owner'].setValue(user);
           }
         });
@@ -109,7 +108,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   filter(value: string): Observable<User[]> {
     const filterValue = value.toLowerCase();
     return this.users$.pipe(
-      map((users) => users.filter((user) => getFullNameFromUser(user).toLowerCase().includes(filterValue))),
+      map((users) => users.filter((user) => getFullNameOfUser(user).toLowerCase().includes(filterValue))),
     );
   }
 
@@ -120,8 +119,8 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  getUserNameFromUser(user: User): string {
-    return user ? getFullNameFromUser(user) : '';
+  getFullNameOfUser(user: User): string {
+    return user ? getFullNameOfUser(user) : '';
   }
 
   getKeyResultId(): number | null {
@@ -130,7 +129,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   updateFormValidity() {}
 
-  getLoggedInUserName() {
-    return this.getUserNameFromUser(this.userService.getCurrentUser());
+  getFullNameOfLoggedInUser() {
+    return this.getFullNameOfUser(this.userService.getCurrentUser());
   }
 }

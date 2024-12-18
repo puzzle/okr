@@ -1,4 +1,4 @@
-<app-application-banner id="bannerComponent"></app-application-banner>
+<app-application-banner id="banner-component"></app-application-banner>
 <div id="overview" class="overview-container px-sm-4" [ngStyle]="{ 'padding-top.px': overviewPadding | async }">
   <app-team
     *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"

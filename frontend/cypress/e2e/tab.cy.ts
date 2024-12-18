@@ -32,7 +32,7 @@ describe('tabbing workflows', () => {
     focusedShouldHaveTestId('logout');
     cy.realPress('Escape');
     tabAndCheck('quarterFilter', 'GJ');
-    tabAndCheck('objectiveSearch');
+    tabAndCheck('objective-search');
     cy.tabForward();
     cy.focused()
       .children('img')
@@ -49,7 +49,7 @@ describe('tabbing workflows', () => {
     tabAndCheck('objective');
     tabAndCheck('three-dot-menu');
     tabAndCheck('key-result');
-    tabAndCheck('add-keyResult', 'Key Result hinzufügen');
+    tabAndCheck('add-key-result', 'Key Result hinzufügen');
   });
 
   describe('objective', () => {
@@ -142,36 +142,36 @@ describe('tabbing workflows', () => {
     it('should be able to open objective detail view', () => {
       overviewPage.getObjectiveByState('ongoing').focus();
       cy.realPress('Enter').tabForward();
-      focusedShouldHaveTestId('closeDrawer');
-      tabAndCheck('add-keyResult-objective-detail', 'Key Result hinzufügen');
+      focusedShouldHaveTestId('close-drawer');
+      tabAndCheck('add-key-result-objective-detail', 'Key Result hinzufügen');
       tabAndCheck('edit-objective', 'Objective bearbeiten');
     });
   });
 
   describe('keyresult & checkin', () => {
     it('should be able to tab key-result dialog', () => {
-      tabAndCheck('add-keyResult', 'Key Result hinzufügen');
+      tabAndCheck('add-key-result', 'Key Result hinzufügen');
       cy.realPress('Enter');
       focusedShouldHaveTestId('close-dialog');
-      tabAndCheck('titleInput');
+      tabAndCheck('title-input');
       cy.focused().type('Title');
       tabAndCheck('unit');
       tabAndCheck('baseline');
-      tabAndCheck('stretchGoal');
-      tabAndCheck('ownerInput');
-      tabAndCheck('descriptionInput');
+      tabAndCheck('stretch-goal');
+      tabAndCheck('owner-input');
+      tabAndCheck('description-input');
       tabAndCheck('action-input');
       tabAndCheck('add-action-plan-line', 'Weitere Action hinzufügen');
-      tabAndCheck('ordinalTab', 'Ordinal');
+      tabAndCheck('ordinal-tab', 'Ordinal');
       cy.realPress('Enter');
-      tabAndCheck('commitZone');
+      tabAndCheck('commit-zone');
       cy.focused().type('Commit');
-      tabAndCheck('targetZone');
+      tabAndCheck('target-zone');
       cy.focused().type('Target');
-      tabAndCheck('stretchZone');
+      tabAndCheck('stretch-zone');
       cy.focused().type('Stretch');
       tabAndCheck('submit', 'Speichern');
-      tabAndCheck('saveAndNew', 'Speichern & Neu');
+      tabAndCheck('save-and-new', 'Speichern & Neu');
       tabAndCheck('cancel', 'Abbrechen');
     });
 

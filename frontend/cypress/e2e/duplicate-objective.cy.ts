@@ -89,7 +89,7 @@ describe('Functionality of duplicating objectives and their belonging keyResults
 });
 
 describe('Verify functionality of scoring adjustment on duplicated objectives', () => {
-  let keyresultDetailPage = new KeyResultDetailPage();
+  let keyResultDetailPage = new KeyResultDetailPage();
 
   it('Duplicate ordinal checkin and validate value of scoring component', () => {
     overviewPage
@@ -99,7 +99,7 @@ describe('Verify functionality of scoring adjustment on duplicated objectives', 
       .submit();
 
     cy.contains('stretch keyresult for testing');
-    keyresultDetailPage
+    keyResultDetailPage
       .visit('stretch keyresult for testing')
       .createCheckIn()
       .selectOrdinalCheckInZone('stretch')
@@ -109,7 +109,7 @@ describe('Verify functionality of scoring adjustment on duplicated objectives', 
       .submit();
 
     cy.intercept('GET', '**/overview?*').as('indexPage');
-    keyresultDetailPage.close();
+    keyResultDetailPage.close();
     cy.wait('@indexPage');
 
     overviewPage

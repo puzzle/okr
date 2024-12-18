@@ -1,7 +1,7 @@
 import { MetricCheckInDirective } from './metric-check-in-directive';
 
 describe('MetricCheckInDirective', () => {
-  it('create an instance', () => {
+  it('should create an instance', () => {
     const directive = new MetricCheckInDirective();
     expect(directive).toBeTruthy();
   });

@@ -4,7 +4,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { getFullNameFromUser } from '../../shared/types/model/User';
+import { getFullNameOfUser } from '../../shared/types/model/User';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -20,7 +20,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   constructor(
-    private oauthService: OAuthService,
+    private oAuthService: OAuthService,
     private userService: UserService,
     private configService: ConfigService,
     private router: Router,
@@ -48,7 +48,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   logOut() {
     const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
     this.router.navigateByUrl(currentUrlTree).then(() => {
-      this.oauthService.logOut();
+      this.oAuthService.logOut();
     });
   }
 
@@ -56,7 +56,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
     // user is loaded on base route resolver. We have to wait until routing is done.
     this.router.events.subscribe((val) => {
       if (!this.userFullName && val instanceof NavigationEnd) {
-        this.userFullName = getFullNameFromUser(this.userService.getCurrentUser());
+        this.userFullName = getFullNameOfUser(this.userService.getCurrentUser());
         this.cd.markForCheck();
       }
     });

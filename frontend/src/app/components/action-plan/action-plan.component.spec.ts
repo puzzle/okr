@@ -48,7 +48,7 @@ describe('ActionPlanComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should remove item from actionplan array', () => {
+  it('should remove item from action-plan array', () => {
     component.control = new BehaviorSubject<Action[] | null>([action1, action2]);
     actionServiceMock.deleteAction.mockReturnValue(of(null));
     jest
@@ -63,7 +63,7 @@ describe('ActionPlanComponent', () => {
     expect(component.control.getValue()![0].priority).toBe(0);
   });
 
-  it('should remove item from actionplan without opening dialog when action has no text and id', () => {
+  it('should remove item from action-plan without opening dialog when action has no text and id', () => {
     const dialogSpy = jest.spyOn(component.dialogService, 'open');
     component.control = new BehaviorSubject<Action[] | null>([action3]);
 

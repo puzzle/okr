@@ -5,7 +5,7 @@ import { overViewEntity1, overViewEntity2 } from '../../shared/testData';
 import { ObjectiveComponent } from '../objective/objective.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
-import { KeyresultComponent } from '../keyresult/keyresult.component';
+import { KeyResultComponent } from '../key-result/key-result.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { RefreshDataService } from '../../services/refresh-data.service';
@@ -61,7 +61,7 @@ describe('TeamComponent', () => {
         }),
         MatIcon,
       ],
-      declarations: [TeamComponent, ObjectiveComponent, KeyresultComponent, ConfidenceComponent, ScoringComponent],
+      declarations: [TeamComponent, ObjectiveComponent, KeyResultComponent, ConfidenceComponent, ScoringComponent],
       providers: [
         {
           provide: DialogService,

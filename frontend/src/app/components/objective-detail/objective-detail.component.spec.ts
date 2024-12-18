@@ -62,16 +62,16 @@ describe('ObjectiveDetailComponent', () => {
     expect(description).toContain(objective.description);
   });
 
-  it('should display add keyresult button if writeable is true', async () => {
+  it('should display add key-result button if writeable is true', async () => {
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult-objective-detail"]'));
+    const button = fixture.debugElement.query(By.css('[data-testId="add-key-result-objective-detail"]'));
     expect(button).toBeTruthy();
   });
 
-  it('should not display add keyresult button if writeable is false', async () => {
+  it('should not display add key-result button if writeable is false', async () => {
     objectiveService.getFullObjective.mockReturnValue(of(objectiveWriteableFalse));
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult-objective-detail"]'));
+    const button = fixture.debugElement.query(By.css('[data-testId="add-key-result-objective-detail"]'));
     expect(button).toBeFalsy();
   });
 });

@@ -4,15 +4,15 @@
 >
   <div
     class="bg-inherit d-flex justify-content-center align-items-center w-auto"
-    [ngClass]="[edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show', isDetail ? 'height' : '']"
+    [ngClass]="[isEdit ? 'key-result-attribute-edit' : 'key-result-attribute-show', isDetail ? 'height' : '']"
   >
-    <p class="fw-normal text-black sub-title-key-result p-0" data-testid="confidence">
+    <p class="fw-normal text-black sub-title-key-result p-0" [attr.data-testId]="'confidence'">
       {{ checkIn.confidence }}/{{ max }}
     </p>
   </div>
 
   <mat-slider
-    *ngIf="edit"
+    *ngIf="isEdit"
     [max]="max"
     [min]="min"
     [step]="1"

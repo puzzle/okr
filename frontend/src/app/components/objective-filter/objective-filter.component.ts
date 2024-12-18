@@ -17,10 +17,10 @@ export class ObjectiveFilterComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
   ) {
-    this.refresh.pipe(debounceTime(300)).subscribe(() => this.updateURL());
+    this.refresh.pipe(debounceTime(300)).subscribe(() => this.updateUrl());
   }
 
-  updateURL() {
+  updateUrl() {
     const sanitizedQuery = sanitize(this.query);
     const params = { objectiveQuery: sanitizedQuery };
     const optionalParams = optionalReplaceWithNulls(params);

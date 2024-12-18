@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { getFullNameFromUser, User } from '../../shared/types/model/User';
+import { getFullNameOfUser, User } from '../../shared/types/model/User';
 import { Location } from '@angular/common';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { UserTeam } from '../../shared/types/model/UserTeam';
@@ -84,12 +84,12 @@ export class DeleteUserComponent implements OnInit {
   deleteUserWithChecks() {
     if (this.isUserMemberOfTeams()) {
       const dialogTitle = `User kann nicht gelöscht werden`;
-      const dialogText = `${getFullNameFromUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.dialogDetailsUserTeams()}`;
+      const dialogText = `${getFullNameOfUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.dialogDetailsUserTeams()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     } else if (this.isUserOwnerOfKeyResults()) {
       const dialogTitle = `User kann nicht gelöscht werden`;
-      const dialogText = `${getFullNameFromUser(this.user)} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
+      const dialogText = `${getFullNameOfUser(this.user)} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     }
@@ -155,7 +155,7 @@ export class DeleteUserComponent implements OnInit {
                 this.location.back();
               },
               error: () => {
-                throw Error(`unable to delete user ${getFullNameFromUser(this.user)} (with id ${this.user.id})`);
+                throw Error(`unable to delete user ${getFullNameOfUser(this.user)} (with id ${this.user.id})`);
               },
             }),
           )
@@ -164,5 +164,5 @@ export class DeleteUserComponent implements OnInit {
     });
   }
 
-  protected readonly getFullNameFromUser = getFullNameFromUser;
+  protected readonly getFullNameFromUser = getFullNameOfUser;
 }

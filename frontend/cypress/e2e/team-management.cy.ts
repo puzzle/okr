@@ -38,7 +38,7 @@ describe('okr team-management', () => {
     before(() => {
       // login as bl to ensure this user exists in database
       cy.loginAsUser(users.bl);
-      cy.getByTestId('user-name').click();
+      cy.getByTestId('username').click();
       cy.getByTestId('logout').click();
     });
 

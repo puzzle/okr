@@ -16,7 +16,7 @@
       </button>
       <button
         *ngIf="!data.keyResult"
-        [attr.data-testId]="'saveAndNew'"
+        [attr.data-testId]="'save-and-new'"
         (click)="openNew()"
         mat-stroked-button
         [disabled]="keyResultForm.invalid || invalidOwner()"
@@ -27,7 +27,7 @@
       <button mat-button mat-dialog-close color="primary" [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
     <div class="col-auto" *ngIf="this.data.keyResult">
-      <button color="primary" mat-button (click)="deleteKeyResult()" [attr.data-testId]="'delete-keyResult'">
+      <button color="primary" mat-button (click)="deleteKeyResult()" [attr.data-testId]="'delete-key-result'">
         Key Result löschen
       </button>
     </div>

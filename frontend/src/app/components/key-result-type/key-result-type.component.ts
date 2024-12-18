@@ -8,13 +8,13 @@ import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-keyresult-type',
-  templateUrl: './keyresult-type.component.html',
-  styleUrls: ['./keyresult-type.component.scss'],
+  selector: 'app-key-result-type',
+  templateUrl: './key-result-type.component.html',
+  styleUrls: ['./key-result-type.component.scss'],
 })
-export class KeyresultTypeComponent implements OnInit {
+export class KeyResultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
-  @Input() keyresult!: KeyResult | null;
+  @Input() keyResult!: KeyResult | null;
   @Output() formValidityEmitter = new EventEmitter<boolean>();
   isMetric: boolean = true;
   typeChangeAllowed: boolean = true;
@@ -25,12 +25,12 @@ export class KeyresultTypeComponent implements OnInit {
   constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {
-    if (this.keyresult) {
-      this.typeChangeAllowed = (this.keyresult as KeyResultMetric | KeyResultOrdinal).lastCheckIn?.id == null;
-      this.isMetric = this.keyresult.keyResultType == 'metric';
+    if (this.keyResult) {
+      this.typeChangeAllowed = (this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn?.id == null;
+      this.isMetric = this.keyResult.keyResultType == 'metric';
       this.isMetric
-        ? this.keyResultForm.patchValue({ ...this.castToMetric(this.keyresult) })
-        : this.keyResultForm.patchValue({ ...this.castToOrdinal(this.keyresult) });
+        ? this.keyResultForm.patchValue({ ...this.castToMetric(this.keyResult) })
+        : this.keyResultForm.patchValue({ ...this.castToOrdinal(this.keyResult) });
     }
     this.switchValidators();
   }

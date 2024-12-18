@@ -37,8 +37,8 @@ import { TeamComponent } from './components/team/team.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { ObjectiveComponent } from './components/objective/objective.component';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { KeyresultComponent } from './components/keyresult/keyresult.component';
-import { KeyresultDetailComponent } from './components/keyresult-detail/keyresult-detail.component';
+import { KeyResultComponent } from './components/key-result/key-result.component';
+import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ConfidenceComponent } from './components/confidence/confidence.component';
@@ -51,7 +51,7 @@ import { QuarterFilterComponent } from './components/quarter-filter/quarter-filt
 import { TeamFilterComponent } from './components/team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
-import { KeyresultTypeComponent } from './components/keyresult-type/keyresult-type.component';
+import { KeyResultTypeComponent } from './components/key-result-type/key-result-type.component';
 import { ObjectiveFilterComponent } from './components/objective-filter/objective-filter.component';
 import { ActionPlanComponent } from './components/action-plan/action-plan.component';
 import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
@@ -60,7 +60,7 @@ import { OauthInterceptor } from './interceptors/oauth.interceptor';
 import { ErrorInterceptor } from './interceptors/error-interceptor.service';
 import { CustomRouter } from './shared/customRouter';
 import { KeyResultFormComponent } from './components/key-result-form/key-result-form.component';
-import { KeyresultDialogComponent } from './components/keyresult-dialog/keyresult-dialog.component';
+import { KeyResultDialogComponent } from './components/key-result-dialog/key-result-dialog.component';
 import { CheckInHistoryDialogComponent } from './components/check-in-history-dialog/check-in-history-dialog.component';
 import { CheckInFormMetricComponent } from './components/checkin/check-in-form-metric/check-in-form-metric.component';
 import { CheckInFormOrdinalComponent } from './components/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
@@ -107,19 +107,19 @@ export const MY_FORMATS = {
     TeamComponent,
     OverviewComponent,
     ObjectiveComponent,
-    KeyresultComponent,
+    KeyResultComponent,
     ApplicationTopBarComponent,
     ConfidenceComponent,
-    KeyresultDetailComponent,
+    KeyResultDetailComponent,
     ObjectiveDetailComponent,
     ApplicationBannerComponent,
     QuarterFilterComponent,
     TeamFilterComponent,
-    KeyresultTypeComponent,
+    KeyResultTypeComponent,
     ObjectiveFilterComponent,
     ActionPlanComponent,
     KeyResultFormComponent,
-    KeyresultDialogComponent,
+    KeyResultDialogComponent,
     CheckInHistoryDialogComponent,
     CheckInFormMetricComponent,
     CheckInFormOrdinalComponent,

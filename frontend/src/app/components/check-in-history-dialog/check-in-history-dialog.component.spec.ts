@@ -50,7 +50,7 @@ describe('CheckInHistoryDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it.skip('should not display edit check-in button if writeable is false', async () => {
+  it.skip('should not display edit check-in button if is-writeable is false', async () => {
     const buttons = fixture.debugElement.queryAll(By.css('button'));
     expect(buttons.length).toBe(1);
   });

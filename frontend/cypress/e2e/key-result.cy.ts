@@ -118,12 +118,12 @@ describe('okr key-result', () => {
 
     cy.getByTestId('submit').should('not.be.disabled');
     cy.contains('Key Result bearbeiten');
-    cy.getByTestId('titleInput').should('have.value', 'We want not to change keyresult title');
-    cy.getByTestId('commitZone').should('have.value', 'My commit zone');
-    cy.getByTestId('targetZone').should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone').should('have.value', 'My stretch goal');
-    cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
-    cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
+    cy.getByTestId('title-input').should('have.value', 'We want not to change keyresult title');
+    cy.getByTestId('commit-zone').should('have.value', 'My commit zone');
+    cy.getByTestId('target-zone').should('have.value', 'My target zone');
+    cy.getByTestId('stretch-zone').should('have.value', 'My stretch goal');
+    cy.getByTestId('owner-input').should('have.value', 'Jaya Norris');
+    cy.getByTestId('description-input').should('have.value', 'This is my description');
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is the new title')
@@ -153,12 +153,12 @@ describe('okr key-result', () => {
 
     cy.getByTestId('submit').should('not.be.disabled');
     cy.contains('Key Result bearbeiten');
-    cy.getByTestId('titleInput').should('have.value', 'Here we want to change keyresult title');
-    cy.getByTestId('commitZone').should('have.value', 'My commit zone');
-    cy.getByTestId('targetZone').should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone').should('have.value', 'My stretch goal');
-    cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
-    cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
+    cy.getByTestId('title-input').should('have.value', 'Here we want to change keyresult title');
+    cy.getByTestId('commit-zone').should('have.value', 'My commit zone');
+    cy.getByTestId('target-zone').should('have.value', 'My target zone');
+    cy.getByTestId('stretch-zone').should('have.value', 'My stretch goal');
+    cy.getByTestId('owner-input').should('have.value', 'Jaya Norris');
+    cy.getByTestId('description-input').should('have.value', 'This is my description');
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is my new title for the new metric keyresult')
@@ -198,7 +198,7 @@ describe('okr key-result', () => {
 
     keyResultDetailPage.visit('Here we want to create a checkin').editKeyResult();
 
-    cy.getByTestId('metricTab').should('have.class', 'non-active');
+    cy.getByTestId('metric-tab').should('have.class', 'non-active');
   });
 
   it('should check validation in key-result dialog', () => {
@@ -211,7 +211,7 @@ describe('okr key-result', () => {
 
     cy.getByTestId('submit').should('not.be.disabled');
 
-    cy.getByTestId('titleInput').clear();
+    cy.getByTestId('title-input').clear();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Titel muss folgende Länge haben: 2-250 Zeichen');
 
@@ -227,7 +227,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do().withMetricValues(Unit.PERCENT, '45', '52');
     cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('stretchGoal').clear();
+    cy.getByTestId('stretch-goal').clear();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Stretch Goal muss eine Zahl sein');
 
@@ -237,36 +237,36 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do().withMetricValues(Unit.PERCENT, '45', '83');
     cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('ownerInput').clear();
+    cy.getByTestId('owner-input').clear();
     cy.getByTestId('submit').should('be.disabled');
 
-    cy.getByTestId('ownerInput').type('abc');
-    cy.getByTestId('titleInput').type('Hello');
+    cy.getByTestId('owner-input').type('abc');
+    cy.getByTestId('title-input').type('Hello');
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Owner muss ausgewählt sein');
 
     KeyResultDialog.do().fillOwner('Bob Baumeister');
     cy.getByTestId('submit').should('not.be.disabled');
 
-    cy.getByTestId('ordinalTab').click();
+    cy.getByTestId('ordinal-tab').click();
     cy.getByTestId('submit').should('be.disabled');
 
     KeyResultDialog.do().withOrdinalValues('Commit', 'Target', 'Stretch');
     cy.getByTestId('submit').should('not.be.disabled');
 
-    cy.getByTestId('commitZone').clear();
+    cy.getByTestId('commit-zone').clear();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Commit Zone muss folgende Länge haben: 1-400 Zeichen');
 
     KeyResultDialog.do().withOrdinalValues('Commit', 'Target', 'Stretch');
     cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('targetZone').clear();
+    cy.getByTestId('target-zone').clear();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Target Zone muss folgende Länge haben: 1-400 Zeichen');
 
     KeyResultDialog.do().withOrdinalValues('Commit', 'Target', 'Stretch');
     cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('stretchZone').clear();
+    cy.getByTestId('stretch-zone').clear();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Stretch Zone muss folgende Länge haben: 1-400 Zeichen');
 

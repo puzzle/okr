@@ -3,7 +3,7 @@ import { Objective } from '../../shared/types/model/Objective';
 import { ObjectiveService } from '../../services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../services/dialog.service';
@@ -48,7 +48,7 @@ export class ObjectiveDetailComponent {
 
   openAddKeyResultDialog() {
     this.dialogService
-      .open(KeyresultDialogComponent, {
+      .open(KeyResultDialogComponent, {
         data: {
           objective: this.objective$.getValue(),
           keyResult: null,

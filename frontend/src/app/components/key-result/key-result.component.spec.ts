@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { KeyresultComponent } from './keyresult.component';
+import { KeyResultComponent } from './key-result.component';
 import { keyResultMetricMin } from '../../shared/testData';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ConfidenceComponent } from '../confidence/confidence.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-describe('KeyresultComponent', () => {
-  let component: KeyresultComponent;
-  let fixture: ComponentFixture<KeyresultComponent>;
+describe('KeyResultComponent', () => {
+  let component: KeyResultComponent;
+  let fixture: ComponentFixture<KeyResultComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KeyresultComponent, ScoringComponent, ConfidenceComponent],
+      declarations: [KeyResultComponent, ScoringComponent, ConfidenceComponent],
       imports: [MatDialogModule],
       providers: [provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(KeyresultComponent);
+    fixture = TestBed.createComponent(KeyResultComponent);
     component = fixture.componentInstance;
     component.keyResult = keyResultMetricMin;
     fixture.detectChanges();

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as de from '../../../assets/i18n/de.json';
 
-import { KeyresultTypeComponent } from './keyresult-type.component';
+import { KeyResultTypeComponent } from './key-result-type.component';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { keyResultMetric, keyResultOrdinal, testUser } from '../../shared/testData';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -9,9 +9,9 @@ import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../../shared/types/model/User';
 
-describe('KeyresultTypeComponent', () => {
-  let component: KeyresultTypeComponent;
-  let fixture: ComponentFixture<KeyresultTypeComponent>;
+describe('KeyResultTypeComponent', () => {
+  let component: KeyResultTypeComponent;
+  let fixture: ComponentFixture<KeyResultTypeComponent>;
 
   let metricKeyResult: KeyResult = keyResultMetric;
   let ordinalKeyResult: KeyResult = keyResultOrdinal;
@@ -76,7 +76,7 @@ describe('KeyresultTypeComponent', () => {
   describe('Edit Metric', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [KeyresultTypeComponent],
+        declarations: [KeyResultTypeComponent],
         imports: [
           TranslateTestingModule.withTranslations({
             de: de,
@@ -84,11 +84,11 @@ describe('KeyresultTypeComponent', () => {
           ReactiveFormsModule,
         ],
       });
-      fixture = TestBed.createComponent(KeyresultTypeComponent);
+      fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
       component.keyResultForm = metricKeyResultForm;
       fixture.detectChanges();
-      component.keyresult = metricKeyResult;
+      component.keyResult = metricKeyResult;
       fixture.detectChanges();
     });
 
@@ -107,7 +107,7 @@ describe('KeyresultTypeComponent', () => {
       expect(component.keyResultForm.value.stretchZone).toBeNull();
     });
 
-    it('should switch type of KeyResult', () => {
+    it('should switch type of key-result', () => {
       component.isMetric = true;
       component.typeChangeAllowed = true;
 
@@ -132,7 +132,7 @@ describe('KeyresultTypeComponent', () => {
       component.typeChangeAllowed = true;
 
       expect(component.isMetric).toBeTruthy();
-      const ordinalTab = fixture.debugElement.query(By.css('[data-testId="ordinalTab"]'));
+      const ordinalTab = fixture.debugElement.query(By.css('[data-testId="ordinal-tab"]'));
       ordinalTab.nativeElement.click();
       expect(component.isMetric).toBeFalsy();
     });
@@ -141,7 +141,7 @@ describe('KeyresultTypeComponent', () => {
   describe('Edit Ordinal', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [KeyresultTypeComponent],
+        declarations: [KeyResultTypeComponent],
         imports: [
           TranslateTestingModule.withTranslations({
             de: de,
@@ -149,11 +149,11 @@ describe('KeyresultTypeComponent', () => {
           ReactiveFormsModule,
         ],
       });
-      fixture = TestBed.createComponent(KeyresultTypeComponent);
+      fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
       component.keyResultForm = ordinalKeyResultForm;
       fixture.detectChanges();
-      component.keyresult = ordinalKeyResult;
+      component.keyResult = ordinalKeyResult;
       fixture.detectChanges();
     });
 
@@ -171,7 +171,7 @@ describe('KeyresultTypeComponent', () => {
       expect(component.keyResultForm.value.stretchZone).toEqual('Stretch');
     });
 
-    it('should switch type of KeyResult', () => {
+    it('should switch type of key-result', () => {
       component.isMetric = true;
       component.typeChangeAllowed = true;
 
@@ -198,7 +198,7 @@ describe('KeyresultTypeComponent', () => {
       component.isMetric = false;
 
       expect(component.isMetric).toBeFalsy();
-      const metricTab = fixture.debugElement.query(By.css('[data-testId="metricTab"]'));
+      const metricTab = fixture.debugElement.query(By.css('[data-testId="metric-tab"]'));
       metricTab.nativeElement.click();
       expect(component.isMetric).toBeTruthy();
     });
@@ -207,7 +207,7 @@ describe('KeyresultTypeComponent', () => {
   describe('Create', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [KeyresultTypeComponent],
+        declarations: [KeyResultTypeComponent],
         imports: [
           TranslateTestingModule.withTranslations({
             de: de,
@@ -215,11 +215,11 @@ describe('KeyresultTypeComponent', () => {
           ReactiveFormsModule,
         ],
       });
-      fixture = TestBed.createComponent(KeyresultTypeComponent);
+      fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
       component.keyResultForm = emptyKeyResultForm;
       fixture.detectChanges();
-      component.keyresult = {} as KeyResult;
+      component.keyResult = {} as KeyResult;
       fixture.detectChanges();
     });
 
@@ -236,7 +236,7 @@ describe('KeyresultTypeComponent', () => {
       expect(component.keyResultForm.value.stretchZone).toBeNull();
     });
 
-    it('should switch type of KeyResult', () => {
+    it('should switch type of key-result', () => {
       component.isMetric = true;
       component.typeChangeAllowed = true;
 
@@ -261,7 +261,7 @@ describe('KeyresultTypeComponent', () => {
       component.typeChangeAllowed = true;
 
       expect(component.isMetric).toBeTruthy();
-      const ordinalTab = fixture.debugElement.query(By.css('[data-testId="ordinalTab"]'));
+      const ordinalTab = fixture.debugElement.query(By.css('[data-testId="ordinal-tab"]'));
       ordinalTab.nativeElement.click();
       expect(component.isMetric).toBeFalsy();
     });

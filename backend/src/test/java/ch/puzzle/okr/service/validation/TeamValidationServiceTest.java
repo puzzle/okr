@@ -6,6 +6,7 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -54,6 +55,7 @@ class TeamValidationServiceTest {
     @InjectMocks
     private TeamValidationService validator;
 
+    @DisplayName("should be successful on validateOnGet() when team id is valid")
     @Test
     void validateOnGetShouldBeSuccessfulWhenValidTeamId() {
         validator.validateOnGet(1L);
@@ -62,6 +64,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
+    @DisplayName("should throw exception on validateOnGet() when team id is null")
     @Test
     void validateOnGetShouldThrowExceptionIfTeamIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -75,18 +78,20 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be successful on validateOnDelete() when team id is valid")
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidTeamId() {
-        validator.validateOnGet(1L);
+        validator.validateOnDelete(1L);
 
-        verify(validator, times(1)).validateOnGet(1L);
+        verify(validator, times(1)).validateOnDelete(1L);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
+    @DisplayName("should be throw exception on validateOnDelete() when team id is null")
     @Test
     void validateOnDeleteShouldThrowExceptionIfTeamIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
+                () -> validator.validateOnDelete(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
@@ -96,6 +101,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be throw exception on validateOnCreate() when team id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -108,6 +114,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be throw exception on validateOnCreate() when team already exists")
     @Test
     void validateOnCreateShouldThrowExceptionWhenTeamAlreadyExists() {
         BDDMockito.given(teamPersistenceService.findTeamsByName(anyString())).willReturn(List.of(team1));
@@ -121,6 +128,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be throw exception on validateOnCreate() when model is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -133,6 +141,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be throw exception on validateOnCreate() when team name is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNameIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -148,6 +157,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be throw exception on validateOnUpdate() when team id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -161,6 +171,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be throw exception on validateOnUpdate() when model and id are null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -173,6 +184,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should be throw exception on validateOnUpdate() when team name is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNameIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

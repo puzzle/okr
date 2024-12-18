@@ -45,7 +45,7 @@ class ValidationBaseTest {
         assertNotNull(persistenceService);
     }
 
-    @DisplayName("validateOnGet() should be successful when Id is valid")
+    @DisplayName("should be successful when Id is valid")
     @Test
     void validateOnGetShouldBeSuccessfulWhenIdIsValid() {
         Long id = 1L;
@@ -53,7 +53,7 @@ class ValidationBaseTest {
         verify(validator, times(1)).validateOnGet(anyLong());
     }
 
-    @DisplayName("validateOnGet() should throw exception when Id is null")
+    @DisplayName("should throw exception when Id is null")
     @Test
     void validateOnGetShouldThrowExceptionWhenIdIsNull() {
         // arrange
@@ -69,7 +69,7 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnDelete() should be successful when Id is valid")
+    @DisplayName("should be successful when Id is valid")
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenIdIsValid() {
         // arrange
@@ -84,7 +84,7 @@ class ValidationBaseTest {
         assertEquals(quarter, validatedQuarter);
     }
 
-    @DisplayName("validateOnDelete() should throw exception when Id is null")
+    @DisplayName("should throw exception when Id is null")
     @Test
     void validateOnDeleteShouldThrowExceptionWhenIdIsNull() {
         // arrange
@@ -100,7 +100,7 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("throwExceptionWhenModelIsNull() should be successful when model is valid")
+    @DisplayName("should not throw exception when model is valid")
     @Test
     void throwExceptionWhenModelIsNullShouldBeSuccessfulWhenModelIsValid() {
         // act
@@ -112,7 +112,7 @@ class ValidationBaseTest {
         verify(quarterPersistenceService, never()).getModelName();
     }
 
-    @DisplayName("throwExceptionWhenModelIsNull() should throw exception when model is null")
+    @DisplayName("should throw exception when model is null")
     @Test
     void throwExceptionWhenModelIsNullShouldThrowExceptionWhenModelIsNull() {
         // arrange
@@ -128,7 +128,7 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("throwExceptionWhenIdIsNotNull() should be successful when Id is null")
+    @DisplayName("should be successful exception when Id is null")
     @Test
     void throwExceptionWhenIdIsNotNullShouldBeSuccessfulWhenIdIsNull() {
         Long id = null;
@@ -136,7 +136,7 @@ class ValidationBaseTest {
         verify(quarterPersistenceService, never()).getModelName();
     }
 
-    @DisplayName("throwExceptionWhenIdIsNotNull() should throw exception when Id is not null")
+    @DisplayName("should throw exception when Id is not null")
     @Test
     void throwExceptionWhenIdIsNotNullShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
@@ -152,7 +152,7 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("throwExceptionWhenIdHasChanged() should be successful when Ids are equal")
+    @DisplayName("should be successful when Ids are equal")
     @Test
     void throwExceptionWhenIdHasChangedShouldBeSuccessfulWhenIdsAreEqual() {
         Long id = 1L;
@@ -161,7 +161,7 @@ class ValidationBaseTest {
         verify(quarterPersistenceService, never()).getModelName();
     }
 
-    @DisplayName("throwExceptionWhenIdHasChanged() should throw exception when Ids are not equal")
+    @DisplayName("should throw exception when Ids are not equal")
     @Test
     void throwExceptionWhenIdHasChangedShouldThrowExceptionWhenIdsAreNotEqual() {
         // arrange
@@ -179,7 +179,7 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validate() should be successful when constraint in model class is not violated")
+    @DisplayName("should be successful when constraint in model class is not violated")
     @Test
     void validateShouldBeSuccessfulWhenConstraintInModelClassIsNotViolated() {
         // arrange
@@ -191,7 +191,7 @@ class ValidationBaseTest {
         verify(quarterPersistenceService, never()).getModelName();
     }
 
-    @DisplayName("validate() should throw exception when when constraint in model class is violated")
+    @DisplayName("should throw exception when when constraint in model class is violated")
     @Test
     void validateShouldThrowExceptionWhenWhenConstraintInModelClassIsViolated() {
         // arrange
@@ -207,7 +207,7 @@ class ValidationBaseTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validate() should throw exception when one of several constraints in model class is violated")
+    @DisplayName("should throw exception when one of several constraints in model class is violated")
     @Test
     void validateShouldThrowExceptionWhenOneOfSeveralConstraintsInModelClassIsViolated() {
         // arrange

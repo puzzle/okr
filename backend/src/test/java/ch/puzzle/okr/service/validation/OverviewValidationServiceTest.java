@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +23,7 @@ class OverviewValidationServiceTest {
     @InjectMocks
     OverviewValidationService validator;
 
+    @DisplayName("should call quarter validator on validateQuarter()")
     @Test
     void validateOnGetShouldCallQuarterValidator() {
         validator.validateQuarter(QUARTER_ID);
@@ -29,6 +31,7 @@ class OverviewValidationServiceTest {
         verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);
     }
 
+    @DisplayName("should call team validator on validateTeam()")
     @Test
     void validateOnGetShouldCallTeamValidator() {
         validator.validateTeam(TEAM_ID);
@@ -36,6 +39,7 @@ class OverviewValidationServiceTest {
         verify(teamValidationService, times(1)).doesEntityExist(TEAM_ID);
     }
 
+    @DisplayName("should call team validator and quarter validator on validateOnGet()")
     @Test
     void validateOnGetShouldCallQuarterValidatorAndTeamValidator() {
         validator.validateOnGet(QUARTER_ID, teamIds);

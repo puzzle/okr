@@ -6,6 +6,7 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,11 +34,13 @@ class AlignmentValidationServiceTest {
     @InjectMocks
     private AlignmentValidationService validator;
 
+    @DisplayName("should throw exception on validateOnCreate()")
     @Test
     void validateOnCreateShouldThrowException() {
         assertThrows(UnsupportedOperationException.class, () -> validator.validateOnCreate(keyResultAlignment));
     }
 
+    @DisplayName("should throw exception on validateOnUpdate() when id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         when(alignmentPersistenceService.getModelName()).thenReturn("Alignment");
@@ -51,6 +54,7 @@ class AlignmentValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
     }
 
+    @DisplayName("should throw exception on validateOnUpdate() when id of alignment is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdOfAlignmentIsNull() {
         when(alignmentPersistenceService.getModelName()).thenReturn("Alignment");
@@ -66,6 +70,7 @@ class AlignmentValidationServiceTest {
 
     }
 
+    @DisplayName("should throw exception on validateOnUpdate() when id has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         Alignment alignment = KeyResultAlignment.Builder.builder().withId(3L).build();
@@ -79,6 +84,7 @@ class AlignmentValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, 3L);
     }
 
+    @DisplayName("should throw exception on validateOnUpdate() when model is invalid")
     @Test
     void validateOnUpdateShouldValidateDto() {
         when(alignmentPersistenceService.getModelName()).thenReturn("Alignment");

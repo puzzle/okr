@@ -18,7 +18,7 @@
               <img ngSrc="assets/icons/edit.svg" alt="edit check-in" width="24" height="24" />
             </button>
           </div>
-          <div class="okr-form-row row-cols-4">
+          <div class="okr-form-row row-cols-4 mb-1">
             <h4 class="col-auto">Wert:</h4>
             <span class="col">
               <ng-container *ngIf="keyResult.keyResultType === 'metric' && getCheckInMetric(checkIn) as metricCheckIn">
@@ -34,14 +34,14 @@
             <span class="col">{{ checkIn.confidence }} / 10</span>
           </div>
 
-          <div class="okr-form-row justify-content-between" *ngIf="checkIn.changeInfo !== ''">
+          <div class="okr-form-row justify-content-between mb-1" *ngIf="checkIn.changeInfo !== ''">
             <h4 class="col-3">Veränderungen:</h4>
             <span class="col linebreak">{{ checkIn.changeInfo }}</span>
           </div>
 
-          <div class="okr-form-row justify-content-between row-cols-2" *ngIf="checkIn.initiatives !== ''">
+          <div class="okr-form-row justify-content-between mb-1" *ngIf="checkIn.initiatives !== ''">
             <h4 class="col-3">Massnahmen:</h4>
-            <span class="col flex-fill linebreak">{{ checkIn.initiatives }}</span>
+            <span class="col linebreak">{{ checkIn.initiatives }}</span>
           </div>
         </div>
       </div>

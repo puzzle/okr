@@ -2,14 +2,14 @@
   <ng-container content>
     <form [formGroup]="dialogForm">
       <div class="okr-form-row okr-form-label-input-container">
-        <h3 class="okr-form-label okr-form-col">Key Result</h3>
+        <label class="okr-form-label okr-form-col">Key Result</label>
         <span class="okr-form-col">
           <p class="dialog-data-show">{{ keyResult.title }}</p>
         </span>
       </div>
 
       <div *ngIf="getActions().length > 0" class="okr-form-row okr-form-label-input-container">
-        <p class="okr-form-label okr-form-col">Action Plan:</p>
+        <label class="okr-form-label okr-form-col">Action Plan:</label>
         <div class="col">
           <span *ngFor="let action of getActions(); let i = index" class="okr-form-row">
             <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked" class="col-auto">
@@ -72,13 +72,13 @@
       </div>
 
       <div class="okr-form-row okr-form-label-input-container">
-        <p class="okr-form-label okr-form-col confidence-label">
+        <label class="okr-form-label okr-form-col confidence-label">
           Confidence um Target Zone
           <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
             ({{ calculateTarget(kr) | unitTransformation: kr.unit }})
           </span>
           zu erreichen:
-        </p>
+        </label>
         <app-confidence [checkIn]="checkIn" [edit]="true"></app-confidence>
       </div>
     </form>

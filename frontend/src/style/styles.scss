@@ -39,15 +39,15 @@ body.okr {
   h4 {
     font-family: Roboto, "sans-serif";
     font-size: 0.875rem;
-    font-weight: 400;
+    font-variation-settings: "wght" 400;
     margin-bottom: 0;
   }
 
   h5 {
     font-family: Roboto, "sans-serif";
     font-size: 0.875rem;
+    font-variation-settings: "wght" 400;
     margin-bottom: 0;
-    font-weight: 400;
   }
 
   p {
@@ -75,7 +75,6 @@ body.okr {
     color: $pz-dark-blue;
     text-decoration: none;
     font-size: 0.875rem;
-    font-weight: 700;
   }
 
   .font-size-14 {
@@ -261,12 +260,6 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   margin-bottom: 1rem;
 }
 
-.sub-title-keyresult {
-  font-family: Roboto, "sans-serif";
-  font-variation-settings: "wght" 400;
-  font-size: 0.9rem !important;
-}
-
 * {
   line-height: 115% !important;
 }
@@ -278,7 +271,6 @@ img.add-cross-button {
 
 .add-text {
   font-family: Roboto, "sans-serif";
-  font-variation-settings: "wght" 500;
   margin-top: 1px;
   height: 2rem;
 }

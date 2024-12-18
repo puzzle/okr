@@ -4,6 +4,10 @@
   flex: 1;
 }
 
+h3 {
+  font-variation-settings: "wght" 600 !important;
+}
+
 .keyResult-detail-attribute-show {
   background-color: $display-element;
   height: auto;
@@ -79,6 +83,7 @@
 }
 
 .action-list-checked-item {
+  font-size: 14px;
   text-indent: -1.3rem;
 }
 

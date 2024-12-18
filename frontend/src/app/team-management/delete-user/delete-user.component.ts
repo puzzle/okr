@@ -136,7 +136,7 @@ export class DeleteUserComponent implements OnInit {
   deleteUser() {
     const data: ConfirmDialogData = {
       title: `User löschen`,
-      text: `Möchtest du den User ${this.user.firstname} ${this.user.lastname} wirklich löschen?`,
+      text: `Möchtest du den User ${this.user.firstName} ${this.user.lastName} wirklich löschen?`,
       yesButtonState: ButtonState.VisibleEnabled,
       noButtonState: ButtonState.VisibleEnabled,
       closeButtonState: ButtonState.Hidden,

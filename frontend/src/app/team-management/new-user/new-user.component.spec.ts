@@ -23,8 +23,8 @@ describe('NewUserComponent', () => {
     component = fixture.componentInstance;
 
     component.userFormGroup = new FormGroup<NewUserForm<FormControl>>({
-      firstname: new FormControl<any>('user1'),
-      lastname: new FormControl<any>('user'),
+      firstName: new FormControl<any>('user1'),
+      lastName: new FormControl<any>('user'),
       email: new FormControl<any>('test@test.ch'),
     });
 

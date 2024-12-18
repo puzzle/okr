@@ -12,6 +12,7 @@ import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -44,7 +45,7 @@ class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
     private static final String DESCRIPTION = "This is our description";
-    private static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
+    private static final String UPDATED_DESCRIPTION = "This is a updated description";
     private static final String TITLE = "Hunting";
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
@@ -78,13 +79,13 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"isWriteable":true}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
     private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
             .build();
-    private static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    private static final User user = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch").build();
     private static final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     private static final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
@@ -117,8 +118,9 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
     }
 
+    @DisplayName("Should get an objective by id")
     @Test
-    void getObjectiveById() throws Exception {
+    void shouldGetObjectiveById() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong())).willReturn(objective1);
 
         mvc.perform(get(URL_OBJECTIVE_5).contentType(MediaType.APPLICATION_JSON))
@@ -126,8 +128,9 @@ class ObjectiveControllerIT {
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(OBJECTIVE_TITLE_1)));
     }
 
+    @DisplayName("Should throw not found exception when getting a objective with a non existent id")
     @Test
-    void getObjectiveByIdFail() throws Exception {
+    void shouldThrowNotFoundWhenGettingObjectiveWithNonExistentId() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -135,8 +138,9 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return the created objective when creating a new objective")
     @Test
-    void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
+    void shouldReturnCreatedObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "GJ 22/23-Q2",
                 "Just be faster", State.DRAFT, null, null, true);
 
@@ -150,8 +154,9 @@ class ObjectiveControllerIT {
         verify(objectiveAuthorizationService, times(1)).createEntity(any());
     }
 
+    @DisplayName("Should throw bad request exception when creating a objective with null values")
     @Test
-    void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
+    void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
@@ -160,11 +165,12 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should return the updated objective when updating a objective")
     @Test
-    void shouldReturnUpdatedObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", EVERYTHING_FINE_DESCRIPTION,
+    void shouldReturnUpdatedObjectiveWhenUpdatingObjective() throws Exception {
+        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", UPDATED_DESCRIPTION,
                 State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
-        Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
+        Objective objective = Objective.Builder.builder().withId(1L).withDescription(UPDATED_DESCRIPTION)
                 .withTitle(TITLE).build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
@@ -173,16 +179,16 @@ class ObjectiveControllerIT {
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(1)))
-                .andExpect(jsonPath("$.description", Is.is(EVERYTHING_FINE_DESCRIPTION)))
+                .andExpect(jsonPath("$.id", Is.is(1))).andExpect(jsonPath("$.description", Is.is(UPDATED_DESCRIPTION)))
                 .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(TITLE)));
     }
 
+    @DisplayName("Should return im used exception")
     @Test
     void shouldReturnImUsed() throws Exception {
-        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2",
-                EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
-        Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, "GJ 22/23-Q2", UPDATED_DESCRIPTION,
+                State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
+        Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(UPDATED_DESCRIPTION)
                 .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle(TITLE)
                 .build();
 
@@ -196,8 +202,9 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isImUsed());
     }
 
+    @DisplayName("Should return not found when updating a objective with a non existent id")
     @Test
-    void shouldReturnNotFound() throws Exception {
+    void shouldReturnNotFoundWhenUpdatingObjectiveByNonExistentId() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
@@ -206,6 +213,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return bad request exception")
     @Test
     void shouldReturnBadRequest() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willThrow(
@@ -215,14 +223,16 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should successfully delete an objective")
     @Test
-    void shouldDeleteObjective() throws Exception {
+    void shouldSuccessfullyDeleteObjective() throws Exception {
         mvc.perform(delete(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should throw not found exception when an objective with a given id can not be found while deleting")
     @Test
-    void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
+    void shouldThrowExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found"))
                 .when(objectiveAuthorizationService).deleteEntityById(anyLong());
 
@@ -230,6 +240,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return is created when an ojective was duplicated")
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any(), anyList()))

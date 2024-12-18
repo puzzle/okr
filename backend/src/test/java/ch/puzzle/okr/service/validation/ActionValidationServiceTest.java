@@ -39,14 +39,14 @@ class ActionValidationServiceTest {
     private final Action action1 = Action.Builder.builder() //
             .withId(null) //
             .withAction("Neue Katze") //
-            .withIsChecked(false) //
+            .isChecked(false) //
             .withPriority(0) //
             .withKeyResult(keyResult).build();
 
     private final Action action2 = Action.Builder.builder() //
             .withId(2L) //
             .withAction("Neues Lama") //
-            .withIsChecked(true) // //
+            .isChecked(true) // //
             .withPriority(1).withKeyResult(keyResult).build();
 
     @Mock
@@ -77,29 +77,29 @@ class ActionValidationServiceTest {
         return Stream.of( //
                 Arguments.of(new ActionPair( //
                         Action.Builder.builder() //
-                                .withId(id).withAction("Action").withIsChecked(false).withPriority(1) //
+                                .withId(id).withAction("Action").isChecked(false).withPriority(1) //
                                 .withKeyResult(null).build(),
 
                         Action.Builder.builder() //
-                                .withId(id).withAction("Action").withIsChecked(false).withPriority(1) //
+                                .withId(id).withAction("Action").isChecked(false).withPriority(1) //
                                 .withKeyResult(null).build())),
 
                 Arguments.of(new ActionPair( //
                         Action.Builder.builder() //
-                                .withId(id).withAction("Action").withIsChecked(false).withPriority(1) //
+                                .withId(id).withAction("Action").isChecked(false).withPriority(1) //
                                 .withKeyResult(keyResult).build(),
 
                         Action.Builder.builder() //
-                                .withId(id).withAction("Action").withIsChecked(false).withPriority(1) //
+                                .withId(id).withAction("Action").isChecked(false).withPriority(1) //
                                 .withKeyResult(null).build())),
 
                 Arguments.of(new ActionPair( //
                         Action.Builder.builder() //
-                                .withId(id).withAction("Action").withIsChecked(false).withPriority(1) //
+                                .withId(id).withAction("Action").isChecked(false).withPriority(1) //
                                 .withKeyResult(null).build(),
 
                         Action.Builder.builder() //
-                                .withId(id).withAction("Action").withIsChecked(false).withPriority(1)
+                                .withId(id).withAction("Action").isChecked(false).withPriority(1)
                                 .withKeyResult(keyResult).build())));
     }
 
@@ -144,8 +144,8 @@ class ActionValidationServiceTest {
     @MethodSource("actionValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenActionIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
-        Action action = Action.Builder.builder().withId(null).withAction(actionText).withIsChecked(false)
-                .withPriority(1).withKeyResult(keyResult).build();
+        Action action = Action.Builder.builder().withId(null).withAction(actionText).isChecked(false).withPriority(1)
+                .withKeyResult(keyResult).build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -157,7 +157,7 @@ class ActionValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
-        Action actionInvalid = Action.Builder.builder().withIsChecked(true).build();
+        Action actionInvalid = Action.Builder.builder().isChecked(true).build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -273,7 +273,7 @@ class ActionValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenKeyResultIdHasChanged() {
         // arrange
-        Action action = Action.Builder.builder().withId(action2.getId()).withAction("Action").withIsChecked(false)
+        Action action = Action.Builder.builder().withId(action2.getId()).withAction("Action").isChecked(false)
                 .withPriority(1)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(11L).withTitle("KR Title").build()).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(action2);
@@ -295,7 +295,7 @@ class ActionValidationServiceTest {
     @MethodSource("actionValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
-        Action action = Action.Builder.builder().withId(3L).withAction(actionText).withIsChecked(false).withPriority(1)
+        Action action = Action.Builder.builder().withId(3L).withAction(actionText).isChecked(false).withPriority(1)
                 .withKeyResult(keyResult).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(action);
 
@@ -308,7 +308,7 @@ class ActionValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenKeyResultIsMissing() {
         // arrange
-        Action actionInvalid = Action.Builder.builder().withId(11L).withIsChecked(true).build();
+        Action actionInvalid = Action.Builder.builder().withId(11L).isChecked(true).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert
@@ -323,8 +323,7 @@ class ActionValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
-        Action actionInvalid = Action.Builder.builder().withId(11L).withIsChecked(true).withKeyResult(keyResult)
-                .build();
+        Action actionInvalid = Action.Builder.builder().withId(11L).isChecked(true).withKeyResult(keyResult).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert

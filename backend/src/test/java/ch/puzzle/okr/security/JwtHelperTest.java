@@ -21,8 +21,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public class JwtHelperTest {
 
-    private static final String TOKEN_CLAIMS_KEY_FIRSTNAME = "given_name";
-    private static final String TOKEN_CLAIMS_KEY_LASTNAME = "family_name";
+    private static final String TOKEN_CLAIMS_KEY_FIRST_NAME = "given_name";
+    private static final String TOKEN_CLAIMS_KEY_LAST_NAME = "family_name";
     private static final String TOKEN_CLAIMS_KEY_EMAIL = "email";
     private static final String HANS = "Hans";
     private static final String MUSTER = "Muster";
@@ -38,32 +38,32 @@ public class JwtHelperTest {
         // arrange
         Jwt tokenWithUserDataMock = mock(Jwt.class);
         when(tokenWithUserDataMock.getClaims()).thenReturn(Map.of( //
-                TOKEN_CLAIMS_KEY_FIRSTNAME, HANS, //
-                TOKEN_CLAIMS_KEY_LASTNAME, MUSTER, //
+                TOKEN_CLAIMS_KEY_FIRST_NAME, HANS, //
+                TOKEN_CLAIMS_KEY_LAST_NAME, MUSTER, //
                 TOKEN_CLAIMS_KEY_EMAIL, EMAIL //
         ));
 
         JwtHelper jwtHelper = new JwtHelper(null, //
-                TOKEN_CLAIMS_KEY_FIRSTNAME, TOKEN_CLAIMS_KEY_LASTNAME, TOKEN_CLAIMS_KEY_EMAIL);
+                TOKEN_CLAIMS_KEY_FIRST_NAME, TOKEN_CLAIMS_KEY_LAST_NAME, TOKEN_CLAIMS_KEY_EMAIL);
 
         // act
         User userFromToken = jwtHelper.getUserFromJwt(tokenWithUserDataMock);
 
         // assert
-        assertEquals(HANS, userFromToken.getFirstname());
-        assertEquals(MUSTER, userFromToken.getLastname());
+        assertEquals(HANS, userFromToken.getFirstName());
+        assertEquals(MUSTER, userFromToken.getLastName());
         assertEquals(EMAIL, userFromToken.getEmail());
     }
 
     // ok
-    @DisplayName("getUserFromJwt() throws Exception if Token not contains User data")
+    @DisplayName("getUserFromJwt() throws Exception if Token doesnt contain User data")
     @Test
     void getUserFromJwtThrowsExceptionIfTokenNotContainsUserData() {
         // arrange
         Jwt tokenWithNoUserDataMock = mock(Jwt.class);
 
         JwtHelper jwtHelper = new JwtHelper(null, //
-                TOKEN_CLAIMS_KEY_FIRSTNAME, TOKEN_CLAIMS_KEY_LASTNAME, TOKEN_CLAIMS_KEY_EMAIL);
+                TOKEN_CLAIMS_KEY_FIRST_NAME, TOKEN_CLAIMS_KEY_LAST_NAME, TOKEN_CLAIMS_KEY_EMAIL);
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = //
@@ -134,7 +134,7 @@ public class JwtHelperTest {
         assertEquals(PITC, tenantFromToken);
     }
 
-    @DisplayName("getTenantFromJWTClaimsSet() throws Exception if ClaimSet can not be parsed")
+    @DisplayName("getTenantFromJWTClaimsSet() throws Exception if ClaimSet cannot be parsed")
     @Test
     void getTenantFromJWTClaimsSetThrowsExceptionIfClaimSetCanNotBeParsed() throws ParseException {
         // arrange

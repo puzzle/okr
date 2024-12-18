@@ -134,16 +134,16 @@ public class PersistenceBaseTestIT {
         var foundUser = persistenceBase.findById(createdUserId);
 
         // pro-condition
-        assertEquals("Ueli", createdUser.getFirstname());
+        assertEquals("Ueli", createdUser.getFirstName());
 
         // act
-        foundUser.setFirstname("Pekka");
+        foundUser.setFirstName("Pekka");
         persistenceBase.save(foundUser);
         foundUser = persistenceBase.findById(createdUserId);
 
         // assert
         assertEquals(createdUserId, foundUser.getId());
-        assertEquals("Pekka", foundUser.getFirstname());
+        assertEquals("Pekka", foundUser.getFirstName());
     }
 
     @DisplayName("deleteById() should delete entity")
@@ -163,8 +163,8 @@ public class PersistenceBaseTestIT {
 
     private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail,
             User currentUser) {
-        assertEquals(expectedFirstName, currentUser.getFirstname());
-        assertEquals(expectedLastName, currentUser.getLastname());
+        assertEquals(expectedFirstName, currentUser.getFirstName());
+        assertEquals(expectedLastName, currentUser.getLastName());
         assertEquals(expectedEmail, currentUser.getEmail());
     }
 
@@ -180,7 +180,7 @@ public class PersistenceBaseTestIT {
     }
 
     private static User createUserWithUniqueName(String name) {
-        return User.Builder.builder().withFirstname(name).withLastname("Muster").withEmail("hans.muster@puzzle.ch")
+        return User.Builder.builder().withFirstName(name).withLastName("Muster").withEmail("hans.muster@puzzle.ch")
                 .build();
     }
 }

@@ -1,33 +1,31 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
-import TeammanagementPage from '../support/helper/dom-helper/pages/teammanagementPage';
+import TeamManagementPage from '../support/helper/dom-helper/pages/teamManagementPage';
 
-describe('Routing', () => {
+describe('okr routing', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
   });
 
-  describe('Route via url', () => {
-    it('should route to overview', () => {
-      // Visit autocalls the validatePage method
-      CyOverviewPage.do().visitViaURL();
-    });
+  it('should route to overview', () => {
+    // Visit autocalls the validatePage method
+    CyOverviewPage.do().visitViaURL();
+  });
 
-    it('should route to teammanagement', () => {
-      // Visit autocalls the validatePage method
-      TeammanagementPage.do().visitViaURL();
-    });
+  it('should route to team-management', () => {
+    // Visit autocalls the validatePage method
+    TeamManagementPage.do().visitViaURL();
+  });
 
-    it('should route from overview to team management ', () => {
-      CyOverviewPage.do().visitViaURL().visitTeammanagement();
-    });
+  it('should route from overview to team-management ', () => {
+    CyOverviewPage.do().visitViaURL().visitTeamManagement();
+  });
 
-    it('should route from team management to Overview via back button', () => {
-      TeammanagementPage.do().visitViaURL().backToOverview();
-    });
+  it('should route from team-management to overview via back button', () => {
+    TeamManagementPage.do().visitViaURL().backToOverview();
+  });
 
-    it('should route from team management to Overview via logo', () => {
-      TeammanagementPage.do().visitViaURL().visitOverview();
-    });
+  it('should route from team-management to overview via logo', () => {
+    TeamManagementPage.do().visitViaURL().visitOverview();
   });
 });

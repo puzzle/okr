@@ -17,7 +17,7 @@ class UserKeyGeneratorTest {
     }
 
     @Test
-    void generate_shouldReturnTenantAndUserInfo() {
+    void generateShouldReturnTenantAndUserInfo() {
         Object notUsedObject = new Object();
         Method notUsedMethod = notUsedObject.getClass().getEnclosingMethod();
 

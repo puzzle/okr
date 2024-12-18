@@ -208,8 +208,8 @@ class DeserializerHelperTest {
     private static void assertOwner(KeyResultUserDto owner) {
         assertNotNull(owner);
         assertEquals(1000, owner.id());
-        assertEquals("Jaya", owner.firstname());
-        assertEquals("Norris", owner.lastname());
+        assertEquals("Jaya", owner.firstName());
+        assertEquals("Norris", owner.lastName());
     }
 
     private static void assertObjective(KeyResultObjectiveDto objective) {

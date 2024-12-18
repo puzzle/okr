@@ -188,7 +188,7 @@ describe('ObjectiveDialogComponent', () => {
             state: State[state as keyof typeof State],
             teamId: 2,
             title: title,
-            writeable: true,
+            isWriteable: true,
           },
           teamId: 1,
         });

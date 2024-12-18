@@ -50,10 +50,10 @@ class KeyResultPersistenceServiceIT {
                 .build();
     }
 
-    private static final String KEY_RESULT_UPDATED = "Updated Key Result";
-    private static final String THIS_IS_DESCRIPTION = "This is a new description";
+    private static final String KEY_RESULT_TITLE = "Updated Key Result";
+    private static final String KEY_RESULT_DESCRIPTION = "This is a new description";
     private static final String MODEL_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
-    private static final String KEYRESULT = "KeyResult";
+    private static final String KEY_RESULT = "KeyResult";
 
     @BeforeEach
     void setUp() {
@@ -90,7 +90,7 @@ class KeyResultPersistenceServiceIT {
     }
 
     @Test
-    void getKeyResultByIdShouldReturnKeyResultProperly() {
+    void shouldFindKeyResultById() {
         KeyResult keyResult = keyResultPersistenceService.findById(3L);
 
         assertEquals(3L, keyResult.getId());
@@ -102,7 +102,7 @@ class KeyResultPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(321L));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto(MODEL_NOT_FOUND, List.of(KEYRESULT, "321")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto(MODEL_NOT_FOUND, List.of(KEY_RESULT, "321")));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -114,7 +114,7 @@ class KeyResultPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(null));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", KEYRESULT)));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", KEY_RESULT)));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -125,14 +125,14 @@ class KeyResultPersistenceServiceIT {
     void recreateEntityShouldUpdateKeyResultNoTypeChange() {
         KeyResult keyResult = createKeyResultOrdinal(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
-        createdKeyResult.setTitle(KEY_RESULT_UPDATED);
+        createdKeyResult.setTitle(KEY_RESULT_TITLE);
         Long keyResultId = createdKeyResult.getId();
 
         KeyResult recreatedKeyResult = keyResultPersistenceService.recreateEntity(createdKeyResult.getId(),
                 createdKeyResult);
 
         assertNotNull(createdKeyResult.getId());
-        assertEquals(KEY_RESULT_UPDATED, recreatedKeyResult.getTitle());
+        assertEquals(KEY_RESULT_TITLE, recreatedKeyResult.getTitle());
         assertEquals(createdKeyResult.getOwner().getId(), recreatedKeyResult.getOwner().getId());
         assertEquals(createdKeyResult.getObjective().getId(), recreatedKeyResult.getObjective().getId());
 
@@ -140,7 +140,7 @@ class KeyResultPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(keyResultId));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEYRESULT, keyResultId)));
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEY_RESULT, keyResultId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -157,7 +157,7 @@ class KeyResultPersistenceServiceIT {
 
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Hund")
                 .withTargetZone("Hund + Katze").withStretchZone("Zoo").withId(createdKeyResult.getId())
-                .withTitle(KEY_RESULT_UPDATED).withObjective(createdKeyResult.getObjective())
+                .withTitle(KEY_RESULT_TITLE).withObjective(createdKeyResult.getObjective())
                 .withOwner(createdKeyResult.getOwner()).withCreatedBy(createdKeyResult.getCreatedBy())
                 .withCreatedOn(createdKeyResult.getCreatedOn()).build();
 
@@ -166,7 +166,7 @@ class KeyResultPersistenceServiceIT {
 
         assertNotNull(createdKeyResult.getId());
         assertEquals(createdKeyResult.getObjective().getId(), recreatedKeyResult.getObjective().getId());
-        assertEquals(KEY_RESULT_UPDATED, recreatedKeyResult.getTitle());
+        assertEquals(KEY_RESULT_TITLE, recreatedKeyResult.getTitle());
         assertEquals(createdKeyResult.getOwner().getId(), recreatedKeyResult.getOwner().getId());
 
         Long keyResultId = createdKeyResult.getId();
@@ -174,7 +174,7 @@ class KeyResultPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(keyResultId));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEYRESULT, keyResultId)));
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEY_RESULT, keyResultId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -189,15 +189,15 @@ class KeyResultPersistenceServiceIT {
         KeyResult keyResult = createKeyResultOrdinal(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
         KeyResult updateKeyResult = createKeyResultOrdinal(createdKeyResult.getId(), createdKeyResult.getVersion());
-        updateKeyResult.setTitle(KEY_RESULT_UPDATED);
-        updateKeyResult.setDescription(THIS_IS_DESCRIPTION);
+        updateKeyResult.setTitle(KEY_RESULT_TITLE);
+        updateKeyResult.setDescription(KEY_RESULT_DESCRIPTION);
 
         KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(updateKeyResult);
 
         assertEquals(createdKeyResult.getId(), updatedKeyResult.getId());
         assertEquals(createdKeyResult.getVersion() + 1, updatedKeyResult.getVersion());
-        assertEquals(KEY_RESULT_UPDATED, updatedKeyResult.getTitle());
-        assertEquals(THIS_IS_DESCRIPTION, updatedKeyResult.getDescription());
+        assertEquals(KEY_RESULT_TITLE, updatedKeyResult.getTitle());
+        assertEquals(KEY_RESULT_DESCRIPTION, updatedKeyResult.getDescription());
         assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
         assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
         assertEquals(createdKeyResult.getModifiedOn(), updatedKeyResult.getModifiedOn());
@@ -208,12 +208,12 @@ class KeyResultPersistenceServiceIT {
         KeyResult keyResult = createKeyResultOrdinal(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
         KeyResult updateKeyResult = createKeyResultOrdinal(createdKeyResult.getId(), 0);
-        updateKeyResult.setTitle(KEY_RESULT_UPDATED);
-        updateKeyResult.setDescription(THIS_IS_DESCRIPTION);
+        updateKeyResult.setTitle(KEY_RESULT_TITLE);
+        updateKeyResult.setDescription(KEY_RESULT_DESCRIPTION);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.updateEntity(updateKeyResult));
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(KEYRESULT)));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(KEY_RESULT)));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -237,7 +237,7 @@ class KeyResultPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(keyResultId));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEYRESULT, keyResultId)));
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEY_RESULT, keyResultId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -251,7 +251,7 @@ class KeyResultPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(nonExistentId));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEYRESULT, nonExistentId)));
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEY_RESULT, nonExistentId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

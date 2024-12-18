@@ -1,5 +1,5 @@
 <div class="okr-form-row okr-form-label-input-container">
-  <label for="actionlist" class="okr-form-label">Action Plan (optional)</label>
+  <label for="action-list" class="okr-form-label">Action Plan (optional)</label>
   <div
     cdkDropList
     *ngIf="control?.getValue()"
@@ -7,17 +7,11 @@
     (keydown.enter)="preventAddingNewItems($event)"
     class="okr-form-col d-flex flex-column gap-2"
     (cdkDropListDropped)="drop($event)"
-    id="actionlist"
+    id="action-list"
   >
     <div class="action-point-item" *ngFor="let action of (control | async)!; index as i; trackBy: trackByFn" cdkDrag>
       <div class="drag-drop-dots">
-        <img
-          cdkDragHandle
-          class="icons"
-          src="../../../assets/icons/drag_indicator.svg"
-          alt="Drag indicator"
-          [attr.data-testId]="'dragIcon'"
-        />
+        <img cdkDragHandle class="icons" src="../../../assets/icons/drag_indicator.svg" alt="Drag indicator" />
       </div>
       <input
         #listItem
@@ -27,7 +21,7 @@
         (input)="updateActionTexts(this.control.value!)"
         class="action-input"
         [value]="action.action"
-        [attr.data-testId]="'actionInput'"
+        [attr.data-testId]="'action-input'"
       />
       <img
         tabindex="0"

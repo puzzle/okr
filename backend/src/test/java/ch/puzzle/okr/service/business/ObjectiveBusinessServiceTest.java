@@ -48,7 +48,7 @@ class ObjectiveBusinessServiceTest {
 
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    private final User user = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch").build();
     private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
@@ -59,7 +59,7 @@ class ObjectiveBusinessServiceTest {
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
     @Test
-    void getOneObjective() {
+    void shouldGetOneObjective() {
         when(objectivePersistenceService.findById(5L)).thenReturn(objective);
 
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
@@ -68,7 +68,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @Test
-    void getEntitiesByTeamId() {
+    void shouldGetEntitiesByTeamId() {
         when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
 
         List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
@@ -77,7 +77,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @Test
-    void shouldNotFindTheObjective() {
+    void shouldThrowNotFoundWhenTryingToFindNonExistentObjectiveById() {
         when(objectivePersistenceService.findById(6L))
                 .thenThrow(new ResponseStatusException(NOT_FOUND, "Objective with id 6 not found"));
 
@@ -88,7 +88,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @Test
-    void shouldSaveANewObjective() {
+    void shouldSuccessfullySaveNewObjective() {
         Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
                 .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
                 .withState(DRAFT).build());
@@ -101,18 +101,6 @@ class ObjectiveBusinessServiceTest {
         assertEquals(DRAFT, objective.getState());
         assertEquals(user, objective.getCreatedBy());
         assertNull(objective.getCreatedOn());
-    }
-
-    @Test
-    void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
-        Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
-                .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
-        when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
-
-        Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
-        assertNull(savedObjective.getId());
-        assertEquals("FullObjective1", savedObjective.getTitle());
-        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
     }
 
     @ParameterizedTest

@@ -3,8 +3,8 @@ import { PageObjectMapperBase } from './pageObjectMapperBase';
 export default class FilterHelper extends PageObjectMapperBase {
   validatePage(): void {}
 
-  optionShouldBeSelected(text: string, onOverview = true): this {
-    if (onOverview) {
+  optionShouldBeSelected(text: string, isOnOverview = true): this {
+    if (isOnOverview) {
       cy.contains('h1:visible', text).should('have.length', 1);
     }
     this.getOption(text).should('have.length', 1).should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');

@@ -46,8 +46,8 @@ class UserPersistenceServiceIT {
     void saveShouldSaveUserWithEmptyUserTeamList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
+                .withFirstName("Hans") //
+                .withLastName("Muster") //
                 .withEmail("muster@puzzle.ch") //
                 .withUserTeamList(List.of()).build();
 
@@ -64,8 +64,8 @@ class UserPersistenceServiceIT {
     void saveShouldSaveUserWithNullUserTeamList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
+                .withFirstName("Hans") //
+                .withLastName("Muster") //
                 .withEmail("muster@puzzle.ch") //
                 .withUserTeamList(null).build();
 
@@ -82,8 +82,8 @@ class UserPersistenceServiceIT {
     void saveAllShouldSaveAllUsersInTheInputList() {
         // arrange
         var newUser = User.Builder.builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
+                .withFirstName("Hans") //
+                .withLastName("Muster") //
                 .withEmail("muster@puzzle.ch") //
                 .build();
 
@@ -117,8 +117,8 @@ class UserPersistenceServiceIT {
         // arrange
         var newUser = User.Builder.builder() //
                 .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
+                .withFirstName("firstname") //
+                .withLastName("lastname") //
                 .withEmail("lastname@puzzle.ch") //
                 .build();
 
@@ -137,8 +137,8 @@ class UserPersistenceServiceIT {
         Optional<User> user = userPersistenceService.findByEmail("gl@gl.com");
 
         assertTrue(user.isPresent());
-        assertEquals("Jaya", user.get().getFirstname());
-        assertEquals("Norris", user.get().getLastname());
+        assertEquals("Jaya", user.get().getFirstName());
+        assertEquals("Norris", user.get().getLastName());
     }
 
     @DisplayName("findByEmail() should return empty optional if email is not found")
@@ -177,14 +177,14 @@ class UserPersistenceServiceIT {
     }
 
     private void assertUser(String firstName, String lastName, String email, User currentUser) {
-        assertEquals(firstName, currentUser.getFirstname());
-        assertEquals(lastName, currentUser.getLastname());
+        assertEquals(firstName, currentUser.getFirstName());
+        assertEquals(lastName, currentUser.getLastName());
         assertEquals(email, currentUser.getEmail());
     }
 
-    @DisplayName("deleteById() should delete user when user found")
+    @DisplayName("deleteById() should delete user when user exists")
     @Test
-    void deleteByIdShouldDeleteUserWhenUserFound() {
+    void deleteByIdShouldDeleteUserWhenUserExists() {
         // arrange
         User user = createUser();
 
@@ -201,8 +201,8 @@ class UserPersistenceServiceIT {
     private User createUser() {
         User newUser = User.Builder.builder() //
                 .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
+                .withFirstName("firstname") //
+                .withLastName("lastname") //
                 .withEmail("lastname@puzzle.ch") //
                 .build();
         createdUser = userPersistenceService.getOrCreateUser(newUser);

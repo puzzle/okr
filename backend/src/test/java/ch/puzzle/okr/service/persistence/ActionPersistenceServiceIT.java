@@ -32,7 +32,7 @@ class ActionPersistenceServiceIT {
 
     private static Action createAction(Long id, int version) {
         return Action.Builder.builder().withId(id).withVersion(version).withAction("Neue Katze").withPriority(0)
-                .withIsChecked(false)
+                .isChecked(false)
                 .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
                 .build();

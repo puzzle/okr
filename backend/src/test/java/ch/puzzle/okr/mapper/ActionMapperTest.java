@@ -28,7 +28,7 @@ public class ActionMapperTest {
     private static final int PRIORITY = 42;
     private static final boolean IS_CHECKED = true;
     private static final boolean IS_WRITEABLE = true;
-    public static final long KEY_RESULT_ID = 10L;
+    private static final long KEY_RESULT_ID = 10L;
     private final KeyResult keyResult = KeyResultMetric.Builder.builder().withId(KEY_RESULT_ID).build();
 
     private ActionMapper actionMapper;
@@ -53,7 +53,7 @@ public class ActionMapperTest {
                 .withVersion(VERSION) //
                 .withAction(ACTION) //
                 .withPriority(PRIORITY) //
-                .withIsChecked(IS_CHECKED) //
+                .isChecked(IS_CHECKED) //
                 .withKeyResult(keyResult) //
                 .build();
         action.setWriteable(IS_WRITEABLE);
@@ -73,12 +73,12 @@ public class ActionMapperTest {
         assertEquals(expected.getPriority(), actual.priority());
         assertEquals(expected.isChecked(), actual.isChecked());
         assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
-        assertEquals(expected.isWriteable(), actual.writeable());
+        assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
     @DisplayName("toActions() should map List of Dtos with KeyResultId to list of Actions.")
     @Test
-    void toActionsShouldMapListOfDtosWithKeyResltIdToListOfActions() {
+    void toActionsShouldMapListOfDtosWithKeyResultIdToListOfActions() {
         // arrange
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);
 

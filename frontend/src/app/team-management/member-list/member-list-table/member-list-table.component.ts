@@ -44,7 +44,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   private setColumnForTeam(team: Team) {
     this.displayedColumns = [...this.teamColumns];
-    if (team.writeable) {
+    if (team.isWriteable) {
       this.displayedColumns.push('menu');
     }
   }
@@ -57,7 +57,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
     const i18nData = {
-      user: `${entry.firstname} ${entry.lastname}`,
+      user: `${entry.firstName} ${entry.lastName}`,
       team: this.selectedTeam$.value?.name,
     };
     this.dialogService

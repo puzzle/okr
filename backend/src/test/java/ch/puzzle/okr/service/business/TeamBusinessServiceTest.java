@@ -66,12 +66,12 @@ class TeamBusinessServiceTest {
     void setUp() {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
         this.team1.setUserTeamList(List.of(
-                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(2L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).withTeamAdmin(false).build()));
+                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(2L)).isTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).isTeamAdmin(false).build()));
         this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
         this.team2.setUserTeamList(List.of(
-                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withTeamAdmin(true).build()));
+                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).isTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).isTeamAdmin(true).build()));
         this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
         this.team3.setUserTeamList(List.of());
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();
@@ -82,7 +82,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void getTeamByIdShouldBeSuccessful() {
+    void shouldSuccessfullyGetTeamById() {
         Long id = team1.getId();
         Mockito.when(teamPersistenceService.findById(id)).thenReturn(team1);
 
@@ -92,7 +92,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void getAllTeamsShouldBeSuccessful() {
+    void shouldSuccessfullyGetAllTeams() {
         Mockito.when(teamPersistenceService.findAll()).thenReturn(List.of(team1, team2));
 
         List<Team> teams = teamBusinessService.getAllTeams(defaultAuthorizationUser());
@@ -110,7 +110,7 @@ class TeamBusinessServiceTest {
         List<UserTeam> userTeamList = List
                 .of(UserTeam.Builder.builder().withUser(user).withTeam(userTeam).withId(1L).build());
         AuthorizationUser authUser = new AuthorizationUser(User.Builder.builder().withId(user.getId())
-                .withFirstname(user.getFirstname()).withLastname(user.getLastname()).withEmail(user.getEmail())
+                .withFirstName(user.getFirstName()).withLastName(user.getLastName()).withEmail(user.getEmail())
                 .withUserTeamList(userTeamList).build());
         when(teamPersistenceService.findAll()).thenReturn(teams);
 
@@ -119,7 +119,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void shouldSaveANewTeam_shouldSetCurrentUserAsAdmin() {
+    void shouldCreateANewTeamAndSetCurrentUserAsAdmin() {
         Team team = Team.Builder.builder().withName("OKR-TEAM").withId(2L).build();
         var user = defaultUserWithTeams(1L, List.of(), List.of());
 
@@ -159,7 +159,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void addUsersToTeam_shouldAddUsersCorrectly() {
+    void shouldSuccessfullyAddUserToTeam() {
         var teamId = 1L;
         var userIds = List.of(1L, 2L);
 
@@ -172,18 +172,18 @@ class TeamBusinessServiceTest {
 
         teamBusinessService.addUsersToTeam(teamId, userIds);
 
-        var user1Teamids = user1.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList();
-        assertTrue(user1Teamids.contains(teamId));
+        var user1TeamIds = user1.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList();
+        assertTrue(user1TeamIds.contains(teamId));
 
-        var user2Teamids = user2.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList();
-        assertTrue(user2Teamids.contains(teamId));
+        var user2TeamIds = user2.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList();
+        assertTrue(user2TeamIds.contains(teamId));
 
-        assertFalse(user1Teamids.contains(3L));
-        assertFalse(user2Teamids.contains(3L));
+        assertFalse(user1TeamIds.contains(3L));
+        assertFalse(user2TeamIds.contains(3L));
     }
 
     @Test
-    void removeUserFromTeam_shouldRemoveUser() {
+    void shouldSuccessfullyRemoveUserFromTeam() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team2, team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team2.getId())).thenReturn(team2);
@@ -197,7 +197,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void removeUserFromTeam_shouldThrowExceptionWhenNoTeamFound() {
+    void removeUserFromTeamShouldThrowExceptionWhenNoTeamFound() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
@@ -206,7 +206,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void removeUserFromTeam_shouldThrowExceptionWhenLastAdminShouldBeRemoved() {
+    void removeUserFromTeamShouldThrowExceptionWhenLastAdminShouldBeRemoved() {
         var user = defaultUserWithTeams(2L, List.of(team1), List.of(team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
@@ -217,7 +217,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void updateOrAddTeamMembership_shouldUpdateIfTeamFound() {
+    void updateOrAddTeamMembershipShouldUpdateIfTeamFound() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team2, team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         teamBusinessService.updateOrAddTeamMembership(team2.getId(), user.getId(), true);
@@ -228,7 +228,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void updateOrAddTeamMembership_shouldThrowExceptionIfLastAdminShouldBeRemoved() {
+    void updateOrAddTeamMembershipShouldThrowExceptionIfLastAdminShouldBeRemoved() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of());
         team1.setUserTeamList(new ArrayList<>(user.getUserTeamList()));
 
@@ -239,7 +239,7 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void updateOrAddTeamMembership_shouldAddTeamIfNoTeamFound() {
+    void updateOrAddTeamMembershipShouldAddTeamIfNoTeamFound() {
         var user = defaultUserWithTeams(1L, List.of(), List.of(team2));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);

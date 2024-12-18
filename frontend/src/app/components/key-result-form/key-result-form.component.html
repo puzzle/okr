@@ -35,7 +35,7 @@
       />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameFromUser.bind(this)">
         <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-          {{ user.firstname + " " + user.lastname }}
+          {{ user.firstName + " " + user.lastName }}
         </mat-option>
       </mat-autocomplete>
       <mat-error *ngIf="invalidOwner()">

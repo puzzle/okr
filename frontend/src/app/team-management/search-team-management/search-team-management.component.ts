@@ -114,7 +114,7 @@ export class SearchTeamManagementComponent {
 
   private updateTeamsAndUsers(teams: Team[], users: User[]) {
     this.teams = [...teams].sort((a, b) => a.name.localeCompare(b.name));
-    this.users = users.sort((a, b) => (a.firstname + a.lastname).localeCompare(b.firstname + b.lastname));
+    this.users = users.sort((a, b) => (a.firstName + a.lastName).localeCompare(b.firstName + b.lastName));
     this.applyFilter(this.searchValue$.getValue());
   }
 
@@ -130,12 +130,12 @@ export class SearchTeamManagementComponent {
 
   private filterUsers(users: User[], filterValue: string): FilteredUser[] {
     return users
-      .filter((user) => this.containsText(user.firstname + user.lastname + user.email, filterValue))
+      .filter((user) => this.containsText(user.firstName + user.lastName + user.email, filterValue))
 
       .map((user) => ({
         ...user,
-        displayValue: `${user.firstname} ${user.lastname} (${user.email})`,
-        htmlValue: this.formatText(`${user.firstname} ${user.lastname} (${user.email})`, filterValue),
+        displayValue: `${user.firstName} ${user.lastName} (${user.email})`,
+        htmlValue: this.formatText(`${user.firstName} ${user.lastName} (${user.email})`, filterValue),
       }));
   }
 

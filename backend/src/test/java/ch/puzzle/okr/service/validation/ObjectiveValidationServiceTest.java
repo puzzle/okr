@@ -39,7 +39,7 @@ class ObjectiveValidationServiceTest {
     @MockBean
     ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
 
-    Objective objective1;
+    Objective objective;
     Objective objectiveMinimal;
     User user;
     Quarter quarter;
@@ -70,13 +70,13 @@ class ObjectiveValidationServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+        this.user = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
         this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2")
                 .withStartDate(LocalDate.of(2022, 1, 1)).withEndDate(LocalDate.of(2022, 3, 31)).build();
 
-        this.objective1 = Objective.Builder.builder().withId(1L).withTitle("Objective 1").withCreatedBy(user)
+        this.objective = Objective.Builder.builder().withId(1L).withTitle("Objective 1").withCreatedBy(user)
                 .withTeam(team).withQuarter(quarter).withDescription("This is our description")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
                 .withCreatedOn(LocalDateTime.MAX).build();
@@ -84,7 +84,7 @@ class ObjectiveValidationServiceTest {
         this.objectiveMinimal = Objective.Builder.builder().withId(null).withTitle("Objective 2").withCreatedBy(user)
                 .withTeam(team).withQuarter(quarter).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).build();
 
-        when(objectivePersistenceService.findById(1L)).thenReturn(objective1);
+        when(objectivePersistenceService.findById(1L)).thenReturn(objective);
         when(objectivePersistenceService.getModelName()).thenReturn("Objective");
         doThrow(new OkrResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("%s with id %s not found", objectivePersistenceService.getModelName(), 2L)))
@@ -135,7 +135,7 @@ class ObjectiveValidationServiceTest {
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnCreate(objective1));
+                () -> validator.validateOnCreate(objective));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Objective")));
 
@@ -185,7 +185,7 @@ class ObjectiveValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveInvalid));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_SET_FORBIDDEN", List.of("ModifiedBy",
-                "User{id=1, version=0, firstname='Bob', lastname='Kaufmann', email='kaufmann@puzzle.ch', isOkrChampion='false'}")));
+                "User{id=1, version=0, firstName='Bob', lastName='Kaufmann', email='kaufmann@puzzle.ch', okrChampion='false'}")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -228,12 +228,12 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenObjectiveIsValid() {
-        validator.validateOnUpdate(objective1.getId(), objective1);
+        validator.validateOnUpdate(objective.getId(), objective);
 
-        verify(validator, times(1)).throwExceptionWhenModelIsNull(objective1);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(objective1.getId());
-        verify(validator, times(1)).throwExceptionWhenIdHasChanged(objective1.getId(), objective1.getId());
-        verify(validator, times(1)).validate(objective1);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(objective);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(objective.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(objective.getId(), objective.getId());
+        verify(validator, times(1)).validate(objective);
     }
 
     @Test
@@ -265,11 +265,11 @@ class ObjectiveValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(7L, objective1));
+                () -> validator.validateOnUpdate(7L, objective));
 
-        verify(validator, times(1)).throwExceptionWhenModelIsNull(objective1);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(objective1.getId());
-        verify(validator, times(1)).throwExceptionWhenIdHasChanged(7L, objective1.getId());
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(objective);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(objective.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(7L, objective.getId());
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", "7", "1")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());

@@ -18,9 +18,9 @@ describe('InviteUserDialogComponent', () => {
   let component: InviteUserDialogComponent;
   let fixture: ComponentFixture<InviteUserDialogComponent>;
 
-  const user1 = { firstname: 'user1', lastname: '1user', email: 'user1@user.ch' };
-  const user2 = { firstname: 'user2', lastname: '2user', email: 'user2@user.ch' };
-  const user3 = { firstname: 'user3', lastname: '3user', email: 'user3@user.ch' };
+  const user1 = { firstName: 'user1', lastName: '1user', email: 'user1@user.ch' };
+  const user2 = { firstName: 'user2', lastName: '2user', email: 'user2@user.ch' };
+  const user3 = { firstName: 'user3', lastName: '3user', email: 'user3@user.ch' };
 
   const userServiceMock = {
     createUsers: jest.fn(),

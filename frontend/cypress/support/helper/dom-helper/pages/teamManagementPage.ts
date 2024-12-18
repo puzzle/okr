@@ -3,10 +3,10 @@ import TeamDialog from '../dialogs/teamDialog';
 import AngularSearchBox from '../angularSearchBox';
 import ConfirmDialog from '../dialogs/confirmDialog';
 
-export default class TeammanagementPage extends Page {
+export default class TeamManagementPage extends Page {
   elements = {
     logo: () => cy.getByTestId('logo'),
-    teammanagement: () => cy.getByTestId('team-management'),
+    teamManagement: () => cy.getByTestId('team-management'),
     backToOverview: () => cy.getByTestId('routerLink-to-overview'),
     teamMenu: () => cy.get('app-team-list'),
     memberHeader: () => cy.get('#member-header'),
@@ -16,7 +16,7 @@ export default class TeammanagementPage extends Page {
   };
 
   override validatePage() {
-    this.elements.teammanagement().contains('Teamverwaltung');
+    this.elements.teamManagement().contains('Teamverwaltung');
     this.elements.backToOverview().contains('Zurück zur OKR Übersicht');
     this.elements.addTeam().contains('Team erfassen');
     this.elements.teamMenu().contains('Alle Teams');

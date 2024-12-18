@@ -22,8 +22,8 @@ public class UserMapperTest {
     private static final long USER_TEAM_ID = 100L;
     private static final long ID = 0L;
     private static final int VERSION = 1;
-    private static final String FIRSTNAME = "firstname";
-    private static final String LASTNAME = "lastname";
+    private static final String FIRST_NAME = "firstname";
+    private static final String LAST_NAME = "lastname";
     private static final String EMAIL = "a@b.ch";
     private static final boolean IS_OKR_CHAMPION = true;
 
@@ -35,17 +35,17 @@ public class UserMapperTest {
     private final User user = User.Builder.builder() //
             .withId(ID) //
             .withVersion(VERSION) //
-            .withFirstname(FIRSTNAME) //
-            .withLastname(LASTNAME) //
+            .withFirstName(FIRST_NAME) //
+            .withLastName(LAST_NAME) //
             .withEmail(EMAIL) //
             .withUserTeamList(List.of(UserTeam.Builder.builder() //
                     .withId(USER_TEAM_ID) //
                     .withTeam(Team.Builder.builder().build()) //
                     .build())) //
-            .withOkrChampion(IS_OKR_CHAMPION) //
+            .isOkrChampion(IS_OKR_CHAMPION) //
             .build();
 
-    private final NewUserDto userDto = new NewUserDto(FIRSTNAME, LASTNAME, EMAIL);
+    private final NewUserDto userDto = new NewUserDto(FIRST_NAME, LAST_NAME, EMAIL);
 
     @BeforeEach
     void setup() {
@@ -59,10 +59,10 @@ public class UserMapperTest {
         User user = User.Builder.builder() //
                 .withId(ID) //
                 .withVersion(VERSION) //
-                .withFirstname(FIRSTNAME) //
-                .withLastname(LASTNAME) //
+                .withFirstName(FIRST_NAME) //
+                .withLastName(LAST_NAME) //
                 .withEmail(EMAIL) //
-                .withOkrChampion(IS_OKR_CHAMPION) //
+                .isOkrChampion(IS_OKR_CHAMPION) //
                 .build();
 
         // act + assert
@@ -94,7 +94,7 @@ public class UserMapperTest {
     private void assertUserDto(User expected, UserDto actual) {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
-        assertEquals(expected.getFirstname(), actual.firstname());
+        assertEquals(expected.getFirstName(), actual.firstName());
         assertEquals(expected.isOkrChampion(), actual.isOkrChampion());
         assertEquals(expected.getEmail(), actual.email());
 
@@ -125,8 +125,8 @@ public class UserMapperTest {
     }
 
     private void assertUser(NewUserDto expected, User actual) {
-        assertEquals(expected.firstname(), actual.getFirstname());
-        assertEquals(expected.lastname(), actual.getLastname());
+        assertEquals(expected.firstName(), actual.getFirstName());
+        assertEquals(expected.lastName(), actual.getLastName());
         assertEquals(expected.email(), actual.getEmail());
     }
 

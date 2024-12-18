@@ -14,5 +14,5 @@ export interface KeyResult {
   createdOn: Date;
   modifiedOn: Date;
   actionList: Action[] | null;
-  writeable: boolean;
+  isWriteable: boolean;
 }

@@ -128,7 +128,7 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
-    void getFilteredOverviewShouldReturnExceptionWhenQuarterIdIsNonExistent() {
+    void getFilteredOverviewShouldThrowNotFoundWhenQuarterIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(eq(QUARTER_ID), anyList());
 
@@ -142,7 +142,7 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
-    void getFilteredOverviewShouldReturnExceptionWhenTeamIdIsNonExistent() {
+    void getFilteredOverviewShouldThrowNotFoundWhenTeamIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(QUARTER_ID, teamIds);
 
@@ -157,20 +157,7 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
-    void getFilteredOverviewShouldThrowExceptionWhenTeamIdIsNonExistent() {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
-                .validateOnGet(QUARTER_ID, teamIds);
-        assertThrows(ResponseStatusException.class,
-                () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser));
-
-        verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(), anyList(), anyString(),
-                eq(authorizationUser));
-    }
-
-    @Test
-    void getFilteredOverviewShouldReturnSortedListUserTeamsFirst() {
+    void getFilteredOverviewShouldReturnSortedListWithUserTeamsFirst() {
         Long firstLevelTeamId = 5L;
         AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))

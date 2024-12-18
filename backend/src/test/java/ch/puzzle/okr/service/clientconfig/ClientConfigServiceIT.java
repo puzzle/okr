@@ -24,7 +24,7 @@ class ClientConfigServiceIT {
 
     @ParameterizedTest
     @MethodSource("tenantConfigs")
-    void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname, String activeProfile,
+    void getConfigBasedOnActiveEnvWithValidSubdomainReturnsCorrectTenantConfig(String hostname, String activeProfile,
             String issuer, String clientId) {
 
         // arrange + act
@@ -43,13 +43,13 @@ class ClientConfigServiceIT {
     }
 
     @Test
-    void getConfigBasedOnActiveEnv_invalidSubdomain_throwsException() {
+    void getConfigBasedOnActiveEnvWithInvalidSubdomainThrowsException() {
         assertThrowsExactly(EntityNotFoundException.class,
                 () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
     }
 
     @Test
-    void getClientConfig_withOtherValues_returnsRightValues() {
+    void getClientConfigWithOtherValuesReturnsCorrectValues() {
         // arrange + act
         ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
 

@@ -43,7 +43,7 @@ class SpringCachingConfigTest {
 
     @DisplayName("before calling updateOrAddAuthorizationUser the User is not in the cache")
     @Test
-    void testUserIsNotCached() {
+    void shouldNotHaveCachedUserBeforeUpdateOrAddAuthorizationUser() {
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
 
         assertNotNull(cache);
@@ -52,7 +52,7 @@ class SpringCachingConfigTest {
 
     @DisplayName("updateOrAddAuthorizationUser puts the User in the cache with key composed by Tenant and User Email")
     @Test
-    void testUserIsCached() {
+    void shouldCacheUserGivenToUpdateOrAddAuthorizationUser() {
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
 
         service.updateOrAddAuthorizationUser(user);
@@ -66,10 +66,10 @@ class SpringCachingConfigTest {
     private void assertEqualUsers(AuthorizationUser expectedAuthorizationUser,
             AuthorizationUser actualAuthorizationUser) {
 
-        User expcetedUser = expectedAuthorizationUser.user();
+        User expectedUser = expectedAuthorizationUser.user();
         User actualUser = actualAuthorizationUser.user();
-        assertTrue(expcetedUser.getFirstname().equals(actualUser.getFirstname())
-                && expcetedUser.getLastname().equals(actualUser.getLastname())
-                && expcetedUser.getEmail().equals(actualUser.getEmail()));
+        assertTrue(expectedUser.getFirstName().equals(actualUser.getFirstName())
+                && expectedUser.getLastName().equals(actualUser.getLastName())
+                && expectedUser.getEmail().equals(actualUser.getEmail()));
     }
 }

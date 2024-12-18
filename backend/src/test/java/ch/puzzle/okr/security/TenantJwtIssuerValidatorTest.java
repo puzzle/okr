@@ -38,9 +38,9 @@ public class TenantJwtIssuerValidatorTest {
         assertEquals("unknown tenant", illegalArgumentException.getLocalizedMessage());
     }
 
-    @DisplayName("validate() return OAuth2TokenValidatorResult if TenantConfig with IssuerUrl is found for Tenant PITC")
+    @DisplayName("validate() returns OAuth2TokenValidatorResult if TenantConfig with IssuerUrl is found for Tenant PITC")
     @Test
-    void validateReturnOAuth2TokenValidatorResultIfTenantConfigWithIssuerUrlIsFound() {
+    void validateReturnsOAuth2TokenValidatorResultIfTenantConfigWithIssuerUrlIsFound() {
         // arrange
         Jwt token = mock(Jwt.class);
 

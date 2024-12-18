@@ -34,8 +34,8 @@ public class KeyResultOrdinalMapper {
     public KeyResultDto toDto(KeyResultOrdinal keyResult, List<Action> actionList) {
         KeyResultUserDto ownerDto = new KeyResultUserDto( //
                 keyResult.getOwner().getId(), //
-                keyResult.getOwner().getFirstname(), //
-                keyResult.getOwner().getLastname());
+                keyResult.getOwner().getFirstName(), //
+                keyResult.getOwner().getLastName());
 
         KeyResultQuarterDto quarterDto = new KeyResultQuarterDto( //
                 keyResult.getObjective().getQuarter().getId(), //

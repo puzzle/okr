@@ -40,8 +40,8 @@ describe('DeleteUserComponent', () => {
     component = fixture.componentInstance;
     component.user = {
       id: 2,
-      firstname: 'Hans',
-      lastname: 'Muster',
+      firstName: 'Hans',
+      lastName: 'Muster',
       isOkrChampion: false,
       userTeamList: [],
       email: 'hans.muster@puzzle.ch',
@@ -109,7 +109,7 @@ describe('DeleteUserComponent', () => {
           id: 1,
           version: 2,
           name: 'Lorem',
-          writeable: true,
+          isWriteable: true,
         },
         isTeamAdmin: false,
       },
@@ -203,7 +203,7 @@ describe('DeleteUserComponent', () => {
           id: 1,
           version: 2,
           name: 'Lorem',
-          writeable: true,
+          isWriteable: true,
         },
         isTeamAdmin: false,
       },

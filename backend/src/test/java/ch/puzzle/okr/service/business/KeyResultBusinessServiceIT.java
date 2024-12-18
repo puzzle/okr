@@ -82,12 +82,12 @@ class KeyResultBusinessServiceIT {
     }
 
     private static Action createAction1(KeyResult keyResult) {
-        return Action.Builder.builder().withIsChecked(false).withAction("Neuer Drucker").withPriority(0)
+        return Action.Builder.builder().isChecked(false).withAction("Neuer Drucker").withPriority(0)
                 .withKeyResult(keyResult).build();
     }
 
     private static Action createAction2(KeyResult keyResult) {
-        return Action.Builder.builder().withIsChecked(false).withAction("Neues Papier").withPriority(0)
+        return Action.Builder.builder().isChecked(false).withAction("Neues Papier").withPriority(0)
                 .withKeyResult(keyResult).build();
     }
 
@@ -130,7 +130,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithSameTypeMetric() {
+    void updateEntitiesShouldUpdateMetricKeyResultWithSameType() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
@@ -141,7 +141,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithSameTypeMetricWithActionList() {
+    void updateEntitiesShouldUpdateMetricKeyResultWithSameTypeWithActionList() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
         action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
@@ -155,7 +155,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithSameTypeOrdinal() {
+    void updateEntitiesShouldUpdateOrdinalKeyResultWithSameType() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
@@ -166,11 +166,11 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldRecreateKeyResultMetric() {
+    void updateEntitiesShouldRecreateOrdinalKeyResultAsMetric() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
-        KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
+        KeyResult changedKeyResult = createKeyResultMetric(createdKeyResultId);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
                 changedKeyResult, List.of());
@@ -180,7 +180,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldRecreateKeyResultMetricWithActionList() {
+    void updateEntitiesShouldRecreateOrdinalKeyResultAsMetricWithActionList() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
         action1 = actionBusinessService.createEntity(createAction1(savedKeyResult));
@@ -188,7 +188,7 @@ class KeyResultBusinessServiceIT {
         KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
         Long createdKeyResultId = changedKeyResult.getId();
 
-        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResultId,
                 changedKeyResult, List.of(action1, action2));
         createdKeyResult = updatedKeyResult.keyResult();
 
@@ -197,11 +197,11 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldRecreateKeyResultOrdinal() {
+    void updateEntitiesShouldRecreateMetricKeyResultAsOrdinal() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
                 authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
-        KeyResult changedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
+        KeyResult changedKeyResult = createKeyResultOrdinal(createdKeyResultId);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
                 changedKeyResult, List.of());
@@ -211,7 +211,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInMetric() {
+    void updateEntitiesShouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckIn() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
 
@@ -224,7 +224,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInMetricWithActionList() {
+    void updateEntitiesShouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckInWithActionList() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
         action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
@@ -242,7 +242,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInOrdinal() {
+    void updateEntitiesShouldUpdateMetricKeyResultWithDifferentTypeAndCheckIn() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInMetric(createdKeyResult), authorizationUser);
 

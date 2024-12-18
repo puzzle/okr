@@ -39,7 +39,7 @@ class KeyResultValidationServiceTest {
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
 
-    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    private final User user = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
@@ -308,7 +308,7 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResuslt) has changed")
+    @DisplayName("validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResult) has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenObjectiveIdOfKeyResultHasChanged() {
         // arrange

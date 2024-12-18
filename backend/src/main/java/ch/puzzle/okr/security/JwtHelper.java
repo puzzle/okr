@@ -34,17 +34,17 @@ public class JwtHelper {
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
     private final TenantConfigProvider tenantConfigProvider;
-    private final String firstname;
-    private final String lastname;
+    private final String firstName;
+    private final String lastName;
     private final String email;
 
     public JwtHelper(TenantConfigProvider tenantConfigProvider,
-            @Value("${okr.jwt.claim.firstname}") final String tokenClaimsKeyFirstname,
-            @Value("${okr.jwt.claim.lastname}") final String tokenClaimsKeyLastname,
+            @Value("${okr.jwt.claim.first-name}") final String tokenClaimsKeyFirstname,
+            @Value("${okr.jwt.claim.last-name}") final String tokenClaimsKeyLastname,
             @Value("${okr.jwt.claim.email}") final String tokenClaimsKeyEmail) {
         this.tenantConfigProvider = tenantConfigProvider;
-        this.firstname = tokenClaimsKeyFirstname;
-        this.lastname = tokenClaimsKeyLastname;
+        this.firstName = tokenClaimsKeyFirstname;
+        this.lastName = tokenClaimsKeyLastname;
         this.email = tokenClaimsKeyEmail;
     }
 
@@ -54,8 +54,8 @@ public class JwtHelper {
 
         try {
             return User.Builder.builder() //
-                    .withFirstname(claims.get(firstname).toString()) //
-                    .withLastname(claims.get(lastname).toString()) //
+                    .withFirstName(claims.get(firstName).toString()) //
+                    .withLastName(claims.get(lastName).toString()) //
                     .withEmail(claims.get(email).toString()) //
                     .build();
         } catch (Exception e) {

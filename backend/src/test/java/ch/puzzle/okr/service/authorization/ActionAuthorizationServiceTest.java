@@ -35,9 +35,9 @@ class ActionAuthorizationServiceTest {
 
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private final KeyResult keyResult = KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build();
-    private final Action action1 = Action.Builder.builder().withId(1L).withAction("Neue Katze").withIsChecked(false)
+    private final Action action1 = Action.Builder.builder().withId(1L).withAction("Neue Katze").isChecked(false)
             .withPriority(0).withKeyResult(keyResult).build();
-    private final Action action2 = Action.Builder.builder().withId(2L).withAction("Neues Lama").withIsChecked(true)
+    private final Action action2 = Action.Builder.builder().withId(2L).withAction("Neues Lama").isChecked(true)
             .withPriority(1).withKeyResult(keyResult).build();
     private final List<Action> actionList = List.of(action1, action2);
 

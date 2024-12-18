@@ -38,10 +38,10 @@ public class AuthorizationCriteriaTest {
         // arrange
         var user = User.Builder.builder() //
                 .withId(23L) //
-                .withFirstname("Hanna") //
-                .withLastname("muster") //
+                .withFirstName("Hanna") //
+                .withLastName("muster") //
                 .withEmail("hanna.muster@example.com") //
-                .withOkrChampion(true) //
+                .isOkrChampion(true) //
                 .build();
         var criteria = new AuthorizationCriteria<Objective>();
 

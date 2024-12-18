@@ -25,7 +25,7 @@ public class Action implements WriteableInterface {
     private int priority;
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    private boolean isChecked;
+    private boolean checked;
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
@@ -41,7 +41,7 @@ public class Action implements WriteableInterface {
         version = builder.version;
         action = builder.action;
         priority = builder.priority;
-        isChecked = builder.isChecked;
+        checked = builder.checked;
         keyResult = builder.keyResult;
     }
 
@@ -70,11 +70,11 @@ public class Action implements WriteableInterface {
     }
 
     public boolean isChecked() {
-        return isChecked;
+        return checked;
     }
 
     public void setChecked(boolean checked) {
-        isChecked = checked;
+        this.checked = checked;
     }
 
     public KeyResult getKeyResult() {
@@ -106,7 +106,7 @@ public class Action implements WriteableInterface {
     @Override
     public String toString() {
         return "Action{" + "id=" + id + ", version=" + version + ", action='" + action + '\'' + ", priority=" + priority
-                + ", isChecked=" + isChecked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
+                + ", checked=" + checked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
     }
 
     @Override
@@ -116,14 +116,14 @@ public class Action implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         Action action1 = (Action) o;
-        return version == action1.version && priority == action1.priority && isChecked == action1.isChecked
+        return version == action1.version && priority == action1.priority && checked == action1.checked
                 && writeable == action1.writeable && Objects.equals(id, action1.id)
                 && Objects.equals(action, action1.action) && Objects.equals(keyResult, action1.keyResult);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, action, priority, isChecked, keyResult, writeable);
+        return Objects.hash(id, version, action, priority, checked, keyResult, writeable);
     }
 
     public static final class Builder {
@@ -131,7 +131,7 @@ public class Action implements WriteableInterface {
         private int version;
         private String action;
         private int priority;
-        private boolean isChecked;
+        private boolean checked;
         private KeyResult keyResult;
 
         private Builder() {
@@ -161,8 +161,8 @@ public class Action implements WriteableInterface {
             return this;
         }
 
-        public Builder withIsChecked(boolean isChecked) {
-            this.isChecked = isChecked;
+        public Builder isChecked(boolean checked) {
+            this.checked = checked;
             return this;
         }
 

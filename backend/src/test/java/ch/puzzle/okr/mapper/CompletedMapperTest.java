@@ -45,7 +45,7 @@ public class CompletedMapperTest {
         completedMapper = new CompletedMapper(objectiveMapper);
     }
 
-    @DisplayName("toDo() should map Completed to Dto")
+    @DisplayName("toDto() should map Completed to Dto")
     @Test
     void toDtoShouldMapCompletedToDto() {
         // arrange

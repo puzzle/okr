@@ -20,7 +20,7 @@ values (1, '1'), -- last past quarter
        (8, '8'), -- future quarter
        (999, 'Backlog');
 
-insert into person (id, email, firstname, lastname, version, is_okr_champion)
+insert into person (id, email, firstName, lastName, version, is_okr_champion)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, TRUE),
        (2, 'leimgruber@puzzle.ch', 'Philipp', 'Leimgruber', 1, TRUE),
        (3, 'brantschen@puzzle.ch', 'Jean-Claude', 'Brantschen', 1, TRUE),

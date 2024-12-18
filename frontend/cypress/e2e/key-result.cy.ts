@@ -4,7 +4,7 @@ import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDet
 import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
 
-describe('OKR Overview', () => {
+describe('okr key-result', () => {
   let overviewPage = new CyOverviewPage();
   let keyResultDetailPage = new KeyResultDetailPage();
 
@@ -14,7 +14,7 @@ describe('OKR Overview', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it('Create new metric KeyResult', () => {
+  it('should create new metric key-result', () => {
     overviewPage
       .addKeyResult()
       .checkForDialogTextMetric()
@@ -38,7 +38,7 @@ describe('OKR Overview', () => {
     cy.contains('Key Result bearbeiten');
   });
 
-  it('Create new ordinal KeyResult', () => {
+  it('should create new ordinal key-result', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('I am a ordinal keyresult')
@@ -66,7 +66,7 @@ describe('OKR Overview', () => {
     cy.contains('Key Result bearbeiten');
   });
 
-  it('Create new KeyResult and Save and New', () => {
+  it('should create new key-result and save and new', () => {
     overviewPage
       .addKeyResult()
       .checkForDialogTextMetric()
@@ -79,7 +79,7 @@ describe('OKR Overview', () => {
     KeyResultDialog.do().checkForDialogTextMetric();
   });
 
-  it('Create and edit KeyResult with Action Plan', () => {
+  it('should create and edit key-result with action plan', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This is a keyresult with an action plan')
@@ -103,10 +103,10 @@ describe('OKR Overview', () => {
     cy.contains('A new company');
 
     keyResultDetailPage.editKeyResult();
-    cy.getByTestId('actionInput').should('have.length', 3);
+    cy.getByTestId('action-input').should('have.length', 3);
   });
 
-  it('Edit a KeyResult without type change', () => {
+  it('should edit a key-result without type change', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('We want not to change keyresult title')
@@ -139,7 +139,7 @@ describe('OKR Overview', () => {
     cy.contains('This is my new description');
   });
 
-  it('Edit a KeyResult with type change', () => {
+  it('should edit a key-result with type change', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('Here we want to change keyresult title')
@@ -201,7 +201,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('metricTab').should('have.class', 'non-active');
   });
 
-  it('Check validation in keyresult dialog', () => {
+  it('should check validation in key-result dialog', () => {
     overviewPage.addKeyResult().checkForDialogTextMetric();
     cy.getByTestId('submit').should('be.disabled');
     KeyResultDialog.do()
@@ -274,7 +274,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit').should('not.be.disabled');
   });
 
-  it('Delete existing keyresult', () => {
+  it('should delete existing key-result', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('A keyresult to delete')

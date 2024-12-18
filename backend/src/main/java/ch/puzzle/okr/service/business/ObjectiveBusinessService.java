@@ -69,15 +69,15 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private void setQuarterIfIsImUsed(Objective objective, Objective savedObjective) {
-        boolean imUsed = isImUsed(objective, savedObjective);
-        if (imUsed) {
+        boolean isImUsed = isImUsed(objective, savedObjective);
+        if (isImUsed) {
             objective.setQuarter(savedObjective.getQuarter());
         }
-        logger.debug("quarter has changed and is{}changeable, {}", spaceOrNot(imUsed), objective);
+        logger.debug("quarter has changed and is{}changeable, {}", spaceOrNot(isImUsed), objective);
     }
 
-    private String spaceOrNot(boolean imUsed) {
-        if (imUsed)
+    private String spaceOrNot(boolean isImUsed) {
+        if (isImUsed)
             return " NOT ";
         return " ";
     }

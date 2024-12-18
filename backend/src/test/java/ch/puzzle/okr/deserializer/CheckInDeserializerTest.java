@@ -37,7 +37,7 @@ class CheckInDeserializerTest {
     @Mock
     DeserializationContext deserializationContext;
 
-    @DisplayName("deserialize() should call helper with correct params")
+    @DisplayName("deserialize() should call helper with correct params for metric json")
     @Test
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
         // arrange
@@ -59,10 +59,10 @@ class CheckInDeserializerTest {
                 Arguments.of(ordinalKeyResult, CHECK_IN_ORDINAL_JSON, "ordinal"));
     }
 
-    @DisplayName("deserialize() should call helper with correct params")
+    @DisplayName("getKeyResultType() should return the correct key-result type")
     @ParameterizedTest
     @MethodSource("checkInTypes")
-    void shouldReturnCorrectKeyResulType(KeyResult kr, String json, String type) throws Exception {
+    void getKeyResultTypeShouldReturnCorrectType(KeyResult kr, String json, String type) throws Exception {
         // arrange
         when(keyResultBusinessService.getEntityById(any())).thenReturn(kr);
         JsonNode jsonNode = TestHelper.getJsonNode(json);
@@ -74,8 +74,9 @@ class CheckInDeserializerTest {
         assertEquals(type, keyResultType);
     }
 
+    @DisplayName("getKeyResultType() should return null for missing attribute")
     @Test
-    void shouldReturnNullForMissingAttribute() throws Exception {
+    void getKeyResultTypeShouldReturnNullForMissingAttribute() throws Exception {
         // arrange
         JsonNode jsonNode = TestHelper.getJsonNode("");
 

@@ -3,6 +3,7 @@ package ch.puzzle.okr.models.authorization;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,11 +21,13 @@ class AuthorizationUserTest {
     private final User user = User.Builder.builder().withUserTeamList(userTeamList).build();
     private final AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
+    @DisplayName("Should return all team-ids when extracting team-ids of a user")
     @Test
     public void shouldReturnAllTeamIdsWhenExtractingTeamIdsOfUser() {
         assertEquals(List.of(1L, 2L, 3L, 4L, 5L), authorizationUser.extractTeamIds());
     }
 
+    @DisplayName("Should return correctly if a user is a member in a team")
     @Test
     public void shouldCorrectlyCheckIfUserIsMemberInTeam() {
         assertTrue(authorizationUser.isUserMemberInTeam(1L));
@@ -35,6 +38,7 @@ class AuthorizationUserTest {
         assertFalse(authorizationUser.isUserMemberInTeam(6L));
     }
 
+    @DisplayName("Should return correctly if a user is an admin in a team")
     @Test
     public void shouldCorrectlyCheckIfUserIsAdminInTeam() {
         assertTrue(authorizationUser.isUserAdminInTeam(1L));

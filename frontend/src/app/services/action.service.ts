@@ -4,16 +4,16 @@ import { Observable } from 'rxjs';
 import { Action } from '../shared/types/model/Action';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ActionService {
-  constructor(private httpClient: HttpClient) {}
+  constructor (private httpClient: HttpClient) {}
 
-  updateActions(actionList: Action[]): Observable<Action> {
+  updateActions (actionList: Action[]): Observable<Action> {
     return this.httpClient.put<Action>(`/api/v2/action`, actionList);
   }
 
-  deleteAction(actionId: number): Observable<Action> {
+  deleteAction (actionId: number): Observable<Action> {
     return this.httpClient.delete<Action>(`/api/v2/action/${actionId}`);
   }
 }

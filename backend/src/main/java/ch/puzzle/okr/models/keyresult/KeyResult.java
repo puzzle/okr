@@ -4,7 +4,6 @@ import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,98 +53,58 @@ public abstract class KeyResult implements WriteableInterface {
 
     private transient boolean writeable;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public int getVersion() {
-        return version;
-    }
+    public int getVersion() { return version; }
 
-    public Objective getObjective() {
-        return objective;
-    }
+    public Objective getObjective() { return objective; }
 
-    public void setObjective(Objective objective) {
-        this.objective = objective;
-    }
+    public void setObjective(Objective objective) { this.objective = objective; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return title; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) { this.description = description; }
 
-    public User getOwner() {
-        return owner;
-    }
+    public User getOwner() { return owner; }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
+    public void setOwner(User owner) { this.owner = owner; }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
+    public User getCreatedBy() { return createdBy; }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
+    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
+    public LocalDateTime getCreatedOn() { return createdOn; }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
+    public void setCreatedOn(LocalDateTime createdOn) { this.createdOn = createdOn; }
 
-    public LocalDateTime getModifiedOn() {
-        return modifiedOn;
-    }
+    public LocalDateTime getModifiedOn() { return modifiedOn; }
 
-    public void setModifiedOn(LocalDateTime modifiedOn) {
-        this.modifiedOn = modifiedOn;
-    }
+    public void setModifiedOn(LocalDateTime modifiedOn) { this.modifiedOn = modifiedOn; }
 
-    public String getKeyResultType() {
-        return keyResultType;
-    }
+    public String getKeyResultType() { return keyResultType; }
 
     public void resetId() {
         this.id = null;
     }
 
-    private void setKeyResultType(String keyResultType) {
-        this.keyResultType = keyResultType;
-    }
+    private void setKeyResultType(String keyResultType) { this.keyResultType = keyResultType; }
 
     @Override
-    public boolean isWriteable() {
-        return writeable;
-    }
+    public boolean isWriteable() { return writeable; }
 
     @Override
-    public void setWriteable(boolean writeable) {
-        this.writeable = writeable;
-    }
+    public void setWriteable(boolean writeable) { this.writeable = writeable; }
 
     @Override
     public String toString() {
         return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title
-                + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy
-                + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType
-                + ", writeable=" + writeable + '\'' + '}';
+               + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy
+               + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType
+               + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -156,17 +115,26 @@ public abstract class KeyResult implements WriteableInterface {
             return false;
         KeyResult keyResult = (KeyResult) o;
         return Objects.equals(id, keyResult.id) && version == keyResult.version
-                && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title)
-                && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner)
-                && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn)
-                && Objects.equals(modifiedOn, keyResult.modifiedOn)
-                && Objects.equals(keyResultType, keyResult.keyResultType);
+               && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title)
+               && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner)
+               && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn)
+               && Objects.equals(modifiedOn, keyResult.modifiedOn)
+               && Objects.equals(keyResultType, keyResult.keyResultType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, objective, title, description, owner, createdBy, createdOn, modifiedOn,
-                keyResultType);
+        return Objects
+                .hash(id,
+                      version,
+                      objective,
+                      title,
+                      description,
+                      owner,
+                      createdBy,
+                      createdOn,
+                      modifiedOn,
+                      keyResultType);
     }
 
     protected KeyResult() {

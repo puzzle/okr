@@ -2,41 +2,47 @@ import Dialog from './dialog';
 import Chainable = Cypress.Chainable;
 
 export default class CheckInDialog extends Dialog {
-  fillCheckInCommentary(commentary: string) {
+  fillCheckInCommentary (commentary: string) {
     this.fillInputByTestId('changeInfo', commentary);
     return this;
   }
 
-  fillMetricCheckInValue(value: string) {
+  fillMetricCheckInValue (value: string) {
     this.fillInputByTestId('check-in-metric-value', value);
     return this;
   }
 
-  selectOrdinalCheckInZone(zone: 'fail' | 'commit' | 'target' | 'stretch') {
+  selectOrdinalCheckInZone (zone: 'fail' | 'commit' | 'target' | 'stretch') {
     switch (zone) {
       case 'fail':
-        cy.getByTestId('fail-radio').click();
+        cy.getByTestId('fail-radio')
+          .click();
         break;
       case 'commit':
-        cy.getByTestId('commit-radio').click();
+        cy.getByTestId('commit-radio')
+          .click();
         break;
       case 'target':
-        cy.getByTestId('target-radio').click();
+        cy.getByTestId('target-radio')
+          .click();
         break;
       case 'stretch':
-        cy.getByTestId('stretch-radio').click();
+        cy.getByTestId('stretch-radio')
+          .click();
         break;
     }
     return this;
   }
 
-  fillCheckInInitiatives(value: string) {
+  fillCheckInInitiatives (value: string) {
     this.fillInputByTestId('initiatives', value);
     return this;
   }
 
-  setCheckInConfidence(confidence: number) {
-    cy.getByTestId('confidence-slider').find('input').focus();
+  setCheckInConfidence (confidence: number) {
+    cy.getByTestId('confidence-slider')
+      .find('input')
+      .focus();
     for (let i = 0; i < 10; i++) {
       cy.realPress('ArrowLeft');
     }
@@ -46,7 +52,7 @@ export default class CheckInDialog extends Dialog {
     return this;
   }
 
-  checkForDialogTextMetric() {
+  checkForDialogTextMetric () {
     cy.contains('Very important keyresult');
     cy.contains('Check-in erfassen');
     cy.contains('Key Result');
@@ -56,7 +62,7 @@ export default class CheckInDialog extends Dialog {
     return this;
   }
 
-  checkForDialogTextOrdinal() {
+  checkForDialogTextOrdinal () {
     cy.contains('A new ordinal keyresult for our company');
     cy.contains('Check-in erfassen');
     cy.contains('Key Result');
@@ -73,11 +79,12 @@ export default class CheckInDialog extends Dialog {
     return this;
   }
 
-  override submit() {
-    cy.getByTestId('submit-check-in').click();
+  override submit () {
+    cy.getByTestId('submit-check-in')
+      .click();
   }
 
-  getPage(): Chainable {
+  getPage (): Chainable {
     return cy.get('app-check-in-form');
   }
 }

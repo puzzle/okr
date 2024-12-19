@@ -1,15 +1,14 @@
 package ch.puzzle.okr.models.checkin;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+
 import ch.puzzle.okr.models.MessageKey;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.Objects;
-
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_ORDINAL)
@@ -19,13 +18,9 @@ public class CheckInOrdinal extends CheckIn {
     private Zone zone;
 
     /* Getter and Setter */
-    public Zone getZone() {
-        return zone;
-    }
+    public Zone getZone() { return zone; }
 
-    public void setZone(Zone zone) {
-        this.zone = zone;
-    }
+    public void setZone(Zone zone) { this.zone = zone; }
 
     /* Constructor */
     public CheckInOrdinal() {

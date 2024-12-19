@@ -1,21 +1,20 @@
 package ch.puzzle.okr.security.helper;
 
-import com.nimbusds.jwt.JWTClaimsSet;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
-import java.text.ParseException;
-import java.util.Optional;
-
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_ISS;
 import static ch.puzzle.okr.security.JwtHelper.CLAIM_TENANT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.nimbusds.jwt.JWTClaimsSet;
+import java.text.ParseException;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class ClaimHelperTest {
 

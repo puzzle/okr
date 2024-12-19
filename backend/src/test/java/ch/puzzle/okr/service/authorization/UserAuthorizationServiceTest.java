@@ -1,21 +1,20 @@
 package ch.puzzle.okr.service.authorization;
 
+import static ch.puzzle.okr.test.TestHelper.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.UserBusinessService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static ch.puzzle.okr.test.TestHelper.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserAuthorizationServiceTest {
@@ -80,7 +79,7 @@ public class UserAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
         assertThrows(OkrResponseStatusException.class,
-                () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
+                     () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
     }
 
     @Test
@@ -105,7 +104,7 @@ public class UserAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
         assertThrows(OkrResponseStatusException.class,
-                () -> userAuthorizationService.createUsers(List.of(user, user2)));
+                     () -> userAuthorizationService.createUsers(List.of(user, user2)));
     }
 
     @DisplayName("isUserMemberOfTeams() should return false if user is not member of teams")

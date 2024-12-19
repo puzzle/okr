@@ -1,11 +1,10 @@
 package ch.puzzle.okr;
 
+import static java.util.Map.entry;
+
 import ch.puzzle.okr.dto.checkin.*;
 import ch.puzzle.okr.dto.keyresult.*;
-
 import java.util.Map;
-
-import static java.util.Map.entry;
 
 public class Constants {
     private Constants() {
@@ -29,11 +28,11 @@ public class Constants {
     public static final String CHECK_IN_KEY_RESULT_ID_ATTRIBUTE_NAME = "keyResultId";
     public static final String KEY_RESULT_TYPE_ATTRIBUTE_NAME = "keyResultType";
 
-    public static final Map<String, Class<? extends KeyResultDto>> KEY_RESULT_MAP = Map.ofEntries(
-            entry(KEY_RESULT_TYPE_METRIC, KeyResultMetricDto.class),
-            entry(KEY_RESULT_TYPE_ORDINAL, KeyResultOrdinalDto.class));
+    public static final Map<String, Class<? extends KeyResultDto>> KEY_RESULT_MAP = Map
+            .ofEntries(entry(KEY_RESULT_TYPE_METRIC, KeyResultMetricDto.class),
+                       entry(KEY_RESULT_TYPE_ORDINAL, KeyResultOrdinalDto.class));
 
-    public static final Map<String, Class<? extends CheckInDto>> CHECK_IN_MAP = Map.ofEntries(
-            entry(KEY_RESULT_TYPE_METRIC, CheckInMetricDto.class),
-            entry(KEY_RESULT_TYPE_ORDINAL, CheckInOrdinalDto.class));
+    public static final Map<String, Class<? extends CheckInDto>> CHECK_IN_MAP = Map
+            .ofEntries(entry(KEY_RESULT_TYPE_METRIC, CheckInMetricDto.class),
+                       entry(KEY_RESULT_TYPE_ORDINAL, CheckInOrdinalDto.class));
 }

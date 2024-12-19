@@ -4,16 +4,14 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long, Objective, ObjectiveBusinessService> {
 
     public ObjectiveAuthorizationService(ObjectiveBusinessService objectiveBusinessService,
-            AuthorizationService authorizationService) {
+                                         AuthorizationService authorizationService) {
         super(objectiveBusinessService, authorizationService);
     }
 

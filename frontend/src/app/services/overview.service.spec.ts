@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { overviews } from '../shared/testData';
 
 const httpClient = {
-  get: jest.fn(),
+  get: jest.fn()
 };
 
 describe('OverviewService', () => {
@@ -16,22 +16,26 @@ describe('OverviewService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: HttpClient, useValue: httpClient }],
-    }).compileComponents();
+      providers: [{ provide: HttpClient,
+        useValue: httpClient }]
+    })
+      .compileComponents();
     service = TestBed.inject(OverviewService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service)
+      .toBeTruthy();
   });
 
   it('should set state of objectives correctly', (done) => {
-    jest.spyOn(httpClient, 'get').mockReturnValue(of(overviews));
-    service.getOverview().subscribe((dashboard) => {
-      overviews.forEach((overview) =>
-        overview.objectives.forEach((objective) => expect(typeof objective.state).toBe('string')),
-      );
-      done();
-    });
+    jest.spyOn(httpClient, 'get')
+      .mockReturnValue(of(overviews));
+    service.getOverview()
+      .subscribe((dashboard) => {
+        overviews.forEach((overview) => overview.objectives.forEach((objective) => expect(typeof objective.state)
+          .toBe('string')));
+        done();
+      });
   });
 });

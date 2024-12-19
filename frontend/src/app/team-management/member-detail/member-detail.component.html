@@ -1,22 +1,33 @@
-<div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true" [attr.data-testId]="'side-panel'">
+<div
+  class="w-100"
+  cdkTrapFocus
+  cdkTrapFocusAutoCapture="true"
+  [attr.data-testId]="'side-panel'"
+>
   <div *ngIf="user as userRef; else spinner">
     <div class="w-100 d-flex justify-content-between align-items-center mb-3">
       <h2>
         {{ getFullNameFromUser(userRef) }}
         <span *ngIf="selectedUserIsLoggedInUser">(ich)</span>
       </h2>
-      <button class="d-flex" mat-icon-button (click)="navigateBack()" [attr.data-testId]="'close-drawer'">
+      <button
+        class="d-flex"
+        mat-icon-button
+        (click)="navigateBack()"
+        [attr.data-testId]="'close-drawer'"
+      >
         <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
       </button>
     </div>
     <div class="w-100">
-      <app-edit-okr-champion
-        [user]="userRef"
-        (okrChampionChange)="isOkrChampionChange($event, userRef)"
-      ></app-edit-okr-champion>
+      <app-edit-okr-champion [user]="userRef" (okrChampionChange)="isOkrChampionChange($event, userRef)"></app-edit-okr-champion>
     </div>
     <div class="w-100">
-      <table mat-table [dataSource]="userRef.userTeamList" class="okr-table">
+      <table
+        mat-table
+        [dataSource]="userRef.userTeamList"
+        class="okr-table"
+      >
         <ng-container matColumnDef="team">
           <th mat-header-cell *matHeaderCellDef>Team</th>
           <td mat-cell *matCellDef="let element">{{ element.team.name }}</td>
@@ -24,10 +35,7 @@
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef>Rolle</th>
           <td mat-cell *matCellDef="let element">
-            <app-show-edit-role
-              [userTeam]="element"
-              (save)="updateTeamMembership($event, element, userRef)"
-            ></app-show-edit-role>
+            <app-show-edit-role [userTeam]="element" (save)="updateTeamMembership($event, element, userRef)"></app-show-edit-role>
           </td>
         </ng-container>
         <ng-container matColumnDef="delete">
@@ -49,10 +57,7 @@
           <td class="mat-cell px-3" [attr.colspan]="displayedColumns.length">Keine Teams</td>
         </tr>
       </table>
-      <app-add-user-team
-        [currentTeams$]="currentUserTeams$.asObservable()"
-        (addUserTeam)="addTeamMembership($event, userRef)"
-      ></app-add-user-team>
+      <app-add-user-team [currentTeams$]="currentUserTeams$.asObservable()" (addUserTeam)="addTeamMembership($event, userRef)"></app-add-user-team>
 
       <app-delete-user [user]="userRef" [currentTeams$]="currentUserTeams$.asObservable()"></app-delete-user>
     </div>

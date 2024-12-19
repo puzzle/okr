@@ -18,31 +18,31 @@ import { ObjectiveDetailComponent } from './components/objective-detail/objectiv
 import { CommonModule } from '@angular/common';
 
 const oauthServiceMock = {
-  configure(environment: AuthConfig): void {},
-  initCodeFlow(): void {},
-  setupAutomaticSilentRefresh(): void {},
-  hasValidAccessToken(): boolean {
+  configure (environment: AuthConfig): void {},
+  initCodeFlow (): void {},
+  setupAutomaticSilentRefresh (): void {},
+  hasValidAccessToken (): boolean {
     return true;
   },
-  loadDiscoveryDocumentAndTryLogin(): Promise<any> {
+  loadDiscoveryDocumentAndTryLogin (): Promise<any> {
     this.initCodeFlow();
     return Promise.resolve();
-  },
+  }
 };
 
 const routerMock = {
   root: jest.fn(),
   // Router
-  events: of(new NavigationEnd(0, 'http://localhost:4200/objective/2', 'http://localhost:4200/objective/2')),
+  events: of(new NavigationEnd(0, 'http://localhost:4200/objective/2', 'http://localhost:4200/objective/2'))
 };
 
-const routes: Routes = [
-  {
-    path: '',
-    component: OverviewComponent,
-    children: [{ path: 'objective/:id', component: ObjectiveDetailComponent, pathMatch: 'full' }],
-  },
-];
+const routes: Routes = [{
+  path: '',
+  component: OverviewComponent,
+  children: [{ path: 'objective/:id',
+    component: ObjectiveDetailComponent,
+    pathMatch: 'full' }]
+}];
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -55,16 +55,18 @@ describe('AppComponent', () => {
         RouterTestingModule.withRoutes(routes),
         HttpClientTestingModule,
         TranslateTestingModule.withTranslations({
-          de: de,
+          de: de
         }),
         OAuthModule.forRoot(),
         MatSidenavModule,
         NoopAnimationsModule,
-        CommonModule,
+        CommonModule
       ],
-      providers: [{ provide: OAuthService, useValue: oauthServiceMock }],
-      declarations: [AppComponent, OverviewComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [{ provide: OAuthService,
+        useValue: oauthServiceMock }],
+      declarations: [AppComponent,
+        OverviewComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
@@ -78,6 +80,7 @@ describe('AppComponent', () => {
   });
 
   test('should create the app', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

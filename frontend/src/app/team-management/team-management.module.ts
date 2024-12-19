@@ -66,7 +66,7 @@ import { MatChip } from '@angular/material/chips';
     ShowEditRoleComponent,
     EditOkrChampionComponent,
     NewUserComponent,
-    InviteUserDialogComponent,
+    InviteUserDialogComponent
   ],
   imports: [
     CommonModule,
@@ -91,7 +91,7 @@ import { MatChip } from '@angular/material/chips';
     OkrChampionPipe,
     MatCheckboxModule,
     MatTooltipModule,
-    MatChip,
-  ],
+    MatChip
+  ]
 })
 export class TeamManagementModule {}

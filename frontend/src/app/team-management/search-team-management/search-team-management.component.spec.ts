@@ -23,54 +23,52 @@ const teams: Team[] = [
     id: 1,
     version: 1,
     name: 'ZZ the Puzzle Team - Keyword',
-    writeable: false,
+    writeable: false
   },
   {
     id: 2,
     version: 1,
     name: 'The Puzzle Team - Keyword',
-    writeable: false,
+    writeable: false
   },
   {
     id: 3,
     version: 1,
     name: 'Puzzle Team - No',
-    writeable: false,
+    writeable: false
   },
   {
     id: 4,
     version: 1,
     name: 'Team Ruedi - Noname',
-    writeable: false,
-  },
+    writeable: false
+  }
 ];
 
-const users: User[] = [
-  {
-    id: 2,
-    firstname: 'Pete',
-    lastname: 'Parrot',
-    email: 'parrot@puzzle.ch',
-    userTeamList: [],
-    isOkrChampion: false,
-  },
-  {
-    id: 1,
-    firstname: 'Martin',
-    lastname: 'Käser',
-    email: 'kaeser@puzzle.ch',
-    userTeamList: [],
-    isOkrChampion: false,
-  },
-  {
-    id: 3,
-    firstname: 'Ruedi',
-    lastname: 'Peters',
-    email: 'rpeter@gmail.com',
-    userTeamList: [],
-    isOkrChampion: false,
-  },
-];
+const users: User[] = [{
+  id: 2,
+  firstname: 'Pete',
+  lastname: 'Parrot',
+  email: 'parrot@puzzle.ch',
+  userTeamList: [],
+  isOkrChampion: false
+},
+{
+  id: 1,
+  firstname: 'Martin',
+  lastname: 'Käser',
+  email: 'kaeser@puzzle.ch',
+  userTeamList: [],
+  isOkrChampion: false
+},
+{
+  id: 3,
+  firstname: 'Ruedi',
+  lastname: 'Peters',
+  email: 'rpeter@gmail.com',
+  userTeamList: [],
+  isOkrChampion: false
+}];
 
 describe('SearchTeamManagementComponent', () => {
   let component: SearchTeamManagementComponent;
@@ -86,19 +84,19 @@ describe('SearchTeamManagementComponent', () => {
     teamServiceMock = {
       getAllTeams: () => {
         return of(teams);
-      },
+      }
     };
 
     userServiceMock = {
       getUsers: () => {
         return of(users);
-      },
+      }
     };
 
     activatedRouteMock = {
       snapshot: {
-        params: {},
-      } as unknown as ActivatedRouteSnapshot,
+        params: {}
+      } as unknown as ActivatedRouteSnapshot
     };
 
     await TestBed.configureTestingModule({
@@ -111,26 +109,25 @@ describe('SearchTeamManagementComponent', () => {
         MatInputModule,
         MatIconModule,
         TranslateTestingModule.withTranslations({
-          de: de,
+          de: de
         }),
-        SharedModule,
+        SharedModule
       ],
       declarations: [SearchTeamManagementComponent],
-      providers: [
-        {
-          provide: TeamService,
-          useValue: teamServiceMock,
-        },
-        {
-          provide: UserService,
-          useValue: userServiceMock,
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
-    }).compileComponents();
+      providers: [{
+        provide: TeamService,
+        useValue: teamServiceMock
+      },
+      {
+        provide: UserService,
+        useValue: userServiceMock
+      },
+      {
+        provide: ActivatedRoute,
+        useValue: activatedRouteMock
+      }]
+    })
+      .compileComponents();
   });
   beforeEach(() => {
     navigateSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl') as unknown as Spy;
@@ -152,18 +149,16 @@ describe('SearchTeamManagementComponent', () => {
     fixture.detectChanges();
     jest.advanceTimersByTime(250);
 
-    let filteredUsers = component.filteredUsers$.getValue();
-    let filteredTeams = component.filteredTeams$.getValue();
-    expect(filteredUsers.map(getDisplayValues)).toEqual([
-      'Pete Parrot (parrot@puzzle.ch)',
-      'Martin Käser (kaeser@puzzle.ch)',
-    ]);
+    const filteredUsers = component.filteredUsers$.getValue();
+    const filteredTeams = component.filteredTeams$.getValue();
+    expect(filteredUsers.map(getDisplayValues))
+      .toEqual(['Pete Parrot (parrot@puzzle.ch)',
+        'Martin Käser (kaeser@puzzle.ch)']);
 
-    expect(filteredTeams.map(getDisplayValues)).toEqual([
-      'Puzzle Team - No',
-      'The Puzzle Team - Keyword',
-      'ZZ the Puzzle Team - Keyword',
-    ]);
+    expect(filteredTeams.map(getDisplayValues))
+      .toEqual(['Puzzle Team - No',
+        'The Puzzle Team - Keyword',
+        'ZZ the Puzzle Team - Keyword']);
   });
 
   it('should generate html values correctly', () => {
@@ -171,12 +166,14 @@ describe('SearchTeamManagementComponent', () => {
     fixture.detectChanges();
     jest.advanceTimersByTime(250);
 
-    let filteredUsers = component.filteredUsers$.getValue();
-    let filteredTeams = component.filteredTeams$.getValue();
+    const filteredUsers = component.filteredUsers$.getValue();
+    const filteredTeams = component.filteredTeams$.getValue();
 
-    expect(filteredUsers.map(getHTMLValues)).toEqual(['<strong>Ruedi</strong> Peters (rpeter@gmail.com)']);
+    expect(filteredUsers.map(getHTMLValues))
+      .toEqual(['<strong>Ruedi</strong> Peters (rpeter@gmail.com)']);
 
-    expect(filteredTeams.map(getHTMLValues)).toEqual(['Team <strong>Ruedi</strong> - Noname']);
+    expect(filteredTeams.map(getHTMLValues))
+      .toEqual(['Team <strong>Ruedi</strong> - Noname']);
   });
 
   it('should debounce inputs correctly', () => {
@@ -184,8 +181,10 @@ describe('SearchTeamManagementComponent', () => {
     fixture.detectChanges();
 
     jest.advanceTimersByTime(100); // After 100ms
-    expect(component.filteredUsers$.getValue()).toHaveLength(0);
-    expect(component.filteredTeams$.getValue()).toHaveLength(0);
+    expect(component.filteredUsers$.getValue())
+      .toHaveLength(0);
+    expect(component.filteredTeams$.getValue())
+      .toHaveLength(0);
 
     jest.advanceTimersByTime(110); // After 210ms
     expect(component.filteredUsers$.getValue()).not.toHaveLength(0);
@@ -197,7 +196,8 @@ describe('SearchTeamManagementComponent', () => {
 
     component.selectUser(users[1]);
 
-    expect(navigateSpy).toHaveBeenCalledWith('/team-management/42/details/member/2');
+    expect(navigateSpy)
+      .toHaveBeenCalledWith('/team-management/42/details/member/2');
   });
 
   it('should stay on current root page when a user is selected', () => {
@@ -205,12 +205,14 @@ describe('SearchTeamManagementComponent', () => {
 
     component.selectUser(users[1]);
 
-    expect(navigateSpy).toHaveBeenCalledWith('/team-management/details/member/2');
+    expect(navigateSpy)
+      .toHaveBeenCalledWith('/team-management/details/member/2');
   });
 
   it('should switch to teams page when selected', () => {
     component.selectTeam(teams[0]);
 
-    expect(navigateSpy).toHaveBeenCalledWith('/team-management/1');
+    expect(navigateSpy)
+      .toHaveBeenCalledWith('/team-management/1');
   });
 });

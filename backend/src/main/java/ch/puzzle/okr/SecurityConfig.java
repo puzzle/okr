@@ -1,5 +1,9 @@
 package ch.puzzle.okr;
 
+import static org.springframework.security.web.header.writers.CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP;
+import static org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER;
+import static org.springframework.security.web.header.writers.XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK;
+
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
@@ -33,10 +37,6 @@ import org.springframework.security.web.header.writers.CrossOriginOpenerPolicyHe
 import org.springframework.security.web.header.writers.CrossOriginResourcePolicyHeaderWriter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
-import static org.springframework.security.web.header.writers.CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP;
-import static org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER;
-import static org.springframework.security.web.header.writers.XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -58,10 +58,12 @@ public class SecurityConfig {
         http.addFilterAfter(new ForwardFilter(), BasicAuthenticationFilter.class);
         logger.debug("*** apiSecurityFilterChain reached");
         setHeaders(http);
-        return http.cors(Customizer.withDefaults())
+        return http
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(e -> e.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())).build();
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .build();
     }
 
     @Bean
@@ -75,14 +77,15 @@ public class SecurityConfig {
     JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor, OAuth2TokenValidator<Jwt> jwtValidator) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(JwtValidators.createDefault(),
-                jwtValidator);
+                                                                                   jwtValidator);
         decoder.setJwtValidator(validator);
         return decoder;
     }
 
     private HttpSecurity setHeaders(HttpSecurity http) throws Exception {
         return http
-                .headers(headers -> headers.contentSecurityPolicy(c -> c.policyDirectives(okrContentSecurityPolicy()))
+                .headers(headers -> headers
+                        .contentSecurityPolicy(c -> c.policyDirectives(okrContentSecurityPolicy()))
                         .crossOriginEmbedderPolicy(c -> c.policy(REQUIRE_CORP))
                         .crossOriginOpenerPolicy(c -> c.policy(OPENER_SAME_ORIGIN))
                         .crossOriginResourcePolicy(c -> c.policy(RESOURCE_SAME_ORIGIN))
@@ -96,32 +99,31 @@ public class SecurityConfig {
 
     private String okrContentSecurityPolicy() {
         return "default-src 'self';" //
-                + "script-src 'self' 'unsafe-inline';" //
-                + "        style-src 'self' 'unsafe-inline';" //
-                + "        object-src 'none';" //
-                + "        base-uri 'self';" //
-                + "        connect-src 'self' " + connectSrc + ";" //
-                + "        font-src 'self';" //
-                + "        frame-src 'self';" //
-                + "        img-src 'self' data: ;" //
-                + "        manifest-src 'self';" //
-                + "        media-src 'self';" //
-                + "        worker-src 'none';"; //
+               + "script-src 'self' 'unsafe-inline';" //
+               + "        style-src 'self' 'unsafe-inline';" //
+               + "        object-src 'none';" //
+               + "        base-uri 'self';" //
+               + "        connect-src 'self' " + connectSrc + ";" //
+               + "        font-src 'self';" //
+               + "        frame-src 'self';" //
+               + "        img-src 'self' data: ;" //
+               + "        manifest-src 'self';" //
+               + "        media-src 'self';" //
+               + "        worker-src 'none';"; //
     }
 
     private String okrPermissionPolicy() {
         return "accelerometer=(), ambient-light-sensor=(), autoplay=(), "
-                + "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), "
-                + "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(),"
-                + " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), "
-                + "midi=(), navigation-override=(), payment=(), picture-in-picture=(),"
-                + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
-                + "usb=(), web-share=(), xr-spatial-tracking=()";
+               + "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), "
+               + "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(),"
+               + " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), "
+               + "midi=(), navigation-override=(), payment=(), picture-in-picture=(),"
+               + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
+               + "usb=(), web-share=(), xr-spatial-tracking=()";
     }
 
     @Bean
-    public AuthenticationEventPublisher authenticationEventPublisher(
-            ApplicationEventPublisher applicationEventPublisher) {
+    public AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
 

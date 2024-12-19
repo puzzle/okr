@@ -10,23 +10,29 @@ describe('CheckInService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.inject(CheckInService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service)
+      .toBeTruthy();
   });
 
   it('should map correctly', () => {
-    service.getAllCheckInOfKeyResult(keyResultMetricWithIdEight.id).subscribe((checkIns) => {
+    service.getAllCheckInOfKeyResult(keyResultMetricWithIdEight.id)
+      .subscribe((checkIns) => {
       /* Check first CheckIn of this KeyResult */
-      expect(checkIns[0].confidence).toBe(firstCheckIn.confidence);
-      expect((checkIns[0] as CheckInMetricMin).value).toBe(firstCheckIn.value);
+        expect(checkIns[0].confidence)
+          .toBe(firstCheckIn.confidence);
+        expect((checkIns[0] as CheckInMetricMin).value)
+          .toBe(firstCheckIn.value);
 
-      expect(checkIns[1].confidence).toBe(secondCheckIn.confidence);
-      expect((checkIns[1] as CheckInMetricMin).value).toBe(secondCheckIn.value);
-    });
+        expect(checkIns[1].confidence)
+          .toBe(secondCheckIn.confidence);
+        expect((checkIns[1] as CheckInMetricMin).value)
+          .toBe(secondCheckIn.value);
+      });
   });
 });

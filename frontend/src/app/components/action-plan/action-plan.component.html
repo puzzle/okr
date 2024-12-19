@@ -9,7 +9,11 @@
     (cdkDropListDropped)="drop($event)"
     id="actionlist"
   >
-    <div class="action-point-item" *ngFor="let action of (control | async)!; index as i; trackBy: trackByFn" cdkDrag>
+    <div
+      class="action-point-item"
+      *ngFor="let action of (control | async)!; index as i; trackBy: trackByFn"
+      cdkDrag
+    >
       <div class="drag-drop-dots">
         <img
           cdkDragHandle

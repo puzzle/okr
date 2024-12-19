@@ -3,7 +3,6 @@ package ch.puzzle.okr.dto.keyresult;
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.models.Unit;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,7 +12,5 @@ public record KeyResultMetricDto(Long id, int version, String keyResultType, Str
         KeyResultLastCheckInMetricDto lastCheckIn, LocalDateTime createdOn, LocalDateTime modifiedOn, boolean writeable,
         List<ActionDto> actionList) implements KeyResultDto {
     @Override
-    public List<ActionDto> getActionList() {
-        return actionList;
-    }
+    public List<ActionDto> getActionList() { return actionList; }
 }

@@ -1,5 +1,8 @@
 package ch.puzzle.okr.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -7,17 +10,13 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ActionMapperTest {
@@ -48,7 +47,8 @@ public class ActionMapperTest {
     @Test
     void toDtoShouldMapActionToDto() {
         // arrange
-        Action action = Action.Builder.builder() //
+        Action action = Action.Builder
+                .builder() //
                 .withId(ID) //
                 .withVersion(VERSION) //
                 .withAction(ACTION) //
@@ -107,12 +107,12 @@ public class ActionMapperTest {
         // arrange
         KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
         ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, //
-                VERSION, //
-                ACTION, //
-                PRIORITY, //
-                IS_CHECKED, //
-                null, // keyResultId
-                IS_WRITEABLE //
+                                                                 VERSION, //
+                                                                 ACTION, //
+                                                                 PRIORITY, //
+                                                                 IS_CHECKED, //
+                                                                 null, // keyResultId
+                                                                 IS_WRITEABLE //
         );
 
         // act
@@ -123,7 +123,8 @@ public class ActionMapperTest {
         assertNotNull(actionList);
 
         // the value of the KeyResultId in the ActionDto is null
-        // the value of the KeyResultId in Action is the value of keyResultParameter ( == 20)
+        // the value of the KeyResultId in Action is the value of keyResultParameter (
+        // == 20)
         assertListOfActionsAndKeyResultParameter(actionDtoList, actionList, keyResultParameter.getId());
     }
 
@@ -133,7 +134,7 @@ public class ActionMapperTest {
     }
 
     private void assertListOfActionsAndKeyResultParameter(List<ActionDto> expectedDtoList, List<Action> actualList,
-            Long keyResultId) {
+                                                          Long keyResultId) {
         assertListsAndFirstAction(expectedDtoList, actualList);
         assertEquals(keyResultId, actualList.get(0).getKeyResult().getId());
     }

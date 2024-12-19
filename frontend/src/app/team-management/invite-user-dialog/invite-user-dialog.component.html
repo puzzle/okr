@@ -1,19 +1,29 @@
 <app-dialog-template-core [title]="'Members registrieren'">
   <ng-container content>
     @for (userFormGroup of form.controls; track $index) {
-      <div class="okr-form-row align-items-center pe-4">
-        <app-new-user
-          (removeUser)="removeUser($index)"
-          [index]="$index"
-          [userFormGroup]="userFormGroup"
-          [triedToSubmit]="triedToSubmit"
-        ></app-new-user>
-      </div>
+    <div class="okr-form-row align-items-center pe-4">
+      <app-new-user
+        (removeUser)="removeUser($index)"
+        [index]="$index"
+        [userFormGroup]="userFormGroup"
+        [triedToSubmit]="triedToSubmit"
+      ></app-new-user>
+    </div>
     }
     <div class="okr-form-row">
-      <button (click)="addUser()" class="col-auto" color="primary" mat-button [attr.data-testId]="'new-member-add-row'">
+      <button
+        (click)="addUser()"
+        class="col-auto"
+        color="primary"
+        mat-button
+        [attr.data-testId]="'new-member-add-row'"
+      >
         <span class="d-flex align-items-center fw-bold">
-          <img alt="Add User button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          <img
+            alt="Add User button"
+            class="add-cross-button"
+            src="/assets/icons/new-icon.svg"
+          />
           Weiterer Member hinzufügen
         </span>
       </button>
@@ -21,10 +31,21 @@
   </ng-container>
   <ng-container actions>
     <div class="col-auto">
-      <button color="primary" [attr.data-testId]="'invite'" mat-flat-button type="submit" (click)="registerUsers()">
+      <button
+        color="primary"
+        [attr.data-testId]="'invite'"
+        mat-flat-button
+        type="submit"
+        (click)="registerUsers()"
+      >
         Einladen
       </button>
-      <button color="primary" [attr.data-testId]="'new-member-cancel'" mat-button mat-dialog-close>Abbrechen</button>
+      <button
+        color="primary"
+        [attr.data-testId]="'new-member-cancel'"
+        mat-button
+        mat-dialog-close
+      >Abbrechen</button>
     </div>
   </ng-container>
 </app-dialog-template-core>

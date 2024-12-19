@@ -1,7 +1,6 @@
 package ch.puzzle.okr.dto;
 
 import ch.puzzle.okr.ErrorKey;
-
 import java.util.List;
 
 public record ErrorDto(String errorKey, List<String> params) {

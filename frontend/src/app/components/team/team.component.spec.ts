@@ -22,27 +22,27 @@ import { of } from 'rxjs';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const dialogService = {
-  open: jest.fn(),
+  open: jest.fn()
 };
 
 const configServiceDefined = {
   config$: of({
     customStyles: {
-      'okr-add-objective-icon': 'new-icon-from-config-service.svg',
-    },
-  }),
+      'okr-add-objective-icon': 'new-icon-from-config-service.svg'
+    }
+  })
 };
 
 const configServiceUndefined = {
   config$: of({
     customStyles: {
-      'okr-add-objective-icon': undefined,
-    },
-  }),
+      'okr-add-objective-icon': undefined
+    }
+  })
 };
 
 const refreshDataServiceMock = {
-  markDataRefresh: jest.fn(),
+  markDataRefresh: jest.fn()
 };
 
 describe('TeamComponent', () => {
@@ -57,29 +57,35 @@ describe('TeamComponent', () => {
         MatDialogModule,
         MatTooltipModule,
         TranslateTestingModule.withTranslations({
-          de: de,
+          de: de
         }),
-        MatIcon,
+        MatIcon
       ],
-      declarations: [TeamComponent, ObjectiveComponent, KeyresultComponent, ConfidenceComponent, ScoringComponent],
+      declarations: [
+        TeamComponent,
+        ObjectiveComponent,
+        KeyresultComponent,
+        ConfidenceComponent,
+        ScoringComponent
+      ],
       providers: [
         {
           provide: DialogService,
-          useValue: dialogService,
+          useValue: dialogService
         },
         {
           provide: ConfigService,
-          useValue: configServiceDefined,
+          useValue: configServiceDefined
         },
         {
           provide: RefreshDataService,
-          useValue: refreshDataServiceMock,
+          useValue: refreshDataServiceMock
         },
-        provideHttpClient(withInterceptorsFromDi()),
-      ],
+        provideHttpClient(withInterceptorsFromDi())
+      ]
     })
       .overrideComponent(TeamComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+        set: { changeDetection: ChangeDetectionStrategy.Default }
       })
       .compileComponents();
 
@@ -91,13 +97,15 @@ describe('TeamComponent', () => {
 
   it('should create', () => {
     fixture.detectChanges();
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should display add objective button if writeable is true', async () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
-    expect(button).toBeTruthy();
+    expect(button)
+      .toBeTruthy();
   });
 
   it('should not display add objective button if writeable is false', () => {
@@ -105,13 +113,16 @@ describe('TeamComponent', () => {
     component.overviewEntity.writeable = false;
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
-    expect(button).toBeFalsy();
+    expect(button)
+      .toBeFalsy();
   });
 
   it('should set value of addIconSrc if src from config service is defined', () => {
-    expect(component.addIconSrc.value).toBe('new-icon-from-config-service.svg');
+    expect(component.addIconSrc.value)
+      .toBe('new-icon-from-config-service.svg');
     const addObjectiveIcon = fixture.debugElement.query(By.css('[data-testId="add-objective-icon"]'));
-    expect(addObjectiveIcon.attributes['src']).toBe('new-icon-from-config-service.svg');
+    expect(addObjectiveIcon.attributes['src'])
+      .toBe('new-icon-from-config-service.svg');
   });
 });
 
@@ -121,23 +132,19 @@ describe('TeamComponent undefined values in config service', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
+      imports: [MatMenuModule,
         TranslateTestingModule.withTranslations({
-          de: de,
-        }),
-      ],
+          de: de
+        })],
       declarations: [TeamComponent],
-      providers: [
-        {
-          provide: ConfigService,
-          useValue: configServiceUndefined,
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-      ],
+      providers: [{
+        provide: ConfigService,
+        useValue: configServiceUndefined
+      },
+      provideHttpClient(withInterceptorsFromDi())]
     })
       .overrideComponent(TeamComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+        set: { changeDetection: ChangeDetectionStrategy.Default }
       })
       .compileComponents();
 
@@ -148,8 +155,10 @@ describe('TeamComponent undefined values in config service', () => {
   });
 
   it('should keep default value of addIconSrc if src from config service is undefined', () => {
-    expect(component.addIconSrc.value).toBe('assets/icons/new-icon.svg');
+    expect(component.addIconSrc.value)
+      .toBe('assets/icons/new-icon.svg');
     const addObjectiveIcon = fixture.debugElement.query(By.css('[data-testId="add-objective-icon"]'));
-    expect(addObjectiveIcon.attributes['src']).toBe('assets/icons/new-icon.svg');
+    expect(addObjectiveIcon.attributes['src'])
+      .toBe('assets/icons/new-icon.svg');
   });
 });

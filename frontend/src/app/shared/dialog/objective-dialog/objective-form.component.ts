@@ -4,7 +4,7 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
-import { forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
@@ -21,33 +21,48 @@ import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
   selector: 'app-objective-form',
   templateUrl: './objective-form.component.html',
   styleUrls: ['./objective-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   objectiveForm = new FormGroup({
-    title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
+    title: new FormControl<string>('', [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     quarter: new FormControl<number>(0, [Validators.required]),
-    team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
-    relation: new FormControl<number>({ value: 0, disabled: true }),
+    team: new FormControl<number>({ value: 0,
+      disabled: true }, [Validators.required]),
+    relation: new FormControl<number>({ value: 0,
+      disabled: true }),
     keyResults: new FormArray<FormControl<boolean | null>>([]),
-    createKeyResults: new FormControl<boolean>(false),
+    createKeyResults: new FormControl<boolean>(false)
   });
+
   quarters$: Observable<Quarter[]> = of([]);
+
   currentQuarter$: Observable<Quarter> = of();
+
   quarters: Quarter[] = [];
+
   teams$: Observable<Team[]> = of([]);
+
   currentTeam: Subject<Team> = new Subject<Team>();
+
   state: string | null = null;
+
   keyResults$: Observable<KeyResultDTO[]> = of([]);
+
   keyResults: KeyResultDTO[] = [];
 
   version!: number;
+
   protected readonly formInputCheck = formInputCheck;
+
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
+
   private unsubscribe$ = new Subject<void>();
 
-  constructor(
+  constructor (
     private route: ActivatedRoute,
     private teamService: TeamService,
     private quarterService: QuarterService,
@@ -62,20 +77,20 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
         teamId?: number;
       };
     },
-    private translate: TranslateService,
+    private translate: TranslateService
   ) {}
 
-  onSubmit(submitType: any): void {
+  onSubmit (submitType: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
-    let objectiveDTO: Objective = {
+    const objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       version: this.version,
       quarterId: value.quarter,
       description: value.description,
       title: value.title,
       teamId: value.team,
-      state: state,
+      state: state
     } as unknown as Objective;
 
     const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId!, objectiveDTO);
@@ -84,9 +99,10 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     const isEditing: boolean = this.data.objective.objectiveId != undefined;
-    this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
+    this.teams$ = this.teamService.getAllTeams()
+      .pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
     this.keyResults$ = isEditing
@@ -96,19 +112,30 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
 
-    forkJoin([objective$, this.quarters$, this.currentQuarter$, this.keyResults$]).subscribe(
-      ([objective, quarters, currentQuarter, keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]]) => {
-        this.handleDataInitialization(objective, quarters, currentQuarter, keyResults, isEditing);
-      },
-    );
+    forkJoin([
+      objective$,
+      this.quarters$,
+      this.currentQuarter$,
+      this.keyResults$
+    ])
+      .subscribe(([
+        objective,
+        quarters,
+        currentQuarter,
+        keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]
+      ]) => {
+        this.handleDataInitialization(
+          objective, quarters, currentQuarter, keyResults, isEditing
+        );
+      });
   }
 
-  private handleDataInitialization(
+  private handleDataInitialization (
     objective: Objective,
     quarters: Quarter[],
     currentQuarter: Quarter,
     keyResults: KeyResultDTO[],
-    isEditing: boolean,
+    isEditing: boolean
   ): void {
     this.quarters = quarters;
 
@@ -135,7 +162,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       title: objective.title,
       description: objective.description,
       team: teamId,
-      quarter: quarterId,
+      quarter: quarterId
     });
 
     keyResults.forEach(() => {
@@ -143,22 +170,21 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy () {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  getSubmitFunction(id: number, objectiveDTO: any): Observable<Objective> {
+  getSubmitFunction (id: number, objectiveDTO: any): Observable<Objective> {
     if (this.data.action == 'duplicate') {
       objectiveDTO.id = null;
       objectiveDTO.state = 'DRAFT' as State;
       return this.objectiveService.duplicateObjective(id, {
         objective: objectiveDTO,
         keyResults: this.keyResults
-          .filter((keyResult, index) =>
-            this.objectiveForm.value.keyResults ? this.objectiveForm.value.keyResults[index] : false,
-          )
-          .map((result) => ({ ...result, id: undefined })),
+          .filter((keyResult, index) => (this.objectiveForm.value.keyResults ? this.objectiveForm.value.keyResults[index] : false))
+          .map((result) => ({ ...result,
+            id: undefined }))
       });
     } else {
       if (this.data.action == 'releaseBacklog') objectiveDTO.state = 'ONGOING' as State;
@@ -170,62 +196,65 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteObjective() {
+  deleteObjective () {
     const dialog = this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
-    dialog.afterClosed().subscribe((result) => {
-      if (result) {
-        this.objectiveService.deleteObjective(this.data.objective.objectiveId!).subscribe({
-          next: () => {
-            let objectiveDTO: Objective = { id: this.data.objective.objectiveId! } as unknown as Objective;
-            this.closeDialog(objectiveDTO, true);
-          },
-          error: () => {
-            this.dialogRef.close();
-          },
-        });
-      }
-    });
+    dialog.afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.objectiveService.deleteObjective(this.data.objective.objectiveId!)
+            .subscribe({
+              next: () => {
+                const objectiveDTO: Objective = { id: this.data.objective.objectiveId! } as unknown as Objective;
+                this.closeDialog(objectiveDTO, true);
+              },
+              error: () => {
+                this.dialogRef.close();
+              }
+            });
+        }
+      });
   }
 
-  objectiveToObjectiveMin(objectiveDto: Objective): ObjectiveMin {
+  objectiveToObjectiveMin (objectiveDto: Objective): ObjectiveMin {
     return {
       ...objectiveDto,
-      state: State[objectiveDto.state as string as keyof typeof State],
+      state: State[objectiveDto.state as string as keyof typeof State]
     } as unknown as ObjectiveMin;
   }
 
-  closeDialog(objectiveDTO: Objective, willDelete: boolean = false, addKeyResult: boolean = false) {
+  closeDialog (objectiveDTO: Objective, willDelete = false, addKeyResult = false) {
     const value = this.objectiveForm.getRawValue();
     const objectiveMin: ObjectiveMin = this.objectiveToObjectiveMin(objectiveDTO);
     this.dialogRef.close({
       objective: objectiveMin,
       teamId: value.team,
       delete: willDelete,
-      addKeyResult: addKeyResult,
+      addKeyResult: addKeyResult
     });
   }
 
-  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
+  getErrorMessage (
+    error: string, field: string, firstNumber: number | null, secondNumber: number | null
+  ): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error)
+      .format(firstNumber, secondNumber);
   }
 
-  getDefaultObjective() {
+  getDefaultObjective () {
     return {
       id: 0,
       title: '',
       description: '',
       state: 'DRAFT' as State,
       teamId: 0,
-      quarterId: 0,
+      quarterId: 0
     } as Objective;
   }
 
-  allowedToSaveBacklog() {
-    let currentQuarter: Quarter | undefined = this.quarters.find(
-      (quarter) => quarter.id == this.objectiveForm.value.quarter,
-    );
+  allowedToSaveBacklog () {
+    const currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == this.objectiveForm.value.quarter);
     if (currentQuarter) {
-      let isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
+      const isBacklogCurrent = !this.isBacklogQuarter(currentQuarter.label);
       if (this.data.action == 'duplicate') return true;
       if (this.data.objective.objectiveId) {
         return isBacklogCurrent ? this.state == 'DRAFT' : true;
@@ -237,7 +266,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  allowedOption(quarter: Quarter) {
+  allowedOption (quarter: Quarter) {
     if (quarter.label == 'Backlog') {
       if (this.data.action == 'duplicate') {
         return true;
@@ -253,11 +282,11 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  isBacklogQuarter(label: string) {
+  isBacklogQuarter (label: string) {
     return GJ_REGEX_PATTERN.test(label);
   }
 
-  getDialogTitle(teamName: string): string {
+  getDialogTitle (teamName: string): string {
     if (this.data.action === 'duplicate') {
       return `Objective von ${teamName} duplizieren`;
     }

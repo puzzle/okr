@@ -1,5 +1,10 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -18,11 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class CheckInBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
@@ -36,18 +36,46 @@ class CheckInBusinessServiceTest {
     @InjectMocks
     private CheckInBusinessService checkInBusinessService;
 
-    private User user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
+    private User user = User.Builder
+            .builder()
+            .withEmail("Email")
+            .withFirstname("Firstname")
+            .withLastname("Lastname")
             .build();
-    private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
-            .withStretchZone("Wald").withId(7L).withTitle("Keyresult Ordinal").build();
-    private KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(10D).withStretchGoal(50D)
-            .withUnit(Unit.CHF).withId(8L).withTitle("Keyresult Metric").build();
-    private CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withConfidence(5)
-            .withChangeInfo("ChangeInfo1").withInitiatives("Initiatives1").withCreatedBy(user)
-            .withKeyResult(metricKeyResult).build();
-    private CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withConfidence(5)
-            .withChangeInfo("ChangeInfo2").withInitiatives("Initiatives2").withCreatedBy(user)
-            .withKeyResult(ordinalKeyResult).build();
+    private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder
+            .builder()
+            .withCommitZone("Baum")
+            .withStretchZone("Wald")
+            .withId(7L)
+            .withTitle("Keyresult Ordinal")
+            .build();
+    private KeyResult metricKeyResult = KeyResultMetric.Builder
+            .builder()
+            .withBaseline(10D)
+            .withStretchGoal(50D)
+            .withUnit(Unit.CHF)
+            .withId(8L)
+            .withTitle("Keyresult Metric")
+            .build();
+    private CheckIn checkInMetric = CheckInMetric.Builder
+            .builder()
+            .withValue(30D)
+            .withId(1L)
+            .withConfidence(5)
+            .withChangeInfo("ChangeInfo1")
+            .withInitiatives("Initiatives1")
+            .withCreatedBy(user)
+            .withKeyResult(metricKeyResult)
+            .build();
+    private CheckIn checkInOrdinal = CheckInOrdinal.Builder
+            .builder()
+            .withZone(Zone.COMMIT)
+            .withConfidence(5)
+            .withChangeInfo("ChangeInfo2")
+            .withInitiatives("Initiatives2")
+            .withCreatedBy(user)
+            .withKeyResult(ordinalKeyResult)
+            .build();
 
     @Test
     void shouldGetMetricCheckIn() {

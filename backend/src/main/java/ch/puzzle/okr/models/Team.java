@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -38,39 +37,23 @@ public class Team implements WriteableInterface {
         setUserTeamList(builder.userTeamList);
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public int getVersion() {
-        return version;
-    }
+    public int getVersion() { return version; }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public List<UserTeam> getUserTeamList() {
-        return userTeamList;
-    }
+    public List<UserTeam> getUserTeamList() { return userTeamList; }
 
-    public void setUserTeamList(List<UserTeam> userTeamList) {
-        this.userTeamList = userTeamList;
-    }
+    public void setUserTeamList(List<UserTeam> userTeamList) { this.userTeamList = userTeamList; }
 
     @Override
-    public boolean isWriteable() {
-        return writeable;
-    }
+    public boolean isWriteable() { return writeable; }
 
     @Override
-    public void setWriteable(boolean writeable) {
-        this.writeable = writeable;
-    }
+    public void setWriteable(boolean writeable) { this.writeable = writeable; }
 
     @Override
     public String toString() {
@@ -85,7 +68,7 @@ public class Team implements WriteableInterface {
             return false;
         Team team = (Team) o;
         return Objects.equals(id, team.id) && Objects.equals(version, team.version) && Objects.equals(name, team.name)
-                && Objects.equals(writeable, team.writeable);
+               && Objects.equals(writeable, team.writeable);
     }
 
     @Override

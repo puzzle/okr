@@ -1,5 +1,8 @@
 package ch.puzzle.okr.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
@@ -7,6 +10,8 @@ import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
+import java.time.LocalDateTime;
+import java.time.Month;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,12 +20,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDateTime;
-import java.time.Month;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ObjectiveMapperTest {
@@ -39,7 +38,8 @@ public class ObjectiveMapperTest {
     private static final LocalDateTime MODIFIED_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 21, 8, 0, 0);
 
     private final Team team = Team.Builder.builder().withId(TEAM_ID).build();
-    private final Quarter quarter = Quarter.Builder.builder() //
+    private final Quarter quarter = Quarter.Builder
+            .builder() //
             .withId(QUARTER_ID) //
             .withLabel(QUARTER_LABEL) //
             .build();
@@ -61,7 +61,8 @@ public class ObjectiveMapperTest {
     @Test
     void toDtoShouldMapObjectiveToDto() {
         // arrange
-        Objective objective = Objective.Builder.builder() //
+        Objective objective = Objective.Builder
+                .builder() //
                 .withId(ID) //
                 .withVersion(VERSION) //
                 .withTitle(TITLE) //

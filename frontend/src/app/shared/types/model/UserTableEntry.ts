@@ -51,6 +51,6 @@ export const convertFromUser = (user: User): UserTableEntry => {
     teams,
     roles,
     isOkrChampion: user.isOkrChampion,
-    userTeamList: user.userTeamList,
+    userTeamList: user.userTeamList
   };
 };

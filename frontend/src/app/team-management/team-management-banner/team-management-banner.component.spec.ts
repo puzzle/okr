@@ -18,7 +18,7 @@ describe('TeamManagementBannerComponent', () => {
   let fixture: ComponentFixture<TeamManagementBannerComponent>;
 
   const dialogServiceMock = {
-    open: jest.fn(),
+    open: jest.fn()
   };
 
   beforeEach(() => {
@@ -29,14 +29,17 @@ describe('TeamManagementBannerComponent', () => {
         MatIconModule,
         HttpClientTestingModule,
         TranslateModule.forRoot(),
-        MatAutocompleteModule,
+        MatAutocompleteModule
       ],
-      declarations: [TeamManagementBannerComponent, SearchTeamManagementComponent, OkrTangramComponent],
-      providers: [
-        { provide: DialogService, useValue: dialogServiceMock },
-        { provide: ActivatedRoute, useValue: {} },
-      ],
-    }).compileComponents();
+      declarations: [TeamManagementBannerComponent,
+        SearchTeamManagementComponent,
+        OkrTangramComponent],
+      providers: [{ provide: DialogService,
+        useValue: dialogServiceMock },
+      { provide: ActivatedRoute,
+        useValue: {} }]
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -45,16 +48,19 @@ describe('TeamManagementBannerComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('createTeam should open dialog', fakeAsync(() => {
     dialogServiceMock.open.mockReturnValue({
-      afterClosed: () => of(),
+      afterClosed: () => of()
     });
     component.createTeam();
     tick();
-    expect(dialogServiceMock.open).toBeCalledTimes(1);
-    expect(dialogServiceMock.open).toBeCalledWith(AddEditTeamDialog);
+    expect(dialogServiceMock.open)
+      .toBeCalledTimes(1);
+    expect(dialogServiceMock.open)
+      .toBeCalledWith(AddEditTeamDialog);
   }));
 });

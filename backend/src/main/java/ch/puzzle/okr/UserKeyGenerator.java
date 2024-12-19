@@ -2,10 +2,9 @@ package ch.puzzle.okr;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
-import org.springframework.cache.interceptor.KeyGenerator;
-
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import org.springframework.cache.interceptor.KeyGenerator;
 
 public class UserKeyGenerator implements KeyGenerator {
     @Override

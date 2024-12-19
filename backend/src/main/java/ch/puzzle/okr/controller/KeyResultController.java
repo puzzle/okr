@@ -1,5 +1,7 @@
 package ch.puzzle.okr.controller;
 
+import static org.springframework.http.HttpStatus.*;
+
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
@@ -18,12 +20,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("api/v2/keyresults")
@@ -36,8 +35,8 @@ public class KeyResultController {
     private final ActionMapper actionMapper;
 
     public KeyResultController(KeyResultAuthorizationService keyResultAuthorizationService,
-            ActionAuthorizationService actionAuthorizationService, KeyResultMapper keyResultMapper,
-            CheckInMapper checkInMapper, ActionMapper actionMapper) {
+                               ActionAuthorizationService actionAuthorizationService, KeyResultMapper keyResultMapper,
+                               CheckInMapper checkInMapper, ActionMapper actionMapper) {
         this.keyResultAuthorizationService = keyResultAuthorizationService;
         this.actionAuthorizationService = actionAuthorizationService;
         this.keyResultMapper = keyResultMapper;
@@ -66,8 +65,8 @@ public class KeyResultController {
             @ApiResponse(responseCode = "401", description = "Not authorized to read Check-ins from a KeyResult", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Check-ins from.", content = @Content) })
     @GetMapping("/{id}/checkins")
-    public List<CheckInDto> getCheckInsFromKeyResult(
-            @Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
+    public List<CheckInDto> getCheckInsFromKeyResult(@Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true)
+    @PathVariable long id) {
         return keyResultAuthorizationService.getAllCheckInsByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 
@@ -98,15 +97,15 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content),
             @ApiResponse(responseCode = "422", description = "Can't update KeyResult since KeyResult was updated or deleted by another user.", content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<KeyResultDto> updateKeyResult(
-            @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
-            @RequestBody KeyResultDto keyResultDto) {
+    public ResponseEntity<KeyResultDto> updateKeyResult(@Parameter(description = "The ID for updating a KeyResult.", required = true)
+    @PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList(), keyResult);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
-        KeyResultWithActionList updatedKeyResult = keyResultAuthorizationService.updateEntities(id, keyResult,
-                actionList);
-        return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK)
+        KeyResultWithActionList updatedKeyResult = keyResultAuthorizationService
+                .updateEntities(id, keyResult, actionList);
+        return ResponseEntity
+                .status(isKeyResultImUsed ? IM_USED : OK)
                 .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
     }
 

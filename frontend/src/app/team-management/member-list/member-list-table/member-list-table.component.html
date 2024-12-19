@@ -1,4 +1,8 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
+<table
+  mat-table
+  [dataSource]="dataSource"
+  class="mat-elevation-z8 okr-table"
+>
   <ng-container matColumnDef="icon">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
@@ -35,7 +39,11 @@
 
   <ng-container matColumnDef="teams">
     <th mat-header-cell *matHeaderCellDef>Teams</th>
-    <td mat-cell *matCellDef="let element" [title]="element.teams | teams: undefined">
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [title]="element.teams | teams: undefined"
+    >
       {{ element.teams | teams: 2 }}
     </td>
   </ng-container>

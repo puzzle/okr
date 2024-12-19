@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service;
 
+import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -7,8 +9,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 
 @EnableScheduling
 @Service

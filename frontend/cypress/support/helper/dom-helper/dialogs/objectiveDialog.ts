@@ -3,43 +3,51 @@ import ConfirmDialog from './confirmDialog';
 import Chainable = Cypress.Chainable;
 
 export default class ObjectiveDialog extends Dialog {
-  fillObjectiveTitle(title: string) {
+  fillObjectiveTitle (title: string) {
     this.fillInputByTestId('title', title);
     return this;
   }
 
-  fillObjectiveDescription(description: string) {
+  fillObjectiveDescription (description: string) {
     this.fillInputByTestId('description', description);
     return this;
   }
 
-  selectQuarter(quarter: string) {
-    cy.get('select#quarter').select(quarter);
+  selectQuarter (quarter: string) {
+    cy.get('select#quarter')
+      .select(quarter);
     return this;
   }
 
-  toggleCreateKeyResults() {
-    cy.getByTestId('keyResult-checkbox').find("[type='checkbox']").check();
+  toggleCreateKeyResults () {
+    cy.getByTestId('keyResult-checkbox')
+      .find("[type='checkbox']")
+      .check();
     return this;
   }
 
-  deleteObjective() {
-    cy.getByTestId('delete').click();
+  deleteObjective () {
+    cy.getByTestId('delete')
+      .click();
     return new ConfirmDialog();
   }
 
-  submitDraftObjective() {
-    cy.getByTestId('save-draft').click();
+  submitDraftObjective () {
+    cy.getByTestId('save-draft')
+      .click();
   }
 
-  excludeKeyResults(keyResults: string[]) {
+  excludeKeyResults (keyResults: string[]) {
     keyResults.forEach((keyResult) => {
-      cy.get('label').contains(keyResult.slice(0, 30)).click();
+      cy.get('label')
+        .contains(keyResult.slice(0, 30))
+        .click();
     });
     return this;
   }
 
-  getPage(): Chainable {
-    return cy.get('app-objective-form').should('exist');
+  getPage (): Chainable {
+    return cy.get('app-objective-form')
+      .should('exist');
   }
 }

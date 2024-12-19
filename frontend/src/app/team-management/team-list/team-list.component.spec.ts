@@ -12,23 +12,25 @@ describe('TeamListComponent', () => {
   const paramTeamId = 1;
 
   const teamServiceMock = {
-    getAllTeams: jest.fn().mockReturnValue(of()),
+    getAllTeams: jest.fn()
+      .mockReturnValue(of())
   };
 
   const activatedRouteMock: any = {
     paramMap: of({
-      get: () => paramTeamId,
-    }),
+      get: () => paramTeamId
+    })
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TeamListComponent],
-      providers: [
-        { provide: TeamService, useValue: teamServiceMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-      ],
-    }).compileComponents();
+      providers: [{ provide: TeamService,
+        useValue: teamServiceMock },
+      { provide: ActivatedRoute,
+        useValue: activatedRouteMock }]
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -40,19 +42,22 @@ describe('TeamListComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should set selected teamid', () => {
     component.ngOnInit();
-    expect(component.selectedTeamId).toBe(paramTeamId);
+    expect(component.selectedTeamId)
+      .toBe(paramTeamId);
   });
 
   it('should set selected teamid', () => {
     activatedRouteMock.paramMap = of({
-      get: () => undefined,
+      get: () => undefined
     });
     component.ngOnInit();
-    expect(component.selectedTeamId).toBe(undefined);
+    expect(component.selectedTeamId)
+      .toBe(undefined);
   });
 });

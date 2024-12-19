@@ -5,16 +5,20 @@ import { CheckInMin } from '../../shared/types/model/CheckInMin';
   selector: 'app-confidence',
   templateUrl: './confidence.component.html',
   styleUrls: ['./confidence.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfidenceComponent implements OnChanges {
-  min: number = 0;
-  max: number = 10;
-  @Input() edit: boolean = true;
-  @Input() isDetail: boolean = true;
+  min = 0;
+
+  max = 10;
+
+  @Input() edit = true;
+
+  @Input() isDetail = true;
+
   @Input() checkIn!: CheckInMin;
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges (changes: SimpleChanges) {
     if (!changes['checkIn']?.currentValue) {
       this.checkIn = { confidence: 5 } as CheckInMin;
     }

@@ -74,7 +74,7 @@ class CompletedValidationServiceTest {
 
     @DisplayName("Should be successful on validateOnCreate() when model is valid")
     @Test
-    void validateOnCreateShouldBeSuccessfulWhenCompletedIsValid() {
+    void shouldBeSuccessfulOnValidateOnCreateWhenCompletedIsValid() {
         validator.validateOnCreate(this.validCompleted);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(this.validCompleted);
@@ -83,7 +83,7 @@ class CompletedValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when model is null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
@@ -94,7 +94,7 @@ class CompletedValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
         // arrange
         Completed completed = Completed.Builder.builder() //
                 .withId(300L) //
@@ -112,7 +112,7 @@ class CompletedValidationServiceTest {
 
     @ParameterizedTest(name = "should throw exception on validateOnCreate() when model has invalid comment {0}")
     @MethodSource("nameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
+    void shouldThrowExceptionOnValidateOnCreateWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         // arrange
         Completed completed = Completed.Builder.builder() //
                 .withObjective(this.objective) //
@@ -128,7 +128,7 @@ class CompletedValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnCreateWhenAttrsAreMissing() {
         // arrange
         Completed completedInvalid = Completed.Builder.builder() //
                 .withId(null) //
@@ -146,7 +146,7 @@ class CompletedValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate()")
     @Test
-    void validateOnUpdateShouldThrowException() {
+    void shouldThrowOnValidateOnUpdateException() {
         // arrange
         Long id = 1L;
         Completed completed = Completed.Builder.builder().build();

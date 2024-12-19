@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,6 +43,7 @@ class QuarterBusinessServiceTest {
     @Spy
     private QuarterBusinessService quarterBusinessService;
 
+    @DisplayName("Should return correct quarter on getQuarterById()")
     @Test
     void shouldReturnProperQuarter() {
         quarterBusinessService.getQuarterById(3L);
@@ -49,24 +51,28 @@ class QuarterBusinessServiceTest {
         verify(quarterPersistenceService, times(1)).findById(3L);
     }
 
+    @DisplayName("Should throw exception on getQuarterById() when id is null")
     @Test
     void shouldThrowExceptionWhenIdIsNullOnGetQuarter() {
         quarterBusinessService.getQuarterById(null);
         verify(quarterValidationService, times(1)).validateOnGet(null);
     }
 
+    @DisplayName("Should call persistence service on getCurrentQuarter()")
     @Test
     void shouldCallGetCurrentQuarterOnGetCurrentQuarter() {
         quarterBusinessService.getCurrentQuarter();
         verify(quarterPersistenceService, times(1)).getCurrentQuarter();
     }
 
+    @DisplayName("Should call correct method in persistence service on getQuarters()")
     @Test
     void shouldCallGetMostCurrentQuarters() {
         quarterBusinessService.getQuarters();
         verify(quarterPersistenceService).getMostCurrentQuarters();
     }
 
+    @DisplayName("Should also get backlog quarter on getQuarters()")
     @Test
     void shouldGetBacklogQuarter() {
         Quarter realQuarter1 = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
@@ -87,7 +93,7 @@ class QuarterBusinessServiceTest {
         assertNull(quarterList.get(0).getEndDate());
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should not generate a new quarter on scheduledGenerationQuarters() when it is not the last month of the quarter such as {0}")
     @ValueSource(ints = { 1, 2, 4, 5, 7, 8, 10, 11 })
     void shouldNotGenerateQuarterIfNotLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
@@ -97,7 +103,7 @@ class QuarterBusinessServiceTest {
         verify(quarterPersistenceService, never()).save(any());
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should generate new quarter on scheduledGenerationQuarters() when it is the last month of the quarter such as {0}")
     @ValueSource(ints = { 3, 6, 9, 12 })
     void shouldGenerateQuarterIfLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
@@ -116,7 +122,7 @@ class QuarterBusinessServiceTest {
                 Arguments.of(2, "xx-yy-xxxx-yyyy-Qzz", YearMonth.of(2030, 1), "30-31-2030-2031-Q2"));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should generate quarters correctly on scheduledGenerationQuarters() with quarter start {0}, format {1}, current month of year {2} and label {3}")
     @MethodSource("generateQuarterParams")
     void shouldGenerateCorrectQuarter(int quarterStart, String quarterFormat, YearMonth currentYearMonth,
             String expectedLabel) {
@@ -148,7 +154,7 @@ class QuarterBusinessServiceTest {
                 Arguments.of(10, 9, 4), Arguments.of(10, 10, 1), Arguments.of(10, 11, 1), Arguments.of(10, 12, 1));
     }
 
-    @ParameterizedTest(name = "Start month={0}, current month={1} => quarter={2}")
+    @ParameterizedTest(name = "Should get generate quarters on generateQuarters() when start is {0}")
     @MethodSource("getQuartersParams")
     void shouldGetQuartersBasedOnStart(int start, int month, int quarter) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", start);
@@ -156,6 +162,7 @@ class QuarterBusinessServiceTest {
         assertEquals(quarter, quarters.get(month));
     }
 
+    @DisplayName("Should return null on scheduledGenerationQuarters() when no quarters need to be generated")
     @Test
     void shouldReturnNullWhenNoQuarterGenerationNeeded() {
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 4));

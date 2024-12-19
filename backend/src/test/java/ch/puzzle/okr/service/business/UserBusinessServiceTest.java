@@ -8,6 +8,7 @@ import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,6 +56,7 @@ class UserBusinessServiceTest {
         userList = Arrays.asList(userAlice, userBob);
     }
 
+    @DisplayName("Should return correct list of all users on getAllUsers()")
     @Test
     void shouldReturnAllUsersCorrectly() throws ResponseStatusException {
         Mockito.when(userPersistenceService.findAll()).thenReturn(userList);
@@ -72,6 +74,7 @@ class UserBusinessServiceTest {
         Assertions.assertThat(userList.get(1).getEmail()).isEqualTo("baumeister@puzzle.ch");
     }
 
+    @DisplayName("Should return empty list of users on getAllUsers() when there are no users")
     @Test
     void shouldReturnEmptyListOfUsers() throws ResponseStatusException {
         List<User> userList = userBusinessService.getAllUsers();
@@ -79,6 +82,7 @@ class UserBusinessServiceTest {
         Assertions.assertThat(userList.size()).isEqualTo(0);
     }
 
+    @DisplayName("Should return correct user on getUserById()")
     @Test
     void getUserByIdShouldReturnSingleUserWhenUserFound() {
         User owner = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
@@ -93,6 +97,7 @@ class UserBusinessServiceTest {
         assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
     }
 
+    @DisplayName("Should return user on getOrCreateUser() when user already exists")
     @Test
     void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
         User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
@@ -107,6 +112,7 @@ class UserBusinessServiceTest {
         assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
     }
 
+    @DisplayName("Should create new user on getOrCreateUser() when user does not already exist")
     @Test
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
@@ -121,6 +127,7 @@ class UserBusinessServiceTest {
         assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
     }
 
+    @DisplayName("Should throw exception on getOrCreateUser() when user is invalid")
     @Test
     void getOrCreateUserShouldThrowResponseStatusExceptionWhenInvalidUser() {
         User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
@@ -135,6 +142,7 @@ class UserBusinessServiceTest {
         assertEquals("Not allowed to give an id", exception.getReason());
     }
 
+    @DisplayName("Should set user to okr champion on setIsOkrChampion()")
     @Test
     void setOkrChampionShouldSetOkrChampionCorrectly() {
         var user = TestHelper.defaultUser(1L);
@@ -146,6 +154,7 @@ class UserBusinessServiceTest {
         assertTrue(user.isOkrChampion());
     }
 
+    @DisplayName("Should throw exception on setIsOkrChampion() when the last okr champion is removed")
     @Test
     void setOkrChampionShouldThrowExceptionIfLastOkrChampionIsRemoved() {
         var user = TestHelper.defaultUser(1L);
@@ -156,6 +165,7 @@ class UserBusinessServiceTest {
         assertThrows(OkrResponseStatusException.class, () -> userBusinessService.setIsOkrChampion(user, false));
     }
 
+    @DisplayName("Should not throw exception on setIsOkrChampion() when removing the second to last okr champion")
     @Test
     void setOkrChampionShouldNotThrowExceptionIfPenultimateOkrChampionIsRemoved() {
         var user = TestHelper.defaultUser(1L);
@@ -170,6 +180,7 @@ class UserBusinessServiceTest {
         assertFalse(user.isOkrChampion());
     }
 
+    @DisplayName("Should delete user on deleteEntityById()")
     @Test
     void shouldDeleteUser() {
         userBusinessService.deleteEntityById(23L);

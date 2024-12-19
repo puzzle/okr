@@ -4,7 +4,6 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
-import angularTemplateParser from '@angular-eslint/template-parser'
 import htmlParser from '@html-eslint/parser'
 
 export default tsEslint.config(
@@ -89,11 +88,6 @@ export default tsEslint.config(
     files: ['**/*.html'],
     // recommended configuration included in the plugin
     ...html.configs['flat/recommended'],
-    //extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
-    //processor: angular.processInlineTemplates,
-    //languageOptions: {
-    //parser: angularTemplateParser,
-    //},
     languageOptions: {
       parser: htmlParser,
     },

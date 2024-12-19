@@ -62,7 +62,7 @@ class CompletedPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("should save entity on save()")
+    @DisplayName("Should save entity on save()")
     @Test
     void saveCompletedShouldSaveCompleted() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
@@ -73,7 +73,7 @@ class CompletedPersistenceServiceIT {
         assertEquals(OBJECTIVE_TITLE, createdCompleted.getObjective().getTitle());
     }
 
-    @DisplayName("should update entity on save() when the entity already exists")
+    @DisplayName("Should update entity on save() when the entity already exists")
     @Test
     void updateCompletedShouldSaveCompleted() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));

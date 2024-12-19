@@ -32,7 +32,7 @@ class AlignmentSelectionPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("should return correct alignment selections on getAlignmentSelectionByQuarterIdAndTeamIdNot()")
+    @DisplayName("Should return correct alignment selections on getAlignmentSelectionByQuarterIdAndTeamIdNot()")
     @Test
     void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnAlignmentSelections() {
         List<AlignmentSelection> alignmentSelections = alignmentSelectionPersistenceService

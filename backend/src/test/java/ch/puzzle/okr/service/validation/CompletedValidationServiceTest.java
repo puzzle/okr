@@ -72,7 +72,7 @@ class CompletedValidationServiceTest {
                 List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("comment", "Completed", "0", "4096")))));
     }
 
-    @DisplayName("should be successful on validateOnCreate() when model is valid")
+    @DisplayName("Should be successful on validateOnCreate() when model is valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenCompletedIsValid() {
         validator.validateOnCreate(this.validCompleted);
@@ -81,7 +81,7 @@ class CompletedValidationServiceTest {
         verify(validator, times(1)).validate(this.validCompleted);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when model is null")
+    @DisplayName("Should throw exception on validateOnCreate() when model is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
@@ -92,7 +92,7 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when id is not null")
+    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
@@ -126,7 +126,7 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when attributes are missing")
+    @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
@@ -144,7 +144,7 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate()")
+    @DisplayName("Should throw exception on validateOnUpdate()")
     @Test
     void validateOnUpdateShouldThrowException() {
         // arrange

@@ -23,7 +23,7 @@ class OverviewValidationServiceTest {
     @InjectMocks
     OverviewValidationService validator;
 
-    @DisplayName("should call quarter validator on validateQuarter()")
+    @DisplayName("Should call quarter validator on validateQuarter()")
     @Test
     void validateOnGetShouldCallQuarterValidator() {
         validator.validateQuarter(QUARTER_ID);
@@ -31,7 +31,7 @@ class OverviewValidationServiceTest {
         verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);
     }
 
-    @DisplayName("should call team validator on validateTeam()")
+    @DisplayName("Should call team validator on validateTeam()")
     @Test
     void validateOnGetShouldCallTeamValidator() {
         validator.validateTeam(TEAM_ID);
@@ -39,7 +39,7 @@ class OverviewValidationServiceTest {
         verify(teamValidationService, times(1)).doesEntityExist(TEAM_ID);
     }
 
-    @DisplayName("should call team validator and quarter validator on validateOnGet()")
+    @DisplayName("Should call team validator and quarter validator on validateOnGet()")
     @Test
     void validateOnGetShouldCallQuarterValidatorAndTeamValidator() {
         validator.validateOnGet(QUARTER_ID, teamIds);

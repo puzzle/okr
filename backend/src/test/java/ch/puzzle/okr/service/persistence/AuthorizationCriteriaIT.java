@@ -35,7 +35,7 @@ class AuthorizationCriteriaIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("should return objective on findObjectiveById() when user is has first level role")
+    @DisplayName("Should return objective on findObjectiveById() when user is has first level role")
     @Test
     void appendObjectiveShouldReturnObjectiveWhenFirstLevelRole() {
         Long objectiveId = 5L;
@@ -45,7 +45,7 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
-    @DisplayName("should return objective on findObjectiveById() when user is has second level role")
+    @DisplayName("Should return objective on findObjectiveById() when user is has second level role")
     @Test
     void appendObjectiveShouldReturnObjectiveWhenSecondLevelRole() {
         Long objectiveId = 6L;

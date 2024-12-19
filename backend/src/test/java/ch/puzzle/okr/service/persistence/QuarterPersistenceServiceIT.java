@@ -35,7 +35,7 @@ class QuarterPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("should return current, future and GJForTests quarter on getMostCurrentQuarters()")
+    @DisplayName("Should return current, future and GJForTests quarter on getMostCurrentQuarters()")
     @Test
     void getMostCurrentQuartersShouldReturnCurrentQuarterAndFutureQuarterAndGJForTestsQuarter() {
         List<Quarter> quarterListFromFunction = quarterPersistenceService.getMostCurrentQuarters();
@@ -57,7 +57,7 @@ class QuarterPersistenceServiceIT {
         assertEquals(1, foundCurrentQuartersCount);
     }
 
-    @DisplayName("should return current quarter on getCurrentQuarter()")
+    @DisplayName("Should return current quarter on getCurrentQuarter()")
     @Test
     void shouldGetCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();

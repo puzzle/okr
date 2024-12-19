@@ -92,7 +92,7 @@ class ObjectiveValidationServiceTest {
                         .when(objectivePersistenceService).findById(2L);
     }
 
-    @DisplayName("should be successful on validateOnGet() when id is valid")
+    @DisplayName("Should be successful on validateOnGet() when id is valid")
     @Test
     void validateOnGetShouldBeSuccessfulWhenValidObjectiveId() {
         validator.validateOnGet(1L);
@@ -101,7 +101,7 @@ class ObjectiveValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
-    @DisplayName("should throw exception on validateOnGet() when id is null")
+    @DisplayName("Should throw exception on validateOnGet() when id is null")
     @Test
     void validateOnGetShouldThrowExceptionIfObjectiveIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -115,7 +115,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be successful on validateOnCreate() when objective is valid")
+    @DisplayName("Should be successful on validateOnCreate() when objective is valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenTeamIsValid() {
         validator.validateOnCreate(objectiveMinimal);
@@ -124,7 +124,7 @@ class ObjectiveValidationServiceTest {
         verify(validator, times(1)).validate(objectiveMinimal);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when objective is null")
+    @DisplayName("Should throw exception on validateOnCreate() when objective is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -137,7 +137,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when id is not null")
+    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -165,7 +165,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when attributes are missing")
+    @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Title").withQuarter(quarter)
@@ -183,7 +183,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when model was modified")
+    @DisplayName("Should throw exception on validateOnCreate() when model was modified")
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrModifiedByIsSet() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(null)
@@ -200,7 +200,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when start date is null")
+    @DisplayName("Should throw exception on validateOnCreate() when start date is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenStartDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
@@ -218,7 +218,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when end date is null")
+    @DisplayName("Should throw exception on validateOnCreate() when end date is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenEndDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")

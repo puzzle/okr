@@ -79,14 +79,14 @@ class CheckInValidationServiceTest {
         when(checkInPersistenceService.getModelName()).thenReturn("CheckIn");
     }
 
-    @DisplayName("should be successful on validateOnGet() when id is valid")
+    @DisplayName("Should be successful on validateOnGet() when id is valid")
     @Test
     void validateOnGetShouldBeSuccessfulWhenValidCheckInId() {
         validator.validateOnGet(1L);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
-    @DisplayName("should throw exception on validateOnGet() when id is null")
+    @DisplayName("Should throw exception on validateOnGet() when id is null")
     @Test
     void validateOnGetShouldThrowExceptionIfCheckInIdIsNull() {
         // act + assert
@@ -99,7 +99,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should be successful on validateOnCreate() when check in is valid")
+    @DisplayName("Should be successful on validateOnCreate() when check in is valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenCheckInIsValid() {
         when(checkInPersistenceService.findById(checkInMetric.getId())).thenReturn(checkInMetric);
@@ -111,7 +111,7 @@ class CheckInValidationServiceTest {
         verify(validator, times(1)).validate(checkInMetric);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when model is null")
+    @DisplayName("Should throw exception on validateOnCreate() when model is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
@@ -122,7 +122,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when id is not null")
+    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // act + assert
@@ -156,7 +156,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when attributes are missing")
+    @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
@@ -177,7 +177,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should be successful on validateOnUpdate()")
+    @DisplayName("Should be successful on validateOnUpdate()")
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenCheckInIsValid() {
         when(checkInPersistenceService.findById(checkInOrdinal.getId())).thenReturn(checkInOrdinal);
@@ -190,7 +190,7 @@ class CheckInValidationServiceTest {
         verify(validator, times(1)).validate(checkInOrdinal);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when model is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when model is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         // act + assert
@@ -201,7 +201,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when id is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         // act + assert
@@ -215,7 +215,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when id has changed")
+    @DisplayName("Should throw exception on validateOnUpdate() when id has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsHasChanged() {
         // act + assert
@@ -249,7 +249,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when check ins are empty")
+    @DisplayName("Should throw exception on validateOnUpdate() when check ins are empty")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenCheckInsOfKeyResultIsEmpty() {
         // arrange
@@ -275,7 +275,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when attributes are missing")
+    @DisplayName("Should throw exception on validateOnUpdate() when attributes are missing")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
@@ -299,7 +299,7 @@ class CheckInValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should be successful on validateOnDelete() when id is valid")
+    @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidKeyResultId() {
         validator.validateOnDelete(1L);
@@ -307,7 +307,7 @@ class CheckInValidationServiceTest {
         verify(validator, times(1)).doesEntityExist(1L);
     }
 
-    @DisplayName("should throw exception on validateOnDelete() when id is null")
+    @DisplayName("Should throw exception on validateOnDelete() when id is null")
     @Test
     void validateOnDeleteShouldThrowExceptionIfKeyResultIdIsNull() {
         // act + assert

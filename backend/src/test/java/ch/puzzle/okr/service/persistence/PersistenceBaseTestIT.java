@@ -56,7 +56,7 @@ public class PersistenceBaseTestIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("should return single entity on findById() when entity with id exists")
+    @DisplayName("Should return single entity on findById() when entity with id exists")
     @Test
     void findByIdShouldReturnSingleEntityIfEntityWithIdExists() {
         var foundUser = persistenceBase.findById(USER_PACO_ID);
@@ -65,7 +65,7 @@ public class PersistenceBaseTestIT {
         assertUser("Paco", "Eggimann", "peggimann@puzzle.ch", foundUser);
     }
 
-    @DisplayName("should throw exception on findById() when entity with id does not exist")
+    @DisplayName("Should throw exception on findById() when entity with id does not exist")
     @Test
     void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
         var exception = assertThrows(ResponseStatusException.class,

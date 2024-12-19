@@ -108,7 +108,7 @@ class ActionValidationServiceTest {
         Mockito.lenient().when(actionPersistenceService.getModelName()).thenReturn("Action");
     }
 
-    @DisplayName("should be successful on validateOnCreate() when action is valid")
+    @DisplayName("Should be successful on validateOnCreate() when action is valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenActionIsValid() {
         validator.validateOnCreate(action1);
@@ -117,7 +117,7 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).validate(action1);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when model is null")
+    @DisplayName("Should throw exception on validateOnCreate() when model is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         // arrange
@@ -130,7 +130,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should be successful on validateOnCreate() when id is not null")
+    @DisplayName("Should be successful on validateOnCreate() when id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         // arrange
@@ -157,7 +157,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, errors);
     }
 
-    @DisplayName("should throw exception on validateOnCreate() when attributes are missing")
+    @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         // arrange
@@ -173,7 +173,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should be successful on validateOnUpdate() when action is valid")
+    @DisplayName("Should be successful on validateOnUpdate() when action is valid")
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenActionIsValid() {
         // arrange
@@ -191,7 +191,7 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).validate(action2);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when model is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when model is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         // arrange
@@ -204,7 +204,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when id is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         // act + assert
@@ -219,7 +219,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when id has changed")
+    @DisplayName("Should throw exception on validateOnUpdate() when id has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         // act + assert
@@ -235,7 +235,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when no entity can be found")
+    @DisplayName("Should throw exception on validateOnUpdate() when no entity can be found")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenEntityDoesNotExist() {
         // arrange
@@ -255,7 +255,7 @@ class ActionValidationServiceTest {
         assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when KeyResult is not set")
+    @DisplayName("Should throw exception on validateOnUpdate() when KeyResult is not set")
     @ParameterizedTest
     @MethodSource("actionPairArgument")
     void validateOnUpdateShouldThrowExceptionWhenKeyResultNotSet(ActionPair actionPair) {

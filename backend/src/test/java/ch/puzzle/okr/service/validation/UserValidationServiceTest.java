@@ -116,7 +116,7 @@ class UserValidationServiceTest {
                         new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("email", "User")))));
     }
 
-    @DisplayName("should be successful on validateOnGet() when user id is valid")
+    @DisplayName("Should be successful on validateOnGet() when user id is valid")
     @Test
     void validateOnGetShouldBeSuccessfulWhenValidUserId() {
         validator.validateOnGet(1L);
@@ -125,7 +125,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
-    @DisplayName("should throw exception on validateOnGet() when id is null")
+    @DisplayName("Should throw exception on validateOnGet() when id is null")
     @Test
     void validateOnGetShouldThrowExceptionIfUserIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -138,7 +138,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be successful on validateOnGetOrCreate() when user is valid")
+    @DisplayName("Should be successful on validateOnGetOrCreate() when user is valid")
     @Test
     void validateOnGetOrCreateShouldBeSuccessful() {
         validator.validateOnGetOrCreate(userMinimal);
@@ -147,7 +147,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).validate(userMinimal);
     }
 
-    @DisplayName("should throw exception on validateOnGetOrCreate() when model is null")
+    @DisplayName("Should throw exception on validateOnGetOrCreate() when model is null")
     @Test
     void validateOnGetOrCreateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -161,7 +161,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be successful on validateOnCreate() when user is valid")
+    @DisplayName("Should be successful on validateOnCreate() when user is valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnCreate(userMinimal);
@@ -170,7 +170,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).validate(userMinimal);
     }
 
-    @DisplayName("should throw exception on validateCreate() when model is null")
+    @DisplayName("Should throw exception on validateCreate() when model is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -183,7 +183,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateCreate() when id is not null")
+    @DisplayName("Should throw exception on validateCreate() when id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -237,7 +237,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateCreate() when model is missing attributes")
+    @DisplayName("Should throw exception on validateCreate() when model is missing attributes")
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         User userInvalid = User.Builder.builder().withId(null).withLastName("Lastname").withFirstName("firstname")

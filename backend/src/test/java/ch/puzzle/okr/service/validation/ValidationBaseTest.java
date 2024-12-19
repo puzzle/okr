@@ -45,7 +45,7 @@ class ValidationBaseTest {
         assertNotNull(persistenceService);
     }
 
-    @DisplayName("should be successful when Id is valid")
+    @DisplayName("Should be successful when Id is valid")
     @Test
     void validateOnGetShouldBeSuccessfulWhenIdIsValid() {
         Long id = 1L;
@@ -53,7 +53,7 @@ class ValidationBaseTest {
         verify(validator, times(1)).validateOnGet(anyLong());
     }
 
-    @DisplayName("should throw exception when Id is null")
+    @DisplayName("Should throw exception when Id is null")
     @Test
     void validateOnGetShouldThrowExceptionWhenIdIsNull() {
         // arrange

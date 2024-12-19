@@ -23,25 +23,25 @@ class OverviewValidationServiceTest {
     @InjectMocks
     OverviewValidationService validator;
 
-    @DisplayName("Should call quarter validator on validateQuarter()")
+    @DisplayName("Should be successful on validateQuarter() when quarter id is valid")
     @Test
-    void validateOnGetShouldCallQuarterValidator() {
+    void shouldBeSuccessfulOnValidateQuarterWhenQuarterIdIsValid() {
         validator.validateQuarter(QUARTER_ID);
         verify(quarterValidationService, times(1)).validateOnGet(QUARTER_ID);
         verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);
     }
 
-    @DisplayName("Should call team validator on validateTeam()")
+    @DisplayName("Should be successful on validateTeam() when team id is valid")
     @Test
-    void validateOnGetShouldCallTeamValidator() {
+    void shouldBeSuccessfulOnValidateTeamWhenTeamIdIsValid() {
         validator.validateTeam(TEAM_ID);
         verify(teamValidationService, times(1)).validateOnGet(TEAM_ID);
         verify(teamValidationService, times(1)).doesEntityExist(TEAM_ID);
     }
 
-    @DisplayName("Should call team validator and quarter validator on validateOnGet()")
+    @DisplayName("Should be successful on validateOnGet() when quarter and teams are valid")
     @Test
-    void validateOnGetShouldCallQuarterValidatorAndTeamValidator() {
+    void shouldBeSuccessfulOnValidateOnGetWhenQuarterAndTeamsAreValid() {
         validator.validateOnGet(QUARTER_ID, teamIds);
         verify(quarterValidationService, times(1)).validateOnGet(QUARTER_ID);
         verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);

@@ -1,7 +1,7 @@
 import tsEslint from "typescript-eslint";
 import html from "@html-eslint/eslint-plugin";
 import { createRegexForWords } from "./eslintHelper.mjs"
-
+import * as constants from "node:constants";
 
 export default tsEslint.config(
   {
@@ -18,24 +18,14 @@ export default tsEslint.config(
 
           selector: ["class", "interface"], format: ["PascalCase"]
         }, {
-        //   It has to many exceptions for me to check this usefully
-        //
-        //   selector: "typeProperty", types: ["string"], modifiers: ["readonly"], format: ["UPPER_CASE"]
-        // },{
-        //   selector: "classProperty", modifiers: ["readonly"], format: ["UPPER_CASE"]
-        // }, {
-        //   selector: "variable", modifiers: ["global"], types: ["string"], format: ["UPPER_CASE"]
-        // }, {
-        //     selector: "variable", modifiers: [], format: ["camelCase"]
-        // },  {
+            selector: "variable", modifiers: [], format: ["camelCase", "UPPER_CASE"]
+        },  {
           selector: "enum", format: ["PascalCase"]
         }, {
           selector: "enumMember", format: ["UPPER_CASE"]
         }, {
           selector: ["method", "function"], format: ["camelCase"]
         }, {
-        //   selector: "property", format: ["camelCase"]
-        // }, {
           selector: "typeParameter", format: ["PascalCase"]
         }
           ],

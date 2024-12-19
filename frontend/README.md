@@ -33,6 +33,9 @@ Build:
 We use the **prettier** code formatter for the frontend code:
 https://www.npmjs.com/package/prettier
 
+If you get a does not match pattern error, it is likely because of the custom words for the OKR tool
+here is a regex101 project that showcases how the regex works:
+https://regex101.com/r/VUyAt6/1
 ## Test Coverage
 
 For generating the coverage of our frontend specs (jest), you can use following command:

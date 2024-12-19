@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.clientconfig;
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,7 +23,7 @@ class ClientConfigServiceIT {
     @Autowired
     private ClientConfigService clientConfigService;
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should get correct config on getConfigBasedOnActiveEnv() based on the hostname {0}, active profile {1}, issuer {2} and client id {3}")
     @MethodSource("tenantConfigs")
     void getConfigBasedOnActiveEnvWithValidSubdomainReturnsCorrectTenantConfig(String hostname, String activeProfile,
             String issuer, String clientId) {
@@ -42,12 +43,14 @@ class ClientConfigServiceIT {
                 Arguments.of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
     }
 
+    @DisplayName("should throw exception on getConfigBasedOnActiveEnv() when subdomain is invalid")
     @Test
     void getConfigBasedOnActiveEnvWithInvalidSubdomainThrowsException() {
         assertThrowsExactly(EntityNotFoundException.class,
                 () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
     }
 
+    @DisplayName("should return config with correct values on getConfigBasedOnActiveEnv()")
     @Test
     void getClientConfigWithOtherValuesReturnsCorrectValues() {
         // arrange + act

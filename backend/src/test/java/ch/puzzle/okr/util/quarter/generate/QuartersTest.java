@@ -146,9 +146,9 @@ public class QuartersTest {
                         "('GJ 24/25-Q2', '2024-10-01', '2024-12-31')"));
     }
 
-    @DisplayName("currentQuarter() should throw exception if no matching quarter is found for now")
+    @DisplayName("Should throw exception if no matching quarter is found when calling currentQuarter()")
     @Test
-    void currentQuarterShouldThrowExceptionIfNoMatchingQuarterIsFoundForNow() {
+    void shouldThrowExceptionIfNoMatchingQuarterIsFoundForNow() {
         // arrange
         LocalDate now = LocalDate.of(2024, 7, 15);
         Quarters allQuartersOfCurrentYear = new Quarters(now.getYear());

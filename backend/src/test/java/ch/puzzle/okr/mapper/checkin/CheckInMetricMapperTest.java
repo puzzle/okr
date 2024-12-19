@@ -38,9 +38,9 @@ public class CheckInMetricMapperTest {
         checkInMetricMapper = new CheckInMetricMapper(keyResultBusinessService);
     }
 
-    @DisplayName("toDto() should map CheckInMetric to Dto")
+    @DisplayName("Should map check-in-metric to dto when calling toDto()")
     @Test
-    void toDtoShouldMapCheckInMetricToDto() {
+    void shouldMapCheckInMetricToDto() {
         // arrange
         CheckInMetric checkInMetric = checkInMetric();
 
@@ -52,9 +52,9 @@ public class CheckInMetricMapperTest {
         assertCheckInMetricDto(checkInMetric, checkInMetricDto);
     }
 
-    @DisplayName("toCheckInMetric() should map Dto to checkInMetric")
+    @DisplayName("Should map dto to check-in-metric when calling toCheckInMetric()")
     @Test
-    void toCheckInMetricShouldMapDtoToCheckInMetric() {
+    void shouldMapDtoToCheckInMetric() {
         // arrange
         KeyResult keyResult = TestDataHelper.keyResult();
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);

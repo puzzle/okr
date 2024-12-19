@@ -88,7 +88,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should throw exception on findObjectiveById() when objective not found")
     @Test
-    void findObjectiveByIdShouldThrowExceptionWhenObjectiveNotFound() {
+    void shouldThrowExceptionWhenObjectiveNotFoundOnFindObjectiveById() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
                 .findObjectiveById(INVALID_OBJECTIVE_ID, authorizationUser, NO_RESULT_EXCEPTION));
@@ -100,7 +100,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should throw exception on findObjectiveById() when objective id is null")
     @Test
-    void findObjectiveByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
+    void shouldThrowExceptionWhenObjectiveIdIsNullOnFindObjectiveById() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, NO_RESULT_EXCEPTION));
@@ -123,7 +123,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should throw exception on findObjectiveByKeyResultId() when objective not found")
     @Test
-    void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
+    void shouldThrowExceptionWhenObjectiveNotFoundOnFindObjectiveByKeyResultId() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
                 .findObjectiveByKeyResultId(INVALID_KEY_RESULT_ID, authorizationUser, NO_RESULT_EXCEPTION));
@@ -135,7 +135,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should throw exception on findObjectiveByKeyResultId() when objective id is null")
     @Test
-    void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
+    void shouldThrowExceptionWhenObjectiveIdIsNullOnFindObjectiveByKeyResultId() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
                 .findObjectiveByKeyResultId(null, authorizationUser, NO_RESULT_EXCEPTION));
@@ -158,7 +158,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should throw exception on findObjectiveByCheckInId() when objective not found")
     @Test
-    void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
+    void shouldThrowExceptionWhenObjectiveNotFoundOnFindObjectiveByCheckInId() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
                 .findObjectiveByCheckInId(INVALID_CHECK_IN_ID, authorizationUser, NO_RESULT_EXCEPTION));
@@ -170,7 +170,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should throw exception on findObjectiveByCheckInId() when objective id is null")
     @Test
-    void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
+    void shouldThrowExceptionWhenObjectiveIdIsNullOnFindObjectiveByCheckInId() {
         // act
         var exception = assertThrows(OkrResponseStatusException.class, () -> objectivePersistenceService
                 .findObjectiveByCheckInId(null, authorizationUser, ObjectivePersistenceServiceIT.NO_RESULT_EXCEPTION));
@@ -195,7 +195,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should return empty list on findObjectiveByTeamId() when objective not found")
     @Test
-    void findObjectiveByTeamIdShouldReturnEmptyListWhenObjectiveNotFound() {
+    void shouldReturnEmptyListWhenObjectiveNotFoundOnFindObjectiveByTeamId() {
         // act
         var objectives = objectivePersistenceService.findObjectiveByTeamId(INVALID_TEAM_ID);
 
@@ -205,7 +205,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should return empty list on findObjectiveByTeamId() when objective id is null")
     @Test
-    void findObjectiveByTeamIdShouldReturnEmptyListWhenObjectiveIdIsNull() {
+    void shouldReturnEmptyListWhenObjectiveIdIsNullOnFindObjectiveByTeamId() {
         // act
         var objectives = objectivePersistenceService.findObjectiveByTeamId(null);
 
@@ -215,7 +215,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should return correct number of objectives for current quarter on findObjectiveByTeamId()")
     @Test
-    void countByTeamAndQuarterShouldReturnNumberOfObjectivesForCurrentQuarter() {
+    void shouldReturnNumberOfObjectivesForCurrentQuarterOnCountByTeamAndQuarter() {
         // arrange: there are 3 objectives for the current quarter (id 2) for team with id 6
         var team = Team.Builder.builder().withId(ID_OF_TEAM_6).build();
         var quarter = Quarter.Builder.builder().withId(CURRENT_QUARTER_ID).build();
@@ -261,7 +261,7 @@ class ObjectivePersistenceServiceIT {
 
     @DisplayName("Should return objective on getModelName()")
     @Test
-    void getModelNameShouldReturnObjective() {
+    void shouldReturnObjectiveOnGetModelName() {
         assertEquals(OBJECTIVE, objectivePersistenceService.getModelName());
     }
 

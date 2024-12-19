@@ -30,18 +30,18 @@ class OverviewMapperTest {
     @InjectMocks
     private OverviewMapper overviewMapper;
 
-    @DisplayName("toDto() should return an empty list when no team is found")
+    @DisplayName("Should return an empty list when toDto() is called with no team found")
     @Test
-    void toDtoShouldReturnEmptyListWhenNoTeamFound() {
+    void shouldReturnEmptyListWhenToDtoIsCalledWithNoTeamFound() {
         List<Overview> overviews = List.of();
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertTrue(overviewDtos.isEmpty());
     }
 
-    @DisplayName("toDto() should return one element when a team without objectives is found")
+    @DisplayName("Should return one element when toDto() is called with a team without objectives")
     @Test
-    void toDtoShouldReturnEmptyListWhenTeamFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithTeamWithoutObjectives() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build()).withTeamName(TEAM_PUZZLE).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
@@ -50,9 +50,9 @@ class OverviewMapperTest {
         assertEquals(0, overviewDtos.get(0).objectives().size());
     }
 
-    @DisplayName("toDto() should return one element when a single objective with a key result is found")
+    @DisplayName("Should return one element when toDto() is called with a single objective and no key-results")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithSingleObjectiveAndNoKeyResults() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).build())
                 .withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").build());
@@ -63,9 +63,9 @@ class OverviewMapperTest {
         assertEquals(0, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should return one element when a single objective with a key result and check-ins is found")
+    @DisplayName("Should return one element when toDto() is called with a single objective and a key-result")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithSingleObjectiveAndKeyResult() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(
                         OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L).build())
@@ -78,9 +78,9 @@ class OverviewMapperTest {
         assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should return one element when an objective with multiple key results and check-ins is found")
+    @DisplayName("Should return one element when toDto() is called with an objective having multiple key results and check-ins")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultAndCheckInsFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithObjectiveHavingMultipleKeyResultsAndCheckIns() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
                         .withCheckInId(4L).build())
@@ -93,9 +93,9 @@ class OverviewMapperTest {
         assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should return one element when an objective with multiple key results and check-ins is found")
+    @DisplayName("Should return one element when toDto() is called with an objective having two key results and a check-in")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithTwoKeyResultAndCheckInFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithObjectiveHavingTwoKeyResultsAndCheckIn() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
@@ -114,9 +114,9 @@ class OverviewMapperTest {
         assertEquals(2, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should return one element when multiple objectives with key results and check-ins are found")
+    @DisplayName("Should return one element when toDto() is called with multiple objectives, key results, and check-ins")
     @Test
-    void toDtoShouldReturnOneElementWhenTwoObjectivesWithKeyResultAndCheckInFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithMultipleObjectivesKeyResultsAndCheckIns() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
@@ -153,9 +153,9 @@ class OverviewMapperTest {
         assertEquals("checkIn", ((OverviewKeyResultOrdinalDto) keyResultDto).lastCheckIn().zone());
     }
 
-    @DisplayName("toDto() should return one element when multiple teams with objectives and key results are found")
+    @DisplayName("Should return one element when toDto() is called with multiple teams having objectives and key-results")
     @Test
-    void toDtoShouldReturnOneElementWhenTwoTeamsWithObjectivesAndKeyResultsFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithMultipleTeamsHavingObjectivesAndKeyResults() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
@@ -181,9 +181,9 @@ class OverviewMapperTest {
         assertEquals(2, overviewDtos.get(1).objectives().get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should throw an exception when a key result type is not supported")
+    @DisplayName("Should throw an exception when toDto() is called with an unsupported key result type")
     @Test
-    void toDtoShouldThrowExceptionWhenKeyResultTypeNotSupported() {
+    void shouldThrowExceptionWhenToDtoIsCalledWithUnsupportedKeyResultType() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
                         .withCheckInId(4L).build())

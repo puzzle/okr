@@ -15,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AlignmentSelectionMapperTest {
     private final AlignmentSelectionMapper alignmentSelectionMapper = new AlignmentSelectionMapper();
 
-    @DisplayName("toDto() should return an empty list when no objectives are found")
+    @DisplayName("Should return an empty list when no objectives are found in toDto()")
     @Test
-    void toDtoShouldReturnEmptyListWhenNoObjectiveFound() {
+    void shouldReturnEmptyListWhenNoObjectivesAreFoundInToDto() {
         List<AlignmentSelection> alignmentSelections = List.of();
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
         assertTrue(alignmentObjectiveDtos.isEmpty());
     }
 
-    @DisplayName("toDto() should return one element when a single objective is found")
+    @DisplayName("Should return one element when a single objective is found in toDto()")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveFound() {
+    void shouldReturnOneElementWhenSingleObjectiveIsFoundInToDto() {
         List<AlignmentSelection> alignmentSelections = List.of(AlignmentSelection.Builder.builder()
                 .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder().withObjectiveId(1L).build())
                 .withTeamId(2L).withTeamName(TEAM_PUZZLE).withObjectiveTitle("Objective 1").build());
@@ -36,9 +36,9 @@ class AlignmentSelectionMapperTest {
         assertEquals(0, alignmentObjectiveDtos.get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should return one element when an objective with a key result is found")
+    @DisplayName("Should return one element when an objective with a key result is found in toDto()")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultFound() {
+    void shouldReturnOneElementWhenObjectiveWithKeyResultIsFoundInToDto() {
         List<AlignmentSelection> alignmentSelections = List.of(AlignmentSelection.Builder.builder()
                 .withAlignmentSelectionId(
                         AlignmentSelectionId.Builder.builder().withObjectiveId(1L).withKeyResultId(3L).build())
@@ -50,9 +50,9 @@ class AlignmentSelectionMapperTest {
         assertEquals(1, alignmentObjectiveDtos.get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should return one element when an objective with multiple key results is found")
+    @DisplayName("Should return one element when an objective with multiple key results is found in toDto()")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithTwoKeyResultsFound() {
+    void shouldReturnOneElementWhenObjectiveWithMultipleKeyResultsIsFoundInToDto() {
         List<AlignmentSelection> alignmentSelections = List.of(
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(
@@ -70,9 +70,9 @@ class AlignmentSelectionMapperTest {
         assertEquals(2, alignmentObjectiveDtos.get(0).keyResults().size());
     }
 
-    @DisplayName("toDto() should return multiple objectives with their respective key results")
+    @DisplayName("Should return multiple objectives with their respective key results in toDto()")
     @Test
-    void toDtoShouldReturnOneElementWhenTwoObjectivesWithKeyResultsFound() {
+    void shouldReturnMultipleObjectivesWithRespectiveKeyResultsInToDto() {
         List<AlignmentSelection> alignmentSelections = List.of(
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(

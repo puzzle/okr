@@ -38,9 +38,9 @@ public class CheckInOrdinalMapperTest {
         checkInOrdinalMapper = new CheckInOrdinalMapper(keyResultBusinessService);
     }
 
-    @DisplayName("toDto() should map CheckInOrdinal to Dto")
+    @DisplayName("Should map check-in-ordinal to dto when calling toDto()")
     @Test
-    void toDtoShouldMapCheckInOrdinalToDto() {
+    void shouldMapCheckInOrdinalToDto() {
         // arrange
         CheckInOrdinal checkInOrdinal = checkInOrdinal();
 
@@ -52,9 +52,9 @@ public class CheckInOrdinalMapperTest {
         assertCheckInOrdinalDto(checkInOrdinal, checkInOrdinalDto);
     }
 
-    @DisplayName("toCheckInOrdinal() should map Dto to checkInOrdinal")
+    @DisplayName("Should map dto to check-in-ordinal when calling toCheckInOrdinal()")
     @Test
-    void toCheckInOrdinalShouldMapDtoToCheckInOrdinal() {
+    void shouldMapDtoToCheckInOrdinal() {
         // arrange
         KeyResult keyResult = TestDataHelper.keyResult();
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);

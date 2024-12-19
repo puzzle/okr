@@ -44,9 +44,9 @@ public class ActionMapperTest {
         actionMapper = new ActionMapper(keyResultBusinessService);
     }
 
-    @DisplayName("toDto() should map Action to Dto")
+    @DisplayName("Should map action to dto when calling toDto() is called")
     @Test
-    void toDtoShouldMapActionToDto() {
+    void shouldMapActionToDtoWhenToDtoIsCalled() {
         // arrange
         Action action = Action.Builder.builder() //
                 .withId(ID) //
@@ -76,9 +76,9 @@ public class ActionMapperTest {
         assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
-    @DisplayName("toActions() should map List of Dtos with KeyResultId to list of Actions.")
+    @DisplayName("Should map a list of dtos with key-result-id to a list of actions when calling toActions()")
     @Test
-    void toActionsShouldMapListOfDtosWithKeyResultIdToListOfActions() {
+    void shouldMapListOfDtosWithKeyResultIdToListOfActionsWhenToActionsIsCalled() {
         // arrange
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);
 
@@ -101,9 +101,9 @@ public class ActionMapperTest {
         assertListOfActionsWithKeyResultId(actionDtoList, actionList);
     }
 
-    @DisplayName("toActions() with KeyResult Parameter should map List of Dtos (without a KeyResultId) to list of Actions")
+    @DisplayName("Should map list of dtos (without a key-result-id) to a list of actions when toActions() is called with a Key-result parameter")
     @Test
-    void toActionsWithKeyResultParameterShouldMapListOfDtosToListOfActions() {
+    void shouldMapListOfDtosWithoutKeyResultIdToListOfActionsWhenToActionsIsCalledWithKeyResultParameter() {
         // arrange
         KeyResult keyResultParameter = KeyResultMetric.Builder.builder().withId(20L).build();
         ActionDto actionDtoWithKeyResultIdIsNull = new ActionDto(ID, //

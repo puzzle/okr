@@ -210,7 +210,7 @@ class KeyResultValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when model is null")
     @Test
-    void ShouldThrowExceptionOnValidateOnUpdateWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
@@ -310,7 +310,7 @@ class KeyResultValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnDelete() when id is valid")
     @Test
-    void ShouldThrowExceptionOnValidateOnDeleteWhenKeyResultIdIsNull() {
+    void shouldThrowExceptionOnValidateOnDeleteWhenKeyResultIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnDelete(null));

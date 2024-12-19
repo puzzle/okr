@@ -18,8 +18,7 @@ import static org.mockito.Mockito.when;
 
 public class ClientConfigServiceTest {
 
-    @DisplayName("should be successful on getConfigBasedOnActiveEnv() when tenant is configured properly")
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should be successful on getConfigBasedOnActiveEnv() when tenant is configured properly with tenant {0} and hostname {1}")
     @CsvSource({ "pitc,pitc.ork.ch", "acme,acme-ork.ch" })
     void getConfigBasedOnActiveEnvShouldBeSuccessfulWhenTenantIsConfiguredProperly(String tenant, String hostname) {
         // arrange
@@ -34,8 +33,7 @@ public class ClientConfigServiceTest {
         assertClientConfigDto(configBasedOnActiveEnv, tenant);
     }
 
-    @DisplayName("should throw exception on getConfigBasedOnActiveEnv() when client customization is not found")
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should throw exception on getConfigBasedOnActiveEnv() when client customization is not found for tenant {0}, hostname {1} and subdomain {2}")
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostname,
             String subdomain) {
@@ -51,8 +49,7 @@ public class ClientConfigServiceTest {
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
-    @DisplayName("should throw exception getConfigBasedOnActiveEnv when client config is not found")
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should throw exception getConfigBasedOnActiveEnv when client config is not found for tenant {0}, hostname {1} and subdomain {2} ")
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientConfigIsNotFound(String tenant, String hostname,
             String subdomain) {

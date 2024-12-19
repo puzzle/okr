@@ -23,7 +23,7 @@ class ClientConfigServiceIT {
     @Autowired
     private ClientConfigService clientConfigService;
 
-    @ParameterizedTest(name = "should get correct config on getConfigBasedOnActiveEnv() based on the hostname {0}, active profile {1}, issuer {2} and client id {3}")
+    @ParameterizedTest(name = "Should get correct config on getConfigBasedOnActiveEnv() based on the hostname {0}, active profile {1}, issuer {2} and client id {3}")
     @MethodSource("tenantConfigs")
     void getConfigBasedOnActiveEnvWithValidSubdomainReturnsCorrectTenantConfig(String hostname, String activeProfile,
             String issuer, String clientId) {
@@ -43,14 +43,14 @@ class ClientConfigServiceIT {
                 Arguments.of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
     }
 
-    @DisplayName("should throw exception on getConfigBasedOnActiveEnv() when subdomain is invalid")
+    @DisplayName("Should throw exception on getConfigBasedOnActiveEnv() when subdomain is invalid")
     @Test
     void getConfigBasedOnActiveEnvWithInvalidSubdomainThrowsException() {
         assertThrowsExactly(EntityNotFoundException.class,
                 () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
     }
 
-    @DisplayName("should return config with correct values on getConfigBasedOnActiveEnv()")
+    @DisplayName("Should return config with correct values on getConfigBasedOnActiveEnv()")
     @Test
     void getClientConfigWithOtherValuesReturnsCorrectValues() {
         // arrange + act

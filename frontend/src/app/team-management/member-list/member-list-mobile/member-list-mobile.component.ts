@@ -19,8 +19,7 @@ export class MemberListMobileComponent {
   constructor () {}
 
   getMemberDetailsLink (userTableEntry: UserTableEntry) {
-    return getRouteToUserDetails(userTableEntry.id,
-      this.selectedTeam$.value?.id);
+    return getRouteToUserDetails(userTableEntry.id, this.selectedTeam$.value?.id);
   }
 
   protected readonly getFullNameFromUser = getFullNameFromUser;

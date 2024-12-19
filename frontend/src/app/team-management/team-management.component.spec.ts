@@ -25,74 +25,72 @@ import { testUser, users } from "../shared/testData";
 import { UserService } from "../services/user.service";
 import { ConfigService } from "../services/config.service";
 
-describe("TeamManagementComponent",
-  () => {
-    let component: TeamManagementComponent;
-    let fixture: ComponentFixture<TeamManagementComponent>;
+describe("TeamManagementComponent", () => {
+  let component: TeamManagementComponent;
+  let fixture: ComponentFixture<TeamManagementComponent>;
 
-    const activatedRouteMock = {
-      paramMap: of({})
-    };
+  const activatedRouteMock = {
+    paramMap: of({})
+  };
 
-    const userServiceMock = {
-      getCurrentUser: () => of(testUser),
-      getUsers: () => of(users)
-    };
+  const userServiceMock = {
+    getCurrentUser: () => of(testUser),
+    getUsers: () => of(users)
+  };
 
-    const configServiceMock = {
-      config$: of({})
-    };
+  const configServiceMock = {
+    config$: of({})
+  };
 
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        imports: [
-          HttpClientTestingModule,
-          MatFormFieldModule,
-          MatIconModule,
-          SharedModule,
-          MatInputModule,
-          BrowserAnimationsModule,
-          MatListModule,
-          RouterModule,
-          MatAutocompleteModule,
-          ReactiveFormsModule,
-          TranslateModule.forRoot(),
-          MatSelectModule,
-          FormsModule,
-          ReactiveFormsModule,
-          MatTableModule
-        ],
-        declarations: [
-          TeamManagementComponent,
-          TeamManagementBannerComponent,
-          TeamListComponent,
-          MemberListComponent,
-          SearchTeamManagementComponent,
-          TeamManagementMobileFilterComponent,
-          MemberListTableComponent,
-          MemberListMobileComponent
-        ],
-        providers: [{ provide: ActivatedRoute,
-          useValue: activatedRouteMock },
-        { provide: UserService,
-          useValue: userServiceMock },
-        { provide: ConfigService,
-          useValue: configServiceMock }]
-      })
-        .compileComponents();
-    });
-
-    beforeEach(() => {
-      TestBed.runInInjectionContext(() => {
-        fixture = TestBed.createComponent(TeamManagementComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-      });
-    });
-
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        MatFormFieldModule,
+        MatIconModule,
+        SharedModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        MatListModule,
+        RouterModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatTableModule
+      ],
+      declarations: [
+        TeamManagementComponent,
+        TeamManagementBannerComponent,
+        TeamListComponent,
+        MemberListComponent,
+        SearchTeamManagementComponent,
+        TeamManagementMobileFilterComponent,
+        MemberListTableComponent,
+        MemberListMobileComponent
+      ],
+      providers: [{ provide: ActivatedRoute,
+        useValue: activatedRouteMock },
+      { provide: UserService,
+        useValue: userServiceMock },
+      { provide: ConfigService,
+        useValue: configServiceMock }]
+    })
+      .compileComponents();
   });
+
+  beforeEach(() => {
+    TestBed.runInInjectionContext(() => {
+      fixture = TestBed.createComponent(TeamManagementComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+  });
+
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+});

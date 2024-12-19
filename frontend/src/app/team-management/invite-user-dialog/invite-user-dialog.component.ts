@@ -52,19 +52,16 @@ export class InviteUserDialogComponent {
 
   private createUserFormGroup () {
     return this.formBuilder.group({
-      firstname: this.formBuilder.control("",
-        [Validators.required,
-          Validators.minLength(1)]),
-      lastname: this.formBuilder.control("",
-        [Validators.required,
-          Validators.minLength(1)]),
-      email: this.formBuilder.control("",
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.email,
-          this.uniqueMailValidator.validate.bind(this.uniqueMailValidator)
-        ])
+      firstname: this.formBuilder.control("", [Validators.required,
+        Validators.minLength(1)]),
+      lastname: this.formBuilder.control("", [Validators.required,
+        Validators.minLength(1)]),
+      email: this.formBuilder.control("", [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.email,
+        this.uniqueMailValidator.validate.bind(this.uniqueMailValidator)
+      ])
     });
   }
 

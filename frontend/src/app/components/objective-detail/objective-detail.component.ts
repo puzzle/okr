@@ -49,13 +49,12 @@ export class ObjectiveDetailComponent implements OnInit {
 
   openAddKeyResultDialog () {
     this.dialogService
-      .open(KeyresultDialogComponent,
-        {
-          data: {
-            objective: this.objective$.getValue(),
-            keyResult: null
-          }
-        })
+      .open(KeyresultDialogComponent, {
+        data: {
+          objective: this.objective$.getValue(),
+          keyResult: null
+        }
+      })
       .afterClosed()
       .subscribe((result) => {
         if (result?.openNew) {
@@ -67,15 +66,14 @@ export class ObjectiveDetailComponent implements OnInit {
 
   openEditObjectiveDialog () {
     this.dialogService
-      .open(ObjectiveFormComponent,
-        {
-          data: {
-            objective: {
-              objectiveId: this.objective$.getValue().id,
-              teamId: this.objective$.value.teamId
-            }
+      .open(ObjectiveFormComponent, {
+        data: {
+          objective: {
+            objectiveId: this.objective$.getValue().id,
+            teamId: this.objective$.value.teamId
           }
-        })
+        }
+      })
       .afterClosed()
       .subscribe((result) => {
         this.refreshDataService.markDataRefresh();

@@ -26,8 +26,7 @@ export class ObjectiveMenuActions {
   releaseFromBacklogAction (objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id },
       action: "releaseBacklog" } };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent,
-      config);
+    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
     const afterAction: ObjectiveMenuAfterAction = () => this.refreshDataService.markDataRefresh();
     return { displayName: "Objective veröffentlichen",
       action: action,
@@ -36,8 +35,7 @@ export class ObjectiveMenuActions {
 
   editObjectiveAction (objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id } } };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent,
-      config);
+    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
     const afterAction: ObjectiveMenuAfterAction = () => {
       this.refreshDataService.markDataRefresh();
     };
@@ -49,8 +47,7 @@ export class ObjectiveMenuActions {
   duplicateObjectiveAction (objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id },
       action: "duplicate" } };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent,
-      config);
+    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
     const afterAction: ObjectiveMenuAfterAction = () => this.refreshDataService.markDataRefresh();
     return { displayName: "Objective duplizieren",
       action: action,
@@ -61,10 +58,8 @@ export class ObjectiveMenuActions {
     const config = {
       data: { objectiveTitle: objective.title }
     };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(CompleteDialogComponent,
-      config);
-    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) => this.afterActions.completeObjective(obj,
-      result);
+    const action: ObjectiveMenuAction = () => this.dialogService.open(CompleteDialogComponent, config);
+    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) => this.afterActions.completeObjective(obj, result);
 
     return { displayName: "Objective abschliessen",
       action: action,

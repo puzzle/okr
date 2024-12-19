@@ -87,13 +87,12 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   }
 
   checkInHistory () {
-    const dialogRef = this.dialogService.open(CheckInHistoryDialogComponent,
-      {
-        data: {
-          keyResult: this.keyResult$.getValue(),
-          isComplete: this.isComplete
-        }
-      });
+    const dialogRef = this.dialogService.open(CheckInHistoryDialogComponent, {
+      data: {
+        keyResult: this.keyResult$.getValue(),
+        isComplete: this.isComplete
+      }
+    });
     dialogRef.afterClosed()
       .subscribe(() => {
         this.refreshDataService.markDataRefresh();
@@ -102,13 +101,12 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
 
   openEditKeyResultDialog (keyResult: KeyResult) {
     this.dialogService
-      .open(KeyresultDialogComponent,
-        {
-          data: {
-            objective: keyResult.objective,
-            keyResult: keyResult
-          }
-        })
+      .open(KeyresultDialogComponent, {
+        data: {
+          objective: keyResult.objective,
+          keyResult: keyResult
+        }
+      })
       .afterClosed()
       .subscribe((result) => {
         if (result?.closeState === CloseState.SAVED && result.id) {
@@ -139,12 +137,11 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   }
 
   openCheckInForm () {
-    const dialogRef = this.dialogService.open(CheckInFormComponent,
-      {
-        data: {
-          keyResult: this.keyResult$.getValue()
-        }
-      });
+    const dialogRef = this.dialogService.open(CheckInFormComponent, {
+      data: {
+        keyResult: this.keyResult$.getValue()
+      }
+    });
     dialogRef.afterClosed()
       .subscribe(() => {
         this.refreshDataService.reloadKeyResultSubject.next();

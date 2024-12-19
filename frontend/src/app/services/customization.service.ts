@@ -38,8 +38,7 @@ export class CustomizationService {
     }
 
     this.document.getElementById("favicon")
-      ?.setAttribute("href",
-        favicon);
+      ?.setAttribute("href", favicon);
   }
 
   private setTitle (title: string) {
@@ -84,8 +83,7 @@ export class CustomizationService {
     Object.entries(customStylesMap)
       .forEach(([varName,
         varValue]) => {
-        styles.setProperty(`--${varName}`,
-          varValue);
+        styles.setProperty(`--${varName}`, varValue);
       });
   }
 

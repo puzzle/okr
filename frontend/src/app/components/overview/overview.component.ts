@@ -80,16 +80,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
     const objectiveQueryString = getQueryString(objectiveQuery);
-    this.loadOverview(quarterId,
-      teamIds,
-      objectiveQueryString);
+    this.loadOverview(quarterId, teamIds, objectiveQueryString);
   }
 
   loadOverview (quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
     this.overviewService
-      .getOverview(quarterId,
-        teamIds,
-        objectiveQuery)
+      .getOverview(quarterId, teamIds, objectiveQuery)
       .pipe(catchError(() => {
         this.loadOverview();
         return EMPTY;

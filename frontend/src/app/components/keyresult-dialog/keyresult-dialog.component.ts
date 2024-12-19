@@ -18,15 +18,12 @@ import { DialogService } from "../../services/dialog.service";
 })
 export class KeyresultDialogComponent {
   keyResultForm = new FormGroup({
-    title: new FormControl<string>("",
-      [Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(250)]),
-    description: new FormControl<string>("",
-      [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string | null>(null,
-      [Validators.required,
-        Validators.nullValidator]),
+    title: new FormControl<string>("", [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)]),
+    description: new FormControl<string>("", [Validators.maxLength(4096)]),
+    owner: new FormControl<User | string | null>(null, [Validators.required,
+      Validators.nullValidator]),
     actionList: new FormControl<Action[]>([]),
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),

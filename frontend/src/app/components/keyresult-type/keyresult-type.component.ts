@@ -63,8 +63,7 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   async updateFormValidity () {
-    await new Promise((r) => setTimeout(r,
-      100));
+    await new Promise((r) => setTimeout(r, 100));
   }
 
   setValidatorsMetric () {
@@ -109,7 +108,6 @@ export class KeyresultTypeComponent implements OnInit {
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
     return field + this.translate.instant("DIALOG_ERRORS." + error)
-      .format(firstNumber,
-        secondNumber);
+      .format(firstNumber, secondNumber);
   }
 }

@@ -19,8 +19,7 @@ export class ShowEditRoleComponent {
     private readonly elementRef: ElementRef,
     private readonly cd: ChangeDetectorRef) {}
 
-  @HostListener("document:click",
-    ["$event"])
+  @HostListener("document:click", ["$event"])
   clickOutside (event: MouseEvent) {
     if (this.elementRef.nativeElement.contains(event.target)) {
       return;
@@ -37,8 +36,7 @@ export class ShowEditRoleComponent {
     setTimeout(() => {
       this.edit = edit;
       this.cd.markForCheck();
-    },
-    0);
+    }, 0);
   }
 
   saveIsAdmin (isAdmin: boolean) {

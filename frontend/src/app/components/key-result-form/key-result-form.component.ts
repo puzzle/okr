@@ -43,9 +43,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   ngOnInit (): void {
     this.users$ = this.userService.getUsers();
-    this.filteredUsers$ = this.keyResultForm.get("owner")?.valueChanges.pipe(startWith(""),
-      filter((value) => typeof value === "string"),
-      switchMap((value) => this.filter(value as string)));
+    this.filteredUsers$ = this.keyResultForm.get("owner")?.valueChanges.pipe(startWith(""), filter((value) => typeof value === "string"), switchMap((value) => this.filter(value as string)));
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
       this.keyResultForm.controls["title"].setValue(this.keyResult.title);
@@ -129,8 +127,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
     return field + this.translate.instant("DIALOG_ERRORS." + error)
-      .format(firstNumber,
-        secondNumber);
+      .format(firstNumber, secondNumber);
   }
 
   filter (value: string): Observable<User[]> {

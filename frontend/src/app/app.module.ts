@@ -82,9 +82,7 @@ function initOauthFactory (configService: ConfigService, oauthService: OAuthServ
 }
 
 export function createTranslateLoader (http: HttpBackend) {
-  return new TranslateHttpLoader(new HttpClient(http),
-    "./assets/i18n/",
-    ".json");
+  return new TranslateHttpLoader(new HttpClient(http), "./assets/i18n/", ".json");
 }
 
 export function storageFactory (): OAuthStorage {

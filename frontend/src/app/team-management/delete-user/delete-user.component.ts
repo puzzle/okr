@@ -44,16 +44,14 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   private loadOkrUser () {
     this.userService
       .getOrInitCurrentUser()
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((user) => this.okrUser = user))
+      .pipe(takeUntil(this.unsubscribe$), tap((user) => this.okrUser = user))
       .subscribe();
   }
 
   loadUserOkrData () {
     this.userService
       .getUserOkrData(this.user)
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((okrData) => this.userOkrData = okrData))
+      .pipe(takeUntil(this.unsubscribe$), tap((okrData) => this.userOkrData = okrData))
       .subscribe();
   }
 
@@ -66,8 +64,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   loadUserMemberOfTeamsStatus () {
     this.userService
       .isUserMemberOfTeams(this.user)
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((isMemberOfTeams) => this.userIsMemberOfTeams = isMemberOfTeams))
+      .pipe(takeUntil(this.unsubscribe$), tap((isMemberOfTeams) => this.userIsMemberOfTeams = isMemberOfTeams))
       .subscribe();
   }
 
@@ -80,14 +77,12 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     if (this.isUserMemberOfTeams()) {
       const dialogTitle = "User kann nicht gelöscht werden";
       const dialogText = `${getFullNameFromUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.dialogDetailsUserTeams()}`;
-      this.showUnableToDeleteUserDialog(dialogTitle,
-        dialogText);
+      this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     } else if (this.isUserOwnerOfKeyResults()) {
       const dialogTitle = "User kann nicht gelöscht werden";
       const dialogText = `${getFullNameFromUser(this.user)} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
-      this.showUnableToDeleteUserDialog(dialogTitle,
-        dialogText);
+      this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     }
     this.deleteUser();
@@ -145,16 +140,15 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
         if (result) {
           this.userService
             .deleteUser(this.user)
-            .pipe(takeUntil(this.unsubscribe$),
-              tap({
-                next: () => {
-                  this.userService.reloadUsers();
-                  this.location.back();
-                },
-                error: () => {
-                  throw Error(`unable to delete user ${getFullNameFromUser(this.user)} (with id ${this.user.id})`);
-                }
-              }))
+            .pipe(takeUntil(this.unsubscribe$), tap({
+              next: () => {
+                this.userService.reloadUsers();
+                this.location.back();
+              },
+              error: () => {
+                throw Error(`unable to delete user ${getFullNameFromUser(this.user)} (with id ${this.user.id})`);
+              }
+            }))
             .subscribe();
         }
       });

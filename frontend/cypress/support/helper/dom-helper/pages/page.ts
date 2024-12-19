@@ -15,8 +15,7 @@ export abstract class Page extends PageObjectMapperBase {
 
   afterVisit (): this {
     cy.url()
-      .should("include",
-        this.getURL());
+      .should("include", this.getURL());
     this.validatePage();
     return this;
   }

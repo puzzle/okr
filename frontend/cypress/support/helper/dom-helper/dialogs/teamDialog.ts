@@ -9,8 +9,7 @@ export default class TeamDialog extends Dialog {
   }
 
   fillName (name: string) {
-    this.fillInputByTestId("add-team-name",
-      name);
+    this.fillInputByTestId("add-team-name", name);
     return this;
   }
 

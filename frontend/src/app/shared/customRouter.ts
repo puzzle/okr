@@ -10,7 +10,6 @@ export class CustomRouter extends Router {
   override navigate (commands: any[], extras?: NavigationExtras | undefined): Promise<boolean> {
     const customExtras = { ...extras,
       queryParamsHandling: "merge" } as NavigationExtras;
-    return super.navigate(commands,
-      customExtras);
+    return super.navigate(commands, customExtras);
   }
 }

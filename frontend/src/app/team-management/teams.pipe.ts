@@ -19,12 +19,10 @@ export class TeamsPipe implements PipeTransform {
     const overflow = teams.length - maxEntries;
     if (overflow > 0) {
       return (
-        teams.slice(0,
-          maxEntries)
+        teams.slice(0, maxEntries)
           .join(this.SEPARATOR) +
           ", " +
-          this.translate.instant("TEAM_MANAGEMENT.WEITERE",
-            { overflow })
+          this.translate.instant("TEAM_MANAGEMENT.WEITERE", { overflow })
       );
     }
     return teams.join(this.SEPARATOR);

@@ -36,8 +36,7 @@ export class ActionPlanComponent {
         newIndex -= 1;
       }
     }
-    this.changeItemPosition(newIndex,
-      currentIndex);
+    this.changeItemPosition(newIndex, currentIndex);
     this.listItems.get(this.activeItem)?.nativeElement.focus();
   }
 
@@ -45,9 +44,7 @@ export class ActionPlanComponent {
     this.activeItem = newIndex;
     const currentActionPlan: Action[] = this.control.getValue() ?? [];
     this.updateActionTexts(currentActionPlan);
-    moveItemInArray(currentActionPlan,
-      currentIndex,
-      newIndex);
+    moveItemInArray(currentActionPlan, currentIndex, newIndex);
     currentActionPlan.forEach((action: Action, index: number) => action.priority = index);
     this.control.next(currentActionPlan);
   }
@@ -81,15 +78,10 @@ export class ActionPlanComponent {
       this.control.next(actions);
     }
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data ?? [],
-        event.previousIndex,
-        event.currentIndex);
+      moveItemInArray(event.container.data ?? [], event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(
-        event.previousContainer.data ?? [],
-        event.container.data ?? [],
-        event.previousIndex,
-        event.currentIndex
+        event.previousContainer.data ?? [], event.container.data ?? [], event.previousIndex, event.currentIndex
       );
     }
     this.adjustPriorities();
@@ -119,15 +111,13 @@ export class ActionPlanComponent {
               this.actionService.deleteAction(actions[index].id)
                 .subscribe();
             }
-            actions.splice(index,
-              1);
+            actions.splice(index, 1);
             this.control.next(actions);
             this.adjustPriorities();
           }
         });
     } else {
-      actions.splice(index,
-        1);
+      actions.splice(index, 1);
       this.control.next(actions);
       this.adjustPriorities();
     }

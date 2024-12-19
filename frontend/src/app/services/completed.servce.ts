@@ -10,8 +10,7 @@ export class CompletedService {
   constructor (private httpClient: HttpClient) {}
 
   createCompleted (completed: Completed): Observable<Completed> {
-    return this.httpClient.post<Completed>("/api/v2/completed",
-      completed);
+    return this.httpClient.post<Completed>("/api/v2/completed", completed);
   }
 
   deleteCompleted (objectiveId: number): Observable<Completed> {

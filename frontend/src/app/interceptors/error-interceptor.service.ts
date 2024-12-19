@@ -22,21 +22,18 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept (request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)
-      .pipe(filter((event) => event instanceof HttpResponse),
-        tap((response) => {
-          if (this.checkForToaster(response)) {
-            const method = HttpType[request.method as keyof typeof HttpType];
-            this.handleSuccessToaster(response,
-              method);
-          }
-        }),
-        catchError((response) => {
-          if (this.checkForToaster(response)) {
-            this.handleErrorToaster(response);
-          }
-          this.handleDrawerError(request);
-          return throwError(() => new Error(response));
-        }));
+      .pipe(filter((event) => event instanceof HttpResponse), tap((response) => {
+        if (this.checkForToaster(response)) {
+          const method = HttpType[request.method as keyof typeof HttpType];
+          this.handleSuccessToaster(response, method);
+        }
+      }), catchError((response) => {
+        if (this.checkForToaster(response)) {
+          this.handleErrorToaster(response);
+        }
+        this.handleDrawerError(request);
+        return throwError(() => new Error(response));
+      }));
   }
 
   handleErrorToaster (response: any) {
@@ -53,9 +50,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleSuccessToaster (response: any, method: HttpType) {
-    const successMessageObj = this.getSuccessMessageKey(response.url,
-      response.status,
-      method);
+    const successMessageObj = this.getSuccessMessageKey(response.url, response.status, method);
     if (!successMessageObj) return;
 
     let messageKey = successMessageObj.key;
@@ -64,8 +59,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       messageKey += "_BACKLOG";
     }
     const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + messageKey);
-    this.toasterService.showCustomToaster(message,
-      successMessageObj.toasterType);
+    this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 
   getSuccessMessageKey (url: string, statusCode: number, method: HttpType) {

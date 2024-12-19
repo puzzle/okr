@@ -19,56 +19,52 @@ const checkInService = {
   getAllCheckInOfKeyResult: jest.fn()
 };
 
-describe("CheckInHistoryDialogComponent",
-  () => {
-    let component: CheckInHistoryDialogComponent;
-    let fixture: ComponentFixture<CheckInHistoryDialogComponent>;
+describe("CheckInHistoryDialogComponent", () => {
+  let component: CheckInHistoryDialogComponent;
+  let fixture: ComponentFixture<CheckInHistoryDialogComponent>;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [CheckInHistoryDialogComponent,
-          DialogTemplateCoreComponent,
-          SpinnerComponent],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CheckInHistoryDialogComponent,
+        DialogTemplateCoreComponent,
+        SpinnerComponent],
 
-        imports: [
-          TranslateModule.forRoot(),
-          MatIconModule,
-          MatProgressSpinner,
-          MatDividerModule,
-          MatDialogModule
-        ],
-        providers: [
-          provideRouter([]),
-          provideHttpClient(),
-          provideHttpClientTesting(),
-          TranslateService,
-          DialogService,
-          { provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: keyResult } },
-          { provide: MatDialogRef,
-            useValue: {} }
-        ]
-      });
-      jest
-        .spyOn(checkInService,
-          "getAllCheckInOfKeyResult")
-        .mockReturnValue([checkInMetric,
-          checkInMetricWriteableFalse]);
-      fixture = TestBed.createComponent(CheckInHistoryDialogComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+      imports: [
+        TranslateModule.forRoot(),
+        MatIconModule,
+        MatProgressSpinner,
+        MatDividerModule,
+        MatDialogModule
+      ],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        TranslateService,
+        DialogService,
+        { provide: MAT_DIALOG_DATA,
+          useValue: { keyResult: keyResult } },
+        { provide: MatDialogRef,
+          useValue: {} }
+      ]
     });
-
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
-
-    it.skip("should not display edit check-in button if writeable is false",
-      async () => {
-        const buttons = fixture.debugElement.queryAll(By.css("button"));
-        expect(buttons.length)
-          .toBe(1);
-      });
+    jest
+      .spyOn(checkInService, "getAllCheckInOfKeyResult")
+      .mockReturnValue([checkInMetric,
+        checkInMetricWriteableFalse]);
+    fixture = TestBed.createComponent(CheckInHistoryDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
+
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it.skip("should not display edit check-in button if writeable is false", async () => {
+    const buttons = fixture.debugElement.queryAll(By.css("button"));
+    expect(buttons.length)
+      .toBe(1);
+  });
+});

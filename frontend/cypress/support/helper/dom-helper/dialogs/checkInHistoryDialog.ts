@@ -27,8 +27,7 @@ export default class CheckInHistoryDialog extends Dialog {
     cy.get("mat-dialog-container")
       .contains(value)
       .parent()
-      .should("contain",
-        title);
+      .should("contain", title);
     return this;
   }
 }

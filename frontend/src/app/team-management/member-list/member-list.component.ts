@@ -48,10 +48,8 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       .subscribe(([users,
         teamIdParam,
         teams]) => {
-        this.setSelectedTeam(teams,
-          teamIdParam);
-        this.setDataSourceForTeamOrAll(users,
-          teamIdParam);
+        this.setSelectedTeam(teams, teamIdParam);
+        this.setDataSourceForTeamOrAll(users, teamIdParam);
       });
   }
 
@@ -76,20 +74,17 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       this.cd.markForCheck();
       return;
     }
-    this.setDataSourceForTeam(teamIdParam,
-      users);
+    this.setDataSourceForTeam(teamIdParam, users);
     this.cd.markForCheck();
   }
 
   private setDataSourceForAllTeams (users: User[]) {
-    this.dataSource.data = convertFromUsers(users,
-      null);
+    this.dataSource.data = convertFromUsers(users, null);
   }
 
   private setDataSourceForTeam (teamIdParam: string, users: User[]) {
     const teamId = parseInt(teamIdParam);
-    this.dataSource.data = convertFromUsers(users,
-      teamId);
+    this.dataSource.data = convertFromUsers(users, teamId);
   }
 
   deleteTeam (selectedTeam: Team) {
@@ -98,11 +93,9 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
     };
 
     this.dialogService
-      .openConfirmDialog("CONFIRMATION.DELETE.TEAM",
-        data)
+      .openConfirmDialog("CONFIRMATION.DELETE.TEAM", data)
       .afterClosed()
-      .pipe(filter((confirm) => confirm),
-        mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -112,13 +105,12 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   }
 
   addMemberToTeam () {
-    const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent,
-      {
-        data: {
-          team: this.selectedTeam$.value,
-          currentUsersOfTeam: this.dataSource.data
-        }
-      });
+    const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
+      data: {
+        team: this.selectedTeam$.value,
+        currentUsersOfTeam: this.dataSource.data
+      }
+    });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());
   }
@@ -138,8 +130,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   }
 
   editTeam (): void {
-    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent,
-      { data: { team: this.selectedTeam$.value } });
+    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent, { data: { team: this.selectedTeam$.value } });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());
   }

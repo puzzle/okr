@@ -24,8 +24,7 @@ export class TeamManagementMobileFilterComponent {
       this.route.paramMap])
       .pipe(takeUntilDestroyed())
       .subscribe(([teams,
-        params]) => this.setTeamsAndSelectedTeam(teams,
-        params));
+        params]) => this.setTeamsAndSelectedTeam(teams, params));
   }
 
   navigate (team: Team | "alle") {

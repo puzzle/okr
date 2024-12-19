@@ -28,9 +28,7 @@ const dialogServiceMock = {
 };
 
 const routerMock = {
-  events: of(new NavigationEnd(1,
-    "",
-    "")),
+  events: of(new NavigationEnd(1, "", "")),
   navigateByUrl: jest.fn()
 };
 
@@ -42,77 +40,73 @@ const configServiceMock = {
   config$: of({})
 };
 
-describe("ApplicationTopBarComponent",
-  () => {
-    let component: ApplicationTopBarComponent;
-    let fixture: ComponentFixture<ApplicationTopBarComponent>;
-    let loader: HarnessLoader;
+describe("ApplicationTopBarComponent", () => {
+  let component: ApplicationTopBarComponent;
+  let fixture: ComponentFixture<ApplicationTopBarComponent>;
+  let loader: HarnessLoader;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [MatMenuModule,
-          NoopAnimationsModule,
-          MatDialogModule],
-        declarations: [ApplicationTopBarComponent],
-        providers: [
-          { provide: OAuthService,
-            useValue: oAuthMock },
-          { provide: HttpClient },
-          { provide: HttpHandler },
-          { provide: UrlHelperService },
-          { provide: OAuthLogger },
-          { provide: DateTimeProvider },
-          {
-            provide: DialogService,
-            useValue: dialogServiceMock
-          },
-          {
-            provide: Router,
-            useValue: routerMock
-          },
-          {
-            provide: UserService,
-            useValue: userServiceMock
-          },
-          {
-            provide: ConfigService,
-            useValue: configServiceMock
-          }
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      })
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [MatMenuModule,
+        NoopAnimationsModule,
+        MatDialogModule],
+      declarations: [ApplicationTopBarComponent],
+      providers: [
+        { provide: OAuthService,
+          useValue: oAuthMock },
+        { provide: HttpClient },
+        { provide: HttpHandler },
+        { provide: UrlHelperService },
+        { provide: OAuthLogger },
+        { provide: DateTimeProvider },
+        {
+          provide: DialogService,
+          useValue: dialogServiceMock
+        },
+        {
+          provide: Router,
+          useValue: routerMock
+        },
+        {
+          provide: UserService,
+          useValue: userServiceMock
+        },
+        {
+          provide: ConfigService,
+          useValue: configServiceMock
+        }
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+      .compileComponents();
 
-      fixture = TestBed.createComponent(ApplicationTopBarComponent);
-      component = fixture.componentInstance;
-      loader = TestbedHarnessEnvironment.loader(fixture);
-      component.ngOnInit();
-    });
+    fixture = TestBed.createComponent(ApplicationTopBarComponent);
+    component = fixture.componentInstance;
+    loader = TestbedHarnessEnvironment.loader(fixture);
+    component.ngOnInit();
+  });
 
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
 
-    it("should set full name from user service",
-      () => {
-        expect(component.userFullName)
-          .toBe("Bob Baumeister");
-      });
+  it("should set full name from user service", () => {
+    expect(component.userFullName)
+      .toBe("Bob Baumeister");
+  });
 
-    it("logout function should get called on button click",
-      async () => {
-        routerMock.navigateByUrl.mockReturnValue(of()
-          .toPromise());
-        const harness = await loader.getHarness(MatMenuHarness);
-        await harness.open();
-        fixture.detectChanges();
-        harness.getItems()
-          .then((items) => {
-            items[0].click();
-            expect(oAuthMock.logOut)
-              .toBeCalledTimes(1);
-          });
+  it("logout function should get called on button click", async () => {
+    routerMock.navigateByUrl.mockReturnValue(of()
+      .toPromise());
+    const harness = await loader.getHarness(MatMenuHarness);
+    await harness.open();
+    fixture.detectChanges();
+    harness.getItems()
+      .then((items) => {
+        items[0].click();
+        expect(oAuthMock.logOut)
+          .toBeCalledTimes(1);
       });
   });
+});

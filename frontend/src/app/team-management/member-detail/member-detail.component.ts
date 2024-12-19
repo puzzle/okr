@@ -48,11 +48,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit (): void {
     this.route.paramMap
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((params) => {
-          const id = this.getIdFromParams(params);
-          this.loadUser(id);
-        }))
+      .pipe(takeUntil(this.unsubscribe$), tap((params) => {
+        const id = this.getIdFromParams(params);
+        this.loadUser(id);
+      }))
       .subscribe();
   }
 
@@ -90,12 +89,9 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       team: userTeam.team.name
     };
     this.dialogService
-      .openConfirmDialog("CONFIRMATION.DELETE.USER_FROM_TEAM",
-        i18nData)
+      .openConfirmDialog("CONFIRMATION.DELETE.USER_FROM_TEAM", i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm),
-        mergeMap(() => this.teamService.removeUserFromTeam(user.id,
-          userTeam.team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)))
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
@@ -107,8 +103,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     // make a copy and set value of real object after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(user.id,
-      newUserTeam)
+    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam)
       .subscribe(() => {
         userTeam.isTeamAdmin = isAdmin;
         this.loadUser(user.id);
@@ -120,8 +115,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   addTeamMembership (userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService.updateOrAddTeamMembership(user.id,
-      userTeam)
+    this.teamService.updateOrAddTeamMembership(user.id, userTeam)
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
@@ -135,13 +129,11 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   navigateBack () {
-    this.router.navigate(["../"],
-      { relativeTo: this.route.parent });
+    this.router.navigate(["../"], { relativeTo: this.route.parent });
   }
 
   isOkrChampionChange (okrChampion: boolean, user: User) {
-    this.userService.setIsOkrChampion(user,
-      okrChampion)
+    this.userService.setIsOkrChampion(user, okrChampion)
       .subscribe(() => {
         this.loadUser(user.id);
         this.teamService.reloadTeams();

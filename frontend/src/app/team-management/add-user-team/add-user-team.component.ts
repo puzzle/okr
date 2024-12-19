@@ -29,21 +29,19 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     this.allAdminTeams$ = this.teamService.getAllTeams()
-      .pipe(takeUntil(this.unsubscribe$),
-        map((teams) => {
-          return teams.filter((t) => t.writeable);
-        }));
+      .pipe(takeUntil(this.unsubscribe$), map((teams) => {
+        return teams.filter((t) => t.writeable);
+      }));
 
     this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$,
       this.currentTeams$])
-      .pipe(takeUntil(this.unsubscribe$),
-        map(([allTeams,
-          userTeams]) => {
-          const currentTeamIds = userTeams.map((ut) => ut.team.id);
-          return allTeams.filter((t) => {
-            return !currentTeamIds.includes(t.id);
-          });
-        }));
+      .pipe(takeUntil(this.unsubscribe$), map(([allTeams,
+        userTeams]) => {
+        const currentTeamIds = userTeams.map((ut) => ut.team.id);
+        return allTeams.filter((t) => {
+          return !currentTeamIds.includes(t.id);
+        });
+      }));
   }
 
   ngOnDestroy () {

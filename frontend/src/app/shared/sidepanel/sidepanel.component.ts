@@ -49,8 +49,7 @@ export class SidepanelComponent implements AfterContentInit, OnDestroy {
   }
 
   close () {
-    this.router.navigate(["../"],
-      { relativeTo: this.route });
+    this.router.navigate(["../"], { relativeTo: this.route });
   }
 
   closeOnKeydown ($event: KeyboardEvent) {

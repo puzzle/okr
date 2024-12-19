@@ -46,8 +46,7 @@ export default class CyOverviewPage extends Page {
 
   addKeyResult (teamName?: string, objectiveName?: string) {
     if (teamName && objectiveName) {
-      this.getObjectiveByTeamAndName(teamName,
-        objectiveName)
+      this.getObjectiveByTeamAndName(teamName, objectiveName)
         .findByTestId("add-keyResult")
         .first()
         .click();
@@ -80,8 +79,7 @@ export default class CyOverviewPage extends Page {
   }
 
   getTeamByName (teamName: string) {
-    return cy.contains(".team-title",
-      teamName)
+    return cy.contains(".team-title", teamName)
       .parentsUntil("#overview")
       .last();
   }
@@ -92,8 +90,7 @@ export default class CyOverviewPage extends Page {
   }
 
   getObjectiveByNameAndState (objectiveName: string, state: string) {
-    this.getObjectivesByNameAndState(objectiveName,
-      state)
+    this.getObjectivesByNameAndState(objectiveName, state)
       .last()
       .as("objective")
       .scrollIntoView();
@@ -175,14 +172,12 @@ export default class CyOverviewPage extends Page {
       .scrollIntoView();
 
     cy.get("@option")
-      .should("have.class",
-        "objective-menu-option")
+      .should("have.class", "objective-menu-option")
       .click();
   }
 
   duplicateObjective (objectiveName: string) {
-    cy.intercept("GET",
-      "**/objectives/*/keyResults")
+    cy.intercept("GET", "**/objectives/*/keyResults")
       .as("keyResults");
     this.getObjectiveByName(objectiveName)
       .findByTestId("three-dot-menu")

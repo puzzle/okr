@@ -47,30 +47,18 @@ interface MatDialogDataInterface {
 const quarterService = {
   getAllQuarters (): Observable<Quarter[]> {
     return of([new Quarter(
-      1,
-      quarter.label,
-      quarter.startDate,
-      quarter.endDate
+      1, quarter.label, quarter.startDate, quarter.endDate
     ),
     new Quarter(
-      2,
-      quarter.label,
-      quarter.startDate,
-      quarter.endDate
+      2, quarter.label, quarter.startDate, quarter.endDate
     ),
     new Quarter(
-      999,
-      "Backlog",
-      null,
-      null
+      999, "Backlog", null, null
     )]);
   },
   getCurrentQuarter (): Observable<Quarter> {
     return of(new Quarter(
-      2,
-      quarter.label,
-      quarter.startDate,
-      quarter.endDate
+      2, quarter.label, quarter.startDate, quarter.endDate
     ));
   }
 };
@@ -110,435 +98,415 @@ const mockActivatedRoute = {
   }
 };
 
-describe("ObjectiveDialogComponent",
-  () => {
-    let component: ObjectiveFormComponent;
-    let fixture: ComponentFixture<ObjectiveFormComponent>;
-    let loader: HarnessLoader;
+describe("ObjectiveDialogComponent", () => {
+  let component: ObjectiveFormComponent;
+  let fixture: ComponentFixture<ObjectiveFormComponent>;
+  let loader: HarnessLoader;
 
-    describe("Normal Objective dialog",
-      () => {
-        beforeEach(() => {
-          TestBed.configureTestingModule({
-            imports: [
-              MatDialogModule,
-              MatIconModule,
-              MatFormFieldModule,
-              MatSelectModule,
-              ReactiveFormsModule,
-              MatInputModule,
-              NoopAnimationsModule,
-              MatCheckboxModule,
-              TranslateTestingModule.withTranslations({
-                de: de
-              }),
-              MatDividerModule
-            ],
-            declarations: [ObjectiveFormComponent,
-              DialogTemplateCoreComponent],
-            providers: [
-              provideRouter([]),
-              provideHttpClient(),
-              provideHttpClientTesting(),
-              { provide: MatDialogRef,
-                useValue: dialogMock },
-              { provide: MAT_DIALOG_DATA,
-                useValue: matDataMock },
-              { provide: ObjectiveService,
-                useValue: objectiveService },
-              { provide: QuarterService,
-                useValue: quarterService },
-              { provide: TeamService,
-                useValue: teamService }
-            ]
-          });
-          fixture = TestBed.createComponent(ObjectiveFormComponent);
-          component = fixture.componentInstance;
-          fixture.detectChanges();
-          loader = TestbedHarnessEnvironment.loader(fixture);
+  describe("Normal Objective dialog", () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          MatDialogModule,
+          MatIconModule,
+          MatFormFieldModule,
+          MatSelectModule,
+          ReactiveFormsModule,
+          MatInputModule,
+          NoopAnimationsModule,
+          MatCheckboxModule,
+          TranslateTestingModule.withTranslations({
+            de: de
+          }),
+          MatDividerModule
+        ],
+        declarations: [ObjectiveFormComponent,
+          DialogTemplateCoreComponent],
+        providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          { provide: MatDialogRef,
+            useValue: dialogMock },
+          { provide: MAT_DIALOG_DATA,
+            useValue: matDataMock },
+          { provide: ObjectiveService,
+            useValue: objectiveService },
+          { provide: QuarterService,
+            useValue: quarterService },
+          { provide: TeamService,
+            useValue: teamService }
+        ]
+      });
+      fixture = TestBed.createComponent(ObjectiveFormComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      loader = TestbedHarnessEnvironment.loader(fixture);
+    });
+
+    it("should create", () => {
+      expect(component)
+        .toBeTruthy();
+    });
+
+    it.each([["DRAFT"],
+      ["ONGOING"]])("onSubmit create", fakeAsync((state: string) => {
+      // Prepare data
+      const title = "title";
+      const description = "description";
+      const createKeyresults = true;
+      let quarter = 0;
+      let team = 0;
+      teamService.getAllTeams()
+        .subscribe((teams: { id: number }[]) => {
+          team = teams[0].id;
+        });
+      quarterService.getAllQuarters()
+        .subscribe((quarters) => {
+          quarter = quarters[1].id;
         });
 
-        it("should create",
-          () => {
-            expect(component)
-              .toBeTruthy();
-          });
+      // Get input elements and set values
+      const titleInput: HTMLInputElement = fixture.debugElement.query(By.css("[data-testId=\"title\"]")).nativeElement;
+      titleInput.value = title;
+      const descriptionInput: HTMLInputElement = fixture.debugElement.query(By.css("[data-testId=\"description\"]")).nativeElement;
+      descriptionInput.value = description;
+      loader.getHarness(MatCheckboxHarness)
+        .then((checkBox) => checkBox.check());
+      tick(200);
+      const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css("[data-testId=\"quarterSelect\"]")).nativeElement;
+      quarterSelect.value = quarter.toString();
+      // Trigger update of form
+      fixture.detectChanges();
+      titleInput.dispatchEvent(new Event("input"));
+      descriptionInput.dispatchEvent(new Event("input"));
+      quarterSelect.dispatchEvent(new Event("change"));
 
-        it.each([["DRAFT"],
-          ["ONGOING"]])("onSubmit create",
-          fakeAsync((state: string) => {
-            // Prepare data
-            const title = "title";
-            const description = "description";
-            const createKeyresults = true;
-            let quarter = 0;
-            let team = 0;
-            teamService.getAllTeams()
-              .subscribe((teams: { id: number }[]) => {
-                team = teams[0].id;
-              });
-            quarterService.getAllQuarters()
-              .subscribe((quarters) => {
-                quarter = quarters[1].id;
-              });
+      const rawFormValue = component.objectiveForm.getRawValue();
+      expect(rawFormValue.description)
+        .toBe(description);
+      expect(rawFormValue.quarter)
+        .toBe(quarter.toString());
+      expect(rawFormValue.team)
+        .toBe(team);
+      expect(rawFormValue.title)
+        .toBe(title);
+      expect(rawFormValue.createKeyResults)
+        .toBe(createKeyresults);
 
-            // Get input elements and set values
-            const titleInput: HTMLInputElement = fixture.debugElement.query(By.css("[data-testId=\"title\"]")).nativeElement;
-            titleInput.value = title;
-            const descriptionInput: HTMLInputElement = fixture.debugElement.query(By.css("[data-testId=\"description\"]")).nativeElement;
-            descriptionInput.value = description;
-            loader.getHarness(MatCheckboxHarness)
-              .then((checkBox) => checkBox.check());
-            tick(200);
-            const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css("[data-testId=\"quarterSelect\"]")).nativeElement;
-            quarterSelect.value = quarter.toString();
-            // Trigger update of form
-            fixture.detectChanges();
-            titleInput.dispatchEvent(new Event("input"));
-            descriptionInput.dispatchEvent(new Event("input"));
-            quarterSelect.dispatchEvent(new Event("change"));
+      objectiveService.createObjective.mockReturnValue(of({ ...objective,
+        state: state }));
+      component.onSubmit(state);
 
-            const rawFormValue = component.objectiveForm.getRawValue();
-            expect(rawFormValue.description)
-              .toBe(description);
-            expect(rawFormValue.quarter)
-              .toBe(quarter.toString());
-            expect(rawFormValue.team)
-              .toBe(team);
-            expect(rawFormValue.title)
-              .toBe(title);
-            expect(rawFormValue.createKeyResults)
-              .toBe(createKeyresults);
-
-            objectiveService.createObjective.mockReturnValue(of({ ...objective,
-              state: state }));
-            component.onSubmit(state);
-
-            expect(dialogMock.close)
-              .toHaveBeenCalledWith({
-                addKeyResult: createKeyresults,
-                delete: false,
-                objective: {
-                  description: description,
-                  id: 5,
-                  version: 1,
-                  quarterId: 2,
-                  quarterLabel: "GJ 22/23-Q2",
-                  state: State[state as keyof typeof State],
-                  teamId: 2,
-                  title: title,
-                  writeable: true
-                },
-                teamId: 1
-              });
-          }));
-
-        it("should create objective",
-          () => {
-            matDataMock.objective.objectiveId = undefined;
-            component.objectiveForm.setValue({
-              title: "Test title",
-              description: "Test description",
-              quarter: 0,
-              team: 0,
-              relation: 0,
-              createKeyResults: false,
-              keyResults: []
-            });
-
-            objectiveService.createObjective.mockReturnValue(of({ ...objective,
-              state: "DRAFT" }));
-            component.onSubmit("DRAFT");
-
-            fixture.detectChanges();
-
-            expect(objectiveService.createObjective)
-              .toHaveBeenCalledWith({
-                description: "Test description",
-                id: undefined,
-                state: "DRAFT",
-                title: "Test title",
-                quarterId: 0,
-                teamId: 0
-              });
-          });
-
-        it("should update objective",
-          () => {
-            matDataMock.objective.objectiveId = 1;
-            component.objectiveForm.setValue({
-              title: "Test title",
-              description: "Test description",
-              quarter: 1,
-              team: 1,
-              relation: 0,
-              createKeyResults: false,
-              keyResults: []
-            });
-
-            objectiveService.updateObjective.mockReturnValue(of({ ...objective,
-              state: "ONGOING" }));
-            component.onSubmit("DRAFT");
-
-            fixture.detectChanges();
-
-            expect(objectiveService.updateObjective)
-              .toHaveBeenCalledWith({
-                description: "Test description",
-                id: 1,
-                state: "DRAFT",
-                title: "Test title",
-                quarterId: 1,
-                teamId: 1
-              });
-          });
-
-        it("should load default values into form onInit with undefined objectiveId",
-          () => {
-            matDataMock.objective.objectiveId = undefined;
-            matDataMock.objective.teamId = 1;
-            component.ngOnInit();
-            const rawFormValue = component.objectiveForm.getRawValue();
-            const defaultComponent = component.getDefaultObjective();
-            expect(rawFormValue.title)
-              .toBe(defaultComponent.title);
-            expect(rawFormValue.description)
-              .toBe(defaultComponent.description);
-            expect(rawFormValue.team)
-              .toBe(matDataMock.objective.teamId);
-            quarterService.getAllQuarters()
-              .subscribe((quarters) => {
-                expect(rawFormValue.quarter)
-                  .toBe([quarters[0].id]);
-              });
-          });
-
-        it("should load default values into form onInit with defined objectiveId",
-          async () => {
-            matDataMock.objective.objectiveId = 1;
-            const routerHarness = await RouterTestingHarness.create();
-            await routerHarness.navigateByUrl("/?quarter=2");
-            objectiveService.getFullObjective.mockReturnValue(of(objective));
-            objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(keyResult));
-            component.ngOnInit();
-            const rawFormValue = component.objectiveForm.getRawValue();
-            expect(rawFormValue.title)
-              .toBe(objective.title);
-            expect(rawFormValue.description)
-              .toBe(objective.description);
-            expect(rawFormValue.team)
-              .toBe(objective.teamId);
-            expect(rawFormValue.quarter)
-              .toBe(objective.quarterId);
-          });
-
-        it("should set teams$ observable correctly on ngOnInit",
-          () => {
-            const mockTeams = [{ id: 1,
-              name: "Team A" },
-            { id: 2,
-              name: "Team B" }];
-            teamService.getAllTeams.mockReturnValue(of(mockTeams));
-
-            component.ngOnInit();
-
-            component.teams$.subscribe((teams: Team[]) => {
-              expect(teams)
-                .toEqual(mockTeams);
-            });
-          });
-
-        it("should set keyResults$ observable correctly when objectiveId is defined",
-          () => {
-            const mockKeyResults = [{ id: 1,
-              name: "Key Result A" }];
-            matDataMock.objective.objectiveId = 1;
-            objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(mockKeyResults));
-
-            component.ngOnInit();
-
-            component.keyResults$.subscribe((keyResults) => {
-              expect(keyResults)
-                .toEqual(mockKeyResults);
-            });
-          });
-
-        it("should return correct value if allowed to save to backlog",
-          async () => {
-            component.quarters = quarterList;
-            const isBacklogQuarterSpy = jest.spyOn(component,
-              "isBacklogQuarter");
-            isBacklogQuarterSpy.mockReturnValue(false);
-
-            component.data.action = "duplicate";
-            fixture.detectChanges();
-            expect(component.allowedToSaveBacklog())
-              .toBeTruthy();
-
-            component.objectiveForm.controls.quarter.setValue(999);
-            component.data.action = "";
-            component.data.objective.objectiveId = 5;
-            component.state = "DRAFT";
-            fixture.detectChanges();
-            expect(component.allowedToSaveBacklog())
-              .toBeTruthy();
-
-            component.state = "ONGOING";
-            fixture.detectChanges();
-            expect(component.allowedToSaveBacklog())
-              .toBeFalsy();
-
-            component.objectiveForm.controls.quarter.setValue(2);
-            isBacklogQuarterSpy.mockReturnValue(true);
-            fixture.detectChanges();
-            expect(component.allowedToSaveBacklog())
-              .toBeTruthy();
-
-            component.objectiveForm.controls.quarter.setValue(999);
-            component.data.objective.objectiveId = undefined;
-            isBacklogQuarterSpy.mockReturnValue(false);
-            fixture.detectChanges();
-            expect(component.allowedToSaveBacklog())
-              .toBeFalsy();
-
-            component.objectiveForm.controls.quarter.setValue(2);
-            isBacklogQuarterSpy.mockReturnValue(true);
-            fixture.detectChanges();
-            expect(component.allowedToSaveBacklog())
-              .toBeTruthy();
-          });
-
-        it("should return if option is allowed for quarter select",
-          async () => {
-            const quarter: Quarter = new Quarter(
-              1,
-              "Backlog",
-              null,
-              null
-            );
-
-            const data = {
-              action: "duplicate",
-              objective: {
-                objectiveId: 22
-              }
-            };
-            component.data = data;
-            component.state = "DRAFT";
-            fixture.detectChanges();
-
-            expect(component.allowedOption(quarter))
-              .toBeTruthy();
-
-            expect(component.allowedOption(quarter))
-              .toBeTruthy();
-            data.action = "releaseBacklog";
-            fixture.detectChanges();
-            expect(component.allowedOption(quarter))
-              .toBeFalsy();
-
-            data.action = "edit";
-            fixture.detectChanges();
-
-            expect(component.allowedOption(quarter))
-              .toBeTruthy();
-
-            component.state = "ONGOING";
-            fixture.detectChanges();
-            expect(component.allowedOption(quarter))
-              .toBeFalsy();
-
-            component.data = {
-              action: "duplicate",
-              objective: {}
-            };
-
-            fixture.detectChanges();
-            expect(component.allowedOption(quarter))
-              .toBeTruthy();
-          });
-      });
-
-    describe("Backlog quarter",
-      () => {
-        beforeEach(() => {
-          TestBed.configureTestingModule({
-            imports: [
-              MatDialogModule,
-              MatIconModule,
-              MatFormFieldModule,
-              MatSelectModule,
-              ReactiveFormsModule,
-              MatInputModule,
-              NoopAnimationsModule,
-              MatCheckboxModule,
-              TranslateTestingModule.withTranslations({
-                de: de
-              }),
-              MatDividerModule
-            ],
-            declarations: [ObjectiveFormComponent,
-              DialogTemplateCoreComponent],
-            providers: [
-              provideRouter([]),
-              provideHttpClient(),
-              provideHttpClientTesting(),
-              { provide: MatDialogRef,
-                useValue: dialogMock },
-              { provide: MAT_DIALOG_DATA,
-                useValue: matDataMock },
-              { provide: ObjectiveService,
-                useValue: objectiveService },
-              { provide: QuarterService,
-                useValue: quarterService },
-              { provide: TeamService,
-                useValue: teamService },
-              { provide: ActivatedRoute,
-                useValue: mockActivatedRoute }
-            ]
-          });
-          fixture = TestBed.createComponent(ObjectiveFormComponent);
-          component = fixture.componentInstance;
-          fixture.detectChanges();
-          loader = TestbedHarnessEnvironment.loader(fixture);
+      expect(dialogMock.close)
+        .toHaveBeenCalledWith({
+          addKeyResult: createKeyresults,
+          delete: false,
+          objective: {
+            description: description,
+            id: 5,
+            version: 1,
+            quarterId: 2,
+            quarterLabel: "GJ 22/23-Q2",
+            state: State[state as keyof typeof State],
+            teamId: 2,
+            title: title,
+            writeable: true
+          },
+          teamId: 1
         });
+    }));
 
-        it("should create",
-          () => {
-            expect(component)
-              .toBeTruthy();
-          });
-
-        it("should set correct default value if objective is released in backlog",
-          async () => {
-            component.data = {
-              objective: {
-                objectiveId: 1,
-                teamId: 1
-              },
-              action: "releaseBacklog"
-            };
-
-            const isBacklogQuarterSpy = jest.spyOn(component,
-              "isBacklogQuarter");
-            isBacklogQuarterSpy.mockReturnValue(false);
-
-            const routerHarness = await RouterTestingHarness.create();
-            await routerHarness.navigateByUrl("/?quarter=999");
-            objectiveService.getFullObjective.mockReturnValue(of(objective));
-            fixture.detectChanges();
-            component.ngOnInit();
-
-            const rawFormValue = component.objectiveForm.getRawValue();
-            expect(rawFormValue.title)
-              .toBe(objective.title);
-            expect(rawFormValue.description)
-              .toBe(objective.description);
-            expect(rawFormValue.team)
-              .toBe(objective.teamId);
-            expect(rawFormValue.quarter).not.toBe(999);
-            expect(rawFormValue.quarter)
-              .toBe(2);
-          });
+    it("should create objective", () => {
+      matDataMock.objective.objectiveId = undefined;
+      component.objectiveForm.setValue({
+        title: "Test title",
+        description: "Test description",
+        quarter: 0,
+        team: 0,
+        relation: 0,
+        createKeyResults: false,
+        keyResults: []
       });
+
+      objectiveService.createObjective.mockReturnValue(of({ ...objective,
+        state: "DRAFT" }));
+      component.onSubmit("DRAFT");
+
+      fixture.detectChanges();
+
+      expect(objectiveService.createObjective)
+        .toHaveBeenCalledWith({
+          description: "Test description",
+          id: undefined,
+          state: "DRAFT",
+          title: "Test title",
+          quarterId: 0,
+          teamId: 0
+        });
+    });
+
+    it("should update objective", () => {
+      matDataMock.objective.objectiveId = 1;
+      component.objectiveForm.setValue({
+        title: "Test title",
+        description: "Test description",
+        quarter: 1,
+        team: 1,
+        relation: 0,
+        createKeyResults: false,
+        keyResults: []
+      });
+
+      objectiveService.updateObjective.mockReturnValue(of({ ...objective,
+        state: "ONGOING" }));
+      component.onSubmit("DRAFT");
+
+      fixture.detectChanges();
+
+      expect(objectiveService.updateObjective)
+        .toHaveBeenCalledWith({
+          description: "Test description",
+          id: 1,
+          state: "DRAFT",
+          title: "Test title",
+          quarterId: 1,
+          teamId: 1
+        });
+    });
+
+    it("should load default values into form onInit with undefined objectiveId", () => {
+      matDataMock.objective.objectiveId = undefined;
+      matDataMock.objective.teamId = 1;
+      component.ngOnInit();
+      const rawFormValue = component.objectiveForm.getRawValue();
+      const defaultComponent = component.getDefaultObjective();
+      expect(rawFormValue.title)
+        .toBe(defaultComponent.title);
+      expect(rawFormValue.description)
+        .toBe(defaultComponent.description);
+      expect(rawFormValue.team)
+        .toBe(matDataMock.objective.teamId);
+      quarterService.getAllQuarters()
+        .subscribe((quarters) => {
+          expect(rawFormValue.quarter)
+            .toBe([quarters[0].id]);
+        });
+    });
+
+    it("should load default values into form onInit with defined objectiveId", async () => {
+      matDataMock.objective.objectiveId = 1;
+      const routerHarness = await RouterTestingHarness.create();
+      await routerHarness.navigateByUrl("/?quarter=2");
+      objectiveService.getFullObjective.mockReturnValue(of(objective));
+      objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(keyResult));
+      component.ngOnInit();
+      const rawFormValue = component.objectiveForm.getRawValue();
+      expect(rawFormValue.title)
+        .toBe(objective.title);
+      expect(rawFormValue.description)
+        .toBe(objective.description);
+      expect(rawFormValue.team)
+        .toBe(objective.teamId);
+      expect(rawFormValue.quarter)
+        .toBe(objective.quarterId);
+    });
+
+    it("should set teams$ observable correctly on ngOnInit", () => {
+      const mockTeams = [{ id: 1,
+        name: "Team A" },
+      { id: 2,
+        name: "Team B" }];
+      teamService.getAllTeams.mockReturnValue(of(mockTeams));
+
+      component.ngOnInit();
+
+      component.teams$.subscribe((teams: Team[]) => {
+        expect(teams)
+          .toEqual(mockTeams);
+      });
+    });
+
+    it("should set keyResults$ observable correctly when objectiveId is defined", () => {
+      const mockKeyResults = [{ id: 1,
+        name: "Key Result A" }];
+      matDataMock.objective.objectiveId = 1;
+      objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(mockKeyResults));
+
+      component.ngOnInit();
+
+      component.keyResults$.subscribe((keyResults) => {
+        expect(keyResults)
+          .toEqual(mockKeyResults);
+      });
+    });
+
+    it("should return correct value if allowed to save to backlog", async () => {
+      component.quarters = quarterList;
+      const isBacklogQuarterSpy = jest.spyOn(component, "isBacklogQuarter");
+      isBacklogQuarterSpy.mockReturnValue(false);
+
+      component.data.action = "duplicate";
+      fixture.detectChanges();
+      expect(component.allowedToSaveBacklog())
+        .toBeTruthy();
+
+      component.objectiveForm.controls.quarter.setValue(999);
+      component.data.action = "";
+      component.data.objective.objectiveId = 5;
+      component.state = "DRAFT";
+      fixture.detectChanges();
+      expect(component.allowedToSaveBacklog())
+        .toBeTruthy();
+
+      component.state = "ONGOING";
+      fixture.detectChanges();
+      expect(component.allowedToSaveBacklog())
+        .toBeFalsy();
+
+      component.objectiveForm.controls.quarter.setValue(2);
+      isBacklogQuarterSpy.mockReturnValue(true);
+      fixture.detectChanges();
+      expect(component.allowedToSaveBacklog())
+        .toBeTruthy();
+
+      component.objectiveForm.controls.quarter.setValue(999);
+      component.data.objective.objectiveId = undefined;
+      isBacklogQuarterSpy.mockReturnValue(false);
+      fixture.detectChanges();
+      expect(component.allowedToSaveBacklog())
+        .toBeFalsy();
+
+      component.objectiveForm.controls.quarter.setValue(2);
+      isBacklogQuarterSpy.mockReturnValue(true);
+      fixture.detectChanges();
+      expect(component.allowedToSaveBacklog())
+        .toBeTruthy();
+    });
+
+    it("should return if option is allowed for quarter select", async () => {
+      const quarter: Quarter = new Quarter(
+        1, "Backlog", null, null
+      );
+
+      const data = {
+        action: "duplicate",
+        objective: {
+          objectiveId: 22
+        }
+      };
+      component.data = data;
+      component.state = "DRAFT";
+      fixture.detectChanges();
+
+      expect(component.allowedOption(quarter))
+        .toBeTruthy();
+
+      expect(component.allowedOption(quarter))
+        .toBeTruthy();
+      data.action = "releaseBacklog";
+      fixture.detectChanges();
+      expect(component.allowedOption(quarter))
+        .toBeFalsy();
+
+      data.action = "edit";
+      fixture.detectChanges();
+
+      expect(component.allowedOption(quarter))
+        .toBeTruthy();
+
+      component.state = "ONGOING";
+      fixture.detectChanges();
+      expect(component.allowedOption(quarter))
+        .toBeFalsy();
+
+      component.data = {
+        action: "duplicate",
+        objective: {}
+      };
+
+      fixture.detectChanges();
+      expect(component.allowedOption(quarter))
+        .toBeTruthy();
+    });
   });
+
+  describe("Backlog quarter", () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          MatDialogModule,
+          MatIconModule,
+          MatFormFieldModule,
+          MatSelectModule,
+          ReactiveFormsModule,
+          MatInputModule,
+          NoopAnimationsModule,
+          MatCheckboxModule,
+          TranslateTestingModule.withTranslations({
+            de: de
+          }),
+          MatDividerModule
+        ],
+        declarations: [ObjectiveFormComponent,
+          DialogTemplateCoreComponent],
+        providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          { provide: MatDialogRef,
+            useValue: dialogMock },
+          { provide: MAT_DIALOG_DATA,
+            useValue: matDataMock },
+          { provide: ObjectiveService,
+            useValue: objectiveService },
+          { provide: QuarterService,
+            useValue: quarterService },
+          { provide: TeamService,
+            useValue: teamService },
+          { provide: ActivatedRoute,
+            useValue: mockActivatedRoute }
+        ]
+      });
+      fixture = TestBed.createComponent(ObjectiveFormComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      loader = TestbedHarnessEnvironment.loader(fixture);
+    });
+
+    it("should create", () => {
+      expect(component)
+        .toBeTruthy();
+    });
+
+    it("should set correct default value if objective is released in backlog", async () => {
+      component.data = {
+        objective: {
+          objectiveId: 1,
+          teamId: 1
+        },
+        action: "releaseBacklog"
+      };
+
+      const isBacklogQuarterSpy = jest.spyOn(component, "isBacklogQuarter");
+      isBacklogQuarterSpy.mockReturnValue(false);
+
+      const routerHarness = await RouterTestingHarness.create();
+      await routerHarness.navigateByUrl("/?quarter=999");
+      objectiveService.getFullObjective.mockReturnValue(of(objective));
+      fixture.detectChanges();
+      component.ngOnInit();
+
+      const rawFormValue = component.objectiveForm.getRawValue();
+      expect(rawFormValue.title)
+        .toBe(objective.title);
+      expect(rawFormValue.description)
+        .toBe(objective.description);
+      expect(rawFormValue.team)
+        .toBe(objective.teamId);
+      expect(rawFormValue.quarter).not.toBe(999);
+      expect(rawFormValue.quarter)
+        .toBe(2);
+    });
+  });
+});

@@ -27,19 +27,16 @@ export class MetricCheckInDirective implements ControlValueAccessor {
     // does not need to be implemented
   }
 
-  @HostListener("input",
-    ["$event.target.value"])
+  @HostListener("input", ["$event.target.value"])
   handleInput (param: string): void {
     const value: string = param || "0";
     if (value.toString()
       .at(0) == "-") {
       this.onChange(+("-" + value.toString()
-        .replace(this.CHAR_REGEX,
-          "")));
+        .replace(this.CHAR_REGEX, "")));
       return;
     }
     this.onChange(Number(value.toString()
-      .replace(this.CHAR_REGEX,
-        "")));
+      .replace(this.CHAR_REGEX, "")));
   }
 }

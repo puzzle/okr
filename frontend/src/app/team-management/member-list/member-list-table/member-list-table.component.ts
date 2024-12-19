@@ -72,12 +72,9 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
       team: this.selectedTeam$.value?.name
     };
     this.dialogService
-      .openConfirmDialog("CONFIRMATION.DELETE.USER_FROM_TEAM",
-        i18nData)
+      .openConfirmDialog("CONFIRMATION.DELETE.USER_FROM_TEAM", i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm),
-        mergeMap(() => this.teamService.removeUserFromTeam(entry.id,
-          this.selectedTeam$.value as Team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam$.value as Team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -89,8 +86,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     // make a copy and set value only after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(userTableEntry.id,
-      newUserTeam)
+    this.teamService.updateOrAddTeamMembership(userTableEntry.id, newUserTeam)
       .subscribe(() => {
         userTeam.isTeamAdmin = isAdmin;
         this.userService.reloadUsers();
@@ -100,8 +96,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   }
 
   getMemberDetailsLink (user: User, team?: Team) {
-    return getRouteToUserDetails(user.id,
-      team?.id);
+    return getRouteToUserDetails(user.id, team?.id);
   }
 
   /*

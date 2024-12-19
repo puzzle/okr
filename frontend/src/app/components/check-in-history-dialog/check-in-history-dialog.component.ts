@@ -40,13 +40,12 @@ export class CheckInHistoryDialogComponent implements OnInit {
   }
 
   openCheckInDialogForm (checkIn: CheckInMin) {
-    const dialogRef = this.dialogService.open(CheckInFormComponent,
-      {
-        data: {
-          keyResult: this.keyResult,
-          checkIn: checkIn
-        }
-      });
+    const dialogRef = this.dialogService.open(CheckInFormComponent, {
+      data: {
+        keyResult: this.keyResult,
+        checkIn: checkIn
+      }
+    });
     dialogRef.afterClosed()
       .subscribe(() => {
         this.loadCheckInHistory();

@@ -34,99 +34,92 @@ const teamServiceMock = {
   deleteTeam: jest.fn()
 };
 
-describe("TeamManagementComponent",
-  () => {
-    let component: AddEditTeamDialogComponent;
-    let fixture: ComponentFixture<AddEditTeamDialogComponent>;
+describe("TeamManagementComponent", () => {
+  let component: AddEditTeamDialogComponent;
+  let fixture: ComponentFixture<AddEditTeamDialogComponent>;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatDialogModule,
-          MatIconModule,
-          MatFormFieldModule,
-          MatSelectModule,
-          ReactiveFormsModule,
-          MatInputModule,
-          NoopAnimationsModule,
-          MatCheckboxModule,
-          MatDividerModule
-        ],
-        declarations: [AddEditTeamDialogComponent,
-          DialogTemplateCoreComponent],
-        providers: [
-          provideRouter([]),
-          provideHttpClient(),
-          provideHttpClientTesting(),
-          {
-            provide: DialogService,
-            useValue: dialogServiceMock
-          },
-          {
-            provide: MatDialogRef,
-            useValue: dialogRefMock
-          },
-          {
-            provide: TeamService,
-            useValue: teamServiceMock
-          },
-          {
-            provide: MAT_DIALOG_DATA,
-            useValue: null
-          },
-          { provide: TranslateService,
-            useValue: {} }
-        ]
-      });
-      fixture = TestBed.createComponent(AddEditTeamDialogComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatDialogModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        NoopAnimationsModule,
+        MatCheckboxModule,
+        MatDividerModule
+      ],
+      declarations: [AddEditTeamDialogComponent,
+        DialogTemplateCoreComponent],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {
+          provide: DialogService,
+          useValue: dialogServiceMock
+        },
+        {
+          provide: MatDialogRef,
+          useValue: dialogRefMock
+        },
+        {
+          provide: TeamService,
+          useValue: teamServiceMock
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: null
+        },
+        { provide: TranslateService,
+          useValue: {} }
+      ]
     });
-
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
-
-    it("should call service method to save team",
-      async () => {
-        component.teamForm.setValue(teamFormObject);
-        jest.spyOn(teamServiceMock,
-          "createTeam")
-          .mockReturnValue(of(teamFormObject));
-        fixture.detectChanges();
-        component.saveTeam();
-        expect(teamServiceMock.createTeam)
-          .toHaveBeenCalled();
-        expect(teamServiceMock.createTeam)
-          .toHaveBeenCalledWith(teamFormObject as Team);
-      });
-
-    it("should call service method to update team if data input is not null",
-      async () => {
-        component.data = { team: marketingTeamWriteable };
-        component.teamForm.setValue(teamFormObject);
-        jest.spyOn(teamServiceMock,
-          "updateTeam")
-          .mockReturnValue(of(teamFormObject));
-        fixture.detectChanges();
-        component.saveTeam();
-        expect(teamServiceMock.updateTeam)
-          .toHaveBeenCalled();
-        expect(teamServiceMock.updateTeam)
-          .toHaveBeenCalledWith({
-            ...teamFormObject,
-            id: marketingTeamWriteable.id,
-            version: marketingTeamWriteable.version
-          } as Team);
-      });
-
-    it("should set team values in from on init if data is not null",
-      async () => {
-        component.data = { team: marketingTeamWriteable };
-        component.ngOnInit();
-        expect(component.teamForm.controls.name.value)
-          .toBe(marketingTeamWriteable.name);
-      });
+    fixture = TestBed.createComponent(AddEditTeamDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
+
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it("should call service method to save team", async () => {
+    component.teamForm.setValue(teamFormObject);
+    jest.spyOn(teamServiceMock, "createTeam")
+      .mockReturnValue(of(teamFormObject));
+    fixture.detectChanges();
+    component.saveTeam();
+    expect(teamServiceMock.createTeam)
+      .toHaveBeenCalled();
+    expect(teamServiceMock.createTeam)
+      .toHaveBeenCalledWith(teamFormObject as Team);
+  });
+
+  it("should call service method to update team if data input is not null", async () => {
+    component.data = { team: marketingTeamWriteable };
+    component.teamForm.setValue(teamFormObject);
+    jest.spyOn(teamServiceMock, "updateTeam")
+      .mockReturnValue(of(teamFormObject));
+    fixture.detectChanges();
+    component.saveTeam();
+    expect(teamServiceMock.updateTeam)
+      .toHaveBeenCalled();
+    expect(teamServiceMock.updateTeam)
+      .toHaveBeenCalledWith({
+        ...teamFormObject,
+        id: marketingTeamWriteable.id,
+        version: marketingTeamWriteable.version
+      } as Team);
+  });
+
+  it("should set team values in from on init if data is not null", async () => {
+    component.data = { team: marketingTeamWriteable };
+    component.ngOnInit();
+    expect(component.teamForm.controls.name.value)
+      .toBe(marketingTeamWriteable.name);
+  });
+});

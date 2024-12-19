@@ -5,14 +5,12 @@ import Chainable = Cypress.Chainable;
 
 export default class KeyResultDialog extends Dialog {
   fillKeyResultTitle (title: string) {
-    this.fillInputByTestId("titleInput",
-      title);
+    this.fillInputByTestId("titleInput", title);
     return this;
   }
 
   fillKeyResultDescription (description: string) {
-    this.fillInputByTestId("descriptionInput",
-      description);
+    this.fillInputByTestId("descriptionInput", description);
     return this;
   }
 
@@ -21,28 +19,22 @@ export default class KeyResultDialog extends Dialog {
       .click();
     cy.getByTestId("unit")
       .select(unit);
-    this.fillInputByTestId("baseline",
-      baseline);
-    this.fillInputByTestId("stretchGoal",
-      stretchGoal);
+    this.fillInputByTestId("baseline", baseline);
+    this.fillInputByTestId("stretchGoal", stretchGoal);
     return this;
   }
 
   withOrdinalValues (commitZone: string, targetZone: string, stretchGoal: string) {
     cy.getByTestId("ordinalTab")
       .click();
-    this.fillInputByTestId("commitZone",
-      commitZone);
-    this.fillInputByTestId("targetZone",
-      targetZone);
-    this.fillInputByTestId("stretchZone",
-      stretchGoal);
+    this.fillInputByTestId("commitZone", commitZone);
+    this.fillInputByTestId("targetZone", targetZone);
+    this.fillInputByTestId("stretchZone", stretchGoal);
     return this;
   }
 
   fillOwner (owner: string) {
-    this.fillInputByTestId("ownerInput",
-      owner);
+    this.fillInputByTestId("ownerInput", owner);
     cy.realPress("ArrowDown")
       .realPress("Enter");
     return this;

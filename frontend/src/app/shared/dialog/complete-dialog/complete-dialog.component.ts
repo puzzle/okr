@@ -11,10 +11,8 @@ import { TranslateService } from "@ngx-translate/core";
 })
 export class CompleteDialogComponent {
   completeForm = new FormGroup({
-    isSuccessful: new FormControl<boolean | null>(null,
-      [Validators.required]),
-    comment: new FormControl<string | null>(null,
-      [Validators.maxLength(4096)])
+    isSuccessful: new FormControl<boolean | null>(null, [Validators.required]),
+    comment: new FormControl<string | null>(null, [Validators.maxLength(4096)])
   });
 
   protected readonly formInputCheck = formInputCheck;

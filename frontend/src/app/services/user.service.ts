@@ -56,8 +56,7 @@ export class UserService {
   }
 
   setIsOkrChampion (user: User, isOkrChampion: boolean) {
-    return this.httpClient.put(`${this.API_URL}/${user.id}/isokrchampion/${isOkrChampion}`,
-      {})
+    return this.httpClient.put(`${this.API_URL}/${user.id}/isokrchampion/${isOkrChampion}`, {})
       .pipe(tap(() => {
         this.reloadUsers();
         this.reloadCurrentUser()
@@ -66,24 +65,20 @@ export class UserService {
   }
 
   createUsers (userList: NewUser[]) {
-    return this.httpClient.post<User>(`${this.API_URL}/createall`,
-      userList)
+    return this.httpClient.post<User>(`${this.API_URL}/createall`, userList)
       .pipe(tap(() => this.reloadUsers()));
   }
 
   deleteUser (user: User) {
-    return this.httpClient.delete<void>(`${this.API_URL}/${user.id}`,
-      {})
+    return this.httpClient.delete<void>(`${this.API_URL}/${user.id}`, {})
       .pipe(tap(() => this.reloadUsers()));
   }
 
   getUserOkrData (user: User): Observable<UserOkrData> {
-    return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`,
-      {});
+    return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`, {});
   }
 
   isUserMemberOfTeams (user: User): Observable<boolean> {
-    return this.httpClient.get<boolean>(`${this.API_URL}/${user.id}/ismemberofteams`,
-      {});
+    return this.httpClient.get<boolean>(`${this.API_URL}/${user.id}/ismemberofteams`, {});
   }
 }

@@ -1,6 +1,5 @@
 export function filterByKeyResultName (keyResultName: string) {
-  return (index: number, element: HTMLElement) => isKeyResultName(element,
-    keyResultName);
+  return (index: number, element: HTMLElement) => isKeyResultName(element, keyResultName);
 }
 
 const isKeyResultName = (element: HTMLElement, keyResultName: string) => {

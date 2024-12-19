@@ -1,10 +1,17 @@
 package ch.puzzle.okr.deserializer;
 
+import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+
 import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
 import ch.puzzle.okr.test.TestHelper;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,16 +21,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.stream.Stream;
-
-import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultDeserializerTest {
@@ -61,8 +58,8 @@ class KeyResultDeserializerTest {
     }
 
     private static Stream<Arguments> keyResultTypes() {
-        return Stream.of(Arguments.of(KEY_RESULT_METRIC_JSON, "metric"),
-                Arguments.of(KEY_RESULT_ORDINAL_JSON, "ordinal"));
+        return Stream
+                .of(Arguments.of(KEY_RESULT_METRIC_JSON, "metric"), Arguments.of(KEY_RESULT_ORDINAL_JSON, "ordinal"));
     }
 
     @DisplayName("deserialize() should call helper with correct params")

@@ -1,12 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.CHECK_IN;
+
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.repository.CheckInRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-
-import static ch.puzzle.okr.Constants.CHECK_IN;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long, CheckInRepository> {
@@ -16,9 +15,7 @@ public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long, Ch
     }
 
     @Override
-    public String getModelName() {
-        return CHECK_IN;
-    }
+    public String getModelName() { return CHECK_IN; }
 
     public List<CheckIn> getCheckInsByKeyResultIdOrderByCheckInDateDesc(Long keyResultId) {
         return getRepository().findCheckInsByKeyResultIdOrderByCreatedOnDesc(keyResultId);

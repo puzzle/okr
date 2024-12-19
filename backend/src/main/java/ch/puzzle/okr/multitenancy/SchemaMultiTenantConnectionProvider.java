@@ -1,19 +1,18 @@
 package ch.puzzle.okr.multitenancy;
 
+import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
+
 import ch.puzzle.okr.exception.ConnectionProviderException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.util.*;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.MessageFormat;
-import java.util.*;
-
-import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
 
 public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
 
@@ -45,9 +44,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     @Override
-    protected ConnectionProvider getAnyConnectionProvider() {
-        return getConnectionProvider(DEFAULT_TENANT_ID);
-    }
+    protected ConnectionProvider getAnyConnectionProvider() { return getConnectionProvider(DEFAULT_TENANT_ID); }
 
     @Override
     protected ConnectionProvider selectConnectionProvider(String tenantIdentifier) {
@@ -55,24 +52,27 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     protected ConnectionProvider getConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier) //
+        return Optional
+                .ofNullable(tenantIdentifier) //
                 .map(connectionProviderMap::get) //
                 .orElseGet(() -> createNewConnectionProvider(tenantIdentifier));
     }
 
     private ConnectionProvider createNewConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier) //
+        return Optional
+                .ofNullable(tenantIdentifier) //
                 .map(this::createConnectionProvider) //
                 .map(connectionProvider -> {
                     connectionProviderMap.put(tenantIdentifier, connectionProvider);
                     return connectionProvider;
                 }) //
-                .orElseThrow(() -> new ConnectionProviderException(
-                        String.format("Cannot create new connection provider for tenant: %s", tenantIdentifier)));
+                .orElseThrow(() -> new ConnectionProviderException(String
+                        .format("Cannot create new connection provider for tenant: %s", tenantIdentifier)));
     }
 
     private ConnectionProvider createConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier) //
+        return Optional
+                .ofNullable(tenantIdentifier) //
                 .map(this::getHibernatePropertiesForTenantIdentifier) //
                 .map(this::initConnectionProvider) //
                 .orElse(null);
@@ -109,7 +109,5 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         return configProperties;
     }
 
-    protected Properties getHibernateProperties() {
-        return HibernateContext.getHibernateConfig();
-    }
+    protected Properties getHibernateProperties() { return HibernateContext.getHibernateConfig(); }
 }

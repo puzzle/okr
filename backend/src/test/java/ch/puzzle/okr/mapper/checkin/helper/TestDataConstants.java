@@ -1,7 +1,6 @@
 package ch.puzzle.okr.mapper.checkin.helper;
 
 import ch.puzzle.okr.models.checkin.Zone;
-
 import java.time.LocalDateTime;
 import java.time.Month;
 

@@ -5,9 +5,8 @@ import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
 import ch.puzzle.okr.service.validation.AlignmentValidationService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AlignmentBusinessService {
@@ -15,7 +14,7 @@ public class AlignmentBusinessService {
     private final AlignmentValidationService validation;
 
     public AlignmentBusinessService(AlignmentPersistenceService alignmentPersistenceService,
-            AlignmentValidationService validation) {
+                                    AlignmentValidationService validation) {
         this.alignmentPersistenceService = alignmentPersistenceService;
         this.validation = validation;
     }

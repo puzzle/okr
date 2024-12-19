@@ -1,22 +1,5 @@
 package ch.puzzle.okr.deserializer;
 
-import ch.puzzle.okr.Constants;
-import ch.puzzle.okr.models.keyresult.KeyResult;
-import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
-import ch.puzzle.okr.test.*;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.*;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.stream.Stream;
-
 import static ch.puzzle.okr.test.CheckInTestHelpers.*;
 import static ch.puzzle.okr.test.CheckInTestHelpers.CHECK_IN_METRIC_JSON;
 import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
@@ -25,6 +8,21 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
+
+import ch.puzzle.okr.Constants;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
+import ch.puzzle.okr.test.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.*;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInDeserializerTest {
@@ -55,8 +53,9 @@ class CheckInDeserializerTest {
     }
 
     private static Stream<Arguments> checkInTypes() {
-        return Stream.of(Arguments.of(metricKeyResult, CHECK_IN_METRIC_JSON, "metric"),
-                Arguments.of(ordinalKeyResult, CHECK_IN_ORDINAL_JSON, "ordinal"));
+        return Stream
+                .of(Arguments.of(metricKeyResult, CHECK_IN_METRIC_JSON, "metric"),
+                    Arguments.of(ordinalKeyResult, CHECK_IN_ORDINAL_JSON, "ordinal"));
     }
 
     @DisplayName("deserialize() should call helper with correct params")

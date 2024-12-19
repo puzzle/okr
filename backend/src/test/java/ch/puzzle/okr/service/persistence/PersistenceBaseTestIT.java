@@ -1,21 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.dto.ErrorDto;
-import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.multitenancy.TenantContext;
-import ch.puzzle.okr.repository.UserRepository;
-import ch.puzzle.okr.test.SpringIntegrationTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static ch.puzzle.okr.test.TestHelper.getAllErrorKeys;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,9 +8,23 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.*;
 
+import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.test.SpringIntegrationTest;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.web.server.ResponseStatusException;
+
 /**
- * Testing the functionality of the abstract PersistenceBase and use UserRepository as example of a CrudRepository
- * implementation.
+ * Testing the functionality of the abstract PersistenceBase and use
+ * UserRepository as example of a CrudRepository implementation.
  * <p>
  * Tests depending on data from V100_0_0__TestData.sql
  */
@@ -69,7 +67,7 @@ public class PersistenceBaseTestIT {
     @Test
     void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
         var exception = assertThrows(ResponseStatusException.class,
-                () -> persistenceBase.findById(NON_EXISTING_USER_ID));
+                                     () -> persistenceBase.findById(NON_EXISTING_USER_ID));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
@@ -111,9 +109,7 @@ public class PersistenceBaseTestIT {
 
         var persistenceBaseForTest = new PersistenceBase<>(testRepository) {
             @Override
-            public String getModelName() {
-                return "for_test";
-            }
+            public String getModelName() { return "for_test"; }
         };
 
         // act + assert
@@ -162,7 +158,7 @@ public class PersistenceBaseTestIT {
     }
 
     private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail,
-            User currentUser) {
+                                   User currentUser) {
         assertEquals(expectedFirstName, currentUser.getFirstname());
         assertEquals(expectedLastName, currentUser.getLastname());
         assertEquals(expectedEmail, currentUser.getEmail());
@@ -180,7 +176,11 @@ public class PersistenceBaseTestIT {
     }
 
     private static User createUserWithUniqueName(String name) {
-        return User.Builder.builder().withFirstname(name).withLastname("Muster").withEmail("hans.muster@puzzle.ch")
+        return User.Builder
+                .builder()
+                .withFirstname(name)
+                .withLastname("Muster")
+                .withEmail("hans.muster@puzzle.ch")
                 .build();
     }
 }

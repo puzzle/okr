@@ -1,7 +1,6 @@
 package ch.puzzle.okr.models.alignment;
 
 import jakarta.persistence.Embeddable;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -27,13 +26,9 @@ public class AlignmentSelectionId implements Serializable {
         return new AlignmentSelectionId(objectiveId, keyResultId);
     }
 
-    public Long getObjectiveId() {
-        return objectiveId;
-    }
+    public Long getObjectiveId() { return objectiveId; }
 
-    public Long getKeyResultId() {
-        return keyResultId;
-    }
+    public Long getKeyResultId() { return keyResultId; }
 
     @Override
     public String toString() {

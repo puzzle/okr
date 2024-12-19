@@ -1,13 +1,12 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.QUARTER;
+
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static ch.puzzle.okr.Constants.QUARTER;
+import org.springframework.stereotype.Service;
 
 @Service
 public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, QuarterRepository> {
@@ -17,9 +16,7 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, Qu
     }
 
     @Override
-    public String getModelName() {
-        return QUARTER;
-    }
+    public String getModelName() { return QUARTER; }
 
     public List<Quarter> getMostCurrentQuarters() {
         return getRepository().findTop6ByOrderByStartDateDescWithoutNullStartDate();
@@ -29,7 +26,5 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, Qu
         return getRepository().findByLabel(label);
     }
 
-    public Quarter getCurrentQuarter() {
-        return getRepository().getActiveQuarter(LocalDate.now());
-    }
+    public Quarter getCurrentQuarter() { return getRepository().getActiveQuarter(LocalDate.now()); }
 }

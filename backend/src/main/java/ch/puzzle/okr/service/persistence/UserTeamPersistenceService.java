@@ -1,12 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.USER_TEAM;
+
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.repository.UserTeamRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-
-import static ch.puzzle.okr.Constants.USER_TEAM;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserTeamPersistenceService extends PersistenceBase<UserTeam, Long, UserTeamRepository> {
@@ -23,7 +22,5 @@ public class UserTeamPersistenceService extends PersistenceBase<UserTeam, Long, 
     }
 
     @Override
-    public String getModelName() {
-        return USER_TEAM;
-    }
+    public String getModelName() { return USER_TEAM; }
 }

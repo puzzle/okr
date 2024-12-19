@@ -20,7 +20,8 @@ public class ClientConfigController {
 
     @GetMapping("/config")
     public ResponseEntity<ClientConfigDto> getConfig(HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 

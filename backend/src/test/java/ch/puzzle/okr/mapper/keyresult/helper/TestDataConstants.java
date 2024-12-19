@@ -3,7 +3,6 @@ package ch.puzzle.okr.mapper.keyresult.helper;
 import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.checkin.Zone;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;

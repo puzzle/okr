@@ -1,20 +1,19 @@
 package ch.puzzle.okr.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserMapperTest {
@@ -32,16 +31,19 @@ public class UserMapperTest {
     @InjectMocks
     private TeamMapper teamMapper;
 
-    private final User user = User.Builder.builder() //
+    private final User user = User.Builder
+            .builder() //
             .withId(ID) //
             .withVersion(VERSION) //
             .withFirstname(FIRSTNAME) //
             .withLastname(LASTNAME) //
             .withEmail(EMAIL) //
-            .withUserTeamList(List.of(UserTeam.Builder.builder() //
-                    .withId(USER_TEAM_ID) //
-                    .withTeam(Team.Builder.builder().build()) //
-                    .build())) //
+            .withUserTeamList(List
+                    .of(UserTeam.Builder
+                            .builder() //
+                            .withId(USER_TEAM_ID) //
+                            .withTeam(Team.Builder.builder().build()) //
+                            .build())) //
             .withOkrChampion(IS_OKR_CHAMPION) //
             .build();
 
@@ -56,7 +58,8 @@ public class UserMapperTest {
     @Test
     void toDtoWithoutTeamListThrowsException() {
         // arrange
-        User user = User.Builder.builder() //
+        User user = User.Builder
+                .builder() //
                 .withId(ID) //
                 .withVersion(VERSION) //
                 .withFirstname(FIRSTNAME) //

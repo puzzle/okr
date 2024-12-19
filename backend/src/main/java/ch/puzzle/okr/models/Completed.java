@@ -32,34 +32,22 @@ public class Completed {
         setComment(builder.comment);
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public int getVersion() {
-        return version;
-    }
+    public int getVersion() { return version; }
 
-    public Objective getObjective() {
-        return objective;
-    }
+    public Objective getObjective() { return objective; }
 
-    public void setObjective(Objective objective) {
-        this.objective = objective;
-    }
+    public void setObjective(Objective objective) { this.objective = objective; }
 
-    public String getComment() {
-        return comment;
-    }
+    public String getComment() { return comment; }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+    public void setComment(String comment) { this.comment = comment; }
 
     @Override
     public String toString() {
         return "Completed{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", comment='" + comment
-                + '\'' + '}';
+               + '\'' + '}';
     }
 
     @Override
@@ -70,7 +58,7 @@ public class Completed {
             return false;
         Completed completed = (Completed) o;
         return Objects.equals(id, completed.id) && version == completed.version
-                && Objects.equals(objective, completed.objective) && Objects.equals(comment, completed.comment);
+               && Objects.equals(objective, completed.objective) && Objects.equals(comment, completed.comment);
     }
 
     @Override

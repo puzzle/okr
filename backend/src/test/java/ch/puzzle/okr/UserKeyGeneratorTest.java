@@ -1,13 +1,12 @@
 package ch.puzzle.okr;
 
+import static ch.puzzle.okr.test.KeyResultTestHelpers.user;
+
 import ch.puzzle.okr.multitenancy.TenantContext;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Method;
-
-import static ch.puzzle.okr.test.KeyResultTestHelpers.user;
 
 class UserKeyGeneratorTest {
 

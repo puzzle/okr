@@ -1,5 +1,9 @@
 package ch.puzzle.okr.controller;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import ch.puzzle.okr.service.CacheService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,10 +16,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CacheController.class)
@@ -27,15 +27,17 @@ class CacheControllerIT {
 
     @Test
     void shouldEmptyAuthorisationUsersCache() throws Exception {
-        mvc.perform(
-                post("/api/v2/caches/emptyAuthorizationUsersCache").with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(post("/api/v2/caches/emptyAuthorizationUsersCache")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
     @Test
     void shouldEmptyAllCaches() throws Exception {
-        mvc.perform(post("/api/v2/caches/emptyAllCaches").with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(post("/api/v2/caches/emptyAllCaches").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         verify(cacheService, times(1)).emptyAllCaches();
     }

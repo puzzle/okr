@@ -6,9 +6,8 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import org.hibernate.annotations.Immutable;
-
 import java.time.LocalDateTime;
+import org.hibernate.annotations.Immutable;
 
 @Entity
 @Immutable
@@ -65,107 +64,63 @@ public class Overview implements WriteableInterface {
         checkInCreatedOn = builder.checkInCreatedOn;
     }
 
-    public OverviewId getOverviewId() {
-        return overviewId;
-    }
+    public OverviewId getOverviewId() { return overviewId; }
 
-    public int getTeamVersion() {
-        return teamVersion;
-    }
+    public int getTeamVersion() { return teamVersion; }
 
-    public String getTeamName() {
-        return teamName;
-    }
+    public String getTeamName() { return teamName; }
 
-    public String getObjectiveTitle() {
-        return objectiveTitle;
-    }
+    public String getObjectiveTitle() { return objectiveTitle; }
 
-    public State getObjectiveState() {
-        return objectiveState;
-    }
+    public State getObjectiveState() { return objectiveState; }
 
-    public LocalDateTime getObjectiveCreatedOn() {
-        return objectiveCreatedOn;
-    }
+    public LocalDateTime getObjectiveCreatedOn() { return objectiveCreatedOn; }
 
-    public Long getQuarterId() {
-        return quarterId;
-    }
+    public Long getQuarterId() { return quarterId; }
 
-    public String getQuarterLabel() {
-        return quarterLabel;
-    }
+    public String getQuarterLabel() { return quarterLabel; }
 
-    public String getKeyResultTitle() {
-        return keyResultTitle;
-    }
+    public String getKeyResultTitle() { return keyResultTitle; }
 
-    public String getKeyResultType() {
-        return keyResultType;
-    }
+    public String getKeyResultType() { return keyResultType; }
 
-    public Double getBaseline() {
-        return baseline;
-    }
+    public Double getBaseline() { return baseline; }
 
-    public Double getStretchGoal() {
-        return stretchGoal;
-    }
+    public Double getStretchGoal() { return stretchGoal; }
 
-    public String getUnit() {
-        return unit;
-    }
+    public String getUnit() { return unit; }
 
-    public String getCommitZone() {
-        return commitZone;
-    }
+    public String getCommitZone() { return commitZone; }
 
-    public String getTargetZone() {
-        return targetZone;
-    }
+    public String getTargetZone() { return targetZone; }
 
-    public String getStretchZone() {
-        return stretchZone;
-    }
+    public String getStretchZone() { return stretchZone; }
 
-    public Double getCheckInValue() {
-        return checkInValue;
-    }
+    public Double getCheckInValue() { return checkInValue; }
 
-    public String getCheckInZone() {
-        return checkInZone;
-    }
+    public String getCheckInZone() { return checkInZone; }
 
-    public Integer getConfidence() {
-        return confidence;
-    }
+    public Integer getConfidence() { return confidence; }
 
-    public LocalDateTime getCheckInCreatedOn() {
-        return checkInCreatedOn;
-    }
+    public LocalDateTime getCheckInCreatedOn() { return checkInCreatedOn; }
 
     @Override
-    public boolean isWriteable() {
-        return writeable;
-    }
+    public boolean isWriteable() { return writeable; }
 
     @Override
-    public void setWriteable(boolean writeable) {
-        this.writeable = writeable;
-    }
+    public void setWriteable(boolean writeable) { this.writeable = writeable; }
 
     @Override
     public String toString() {
         return "Overview{" + "overviewId=" + overviewId + ", teamVersion='" + teamVersion + ", teamName='" + teamName
-                + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
-                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
-                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
-                + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit
-                + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
-                + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\''
-                + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\''
-                + '}';
+               + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
+               + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
+               + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
+               + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit
+               + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
+               + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\''
+               + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\''
+               + '}';
     }
 
     public static final class Builder {

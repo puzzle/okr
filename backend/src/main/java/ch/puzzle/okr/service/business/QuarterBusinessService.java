@@ -1,22 +1,21 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
 
 @Service
 public class QuarterBusinessService {
@@ -32,7 +31,7 @@ public class QuarterBusinessService {
     private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-            QuarterValidationService validator) {
+                                  QuarterValidationService validator) {
         this.quarterPersistenceService = quarterPersistenceService;
         this.validator = validator;
     }
@@ -49,9 +48,7 @@ public class QuarterBusinessService {
         return mostCurrentQuarterList;
     }
 
-    public Quarter getCurrentQuarter() {
-        return quarterPersistenceService.getCurrentQuarter();
-    }
+    public Quarter getCurrentQuarter() { return quarterPersistenceService.getCurrentQuarter(); }
 
     private String shortenYear(int fullYear) {
         return padWithZeros(2, fullYear % 100);
@@ -66,9 +63,11 @@ public class QuarterBusinessService {
         int yearStart = getStartOfBusinessYear(startOfQuarter, quarter);
         int yearEnd = yearStart + 1;
 
-        return StringUtils.replaceEach(quarterFormat, new String[] { "xxxx", "yyyy", "xx", "yy", "zz" },
-                new String[] { String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
-                        shortenYear(yearEnd), String.valueOf(quarter) });
+        return StringUtils
+                .replaceEach(quarterFormat,
+                             new String[]{ "xxxx", "yyyy", "xx", "yy", "zz" },
+                             new String[]{ String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
+                                     shortenYear(yearEnd), String.valueOf(quarter) });
     }
 
     private int getStartOfBusinessYear(YearMonth startOfQuarter, int quarter) {
@@ -79,8 +78,12 @@ public class QuarterBusinessService {
 
     private void generateQuarter(LocalDateTime start, String label) {
         YearMonth yearMonth = YearMonth.from(start);
-        Quarter quarter = Quarter.Builder.builder().withLabel(label).withStartDate(start.toLocalDate())
-                .withEndDate(yearMonth.plusMonths(2).atEndOfMonth()).build();
+        Quarter quarter = Quarter.Builder
+                .builder()
+                .withLabel(label)
+                .withStartDate(start.toLocalDate())
+                .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
+                .build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }
@@ -92,9 +95,7 @@ public class QuarterBusinessService {
         return Math.abs(nextQuarter - currentQuarter) == 2;
     }
 
-    YearMonth getCurrentYearMonth() {
-        return YearMonth.now();
-    }
+    YearMonth getCurrentYearMonth() { return YearMonth.now(); }
 
     Map<Integer, Integer> generateQuarters() {
         Map<Integer, Integer> quarters = new HashMap<>();

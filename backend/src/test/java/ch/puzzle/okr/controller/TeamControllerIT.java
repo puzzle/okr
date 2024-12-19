@@ -1,9 +1,18 @@
 package ch.puzzle.okr.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,16 +30,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
@@ -87,10 +86,14 @@ class TeamControllerIT {
     void shouldGetAllTeams() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
 
-        mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].name", Is.is(PUZZLE)))
-                .andExpect(jsonPath("$[1].id", Is.is(7))).andExpect(jsonPath("$[1].name", Is.is("OKR")));
+        mvc
+                .perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Is.is(5)))
+                .andExpect(jsonPath("$[0].name", Is.is(PUZZLE)))
+                .andExpect(jsonPath("$[1].id", Is.is(7)))
+                .andExpect(jsonPath("$[1].name", Is.is("OKR")));
     }
 
     @Test
@@ -105,27 +108,37 @@ class TeamControllerIT {
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(Collections.emptyList());
 
-        mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
+        mvc
+                .perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
     void shouldReturnCreatedTeam() throws Exception {
         BDDMockito.given(teamAuthorizationService.createEntity(any())).willReturn(teamOKR);
 
-        mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(CREATE_NEW_TEAM)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(CREATE_NEW_TEAM)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_TEAM));
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
-        BDDMockito.given(teamAuthorizationService.createEntity(any())).willThrow(
-                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
+        BDDMockito
+                .given(teamAuthorizationService.createEntity(any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                       "Missing attribute name when creating team"));
 
-        mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(CREATE_NEW_TEAM_WITH_NULL_VALUES)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(CREATE_NEW_TEAM_WITH_NULL_VALUES)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -137,8 +150,12 @@ class TeamControllerIT {
         BDDMockito.given(teamMapper.toDto(any())).willReturn(teamDto);
         BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong())).willReturn(team);
 
-        mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON).content(UPDATE_TEAM)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
+        mvc
+                .perform(put(URL_TEAM_1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(UPDATE_TEAM)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(teamDto.id().intValue())))
                 .andExpect(jsonPath("$.version", Is.is(teamDto.version())))
                 .andExpect(jsonPath("$.name", Is.is(teamDto.name())));
@@ -146,55 +163,76 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong()))
+        BDDMockito
+                .given(teamAuthorizationService.updateEntity(any(), anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed team -> Attribut is invalid"));
 
-        mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON).content(UPDATE_TEAM)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(put(URL_TEAM_1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(UPDATE_TEAM)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(teamAuthorizationService.updateEntity(any(), anyLong()))
+        BDDMockito
+                .given(teamAuthorizationService.updateEntity(any(), anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed team -> Attribut is invalid"));
 
-        mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON).content(UPDATE_TEAM)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(put(URL_TEAM_1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(UPDATE_TEAM)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldDeleteTeam() throws Exception {
-        mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void throwExceptionWhenOTeamWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found")).when(teamAuthorizationService)
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found"))
+                .when(teamAuthorizationService)
                 .deleteEntity(anyLong());
-        mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     void addUsersToTeam_shouldReturnOk() throws Exception {
-        mvc.perform(put(URL_TEAM_1 + "/addusers").contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mvc
+                .perform(put(URL_TEAM_1 + "/addusers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADD_USERS)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void removeUserFromTeam_shouldReturnOk() throws Exception {
-        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser").contentType(MediaType.APPLICATION_JSON)
-                .content(ADD_USERS).with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc
+                .perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADD_USERS)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
-        mvc.perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true")
-                .contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mvc
+                .perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADD_USERS)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

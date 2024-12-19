@@ -1,5 +1,9 @@
 package ch.puzzle.okr.security;
 
+import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.multitenancy.TenantContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,10 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
-
-import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 public class AuthenticationEventsTest {
 
@@ -54,7 +54,7 @@ public class AuthenticationEventsTest {
     }
 
     private void verifyGetTenantFromTokenIsCalledWithTokenFromAuthenticationSuccessEvent(JwtHelper jwtHelper,
-            Jwt token) {
+                                                                                         Jwt token) {
         verify(jwtHelper).getTenantFromToken(token);
     }
 

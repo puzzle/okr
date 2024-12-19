@@ -1,5 +1,12 @@
 package ch.puzzle.okr.mapper.checkin;
 
+import static ch.puzzle.okr.mapper.checkin.helper.AssertHelper.assertCheckInOrdinal;
+import static ch.puzzle.okr.mapper.checkin.helper.AssertHelper.assertCheckInOrdinalDto;
+import static ch.puzzle.okr.mapper.checkin.helper.TestDataDtoHelper.checkInOrdinalDto;
+import static ch.puzzle.okr.mapper.checkin.helper.TestDataHelper.checkInOrdinal;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
 import ch.puzzle.okr.mapper.checkin.helper.TestDataHelper;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -14,13 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static ch.puzzle.okr.mapper.checkin.helper.AssertHelper.assertCheckInOrdinal;
-import static ch.puzzle.okr.mapper.checkin.helper.AssertHelper.assertCheckInOrdinalDto;
-import static ch.puzzle.okr.mapper.checkin.helper.TestDataDtoHelper.checkInOrdinalDto;
-import static ch.puzzle.okr.mapper.checkin.helper.TestDataHelper.checkInOrdinal;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CheckInOrdinalMapperTest {

@@ -1,5 +1,7 @@
 package ch.puzzle.okr.mapper.keyresult;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
@@ -7,12 +9,9 @@ import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class KeyResultMapper {
@@ -32,7 +31,9 @@ public class KeyResultMapper {
             return keyResultOrdinalMapper.toDto(keyResultOrdinal, actionList);
         } else {
             throw new ResponseStatusException(BAD_REQUEST,
-                    String.format("The KeyResult %s can't be converted to a metric or ordinal KeyResult", keyResult));
+                                              String
+                                                      .format("The KeyResult %s can't be converted to a metric or ordinal KeyResult",
+                                                              keyResult));
         }
     }
 
@@ -43,7 +44,9 @@ public class KeyResultMapper {
             return keyResultOrdinalMapper.toKeyResultOrdinal((KeyResultOrdinalDto) keyResultDto);
         } else {
             throw new ResponseStatusException(BAD_REQUEST,
-                    String.format("The provided KeyResultDto %s is neither metric nor ordinal", keyResultDto));
+                                              String
+                                                      .format("The provided KeyResultDto %s is neither metric nor ordinal",
+                                                              keyResultDto));
         }
     }
 }

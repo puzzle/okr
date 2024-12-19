@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
 import ch.puzzle.okr.service.validation.OverviewValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -81,6 +82,7 @@ class OverviewBusinessServiceTest {
         return overviews;
     }
 
+    @DisplayName("Should return correct list of overviews on getFilteredOverview()")
     @Test
     void getFilteredOverviewShouldReturnListOfOverviews() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "Objective", authorizationUser))
@@ -99,6 +101,7 @@ class OverviewBusinessServiceTest {
                 authorizationUser);
     }
 
+    @DisplayName("Should return overviews of current quarter on getFilteredOverview() when quarter id is null")
     @Test
     void getFilteredOverviewShouldReturnListOfOverviewsWhenQuarterIsNull() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser))
@@ -115,6 +118,7 @@ class OverviewBusinessServiceTest {
         verify(overviewPersistenceService, times(1)).getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser);
     }
 
+    @DisplayName("Should return empty list of overviews on getFilteredOverview() when team ids are null")
     @Test
     void getFilteredOverviewShouldReturnEmptyListOfOverviewsWhenTeamIdsAreNull() {
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser);
@@ -127,6 +131,7 @@ class OverviewBusinessServiceTest {
                 eq(authorizationUser));
     }
 
+    @DisplayName("Should throw exception on getFilteredOverview() when quarter id does not exist")
     @Test
     void getFilteredOverviewShouldThrowNotFoundWhenQuarterIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
@@ -141,6 +146,7 @@ class OverviewBusinessServiceTest {
                 eq(authorizationUser));
     }
 
+    @DisplayName("Should throw exception on getFilteredOverview() when team id does not exist")
     @Test
     void getFilteredOverviewShouldThrowNotFoundWhenTeamIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
@@ -156,6 +162,7 @@ class OverviewBusinessServiceTest {
                 eq(authorizationUser));
     }
 
+    @DisplayName("Should return sorted list with teams that include the user first on getFilteredOverview()")
     @Test
     void getFilteredOverviewShouldReturnSortedListWithUserTeamsFirst() {
         Long firstLevelTeamId = 5L;

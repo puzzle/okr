@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,6 +59,7 @@ class ObjectiveBusinessServiceTest {
             .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective).build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
+    @DisplayName("Should return correct objective on getEntityById()")
     @Test
     void shouldGetOneObjective() {
         when(objectivePersistenceService.findById(5L)).thenReturn(objective);
@@ -67,6 +69,7 @@ class ObjectiveBusinessServiceTest {
         assertEquals("Objective 1", realObjective.getTitle());
     }
 
+    @DisplayName("Should return correct objectives on getEntitiesByTeamId()s")
     @Test
     void shouldGetEntitiesByTeamId() {
         when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
@@ -76,6 +79,7 @@ class ObjectiveBusinessServiceTest {
         assertThat(entities).hasSameElementsAs(List.of(objective));
     }
 
+    @DisplayName("Should throw exception on getEntityById() when entity does not exist")
     @Test
     void shouldThrowNotFoundWhenTryingToFindNonExistentObjectiveById() {
         when(objectivePersistenceService.findById(6L))
@@ -87,6 +91,7 @@ class ObjectiveBusinessServiceTest {
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
 
+    @DisplayName("Should create new entity on createEntity()")
     @Test
     void shouldSuccessfullySaveNewObjective() {
         Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
@@ -103,7 +108,7 @@ class ObjectiveBusinessServiceTest {
         assertNull(objective.getCreatedOn());
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should handle quarters correctly on updateEntity() when objectives and quarters get changed")
     @ValueSource(booleans = { false, true })
     void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
@@ -135,6 +140,7 @@ class ObjectiveBusinessServiceTest {
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
     }
 
+    @DisplayName("Should delete objective with all key results on deleteEntityById()")
     @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
         when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(keyResultList);
@@ -145,6 +151,7 @@ class ObjectiveBusinessServiceTest {
         verify(objectiveBusinessService, times(1)).deleteEntityById(1L);
     }
 
+    @DisplayName("Should duplicate objective correctly on duplicateObjective()")
     @Test
     void shouldDuplicateObjective() {
         // arrange
@@ -188,6 +195,7 @@ class ObjectiveBusinessServiceTest {
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
 
+    @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")
     @Test
     void testGetAllKeyResultsByObjective() {
         Long objectiveId = 5L;

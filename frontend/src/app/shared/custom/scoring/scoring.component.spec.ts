@@ -172,8 +172,8 @@ describe("ScoringComponent",
             component.commitPercent = 0;
             component.failPercent = 0;
 
-            // Set zone
-            (component.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone! = object.zoneValue;
+            // Set zonen
+            (component.keyResult.lastCheckIn as CheckInOrdinalMin).zone = object.zoneValue;
             component.calculatePercentageOrdinal();
 
             // Verify if percentage was set correctly

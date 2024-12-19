@@ -83,8 +83,8 @@ export default tsEslint.config(
       '@angular-eslint/component-class-suffix': 'error',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
-      '@stylistic/no-extra-parens': 'off',
-      '@typescript-eslint/no-confusing-non-null-assertion': 'off',
+      '@stylistic/no-extra-parens': 'error',
+      '@typescript-eslint/no-confusing-non-null-assertion': 'error',
       //Delete these rules after fixing all the issues and enabling the actual rules
       '@stylistic/quotes': 'off',
       '@stylistic/function-call-argument-newline': 'off',

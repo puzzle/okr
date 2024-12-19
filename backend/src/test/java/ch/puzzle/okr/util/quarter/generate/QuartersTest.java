@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class QuartersTest {
 
-    @DisplayName("currentQuarter() should find current quarter for now and 12 months in future")
-    @ParameterizedTest
+    @ParameterizedTest(name = "currentQuarter() should find current quarter for now and 12 months in future")
     @MethodSource("futureDatesAndLabels")
     void currentQuarterShouldFindCurrentQuarterForNowAnd12MonthsInFuture(LocalDate date, String expectedLabelFirstYear,
             String expectedLabelSecondYear) {
@@ -91,8 +90,7 @@ public class QuartersTest {
                         "('GJ 25/26-Q2', '2025-10-01', '2025-12-31')"));
     }
 
-    @DisplayName("currentQuarter() should find current quarter for now and seven months in past")
-    @ParameterizedTest
+    @ParameterizedTest(name = "currentQuarter() should find current quarter for now and seven months in past")
     @MethodSource("pastDatesAndLabels")
     void currentQuarterShouldFindCurrentQuarterForNowAndSevenMonthsInPast(LocalDate date, String expectedLabelFirstYear,
             String expectedLabelSecondYear) {
@@ -166,8 +164,7 @@ public class QuartersTest {
         assertEquals("No current quarter found for 2026-07-15", exception.getMessage());
     }
 
-    @DisplayName("currentQuarter() should find current quarter for boundary dates")
-    @ParameterizedTest
+    @ParameterizedTest(name = "currentQuarter() should find current quarter for boundary dates")
     @MethodSource("boundaryDatesAndLabels")
     void currentQuarterShouldFindCurrentQuarterForBoundaryDates(LocalDate date, String expectedLabel) {
         // arrange

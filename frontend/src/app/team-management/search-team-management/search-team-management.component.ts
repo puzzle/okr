@@ -59,7 +59,7 @@ export class SearchTeamManagementComponent {
       .pipe(
         takeUntilDestroyed(),
         debounceTime(200),
-        map((v) => (v ? v.trim() : '')),
+        map((v) => (v ?? "").trim()),
         distinctUntilChanged()
       )
       .subscribe((searchValue) => {

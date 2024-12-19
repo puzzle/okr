@@ -198,7 +198,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
         {
           objective: objectiveDTO,
           keyResults: this.keyResults
-            .filter((keyResult, index) => (this.objectiveForm.value.keyResults ? this.objectiveForm.value.keyResults[index] : false))
+            .filter((keyResult, index) => this.objectiveForm.value.keyResults?.[index] ?? false)
             .map((result) => ({
               ...result,
               id: undefined

@@ -15,7 +15,9 @@ export function getValueFromQuery (query: any, fallback?: number): number[] {
   const values = Array.from([query])
     .flat()
     .filter((e) => e !== "")
-    .map((e) => (typeof e == 'string' ? e.split(',') : e))
+    .map((e) => {
+      return typeof e == 'string' ? e.split(',') : e;
+    })
     .flat()
     .map((id: any) => Number(id))
     .filter((id: number) => Number.isInteger(id));

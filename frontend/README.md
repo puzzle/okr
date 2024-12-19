@@ -30,8 +30,12 @@ Build:
 
 ## Formatting
 
-We use the **prettier** code formatter for the frontend code:
-https://www.npmjs.com/package/prettier
+
+We use **EsLint** and a variety of plugins to format html and ts files:
+https://eslint.org/
+
+We use **prettier** to format scss json and yaml files:
+https://prettier.io/
 
 ## Test Coverage
 
@@ -44,16 +48,16 @@ Open the html file in browser and you get a beautiful overview
 ## Cypress Tests
 
 - local setup
-  - start local Docker `docker-compose up`
-  - start local Server: `OkrApplication-E2E`
-  - start local Client: `npm run start`
+    - start local Docker `docker-compose up`
+    - start local Server: `OkrApplication-E2E`
+    - start local Client: `npm run start`
 - run selected Tests
-  - npm run `npm run cypress:open`
-  - in Cypress App, select `E2E Testing` and `Chrome` as Browser
+    - npm run `npm run cypress:open`
+    - in Cypress App, select `E2E Testing` and `Chrome` as Browser
 - run all tests
-  - npm run `npm run cypress:run`
-  - in Cypress App, select `E2E Testing` and `Chrome` as Browser
+    - npm run `npm run cypress:run`
+    - in Cypress App, select `E2E Testing` and `Chrome` as Browser
 - in case of failing Tests:
-  - stop and restart local Server
-  - stop and restart local Client
-  - re-run Cypress Tests
+    - stop and restart local Server
+    - stop and restart local Client
+    - re-run Cypress Tests

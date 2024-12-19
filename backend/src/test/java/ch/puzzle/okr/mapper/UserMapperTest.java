@@ -52,9 +52,9 @@ public class UserMapperTest {
         userMapper = new UserMapper(teamMapper);
     }
 
-    @DisplayName("toDto() without TeamList throws NullPointerException")
+    @DisplayName("Should throw NullPointerException when toDto() is called without teamList")
     @Test
-    void toDtoWithoutTeamListThrowsException() {
+    void shouldThrowExceptionWhenToDtoIsCalledWithoutTeamList() {
         // arrange
         User user = User.Builder.builder() //
                 .withId(ID) //
@@ -69,9 +69,9 @@ public class UserMapperTest {
         assertThrows(NullPointerException.class, () -> userMapper.toDto(user));
     }
 
-    @DisplayName("toDto() should map User to Dto")
+    @DisplayName("Should map User to Dto when toDto() is called")
     @Test
-    void toDtoShouldMapUserToDto() {
+    void shouldMapUserToDtoWhenToDtoIsCalled() {
         // act
         UserDto userDto = userMapper.toDto(user);
 
@@ -80,9 +80,9 @@ public class UserMapperTest {
         assertUserDto(user, userDto);
     }
 
-    @DisplayName("toDtos() should map list of Users to Dtos")
+    @DisplayName("Should map list of users to dtos when toDtos() is called")
     @Test
-    void toDtosShouldMapListOfUsersToDtos() {
+    void shouldMapListOfUsersToDtosWhenToDtosIsCalled() {
         // act
         List<UserDto> userDtos = userMapper.toDtos(List.of(user));
 
@@ -102,9 +102,9 @@ public class UserMapperTest {
         assertEquals(expected.getUserTeamList().get(0).getId(), actual.userTeamList().get(0).id());
     }
 
-    @DisplayName("toUser() should map UserDto to User")
+    @DisplayName("Should map user-dto to user when toUser() is called")
     @Test
-    void toUserShouldMapUserDtoToUser() {
+    void shouldMapUserDtoToUserWhenToUserIsCalled() {
         // act
         User user = userMapper.toUser(userDto);
 
@@ -113,9 +113,9 @@ public class UserMapperTest {
         assertUser(userDto, user);
     }
 
-    @DisplayName("toUserList() should map List of UserDtos to List of Users")
+    @DisplayName("Should map list of user-dtos to list of users when toUserList() is called")
     @Test
-    void toUserListShouldMapUserDtoListToUserList() {
+    void shouldMapUserDtoListToUserListWhenToUserListIsCalled() {
         // act
         List<User> users = userMapper.toUserList(List.of(userDto));
 

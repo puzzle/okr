@@ -61,9 +61,9 @@ public class KeyResultOrdinalMapperTest {
                 actionMapper);
     }
 
-    @DisplayName("toDto() should map a KeyResultOrdinal with CheckIn to a Dto")
+    @DisplayName("Should map a key-result-ordinal with check-in to a dto when calling toDto()")
     @Test
-    void toDtoShouldMapKeyResultWithCheckInOrdinalToDto() {
+    void shouldMapKeyResultWithCheckInOrdinalToDto() {
         // arrange
         CheckIn checkIn = TestDataHelper.checkInOrdinal();
         when(checkInBusinessService.getLastCheckInByKeyResultId(anyLong())).thenReturn(checkIn);
@@ -80,9 +80,9 @@ public class KeyResultOrdinalMapperTest {
         assertKeyResultOrdinalDtoWithCheckIn(keyResultOrdinal, keyResultOrdinalDto, actions);
     }
 
-    @DisplayName("toDto() should map a KeyResultOrdinal without CheckIn to a Dto")
+    @DisplayName("Should map a KeyResultOrdinal without CheckIn to a Dto when calling toDto()")
     @Test
-    void toDtoShouldMapKeyResultWithoutCheckInOrdinalToDto() {
+    void shouldMapKeyResultWithoutCheckInOrdinalToDto() {
         // arrange
         KeyResultOrdinal keyResultOrdinal = keyResultOrdinal();
         List<Action> actions = List.of(action(keyResultOrdinal));
@@ -96,9 +96,9 @@ public class KeyResultOrdinalMapperTest {
         assertKeyResultOrdinalDtoWithoutCheckIn(keyResultOrdinal, keyResultOrdinalDto, actions);
     }
 
-    @DisplayName("toKeyResultMetric() should map Dto to KeyResultMetric")
+    @DisplayName("Should map Dto to KeyResultMetric when calling toKeyResultMetric()")
     @Test
-    void toKeyResultMetricShouldMapDtoToKeyResultMetric() {
+    void shouldMapDtoToKeyResultMetric() {
         // arrange
         when(userBusinessService.getUserById(anyLong())).thenReturn(owner());
         when(objectiveBusinessService.getEntityById(anyLong())).thenReturn(objective());

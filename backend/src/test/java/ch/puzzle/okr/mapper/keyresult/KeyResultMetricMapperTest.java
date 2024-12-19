@@ -60,9 +60,9 @@ public class KeyResultMetricMapperTest {
                 actionMapper);
     }
 
-    @DisplayName("toDto() should map a KeyResultMetric to a Dto")
+    @DisplayName("Should map a KeyResultMetric to a Dto with CheckIn when toDto() is called")
     @Test
-    void toDtoShouldMapKeyResultMetricToDtoWithCheckIn() {
+    void shouldMapKeyResultMetricToDtoWithCheckInWhenToDtoIsCalled() {
         // arrange
         CheckIn checkIn = TestDataHelper.checkInMetric();
         when(checkInBusinessService.getLastCheckInByKeyResultId(anyLong())).thenReturn(checkIn);
@@ -79,9 +79,9 @@ public class KeyResultMetricMapperTest {
         assertKeyResultMetricDtoWithCheckIn(keyResultMetric, keyResultMetricDto, actions);
     }
 
-    @DisplayName("toDto() should map KeyResultMetric to a Dto without CheckIn")
+    @DisplayName("Should map a KeyResultMetric to a Dto without CheckIn when toDto() is called")
     @Test
-    void toDtoShouldMapKeyResultMetricToDtoWithoutCheckIn() {
+    void shouldMapKeyResultMetricToDtoWithoutCheckInWhenToDtoIsCalled() {
         // arrange
         KeyResultMetric keyResultMetric = keyResultMetric();
         List<Action> actions = List.of(action(keyResultMetric));
@@ -95,9 +95,9 @@ public class KeyResultMetricMapperTest {
         assertKeyResultMetricDtoWithoutCheckIn(keyResultMetric, keyResultMetricDto, actions);
     }
 
-    @DisplayName("toKeyResultMetric() should map Dto to KeyResultMetric")
+    @DisplayName("Should map a Dto to KeyResultMetric when toKeyResultMetric() is called")
     @Test
-    void toKeyResultMetricShouldMapDtoToKeyResultMetric() {
+    void shouldMapDtoToKeyResultMetricWhenToKeyResultMetricIsCalled() {
         // arrange
         when(userBusinessService.getUserById(anyLong())).thenReturn(owner());
         when(objectiveBusinessService.getEntityById(anyLong())).thenReturn(objective());

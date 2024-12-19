@@ -37,7 +37,7 @@ class AuthorizationCriteriaIT {
 
     @DisplayName("Should return objective on findObjectiveById() when user is has first level role")
     @Test
-    void appendObjectiveShouldReturnObjectiveWhenFirstLevelRole() {
+    void shouldReturnObjectiveWhenFindObjectiveByIdIsCalledByUserWithFirstLevelRole() {
         Long objectiveId = 5L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
@@ -47,7 +47,7 @@ class AuthorizationCriteriaIT {
 
     @DisplayName("Should return objective on findObjectiveById() when user is has second level role")
     @Test
-    void appendObjectiveShouldReturnObjectiveWhenSecondLevelRole() {
+    void shouldReturnObjectiveWhenFindObjectiveByIdIsCalledByUserWithSecondLevelRole() {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
@@ -57,7 +57,7 @@ class AuthorizationCriteriaIT {
 
     @DisplayName("Should return objective on findObjectiveById() when user is has member level role")
     @Test
-    void appendObjectiveShouldReturnObjectiveWhenMemberRole() {
+    void shouldReturnObjectiveWhenFindObjectiveByIdIsCalledByUserWithMemberLevelRole() {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
@@ -67,7 +67,7 @@ class AuthorizationCriteriaIT {
 
     @DisplayName("Should return correct overview on getFilteredOverview() when user has first level role and no team ids are supplied")
     @Test
-    void appendOverviewShouldReturnObjectiveWhenFirstLevelRoleAndTeamIdsEmpty() {
+    void shouldReturnCorrectOverviewWhenGetFilteredOverviewIsCalledByUserWithFirstLevelRoleAndNoTeamIdsSupplied() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(), "",
@@ -78,7 +78,7 @@ class AuthorizationCriteriaIT {
 
     @DisplayName("Should return correct overview on getFilteredOverview() when user has second level role")
     @Test
-    void appendOverviewShouldReturnObjectiveWhenSecondLevelRole() {
+    void shouldReturnCorrectOverviewWhenGetFilteredOverviewIsCalledByUserWithSecondLevelRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",
@@ -89,7 +89,7 @@ class AuthorizationCriteriaIT {
 
     @DisplayName("Should return correct overview on getFilteredOverview() when user has member level role")
     @Test
-    void appendOverviewShouldReturnObjectiveWhenMemberRole() {
+    void shouldReturnCorrectOverviewWhenGetFilteredOverviewIsCalledByUserWithMemberLevelRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",

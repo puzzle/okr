@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QuarterRangeCheckerTest {
 
-    @DisplayName("nowIsInQuarter() should return false if Quarter is null")
+    @DisplayName("Should return false if Quarter is null when nowIsInQuarter() is called")
     @Test
-    void nowIsInQuarterShouldReturnFalseIfQuarterIsNull() {
+    void shouldReturnFalseIfQuarterIsNullWhenNowIsInQuarterIsCalled() {
         // arrange
         Quarter quarter = null;
         LocalDate now = LocalDate.now();
@@ -22,9 +22,9 @@ public class QuarterRangeCheckerTest {
         assertFalse(QuarterRangeChecker.nowIsInQuarter(now, quarter));
     }
 
-    @DisplayName("nowIsInQuarter() should return false if now is null")
+    @DisplayName("Should return false if now is null when nowIsInQuarter() is called")
     @Test
-    void nowIsInQuarterShouldReturnFalseIfNowIsNull() {
+    void shouldReturnFalseIfNowIsNullWhenNowIsInQuarterIsCalled() {
         // arrange
         Quarter quarter = Quarter.Builder.builder().build();
         LocalDate now = null;
@@ -33,9 +33,9 @@ public class QuarterRangeCheckerTest {
         assertFalse(QuarterRangeChecker.nowIsInQuarter(now, quarter));
     }
 
-    @DisplayName("nowIsInQuarter() should return true if now matches Quarter StartDate")
+    @DisplayName("Should return true if now matches Quarter StartDate when nowIsInQuarter() is called")
     @Test
-    void nowIsInQuarterShouldReturnTrueIfNowMatchesQuarterStartDate() {
+    void shouldReturnTrueIfNowMatchesQuarterStartDateWhenNowIsInQuarterIsCalled() {
         // arrange
         LocalDate startDate = LocalDate.of(2024, 7, 1);
         Quarter quarter = quarter(startDate, null);
@@ -46,9 +46,9 @@ public class QuarterRangeCheckerTest {
         assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchingQuarterStartDate, quarter));
     }
 
-    @DisplayName("nowIsInQuarter() should return true if now matches Quarter EndDate")
+    @DisplayName("Should return true if now matches Quarter EndDate when nowIsInQuarter() is called")
     @Test
-    void nowIsInQuarterShouldReturnTrueIfNowMatchesQuarterEndDate() {
+    void shouldReturnTrueIfNowMatchesQuarterEndDateWhenNowIsInQuarterIsCalled() {
         // arrange
         LocalDate startDate = LocalDate.of(2024, 7, 1);
         LocalDate endDate = LocalDate.of(2024, 9, 30);
@@ -60,9 +60,9 @@ public class QuarterRangeCheckerTest {
         assertTrue(QuarterRangeChecker.nowIsInQuarter(nowMatchingQuarterEndDate, quarter));
     }
 
-    @DisplayName("nowIsInQuarter() should return true if now is between Quarter StartDate and EndDate")
+    @DisplayName("Should return true if now is between Quarter StartDate and EndDate when nowIsInQuarter() is called")
     @Test
-    void nowIsInQuarterShouldReturnTrueIfNowIsBetweenQuarterStartDateAndEndDate() {
+    void shouldReturnTrueIfNowIsBetweenQuarterStartDateAndEndDateWhenNowIsInQuarterIsCalled() {
         // arrange
         LocalDate startDate = LocalDate.of(2024, 7, 1);
         LocalDate endDate = LocalDate.of(2024, 9, 30);
@@ -74,9 +74,9 @@ public class QuarterRangeCheckerTest {
         assertTrue(QuarterRangeChecker.nowIsInQuarter(nowBetweenQuarterStartEndDate, quarter));
     }
 
-    @DisplayName("nowIsInQuarter() should return false if now is before Quarter StartDate")
+    @DisplayName("Should return false if now is before Quarter StartDate when nowIsInQuarter() is called")
     @Test
-    void nowIsInQuarterShouldReturnFalseIfNowIsBeforeQuarterStartDate() {
+    void shouldReturnFalseIfNowIsBeforeQuarterStartDateWhenNowIsInQuarterIsCalled() {
         // arrange
         LocalDate startDate = LocalDate.of(2024, 7, 1);
         LocalDate endDate = LocalDate.of(2024, 9, 30);
@@ -88,9 +88,9 @@ public class QuarterRangeCheckerTest {
         assertFalse(QuarterRangeChecker.nowIsInQuarter(nowBeforeQuarterStartDate, quarter));
     }
 
-    @DisplayName("nowIsInQuarter() should return false if now is after Quarter EndDate")
+    @DisplayName("Should return false if now is after Quarter EndDate when nowIsInQuarter() is called")
     @Test
-    void nowIsInQuarterShouldReturnFalseIfNowIsAfterQuarterEndDate() {
+    void shouldReturnFalseIfNowIsAfterQuarterEndDateWhenNowIsInQuarterIsCalled() {
         // arrange
         LocalDate startDate = LocalDate.of(2024, 7, 1);
         LocalDate endDate = LocalDate.of(2024, 9, 30);

@@ -21,9 +21,9 @@ public class TeamMapperTest {
     @InjectMocks
     private TeamMapper teamMapper;
 
-    @DisplayName("toDto() should map Team to Dto")
+    @DisplayName("Should map team to dto when calling toDto()")
     @Test
-    void toDtoShouldMapTeamToDto() {
+    void shouldMapTeamToDto() {
         // arrange
         Team team = Team.Builder.builder() //
                 .withId(ID) //
@@ -47,9 +47,9 @@ public class TeamMapperTest {
         assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
-    @DisplayName("toTeam() should map Dto to Team")
+    @DisplayName("Should map dto to team when calling toTeam()")
     @Test
-    void toTeamShouldMapDtoToTeam() {
+    void shouldMapDtoToTeam() {
         // arrange
         TeamDto teamDto = new TeamDto(ID, VERSION, NAME, IS_WRITEABLE);
 

@@ -45,9 +45,9 @@ public class CompletedMapperTest {
         completedMapper = new CompletedMapper(objectiveMapper);
     }
 
-    @DisplayName("toDto() should map Completed to Dto")
+    @DisplayName("Should map completed to dto when calling toDto()")
     @Test
-    void toDtoShouldMapCompletedToDto() {
+    void shouldMapCompletedToDto() {
         // arrange
         var completed = Completed.Builder.builder() //
                 .withId(COMPLETED_ID) //
@@ -73,9 +73,9 @@ public class CompletedMapperTest {
         assertEquals(expected.getObjective().getId(), actual.objective().id());
     }
 
-    @DisplayName("toCompleted() should map Dto to Completed")
+    @DisplayName("Should map dto to completed when calling toCompleted()")
     @Test
-    void toCompletedShouldMapDtoToCompleted() {
+    void shouldMapDtoToCompleted() {
         // arrange
         var completedDto = CompletedDtoBuilder.builder().withId(COMPLETED_ID).withComment(COMPLETED_COMMENT)
                 .withObjectiveDto(ObjectiveDtoBuilder.builder().withId(OBJECTIVE_ID).build()).build();

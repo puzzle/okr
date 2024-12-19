@@ -34,7 +34,7 @@ class AlignmentSelectionPersistenceServiceIT {
 
     @DisplayName("Should return correct alignment selections on getAlignmentSelectionByQuarterIdAndTeamIdNot()")
     @Test
-    void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnAlignmentSelections() {
+    void shouldReturnAlignmentSelections() {
         List<AlignmentSelection> alignmentSelections = alignmentSelectionPersistenceService
                 .getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);
 

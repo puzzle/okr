@@ -15,9 +15,9 @@ describe("eslintHelper", () => {
   });
 
   it.each([
-    [["KeyResult"], ["KeyResult", "CurrentKeyResult", "keyResult", "keyResultId"],["Keyresult", "CurrentKeyresult", "keyresult", "keyresultId", "KEyResult", "KeyResUlt"]],
-    [["CheckIn"], ["CheckIn", "CurrentCheckIn", "checkIn", "checkInId"],["Checkin", "CurrentCheckin", "checkin", "checkinId", "cHeckIn", "checkIN"]],
-    [["KeyResult", "CheckIn"], ["KeyResult", "CurrentKeyResult", "keyResult", "keyResultId", "CheckIn", "CurrentCheckIn", "checkIn", "checkInId"],["Keyresult", "CurrentKeyresult", "keyresult", "keyresultId", "KEyResult", "KeyResUlt", "Checkin", "CurrentCheckin", "checkin", "checkinId", "cHeckIn", "checkIN"]],
+    [["KeyResult"], ["KeyResult", "CurrentKeyResult", "keyResult", "keyResultId", "key-result", "test-key-result-test"],["Keyresult", "CurrentKeyresult", "keyresult", "keyresultId", "KEyResult", "KeyResUlt", "test-keyresult-test"]],
+    [["CheckIn"], ["CheckIn", "CurrentCheckIn", "checkIn", "checkInId", "check-in", "test-check-in-test"],["Checkin", "CurrentCheckin", "checkin", "checkinId", "cHeckIn", "checkIN", "test-checkin-test"]],
+    [["KeyResult", "CheckIn"], ["KeyResult", "CurrentKeyResult", "keyResult", "keyResultId", "key-result", "test-key-result-test", "CheckIn", "CurrentCheckIn", "checkIn", "checkInId", "check-in", "test-check-in-test"],["Keyresult", "CurrentKeyresult", "keyresult", "keyresultId", "KEyResult", "KeyResUlt", "test-keyresult-test", "Checkin", "CurrentCheckin", "checkin", "checkinId", "cHeckIn", "checkIN", "test-checkin-test"]],
   ])("should run regex %p threw the matching and not matching list", (wordToRegex:string[], matchingListToRegex:string[], notMatchingListToRegex:string[]) => {
     const regexOfCustomWord = new RegExp(eslintHelper.createRegexForWords(wordToRegex));
     matchingListToRegex = matchingListToRegex.filter(word => regexOfCustomWord.test(word));

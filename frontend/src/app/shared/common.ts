@@ -37,12 +37,13 @@ export function optionalValue (param: object): Record<string, any> {
       return true;
     }));
 }
+
 export function isLastCheckInNegative (baseline: number, stretchGoal: number, value: number): boolean {
   return value > baseline && baseline > stretchGoal || value < baseline && baseline <= stretchGoal;
 }
 
 export function calculateCurrentPercentage (keyResultMetric: KeyResultMetricMin): number {
-  const value: number = +keyResultMetric.lastCheckIn?.value;
+  const value: number = +(keyResultMetric.lastCheckIn?.value ?? 0);
   const baseline: number = +keyResultMetric.baseline;
   const stretchGoal: number = +keyResultMetric.stretchGoal;
   if (isLastCheckInNegative(baseline,
@@ -52,6 +53,7 @@ export function calculateCurrentPercentage (keyResultMetric: KeyResultMetricMin)
 
   return Math.abs(value - baseline) / Math.abs(stretchGoal - baseline) * 100;
 }
+
 export function sanitize (query: string) {
   return query.trim()
     .toLowerCase();
@@ -61,6 +63,7 @@ export function getQueryString (query?: string) {
   const queryString = query || "";
   return sanitize(decodeURI(queryString));
 }
+
 export function optionalReplaceWithNulls (param: object): Record<string, any> {
   const clearObject = optionalValue(param);
   return Object.fromEntries(Object.entries(param)

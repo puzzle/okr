@@ -150,7 +150,7 @@ class KeyResultBusinessServiceIT {
 
     @DisplayName("Should update metric key-result and type should stay metric")
     @Test
-    void updateEntitiesShouldUpdateMetricKeyResultWithSameType() {
+    void shouldUpdateMetricKeyResultWithSameTypeUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
@@ -162,7 +162,7 @@ class KeyResultBusinessServiceIT {
 
     @DisplayName("Should update metric key-result and type should stay metric and keep action list")
     @Test
-    void updateEntitiesShouldUpdateMetricKeyResultWithSameTypeWithActionList() {
+    void shouldUpdateMetricKeyResultWithSameTypeWithActionListUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
         action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
@@ -177,7 +177,7 @@ class KeyResultBusinessServiceIT {
 
     @DisplayName("Should update ordinal key-result and type should stay ordinal")
     @Test
-    void updateEntitiesShouldUpdateOrdinalKeyResultWithSameType() {
+    void shouldUpdateOrdinalKeyResultWithSameTypeUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
@@ -188,7 +188,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldRecreateOrdinalKeyResultAsMetric() {
+    void shouldRecreateOrdinalKeyResultAsMetricUsingUpdateEntities() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
@@ -203,7 +203,7 @@ class KeyResultBusinessServiceIT {
 
     @DisplayName("Should update ordinal key-result and type should stay ordinal and keep action list")
     @Test
-    void updateEntitiesShouldRecreateOrdinalKeyResultAsMetricWithActionList() {
+    void shouldRecreateOrdinalKeyResultAsMetricWithActionListUsingUpdateEntities() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
         action1 = actionBusinessService.createEntity(createAction1(savedKeyResult));
@@ -221,7 +221,7 @@ class KeyResultBusinessServiceIT {
 
     @DisplayName("Should update metric key-result to ordinal key-result")
     @Test
-    void updateEntitiesShouldRecreateMetricKeyResultAsOrdinal() {
+    void shouldRecreateMetricKeyResultAsOrdinalUsingUpdateEntities() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
                 authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
@@ -236,7 +236,7 @@ class KeyResultBusinessServiceIT {
 
     @DisplayName("Should update ordinal key-result as metric and keep action list")
     @Test
-    void updateEntitiesShouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckIn() {
+    void shouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckInUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
 
@@ -248,8 +248,9 @@ class KeyResultBusinessServiceIT {
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }
 
+    //No displayname because i dont understand the test
     @Test
-    void updateEntitiesShouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckInWithActionList() {
+    void shouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckInWithActionListUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
         action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
@@ -266,8 +267,9 @@ class KeyResultBusinessServiceIT {
         assertUpdatedActions(List.of(action1, action2), updatedKeyResult);
     }
 
+    //No displayname because i dont understand the test
     @Test
-    void updateEntitiesShouldUpdateMetricKeyResultWithDifferentTypeAndCheckIn() {
+    void shouldUpdateMetricKeyResultWithDifferentTypeAndCheckInUsingUpdateEntity() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInMetric(createdKeyResult), authorizationUser);
 

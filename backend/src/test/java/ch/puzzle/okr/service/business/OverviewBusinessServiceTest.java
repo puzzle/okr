@@ -84,7 +84,7 @@ class OverviewBusinessServiceTest {
 
     @DisplayName("Should return correct list of overviews on getFilteredOverview()")
     @Test
-    void getFilteredOverviewShouldReturnListOfOverviews() {
+    void shouldReturnListOfOverviewsUsingGetFilteredOverview() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "Objective", authorizationUser))
                 .thenReturn(createOverviews());
 
@@ -103,7 +103,7 @@ class OverviewBusinessServiceTest {
 
     @DisplayName("Should return overviews of current quarter on getFilteredOverview() when quarter id is null")
     @Test
-    void getFilteredOverviewShouldReturnListOfOverviewsWhenQuarterIsNull() {
+    void shouldReturnListOfOverviewsWhenQuarterIsNullUsingGetFilteredOverview() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser))
                 .thenReturn(createOverviews());
         when(quarterBusinessService.getCurrentQuarter())
@@ -120,7 +120,7 @@ class OverviewBusinessServiceTest {
 
     @DisplayName("Should return empty list of overviews on getFilteredOverview() when team ids are null")
     @Test
-    void getFilteredOverviewShouldReturnEmptyListOfOverviewsWhenTeamIdsAreNull() {
+    void shouldReturnEmptyListOfOverviewsWhenTeamIdsAreNullUsingGetFilteredOverview() {
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser);
 
         assertEquals(0, overviews.size());
@@ -133,7 +133,7 @@ class OverviewBusinessServiceTest {
 
     @DisplayName("Should throw exception on getFilteredOverview() when quarter id does not exist")
     @Test
-    void getFilteredOverviewShouldThrowNotFoundWhenQuarterIdIsNonExistent() {
+    void shouldThrowNotFoundWhenQuarterIdIsNonExistentUsingGetFilteredOverview() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(eq(QUARTER_ID), anyList());
 
@@ -148,7 +148,7 @@ class OverviewBusinessServiceTest {
 
     @DisplayName("Should throw exception on getFilteredOverview() when team id does not exist")
     @Test
-    void getFilteredOverviewShouldThrowNotFoundWhenTeamIdIsNonExistent() {
+    void shouldThrowNotFoundWhenTeamIdIsNonExistentUsingGetFilteredOverview() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(QUARTER_ID, teamIds);
 
@@ -164,7 +164,7 @@ class OverviewBusinessServiceTest {
 
     @DisplayName("Should return sorted list with teams that include the user first on getFilteredOverview()")
     @Test
-    void getFilteredOverviewShouldReturnSortedListWithUserTeamsFirst() {
+    void shouldReturnSortedListWithUserTeamsFirstUsingGetFilteredOverview() {
         Long firstLevelTeamId = 5L;
         AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))

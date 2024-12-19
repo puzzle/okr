@@ -110,7 +110,7 @@ class ObjectiveBusinessServiceTest {
 
     @ParameterizedTest(name = "Should handle quarters correctly on updateEntity() when objectives and quarters get changed")
     @ValueSource(booleans = { false, true })
-    void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
+    void shouldHandleQuarterCorrectlyUsingUpdateEntity(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";
         String description = "The description";
@@ -197,7 +197,7 @@ class ObjectiveBusinessServiceTest {
 
     @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")
     @Test
-    void testGetAllKeyResultsByObjective() {
+    void shouldGetAllKeyResultsByObjective() {
         Long objectiveId = 5L;
 
         KeyResult keyResult1 = new KeyResultMetric();

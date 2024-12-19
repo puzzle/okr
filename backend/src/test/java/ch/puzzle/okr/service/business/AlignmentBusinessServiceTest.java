@@ -58,7 +58,7 @@ class AlignmentBusinessServiceTest {
 
     @DisplayName("Should throw exception when validation fails")
     @Test
-    void updateEntityShouldThrowExceptionWhenValidationFails() {
+    void shouldThrowExceptionWhenValidationFailsUsingUpdateEntity() {
         doThrow(new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "Error Message"))
                 .when(alignmentValidationService).validateOnUpdate(eq(1L), any(KeyResultAlignment.class));
 
@@ -68,7 +68,7 @@ class AlignmentBusinessServiceTest {
 
     @DisplayName("Should save new entity when updating entity")
     @Test
-    void updateEntityShouldSaveNewEntity() {
+    void shouldSaveNewEntityUsingUpdateEntity() {
         Alignment mockedAlignment = mock(Alignment.class);
         when(alignmentPersistenceService.save(any(Alignment.class))).thenAnswer(i -> i.getArguments()[0]);
 
@@ -80,7 +80,7 @@ class AlignmentBusinessServiceTest {
 
     @DisplayName("Should update key-result")
     @Test
-    void updateKeyResultIdShouldUpdateKeyResult() {
+    void shouldUpdateKeyResult() {
         KeyResult mockedKeyresult = mock(KeyResult.class);
         when(alignmentPersistenceService.findByKeyResultAlignmentId(1L)).thenReturn(this.alignments);
 
@@ -93,7 +93,7 @@ class AlignmentBusinessServiceTest {
 
     @DisplayName("Should update nothing if no key-results are found")
     @Test
-    void updateKeyResultIdShouldUpdateNothingIfNoKeyResultAreFound() {
+    void shouldUpdateNothingIfNoKeyResultAreFound() {
         KeyResult mockedKeyresult = mock(KeyResult.class);
         when(alignmentPersistenceService.findByKeyResultAlignmentId(1L)).thenReturn(List.of());
 

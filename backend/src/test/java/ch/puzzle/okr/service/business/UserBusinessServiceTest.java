@@ -84,7 +84,7 @@ class UserBusinessServiceTest {
 
     @DisplayName("Should return correct user on getUserById()")
     @Test
-    void getUserByIdShouldReturnSingleUserWhenUserFound() {
+    void shouldReturnSingleUserWhenUserFoundUsingGetUserById() {
         User owner = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
@@ -99,7 +99,7 @@ class UserBusinessServiceTest {
 
     @DisplayName("Should return user on getOrCreateUser() when user already exists")
     @Test
-    void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
+    void shouldReturnSingleUserWhenUserFoundUsingGetOrCreateUser() {
         User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(any())).thenReturn(newUser);
@@ -114,7 +114,7 @@ class UserBusinessServiceTest {
 
     @DisplayName("Should create new user on getOrCreateUser() when user does not already exist")
     @Test
-    void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
+    void shouldReturnSavedUserWhenUserNotFoundUsingGetOrCreateUser() {
         User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(newUser)).thenReturn(newUser);
@@ -129,7 +129,7 @@ class UserBusinessServiceTest {
 
     @DisplayName("Should throw exception on getOrCreateUser() when user is invalid")
     @Test
-    void getOrCreateUserShouldThrowResponseStatusExceptionWhenInvalidUser() {
+    void shouldThrowResponseStatusExceptionWhenInvalidUserUsingGetOrCreateUser() {
         User newUser = User.Builder.builder().withId(1L).withFirstName("Bob").withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))
@@ -144,7 +144,7 @@ class UserBusinessServiceTest {
 
     @DisplayName("Should set user to okr champion on setIsOkrChampion()")
     @Test
-    void setOkrChampionShouldSetOkrChampionCorrectly() {
+    void shouldSetOkrChampionCorrectly() {
         var user = TestHelper.defaultUser(1L);
         user.setOkrChampion(false);
 
@@ -156,7 +156,7 @@ class UserBusinessServiceTest {
 
     @DisplayName("Should throw exception on setIsOkrChampion() when the last okr champion is removed")
     @Test
-    void setOkrChampionShouldThrowExceptionIfLastOkrChampionIsRemoved() {
+    void shouldThrowExceptionIfLastOkrChampionIsRemovedUsingSetIsOkrChampion() {
         var user = TestHelper.defaultUser(1L);
         var user2 = TestHelper.defaultUser(2L);
         user.setOkrChampion(true);
@@ -167,7 +167,7 @@ class UserBusinessServiceTest {
 
     @DisplayName("Should not throw exception on setIsOkrChampion() when removing the second to last okr champion")
     @Test
-    void setOkrChampionShouldNotThrowExceptionIfPenultimateOkrChampionIsRemoved() {
+    void shouldNotThrowExceptionIfPenultimateOkrChampionIsRemovedUsingSetOkrChampion() {
         var user = TestHelper.defaultUser(1L);
         var user2 = TestHelper.defaultUser(2L);
         user.setOkrChampion(true);

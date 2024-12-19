@@ -186,7 +186,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
 
-    @DisplayName("")
+    //No displayname because i dont understand the test
     @Test
     void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = checkIns;
@@ -205,6 +205,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
+    //No displayname because i dont understand the test
     @Test
     void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = checkIns;

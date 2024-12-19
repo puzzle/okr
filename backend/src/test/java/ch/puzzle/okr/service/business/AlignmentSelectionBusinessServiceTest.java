@@ -32,7 +32,7 @@ class AlignmentSelectionBusinessServiceTest {
 
     @DisplayName("Should get alignment selection by quarter id and all teams except ignored team")
     @Test
-    void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnListOfAlignmentSelections() {
+    void shouldReturnListOfAlignmentSelectionsUsingGetAlignmentSelectionByQuarterIdAndTeamIdNot() {
         when(alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))
                 .thenReturn(List.of(createAlignmentSelection()));
 

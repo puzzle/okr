@@ -105,7 +105,7 @@ class TeamBusinessServiceTest {
 
     @DisplayName("Should return list of teams with teams that include the users first on getAllTeams()")
     @Test
-    void getAllTeamsSortedShouldReturnSortedListUserTeamsFirst() {
+    void shouldReturnSortedListUserTeamsFirstUsingGetAllTeams() {
         Team userTeam = Team.Builder.builder().withId(1L).withName("UserTeam").withVersion(1).build();
         Team notUserTeam = Team.Builder.builder().withId(2L).withName("NOTUserTeam").withVersion(1).build();
         Team notUserTeam2 = Team.Builder.builder().withId(3L).withName("NOTUserTeam2").withVersion(1).build();
@@ -207,7 +207,7 @@ class TeamBusinessServiceTest {
 
     @DisplayName("Should throw exception on removeUserFromTeam() when team does not exist")
     @Test
-    void removeUserFromTeamShouldThrowExceptionWhenNoTeamFound() {
+    void shouldThrowExceptionWhenNoTeamFoundUsingRemoveUserFromTeam() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
@@ -217,7 +217,7 @@ class TeamBusinessServiceTest {
 
     @DisplayName("Should throw exception on removeUserFromTeam() when user is the last admin")
     @Test
-    void removeUserFromTeamShouldThrowExceptionWhenLastAdminShouldBeRemoved() {
+    void shouldThrowExceptionWhenLastAdminGetsRemoved() {
         var user = defaultUserWithTeams(2L, List.of(team1), List.of(team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
@@ -229,7 +229,7 @@ class TeamBusinessServiceTest {
 
     @DisplayName("Should update team membership on updateOrAddTeamMembership() when the user is already in the team")
     @Test
-    void updateOrAddTeamMembershipShouldUpdateIfTeamFound() {
+    void shouldUpdateIfTeamFound() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team2, team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         teamBusinessService.updateOrAddTeamMembership(team2.getId(), user.getId(), true);
@@ -241,7 +241,7 @@ class TeamBusinessServiceTest {
 
     @DisplayName("Should throw exception on updateOrAddTeamMembership() when the last admin gets his role removed")
     @Test
-    void updateOrAddTeamMembershipShouldThrowExceptionIfLastAdminShouldBeRemoved() {
+    void shouldThrowExceptionIfLastAdminRoleIsRemoved() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of());
         team1.setUserTeamList(new ArrayList<>(user.getUserTeamList()));
 
@@ -253,7 +253,7 @@ class TeamBusinessServiceTest {
 
     @DisplayName("Should add user to team on updateOrAddTeamMembership() when user is not already in the team")
     @Test
-    void updateOrAddTeamMembershipShouldAddTeamIfNoTeamFound() {
+    void shouldAddTeamIfNoTeamFoundUsingUpdateOrAddTeamMembership() {
         var user = defaultUserWithTeams(1L, List.of(), List.of(team2));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);

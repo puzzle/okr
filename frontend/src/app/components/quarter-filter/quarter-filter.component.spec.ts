@@ -16,23 +16,31 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { Router } from '@angular/router';
 
 const overviewService = {
-  getOverview: jest.fn(),
+  getOverview: jest.fn()
 };
 
 const quarters = [
-  new Quarter(999, 'Backlog', null, null),
-  new Quarter(2, '23.02.2025', new Date(), new Date()),
-  new Quarter(5, '23.02.2025', new Date(), new Date()),
-  new Quarter(7, '23.02.2025', new Date(), new Date()),
+  new Quarter(
+    999, 'Backlog', null, null
+  ),
+  new Quarter(
+    2, '23.02.2025', new Date(), new Date()
+  ),
+  new Quarter(
+    5, '23.02.2025', new Date(), new Date()
+  ),
+  new Quarter(
+    7, '23.02.2025', new Date(), new Date()
+  )
 ];
 
 const quarterService = {
-  getAllQuarters(): Observable<Quarter[]> {
+  getAllQuarters (): Observable<Quarter[]> {
     return of(quarters);
   },
-  getCurrentQuarter(): Observable<Quarter> {
+  getCurrentQuarter (): Observable<Quarter> {
     return of(quarters[2]);
-  },
+  }
 };
 
 describe('QuarterFilterComponent', () => {
@@ -50,12 +58,12 @@ describe('QuarterFilterComponent', () => {
         FormsModule,
         MatSelectModule,
         MatFormFieldModule,
-        NoopAnimationsModule,
+        NoopAnimationsModule
       ],
-      providers: [
-        { provide: OverviewService, useValue: overviewService },
-        { provide: QuarterService, useValue: quarterService },
-      ],
+      providers: [{ provide: OverviewService,
+        useValue: overviewService },
+      { provide: QuarterService,
+        useValue: quarterService }]
     });
     fixture = TestBed.createComponent(QuarterFilterComponent);
     component = fixture.componentInstance;
@@ -65,37 +73,50 @@ describe('QuarterFilterComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should set correct default quarter if no route param is defined', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
-    jest.spyOn(quarters[2] as any, 'isCurrent').mockReturnValue(true);
+    jest.spyOn(quarters[2] as any, 'isCurrent')
+      .mockReturnValue(true);
     const quarterSelect = await loader.getHarness(MatSelectHarness);
-    expect(quarterSelect).toBeTruthy();
+    expect(quarterSelect)
+      .toBeTruthy();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.currentQuarterId).toBe(quarters[2].id);
-    expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
-    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
+    expect(component.currentQuarterId)
+      .toBe(quarters[2].id);
+    expect(await quarterSelect.getValueText())
+      .toBe(quarters[2].label + ' Aktuell');
+    expect(component.changeDisplayedQuarter)
+      .toHaveBeenCalledTimes(1);
   });
 
   it('should set correct value in form according to route param', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
     const routerHarnessPromise = RouterTestingHarness.create();
     const quarterSelectPromise = loader.getHarness(MatSelectHarness);
-    await Promise.all([routerHarnessPromise, quarterSelectPromise]).then(async ([routerHarness, quarterSelect]) => {
-      await routerHarness.navigateByUrl('/?quarter=' + quarters[3].id);
+    await Promise.all([routerHarnessPromise,
+      quarterSelectPromise])
+      .then(async ([routerHarness,
+        quarterSelect]) => {
+        await routerHarness.navigateByUrl('/?quarter=' + quarters[3].id);
 
-      expect(quarterSelect).toBeTruthy();
-      routerHarness.detectChanges();
-      component.ngOnInit();
-      fixture.detectChanges();
+        expect(quarterSelect)
+          .toBeTruthy();
+        routerHarness.detectChanges();
+        component.ngOnInit();
+        fixture.detectChanges();
 
-      expect(component.currentQuarterId).toBe(quarters[3].id);
-      expect(await quarterSelect.getValueText()).toBe(quarters[3].label);
-      expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
-    });
+        expect(component.currentQuarterId)
+          .toBe(quarters[3].id);
+        expect(await quarterSelect.getValueText())
+          .toBe(quarters[3].label);
+        expect(component.changeDisplayedQuarter)
+          .toHaveBeenCalledTimes(1);
+      });
   });
 
   it('should set default quarter if quarter id in route params does not exist', async () => {
@@ -105,13 +126,18 @@ describe('QuarterFilterComponent', () => {
     const routerHarness = await RouterTestingHarness.create();
     await routerHarness.navigateByUrl('/?quarter=1000');
 
-    expect(quarterSelect).toBeTruthy();
+    expect(quarterSelect)
+      .toBeTruthy();
     routerHarness.detectChanges();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.currentQuarterId).toBe(quarters[2].id);
-    expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
-    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
-    expect(router.url).toBe('/?quarter=' + quarters[2].id);
+    expect(component.currentQuarterId)
+      .toBe(quarters[2].id);
+    expect(await quarterSelect.getValueText())
+      .toBe(quarters[2].label + ' Aktuell');
+    expect(component.changeDisplayedQuarter)
+      .toHaveBeenCalledTimes(1);
+    expect(router.url)
+      .toBe('/?quarter=' + quarters[2].id);
   });
 });

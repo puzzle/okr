@@ -4,40 +4,45 @@ import ConfirmDialog from './confirmDialog';
 import Chainable = Cypress.Chainable;
 
 export default class KeyResultDialog extends Dialog {
-  fillKeyResultTitle(title: string) {
+  fillKeyResultTitle (title: string) {
     this.fillInputByTestId('titleInput', title);
     return this;
   }
 
-  fillKeyResultDescription(description: string) {
+  fillKeyResultDescription (description: string) {
     this.fillInputByTestId('descriptionInput', description);
     return this;
   }
 
-  withMetricValues(unit: Unit, baseline: string, stretchGoal: string) {
-    cy.getByTestId('metricTab').click();
-    cy.getByTestId('unit').select(unit);
+  withMetricValues (unit: Unit, baseline: string, stretchGoal: string) {
+    cy.getByTestId('metricTab')
+      .click();
+    cy.getByTestId('unit')
+      .select(unit);
     this.fillInputByTestId('baseline', baseline);
     this.fillInputByTestId('stretchGoal', stretchGoal);
     return this;
   }
 
-  withOrdinalValues(commitZone: string, targetZone: string, stretchGoal: string) {
-    cy.getByTestId('ordinalTab').click();
+  withOrdinalValues (commitZone: string, targetZone: string, stretchGoal: string) {
+    cy.getByTestId('ordinalTab')
+      .click();
     this.fillInputByTestId('commitZone', commitZone);
     this.fillInputByTestId('targetZone', targetZone);
     this.fillInputByTestId('stretchZone', stretchGoal);
     return this;
   }
 
-  fillOwner(owner: string) {
+  fillOwner (owner: string) {
     this.fillInputByTestId('ownerInput', owner);
-    cy.realPress('ArrowDown').realPress('Enter');
+    cy.realPress('ArrowDown')
+      .realPress('Enter');
     return this;
   }
 
-  addActionPlanElement(action: string) {
-    cy.getByTestId('add-action-plan-line').click();
+  addActionPlanElement (action: string) {
+    cy.getByTestId('add-action-plan-line')
+      .click();
     cy.getByTestId('actionInput')
       .filter((k, el) => {
         return (el as HTMLInputElement).value.trim() === '';
@@ -47,12 +52,13 @@ export default class KeyResultDialog extends Dialog {
     return this;
   }
 
-  deleteKeyResult() {
-    cy.getByTestId('delete-keyResult').click();
+  deleteKeyResult () {
+    cy.getByTestId('delete-keyResult')
+      .click();
     return new ConfirmDialog();
   }
 
-  checkForDialogTextMetric() {
+  checkForDialogTextMetric () {
     cy.contains('Einheit');
     cy.contains('Baseline');
     cy.contains('Stretch Goal');
@@ -60,7 +66,7 @@ export default class KeyResultDialog extends Dialog {
     return this;
   }
 
-  checkForDialogTextOrdinal() {
+  checkForDialogTextOrdinal () {
     cy.contains('Commit Zone');
     cy.contains('Target Zone');
     cy.contains('Stretch Goal');
@@ -68,7 +74,7 @@ export default class KeyResultDialog extends Dialog {
     return this;
   }
 
-  private checkForDialogText() {
+  private checkForDialogText () {
     cy.contains('Key Result erfassen');
     cy.contains('Titel');
     cy.contains('Metrisch');
@@ -82,15 +88,17 @@ export default class KeyResultDialog extends Dialog {
     cy.contains('Abbrechen');
   }
 
-  override submit() {
-    cy.getByTestId('submit').click();
+  override submit () {
+    cy.getByTestId('submit')
+      .click();
   }
 
-  saveAndNew() {
-    cy.getByTestId('saveAndNew').click();
+  saveAndNew () {
+    cy.getByTestId('saveAndNew')
+      .click();
   }
 
-  getPage(): Chainable {
+  getPage (): Chainable {
     return cy.get('app-key-result-form');
   }
 }

@@ -12,7 +12,9 @@ describe('OKR Objective e2e tests', () => {
 
   describe('tests via click', () => {
     it(`Release Objective from Draft to Ongoing`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('A objective in state draft').submitDraftObjective();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('A objective in state draft')
+        .submitDraftObjective();
 
       overviewPage
         .getObjectiveByNameAndState('A objective in state draft', 'draft')
@@ -25,11 +27,14 @@ describe('OKR Objective e2e tests', () => {
         .checkDescription('Soll dieses Objective veröffentlicht werden?')
         .submit();
 
-      overviewPage.getObjectiveByNameAndState('A objective in state draft', 'ongoing').should('exist');
+      overviewPage.getObjectiveByNameAndState('A objective in state draft', 'ongoing')
+        .should('exist');
     });
 
     it(`Complete Objective with Successful`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('We want to complete this successful').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('We want to complete this successful')
+        .submit();
 
       overviewPage
         .getObjectiveByNameAndState('We want to complete this successful', 'ongoing')
@@ -45,14 +50,18 @@ describe('OKR Objective e2e tests', () => {
       cy.contains('Objective abschliessen');
       cy.contains('Abbrechen');
 
-      cy.getByTestId('successful').click();
-      cy.getByTestId('submit').click();
+      cy.getByTestId('successful')
+        .click();
+      cy.getByTestId('submit')
+        .click();
 
       overviewPage.getObjectiveByNameAndState('We want to complete this successful', 'successful');
     });
 
     it(`Complete Objective with Not-Successful`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('A not successful objective').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('A not successful objective')
+        .submit();
 
       overviewPage
         .getObjectiveByNameAndState('A not successful objective', 'ongoing')
@@ -67,14 +76,18 @@ describe('OKR Objective e2e tests', () => {
       cy.contains('Objective abschliessen');
       cy.contains('Abbrechen');
 
-      cy.getByTestId('not-successful').click();
-      cy.getByTestId('submit').click();
+      cy.getByTestId('not-successful')
+        .click();
+      cy.getByTestId('submit')
+        .click();
 
       overviewPage.getObjectiveByNameAndState('A not successful objective', 'not-successful');
     });
 
     it(`Reopen Successful Objective`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('This objective will be reopened after').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('This objective will be reopened after')
+        .submit();
 
       overviewPage
         .getObjectiveByNameAndState('This objective will be reopened after', 'ongoing')
@@ -83,8 +96,10 @@ describe('OKR Objective e2e tests', () => {
 
       overviewPage.selectFromThreeDotMenu('Objective abschliessen');
 
-      cy.getByTestId('successful').click();
-      cy.getByTestId('submit').click();
+      cy.getByTestId('successful')
+        .click();
+      cy.getByTestId('submit')
+        .click();
 
       cy.wait(500);
 
@@ -100,11 +115,14 @@ describe('OKR Objective e2e tests', () => {
         .checkDescription('Soll dieses Objective wiedereröffnet werden?')
         .submit();
 
-      overviewPage.getObjectiveByNameAndState('This objective will be reopened after', 'ongoing').should('exist');
+      overviewPage.getObjectiveByNameAndState('This objective will be reopened after', 'ongoing')
+        .should('exist');
     });
 
     it(`Cancel Reopen Successful Objective`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('The reopening of this objective will be canceled').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('The reopening of this objective will be canceled')
+        .submit();
 
       overviewPage
         .getObjectiveByNameAndState('The reopening of this objective will be canceled', 'ongoing')
@@ -113,8 +131,10 @@ describe('OKR Objective e2e tests', () => {
 
       overviewPage.selectFromThreeDotMenu('Objective abschliessen');
 
-      cy.getByTestId('successful').click();
-      cy.getByTestId('submit').click();
+      cy.getByTestId('successful')
+        .click();
+      cy.getByTestId('submit')
+        .click();
 
       cy.wait(500);
 
@@ -136,7 +156,9 @@ describe('OKR Objective e2e tests', () => {
     });
 
     it('Cancel Ongoing objective back to draft state', () => {
-      overviewPage.addObjective().fillObjectiveTitle('This objective will be returned to draft state').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('This objective will be returned to draft state')
+        .submit();
 
       overviewPage
         .getObjectiveByNameAndState('This objective will be returned to draft state', 'ongoing')
@@ -177,9 +199,13 @@ describe('OKR Objective e2e tests', () => {
     });
 
     it(`Search for Objective`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('Search after this objective').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('Search after this objective')
+        .submit();
 
-      overviewPage.addObjective().fillObjectiveTitle('We dont want to search for this').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('We dont want to search for this')
+        .submit();
 
       cy.contains('Search after this objective');
       cy.contains('We dont want to search for this');
@@ -187,35 +213,59 @@ describe('OKR Objective e2e tests', () => {
       cy.scrollTo(0, 0);
       cy.wait(500);
 
-      cy.getByTestId('objectiveSearch').first().click();
-      cy.getByTestId('objectiveSearch').first().type('Search after').wait(350);
+      cy.getByTestId('objectiveSearch')
+        .first()
+        .click();
+      cy.getByTestId('objectiveSearch')
+        .first()
+        .type('Search after')
+        .wait(350);
 
       cy.contains('Search after this objective');
-      cy.contains('We dont want to search for this').should('not.exist');
+      cy.contains('We dont want to search for this')
+        .should('not.exist');
 
-      cy.getByTestId('objectiveSearch').first().as('objective-search').clear();
-      cy.get('@objective-search').type('this').wait(350);
+      cy.getByTestId('objectiveSearch')
+        .first()
+        .as('objective-search')
+        .clear();
+      cy.get('@objective-search')
+        .type('this')
+        .wait(350);
 
       cy.contains('Search after this objective');
       cy.contains('We dont want to search for this');
 
-      cy.get('@objective-search').clear();
-      cy.get('@objective-search').type('dont want to').wait(350);
+      cy.get('@objective-search')
+        .clear();
+      cy.get('@objective-search')
+        .type('dont want to')
+        .wait(350);
 
       cy.contains('We dont want to search for this');
-      cy.contains('Search after this objective').should('not.exist');
+      cy.contains('Search after this objective')
+        .should('not.exist');
 
-      cy.get('@objective-search').clear();
-      cy.get('@objective-search').type('there is no objective').wait(350);
+      cy.get('@objective-search')
+        .clear();
+      cy.get('@objective-search')
+        .type('there is no objective')
+        .wait(350);
 
-      cy.contains('We dont want to search for this').should('not.exist');
-      cy.contains('Search after this objective').should('not.exist');
+      cy.contains('We dont want to search for this')
+        .should('not.exist');
+      cy.contains('Search after this objective')
+        .should('not.exist');
     });
 
     it(`Create Objective in other quarter`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('Objective in quarter 3').selectQuarter('3').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('Objective in quarter 3')
+        .selectQuarter('3')
+        .submit();
 
-      cy.contains('Objective in quarter 3').should('not.exist');
+      cy.contains('Objective in quarter 3')
+        .should('not.exist');
 
       overviewPage.visitNextQuarter();
 
@@ -223,7 +273,9 @@ describe('OKR Objective e2e tests', () => {
     });
 
     it(`Edit Objective and move to other quarter`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('Move to another quarter on edit').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('Move to another quarter on edit')
+        .submit();
 
       overviewPage
         .getObjectiveByNameAndState('Move to another quarter on edit', 'ongoing')
@@ -231,9 +283,12 @@ describe('OKR Objective e2e tests', () => {
         .click();
 
       overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
-      ObjectiveDialog.do().selectQuarter('3').submit();
+      ObjectiveDialog.do()
+        .selectQuarter('3')
+        .submit();
 
-      cy.contains('Move to another quarter on edit').should('not.exist');
+      cy.contains('Move to another quarter on edit')
+        .should('not.exist');
 
       overviewPage.visitNextQuarter();
       cy.contains('Move to another quarter on edit');
@@ -242,9 +297,14 @@ describe('OKR Objective e2e tests', () => {
 
   describe('tests via keyboard', () => {
     it(`Open objective aside via enter`, () => {
-      cy.getByTestId('objective').first().find('[tabindex]').first().focus();
+      cy.getByTestId('objective')
+        .first()
+        .find('[tabindex]')
+        .first()
+        .focus();
       cy.realPress('Enter');
-      cy.url().should('include', 'objective');
+      cy.url()
+        .should('include', 'objective');
     });
   });
 });

@@ -4,19 +4,17 @@ import { NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
 
 @Directive({
   selector: '[unitValueValidator]',
-  providers: [
-    {
-      provide: NG_VALIDATORS,
-      useExisting: UnitValueValidator,
-      multi: true,
-    },
-  ],
+  providers: [{
+    provide: NG_VALIDATORS,
+    useExisting: UnitValueValidator,
+    multi: true
+  }]
 })
 export class UnitValueValidator implements Validator {
   @Input('unitValueValidator') unit: string | null = '';
 
-  validate(control: AbstractControl): ValidationErrors | null {
-    let value: string = control.value;
+  validate (control: AbstractControl): ValidationErrors | null {
+    const value: string = control.value;
     switch (this.unit) {
       case 'PERCENT': {
         return this.proceedRegex(value, PERCENT_REGEX);
@@ -36,12 +34,13 @@ export class UnitValueValidator implements Validator {
     }
   }
 
-  proceedRegex(value: string, regex: string) {
-    return String(value).match(regex) ? null : { valid: false };
+  proceedRegex (value: string, regex: string) {
+    return String(value)
+      .match(regex) ? null : { valid: false };
   }
 }
 
-export function comparisonValidator(secondControl: AbstractControl): ValidatorFn {
+export function comparisonValidator (secondControl: AbstractControl): ValidatorFn {
   return (firstControl: AbstractControl): ValidationErrors | null => {
     return firstControl.value == secondControl.value ? { valid: false } : null;
   };

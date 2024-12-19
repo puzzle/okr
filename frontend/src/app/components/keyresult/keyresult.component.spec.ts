@@ -12,10 +12,13 @@ describe('KeyresultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KeyresultComponent, ScoringComponent, ConfidenceComponent],
+      declarations: [KeyresultComponent,
+        ScoringComponent,
+        ConfidenceComponent],
       imports: [MatDialogModule],
-      providers: [provideHttpClient(withInterceptorsFromDi())],
-    }).compileComponents();
+      providers: [provideHttpClient(withInterceptorsFromDi())]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(KeyresultComponent);
     component = fixture.componentInstance;
@@ -24,6 +27,7 @@ describe('KeyresultComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

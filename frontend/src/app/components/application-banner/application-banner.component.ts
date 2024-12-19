@@ -5,7 +5,7 @@ import {
   ElementRef,
   HostListener,
   OnDestroy,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
@@ -15,17 +15,22 @@ import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/co
   selector: 'app-application-banner',
   templateUrl: './application-banner.component.html',
   styleUrls: ['./application-banner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('okrBanner') okrBanner!: ElementRef;
-  quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  panelOpenState = false;
-  resizeObserver: ResizeObserver;
-  bannerHeight: number = DEFAULT_HEADER_HEIGHT_PX;
-  lastScrollPosition: number = 0;
 
-  constructor(private refreshDataService: RefreshDataService) {
+  quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+  panelOpenState = false;
+
+  resizeObserver: ResizeObserver;
+
+  bannerHeight: number = DEFAULT_HEADER_HEIGHT_PX;
+
+  lastScrollPosition = 0;
+
+  constructor (private refreshDataService: RefreshDataService) {
     this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
       const newBannerHeight = entries[0].contentRect.height;
       if (newBannerHeight != this.bannerHeight) {
@@ -35,18 +40,18 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit (): void {
     this.resizeObserver.observe(this.okrBanner.nativeElement);
     this.changeHeaderAppearance();
   }
 
-  changeHeaderAppearance() {
-    let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
+  changeHeaderAppearance () {
+    const scrollTop: number = window.scrollY || document.documentElement.scrollTop;
     this.refreshBanner(scrollTop);
     this.lastScrollPosition = scrollTop;
   }
 
-  refreshBanner(scrollTop: number) {
+  refreshBanner (scrollTop: number) {
     const newBannerPadding = this.getBannerTopPadding(scrollTop);
     this.okrBanner.nativeElement.style.top = newBannerPadding + 'px';
 
@@ -54,22 +59,22 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
     this.refreshDataService.okrBannerHeightSubject.next(overviewPadding);
   }
 
-  getBannerTopPadding(scrollTop: number) {
+  getBannerTopPadding (scrollTop: number) {
     return scrollTop > this.lastScrollPosition
       ? 0 - (PUZZLE_TOP_BAR_HEIGHT + this.bannerHeight)
       : PUZZLE_TOP_BAR_HEIGHT;
   }
 
-  getOverviewPadding(newBannerPadding: number, paddingAmount: number): number {
+  getOverviewPadding (newBannerPadding: number, paddingAmount: number): number {
     return newBannerPadding < 0 ? PUZZLE_TOP_BAR_HEIGHT * 2 : paddingAmount;
   }
 
   @HostListener('window:scroll')
-  scroll() {
+  scroll () {
     this.changeHeaderAppearance();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy (): void {
     this.resizeObserver.disconnect();
   }
 }

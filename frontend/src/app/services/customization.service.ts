@@ -4,25 +4,23 @@ import { CustomizationConfig, CustomStyles } from '../shared/types/model/ClientC
 import { ConfigService } from './config.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CustomizationService {
   private currentConfig?: CustomizationConfig;
 
-  constructor(
-    configService: ConfigService,
-    @Inject(DOCUMENT) private document: Document,
-  ) {
+  constructor (configService: ConfigService,
+    @Inject(DOCUMENT) private document: Document) {
     configService.config$.subscribe((config) => {
       this.updateCustomizations(config);
     });
   }
 
-  public getCurrentConfig() {
+  public getCurrentConfig () {
     return this.currentConfig;
   }
 
-  private updateCustomizations(config: CustomizationConfig) {
+  private updateCustomizations (config: CustomizationConfig) {
     this.setTitle(config.title);
     this.setFavicon(config.favicon);
     this.setStyleCustomizations(config.customStyles);
@@ -30,7 +28,7 @@ export class CustomizationService {
     this.currentConfig = config;
   }
 
-  private setFavicon(favicon: string) {
+  private setFavicon (favicon: string) {
     if (!favicon || this.currentConfig?.favicon === favicon) {
       return;
     }
@@ -39,10 +37,11 @@ export class CustomizationService {
       return;
     }
 
-    this.document.getElementById('favicon')?.setAttribute('href', favicon);
+    this.document.getElementById('favicon')
+      ?.setAttribute('href', favicon);
   }
 
-  private setTitle(title: string) {
+  private setTitle (title: string) {
     if (!title || this.currentConfig?.title === title) {
       return;
     }
@@ -54,7 +53,7 @@ export class CustomizationService {
     this.document.querySelector('title')!.innerHTML = title;
   }
 
-  private setStyleCustomizations(customStylesMap: CustomStyles) {
+  private setStyleCustomizations (customStylesMap: CustomStyles) {
     if (!customStylesMap || this.areStylesTheSame(customStylesMap)) {
       return;
     }
@@ -63,11 +62,11 @@ export class CustomizationService {
     this.setStyles(customStylesMap);
   }
 
-  private areStylesTheSame(customStylesMap: CustomStyles) {
+  private areStylesTheSame (customStylesMap: CustomStyles) {
     return JSON.stringify(this.currentConfig?.customStyles) === JSON.stringify(customStylesMap);
   }
 
-  private setStyles(customStylesMap: CustomStyles | undefined) {
+  private setStyles (customStylesMap: CustomStyles | undefined) {
     if (!customStylesMap) {
       return;
     }
@@ -81,12 +80,14 @@ export class CustomizationService {
       return;
     }
 
-    Object.entries(customStylesMap).forEach(([varName, varValue]) => {
-      styles.setProperty(`--${varName}`, varValue);
-    });
+    Object.entries(customStylesMap)
+      .forEach(([varName,
+        varValue]) => {
+        styles.setProperty(`--${varName}`, varValue);
+      });
   }
 
-  private removeStyles(customStylesMap: CustomStyles | undefined) {
+  private removeStyles (customStylesMap: CustomStyles | undefined) {
     if (!customStylesMap) {
       return;
     }
@@ -95,8 +96,9 @@ export class CustomizationService {
     if (!styles) {
       return;
     }
-    Object.keys(customStylesMap).forEach((varName) => {
-      styles.removeProperty(`--${varName}`);
-    });
+    Object.keys(customStylesMap)
+      .forEach((varName) => {
+        styles.removeProperty(`--${varName}`);
+      });
   }
 }

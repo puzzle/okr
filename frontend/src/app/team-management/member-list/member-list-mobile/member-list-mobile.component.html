@@ -1,20 +1,20 @@
 @for (member of dataSource.data; track member.id) {
-  <div class="member" [routerLink]="getMemberDetailsLink(member)">
-    <div class="member-icon">
-      <mat-icon>person_outline</mat-icon>
-    </div>
-    <div class="member-content">
-      <div [ngClass]="{ 'single-line': !member.teams.length }">
-        <a [routerLink]="getMemberDetailsLink(member)">{{ getFullNameFromUser(member) }}</a>
-      </div>
-      @if (member.teams.length) {
-        <div>{{ member.teams }}</div>
-      }
-    </div>
-    <div class="member-next">
-      <mat-icon>arrow_forward_ios</mat-icon>
-    </div>
+<div class="member" [routerLink]="getMemberDetailsLink(member)">
+  <div class="member-icon">
+    <mat-icon>person_outline</mat-icon>
   </div>
+  <div class="member-content">
+    <div [ngClass]="{ 'single-line': !member.teams.length }">
+      <a [routerLink]="getMemberDetailsLink(member)">{{ getFullNameFromUser(member) }}</a>
+    </div>
+    @if (member.teams.length) {
+    <div>{{ member.teams }}</div>
+    }
+  </div>
+  <div class="member-next">
+    <mat-icon>arrow_forward_ios</mat-icon>
+  </div>
+</div>
 } @empty {
-  <p>Keine Members</p>
+<p>Keine Members</p>
 }

@@ -17,7 +17,7 @@ import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/d
 import { MatDividerModule } from '@angular/material/divider';
 
 const dialogRefMock = {
-  close: jest.fn(),
+  close: jest.fn()
 };
 
 describe('ConfirmDialogComponent', () => {
@@ -36,14 +36,16 @@ describe('ConfirmDialogComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         MatIconModule,
-        MatDividerModule,
+        MatDividerModule
       ],
-      declarations: [ConfirmDialogComponent, DialogTemplateCoreComponent],
-      providers: [
-        TranslateService,
-        { provide: MAT_DIALOG_DATA, useValue: { title: '', text: '' } as ConfirmDialogData },
-        { provide: MatDialogRef, useValue: dialogRefMock },
-      ],
+      declarations: [ConfirmDialogComponent,
+        DialogTemplateCoreComponent],
+      providers: [TranslateService,
+        { provide: MAT_DIALOG_DATA,
+          useValue: { title: '',
+            text: '' } as ConfirmDialogData },
+        { provide: MatDialogRef,
+          useValue: dialogRefMock }]
     });
     fixture = TestBed.createComponent(ConfirmDialogComponent);
     component = fixture.componentInstance;
@@ -52,22 +54,25 @@ describe('ConfirmDialogComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should call close method with parameter: true if clicked to submit button', async () => {
-    let buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const buttons = await loader.getAllHarnesses(MatButtonHarness);
     const submitButton = buttons[1];
     await submitButton.click();
 
-    expect(dialogRefMock.close).toHaveBeenCalledWith(true);
+    expect(dialogRefMock.close)
+      .toHaveBeenCalledWith(true);
   });
 
   it('should call close method with parameter: "" if clicked to cancel button', async () => {
-    let buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const buttons = await loader.getAllHarnesses(MatButtonHarness);
     const cancelButton = buttons[0];
     await cancelButton.click();
 
-    expect(dialogRefMock.close).toHaveBeenCalledWith('');
+    expect(dialogRefMock.close)
+      .toHaveBeenCalledWith('');
   });
 });

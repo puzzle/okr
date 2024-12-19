@@ -10,25 +10,30 @@ import { CheckInMetricMin } from '../../../shared/types/model/CheckInMetricMin';
   selector: 'app-check-in-form-metric',
   templateUrl: './check-in-form-metric.component.html',
   styleUrls: ['./check-in-form-metric.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckInFormMetricComponent implements OnInit {
   @Input()
   keyResult!: KeyResultMetric;
+
   @Input()
   checkIn!: CheckInMin;
+
   @Input()
   dialogForm!: FormGroup;
+
   protected readonly formInputCheck = formInputCheck;
+
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor(private translate: TranslateService) {}
+  constructor (private translate: TranslateService) {}
 
-  ngOnInit() {
-    this.dialogForm.controls['value'].setValidators([Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]);
+  ngOnInit () {
+    this.dialogForm.controls['value'].setValidators([Validators.required,
+      Validators.pattern('^-?\\d+\\.?\\d*$')]);
   }
 
-  generateUnitLabel(): string {
+  generateUnitLabel (): string {
     switch (this.keyResult.unit) {
       case 'PERCENT':
         return '%';
@@ -43,11 +48,11 @@ export class CheckInFormMetricComponent implements OnInit {
     }
   }
 
-  getErrorMessage(error: string, field: string): string {
+  getErrorMessage (error: string, field: string): string {
     return field + this.translate.instant('DIALOG_ERRORS.' + error);
   }
 
-  getCheckInMetric(): CheckInMetricMin {
+  getCheckInMetric (): CheckInMetricMin {
     return this.checkIn as CheckInMetricMin;
   }
 }

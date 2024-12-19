@@ -13,8 +13,9 @@ describe('ShowEditRoleComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ShowEditRoleComponent],
-      imports: [TranslateTestingModule.withTranslations({ de: de })],
-    }).compileComponents();
+      imports: [TranslateTestingModule.withTranslations({ de: de })]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ShowEditRoleComponent);
     component = fixture.componentInstance;
@@ -25,22 +26,25 @@ describe('ShowEditRoleComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('saveIsAdmin should set edit to false', () => {
     component.edit = true;
     component.saveIsAdmin(true);
-    expect(component.edit).toBeFalsy();
+    expect(component.edit)
+      .toBeFalsy();
   });
 
   it('setEditAsync should set edit to given value', fakeAsync(() => {
     component.edit = false;
     const mouseEvent = {
-      stopPropagation: () => undefined,
+      stopPropagation: () => undefined
     } as any;
     component.setEditAsync(mouseEvent, true);
     tick();
-    expect(component.edit).toBeTruthy();
+    expect(component.edit)
+      .toBeTruthy();
   }));
 });

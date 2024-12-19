@@ -16,7 +16,7 @@ import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template
 import { MatDividerModule } from '@angular/material/divider';
 
 const checkInService = {
-  getAllCheckInOfKeyResult: jest.fn(),
+  getAllCheckInOfKeyResult: jest.fn()
 };
 
 describe('CheckInHistoryDialogComponent', () => {
@@ -25,33 +25,46 @@ describe('CheckInHistoryDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CheckInHistoryDialogComponent, DialogTemplateCoreComponent, SpinnerComponent],
+      declarations: [CheckInHistoryDialogComponent,
+        DialogTemplateCoreComponent,
+        SpinnerComponent],
 
-      imports: [TranslateModule.forRoot(), MatIconModule, MatProgressSpinner, MatDividerModule, MatDialogModule],
+      imports: [
+        TranslateModule.forRoot(),
+        MatIconModule,
+        MatProgressSpinner,
+        MatDividerModule,
+        MatDialogModule
+      ],
       providers: [
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
         TranslateService,
         DialogService,
-        { provide: MAT_DIALOG_DATA, useValue: { keyResult: keyResult } },
-        { provide: MatDialogRef, useValue: {} },
-      ],
+        { provide: MAT_DIALOG_DATA,
+          useValue: { keyResult: keyResult } },
+        { provide: MatDialogRef,
+          useValue: {} }
+      ]
     });
     jest
       .spyOn(checkInService, 'getAllCheckInOfKeyResult')
-      .mockReturnValue([checkInMetric, checkInMetricWriteableFalse]);
+      .mockReturnValue([checkInMetric,
+        checkInMetricWriteableFalse]);
     fixture = TestBed.createComponent(CheckInHistoryDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it.skip('should not display edit check-in button if writeable is false', async () => {
     const buttons = fixture.debugElement.queryAll(By.css('button'));
-    expect(buttons.length).toBe(1);
+    expect(buttons.length)
+      .toBe(1);
   });
 });

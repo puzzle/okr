@@ -4,12 +4,13 @@ import { Observable, shareReplay } from 'rxjs';
 import { ClientConfig } from '../shared/types/model/ClientConfig';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ConfigService {
   public config$: Observable<ClientConfig>;
 
-  constructor(private httpClient: HttpClient) {
-    this.config$ = this.httpClient.get<ClientConfig>('/config').pipe(shareReplay());
+  constructor (private httpClient: HttpClient) {
+    this.config$ = this.httpClient.get<ClientConfig>('/config')
+      .pipe(shareReplay());
   }
 }

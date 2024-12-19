@@ -15,34 +15,36 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-key-result-form',
   templateUrl: './key-result-form.component.html',
   styleUrls: ['./key-result-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KeyResultFormComponent implements OnInit, OnDestroy {
   users$!: Observable<User[]>;
+
   filteredUsers$: Observable<User[]> | undefined = of([]);
+
   actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
+
   protected readonly formInputCheck = formInputCheck;
+
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
+
   private unsubscribe$ = new Subject<void>();
 
   @Input()
   keyResultForm!: FormGroup;
+
   @Input()
   keyResult!: KeyResult | null;
 
-  constructor(
-    public userService: UserService,
+  constructor (public userService: UserService,
     private oauthService: OAuthService,
-    private translate: TranslateService,
-  ) {}
+    private translate: TranslateService) {}
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.users$ = this.userService.getUsers();
-    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(
-      startWith(''),
+    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''),
       filter((value) => typeof value === 'string'),
-      switchMap((value) => this.filter(value as string)),
-    );
+      switchMap((value) => this.filter(value as string)));
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
       this.keyResultForm.controls['title'].setValue(this.keyResult.title);
@@ -56,20 +58,34 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
       this.actionList$ = new BehaviorSubject<Action[] | null>(this.keyResult.actionList);
     }
     if (!this.keyResult) {
-      this.actionList$ = new BehaviorSubject<Action[] | null>([
-        { id: null, version: 1, action: '', priority: 0, keyResultId: null, isChecked: false },
-        { id: null, version: 1, action: '', priority: 1, keyResultId: null, isChecked: false },
-        { id: null, version: 1, action: '', priority: 2, keyResultId: null, isChecked: false },
-      ]);
+      this.actionList$ = new BehaviorSubject<Action[] | null>([{ id: null,
+        version: 1,
+        action: '',
+        priority: 0,
+        keyResultId: null,
+        isChecked: false },
+      { id: null,
+        version: 1,
+        action: '',
+        priority: 1,
+        keyResultId: null,
+        isChecked: false },
+      { id: null,
+        version: 1,
+        action: '',
+        priority: 2,
+        keyResultId: null,
+        isChecked: false }]);
 
-      this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
-        const loggedInUser = this.getLoggedInUserName();
-        users.forEach((user) => {
-          if (getFullNameFromUser(user) === loggedInUser) {
-            this.keyResultForm.controls['owner'].setValue(user);
-          }
+      this.users$.pipe(takeUntil(this.unsubscribe$))
+        .subscribe((users) => {
+          const loggedInUser = this.getLoggedInUserName();
+          users.forEach((user) => {
+            if (getFullNameFromUser(user) === loggedInUser) {
+              this.keyResultForm.controls['owner'].setValue(user);
+            }
+          });
         });
-      });
     }
 
     this.actionList$.subscribe((value) => {
@@ -77,60 +93,63 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy () {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  isMetricKeyResult() {
+  isMetricKeyResult () {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
-  setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
+  setMetricValuesInForm (keyResultMetric: KeyResultMetric) {
     this.keyResultForm.controls['unit'].setValue(keyResultMetric.unit);
     this.keyResultForm.controls['baseline'].setValue(keyResultMetric.baseline);
     this.keyResultForm.controls['stretchGoal'].setValue(keyResultMetric.stretchGoal);
   }
 
-  setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {
+  setOrdinalValuesInForm (keyResultOrdinal: KeyResultOrdinal) {
     this.keyResultForm.controls['commitZone'].setValue(keyResultOrdinal.commitZone);
     this.keyResultForm.controls['targetZone'].setValue(keyResultOrdinal.targetZone);
     this.keyResultForm.controls['stretchZone'].setValue(keyResultOrdinal.stretchZone);
   }
 
-  isTouchedOrDirty(name: string) {
+  isTouchedOrDirty (name: string) {
     return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
   }
 
-  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
+  getErrorMessage (
+    error: string, field: string, firstNumber: number | null, secondNumber: number | null
+  ): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error)
+      .format(firstNumber, secondNumber);
   }
 
-  filter(value: string): Observable<User[]> {
+  filter (value: string): Observable<User[]> {
     const filterValue = value.toLowerCase();
-    return this.users$.pipe(
-      map((users) => users.filter((user) => getFullNameFromUser(user).toLowerCase().includes(filterValue))),
-    );
+    return this.users$.pipe(map((users) => users.filter((user) => getFullNameFromUser(user)
+      .toLowerCase()
+      .includes(filterValue))));
   }
 
-  invalidOwner(): boolean {
+  invalidOwner (): boolean {
     return (
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
   }
 
-  getUserNameFromUser(user: User): string {
+  getUserNameFromUser (user: User): string {
     return user ? getFullNameFromUser(user) : '';
   }
 
-  getKeyResultId(): number | null {
+  getKeyResultId (): number | null {
     return this.keyResult ? this.keyResult.id : null;
   }
 
-  updateFormValidity() {}
+  updateFormValidity () {}
 
-  getLoggedInUserName() {
+  getLoggedInUserName () {
     return this.getUserNameFromUser(this.userService.getCurrentUser());
   }
 }

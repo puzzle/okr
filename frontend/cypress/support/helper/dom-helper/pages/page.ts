@@ -1,23 +1,24 @@
 import { PageObjectMapperBase } from '../pageObjectMapperBase';
 
 export abstract class Page extends PageObjectMapperBase {
-  visit(arg?: any): this {
+  visit (arg?: any): this {
     this.doVisit();
     return this.afterVisit();
   }
 
-  visitViaURL(): this {
+  visitViaURL (): this {
     cy.visit(this.getURL());
     return this.afterVisit();
   }
 
-  protected abstract doVisit(arg?: any): void;
+  protected abstract doVisit (arg?: any): void;
 
-  afterVisit(): this {
-    cy.url().should('include', this.getURL());
+  afterVisit (): this {
+    cy.url()
+      .should('include', this.getURL());
     this.validatePage();
     return this;
   }
 
-  abstract getURL(): string;
+  abstract getURL (): string;
 }

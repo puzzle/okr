@@ -7,9 +7,8 @@ import {
   EMPTY,
   ReplaySubject,
   Subject,
-  Subscription,
   take,
-  takeUntil,
+  takeUntil
 } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,40 +20,42 @@ import { ConfigService } from '../../services/config.service';
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
+
   protected readonly trackByFn = trackByFn;
-  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  overviewPadding: Subject<number> = new Subject();
 
-  backgroundLogoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+  private destroyed$ = new ReplaySubject<boolean>(1);
 
-  constructor(
+  overviewPadding = new Subject<number>();
+
+  backgroundLogoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
+
+  constructor (
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
-    private configService: ConfigService,
+    private configService: ConfigService
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.loadOverviewWithParams());
 
-    combineLatest([
-      refreshDataService.teamFilterReady.asObservable(),
-      refreshDataService.quarterFilterReady.asObservable(),
-    ])
+    combineLatest([refreshDataService.teamFilterReady.asObservable(),
+      refreshDataService.quarterFilterReady.asObservable()])
       .pipe(take(1))
       .subscribe(() => {
-        this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-          this.loadOverviewWithParams();
-        });
+        this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$))
+          .subscribe(() => {
+            this.loadOverviewWithParams();
+          });
       });
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.refreshDataService.okrBannerHeightSubject.subscribe((e) => {
       this.overviewPadding.next(e);
       this.changeDetector.detectChanges();
@@ -67,11 +68,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
         if (config.triangles) {
           this.backgroundLogoSrc$.next(config.backgroundLogo);
         }
-      },
+      }
     });
   }
 
-  loadOverviewWithParams() {
+  loadOverviewWithParams () {
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
     const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
@@ -82,21 +83,19 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.loadOverview(quarterId, teamIds, objectiveQueryString);
   }
 
-  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
+  loadOverview (quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
     this.overviewService
       .getOverview(quarterId, teamIds, objectiveQuery)
-      .pipe(
-        catchError(() => {
-          this.loadOverview();
-          return EMPTY;
-        }),
-      )
+      .pipe(catchError(() => {
+        this.loadOverview();
+        return EMPTY;
+      }))
       .subscribe((overviews) => {
         this.overviewEntities$.next(overviews);
       });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy (): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }

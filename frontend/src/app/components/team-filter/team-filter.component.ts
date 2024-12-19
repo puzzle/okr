@@ -7,38 +7,44 @@ import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { UserService } from '../../services/user.service';
 import { extractTeamsFromUser } from '../../shared/types/model/User';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-team-filter',
   templateUrl: './team-filter.component.html',
   styleUrls: ['./team-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
+
   activeTeams: number[] = [];
+
   protected readonly trackByFn = trackByFn;
+
   private unsubscribe$ = new Subject<void>();
+
   private subscription?: Subscription;
 
-  showMoreTeams: boolean = true;
-  isMobile: boolean = false;
+  showMoreTeams = true;
 
-  constructor(
+  isMobile = false;
+
+  constructor (
     private teamService: TeamService,
     private route: ActivatedRoute,
     private router: Router,
     private refreshDataService: RefreshDataService,
     private userService: UserService,
-    private breakpointObserver: BreakpointObserver,
+    private breakpointObserver: BreakpointObserver
   ) {
-    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.refreshTeamData();
-    });
+    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.refreshTeamData();
+      });
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.refreshTeamData();
 
     this.breakpointObserver
@@ -49,23 +55,23 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       });
   }
 
-  private refreshTeamData() {
+  private refreshTeamData () {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
     this.subscription = this.teamService
       .getAllTeams()
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        filter((teams) => teams.length > 0),
-      )
+      .pipe(takeUntil(this.unsubscribe$),
+        filter((teams) => teams.length > 0))
       .subscribe((teams: Team[]) => {
         this.teams$.next(teams);
         const teamQuery = this.route.snapshot.queryParams['teams'];
         const teamIds = getValueFromQuery(teamQuery);
-        const knownTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
+        const knownTeams = this.getAllTeamIds()
+          .filter((teamId) => teamIds?.includes(teamId));
         if (knownTeams.length == 0) {
-          this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser()).map((team) => team.id);
+          this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
+            .map((team) => team.id);
         } else {
           this.activeTeams = knownTeams;
         }
@@ -76,12 +82,12 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy () {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  changeTeamFilterParams() {
+  changeTeamFilterParams () {
     const params = { teams: this.activeTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
     this.router
@@ -89,7 +95,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
-  toggleSelection(id: number) {
+  toggleSelection (id: number) {
     if (this.areAllTeamsShown()) {
       this.activeTeams = [id];
     } else if (this.activeTeams.includes(id)) {
@@ -104,34 +110,37 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     this.changeTeamFilterParams();
   }
 
-  areAllTeamsShown() {
+  areAllTeamsShown () {
     return areEqual(this.activeTeams, this.getAllTeamIds());
   }
 
-  toggleAll() {
+  toggleAll () {
     this.activeTeams = this.areAllTeamsShown() ? [] : this.getAllTeamIds();
     this.changeTeamFilterParams();
   }
 
-  getAllTeamIds() {
-    return this.teams$.getValue().map((team) => team.id);
+  getAllTeamIds () {
+    return this.teams$.getValue()
+      .map((team) => team.id);
   }
 
-  getTeamName(id: number): string {
-    let teamName = this.teams$.getValue().find((team) => team.id === id)?.name;
+  getTeamName (id: number): string {
+    const teamName = this.teams$.getValue()
+      .find((team) => team.id === id)?.name;
     return teamName ?? 'no team name';
   }
 
-  sortTeamsToggledPriority() {
-    return this.teams$.getValue().sort((a, b) => {
-      const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;
-      const bToggled = this.activeTeams.includes(b.id) ? 0 : 1;
+  sortTeamsToggledPriority () {
+    return this.teams$.getValue()
+      .sort((a, b) => {
+        const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;
+        const bToggled = this.activeTeams.includes(b.id) ? 0 : 1;
 
-      if (aToggled !== bToggled) {
-        return aToggled - bToggled;
-      }
+        if (aToggled !== bToggled) {
+          return aToggled - bToggled;
+        }
 
-      return a.name.localeCompare(b.name);
-    });
+        return a.name.localeCompare(b.name);
+      });
   }
 }

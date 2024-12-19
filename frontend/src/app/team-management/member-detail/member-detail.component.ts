@@ -13,48 +13,55 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
-  styleUrl: './member-detail.component.scss',
+  styleUrl: './member-detail.component.scss'
 })
 export class MemberDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
   user: User | undefined;
+
   teams: Team[] = [];
+
   currentUserTeams$ = new BehaviorSubject<UserTeam[]>([]);
-  selectedUserIsLoggedInUser: boolean = false;
+
+  selectedUserIsLoggedInUser = false;
+
   unsubscribe$ = new Subject<void>();
+
   userTeamEditId: number | undefined;
 
-  readonly displayedColumns = ['team', 'role', 'delete'];
+  readonly displayedColumns = ['team',
+    'role',
+    'delete'];
+
   readonly getFullNameFromUser = getFullNameFromUser;
 
-  constructor(
+  constructor (
     private readonly userService: UserService,
     private readonly route: ActivatedRoute,
     private readonly translateService: TranslateService,
     private readonly teamService: TeamService,
     private readonly cd: ChangeDetectorRef,
     private readonly router: Router,
-    private readonly dialogService: DialogService,
+    private readonly dialogService: DialogService
   ) {}
-  ngOnInit(): void {
+
+  ngOnInit (): void {
     this.route.paramMap
-      .pipe(
-        takeUntil(this.unsubscribe$),
+      .pipe(takeUntil(this.unsubscribe$),
         tap((params) => {
           const id = this.getIdFromParams(params);
           this.loadUser(id);
-        }),
-      )
+        }))
       .subscribe();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy (): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  private loadUser(userId: number) {
+  private loadUser (userId: number) {
     this.userService
       .getUserById(userId)
       .pipe(tap((user) => this.setSelectedUserIsLoggedinUser(user)))
@@ -65,11 +72,11 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setSelectedUserIsLoggedinUser(selectedUser: User) {
+  private setSelectedUserIsLoggedinUser (selectedUser: User) {
     this.selectedUserIsLoggedInUser = selectedUser.id === this.userService.getCurrentUser().id;
   }
 
-  private getIdFromParams(params: ParamMap): number {
+  private getIdFromParams (params: ParamMap): number {
     const id = params.get('id');
     if (!id) {
       throw Error('member id is undefined');
@@ -77,58 +84,61 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     return parseInt(id);
   }
 
-  removeUserFromTeam(userTeam: UserTeam, user: User) {
+  removeUserFromTeam (userTeam: UserTeam, user: User) {
     const i18nData = {
       user: getFullNameFromUser(user),
-      team: userTeam.team.name,
+      team: userTeam.team.name
     };
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(
-        filter((confirm) => confirm),
-        mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)),
-      )
+      .pipe(filter((confirm) => confirm),
+        mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)))
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
       });
   }
 
-  updateTeamMembership(isAdmin: boolean, userTeam: UserTeam, user: User) {
+  updateTeamMembership (isAdmin: boolean, userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
     // make a copy and set value of real object after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam).subscribe(() => {
-      userTeam.isTeamAdmin = isAdmin;
-      this.loadUser(user.id);
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-    });
+    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam)
+      .subscribe(() => {
+        userTeam.isTeamAdmin = isAdmin;
+        this.loadUser(user.id);
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser()
+          .subscribe();
+      });
   }
 
-  addTeamMembership(userTeam: UserTeam, user: User) {
+  addTeamMembership (userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService.updateOrAddTeamMembership(user.id, userTeam).subscribe(() => {
-      this.loadUser(user.id);
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-    });
+    this.teamService.updateOrAddTeamMembership(user.id, userTeam)
+      .subscribe(() => {
+        this.loadUser(user.id);
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser()
+          .subscribe();
+      });
   }
 
-  isDeletable(userTeam: UserTeam): boolean {
+  isDeletable (userTeam: UserTeam): boolean {
     return userTeam.team.writeable || this.selectedUserIsLoggedInUser;
   }
 
-  navigateBack() {
+  navigateBack () {
     this.router.navigate(['../'], { relativeTo: this.route.parent });
   }
 
-  isOkrChampionChange(okrChampion: boolean, user: User) {
-    this.userService.setIsOkrChampion(user, okrChampion).subscribe(() => {
-      this.loadUser(user.id);
-      this.teamService.reloadTeams();
-    });
+  isOkrChampionChange (okrChampion: boolean, user: User) {
+    this.userService.setIsOkrChampion(user, okrChampion)
+      .subscribe(() => {
+        this.loadUser(user.id);
+        this.teamService.reloadTeams();
+      });
   }
 }

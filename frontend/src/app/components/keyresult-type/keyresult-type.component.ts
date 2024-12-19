@@ -10,21 +10,28 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-keyresult-type',
   templateUrl: './keyresult-type.component.html',
-  styleUrls: ['./keyresult-type.component.scss'],
+  styleUrls: ['./keyresult-type.component.scss']
 })
 export class KeyresultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
+
   @Input() keyresult!: KeyResult | null;
+
   @Output() formValidityEmitter = new EventEmitter<boolean>();
-  isMetric: boolean = true;
-  typeChangeAllowed: boolean = true;
+
+  isMetric = true;
+
+  typeChangeAllowed = true;
+
   protected readonly Unit = Unit;
+
   protected readonly formInputCheck = formInputCheck;
+
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor(private translate: TranslateService) {}
+  constructor (private translate: TranslateService) {}
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     if (this.keyresult) {
       this.typeChangeAllowed = (this.keyresult as KeyResultMetric | KeyResultOrdinal).lastCheckIn?.id == null;
       this.isMetric = this.keyresult.keyResultType == 'metric';
@@ -35,15 +42,15 @@ export class KeyresultTypeComponent implements OnInit {
     this.switchValidators();
   }
 
-  castToMetric(keyResult: KeyResult) {
+  castToMetric (keyResult: KeyResult) {
     return keyResult as KeyResultMetric;
   }
 
-  castToOrdinal(keyResult: KeyResult) {
+  castToOrdinal (keyResult: KeyResult) {
     return keyResult as KeyResultOrdinal;
   }
 
-  switchValidators() {
+  switchValidators () {
     if (this.isMetric) {
       this.setValidatorsMetric();
       this.clearValidatorsOrdinal();
@@ -56,51 +63,53 @@ export class KeyresultTypeComponent implements OnInit {
     this.updateFormValidity();
   }
 
-  async updateFormValidity() {
+  async updateFormValidity () {
     await new Promise((r) => setTimeout(r, 100));
     this.formValidityEmitter.emit(this.keyResultForm.invalid);
   }
 
-  setValidatorsMetric() {
+  setValidatorsMetric () {
     this.keyResultForm.controls['unit'].setValidators([Validators.required]);
-    this.keyResultForm.controls['baseline'].setValidators([
-      Validators.required,
-      Validators.pattern('^-?\\d+\\.?\\d*$'),
-    ]);
-    this.keyResultForm.controls['stretchGoal'].setValidators([
-      Validators.required,
-      Validators.pattern('^-?\\d+\\.?\\d*$'),
-    ]);
+    this.keyResultForm.controls['baseline'].setValidators([Validators.required,
+      Validators.pattern('^-?\\d+\\.?\\d*$')]);
+    this.keyResultForm.controls['stretchGoal'].setValidators([Validators.required,
+      Validators.pattern('^-?\\d+\\.?\\d*$')]);
   }
 
-  setValidatorsOrdinal() {
-    this.keyResultForm.controls['commitZone'].setValidators([Validators.required, Validators.maxLength(400)]);
-    this.keyResultForm.controls['targetZone'].setValidators([Validators.required, Validators.maxLength(400)]);
-    this.keyResultForm.controls['stretchZone'].setValidators([Validators.required, Validators.maxLength(400)]);
+  setValidatorsOrdinal () {
+    this.keyResultForm.controls['commitZone'].setValidators([Validators.required,
+      Validators.maxLength(400)]);
+    this.keyResultForm.controls['targetZone'].setValidators([Validators.required,
+      Validators.maxLength(400)]);
+    this.keyResultForm.controls['stretchZone'].setValidators([Validators.required,
+      Validators.maxLength(400)]);
   }
 
-  clearValidatorsMetric() {
+  clearValidatorsMetric () {
     this.keyResultForm.controls['unit'].clearValidators();
     this.keyResultForm.controls['baseline'].clearValidators();
     this.keyResultForm.controls['stretchGoal'].clearValidators();
   }
 
-  clearValidatorsOrdinal() {
+  clearValidatorsOrdinal () {
     this.keyResultForm.controls['commitZone'].clearValidators();
     this.keyResultForm.controls['targetZone'].clearValidators();
     this.keyResultForm.controls['stretchZone'].clearValidators();
   }
 
-  switchKeyResultType(type: string) {
+  switchKeyResultType (type: string) {
     if (((type == 'metric' && !this.isMetric) || (type == 'ordinal' && this.isMetric)) && this.typeChangeAllowed) {
       this.isMetric = !this.isMetric;
-      let keyResultType = this.isMetric ? 'metric' : 'ordinal';
+      const keyResultType = this.isMetric ? 'metric' : 'ordinal';
       this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
       this.switchValidators();
     }
   }
 
-  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
+  getErrorMessage (
+    error: string, field: string, firstNumber: number | null, secondNumber: number | null
+  ): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error)
+      .format(firstNumber, secondNumber);
   }
 }

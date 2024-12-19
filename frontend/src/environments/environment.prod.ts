@@ -12,6 +12,6 @@ export const environment = {
     scope: 'profile openid',
     clientId: 'pitc_okr_prod',
     responseType: 'code',
-    showDebugInformation: true,
-  } as AuthConfig,
+    showDebugInformation: true
+  } as AuthConfig
 };

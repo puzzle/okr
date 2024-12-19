@@ -38,12 +38,15 @@ export class KeyresultDialogComponent {
   });
 
   constructor (
-    @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
-      keyResult: KeyResult; },
+    @Inject(MAT_DIALOG_DATA) public data: {
+      objective: Objective;
+      keyResult: KeyResult;
+    },
     private keyResultService: KeyresultService,
     public dialogService: DialogService,
     public dialogRef: MatDialogRef<KeyresultDialogComponent>
-  ) {}
+  ) {
+  }
 
   isMetricKeyResult () {
     return this.keyResultForm.controls["keyResultType"].value === "metric";
@@ -52,14 +55,18 @@ export class KeyresultDialogComponent {
   saveKeyResult (openNewDialog = false) {
     const value = this.keyResultForm.value;
     const keyResult = this.isMetricKeyResult()
-      ? ({ ...value,
-        objective: this.data.objective } as KeyResultMetricDTO)
-      : ({ ...value,
+      ? ({
+        ...value,
+        objective: this.data.objective
+      } as KeyResultMetricDTO)
+      : ({
+        ...value,
         objective: this.data.objective,
-        id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
+        id: this.data.keyResult?.id
+      } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
-    keyResult.actionList = keyResult.actionList!.filter((action: Action) => action.action !== "");
+    keyResult.actionList = (keyResult.actionList ?? []).filter((action: Action) => action.action !== "");
     this.keyResultService.saveKeyResult(keyResult)
       .subscribe((returnValue) => {
         this.dialogRef.close({

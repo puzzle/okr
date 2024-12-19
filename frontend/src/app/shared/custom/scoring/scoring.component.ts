@@ -70,14 +70,17 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit (): void {
-    // Define width of scoring elements
-    this.failElement!.nativeElement.style.width = this.failPercent + "%";
-    this.commitElement!.nativeElement.style.width = this.commitPercent + "%";
-    this.targetElement!.nativeElement.style.width = this.targetPercent + "%";
+    /*
+     * Define width of scoring elements
+     * All checked individually because that if one is undefined, the others can still be set
+     */
+    if (this.failElement) this.failElement.nativeElement.style.width = this.failPercent + "%";
+    if (this.commitElement) this.commitElement.nativeElement.style.width = this.commitPercent + "%";
+    if (this.targetElement) this.targetElement.nativeElement.style.width = this.targetPercent + "%";
 
-    if (this.valueLabel != undefined && this.keyResult.keyResultType == "metric") {
+    if (this.keyResult.keyResultType == "metric") {
       this.labelPercentage.subscribe((value) => {
-        this.valueLabel!.nativeElement.style.width = value + "%";
+        if (this.valueLabel) this.valueLabel.nativeElement.style.width = value + "%";
         this.changeDetectionRef.detectChanges();
       });
     }
@@ -85,9 +88,10 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     // Set color of scoring component
     const scoringClass = this.getScoringColorClassAndSetBorder();
     if (scoringClass !== null) {
-      this.targetElement!.nativeElement.classList.add(scoringClass);
-      this.commitElement!.nativeElement.classList.add(scoringClass);
-      this.failElement!.nativeElement.classList.add(scoringClass);
+      // All checked individually because that if one is undefined, the others can still be set
+      if (this.targetElement) this.targetElement.nativeElement.classList.add(scoringClass);
+      if (this.commitElement) this.commitElement.nativeElement.classList.add(scoringClass);
+      if (this.failElement) this.failElement.nativeElement.classList.add(scoringClass);
     }
 
     // Fill out icon if target percent has reached 100 percent or more
@@ -98,7 +102,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageOrdinal () {
-    switch ((this.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone!) {
+    switch ((this.keyResult.lastCheckIn as CheckInOrdinalMin).zone) {
       case Zone.STRETCH:
         this.stretched = true;
         break;

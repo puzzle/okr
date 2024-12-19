@@ -33,11 +33,15 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       [Validators.maxLength(4096)]),
     quarter: new FormControl<number>(0,
       [Validators.required]),
-    team: new FormControl<number>({ value: 0,
-      disabled: true },
+    team: new FormControl<number>({
+      value: 0,
+      disabled: true
+    },
     [Validators.required]),
-    relation: new FormControl<number>({ value: 0,
-      disabled: true }),
+    relation: new FormControl<number>({
+      value: 0,
+      disabled: true
+    }),
     keyResults: new FormArray<FormControl<boolean | null>>([]),
     createKeyResults: new FormControl<boolean>(false)
   });
@@ -82,7 +86,8 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       };
     },
     private translate: TranslateService
-  ) {}
+  ) {
+  }
 
   onSubmit (submitType: any): void {
     const value = this.objectiveForm.getRawValue();
@@ -97,26 +102,24 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       state: state
     } as unknown as Objective;
 
-    const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId!,
-      objectiveDTO);
+    const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId, objectiveDTO);
     submitFunction.subscribe((savedObjective: Objective) => {
       this.closeDialog(savedObjective,
         false,
-        value.createKeyResults!);
+        value.createKeyResults ?? undefined);
     });
   }
 
   ngOnInit (): void {
-    const isEditing: boolean = this.data.objective.objectiveId != undefined;
     this.teams$ = this.teamService.getAllTeams()
       .pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
-    this.keyResults$ = isEditing
+    this.keyResults$ = this.data.objective.objectiveId
       ? this.objectiveService.getAllKeyResultsByObjective(this.data.objective.objectiveId || -1)
       : of([]);
-    const objective$ = isEditing
-      ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
+    const objective$ = this.data.objective.objectiveId
+      ? this.objectiveService.getFullObjective(this.data.objective.objectiveId)
       : of(this.getDefaultObjective());
 
     forkJoin([
@@ -136,7 +139,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
           quarters,
           currentQuarter,
           keyResults,
-          isEditing
+          this.data.objective.objectiveId != null
         );
       });
   }
@@ -167,7 +170,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     // Subscribe to teams$ to find and update the current team
     this.teams$.subscribe((teams) => {
       const currentTeam = teams.find((team) => team.id === teamId);
-      this.currentTeam.next(currentTeam!);
+      if (currentTeam) this.currentTeam.next(currentTeam);
     });
 
     this.objectiveForm.patchValue({
@@ -187,8 +190,8 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  getSubmitFunction (id: number, objectiveDTO: any): Observable<Objective> {
-    if (this.data.action == "duplicate") {
+  getSubmitFunction (id: number | undefined, objectiveDTO: any): Observable<Objective> {
+    if (this.data.action == "duplicate" && id) {
       objectiveDTO.id = null;
       objectiveDTO.state = "DRAFT" as State;
       return this.objectiveService.duplicateObjective(id,
@@ -196,12 +199,14 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
           objective: objectiveDTO,
           keyResults: this.keyResults
             .filter((keyResult, index) => (this.objectiveForm.value.keyResults ? this.objectiveForm.value.keyResults[index] : false))
-            .map((result) => ({ ...result,
-              id: undefined }))
+            .map((result) => ({
+              ...result,
+              id: undefined
+            }))
         });
     } else {
       if (this.data.action == "releaseBacklog") objectiveDTO.state = "ONGOING" as State;
-      if (this.data.objective.objectiveId) {
+      if (this.data.objective.objectiveId && id) {
         objectiveDTO.id = id;
         return this.objectiveService.updateObjective(objectiveDTO);
       }
@@ -213,11 +218,11 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const dialog = this.dialogService.openConfirmDialog("CONFIRMATION.DELETE.OBJECTIVE");
     dialog.afterClosed()
       .subscribe((result) => {
-        if (result) {
-          this.objectiveService.deleteObjective(this.data.objective.objectiveId!)
+        if (result && this.data.objective.objectiveId) {
+          this.objectiveService.deleteObjective(this.data.objective.objectiveId)
             .subscribe({
               next: () => {
-                const objectiveDTO: Objective = { id: this.data.objective.objectiveId! } as unknown as Objective;
+                const objectiveDTO: Objective = { id: this.data.objective.objectiveId } as unknown as Objective;
                 this.closeDialog(objectiveDTO,
                   true);
               },

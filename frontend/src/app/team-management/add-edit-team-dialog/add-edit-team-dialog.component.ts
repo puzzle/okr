@@ -37,7 +37,8 @@ export class AddEditTeamDialogComponent implements OnInit {
       }
       | undefined,
     private translate: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit (): void {
     if (this.data) {
@@ -68,15 +69,17 @@ export class AddEditTeamDialogComponent implements OnInit {
   }
 
   private updateTeam () {
-    const updatedTeam: Team = {
-      ...this.teamForm.value,
-      id: this.data!.team.id,
-      version: this.data!.team.version
-    } as Team;
-    this.teamService.updateTeam(updatedTeam)
-      .subscribe((result) => {
-        this.dialogRef.close(result);
-      });
+    if (this.data) {
+      const updatedTeam: Team = {
+        ...this.teamForm.value,
+        id: this.data.team.id,
+        version: this.data.team.version
+      } as Team;
+      this.teamService.updateTeam(updatedTeam)
+        .subscribe((result) => {
+          this.dialogRef.close(result);
+        });
+    }
   }
 
   getErrorMessage (

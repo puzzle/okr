@@ -1,6 +1,6 @@
 import { validateScoring } from "./helper/scoringSupport";
 import { keyCodeDefinitions } from "cypress-real-events/keyCodeDefinitions";
-import { pressUntilContains, doUntilSelector } from "./helper/utils";
+import { doUntilSelector, pressUntilContains } from "./helper/utils";
 import Chainable = Cypress.Chainable;
 
 Cypress.Commands.add("loginAsUser",
@@ -84,8 +84,12 @@ function loginWithCredentials (username: string, password: string) {
     "**/users/current")
     .as("getCurrentUser");
   cy.origin(Cypress.env("login_url"),
-    { args: { username,
-      password } },
+    {
+      args: {
+        username,
+        password
+      }
+    },
     ({ username, password }) => {
       cy.get("input[name=\"username\"]")
         .type(username);
@@ -99,7 +103,7 @@ function loginWithCredentials (username: string, password: string) {
   cy.url()
     .then((url) => {
       const currentUrl = new URL(url);
-      const baseURL = new URL(Cypress.config().baseUrl!);
+      const baseURL = new URL(Cypress.config().baseUrl ?? "");
       expect(currentUrl.pathname)
         .equal(baseURL.pathname);
     });

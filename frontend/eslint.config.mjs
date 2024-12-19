@@ -75,11 +75,11 @@ export default tsEslint.config(
         },
       ],
       'prefer-rest-params': 'error',
-      '@typescript-eslint/no-empty-function': ['error', {allow: ['arrowFunctions', 'constructors']}],
+      '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
       '@stylistic/lines-around-comment': ['error'],
       '@angular-eslint/no-empty-lifecycle-method': 'error',
       '@angular-eslint/component-class-suffix': 'error',
-      '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
+      '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@stylistic/no-extra-parens': 'off',
       '@typescript-eslint/no-confusing-non-null-assertion': 'off',
@@ -92,15 +92,15 @@ export default tsEslint.config(
       // '@stylistic/quotes': ['error', 'double'],
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/dot-location': ['error', 'property'],
-      '@stylistic/newline-per-chained-call': ['error', {ignoreChainWithDepth: 1}],
+      '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
       '@stylistic/indent': ['error', 2],
       '@stylistic/quote-props': ['error', 'as-needed'],
       '@stylistic/object-property-newline': ['error'],
       '@stylistic/multiline-ternary': ['off'],
       '@stylistic/object-curly-spacing': ['error', 'always'],
-      '@stylistic/array-bracket-newline': ['error', {minItems: 4}],
+      '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
       '@stylistic/semi-style': ['error'],
-      '@stylistic/function-paren-newline': ['error', {minItems: 4}],
+      '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -135,18 +135,25 @@ export default tsEslint.config(
     files: ['**/*.html'],
     extends: [
       ...angular.configs.templateRecommended,
+      // Add any other recommended configs here if needed
     ],
     languageOptions: {
+      // Choose one parser. For Angular templates, usually angular.templateParser is needed.
       parser: angular.templateParser,
     },
-
     rules: {
+      // Combine all sets of rules
+      ...html.configs.recommended.rules,
       ...html.configs['flat/recommended'].rules,
+
       '@angular-eslint/template/eqeqeq': 'error',
       '@html-eslint/indent': ['error', 2],
-      '@html-eslint/require-img-alt': 'off',
+      '@html-eslint/require-img-alt': 'error',
+      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
+      '@angular-eslint/template/banana-in-box': 'error',
+      '@angular-eslint/template/no-negated-async': 'error',
+      //For Some reason the following rule does not work with the angular-parser
       '@html-eslint/element-newline': 'off',
-      '@html-eslint/require-closing-tags': ['error', {selfClosing: 'always'}],
     },
   },
   {

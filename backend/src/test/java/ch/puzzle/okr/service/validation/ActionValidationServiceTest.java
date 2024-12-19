@@ -279,7 +279,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when key result id has changed")
+    @DisplayName("Should throw exception on validateOnUpdate() when key result id has changed")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenKeyResultIdHasChanged() {
         // arrange
@@ -315,7 +315,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, errors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when key result is missing in model")
+    @DisplayName("Should throw exception on validateOnUpdate() when key result is missing in model")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenKeyResultIsMissing() {
         // arrange
@@ -331,7 +331,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when attributes are missing")
+    @DisplayName("Should throw exception on validateOnUpdate() when attributes are missing")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenAttrsAreMissing() {
         // arrange
@@ -347,7 +347,7 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("should be successful on validateOnGetByKeyResultId() when id is not null")
+    @DisplayName("Should be successful on validateOnGetByKeyResultId() when id is not null")
     @Test
     void shouldBeSuccessfulInValidateOnGetByKeyResultIdWhenIdIsNotNull() {
         // arrange
@@ -359,7 +359,7 @@ class ActionValidationServiceTest {
         verify(actionPersistenceService, never()).getModelName();
     }
 
-    @DisplayName("should throw exception on validateOnGetByKeyResultId() when id is null")
+    @DisplayName("Should throw exception on validateOnGetByKeyResultId() when id is null")
     @Test
     void shouldThrowExceptionOnValidateOnGetByKeyResultIdWhenIdIsNull() {
         // arrange

@@ -184,7 +184,7 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be throw exception on validateOnUpdate() when team name is null")
+    @DisplayName("Should be throw exception on validateOnUpdate() when team name is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNameIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

@@ -145,7 +145,7 @@ class ObjectivePersistenceServiceIT {
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName("should return correct objective on findObjectiveByCheckInId()")
+    @DisplayName("Should return correct objective on findObjectiveByCheckInId()")
     @Test
     void shouldFindObjectiveByCheckInId() {
         // act
@@ -156,7 +156,7 @@ class ObjectivePersistenceServiceIT {
         assertObjective(ID_OF_OBJECTIVE_3, TITLE_OF_OBJECTIVE_3, objective);
     }
 
-    @DisplayName("should throw exception on findObjectiveByCheckInId() when objective not found")
+    @DisplayName("Should throw exception on findObjectiveByCheckInId() when objective not found")
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         // act
@@ -168,7 +168,7 @@ class ObjectivePersistenceServiceIT {
         assertResponseStatusException(UNAUTHORIZED, expectedErrors, exception);
     }
 
-    @DisplayName("should throw exception on findObjectiveByCheckInId() when objective id is null")
+    @DisplayName("Should throw exception on findObjectiveByCheckInId() when objective id is null")
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         // act
@@ -180,7 +180,7 @@ class ObjectivePersistenceServiceIT {
         assertResponseStatusException(BAD_REQUEST, expectedErrors, exception);
     }
 
-    @DisplayName("should return correct objective on findObjectiveByTeamId()")
+    @DisplayName("Should return correct objective on findObjectiveByTeamId()")
     @Test
     void shouldFindObjectivesByTeamId() {
         // act
@@ -193,7 +193,7 @@ class ObjectivePersistenceServiceIT {
         assertObjective(ID_OF_OBJECTIVE_10, TITLE_OF_OBJECTIVE_10, objectives.get(2));
     }
 
-    @DisplayName("should return empty list on findObjectiveByTeamId() when objective not found")
+    @DisplayName("Should return empty list on findObjectiveByTeamId() when objective not found")
     @Test
     void findObjectiveByTeamIdShouldReturnEmptyListWhenObjectiveNotFound() {
         // act
@@ -203,7 +203,7 @@ class ObjectivePersistenceServiceIT {
         assertTrue(objectives.isEmpty());
     }
 
-    @DisplayName("should return empty list on findObjectiveByTeamId() when objective id is null")
+    @DisplayName("Should return empty list on findObjectiveByTeamId() when objective id is null")
     @Test
     void findObjectiveByTeamIdShouldReturnEmptyListWhenObjectiveIdIsNull() {
         // act
@@ -213,7 +213,7 @@ class ObjectivePersistenceServiceIT {
         assertTrue(objectives.isEmpty());
     }
 
-    @DisplayName("should return correct number of objectives for current quarter on findObjectiveByTeamId()")
+    @DisplayName("Should return correct number of objectives for current quarter on findObjectiveByTeamId()")
     @Test
     void countByTeamAndQuarterShouldReturnNumberOfObjectivesForCurrentQuarter() {
         // arrange: there are 3 objectives for the current quarter (id 2) for team with id 6
@@ -227,7 +227,7 @@ class ObjectivePersistenceServiceIT {
         assertEquals(3, count);
     }
 
-    @DisplayName("should return zero on findObjectiveByTeamId() when team or quarter is not valid or null")
+    @DisplayName("Should return zero on findObjectiveByTeamId() when team or quarter is not valid or null")
     @ParameterizedTest
     @MethodSource("invalidTeamsAndQuarters")
     void countByTeamAndQuarterShouldReturnZeroWhenTeamOrQuarterIsNotValidOrNull(Team team, Quarter quarter) {
@@ -259,7 +259,7 @@ class ObjectivePersistenceServiceIT {
                 arguments(null, null));
     }
 
-    @DisplayName("should return objective on getModelName()")
+    @DisplayName("Should return objective on getModelName()")
     @Test
     void getModelNameShouldReturnObjective() {
         assertEquals(OBJECTIVE, objectivePersistenceService.getModelName());

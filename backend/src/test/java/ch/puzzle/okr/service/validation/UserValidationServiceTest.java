@@ -252,7 +252,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be successful on validateCreate() when user is valid")
+    @DisplayName("Should be successful on validateCreate() when user is valid")
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnUpdate(user.getId(), user);
@@ -263,7 +263,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).validate(user);
     }
 
-    @DisplayName("should be throw exception on validateOnUpdate() when model is null")
+    @DisplayName("Should be throw exception on validateOnUpdate() when model is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -276,7 +276,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be throw exception on validateOnUpdate() when id is null")
+    @DisplayName("Should be throw exception on validateOnUpdate() when id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -292,7 +292,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be throw exception on validateOnUpdate() when id has changed")
+    @DisplayName("Should be throw exception on validateOnUpdate() when id has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -351,7 +351,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when model is missing attributes")
+    @DisplayName("Should throw exception on validateOnUpdate() when model is missing attributes")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         User userInvalid = User.Builder.builder().withId(3L).withLastName("Lastname").withFirstName("firstname")
@@ -366,7 +366,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should not throw error on validateAuthorisationToken() when token is valid")
+    @DisplayName("Should not throw error on validateAuthorisationToken() when token is valid")
     @Test
     void validateAuthorisationTokenShouldNotThrowError() {
         assertDoesNotThrow(() -> validator.validateAuthorisationToken(mockJwt));
@@ -374,7 +374,7 @@ class UserValidationServiceTest {
         verify(validator).validateAuthorisationToken(mockJwt);
     }
 
-    @DisplayName("should throw error on validateAuthorisationToken() when token is null")
+    @DisplayName("Should throw error on validateAuthorisationToken() when token is null")
     @Test
     void validateAuthorisationTokenShouldThrowErrorWhenNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -387,7 +387,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be successful on validateOnDelete() when model is valid")
+    @DisplayName("Should be successful on validateOnDelete() when model is valid")
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidObjectiveId() {
         validator.validateOnDelete(1L);
@@ -396,7 +396,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
-    @DisplayName("should throw exception on validateOnGet() when model is null")
+    @DisplayName("Should throw exception on validateOnGet() when model is null")
     @Test
     void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

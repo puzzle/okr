@@ -75,7 +75,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
     }
 
-    @DisplayName("should throw exception on findById() when id is null")
+    @DisplayName("Should throw exception on findById() when id is null")
     @Test
     void findByIdShouldThrowExceptionIfIdIsNull() {
         var exception = assertThrows(ResponseStatusException.class, () -> persistenceBase.findById(null));
@@ -84,7 +84,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("ATTRIBUTE_NULL", exception);
     }
 
-    @DisplayName("should return all entities as list on findAll()")
+    @DisplayName("Should return all entities as list on findAll()")
     @Test
     void findAllShouldReturnAllEntitiesAsList() throws ResponseStatusException {
         var userList = persistenceBase.findAll();
@@ -92,7 +92,7 @@ public class PersistenceBaseTestIT {
         assertThat(userList.size()).isGreaterThanOrEqualTo(7);
     }
 
-    @DisplayName("should add new entity on save()")
+    @DisplayName("Should add new entity on save()")
     @Test
     void saveShouldAddNewEntity() throws ResponseStatusException {
         User uniqueUser = createUserWithUniqueName("Fritz");
@@ -102,7 +102,7 @@ public class PersistenceBaseTestIT {
         assertUser("Fritz", "Muster", "hans.muster@puzzle.ch", createdUser);
     }
 
-    @DisplayName("should throw exception on save() in the case of optimistic locking failure")
+    @DisplayName("Should throw exception on save() in the case of optimistic locking failure")
     @Test
     void saveShouldThrowExceptionInTheCaseOfOptimisticLockingFailure() throws ResponseStatusException {
         // arrange
@@ -124,7 +124,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("DATA_HAS_BEEN_UPDATED", exception);
     }
 
-    @DisplayName("should updated existing entity with new data on save()")
+    @DisplayName("Should updated existing entity with new data on save()")
     @Test
     void saveExistingEntityWithDifferentDataShouldUpdateExistingEntity() throws ResponseStatusException {
         // arrange
@@ -146,7 +146,7 @@ public class PersistenceBaseTestIT {
         assertEquals("Pekka", foundUser.getFirstName());
     }
 
-    @DisplayName("should delete entity on deleteById()")
+    @DisplayName("Should delete entity on deleteById()")
     @Test
     void deleteByIdShouldDeleteEntity() throws ResponseStatusException {
         // arrange

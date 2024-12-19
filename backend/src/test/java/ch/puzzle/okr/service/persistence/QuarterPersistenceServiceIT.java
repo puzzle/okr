@@ -72,7 +72,7 @@ class QuarterPersistenceServiceIT {
         assertNotNull(quarter.getLabel());
     }
 
-    @DisplayName("should return single Quarter on findByLabel() when label is valid")
+    @DisplayName("Should return single Quarter on findByLabel() when label is valid")
     @Test
     void findByLabelShouldReturnSingleQuarterWhenLabelIsValid() {
         // arrange + act
@@ -85,7 +85,7 @@ class QuarterPersistenceServiceIT {
         assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
     }
 
-    @DisplayName("should return null on findByLabel() when label is not valid")
+    @DisplayName("Should return null on findByLabel() when label is not valid")
     @Test
     void findByLabelShouldReturnNullWhenLabelIsNotValid() {
         // arrange + act
@@ -95,7 +95,7 @@ class QuarterPersistenceServiceIT {
         assertNull(returnedQuarter);
     }
 
-    @DisplayName("should return null on findByLabel() when label is null")
+    @DisplayName("Should return null on findByLabel() when label is null")
     @Test
     void findByLabelShouldReturnNullWhenLabelIsNull() {
         // arrange + act
@@ -105,7 +105,7 @@ class QuarterPersistenceServiceIT {
         assertNull(returnedQuarter);
     }
 
-    @DisplayName("should return quarter on getModelName()")
+    @DisplayName("Should return quarter on getModelName()")
     @Test
     void getModelNameShouldReturnQuarter() {
         assertEquals(QUARTER, quarterPersistenceService.getModelName());

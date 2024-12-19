@@ -65,7 +65,7 @@ class AlignmentPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("should save new objective alignment entity on save()")
+    @DisplayName("Should save new objective alignment entity on save()")
     @Test
     void saveAlignmentShouldSaveNewObjectiveAlignment() {
         Alignment alignment = createObjectiveAlignment(null);
@@ -77,7 +77,7 @@ class AlignmentPersistenceServiceIT {
         assertEquals(4L, ((ObjectiveAlignment) createdAlignment).getAlignmentTarget().getId());
     }
 
-    @DisplayName("should save new key result alignment entity on save()")
+    @DisplayName("Should save new key result alignment entity on save()")
     @Test
     void saveAlignmentShouldSaveNewKeyResultAlignment() {
         Alignment alignment = createKeyResultAlignment(null);
@@ -89,7 +89,7 @@ class AlignmentPersistenceServiceIT {
         assertEquals(8L, ((KeyResultAlignment) createdAlignment).getAlignmentTarget().getId());
     }
 
-    @DisplayName("should update key result alignment entity on save()")
+    @DisplayName("Should update key result alignment entity on save()")
     @Test
     void updateAlignmentShouldSaveKeyResultAlignment() {
         createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
@@ -102,7 +102,7 @@ class AlignmentPersistenceServiceIT {
         assertEquals(createdAlignment.getVersion() + 1, updatedAlignment.getVersion());
     }
 
-    @DisplayName("should throw exception on  save() when entity was already updated in the mean time")
+    @DisplayName("Should throw exception on  save() when entity was already updated in the mean time")
     @Test
     void updateAlignmentShouldThrowExceptionWhenAlreadyUpdated() {
         createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
@@ -119,7 +119,7 @@ class AlignmentPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should return correct list of alignments on findByAlignedObjectiveId()")
+    @DisplayName("Should return correct list of alignments on findByAlignedObjectiveId()")
     @Test
     void findByAlignedObjectiveIdShouldReturnListOfAlignments() {
         List<Alignment> alignments = alignmentPersistenceService.findByAlignedObjectiveId(4L);
@@ -128,7 +128,7 @@ class AlignmentPersistenceServiceIT {
         alignments.forEach(this::assertAlignment);
     }
 
-    @DisplayName("should return correct list of key result alignments on findByKeyResultAlignmentId()")
+    @DisplayName("Should return correct list of key result alignments on findByKeyResultAlignmentId()")
     @Test
     void findByKeyResultAlignmentIdShouldReturnListOfAlignments() {
         List<KeyResultAlignment> alignments = alignmentPersistenceService.findByKeyResultAlignmentId(8L);
@@ -137,7 +137,7 @@ class AlignmentPersistenceServiceIT {
         assertAlignment(alignments.get(0));
     }
 
-    @DisplayName("should return correct list of objective alignments on findByObjectiveAlignmentId()")
+    @DisplayName("Should return correct list of objective alignments on findByObjectiveAlignmentId()")
     @Test
     void findByObjectiveAlignmentIdShouldReturnListOfAlignments() {
         List<ObjectiveAlignment> alignments = alignmentPersistenceService.findByObjectiveAlignmentId(3L);

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthorizationCriteriaParametersTest {
 
-    @DisplayName("should be successful on setParameters() with default authorization user")
+    @DisplayName("Should be successful on setParameters() with default authorization user")
     @Test
     void setParametersShouldBeSuccessfulWithDefaultAuthorizationUser() {
         // arrange
@@ -39,7 +39,7 @@ public class AuthorizationCriteriaParametersTest {
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    @DisplayName("should be successful on setParameters() when user is okr champion")
+    @DisplayName("Should be successful on setParameters() when user is okr champion")
     @Test
     void setParametersShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
@@ -65,7 +65,7 @@ public class AuthorizationCriteriaParametersTest {
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    @DisplayName("should be successful on setParameters() when team ids or objective query are empty")
+    @DisplayName("Should be successful on setParameters() when team ids or objective query are empty")
     @ParameterizedTest
     @MethodSource("provideListAndString")
     void setParametersShouldBeSuccessfulWhenTeamIdsOrObjectiveQueryAreEmpty(List<Long> teamIds, String objectiveQuery) {
@@ -94,7 +94,7 @@ public class AuthorizationCriteriaParametersTest {
                 Arguments.of(null, ""));
     }
 
-    @DisplayName("should be successful on setParameters() when team ids and objective query are not empty")
+    @DisplayName("Should be successful on setParameters() when team ids and objective query are not empty")
     @Test
     void setParametersShouldBeSuccessfulWhenTeamIdsAndObjectiveQueryAreNotEmpty() {
         // arrange

@@ -236,7 +236,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be successful on validateOnCreate() when model is valid")
+    @DisplayName("Should be successful on validateOnCreate() when model is valid")
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenObjectiveIsValid() {
         validator.validateOnUpdate(objective.getId(), objective);
@@ -247,7 +247,7 @@ class ObjectiveValidationServiceTest {
         verify(validator, times(1)).validate(objective);
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when model date is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when model date is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -260,7 +260,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when id is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -275,7 +275,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when id has changed")
+    @DisplayName("Should throw exception on validateOnUpdate() when id has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -308,7 +308,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when attributes are missing")
+    @DisplayName("Should throw exception on validateOnUpdate() when attributes are missing")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").withQuarter(quarter)
@@ -327,7 +327,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when modifiedBy is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when modifiedBy is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrModifiedByIsNotSet() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(1L)
@@ -344,7 +344,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when start date is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when start date is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenStartDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
@@ -362,7 +362,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when end date is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when end date is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenEndDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
@@ -380,7 +380,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should throw exception on validateOnUpdate() when team has changed")
+    @DisplayName("Should throw exception on validateOnUpdate() when team has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWheTeamHasChanged() {
         Objective savedObjective = Objective.Builder.builder().withId(1L).withTitle("Team has changed")
@@ -440,7 +440,7 @@ class ObjectiveValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should be successful on validateOnUpdate() when the objective is in the backlog and the state is DRAFT")
+    @DisplayName("Should be successful on validateOnUpdate() when the objective is in the backlog and the state is DRAFT")
     @Test
     void validateOnUpdateShouldPassWhenQuarterIsBacklogAndStateIsDraft() {
         Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
@@ -453,7 +453,7 @@ class ObjectiveValidationServiceTest {
         assertDoesNotThrow(() -> validator.validateOnUpdate(1L, validObjective));
     }
 
-    @DisplayName("should be successful on validateOnGet() when id is valid")
+    @DisplayName("Should be successful on validateOnGet() when id is valid")
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidObjectiveId() {
         validator.validateOnGet(1L);
@@ -462,7 +462,7 @@ class ObjectiveValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
-    @DisplayName("should throw exception on validateOnGet() when id is null")
+    @DisplayName("Should throw exception on validateOnGet() when id is null")
     @Test
     void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

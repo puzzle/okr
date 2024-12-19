@@ -55,7 +55,7 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
-    @DisplayName("should return objective on findObjectiveById() when user is has member level role")
+    @DisplayName("Should return objective on findObjectiveById() when user is has member level role")
     @Test
     void appendObjectiveShouldReturnObjectiveWhenMemberRole() {
         Long objectiveId = 6L;
@@ -65,7 +65,7 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
-    @DisplayName("should return correct overview on getFilteredOverview() when user has first level role and no team ids are supplied")
+    @DisplayName("Should return correct overview on getFilteredOverview() when user has first level role and no team ids are supplied")
     @Test
     void appendOverviewShouldReturnObjectiveWhenFirstLevelRoleAndTeamIdsEmpty() {
         Long quarterId = 2L;
@@ -76,7 +76,7 @@ class AuthorizationCriteriaIT {
         assertEquals(18L, overviews.size());
     }
 
-    @DisplayName("should return correct overview on getFilteredOverview() when user has second level role")
+    @DisplayName("Should return correct overview on getFilteredOverview() when user has second level role")
     @Test
     void appendOverviewShouldReturnObjectiveWhenSecondLevelRole() {
         Long quarterId = 2L;
@@ -87,7 +87,7 @@ class AuthorizationCriteriaIT {
         assertEquals(6L, overviews.size());
     }
 
-    @DisplayName("should return correct overview on getFilteredOverview() when user has member level role")
+    @DisplayName("Should return correct overview on getFilteredOverview() when user has member level role")
     @Test
     void appendOverviewShouldReturnObjectiveWhenMemberRole() {
         Long quarterId = 2L;

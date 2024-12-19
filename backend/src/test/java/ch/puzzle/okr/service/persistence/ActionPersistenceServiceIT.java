@@ -61,7 +61,7 @@ class ActionPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("should create new entity on save()")
+    @DisplayName("Should create new entity on save()")
     @Test
     void saveActionShouldSaveNewAction() {
         Action action = createAction(null);
@@ -75,7 +75,7 @@ class ActionPersistenceServiceIT {
         assertEquals(action.isChecked(), createdAction.isChecked());
     }
 
-    @DisplayName("should update action on save() when the action has been modified")
+    @DisplayName("Should update action on save() when the action has been modified")
     @Test
     void updateActionShouldUpdateAction() {
         Action action = createAction(null);
@@ -90,7 +90,7 @@ class ActionPersistenceServiceIT {
         assertEquals(4, updateAction.getPriority());
     }
 
-    @DisplayName("should throw exception on save() when the action has already been updated")
+    @DisplayName("Should throw exception on save() when the action has already been updated")
     @Test
     void updateActionShouldThrowExceptionWhenAlreadyUpdated() {
         createdAction = actionPersistenceService.save(createAction(null));
@@ -106,7 +106,7 @@ class ActionPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("should return list of all actions on findAll()")
+    @DisplayName("Should return list of all actions on findAll()")
     @Test
     void getAllActionsShouldReturnListOfAllActions() {
         List<Action> actions = actionPersistenceService.findAll();
@@ -114,7 +114,7 @@ class ActionPersistenceServiceIT {
         assertEquals(11, actions.size());
     }
 
-    @DisplayName("should return list of actions from a key result ordered by ascending priority on getActionsByKeyResultIdOrderByPriorityAsc()")
+    @DisplayName("Should return list of actions from a key result ordered by ascending priority on getActionsByKeyResultIdOrderByPriorityAsc()")
     @Test
     void getAllActionsByKeyResultIdShouldReturnListOfAllActionsFromThisKeyResultOrderASC() {
         List<Action> actions = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(6L);
@@ -125,7 +125,7 @@ class ActionPersistenceServiceIT {
         assertEquals(3, actions.get(2).getPriority());
     }
 
-    @DisplayName("should return correct action on findById()")
+    @DisplayName("Should return correct action on findById()")
     @Test
     void getActionByIdShouldReturnActionProperly() {
         Action action = actionPersistenceService.findById(1L);
@@ -137,7 +137,7 @@ class ActionPersistenceServiceIT {
         assertEquals(8L, action.getKeyResult().getId());
     }
 
-    @DisplayName("should delete action on delete()")
+    @DisplayName("Should delete action on delete()")
     @Test
     void shouldDeleteActionById() {
         Action action = createAction(null);

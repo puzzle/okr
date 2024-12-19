@@ -16,9 +16,9 @@ public class UserUpdateHelperTest {
         helper = new AuthorizationRegistrationService.UserUpdateHelper();
     }
 
-    @DisplayName("update userFromDB with Firstname and Lastname from token")
+    @DisplayName("Should update userFromDB with Firstname and Lastname from token")
     @Test
-    void updateUserFromWithTokenData() {
+    void shouldUpdateUserFromDBWithTokenData() {
         // arrange
         User userFromDB = User.Builder.builder() //
                 .withId(23L) //
@@ -42,8 +42,9 @@ public class UserUpdateHelperTest {
         assertEquals("lastname_from_token", updatedUser.getLastName());
     }
 
+    @DisplayName("Should not update user as OKR champion when email is not listed")
     @Test
-    void updateUserAsNoChampion() {
+    void shouldNotUpdateUserAsOkrChampionWhenEmailIsNotListed() {
         // arrange
         User noChampionUser = User.Builder.builder().withEmail("no@champions.ch").build();
         TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, //
@@ -56,8 +57,9 @@ public class UserUpdateHelperTest {
         assertFalse(updatedUser.isOkrChampion());
     }
 
+    @DisplayName("Should update user as OKR champion when email is listed")
     @Test
-    void updateUserAsChampion() {
+    void shouldUpdateUserAsOkrChampionWhenEmailIsListed() {
         // arrange
         User championUser = User.Builder.builder().withEmail("yes@champions.ch").build();
         TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, //

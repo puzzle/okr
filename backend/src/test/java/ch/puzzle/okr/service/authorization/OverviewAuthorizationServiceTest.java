@@ -42,9 +42,9 @@ class OverviewAuthorizationServiceTest {
             .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(adminTeamId).build())
             .withObjectiveTitle("Objective 1").build();
 
-    @DisplayName("getFilteredOverview() should do nothing when OverviewId is null")
+    @DisplayName("Should do nothing when OverviewId is null")
     @Test
-    void getFilteredOverviewShouldDoNothingWhenOverviewIdIsNull() {
+    void shouldDoNothingWhenOverviewIdIsNull() {
         // arrange
         Overview overviewWithoutOverviewId = mock(Overview.class);
         when(overviewWithoutOverviewId.getOverviewId()).thenReturn(null);
@@ -60,9 +60,9 @@ class OverviewAuthorizationServiceTest {
         verify(overviewWithoutOverviewId, never()).setWriteable(anyBoolean());
     }
 
-    @DisplayName("getFilteredOverview() should do nothing when TeamId is null")
+    @DisplayName("Should do nothing when TeamId is null")
     @Test
-    void getFilteredOverviewShouldDoNothingWhenTeamIdIsNull() {
+    void shouldDoNothingWhenTeamIdIsNull() {
         // arrange
         OverviewId overviewId = mock(OverviewId.class);
         when(overviewId.getTeamId()).thenReturn(null);
@@ -80,9 +80,9 @@ class OverviewAuthorizationServiceTest {
         verify(overviewWithoutTeamId, never()).setWriteable(anyBoolean());
     }
 
-    @DisplayName("getFilteredOverview() should do nothing when ObjectiveId is null")
+    @DisplayName("Should do nothing when ObjectiveId is null")
     @Test
-    void getFilteredOverviewShouldDoNothingWhenObjectiveIdIsNull() {
+    void shouldDoNothingWhenObjectiveIdIsNull() {
         // arrange
         OverviewId overviewId = mock(OverviewId.class);
         when(overviewId.getObjectiveId()).thenReturn(null);
@@ -100,8 +100,9 @@ class OverviewAuthorizationServiceTest {
         verify(overviewWithoutObjectiveId, never()).setWriteable(anyBoolean());
     }
 
+    @DisplayName("Should return the overviews when authorized")
     @Test
-    void getFilteredOverviewShouldReturnOverviewsWhenAuthorized() {
+    void shouldReturnOverviewsWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
@@ -111,8 +112,9 @@ class OverviewAuthorizationServiceTest {
         assertThat(List.of(overview)).hasSameElementsAs(overviews);
     }
 
+    @DisplayName("Should set writable property to true")
     @Test
-    void getFilteredOverviewShouldSetWritableProperlyToTrue() {
+    void shouldSetWritablePropertyToTrue() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
@@ -122,8 +124,9 @@ class OverviewAuthorizationServiceTest {
         assertTrue(overviews.get(0).isWriteable());
     }
 
+    @DisplayName("Should set writable property to false")
     @Test
-    void getFilteredOverviewShouldSetWritableProperlyToFalse() {
+    void shouldSetWritablePropertyToFalse() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
@@ -133,8 +136,9 @@ class OverviewAuthorizationServiceTest {
         assertTrue(overviews.get(0).isWriteable());
     }
 
+    @DisplayName("Should return an empty list when not authorized")
     @Test
-    void getFilteredOverviewShouldReturnEmptyListWhenNotAuthorized() {
+    void shouldReturnEmptyListWhenNotAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(1L, List.of(adminTeamId), "", authorizationUser))
                 .thenReturn(List.of());
@@ -143,9 +147,9 @@ class OverviewAuthorizationServiceTest {
         assertThat(List.of()).hasSameElementsAs(overviews);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should return {0} for hasWriteAllAccess based on user role")
     @ValueSource(booleans = { true, false })
-    void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
+    void shouldReturnHasWriteAllAccessBasedOnUserRole(boolean hasRoleWriteAll) {
         if (hasRoleWriteAll) {
             when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         } else {
@@ -155,4 +159,5 @@ class OverviewAuthorizationServiceTest {
 
         assertEquals(hasRoleWriteAll, overviewAuthorizationService.hasWriteAllAccess());
     }
+
 }

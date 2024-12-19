@@ -368,7 +368,7 @@ class KeyResultBusinessServiceTest {
         assertFalse(returnValue);
     }
 
-     @DisplayName("Should return false for isImUsed() on metric key-result with check-ins")
+    @DisplayName("Should return false for isImUsed() on metric key-result with check-ins")
     @Test
     void shouldReturnFalseForImUsedOnMetricKeyResultWithCheckIns() {
         when(keyResultPersistenceService.findById(any())).thenReturn(metricKeyResult);

@@ -115,7 +115,7 @@ export class CheckInFormComponent implements OnInit {
 
     this.checkInService.saveCheckIn(checkIn)
       .subscribe(() => {
-        this.actionService.updateActions(this.dialogForm.value.actionList!)
+        this.actionService.updateActions(this.dialogForm.value.actionList ?? [])
           .subscribe(() => {
             this.dialogRef.close();
           });
@@ -124,9 +124,9 @@ export class CheckInFormComponent implements OnInit {
 
   getCheckInValue (): string {
     if ((this.checkIn as CheckInMetricMin).value != null) {
-      return (this.checkIn as CheckInMetricMin).value!.toString();
+      return (this.checkIn as CheckInMetricMin).value?.toString() ?? "";
     } else {
-      return (this.checkIn as CheckInOrdinalMin).zone!;
+      return (this.checkIn as CheckInOrdinalMin).zone ?? "";
     }
   }
 
@@ -143,9 +143,11 @@ export class CheckInFormComponent implements OnInit {
   }
 
   changeIsChecked (event: any, index: number) {
-    const actions = this.dialogForm.value.actionList!;
-    actions[index] = { ...actions[index],
-      isChecked: event.checked };
+    const actions = this.dialogForm.value.actionList ?? [];
+    actions[index] = {
+      ...actions[index],
+      isChecked: event.checked
+    };
     this.dialogForm.patchValue({ actionList: actions });
   }
 

@@ -77,7 +77,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(filter((confirm) => confirm),
         mergeMap(() => this.teamService.removeUserFromTeam(entry.id,
-          this.selectedTeam$.value!)))
+          this.selectedTeam$.value as Team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()

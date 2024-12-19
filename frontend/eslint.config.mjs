@@ -17,7 +17,7 @@ export default tsEslint.config(
     processor: angular.processInlineTemplates,
     languageOptions: {
       globals: {
-        //Cypress Undefined
+        //Cypress things not recognized by eslint
         cy: 'readonly',
         Cypress: 'readonly',
         it: 'readonly',
@@ -25,21 +25,23 @@ export default tsEslint.config(
         expect: 'readonly',
         beforeEach: 'readonly',
         before: 'readonly',
-        //Dom undefined
+        //Dom things not recognized by eslint
         localStorage: 'readonly',
         console: 'readonly',
         window: 'readonly',
         document: 'readonly',
-        //Event undefined
+        //Event not recognized by eslint
         MouseEvent: 'readonly',
         KeyboardEvent: 'readonly',
         Event: 'readonly',
-        //HTML Elements undefined
+        //HTML Elements not recognized by eslint
         HTMLDivElement: 'readonly',
         HTMLInputElement: 'readonly',
         HTMLSpanElement: 'readonly',
         HTMLElement: 'readonly',
-        //Other undefined
+        HTMLTitleElement: 'readonly',
+        HTMLHtmlElement: 'readonly',
+        //Others not recognized by eslint
         ResizeObserver: 'readonly',
         ResizeObserverEntry: 'readonly',
         setTimeout: 'readonly',
@@ -76,11 +78,11 @@ export default tsEslint.config(
       ],
       'prefer-rest-params': 'error',
       '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
-      '@stylistic/lines-around-comment': ['error'],
+      '@stylistic/lines-around-comment': 'off',
       '@angular-eslint/no-empty-lifecycle-method': 'error',
       '@angular-eslint/component-class-suffix': 'error',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
-      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'error',
       '@stylistic/no-extra-parens': 'off',
       '@typescript-eslint/no-confusing-non-null-assertion': 'off',
       //Delete these rules after fixing all the issues and enabling the actual rules
@@ -124,10 +126,12 @@ export default tsEslint.config(
     files: ['**/*.spec.ts'],
     extends: [...tsEslint.configs.recommended],
     rules: {
+      //Rules removed for Test files because they are unnecessary for tests
       '@typescript-eslint/no-explicit-any': 'off',
       'prefer-rest-params': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },
 

@@ -22,12 +22,13 @@ export class ActionPlanComponent {
   listItems!: QueryList<ElementRef>;
 
   constructor (private actionService: ActionService,
-    public dialogService: DialogService) {}
+    public dialogService: DialogService) {
+  }
 
   handleKeyDown (event: Event, currentIndex: number) {
     let newIndex = currentIndex;
     if ((event as KeyboardEvent).key === "ArrowDown") {
-      if (newIndex + 1 <= this.control.getValue()!.length - 1) {
+      if (newIndex + 1 <= (this.control.getValue() ?? []).length - 1) {
         newIndex += 1;
       }
     } else if ((event as KeyboardEvent).key === "ArrowUp") {
@@ -42,7 +43,7 @@ export class ActionPlanComponent {
 
   changeItemPosition (newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
-    const currentActionPlan: Action[] = this.control.getValue()!;
+    const currentActionPlan: Action[] = this.control.getValue() ?? [];
     this.updateActionTexts(currentActionPlan);
     moveItemInArray(currentActionPlan,
       currentIndex,
@@ -58,7 +59,7 @@ export class ActionPlanComponent {
   }
 
   increaseActiveItemWithTab () {
-    if (this.activeItem <= this.control.value!.length - 2) {
+    if (this.activeItem <= (this.control.value ?? []).length - 2) {
       this.activeItem++;
     }
   }
@@ -71,20 +72,22 @@ export class ActionPlanComponent {
 
   drop (event: CdkDragDrop<Action[] | null>) {
     const value: string = (event.container.element.nativeElement.children[event.previousIndex].children[1] as HTMLInputElement).value;
-    const actions: Action[] = this.control.getValue()!;
+    const actions: Action[] = this.control.getValue() ?? [];
     if (actions[event.previousIndex].action == "" && value != "") {
-      actions[event.previousIndex] = { ...actions[event.previousIndex],
-        action: value };
+      actions[event.previousIndex] = {
+        ...actions[event.previousIndex],
+        action: value
+      };
       this.control.next(actions);
     }
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data!,
+      moveItemInArray(event.container.data ?? [],
         event.previousIndex,
         event.currentIndex);
     } else {
       transferArrayItem(
-        event.previousContainer.data!,
-        event.container.data!,
+        event.previousContainer.data ?? [],
+        event.container.data ?? [],
         event.previousIndex,
         event.currentIndex
       );
@@ -94,7 +97,7 @@ export class ActionPlanComponent {
   }
 
   adjustPriorities () {
-    const actions: Action[] = this.control.getValue()!;
+    const actions: Action[] = this.control.getValue() ?? [];
     actions.forEach(function (action: Action, index: number) {
       action.priority = index;
     });
@@ -102,7 +105,7 @@ export class ActionPlanComponent {
   }
 
   removeAction (index: number) {
-    const actions: Action[] = this.control.getValue()!;
+    const actions: Action[] = this.control.getValue() ?? [];
     if (this.activeItem == index && this.activeItem > 0) {
       this.activeItem--;
     }
@@ -113,7 +116,7 @@ export class ActionPlanComponent {
         .subscribe((result) => {
           if (result) {
             if (actions[index].id) {
-              this.actionService.deleteAction(actions[index].id!)
+              this.actionService.deleteAction(actions[index].id)
                 .subscribe();
             }
             actions.splice(index,
@@ -131,10 +134,12 @@ export class ActionPlanComponent {
   }
 
   addNewAction () {
-    const actions: Action[] = this.control.getValue()!;
-    actions.push({ action: "",
+    const actions: Action[] = this.control.getValue() ?? [];
+    actions.push({
+      action: "",
       priority: actions.length,
-      keyResultId: this.keyResultId } as Action);
+      keyResultId: this.keyResultId
+    } as Action);
     this.control.next(actions);
     this.activeItem = actions.length - 1;
   }

@@ -115,7 +115,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
     const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent,
       {
         data: {
-          team: this.selectedTeam$.value!,
+          team: this.selectedTeam$.value,
           currentUsersOfTeam: this.dataSource.data
         }
       });

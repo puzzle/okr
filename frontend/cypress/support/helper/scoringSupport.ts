@@ -65,12 +65,14 @@ function validateScoringWidth (zone: string, percent: number, isOverview: boolea
     .invoke("width")
     .then((parentWidth) => {
       expect(parentWidth).not.to.equal(undefined);
-      cy.getZone(zone,
-        isOverview)
-        .invoke("width")
-        .should("be.within",
-          parentWidth! * (percent / 100) - 3,
-          parentWidth! * (percent / 100) + 3);
+      if (parentWidth) {
+        cy.getZone(zone,
+          isOverview)
+          .invoke("width")
+          .should("be.within",
+            parentWidth * (percent / 100) - 3,
+            parentWidth * (percent / 100) + 3);
+      }
     });
 }
 
@@ -121,22 +123,30 @@ function colorFromPercentage (percentage: number) {
 
 function scoringValueFromPercentage (percentage: number): ScoringValue {
   if (percentage >= 100) {
-    return { failPercent: 0,
+    return {
+      failPercent: 0,
       commitPercent: 0,
-      targetPercent: 0 };
+      targetPercent: 0
+    };
   } else if (percentage > 70) {
     const targetPercent = (percentage - 70) * (100 / 30);
-    return { failPercent: 100,
+    return {
+      failPercent: 100,
       commitPercent: 100,
-      targetPercent: targetPercent };
+      targetPercent: targetPercent
+    };
   } else if (percentage > 30) {
     const commitPercent = (percentage - 30) * (100 / 40);
-    return { failPercent: 100,
+    return {
+      failPercent: 100,
       commitPercent: commitPercent,
-      targetPercent: -1 };
+      targetPercent: -1
+    };
   }
   const failPercent = percentage * (100 / 30);
-  return { failPercent: failPercent,
+  return {
+    failPercent: failPercent,
     commitPercent: -1,
-    targetPercent: -1 };
+    targetPercent: -1
+  };
 }

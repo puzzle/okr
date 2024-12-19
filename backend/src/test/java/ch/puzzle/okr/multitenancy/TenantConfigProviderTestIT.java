@@ -85,8 +85,7 @@ public class TenantConfigProviderTestIT {
         }
     }
 
-    @DisplayName("getTenantConfigById returns for an existing TenantId the TenantConfig as Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getTenantConfigById returns for an existing TenantId the TenantConfig as Optional")
     @CsvSource({ "pitc, acme" })
     void shouldGetTenantConfigByIdForExistingTenantId(String tenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
@@ -95,8 +94,7 @@ public class TenantConfigProviderTestIT {
         assertTenantConfigProvider(config.get());
     }
 
-    @DisplayName("getTenantConfigById returns for a non existing TenantId an empty Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getTenantConfigById returns for a non existing TenantId an empty Optional")
     @CsvSource({ "PITC-London" })
     void shouldGetEmptyTenantConfigForNonExistingTenantId(String nonExistingTenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
@@ -104,8 +102,7 @@ public class TenantConfigProviderTestIT {
         assertTrue(config.isEmpty());
     }
 
-    @DisplayName("getJwkSetUri returns for an existing TenantId the JwkSetUri as Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getJwkSetUri returns for an existing TenantId the JwkSetUri as Optional")
     @CsvSource({ "pitc", "acme" })
     void shouldGetJwkSetUriForExistingTenantId(String tenantId) {
         // arrange
@@ -119,8 +116,7 @@ public class TenantConfigProviderTestIT {
         assertEquals(prefix(tenantId) + JWK_SET_URI, jwkSetUri.get());
     }
 
-    @DisplayName("getJwkSetUri returns for a non existing TenantId an empty Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getJwkSetUri returns for a non existing TenantId an empty Optional")
     @CsvSource({ "PITC-London" })
     void shouldGetEmptyJwkSetUriForNonExistingTenantId(String nonExistingTenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);

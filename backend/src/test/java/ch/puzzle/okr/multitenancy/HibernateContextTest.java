@@ -34,8 +34,7 @@ public class HibernateContextTest {
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
 
-    @DisplayName("setHibernateConfig() should throw exception if db config has null or empty values")
-    @ParameterizedTest
+    @ParameterizedTest(name = "setHibernateConfig() should throw exception if db config has null or empty values")
     @MethodSource("invalidDbConfig")
     void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username,
             String password, String tenant) {

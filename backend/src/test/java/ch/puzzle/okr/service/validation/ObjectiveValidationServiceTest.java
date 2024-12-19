@@ -94,30 +94,16 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should be successful on validateOnGet() when id is valid")
     @Test
-    void validateOnGetShouldBeSuccessfulWhenValidObjectiveId() {
+    void shouldBeSuccessfulOnValidateOnGetWhenValidObjectiveId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
-    @DisplayName("Should throw exception on validateOnGet() when id is null")
-    @Test
-    void validateOnGetShouldThrowExceptionIfObjectiveIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(null));
-
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Objective")));
-
-        assertEquals(BAD_REQUEST, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-    }
-
     @DisplayName("Should be successful on validateOnCreate() when objective is valid")
     @Test
-    void validateOnCreateShouldBeSuccessfulWhenTeamIsValid() {
+    void shouldBeSuccessfulOnValidateOnGetWhenTeamIsValid() {
         validator.validateOnCreate(objectiveMinimal);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(objectiveMinimal);
@@ -126,7 +112,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when objective is null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
@@ -139,7 +125,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objective));
 
@@ -152,7 +138,7 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest(name = "should throw exception on validateOnCreate() when model has invalid name {0}")
     @MethodSource("nameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
+    void shouldThrowExceptionOnValidateOnCreateWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder().withId(null).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).build();
@@ -167,7 +153,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnCreateWhenAttrsAreMissing() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Title").withQuarter(quarter)
                 .build();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -185,7 +171,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when model was modified")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenAttrModifiedByIsSet() {
+    void shouldThrowExceptionOnValidateOnCreateWhenAttrModifiedByIsSet() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(null)
                 .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
                 .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(user).build();
@@ -202,7 +188,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when start date is null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenStartDateIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenStartDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
                 .withEndDate(LocalDate.of(2022, 7, 31)).build();
         Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Start date is missing")
@@ -220,7 +206,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnCreate() when end date is null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenEndDateIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenEndDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
                 .withStartDate(LocalDate.of(2022, 4, 1)).build();
         Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("End date is missing")
@@ -238,7 +224,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should be successful on validateOnCreate() when model is valid")
     @Test
-    void validateOnUpdateShouldBeSuccessfulWhenObjectiveIsValid() {
+    void shouldBeSuccessfulOnValidateOnCreateWhenObjectiveIsValid() {
         validator.validateOnUpdate(objective.getId(), objective);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(objective);
@@ -249,7 +235,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when model date is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
@@ -262,7 +248,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, objectiveMinimal));
 
@@ -277,7 +263,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when id has changed")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdHasChanged() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(7L, objective));
 
@@ -293,7 +279,7 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest(name = "should throw exception on validateOnUpdate() when model has invalid name {0}")
     @MethodSource("nameValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
+    void shouldThrowExceptionOnValidateOnUpdateWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder().withId(3L).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
@@ -310,7 +296,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when attributes are missing")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenAttrsAreMissing() {
         Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").withQuarter(quarter)
                 .withModifiedBy(user).build();
         when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
@@ -329,7 +315,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when modifiedBy is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenAttrModifiedByIsNotSet() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenAttrModifiedByIsNotSet() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(1L)
                 .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
                 .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(null).build();
@@ -346,7 +332,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when start date is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenStartDateIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenStartDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
                 .withEndDate(LocalDate.of(2022, 7, 31)).build();
         Objective objectiveInvalid = Objective.Builder.builder().withId(1L).withTitle("Start date is missing")
@@ -364,7 +350,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when end date is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenEndDateIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenEndDateIsNull() {
         Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
                 .withStartDate(LocalDate.of(2022, 4, 1)).build();
         Objective objectiveInvalid = Objective.Builder.builder().withId(1L).withTitle("End date is missing")
@@ -382,7 +368,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should throw exception on validateOnUpdate() when team has changed")
     @Test
-    void validateOnUpdateShouldThrowExceptionWheTeamHasChanged() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenTeamHasChanged() {
         Objective savedObjective = Objective.Builder.builder().withId(1L).withTitle("Team has changed")
                 .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)
                 .withQuarter(quarter).withModifiedBy(null).build();
@@ -403,7 +389,7 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest(name = "should throw exception on validateOnCreate() when the objective is in the backlog and the state is {0} instead of draft")
     @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
-    void validateOnCreateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
+    void shouldThrowExceptionOnValidateOnCreateWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
         Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
                 .withStartDate(null).withEndDate(null).build();
 
@@ -422,7 +408,7 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest(name = "should throw exception on validateOnUpdate() when the objective is in the backlog and the state is {0} instead of DRAFT")
     @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
-    void validateOnUpdateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
+    void shouldThrowExceptionOnValidateOnUpdateWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
         Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
                 .withStartDate(null).withEndDate(null).build();
 
@@ -442,7 +428,7 @@ class ObjectiveValidationServiceTest {
 
     @DisplayName("Should be successful on validateOnUpdate() when the objective is in the backlog and the state is DRAFT")
     @Test
-    void validateOnUpdateShouldPassWhenQuarterIsBacklogAndStateIsDraft() {
+    void shouldPassOnValidateOnUpdateWhenQuarterIsBacklogAndStateIsDraft() {
         Quarter backlogQuarter = Quarter.Builder.builder().withId(BACK_LOG_QUARTER_ID).withLabel(BACK_LOG_QUARTER_LABEL)
                 .withStartDate(null).withEndDate(null).build();
 
@@ -453,18 +439,9 @@ class ObjectiveValidationServiceTest {
         assertDoesNotThrow(() -> validator.validateOnUpdate(1L, validObjective));
     }
 
-    @DisplayName("Should be successful on validateOnGet() when id is valid")
-    @Test
-    void validateOnDeleteShouldBeSuccessfulWhenValidObjectiveId() {
-        validator.validateOnGet(1L);
-
-        verify(validator, times(1)).validateOnGet(1L);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
-    }
-
     @DisplayName("Should throw exception on validateOnGet() when id is null")
     @Test
-    void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
+    void shouldThrowExceptionOnValidateOnGetWhenObjectiveIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 

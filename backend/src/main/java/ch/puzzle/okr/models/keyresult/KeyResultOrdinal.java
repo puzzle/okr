@@ -1,13 +1,12 @@
 package ch.puzzle.okr.models.keyresult;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.Objects;
-
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_ORDINAL)
@@ -24,29 +23,17 @@ public class KeyResultOrdinal extends KeyResult {
     @Size(max = 400, message = "Attribute stretchZone has a max length of 400 characters")
     private String stretchZone;
 
-    public String getCommitZone() {
-        return commitZone;
-    }
+    public String getCommitZone() { return commitZone; }
 
-    public void setCommitZone(String commitZone) {
-        this.commitZone = commitZone;
-    }
+    public void setCommitZone(String commitZone) { this.commitZone = commitZone; }
 
-    public String getTargetZone() {
-        return targetZone;
-    }
+    public String getTargetZone() { return targetZone; }
 
-    public void setTargetZone(String targetZone) {
-        this.targetZone = targetZone;
-    }
+    public void setTargetZone(String targetZone) { this.targetZone = targetZone; }
 
-    public String getStretchZone() {
-        return stretchZone;
-    }
+    public String getStretchZone() { return stretchZone; }
 
-    public void setStretchZone(String stretchZone) {
-        this.stretchZone = stretchZone;
-    }
+    public void setStretchZone(String stretchZone) { this.stretchZone = stretchZone; }
 
     public KeyResultOrdinal() {
         super();
@@ -56,8 +43,8 @@ public class KeyResultOrdinal extends KeyResult {
     public boolean equals(Object o) {
         if (o instanceof KeyResultOrdinal) {
             return super.equals(o) && Objects.equals(commitZone, ((KeyResultOrdinal) o).commitZone)
-                    && Objects.equals(targetZone, ((KeyResultOrdinal) o).targetZone)
-                    && Objects.equals(stretchZone, ((KeyResultOrdinal) o).stretchZone);
+                   && Objects.equals(targetZone, ((KeyResultOrdinal) o).targetZone)
+                   && Objects.equals(stretchZone, ((KeyResultOrdinal) o).stretchZone);
         }
         return false;
     }
@@ -70,7 +57,7 @@ public class KeyResultOrdinal extends KeyResult {
     @Override
     public String toString() {
         return super.toString() + "KeyResultOrdinal{" + "commitZone='" + commitZone + '\'' + ", targetZone='"
-                + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + '}';
+               + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + '}';
     }
 
     private KeyResultOrdinal(Builder builder) {

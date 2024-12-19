@@ -4,11 +4,10 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class OverviewPersistenceService {
@@ -20,15 +19,15 @@ public class OverviewPersistenceService {
     private final AuthorizationCriteria<Overview> authorizationCriteria;
 
     public OverviewPersistenceService(EntityManager entityManager,
-            AuthorizationCriteria<Overview> authorizationCriteria) {
+                                      AuthorizationCriteria<Overview> authorizationCriteria) {
         this.entityManager = entityManager;
         this.authorizationCriteria = authorizationCriteria;
     }
 
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery,
-            AuthorizationUser authorizationUser) {
+                                              AuthorizationUser authorizationUser) {
         String queryString = SELECT_OVERVIEW
-                + authorizationCriteria.appendOverview(teamIds, objectiveQuery, authorizationUser);
+                             + authorizationCriteria.appendOverview(teamIds, objectiveQuery, authorizationUser);
         logger.debug("select overview by quarterId={} and teamIds={}: {}", quarterId, teamIds, queryString);
         TypedQuery<Overview> typedQuery = entityManager.createQuery(queryString, Overview.class);
         typedQuery.setParameter("quarterId", quarterId);

@@ -1,5 +1,9 @@
 package ch.puzzle.okr;
 
+import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
+import static ch.puzzle.okr.test.TestHelper.defaultUser;
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
@@ -13,10 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-
-import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
-import static ch.puzzle.okr.test.TestHelper.defaultUser;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class SpringCachingConfigTest {
@@ -64,12 +64,12 @@ class SpringCachingConfigTest {
     }
 
     private void assertEqualUsers(AuthorizationUser expectedAuthorizationUser,
-            AuthorizationUser actualAuthorizationUser) {
+                                  AuthorizationUser actualAuthorizationUser) {
 
         User expcetedUser = expectedAuthorizationUser.user();
         User actualUser = actualAuthorizationUser.user();
         assertTrue(expcetedUser.getFirstname().equals(actualUser.getFirstname())
-                && expcetedUser.getLastname().equals(actualUser.getLastname())
-                && expcetedUser.getEmail().equals(actualUser.getEmail()));
+                   && expcetedUser.getLastname().equals(actualUser.getLastname())
+                   && expcetedUser.getEmail().equals(actualUser.getEmail()));
     }
 }

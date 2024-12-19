@@ -1,6 +1,12 @@
 package ch.puzzle.okr.multitenancy;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,13 +15,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.core.env.Environment;
-
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringIntegrationTest
 @SpringBootConfiguration
@@ -139,7 +138,7 @@ public class TenantConfigProviderTestIT {
         assertEquals(prefix(tenantId) + DATASOURCE_PASSWORD, tenantConfig.dataSourceConfig().password());
         assertEquals(prefix(tenantId) + DATASOURCE_SCHEMA, tenantConfig.dataSourceConfig().schema());
 
-        assertArrayEquals(new String[] { CHAMPION_EMAILS_1, CHAMPION_EMAILS_2 }, tenantConfig.okrChampionEmails());
+        assertArrayEquals(new String[]{ CHAMPION_EMAILS_1, CHAMPION_EMAILS_2 }, tenantConfig.okrChampionEmails());
         assertEquals(DRIVER_CLASS_NAME, tenantConfig.dataSourceConfig().driverClassName());
     }
 

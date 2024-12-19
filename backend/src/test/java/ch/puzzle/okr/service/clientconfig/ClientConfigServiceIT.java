@@ -1,19 +1,18 @@
 package ch.puzzle.okr.service.clientconfig;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 @SpringIntegrationTest
 @SpringBootTest()
@@ -25,7 +24,7 @@ class ClientConfigServiceIT {
     @ParameterizedTest
     @MethodSource("tenantConfigs")
     void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname, String activeProfile,
-            String issuer, String clientId) {
+                                                                             String issuer, String clientId) {
 
         // arrange + act
         ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv(hostname);
@@ -37,15 +36,16 @@ class ClientConfigServiceIT {
     }
 
     private static Stream<Arguments> tenantConfigs() {
-        return Stream.of(
-                Arguments.of("pitc.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "pitc_okr_staging"),
-                Arguments.of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
+        return Stream
+                .of(Arguments.of("pitc.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "pitc_okr_staging"),
+                    Arguments
+                            .of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
     }
 
     @Test
     void getConfigBasedOnActiveEnv_invalidSubdomain_throwsException() {
         assertThrowsExactly(EntityNotFoundException.class,
-                () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
+                            () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
     }
 
     @Test

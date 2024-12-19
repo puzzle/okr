@@ -2,7 +2,6 @@ package ch.puzzle.okr.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -31,38 +30,24 @@ public class Quarter {
         setEndDate(builder.endDate);
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public String getLabel() {
-        return label;
-    }
+    public String getLabel() { return label; }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
+    public void setLabel(String label) { this.label = label; }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
+    public LocalDate getStartDate() { return startDate; }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
+    public LocalDate getEndDate() { return endDate; }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
     @Override
     public String toString() {
         return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate="
-                + endDate + '}';
+               + endDate + '}';
     }
 
     @Override
@@ -73,7 +58,7 @@ public class Quarter {
             return false;
         Quarter quarter = (Quarter) o;
         return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label)
-                && Objects.equals(startDate, quarter.startDate) && Objects.equals(endDate, quarter.endDate);
+               && Objects.equals(startDate, quarter.startDate) && Objects.equals(endDate, quarter.endDate);
     }
 
     @Override

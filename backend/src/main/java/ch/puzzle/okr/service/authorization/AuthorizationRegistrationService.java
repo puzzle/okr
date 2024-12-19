@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
+import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
+
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
@@ -8,8 +10,6 @@ import ch.puzzle.okr.service.business.UserBusinessService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 
 @Service
 public class AuthorizationRegistrationService {
@@ -20,7 +20,7 @@ public class AuthorizationRegistrationService {
     private final UserUpdateHelper helper = new UserUpdateHelper();
 
     public AuthorizationRegistrationService(UserBusinessService userBusinessService,
-            TenantConfigProvider tenantConfigProvider) {
+                                            TenantConfigProvider tenantConfigProvider) {
         this.userBusinessService = userBusinessService;
         this.tenantConfigProvider = tenantConfigProvider;
     }

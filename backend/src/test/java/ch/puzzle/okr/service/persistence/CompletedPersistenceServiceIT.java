@@ -1,24 +1,23 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
 class CompletedPersistenceServiceIT {
@@ -34,9 +33,13 @@ class CompletedPersistenceServiceIT {
     }
 
     private static Completed createCompleted(Long id, int version) {
-        return Completed.Builder.builder().withId(id).withVersion(version)
+        return Completed.Builder
+                .builder()
+                .withId(id)
+                .withVersion(version)
                 .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(GUTE_LERNENDE).build())
-                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT).build();
+                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT)
+                .build();
     }
 
     private static final String COMPLETED = "Completed";
@@ -91,7 +94,7 @@ class CompletedPersistenceServiceIT {
         updateCompleted.setComment("Updated completed");
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> completedPersistenceService.save(updateCompleted));
+                                                            () -> completedPersistenceService.save(updateCompleted));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(COMPLETED)));
 
@@ -107,7 +110,7 @@ class CompletedPersistenceServiceIT {
         assertNotNull(savedCompleted.getId());
         assertEquals("War leider nicht moeglich", savedCompleted.getComment());
         assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.",
-                savedCompleted.getObjective().getTitle());
+                     savedCompleted.getObjective().getTitle());
     }
 
     @Test
@@ -116,7 +119,7 @@ class CompletedPersistenceServiceIT {
         completedPersistenceService.deleteById(3L);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> completedPersistenceService.findById(3L));
+                                                            () -> completedPersistenceService.findById(3L));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "3")));
 
@@ -130,7 +133,7 @@ class CompletedPersistenceServiceIT {
         long noExistentId = getNonExistentId();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> completedPersistenceService.findById(noExistentId));
+                                                            () -> completedPersistenceService.findById(noExistentId));
 
         List<ErrorDto> expectedErrors = List
                 .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, String.valueOf(noExistentId))));

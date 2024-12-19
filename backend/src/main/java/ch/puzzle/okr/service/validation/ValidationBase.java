@@ -9,14 +9,13 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.springframework.http.HttpStatus;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.http.HttpStatus;
 
 /**
  * @param <T>
@@ -39,9 +38,7 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         }
     }
 
-    public PS getPersistenceService() {
-        return persistenceService;
-    }
+    public PS getPersistenceService() { return persistenceService; }
 
     public void validateOnGet(ID id) {
         throwExceptionWhenIdIsNull(id);
@@ -62,29 +59,33 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     public void throwExceptionWhenModelIsNull(T model) {
         if (model == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.MODEL_NULL,
-                    persistenceService.getModelName());
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.MODEL_NULL,
+                                                 persistenceService.getModelName());
         }
     }
 
     public void throwExceptionWhenIdIsNull(ID id) {
         if (id == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                    List.of("ID", persistenceService.getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.ATTRIBUTE_NULL,
+                                                 List.of("ID", persistenceService.getModelName()));
         }
     }
 
     protected void throwExceptionWhenIdIsNotNull(ID id) {
         if (id != null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, MessageKey.ATTRIBUTE_NOT_NULL,
-                    List.of("ID", persistenceService.getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 MessageKey.ATTRIBUTE_NOT_NULL,
+                                                 List.of("ID", persistenceService.getModelName()));
         }
     }
 
     protected void throwExceptionWhenIdHasChanged(ID id, ID modelId) {
         if (!Objects.equals(id, modelId)) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CHANGED,
-                    List.of("ID", id, modelId));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.ATTRIBUTE_CHANGED,
+                                                 List.of("ID", id, modelId));
         }
     }
 
@@ -101,14 +102,16 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
     }
 
     private List<ErrorDto> createErrorDtos(Set<ConstraintViolation<T>> violations) {
-        return violations.stream() //
+        return violations
+                .stream() //
                 .map(e -> { //
                     String path = e.getPropertyPath().toString(); //
                     List<Object> attributes = new ArrayList<>(List.of(path, persistenceService.getModelName())); //
                     attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate())); //
                     String errorKey = e.getMessageTemplate().replaceAll("_\\{.*", ""); //
                     return ErrorDto.of(errorKey, attributes); //
-                }).toList();
+                })
+                .toList();
     }
 
     // example:

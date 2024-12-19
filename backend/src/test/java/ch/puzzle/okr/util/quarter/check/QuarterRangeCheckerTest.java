@@ -1,13 +1,12 @@
 package ch.puzzle.okr.util.quarter.check;
 
-import ch.puzzle.okr.models.Quarter;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import ch.puzzle.okr.models.Quarter;
+import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class QuarterRangeCheckerTest {
 
@@ -103,7 +102,8 @@ public class QuarterRangeCheckerTest {
     }
 
     private Quarter quarter(LocalDate startDate, LocalDate endDate) {
-        return Quarter.Builder.builder() //
+        return Quarter.Builder
+                .builder() //
                 .withStartDate(startDate) //
                 .withEndDate(endDate) //
                 .build();

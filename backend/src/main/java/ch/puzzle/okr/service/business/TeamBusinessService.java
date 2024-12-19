@@ -12,13 +12,12 @@ import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TeamBusinessService {
@@ -35,9 +34,9 @@ public class TeamBusinessService {
     private final CacheService cacheService;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
-            ObjectiveBusinessService objectiveBusinessService, TeamValidationService validator,
-            CacheService cacheService, UserPersistenceService userPersistenceService,
-            UserTeamPersistenceService userTeamPersistenceService) {
+                               ObjectiveBusinessService objectiveBusinessService, TeamValidationService validator,
+                               CacheService cacheService, UserPersistenceService userPersistenceService,
+                               UserTeamPersistenceService userTeamPersistenceService) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.userPersistenceService = userPersistenceService;
@@ -52,7 +51,8 @@ public class TeamBusinessService {
     }
 
     @Transactional
-    // Creates a new team. Current authorization user is added as admin user in team.
+    // Creates a new team. Current authorization user is added as admin user in
+    // team.
     public Team createTeam(Team team, AuthorizationUser authorizationUser) {
         validator.validateOnCreate(team);
         cacheService.emptyAuthorizationUsersCache();
@@ -72,7 +72,8 @@ public class TeamBusinessService {
     @Transactional
     public void deleteTeam(Long id) {
         validator.validateOnDelete(id);
-        objectiveBusinessService.getEntitiesByTeamId(id)
+        objectiveBusinessService
+                .getEntitiesByTeamId(id)
                 .forEach(objective -> objectiveBusinessService.deleteEntityById(objective.getId()));
         deleteUserTeamList(id);
         cacheService.emptyAuthorizationUsersCache();
@@ -81,7 +82,8 @@ public class TeamBusinessService {
 
     private void deleteUserTeamList(Long id) {
         var team = teamPersistenceService.findById(id);
-        // remove userTeam from each user, otherwise they are still in the session and are not deleted
+        // remove userTeam from each user, otherwise they are still in the session and
+        // are not deleted
         team.getUserTeamList().forEach(userTeam -> {
             var user = userTeam.getUser();
             user.getUserTeamList().remove(userTeam);
@@ -122,9 +124,12 @@ public class TeamBusinessService {
         checkTeamHasAtLeastOneAdmin(team, user);
 
         var userTeamList = user.getUserTeamList();
-        var userTeamToRemove = userTeamList.stream().filter(ut -> ut.getTeam().getId() == teamId).findFirst()
+        var userTeamToRemove = userTeamList
+                .stream()
+                .filter(ut -> ut.getTeam().getId() == teamId)
+                .findFirst()
                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "No team found to remove from userTeam list"));
+                                                                  "No team found to remove from userTeam list"));
         userTeamList.remove(userTeamToRemove);
         team.getUserTeamList().remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
@@ -133,10 +138,13 @@ public class TeamBusinessService {
     }
 
     private void checkTeamHasAtLeastOneAdmin(Team team, User user) {
-        team.getUserTeamList().stream()
-                .filter(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId())).findAny()
+        team
+                .getUserTeamList()
+                .stream()
+                .filter(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId()))
+                .findAny()
                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                        ErrorKey.TRIED_TO_DELETE_LAST_ADMIN));
+                                                                  ErrorKey.TRIED_TO_DELETE_LAST_ADMIN));
     }
 
     @Transactional

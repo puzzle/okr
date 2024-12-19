@@ -12,9 +12,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -25,7 +24,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     public UserController(UserAuthorizationService userAuthorizationService, AuthorizationService authorizationService,
-            UserMapper userMapper) {
+                          UserMapper userMapper) {
         this.userAuthorizationService = userAuthorizationService;
         this.authorizationService = authorizationService;
         this.userMapper = userMapper;
@@ -53,8 +52,8 @@ public class UserController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned user", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping(path = "/{id}")
-    public UserDto getUserById(
-            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id) {
+    public UserDto getUserById(@Parameter(description = "The ID for requested user.", required = true)
+    @PathVariable long id) {
         var user = this.userAuthorizationService.getById(id);
         return userMapper.toDto(user);
     }
@@ -63,9 +62,8 @@ public class UserController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned user", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @PutMapping(path = "/{id}/isokrchampion/{isOkrChampion}")
-    public UserDto setOkrChampion(
-            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id,
-            @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean isOkrChampion) {
+    public UserDto setOkrChampion(@Parameter(description = "The ID for requested user.", required = true)
+    @PathVariable long id, @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean isOkrChampion) {
         var user = this.userAuthorizationService.setIsOkrChampion(id, isOkrChampion);
         return userMapper.toDto(user);
     }
@@ -74,8 +72,8 @@ public class UserController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned users", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @PostMapping(path = "/createall")
-    public List<UserDto> createUsers(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The users to create", required = true) @RequestBody List<NewUserDto> newUserDtoList) {
+    public List<UserDto> createUsers(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The users to create", required = true)
+    @RequestBody List<NewUserDto> newUserDtoList) {
         var createdUsers = this.userAuthorizationService.createUsers(userMapper.toUserList(newUserDtoList));
         return userMapper.toDtos(createdUsers);
     }
@@ -86,8 +84,8 @@ public class UserController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)) }), })
 
     @GetMapping(path = "/{id}/ismemberofteams")
-    public Boolean isUserMemberOfTeams(
-            @Parameter(description = "The ID of the user.", required = true) @PathVariable long id) {
+    public Boolean isUserMemberOfTeams(@Parameter(description = "The ID of the user.", required = true)
+    @PathVariable long id) {
 
         return this.userAuthorizationService.isUserMemberOfTeams(id);
     }

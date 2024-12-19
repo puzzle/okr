@@ -1,7 +1,6 @@
 package ch.puzzle.okr.models.alignment;
 
 import ch.puzzle.okr.models.Objective;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
@@ -30,21 +29,13 @@ public abstract class Alignment {
         setAlignedObjective(builder.alignedObjective);
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public int getVersion() {
-        return version;
-    }
+    public int getVersion() { return version; }
 
-    public Objective getAlignedObjective() {
-        return alignedObjective;
-    }
+    public Objective getAlignedObjective() { return alignedObjective; }
 
-    public void setAlignedObjective(Objective alignedObjective) {
-        this.alignedObjective = alignedObjective;
-    }
+    public void setAlignedObjective(Objective alignedObjective) { this.alignedObjective = alignedObjective; }
 
     @Override
     public String toString() {
@@ -59,7 +50,7 @@ public abstract class Alignment {
             return false;
         Alignment alignment = (Alignment) o;
         return Objects.equals(id, alignment.id) && version == alignment.version
-                && Objects.equals(alignedObjective, alignment.alignedObjective);
+               && Objects.equals(alignedObjective, alignment.alignedObjective);
     }
 
     @Override

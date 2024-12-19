@@ -4,10 +4,8 @@ import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.keyresult.KeyResult;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -53,90 +51,52 @@ public abstract class CheckIn implements WriteableInterface {
     private transient boolean writeable;
 
     /* Getter and Setter */
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public int getVersion() {
-        return version;
-    }
+    public int getVersion() { return version; }
 
-    public String getChangeInfo() {
-        return changeInfo;
-    }
+    public String getChangeInfo() { return changeInfo; }
 
-    public void setChangeInfo(String changeInfo) {
-        this.changeInfo = changeInfo;
-    }
+    public void setChangeInfo(String changeInfo) { this.changeInfo = changeInfo; }
 
-    public String getInitiatives() {
-        return initiatives;
-    }
+    public String getInitiatives() { return initiatives; }
 
-    public void setInitiatives(String initiatives) {
-        this.initiatives = initiatives;
-    }
+    public void setInitiatives(String initiatives) { this.initiatives = initiatives; }
 
-    public Integer getConfidence() {
-        return confidence;
-    }
+    public Integer getConfidence() { return confidence; }
 
-    public void setConfidence(Integer confidence) {
-        this.confidence = confidence;
-    }
+    public void setConfidence(Integer confidence) { this.confidence = confidence; }
 
-    public KeyResult getKeyResult() {
-        return keyResult;
-    }
+    public KeyResult getKeyResult() { return keyResult; }
 
-    public void setKeyResult(KeyResult keyResult) {
-        this.keyResult = keyResult;
-    }
+    public void setKeyResult(KeyResult keyResult) { this.keyResult = keyResult; }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
+    public User getCreatedBy() { return createdBy; }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
+    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
+    public LocalDateTime getCreatedOn() { return createdOn; }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
+    public void setCreatedOn(LocalDateTime createdOn) { this.createdOn = createdOn; }
 
-    public LocalDateTime getModifiedOn() {
-        return modifiedOn;
-    }
+    public LocalDateTime getModifiedOn() { return modifiedOn; }
 
-    public void setModifiedOn(LocalDateTime modifiedOn) {
-        this.modifiedOn = modifiedOn;
-    }
+    public void setModifiedOn(LocalDateTime modifiedOn) { this.modifiedOn = modifiedOn; }
 
-    public String getCheckInType() {
-        return checkInType;
-    }
+    public String getCheckInType() { return checkInType; }
 
     @Override
-    public boolean isWriteable() {
-        return writeable;
-    }
+    public boolean isWriteable() { return writeable; }
 
     @Override
-    public void setWriteable(boolean writeable) {
-        this.writeable = writeable;
-    }
+    public void setWriteable(boolean writeable) { this.writeable = writeable; }
 
     @Override
     public String toString() {
         return "CheckIn{" + "id=" + id + ", version=" + version + ", changeInfo='" + changeInfo + '\''
-                + ", initiatives='" + initiatives + '\'' + ", confidence=" + confidence + ", keyResult=" + keyResult
-                + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn
-                + ", checkInType='" + checkInType + '\'' + ", writeable=" + writeable + '\'' + '}';
+               + ", initiatives='" + initiatives + '\'' + ", confidence=" + confidence + ", keyResult=" + keyResult
+               + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn
+               + ", checkInType='" + checkInType + '\'' + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -147,16 +107,25 @@ public abstract class CheckIn implements WriteableInterface {
             return false;
         CheckIn checkIn = (CheckIn) o;
         return Objects.equals(id, checkIn.id) && version == checkIn.version
-                && Objects.equals(changeInfo, checkIn.changeInfo) && Objects.equals(initiatives, checkIn.initiatives)
-                && Objects.equals(confidence, checkIn.confidence) && Objects.equals(keyResult, checkIn.keyResult)
-                && Objects.equals(createdBy, checkIn.createdBy) && Objects.equals(createdOn, checkIn.createdOn)
-                && Objects.equals(modifiedOn, checkIn.modifiedOn) && Objects.equals(checkInType, checkIn.checkInType);
+               && Objects.equals(changeInfo, checkIn.changeInfo) && Objects.equals(initiatives, checkIn.initiatives)
+               && Objects.equals(confidence, checkIn.confidence) && Objects.equals(keyResult, checkIn.keyResult)
+               && Objects.equals(createdBy, checkIn.createdBy) && Objects.equals(createdOn, checkIn.createdOn)
+               && Objects.equals(modifiedOn, checkIn.modifiedOn) && Objects.equals(checkInType, checkIn.checkInType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, changeInfo, initiatives, confidence, keyResult, createdBy, createdOn,
-                modifiedOn, checkInType);
+        return Objects
+                .hash(id,
+                      version,
+                      changeInfo,
+                      initiatives,
+                      confidence,
+                      keyResult,
+                      createdBy,
+                      createdOn,
+                      modifiedOn,
+                      checkInType);
     }
 
     /* Constructor */

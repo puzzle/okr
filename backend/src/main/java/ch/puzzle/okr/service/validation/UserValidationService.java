@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
@@ -9,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class UserValidationService extends ValidationBase<User, Long, UserRepository, UserPersistenceService> {

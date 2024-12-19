@@ -35,7 +35,7 @@ class QuarterPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("getMostCurrentQuarters() should return current quarter and future quarter and GJForTests quarter")
+    @DisplayName("should return current, future and GJForTests quarter on getMostCurrentQuarters()")
     @Test
     void getMostCurrentQuartersShouldReturnCurrentQuarterAndFutureQuarterAndGJForTestsQuarter() {
         List<Quarter> quarterListFromFunction = quarterPersistenceService.getMostCurrentQuarters();
@@ -57,6 +57,7 @@ class QuarterPersistenceServiceIT {
         assertEquals(1, foundCurrentQuartersCount);
     }
 
+    @DisplayName("should return current quarter on getCurrentQuarter()")
     @Test
     void shouldGetCurrentQuarter() {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
@@ -71,7 +72,7 @@ class QuarterPersistenceServiceIT {
         assertNotNull(quarter.getLabel());
     }
 
-    @DisplayName("findByLabel() should return single Quarter when label is valid")
+    @DisplayName("should return single Quarter on findByLabel() when label is valid")
     @Test
     void findByLabelShouldReturnSingleQuarterWhenLabelIsValid() {
         // arrange + act
@@ -84,7 +85,7 @@ class QuarterPersistenceServiceIT {
         assertEquals(LocalDate.of(2000, 9, 30), returnedQuarter.getEndDate());
     }
 
-    @DisplayName("findByLabel() should return null when label is not valid")
+    @DisplayName("should return null on findByLabel() when label is not valid")
     @Test
     void findByLabelShouldReturnNullWhenLabelIsNotValid() {
         // arrange + act
@@ -94,7 +95,7 @@ class QuarterPersistenceServiceIT {
         assertNull(returnedQuarter);
     }
 
-    @DisplayName("findByLabel() should return null when label is null")
+    @DisplayName("should return null on findByLabel() when label is null")
     @Test
     void findByLabelShouldReturnNullWhenLabelIsNull() {
         // arrange + act
@@ -104,7 +105,7 @@ class QuarterPersistenceServiceIT {
         assertNull(returnedQuarter);
     }
 
-    @DisplayName("getModelName() should return Quarter")
+    @DisplayName("should return quarter on getModelName()")
     @Test
     void getModelNameShouldReturnQuarter() {
         assertEquals(QUARTER, quarterPersistenceService.getModelName());

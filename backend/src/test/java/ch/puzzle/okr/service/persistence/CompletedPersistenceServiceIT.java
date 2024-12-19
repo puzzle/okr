@@ -9,6 +9,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -61,6 +62,7 @@ class CompletedPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("should save entity on save()")
     @Test
     void saveCompletedShouldSaveCompleted() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
@@ -71,6 +73,7 @@ class CompletedPersistenceServiceIT {
         assertEquals(OBJECTIVE_TITLE, createdCompleted.getObjective().getTitle());
     }
 
+    @DisplayName("should update entity on save() when the entity already exists")
     @Test
     void updateCompletedShouldSaveCompleted() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
@@ -84,6 +87,7 @@ class CompletedPersistenceServiceIT {
         assertEquals(updateCompleted.getComment(), updatedCompleted.getComment());
     }
 
+    @DisplayName("should throw exception on save() when entity was already updated in the mean time")
     @Test
     void updateCompletedShouldThrowExceptionWhenAlreadyUpdated() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
@@ -100,6 +104,7 @@ class CompletedPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should return correct entity on getCompletedByObjectiveId()")
     @Test
     void getCompletedShouldGetCompletedByObjectiveId() {
         Completed savedCompleted = completedPersistenceService.getCompletedByObjectiveId(6L);
@@ -110,6 +115,7 @@ class CompletedPersistenceServiceIT {
                 savedCompleted.getObjective().getTitle());
     }
 
+    @DisplayName("should delete entity on deleteById()")
     @Test
     void deleteByIdShouldDeleteExistingCompletedByObjectiveId() {
 
@@ -125,6 +131,7 @@ class CompletedPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should throw exception on findById() when id does not exist")
     @Test
     void deleteCompletedShouldThrowExceptionWhenCompletedNotFound() {
         long noExistentId = getNonExistentId();

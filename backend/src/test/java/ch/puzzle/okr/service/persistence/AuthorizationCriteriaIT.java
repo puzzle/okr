@@ -8,6 +8,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,6 +35,7 @@ class AuthorizationCriteriaIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("should return objective on findObjectiveById() when user is has first level role")
     @Test
     void appendObjectiveShouldReturnObjectiveWhenFirstLevelRole() {
         Long objectiveId = 5L;
@@ -43,6 +45,7 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
+    @DisplayName("should return objective on findObjectiveById() when user is has second level role")
     @Test
     void appendObjectiveShouldReturnObjectiveWhenSecondLevelRole() {
         Long objectiveId = 6L;
@@ -52,6 +55,7 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
+    @DisplayName("should return objective on findObjectiveById() when user is has member level role")
     @Test
     void appendObjectiveShouldReturnObjectiveWhenMemberRole() {
         Long objectiveId = 6L;
@@ -61,6 +65,7 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
+    @DisplayName("should return correct overview on getFilteredOverview() when user has first level role and no team ids are supplied")
     @Test
     void appendOverviewShouldReturnObjectiveWhenFirstLevelRoleAndTeamIdsEmpty() {
         Long quarterId = 2L;
@@ -71,6 +76,7 @@ class AuthorizationCriteriaIT {
         assertEquals(18L, overviews.size());
     }
 
+    @DisplayName("should return correct overview on getFilteredOverview() when user has second level role")
     @Test
     void appendOverviewShouldReturnObjectiveWhenSecondLevelRole() {
         Long quarterId = 2L;
@@ -81,6 +87,7 @@ class AuthorizationCriteriaIT {
         assertEquals(6L, overviews.size());
     }
 
+    @DisplayName("should return correct overview on getFilteredOverview() when user has member level role")
     @Test
     void appendOverviewShouldReturnObjectiveWhenMemberRole() {
         Long quarterId = 2L;

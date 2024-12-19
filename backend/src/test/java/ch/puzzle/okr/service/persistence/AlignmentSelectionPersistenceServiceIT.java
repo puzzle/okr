@@ -7,6 +7,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,6 +32,7 @@ class AlignmentSelectionPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("should return correct alignment selections on getAlignmentSelectionByQuarterIdAndTeamIdNot()")
     @Test
     void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnAlignmentSelections() {
         List<AlignmentSelection> alignmentSelections = alignmentSelectionPersistenceService

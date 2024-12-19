@@ -8,6 +8,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -56,6 +57,7 @@ class OverviewPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("should return correct overview on getFilteredOverview() when team ids are set")
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenTeamIdsSet() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(5L, 6L, 8L), "",
@@ -64,6 +66,7 @@ class OverviewPersistenceServiceIT {
         assertThat(expectedOverviewIds.subList(5, 18)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
+    @DisplayName("should return correct overview on getFilteredOverview() when team ids are not set")
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenTeamIdsEmpty() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(), "", authorizationUser);
@@ -71,6 +74,7 @@ class OverviewPersistenceServiceIT {
         assertThat(expectedOverviewIds.subList(0, 18)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
+    @DisplayName("should return correct overview on getFilteredOverview() when query is set")
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenObjectiveQuery() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(5L, 6L, 8L),
@@ -79,6 +83,7 @@ class OverviewPersistenceServiceIT {
         assertThat(expectedOverviewIds.subList(5, 8)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
+    @DisplayName("should return correct overview on getFilteredOverview() when quarter has no objectives")
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenQuarterWithoutObjectives() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(3L, List.of(5L, 6L, 8L), null,
@@ -87,6 +92,7 @@ class OverviewPersistenceServiceIT {
         assertThat(expectedOverviewIds.subList(17, 20)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
+    @DisplayName("should return empty overview on getFilteredOverview() when query is set and no objectives are present")
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenQuarterWithoutObjectivesAndObjectiveQuery() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(3L, List.of(5L, 6L, 8L),

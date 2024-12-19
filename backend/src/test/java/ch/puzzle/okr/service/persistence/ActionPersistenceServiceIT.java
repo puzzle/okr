@@ -10,6 +10,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -60,6 +61,7 @@ class ActionPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("should create new entity on save()")
     @Test
     void saveActionShouldSaveNewAction() {
         Action action = createAction(null);
@@ -73,6 +75,7 @@ class ActionPersistenceServiceIT {
         assertEquals(action.isChecked(), createdAction.isChecked());
     }
 
+    @DisplayName("should update action on save() when the action has been modified")
     @Test
     void updateActionShouldUpdateAction() {
         Action action = createAction(null);
@@ -87,6 +90,7 @@ class ActionPersistenceServiceIT {
         assertEquals(4, updateAction.getPriority());
     }
 
+    @DisplayName("should throw exception on save() when the action has already been updated")
     @Test
     void updateActionShouldThrowExceptionWhenAlreadyUpdated() {
         createdAction = actionPersistenceService.save(createAction(null));
@@ -102,6 +106,7 @@ class ActionPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should return list of all actions on findAll()")
     @Test
     void getAllActionsShouldReturnListOfAllActions() {
         List<Action> actions = actionPersistenceService.findAll();
@@ -109,6 +114,7 @@ class ActionPersistenceServiceIT {
         assertEquals(11, actions.size());
     }
 
+    @DisplayName("should return list of actions from a key result ordered by ascending priority on getActionsByKeyResultIdOrderByPriorityAsc()")
     @Test
     void getAllActionsByKeyResultIdShouldReturnListOfAllActionsFromThisKeyResultOrderASC() {
         List<Action> actions = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(6L);
@@ -119,6 +125,7 @@ class ActionPersistenceServiceIT {
         assertEquals(3, actions.get(2).getPriority());
     }
 
+    @DisplayName("should return correct action on findById()")
     @Test
     void getActionByIdShouldReturnActionProperly() {
         Action action = actionPersistenceService.findById(1L);
@@ -130,6 +137,7 @@ class ActionPersistenceServiceIT {
         assertEquals(8L, action.getKeyResult().getId());
     }
 
+    @DisplayName("should delete action on delete()")
     @Test
     void shouldDeleteActionById() {
         Action action = createAction(null);

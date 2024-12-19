@@ -26,7 +26,7 @@ class TeamPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName("findTeamsByName() should return teams with matching name")
+    @DisplayName("should return teams with matching name on findTeamsByName()")
     @Test
     void findTeamsByNameShouldReturnTeamsWithMatchingName() {
         List<Team> teams = teamPersistenceService.findTeamsByName("LoremIpsum");
@@ -36,7 +36,7 @@ class TeamPersistenceServiceIT {
         assertEquals("LoremIpsum", teams.get(0).getName());
     }
 
-    @DisplayName("getModelName() should return Team")
+    @DisplayName("should return team on getModelName()")
     @Test
     void getModelNameShouldReturnTeam() {
         assertEquals(TEAM, teamPersistenceService.getModelName());

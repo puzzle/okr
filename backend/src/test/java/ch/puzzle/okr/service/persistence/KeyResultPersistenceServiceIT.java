@@ -13,6 +13,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -75,6 +76,7 @@ class KeyResultPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("should save new key result on save()")
     @Test
     void saveKeyResultShouldSaveNewKeyResult() {
         KeyResult keyResult = createKeyResultMetric(null);
@@ -89,6 +91,7 @@ class KeyResultPersistenceServiceIT {
         assertEquals(keyResult.getDescription(), createdKeyResult.getDescription());
     }
 
+    @DisplayName("should return correct key result on findById()")
     @Test
     void shouldFindKeyResultById() {
         KeyResult keyResult = keyResultPersistenceService.findById(3L);
@@ -97,6 +100,7 @@ class KeyResultPersistenceServiceIT {
         assertEquals("Steigern der URS um 25%", keyResult.getTitle());
     }
 
+    @DisplayName("should throw exception on findById() when id does not exist")
     @Test
     void getKeyResultByIdShouldThrowExceptionWhenKeyResultNotFound() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -109,6 +113,7 @@ class KeyResultPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should throw exception on findById() when id is null")
     @Test
     void getKeyResultByIdShouldThrowExceptionWhenKeyResultIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -121,6 +126,7 @@ class KeyResultPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should only update entity on recreateEntity() when no type change was done")
     @Test
     void recreateEntityShouldUpdateKeyResultNoTypeChange() {
         KeyResult keyResult = createKeyResultOrdinal(null);
@@ -150,6 +156,7 @@ class KeyResultPersistenceServiceIT {
         createdKeyResult = recreatedKeyResult;
     }
 
+    @DisplayName("should change type on recreateEntity() when type change was done")
     @Test
     void recreateEntityShouldUpdateKeyResultWithTypeChange() {
         KeyResult keyResult = createKeyResultMetric(null);
@@ -184,6 +191,7 @@ class KeyResultPersistenceServiceIT {
         createdKeyResult = recreatedKeyResult;
     }
 
+    @DisplayName("should update key result on updateEntity()")
     @Test
     void updateEntityShouldUpdateKeyResult() {
         KeyResult keyResult = createKeyResultOrdinal(null);
@@ -203,6 +211,7 @@ class KeyResultPersistenceServiceIT {
         assertEquals(createdKeyResult.getModifiedOn(), updatedKeyResult.getModifiedOn());
     }
 
+    @DisplayName("should throw exception on updateEntity() when entity was already updated in the mean time")
     @Test
     void updateEntityShouldThrowExceptionWhenAlreadyUpdated() {
         KeyResult keyResult = createKeyResultOrdinal(null);
@@ -220,6 +229,7 @@ class KeyResultPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should return list of key results on getKeyResultsByObjective()")
     @Test
     void getKeyResultsByObjectiveShouldReturnListOfKeyResults() {
         List<KeyResult> keyResultsByObjective = keyResultPersistenceService.getKeyResultsByObjective(3L);
@@ -227,6 +237,7 @@ class KeyResultPersistenceServiceIT {
         assertEquals(3, keyResultsByObjective.size());
     }
 
+    @DisplayName("should delete entity on deleteById()")
     @Test
     void deleteKeyResultByIdShouldDeleteExistingKeyResult() {
         KeyResult keyResult = createKeyResultMetric(null);
@@ -244,6 +255,7 @@ class KeyResultPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("should throw exception on deleteById() when id does not exist")
     @Test
     void deleteKeyResultShouldThrowExceptionWhenKeyResultNotFound() {
         long nonExistentId = getNonExistentId();

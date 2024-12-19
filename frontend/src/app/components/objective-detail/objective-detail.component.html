@@ -19,7 +19,9 @@
 
       <section class="me-3">
         <h3 class="mb-1">Beschrieb</h3>
-        <div class="linebreak" *ngIf="objective.description === ''"><p>-</p></div>
+        <div class="linebreak" *ngIf="objective.description === ''">
+          <p>-</p>
+        </div>
         <div
           *ngIf="objective.description !== ''"
           [attr.data-testId]="'description'"

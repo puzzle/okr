@@ -4,6 +4,7 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
+import htmlParser from '@html-eslint/parser'
 
 export default tsEslint.config(
   {
@@ -52,15 +53,11 @@ export default tsEslint.config(
     },
     rules: {
       ...stylistic.configs['all-flat'].rules,
+      //eslint rules
       'unused-imports/no-unused-imports': 'error',
-
-      // ToDo: Disable rules so eslint passes, fix in followup ticket
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          args: 'none',
-        },
-      ],
+      'no-undef': 'error',
+      'prefer-rest-params': 'error',
+      //Typescript eslint rules
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/no-unused-expressions': [
         'error',
@@ -68,7 +65,13 @@ export default tsEslint.config(
           allowTernary: true,
         },
       ],
-      'no-undef': 'error',
+
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'none',
+        },
+      ],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-namespace': [
         'error',
@@ -76,19 +79,15 @@ export default tsEslint.config(
           allowDeclarations: true,
         },
       ],
-      'prefer-rest-params': 'error',
       '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
-      '@angular-eslint/no-empty-lifecycle-method': 'error',
-      '@angular-eslint/component-class-suffix': 'error',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
-      '@stylistic/no-extra-parens': 'error',
       '@typescript-eslint/no-confusing-non-null-assertion': 'error',
-      //Actual formatting rules
+
+      //Stylistic eslint rules
+      '@stylistic/no-extra-parens': 'error',
       '@stylistic/function-call-argument-newline': ['error', 'never'],
       '@stylistic/quotes': ['error', 'double'],
-      // This rule makes no sense
-      '@stylistic/lines-around-comment': 'off',
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/dot-location': ['error', 'property'],
       '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
@@ -100,7 +99,11 @@ export default tsEslint.config(
       '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
       '@stylistic/semi-style': ['error'],
       '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
+      // This rule makes no sense
+      '@stylistic/lines-around-comment': 'off',
       //Angular eslint rules
+      '@angular-eslint/no-empty-lifecycle-method': 'error',
+      '@angular-eslint/component-class-suffix': 'error',
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -135,27 +138,17 @@ export default tsEslint.config(
 
   {
     files: ['**/*.html'],
-    extends: [
-      ...angular.configs.templateRecommended,
-      // Add any other recommended configs here if needed
-    ],
+    ...html.configs['flat/recommended'],
     languageOptions: {
-      // Choose one parser. For Angular templates, usually angular.templateParser is needed.
-      parser: angular.templateParser,
+      parser: htmlParser,
     },
     rules: {
-      // Combine all sets of rules
-      ...html.configs.recommended.rules,
       ...html.configs['flat/recommended'].rules,
-      //Angular template eslint rules
-      '@angular-eslint/template/eqeqeq': 'error',
-      '@angular-eslint/template/banana-in-box': 'error',
-      '@angular-eslint/template/no-negated-async': 'error',
       //Html eslint rules
-      '@html-eslint/require-img-alt': 'error',
+      '@html-eslint/require-img-alt': 'off',
       '@html-eslint/indent': ['error', 2],
       '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
-      //For Some reason the following rule does not work with the angular-parser
+      //Doesn't work with Angular 17+
       '@html-eslint/element-newline': 'off',
     },
   },

@@ -17,20 +17,16 @@ export class UnitValueValidator implements Validator {
     const value: string = control.value;
     switch (this.unit) {
       case "PERCENT": {
-        return this.proceedRegex(value,
-          PERCENT_REGEX);
+        return this.proceedRegex(value, PERCENT_REGEX);
       }
       case "CHF": {
-        return this.proceedRegex(value,
-          NUMBER_REGEX);
+        return this.proceedRegex(value, NUMBER_REGEX);
       }
       case "EUR": {
-        return this.proceedRegex(value,
-          NUMBER_REGEX);
+        return this.proceedRegex(value, NUMBER_REGEX);
       }
       case "NUMBER": {
-        return this.proceedRegex(value,
-          NUMBER_REGEX);
+        return this.proceedRegex(value, NUMBER_REGEX);
       }
       default: {
         return null;

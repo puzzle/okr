@@ -45,129 +45,120 @@ const refreshDataServiceMock = {
   markDataRefresh: jest.fn()
 };
 
-describe("TeamComponent",
-  () => {
-    let component: TeamComponent;
-    let fixture: ComponentFixture<TeamComponent>;
+describe("TeamComponent", () => {
+  let component: TeamComponent;
+  let fixture: ComponentFixture<TeamComponent>;
 
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule,
-          MatMenuModule,
-          MatDialogModule,
-          MatTooltipModule,
-          TranslateTestingModule.withTranslations({
-            de: de
-          }),
-          MatIcon
-        ],
-        declarations: [
-          TeamComponent,
-          ObjectiveComponent,
-          KeyresultComponent,
-          ConfidenceComponent,
-          ScoringComponent
-        ],
-        providers: [
-          {
-            provide: DialogService,
-            useValue: dialogService
-          },
-          {
-            provide: ConfigService,
-            useValue: configServiceDefined
-          },
-          {
-            provide: RefreshDataService,
-            useValue: refreshDataServiceMock
-          },
-          provideHttpClient(withInterceptorsFromDi())
-        ]
-      })
-        .overrideComponent(TeamComponent,
-          {
-            set: { changeDetection: ChangeDetectionStrategy.Default }
-          })
-        .compileComponents();
-
-      fixture = TestBed.createComponent(TeamComponent);
-      component = fixture.componentInstance;
-      component.overviewEntity = overViewEntity1;
-      fixture.detectChanges();
-    });
-
-    it("should create",
-      () => {
-        fixture.detectChanges();
-        expect(component)
-          .toBeTruthy();
-      });
-
-    it("should display add objective button if writeable is true",
-      async () => {
-        fixture.detectChanges();
-        const button = fixture.debugElement.query(By.css("[data-testId=\"add-objective\"]"));
-        expect(button)
-          .toBeTruthy();
-      });
-
-    it("should not display add objective button if writeable is false",
-      () => {
-        component.overviewEntity = { ...overViewEntity2 };
-        component.overviewEntity.writeable = false;
-        fixture.detectChanges();
-        const button = fixture.debugElement.query(By.css("[data-testId=\"add-objective\"]"));
-        expect(button)
-          .toBeFalsy();
-      });
-
-    it("should set value of addIconSrc if src from config service is defined",
-      () => {
-        expect(component.addIconSrc.value)
-          .toBe("new-icon-from-config-service.svg");
-        const addObjectiveIcon = fixture.debugElement.query(By.css("[data-testId=\"add-objective-icon\"]"));
-        expect(addObjectiveIcon.attributes["src"])
-          .toBe("new-icon-from-config-service.svg");
-      });
-  });
-
-describe("TeamComponent undefined values in config service",
-  () => {
-    let component: TeamComponent;
-    let fixture: ComponentFixture<TeamComponent>;
-
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        imports: [MatMenuModule,
-          TranslateTestingModule.withTranslations({
-            de: de
-          })],
-        declarations: [TeamComponent],
-        providers: [{
-          provide: ConfigService,
-          useValue: configServiceUndefined
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        MatMenuModule,
+        MatDialogModule,
+        MatTooltipModule,
+        TranslateTestingModule.withTranslations({
+          de: de
+        }),
+        MatIcon
+      ],
+      declarations: [
+        TeamComponent,
+        ObjectiveComponent,
+        KeyresultComponent,
+        ConfidenceComponent,
+        ScoringComponent
+      ],
+      providers: [
+        {
+          provide: DialogService,
+          useValue: dialogService
         },
-        provideHttpClient(withInterceptorsFromDi())]
+        {
+          provide: ConfigService,
+          useValue: configServiceDefined
+        },
+        {
+          provide: RefreshDataService,
+          useValue: refreshDataServiceMock
+        },
+        provideHttpClient(withInterceptorsFromDi())
+      ]
+    })
+      .overrideComponent(TeamComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
       })
-        .overrideComponent(TeamComponent,
-          {
-            set: { changeDetection: ChangeDetectionStrategy.Default }
-          })
-        .compileComponents();
+      .compileComponents();
 
-      fixture = TestBed.createComponent(TeamComponent);
-      component = fixture.componentInstance;
-      component.overviewEntity = overViewEntity1;
-      fixture.detectChanges();
-    });
-
-    it("should keep default value of addIconSrc if src from config service is undefined",
-      () => {
-        expect(component.addIconSrc.value)
-          .toBe("assets/icons/new-icon.svg");
-        const addObjectiveIcon = fixture.debugElement.query(By.css("[data-testId=\"add-objective-icon\"]"));
-        expect(addObjectiveIcon.attributes["src"])
-          .toBe("assets/icons/new-icon.svg");
-      });
+    fixture = TestBed.createComponent(TeamComponent);
+    component = fixture.componentInstance;
+    component.overviewEntity = overViewEntity1;
+    fixture.detectChanges();
   });
+
+  it("should create", () => {
+    fixture.detectChanges();
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it("should display add objective button if writeable is true", async () => {
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css("[data-testId=\"add-objective\"]"));
+    expect(button)
+      .toBeTruthy();
+  });
+
+  it("should not display add objective button if writeable is false", () => {
+    component.overviewEntity = { ...overViewEntity2 };
+    component.overviewEntity.writeable = false;
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css("[data-testId=\"add-objective\"]"));
+    expect(button)
+      .toBeFalsy();
+  });
+
+  it("should set value of addIconSrc if src from config service is defined", () => {
+    expect(component.addIconSrc.value)
+      .toBe("new-icon-from-config-service.svg");
+    const addObjectiveIcon = fixture.debugElement.query(By.css("[data-testId=\"add-objective-icon\"]"));
+    expect(addObjectiveIcon.attributes["src"])
+      .toBe("new-icon-from-config-service.svg");
+  });
+});
+
+describe("TeamComponent undefined values in config service", () => {
+  let component: TeamComponent;
+  let fixture: ComponentFixture<TeamComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MatMenuModule,
+        TranslateTestingModule.withTranslations({
+          de: de
+        })],
+      declarations: [TeamComponent],
+      providers: [{
+        provide: ConfigService,
+        useValue: configServiceUndefined
+      },
+      provideHttpClient(withInterceptorsFromDi())]
+    })
+      .overrideComponent(TeamComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(TeamComponent);
+    component = fixture.componentInstance;
+    component.overviewEntity = overViewEntity1;
+    fixture.detectChanges();
+  });
+
+  it("should keep default value of addIconSrc if src from config service is undefined", () => {
+    expect(component.addIconSrc.value)
+      .toBe("assets/icons/new-icon.svg");
+    const addObjectiveIcon = fixture.debugElement.query(By.css("[data-testId=\"add-objective-icon\"]"));
+    expect(addObjectiveIcon.attributes["src"])
+      .toBe("assets/icons/new-icon.svg");
+  });
+});

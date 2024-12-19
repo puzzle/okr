@@ -59,8 +59,7 @@ export class QuarterFilterComponent implements OnInit {
     this.quarterLabel$.next(quarterLabel);
 
     this.router
-      .navigate([],
-        { queryParams: { quarter: id } })
+      .navigate([], { queryParams: { quarter: id } })
       .then(() => this.refreshDataService.quarterFilterReady.next());
   }
 }

@@ -37,109 +37,103 @@ const completedServiceMock = {
   deleteCompleted: jest.fn()
 };
 
-describe("ObjectiveColumnComponent",
-  () => {
-    let component: ObjectiveComponent;
-    let fixture: ComponentFixture<ObjectiveComponent>;
-    let loader: HarnessLoader;
-    beforeEach(() => {
-      overviewServiceMock.getObjectiveWithKeyresults.mockReset();
+describe("ObjectiveColumnComponent", () => {
+  let component: ObjectiveComponent;
+  let fixture: ComponentFixture<ObjectiveComponent>;
+  let loader: HarnessLoader;
+  beforeEach(() => {
+    overviewServiceMock.getObjectiveWithKeyresults.mockReset();
 
-      TestBed.configureTestingModule({
-        declarations: [
-          ObjectiveComponent,
-          KeyresultComponent,
-          ScoringComponent,
-          ConfidenceComponent,
-          KeyresultComponent
-        ],
-        imports: [
-          MatMenuModule,
-          MatCardModule,
-          NoopAnimationsModule,
-          MatDialogModule,
-          MatIconModule,
-          MatTooltipModule,
-          ReactiveFormsModule,
-          TranslateTestingModule.withTranslations({
-            de: de
-          })
-        ],
-        providers: [
-          { provide: OverviewService,
-            useValue: overviewServiceMock },
-          { provide: ObjectiveService,
-            useValue: objectiveServiceMock },
-          { provide: CompletedService,
-            useValue: completedServiceMock },
-          provideHttpClient(withInterceptorsFromDi())
-        ]
-      })
-        .compileComponents();
+    TestBed.configureTestingModule({
+      declarations: [
+        ObjectiveComponent,
+        KeyresultComponent,
+        ScoringComponent,
+        ConfidenceComponent,
+        KeyresultComponent
+      ],
+      imports: [
+        MatMenuModule,
+        MatCardModule,
+        NoopAnimationsModule,
+        MatDialogModule,
+        MatIconModule,
+        MatTooltipModule,
+        ReactiveFormsModule,
+        TranslateTestingModule.withTranslations({
+          de: de
+        })
+      ],
+      providers: [
+        { provide: OverviewService,
+          useValue: overviewServiceMock },
+        { provide: ObjectiveService,
+          useValue: objectiveServiceMock },
+        { provide: CompletedService,
+          useValue: completedServiceMock },
+        provideHttpClient(withInterceptorsFromDi())
+      ]
+    })
+      .compileComponents();
 
-      fixture = TestBed.createComponent(ObjectiveComponent);
-      component = fixture.componentInstance;
+    fixture = TestBed.createComponent(ObjectiveComponent);
+    component = fixture.componentInstance;
 
-      loader = TestbedHarnessEnvironment.loader(fixture);
-      component.objective = objectiveMin;
-    });
-
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
-
-    test("Mat-menu should open and close",
-      async () => {
-        component.isWritable = true;
-        fixture.detectChanges();
-
-        const menu = await loader.getHarness(MatMenuHarness.with({ selector: "[data-testid=\"three-dot-menu\"]" }));
-        expect(await menu.isOpen())
-          .toBeFalsy();
-        await menu.open();
-        expect(await menu.isOpen())
-          .toBeTruthy();
-        await menu.close();
-        expect(await menu.isOpen())
-          .toBeFalsy();
-      });
-
-    test.each([
-      [State.DRAFT,
-        "assets/icons/draft-icon.svg"],
-      [State.ONGOING,
-        "assets/icons/ongoing-icon.svg"],
-      [State.SUCCESSFUL,
-        "assets/icons/successful-icon.svg"],
-      [State.NOTSUCCESSFUL,
-        "assets/icons/not-successful-icon.svg"]
-    ])("Status-indicator should change based on the state given by the service",
-      (state: State, path) => {
-        component.objective = { ...objectiveMin,
-          state: state };
-        fixture.detectChanges();
-        const image = fixture.debugElement.query(By.css("[data-testid=\"objective-state\"]"));
-        const statusIndicatorSrc = image.attributes["src"];
-        expect(statusIndicatorSrc)
-          .toBe(path);
-      });
-
-    test("Mat-menu should not be present if writeable is false",
-      async () => {
-        component.isWritable = false;
-        fixture.detectChanges();
-        const menu = fixture.debugElement.query(By.css("[data-testid=\"objective-menu\"]"));
-        expect(menu)
-          .toBeFalsy();
-      });
-
-    test("Create keyresult button should not be present if writeable is false",
-      async () => {
-        component.isWritable = false;
-        const button = fixture.debugElement.query(By.css("[data-testId=\"add-keyResult\"]"));
-        expect(button)
-          .toBeFalsy();
-      });
+    loader = TestbedHarnessEnvironment.loader(fixture);
+    component.objective = objectiveMin;
   });
+
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  test("Mat-menu should open and close", async () => {
+    component.isWritable = true;
+    fixture.detectChanges();
+
+    const menu = await loader.getHarness(MatMenuHarness.with({ selector: "[data-testid=\"three-dot-menu\"]" }));
+    expect(await menu.isOpen())
+      .toBeFalsy();
+    await menu.open();
+    expect(await menu.isOpen())
+      .toBeTruthy();
+    await menu.close();
+    expect(await menu.isOpen())
+      .toBeFalsy();
+  });
+
+  test.each([
+    [State.DRAFT,
+      "assets/icons/draft-icon.svg"],
+    [State.ONGOING,
+      "assets/icons/ongoing-icon.svg"],
+    [State.SUCCESSFUL,
+      "assets/icons/successful-icon.svg"],
+    [State.NOTSUCCESSFUL,
+      "assets/icons/not-successful-icon.svg"]
+  ])("Status-indicator should change based on the state given by the service", (state: State, path) => {
+    component.objective = { ...objectiveMin,
+      state: state };
+    fixture.detectChanges();
+    const image = fixture.debugElement.query(By.css("[data-testid=\"objective-state\"]"));
+    const statusIndicatorSrc = image.attributes["src"];
+    expect(statusIndicatorSrc)
+      .toBe(path);
+  });
+
+  test("Mat-menu should not be present if writeable is false", async () => {
+    component.isWritable = false;
+    fixture.detectChanges();
+    const menu = fixture.debugElement.query(By.css("[data-testid=\"objective-menu\"]"));
+    expect(menu)
+      .toBeFalsy();
+  });
+
+  test("Create keyresult button should not be present if writeable is false", async () => {
+    component.isWritable = false;
+    const button = fixture.debugElement.query(By.css("[data-testId=\"add-keyResult\"]"));
+    expect(button)
+      .toBeFalsy();
+  });
+});

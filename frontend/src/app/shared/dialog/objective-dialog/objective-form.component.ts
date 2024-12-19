@@ -25,19 +25,15 @@ import { KeyResultDTO } from "../../types/DTOs/KeyResultDTO";
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   objectiveForm = new FormGroup({
-    title: new FormControl<string>("",
-      [Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(250)]),
-    description: new FormControl<string>("",
-      [Validators.maxLength(4096)]),
-    quarter: new FormControl<number>(0,
-      [Validators.required]),
+    title: new FormControl<string>("", [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)]),
+    description: new FormControl<string>("", [Validators.maxLength(4096)]),
+    quarter: new FormControl<number>(0, [Validators.required]),
     team: new FormControl<number>({
       value: 0,
       disabled: true
-    },
-    [Validators.required]),
+    }, [Validators.required]),
     relation: new FormControl<number>({
       value: 0,
       disabled: true
@@ -104,9 +100,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
     const submitFunction = this.getSubmitFunction(this.data.objective.objectiveId, objectiveDTO);
     submitFunction.subscribe((savedObjective: Objective) => {
-      this.closeDialog(savedObjective,
-        false,
-        value.createKeyResults ?? undefined);
+      this.closeDialog(savedObjective, false, value.createKeyResults ?? undefined);
     });
   }
 
@@ -135,11 +129,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
         keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]
       ]) => {
         this.handleDataInitialization(
-          objective,
-          quarters,
-          currentQuarter,
-          keyResults,
-          this.data.objective.objectiveId != null
+          objective, quarters, currentQuarter, keyResults, this.data.objective.objectiveId != null
         );
       });
   }
@@ -156,8 +146,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     // Determine the team ID to set in the form: existing team for editing or default team for new objectives
     const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
     const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
-    let quarterId = getValueFromQuery(this.route.snapshot.queryParams["quarter"],
-      newEditQuarter)[0];
+    let quarterId = getValueFromQuery(this.route.snapshot.queryParams["quarter"], newEditQuarter)[0];
 
     if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == "releaseBacklog") {
       quarterId = quarters[1].id;
@@ -194,16 +183,15 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     if (this.data.action == "duplicate" && id) {
       objectiveDTO.id = null;
       objectiveDTO.state = "DRAFT" as State;
-      return this.objectiveService.duplicateObjective(id,
-        {
-          objective: objectiveDTO,
-          keyResults: this.keyResults
-            .filter((keyResult, index) => this.objectiveForm.value.keyResults?.[index] ?? false)
-            .map((result) => ({
-              ...result,
-              id: undefined
-            }))
-        });
+      return this.objectiveService.duplicateObjective(id, {
+        objective: objectiveDTO,
+        keyResults: this.keyResults
+          .filter((keyResult, index) => this.objectiveForm.value.keyResults?.[index] ?? false)
+          .map((result) => ({
+            ...result,
+            id: undefined
+          }))
+      });
     } else {
       if (this.data.action == "releaseBacklog") objectiveDTO.state = "ONGOING" as State;
       if (this.data.objective.objectiveId && id) {
@@ -223,8 +211,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
             .subscribe({
               next: () => {
                 const objectiveDTO: Objective = { id: this.data.objective.objectiveId } as unknown as Objective;
-                this.closeDialog(objectiveDTO,
-                  true);
+                this.closeDialog(objectiveDTO, true);
               },
               error: () => {
                 this.dialogRef.close();
@@ -256,8 +243,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
     return field + this.translate.instant("DIALOG_ERRORS." + error)
-      .format(firstNumber,
-        secondNumber);
+      .format(firstNumber, secondNumber);
   }
 
   getDefaultObjective () {

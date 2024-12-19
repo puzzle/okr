@@ -22,13 +22,11 @@ export class ObjectiveService {
   }
 
   createObjective (objectiveDTO: Objective): Observable<Objective> {
-    return this.httpClient.post<Objective>("/api/v2/objectives",
-      objectiveDTO);
+    return this.httpClient.post<Objective>("/api/v2/objectives", objectiveDTO);
   }
 
   updateObjective (objectiveDTO: Objective): Observable<Objective> {
-    return this.httpClient.put<Objective>(`/api/v2/objectives/${objectiveDTO.id}`,
-      objectiveDTO);
+    return this.httpClient.put<Objective>(`/api/v2/objectives/${objectiveDTO.id}`, objectiveDTO);
   }
 
   deleteObjective (objectiveId: number): Observable<Objective> {
@@ -52,7 +50,6 @@ export class ObjectiveService {
       }[];
       objective: any;
     }): Observable<Objective> {
-    return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`,
-      duplicateObjectiveDto);
+    return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, duplicateObjectiveDto);
   }
 }

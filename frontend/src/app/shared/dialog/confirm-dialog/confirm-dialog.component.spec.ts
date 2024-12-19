@@ -20,63 +20,59 @@ const dialogRefMock = {
   close: jest.fn()
 };
 
-describe("ConfirmDialogComponent",
-  () => {
-    let component: ConfirmDialogComponent;
-    let fixture: ComponentFixture<ConfirmDialogComponent>;
-    let loader: HarnessLoader;
+describe("ConfirmDialogComponent", () => {
+  let component: ConfirmDialogComponent;
+  let fixture: ComponentFixture<ConfirmDialogComponent>;
+  let loader: HarnessLoader;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatDialogModule,
-          NoopAnimationsModule,
-          MatSelectModule,
-          MatInputModule,
-          MatRadioModule,
-          ReactiveFormsModule,
-          TranslateModule.forRoot(),
-          MatIconModule,
-          MatDividerModule
-        ],
-        declarations: [ConfirmDialogComponent,
-          DialogTemplateCoreComponent],
-        providers: [TranslateService,
-          { provide: MAT_DIALOG_DATA,
-            useValue: { title: "",
-              text: "" } as ConfirmDialogData },
-          { provide: MatDialogRef,
-            useValue: dialogRefMock }]
-      });
-      fixture = TestBed.createComponent(ConfirmDialogComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-      loader = TestbedHarnessEnvironment.loader(fixture);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatDialogModule,
+        NoopAnimationsModule,
+        MatSelectModule,
+        MatInputModule,
+        MatRadioModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        MatIconModule,
+        MatDividerModule
+      ],
+      declarations: [ConfirmDialogComponent,
+        DialogTemplateCoreComponent],
+      providers: [TranslateService,
+        { provide: MAT_DIALOG_DATA,
+          useValue: { title: "",
+            text: "" } as ConfirmDialogData },
+        { provide: MatDialogRef,
+          useValue: dialogRefMock }]
     });
-
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
-
-    it("should call close method with parameter: true if clicked to submit button",
-      async () => {
-        const buttons = await loader.getAllHarnesses(MatButtonHarness);
-        const submitButton = buttons[1];
-        await submitButton.click();
-
-        expect(dialogRefMock.close)
-          .toHaveBeenCalledWith(true);
-      });
-
-    it("should call close method with parameter: \"\" if clicked to cancel button",
-      async () => {
-        const buttons = await loader.getAllHarnesses(MatButtonHarness);
-        const cancelButton = buttons[0];
-        await cancelButton.click();
-
-        expect(dialogRefMock.close)
-          .toHaveBeenCalledWith("");
-      });
+    fixture = TestBed.createComponent(ConfirmDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
+
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it("should call close method with parameter: true if clicked to submit button", async () => {
+    const buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const submitButton = buttons[1];
+    await submitButton.click();
+
+    expect(dialogRefMock.close)
+      .toHaveBeenCalledWith(true);
+  });
+
+  it("should call close method with parameter: \"\" if clicked to cancel button", async () => {
+    const buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const cancelButton = buttons[0];
+    await cancelButton.click();
+
+    expect(dialogRefMock.close)
+      .toHaveBeenCalledWith("");
+  });
+});

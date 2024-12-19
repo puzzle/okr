@@ -48,17 +48,13 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   public ngOnInit (): void {
     this.usersForSelection$ = combineLatest([this.userService.getUsers(),
       this.selectedUsers$,
-      this.search.valueChanges.pipe(startWith(""),
-        // directly after selecting object, filtervalue is an object.
-        filter((searchValue) => typeof searchValue === "string"))])
-      .pipe(takeUntil(this.unsubscribe$),
-        map(([allPossibleUsers,
-          selectedUsers,
-          filterValue]) => {
-          return this.filter(allPossibleUsers,
-            filterValue || "",
-            selectedUsers);
-        }));
+      // directly after selecting object, filter value is an object.
+      this.search.valueChanges.pipe(startWith(""), filter((searchValue) => typeof searchValue === "string"))])
+      .pipe(takeUntil(this.unsubscribe$), map(([allPossibleUsers,
+        selectedUsers,
+        filterValue]) => {
+        return this.filter(allPossibleUsers, filterValue || "", selectedUsers);
+      }));
   }
 
   public ngOnDestroy () {
@@ -71,8 +67,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   }
 
   addUsersToTeam (): void {
-    this.teamService.addUsersToTeam(this.data.team,
-      this.selectedUsers$.getValue())
+    this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue())
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()

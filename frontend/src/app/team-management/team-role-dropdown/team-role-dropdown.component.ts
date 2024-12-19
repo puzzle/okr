@@ -16,8 +16,7 @@ export class TeamRoleDropdownComponent implements OnInit {
   adminControl!: FormControl<boolean | null>;
 
   ngOnInit (): void {
-    this.adminControl = new FormControl(this.isAdmin,
-      [Validators.required]);
+    this.adminControl = new FormControl(this.isAdmin, [Validators.required]);
   }
 
   public triggerIsAdminChange (): void {

@@ -33,12 +33,8 @@ export class ObjectiveMenuActionsService {
     completedService: CompletedService,
     refreshDataService: RefreshDataService
   ) {
-    this.afterActions = new ObjectiveMenuAfterActions(objectiveService,
-      completedService,
-      refreshDataService);
-    this.actions = new ObjectiveMenuActions(dialogService,
-      refreshDataService,
-      this.afterActions);
+    this.afterActions = new ObjectiveMenuAfterActions(objectiveService, completedService, refreshDataService);
+    this.actions = new ObjectiveMenuActions(dialogService, refreshDataService, this.afterActions);
   }
 
   getMenu (objective: ObjectiveMin): ObjectiveMenuEntry[] {

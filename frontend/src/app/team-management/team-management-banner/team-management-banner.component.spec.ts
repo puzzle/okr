@@ -13,57 +13,54 @@ import { ActivatedRoute } from "@angular/router";
 import { DialogService } from "../../services/dialog.service";
 import { OkrTangramComponent } from "../../shared/custom/okr-tangram/okr-tangram.component";
 
-describe("TeamManagementBannerComponent",
-  () => {
-    let component: TeamManagementBannerComponent;
-    let fixture: ComponentFixture<TeamManagementBannerComponent>;
+describe("TeamManagementBannerComponent", () => {
+  let component: TeamManagementBannerComponent;
+  let fixture: ComponentFixture<TeamManagementBannerComponent>;
 
-    const dialogServiceMock = {
-      open: jest.fn()
-    };
+  const dialogServiceMock = {
+    open: jest.fn()
+  };
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatDialogModule,
-          MatFormFieldModule,
-          MatIconModule,
-          HttpClientTestingModule,
-          TranslateModule.forRoot(),
-          MatAutocompleteModule
-        ],
-        declarations: [TeamManagementBannerComponent,
-          SearchTeamManagementComponent,
-          OkrTangramComponent],
-        providers: [{ provide: DialogService,
-          useValue: dialogServiceMock },
-        { provide: ActivatedRoute,
-          useValue: {} }]
-      })
-        .compileComponents();
-    });
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(TeamManagementBannerComponent);
-      component = fixture.componentInstance;
-    });
-
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
-
-    it("createTeam should open dialog",
-      fakeAsync(() => {
-        dialogServiceMock.open.mockReturnValue({
-          afterClosed: () => of()
-        });
-        component.createTeam();
-        tick();
-        expect(dialogServiceMock.open)
-          .toBeCalledTimes(1);
-        expect(dialogServiceMock.open)
-          .toBeCalledWith(AddEditTeamDialogComponent);
-      }));
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatDialogModule,
+        MatFormFieldModule,
+        MatIconModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+        MatAutocompleteModule
+      ],
+      declarations: [TeamManagementBannerComponent,
+        SearchTeamManagementComponent,
+        OkrTangramComponent],
+      providers: [{ provide: DialogService,
+        useValue: dialogServiceMock },
+      { provide: ActivatedRoute,
+        useValue: {} }]
+    })
+      .compileComponents();
   });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TeamManagementBannerComponent);
+    component = fixture.componentInstance;
+  });
+
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it("createTeam should open dialog", fakeAsync(() => {
+    dialogServiceMock.open.mockReturnValue({
+      afterClosed: () => of()
+    });
+    component.createTeam();
+    tick();
+    expect(dialogServiceMock.open)
+      .toBeCalledTimes(1);
+    expect(dialogServiceMock.open)
+      .toBeCalledWith(AddEditTeamDialogComponent);
+  }));
+});

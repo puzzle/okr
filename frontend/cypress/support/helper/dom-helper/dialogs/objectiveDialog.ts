@@ -4,14 +4,12 @@ import Chainable = Cypress.Chainable;
 
 export default class ObjectiveDialog extends Dialog {
   fillObjectiveTitle (title: string) {
-    this.fillInputByTestId("title",
-      title);
+    this.fillInputByTestId("title", title);
     return this;
   }
 
   fillObjectiveDescription (description: string) {
-    this.fillInputByTestId("description",
-      description);
+    this.fillInputByTestId("description", description);
     return this;
   }
 
@@ -42,8 +40,7 @@ export default class ObjectiveDialog extends Dialog {
   excludeKeyResults (keyResults: string[]) {
     keyResults.forEach((keyResult) => {
       cy.get("label")
-        .contains(keyResult.slice(0,
-          30))
+        .contains(keyResult.slice(0, 30))
         .click();
     });
     return this;

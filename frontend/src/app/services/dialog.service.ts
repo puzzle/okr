@@ -31,40 +31,35 @@ export class DialogService {
     private readonly translationService: TranslateService) {}
 
   open<T, D = any, R = any>(component: ComponentType<T>, config?: MatDialogConfig<D>): MatDialogRef<T, R> {
-    return this.dialog.open(component,
-      {
-        panelClass: this.DIALOG_PANEL_CLASS_DEFAULT,
-        ...this.DIALOG_CONFIG,
-        ...config
-      });
+    return this.dialog.open(component, {
+      panelClass: this.DIALOG_PANEL_CLASS_DEFAULT,
+      ...this.DIALOG_CONFIG,
+      ...config
+    });
   }
 
   openConfirmDialog (translationKey: string, i18nData?: object): MatDialogRef<ConfirmDialogComponent> {
-    const title = this.translationService.instant(`${translationKey}.TITLE`,
-      i18nData);
-    const text = this.translationService.instant(`${translationKey}.TEXT`,
-      i18nData);
-    return this.open(ConfirmDialogComponent,
-      {
-        panelClass: this.DIALOG_PANEL_CLASS_SMALL,
-        data: {
-          title: title,
-          text: text
-        }
-      });
+    const title = this.translationService.instant(`${translationKey}.TITLE`, i18nData);
+    const text = this.translationService.instant(`${translationKey}.TEXT`, i18nData);
+    return this.open(ConfirmDialogComponent, {
+      panelClass: this.DIALOG_PANEL_CLASS_SMALL,
+      data: {
+        title: title,
+        text: text
+      }
+    });
   }
 
   openCustomizedConfirmDialog (data: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent> {
-    return this.open(ConfirmDialogComponent,
-      {
-        panelClass: this.DIALOG_PANEL_CLASS_SMALL,
-        data: {
-          title: data.title,
-          text: data.text,
-          yesButtonState: data.yesButtonState,
-          noButtonState: data.noButtonState,
-          closeButtonState: data.closeButtonState
-        }
-      });
+    return this.open(ConfirmDialogComponent, {
+      panelClass: this.DIALOG_PANEL_CLASS_SMALL,
+      data: {
+        title: data.title,
+        text: data.text,
+        yesButtonState: data.yesButtonState,
+        noButtonState: data.noButtonState,
+        closeButtonState: data.closeButtonState
+      }
+    });
   }
 }

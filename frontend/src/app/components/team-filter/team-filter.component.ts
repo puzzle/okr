@@ -61,8 +61,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     }
     this.subscription = this.teamService
       .getAllTeams()
-      .pipe(takeUntil(this.unsubscribe$),
-        filter((teams) => teams.length > 0))
+      .pipe(takeUntil(this.unsubscribe$), filter((teams) => teams.length > 0))
       .subscribe((teams: Team[]) => {
         this.teams$.next(teams);
         const teamQuery = this.route.snapshot.queryParams["teams"];
@@ -91,8 +90,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     const params = { teams: this.activeTeams.join(",") };
     const optionalParams = optionalReplaceWithNulls(params);
     this.router
-      .navigate([],
-        { queryParams: optionalParams })
+      .navigate([], { queryParams: optionalParams })
       .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
@@ -112,8 +110,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   }
 
   areAllTeamsShown () {
-    return areEqual(this.activeTeams,
-      this.getAllTeamIds());
+    return areEqual(this.activeTeams, this.getAllTeamIds());
   }
 
   toggleAll () {

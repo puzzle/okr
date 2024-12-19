@@ -50,17 +50,13 @@ export class SearchTeamManagementComponent {
       .pipe(takeUntilDestroyed())
       .subscribe(([teams,
         users]) => {
-        this.updateTeamsAndUsers(teams,
-          users);
+        this.updateTeamsAndUsers(teams, users);
         this.applyFilter(this.searchValue$.getValue());
       });
 
     this.search.valueChanges
       .pipe(
-        takeUntilDestroyed(),
-        debounceTime(200),
-        map((v) => (v ?? "").trim()),
-        distinctUntilChanged()
+        takeUntilDestroyed(), debounceTime(200), map((v) => (v ?? "").trim()), distinctUntilChanged()
       )
       .subscribe((searchValue) => {
         this.searchValue$.next(searchValue);
@@ -75,8 +71,7 @@ export class SearchTeamManagementComponent {
   selectUser (user: User) {
     this.search.setValue("");
     const teamId: number = this.activatedRoute.snapshot.params["teamId"];
-    this.router.navigateByUrl(getRouteToUserDetails(user.id,
-      teamId))
+    this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId))
       .then();
   }
 
@@ -93,20 +88,12 @@ export class SearchTeamManagementComponent {
       return;
     }
 
-    this.filteredTeams$.next(this.filterTeams(this.teams,
-      filterValue)
-      .sort((a, b) => this.sortByStringPosition(a.displayValue,
-        b.displayValue,
-        filterValue))
-      .slice(0,
-        SearchTeamManagementComponent.MAX_SUGGESTIONS));
-    this.filteredUsers$.next(this.filterUsers(this.users,
-      filterValue)
-      .sort((a, b) => this.sortByStringPosition(a.displayValue,
-        b.displayValue,
-        filterValue))
-      .slice(0,
-        SearchTeamManagementComponent.MAX_SUGGESTIONS));
+    this.filteredTeams$.next(this.filterTeams(this.teams, filterValue)
+      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS));
+    this.filteredUsers$.next(this.filterUsers(this.users, filterValue)
+      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS));
   }
 
   private sortByStringPosition (a: string, b: string, value: string): number {
@@ -137,26 +124,22 @@ export class SearchTeamManagementComponent {
 
   private filterTeams (teams: Team[], filterValue: string): FilteredTeam[] {
     return teams
-      .filter((team) => this.containsText(team.name,
-        filterValue))
+      .filter((team) => this.containsText(team.name, filterValue))
       .map((team) => ({
         ...team,
         displayValue: team.name,
-        htmlValue: this.formatText(team.name,
-          filterValue)
+        htmlValue: this.formatText(team.name, filterValue)
       }));
   }
 
   private filterUsers (users: User[], filterValue: string): FilteredUser[] {
     return users
-      .filter((user) => this.containsText(user.firstname + user.lastname + user.email,
-        filterValue))
+      .filter((user) => this.containsText(user.firstname + user.lastname + user.email, filterValue))
 
       .map((user) => ({
         ...user,
         displayValue: `${user.firstname} ${user.lastname} (${user.email})`,
-        htmlValue: this.formatText(`${user.firstname} ${user.lastname} (${user.email})`,
-          filterValue)
+        htmlValue: this.formatText(`${user.firstname} ${user.lastname} (${user.email})`, filterValue)
       }));
   }
 
@@ -166,8 +149,6 @@ export class SearchTeamManagementComponent {
   }
 
   private formatText (value: string, text: string): string {
-    return value.replaceAll(new RegExp(`(${text})`,
-      "ig"),
-    "<strong>$1</strong>");
+    return value.replaceAll(new RegExp(`(${text})`, "ig"), "<strong>$1</strong>");
   }
 }

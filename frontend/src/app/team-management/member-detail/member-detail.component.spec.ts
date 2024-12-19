@@ -21,212 +21,194 @@ import { provideHttpClient } from "@angular/common/http";
 import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { DialogTemplateCoreComponent } from "../../shared/custom/dialog-template-core/dialog-template-core.component";
 
-describe("MemberDetailComponent",
-  () => {
-    let component: MemberDetailComponent;
-    let fixture: ComponentFixture<MemberDetailComponent>;
+describe("MemberDetailComponent", () => {
+  let component: MemberDetailComponent;
+  let fixture: ComponentFixture<MemberDetailComponent>;
 
-    const activatedRouteMock = {
-      paramMap: of({
-        get: (): any => 1
-      })
-    };
+  const activatedRouteMock = {
+    paramMap: of({
+      get: (): any => 1
+    })
+  };
 
-    const userServiceMock = {
-      getUserById: jest.fn(),
-      getCurrentUser: jest.fn(),
-      reloadUsers: jest.fn(),
-      reloadCurrentUser: jest.fn()
-    };
+  const userServiceMock = {
+    getUserById: jest.fn(),
+    getCurrentUser: jest.fn(),
+    reloadUsers: jest.fn(),
+    reloadCurrentUser: jest.fn()
+  };
 
-    const teamServiceMock = {
-      removeUserFromTeam: jest.fn(),
-      updateOrAddTeamMembership: jest.fn(),
-      getAllTeams: () => of([])
-    };
+  const teamServiceMock = {
+    removeUserFromTeam: jest.fn(),
+    updateOrAddTeamMembership: jest.fn(),
+    getAllTeams: () => of([])
+  };
 
-    const dialogServiceMock = {
-      open: jest.fn(),
-      openConfirmDialog: jest.fn()
-    };
+  const dialogServiceMock = {
+    open: jest.fn(),
+    openConfirmDialog: jest.fn()
+  };
 
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        declarations: [
-          MemberDetailComponent,
-          AddUserTeamComponent,
-          ShowEditRoleComponent,
-          PuzzleIconButtonComponent,
-          PuzzleIconComponent,
-          DialogTemplateCoreComponent
-        ],
-        imports: [
-          TranslateModule.forRoot(),
-          BrowserModule,
-          SharedModule,
-          MatTableModule,
-          MatIconModule,
-          CommonModule
-        ],
-        providers: [
-          provideRouter([]),
-          provideHttpClient(),
-          provideHttpClientTesting(),
-          { provide: ActivatedRoute,
-            useValue: activatedRouteMock },
-          { provide: UserService,
-            useValue: userServiceMock },
-          { provide: TeamService,
-            useValue: teamServiceMock },
-          { provide: DialogService,
-            useValue: dialogServiceMock }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      })
-        .compileComponents();
-    });
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(MemberDetailComponent);
-      component = fixture.componentInstance;
-
-      userServiceMock.getUserById.mockReturnValue(of(testUser));
-      userServiceMock.getCurrentUser.mockReturnValue(testUser);
-      userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
-
-      fixture.detectChanges();
-    });
-
-    afterEach(() => {
-      userServiceMock.getUserById.mockReset();
-      userServiceMock.reloadUsers.mockReset();
-      teamServiceMock.updateOrAddTeamMembership.mockReset();
-      dialogServiceMock.open.mockReset();
-      teamServiceMock.removeUserFromTeam.mockReset();
-    });
-
-    it("should create the component",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
-
-    it("should set selectedUserIsLoggedInUser and currentUserTeams correctly",
-      (done) => {
-        component.ngOnInit();
-        component.currentUserTeams$.subscribe((userTeams) => {
-          expect(userTeams)
-            .toStrictEqual(testUser.userTeamList);
-          expect(component.user)
-            .toStrictEqual(testUser);
-          expect(component.selectedUserIsLoggedInUser)
-            .toBeTruthy();
-          done();
-        });
-      });
-
-    it("removeUserFromTeam should call removeUserFromTeam and loadUser",
-      fakeAsync(() => {
-        const user = testUser;
-        const userTeam = testUser.userTeamList[0];
-        teamServiceMock.removeUserFromTeam.mockReturnValue(of());
-        userServiceMock.getUserById.mockReturnValue(of(user));
-        dialogServiceMock.openConfirmDialog.mockReturnValue({
-          afterClosed: () => of(true)
-        });
-
-        component.removeUserFromTeam(userTeam,
-          user);
-        tick();
-
-        expect(teamServiceMock.removeUserFromTeam)
-          .toHaveBeenCalledTimes(1);
-        expect(teamServiceMock.removeUserFromTeam)
-          .toHaveBeenCalledWith(user.id,
-            userTeam.team);
-        expect(userServiceMock.getUserById)
-          .toHaveBeenCalledWith(user.id);
-      }));
-
-    it("removeUserFromTeam should not call removeUserFromTeam if dialog canceled",
-      fakeAsync(() => {
-        const user = testUser;
-        const userTeam = testUser.userTeamList[0];
-        teamServiceMock.removeUserFromTeam.mockReturnValue(of());
-        userServiceMock.getUserById.mockReturnValue(of(user));
-        dialogServiceMock.openConfirmDialog.mockReturnValue({
-          afterClosed: () => of(false)
-        });
-
-        component.removeUserFromTeam(userTeam,
-          user);
-        tick();
-
-        expect(teamServiceMock.removeUserFromTeam)
-          .toHaveBeenCalledTimes(0);
-      }));
-
-    it("addTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null",
-      fakeAsync(() => {
-        const user = testUser;
-        const userTeam = testUser.userTeamList[0];
-
-        teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
-        userServiceMock.getUserById.mockReturnValue(of(user));
-
-        component.addTeamMembership(userTeam,
-          user);
-        tick();
-
-        expect(teamServiceMock.updateOrAddTeamMembership)
-          .toHaveBeenCalledTimes(1);
-        expect(teamServiceMock.updateOrAddTeamMembership)
-          .toHaveBeenCalledWith(user.id,
-            userTeam);
-        expect(userServiceMock.getUserById)
-          .toHaveBeenCalledWith(user.id);
-      }));
-
-    it("updateTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null",
-      fakeAsync(() => {
-        const user = testUser;
-        const userTeam = testUser.userTeamList[0];
-
-        teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
-        userServiceMock.getUserById.mockReturnValue(of(user));
-
-        component.updateTeamMembership(false,
-          userTeam,
-          user);
-        tick();
-
-        expect(teamServiceMock.updateOrAddTeamMembership)
-          .toHaveBeenCalledTimes(1);
-        expect(teamServiceMock.updateOrAddTeamMembership)
-          .toHaveBeenCalledWith(user.id,
-            userTeam);
-        expect(userServiceMock.getUserById)
-          .toHaveBeenCalledWith(user.id);
-      }));
-
-    it("updateTeamRole should set isAdmin only after successfull request",
-      fakeAsync(() => {
-        const user = testUser;
-        const userTeam = { ...testUser.userTeamList[0] };
-        userTeam.isTeamAdmin = false;
-
-        teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null)
-          .pipe(delay(10)));
-        userServiceMock.getUserById.mockReturnValue(of(user));
-
-        component.updateTeamMembership(true,
-          userTeam,
-          user);
-
-        expect(userTeam.isTeamAdmin)
-          .toBeFalsy();
-        tick(11);
-        expect(userTeam.isTeamAdmin)
-          .toBeTruthy();
-      }));
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [
+        MemberDetailComponent,
+        AddUserTeamComponent,
+        ShowEditRoleComponent,
+        PuzzleIconButtonComponent,
+        PuzzleIconComponent,
+        DialogTemplateCoreComponent
+      ],
+      imports: [
+        TranslateModule.forRoot(),
+        BrowserModule,
+        SharedModule,
+        MatTableModule,
+        MatIconModule,
+        CommonModule
+      ],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: ActivatedRoute,
+          useValue: activatedRouteMock },
+        { provide: UserService,
+          useValue: userServiceMock },
+        { provide: TeamService,
+          useValue: teamServiceMock },
+        { provide: DialogService,
+          useValue: dialogServiceMock }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
   });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(MemberDetailComponent);
+    component = fixture.componentInstance;
+
+    userServiceMock.getUserById.mockReturnValue(of(testUser));
+    userServiceMock.getCurrentUser.mockReturnValue(testUser);
+    userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
+
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    userServiceMock.getUserById.mockReset();
+    userServiceMock.reloadUsers.mockReset();
+    teamServiceMock.updateOrAddTeamMembership.mockReset();
+    dialogServiceMock.open.mockReset();
+    teamServiceMock.removeUserFromTeam.mockReset();
+  });
+
+  it("should create the component", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it("should set selectedUserIsLoggedInUser and currentUserTeams correctly", (done) => {
+    component.ngOnInit();
+    component.currentUserTeams$.subscribe((userTeams) => {
+      expect(userTeams)
+        .toStrictEqual(testUser.userTeamList);
+      expect(component.user)
+        .toStrictEqual(testUser);
+      expect(component.selectedUserIsLoggedInUser)
+        .toBeTruthy();
+      done();
+    });
+  });
+
+  it("removeUserFromTeam should call removeUserFromTeam and loadUser", fakeAsync(() => {
+    const user = testUser;
+    const userTeam = testUser.userTeamList[0];
+    teamServiceMock.removeUserFromTeam.mockReturnValue(of());
+    userServiceMock.getUserById.mockReturnValue(of(user));
+    dialogServiceMock.openConfirmDialog.mockReturnValue({
+      afterClosed: () => of(true)
+    });
+
+    component.removeUserFromTeam(userTeam, user);
+    tick();
+
+    expect(teamServiceMock.removeUserFromTeam)
+      .toHaveBeenCalledTimes(1);
+    expect(teamServiceMock.removeUserFromTeam)
+      .toHaveBeenCalledWith(user.id, userTeam.team);
+    expect(userServiceMock.getUserById)
+      .toHaveBeenCalledWith(user.id);
+  }));
+
+  it("removeUserFromTeam should not call removeUserFromTeam if dialog canceled", fakeAsync(() => {
+    const user = testUser;
+    const userTeam = testUser.userTeamList[0];
+    teamServiceMock.removeUserFromTeam.mockReturnValue(of());
+    userServiceMock.getUserById.mockReturnValue(of(user));
+    dialogServiceMock.openConfirmDialog.mockReturnValue({
+      afterClosed: () => of(false)
+    });
+
+    component.removeUserFromTeam(userTeam, user);
+    tick();
+
+    expect(teamServiceMock.removeUserFromTeam)
+      .toHaveBeenCalledTimes(0);
+  }));
+
+  it("addTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null", fakeAsync(() => {
+    const user = testUser;
+    const userTeam = testUser.userTeamList[0];
+
+    teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
+    userServiceMock.getUserById.mockReturnValue(of(user));
+
+    component.addTeamMembership(userTeam, user);
+    tick();
+
+    expect(teamServiceMock.updateOrAddTeamMembership)
+      .toHaveBeenCalledTimes(1);
+    expect(teamServiceMock.updateOrAddTeamMembership)
+      .toHaveBeenCalledWith(user.id, userTeam);
+    expect(userServiceMock.getUserById)
+      .toHaveBeenCalledWith(user.id);
+  }));
+
+  it("updateTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null", fakeAsync(() => {
+    const user = testUser;
+    const userTeam = testUser.userTeamList[0];
+
+    teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
+    userServiceMock.getUserById.mockReturnValue(of(user));
+
+    component.updateTeamMembership(false, userTeam, user);
+    tick();
+
+    expect(teamServiceMock.updateOrAddTeamMembership)
+      .toHaveBeenCalledTimes(1);
+    expect(teamServiceMock.updateOrAddTeamMembership)
+      .toHaveBeenCalledWith(user.id, userTeam);
+    expect(userServiceMock.getUserById)
+      .toHaveBeenCalledWith(user.id);
+  }));
+
+  it("updateTeamRole should set isAdmin only after successfull request", fakeAsync(() => {
+    const user = testUser;
+    const userTeam = { ...testUser.userTeamList[0] };
+    userTeam.isTeamAdmin = false;
+
+    teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null)
+      .pipe(delay(10)));
+    userServiceMock.getUserById.mockReturnValue(of(user));
+
+    component.updateTeamMembership(true, userTeam, user);
+
+    expect(userTeam.isTeamAdmin)
+      .toBeFalsy();
+    tick(11);
+    expect(userTeam.isTeamAdmin)
+      .toBeTruthy();
+  }));
+});

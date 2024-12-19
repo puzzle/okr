@@ -22,14 +22,11 @@ export class ExampleDialogComponent {
   protected readonly formInputCheck = formInputCheck;
 
   dialogForm = new FormGroup({
-    name: new FormControl<string>("",
-      [Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50)]),
-    gender: new FormControl<string>("",
-      [Validators.required]),
-    hobby: new FormControl<string>("",
-      [Validators.required])
+    name: new FormControl<string>("", [Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50)]),
+    gender: new FormControl<string>("", [Validators.required]),
+    hobby: new FormControl<string>("", [Validators.required])
   });
 
   constructor (public dialog: MatDialogRef<ExampleDialogComponent>,

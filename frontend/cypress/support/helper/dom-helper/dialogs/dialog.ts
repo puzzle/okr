@@ -29,8 +29,7 @@ export default abstract class Dialog extends PageObjectMapperBase {
 
   protected fillInputByTestId (testId: string, value: string) {
     const elem = cy.getByTestId(testId);
-    this.fillInput(elem,
-      value);
+    this.fillInput(elem, value);
   }
 
   protected fillInput (elem: Cypress.Chainable<JQuery<HTMLElement>>, value: string) {

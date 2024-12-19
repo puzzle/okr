@@ -1,11 +1,9 @@
 export function filterByObjectiveName (objectiveName: string) {
-  return (index: number, element: HTMLElement) => isObjectiveName(element,
-    objectiveName);
+  return (index: number, element: HTMLElement) => isObjectiveName(element, objectiveName);
 }
 
 export function filterByObjectiveState (icon: string) {
-  return (index: number, element: HTMLElement) => isObjectiveState(element,
-    icon);
+  return (index: number, element: HTMLElement) => isObjectiveState(element, icon);
 }
 
 const isObjectiveState = (element: HTMLElement, icon: string) => {

@@ -35,14 +35,13 @@ export class TeamComponent {
   trackByObjectiveId: TrackByFunction<ObjectiveMin> = (index, objective) => objective.id;
 
   createObjective () {
-    const matDialogRef = this.dialogService.open(ObjectiveFormComponent,
-      {
-        data: {
-          objective: {
-            teamId: this.overviewEntity.team.id
-          }
+    const matDialogRef = this.dialogService.open(ObjectiveFormComponent, {
+      data: {
+        objective: {
+          teamId: this.overviewEntity.team.id
         }
-      });
+      }
+    });
     matDialogRef.afterClosed()
       .subscribe((result) => {
         if (result?.addKeyResult) {
@@ -54,13 +53,12 @@ export class TeamComponent {
 
   openAddKeyResultDialog (objective: Objective) {
     this.dialogService
-      .open(KeyresultDialogComponent,
-        {
-          data: {
-            objective: objective,
-            keyResult: null
-          }
-        })
+      .open(KeyresultDialogComponent, {
+        data: {
+          objective: objective,
+          keyResult: null
+        }
+      })
       .afterClosed()
       .subscribe((result) => {
         if (result?.openNew) {

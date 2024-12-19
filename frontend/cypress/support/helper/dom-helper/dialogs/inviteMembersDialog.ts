@@ -22,12 +22,9 @@ export default class InviteMembersDialog extends Dialog {
       .last();
     const emailInput = cy.get("[formcontrolname=\"email\"]")
       .last();
-    this.fillInput(firstNameInput,
-      firstName);
-    this.fillInput(lastNameInput,
-      lastName);
-    this.fillInput(emailInput,
-      email);
+    this.fillInput(firstNameInput, firstName);
+    this.fillInput(lastNameInput, lastName);
+    this.fillInput(emailInput, email);
     return this;
   }
 

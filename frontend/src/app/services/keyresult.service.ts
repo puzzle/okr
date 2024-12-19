@@ -20,11 +20,9 @@ export class KeyresultService {
 
   saveKeyResult (keyResultDTO: KeyResultDTO): Observable<KeyResult> {
     if (keyResultDTO.id) {
-      return this.httpClient.put<KeyResult>("/api/v2/keyresults/" + keyResultDTO.id,
-        keyResultDTO);
+      return this.httpClient.put<KeyResult>("/api/v2/keyresults/" + keyResultDTO.id, keyResultDTO);
     } else {
-      return this.httpClient.post<KeyResult>("/api/v2/keyresults",
-        keyResultDTO);
+      return this.httpClient.post<KeyResult>("/api/v2/keyresults", keyResultDTO);
     }
   }
 

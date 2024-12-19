@@ -37,14 +37,12 @@ export class TeamService {
   }
 
   createTeam (team: Team): Observable<Team> {
-    return this.http.post<Team>(this.API_URL,
-      team)
+    return this.http.post<Team>(this.API_URL, team)
       .pipe(tap(() => this.reloadTeams()));
   }
 
   updateTeam (team: Team): Observable<Team> {
-    return this.http.put<Team>(`${this.API_URL}/${team.id}`,
-      team)
+    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team)
       .pipe(tap(() => this.reloadTeams()));
   }
 
@@ -54,21 +52,18 @@ export class TeamService {
   }
 
   addUsersToTeam (team: Team, selectedUsers: User[]): Observable<void> {
-    return this.http.put<void>(`${this.API_URL}/${team.id}/addusers`,
-      selectedUsers);
+    return this.http.put<void>(`${this.API_URL}/${team.id}/addusers`, selectedUsers);
   }
 
   removeUserFromTeam (userId: number, team: Team): Observable<void> {
     return this.http
-      .put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`,
-        null)
+      .put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null)
       .pipe(tap(() => this.reloadTeams()));
   }
 
   updateOrAddTeamMembership (userId: number, userTeam: UserTeam): Observable<void> {
     return this.http
-      .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`,
-        {})
+      .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`, {})
       .pipe(tap(() => this.reloadTeams()));
   }
 }

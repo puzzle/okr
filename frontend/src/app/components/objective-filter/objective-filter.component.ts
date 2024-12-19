@@ -24,8 +24,7 @@ export class ObjectiveFilterComponent implements OnInit {
     const sanitizedQuery = sanitize(this.query);
     const params = { objectiveQuery: sanitizedQuery };
     const optionalParams = optionalReplaceWithNulls(params);
-    this.router.navigate([],
-      { queryParams: optionalParams });
+    this.router.navigate([], { queryParams: optionalParams });
   }
 
   ngOnInit () {

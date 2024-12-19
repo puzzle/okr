@@ -50,8 +50,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   }
 
   logOut () {
-    const currentUrlTree = this.router.createUrlTree([],
-      { queryParams: {} });
+    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
     this.router.navigateByUrl(currentUrlTree)
       .then(() => {
         this.oauthService.logOut();

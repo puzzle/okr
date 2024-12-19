@@ -43,8 +43,7 @@ export class ObjectiveComponent {
 
   getStateTooltip (stateString: string): string {
     const state = this.getStateByValue(stateString);
-    return this.translate.instant("INFORMATION.OBJECTIVE_STATE_TOOLTIP",
-      { state: state });
+    return this.translate.instant("INFORMATION.OBJECTIVE_STATE_TOOLTIP", { state: state });
   }
 
   redirect (menuEntry: ObjectiveMenuEntry, objectiveMin: ObjectiveMin) {
@@ -54,8 +53,7 @@ export class ObjectiveComponent {
       .pipe(take(1))
       .subscribe((result) => {
         if (result) {
-          menuEntry.afterAction(objectiveMin,
-            result);
+          menuEntry.afterAction(objectiveMin, result);
         }
         this.trigger?.focus();
       });
@@ -68,13 +66,12 @@ export class ObjectiveComponent {
 
   openAddKeyResultDialog (objective: ObjectiveMin) {
     this.dialogService
-      .open(KeyresultDialogComponent,
-        {
-          data: {
-            objective: objective,
-            keyResult: null
-          }
-        })
+      .open(KeyresultDialogComponent, {
+        data: {
+          objective: objective,
+          keyResult: null
+        }
+      })
       .afterClosed()
       .subscribe((result) => {
         if (result?.openNew) {

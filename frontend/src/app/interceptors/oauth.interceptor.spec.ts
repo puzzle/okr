@@ -4,23 +4,21 @@ import { OauthInterceptor } from "./oauth.interceptor";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from "angular-oauth2-oidc";
 
-describe("OauthInterceptor",
-  () => {
-    beforeEach(() => TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
-        OAuthService,
-        UrlHelperService,
-        OAuthLogger,
-        DateTimeProvider,
-        OAuthService
-      ]
-    }));
+describe("OauthInterceptor", () => {
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [HttpClientTestingModule],
+    providers: [
+      OAuthService,
+      UrlHelperService,
+      OAuthLogger,
+      DateTimeProvider,
+      OAuthService
+    ]
+  }));
 
-    it("should be created",
-      () => {
-        const interceptor: OauthInterceptor = TestBed.inject(OauthInterceptor);
-        expect(interceptor)
-          .toBeTruthy();
-      });
+  it("should be created", () => {
+    const interceptor: OauthInterceptor = TestBed.inject(OauthInterceptor);
+    expect(interceptor)
+      .toBeTruthy();
   });
+});

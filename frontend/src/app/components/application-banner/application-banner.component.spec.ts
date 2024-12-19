@@ -39,112 +39,104 @@ const routeMock = {
   queryParams: of(null)
 };
 
-describe("ApplicationBannerComponent",
-  () => {
+describe("ApplicationBannerComponent", () => {
   // @ts-ignore
-    global.ResizeObserver = ResizeObserverMock;
-    let component: ApplicationBannerComponent;
-    let fixture: ComponentFixture<ApplicationBannerComponent>;
+  global.ResizeObserver = ResizeObserverMock;
+  let component: ApplicationBannerComponent;
+  let fixture: ComponentFixture<ApplicationBannerComponent>;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          HttpClientTestingModule,
-          MatExpansionModule,
-          MatFormFieldModule,
-          MatChipsModule,
-          MatSelectModule,
-          MatIconModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          MatInputModule
-        ],
-        declarations: [
-          ApplicationBannerComponent,
-          TeamFilterComponent,
-          QuarterFilterComponent,
-          ObjectiveFilterComponent,
-          OkrTangramComponent
-        ],
-        providers: [{ provide: RefreshDataService,
-          useValue: refreshDataServiceMock },
-        { provide: ActivatedRoute,
-          useValue: routeMock }]
-      });
-
-      fixture = TestBed.createComponent(ApplicationBannerComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        MatExpansionModule,
+        MatFormFieldModule,
+        MatChipsModule,
+        MatSelectModule,
+        MatIconModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule
+      ],
+      declarations: [
+        ApplicationBannerComponent,
+        TeamFilterComponent,
+        QuarterFilterComponent,
+        ObjectiveFilterComponent,
+        OkrTangramComponent
+      ],
+      providers: [{ provide: RefreshDataService,
+        useValue: refreshDataServiceMock },
+      { provide: ActivatedRoute,
+        useValue: routeMock }]
     });
 
-    it("should create",
-      () => {
-        expect(component)
-          .toBeTruthy();
-      });
-
-    it("should should hide banner if scrolled down",
-      fakeAsync(() => {
-        // Set bannerHeight to default
-        const bannerHeight = 160;
-        // Scroll more than the height of the banner
-        const scrollTop = 180;
-        // Set lastScrollPosition to smaller than scrollTop => user scrolls down
-        component.lastScrollPosition = 160;
-        component.bannerHeight = bannerHeight;
-
-        // Set banner style
-        component.refreshBanner(scrollTop);
-        tick(600);
-
-        // Assert that banner is hidden was changed
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css("#okrBanner")).attributes["style"])
-          .toContain("top: -" + (PUZZLE_TOP_BAR_HEIGHT + bannerHeight));
-      }));
-
-    it("should show banner if scrolled up",
-      fakeAsync(() => {
-        // Scroll more than the height of the banner
-        const scrollTop = 180;
-        // Set lastScrollPosition to bigger than scrollTop => user scrolls up
-        component.lastScrollPosition = 200;
-
-        // Set banner style
-        component.refreshBanner(scrollTop);
-        tick(600);
-
-        // Assert that banner is visible
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css("#okrBanner")).attributes["style"])
-          .toContain("top: " + PUZZLE_TOP_BAR_HEIGHT);
-      }));
-
-    it("should call setOKRBannerStyle() when changing header appearance",
-      () => {
-        jest.spyOn(component,
-          "refreshBanner")
-          .mockReturnValue();
-
-        // Set bannerHeight to default and execute header appearance change
-        component.bannerHeight = 160;
-        component.changeHeaderAppearance();
-
-        // Assert that banner is visible
-        fixture.detectChanges();
-        expect(component.refreshBanner)
-          .toHaveBeenCalled();
-      });
-
-    it("should call correct method after call scroll()",
-      () => {
-        jest.spyOn(component,
-          "changeHeaderAppearance");
-
-        component.scroll();
-
-        expect(component.changeHeaderAppearance)
-          .toHaveBeenCalled();
-      });
+    fixture = TestBed.createComponent(ApplicationBannerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
+
+  it("should create", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it("should should hide banner if scrolled down", fakeAsync(() => {
+    // Set bannerHeight to default
+    const bannerHeight = 160;
+    // Scroll more than the height of the banner
+    const scrollTop = 180;
+    // Set lastScrollPosition to smaller than scrollTop => user scrolls down
+    component.lastScrollPosition = 160;
+    component.bannerHeight = bannerHeight;
+
+    // Set banner style
+    component.refreshBanner(scrollTop);
+    tick(600);
+
+    // Assert that banner is hidden was changed
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css("#okrBanner")).attributes["style"])
+      .toContain("top: -" + (PUZZLE_TOP_BAR_HEIGHT + bannerHeight));
+  }));
+
+  it("should show banner if scrolled up", fakeAsync(() => {
+    // Scroll more than the height of the banner
+    const scrollTop = 180;
+    // Set lastScrollPosition to bigger than scrollTop => user scrolls up
+    component.lastScrollPosition = 200;
+
+    // Set banner style
+    component.refreshBanner(scrollTop);
+    tick(600);
+
+    // Assert that banner is visible
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css("#okrBanner")).attributes["style"])
+      .toContain("top: " + PUZZLE_TOP_BAR_HEIGHT);
+  }));
+
+  it("should call setOKRBannerStyle() when changing header appearance", () => {
+    jest.spyOn(component, "refreshBanner")
+      .mockReturnValue();
+
+    // Set bannerHeight to default and execute header appearance change
+    component.bannerHeight = 160;
+    component.changeHeaderAppearance();
+
+    // Assert that banner is visible
+    fixture.detectChanges();
+    expect(component.refreshBanner)
+      .toHaveBeenCalled();
+  });
+
+  it("should call correct method after call scroll()", () => {
+    jest.spyOn(component, "changeHeaderAppearance");
+
+    component.scroll();
+
+    expect(component.changeHeaderAppearance)
+      .toHaveBeenCalled();
+  });
+});

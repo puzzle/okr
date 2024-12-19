@@ -15,10 +15,9 @@ import { Router } from "@angular/router";
 })
 export class AddEditTeamDialogComponent implements OnInit {
   teamForm = new FormGroup({
-    name: new FormControl<string>("",
-      [Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(250)])
+    name: new FormControl<string>("", [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)])
   });
 
   protected readonly formInputCheck = formInputCheck;
@@ -86,8 +85,7 @@ export class AddEditTeamDialogComponent implements OnInit {
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
     return field + this.translate.instant("DIALOG_ERRORS." + error)
-      .format(firstNumber,
-        secondNumber);
+      .format(firstNumber, secondNumber);
   }
 
   getDialogTitle (): string {

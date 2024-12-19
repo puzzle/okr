@@ -17,8 +17,7 @@ export class OverviewService {
       team: teamIds,
       objectiveQuery: objectiveQuery
     });
-    return this.http.get<OverviewEntity[]>("/api/v2/overview",
-      { params: params })
+    return this.http.get<OverviewEntity[]>("/api/v2/overview", { params: params })
       .pipe(map((overviews) => {
         overviews.forEach((overview) => {
           overview.objectives.forEach((objective) => {

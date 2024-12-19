@@ -18,20 +18,17 @@ export default class AngularSearchBox extends PageObjectMapperBase {
   }
 
   shouldHaveOption (option: string) {
-    cy.contains(".mat-mdc-autocomplete-panel mat-option",
-      option);
+    cy.contains(".mat-mdc-autocomplete-panel mat-option", option);
     return this;
   }
 
   shouldHaveLabel (label: string) {
-    cy.contains(".mat-mdc-autocomplete-panel .mat-mdc-optgroup-label",
-      label);
+    cy.contains(".mat-mdc-autocomplete-panel .mat-mdc-optgroup-label", label);
     return this;
   }
 
   selectOption (option: string) {
-    cy.contains(".mat-mdc-autocomplete-panel mat-option",
-      option)
+    cy.contains(".mat-mdc-autocomplete-panel mat-option", option)
       .click();
   }
 

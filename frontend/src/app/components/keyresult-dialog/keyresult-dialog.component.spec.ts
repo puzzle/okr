@@ -29,739 +29,712 @@ import { MatDividerModule } from "@angular/material/divider";
 import { DialogTemplateCoreComponent } from "../../shared/custom/dialog-template-core/dialog-template-core.component";
 import { Quarter } from "../../shared/types/model/Quarter";
 
-describe("KeyresultDialogComponent",
-  () => {
-    let component: KeyresultDialogComponent;
-    let fixture: ComponentFixture<KeyresultDialogComponent>;
-    let keyResultService: KeyresultService;
+describe("KeyresultDialogComponent", () => {
+  let component: KeyresultDialogComponent;
+  let fixture: ComponentFixture<KeyresultDialogComponent>;
+  let keyResultService: KeyresultService;
 
-    const oauthMockService = {
-      getIdentityClaims () {
-        return { name: users[1].firstname + " " + users[1].lastname };
-      }
-    };
+  const oauthMockService = {
+    getIdentityClaims () {
+      return { name: users[1].firstname + " " + users[1].lastname };
+    }
+  };
 
-    const userService = {
-      getUsers () {
-        return of(users);
-      },
-      getCurrentUser: jest.fn()
-    };
+  const userService = {
+    getUsers () {
+      return of(users);
+    },
+    getCurrentUser: jest.fn()
+  };
 
-    const fullObjective = {
+  const fullObjective = {
+    id: 1,
+    title: "Das ist ein Objective",
+    description: "Das ist die Beschreibung",
+    state: State.ONGOING,
+    team: { id: 1,
+      name: "Das Puzzle Team" },
+    quarter: { id: 1,
+      label: "GJ 22/23-Q2" }
+  };
+
+  const keyResultObjective: KeyResultObjective = {
+    id: 2,
+    state: State.ONGOING,
+    quarter: new Quarter(
+      1, "GJ 22/23-Q2", new Date(), new Date()
+    )
+  };
+
+  const fullKeyResultMetric = {
+    id: 3,
+    version: 2,
+    actionList: [{
       id: 1,
-      title: "Das ist ein Objective",
-      description: "Das ist die Beschreibung",
-      state: State.ONGOING,
-      team: { id: 1,
-        name: "Das Puzzle Team" },
-      quarter: { id: 1,
-        label: "GJ 22/23-Q2" }
-    };
-
-    const keyResultObjective: KeyResultObjective = {
+      action: "Test",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
       id: 2,
-      state: State.ONGOING,
-      quarter: new Quarter(
-        1,
-        "GJ 22/23-Q2",
-        new Date(),
-        new Date()
-      )
-    };
-
-    const fullKeyResultMetric = {
+      action: "Katze",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
       id: 3,
-      version: 2,
-      actionList: [{
-        id: 1,
-        action: "Test",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0
-      },
-      {
-        id: 2,
-        action: "Katze",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1
-      },
-      {
-        id: 3,
-        action: "Hund",
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2
-      }],
-      title: "Der Titel ist hier",
-      description: "Die Beschreibung",
-      owner: testUser,
-      objective: keyResultObjective,
-      baseline: 3,
-      keyResultType: "metric",
-      stretchGoal: 25,
-      unit: "CHF"
-    };
+      action: "Hund",
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
+    title: "Der Titel ist hier",
+    description: "Die Beschreibung",
+    owner: testUser,
+    objective: keyResultObjective,
+    baseline: 3,
+    keyResultType: "metric",
+    stretchGoal: 25,
+    unit: "CHF"
+  };
 
-    const receivedKeyResultMetric = {
+  const receivedKeyResultMetric = {
+    id: 3,
+    version: 2,
+    actionList: [{
+      id: 1,
+      action: "Test",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
+      id: 2,
+      action: "Katze",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
       id: 3,
-      version: 2,
-      actionList: [{
-        id: 1,
-        action: "Test",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0
-      },
-      {
-        id: 2,
-        action: "Katze",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1
-      },
-      {
-        id: 3,
-        action: "Hund",
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2
-      }],
-      title: "Der Titel ist hier",
-      description: "Die Beschreibung",
-      owner: testUser,
-      objective: keyResultObjective,
-      baseline: 3,
-      keyResultType: "metric",
-      stretchGoal: 25,
-      unit: "CHF",
-      commitZone: null,
-      targetZone: null,
-      stretchZone: null
-    };
+      action: "Hund",
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
+    title: "Der Titel ist hier",
+    description: "Die Beschreibung",
+    owner: testUser,
+    objective: keyResultObjective,
+    baseline: 3,
+    keyResultType: "metric",
+    stretchGoal: 25,
+    unit: "CHF",
+    commitZone: null,
+    targetZone: null,
+    stretchZone: null
+  };
 
-    const fullKeyResultOrdinal = {
-      id: 6,
-      version: 2,
-      actionList: [{
-        id: 1,
-        action: "Test",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0
-      },
-      {
-        id: 2,
-        action: "Katze",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1
-      },
-      {
-        id: 3,
-        action: "Hund",
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2
-      }],
-      title: "Der Titel ist hier",
-      description: "Die Beschreibung",
-      owner: testUser,
-      objective: keyResultObjective,
-      keyResultType: "ordinal",
-      commitZone: "Commit zone",
-      targetZone: "Target zone",
-      stretchZone: "Stretch goal"
-    };
+  const fullKeyResultOrdinal = {
+    id: 6,
+    version: 2,
+    actionList: [{
+      id: 1,
+      action: "Test",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
+      id: 2,
+      action: "Katze",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
+      id: 3,
+      action: "Hund",
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
+    title: "Der Titel ist hier",
+    description: "Die Beschreibung",
+    owner: testUser,
+    objective: keyResultObjective,
+    keyResultType: "ordinal",
+    commitZone: "Commit zone",
+    targetZone: "Target zone",
+    stretchZone: "Stretch goal"
+  };
 
-    const receivedKeyResultOrdinal = {
-      id: 6,
-      version: 2,
-      actionList: [{
-        id: 1,
-        action: "Test",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0
-      },
-      {
-        id: 2,
-        action: "Katze",
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1
-      },
-      {
-        id: 3,
-        action: "Hund",
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2
-      }],
-      title: "Der Titel ist hier",
-      description: "Die Beschreibung",
-      owner: testUser,
-      objective: keyResultObjective,
-      keyResultType: "ordinal",
-      commitZone: "Commit zone",
-      targetZone: "Target zone",
-      stretchZone: "Stretch goal",
-      baseline: null,
-      stretchGoal: null,
-      unit: null
-    };
+  const receivedKeyResultOrdinal = {
+    id: 6,
+    version: 2,
+    actionList: [{
+      id: 1,
+      action: "Test",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
+      id: 2,
+      action: "Katze",
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
+      id: 3,
+      action: "Hund",
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
+    title: "Der Titel ist hier",
+    description: "Die Beschreibung",
+    owner: testUser,
+    objective: keyResultObjective,
+    keyResultType: "ordinal",
+    commitZone: "Commit zone",
+    targetZone: "Target zone",
+    stretchZone: "Stretch goal",
+    baseline: null,
+    stretchGoal: null,
+    unit: null
+  };
 
-    const initKeyResult = {
-      id: undefined,
-      title: "",
-      description: "",
-      owner: testUser,
-      objective: fullObjective,
-      baseline: 3,
-      keyResultType: "metric",
-      stretchGoal: 25,
-      unit: "CHF",
-      commitZone: null,
-      targetZone: null,
-      stretchZone: null,
-      actionList: []
-    };
+  const initKeyResult = {
+    id: undefined,
+    title: "",
+    description: "",
+    owner: testUser,
+    objective: fullObjective,
+    baseline: 3,
+    keyResultType: "metric",
+    stretchGoal: 25,
+    unit: "CHF",
+    commitZone: null,
+    targetZone: null,
+    stretchZone: null,
+    actionList: []
+  };
 
-    const savedKeyResult = {
-      id: undefined,
-      version: undefined,
-      title: "Neuer Titel",
-      description: "Description",
-      owner: testUser,
-      objective: fullObjective,
-      baseline: 3,
-      keyResultType: "metric",
-      stretchGoal: 25,
-      unit: "CHF",
-      commitZone: null,
-      targetZone: null,
-      stretchZone: null,
-      actionList: []
-    };
+  const savedKeyResult = {
+    id: undefined,
+    version: undefined,
+    title: "Neuer Titel",
+    description: "Description",
+    owner: testUser,
+    objective: fullObjective,
+    baseline: 3,
+    keyResultType: "metric",
+    stretchGoal: 25,
+    unit: "CHF",
+    commitZone: null,
+    targetZone: null,
+    stretchZone: null,
+    actionList: []
+  };
 
-    const matDialogRefMock = {
-      close: jest.fn()
-    };
+  const matDialogRefMock = {
+    close: jest.fn()
+  };
 
-    const mockUserService = {
-      getUsers: jest.fn()
-    };
+  const mockUserService = {
+    getUsers: jest.fn()
+  };
 
-    describe("New KeyResult",
-      () => {
-        beforeEach(() => {
-          TestBed.configureTestingModule({
-            imports: [
-              MatDialogModule,
-              NoopAnimationsModule,
-              MatSelectModule,
-              MatInputModule,
-              MatRadioModule,
-              ReactiveFormsModule,
-              MatAutocompleteModule,
-              MatIconModule,
-              TranslateModule.forRoot(),
-              DragDropModule,
-              MatDividerModule
-            ],
-            providers: [
-              provideRouter([]),
-              provideHttpClient(),
-              provideHttpClientTesting(),
-              KeyresultService,
-              TranslateService,
-              { provide: UserService,
-                useValue: userService },
-              {
-                provide: MatDialogRef,
-                useValue: matDialogRefMock
-              },
-              {
-                provide: MAT_DIALOG_DATA,
-                useValue: { objective: fullObjective,
-                  keyResult: undefined }
-              },
-              {
-                provide: OAuthService,
-                useValue: oauthMockService
-              }
-            ],
-            declarations: [
-              KeyresultDialogComponent,
-              KeyResultFormComponent,
-              KeyresultTypeComponent,
-              ActionPlanComponent,
-              DialogTemplateCoreComponent
-            ]
-          })
-            .compileComponents();
+  describe("New KeyResult", () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          MatDialogModule,
+          NoopAnimationsModule,
+          MatSelectModule,
+          MatInputModule,
+          MatRadioModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatIconModule,
+          TranslateModule.forRoot(),
+          DragDropModule,
+          MatDividerModule
+        ],
+        providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          KeyresultService,
+          TranslateService,
+          { provide: UserService,
+            useValue: userService },
+          {
+            provide: MatDialogRef,
+            useValue: matDialogRefMock
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: { objective: fullObjective,
+              keyResult: undefined }
+          },
+          {
+            provide: OAuthService,
+            useValue: oauthMockService
+          }
+        ],
+        declarations: [
+          KeyresultDialogComponent,
+          KeyResultFormComponent,
+          KeyresultTypeComponent,
+          ActionPlanComponent,
+          DialogTemplateCoreComponent
+        ]
+      })
+        .compileComponents();
 
-          fixture = TestBed.createComponent(KeyresultDialogComponent);
-          component = fixture.componentInstance;
+      fixture = TestBed.createComponent(KeyresultDialogComponent);
+      component = fixture.componentInstance;
 
-          userService.getCurrentUser.mockReturnValue(testUser);
+      userService.getCurrentUser.mockReturnValue(testUser);
 
-          fixture.detectChanges();
-          keyResultService = TestBed.inject(KeyresultService);
-        });
+      fixture.detectChanges();
+      keyResultService = TestBed.inject(KeyresultService);
+    });
 
-        it("should create",
-          () => {
-            expect(component)
-              .toBeTruthy();
-          });
+    it("should create", () => {
+      expect(component)
+        .toBeTruthy();
+    });
 
-        it("should be able to set title",
-          waitForAsync(async () => {
-            component.keyResultForm.setValue({
-              owner: null,
-              actionList: [],
-              title: "Title",
-              baseline: 0,
-              stretchZone: null,
-              targetZone: null,
-              commitZone: null,
-              unit: "FTE",
-              description: null,
-              stretchGoal: 0,
-              keyResultType: "metric"
-            });
-            fixture.detectChanges();
-            const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
-            expect(await submitButton.nativeElement.getAttribute("disabled"))
-              .toBeFalsy();
+    it("should be able to set title", waitForAsync(async () => {
+      component.keyResultForm.setValue({
+        owner: null,
+        actionList: [],
+        title: "Title",
+        baseline: 0,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: "FTE",
+        description: null,
+        stretchGoal: 0,
+        keyResultType: "metric"
+      });
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
+      expect(await submitButton.nativeElement.getAttribute("disabled"))
+        .toBeFalsy();
 
-            const formObject = component.keyResultForm.value;
-            expect(formObject.title)
-              .toBe("Title");
-            expect(formObject.description)
-              .toBe(null);
-          }));
+      const formObject = component.keyResultForm.value;
+      expect(formObject.title)
+        .toBe("Title");
+      expect(formObject.description)
+        .toBe(null);
+    }));
 
-        it("should display error message of too short input",
-          waitForAsync(async () => {
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: "T",
-              baseline: null,
-              stretchZone: null,
-              targetZone: null,
-              commitZone: null,
-              unit: null,
-              description: "",
-              stretchGoal: null,
-              keyResultType: null
-            });
-            fixture.detectChanges();
+    it("should display error message of too short input", waitForAsync(async () => {
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: "T",
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: "",
+        stretchGoal: null,
+        keyResultType: null
+      });
+      fixture.detectChanges();
 
-            const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
-            expect(await submitButton.nativeElement.getAttribute("disabled"))
-              .toEqual("");
-            expect(component.keyResultForm.invalid)
-              .toBeTruthy();
-            expect(component.keyResultForm.get("title")!.errors?.["minlength"])
-              .toBeTruthy();
-          }));
+      const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
+      expect(await submitButton.nativeElement.getAttribute("disabled"))
+        .toEqual("");
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get("title")!.errors?.["minlength"])
+        .toBeTruthy();
+    }));
 
-        it("should display error message of required",
-          waitForAsync(async () => {
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: null,
-              baseline: null,
-              stretchZone: null,
-              targetZone: null,
-              commitZone: null,
-              unit: null,
-              description: "",
-              stretchGoal: null,
-              keyResultType: null
-            });
-            fixture.detectChanges();
+    it("should display error message of required", waitForAsync(async () => {
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: null,
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: "",
+        stretchGoal: null,
+        keyResultType: null
+      });
+      fixture.detectChanges();
 
-            const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
-            expect(await submitButton.nativeElement.getAttribute("disabled"))
-              .toEqual("");
-            expect(component.keyResultForm.invalid)
-              .toBeTruthy();
-            expect(component.keyResultForm.get("title")!.errors?.["required"])
-              .toBeTruthy();
-          }));
+      const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
+      expect(await submitButton.nativeElement.getAttribute("disabled"))
+        .toEqual("");
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get("title")!.errors?.["required"])
+        .toBeTruthy();
+    }));
 
-        it("should call service save method",
-          waitForAsync(() => {
-            const spy = jest.spyOn(keyResultService,
-              "saveKeyResult");
-            spy.mockImplementation(() => of({ id: 2 } as KeyResult));
+    it("should call service save method", waitForAsync(() => {
+      const spy = jest.spyOn(keyResultService, "saveKeyResult");
+      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: "Neuer Titel",
-              baseline: 3,
-              stretchZone: null,
-              targetZone: null,
-              commitZone: null,
-              unit: "CHF",
-              description: "Description",
-              stretchGoal: 25,
-              keyResultType: "metric"
-            });
-
-            initKeyResult.title = "Neuer Titel";
-            initKeyResult.description = "Description";
-
-            component.saveKeyResult();
-
-            expect(spy)
-              .toBeCalledTimes(1);
-            expect(spy)
-              .toHaveBeenCalledWith(savedKeyResult);
-          }));
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: "Neuer Titel",
+        baseline: 3,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: "CHF",
+        description: "Description",
+        stretchGoal: 25,
+        keyResultType: "metric"
       });
 
-    describe("Edit KeyResult Metric",
-      () => {
-        beforeEach(() => {
-          mockUserService.getUsers.mockReturnValue(users);
-          TestBed.configureTestingModule({
-            imports: [
-              MatDialogModule,
-              NoopAnimationsModule,
-              MatInputModule,
-              ReactiveFormsModule,
-              MatIconModule,
-              MatAutocompleteModule,
-              DragDropModule,
-              TranslateModule.forRoot(),
-              MatDividerModule
-            ],
-            providers: [
-              provideRouter([]),
-              provideHttpClient(),
-              provideHttpClientTesting(),
-              KeyresultService,
-              {
-                provide: MatDialogRef,
-                useValue: {
-                  close: () => {}
-                }
-              },
-              {
-                provide: OAuthService,
-                useValue: oauthMockService
-              },
-              {
-                provide: MAT_DIALOG_DATA,
-                useValue: { keyResult: fullKeyResultMetric,
-                  objective: keyResultObjective }
-              }
-            ],
-            declarations: [
-              KeyresultDialogComponent,
-              KeyResultFormComponent,
-              DialogTemplateCoreComponent,
-              ActionPlanComponent,
-              KeyresultTypeComponent
-            ]
-          })
-            .compileComponents();
+      initKeyResult.title = "Neuer Titel";
+      initKeyResult.description = "Description";
 
-          fixture = TestBed.createComponent(KeyresultDialogComponent);
-          component = fixture.componentInstance;
-          fixture.detectChanges();
-          keyResultService = TestBed.inject(KeyresultService);
-          fullKeyResultMetric.id = 3;
-        });
+      component.saveKeyResult();
 
-        afterEach(() => {
-          mockUserService.getUsers.mockReset();
-        });
-
-        it("should use KeyResult value from data input",
-          waitForAsync(() => {
-            const formObject = fixture.componentInstance.keyResultForm.value;
-            expect(formObject.title)
-              .toBe("Der Titel ist hier");
-            expect(formObject.description)
-              .toBe("Die Beschreibung");
-            expect(formObject.owner)
-              .toBe(testUser);
-          }));
-
-        it("should be able to set title and description",
-          waitForAsync(async () => {
-            expect(component.keyResultForm.value.title)
-              .toEqual("Der Titel ist hier");
-            expect(component.keyResultForm.value.description)
-              .toEqual("Die Beschreibung");
-
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: "Title",
-              baseline: 0,
-              stretchZone: "",
-              targetZone: "",
-              commitZone: "",
-              unit: "FTE",
-              description: "Description",
-              stretchGoal: 0,
-              keyResultType: "metric"
-            });
-            fixture.detectChanges();
-            const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
-            expect(await submitButton.nativeElement.getAttribute("disabled"))
-              .toBeFalsy();
-
-            const formObject = fixture.componentInstance.keyResultForm.value;
-            expect(formObject.title)
-              .toBe("Title");
-            expect(formObject.description)
-              .toBe("Description");
-            expect(component.keyResultForm.invalid)
-              .toBeFalsy();
-          }));
-
-        it("should display error message of too short input",
-          waitForAsync(async () => {
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: "T",
-              baseline: null,
-              stretchZone: null,
-              targetZone: null,
-              commitZone: null,
-              unit: null,
-              description: "",
-              stretchGoal: null,
-              keyResultType: null
-            });
-            fixture.detectChanges();
-
-            expect(component.keyResultForm.invalid)
-              .toBeTruthy();
-            expect(component.keyResultForm.get("title")!.errors?.["minlength"])
-              .toBeTruthy();
-          }));
-
-        it("should display error message of required",
-          waitForAsync(async () => {
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: null,
-              baseline: null,
-              stretchZone: null,
-              targetZone: null,
-              commitZone: null,
-              unit: null,
-              description: "",
-              stretchGoal: null,
-              keyResultType: null
-            });
-            fixture.detectChanges();
-
-            expect(component.keyResultForm.invalid)
-              .toBeTruthy();
-            expect(component.keyResultForm.get("title")!.errors?.["required"])
-              .toBeTruthy();
-          }));
-
-        it("should call service save method",
-          waitForAsync(() => {
-            const spy = jest.spyOn(keyResultService,
-              "saveKeyResult");
-            spy.mockImplementation(() => of({ id: 2 } as KeyResult));
-
-            component.saveKeyResult();
-
-            expect(spy)
-              .toBeCalledTimes(1);
-            expect(spy)
-              .toHaveBeenCalledWith(receivedKeyResultMetric);
-          }));
-
-        it("should not display logged in user when editing",
-          waitForAsync(() => {
-            jest.resetAllMocks();
-            const userServiceSpy = jest.spyOn(userService,
-              "getUsers");
-            fixture.detectChanges();
-            expect(userServiceSpy)
-              .toHaveBeenCalledTimes(0);
-            expect(component.keyResultForm.controls.owner.value)
-              .toBe(testUser);
-          }));
-      });
-
-    describe("Edit KeyResult Ordinal",
-      () => {
-        beforeEach(() => {
-          mockUserService.getUsers.mockReturnValue(users);
-          TestBed.configureTestingModule({
-            imports: [
-              MatDialogModule,
-              NoopAnimationsModule,
-              MatInputModule,
-              ReactiveFormsModule,
-              MatIconModule,
-              MatAutocompleteModule,
-              DragDropModule,
-              TranslateModule.forRoot(),
-              MatDividerModule
-            ],
-            providers: [
-              provideRouter([]),
-              provideHttpClient(),
-              provideHttpClientTesting(),
-              KeyresultService,
-              {
-                provide: MatDialogRef,
-                useValue: matDialogRefMock
-              },
-              {
-                provide: OAuthService,
-                useValue: oauthMockService
-              },
-              {
-                provide: MAT_DIALOG_DATA,
-                useValue: { keyResult: fullKeyResultOrdinal,
-                  objective: keyResultObjective }
-              }
-            ],
-            declarations: [
-              KeyresultDialogComponent,
-              KeyResultFormComponent,
-              DialogTemplateCoreComponent,
-              ActionPlanComponent,
-              KeyresultTypeComponent
-            ]
-          })
-            .compileComponents();
-
-          fixture = TestBed.createComponent(KeyresultDialogComponent);
-          component = fixture.componentInstance;
-          fixture.detectChanges();
-          keyResultService = TestBed.inject(KeyresultService);
-        });
-
-        afterEach(() => {
-          mockUserService.getUsers.mockReset();
-        });
-
-        it("should use KeyResult value from data input",
-          waitForAsync(() => {
-            const formObject = fixture.componentInstance.keyResultForm.value;
-            expect(formObject.title)
-              .toBe("Der Titel ist hier");
-            expect(formObject.description)
-              .toBe("Die Beschreibung");
-            expect(formObject.owner)
-              .toBe(testUser);
-          }));
-
-        it("should be able to set title and description",
-          waitForAsync(async () => {
-            expect(component.keyResultForm.value.title)
-              .toEqual("Der Titel ist hier");
-            expect(component.keyResultForm.value.description)
-              .toEqual("Die Beschreibung");
-
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: "Title",
-              baseline: 0,
-              stretchZone: "stretchZone",
-              targetZone: "targetZone",
-              commitZone: "commitZone",
-              unit: "FTE",
-              description: "Description",
-              stretchGoal: 0,
-              keyResultType: "ordinal"
-            });
-            fixture.detectChanges();
-            const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
-            expect(await submitButton.nativeElement.getAttribute("disabled"))
-              .toBeFalsy();
-
-            const formObject = fixture.componentInstance.keyResultForm.value;
-            expect(formObject.title)
-              .toBe("Title");
-            expect(formObject.description)
-              .toBe("Description");
-            expect(component.keyResultForm.invalid)
-              .toBeFalsy();
-          }));
-
-        it("should display error message of too short input",
-          waitForAsync(async () => {
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: "T",
-              baseline: 0,
-              stretchZone: "",
-              targetZone: "",
-              commitZone: "",
-              unit: "FTE",
-              description: "Description",
-              stretchGoal: 0,
-              keyResultType: "metric"
-            });
-            fixture.detectChanges();
-
-            expect(component.keyResultForm.invalid)
-              .toBeTruthy();
-            expect(component.keyResultForm.get("title")!.errors?.["minlength"])
-              .toBeTruthy();
-          }));
-
-        it("should display error message of required",
-          waitForAsync(async () => {
-            component.keyResultForm.setValue({
-              owner: testUser,
-              actionList: [],
-              title: null,
-              baseline: null,
-              stretchZone: null,
-              targetZone: null,
-              commitZone: null,
-              unit: null,
-              description: "",
-              stretchGoal: null,
-              keyResultType: null
-            });
-            fixture.detectChanges();
-
-            expect(component.keyResultForm.invalid)
-              .toBeTruthy();
-            expect(component.keyResultForm.get("title")!.errors?.["required"])
-              .toBeTruthy();
-          }));
-
-        it("should call service save method",
-          waitForAsync(() => {
-            const spy = jest.spyOn(keyResultService,
-              "saveKeyResult");
-            spy.mockImplementation(() => of({ id: 2 } as KeyResult));
-
-            component.saveKeyResult();
-
-            expect(spy)
-              .toBeCalledTimes(1);
-            expect(spy)
-              .toHaveBeenCalledWith(receivedKeyResultOrdinal);
-          }));
-      });
+      expect(spy)
+        .toBeCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith(savedKeyResult);
+    }));
   });
+
+  describe("Edit KeyResult Metric", () => {
+    beforeEach(() => {
+      mockUserService.getUsers.mockReturnValue(users);
+      TestBed.configureTestingModule({
+        imports: [
+          MatDialogModule,
+          NoopAnimationsModule,
+          MatInputModule,
+          ReactiveFormsModule,
+          MatIconModule,
+          MatAutocompleteModule,
+          DragDropModule,
+          TranslateModule.forRoot(),
+          MatDividerModule
+        ],
+        providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          KeyresultService,
+          {
+            provide: MatDialogRef,
+            useValue: {
+              close: () => {}
+            }
+          },
+          {
+            provide: OAuthService,
+            useValue: oauthMockService
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: { keyResult: fullKeyResultMetric,
+              objective: keyResultObjective }
+          }
+        ],
+        declarations: [
+          KeyresultDialogComponent,
+          KeyResultFormComponent,
+          DialogTemplateCoreComponent,
+          ActionPlanComponent,
+          KeyresultTypeComponent
+        ]
+      })
+        .compileComponents();
+
+      fixture = TestBed.createComponent(KeyresultDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      keyResultService = TestBed.inject(KeyresultService);
+      fullKeyResultMetric.id = 3;
+    });
+
+    afterEach(() => {
+      mockUserService.getUsers.mockReset();
+    });
+
+    it("should use KeyResult value from data input", waitForAsync(() => {
+      const formObject = fixture.componentInstance.keyResultForm.value;
+      expect(formObject.title)
+        .toBe("Der Titel ist hier");
+      expect(formObject.description)
+        .toBe("Die Beschreibung");
+      expect(formObject.owner)
+        .toBe(testUser);
+    }));
+
+    it("should be able to set title and description", waitForAsync(async () => {
+      expect(component.keyResultForm.value.title)
+        .toEqual("Der Titel ist hier");
+      expect(component.keyResultForm.value.description)
+        .toEqual("Die Beschreibung");
+
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: "Title",
+        baseline: 0,
+        stretchZone: "",
+        targetZone: "",
+        commitZone: "",
+        unit: "FTE",
+        description: "Description",
+        stretchGoal: 0,
+        keyResultType: "metric"
+      });
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
+      expect(await submitButton.nativeElement.getAttribute("disabled"))
+        .toBeFalsy();
+
+      const formObject = fixture.componentInstance.keyResultForm.value;
+      expect(formObject.title)
+        .toBe("Title");
+      expect(formObject.description)
+        .toBe("Description");
+      expect(component.keyResultForm.invalid)
+        .toBeFalsy();
+    }));
+
+    it("should display error message of too short input", waitForAsync(async () => {
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: "T",
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: "",
+        stretchGoal: null,
+        keyResultType: null
+      });
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get("title")!.errors?.["minlength"])
+        .toBeTruthy();
+    }));
+
+    it("should display error message of required", waitForAsync(async () => {
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: null,
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: "",
+        stretchGoal: null,
+        keyResultType: null
+      });
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get("title")!.errors?.["required"])
+        .toBeTruthy();
+    }));
+
+    it("should call service save method", waitForAsync(() => {
+      const spy = jest.spyOn(keyResultService, "saveKeyResult");
+      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
+
+      component.saveKeyResult();
+
+      expect(spy)
+        .toBeCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith(receivedKeyResultMetric);
+    }));
+
+    it("should not display logged in user when editing", waitForAsync(() => {
+      jest.resetAllMocks();
+      const userServiceSpy = jest.spyOn(userService, "getUsers");
+      fixture.detectChanges();
+      expect(userServiceSpy)
+        .toHaveBeenCalledTimes(0);
+      expect(component.keyResultForm.controls.owner.value)
+        .toBe(testUser);
+    }));
+  });
+
+  describe("Edit KeyResult Ordinal", () => {
+    beforeEach(() => {
+      mockUserService.getUsers.mockReturnValue(users);
+      TestBed.configureTestingModule({
+        imports: [
+          MatDialogModule,
+          NoopAnimationsModule,
+          MatInputModule,
+          ReactiveFormsModule,
+          MatIconModule,
+          MatAutocompleteModule,
+          DragDropModule,
+          TranslateModule.forRoot(),
+          MatDividerModule
+        ],
+        providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          KeyresultService,
+          {
+            provide: MatDialogRef,
+            useValue: matDialogRefMock
+          },
+          {
+            provide: OAuthService,
+            useValue: oauthMockService
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: { keyResult: fullKeyResultOrdinal,
+              objective: keyResultObjective }
+          }
+        ],
+        declarations: [
+          KeyresultDialogComponent,
+          KeyResultFormComponent,
+          DialogTemplateCoreComponent,
+          ActionPlanComponent,
+          KeyresultTypeComponent
+        ]
+      })
+        .compileComponents();
+
+      fixture = TestBed.createComponent(KeyresultDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      keyResultService = TestBed.inject(KeyresultService);
+    });
+
+    afterEach(() => {
+      mockUserService.getUsers.mockReset();
+    });
+
+    it("should use KeyResult value from data input", waitForAsync(() => {
+      const formObject = fixture.componentInstance.keyResultForm.value;
+      expect(formObject.title)
+        .toBe("Der Titel ist hier");
+      expect(formObject.description)
+        .toBe("Die Beschreibung");
+      expect(formObject.owner)
+        .toBe(testUser);
+    }));
+
+    it("should be able to set title and description", waitForAsync(async () => {
+      expect(component.keyResultForm.value.title)
+        .toEqual("Der Titel ist hier");
+      expect(component.keyResultForm.value.description)
+        .toEqual("Die Beschreibung");
+
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: "Title",
+        baseline: 0,
+        stretchZone: "stretchZone",
+        targetZone: "targetZone",
+        commitZone: "commitZone",
+        unit: "FTE",
+        description: "Description",
+        stretchGoal: 0,
+        keyResultType: "ordinal"
+      });
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(By.css("[data-testId=\"submit\"]"));
+      expect(await submitButton.nativeElement.getAttribute("disabled"))
+        .toBeFalsy();
+
+      const formObject = fixture.componentInstance.keyResultForm.value;
+      expect(formObject.title)
+        .toBe("Title");
+      expect(formObject.description)
+        .toBe("Description");
+      expect(component.keyResultForm.invalid)
+        .toBeFalsy();
+    }));
+
+    it("should display error message of too short input", waitForAsync(async () => {
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: "T",
+        baseline: 0,
+        stretchZone: "",
+        targetZone: "",
+        commitZone: "",
+        unit: "FTE",
+        description: "Description",
+        stretchGoal: 0,
+        keyResultType: "metric"
+      });
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get("title")!.errors?.["minlength"])
+        .toBeTruthy();
+    }));
+
+    it("should display error message of required", waitForAsync(async () => {
+      component.keyResultForm.setValue({
+        owner: testUser,
+        actionList: [],
+        title: null,
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: "",
+        stretchGoal: null,
+        keyResultType: null
+      });
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get("title")!.errors?.["required"])
+        .toBeTruthy();
+    }));
+
+    it("should call service save method", waitForAsync(() => {
+      const spy = jest.spyOn(keyResultService, "saveKeyResult");
+      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
+
+      component.saveKeyResult();
+
+      expect(spy)
+        .toBeCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith(receivedKeyResultOrdinal);
+    }));
+  });
+});

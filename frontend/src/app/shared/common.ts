@@ -6,8 +6,7 @@ export function getNumberOrNull (str: string | null | undefined): number | null 
     .trim() === "") {
     return null;
   }
-  const number: number = parseInt(str,
-    10);
+  const number: number = parseInt(str, 10);
   return Number.isNaN(number) ? null : number;
 }
 
@@ -16,7 +15,7 @@ export function getValueFromQuery (query: any, fallback?: number): number[] {
     .flat()
     .filter((e) => e !== "")
     .map((e) => {
-      return typeof e == 'string' ? e.split(',') : e;
+      return typeof e == "string" ? e.split(",") : e;
     })
     .flat()
     .map((id: any) => Number(id))
@@ -48,9 +47,7 @@ export function calculateCurrentPercentage (keyResultMetric: KeyResultMetricMin)
   const value: number = +(keyResultMetric.lastCheckIn?.value ?? 0);
   const baseline: number = +keyResultMetric.baseline;
   const stretchGoal: number = +keyResultMetric.stretchGoal;
-  if (isLastCheckInNegative(baseline,
-    stretchGoal,
-    value)) return 0;
+  if (isLastCheckInNegative(baseline, stretchGoal, value)) return 0;
   if (value == stretchGoal) return 100;
 
   return Math.abs(value - baseline) / Math.abs(stretchGoal - baseline) * 100;

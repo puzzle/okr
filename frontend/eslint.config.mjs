@@ -78,20 +78,17 @@ export default tsEslint.config(
       ],
       'prefer-rest-params': 'error',
       '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
-      '@stylistic/lines-around-comment': 'off',
       '@angular-eslint/no-empty-lifecycle-method': 'error',
       '@angular-eslint/component-class-suffix': 'error',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@stylistic/no-extra-parens': 'error',
       '@typescript-eslint/no-confusing-non-null-assertion': 'error',
-      //Delete these rules after fixing all the issues and enabling the actual rules
-      '@stylistic/quotes': 'off',
-      '@stylistic/function-call-argument-newline': 'off',
-
       //Actual formatting rules
-      // '@stylistic/function-call-argument-newline': ['error', 'never'],
-      // '@stylistic/quotes': ['error', 'double'],
+      '@stylistic/function-call-argument-newline': ['error', 'never'],
+      '@stylistic/quotes': ['error', 'double'],
+      // This rule makes no sense
+      '@stylistic/lines-around-comment': 'off',
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/dot-location': ['error', 'property'],
       '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
@@ -103,6 +100,7 @@ export default tsEslint.config(
       '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
       '@stylistic/semi-style': ['error'],
       '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
+      //Angular eslint rules
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -149,13 +147,14 @@ export default tsEslint.config(
       // Combine all sets of rules
       ...html.configs.recommended.rules,
       ...html.configs['flat/recommended'].rules,
-
+      //Angular template eslint rules
       '@angular-eslint/template/eqeqeq': 'error',
-      '@html-eslint/indent': ['error', 2],
-      '@html-eslint/require-img-alt': 'error',
-      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
       '@angular-eslint/template/banana-in-box': 'error',
       '@angular-eslint/template/no-negated-async': 'error',
+      //Html eslint rules
+      '@html-eslint/require-img-alt': 'error',
+      '@html-eslint/indent': ['error', 2],
+      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
       //For Some reason the following rule does not work with the angular-parser
       '@html-eslint/element-newline': 'off',
     },

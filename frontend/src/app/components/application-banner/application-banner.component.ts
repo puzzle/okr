@@ -55,8 +55,7 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
     const newBannerPadding = this.getBannerTopPadding(scrollTop);
     this.okrBanner.nativeElement.style.top = newBannerPadding + "px";
 
-    const overviewPadding = this.getOverviewPadding(newBannerPadding,
-      this.bannerHeight);
+    const overviewPadding = this.getOverviewPadding(newBannerPadding, this.bannerHeight);
     this.refreshDataService.okrBannerHeightSubject.next(overviewPadding);
   }
 

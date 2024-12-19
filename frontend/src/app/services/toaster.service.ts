@@ -9,18 +9,15 @@ export class ToasterService {
   constructor (private toastr: ToastrService) {}
 
   showSuccess (msg: string) {
-    this.toastr.success(msg,
-      "Erfolgreich!");
+    this.toastr.success(msg, "Erfolgreich!");
   }
 
   showError (msg: string) {
-    this.toastr.error(msg,
-      "Fehler!");
+    this.toastr.error(msg, "Fehler!");
   }
 
   showWarn (msg: string) {
-    this.toastr.warning(msg,
-      "Warnung!");
+    this.toastr.warning(msg, "Warnung!");
   }
 
   showCustomToaster (msg: string, type?: ToasterType) {

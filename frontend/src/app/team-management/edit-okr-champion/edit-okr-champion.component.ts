@@ -22,8 +22,7 @@ export class EditOkrChampionComponent {
     private elementRef: ElementRef
   ) {}
 
-  @HostListener("document:click",
-    ["$event"])
+  @HostListener("document:click", ["$event"])
   clickOutside (event: MouseEvent) {
     if (this.elementRef.nativeElement.contains(event.target)) {
       return;
@@ -39,8 +38,7 @@ export class EditOkrChampionComponent {
     setTimeout(() => {
       this.edit = edit;
       this.cd.markForCheck();
-    },
-    0);
+    }, 0);
   }
 
   okrChampionEditable (): boolean {

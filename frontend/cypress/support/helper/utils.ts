@@ -7,8 +7,7 @@ export const uniqueSuffix = (value: string): string => {
 
 export function pressUntilContains (text: string, key: keyof typeof keyCodeDefinitions) {
   const condition = (element: HTMLElement) => element.innerText.includes(text);
-  pressUntil(key,
-    condition);
+  pressUntil(key, condition);
 }
 
 export function doUntilSelector (
@@ -17,16 +16,12 @@ export function doUntilSelector (
   const condition = (element: HTMLElement) => Cypress.$(element)
     .is(selector);
   doUntil(
-    condition,
-    tab,
-    limit,
-    count
+    condition, tab, limit, count
   );
 }
 
 function pressUntil (key: keyof typeof keyCodeDefinitions, condition: (elem: HTMLElement) => boolean) {
-  doUntil(condition,
-    () => cy.realPress(key));
+  doUntil(condition, () => cy.realPress(key));
 }
 
 function doUntil (
@@ -44,10 +39,7 @@ function doUntil (
       } else {
         tab();
         doUntil(
-          condition,
-          tab,
-          limit,
-          count + 1
+          condition, tab, limit, count + 1
         );
       }
     });

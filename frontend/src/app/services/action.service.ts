@@ -10,8 +10,7 @@ export class ActionService {
   constructor (private httpClient: HttpClient) {}
 
   updateActions (actionList: Action[]): Observable<Action> {
-    return this.httpClient.put<Action>("/api/v2/action",
-      actionList);
+    return this.httpClient.put<Action>("/api/v2/action", actionList);
   }
 
   deleteAction (actionId: number): Observable<Action> {

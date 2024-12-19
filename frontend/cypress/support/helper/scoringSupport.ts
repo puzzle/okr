@@ -11,40 +11,23 @@ export function validateScoring (isOverview: boolean, percentage: number) {
   const scoringValue = scoringValueFromPercentage(percentage);
 
   if (percentage >= 100) {
-    cy.getZone("stretch",
-      isOverview)
-      .should("have.attr",
-        "src")
-      .should("include",
-        "star-filled-icon.svg");
+    cy.getZone("stretch", isOverview)
+      .should("have.attr", "src")
+      .should("include", "star-filled-icon.svg");
   }
 
-  validateScoringWidth("fail",
-    scoringValue.failPercent,
-    isOverview);
-  validateScoringWidth("commit",
-    scoringValue.commitPercent,
-    isOverview);
-  validateScoringWidth("target",
-    scoringValue.targetPercent,
-    isOverview);
+  validateScoringWidth("fail", scoringValue.failPercent, isOverview);
+  validateScoringWidth("commit", scoringValue.commitPercent, isOverview);
+  validateScoringWidth("target", scoringValue.targetPercent, isOverview);
 
   if (percentage == 0) return;
-  validateScoringColor("fail",
-    rgbCode,
-    isOverview);
-  validateScoringColor("commit",
-    rgbCode,
-    isOverview);
-  validateScoringColor("target",
-    rgbCode,
-    isOverview);
+  validateScoringColor("fail", rgbCode, isOverview);
+  validateScoringColor("commit", rgbCode, isOverview);
+  validateScoringColor("target", rgbCode, isOverview);
 }
 
 export function getPercentageMetric (baseline: number, stretchGoal: number, value: number) {
-  if (isLastCheckInNegative(baseline,
-    stretchGoal,
-    value)) {
+  if (isLastCheckInNegative(baseline, stretchGoal, value)) {
     return -1;
   }
   return Math.abs(value - baseline) / Math.abs(stretchGoal - baseline) * 100;
@@ -59,59 +42,40 @@ export function getPercentageOrdinal (zone: string) {
 }
 
 function validateScoringWidth (zone: string, percent: number, isOverview: boolean) {
-  cy.getZone(zone,
-    isOverview)
+  cy.getZone(zone, isOverview)
     .parent()
     .invoke("width")
     .then((parentWidth) => {
       expect(parentWidth).not.to.equal(undefined);
       if (parentWidth) {
-        cy.getZone(zone,
-          isOverview)
+        cy.getZone(zone, isOverview)
           .invoke("width")
-          .should("be.within",
-            parentWidth * (percent / 100) - 3,
-            parentWidth * (percent / 100) + 3);
+          .should("be.within", parentWidth * (percent / 100) - 3, parentWidth * (percent / 100) + 3);
       }
     });
 }
 
 function validateScoringColor (zone: string, rgbCode: string, isOverview: boolean) {
-  cy.getZone(zone,
-    isOverview)
-    .invoke("css",
-      "background-color")
-    .should("equal",
-      rgbCode);
+  cy.getZone(zone, isOverview)
+    .invoke("css", "background-color")
+    .should("equal", rgbCode);
   if (rgbCode == "rgba(0, 0, 0, 0)") {
     cy.getByTestId("star-scoring")
-      .invoke("css",
-        "background-image")
-      .should("contain",
-        "scoring-stars");
-    checkVisibilityOfScoringComponent(isOverview,
-      "block",
-      "star-scoring");
-    checkVisibilityOfScoringComponent(isOverview,
-      "none",
-      "normal-scoring");
+      .invoke("css", "background-image")
+      .should("contain", "scoring-stars");
+    checkVisibilityOfScoringComponent(isOverview, "block", "star-scoring");
+    checkVisibilityOfScoringComponent(isOverview, "none", "normal-scoring");
   } else {
-    checkVisibilityOfScoringComponent(isOverview,
-      "none",
-      "star-scoring");
-    checkVisibilityOfScoringComponent(isOverview,
-      "flex",
-      "normal-scoring");
+    checkVisibilityOfScoringComponent(isOverview, "none", "star-scoring");
+    checkVisibilityOfScoringComponent(isOverview, "flex", "normal-scoring");
   }
 }
 
 function checkVisibilityOfScoringComponent (isOverview: boolean, displayProperty: string, componentTestId: string) {
   (isOverview ? cy.focused() : cy.getByTestId("side-panel"))
     .findByTestId(componentTestId)
-    .invoke("css",
-      "display")
-    .should("equal",
-      displayProperty);
+    .invoke("css", "display")
+    .should("equal", displayProperty);
 }
 
 function colorFromPercentage (percentage: number) {

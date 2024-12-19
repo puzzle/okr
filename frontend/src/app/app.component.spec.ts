@@ -26,45 +26,43 @@ const routes: Routes = [{
   }]
 }];
 
-describe("AppComponent",
-  () => {
-    let component: AppComponent;
-    let fixture: ComponentFixture<AppComponent>;
+describe("AppComponent", () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
 
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes(routes),
-          HttpClientTestingModule,
-          TranslateTestingModule.withTranslations({
-            de: de
-          }),
-          OAuthModule.forRoot(),
-          MatSidenavModule,
-          NoopAnimationsModule,
-          CommonModule
-        ],
-        providers: [{
-          provide: OAuthService,
-          useValue: oauthServiceMock
-        }],
-        declarations: [AppComponent,
-          OverviewComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(AppComponent);
-          component = fixture.componentInstance;
-          fixture.detectChanges();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes(routes),
+        HttpClientTestingModule,
+        TranslateTestingModule.withTranslations({
+          de: de
+        }),
+        OAuthModule.forRoot(),
+        MatSidenavModule,
+        NoopAnimationsModule,
+        CommonModule
+      ],
+      providers: [{
+        provide: OAuthService,
+        useValue: oauthServiceMock
+      }],
+      declarations: [AppComponent,
+        OverviewComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(AppComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
 
-          fixture.detectChanges();
-        });
-    });
-
-    test("should create the app",
-      () => {
-        expect(component)
-          .toBeTruthy();
+        fixture.detectChanges();
       });
   });
+
+  test("should create the app", () => {
+    expect(component)
+      .toBeTruthy();
+  });
+});

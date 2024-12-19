@@ -3,14 +3,12 @@ import Chainable = Cypress.Chainable;
 
 export default class CheckInDialog extends Dialog {
   fillCheckInCommentary (commentary: string) {
-    this.fillInputByTestId("changeInfo",
-      commentary);
+    this.fillInputByTestId("changeInfo", commentary);
     return this;
   }
 
   fillMetricCheckInValue (value: string) {
-    this.fillInputByTestId("check-in-metric-value",
-      value);
+    this.fillInputByTestId("check-in-metric-value", value);
     return this;
   }
 
@@ -37,8 +35,7 @@ export default class CheckInDialog extends Dialog {
   }
 
   fillCheckInInitiatives (value: string) {
-    this.fillInputByTestId("initiatives",
-      value);
+    this.fillInputByTestId("initiatives", value);
     return this;
   }
 

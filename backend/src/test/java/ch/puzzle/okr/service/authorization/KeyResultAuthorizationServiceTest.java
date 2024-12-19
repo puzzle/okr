@@ -36,8 +36,9 @@ class KeyResultAuthorizationServiceTest {
     AuthorizationService authorizationService;
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
+    @DisplayName("Should return the created key-result when authorized")
     @Test
-    void createEntityShouldReturnKeyResultWhenAuthorized() {
+    void shouldReturnKeyResultWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.createEntity(metricKeyResult, authorizationUser)).thenReturn(metricKeyResult);
 
@@ -45,8 +46,9 @@ class KeyResultAuthorizationServiceTest {
         assertEquals(metricKeyResult, keyResult);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to create key-result")
     @Test
-    void createEntityShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToCreateKeyResult() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
@@ -58,8 +60,9 @@ class KeyResultAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return a key-result when authorized")
     @Test
-    void getEntityByIdShouldReturnKeyResultWhenAuthorized() {
+    void shouldReturnKeyResultByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.getEntityById(id)).thenReturn(metricKeyResult);
@@ -68,8 +71,9 @@ class KeyResultAuthorizationServiceTest {
         assertEquals(metricKeyResult, keyResult);
     }
 
+    @DisplayName("Should return a writable key-result when authorized")
     @Test
-    void getEntityByIdShouldReturnKeyResultWritableWhenAuthorized() {
+    void shouldReturnWritableKeyResultWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.hasRoleWriteForTeam(metricKeyResult, authorizationUser)).thenReturn(true);
@@ -79,8 +83,9 @@ class KeyResultAuthorizationServiceTest {
         assertTrue(keyResult.isWriteable());
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to get key-result by ID")
     @Test
-    void getEntityByIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToGetKeyResultById() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -93,20 +98,22 @@ class KeyResultAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return the updated key-result when authorized")
     @Test
-    void updateEntitiesShouldReturnUpdatedKeyResultWhenAuthorized() {
+    void shouldReturnUpdatedKeyResultWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.updateEntities(id, metricKeyResult, List.of()))
                 .thenReturn(new KeyResultWithActionList(metricKeyResult, List.of()));
 
-        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id, metricKeyResult,
+        KeyResultWithActionList keyResult = keyResultAuthorizationService.updateEntities(id, metricKeyResult,
                 List.of());
-        assertEquals(metricKeyResult, KeyResult.keyResult());
+        assertEquals(metricKeyResult, keyResult.keyResult());
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to update key-result")
     @Test
-    void updateEntitiesShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToUpdateKeyResult() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -119,8 +126,9 @@ class KeyResultAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should throw an exception for unsupported updateEntity method")
     @Test
-    void updateEntityShouldThrowException() {
+    void shouldThrowExceptionForUnsupportedUpdateEntityMethod() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultAuthorizationService.updateEntity(1L, metricKeyResult));
         assertEquals(BAD_REQUEST, exception.getStatusCode());
@@ -128,16 +136,18 @@ class KeyResultAuthorizationServiceTest {
                 + ", use updateEntities() instead", exception.getReason());
     }
 
+    @DisplayName("Should successfully delete key-result by ID when authorized")
     @Test
-    void deleteEntityByIdShouldPassThroughWhenAuthorized() {
+    void shouldDeleteKeyResultByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         keyResultAuthorizationService.deleteEntityById(id);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to delete key-result by ID")
     @Test
-    void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToDeleteKeyResultById() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -150,8 +160,9 @@ class KeyResultAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return a list of check-ins by key-result when authorized")
     @Test
-    void getAllCheckInsByKeyResultShouldReturnListOfCheckInsWhenAuthorized() {
+    void shouldReturnListOfCheckInsByKeyResultWhenAuthorized() {
         long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.getAllCheckInsByKeyResult(id)).thenReturn(List.of(checkIn1, checkIn1));
@@ -160,9 +171,9 @@ class KeyResultAuthorizationServiceTest {
         assertThat(List.of(checkIn1, checkIn1)).hasSameElementsAs(checkIns);
     }
 
-    @DisplayName("getAllCheckInsByKeyResult() should return empty List if no Checkins are found")
+    @DisplayName("Should return an empty list if no check-ins are found by key-result")
     @Test
-    void getAllCheckInsByKeyResultShouldReturnEmptyListIfNoCheckinsAreFound() {
+    void shouldReturnEmptyListIfNoCheckInsAreFoundByKeyResult() {
         long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.getAllCheckInsByKeyResult(id)).thenReturn(List.of());
@@ -171,8 +182,9 @@ class KeyResultAuthorizationServiceTest {
         assertThat(List.of()).hasSameElementsAs(checkIns);
     }
 
+    @DisplayName("Should return true when the key-result is in use")
     @Test
-    void isImUsedShouldReturnTrueWhenImUsed() {
+    void shouldReturnTrueWhenKeyResultIsInUse() {
         Long id = 13L;
         when(keyResultBusinessService.isImUsed(id, metricKeyResult)).thenReturn(true);
 

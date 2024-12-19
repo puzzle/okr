@@ -66,8 +66,9 @@ class AuthorizationRegistrationServiceIT {
         assertEquals(expectedOkrChampionStatus, userInDb.get().isOkrChampion());
     }
 
+    @DisplayName("Should add the authorization-user to the cache")
     @Test
-    void updateOrAddAuthorizationUserShouldAddAuthorizationUserToCache() {
+    void shouldAddAuthorizationUserToCache() {
         // arrange
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
 
@@ -82,9 +83,9 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(user.getId());
     }
 
-    @DisplayName("updateOrAddAuthorizationUser for a user with an email not defined in the application-integration-test.properties should set isOkrChampion to false")
+    @DisplayName("Should set isOkrChampion to false for a user with an email not defined in the application-integration-test.properties")
     @Test
-    void updateOrAddAuthorizationUserShouldSetIsOkrChampionToFalse() {
+    void shouldSetIsOkrChampionToFalseForUserWithEmailNotInProperties() {
         // arrange
         User user = User.Builder.builder() //
                 .withFirstName("Richard") //
@@ -115,9 +116,9 @@ class AuthorizationRegistrationServiceIT {
      * the db (which has initial isOkrChampion == false) is after calling updateOrAddAuthorizationUser() a user
      * champion. - the OkrChampion status must manually be reset (in the tearDown method) </pre>
      */
+    @DisplayName("Should set isOkrChampion to true for a user with an email defined in the application-integration-test.properties")
     @Test
-    @DisplayName("updateOrAddAuthorizationUser for a user with an email defined in the application-integration-test.properties should set isOkrChampion to true")
-    void updateOrAddAuthorizationUserShouldSetIsOkrChampionToTrue() {
+    void shouldSetIsOkrChampionToTrueForUserWithEmailInProperties() {
         // arrange
         assertOkrChampionStatusInDb(EMAIL_WUNDERLAND, false); // pre-condition
 
@@ -129,7 +130,7 @@ class AuthorizationRegistrationServiceIT {
                         .withFirstName("Alice") //
                         .withLastName("Wunderland") //
                         .withEmail(EMAIL_WUNDERLAND) // user.champion.emails from
-                                                     // application-integration-test.properties
+                        // application-integration-test.properties
                         .build());
 
         // assert
@@ -137,8 +138,9 @@ class AuthorizationRegistrationServiceIT {
         assertOkrChampionStatusInDb(processedUser.user().getEmail(), true);
     }
 
+    @DisplayName("Should set firstname and lastname from the token")
     @Test
-    void updateOrAddAuthorizationUserShouldSetFirstnameAndLastnameFromToken() {
+    void shouldSetFirstnameAndLastnameFromToken() {
         // arrange
         User user = User.Builder.builder() //
                 .withFirstName("Richard") //

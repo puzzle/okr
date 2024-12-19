@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.validation.ActionValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,6 +37,7 @@ class ActionBusinessServiceTest {
             .withPriority(1).withKeyResult(metricKeyResult).build();
     private List<Action> actionList = List.of(action1, action2);
 
+    @DisplayName("Should get action by id")
     @Test
     void shouldGetAction() {
         when(actionPersistenceService.findById(action1.getId())).thenReturn(action1);
@@ -48,6 +50,7 @@ class ActionBusinessServiceTest {
         assertEquals(action1.isChecked(), action.isChecked());
     }
 
+    @DisplayName("Should get actions from key-result")
     @Test
     void shouldGetActionsFromKeyResult() {
         when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(metricKeyResult.getId()))
@@ -57,6 +60,7 @@ class ActionBusinessServiceTest {
         assertIterableEquals(actions, actionList);
     }
 
+    @DisplayName("Should update multiple actions without key result")
     @Test
     void shouldUpdateMultipleActionsNoKeyResult() {
         when(actionPersistenceService.findById(action1.getId())).thenReturn(action1);
@@ -72,6 +76,7 @@ class ActionBusinessServiceTest {
         verify(actionPersistenceService, times(2)).findById(any());
     }
 
+    @DisplayName("Should create action when action has no id")
     @Test
     void shouldCreateActionWhenUpdateWithNoId() {
         Action action = Action.Builder.builder().withAction("Neue Katze").withPriority(0).isChecked(false)
@@ -81,6 +86,7 @@ class ActionBusinessServiceTest {
         verify(actionPersistenceService, times(1)).save(action);
     }
 
+    @DisplayName("Should update multiple actions")
     @Test
     void shouldUpdateMultipleActions() {
         actionBusinessService.updateEntities(actionList);
@@ -89,6 +95,7 @@ class ActionBusinessServiceTest {
         verify(actionPersistenceService, times(1)).save(action2);
     }
 
+    @DisplayName("Should create multiple actions")
     @Test
     void shouldCreateMultipleActions() {
         Action newAction1 = Action.Builder.builder().withAction("Neuer Drucker").withKeyResult(metricKeyResult)
@@ -106,6 +113,7 @@ class ActionBusinessServiceTest {
         assertIterableEquals(createdActions, actionList);
     }
 
+    @DisplayName("Should create one action")
     @Test
     void shouldCreateOneAction() {
         Action newAction1 = Action.Builder.builder().withAction("Neuer Drucker").withKeyResult(metricKeyResult)
@@ -119,6 +127,7 @@ class ActionBusinessServiceTest {
         assertIterableEquals(createdActions, List.of(action1));
     }
 
+    @DisplayName("Should delete action")
     @Test
     void shouldDeleteAction() {
         actionBusinessService.deleteEntityById(action1.getId());

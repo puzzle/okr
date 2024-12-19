@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Unit;
@@ -17,8 +16,10 @@ import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,24 @@ class KeyResultBusinessServiceIT {
                 .withKeyResult(keyResult).build();
     }
 
+    private static void assertKeyResult(KeyResult expected, KeyResult actual) {
+        assertEquals(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getKeyResultType(), actual.getKeyResultType());
+        assertEquals(expected.getModifiedOn(), actual.getModifiedOn());
+        if (expected instanceof KeyResultMetric keyResultMetric) {
+            assertEquals(keyResultMetric.getBaseline(), ((KeyResultMetric) actual).getBaseline());
+            assertEquals(keyResultMetric.getStretchGoal(), ((KeyResultMetric) actual).getStretchGoal());
+            assertEquals(keyResultMetric.getUnit(), ((KeyResultMetric) actual).getUnit());
+        } else if (expected instanceof KeyResultOrdinal keyResultOrdinal) {
+            assertEquals(keyResultOrdinal.getCommitZone(), ((KeyResultOrdinal) actual).getCommitZone());
+            assertEquals(keyResultOrdinal.getStretchZone(), ((KeyResultOrdinal) actual).getStretchZone());
+            assertEquals(keyResultOrdinal.getTargetZone(), ((KeyResultOrdinal) actual).getTargetZone());
+        } else {
+            throw new IllegalArgumentException("keyResultType not supported, " + expected);
+        }
+    }
+
     @BeforeEach
     void setUp() {
         TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
@@ -129,6 +148,7 @@ class KeyResultBusinessServiceIT {
         return null;
     }
 
+    @DisplayName("Should update metric key-result and type should stay metric")
     @Test
     void updateEntitiesShouldUpdateMetricKeyResultWithSameType() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
@@ -140,6 +160,7 @@ class KeyResultBusinessServiceIT {
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
 
+    @DisplayName("Should update metric key-result and type should stay metric and keep action list")
     @Test
     void updateEntitiesShouldUpdateMetricKeyResultWithSameTypeWithActionList() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
@@ -154,6 +175,7 @@ class KeyResultBusinessServiceIT {
         assertSameActions(List.of(action1, action2), updatedKeyResult);
     }
 
+    @DisplayName("Should update ordinal key-result and type should stay ordinal")
     @Test
     void updateEntitiesShouldUpdateOrdinalKeyResultWithSameType() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
@@ -179,6 +201,7 @@ class KeyResultBusinessServiceIT {
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
+    @DisplayName("Should update ordinal key-result and type should stay ordinal and keep action list")
     @Test
     void updateEntitiesShouldRecreateOrdinalKeyResultAsMetricWithActionList() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
@@ -196,6 +219,7 @@ class KeyResultBusinessServiceIT {
         assertSameActions(List.of(action1, action2), updatedKeyResult);
     }
 
+    @DisplayName("Should update metric key-result to ordinal key-result")
     @Test
     void updateEntitiesShouldRecreateMetricKeyResultAsOrdinal() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
@@ -210,6 +234,7 @@ class KeyResultBusinessServiceIT {
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
+    @DisplayName("Should update ordinal key-result as metric and keep action list")
     @Test
     void updateEntitiesShouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckIn() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
@@ -276,24 +301,6 @@ class KeyResultBusinessServiceIT {
         assertEquals(expected.getDescription(), actual.getDescription());
         assertEquals(expected.getOwner(), actual.getOwner());
         assertEquals(expected.getModifiedOn(), actual.getModifiedOn());
-    }
-
-    private static void assertKeyResult(KeyResult expected, KeyResult actual) {
-        assertEquals(expected.getTitle(), actual.getTitle());
-        assertEquals(expected.getDescription(), actual.getDescription());
-        assertEquals(expected.getKeyResultType(), actual.getKeyResultType());
-        assertEquals(expected.getModifiedOn(), actual.getModifiedOn());
-        if (expected instanceof KeyResultMetric keyResultMetric) {
-            assertEquals(keyResultMetric.getBaseline(), ((KeyResultMetric) actual).getBaseline());
-            assertEquals(keyResultMetric.getStretchGoal(), ((KeyResultMetric) actual).getStretchGoal());
-            assertEquals(keyResultMetric.getUnit(), ((KeyResultMetric) actual).getUnit());
-        } else if (expected instanceof KeyResultOrdinal keyResultOrdinal) {
-            assertEquals(keyResultOrdinal.getCommitZone(), ((KeyResultOrdinal) actual).getCommitZone());
-            assertEquals(keyResultOrdinal.getStretchZone(), ((KeyResultOrdinal) actual).getStretchZone());
-            assertEquals(keyResultOrdinal.getTargetZone(), ((KeyResultOrdinal) actual).getTargetZone());
-        } else {
-            throw new IllegalArgumentException("keyResultType not supported, " + expected);
-        }
     }
 
     private void assertSameActions(List<Action> expected, KeyResultWithActionList actual) {

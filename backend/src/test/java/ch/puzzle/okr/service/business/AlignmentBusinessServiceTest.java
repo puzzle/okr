@@ -8,6 +8,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
 import ch.puzzle.okr.service.validation.AlignmentValidationService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -55,6 +56,7 @@ class AlignmentBusinessServiceTest {
         this.alignments.add(KeyResultAlignment.Builder.builder().withId(9L).withTargetKeyResult(keyResult).build());
     }
 
+    @DisplayName("Should throw exception when validation fails")
     @Test
     void updateEntityShouldThrowExceptionWhenValidationFails() {
         doThrow(new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "Error Message"))
@@ -64,6 +66,7 @@ class AlignmentBusinessServiceTest {
                 () -> alignmentBusinessService.updateEntity(1L, new KeyResultAlignment()));
     }
 
+    @DisplayName("Should save new entity when updating entity")
     @Test
     void updateEntityShouldSaveNewEntity() {
         Alignment mockedAlignment = mock(Alignment.class);
@@ -75,6 +78,7 @@ class AlignmentBusinessServiceTest {
         assertEquals(mockedAlignment, alignment);
     }
 
+    @DisplayName("Should update key-result")
     @Test
     void updateKeyResultIdShouldUpdateKeyResult() {
         KeyResult mockedKeyresult = mock(KeyResult.class);
@@ -87,6 +91,7 @@ class AlignmentBusinessServiceTest {
         captor.getAllValues().forEach(c -> assertEquals(c.getAlignmentTarget(), mockedKeyresult));
     }
 
+    @DisplayName("Should update nothing if no key-results are found")
     @Test
     void updateKeyResultIdShouldUpdateNothingIfNoKeyResultAreFound() {
         KeyResult mockedKeyresult = mock(KeyResult.class);

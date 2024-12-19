@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.alignment.AlignmentSelection;
 import ch.puzzle.okr.models.alignment.AlignmentSelectionId;
 import ch.puzzle.okr.service.persistence.AlignmentSelectionPersistenceService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,7 @@ class AlignmentSelectionBusinessServiceTest {
                 .withQuarterLabel("GJ 23/24-Q1").withKeyResultTitle("Key Result 15").build();
     }
 
+    @DisplayName("Should get alignment selection by quarter id and all teams except ignored team")
     @Test
     void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnListOfAlignmentSelections() {
         when(alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))

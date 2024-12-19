@@ -10,7 +10,7 @@ describe('UserService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule]
     });
     service = TestBed.inject(UserService);
     const injector = getTestBed();
@@ -22,38 +22,49 @@ describe('UserService', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service)
+      .toBeTruthy();
   });
 
   it('getUsers should only reload users when they are not loaded yet', (done) => {
     const spy = jest.spyOn(service, 'reloadUsers');
-    service.getUsers().subscribe(() => {
-      expect(spy).toBeCalledTimes(1);
-      httpMock.expectOne(URL);
-      service.getUsers().subscribe((users) => {
-        expect(spy).toBeCalledTimes(1);
-        expect(users).toStrictEqual([]);
-        done();
+    service.getUsers()
+      .subscribe(() => {
+        expect(spy)
+          .toBeCalledTimes(1);
+        httpMock.expectOne(URL);
+        service.getUsers()
+          .subscribe((users) => {
+            expect(spy)
+              .toBeCalledTimes(1);
+            expect(users)
+              .toStrictEqual([]);
+            done();
+          });
       });
-    });
   });
 
   it('get current user should throw error, when not loaded', () => {
-    expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
+    expect(() => service.getCurrentUser())
+      .toThrowError('user should not be undefined here');
   });
 
   it('init current user should load user', (done) => {
-    expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
-    service.getOrInitCurrentUser().subscribe(() => {
-      expect(service.getCurrentUser()).toBe(users[0]);
-      done();
-    });
+    expect(() => service.getCurrentUser())
+      .toThrowError('user should not be undefined here');
+    service.getOrInitCurrentUser()
+      .subscribe(() => {
+        expect(service.getCurrentUser())
+          .toBe(users[0]);
+        done();
+      });
     const req = httpMock.expectOne('api/v1/users/current');
     req.flush(users[0]);
   });
 
   it('setIsOkrChampion should call put operation, reloadUsers and reloadCurrentUser', fakeAsync(() => {
-    service.setIsOkrChampion(testUser, true).subscribe();
+    service.setIsOkrChampion(testUser, true)
+      .subscribe();
     const req = httpMock.expectOne(`api/v1/users/${testUser.id}/isokrchampion/true`);
     req.flush(users[0]);
 
@@ -66,7 +77,8 @@ describe('UserService', () => {
   }));
 
   it('createUsers should call createAll and reloadUsers', fakeAsync(() => {
-    service.createUsers(users).subscribe();
+    service.createUsers(users)
+      .subscribe();
     const req = httpMock.expectOne(`api/v1/users/createall`);
     req.flush(users);
 
@@ -77,7 +89,8 @@ describe('UserService', () => {
   }));
 
   it('deleteUser should call /userId and reloadUsers', fakeAsync(() => {
-    service.deleteUser(testUser).subscribe();
+    service.deleteUser(testUser)
+      .subscribe();
     const req = httpMock.expectOne(`api/v1/users/${testUser.id}`);
     req.flush(users);
 

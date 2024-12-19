@@ -8,18 +8,22 @@ describe('Tab workflow tests', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
     overviewPage = new CyOverviewPage();
-    overviewPage.elements.logo().parent().focus();
+    overviewPage.elements.logo()
+      .parent()
+      .focus();
   });
 
-  function focusedShouldHaveTestId(testId: string) {
-    cy.focused().should('have.attr', 'data-testId', testId);
+  function focusedShouldHaveTestId (testId: string) {
+    cy.focused()
+      .should('have.attr', 'data-testId', testId);
   }
 
-  function tabAndCheck(testId: string, text?: string) {
+  function tabAndCheck (testId: string, text?: string) {
     cy.tabForwardUntil(`[data-testId="${testId}"]`);
     focusedShouldHaveTestId(testId);
     if (text) {
-      cy.focused().contains(text);
+      cy.focused()
+        .contains(text);
     }
   }
 
@@ -40,7 +44,8 @@ describe('Tab workflow tests', () => {
       .should('have.attr', 'src')
       .and('match', /search-icon.svg/);
     cy.tabForward();
-    cy.focused().contains('Alle');
+    cy.focused()
+      .contains('Alle');
   });
 
   it('should be able to tab to overview items', () => {
@@ -68,7 +73,8 @@ describe('Tab workflow tests', () => {
     });
 
     it('should focus three dot menu after edit objective', () => {
-      overviewPage.getObjectiveByState('ongoing').focus();
+      overviewPage.getObjectiveByState('ongoing')
+        .focus();
       tabAndCheck('three-dot-menu');
       cy.realPress('Enter');
       tabToThreeDotMenuOption('Objective bearbeiten');
@@ -85,17 +91,20 @@ describe('Tab workflow tests', () => {
     });
 
     it('should be able to complete and reopen objective', () => {
-      overviewPage.getObjectiveByState('ongoing').focus();
+      overviewPage.getObjectiveByState('ongoing')
+        .focus();
       tabAndCheck('three-dot-menu');
       cy.realPress('Enter');
       tabToThreeDotMenuOption('Objective abschliessen');
       cy.contains('h2', 'Objective abschliessen ');
       focusedShouldHaveTestId('close-dialog');
       cy.tabForward();
-      cy.focused().contains('Objective erreicht');
+      cy.focused()
+        .contains('Objective erreicht');
       cy.realPress('Enter');
       cy.tabForward();
-      cy.focused().contains('Objective nicht erreicht');
+      cy.focused()
+        .contains('Objective nicht erreicht');
       tabAndCheck('completeComment');
       tabAndCheck('cancel', 'Abbrechen');
       tabAndCheck('submit', 'Objective abschliessen');
@@ -115,7 +124,8 @@ describe('Tab workflow tests', () => {
     });
 
     it('should be able to set objective to draft and publish it', () => {
-      overviewPage.getObjectiveByState('ongoing').focus();
+      overviewPage.getObjectiveByState('ongoing')
+        .focus();
       tabAndCheck('three-dot-menu');
       cy.realPress('Enter');
       tabToThreeDotMenuOption('Objective als Draft speichern');
@@ -140,8 +150,10 @@ describe('Tab workflow tests', () => {
     });
 
     it('should be able to open objective detail view', () => {
-      overviewPage.getObjectiveByState('ongoing').focus();
-      cy.realPress('Enter').tabForward();
+      overviewPage.getObjectiveByState('ongoing')
+        .focus();
+      cy.realPress('Enter')
+        .tabForward();
       focusedShouldHaveTestId('closeDrawer');
       tabAndCheck('add-keyResult-objective-detail', 'Key Result hinzufügen');
       tabAndCheck('edit-objective', 'Objective bearbeiten');
@@ -154,7 +166,8 @@ describe('Tab workflow tests', () => {
       cy.realPress('Enter');
       focusedShouldHaveTestId('close-dialog');
       tabAndCheck('titleInput');
-      cy.focused().type('Title');
+      cy.focused()
+        .type('Title');
       tabAndCheck('unit');
       tabAndCheck('baseline');
       tabAndCheck('stretchGoal');
@@ -165,19 +178,26 @@ describe('Tab workflow tests', () => {
       tabAndCheck('ordinalTab', 'Ordinal');
       cy.realPress('Enter');
       tabAndCheck('commitZone');
-      cy.focused().type('Commit');
+      cy.focused()
+        .type('Commit');
       tabAndCheck('targetZone');
-      cy.focused().type('Target');
+      cy.focused()
+        .type('Target');
       tabAndCheck('stretchZone');
-      cy.focused().type('Stretch');
+      cy.focused()
+        .type('Stretch');
       tabAndCheck('submit', 'Speichern');
       tabAndCheck('saveAndNew', 'Speichern & Neu');
       tabAndCheck('cancel', 'Abbrechen');
     });
 
     it('Should tab keyresult detail view', () => {
-      overviewPage.getObjectiveByState('ongoing').findByTestId('key-result').first().focus();
-      cy.realPress('Enter').tabForward();
+      overviewPage.getObjectiveByState('ongoing')
+        .findByTestId('key-result')
+        .first()
+        .focus();
+      cy.realPress('Enter')
+        .tabForward();
       focusedShouldHaveTestId('close-drawer');
       tabAndCheck('show-all-checkins', 'Alle Check-ins anzeigen');
       cy.realPress('Enter');
@@ -196,14 +216,16 @@ describe('Tab workflow tests', () => {
         .fillKeyResultTitle('A metric Keyresult for tabbing tests')
         .withMetricValues(Unit.CHF, '10', '100')
         .submit();
-      KeyResultDetailPage.do().visit('A metric Keyresult for tabbing tests');
+      KeyResultDetailPage.do()
+        .visit('A metric Keyresult for tabbing tests');
       tabAndCheck('add-check-in', 'Check-in erfassen');
       cy.realPress('Enter');
       cy.contains('Check-in erfassen');
       focusedShouldHaveTestId('close-dialog');
       tabAndCheck('changeInfo');
       tabAndCheck('check-in-metric-value');
-      cy.focused().type('20');
+      cy.focused()
+        .type('20');
       tabAndCheck('initiatives');
       cy.contains('5/10');
       cy.tabForward();
@@ -219,20 +241,29 @@ describe('Tab workflow tests', () => {
         .fillKeyResultTitle('A ordinal Keyresult for tabbing tests')
         .withOrdinalValues('Commit', 'Target', 'Stretch')
         .submit();
-      KeyResultDetailPage.do().visit('A ordinal Keyresult for tabbing tests');
+      KeyResultDetailPage.do()
+        .visit('A ordinal Keyresult for tabbing tests');
       tabAndCheck('add-check-in', 'Check-in erfassen');
       cy.realPress('Enter');
       cy.contains('Check-in erfassen');
       focusedShouldHaveTestId('close-dialog');
       tabAndCheck('changeInfo');
       cy.tabForward();
-      cy.focused().closest('mat-radio-button').should('have.attr', 'data-testId', 'fail-radio');
+      cy.focused()
+        .closest('mat-radio-button')
+        .should('have.attr', 'data-testId', 'fail-radio');
       cy.realPress('ArrowDown');
-      cy.focused().closest('mat-radio-button').should('have.attr', 'data-testId', 'commit-radio');
+      cy.focused()
+        .closest('mat-radio-button')
+        .should('have.attr', 'data-testId', 'commit-radio');
       cy.realPress('ArrowDown');
-      cy.focused().closest('mat-radio-button').should('have.attr', 'data-testId', 'target-radio');
+      cy.focused()
+        .closest('mat-radio-button')
+        .should('have.attr', 'data-testId', 'target-radio');
       cy.realPress('ArrowDown');
-      cy.focused().closest('mat-radio-button').should('have.attr', 'data-testId', 'stretch-radio');
+      cy.focused()
+        .closest('mat-radio-button')
+        .should('have.attr', 'data-testId', 'stretch-radio');
       tabAndCheck('initiatives');
       cy.contains('5/10');
       cy.tabForward();
@@ -254,18 +285,21 @@ describe('Tab workflow tests', () => {
       tabAndCheck('invite-member', 'Member registrieren');
     });
     it('Should tab create team', () => {
-      cy.getByTestId('team-management').click();
+      cy.getByTestId('team-management')
+        .click();
       tabAndCheck('add-team');
       cy.realPress('Enter');
       cy.contains('Team erfassen');
       focusedShouldHaveTestId('close-dialog');
       tabAndCheck('add-team-name');
-      cy.focused().type('Name of new team');
+      cy.focused()
+        .type('Name of new team');
       tabAndCheck('save', 'Speichern');
       tabAndCheck('cancel', 'Abbrechen');
     });
     it('Should tab register member', () => {
-      cy.getByTestId('team-management').click();
+      cy.getByTestId('team-management')
+        .click();
       tabAndCheck('invite-member');
       cy.realPress('Enter');
       cy.contains('Member registrieren');
@@ -274,13 +308,16 @@ describe('Tab workflow tests', () => {
       tabAndCheck('new-member-last-name');
       tabAndCheck('email-col_0');
       cy.tabForward();
-      cy.focused().closest('app-puzzle-icon-button').should('have.attr', 'icon', 'delete-icon.svg');
+      cy.focused()
+        .closest('app-puzzle-icon-button')
+        .should('have.attr', 'icon', 'delete-icon.svg');
       tabAndCheck('new-member-add-row', 'Weiterer Member hinzufügen');
       tabAndCheck('invite', 'Einladen');
       tabAndCheck('new-member-cancel', 'Abbrechen');
     });
     it('Should tab edit member', () => {
-      cy.getByTestId('team-management').click();
+      cy.getByTestId('team-management')
+        .click();
       cy.pressUntilContains('Alice Wunderland', 'Tab');
       cy.tabForward();
       cy.realPress('Enter');
@@ -289,23 +326,31 @@ describe('Tab workflow tests', () => {
 
       // Field to toggle if user is OKR-Champion
       cy.tabForward();
-      cy.focused().closest('app-puzzle-icon-button').should('have.attr', 'icon', 'edit.svg');
+      cy.focused()
+        .closest('app-puzzle-icon-button')
+        .should('have.attr', 'icon', 'edit.svg');
       cy.realPress('Enter');
       cy.tabForward();
       tabAndCheck('close-drawer');
       cy.tabForward();
-      cy.focused().closest('mat-checkbox').should('have.attr', 'data-testId', 'edit-okr-champion-checkbox');
+      cy.focused()
+        .closest('mat-checkbox')
+        .should('have.attr', 'data-testId', 'edit-okr-champion-checkbox');
 
       // Field to edit role of assigned team
       cy.tabForward();
-      cy.focused().closest('app-puzzle-icon-button').should('have.attr', 'icon', 'edit.svg');
+      cy.focused()
+        .closest('app-puzzle-icon-button')
+        .should('have.attr', 'icon', 'edit.svg');
       cy.realPress('Enter');
       cy.tabForward();
       tabAndCheck('select-team-role', 'Team-Member');
 
       // Button to delete assigned team
       cy.tabForward();
-      cy.focused().closest('app-puzzle-icon-button').should('have.attr', 'icon', 'delete-icon.svg');
+      cy.focused()
+        .closest('app-puzzle-icon-button')
+        .should('have.attr', 'icon', 'delete-icon.svg');
 
       // Button to add user to another team
       tabAndCheck('add-user');
@@ -319,7 +364,7 @@ describe('Tab workflow tests', () => {
   });
 });
 
-function tabToThreeDotMenuOption(name: string) {
+function tabToThreeDotMenuOption (name: string) {
   cy.pressUntilContains(name, 'ArrowDown');
   cy.realPress('Enter');
 }

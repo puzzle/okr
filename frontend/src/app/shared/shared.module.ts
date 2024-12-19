@@ -37,7 +37,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,
-    DialogTemplateCoreComponent,
+    DialogTemplateCoreComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +59,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     RouterOutlet,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatTooltip,
+    MatTooltip
   ],
   exports: [
     ExampleDialogComponent,
@@ -71,7 +71,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     UnitTransformationPipe,
     SidepanelComponent,
     SpinnerComponent,
-    DialogTemplateCoreComponent,
-  ],
+    DialogTemplateCoreComponent
+  ]
 })
 export class SharedModule {}

@@ -10,17 +10,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-invite-user-dialog',
   templateUrl: './invite-user-dialog.component.html',
-  styleUrl: './invite-user-dialog.component.scss',
+  styleUrl: './invite-user-dialog.component.scss'
 })
 export class InviteUserDialogComponent {
   form: FormArray<FormGroup<NewUserForm<FormControl>>>;
+
   triedToSubmit = false;
 
-  constructor(
+  constructor (
     private readonly userService: UserService,
     private readonly dialogRef: DialogRef,
     private readonly formBuilder: NonNullableFormBuilder,
-    private readonly uniqueMailValidator: UniqueEmailValidator,
+    private readonly uniqueMailValidator: UniqueEmailValidator
   ) {
     this.form = this.formBuilder.array([this.createUserFormGroup()]);
     this.form.valueChanges
@@ -28,40 +29,43 @@ export class InviteUserDialogComponent {
       .subscribe(() => this.uniqueMailValidator.setAddedMails(this.extractAddedMails()));
   }
 
-  registerUsers() {
+  registerUsers () {
     this.triedToSubmit = true;
     if (!this.form.valid) {
       return;
     }
-    this.userService.createUsers(this.extractFormValue()).subscribe(() => this.dialogRef.close());
+    this.userService.createUsers(this.extractFormValue())
+      .subscribe(() => this.dialogRef.close());
   }
 
-  private extractFormValue(): NewUser[] {
+  private extractFormValue (): NewUser[] {
     return this.form.value as NewUser[];
   }
 
-  addUser() {
+  addUser () {
     this.form.push(this.createUserFormGroup());
   }
 
-  removeUser(index: number) {
+  removeUser (index: number) {
     this.form.removeAt(index);
   }
 
-  private createUserFormGroup() {
+  private createUserFormGroup () {
     return this.formBuilder.group({
-      firstname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
-      lastname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+      firstname: this.formBuilder.control('', [Validators.required,
+        Validators.minLength(1)]),
+      lastname: this.formBuilder.control('', [Validators.required,
+        Validators.minLength(1)]),
       email: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(1),
         Validators.email,
-        this.uniqueMailValidator.validate.bind(this.uniqueMailValidator),
-      ]),
+        this.uniqueMailValidator.validate.bind(this.uniqueMailValidator)
+      ])
     });
   }
 
-  private extractAddedMails() {
+  private extractAddedMails () {
     if (!this.form) {
       return [];
     }

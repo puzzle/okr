@@ -5,7 +5,11 @@
     <form [formGroup]="dialogForm" (ngSubmit)="save()">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput formControlName="name" placeholder="Ex. Tom" />
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Ex. Tom"
+        />
         <div *ngIf="isTouchedOrDirty('name')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
             <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>

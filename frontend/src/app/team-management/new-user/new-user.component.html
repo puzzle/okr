@@ -2,7 +2,7 @@
   <div class="firstname equal-sized-col">
     <div class="input-style">
       @if (index === 0) {
-        <label [for]="'firstName-col_' + index">Vorname&nbsp;*</label>
+      <label [for]="'firstName-col_' + index">Vorname&nbsp;*</label>
       }
       <input
         type="text"
@@ -15,7 +15,7 @@
       />
       <mat-error>
         @if (firstname.errors?.["required"] && triedToSubmit) {
-          <span>Angabe benötigt</span>
+        <span>Angabe benötigt</span>
         }
       </mat-error>
     </div>
@@ -23,7 +23,7 @@
   <div class="lastname equal-sized-col">
     <div class="input-style equal-sized-col">
       @if (index === 0) {
-        <label [for]="'lastname-col_' + index">Nachname&nbsp;*</label>
+      <label [for]="'lastname-col_' + index">Nachname&nbsp;*</label>
       }
       <input
         type="text"
@@ -35,7 +35,7 @@
       />
       <mat-error>
         @if (lastname.errors?.["required"] && triedToSubmit) {
-          <span>Angabe benötigt</span>
+        <span>Angabe benötigt</span>
         }
       </mat-error>
     </div>
@@ -43,7 +43,7 @@
   <div class="email equal-sized-col">
     <div class="input-style equal-sized-col">
       @if (index === 0) {
-        <label [for]="'email-col_' + index">E-Mail&nbsp;*</label>
+      <label [for]="'email-col_' + index">E-Mail&nbsp;*</label>
       }
       <input
         type="email"
@@ -55,11 +55,11 @@
       />
       <mat-error>
         @if (email.errors?.["required"] && triedToSubmit) {
-          <span>Angabe benötigt</span>
+        <span>Angabe benötigt</span>
         } @else if (email.errors?.["notUniqueMail"]) {
-          <span>E-Mail existiert bereits</span>
+        <span>E-Mail existiert bereits</span>
         } @else if (email.errors?.["email"] && triedToSubmit) {
-          <span>E-Mail ungültig</span>
+        <span>E-Mail ungültig</span>
         }
       </mat-error>
     </div>
@@ -67,7 +67,7 @@
   <div class="remove">
     <div class="input-style equal-sized-col dialog-form-field">
       @if (index === 0) {
-        <label [for]="'delete-col_' + index">&nbsp;</label>
+      <label [for]="'delete-col_' + index">&nbsp;</label>
       }
       <app-puzzle-icon-button
         (click)="remove()"

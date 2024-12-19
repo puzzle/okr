@@ -11,16 +11,16 @@ import { ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
-let objectiveService = {
-  getFullObjective: jest.fn(),
+const objectiveService = {
+  getFullObjective: jest.fn()
 };
 
 const activatedRouteMock = {
   snapshot: {
     paramMap: {
-      get: jest.fn() as any,
-    },
-  },
+      get: jest.fn() as any
+    }
+  }
 };
 
 describe('ObjectiveDetailComponent', () => {
@@ -29,13 +29,19 @@ describe('ObjectiveDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDialogModule, MatIconModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: ObjectiveService, useValue: objectiveService },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
+      imports: [
+        HttpClientTestingModule,
+        MatDialogModule,
+        MatIconModule,
+        TranslateModule.forRoot()
       ],
-      declarations: [ObjectiveDetailComponent],
-    }).compileComponents();
+      providers: [{ provide: ObjectiveService,
+        useValue: objectiveService },
+      { provide: ActivatedRoute,
+        useValue: activatedRouteMock }],
+      declarations: [ObjectiveDetailComponent]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ObjectiveDetailComponent);
     component = fixture.componentInstance;
@@ -45,12 +51,14 @@ describe('ObjectiveDetailComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should throw an exception, if id is undefined', () => {
     activatedRouteMock.snapshot.paramMap.get = () => undefined;
-    expect(() => component.ngOnInit()).toThrowError('objective id is undefined');
+    expect(() => component.ngOnInit())
+      .toThrowError('objective id is undefined');
   });
 
   it('get data from backend', () => {
@@ -58,20 +66,24 @@ describe('ObjectiveDetailComponent', () => {
     component.objectiveId = 2;
     const title = fixture.debugElement.query(By.css('[data-testId="objective-title"]'))?.nativeElement.innerHTML;
     const description = fixture.debugElement.query(By.css('[data-testId="description"]'))?.nativeElement.innerHTML;
-    expect(title).toContain(objective.title);
-    expect(description).toContain(objective.description);
+    expect(title)
+      .toContain(objective.title);
+    expect(description)
+      .toContain(objective.description);
   });
 
   it('should display add keyresult button if writeable is true', async () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult-objective-detail"]'));
-    expect(button).toBeTruthy();
+    expect(button)
+      .toBeTruthy();
   });
 
   it('should not display add keyresult button if writeable is false', async () => {
     objectiveService.getFullObjective.mockReturnValue(of(objectiveWriteableFalse));
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult-objective-detail"]'));
-    expect(button).toBeFalsy();
+    expect(button)
+      .toBeFalsy();
   });
 });

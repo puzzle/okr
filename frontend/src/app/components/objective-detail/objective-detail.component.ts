@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Objective } from '../../shared/types/model/Objective';
 import { ObjectiveService } from '../../services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
@@ -12,26 +12,27 @@ import { DialogService } from '../../services/dialog.service';
   selector: 'app-objective-detail',
   templateUrl: './objective-detail.component.html',
   styleUrl: 'objective-detail.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObjectiveDetailComponent {
+export class ObjectiveDetailComponent implements OnInit {
   objectiveId!: number;
+
   objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
-  constructor(
+  constructor (
     private objectiveService: ObjectiveService,
     private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.objectiveId = this.getIdFromParams();
     this.loadObjective(this.objectiveId);
   }
 
-  private getIdFromParams(): number {
+  private getIdFromParams (): number {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       throw Error('objective id is undefined');
@@ -39,20 +40,20 @@ export class ObjectiveDetailComponent {
     return parseInt(id);
   }
 
-  loadObjective(id: number): void {
+  loadObjective (id: number): void {
     this.objectiveService
       .getFullObjective(id)
       .pipe(catchError(() => EMPTY))
       .subscribe((objective) => this.objective$.next(objective));
   }
 
-  openAddKeyResultDialog() {
+  openAddKeyResultDialog () {
     this.dialogService
       .open(KeyresultDialogComponent, {
         data: {
           objective: this.objective$.getValue(),
-          keyResult: null,
-        },
+          keyResult: null
+        }
       })
       .afterClosed()
       .subscribe((result) => {
@@ -63,15 +64,15 @@ export class ObjectiveDetailComponent {
       });
   }
 
-  openEditObjectiveDialog() {
+  openEditObjectiveDialog () {
     this.dialogService
       .open(ObjectiveFormComponent, {
         data: {
           objective: {
             objectiveId: this.objective$.getValue().id,
-            teamId: this.objective$.value.teamId,
-          },
-        },
+            teamId: this.objective$.value.teamId
+          }
+        }
       })
       .afterClosed()
       .subscribe((result) => {
@@ -84,7 +85,7 @@ export class ObjectiveDetailComponent {
       });
   }
 
-  backToOverview() {
+  backToOverview () {
     this.router.navigate(['']);
   }
 }

@@ -25,16 +25,16 @@ import { CompletedService } from '../../services/completed.servce';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const overviewServiceMock = {
-  getObjectiveWithKeyresults: jest.fn(),
+  getObjectiveWithKeyresults: jest.fn()
 };
 
 const objectiveServiceMock = {
-  getFullObjective: jest.fn(),
+  getFullObjective: jest.fn()
 };
 
 const completedServiceMock = {
   createCompleted: jest.fn(),
-  deleteCompleted: jest.fn(),
+  deleteCompleted: jest.fn()
 };
 
 describe('ObjectiveColumnComponent', () => {
@@ -45,7 +45,13 @@ describe('ObjectiveColumnComponent', () => {
     overviewServiceMock.getObjectiveWithKeyresults.mockReset();
 
     TestBed.configureTestingModule({
-      declarations: [ObjectiveComponent, KeyresultComponent, ScoringComponent, ConfidenceComponent, KeyresultComponent],
+      declarations: [
+        ObjectiveComponent,
+        KeyresultComponent,
+        ScoringComponent,
+        ConfidenceComponent,
+        KeyresultComponent
+      ],
       imports: [
         MatMenuModule,
         MatCardModule,
@@ -55,16 +61,20 @@ describe('ObjectiveColumnComponent', () => {
         MatTooltipModule,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
-          de: de,
-        }),
+          de: de
+        })
       ],
       providers: [
-        { provide: OverviewService, useValue: overviewServiceMock },
-        { provide: ObjectiveService, useValue: objectiveServiceMock },
-        { provide: CompletedService, useValue: completedServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-      ],
-    }).compileComponents();
+        { provide: OverviewService,
+          useValue: overviewServiceMock },
+        { provide: ObjectiveService,
+          useValue: objectiveServiceMock },
+        { provide: CompletedService,
+          useValue: completedServiceMock },
+        provideHttpClient(withInterceptorsFromDi())
+      ]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ObjectiveComponent);
     component = fixture.componentInstance;
@@ -74,7 +84,8 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   test('Mat-menu should open and close', async () => {
@@ -82,36 +93,47 @@ describe('ObjectiveColumnComponent', () => {
     fixture.detectChanges();
 
     const menu = await loader.getHarness(MatMenuHarness.with({ selector: '[data-testid="three-dot-menu"]' }));
-    expect(await menu.isOpen()).toBeFalsy();
+    expect(await menu.isOpen())
+      .toBeFalsy();
     await menu.open();
-    expect(await menu.isOpen()).toBeTruthy();
+    expect(await menu.isOpen())
+      .toBeTruthy();
     await menu.close();
-    expect(await menu.isOpen()).toBeFalsy();
+    expect(await menu.isOpen())
+      .toBeFalsy();
   });
 
   test.each([
-    [State.DRAFT, 'assets/icons/draft-icon.svg'],
-    [State.ONGOING, 'assets/icons/ongoing-icon.svg'],
-    [State.SUCCESSFUL, 'assets/icons/successful-icon.svg'],
-    [State.NOTSUCCESSFUL, 'assets/icons/not-successful-icon.svg'],
+    [State.DRAFT,
+      'assets/icons/draft-icon.svg'],
+    [State.ONGOING,
+      'assets/icons/ongoing-icon.svg'],
+    [State.SUCCESSFUL,
+      'assets/icons/successful-icon.svg'],
+    [State.NOTSUCCESSFUL,
+      'assets/icons/not-successful-icon.svg']
   ])('Status-indicator should change based on the state given by the service', (state: State, path) => {
-    component.objective = { ...objectiveMin, state: state };
+    component.objective = { ...objectiveMin,
+      state: state };
     fixture.detectChanges();
     const image = fixture.debugElement.query(By.css('[data-testid="objective-state"]'));
-    let statusIndicatorSrc = image.attributes['src'];
-    expect(statusIndicatorSrc).toBe(path);
+    const statusIndicatorSrc = image.attributes['src'];
+    expect(statusIndicatorSrc)
+      .toBe(path);
   });
 
   test('Mat-menu should not be present if writeable is false', async () => {
     component.isWritable = false;
     fixture.detectChanges();
     const menu = fixture.debugElement.query(By.css('[data-testid="objective-menu"]'));
-    expect(menu).toBeFalsy();
+    expect(menu)
+      .toBeFalsy();
   });
 
   test('Create keyresult button should not be present if writeable is false', async () => {
     component.isWritable = false;
     const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult"]'));
-    expect(button).toBeFalsy();
+    expect(button)
+      .toBeFalsy();
   });
 });

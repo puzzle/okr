@@ -1,11 +1,5 @@
-<span
-  class="okr-form-row bg-inherit flex-nowrap align-items-center mx-0"
-  *ngIf="checkIn.confidence || checkIn.confidence === 0"
->
-  <div
-    class="bg-inherit d-flex justify-content-center align-items-center w-auto"
-    [ngClass]="[edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show', isDetail ? 'height' : '']"
-  >
+<span class="okr-form-row bg-inherit flex-nowrap align-items-center mx-0" *ngIf="checkIn.confidence || checkIn.confidence === 0">
+  <div class="bg-inherit d-flex justify-content-center align-items-center w-auto" [ngClass]="[edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show', isDetail ? 'height' : '']">
     <p class="fw-normal text-black p-0" data-testid="confidence">{{ checkIn.confidence }}/{{ max }}</p>
   </div>
 
@@ -18,6 +12,6 @@
     color="accent"
     [attr.data-testId]="'confidence-slider'"
   >
-    <input matSliderThumb [(ngModel)]="checkIn.confidence" />
+    <input matSliderThumb [(ngModel)]="checkIn.confidence"/>
   </mat-slider>
 </span>

@@ -1,10 +1,10 @@
-@import "_variables";
+@import '_variables';
 $theme-colors: (
-  "pz-dark-blue": $pz-dark-blue,
-  "eggshell": $eggshell,
-  "display-element": $display-element,
-  "keyResult-attribute": $keyResult-attribute-bg,
-  "error": $error,
+  'pz-dark-blue': $pz-dark-blue,
+  'eggshell': $eggshell,
+  'display-element': $display-element,
+  'keyResult-attribute': $keyResult-attribute-bg,
+  'error': $error,
 );
 $enable-negative-margins: true;
-@import "bootstrap";
+@import 'bootstrap';

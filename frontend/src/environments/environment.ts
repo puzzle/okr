@@ -1,6 +1,8 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+/*
+ * This file can be replaced during build by using the `fileReplacements` array.
+ * `ng build` replaces `environment.ts` with `environment.prod.ts`.
+ * The list of file replacements can be found in `angular.json`.
+ */
 
 import { AuthConfig } from 'angular-oauth2-oidc';
 
@@ -16,8 +18,8 @@ export const environment = {
     scope: 'openid profile',
     clientId: '',
     responseType: 'code',
-    showDebugInformation: true,
-  } as AuthConfig,
+    showDebugInformation: true
+  } as AuthConfig
 };
 
 /*

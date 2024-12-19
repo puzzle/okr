@@ -7,7 +7,8 @@ describe('OKR team e2e tests', () => {
   describe('tests via click', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
-      CyOverviewPage.do().visitCurrentQuarter();
+      CyOverviewPage.do()
+        .visitCurrentQuarter();
     });
 
     it('Should select teams from teamfilter', () => {
@@ -51,7 +52,8 @@ describe('OKR team e2e tests', () => {
         .optionShouldNotBeSelected('/BBT')
         .optionShouldNotBeSelected('we are cube');
 
-      filterHelper.toggleOption('Puzzle ITC').toggleOption('LoremIpsum');
+      filterHelper.toggleOption('Puzzle ITC')
+        .toggleOption('LoremIpsum');
 
       cy.contains('Kein Team ausgewählt');
     });
@@ -64,15 +66,23 @@ describe('OKR team e2e tests', () => {
         .optionShouldNotBeSelected('/BBT')
         .optionShouldNotBeSelected('we are cube');
 
-      filterHelper.validateUrlParameter('teams', ['5', '6']);
+      filterHelper.validateUrlParameter('teams', ['5',
+        '6']);
 
-      filterHelper.toggleOption('/BBT').validateUrlParameter('teams', ['4', '5', '6']);
-      filterHelper.toggleOption('Puzzle ITC').toggleOption('LoremIpsum').toggleOption('/BBT');
-      cy.url().should('not.include', 'teams=');
+      filterHelper.toggleOption('/BBT')
+        .validateUrlParameter('teams', ['4',
+          '5',
+          '6']);
+      filterHelper.toggleOption('Puzzle ITC')
+        .toggleOption('LoremIpsum')
+        .toggleOption('/BBT');
+      cy.url()
+        .should('not.include', 'teams=');
     });
 
     it('Select teams by url', () => {
-      cy.url().should('not.include', 'teams');
+      cy.url()
+        .should('not.include', 'teams');
 
       cy.visit('/?quarter=2&teams=4,5,8');
       FilterHelper.do()
@@ -84,16 +94,24 @@ describe('OKR team e2e tests', () => {
     });
 
     it('should display less button on mobile header', () => {
-      let teammanagementPage = TeammanagementPage.do().visitViaURL();
-      cy.intercept('POST', '**/teams').as('addTeam');
+      const teammanagementPage = TeammanagementPage.do()
+        .visitViaURL();
+      cy.intercept('POST', '**/teams')
+        .as('addTeam');
 
-      teammanagementPage.addTeam().fillName('X-Team').submit();
+      teammanagementPage.addTeam()
+        .fillName('X-Team')
+        .submit();
       cy.wait('@addTeam');
       cy.contains('X-Team');
-      teammanagementPage.addTeam().fillName('Y-Team').submit();
+      teammanagementPage.addTeam()
+        .fillName('Y-Team')
+        .submit();
       cy.wait('@addTeam');
       cy.contains('Y-Team');
-      teammanagementPage.addTeam().fillName('Z-Team').submit();
+      teammanagementPage.addTeam()
+        .fillName('Z-Team')
+        .submit();
       cy.wait('@addTeam');
       cy.contains('Z-Team');
 
@@ -102,22 +120,27 @@ describe('OKR team e2e tests', () => {
       // set viewport to < 768 to trigger mobile header
       cy.viewport(767, 1200);
 
-      cy.getByTestId('expansion-panel-header').click();
+      cy.getByTestId('expansion-panel-header')
+        .click();
       cy.contains('Weniger');
 
       // reset viewport
       cy.viewport(Cypress.config('viewportWidth'), Cypress.config('viewportHeight'));
 
       cy.visit(`${teammanagementPage.getURL()}`);
-      cy.intercept('DELETE', '**/teams/*').as('deleteTeam');
+      cy.intercept('DELETE', '**/teams/*')
+        .as('deleteTeam');
 
-      teammanagementPage.deleteTeam('X-Team').submit();
+      teammanagementPage.deleteTeam('X-Team')
+        .submit();
       cy.wait('@deleteTeam');
 
-      teammanagementPage.deleteTeam('Y-Team').submit();
+      teammanagementPage.deleteTeam('Y-Team')
+        .submit();
       cy.wait('@deleteTeam');
 
-      teammanagementPage.deleteTeam('Z-Team').submit();
+      teammanagementPage.deleteTeam('Z-Team')
+        .submit();
       cy.wait('@deleteTeam');
     });
   });

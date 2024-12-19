@@ -24,9 +24,12 @@ describe('Functionality of duplicating objectives and their belonging keyResults
       .submit();
 
     cy.contains(duplicatedTitle);
-    overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName).should('exist');
-    overviewPage.getKeyResultOfObjective(duplicatedTitle, secondKeyResultName).should('exist');
-    overviewPage.getKeyResultOfObjective(duplicatedTitle, thirdKeyResultName).should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName)
+      .should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, secondKeyResultName)
+      .should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, thirdKeyResultName)
+      .should('exist');
   });
 
   it('Should be able to duplicate a objective into this quarter, only including one keyResult', () => {
@@ -35,7 +38,8 @@ describe('Functionality of duplicating objectives and their belonging keyResults
     overviewPage
       .duplicateObjective('Build a company culture that kills the competition.')
       .fillObjectiveTitle(duplicatedTitle)
-      .excludeKeyResults([secondKeyResultName, thirdKeyResultName])
+      .excludeKeyResults([secondKeyResultName,
+        thirdKeyResultName])
       .submit();
 
     overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName);
@@ -49,13 +53,15 @@ describe('Functionality of duplicating objectives and their belonging keyResults
   it('Should not show option to select keyResults when objective with no keyResults is being duplicated', () => {
     const duplicatedTitle = 'This is a duplicated objective without any keyResults';
 
-    overviewPage.duplicateObjective(
-      'should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-    );
-    cy.contains('Key Results:').should('not.exist');
-    ObjectiveDialog.do().fillObjectiveTitle(duplicatedTitle).submit();
+    overviewPage.duplicateObjective('should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
+    cy.contains('Key Results:')
+      .should('not.exist');
+    ObjectiveDialog.do()
+      .fillObjectiveTitle(duplicatedTitle)
+      .submit();
 
-    overviewPage.getObjectiveByName(duplicatedTitle).should('exist');
+    overviewPage.getObjectiveByName(duplicatedTitle)
+      .should('exist');
   });
 
   it('Should be able to duplicate a objective into the next quarter, including all keyResults', () => {
@@ -70,9 +76,12 @@ describe('Functionality of duplicating objectives and their belonging keyResults
     overviewPage.visitNextQuarter();
 
     cy.contains(duplicatedTitle);
-    overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName).should('exist');
-    overviewPage.getKeyResultOfObjective(duplicatedTitle, secondKeyResultName).should('exist');
-    overviewPage.getKeyResultOfObjective(duplicatedTitle, thirdKeyResultName).should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName)
+      .should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, secondKeyResultName)
+      .should('exist');
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, thirdKeyResultName)
+      .should('exist');
   });
 
   it('Should not duplicate objective when cancel button is clicked', () => {
@@ -84,12 +93,13 @@ describe('Functionality of duplicating objectives and their belonging keyResults
       .fillObjectiveDescription('Wow this is a very nice description!')
       .cancel();
 
-    cy.contains(duplicatedTitle).should('not.exist');
+    cy.contains(duplicatedTitle)
+      .should('not.exist');
   });
 });
 
 describe('Verify functionality of scoring adjustment on duplicated objectives', () => {
-  let keyresultDetailPage = new KeyResultDetailPage();
+  const keyresultDetailPage = new KeyResultDetailPage();
 
   it('Duplicate ordinal checkin and validate value of scoring component', () => {
     overviewPage
@@ -108,7 +118,8 @@ describe('Verify functionality of scoring adjustment on duplicated objectives', 
       .fillCheckInInitiatives('Testmassnahmen')
       .submit();
 
-    cy.intercept('GET', '**/overview?*').as('indexPage');
+    cy.intercept('GET', '**/overview?*')
+      .as('indexPage');
     keyresultDetailPage.close();
     cy.wait('@indexPage');
 
@@ -128,11 +139,12 @@ describe('Verify functionality of scoring adjustment on duplicated objectives', 
       .findByTestId('fail')
       .as('fail-area');
 
-    cy.get('@fail-area').should(($fail) => {
-      expect($fail).not.to.have.css('score-red');
-      expect($fail).not.to.have.css('score-yellow');
-      expect($fail).not.to.have.css('score-green');
-      expect($fail).not.to.have.css('score-stretch');
-    });
+    cy.get('@fail-area')
+      .should(($fail) => {
+        expect($fail).not.to.have.css('score-red');
+        expect($fail).not.to.have.css('score-yellow');
+        expect($fail).not.to.have.css('score-green');
+        expect($fail).not.to.have.css('score-stretch');
+      });
   });
 });

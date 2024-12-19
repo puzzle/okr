@@ -5,11 +5,7 @@ import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
 import htmlParser from '@html-eslint/parser'
-
-import tsEslint from "typescript-eslint";
-import html from "@html-eslint/eslint-plugin";
 import { createRegexForWords } from "./eslintHelper.mjs"
-import * as constants from "node:constants";
 
 export default tsEslint.config(
   {

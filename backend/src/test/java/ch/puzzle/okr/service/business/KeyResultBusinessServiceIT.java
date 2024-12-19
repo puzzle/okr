@@ -248,7 +248,7 @@ class KeyResultBusinessServiceIT {
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }
 
-    //No displayname because i dont understand the test
+    // No displayname because i dont understand the test
     @Test
     void shouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckInWithActionListUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
@@ -267,7 +267,7 @@ class KeyResultBusinessServiceIT {
         assertUpdatedActions(List.of(action1, action2), updatedKeyResult);
     }
 
-    //No displayname because i dont understand the test
+    // No displayname because i dont understand the test
     @Test
     void shouldUpdateMetricKeyResultWithDifferentTypeAndCheckInUsingUpdateEntity() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);

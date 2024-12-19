@@ -13,8 +13,7 @@ public class UrlHelperTest {
 
     private static final String PITC = "pitc";
 
-    @DisplayName("extractTenantFromIssUrl() returns tenant if Url contains slash")
-    @ParameterizedTest
+    @ParameterizedTest(name = "extractTenantFromIssUrl() returns tenant if Url contains slash")
     @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
     void extractTenantFromIssUrlReturnsTenantIfUrlContainSlash(String issUrl) {
         // arrange

@@ -83,8 +83,7 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns tenant if claim iss is found")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getTenantFromClaimsSetUsingClaimIss() returns tenant if claim iss is found")
     @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
     void getTenantFromClaimsSetUsingClaimIssReturnsTenantIfClaimIssFound(String issUrl) throws ParseException {
         // arrange

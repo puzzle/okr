@@ -68,8 +68,7 @@ public class TokenHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimIss() returns tenant if claim iss is found")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getTenantFromTokenUsingClaimIss() returns tenant if claim iss is found")
     @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
     void getTenantFromTokenUsingClaimIssReturnsTenantIfClaimIssFound(String issUrl) {
         // arrange

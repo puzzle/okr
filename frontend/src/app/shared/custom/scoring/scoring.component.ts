@@ -33,7 +33,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   targetPercent: number = 0;
   labelPercentage: Observable<number>;
   stretched: boolean = false;
-  protected readonly isLastCheckInNegative = isLastCheckInNegative;
 
   @ViewChild('fail')
   private failElement: ElementRef<HTMLSpanElement> | undefined = undefined;
@@ -41,8 +40,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   private commitElement: ElementRef<HTMLSpanElement> | undefined = undefined;
   @ViewChild('target')
   private targetElement: ElementRef<HTMLSpanElement> | undefined = undefined;
-  @ViewChild('valueLabel')
-  private valueLabel: ElementRef<HTMLSpanElement> | undefined = undefined;
 
   constructor(private changeDetectionRef: ChangeDetectorRef) {
     this.labelPercentage = new Observable<number>();
@@ -64,13 +61,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     this.failElement!.nativeElement.style.width = this.failPercent + '%';
     this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
     this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
-
-    if (this.valueLabel != undefined && this.keyResult.keyResultType == 'metric') {
-      this.labelPercentage.subscribe((value) => {
-        this.valueLabel!.nativeElement.style.width = value + '%';
-        this.changeDetectionRef.detectChanges();
-      });
-    }
 
     // Set color of scoring component
     let scoringClass = this.getScoringColorClassAndSetBorder();

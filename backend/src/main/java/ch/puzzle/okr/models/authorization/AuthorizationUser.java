@@ -1,7 +1,6 @@
 package ch.puzzle.okr.models.authorization;
 
 import ch.puzzle.okr.models.User;
-
 import java.util.List;
 
 public record AuthorizationUser(User user) {
@@ -14,7 +13,9 @@ public record AuthorizationUser(User user) {
     }
 
     public boolean isUserAdminInTeam(Long teamId) {
-        return this.user.getUserTeamList().stream()
+        return this.user
+                .getUserTeamList()
+                .stream()
                 .anyMatch(ut -> ut.isTeamAdmin() && ut.getTeam().getId().equals(teamId));
     }
 }

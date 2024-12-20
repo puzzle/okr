@@ -1,9 +1,19 @@
-<div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true" [attr.data-testId]="'side-panel'">
+<div
+  class="w-100"
+  cdkTrapFocus
+  cdkTrapFocusAutoCapture="true"
+  [attr.data-testId]="'side-panel'"
+>
   <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
     <div *ngIf="keyResult" class="d-flex flex-column">
       <div class="w-100 d-flex justify-content-between align-items-center mb-3">
         <h2 class="title">{{ keyResult.title }}</h2>
-        <button class="d-flex" mat-icon-button (click)="backToOverview()" [attr.data-testId]="'close-drawer'">
+        <button
+          class="d-flex"
+          mat-icon-button
+          (click)="backToOverview()"
+          [attr.data-testId]="'close-drawer'"
+        >
           <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
         </button>
       </div>
@@ -13,7 +23,13 @@
             {{ "KEY_RESULT_TYPE." + keyResult.keyResultType | translate }}
           </h4>
           <span class="d-flex align-items-center">
-            <img alt="person icon" class="me-1" height="10" src="../../../assets/icons/person-icon.svg" width="10" />
+            <img
+              alt="person icon"
+              class="me-1"
+              height="10"
+              src="../../../assets/icons/person-icon.svg"
+              width="10"
+            />
             <h4 *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</h4>
           </span>
           <h4 *ngIf="keyResult?.objective?.quarter as quarter">{{ quarter.label }}</h4>
@@ -95,7 +111,11 @@
             <div *ngFor="let action of keyResult.actionList">
               <div *ngIf="action.isChecked">
                 <div class="action-list-checked-item break-word ms-4">
-                  <img src="../../../assets/icons/checkmark.svg" alt="checkbox" class="action-checkbox me-1" />
+                  <img
+                    src="../../../assets/icons/checkmark.svg"
+                    alt="checkbox"
+                    class="action-checkbox me-1"
+                  />
                   <span [ngStyle]="{ 'text-decoration': 'line-through' }">{{ action.action }}</span>
                 </div>
               </div>

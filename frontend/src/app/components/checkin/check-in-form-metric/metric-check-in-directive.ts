@@ -3,16 +3,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
   selector: '[metricCheckIn]',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MetricCheckInDirective),
-      multi: true,
-    },
-  ],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => MetricCheckInDirective),
+    multi: true
+  }]
 })
 export class MetricCheckInDirective implements ControlValueAccessor {
   private onChange: (value: number | null) => void = () => {};
+
   protected readonly CHAR_REGEX = /[^0-9.]/g;
 
   writeValue(value: any): void {
@@ -30,10 +29,13 @@ export class MetricCheckInDirective implements ControlValueAccessor {
   @HostListener('input', ['$event.target.value'])
   handleInput(param: string): void {
     const value: string = param || '0';
-    if (value.toString().at(0) == '-') {
-      this.onChange(+('-' + value.toString().replace(this.CHAR_REGEX, '')));
+    if (value.toString()
+      .at(0) == '-') {
+      this.onChange(+('-' + value.toString()
+        .replace(this.CHAR_REGEX, '')));
       return;
     }
-    this.onChange(Number(value.toString().replace(this.CHAR_REGEX, '')));
+    this.onChange(Number(value.toString()
+      .replace(this.CHAR_REGEX, '')));
   }
 }

@@ -9,9 +9,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v2/action")
@@ -30,8 +29,8 @@ public class ActionController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't update Actions, attributes are not set", content = @Content) })
     @PutMapping
-    public void updateActions(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update existing Actions.", required = true) @RequestBody List<ActionDto> actionDtoList) {
+    public void updateActions(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update existing Actions.", required = true)
+    @RequestBody List<ActionDto> actionDtoList) {
         List<Action> actionList = actionMapper.toActions(actionDtoList);
         actionAuthorizationService.updateEntities(actionList);
     }

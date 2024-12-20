@@ -1,15 +1,14 @@
 package ch.puzzle.okr.multitenancy.customization;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TenantClientCustomizationProvider {
@@ -23,12 +22,18 @@ public class TenantClientCustomizationProvider {
     private static final String ADD_OBJECTIVE_OUTLINE_COLOR = ".okr-add-objective-outline-color";
 
     private final Map<String, TenantClientCustomization> tenantCustomizations = new HashMap<>();
-    private final List<String> customCssStyles = List.of(TOPBAR_BACKGROUND_COLOR, BANNER_BACKGROUND_COLOR,
-            OVERVIEW_BACKGROUND_COLOR, TEAM_HEADER_COLOR, ADD_OBJECTIVE_TEXT_COLOR, ADD_OBJECTIVE_ICON,
-            ADD_OBJECTIVE_OUTLINE_COLOR);
+    private final List<String> customCssStyles = List
+            .of(TOPBAR_BACKGROUND_COLOR,
+                BANNER_BACKGROUND_COLOR,
+                OVERVIEW_BACKGROUND_COLOR,
+                TEAM_HEADER_COLOR,
+                ADD_OBJECTIVE_TEXT_COLOR,
+                ADD_OBJECTIVE_ICON,
+                ADD_OBJECTIVE_OUTLINE_COLOR);
     private final Environment env;
 
-    public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}") String[] tenantIds, Environment env) {
+    public TenantClientCustomizationProvider(final @Value("${okr.tenant-ids}")
+    String[] tenantIds, Environment env) {
         this.env = env;
         for (String tenantId : tenantIds) {
             readClientCustomizationConfig(tenantId);
@@ -37,14 +42,29 @@ public class TenantClientCustomizationProvider {
     }
 
     private TenantClientCustomization readClientCustomizationConfig(String tenantId) {
-        return new TenantClientCustomization(
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.favicon", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.logo", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.triangles", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.background-logo", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.title", tenantId)),
-                env.getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.helpSiteUrl", tenantId)),
-                getCustomCssStyles(tenantId) //
+        return new TenantClientCustomization(env
+                .getProperty(MessageFormat.format("okr.tenants.{0}.clientcustomization.favicon", tenantId)),
+                                             env
+                                                     .getProperty(MessageFormat
+                                                             .format("okr.tenants.{0}.clientcustomization.logo",
+                                                                     tenantId)),
+                                             env
+                                                     .getProperty(MessageFormat
+                                                             .format("okr.tenants.{0}.clientcustomization.triangles",
+                                                                     tenantId)),
+                                             env
+                                                     .getProperty(MessageFormat
+                                                             .format("okr.tenants.{0}.clientcustomization.background-logo",
+                                                                     tenantId)),
+                                             env
+                                                     .getProperty(MessageFormat
+                                                             .format("okr.tenants.{0}.clientcustomization.title",
+                                                                     tenantId)),
+                                             env
+                                                     .getProperty(MessageFormat
+                                                             .format("okr.tenants.{0}.clientcustomization.helpSiteUrl",
+                                                                     tenantId)),
+                                             getCustomCssStyles(tenantId) //
         );
     }
 

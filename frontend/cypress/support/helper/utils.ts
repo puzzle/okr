@@ -10,9 +10,14 @@ export function pressUntilContains(text: string, key: keyof typeof keyCodeDefini
   pressUntil(key, condition);
 }
 
-export function doUntilSelector(selector: string, tab: () => void, limit: number = 100, count: number = 0) {
-  const condition = (element: HTMLElement) => Cypress.$(element).is(selector);
-  doUntil(condition, tab, limit, count);
+export function doUntilSelector(
+  selector: string, tab: () => void, limit = 100, count = 0
+) {
+  const condition = (element: HTMLElement) => Cypress.$(element)
+    .is(selector);
+  doUntil(
+    condition, tab, limit, count
+  );
 }
 
 function pressUntil(key: keyof typeof keyCodeDefinitions, condition: (elem: HTMLElement) => boolean) {
@@ -22,17 +27,20 @@ function pressUntil(key: keyof typeof keyCodeDefinitions, condition: (elem: HTML
 function doUntil(
   condition: (element: HTMLElement) => boolean,
   tab: () => void,
-  limit: number = 100,
-  count: number = 0,
+  limit = 100,
+  count = 0
 ) {
   if (count >= limit) return;
 
-  cy.focused().then((element) => {
-    if (condition(element.get(0))) {
-      return;
-    } else {
-      tab();
-      doUntil(condition, tab, limit, count + 1);
-    }
-  });
+  cy.focused()
+    .then((element) => {
+      if (condition(element.get(0))) {
+        return;
+      } else {
+        tab();
+        doUntil(
+          condition, tab, limit, count + 1
+        );
+      }
+    });
 }

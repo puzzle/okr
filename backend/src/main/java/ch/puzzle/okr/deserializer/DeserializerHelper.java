@@ -3,18 +3,18 @@ package ch.puzzle.okr.deserializer;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class DeserializerHelper {
 
     public <T> T deserializeMetricOrdinal(JsonParser jsonParser, Map<String, Class<? extends T>> validTypes,
-            MetricOrdinalDeserializer deserializer) throws IOException {
+                                          MetricOrdinalDeserializer deserializer)
+            throws IOException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
 

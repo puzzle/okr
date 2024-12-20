@@ -1,13 +1,12 @@
 package ch.puzzle.okr.models.checkin;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+
 import ch.puzzle.okr.models.MessageKey;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.Objects;
-
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_METRIC)

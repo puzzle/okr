@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Action } from '../shared/types/model/Action';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ActionService {
   constructor(private httpClient: HttpClient) {}

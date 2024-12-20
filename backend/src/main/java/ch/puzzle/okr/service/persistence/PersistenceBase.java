@@ -1,20 +1,19 @@
 package ch.puzzle.okr.service.persistence;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
-
-import java.util.List;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.StreamSupport;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * @param <T>
@@ -59,8 +58,9 @@ public abstract class PersistenceBase<T, ID, R> {
             return repository.save(model);
         } catch (OptimisticLockingFailureException ex) {
             logger.info("optimistic locking exception while saving {}", model, ex);
-            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorKey.DATA_HAS_BEEN_UPDATED,
-                    getModelName());
+            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                                 ErrorKey.DATA_HAS_BEEN_UPDATED,
+                                                 getModelName());
         }
     }
 
@@ -76,6 +76,7 @@ public abstract class PersistenceBase<T, ID, R> {
 
     private List<T> iteratorToList(Iterable<T> iterable) {
         return StreamSupport
-                .stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED), false).toList();
+                .stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED), false)
+                .toList();
     }
 }

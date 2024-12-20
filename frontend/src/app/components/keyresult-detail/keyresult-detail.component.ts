@@ -17,22 +17,24 @@ import { DialogService } from '../../services/dialog.service';
 import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
 import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
-import { CheckInOrdinal } from '../../shared/types/model/CheckInOrdinal';
-import { CheckInMetric } from '../../shared/types/model/CheckInMetric';
 
 @Component({
   selector: 'app-keyresult-detail',
   templateUrl: './keyresult-detail.component.html',
   styleUrls: ['./keyresult-detail.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KeyresultDetailComponent implements OnInit, OnDestroy {
   @Input() keyResultId!: number;
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
-  ngDestroy$: Subject<void> = new Subject();
-  isComplete: boolean = false;
+
+  ngDestroy$ = new Subject<void>();
+
+  isComplete = false;
+
   protected readonly DATE_FORMAT = DATE_FORMAT;
+
   protected readonly isLastCheckInNegative = isLastCheckInNegative;
 
   constructor(
@@ -40,15 +42,16 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     private refreshDataService: RefreshDataService,
     private dialogService: DialogService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.keyResultId = this.getIdFromParams();
     this.loadKeyResult(this.keyResultId);
-    this.refreshDataService.reloadKeyResultSubject.pipe(takeUntil(this.ngDestroy$)).subscribe(() => {
-      this.loadKeyResult(this.keyResultId);
-    });
+    this.refreshDataService.reloadKeyResultSubject.pipe(takeUntil(this.ngDestroy$))
+      .subscribe(() => {
+        this.loadKeyResult(this.keyResultId);
+      });
   }
 
   ngOnDestroy() {
@@ -87,12 +90,13 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(CheckInHistoryDialogComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
-        isComplete: this.isComplete,
-      },
+        isComplete: this.isComplete
+      }
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.refreshDataService.markDataRefresh();
-    });
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   openEditKeyResultDialog(keyResult: KeyResult) {
@@ -100,8 +104,8 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
       .open(KeyresultDialogComponent, {
         data: {
           objective: keyResult.objective,
-          keyResult: keyResult,
-        },
+          keyResult: keyResult
+        }
       })
       .afterClosed()
       .subscribe((result) => {
@@ -109,7 +113,8 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
           this.loadKeyResult(result.id);
           this.refreshDataService.markDataRefresh();
         } else if (result?.closeState === CloseState.DELETED) {
-          this.router.navigate(['']).then(() => this.refreshDataService.markDataRefresh());
+          this.router.navigate([''])
+            .then(() => this.refreshDataService.markDataRefresh());
         } else {
           this.loadKeyResult(this.keyResult$.getValue().id);
         }
@@ -134,13 +139,14 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   openCheckInForm() {
     const dialogRef = this.dialogService.open(CheckInFormComponent, {
       data: {
-        keyResult: this.keyResult$.getValue(),
-      },
+        keyResult: this.keyResult$.getValue()
+      }
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.refreshDataService.reloadKeyResultSubject.next();
-      this.refreshDataService.markDataRefresh();
-    });
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.refreshDataService.reloadKeyResultSubject.next();
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   backToOverview() {

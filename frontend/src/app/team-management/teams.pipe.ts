@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'teams',
+  name: 'teams'
 })
 export class TeamsPipe implements PipeTransform {
   private readonly SEPARATOR = ', ';
@@ -19,9 +19,10 @@ export class TeamsPipe implements PipeTransform {
     const overflow = teams.length - maxEntries;
     if (overflow > 0) {
       return (
-        teams.slice(0, maxEntries).join(this.SEPARATOR) +
-        ', ' +
-        this.translate.instant('TEAM_MANAGEMENT.WEITERE', { overflow })
+        teams.slice(0, maxEntries)
+          .join(this.SEPARATOR) +
+          ', ' +
+          this.translate.instant('TEAM_MANAGEMENT.WEITERE', { overflow })
       );
     }
     return teams.join(this.SEPARATOR);

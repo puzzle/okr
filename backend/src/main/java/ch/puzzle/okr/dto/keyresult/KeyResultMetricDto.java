@@ -3,7 +3,6 @@ package ch.puzzle.okr.dto.keyresult;
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.models.Unit;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

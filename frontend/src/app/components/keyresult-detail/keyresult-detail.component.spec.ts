@@ -15,38 +15,45 @@ import { ConfidenceComponent } from '../confidence/confidence.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
 
 const keyResultServiceMock = {
-  getFullKeyResult: jest.fn(),
+  getFullKeyResult: jest.fn()
 };
 
 const activatedRouteMock = {
   snapshot: {
     paramMap: {
-      get: jest.fn(),
-    },
-  },
+      get: jest.fn()
+    }
+  }
 };
 
 describe('KeyresultDetailComponent', () => {
   let component: KeyresultDetailComponent;
   let fixture: ComponentFixture<KeyresultDetailComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDialogModule, MatIconModule, TranslateModule.forRoot()],
-      declarations: [KeyresultDetailComponent, ScoringComponent, ConfidenceComponent],
-      providers: [
-        {
-          provide: KeyresultService,
-          useValue: keyResultServiceMock,
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
+      imports: [
+        HttpClientTestingModule,
+        MatDialogModule,
+        MatIconModule,
+        TranslateModule.forRoot()
       ],
-    }).compileComponents();
+      declarations: [KeyresultDetailComponent,
+        ScoringComponent,
+        ConfidenceComponent],
+      providers: [{
+        provide: KeyresultService,
+        useValue: keyResultServiceMock
+      },
+      {
+        provide: ActivatedRoute,
+        useValue: activatedRouteMock
+      }]
+    })
+      .compileComponents();
 
-    jest.spyOn(keyResultServiceMock, 'getFullKeyResult').mockReturnValue(of(keyResult));
+    jest.spyOn(keyResultServiceMock, 'getFullKeyResult')
+      .mockReturnValue(of(keyResult));
     activatedRouteMock.snapshot.paramMap.get.mockReturnValue(of(1));
 
     fixture = TestBed.createComponent(KeyresultDetailComponent);
@@ -55,45 +62,54 @@ describe('KeyresultDetailComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should throw error when id is undefined', () => {
     activatedRouteMock.snapshot.paramMap.get.mockReturnValue(undefined);
-    expect(() => component.ngOnInit()).toThrowError('keyresult id is undefined');
+    expect(() => component.ngOnInit())
+      .toThrowError('keyresult id is undefined');
   });
 
-  it('should display edit keyresult button if writeable is true', async () => {
+  it('should display edit keyresult button if writeable is true', async() => {
     const button = fixture.debugElement.query(By.css('[data-testId="edit-keyResult"]'));
-    expect(button).toBeTruthy();
+    expect(button)
+      .toBeTruthy();
   });
 
-  it('should not display edit keyresult button if writeable is false', async () => {
-    jest.spyOn(keyResultServiceMock, 'getFullKeyResult').mockReturnValue(of(keyResultWriteableFalse));
+  it('should not display edit keyresult button if writeable is false', async() => {
+    jest.spyOn(keyResultServiceMock, 'getFullKeyResult')
+      .mockReturnValue(of(keyResultWriteableFalse));
     component.ngOnInit();
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="edit-keyResult"]'));
-    expect(button).toBeFalsy();
+    expect(button)
+      .toBeFalsy();
   });
 
-  it('should display add check-in button if writeable is true', async () => {
+  it('should display add check-in button if writeable is true', async() => {
     const button = fixture.debugElement.query(By.css('[data-testId="add-check-in"]'));
-    expect(button).toBeTruthy();
+    expect(button)
+      .toBeTruthy();
   });
 
-  it('should not display add check-in button if writeable is false', async () => {
-    jest.spyOn(keyResultServiceMock, 'getFullKeyResult').mockReturnValue(of(keyResultWriteableFalse));
+  it('should not display add check-in button if writeable is false', async() => {
+    jest.spyOn(keyResultServiceMock, 'getFullKeyResult')
+      .mockReturnValue(of(keyResultWriteableFalse));
     component.ngOnInit();
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-check-in"]'));
-    expect(button).toBeFalsy();
+    expect(button)
+      .toBeFalsy();
   });
 
   it('should trigger observable when subject gets next value', () => {
     const spy = jest.spyOn(component, 'loadKeyResult');
     const refreshDataService = TestBed.inject(RefreshDataService);
     refreshDataService.reloadKeyResultSubject.next();
-    expect(spy).toHaveBeenCalled();
+    expect(spy)
+      .toHaveBeenCalled();
   });
 
   it('should close subscription on destroy', () => {
@@ -102,7 +118,9 @@ describe('KeyresultDetailComponent', () => {
 
     component.ngOnDestroy();
 
-    expect(spyNext).toHaveBeenCalled();
-    expect(spyComplete).toHaveBeenCalled();
+    expect(spyNext)
+      .toHaveBeenCalled();
+    expect(spyComplete)
+      .toHaveBeenCalled();
   });
 });

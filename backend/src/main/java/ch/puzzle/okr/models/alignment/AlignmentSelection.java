@@ -2,9 +2,8 @@ package ch.puzzle.okr.models.alignment;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import org.hibernate.annotations.Immutable;
-
 import java.util.Objects;
+import org.hibernate.annotations.Immutable;
 
 @Entity
 @Immutable
@@ -61,10 +60,10 @@ public class AlignmentSelection {
             return false;
         AlignmentSelection alignmentSelection = (AlignmentSelection) o;
         return Objects.equals(alignmentSelectionId, alignmentSelection.alignmentSelectionId)
-                && Objects.equals(teamId, alignmentSelection.teamId)
-                && Objects.equals(objectiveTitle, alignmentSelection.objectiveTitle)
-                && Objects.equals(quarterId, alignmentSelection.quarterId)
-                && Objects.equals(keyResultTitle, alignmentSelection.keyResultTitle);
+               && Objects.equals(teamId, alignmentSelection.teamId)
+               && Objects.equals(objectiveTitle, alignmentSelection.objectiveTitle)
+               && Objects.equals(quarterId, alignmentSelection.quarterId)
+               && Objects.equals(keyResultTitle, alignmentSelection.keyResultTitle);
     }
 
     @Override
@@ -75,9 +74,9 @@ public class AlignmentSelection {
     @Override
     public String toString() {
         return "AlignmentSelection{" + "alignmentSelectionId=" + alignmentSelectionId + ", teamId='" + teamId
-                + ", teamName='" + teamName + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", quarterId="
-                + quarterId + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
-                + '}';
+               + ", teamName='" + teamName + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", quarterId="
+               + quarterId + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
+               + '}';
     }
 
     public static final class Builder {

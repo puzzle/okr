@@ -10,11 +10,18 @@ describe('TeamRoleDropdownComponent', () => {
   let component: TeamRoleDropdownComponent;
   let fixture: ComponentFixture<TeamRoleDropdownComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, CommonModule, FormsModule, MatOptionModule, TranslateModule.forRoot()],
-      declarations: [TeamRoleDropdownComponent],
-    }).compileComponents();
+      imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        FormsModule,
+        MatOptionModule,
+        TranslateModule.forRoot()
+      ],
+      declarations: [TeamRoleDropdownComponent]
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -23,22 +30,24 @@ describe('TeamRoleDropdownComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('component onInit should create formControl', () => {
     component.isAdmin = false;
     component.ngOnInit();
-    expect(JSON.stringify(component.adminControl)).toStrictEqual(
-      JSON.stringify(new FormControl(component.isAdmin, [Validators.required])),
-    );
+    expect(JSON.stringify(component.adminControl))
+      .toStrictEqual(JSON.stringify(new FormControl(component.isAdmin, [Validators.required])));
   });
 
   it('triggerIsAdminChange should submit next value', (done) => {
-    component.isAdminChange.pipe(takeLast(1)).subscribe((val) => {
-      expect(val).toBeFalsy();
-      done();
-    });
+    component.isAdminChange.pipe(takeLast(1))
+      .subscribe((val) => {
+        expect(val)
+          .toBeFalsy();
+        done();
+      });
     component.isAdminChange.next(false);
     component.triggerIsAdminChange();
     component.isAdminChange.complete();

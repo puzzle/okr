@@ -5,13 +5,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 public class ForwardFilter extends GenericFilterBean {
 

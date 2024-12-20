@@ -1,22 +1,51 @@
 #!/bin/sh
+GIT_BASE_PATH=$(git rev-parse --show-toplevel)
+BACKEND_PATH="$GIT_BASE_PATH"/backend
+FRONTEND_PATH="$GIT_BASE_PATH"/frontend
+FORMATTED_FILE_EXTENSIONS="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
 
-projectPath=$PWD
-addedFiles=$(git diff --cached --name-only --diff-filter=a)
+get_changed_files() {
+    path=$1
+    GIT_BASE_PATH=$(git rev-parse --show-toplevel)
+    # shellcheck disable=SC1087
+    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" | grep -E "\.($FORMATTED_FILE_EXTENSIONS)$"  | tr '\n' ' '
+}
 
+has_changed() {
+    files=$1
+    echo "$files" | grep -q .
+}
+
+
+frontend_files=$(get_changed_files "$FRONTEND_PATH")
+backend_files=$(get_changed_files "$BACKEND_PATH")
 echo "*****Running prettier******"
-cd $projectPath/frontend
-npm run format
+cd "$FRONTEND_PATH" || exit
+has_changed "$frontend_files" && npm run prettier:lint:format:specific $frontend_files || echo "No files found to format"
 echo "*****Finish running prettier******"
 
+echo "---------------------------------------------------------"
+
+echo "*****Running eslint******"
+cd "$FRONTEND_PATH" || exit
+has_changed "$frontend_files" && npm run lint:format:specific $frontend_files || echo "No files found to format"
+echo "*****Finish running eslint******"
+
+echo "---------------------------------------------------------"
+
 echo "*****Running maven formatter******"
-cd $projectPath/backend
-mvn formatter:format
+cd "$BACKEND_PATH" || exit
+has_changed "$backend_files" && mvn -f pom.xml spotless:apply -DspotlessFiles="$backend_files" || echo "No files found to format"
 echo "*****Finish running maven formatter******"
 
+echo "---------------------------------------------------------"
+
 echo "*****Adding changes to git******"
-cd $projectPath
-git add $addedFiles
+cd "$GIT_BASE_PATH" || exit
+has_changed "$frontend_files" && git add $frontend_files -v || echo "No frontend files changed, nothing to add"
+has_changed "$backend_files" && git add $backend_files -v || echo "No backend files files changed, nothing to add"
 echo "*****Formatted files added again******"
 
 status=$?
 exit $status
+

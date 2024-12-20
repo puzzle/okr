@@ -4,10 +4,9 @@ import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.dto.UserTeamDto;
 import ch.puzzle.okr.models.User;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
@@ -23,12 +22,22 @@ public class UserMapper {
     }
 
     public UserDto toDto(User user) {
-        var userTeams = user.getUserTeamList().stream().map(
-                ut -> new UserTeamDto(ut.getId(), user.getVersion(), teamMapper.toDto(ut.getTeam()), ut.isTeamAdmin()))
+        var userTeams = user
+                .getUserTeamList()
+                .stream()
+                .map(ut -> new UserTeamDto(ut.getId(),
+                                           user.getVersion(),
+                                           teamMapper.toDto(ut.getTeam()),
+                                           ut.isTeamAdmin()))
                 .collect(Collectors.toList());
 
-        return new UserDto(user.getId(), user.getVersion(), user.getFirstname(), user.getLastname(), user.getEmail(),
-                userTeams, user.isOkrChampion());
+        return new UserDto(user.getId(),
+                           user.getVersion(),
+                           user.getFirstname(),
+                           user.getLastname(),
+                           user.getEmail(),
+                           userTeams,
+                           user.isOkrChampion());
     }
 
     public List<User> toUserList(List<NewUserDto> newUserList) {

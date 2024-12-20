@@ -1,13 +1,12 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.QUARTER;
+
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static ch.puzzle.okr.Constants.QUARTER;
+import org.springframework.stereotype.Service;
 
 @Service
 public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, QuarterRepository> {

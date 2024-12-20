@@ -1,21 +1,20 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.mockAuthorizationUser;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import jakarta.persistence.*;
+import java.util.*;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.*;
-import java.util.stream.Stream;
-
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.test.TestHelper.mockAuthorizationUser;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthorizationCriteriaParametersTest {
 
@@ -43,7 +42,8 @@ public class AuthorizationCriteriaParametersTest {
     @Test
     void setParametersShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
-        var user = User.Builder.builder() //
+        var user = User.Builder
+                .builder() //
                 .withId(23L) //
                 .withFirstname("Hanna") //
                 .withLastname("muster") //
@@ -87,11 +87,12 @@ public class AuthorizationCriteriaParametersTest {
     }
 
     private static Stream<Arguments> provideListAndString() {
-        return Stream.of( //
-                Arguments.of(List.of(), null), //
-                Arguments.of(List.of(), ""), //
-                Arguments.of(null, null), //
-                Arguments.of(null, ""));
+        return Stream
+                .of( //
+                    Arguments.of(List.of(), null), //
+                    Arguments.of(List.of(), ""), //
+                    Arguments.of(null, null), //
+                    Arguments.of(null, ""));
     }
 
     @DisplayName("setParameters() should be successful when team ids and objective query are not empty")
@@ -118,8 +119,10 @@ public class AuthorizationCriteriaParametersTest {
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    // TypedQuery implementation for testing. The setParameterX() methods calls are logged in an internal StringBuilder
-    // which is return by getLog(). This log can be used for checking the internal state of the TypedQuery. All other
+    // TypedQuery implementation for testing. The setParameterX() methods calls are
+    // logged in an internal StringBuilder
+    // which is return by getLog(). This log can be used for checking the internal
+    // state of the TypedQuery. All other
     // methods are not implemented.
     private static class TypedQueryMock<Objective> implements TypedQuery<Objective> {
 
@@ -131,17 +134,24 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public <T> TypedQuery<Objective> setParameter(Parameter<T> parameter, T t) {
-            log.append(parameter.getName()).append(", ") //
-                    .append(t.getClass().getSimpleName()).append("=").append(t) //
+            log
+                    .append(parameter.getName())
+                    .append(", ") //
+                    .append(t.getClass().getSimpleName())
+                    .append("=")
+                    .append(t) //
                     .append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(Parameter<Calendar> parameter, Calendar calendar,
-                TemporalType temporalType) {
-            log.append(parameter.getName()).append(", ") //
-                    .append(calendar.getTime()).append(", ") //
+                                                  TemporalType temporalType) {
+            log
+                    .append(parameter.getName())
+                    .append(", ") //
+                    .append(calendar.getTime())
+                    .append(", ") //
                     .append(temporalType.name()) //
                     .append("\n");
             return null;
@@ -149,8 +159,11 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setParameter(Parameter<Date> parameter, Date date, TemporalType temporalType) {
-            log.append(parameter.getName()).append(", ") //
-                    .append(date).append(", ") //
+            log
+                    .append(parameter.getName())
+                    .append(", ") //
+                    .append(date)
+                    .append(", ") //
                     .append(temporalType.name()) //
                     .append("\n");
             return null;
@@ -158,16 +171,23 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setParameter(String s, Object o) {
-            log.append(s).append(", ") //
-                    .append(o.getClass().getSimpleName()).append("=").append(o) //
+            log
+                    .append(s)
+                    .append(", ") //
+                    .append(o.getClass().getSimpleName())
+                    .append("=")
+                    .append(o) //
                     .append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(String s, Calendar calendar, TemporalType temporalType) {
-            log.append(s).append(", ") //
-                    .append(calendar.getTime()).append(", ") //
+            log
+                    .append(s)
+                    .append(", ") //
+                    .append(calendar.getTime())
+                    .append(", ") //
                     .append(temporalType.name()) //
                     .append("\n");
             return null;
@@ -175,8 +195,11 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setParameter(String s, Date date, TemporalType temporalType) {
-            log.append(s).append(", ") //
-                    .append(date).append(", ") //
+            log
+                    .append(s)
+                    .append(", ") //
+                    .append(date)
+                    .append(", ") //
                     .append(temporalType.name()) //
                     .append("\n");
             return null;
@@ -184,16 +207,23 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setParameter(int i, Object o) {
-            log.append(i).append(", ") //
-                    .append(o.getClass().getSimpleName()).append("=").append(o) //
+            log
+                    .append(i)
+                    .append(", ") //
+                    .append(o.getClass().getSimpleName())
+                    .append("=")
+                    .append(o) //
                     .append("\n");
             return null;
         }
 
         @Override
         public TypedQuery<Objective> setParameter(int i, Calendar calendar, TemporalType temporalType) {
-            log.append(i).append(", ") //
-                    .append(calendar.getTime()).append(", ") //
+            log
+                    .append(i)
+                    .append(", ") //
+                    .append(calendar.getTime())
+                    .append(", ") //
                     .append(temporalType.name()) //
                     .append("\n");
             return null;
@@ -201,8 +231,11 @@ public class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setParameter(int i, Date date, TemporalType temporalType) {
-            log.append(i).append(", ") //
-                    .append(date).append(", ") //
+            log
+                    .append(i)
+                    .append(", ") //
+                    .append(date)
+                    .append(", ") //
                     .append(temporalType.name()) //
                     .append("\n");
             return null;

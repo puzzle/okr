@@ -9,20 +9,20 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-action-plan',
   templateUrl: './action-plan.component.html',
-  styleUrls: ['./action-plan.component.scss'],
+  styleUrls: ['./action-plan.component.scss']
 })
 export class ActionPlanComponent {
   @Input() control: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([]);
+
   @Input() keyResultId!: number | null;
-  activeItem: number = 0;
+
+  activeItem = 0;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
 
-  constructor(
-    private actionService: ActionService,
-    public dialogService: DialogService,
-  ) {}
+  constructor(private actionService: ActionService,
+    public dialogService: DialogService) {}
 
   handleKeyDown(event: Event, currentIndex: number) {
     let newIndex = currentIndex;
@@ -41,7 +41,7 @@ export class ActionPlanComponent {
 
   changeItemPosition(newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
-    let currentActionPlan: Action[] = this.control.getValue()!;
+    const currentActionPlan: Action[] = this.control.getValue()!;
     this.updateActionTexts(currentActionPlan);
     moveItemInArray(currentActionPlan, currentIndex, newIndex);
     currentActionPlan.forEach((action: Action, index: number) => (action.priority = index));
@@ -49,7 +49,8 @@ export class ActionPlanComponent {
   }
 
   updateActionTexts(currentActionPlan: Action[]) {
-    let texts = Array.from(this.listItems).map((input: any) => input.nativeElement.value);
+    const texts = Array.from(this.listItems)
+      .map((input: any) => input.nativeElement.value);
     currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
   }
 
@@ -66,18 +67,19 @@ export class ActionPlanComponent {
   }
 
   drop(event: CdkDragDrop<Action[] | null>) {
-    let value: string = (<HTMLInputElement>(
-      event.container.element.nativeElement.children[event.previousIndex].children[1]
-    )).value;
+    const value: string = (event.container.element.nativeElement.children[event.previousIndex].children[1] as HTMLInputElement).value;
     const actions: Action[] = this.control.getValue()!;
     if (actions[event.previousIndex].action == '' && value != '') {
-      actions[event.previousIndex] = { ...actions[event.previousIndex], action: value };
+      actions[event.previousIndex] = { ...actions[event.previousIndex],
+        action: value };
       this.control.next(actions);
     }
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data!, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data!, event.container.data!, event.previousIndex, event.currentIndex);
+      transferArrayItem(
+        event.previousContainer.data!, event.container.data!, event.previousIndex, event.currentIndex
+      );
     }
     this.adjustPriorities();
     this.activeItem = event.currentIndex;
@@ -85,14 +87,14 @@ export class ActionPlanComponent {
 
   adjustPriorities() {
     const actions: Action[] = this.control.getValue()!;
-    actions.forEach(function (action: Action, index: number) {
+    actions.forEach(function(action: Action, index: number) {
       action.priority = index;
     });
     this.control.next(actions);
   }
 
   removeAction(index: number) {
-    let actions: Action[] = this.control.getValue()!;
+    const actions: Action[] = this.control.getValue()!;
     if (this.activeItem == index && this.activeItem > 0) {
       this.activeItem--;
     }
@@ -103,7 +105,8 @@ export class ActionPlanComponent {
         .subscribe((result) => {
           if (result) {
             if (actions[index].id) {
-              this.actionService.deleteAction(actions[index].id!).subscribe();
+              this.actionService.deleteAction(actions[index].id!)
+                .subscribe();
             }
             actions.splice(index, 1);
             this.control.next(actions);
@@ -119,13 +122,17 @@ export class ActionPlanComponent {
 
   addNewAction() {
     const actions: Action[] = this.control.getValue()!;
-    actions.push({ action: '', priority: actions.length, keyResultId: this.keyResultId } as Action);
+    actions.push({ action: '',
+      priority: actions.length,
+      keyResultId: this.keyResultId } as Action);
     this.control.next(actions);
     this.activeItem = actions.length - 1;
   }
 
-  /* By default angular material adds a new entry inside the actionplan when the user presses enter
-   *  to disable this behaviour we need this method which prevents the event from firing */
+  /*
+   * By default angular material adds a new entry inside the actionplan when the user presses enter
+   *  to disable this behaviour we need this method which prevents the event from firing
+   */
   preventAddingNewItems(event: Event) {
     event.preventDefault();
   }

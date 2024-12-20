@@ -22,28 +22,34 @@ export interface FilteredTeam extends Team {
 @Component({
   selector: 'app-search-team-management',
   templateUrl: './search-team-management.component.html',
-  styleUrl: './search-team-management.component.scss',
+  styleUrl: './search-team-management.component.scss'
 })
 export class SearchTeamManagementComponent {
   static MAX_SUGGESTIONS = 3;
+
   search = new FormControl('');
 
   filteredUsers$ = new BehaviorSubject<FilteredUser[]>([]);
+
   filteredTeams$ = new BehaviorSubject<FilteredTeam[]>([]);
+
   searchValue$ = new BehaviorSubject<string>('');
 
   private teams: Team[] = [];
+
   private users: User[] = [];
 
   constructor(
     private readonly userService: UserService,
     private readonly teamService: TeamService,
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute,
+    private readonly activatedRoute: ActivatedRoute
   ) {
-    combineLatest([teamService.getAllTeams(), userService.getUsers()])
+    combineLatest([teamService.getAllTeams(),
+      userService.getUsers()])
       .pipe(takeUntilDestroyed())
-      .subscribe(([teams, users]) => {
+      .subscribe(([teams,
+        users]) => {
         this.updateTeamsAndUsers(teams, users);
         this.applyFilter(this.searchValue$.getValue());
       });
@@ -53,26 +59,29 @@ export class SearchTeamManagementComponent {
         takeUntilDestroyed(),
         debounceTime(200),
         map((v) => (v ? v.trim() : '')),
-        distinctUntilChanged(),
+        distinctUntilChanged()
       )
       .subscribe((searchValue) => {
         this.searchValue$.next(searchValue);
       });
 
-    this.searchValue$.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.applyFilter(this.searchValue$.getValue());
-    });
+    this.searchValue$.pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.applyFilter(this.searchValue$.getValue());
+      });
   }
 
   selectUser(user: User) {
     this.search.setValue('');
     const teamId: number = this.activatedRoute.snapshot.params['teamId'];
-    this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId)).then();
+    this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId))
+      .then();
   }
 
   selectTeam(team: Team) {
     this.search.setValue('');
-    this.router.navigateByUrl(getRouteToTeam(team.id)).then();
+    this.router.navigateByUrl(getRouteToTeam(team.id))
+      .then();
   }
 
   private applyFilter(filterValue: string): void {
@@ -82,21 +91,19 @@ export class SearchTeamManagementComponent {
       return;
     }
 
-    this.filteredTeams$.next(
-      this.filterTeams(this.teams, filterValue)
-        .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
-        .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS),
-    );
-    this.filteredUsers$.next(
-      this.filterUsers(this.users, filterValue)
-        .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
-        .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS),
-    );
+    this.filteredTeams$.next(this.filterTeams(this.teams, filterValue)
+      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS));
+    this.filteredUsers$.next(this.filterUsers(this.users, filterValue)
+      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS));
   }
 
   private sortByStringPosition(a: string, b: string, value: string): number {
-    const indexA = a.toLowerCase().indexOf(value);
-    const indexB = b.toLowerCase().indexOf(value);
+    const indexA = a.toLowerCase()
+      .indexOf(value);
+    const indexB = b.toLowerCase()
+      .indexOf(value);
     if (indexA === indexB) {
       return 0;
     }
@@ -124,7 +131,7 @@ export class SearchTeamManagementComponent {
       .map((team) => ({
         ...team,
         displayValue: team.name,
-        htmlValue: this.formatText(team.name, filterValue),
+        htmlValue: this.formatText(team.name, filterValue)
       }));
   }
 
@@ -135,12 +142,13 @@ export class SearchTeamManagementComponent {
       .map((user) => ({
         ...user,
         displayValue: `${user.firstname} ${user.lastname} (${user.email})`,
-        htmlValue: this.formatText(`${user.firstname} ${user.lastname} (${user.email})`, filterValue),
+        htmlValue: this.formatText(`${user.firstname} ${user.lastname} (${user.email})`, filterValue)
       }));
   }
 
   private containsText(value: string, text: string): boolean {
-    return value.toLowerCase().indexOf(text.toLowerCase()) >= 0;
+    return value.toLowerCase()
+      .indexOf(text.toLowerCase()) >= 0;
   }
 
   private formatText(value: string, text: string): string {

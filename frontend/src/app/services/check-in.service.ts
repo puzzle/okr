@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { CheckIn } from '../shared/types/model/CheckIn';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CheckInService {
   constructor(private httpclient: HttpClient) {}

@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AlignmentValidationService
-        extends ValidationBase<Alignment, Long, AlignmentRepository, AlignmentPersistenceService> {
+        extends
+            ValidationBase<Alignment, Long, AlignmentRepository, AlignmentPersistenceService> {
 
     AlignmentValidationService(AlignmentPersistenceService persistenceService) {
         super(persistenceService);

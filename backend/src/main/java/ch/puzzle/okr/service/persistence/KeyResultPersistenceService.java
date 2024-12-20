@@ -1,15 +1,14 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT;
+
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import static ch.puzzle.okr.Constants.KEY_RESULT;
 
 @Service
 public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long, KeyResultRepository> {
@@ -43,7 +42,8 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
     }
 
     public List<KeyResult> getKeyResultsOwnedByUser(long userId) {
-        return findAll().stream() //
+        return findAll()
+                .stream() //
                 .filter(keyResult -> keyResult.getOwner().getId().equals(userId)) //
                 .toList();
     }

@@ -37,57 +37,59 @@ describe('KeyresultDialogComponent', () => {
   const oauthMockService = {
     getIdentityClaims() {
       return { name: users[1].firstname + ' ' + users[1].lastname };
-    },
+    }
   };
 
   const userService = {
     getUsers() {
       return of(users);
     },
-    getCurrentUser: jest.fn(),
+    getCurrentUser: jest.fn()
   };
 
-  let fullObjective = {
+  const fullObjective = {
     id: 1,
     title: 'Das ist ein Objective',
     description: 'Das ist die Beschreibung',
     state: State.ONGOING,
-    team: { id: 1, name: 'Das Puzzle Team' },
-    quarter: { id: 1, label: 'GJ 22/23-Q2' },
+    team: { id: 1,
+      name: 'Das Puzzle Team' },
+    quarter: { id: 1,
+      label: 'GJ 22/23-Q2' }
   };
 
-  let keyResultObjective: KeyResultObjective = {
+  const keyResultObjective: KeyResultObjective = {
     id: 2,
     state: State.ONGOING,
-    quarter: new Quarter(1, 'GJ 22/23-Q2', new Date(), new Date()),
+    quarter: new Quarter(
+      1, 'GJ 22/23-Q2', new Date(), new Date()
+    )
   };
 
-  let fullKeyResultMetric = {
+  const fullKeyResultMetric = {
     id: 3,
     version: 2,
-    actionList: [
-      {
-        id: 1,
-        action: 'Test',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0,
-      },
-      {
-        id: 2,
-        action: 'Katze',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1,
-      },
-      {
-        id: 3,
-        action: 'Hund',
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2,
-      },
-    ],
+    actionList: [{
+      id: 1,
+      action: 'Test',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
+      id: 2,
+      action: 'Katze',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
+      id: 3,
+      action: 'Hund',
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -95,35 +97,33 @@ describe('KeyresultDialogComponent', () => {
     baseline: 3,
     keyResultType: 'metric',
     stretchGoal: 25,
-    unit: 'CHF',
+    unit: 'CHF'
   };
 
-  let receivedKeyResultMetric = {
+  const receivedKeyResultMetric = {
     id: 3,
     version: 2,
-    actionList: [
-      {
-        id: 1,
-        action: 'Test',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0,
-      },
-      {
-        id: 2,
-        action: 'Katze',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1,
-      },
-      {
-        id: 3,
-        action: 'Hund',
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2,
-      },
-    ],
+    actionList: [{
+      id: 1,
+      action: 'Test',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
+      id: 2,
+      action: 'Katze',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
+      id: 3,
+      action: 'Hund',
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -134,35 +134,33 @@ describe('KeyresultDialogComponent', () => {
     unit: 'CHF',
     commitZone: null,
     targetZone: null,
-    stretchZone: null,
+    stretchZone: null
   };
 
-  let fullKeyResultOrdinal = {
+  const fullKeyResultOrdinal = {
     id: 6,
     version: 2,
-    actionList: [
-      {
-        id: 1,
-        action: 'Test',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0,
-      },
-      {
-        id: 2,
-        action: 'Katze',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1,
-      },
-      {
-        id: 3,
-        action: 'Hund',
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2,
-      },
-    ],
+    actionList: [{
+      id: 1,
+      action: 'Test',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
+      id: 2,
+      action: 'Katze',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
+      id: 3,
+      action: 'Hund',
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -170,35 +168,33 @@ describe('KeyresultDialogComponent', () => {
     keyResultType: 'ordinal',
     commitZone: 'Commit zone',
     targetZone: 'Target zone',
-    stretchZone: 'Stretch goal',
+    stretchZone: 'Stretch goal'
   };
 
-  let receivedKeyResultOrdinal = {
+  const receivedKeyResultOrdinal = {
     id: 6,
     version: 2,
-    actionList: [
-      {
-        id: 1,
-        action: 'Test',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 0,
-      },
-      {
-        id: 2,
-        action: 'Katze',
-        isChecked: false,
-        keyResultId: 3,
-        priority: 1,
-      },
-      {
-        id: 3,
-        action: 'Hund',
-        isChecked: true,
-        keyResultId: 3,
-        priority: 2,
-      },
-    ],
+    actionList: [{
+      id: 1,
+      action: 'Test',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 0
+    },
+    {
+      id: 2,
+      action: 'Katze',
+      isChecked: false,
+      keyResultId: 3,
+      priority: 1
+    },
+    {
+      id: 3,
+      action: 'Hund',
+      isChecked: true,
+      keyResultId: 3,
+      priority: 2
+    }],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -209,10 +205,10 @@ describe('KeyresultDialogComponent', () => {
     stretchZone: 'Stretch goal',
     baseline: null,
     stretchGoal: null,
-    unit: null,
+    unit: null
   };
 
-  let initKeyResult = {
+  const initKeyResult = {
     id: undefined,
     title: '',
     description: '',
@@ -225,10 +221,10 @@ describe('KeyresultDialogComponent', () => {
     commitZone: null,
     targetZone: null,
     stretchZone: null,
-    actionList: [],
+    actionList: []
   };
 
-  let savedKeyResult = {
+  const savedKeyResult = {
     id: undefined,
     version: undefined,
     title: 'Neuer Titel',
@@ -242,15 +238,15 @@ describe('KeyresultDialogComponent', () => {
     commitZone: null,
     targetZone: null,
     stretchZone: null,
-    actionList: [],
+    actionList: []
   };
 
   const matDialogRefMock = {
-    close: jest.fn(),
+    close: jest.fn()
   };
 
   const mockUserService = {
-    getUsers: jest.fn(),
+    getUsers: jest.fn()
   };
 
   describe('New KeyResult', () => {
@@ -267,7 +263,7 @@ describe('KeyresultDialogComponent', () => {
           MatIconModule,
           TranslateModule.forRoot(),
           DragDropModule,
-          MatDividerModule,
+          MatDividerModule
         ],
         providers: [
           provideRouter([]),
@@ -275,28 +271,31 @@ describe('KeyresultDialogComponent', () => {
           provideHttpClientTesting(),
           KeyresultService,
           TranslateService,
-          { provide: UserService, useValue: userService },
+          { provide: UserService,
+            useValue: userService },
           {
             provide: MatDialogRef,
-            useValue: matDialogRefMock,
+            useValue: matDialogRefMock
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { objective: fullObjective, keyResult: undefined },
+            useValue: { objective: fullObjective,
+              keyResult: undefined }
           },
           {
             provide: OAuthService,
-            useValue: oauthMockService,
-          },
+            useValue: oauthMockService
+          }
         ],
         declarations: [
           KeyresultDialogComponent,
           KeyResultFormComponent,
           KeyresultTypeComponent,
           ActionPlanComponent,
-          DialogTemplateCoreComponent,
-        ],
-      }).compileComponents();
+          DialogTemplateCoreComponent
+        ]
+      })
+        .compileComponents();
 
       fixture = TestBed.createComponent(KeyresultDialogComponent);
       component = fixture.componentInstance;
@@ -308,10 +307,11 @@ describe('KeyresultDialogComponent', () => {
     });
 
     it('should create', () => {
-      expect(component).toBeTruthy();
+      expect(component)
+        .toBeTruthy();
     });
 
-    it('should be able to set title', waitForAsync(async () => {
+    it('should be able to set title', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: null,
         actionList: [],
@@ -323,18 +323,21 @@ describe('KeyresultDialogComponent', () => {
         unit: 'FTE',
         description: null,
         stretchGoal: 0,
-        keyResultType: 'metric',
+        keyResultType: 'metric'
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
+      expect(await submitButton.nativeElement.getAttribute('disabled'))
+        .toBeFalsy();
 
       const formObject = component.keyResultForm.value;
-      expect(formObject.title).toBe('Title');
-      expect(formObject.description).toBe(null);
+      expect(formObject.title)
+        .toBe('Title');
+      expect(formObject.description)
+        .toBe(null);
     }));
 
-    it('should display error message of too short input', waitForAsync(async () => {
+    it('should display error message of too short input', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -346,17 +349,20 @@ describe('KeyresultDialogComponent', () => {
         unit: null,
         description: '',
         stretchGoal: null,
-        keyResultType: null,
+        keyResultType: null
       });
       fixture.detectChanges();
 
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(await submitButton.nativeElement.getAttribute('disabled')).toEqual('');
-      expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['minlength']).toBeTruthy();
+      expect(await submitButton.nativeElement.getAttribute('disabled'))
+        .toEqual('');
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['minlength'])
+        .toBeTruthy();
     }));
 
-    it('should display error message of required', waitForAsync(async () => {
+    it('should display error message of required', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -368,14 +374,17 @@ describe('KeyresultDialogComponent', () => {
         unit: null,
         description: '',
         stretchGoal: null,
-        keyResultType: null,
+        keyResultType: null
       });
       fixture.detectChanges();
 
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(await submitButton.nativeElement.getAttribute('disabled')).toEqual('');
-      expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['required']).toBeTruthy();
+      expect(await submitButton.nativeElement.getAttribute('disabled'))
+        .toEqual('');
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['required'])
+        .toBeTruthy();
     }));
 
     it('should call service save method', waitForAsync(() => {
@@ -393,7 +402,7 @@ describe('KeyresultDialogComponent', () => {
         unit: 'CHF',
         description: 'Description',
         stretchGoal: 25,
-        keyResultType: 'metric',
+        keyResultType: 'metric'
       });
 
       initKeyResult.title = 'Neuer Titel';
@@ -401,8 +410,10 @@ describe('KeyresultDialogComponent', () => {
 
       component.saveKeyResult();
 
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(savedKeyResult);
+      expect(spy)
+        .toBeCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith(savedKeyResult);
     }));
   });
 
@@ -419,7 +430,7 @@ describe('KeyresultDialogComponent', () => {
           MatAutocompleteModule,
           DragDropModule,
           TranslateModule.forRoot(),
-          MatDividerModule,
+          MatDividerModule
         ],
         providers: [
           provideRouter([]),
@@ -429,26 +440,28 @@ describe('KeyresultDialogComponent', () => {
           {
             provide: MatDialogRef,
             useValue: {
-              close: () => {},
-            },
+              close: () => {}
+            }
           },
           {
             provide: OAuthService,
-            useValue: oauthMockService,
+            useValue: oauthMockService
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultMetric, objective: keyResultObjective },
-          },
+            useValue: { keyResult: fullKeyResultMetric,
+              objective: keyResultObjective }
+          }
         ],
         declarations: [
           KeyresultDialogComponent,
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
           ActionPlanComponent,
-          KeyresultTypeComponent,
-        ],
-      }).compileComponents();
+          KeyresultTypeComponent
+        ]
+      })
+        .compileComponents();
 
       fixture = TestBed.createComponent(KeyresultDialogComponent);
       component = fixture.componentInstance;
@@ -463,14 +476,19 @@ describe('KeyresultDialogComponent', () => {
 
     it('should use KeyResult value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title).toBe('Der Titel ist hier');
-      expect(formObject.description).toBe('Die Beschreibung');
-      expect(formObject.owner).toBe(testUser);
+      expect(formObject.title)
+        .toBe('Der Titel ist hier');
+      expect(formObject.description)
+        .toBe('Die Beschreibung');
+      expect(formObject.owner)
+        .toBe(testUser);
     }));
 
-    it('should be able to set title and description', waitForAsync(async () => {
-      expect(component.keyResultForm.value.title).toEqual('Der Titel ist hier');
-      expect(component.keyResultForm.value.description).toEqual('Die Beschreibung');
+    it('should be able to set title and description', waitForAsync(async() => {
+      expect(component.keyResultForm.value.title)
+        .toEqual('Der Titel ist hier');
+      expect(component.keyResultForm.value.description)
+        .toEqual('Die Beschreibung');
 
       component.keyResultForm.setValue({
         owner: testUser,
@@ -483,19 +501,23 @@ describe('KeyresultDialogComponent', () => {
         unit: 'FTE',
         description: 'Description',
         stretchGoal: 0,
-        keyResultType: 'metric',
+        keyResultType: 'metric'
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
+      expect(await submitButton.nativeElement.getAttribute('disabled'))
+        .toBeFalsy();
 
       const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title).toBe('Title');
-      expect(formObject.description).toBe('Description');
-      expect(component.keyResultForm.invalid).toBeFalsy();
+      expect(formObject.title)
+        .toBe('Title');
+      expect(formObject.description)
+        .toBe('Description');
+      expect(component.keyResultForm.invalid)
+        .toBeFalsy();
     }));
 
-    it('should display error message of too short input', waitForAsync(async () => {
+    it('should display error message of too short input', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -507,15 +529,17 @@ describe('KeyresultDialogComponent', () => {
         unit: null,
         description: '',
         stretchGoal: null,
-        keyResultType: null,
+        keyResultType: null
       });
       fixture.detectChanges();
 
-      expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['minlength']).toBeTruthy();
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['minlength'])
+        .toBeTruthy();
     }));
 
-    it('should display error message of required', waitForAsync(async () => {
+    it('should display error message of required', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -527,12 +551,14 @@ describe('KeyresultDialogComponent', () => {
         unit: null,
         description: '',
         stretchGoal: null,
-        keyResultType: null,
+        keyResultType: null
       });
       fixture.detectChanges();
 
-      expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['required']).toBeTruthy();
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['required'])
+        .toBeTruthy();
     }));
 
     it('should call service save method', waitForAsync(() => {
@@ -541,16 +567,20 @@ describe('KeyresultDialogComponent', () => {
 
       component.saveKeyResult();
 
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(receivedKeyResultMetric);
+      expect(spy)
+        .toBeCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith(receivedKeyResultMetric);
     }));
 
     it('should not display logged in user when editing', waitForAsync(() => {
       jest.resetAllMocks();
       const userServiceSpy = jest.spyOn(userService, 'getUsers');
       fixture.detectChanges();
-      expect(userServiceSpy).toHaveBeenCalledTimes(0);
-      expect(component.keyResultForm.controls.owner.value).toBe(testUser);
+      expect(userServiceSpy)
+        .toHaveBeenCalledTimes(0);
+      expect(component.keyResultForm.controls.owner.value)
+        .toBe(testUser);
     }));
   });
 
@@ -567,7 +597,7 @@ describe('KeyresultDialogComponent', () => {
           MatAutocompleteModule,
           DragDropModule,
           TranslateModule.forRoot(),
-          MatDividerModule,
+          MatDividerModule
         ],
         providers: [
           provideRouter([]),
@@ -576,25 +606,27 @@ describe('KeyresultDialogComponent', () => {
           KeyresultService,
           {
             provide: MatDialogRef,
-            useValue: matDialogRefMock,
+            useValue: matDialogRefMock
           },
           {
             provide: OAuthService,
-            useValue: oauthMockService,
+            useValue: oauthMockService
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultOrdinal, objective: keyResultObjective },
-          },
+            useValue: { keyResult: fullKeyResultOrdinal,
+              objective: keyResultObjective }
+          }
         ],
         declarations: [
           KeyresultDialogComponent,
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
           ActionPlanComponent,
-          KeyresultTypeComponent,
-        ],
-      }).compileComponents();
+          KeyresultTypeComponent
+        ]
+      })
+        .compileComponents();
 
       fixture = TestBed.createComponent(KeyresultDialogComponent);
       component = fixture.componentInstance;
@@ -608,14 +640,19 @@ describe('KeyresultDialogComponent', () => {
 
     it('should use KeyResult value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title).toBe('Der Titel ist hier');
-      expect(formObject.description).toBe('Die Beschreibung');
-      expect(formObject.owner).toBe(testUser);
+      expect(formObject.title)
+        .toBe('Der Titel ist hier');
+      expect(formObject.description)
+        .toBe('Die Beschreibung');
+      expect(formObject.owner)
+        .toBe(testUser);
     }));
 
-    it('should be able to set title and description', waitForAsync(async () => {
-      expect(component.keyResultForm.value.title).toEqual('Der Titel ist hier');
-      expect(component.keyResultForm.value.description).toEqual('Die Beschreibung');
+    it('should be able to set title and description', waitForAsync(async() => {
+      expect(component.keyResultForm.value.title)
+        .toEqual('Der Titel ist hier');
+      expect(component.keyResultForm.value.description)
+        .toEqual('Die Beschreibung');
 
       component.keyResultForm.setValue({
         owner: testUser,
@@ -628,19 +665,23 @@ describe('KeyresultDialogComponent', () => {
         unit: 'FTE',
         description: 'Description',
         stretchGoal: 0,
-        keyResultType: 'ordinal',
+        keyResultType: 'ordinal'
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
+      expect(await submitButton.nativeElement.getAttribute('disabled'))
+        .toBeFalsy();
 
       const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title).toBe('Title');
-      expect(formObject.description).toBe('Description');
-      expect(component.keyResultForm.invalid).toBeFalsy();
+      expect(formObject.title)
+        .toBe('Title');
+      expect(formObject.description)
+        .toBe('Description');
+      expect(component.keyResultForm.invalid)
+        .toBeFalsy();
     }));
 
-    it('should display error message of too short input', waitForAsync(async () => {
+    it('should display error message of too short input', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -652,15 +693,17 @@ describe('KeyresultDialogComponent', () => {
         unit: 'FTE',
         description: 'Description',
         stretchGoal: 0,
-        keyResultType: 'metric',
+        keyResultType: 'metric'
       });
       fixture.detectChanges();
 
-      expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['minlength']).toBeTruthy();
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['minlength'])
+        .toBeTruthy();
     }));
 
-    it('should display error message of required', waitForAsync(async () => {
+    it('should display error message of required', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -672,12 +715,14 @@ describe('KeyresultDialogComponent', () => {
         unit: null,
         description: '',
         stretchGoal: null,
-        keyResultType: null,
+        keyResultType: null
       });
       fixture.detectChanges();
 
-      expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['required']).toBeTruthy();
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['required'])
+        .toBeTruthy();
     }));
 
     it('should call service save method', waitForAsync(() => {
@@ -686,8 +731,10 @@ describe('KeyresultDialogComponent', () => {
 
       component.saveKeyResult();
 
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(receivedKeyResultOrdinal);
+      expect(spy)
+        .toBeCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith(receivedKeyResultOrdinal);
     }));
   });
 });

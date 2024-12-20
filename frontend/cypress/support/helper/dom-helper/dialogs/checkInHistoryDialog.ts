@@ -8,11 +8,14 @@ export default class CheckInHistoryDialog extends Dialog {
   }
 
   override cancel() {
-    cy.getByTestId('closeButton').click();
+    cy.getByTestId('closeButton')
+      .click();
   }
 
   editLatestCheckIn() {
-    cy.getByTestId('edit-check-in').first().click();
+    cy.getByTestId('edit-check-in')
+      .first()
+      .click();
     return new CheckInDialog();
   }
 
@@ -21,7 +24,10 @@ export default class CheckInHistoryDialog extends Dialog {
   }
 
   checkForAttribute(title: string, value: string) {
-    cy.get('mat-dialog-container').contains(value).parent().should('contain', title);
+    cy.get('mat-dialog-container')
+      .contains(value)
+      .parent()
+      .should('contain', title);
     return this;
   }
 }

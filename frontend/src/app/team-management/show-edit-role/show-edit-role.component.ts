@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-show-edit-role',
   templateUrl: './show-edit-role.component.html',
-  styleUrl: './show-edit-role.component.scss',
+  styleUrl: './show-edit-role.component.scss'
 })
 export class ShowEditRoleComponent {
   @Input({ required: true }) userTeam!: UserTeam;
@@ -15,11 +15,9 @@ export class ShowEditRoleComponent {
 
   edit = false;
 
-  constructor(
-    private readonly translate: TranslateService,
+  constructor(private readonly translate: TranslateService,
     private readonly elementRef: ElementRef,
-    private readonly cd: ChangeDetectorRef,
-  ) {}
+    private readonly cd: ChangeDetectorRef) {}
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent) {
@@ -29,8 +27,10 @@ export class ShowEditRoleComponent {
     this.edit = false;
   }
 
-  // we set edit async, to ensure hostListener can detect outside-of-element clicks correctly
-  // otherwise element of event.target is already hidden
+  /*
+   * we set edit async, to ensure hostListener can detect outside-of-element clicks correctly
+   * otherwise element of event.target is already hidden
+   */
   setEditAsync($event: MouseEvent, edit: boolean) {
     $event.stopPropagation();
     setTimeout(() => {

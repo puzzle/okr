@@ -2,9 +2,8 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.alignment.AlignmentSelection;
 import ch.puzzle.okr.repository.AlignmentSelectionRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AlignmentSelectionPersistenceService {

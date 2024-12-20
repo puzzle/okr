@@ -9,16 +9,18 @@ import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMi
   selector: 'app-keyresult',
   templateUrl: './keyresult.component.html',
   styleUrls: ['./keyresult.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
+
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(private router: Router) {}
 
   openDrawer() {
-    this.router.navigate(['details/keyresult', this.keyResult.id]);
+    this.router.navigate(['details/keyresult',
+      this.keyResult.id]);
   }
 
   getKeyResultWithCorrectType(): KeyResultOrdinalMin | KeyResultMetricMin {

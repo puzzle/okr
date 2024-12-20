@@ -10,7 +10,8 @@ export default class AngularSearchBox extends PageObjectMapperBase {
   }
 
   fill(value: string) {
-    const input = cy.get('input').first();
+    const input = cy.get('input')
+      .first();
     input.clear();
     input.type(value);
     return this;
@@ -27,7 +28,8 @@ export default class AngularSearchBox extends PageObjectMapperBase {
   }
 
   selectOption(option: string) {
-    cy.contains('.mat-mdc-autocomplete-panel mat-option', option).click();
+    cy.contains('.mat-mdc-autocomplete-panel mat-option', option)
+      .click();
   }
 
   getPage() {
@@ -39,6 +41,7 @@ export default class AngularSearchBox extends PageObjectMapperBase {
   }
 
   validatePage(): void {
-    this.getPage().should('exist');
+    this.getPage()
+      .should('exist');
   }
 }

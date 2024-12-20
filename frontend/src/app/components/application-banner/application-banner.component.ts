@@ -5,7 +5,7 @@ import {
   ElementRef,
   HostListener,
   OnDestroy,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
@@ -15,15 +15,20 @@ import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/co
   selector: 'app-application-banner',
   templateUrl: './application-banner.component.html',
   styleUrls: ['./application-banner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('okrBanner') okrBanner!: ElementRef;
+
   quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   panelOpenState = false;
+
   resizeObserver: ResizeObserver;
+
   bannerHeight: number = DEFAULT_HEADER_HEIGHT_PX;
-  lastScrollPosition: number = 0;
+
+  lastScrollPosition = 0;
 
   constructor(private refreshDataService: RefreshDataService) {
     this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
@@ -41,7 +46,7 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   }
 
   changeHeaderAppearance() {
-    let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
+    const scrollTop: number = window.scrollY || document.documentElement.scrollTop;
     this.refreshBanner(scrollTop);
     this.lastScrollPosition = scrollTop;
   }

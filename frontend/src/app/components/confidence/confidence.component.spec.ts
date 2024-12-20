@@ -18,8 +18,10 @@ describe('ConfidenceComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConfidenceComponent],
-      imports: [MatSliderModule, FormsModule],
-    }).compileComponents();
+      imports: [MatSliderModule,
+        FormsModule]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ConfidenceComponent);
     component = fixture.componentInstance;
@@ -29,16 +31,17 @@ describe('ConfidenceComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
-  it.each([
-    [{ confidence: 8 } as CheckInMin, '8'],
-    [null, '5'],
-  ])('should set confidence of component with right value', async (checkIn: CheckInMin | null, expected: string) => {
+  it.each([[{ confidence: 8 } as CheckInMin,
+    '8'],
+  [null,
+    '5']])('should set confidence of component with right value', async(checkIn: CheckInMin | null, expected: string) => {
     component.checkIn = checkIn!;
     component.ngOnChanges({
-      checkIn: new SimpleChange(null, component.checkIn, true),
+      checkIn: new SimpleChange(null, component.checkIn, true)
     });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -46,15 +49,19 @@ describe('ConfidenceComponent', () => {
     const expectedLabel = expected + '/' + component.max;
     const sliderInputField = fixture.debugElement.query(By.css('mat-slider > input '));
 
-    expect(await sliderInputField.nativeElement.value).toBe(expected);
-    expect(textField.nativeElement.innerHTML).toContain(expectedLabel);
+    expect(await sliderInputField.nativeElement.value)
+      .toBe(expected);
+    expect(textField.nativeElement.innerHTML)
+      .toContain(expectedLabel);
   });
 
-  it.each([[true], [false]])('should show slider on based on input var', async (editable) => {
+  it.each([[true],
+    [false]])('should show slider on based on input var', async(editable) => {
     component.edit = editable;
     fixture.detectChanges();
     const slider = fixture.debugElement.query(By.css('mat-slider'));
 
-    expect(!!slider).toBe(editable);
+    expect(!!slider)
+      .toBe(editable);
   });
 });

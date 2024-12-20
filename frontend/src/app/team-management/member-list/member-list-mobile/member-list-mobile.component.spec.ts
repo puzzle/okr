@@ -11,10 +11,11 @@ describe('MemberListMobileComponent', () => {
   let component: MemberListMobileComponent;
   let fixture: ComponentFixture<MemberListMobileComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [MemberListMobileComponent],
-    }).compileComponents();
+      declarations: [MemberListMobileComponent]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(MemberListMobileComponent);
     component = fixture.componentInstance;
@@ -25,24 +26,25 @@ describe('MemberListMobileComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should navigate to correct path if no team is selected', () => {
     component.selectedTeam$ = new BehaviorSubject<Team | undefined>(undefined);
     const userTableEntry: any = {
-      id: 1,
+      id: 1
     };
-    expect(component.getMemberDetailsLink(userTableEntry)).toStrictEqual('/team-management/details/member/1');
+    expect(component.getMemberDetailsLink(userTableEntry))
+      .toStrictEqual('/team-management/details/member/1');
   });
 
   it('should navigate to correct path team is selected', () => {
     component.selectedTeam$ = new BehaviorSubject<Team | undefined>(team1);
     const userTableEntry: any = {
-      id: 1,
+      id: 1
     };
-    expect(component.getMemberDetailsLink(userTableEntry)).toStrictEqual(
-      `/team-management/${team1.id}/details/member/1`,
-    );
+    expect(component.getMemberDetailsLink(userTableEntry))
+      .toStrictEqual(`/team-management/${team1.id}/details/member/1`);
   });
 });

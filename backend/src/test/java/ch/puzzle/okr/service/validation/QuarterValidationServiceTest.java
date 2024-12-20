@@ -1,10 +1,18 @@
 package ch.puzzle.okr.service.validation;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.test.TestHelper;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,15 +21,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class QuarterValidationServiceTest {
@@ -57,7 +56,8 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                () -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+                                                                             () -> QuarterValidationService
+                                                                                     .throwExceptionWhenStartEndDateQuarterIsNull(quarter));
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
@@ -72,7 +72,8 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                () -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+                                                                             () -> QuarterValidationService
+                                                                                     .throwExceptionWhenStartEndDateQuarterIsNull(quarter));
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
@@ -100,7 +101,7 @@ class QuarterValidationServiceTest {
     @Test
     void validateOnUpdateShouldThrowException() {
         Exception exception = assertThrows(IllegalCallerException.class,
-                () -> validator.validateOnUpdate(anyLong(), any()));
+                                           () -> validator.validateOnUpdate(anyLong(), any()));
         assertEquals("This method must not be called because there is no update of quarters", exception.getMessage());
     }
 
@@ -114,11 +115,12 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGeneration(quarter));
+                                                                             () -> validator
+                                                                                     .validateOnGeneration(quarter));
 
         assertOkrResponseStatusException( //
-                okrResponseStatusException, //
-                List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "Any Label"))));
+                                         okrResponseStatusException, //
+                                         List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "Any Label"))));
     }
 
     @DisplayName("validateOnGeneration() should throw exception when EndDate is null")
@@ -132,11 +134,12 @@ class QuarterValidationServiceTest {
 
         // act + assert
         OkrResponseStatusException okrResponseStatusException = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGeneration(quarter));
+                                                                             () -> validator
+                                                                                     .validateOnGeneration(quarter));
 
         assertOkrResponseStatusException( //
-                okrResponseStatusException, //
-                List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "Any Label"))));
+                                         okrResponseStatusException, //
+                                         List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "Any Label"))));
     }
 
     @DisplayName("validateOnGeneration() should do nothing when both dates are not null")

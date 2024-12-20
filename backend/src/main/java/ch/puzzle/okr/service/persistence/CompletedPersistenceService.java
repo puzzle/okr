@@ -1,10 +1,10 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.COMPLETED;
+
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.repository.CompletedRepository;
 import org.springframework.stereotype.Service;
-
-import static ch.puzzle.okr.Constants.COMPLETED;
 
 @Service
 public class CompletedPersistenceService extends PersistenceBase<Completed, Long, CompletedRepository> {

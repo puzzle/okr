@@ -9,10 +9,11 @@ import { getRouteToUserDetails } from '../../../shared/routeUtils';
 @Component({
   selector: 'app-member-list-mobile',
   templateUrl: './member-list-mobile.component.html',
-  styleUrl: './member-list-mobile.component.scss',
+  styleUrl: './member-list-mobile.component.scss'
 })
 export class MemberListMobileComponent implements OnInit {
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
+
   @Input() selectedTeam$!: BehaviorSubject<Team | undefined>;
 
   constructor() {}

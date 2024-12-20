@@ -11,13 +11,17 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-edit-team-dialog',
   templateUrl: './add-edit-team-dialog.component.html',
-  styleUrls: ['./add-edit-team-dialog.component.scss'],
+  styleUrls: ['./add-edit-team-dialog.component.scss']
 })
 export class AddEditTeamDialog implements OnInit {
   teamForm = new FormGroup({
-    name: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
+    name: new FormControl<string>('', [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)])
   });
+
   protected readonly formInputCheck = formInputCheck;
+
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(
@@ -28,16 +32,16 @@ export class AddEditTeamDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public data:
       | {
-          team: Team;
-        }
+        team: Team;
+      }
       | undefined,
-    private translate: TranslateService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
     if (this.data) {
       this.teamForm.setValue({
-        name: this.data.team.name,
+        name: this.data.team.name
       });
     }
   }
@@ -51,28 +55,34 @@ export class AddEditTeamDialog implements OnInit {
   }
 
   private createNewTeam() {
-    let newTeam: Team = this.teamForm.value as Team;
-    this.teamService.createTeam(newTeam).subscribe((result) => {
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-      this.dialogRef.close(result);
-      this.router.navigateByUrl('/team-management/' + result.id);
-    });
+    const newTeam: Team = this.teamForm.value as Team;
+    this.teamService.createTeam(newTeam)
+      .subscribe((result) => {
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser()
+          .subscribe();
+        this.dialogRef.close(result);
+        this.router.navigateByUrl('/team-management/' + result.id);
+      });
   }
 
   private updateTeam() {
-    let updatedTeam: Team = {
+    const updatedTeam: Team = {
       ...this.teamForm.value,
       id: this.data!.team.id,
-      version: this.data!.team.version,
+      version: this.data!.team.version
     } as Team;
-    this.teamService.updateTeam(updatedTeam).subscribe((result) => {
-      this.dialogRef.close(result);
-    });
+    this.teamService.updateTeam(updatedTeam)
+      .subscribe((result) => {
+        this.dialogRef.close(result);
+      });
   }
 
-  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
+  getErrorMessage(
+    error: string, field: string, firstNumber: number | null, secondNumber: number | null
+  ): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error)
+      .format(firstNumber, secondNumber);
   }
 
   getDialogTitle(): string {

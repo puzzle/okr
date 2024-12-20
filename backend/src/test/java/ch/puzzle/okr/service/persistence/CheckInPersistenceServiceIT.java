@@ -1,23 +1,22 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.checkin.CheckIn;
-import ch.puzzle.okr.multitenancy.TenantContext;
-import ch.puzzle.okr.test.SpringIntegrationTest;
-import ch.puzzle.okr.test.TestHelper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Objects;
-
 import static ch.puzzle.okr.Constants.CHECK_IN;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
+import java.util.List;
+import java.util.Objects;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringIntegrationTest
 class CheckInPersistenceServiceIT {

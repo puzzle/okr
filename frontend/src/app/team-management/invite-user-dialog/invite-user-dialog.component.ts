@@ -10,17 +10,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-invite-user-dialog',
   templateUrl: './invite-user-dialog.component.html',
-  styleUrl: './invite-user-dialog.component.scss',
+  styleUrl: './invite-user-dialog.component.scss'
 })
 export class InviteUserDialogComponent {
   form: FormArray<FormGroup<NewUserForm<FormControl>>>;
+
   triedToSubmit = false;
 
   constructor(
     private readonly userService: UserService,
     private readonly dialogRef: DialogRef,
     private readonly formBuilder: NonNullableFormBuilder,
-    private readonly uniqueMailValidator: UniqueEmailValidator,
+    private readonly uniqueMailValidator: UniqueEmailValidator
   ) {
     this.form = this.formBuilder.array([this.createUserFormGroup()]);
     this.form.valueChanges
@@ -33,7 +34,8 @@ export class InviteUserDialogComponent {
     if (!this.form.valid) {
       return;
     }
-    this.userService.createUsers(this.extractFormValue()).subscribe(() => this.dialogRef.close());
+    this.userService.createUsers(this.extractFormValue())
+      .subscribe(() => this.dialogRef.close());
   }
 
   private extractFormValue(): NewUser[] {
@@ -50,14 +52,16 @@ export class InviteUserDialogComponent {
 
   private createUserFormGroup() {
     return this.formBuilder.group({
-      firstname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
-      lastname: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+      firstname: this.formBuilder.control('', [Validators.required,
+        Validators.minLength(1)]),
+      lastname: this.formBuilder.control('', [Validators.required,
+        Validators.minLength(1)]),
       email: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(1),
         Validators.email,
-        this.uniqueMailValidator.validate.bind(this.uniqueMailValidator),
-      ]),
+        this.uniqueMailValidator.validate.bind(this.uniqueMailValidator)
+      ])
     });
   }
 

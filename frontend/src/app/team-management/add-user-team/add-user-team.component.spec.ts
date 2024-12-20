@@ -14,14 +14,16 @@ describe('AddUserTeamComponent', () => {
   const team3Copy = { ...team3 };
 
   const teamServiceMock = {
-    getAllTeams: jest.fn(),
+    getAllTeams: jest.fn()
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [AddUserTeamComponent],
-      providers: [{ provide: TeamService, useValue: teamServiceMock }],
-    }).compileComponents();
+      providers: [{ provide: TeamService,
+        useValue: teamServiceMock }]
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -29,14 +31,17 @@ describe('AddUserTeamComponent', () => {
     component = fixture.componentInstance;
     teamService = TestBed.inject(TeamService);
 
-    teamServiceMock.getAllTeams.mockReturnValue(of([team1Copy, team2Copy, team3Copy]));
+    teamServiceMock.getAllTeams.mockReturnValue(of([team1Copy,
+      team2Copy,
+      team3Copy]));
     component.currentTeams$ = of(testUser.userTeamList);
 
     fixture.detectChanges();
   });
 
   it('should create the component', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should filter selectableAdminTeams correctly', (done) => {
@@ -45,8 +50,10 @@ describe('AddUserTeamComponent', () => {
     team3Copy.writeable = false;
     component.ngOnInit();
     component.selectableAdminTeams$!.subscribe((teams) => {
-      expect(teams.length).toBe(1);
-      expect(teams[0].id).toBe(team2Copy.id);
+      expect(teams.length)
+        .toBe(1);
+      expect(teams[0].id)
+        .toBe(team2Copy.id);
       done();
     });
   });
@@ -57,24 +64,30 @@ describe('AddUserTeamComponent', () => {
     team3Copy.writeable = false;
     component.ngOnInit();
     component.allAdminTeams$!.subscribe((teams) => {
-      expect(teams.length).toBe(2);
-      expect(teams[0].id).toBe(team1Copy.id);
-      expect(teams[1].id).toBe(team2Copy.id);
-      expect(component.showAddButton(teams)).toBeTruthy();
+      expect(teams.length)
+        .toBe(2);
+      expect(teams[0].id)
+        .toBe(team1Copy.id);
+      expect(teams[1].id)
+        .toBe(team2Copy.id);
+      expect(component.showAddButton(teams))
+        .toBeTruthy();
       done();
     });
   });
 
   it('createUserTeam should create the userTeam', () => {
     component.createUserTeam(team1Copy);
-    expect(component.userTeam).toStrictEqual({
-      team: team1Copy,
-      isTeamAdmin: false,
-    });
+    expect(component.userTeam)
+      .toStrictEqual({
+        team: team1Copy,
+        isTeamAdmin: false
+      });
   });
 
   it('save should throw exception if userTeam is undefined', () => {
-    expect(() => component.save()).toThrowError('UserTeam should be defined here');
+    expect(() => component.save())
+      .toThrowError('UserTeam should be defined here');
   });
 
   it('save should emit addUserTeam event and set userTeam to undefined', (done) => {
@@ -83,21 +96,31 @@ describe('AddUserTeamComponent', () => {
       done();
     });
     component.save();
-    expect(component.userTeam).toBe(undefined);
+    expect(component.userTeam)
+      .toBe(undefined);
   });
 
   it('should test showAddButton', () => {
     component.userTeam = testUser.userTeamList[0];
-    expect(component.showAddButton(null)).toBeFalsy();
-    expect(component.showAddButton([team1Copy, team2Copy])).toBeFalsy();
+    expect(component.showAddButton(null))
+      .toBeFalsy();
+    expect(component.showAddButton([team1Copy,
+      team2Copy]))
+      .toBeFalsy();
     component.userTeam = undefined;
-    expect(component.showAddButton([])).toBeFalsy();
-    expect(component.showAddButton([team1Copy, team2Copy])).toBeTruthy();
+    expect(component.showAddButton([]))
+      .toBeFalsy();
+    expect(component.showAddButton([team1Copy,
+      team2Copy]))
+      .toBeTruthy();
   });
 
   it('should test addButtonDisabled', () => {
-    expect(component.addButtonDisabled([team1Copy])).toBeFalsy();
-    expect(component.addButtonDisabled([])).toBeTruthy();
-    expect(component.addButtonDisabled(null)).toBeTruthy();
+    expect(component.addButtonDisabled([team1Copy]))
+      .toBeFalsy();
+    expect(component.addButtonDisabled([]))
+      .toBeTruthy();
+    expect(component.addButtonDisabled(null))
+      .toBeTruthy();
   });
 });

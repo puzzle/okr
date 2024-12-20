@@ -11,44 +11,57 @@ describe('ToasterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToasterService],
+      providers: [ToasterService]
     });
     service = TestBed.inject(ToasterService);
     toastr = TestBed.inject(ToastrService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service)
+      .toBeTruthy();
   });
 
   it('showSuccess should call right method', () => {
     jest.spyOn(toastr, 'success');
     service.showSuccess('test');
-    expect(toastr.success).toBeCalledWith('test', 'Erfolgreich!');
+    expect(toastr.success)
+      .toBeCalledWith('test', 'Erfolgreich!');
   });
 
   it('showError should call right method', () => {
     jest.spyOn(toastr, 'error');
     service.showError('test');
-    expect(toastr.error).toBeCalledWith('test', 'Fehler!');
+    expect(toastr.error)
+      .toBeCalledWith('test', 'Fehler!');
   });
 
   it('showWarn should call right method', () => {
     jest.spyOn(toastr, 'warning');
     service.showWarn('test');
-    expect(toastr.warning).toBeCalledWith('test', 'Warnung!');
+    expect(toastr.warning)
+      .toBeCalledWith('test', 'Warnung!');
   });
 
   it.each([
-    [ToasterType.SUCCESS, 'message', 'showSuccess'],
-    [ToasterType.WARN, 'message', 'showWarn'],
-    [ToasterType.ERROR, 'message', 'showError'],
-    [999, 'message', 'showSuccess'],
+    [ToasterType.SUCCESS,
+      'message',
+      'showSuccess'],
+    [ToasterType.WARN,
+      'message',
+      'showWarn'],
+    [ToasterType.ERROR,
+      'message',
+      'showError'],
+    [999,
+      'message',
+      'showSuccess']
   ])('showWarn should call right method', (toasterType: number, message: string, func: any) => {
     const spy = jest.spyOn(service, func);
 
     service.showCustomToaster(message, toasterType);
 
-    expect(spy).toBeCalledWith(message);
+    expect(spy)
+      .toBeCalledWith(message);
   });
 });

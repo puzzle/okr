@@ -1,5 +1,8 @@
 package ch.puzzle.okr.models;
 
 public enum State {
-    SUCCESSFUL, NOTSUCCESSFUL, ONGOING, DRAFT
+    SUCCESSFUL,
+    NOTSUCCESSFUL,
+    ONGOING,
+    DRAFT
 }

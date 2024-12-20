@@ -9,7 +9,7 @@ import {
   checkInOrdinal,
   keyResultActions,
   keyResultMetric,
-  keyResultOrdinal,
+  keyResultOrdinal
 } from '../../../shared/testData';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,18 +31,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { KeyResultMetric } from '../../../shared/types/model/KeyResultMetric';
 
 const dialogMock = {
-  close: jest.fn(),
+  close: jest.fn()
 };
 
 const checkInServiceMock = {
-  saveCheckIn: jest.fn(),
+  saveCheckIn: jest.fn()
 };
 
 const actionServiceMock = {
-  updateActions: jest.fn(),
+  updateActions: jest.fn()
 };
 
 describe('CheckInFormComponent', () => {
@@ -64,20 +63,26 @@ describe('CheckInFormComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
-          de: de,
+          de: de
         }),
-        MatDividerModule,
+        MatDividerModule
       ],
       providers: [
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: MAT_DIALOG_DATA, useValue: { keyResult: {} } },
-        { provide: MatDialogRef, useValue: dialogMock },
-        { provide: CheckInService, useValue: checkInServiceMock },
-        { provide: ActionService, useValue: actionServiceMock },
+        { provide: MAT_DIALOG_DATA,
+          useValue: { keyResult: {} } },
+        { provide: MatDialogRef,
+          useValue: dialogMock },
+        { provide: CheckInService,
+          useValue: checkInServiceMock },
+        { provide: ActionService,
+          useValue: actionServiceMock }
       ],
-      declarations: [CheckInFormComponent, DialogTemplateCoreComponent, ConfidenceComponent],
+      declarations: [CheckInFormComponent,
+        DialogTemplateCoreComponent,
+        ConfidenceComponent]
     });
     fixture = TestBed.createComponent(CheckInFormComponent);
     component = fixture.componentInstance;
@@ -85,10 +90,11 @@ describe('CheckInFormComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
-  it('should save check-in correctly if key result is metric', waitForAsync(async () => {
+  it('should save check-in correctly if key result is metric', waitForAsync(async() => {
     component.checkIn = checkInMetric;
     component.keyResult = keyResultMetric;
     component.dialogForm.controls['value'].setValue(checkInMetric?.value!.toString());
@@ -100,19 +106,21 @@ describe('CheckInFormComponent', () => {
     actionServiceMock.updateActions.mockReturnValue(of(action2));
     component.saveCheckIn();
 
-    expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
-      id: checkInMetric.id,
-      version: checkInMetric.version,
-      confidence: checkInMetric.confidence,
-      value: checkInMetric.value!.toString(),
-      changeInfo: checkInMetric.changeInfo,
-      initiatives: checkInMetric.initiatives,
-      keyResultId: keyResultMetric.id,
-    });
-    expect(actionServiceMock.updateActions).toHaveBeenCalled();
+    expect(checkInServiceMock.saveCheckIn)
+      .toHaveBeenCalledWith({
+        id: checkInMetric.id,
+        version: checkInMetric.version,
+        confidence: checkInMetric.confidence,
+        value: checkInMetric.value!.toString(),
+        changeInfo: checkInMetric.changeInfo,
+        initiatives: checkInMetric.initiatives,
+        keyResultId: keyResultMetric.id
+      });
+    expect(actionServiceMock.updateActions)
+      .toHaveBeenCalled();
   }));
 
-  it('should save check-in correctly if key result is ordinal', waitForAsync(async () => {
+  it('should save check-in correctly if key result is ordinal', waitForAsync(async() => {
     component.checkIn = checkInOrdinal;
     component.keyResult = keyResultOrdinal;
     component.dialogForm.controls['value'].setValue(checkInOrdinal?.zone!.toString());
@@ -124,56 +132,61 @@ describe('CheckInFormComponent', () => {
     actionServiceMock.updateActions.mockReturnValue(of(action2));
     component.saveCheckIn();
 
-    expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
-      id: checkInOrdinal.id,
-      version: checkInOrdinal.version,
-      confidence: checkInOrdinal.confidence,
-      zone: checkInOrdinal.zone,
-      changeInfo: checkInOrdinal.changeInfo,
-      initiatives: checkInOrdinal.initiatives,
-      keyResultId: keyResultOrdinal.id,
-    });
+    expect(checkInServiceMock.saveCheckIn)
+      .toHaveBeenCalledWith({
+        id: checkInOrdinal.id,
+        version: checkInOrdinal.version,
+        confidence: checkInOrdinal.confidence,
+        zone: checkInOrdinal.zone,
+        changeInfo: checkInOrdinal.changeInfo,
+        initiatives: checkInOrdinal.initiatives,
+        keyResultId: keyResultOrdinal.id
+      });
   }));
 
-  it('should set default values if form check-in input is not null', waitForAsync(async () => {
+  it('should set default values if form check-in input is not null', waitForAsync(async() => {
     component.data.checkIn = checkInMetric;
     component.setDefaultValues();
-    expect(component.dialogForm.value).toStrictEqual({
-      confidence: checkInMetric.confidence,
-      value: checkInMetric.value!.toString(),
-      changeInfo: checkInMetric.changeInfo,
-      initiatives: checkInMetric.initiatives,
-      actionList: undefined,
-    });
+    expect(component.dialogForm.value)
+      .toStrictEqual({
+        confidence: checkInMetric.confidence,
+        value: checkInMetric.value!.toString(),
+        changeInfo: checkInMetric.changeInfo,
+        initiatives: checkInMetric.initiatives,
+        actionList: undefined
+      });
   }));
 
-  it('should set default values if last check-in of key result is not null', waitForAsync(async () => {
+  it('should set default values if last check-in of key result is not null', waitForAsync(async() => {
     component.keyResult = keyResultOrdinal;
     component.ngOnInit();
     component.setDefaultValues();
-    expect(component.dialogForm.value).toStrictEqual({
-      confidence: keyResultOrdinal.lastCheckIn!.confidence,
-      value: '',
-      changeInfo: '',
-      initiatives: '',
-      actionList: [],
-    });
+    expect(component.dialogForm.value)
+      .toStrictEqual({
+        confidence: keyResultOrdinal.lastCheckIn!.confidence,
+        value: '',
+        changeInfo: '',
+        initiatives: '',
+        actionList: []
+      });
   }));
 
-  it('should set default values with actionList on KeyResult', waitForAsync(async () => {
+  it('should set default values with actionList on KeyResult', waitForAsync(async() => {
     component.keyResult = keyResultActions;
     component.ngOnInit();
     component.setDefaultValues();
-    expect(component.dialogForm.value).toStrictEqual({
-      confidence: keyResultActions.lastCheckIn!.confidence,
-      value: '',
-      changeInfo: '',
-      initiatives: '',
-      actionList: [action1, action2],
-    });
+    expect(component.dialogForm.value)
+      .toStrictEqual({
+        confidence: keyResultActions.lastCheckIn!.confidence,
+        value: '',
+        changeInfo: '',
+        initiatives: '',
+        actionList: [action1,
+          action2]
+      });
   }));
 
-  it('should call actionService when saving CheckIn', waitForAsync(async () => {
+  it('should call actionService when saving CheckIn', waitForAsync(async() => {
     checkInServiceMock.saveCheckIn.mockReturnValue(of(true));
     actionServiceMock.updateActions.mockReturnValue(of(true));
 
@@ -181,6 +194,7 @@ describe('CheckInFormComponent', () => {
     component.ngOnInit();
     component.setDefaultValues();
     component.saveCheckIn();
-    expect(actionServiceMock.updateActions).toHaveBeenCalled();
+    expect(actionServiceMock.updateActions)
+      .toHaveBeenCalled();
   }));
 });

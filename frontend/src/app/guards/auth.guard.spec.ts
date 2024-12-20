@@ -9,76 +9,90 @@ const oAuthMock = {
   initCodeFlow: jest.fn(),
   loadDiscoveryDocumentAndTryLogin: jest.fn(),
   hasValidIdToken: jest.fn(),
-  setupAutomaticSilentRefresh: jest.fn(),
+  setupAutomaticSilentRefresh: jest.fn()
 };
 
 const routerMock = {
-  navigateByUrl: jest.fn(),
+  navigateByUrl: jest.fn()
 };
 
 const route = { queryParamMap: new Map() };
 
 describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) =>
-    TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+  const executeGuard: CanActivateFn = (...guardParameters) => TestBed.runInInjectionContext(() => authGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: OAuthService,
-          useValue: oAuthMock,
-        },
-        {
-          provide: Router,
-          useValue: routerMock,
-        },
-      ],
+      providers: [{
+        provide: OAuthService,
+        useValue: oAuthMock
+      },
+      {
+        provide: Router,
+        useValue: routerMock
+      }]
     });
-    jest.spyOn(oAuthMock, 'initCodeFlow').mockReturnValue(true);
-    jest.spyOn(oAuthMock, 'loadDiscoveryDocumentAndTryLogin').mockReturnValue(Promise.resolve(true));
-    jest.spyOn(oAuthMock, 'setupAutomaticSilentRefresh').mockReturnValue(true);
-    jest.spyOn(routerMock, 'navigateByUrl').mockReturnValue(of().toPromise());
+    jest.spyOn(oAuthMock, 'initCodeFlow')
+      .mockReturnValue(true);
+    jest.spyOn(oAuthMock, 'loadDiscoveryDocumentAndTryLogin')
+      .mockReturnValue(Promise.resolve(true));
+    jest.spyOn(oAuthMock, 'setupAutomaticSilentRefresh')
+      .mockReturnValue(true);
+    jest.spyOn(routerMock, 'navigateByUrl')
+      .mockReturnValue(of()
+        .toPromise());
     oAuthMock.initCodeFlow.mockReset();
     oAuthMock.setupAutomaticSilentRefresh.mockReset();
     routerMock.navigateByUrl.mockReset();
   });
 
   it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+    expect(executeGuard)
+      .toBeTruthy();
   });
 
-  it('should not call initCodeFlow if token is valid and call router if state param exist', async () => {
-    jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(true);
+  it('should not call initCodeFlow if token is valid and call router if state param exist', async() => {
+    jest.spyOn(oAuthMock, 'hasValidIdToken')
+      .mockReturnValue(true);
     route.queryParamMap.set('state', 1234);
 
     const result = await runAuthGuardWithContext(authGuard);
 
-    expect(result).toBe(false);
-    expect(oAuthMock.loadDiscoveryDocumentAndTryLogin).toHaveBeenCalled();
+    expect(result)
+      .toBe(false);
+    expect(oAuthMock.loadDiscoveryDocumentAndTryLogin)
+      .toHaveBeenCalled();
     expect(oAuthMock.initCodeFlow).not.toHaveBeenCalled();
-    expect(oAuthMock.setupAutomaticSilentRefresh).toHaveBeenCalled();
+    expect(oAuthMock.setupAutomaticSilentRefresh)
+      .toHaveBeenCalled();
 
-    expect(routerMock.navigateByUrl).toHaveBeenCalled();
+    expect(routerMock.navigateByUrl)
+      .toHaveBeenCalled();
   });
 
-  it('should not call router if state param does not exist', async () => {
-    jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(true);
+  it('should not call router if state param does not exist', async() => {
+    jest.spyOn(oAuthMock, 'hasValidIdToken')
+      .mockReturnValue(true);
     route.queryParamMap.set('state', null);
 
     const result = await runAuthGuardWithContext(authGuard);
 
-    expect(result).toBeTruthy();
+    expect(result)
+      .toBeTruthy();
     expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
   });
 
-  it('should call initCodeFlow if token is invalid', async () => {
-    jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(false);
+  it('should call initCodeFlow if token is invalid', async() => {
+    jest.spyOn(oAuthMock, 'hasValidIdToken')
+      .mockReturnValue(false);
     const result = await runAuthGuardWithContext(authGuard);
 
-    expect(result).toBe(false);
-    expect(oAuthMock.loadDiscoveryDocumentAndTryLogin).toHaveBeenCalled();
-    expect(oAuthMock.initCodeFlow).toHaveBeenCalled();
+    expect(result)
+      .toBe(false);
+    expect(oAuthMock.loadDiscoveryDocumentAndTryLogin)
+      .toHaveBeenCalled();
+    expect(oAuthMock.initCodeFlow)
+      .toHaveBeenCalled();
     expect(oAuthMock.setupAutomaticSilentRefresh).not.toHaveBeenCalled();
   });
 

@@ -1,5 +1,11 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -7,19 +13,12 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.validation.ActionValidationService;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ActionBusinessServiceTest {
@@ -32,12 +31,30 @@ class ActionBusinessServiceTest {
     @InjectMocks
     private ActionBusinessService actionBusinessService;
 
-    private KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(10D).withStretchGoal(50D)
-            .withUnit(Unit.CHF).withId(8L).withTitle("Keyresult Metric").build();
-    private Action action1 = Action.Builder.builder().withId(1L).withAction("Neue Katze").withIsChecked(false)
-            .withPriority(0).withKeyResult(metricKeyResult).build();
-    private Action action2 = Action.Builder.builder().withId(2L).withAction("Neues Lama").withIsChecked(true)
-            .withPriority(1).withKeyResult(metricKeyResult).build();
+    private KeyResult metricKeyResult = KeyResultMetric.Builder
+            .builder()
+            .withBaseline(10D)
+            .withStretchGoal(50D)
+            .withUnit(Unit.CHF)
+            .withId(8L)
+            .withTitle("Keyresult Metric")
+            .build();
+    private Action action1 = Action.Builder
+            .builder()
+            .withId(1L)
+            .withAction("Neue Katze")
+            .withIsChecked(false)
+            .withPriority(0)
+            .withKeyResult(metricKeyResult)
+            .build();
+    private Action action2 = Action.Builder
+            .builder()
+            .withId(2L)
+            .withAction("Neues Lama")
+            .withIsChecked(true)
+            .withPriority(1)
+            .withKeyResult(metricKeyResult)
+            .build();
     private List<Action> actionList = List.of(action1, action2);
 
     @Test
@@ -78,8 +95,13 @@ class ActionBusinessServiceTest {
 
     @Test
     void shouldCreateActionWhenUpdateWithNoId() {
-        Action action = Action.Builder.builder().withAction("Neue Katze").withPriority(0).withIsChecked(false)
-                .withKeyResult(metricKeyResult).build();
+        Action action = Action.Builder
+                .builder()
+                .withAction("Neue Katze")
+                .withPriority(0)
+                .withIsChecked(false)
+                .withKeyResult(metricKeyResult)
+                .build();
         actionBusinessService.updateEntities(List.of(action));
 
         verify(actionPersistenceService, times(1)).save(action);
@@ -95,10 +117,20 @@ class ActionBusinessServiceTest {
 
     @Test
     void shouldCreateMultipleActions() {
-        Action newAction1 = Action.Builder.builder().withAction("Neuer Drucker").withKeyResult(metricKeyResult)
-                .withPriority(0).withIsChecked(false).build();
-        Action newAction2 = Action.Builder.builder().withAction("Neues Papier").withKeyResult(metricKeyResult)
-                .withPriority(1).withIsChecked(false).build();
+        Action newAction1 = Action.Builder
+                .builder()
+                .withAction("Neuer Drucker")
+                .withKeyResult(metricKeyResult)
+                .withPriority(0)
+                .withIsChecked(false)
+                .build();
+        Action newAction2 = Action.Builder
+                .builder()
+                .withAction("Neues Papier")
+                .withKeyResult(metricKeyResult)
+                .withPriority(1)
+                .withIsChecked(false)
+                .build();
 
         when(actionPersistenceService.save(newAction1)).thenReturn(action1);
         when(actionPersistenceService.save(newAction2)).thenReturn(action2);
@@ -112,8 +144,13 @@ class ActionBusinessServiceTest {
 
     @Test
     void shouldCreateOneAction() {
-        Action newAction1 = Action.Builder.builder().withAction("Neuer Drucker").withKeyResult(metricKeyResult)
-                .withPriority(0).withIsChecked(false).build();
+        Action newAction1 = Action.Builder
+                .builder()
+                .withAction("Neuer Drucker")
+                .withKeyResult(metricKeyResult)
+                .withPriority(0)
+                .withIsChecked(false)
+                .build();
 
         when(actionPersistenceService.save(newAction1)).thenReturn(action1);
         List<Action> createdActions = actionBusinessService.createEntities(List.of(newAction1));

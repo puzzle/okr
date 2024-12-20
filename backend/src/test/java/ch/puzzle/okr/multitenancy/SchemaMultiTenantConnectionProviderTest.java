@@ -1,16 +1,15 @@
 package ch.puzzle.okr.multitenancy;
 
-import ch.puzzle.okr.test.SpringIntegrationTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import ch.puzzle.okr.test.SpringIntegrationTest;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 @SpringIntegrationTest
 public class SchemaMultiTenantConnectionProviderTest {

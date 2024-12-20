@@ -5,14 +5,14 @@
       routerLink="/team-management"
       [attr.data-testId]="'all-teams-selector'"
       [ngClass]="{ selected: selectedTeamId === undefined }"
-      >Alle Teams ({{ teams.length }})</a
+    >Alle Teams ({{ teams.length }})</a
     >
     <a
       mat-list-item
       *ngFor="let team of teams"
       [routerLink]="['/team-management', team.id]"
       [ngClass]="{ selected: selectedTeamId === team.id }"
-      >{{ team.name }}</a
+    >{{ team.name }}</a
     >
   </mat-nav-list>
 </div>

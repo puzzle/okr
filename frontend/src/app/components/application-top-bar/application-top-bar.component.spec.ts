@@ -20,24 +20,24 @@ import { DialogService } from '../../services/dialog.service';
 const oAuthMock = {
   getIdentityClaims: jest.fn(),
   logOut: jest.fn(),
-  hasValidIdToken: jest.fn(),
+  hasValidIdToken: jest.fn()
 };
 
 const dialogServiceMock = {
-  open: jest.fn(),
+  open: jest.fn()
 };
 
 const routerMock = {
   events: of(new NavigationEnd(1, '', '')),
-  navigateByUrl: jest.fn(),
+  navigateByUrl: jest.fn()
 };
 
 const userServiceMock = {
-  getCurrentUser: () => testUser,
+  getCurrentUser: () => testUser
 };
 
 const configServiceMock = {
-  config$: of({}),
+  config$: of({})
 };
 
 describe('ApplicationTopBarComponent', () => {
@@ -47,10 +47,13 @@ describe('ApplicationTopBarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatMenuModule, NoopAnimationsModule, MatDialogModule],
+      imports: [MatMenuModule,
+        NoopAnimationsModule,
+        MatDialogModule],
       declarations: [ApplicationTopBarComponent],
       providers: [
-        { provide: OAuthService, useValue: oAuthMock },
+        { provide: OAuthService,
+          useValue: oAuthMock },
         { provide: HttpClient },
         { provide: HttpHandler },
         { provide: UrlHelperService },
@@ -58,23 +61,24 @@ describe('ApplicationTopBarComponent', () => {
         { provide: DateTimeProvider },
         {
           provide: DialogService,
-          useValue: dialogServiceMock,
+          useValue: dialogServiceMock
         },
         {
           provide: Router,
-          useValue: routerMock,
+          useValue: routerMock
         },
         {
           provide: UserService,
-          useValue: userServiceMock,
+          useValue: userServiceMock
         },
         {
           provide: ConfigService,
-          useValue: configServiceMock,
-        },
+          useValue: configServiceMock
+        }
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ApplicationTopBarComponent);
     component = fixture.componentInstance;
@@ -83,21 +87,26 @@ describe('ApplicationTopBarComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should set full name from user service', () => {
-    expect(component.userFullName).toBe('Bob Baumeister');
+    expect(component.userFullName)
+      .toBe('Bob Baumeister');
   });
 
-  it('logout function should get called on button click', async () => {
-    routerMock.navigateByUrl.mockReturnValue(of().toPromise());
+  it('logout function should get called on button click', async() => {
+    routerMock.navigateByUrl.mockReturnValue(of()
+      .toPromise());
     const harness = await loader.getHarness(MatMenuHarness);
     await harness.open();
     fixture.detectChanges();
-    harness.getItems().then((items) => {
-      items[0].click();
-      expect(oAuthMock.logOut).toBeCalledTimes(1);
-    });
+    harness.getItems()
+      .then((items) => {
+        items[0].click();
+        expect(oAuthMock.logOut)
+          .toBeCalledTimes(1);
+      });
   });
 });

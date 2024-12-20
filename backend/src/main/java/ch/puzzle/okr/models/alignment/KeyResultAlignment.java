@@ -1,7 +1,6 @@
 package ch.puzzle.okr.models.alignment;
 
 import ch.puzzle.okr.models.keyresult.KeyResult;
-
 import jakarta.persistence.*;
 import java.util.Objects;
 

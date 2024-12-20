@@ -15,12 +15,15 @@ import { CheckInOrdinalMin } from '../../shared/types/model/CheckInOrdinalMin';
 @Component({
   selector: 'app-check-in-history-dialog',
   templateUrl: './check-in-history-dialog.component.html',
-  styleUrls: ['./check-in-history-dialog.component.scss'],
+  styleUrls: ['./check-in-history-dialog.component.scss']
 })
 export class CheckInHistoryDialogComponent implements OnInit {
   keyResult!: KeyResult;
+
   isComplete!: boolean;
+
   checkInHistory$: Observable<CheckInMin[]> = of([]);
+
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(
@@ -28,7 +31,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
     private checkInService: CheckInService,
     private dialogService: DialogService,
     public dialogRef: MatDialogRef<CheckInHistoryDialogComponent>,
-    private refreshDataService: RefreshDataService,
+    private refreshDataService: RefreshDataService
   ) {}
 
   ngOnInit(): void {
@@ -41,14 +44,15 @@ export class CheckInHistoryDialogComponent implements OnInit {
     const dialogRef = this.dialogService.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult,
-        checkIn: checkIn,
-      },
+        checkIn: checkIn
+      }
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.loadCheckInHistory();
-      this.refreshDataService.reloadKeyResultSubject.next();
-      this.refreshDataService.markDataRefresh();
-    });
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.loadCheckInHistory();
+        this.refreshDataService.reloadKeyResultSubject.next();
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   loadCheckInHistory() {

@@ -1,16 +1,15 @@
 package ch.puzzle.okr.service.authorization;
 
+import static ch.puzzle.okr.Constants.TEAM;
+import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-
-import static ch.puzzle.okr.Constants.TEAM;
-import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TeamAuthorizationService {
@@ -18,7 +17,7 @@ public class TeamAuthorizationService {
     private final AuthorizationService authorizationService;
 
     public TeamAuthorizationService(TeamBusinessService teamBusinessService,
-            AuthorizationService authorizationService) {
+                                    AuthorizationService authorizationService) {
         this.teamBusinessService = teamBusinessService;
         this.authorizationService = authorizationService;
     }

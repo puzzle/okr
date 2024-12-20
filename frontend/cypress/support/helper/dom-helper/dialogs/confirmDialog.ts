@@ -3,21 +3,27 @@ import Chainable = Cypress.Chainable;
 
 export default class ConfirmDialog extends Dialog {
   checkTitle(title: string) {
-    this.getPage().contains(title).should('exist');
+    this.getPage()
+      .contains(title)
+      .should('exist');
     return this;
   }
 
   checkDescription(title: string) {
-    this.getPage().contains(title).should('exist');
+    this.getPage()
+      .contains(title)
+      .should('exist');
     return this;
   }
 
   override submit() {
-    cy.getByTestId('confirm-yes').click();
+    cy.getByTestId('confirm-yes')
+      .click();
   }
 
   override cancel() {
-    cy.getByTestId('confirm-no').click();
+    cy.getByTestId('confirm-no')
+      .click();
   }
 
   getPage(): Chainable {

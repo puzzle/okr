@@ -3,7 +3,7 @@ import { UserRole } from '../shared/types/enums/UserRole';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'roles',
+  name: 'roles'
 })
 export class RolesPipe implements PipeTransform {
   constructor(private translate: TranslateService) {}
@@ -12,6 +12,7 @@ export class RolesPipe implements PipeTransform {
     if (!roles?.length) {
       return '';
     }
-    return roles.map((r) => this.translate.instant('USER_ROLE.' + r)).join(', ');
+    return roles.map((r) => this.translate.instant('USER_ROLE.' + r))
+      .join(', ');
   }
 }

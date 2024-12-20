@@ -2,7 +2,6 @@ package ch.puzzle.okr.test.dto.builder;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.models.State;
-
 import java.time.LocalDateTime;
 
 public class ObjectiveDtoBuilder {
@@ -81,8 +80,17 @@ public class ObjectiveDtoBuilder {
     }
 
     public ObjectiveDto build() {
-        return new ObjectiveDto(id, version, title, teamId, quarterId, quarterLabel, description, state, createdOn,
-                modifiedOn, writeable);
+        return new ObjectiveDto(id,
+                                version,
+                                title,
+                                teamId,
+                                quarterId,
+                                quarterLabel,
+                                description,
+                                state,
+                                createdOn,
+                                modifiedOn,
+                                writeable);
     }
 
 }

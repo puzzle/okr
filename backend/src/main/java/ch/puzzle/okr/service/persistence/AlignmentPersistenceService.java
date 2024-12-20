@@ -1,14 +1,13 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.ALIGNMENT;
+
 import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.repository.AlignmentRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-
-import static ch.puzzle.okr.Constants.ALIGNMENT;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long, AlignmentRepository> {

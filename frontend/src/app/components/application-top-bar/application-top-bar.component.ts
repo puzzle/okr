@@ -10,13 +10,17 @@ import { getFullNameFromUser } from '../../shared/types/model/User';
   selector: 'app-application-top-bar',
   templateUrl: './application-top-bar.component.html',
   styleUrls: ['./application-top-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
-  userFullName: string = '';
+  userFullName = '';
+
   menuIsOpen = false;
-  logoSrc$ = new BehaviorSubject<String>('assets/images/empty.svg');
+
+  logoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
+
   helpSiteUrl = new BehaviorSubject<string>('https://en.wikipedia.org/wiki/Objectives_and_key_results');
+
   private subscription?: Subscription;
 
   constructor(
@@ -24,7 +28,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private configService: ConfigService,
     private router: Router,
-    private readonly cd: ChangeDetectorRef,
+    private readonly cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +40,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
         if (config.helpSiteUrl) {
           this.helpSiteUrl.next(config.helpSiteUrl);
         }
-      },
+      }
     });
     this.initUserFullName();
   }
@@ -47,9 +51,10 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
 
   logOut() {
     const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
-    this.router.navigateByUrl(currentUrlTree).then(() => {
-      this.oauthService.logOut();
-    });
+    this.router.navigateByUrl(currentUrlTree)
+      .then(() => {
+        this.oauthService.logOut();
+      });
   }
 
   private initUserFullName() {

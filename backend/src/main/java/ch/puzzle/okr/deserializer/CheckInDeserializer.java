@@ -1,14 +1,13 @@
 package ch.puzzle.okr.deserializer;
 
+import static ch.puzzle.okr.Constants.*;
+
 import ch.puzzle.okr.dto.checkin.*;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
-
-import static ch.puzzle.okr.Constants.*;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CheckInDeserializer extends JsonDeserializer<CheckInDto> implements MetricOrdinalDeserializer {
@@ -17,7 +16,7 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> implements
     private final KeyResultBusinessService keyResultBusinessService;
 
     public CheckInDeserializer(DeserializerHelper deserializerHelper,
-            KeyResultBusinessService keyResultBusinessService) {
+                               KeyResultBusinessService keyResultBusinessService) {
         this.deserializerHelper = deserializerHelper;
         this.keyResultBusinessService = keyResultBusinessService;
     }

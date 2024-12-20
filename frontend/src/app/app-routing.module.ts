@@ -24,39 +24,39 @@ const routes: Routes = [
     path: '',
     component: OverviewComponent,
     resolve: {
-      user: currentUserResolver,
+      user: currentUserResolver
     },
-    children: [
-      {
-        path: 'details',
-        component: SidepanelComponent,
-        children: [
-          {
-            path: 'objective/:id',
-            component: ObjectiveDetailComponent,
-          },
-          {
-            path: 'keyresult/:id',
-            component: KeyresultDetailComponent,
-          },
-        ],
+    children: [{
+      path: 'details',
+      component: SidepanelComponent,
+      children: [{
+        path: 'objective/:id',
+        component: ObjectiveDetailComponent
       },
-    ],
-    canActivate: [authGuard],
+      {
+        path: 'keyresult/:id',
+        component: KeyresultDetailComponent
+      }]
+    }],
+    canActivate: [authGuard]
   },
   {
     path: 'team-management',
     loadChildren: () => import('./team-management/team-management.module').then((m) => m.TeamManagementModule),
     canActivate: [authGuard],
-    resolve: { user: currentUserResolver },
+    resolve: { user: currentUserResolver }
   },
-  { path: 'objective', redirectTo: 'details/objective' },
-  { path: 'keyresult', redirectTo: 'details/keyresult' },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: 'objective',
+    redirectTo: 'details/objective' },
+  { path: 'keyresult',
+    redirectTo: 'details/keyresult' },
+  { path: '**',
+    redirectTo: '',
+    pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -15,16 +15,20 @@ export default class CheckInDialog extends Dialog {
   selectOrdinalCheckInZone(zone: 'fail' | 'commit' | 'target' | 'stretch') {
     switch (zone) {
       case 'fail':
-        cy.getByTestId('fail-radio').click();
+        cy.getByTestId('fail-radio')
+          .click();
         break;
       case 'commit':
-        cy.getByTestId('commit-radio').click();
+        cy.getByTestId('commit-radio')
+          .click();
         break;
       case 'target':
-        cy.getByTestId('target-radio').click();
+        cy.getByTestId('target-radio')
+          .click();
         break;
       case 'stretch':
-        cy.getByTestId('stretch-radio').click();
+        cy.getByTestId('stretch-radio')
+          .click();
         break;
     }
     return this;
@@ -36,7 +40,9 @@ export default class CheckInDialog extends Dialog {
   }
 
   setCheckInConfidence(confidence: number) {
-    cy.getByTestId('confidence-slider').find('input').focus();
+    cy.getByTestId('confidence-slider')
+      .find('input')
+      .focus();
     for (let i = 0; i < 10; i++) {
       cy.realPress('ArrowLeft');
     }
@@ -74,7 +80,8 @@ export default class CheckInDialog extends Dialog {
   }
 
   override submit() {
-    cy.getByTestId('submit-check-in').click();
+    cy.getByTestId('submit-check-in')
+      .click();
   }
 
   getPage(): Chainable {

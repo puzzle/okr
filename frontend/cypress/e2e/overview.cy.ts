@@ -7,7 +7,7 @@ describe('okr overview', () => {
   });
 
   it('should have the current quarter with label "Aktuell"', () => {
-    cy.getByTestId('quarterFilter').contains('Aktuell');
+    cy.getByTestId('quarter-filter').contains('Aktuell');
   });
 
   it('should have correctly ordered teams', () => {

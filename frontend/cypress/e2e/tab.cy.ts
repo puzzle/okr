@@ -31,7 +31,7 @@ describe('tabbing workflows', () => {
     cy.pressUntilContains('Logout', 'ArrowDown');
     focusedShouldHaveTestId('logout');
     cy.realPress('Escape');
-    tabAndCheck('quarterFilter', 'GJ');
+    tabAndCheck('quarter-filter', 'GJ');
     tabAndCheck('objective-search');
     cy.tabForward();
     cy.focused()

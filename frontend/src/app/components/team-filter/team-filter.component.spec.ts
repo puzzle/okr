@@ -73,7 +73,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   }));
 
-  it('should select the right chips', waitForAsync(async () => {
+  it('should select the correct chips', waitForAsync(async () => {
     const teamIds = teamList.map((e) => e.id).filter((e, i) => i < 2);
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -90,7 +90,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   }));
 
-  it('activeTeams array should contain every team when all teams are shown', waitForAsync(async () => {
+  it('should have all teams in activeTeams array when all teams are shown', waitForAsync(async () => {
     const teamIds = teamList.map((e) => e.id);
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -107,7 +107,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toHaveBeenCalledTimes(1);
   }));
 
-  it('change filter params and reload', fakeAsync(async () => {
+  it('should update route after updating filter', fakeAsync(async () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
     const routerHarness = await RouterTestingHarness.create();
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -127,7 +127,7 @@ describe('TeamFilterComponent', () => {
     [[1, 2], 3, [1, 2, 3]],
     [[], 3, [3]],
     [[3], 3, []],
-  ])('toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
+  ])('should toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
     component.activeTeams = activeTeams;
     jest.spyOn(component, 'areAllTeamsShown');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -145,7 +145,7 @@ describe('TeamFilterComponent', () => {
     [[1, 2, 3], true],
     [[], false],
     [[1, 2, 4], false],
-  ])('are all teams shown', (activeTeams: number[], expected: boolean) => {
+  ])('should correctly determine if all teams are shown', (activeTeams: number[], expected: boolean) => {
     component.activeTeams = activeTeams;
     expect(component.areAllTeamsShown()).toBe(expected);
   });
@@ -158,7 +158,7 @@ describe('TeamFilterComponent', () => {
       [1, 2, 3],
     ],
     [[1, 2, 3], []],
-  ])('select all', (currentTeams: number[], expectedTeams: number[]) => {
+  ])('should correctly select all teams', (currentTeams: number[], expectedTeams: number[]) => {
     component.activeTeams = currentTeams;
     jest.spyOn(component, 'changeTeamFilterParams');
     component.toggleAll();
@@ -214,7 +214,7 @@ describe('TeamFilterComponent', () => {
   it.each([
     [[1, 2, 3], '1,2,3'],
     [[], null],
-  ])('changeTeamFilterParams', async (currentTeams: number[], routingTeams: string | null) => {
+  ])('should navigate after filter update', async (currentTeams: number[], routingTeams: string | null) => {
     component.activeTeams = currentTeams;
 
     jest.spyOn(router, 'navigate');

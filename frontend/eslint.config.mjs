@@ -55,9 +55,9 @@ export default tsEslint.config(
       '@stylistic/object-curly-spacing': ['error', 'always'],
       '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
       '@stylistic/semi-style': ['error'],
-      "space-before-function-paren": ["error", "never"],
+      'space-before-function-paren': ['error', 'never'],
       '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
-      "@stylistic/space-before-function-paren": ["error", "never"],
+      '@stylistic/space-before-function-paren': ['error', 'never'],
 
       '@angular-eslint/directive-selector': [
         'error',

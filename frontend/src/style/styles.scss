@@ -384,6 +384,8 @@ table.okr-table {
   }
 
   .mdc-label {
+    display: flex;
+    align-items: center;
     overflow: hidden;
     width: 100%;
     background: $soft-grey;
@@ -393,6 +395,10 @@ table.okr-table {
   .mdc-form-field {
     width: 100%;
   }
+}
+
+.mat-mdc-checkbox {
+  padding-left: 2px;
 }
 
 @import "custom_bootstrap";

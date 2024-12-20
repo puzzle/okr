@@ -3,7 +3,8 @@ export function filterByKeyResultName(keyResultName: string) {
 }
 
 const isKeyResultName = (element: HTMLElement, keyResultName: string) => {
-  return Cypress.$(element).find(`:contains("${keyResultName}")`).length > 0;
+  return Cypress.$(element)
+    .find(`:contains("${keyResultName}")`).length > 0;
 };
 
 export function getKeyResults() {

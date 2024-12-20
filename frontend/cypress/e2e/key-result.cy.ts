@@ -76,7 +76,8 @@ describe('OKR Overview', () => {
       .fillKeyResultDescription('This is my description when creating and then open a new')
       .saveAndNew();
     cy.contains('Jaya Norris');
-    KeyResultDialog.do().checkForDialogTextMetric();
+    KeyResultDialog.do()
+      .checkForDialogTextMetric();
   });
 
   it('Create and edit KeyResult with Action Plan', () => {
@@ -103,7 +104,8 @@ describe('OKR Overview', () => {
     cy.contains('A new company');
 
     keyResultDetailPage.editKeyResult();
-    cy.getByTestId('actionInput').should('have.length', 3);
+    cy.getByTestId('actionInput')
+      .should('have.length', 3);
   });
 
   it('Edit a KeyResult without type change', () => {
@@ -114,16 +116,24 @@ describe('OKR Overview', () => {
       .checkForDialogTextOrdinal()
       .fillKeyResultDescription('This is my description')
       .submit();
-    keyResultDetailPage.visit('We want not to change keyresult title').editKeyResult();
+    keyResultDetailPage.visit('We want not to change keyresult title')
+      .editKeyResult();
 
-    cy.getByTestId('submit').should('not.be.disabled');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
     cy.contains('Key Result bearbeiten');
-    cy.getByTestId('titleInput').should('have.value', 'We want not to change keyresult title');
-    cy.getByTestId('commitZone').should('have.value', 'My commit zone');
-    cy.getByTestId('targetZone').should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone').should('have.value', 'My stretch goal');
-    cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
-    cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
+    cy.getByTestId('titleInput')
+      .should('have.value', 'We want not to change keyresult title');
+    cy.getByTestId('commitZone')
+      .should('have.value', 'My commit zone');
+    cy.getByTestId('targetZone')
+      .should('have.value', 'My target zone');
+    cy.getByTestId('stretchZone')
+      .should('have.value', 'My stretch goal');
+    cy.getByTestId('ownerInput')
+      .should('have.value', 'Jaya Norris');
+    cy.getByTestId('descriptionInput')
+      .should('have.value', 'This is my description');
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is the new title')
@@ -149,16 +159,24 @@ describe('OKR Overview', () => {
       .addActionPlanElement('Action 1')
       .addActionPlanElement('Action 2')
       .submit();
-    keyResultDetailPage.visit('Here we want to change keyresult title').editKeyResult();
+    keyResultDetailPage.visit('Here we want to change keyresult title')
+      .editKeyResult();
 
-    cy.getByTestId('submit').should('not.be.disabled');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
     cy.contains('Key Result bearbeiten');
-    cy.getByTestId('titleInput').should('have.value', 'Here we want to change keyresult title');
-    cy.getByTestId('commitZone').should('have.value', 'My commit zone');
-    cy.getByTestId('targetZone').should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone').should('have.value', 'My stretch goal');
-    cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
-    cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
+    cy.getByTestId('titleInput')
+      .should('have.value', 'Here we want to change keyresult title');
+    cy.getByTestId('commitZone')
+      .should('have.value', 'My commit zone');
+    cy.getByTestId('targetZone')
+      .should('have.value', 'My target zone');
+    cy.getByTestId('stretchZone')
+      .should('have.value', 'My stretch goal');
+    cy.getByTestId('ownerInput')
+      .should('have.value', 'Jaya Norris');
+    cy.getByTestId('descriptionInput')
+      .should('have.value', 'This is my description');
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is my new title for the new metric keyresult')
@@ -196,82 +214,126 @@ describe('OKR Overview', () => {
 
     keyResultDetailPage.close();
 
-    keyResultDetailPage.visit('Here we want to create a checkin').editKeyResult();
+    keyResultDetailPage.visit('Here we want to create a checkin')
+      .editKeyResult();
 
-    cy.getByTestId('metricTab').should('have.class', 'non-active');
+    cy.getByTestId('metricTab')
+      .should('have.class', 'non-active');
   });
 
   it('Check validation in keyresult dialog', () => {
-    overviewPage.addKeyResult().checkForDialogTextMetric();
-    cy.getByTestId('submit').should('be.disabled');
+    overviewPage.addKeyResult()
+      .checkForDialogTextMetric();
+    cy.getByTestId('submit')
+      .should('be.disabled');
     KeyResultDialog.do()
       .fillKeyResultTitle('I am a metric keyresult')
       .withMetricValues(Unit.PERCENT, '21', '52')
       .fillKeyResultDescription('This is my description');
 
-    cy.getByTestId('submit').should('not.be.disabled');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
 
-    cy.getByTestId('titleInput').clear();
-    cy.getByTestId('submit').should('be.disabled');
+    cy.getByTestId('titleInput')
+      .clear();
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Titel muss folgende Länge haben: 2-250 Zeichen');
 
-    KeyResultDialog.do().fillKeyResultTitle('My title');
-    cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('baseline').clear();
-    cy.getByTestId('submit').should('be.disabled');
+    KeyResultDialog.do()
+      .fillKeyResultTitle('My title');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
+    cy.getByTestId('baseline')
+      .clear();
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Baseline muss eine Zahl sein');
 
-    KeyResultDialog.do().withMetricValues(Unit.PERCENT, 'abc', '52');
-    cy.getByTestId('submit').should('be.disabled');
+    KeyResultDialog.do()
+      .withMetricValues(Unit.PERCENT, 'abc', '52');
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Baseline muss eine Zahl sein');
 
-    KeyResultDialog.do().withMetricValues(Unit.PERCENT, '45', '52');
-    cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('stretchGoal').clear();
-    cy.getByTestId('submit').should('be.disabled');
+    KeyResultDialog.do()
+      .withMetricValues(Unit.PERCENT, '45', '52');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
+    cy.getByTestId('stretchGoal')
+      .clear();
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Stretch Goal muss eine Zahl sein');
 
-    KeyResultDialog.do().withMetricValues(Unit.PERCENT, '45', 'abc');
-    cy.getByTestId('submit').should('be.disabled');
+    KeyResultDialog.do()
+      .withMetricValues(Unit.PERCENT, '45', 'abc');
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Stretch Goal muss eine Zahl sein');
 
-    KeyResultDialog.do().withMetricValues(Unit.PERCENT, '45', '83');
-    cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('ownerInput').clear();
-    cy.getByTestId('submit').should('be.disabled');
+    KeyResultDialog.do()
+      .withMetricValues(Unit.PERCENT, '45', '83');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
+    cy.getByTestId('ownerInput')
+      .clear();
+    cy.getByTestId('submit')
+      .should('be.disabled');
 
-    cy.getByTestId('ownerInput').type('abc');
-    cy.getByTestId('titleInput').type('Hello');
-    cy.getByTestId('submit').should('be.disabled');
+    cy.getByTestId('ownerInput')
+      .type('abc');
+    cy.getByTestId('titleInput')
+      .type('Hello');
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Owner muss ausgewählt sein');
 
-    KeyResultDialog.do().fillOwner('Bob Baumeister');
-    cy.getByTestId('submit').should('not.be.disabled');
+    KeyResultDialog.do()
+      .fillOwner('Bob Baumeister');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
 
-    cy.getByTestId('ordinalTab').click();
-    cy.getByTestId('submit').should('be.disabled');
+    cy.getByTestId('ordinalTab')
+      .click();
+    cy.getByTestId('submit')
+      .should('be.disabled');
 
-    KeyResultDialog.do().withOrdinalValues('Commit', 'Target', 'Stretch');
-    cy.getByTestId('submit').should('not.be.disabled');
+    KeyResultDialog.do()
+      .withOrdinalValues('Commit', 'Target', 'Stretch');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
 
-    cy.getByTestId('commitZone').clear();
-    cy.getByTestId('submit').should('be.disabled');
+    cy.getByTestId('commitZone')
+      .clear();
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Commit Zone muss folgende Länge haben: 1-400 Zeichen');
 
-    KeyResultDialog.do().withOrdinalValues('Commit', 'Target', 'Stretch');
-    cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('targetZone').clear();
-    cy.getByTestId('submit').should('be.disabled');
+    KeyResultDialog.do()
+      .withOrdinalValues('Commit', 'Target', 'Stretch');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
+    cy.getByTestId('targetZone')
+      .clear();
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Target Zone muss folgende Länge haben: 1-400 Zeichen');
 
-    KeyResultDialog.do().withOrdinalValues('Commit', 'Target', 'Stretch');
-    cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('stretchZone').clear();
-    cy.getByTestId('submit').should('be.disabled');
+    KeyResultDialog.do()
+      .withOrdinalValues('Commit', 'Target', 'Stretch');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
+    cy.getByTestId('stretchZone')
+      .clear();
+    cy.getByTestId('submit')
+      .should('be.disabled');
     cy.contains('Stretch Zone muss folgende Länge haben: 1-400 Zeichen');
 
-    KeyResultDialog.do().withOrdinalValues('Commit', 'Target', 'Stretch');
-    cy.getByTestId('submit').should('not.be.disabled');
+    KeyResultDialog.do()
+      .withOrdinalValues('Commit', 'Target', 'Stretch');
+    cy.getByTestId('submit')
+      .should('not.be.disabled');
   });
 
   it('Delete existing keyresult', () => {
@@ -287,12 +349,11 @@ describe('OKR Overview', () => {
       .editKeyResult()
       .deleteKeyResult()
       .checkTitle('Key Result löschen')
-      .checkDescription(
-        'Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!',
-      )
+      .checkDescription('Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!')
       .submit();
 
     cy.contains('Puzzle ITC');
-    cy.get('A keyresult to delete').should('not.exist');
+    cy.get('A keyresult to delete')
+      .should('not.exist');
   });
 });

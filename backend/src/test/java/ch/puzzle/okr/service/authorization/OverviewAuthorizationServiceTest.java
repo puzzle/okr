@@ -1,9 +1,18 @@
 package ch.puzzle.okr.service.authorization;
 
+import static ch.puzzle.okr.test.TestHelper.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,16 +21,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static ch.puzzle.okr.test.TestHelper.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OverviewAuthorizationServiceTest {
@@ -35,12 +34,17 @@ class OverviewAuthorizationServiceTest {
     private final long adminTeamId = 5L;
     private final long memberTeamId = 6L;
 
-    private final AuthorizationUser authorizationUser = new AuthorizationUser(
-            defaultUserWithTeams(1L, List.of(defaultTeam(adminTeamId)), List.of(defaultTeam(memberTeamId))));
+    private final AuthorizationUser authorizationUser = new AuthorizationUser(defaultUserWithTeams(1L,
+                                                                                                   List
+                                                                                                           .of(defaultTeam(adminTeamId)),
+                                                                                                   List
+                                                                                                           .of(defaultTeam(memberTeamId))));
     private final AuthorizationUser okrChampionUser = new AuthorizationUser(defaultOkrChampion(2L));
-    private final Overview overview = Overview.Builder.builder()
+    private final Overview overview = Overview.Builder
+            .builder()
             .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(adminTeamId).build())
-            .withObjectiveTitle("Objective 1").build();
+            .withObjectiveTitle("Objective 1")
+            .build();
 
     @DisplayName("getFilteredOverview() should do nothing when OverviewId is null")
     @Test

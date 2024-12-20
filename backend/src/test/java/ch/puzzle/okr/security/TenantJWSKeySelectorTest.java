@@ -1,21 +1,20 @@
 package ch.puzzle.okr.security;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.security.Key;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TenantJWSKeySelectorTest {
     private static final String PITC = "pitc";
@@ -40,7 +39,10 @@ public class TenantJWSKeySelectorTest {
         // act + assert
         TenantJWSKeySelector selector = new TenantJWSKeySelector(emptyTenantConfigProviderMock, jwtHelperMock);
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, //
-                () -> selector.selectKeys(jwsHeaderMock, jwtClaimsSetMock, securityContext));
+                                                                         () -> selector
+                                                                                 .selectKeys(jwsHeaderMock,
+                                                                                             jwtClaimsSetMock,
+                                                                                             securityContext));
 
         assertEquals(UNKNOWN_TENANT, illegalArgumentException.getLocalizedMessage());
     }

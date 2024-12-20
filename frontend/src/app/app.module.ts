@@ -7,7 +7,7 @@ import {
   HttpBackend,
   HttpClient,
   provideHttpClient,
-  withInterceptorsFromDi,
+  withInterceptorsFromDi
 } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -71,12 +71,12 @@ import { CustomizationService } from './services/customization.service';
 import { MetricCheckInDirective } from './components/checkin/check-in-form-metric/metric-check-in-directive';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
-  return async () => {
+  return async() => {
     const config = await firstValueFrom(configService.config$);
     oauthService.configure({
       ...environment.oauth,
       issuer: config.issuer,
-      clientId: config.clientId,
+      clientId: config.clientId
     });
   };
 }
@@ -91,14 +91,14 @@ export function storageFactory(): OAuthStorage {
 
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'LL',
+    dateInput: 'LL'
   },
   display: {
     dateInput: 'DD.MM.YYYY',
     monthYearLabel: 'DD.MM.YYYY',
     dateA11yLabel: 'DD.MM.YYYY',
-    monthYearA11yLabel: 'DD.MM.YYYY',
-  },
+    monthYearA11yLabel: 'DD.MM.YYYY'
+  }
 };
 
 @NgModule({
@@ -124,7 +124,7 @@ export const MY_FORMATS = {
     CheckInFormMetricComponent,
     CheckInFormOrdinalComponent,
     CheckInFormComponent,
-    MetricCheckInDirective,
+    MetricCheckInDirective
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -153,8 +153,8 @@ export const MY_FORMATS = {
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpBackend],
-      },
+        deps: [HttpBackend]
+      }
     }),
     OAuthModule.forRoot(),
     MatRadioModule,
@@ -170,31 +170,39 @@ export const MY_FORMATS = {
     CdkDrag,
     A11yModule,
     CdkDragHandle,
-    SharedModule,
+    SharedModule
   ],
   providers: [
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE],
+      deps: [MAT_DATE_LOCALE]
     },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-    { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: OAuthStorage, useFactory: storageFactory },
+    { provide: MAT_DATE_FORMATS,
+      useValue: MY_FORMATS },
+    { provide: HTTP_INTERCEPTORS,
+      useClass: OauthInterceptor,
+      multi: true },
+    { provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true },
+    { provide: OAuthStorage,
+      useFactory: storageFactory },
     {
       provide: APP_INITIALIZER,
       useFactory: initOauthFactory,
-      deps: [ConfigService, OAuthService, Injector],
-      multi: true,
+      deps: [ConfigService,
+        OAuthService,
+        Injector],
+      multi: true
     },
     {
       provide: Router,
-      useClass: CustomRouter,
+      useClass: CustomRouter
     },
     TranslateService,
-    provideHttpClient(withInterceptorsFromDi()),
-  ],
+    provideHttpClient(withInterceptorsFromDi())
+  ]
 })
 export class AppModule {
   constructor(private readonly customizationService: CustomizationService) {}

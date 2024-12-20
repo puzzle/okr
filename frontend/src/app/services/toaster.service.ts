@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToasterType } from '../shared/types/enums/ToasterType';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ToasterService {
   constructor(private toastr: ToastrService) {}

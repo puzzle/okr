@@ -4,7 +4,6 @@ import ch.puzzle.okr.models.Objective;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-
 import java.util.Objects;
 
 @Entity

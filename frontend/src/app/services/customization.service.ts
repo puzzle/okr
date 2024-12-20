@@ -4,15 +4,13 @@ import { CustomizationConfig, CustomStyles } from '../shared/types/model/ClientC
 import { ConfigService } from './config.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CustomizationService {
   private currentConfig?: CustomizationConfig;
 
-  constructor(
-    configService: ConfigService,
-    @Inject(DOCUMENT) private document: Document,
-  ) {
+  constructor(configService: ConfigService,
+    @Inject(DOCUMENT) private document: Document) {
     configService.config$.subscribe((config) => {
       this.updateCustomizations(config);
     });
@@ -39,7 +37,8 @@ export class CustomizationService {
       return;
     }
 
-    this.document.getElementById('favicon')?.setAttribute('href', favicon);
+    this.document.getElementById('favicon')
+      ?.setAttribute('href', favicon);
   }
 
   private setTitle(title: string) {
@@ -81,9 +80,11 @@ export class CustomizationService {
       return;
     }
 
-    Object.entries(customStylesMap).forEach(([varName, varValue]) => {
-      styles.setProperty(`--${varName}`, varValue);
-    });
+    Object.entries(customStylesMap)
+      .forEach(([varName,
+        varValue]) => {
+        styles.setProperty(`--${varName}`, varValue);
+      });
   }
 
   private removeStyles(customStylesMap: CustomStyles | undefined) {
@@ -95,8 +96,9 @@ export class CustomizationService {
     if (!styles) {
       return;
     }
-    Object.keys(customStylesMap).forEach((varName) => {
-      styles.removeProperty(`--${varName}`);
-    });
+    Object.keys(customStylesMap)
+      .forEach((varName) => {
+        styles.removeProperty(`--${varName}`);
+      });
   }
 }

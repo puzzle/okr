@@ -4,7 +4,8 @@ import Chainable = Cypress.Chainable;
 export default class TeamDialog extends Dialog {
   override validatePage() {
     super.validatePage();
-    this.getPage().contains('Team erfassen');
+    this.getPage()
+      .contains('Team erfassen');
   }
 
   fillName(name: string) {
@@ -13,7 +14,8 @@ export default class TeamDialog extends Dialog {
   }
 
   override submit() {
-    cy.getByTestId('save').click();
+    cy.getByTestId('save')
+      .click();
   }
 
   getPage(): Chainable {

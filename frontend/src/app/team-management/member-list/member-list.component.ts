@@ -15,13 +15,15 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
-  styleUrl: './member-list.component.scss',
+  styleUrl: './member-list.component.scss'
 })
 export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
+
   selectedTeam$: BehaviorSubject<Team | undefined> = new BehaviorSubject<Team | undefined>(undefined);
 
   private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
+
   private unsubscribe$ = new Subject<void>();
 
   public constructor(
@@ -30,7 +32,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly cd: ChangeDetectorRef,
     private readonly teamService: TeamService,
     private readonly router: Router,
-    private readonly dialogService: DialogService,
+    private readonly dialogService: DialogService
   ) {}
 
   public ngOnInit(): void {}
@@ -41,9 +43,13 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((users) => this.allUsersSubj.next(users));
     const teamId$ = this.route.paramMap.pipe(map((params) => params.get('teamId')));
-    combineLatest([this.allUsersSubj.asObservable(), teamId$, this.teamService.getAllTeams()])
+    combineLatest([this.allUsersSubj.asObservable(),
+      teamId$,
+      this.teamService.getAllTeams()])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(([users, teamIdParam, teams]) => {
+      .subscribe(([users,
+        teamIdParam,
+        teams]) => {
         this.setSelectedTeam(teams, teamIdParam);
         this.setDataSourceForTeamOrAll(users, teamIdParam);
       });
@@ -85,19 +91,18 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   deleteTeam(selectedTeam: Team) {
     const data = {
-      team: selectedTeam.name,
+      team: selectedTeam.name
     };
 
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.TEAM', data)
       .afterClosed()
-      .pipe(
-        filter((confirm) => confirm),
-        mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)),
-      )
+      .pipe(filter((confirm) => confirm),
+        mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)))
       .subscribe(() => {
         this.userService.reloadUsers();
-        this.userService.reloadCurrentUser().subscribe();
+        this.userService.reloadCurrentUser()
+          .subscribe();
         this.router.navigateByUrl('team-management');
       });
   }
@@ -106,14 +111,17 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
       data: {
         team: this.selectedTeam$.value!,
-        currentUsersOfTeam: this.dataSource.data,
-      },
+        currentUsersOfTeam: this.dataSource.data
+      }
     });
-    dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
+    dialogRef.afterClosed()
+      .subscribe(() => this.cd.markForCheck());
   }
 
   inviteMember() {
-    this.dialogService.open(InviteUserDialogComponent).afterClosed().subscribe();
+    this.dialogService.open(InviteUserDialogComponent)
+      .afterClosed()
+      .subscribe();
   }
 
   showInviteMember(): boolean {
@@ -126,6 +134,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   editTeam(): void {
     const dialogRef = this.dialogService.open(AddEditTeamDialog, { data: { team: this.selectedTeam$.value } });
-    dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
+    dialogRef.afterClosed()
+      .subscribe(() => this.cd.markForCheck());
   }
 }

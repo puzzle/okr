@@ -13,19 +13,27 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
-  styleUrl: './member-detail.component.scss',
+  styleUrl: './member-detail.component.scss'
 })
 export class MemberDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
   user: User | undefined;
+
   teams: Team[] = [];
+
   currentUserTeams$ = new BehaviorSubject<UserTeam[]>([]);
-  selectedUserIsLoggedInUser: boolean = false;
+
+  selectedUserIsLoggedInUser = false;
+
   unsubscribe$ = new Subject<void>();
+
   userTeamEditId: number | undefined;
 
-  readonly displayedColumns = ['team', 'role', 'delete'];
+  readonly displayedColumns = ['team',
+    'role',
+    'delete'];
+
   readonly getFullNameFromUser = getFullNameFromUser;
 
   constructor(
@@ -35,17 +43,16 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     private readonly teamService: TeamService,
     private readonly cd: ChangeDetectorRef,
     private readonly router: Router,
-    private readonly dialogService: DialogService,
+    private readonly dialogService: DialogService
   ) {}
+
   ngOnInit(): void {
     this.route.paramMap
-      .pipe(
-        takeUntil(this.unsubscribe$),
+      .pipe(takeUntil(this.unsubscribe$),
         tap((params) => {
           const id = this.getIdFromParams(params);
           this.loadUser(id);
-        }),
-      )
+        }))
       .subscribe();
   }
 
@@ -80,15 +87,13 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   removeUserFromTeam(userTeam: UserTeam, user: User) {
     const i18nData = {
       user: getFullNameFromUser(user),
-      team: userTeam.team.name,
+      team: userTeam.team.name
     };
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(
-        filter((confirm) => confirm),
-        mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)),
-      )
+      .pipe(filter((confirm) => confirm),
+        mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)))
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
@@ -100,21 +105,25 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     // make a copy and set value of real object after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam).subscribe(() => {
-      userTeam.isTeamAdmin = isAdmin;
-      this.loadUser(user.id);
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-    });
+    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam)
+      .subscribe(() => {
+        userTeam.isTeamAdmin = isAdmin;
+        this.loadUser(user.id);
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser()
+          .subscribe();
+      });
   }
 
   addTeamMembership(userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService.updateOrAddTeamMembership(user.id, userTeam).subscribe(() => {
-      this.loadUser(user.id);
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-    });
+    this.teamService.updateOrAddTeamMembership(user.id, userTeam)
+      .subscribe(() => {
+        this.loadUser(user.id);
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser()
+          .subscribe();
+      });
   }
 
   isDeletable(userTeam: UserTeam): boolean {
@@ -126,9 +135,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   isOkrChampionChange(okrChampion: boolean, user: User) {
-    this.userService.setIsOkrChampion(user, okrChampion).subscribe(() => {
-      this.loadUser(user.id);
-      this.teamService.reloadTeams();
-    });
+    this.userService.setIsOkrChampion(user, okrChampion)
+      .subscribe(() => {
+        this.loadUser(user.id);
+        this.teamService.reloadTeams();
+      });
   }
 }

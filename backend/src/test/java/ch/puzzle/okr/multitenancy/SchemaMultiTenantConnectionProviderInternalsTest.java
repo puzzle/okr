@@ -1,14 +1,13 @@
 package ch.puzzle.okr.multitenancy;
 
+import static org.mockito.Mockito.mock;
+
 import ch.puzzle.okr.exception.ConnectionProviderException;
+import java.util.Properties;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Properties;
-
-import static org.mockito.Mockito.mock;
 
 public class SchemaMultiTenantConnectionProviderInternalsTest {
 

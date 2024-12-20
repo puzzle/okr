@@ -5,18 +5,17 @@ import { map, Observable } from 'rxjs';
 import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class KeyresultService {
   constructor(private httpClient: HttpClient) {}
 
   getFullKeyResult(keyresultId: number): Observable<KeyResult> {
-    return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyresultId).pipe(
-      map((keyresult: any) => {
+    return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyresultId)
+      .pipe(map((keyresult: any) => {
         keyresult.objective.quarter = keyresult.objective.keyResultQuarterDto;
         return keyresult;
-      }),
-    );
+      }));
   }
 
   saveKeyResult(keyResultDTO: KeyResultDTO): Observable<KeyResult> {

@@ -1,23 +1,22 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.QUARTER;
+import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TESTS_QUARTER_ID;
+import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TEST_QUARTER_LABEL;
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.util.quarter.check.QuarterRangeChecker;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static ch.puzzle.okr.Constants.QUARTER;
-import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TESTS_QUARTER_ID;
-import static ch.puzzle.okr.test.TestConstants.GJ_FOR_TEST_QUARTER_LABEL;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class QuarterPersistenceServiceIT {
@@ -46,14 +45,18 @@ class QuarterPersistenceServiceIT {
     }
 
     private void assertGJForTestsQuarterIsFoundOnce(List<Quarter> quarters) {
-        long foundGJForTestsQuartersCount = quarters.stream()
-                .filter(quarter -> quarter.getLabel().equals(GJ_FOR_TEST_QUARTER_LABEL)).count();
+        long foundGJForTestsQuartersCount = quarters
+                .stream()
+                .filter(quarter -> quarter.getLabel().equals(GJ_FOR_TEST_QUARTER_LABEL))
+                .count();
         assertEquals(1, foundGJForTestsQuartersCount);
     }
 
     private void assertCurrentQuarterIsFoundOnce(List<Quarter> quarters) {
-        long foundCurrentQuartersCount = quarters.stream()
-                .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter)).count();
+        long foundCurrentQuartersCount = quarters
+                .stream()
+                .filter(quarter -> QuarterRangeChecker.nowIsInQuarter(LocalDate.now(), quarter))
+                .count();
         assertEquals(1, foundCurrentQuartersCount);
     }
 
@@ -62,10 +65,10 @@ class QuarterPersistenceServiceIT {
         Quarter quarter = quarterPersistenceService.getCurrentQuarter();
 
         assertTrue(LocalDate.now().isEqual(quarter.getStartDate()) || //
-                LocalDate.now().isAfter(quarter.getStartDate()));
+                   LocalDate.now().isAfter(quarter.getStartDate()));
 
         assertTrue(LocalDate.now().isEqual(quarter.getEndDate()) || //
-                LocalDate.now().isBefore(quarter.getEndDate()));
+                   LocalDate.now().isBefore(quarter.getEndDate()));
 
         assertNotNull(quarter.getId());
         assertNotNull(quarter.getLabel());

@@ -14,32 +14,40 @@ export default class ObjectiveDialog extends Dialog {
   }
 
   selectQuarter(quarter: string) {
-    cy.get('select#quarter').select(quarter);
+    cy.get('select#quarter')
+      .select(quarter);
     return this;
   }
 
   toggleCreateKeyResults() {
-    cy.getByTestId('keyResult-checkbox').find("[type='checkbox']").check();
+    cy.getByTestId('keyResult-checkbox')
+      .find("[type='checkbox']")
+      .check();
     return this;
   }
 
   deleteObjective() {
-    cy.getByTestId('delete').click();
+    cy.getByTestId('delete')
+      .click();
     return new ConfirmDialog();
   }
 
   submitDraftObjective() {
-    cy.getByTestId('save-draft').click();
+    cy.getByTestId('save-draft')
+      .click();
   }
 
   excludeKeyResults(keyResults: string[]) {
     keyResults.forEach((keyResult) => {
-      cy.get('label').contains(keyResult.slice(0, 30)).click();
+      cy.get('label')
+        .contains(keyResult.slice(0, 30))
+        .click();
     });
     return this;
   }
 
   getPage(): Chainable {
-    return cy.get('app-objective-form').should('exist');
+    return cy.get('app-objective-form')
+      .should('exist');
   }
 }

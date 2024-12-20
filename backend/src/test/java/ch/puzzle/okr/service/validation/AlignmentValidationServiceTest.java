@@ -1,11 +1,18 @@
 package ch.puzzle.okr.service.validation;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,14 +21,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AlignmentValidationServiceTest {
@@ -71,11 +70,11 @@ class AlignmentValidationServiceTest {
         Alignment alignment = KeyResultAlignment.Builder.builder().withId(3L).build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnUpdate(1L, alignment));
+                                                            () -> validator.validateOnUpdate(1L, alignment));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals(List.of(new ErrorDto(ErrorKey.ATTRIBUTE_CHANGED.name(), List.of("ID", "1", "3"))),
-                exception.getErrors());
+                     exception.getErrors());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, 3L);
     }
 

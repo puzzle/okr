@@ -160,14 +160,18 @@ describe('OKR Check-in e2e tests', () => {
       keyresultDetailPage.showAllCheckins();
       cy.contains('Check-in History');
       cy.contains('Wert: 30 CHF');
-      CheckInHistoryDialog.do().editLatestCheckIn();
+      CheckInHistoryDialog.do()
+        .editLatestCheckIn();
       cy.contains('Here we edit a metric checkin');
       cy.contains('30 CHF');
       cy.contains('Confidence um Target Zone (213 CHF) zu erreichen');
       cy.contains('5/10');
       cy.contains('Here we are');
       cy.contains('A cat would be great');
-      CheckInDialog.do().fillMetricCheckInValue('200').fillCheckInCommentary('We bought a new sheep').submit();
+      CheckInDialog.do()
+        .fillMetricCheckInValue('200')
+        .fillCheckInCommentary('We bought a new sheep')
+        .submit();
       cy.contains('200 CHF');
       cy.contains('We bought a new sheep');
     });
@@ -191,7 +195,8 @@ describe('OKR Check-in e2e tests', () => {
       keyresultDetailPage.showAllCheckins();
       cy.contains('Check-in History');
       cy.contains('Wert: 30 EUR');
-      CheckInHistoryDialog.do().close();
+      CheckInHistoryDialog.do()
+        .close();
       keyresultDetailPage.close();
 
       overviewPage
@@ -229,20 +234,27 @@ describe('OKR Check-in e2e tests', () => {
         .fillCheckInCommentary('There is a new car')
         .fillCheckInInitiatives('Buy now a new pool')
         .submit();
-      keyresultDetailPage.showAllCheckins().editLatestCheckIn();
+      keyresultDetailPage.showAllCheckins()
+        .editLatestCheckIn();
       cy.contains('For editing ordinal checkin');
       cy.contains('Confidence um Target Zone zu erreichen');
       cy.contains('6/10');
       cy.contains('There is a new car');
       cy.contains('Buy now a new pool');
-      CheckInDialog.do().selectOrdinalCheckInZone('stretch').fillCheckInCommentary('We bought a new dog').submit();
+      CheckInDialog.do()
+        .selectOrdinalCheckInZone('stretch')
+        .fillCheckInCommentary('We bought a new dog')
+        .submit();
       cy.contains('We bought a new dog');
       cy.contains('Buy now a new pool');
       cy.contains('STRETCH');
     });
 
     it(`Should display confirm dialog when creating checkin on draft objective`, () => {
-      overviewPage.addObjective().fillObjectiveTitle('draft objective title').selectQuarter('3').submitDraftObjective();
+      overviewPage.addObjective()
+        .fillObjectiveTitle('draft objective title')
+        .selectQuarter('3')
+        .submitDraftObjective();
       overviewPage.visitNextQuarter();
       overviewPage
         .addKeyResult(undefined, 'draft objective title')
@@ -251,17 +263,21 @@ describe('OKR Check-in e2e tests', () => {
         .fillKeyResultDescription('This is my description')
         .submit();
       keyresultDetailPage.visit('I am a metric keyresult for testing');
-      keyresultDetailPage.elements.addCheckin().click();
-      ConfirmDialog.do().checkTitle('Check-in im Draft-Status');
-      ConfirmDialog.do().checkDescription(
-        'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?',
-      );
+      keyresultDetailPage.elements.addCheckin()
+        .click();
+      ConfirmDialog.do()
+        .checkTitle('Check-in im Draft-Status');
+      ConfirmDialog.do()
+        .checkDescription('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
     });
 
     it(`Should only display last value div if last checkin is present`, () => {
       const objectiveName = uniqueSuffix('new objective');
 
-      overviewPage.addObjective().fillObjectiveTitle(objectiveName).selectQuarter('3').submit();
+      overviewPage.addObjective()
+        .fillObjectiveTitle(objectiveName)
+        .selectQuarter('3')
+        .submit();
       overviewPage.visitNextQuarter();
       overviewPage
         .addKeyResult(undefined, objectiveName)
@@ -269,8 +285,10 @@ describe('OKR Check-in e2e tests', () => {
         .withMetricValues(Unit.PERCENT, '45', '60')
         .fillKeyResultDescription('Description')
         .submit();
-      keyresultDetailPage.visit('I am a keyresult metric').createCheckIn();
-      cy.getByTestId('old-checkin-value').should('not.exist');
+      keyresultDetailPage.visit('I am a keyresult metric')
+        .createCheckIn();
+      cy.getByTestId('old-checkin-value')
+        .should('not.exist');
       CheckInDialog.do()
         .fillMetricCheckInValue('10')
         .setCheckInConfidence(0)
@@ -279,7 +297,9 @@ describe('OKR Check-in e2e tests', () => {
         .submit();
       cy.contains(`Letztes Check-in (${getCurrentDate()})`);
       keyresultDetailPage.createCheckIn();
-      cy.contains('Letzter Wert').siblings('div').contains('10%');
+      cy.contains('Letzter Wert')
+        .siblings('div')
+        .contains('10%');
     });
   });
 });
@@ -287,8 +307,8 @@ describe('OKR Check-in e2e tests', () => {
 function getCurrentDate() {
   const today = new Date();
   const yyyy = today.getFullYear();
-  let mm = today.getMonth() + 1; // Months start at 0!
-  let dd = today.getDate();
+  const mm = today.getMonth() + 1; // Months start at 0!
+  const dd = today.getDate();
 
   let dd_str = '' + dd;
   let mm_str = '' + mm;

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -85,7 +84,7 @@ public class Team implements WriteableInterface {
             return false;
         Team team = (Team) o;
         return Objects.equals(id, team.id) && Objects.equals(version, team.version) && Objects.equals(name, team.name)
-                && Objects.equals(writeable, team.writeable);
+               && Objects.equals(writeable, team.writeable);
     }
 
     @Override

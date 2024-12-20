@@ -2,7 +2,7 @@ import { Unit } from '../../types/enums/Unit';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'unitTransformation',
+  name: 'unitTransformation'
 })
 export class UnitTransformationPipe implements PipeTransform {
   transform(value: number, label: string): string {
@@ -14,7 +14,8 @@ export class UnitTransformationPipe implements PipeTransform {
   }
 
   roundAndAddThousandSplitSign(value: number): string {
-    return (+value.toFixed(2)).toLocaleString('en-US').replace(/,/g, "'");
+    return (+value.toFixed(2)).toLocaleString('en-US')
+      .replace(/,/g, "'");
   }
 
   transformLabel(label: string): string {

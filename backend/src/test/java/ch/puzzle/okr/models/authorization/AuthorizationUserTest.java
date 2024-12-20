@@ -1,22 +1,21 @@
 package ch.puzzle.okr.models.authorization;
 
-import ch.puzzle.okr.test.TestHelper;
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
-import org.junit.jupiter.api.Test;
-
+import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class AuthorizationUserTest {
 
-    private final List<UserTeam> userTeamList = List.of(
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(1L)).withTeamAdmin(true).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(2L)).withTeamAdmin(false).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(3L)).withTeamAdmin(true).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(4L)).withTeamAdmin(false).build(),
-            UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(5L)).withTeamAdmin(false).build());
+    private final List<UserTeam> userTeamList = List
+            .of(UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(1L)).withTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(2L)).withTeamAdmin(false).build(),
+                UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(3L)).withTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(4L)).withTeamAdmin(false).build(),
+                UserTeam.Builder.builder().withTeam(TestHelper.defaultTeam(5L)).withTeamAdmin(false).build());
     private final User user = User.Builder.builder().withUserTeamList(userTeamList).build();
     private final AuthorizationUser authorizationUser = new AuthorizationUser(user);
 

@@ -3,5 +3,5 @@ export enum Unit {
   CHF = 'CHF',
   EUR = 'EUR',
   FTE = 'FTE',
-  NUMBER = 'NUMBER',
+  NUMBER = 'NUMBER'
 }

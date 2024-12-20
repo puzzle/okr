@@ -15,13 +15,25 @@ describe('Scoring component e2e tests', () => {
   });
 
   [
-    [0, 100, 10],
-    [0, 100, 31],
-    [0, 100, 71],
-    [0, 100, 100],
-  ].forEach(([baseline, stretchgoal, value]) => {
+    [0,
+      100,
+      10],
+    [0,
+      100,
+      31],
+    [0,
+      100,
+      71],
+    [0,
+      100,
+      100]
+  ].forEach(([baseline,
+    stretchgoal,
+    value]) => {
     it('Create metric checkin and validate value of scoring component', () => {
-      setupMetricKR(`Metric kr with check-in value ${value}`, baseline, stretchgoal, value);
+      setupMetricKR(
+        `Metric kr with check-in value ${value}`, baseline, stretchgoal, value
+      );
       const percentage = getPercentageMetric(baseline, stretchgoal, value);
       cy.validateScoring(false, percentage);
       cy.get('.keyResult-detail-attribute-show')
@@ -40,12 +52,18 @@ describe('Scoring component e2e tests', () => {
     });
   });
 
-  [
-    [0, 100, -1],
-    [200, 100, 250],
-  ].forEach(([baseline, stretchgoal, value]) => {
+  [[0,
+    100,
+    -1],
+  [200,
+    100,
+    250]].forEach(([baseline,
+    stretchgoal,
+    value]) => {
     it('show indicator that value is negative', () => {
-      setupMetricKR(`Check indicator with value ${value}`, baseline, stretchgoal, value);
+      setupMetricKR(
+        `Check indicator with value ${value}`, baseline, stretchgoal, value
+      );
       cy.validateScoring(false, 0);
       cy.get('.keyResult-detail-attribute-show')
         .contains('Aktuell')
@@ -57,11 +75,17 @@ describe('Scoring component e2e tests', () => {
       keyresultDetailPage.close();
       cy.validateScoring(true, 0);
 
-      overviewPage.getKeyResultByName(`Check indicator with value ${value}`).get('.scoring-error-badge');
+      overviewPage.getKeyResultByName(`Check indicator with value ${value}`)
+        .get('.scoring-error-badge');
     });
   });
 
-  [['fail'], ['commit'], ['target'], ['stretch']].forEach(([zoneName]) => {
+  [
+    ['fail'],
+    ['commit'],
+    ['target'],
+    ['stretch']
+  ].forEach(([zoneName]) => {
     it('Create ordinal checkin and validate value of scoring component', () => {
       overviewPage
         .addKeyResult()
@@ -87,7 +111,9 @@ describe('Scoring component e2e tests', () => {
   });
 });
 
-function setupMetricKR(name: string, baseline: number, stretchgoal: number, value: number) {
+function setupMetricKR(
+  name: string, baseline: number, stretchgoal: number, value: number
+) {
   CyOverviewPage.do()
     .addKeyResult()
     .fillKeyResultTitle(name)

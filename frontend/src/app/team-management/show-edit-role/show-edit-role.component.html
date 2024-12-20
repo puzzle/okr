@@ -11,9 +11,6 @@
     </app-puzzle-icon-button>
   </ng-container>
   <ng-container *ngIf="edit">
-    <app-team-role-dropdown
-      [isAdmin]="userTeam.isTeamAdmin"
-      (isAdminChange)="saveIsAdmin($event)"
-    ></app-team-role-dropdown>
+    <app-team-role-dropdown [isAdmin]="userTeam.isTeamAdmin" (isAdminChange)="saveIsAdmin($event)"></app-team-role-dropdown>
   </ng-container>
 </div>

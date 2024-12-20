@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .mdc-button {
   border-radius: 0.5rem !important;
@@ -77,7 +77,7 @@ $scale-gap: 0.1;
 
 @for $i from calc($scale-start / $scale-gap) through calc($scale-end / $scale-gap) {
   $scale-value: $i * $scale-gap;
-  $selector: ".scale-#{$scale-value * 10}";
+  $selector: '.scale-#{$scale-value * 10}';
 
   #{$selector} {
     transform: scale(#{$scale-value}) !important;

@@ -1,5 +1,8 @@
 package ch.puzzle.okr.mapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import ch.puzzle.okr.dto.CompletedDto;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
@@ -16,9 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 public class CompletedMapperTest {
@@ -49,10 +49,12 @@ public class CompletedMapperTest {
     @Test
     void toDtoShouldMapCompletedToDto() {
         // arrange
-        var completed = Completed.Builder.builder() //
+        var completed = Completed.Builder
+                .builder() //
                 .withId(COMPLETED_ID) //
                 .withComment(COMPLETED_COMMENT) //
-                .withObjective(Objective.Builder.builder() //
+                .withObjective(Objective.Builder
+                        .builder() //
                         .withId(OBJECTIVE_ID)//
                         .withTeam(Team.Builder.builder().withId(NOT_USED_LONG).build()) //
                         .withQuarter(Quarter.Builder.builder().withId(NOT_USED_LONG).build()) //
@@ -77,8 +79,12 @@ public class CompletedMapperTest {
     @Test
     void toCompletedShouldMapDtoToCompleted() {
         // arrange
-        var completedDto = CompletedDtoBuilder.builder().withId(COMPLETED_ID).withComment(COMPLETED_COMMENT)
-                .withObjectiveDto(ObjectiveDtoBuilder.builder().withId(OBJECTIVE_ID).build()).build();
+        var completedDto = CompletedDtoBuilder
+                .builder()
+                .withId(COMPLETED_ID)
+                .withComment(COMPLETED_COMMENT)
+                .withObjectiveDto(ObjectiveDtoBuilder.builder().withId(OBJECTIVE_ID).build())
+                .build();
 
         // act
         var completed = completedMapper.toCompleted(completedDto);

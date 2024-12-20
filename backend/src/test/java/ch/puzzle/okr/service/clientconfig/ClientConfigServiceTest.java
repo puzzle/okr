@@ -1,20 +1,19 @@
 package ch.puzzle.okr.service.clientconfig;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import ch.puzzle.okr.multitenancy.customization.TenantClientCustomization;
 import ch.puzzle.okr.multitenancy.customization.TenantClientCustomizationProvider;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.HashMap;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import java.util.HashMap;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ClientConfigServiceTest {
 
@@ -38,7 +37,7 @@ public class ClientConfigServiceTest {
     @ParameterizedTest
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostname,
-            String subdomain) {
+                                                                                      String subdomain) {
         // arrange
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
         ClientConfigService service = getClientConfig(tenantConfig, tenant);
@@ -55,7 +54,7 @@ public class ClientConfigServiceTest {
     @ParameterizedTest
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientConfigIsNotFound(String tenant, String hostname,
-            String subdomain) {
+                                                                               String subdomain) {
         // arrange
         TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
         ClientConfigService service = getClientConfig(tenantCustomization, tenant);
@@ -69,7 +68,7 @@ public class ClientConfigServiceTest {
     }
 
     private ClientConfigService getClientConfig(TenantConfigProvider.TenantConfig tenantConfig,
-            TenantClientCustomization tenantClientCustomization, String tenantId) {
+                                                TenantClientCustomization tenantClientCustomization, String tenantId) {
         return mockClientConfigService(tenantConfig, tenantClientCustomization, tenantId);
     }
 
@@ -82,7 +81,8 @@ public class ClientConfigServiceTest {
     }
 
     private ClientConfigService mockClientConfigService(TenantConfigProvider.TenantConfig tenantConfig,
-            TenantClientCustomization tenantCustomization, String tenantId) {
+                                                        TenantClientCustomization tenantCustomization,
+                                                        String tenantId) {
 
         TenantClientCustomizationProvider tenantCustomizationProvider = mock(TenantClientCustomizationProvider.class);
         when(tenantCustomizationProvider.getTenantClientCustomizationsById(tenantId)) //
@@ -97,23 +97,23 @@ public class ClientConfigServiceTest {
 
     private TenantConfigProvider.TenantConfig getTenantConfig(String tenantId) {
         return new TenantConfigProvider.TenantConfig( //
-                prefix(tenantId) + "tenantId", //
-                new String[] {}, //
-                prefix(tenantId) + "jwkSetUri", //
-                prefix(tenantId) + "issuerUrl", //
-                prefix(tenantId) + "clientId", //
-                null);
+                                                     prefix(tenantId) + "tenantId", //
+                                                     new String[]{}, //
+                                                     prefix(tenantId) + "jwkSetUri", //
+                                                     prefix(tenantId) + "issuerUrl", //
+                                                     prefix(tenantId) + "clientId", //
+                                                     null);
     }
 
     private TenantClientCustomization getTenantClientCustomization(String tenantId) {
         return new TenantClientCustomization( //
-                prefix(tenantId) + "favicon", //
-                prefix(tenantId) + "logo", //
-                prefix(tenantId) + "triangles", //
-                prefix(tenantId) + "backgroundLogo", //
-                prefix(tenantId) + "title", //
-                prefix(tenantId) + "helpSiteUrl", //
-                new HashMap<>());
+                                             prefix(tenantId) + "favicon", //
+                                             prefix(tenantId) + "logo", //
+                                             prefix(tenantId) + "triangles", //
+                                             prefix(tenantId) + "backgroundLogo", //
+                                             prefix(tenantId) + "title", //
+                                             prefix(tenantId) + "helpSiteUrl", //
+                                             new HashMap<>());
     }
 
     private void assertClientConfigDto(ClientConfigDto clientConfigDto, String tenant) {

@@ -18,7 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 const overviewService = {
-  getOverview: jest.fn(),
+  getOverview: jest.fn()
 };
 
 const authGuardMock = () => {
@@ -29,49 +29,60 @@ const refreshDataServiceMock = {
   teamFilterReady: new Subject(),
   quarterFilterReady: new Subject(),
   reloadOverviewSubject: new Subject(),
-  okrBannerHeightSubject: new BehaviorSubject(5),
+  okrBannerHeightSubject: new BehaviorSubject(5)
 };
 
 class ResizeObserverMock {
   observe() {}
+
   unobserve() {}
+
   disconnect() {}
 }
 
 describe('OverviewComponent', () => {
-  //@ts-ignore
+  // @ts-ignore
   global.ResizeObserver = ResizeObserverMock;
 
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppRoutingModule, MatDialogModule, MatIconModule, MatMenuModule],
-      declarations: [OverviewComponent, ApplicationBannerComponent, ApplicationTopBarComponent],
+      imports: [
+        HttpClientTestingModule,
+        AppRoutingModule,
+        MatDialogModule,
+        MatIconModule,
+        MatMenuModule
+      ],
+      declarations: [OverviewComponent,
+        ApplicationBannerComponent,
+        ApplicationTopBarComponent],
       providers: [
         {
           provide: OverviewService,
-          useValue: overviewService,
+          useValue: overviewService
         },
         {
           provide: authGuard,
-          useValue: authGuardMock,
+          useValue: authGuardMock
         },
         {
           provide: RefreshDataService,
-          useValue: refreshDataServiceMock,
+          useValue: refreshDataServiceMock
         },
         {
           provide: MatDialogRef,
-          useValue: {},
+          useValue: {}
         },
         OAuthService,
         UrlHelperService,
         OAuthLogger,
-        DateTimeProvider,
+        DateTimeProvider
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
@@ -80,56 +91,97 @@ describe('OverviewComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('should load default overview when no quarter is defined in route-params', () => {
     jest.spyOn(overviewService, 'getOverview');
     markFiltersAsReady();
-    expect(overviewService.getOverview).toHaveBeenCalled();
+    expect(overviewService.getOverview)
+      .toHaveBeenCalled();
   });
 
-  it('should load default overview on init', async () => {
+  it('should load default overview on init', async() => {
     jest.spyOn(overviewService, 'getOverview');
     markFiltersAsReady();
-    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, [], '');
+    expect(overviewService.getOverview)
+      .toHaveBeenCalledWith(undefined, [], '');
   });
 
   it.each([
-    ['?quarter=7', 7, [], ''],
-    ['?teams=1,2', undefined, [1, 2], ''],
-    ['?objectiveQuery=a%20a', undefined, [], 'a a'],
-    ['?teams=1,2&objectiveQuery=a%20a', undefined, [1, 2], 'a a'],
-    ['?teams=1,2&quarter=7', 7, [1, 2], ''],
-    ['?quarter=7&objectiveQuery=a%20a', 7, [], 'a a'],
-  ])(
-    'should load overview based on queryparams',
-    async (query: string, quarterParam?: number, teamsParam?: number[], objectiveQueryParam?: string) => {
+    [
+      '?quarter=7',
+      7,
+      [],
+      ''
+    ],
+    [
+      '?teams=1,2',
+      undefined,
+      [1,
+        2],
+      ''
+    ],
+    [
+      '?objectiveQuery=a%20a',
+      undefined,
+      [],
+      'a a'
+    ],
+    [
+      '?teams=1,2&objectiveQuery=a%20a',
+      undefined,
+      [1,
+        2],
+      'a a'
+    ],
+    [
+      '?teams=1,2&quarter=7',
+      7,
+      [1,
+        2],
+      ''
+    ],
+    [
+      '?quarter=7&objectiveQuery=a%20a',
+      7,
+      [],
+      'a a'
+    ]
+  ])('should load overview based on queryparams',
+    async(
+      query: string, quarterParam?: number, teamsParam?: number[], objectiveQueryParam?: string
+    ) => {
       jest.spyOn(overviewService, 'getOverview');
       jest.spyOn(component, 'loadOverview');
       const routerHarness = await RouterTestingHarness.create();
       await routerHarness.navigateByUrl('/' + query);
       routerHarness.detectChanges();
       component.loadOverviewWithParams();
-      expect(overviewService.getOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
-      expect(component.loadOverview).toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
-    },
-  );
+      expect(overviewService.getOverview)
+        .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
+      expect(component.loadOverview)
+        .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
+    });
 
-  it('should refresh overview Entities after getOverview is called', async () => {
+  it('should refresh overview Entities after getOverview is called', async() => {
     jest.spyOn(component.overviewEntities$, 'next');
     jest.spyOn(component, 'loadOverview');
     component.loadOverview();
-    expect(component.loadOverview).toHaveBeenCalledTimes(1);
-    expect(component.overviewEntities$.next).toHaveBeenCalledWith([overViewEntity1]);
+    expect(component.loadOverview)
+      .toHaveBeenCalledTimes(1);
+    expect(component.overviewEntities$.next)
+      .toHaveBeenCalledWith([overViewEntity1]);
   });
 
-  it('should get default if call throws error', async () => {
+  it('should get default if call throws error', async() => {
     overviewService.getOverview.mockReturnValue(of(new Error('')));
 
     jest.spyOn(component, 'loadOverview');
     component.loadOverview();
-    expect(component.loadOverview).toHaveBeenLastCalledWith();
+    expect(component.loadOverview)
+      .toHaveBeenLastCalledWith();
   });
 
   function markFiltersAsReady() {

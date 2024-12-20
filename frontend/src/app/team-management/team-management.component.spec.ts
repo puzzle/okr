@@ -30,19 +30,19 @@ describe('TeamManagementComponent', () => {
   let fixture: ComponentFixture<TeamManagementComponent>;
 
   const activatedRouteMock = {
-    paramMap: of({}),
+    paramMap: of({})
   };
 
   const userServiceMock = {
     getCurrentUser: () => of(testUser),
-    getUsers: () => of(users),
+    getUsers: () => of(users)
   };
 
   const configServiceMock = {
-    config$: of({}),
+    config$: of({})
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -59,7 +59,7 @@ describe('TeamManagementComponent', () => {
         MatSelectModule,
         FormsModule,
         ReactiveFormsModule,
-        MatTableModule,
+        MatTableModule
       ],
       declarations: [
         TeamManagementComponent,
@@ -69,14 +69,16 @@ describe('TeamManagementComponent', () => {
         SearchTeamManagementComponent,
         TeamManagementMobileFilterComponent,
         MemberListTableComponent,
-        MemberListMobileComponent,
+        MemberListMobileComponent
       ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: UserService, useValue: userServiceMock },
-        { provide: ConfigService, useValue: configServiceMock },
-      ],
-    }).compileComponents();
+      providers: [{ provide: ActivatedRoute,
+        useValue: activatedRouteMock },
+      { provide: UserService,
+        useValue: userServiceMock },
+      { provide: ConfigService,
+        useValue: configServiceMock }]
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -88,6 +90,7 @@ describe('TeamManagementComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

@@ -1,13 +1,13 @@
 package ch.puzzle.okr.util.quarter.generate;
 
-import org.springframework.context.annotation.Profile;
-
 import java.time.LocalDate;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Quarter data for H2 database.</br>
  * </br>
- * This class is used for testing purposes only. Do NOT use this class in production mode.
+ * This class is used for testing purposes only. Do NOT use this class in
+ * production mode.
  */
 @Profile("integration-test")
 public record QuarterData(String label, LocalDate startDate, LocalDate endDate) {
@@ -30,9 +30,9 @@ public record QuarterData(String label, LocalDate startDate, LocalDate endDate) 
     @Override
     public String toString() {
         return "(" + "'" + label() + "', " + //
-                "'" + startDateAsIsoString() + "', " + //
-                "'" + endDateAsIsoString() + "'" + //
-                ")";
+               "'" + startDateAsIsoString() + "', " + //
+               "'" + endDateAsIsoString() + "'" + //
+               ")";
     }
 
 }

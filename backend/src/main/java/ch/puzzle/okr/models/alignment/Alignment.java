@@ -1,7 +1,6 @@
 package ch.puzzle.okr.models.alignment;
 
 import ch.puzzle.okr.models.Objective;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
@@ -59,7 +58,7 @@ public abstract class Alignment {
             return false;
         Alignment alignment = (Alignment) o;
         return Objects.equals(id, alignment.id) && version == alignment.version
-                && Objects.equals(alignedObjective, alignment.alignedObjective);
+               && Objects.equals(alignedObjective, alignment.alignedObjective);
     }
 
     @Override

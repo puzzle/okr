@@ -1,5 +1,7 @@
 export class Quarter {
-  constructor(id: number, label: string, startDate: Date | null, endDate: Date | null) {
+  constructor(
+    id: number, label: string, startDate: Date | null, endDate: Date | null
+  ) {
     this.id = id;
     this.label = label;
     this.startDate = startDate;
@@ -7,8 +9,11 @@ export class Quarter {
   }
 
   readonly id: number;
+
   readonly label: string;
+
   readonly startDate: Date | null;
+
   readonly endDate: Date | null;
 
   fullLabel(): string {

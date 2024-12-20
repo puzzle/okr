@@ -15,19 +15,21 @@ public class CheckInOrdinalMapper {
     }
 
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
-        return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getVersion(), //
-                checkInOrdinal.getChangeInfo(), //
-                checkInOrdinal.getInitiatives(), //
-                checkInOrdinal.getConfidence(), //
-                checkInOrdinal.getKeyResult().getId(), //
-                checkInOrdinal.getCreatedOn(), //
-                checkInOrdinal.getModifiedOn(), //
-                checkInOrdinal.getZone(), //
-                checkInOrdinal.isWriteable());
+        return new CheckInOrdinalDto(checkInOrdinal.getId(),
+                                     checkInOrdinal.getVersion(), //
+                                     checkInOrdinal.getChangeInfo(), //
+                                     checkInOrdinal.getInitiatives(), //
+                                     checkInOrdinal.getConfidence(), //
+                                     checkInOrdinal.getKeyResult().getId(), //
+                                     checkInOrdinal.getCreatedOn(), //
+                                     checkInOrdinal.getModifiedOn(), //
+                                     checkInOrdinal.getZone(), //
+                                     checkInOrdinal.isWriteable());
     }
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {
-        return CheckInOrdinal.Builder.builder() //
+        return CheckInOrdinal.Builder
+                .builder() //
                 .withZone(checkInOrdinalDto.zone()) //
                 .withId(checkInOrdinalDto.id()) //
                 .withVersion(checkInOrdinalDto.version()) //

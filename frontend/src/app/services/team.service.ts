@@ -6,13 +6,15 @@ import { User } from '../shared/types/model/User';
 import { UserTeam } from '../shared/types/model/UserTeam';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class TeamService {
   constructor(private http: HttpClient) {}
 
   private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
+
   private teamsLoaded = false;
+
   private readonly API_URL = '/api/v2/teams';
 
   getAllTeams(): Observable<Team[]> {
@@ -24,25 +26,29 @@ export class TeamService {
   }
 
   reloadTeams(): void {
-    this.http.get<Team[]>(this.API_URL).subscribe((teams) => {
-      if (!this.teams) {
-        this.teams = new BehaviorSubject<Team[]>(teams);
-        return;
-      }
-      this.teams.next(teams);
-    });
+    this.http.get<Team[]>(this.API_URL)
+      .subscribe((teams) => {
+        if (!this.teams) {
+          this.teams = new BehaviorSubject<Team[]>(teams);
+          return;
+        }
+        this.teams.next(teams);
+      });
   }
 
   createTeam(team: Team): Observable<Team> {
-    return this.http.post<Team>(this.API_URL, team).pipe(tap(() => this.reloadTeams()));
+    return this.http.post<Team>(this.API_URL, team)
+      .pipe(tap(() => this.reloadTeams()));
   }
 
   updateTeam(team: Team): Observable<Team> {
-    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team).pipe(tap(() => this.reloadTeams()));
+    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team)
+      .pipe(tap(() => this.reloadTeams()));
   }
 
   deleteTeam(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`).pipe(tap(() => this.reloadTeams()));
+    return this.http.delete<void>(`${this.API_URL}/${id}`)
+      .pipe(tap(() => this.reloadTeams()));
   }
 
   addUsersToTeam(team: Team, selectedUsers: User[]): Observable<void> {
@@ -57,10 +63,8 @@ export class TeamService {
 
   updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
     return this.http
-      .put<void>(
-        `${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`,
-        {},
-      )
+      .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`,
+        {})
       .pipe(tap(() => this.reloadTeams()));
   }
 }

@@ -1,5 +1,10 @@
 package ch.puzzle.okr.multitenancy;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+
+import java.util.List;
+import java.util.Optional;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
 import org.junit.jupiter.api.DisplayName;
@@ -7,20 +12,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-
 /**
- * Test for FlywayMultitenantMigrationInitializer.migrateFlyway(). The FlywayMultitenantMigrationInitializer constructor
- * gets a mock implementation of a TenantConfigProviderInterface, which provides some test data. Inside migrateFlyway(),
- * there are two calls to Flyway: Flyway.configure() (a static method) and flyway.migrate() (an instance method).
- * Flyway.configure() returns a FluentConfiguration. Then several method calls are made on the FluentConfiguration,
- * which also return a FluentConfiguration. The last calls is load(), which returns a Flyway Object. We can mock that
- * with a manual Spy FluentConfigurationSpy, which records the methods calls and load() returns a Mockito Mock, which
- * does nothing. And later, flyway.migrate() is called on the Mockito Mock, which does nothing.
+ * Test for FlywayMultitenantMigrationInitializer.migrateFlyway(). The
+ * FlywayMultitenantMigrationInitializer constructor gets a mock implementation
+ * of a TenantConfigProviderInterface, which provides some test data. Inside
+ * migrateFlyway(), there are two calls to Flyway: Flyway.configure() (a static
+ * method) and flyway.migrate() (an instance method). Flyway.configure() returns
+ * a FluentConfiguration. Then several method calls are made on the
+ * FluentConfiguration, which also return a FluentConfiguration. The last calls
+ * is load(), which returns a Flyway Object. We can mock that with a manual Spy
+ * FluentConfigurationSpy, which records the methods calls and load() returns a
+ * Mockito Mock, which does nothing. And later, flyway.migrate() is called on
+ * the Mockito Mock, which does nothing.
  */
 public class FlywayMultitenantMigrationInitializerTest {
 
@@ -54,7 +57,8 @@ public class FlywayMultitenantMigrationInitializerTest {
             return this;
         }
 
-        // the result of load() is used by flyway.migrate(), which we don't test. So load() returns a mock which does
+        // the result of load() is used by flyway.migrate(), which we don't test. So
+        // load() returns a mock which does
         // nothing.
         @Override
         public Flyway load() {
@@ -68,11 +72,19 @@ public class FlywayMultitenantMigrationInitializerTest {
 
     private final TenantConfigProviderInterface providerInterfaceMock = new TenantConfigProviderInterface() {
 
-        private final TenantConfigProvider.DataSourceConfig dataSourceConfig = new TenantConfigProvider.DataSourceConfig(
-                NOT_USED, URL, NAME, PASSWORD, SCHEMA);
+        private final TenantConfigProvider.DataSourceConfig dataSourceConfig = new TenantConfigProvider.DataSourceConfig(NOT_USED,
+                                                                                                                         URL,
+                                                                                                                         NAME,
+                                                                                                                         PASSWORD,
+                                                                                                                         SCHEMA);
 
         private final TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(NOT_USED,
-                new String[] { NOT_USED }, NOT_USED, NOT_USED, NOT_USED, dataSourceConfig);
+                                                                                                             new String[]{
+                                                                                                                     NOT_USED },
+                                                                                                             NOT_USED,
+                                                                                                             NOT_USED,
+                                                                                                             NOT_USED,
+                                                                                                             dataSourceConfig);
 
         @Override
         public List<TenantConfigProvider.TenantConfig> getTenantConfigs() {
@@ -98,8 +110,9 @@ public class FlywayMultitenantMigrationInitializerTest {
             FluentConfigurationSpy fluentConfiguration = new FluentConfigurationSpy();
             mockedStatic.when(Flyway::configure).thenReturn(fluentConfiguration);
 
-            FlywayMultitenantMigrationInitializer migrationInitializer = new FlywayMultitenantMigrationInitializer(
-                    providerInterfaceMock, new String[] { SCRIPT_LOCATION });
+            FlywayMultitenantMigrationInitializer migrationInitializer = new FlywayMultitenantMigrationInitializer(providerInterfaceMock,
+                                                                                                                   new String[]{
+                                                                                                                           SCRIPT_LOCATION });
 
             // act
             migrationInitializer.migrateFlyway();

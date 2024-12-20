@@ -6,6 +6,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Injectable({ providedIn: 'root' })
 export class UniqueEmailValidator implements Validator {
   private existingUserMails: string[] = []; // mails exsiting already in backend
+
   private addedMails: string[] = []; // mails added in form
 
   constructor(private readonly userService: UserService) {
@@ -18,7 +19,8 @@ export class UniqueEmailValidator implements Validator {
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    const existingUser = this.existingUserMails.concat(this.addedMails).includes(control.value);
+    const existingUser = this.existingUserMails.concat(this.addedMails)
+      .includes(control.value);
     return existingUser ? { notUniqueMail: { value: control.value } } : null;
   }
 

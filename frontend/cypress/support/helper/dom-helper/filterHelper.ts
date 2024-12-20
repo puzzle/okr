@@ -5,14 +5,19 @@ export default class FilterHelper extends PageObjectMapperBase {
 
   optionShouldBeSelected(text: string, onOverview = true): this {
     if (onOverview) {
-      cy.contains('h1:visible', text).should('have.length', 1);
+      cy.contains('h1:visible', text)
+        .should('have.length', 1);
     }
-    this.getOption(text).should('have.length', 1).should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
+    this.getOption(text)
+      .should('have.length', 1)
+      .should('have.css', 'background-color')
+      .and('eq', 'rgb(30, 90, 150)');
     return this;
   }
 
   optionShouldNotBeSelected(text: string): this {
-    cy.contains('h1:visible', text).should('not.exist');
+    cy.contains('h1:visible', text)
+      .should('not.exist');
     this.getOption(text)
       .should('have.length', 1)
       .should('have.css', 'background-color')
@@ -21,7 +26,8 @@ export default class FilterHelper extends PageObjectMapperBase {
   }
 
   toggleOption(text: string): this {
-    this.getOption(text).click();
+    this.getOption(text)
+      .click();
     return this;
   }
 

@@ -3,7 +3,11 @@
     <div class="row">
       <h2 class="col d-flex justify-content-between align-items-center my-2">
         {{ title }}
-        <button mat-dialog-close mat-icon-button [attr.data-testId]="'close-dialog'">
+        <button
+          mat-dialog-close
+          mat-icon-button
+          [attr.data-testId]="'close-dialog'"
+        >
           <mat-icon class="text-secondary">close</mat-icon>
         </button>
       </h2>

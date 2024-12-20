@@ -9,23 +9,28 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';
 import { UserTableEntry } from '../../shared/types/model/UserTableEntry';
 
-export type AddMemberToTeamDialogComponentData = {
+export interface AddMemberToTeamDialogComponentData {
   team: Team;
   currentUsersOfTeam: UserTableEntry[];
-};
+}
 
 @Component({
   selector: 'app-add-member-to-team-dialog',
   templateUrl: './add-member-to-team-dialog.component.html',
-  styleUrl: './add-member-to-team-dialog.component.scss',
+  styleUrl: './add-member-to-team-dialog.component.scss'
 })
 export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
   selectedUsers$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+
   search = new FormControl('');
+
   usersForSelection$: Observable<User[]> | undefined;
-  displayedColumns = ['name', 'delete'];
+
+  displayedColumns = ['name',
+    'delete'];
+
   dataSource: MatTableDataSource<User> | undefined;
 
   private readonly unsubscribe$ = new Subject<void>();
@@ -35,26 +40,23 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
     private readonly teamService: TeamService,
     public dialogRef: MatDialogRef<AddMemberToTeamDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: AddMemberToTeamDialogComponentData,
+    public data: AddMemberToTeamDialogComponentData
   ) {
     this.selectedUsers$.subscribe((users) => (this.dataSource = new MatTableDataSource<User>(users)));
   }
 
   public ngOnInit(): void {
-    this.usersForSelection$ = combineLatest([
-      this.userService.getUsers(),
+    this.usersForSelection$ = combineLatest([this.userService.getUsers(),
       this.selectedUsers$,
-      this.search.valueChanges.pipe(
-        startWith(''),
+      this.search.valueChanges.pipe(startWith(''),
         // directly after selecting object, filtervalue is an object.
-        filter((searchValue) => typeof searchValue === 'string'),
-      ),
-    ]).pipe(
-      takeUntil(this.unsubscribe$),
-      map(([allPossibleUsers, selectedUsers, filterValue]) => {
-        return this.filter(allPossibleUsers, filterValue || '', selectedUsers);
-      }),
-    );
+        filter((searchValue) => typeof searchValue === 'string'))])
+      .pipe(takeUntil(this.unsubscribe$),
+        map(([allPossibleUsers,
+          selectedUsers,
+          filterValue]) => {
+          return this.filter(allPossibleUsers, filterValue || '', selectedUsers);
+        }));
   }
 
   public ngOnDestroy() {
@@ -67,11 +69,13 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   }
 
   addUsersToTeam(): void {
-    this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue()).subscribe(() => {
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-      this.dialogRef.close();
-    });
+    this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue())
+      .subscribe(() => {
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser()
+          .subscribe();
+        this.dialogRef.close();
+      });
   }
 
   private filter(allPossibleUsers: User[], searchValue: string, selectedUsers: User[]) {
@@ -84,7 +88,9 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
       if (selectedUsers.find((u) => u.id === user.id)) {
         return false;
       }
-      return this.getDisplayValue(user).toLowerCase().includes(filterLower);
+      return this.getDisplayValue(user)
+        .toLowerCase()
+        .includes(filterLower);
     });
   }
 
@@ -103,7 +109,8 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   }
 
   remove(user: User): void {
-    const filteredUsers = this.selectedUsers$.getValue().filter((u) => u !== user);
+    const filteredUsers = this.selectedUsers$.getValue()
+      .filter((u) => u !== user);
     this.selectedUsers$.next(filteredUsers);
   }
 }

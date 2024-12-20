@@ -6,19 +6,21 @@ import { ButtonState } from '../../types/enums/ButtonState';
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss'],
+  styleUrls: ['./confirm-dialog.component.scss']
 })
 export class ConfirmDialogComponent implements OnInit {
-  dialogTitle: string = '';
-  dialogText: string = '';
+  dialogTitle = '';
+
+  dialogText = '';
+
   yesButtonState?: ButtonState;
+
   noButtonState?: ButtonState;
+
   closeButtonState?: ButtonState;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-  ) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
 
   ngOnInit() {
     this.dialogTitle = this.data.title;

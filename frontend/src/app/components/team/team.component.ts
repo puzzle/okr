@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
 import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
@@ -14,22 +14,22 @@ import { BehaviorSubject, first } from 'rxjs';
   selector: 'app-team',
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TeamComponent {
   @Input({ required: true })
   public overviewEntity!: OverviewEntity;
-  addIconSrc: BehaviorSubject<string> = new BehaviorSubject('assets/icons/new-icon.svg');
 
-  constructor(
-    private dialogService: DialogService,
+  addIconSrc = new BehaviorSubject<string>('assets/icons/new-icon.svg');
+
+  constructor(private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
-    private configService: ConfigService,
-  ) {
-    this.configService.config$.pipe(first()).subscribe((config: ClientConfig) => {
-      const configuredIconSrc = config.customStyles['okr-add-objective-icon'];
-      if (configuredIconSrc) this.addIconSrc.next(configuredIconSrc);
-    });
+    private configService: ConfigService) {
+    this.configService.config$.pipe(first())
+      .subscribe((config: ClientConfig) => {
+        const configuredIconSrc = config.customStyles['okr-add-objective-icon'];
+        if (configuredIconSrc) this.addIconSrc.next(configuredIconSrc);
+      });
   }
 
   trackByObjectiveId: TrackByFunction<ObjectiveMin> = (index, objective) => objective.id;
@@ -38,16 +38,17 @@ export class TeamComponent {
     const matDialogRef = this.dialogService.open(ObjectiveFormComponent, {
       data: {
         objective: {
-          teamId: this.overviewEntity.team.id,
-        },
-      },
-    });
-    matDialogRef.afterClosed().subscribe((result) => {
-      if (result?.addKeyResult) {
-        this.openAddKeyResultDialog(result.objective);
+          teamId: this.overviewEntity.team.id
+        }
       }
-      this.refreshDataService.markDataRefresh();
     });
+    matDialogRef.afterClosed()
+      .subscribe((result) => {
+        if (result?.addKeyResult) {
+          this.openAddKeyResultDialog(result.objective);
+        }
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   openAddKeyResultDialog(objective: Objective) {
@@ -55,8 +56,8 @@ export class TeamComponent {
       .open(KeyresultDialogComponent, {
         data: {
           objective: objective,
-          keyResult: null,
-        },
+          keyResult: null
+        }
       })
       .afterClosed()
       .subscribe((result) => {

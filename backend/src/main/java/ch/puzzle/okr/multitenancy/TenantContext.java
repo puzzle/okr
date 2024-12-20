@@ -1,9 +1,8 @@
 package ch.puzzle.okr.multitenancy;
 
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 public class TenantContext {
     public static final String DEFAULT_TENANT_ID = "public";

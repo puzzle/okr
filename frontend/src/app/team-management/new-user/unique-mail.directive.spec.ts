@@ -6,7 +6,7 @@ import { AbstractControl } from '@angular/forms';
 
 describe('UniqueMailDirective', () => {
   const userServiceMock = {
-    getUsers: jest.fn(),
+    getUsers: jest.fn()
   } as any;
 
   beforeEach(() => {
@@ -16,7 +16,8 @@ describe('UniqueMailDirective', () => {
   it('should create an instance', () => {
     TestBed.runInInjectionContext(() => {
       const directive = new UniqueEmailValidator(userServiceMock);
-      expect(directive).toBeTruthy();
+      expect(directive)
+        .toBeTruthy();
     });
   });
 
@@ -25,16 +26,20 @@ describe('UniqueMailDirective', () => {
       const directive = new UniqueEmailValidator(userServiceMock);
 
       let control = { value: users[0].email } as AbstractControl;
-      expect(directive.validate(control)).toStrictEqual({ notUniqueMail: { value: users[0].email } });
+      expect(directive.validate(control))
+        .toStrictEqual({ notUniqueMail: { value: users[0].email } });
 
       const notExistingMail = 'notexistinguser@test.com';
       control = { value: notExistingMail } as AbstractControl;
-      expect(directive.validate(control)).toStrictEqual(null);
+      expect(directive.validate(control))
+        .toStrictEqual(null);
 
       directive.setAddedMails([notExistingMail]);
-      expect(directive.validate(control)).toStrictEqual({ notUniqueMail: { value: notExistingMail } });
+      expect(directive.validate(control))
+        .toStrictEqual({ notUniqueMail: { value: notExistingMail } });
 
-      expect(directive).toBeTruthy();
+      expect(directive)
+        .toBeTruthy();
     });
   });
 });

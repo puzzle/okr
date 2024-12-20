@@ -1,5 +1,7 @@
 package ch.puzzle.okr.mapper.keyresult.helper;
 
+import static ch.puzzle.okr.mapper.keyresult.helper.TestDataConstants.*;
+
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
@@ -10,8 +12,6 @@ import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-
-import static ch.puzzle.okr.mapper.keyresult.helper.TestDataConstants.*;
 
 public class TestDataHelper {
 
@@ -51,7 +51,8 @@ public class TestDataHelper {
         return objective;
     }
 
-    private static final CheckIn checkInMetric = CheckInMetric.Builder.builder() //
+    private static final CheckIn checkInMetric = CheckInMetric.Builder
+            .builder() //
             .withId(CHECK_IN_ID) //
             .withVersion(CHECK_IN_VERSION) //
             .withValue(CHECK_IN_METRIC_VALUE) //
@@ -61,7 +62,8 @@ public class TestDataHelper {
             .withInitiatives(CHECK_IN_INITIATIVES) //
             .build();
 
-    private static final CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder() //
+    private static final CheckIn checkInOrdinal = CheckInOrdinal.Builder
+            .builder() //
             .withId(CHECK_IN_ID) //
             .withVersion(CHECK_IN_VERSION) //
             .withZone(CHECK_IN_ORDINAL_ZONE) //
@@ -71,26 +73,30 @@ public class TestDataHelper {
             .withInitiatives(CHECK_IN_INITIATIVES) //
             .build();
 
-    private static final User owner = User.Builder.builder() //
+    private static final User owner = User.Builder
+            .builder() //
             .withId(USER_ID) //
             .withFirstname(USER_FIRSTNAME) //
             .withLastname(USER_LASTNAME) //
             .build();
 
-    private static final Quarter quarter = Quarter.Builder.builder() //
+    private static final Quarter quarter = Quarter.Builder
+            .builder() //
             .withId(QUARTER_ID) //
             .withLabel(QUARTER_LABEL) //
             .withStartDate(QUARTER_START_DATE) //
             .withEndDate(QUARTER_END_DATE) //
             .build();
 
-    private static final Objective objective = Objective.Builder.builder() //
+    private static final Objective objective = Objective.Builder
+            .builder() //
             .withId(OBJECTIVE_ID) //
             .withQuarter(quarter) //
             .withState(OBJECTIVE_STATE) //
             .build();
 
-    private static final KeyResult keyResultMetric = KeyResultMetric.Builder.builder() //
+    private static final KeyResult keyResultMetric = KeyResultMetric.Builder
+            .builder() //
             .withId(KEY_RESULT_ID) //
             .withVersion(KEY_RESULT_VERSION) //
             .withTitle(KEY_RESULT_TITLE) //
@@ -104,19 +110,23 @@ public class TestDataHelper {
             .withModifiedOn(CHECK_IN_MODIFIED_ON) //
             .build();
 
-    private static final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder() //
+    private static final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder
+            .builder() //
             .withId(KEY_RESULT_ID) //
             .withVersion(KEY_RESULT_VERSION) //
             .withTitle(KEY_RESULT_TITLE) //
             .withDescription(KEY_RESULT_DESCRIPTION) //
-            .withCommitZone(KEY_RESULT_COMMIT_ZONE).withTargetZone(KEY_RESULT_TARGET_ZONE)
-            .withStretchZone(KEY_RESULT_STRETCH_ZONE).withOwner(owner) //
+            .withCommitZone(KEY_RESULT_COMMIT_ZONE)
+            .withTargetZone(KEY_RESULT_TARGET_ZONE)
+            .withStretchZone(KEY_RESULT_STRETCH_ZONE)
+            .withOwner(owner) //
             .withObjective(objective) //
             .withCreatedOn(CHECK_IN_CREATED_ON) //
             .withModifiedOn(CHECK_IN_MODIFIED_ON) //
             .build();
 
-    private static final Action actionForKeyResultMetric = Action.Builder.builder() //
+    private static final Action actionForKeyResultMetric = Action.Builder
+            .builder() //
             .withId(ACTION_ID) //
             .withVersion(ACTION_VERSION) //
             .withAction(ACTION_ACTION) //
@@ -125,7 +135,8 @@ public class TestDataHelper {
             .withKeyResult(keyResultMetric) //
             .build();
 
-    private static final Action actionForKeyResultOrdinal = Action.Builder.builder() //
+    private static final Action actionForKeyResultOrdinal = Action.Builder
+            .builder() //
             .withId(ACTION_ID) //
             .withVersion(ACTION_VERSION) //
             .withAction(ACTION_ACTION) //

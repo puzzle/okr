@@ -7,11 +7,13 @@ export function filterByObjectiveState(icon: string) {
 }
 
 const isObjectiveState = (element: HTMLElement, icon: string) => {
-  return Cypress.$(element).find(`[src='assets/icons/${icon}-icon.svg']`).length > 0;
+  return Cypress.$(element)
+    .find(`[src='assets/icons/${icon}-icon.svg']`).length > 0;
 };
 
 const isObjectiveName = (element: HTMLElement, objectiveName: string) => {
-  return Cypress.$(element).find(`:contains("${objectiveName}")`).length > 0;
+  return Cypress.$(element)
+    .find(`:contains("${objectiveName}")`).length > 0;
 };
 
 export function getObjectiveColumns() {

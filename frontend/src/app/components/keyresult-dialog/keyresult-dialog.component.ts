@@ -14,13 +14,16 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-keyresult-dialog',
   templateUrl: './keyresult-dialog.component.html',
-  styleUrls: ['./keyresult-dialog.component.scss'],
+  styleUrls: ['./keyresult-dialog.component.scss']
 })
 export class KeyresultDialogComponent {
   keyResultForm = new FormGroup({
-    title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
+    title: new FormControl<string>('', [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string | null>(null, [Validators.required, Validators.nullValidator]),
+    owner: new FormControl<User | string | null>(null, [Validators.required,
+      Validators.nullValidator]),
     actionList: new FormControl<Action[]>([]),
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),
@@ -28,14 +31,15 @@ export class KeyresultDialogComponent {
     commitZone: new FormControl<string | null>(null),
     targetZone: new FormControl<string | null>(null),
     stretchZone: new FormControl<string | null>(null),
-    keyResultType: new FormControl<string>('metric'),
+    keyResultType: new FormControl<string>('metric')
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
+    @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
+      keyResult: KeyResult; },
     private keyResultService: KeyresultService,
     public dialogService: DialogService,
-    public dialogRef: MatDialogRef<KeyresultDialogComponent>,
+    public dialogRef: MatDialogRef<KeyresultDialogComponent>
   ) {}
 
   isMetricKeyResult() {
@@ -44,20 +48,24 @@ export class KeyresultDialogComponent {
 
   saveKeyResult(openNewDialog = false) {
     const value = this.keyResultForm.value;
-    let keyResult = this.isMetricKeyResult()
-      ? ({ ...value, objective: this.data.objective } as KeyResultMetricDTO)
-      : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
+    const keyResult = this.isMetricKeyResult()
+      ? ({ ...value,
+        objective: this.data.objective } as KeyResultMetricDTO)
+      : ({ ...value,
+        objective: this.data.objective,
+        id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version!;
     keyResult.actionList = keyResult.actionList!.filter((action: Action) => action.action !== '');
-    this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
-      this.dialogRef.close({
-        id: returnValue.id,
-        version: returnValue.version,
-        closeState: CloseState.SAVED,
-        openNew: openNewDialog,
+    this.keyResultService.saveKeyResult(keyResult)
+      .subscribe((returnValue) => {
+        this.dialogRef.close({
+          id: returnValue.id,
+          version: returnValue.version,
+          closeState: CloseState.SAVED,
+          openNew: openNewDialog
+        });
       });
-    });
   }
 
   deleteKeyResult() {

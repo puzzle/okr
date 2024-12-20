@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
   name: 'okrChampion',
-  standalone: true,
+  standalone: true
 })
 export class OkrChampionPipe implements PipeTransform {
   constructor(private readonly translate: TranslateService) {}

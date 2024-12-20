@@ -1,5 +1,9 @@
 package ch.puzzle.okr.service.validation;
 
+import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -8,6 +12,7 @@ import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.QuarterRepository;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +21,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.List;
-
-import static ch.puzzle.okr.test.AssertionHelper.assertOkrResponseStatusException;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ValidationBaseTest {
@@ -62,7 +61,7 @@ class ValidationBaseTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGet(id));
+                                                            () -> validator.validateOnGet(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
@@ -93,7 +92,7 @@ class ValidationBaseTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnDelete(id));
+                                                            () -> validator.validateOnDelete(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Quarter")));
@@ -121,7 +120,7 @@ class ValidationBaseTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.throwExceptionWhenModelIsNull(model));
+                                                            () -> validator.throwExceptionWhenModelIsNull(model));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Quarter")));
@@ -145,7 +144,7 @@ class ValidationBaseTest {
 
         // act
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.throwExceptionWhenIdIsNotNull(id));
+                                                            () -> validator.throwExceptionWhenIdIsNotNull(id));
 
         // assert
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Quarter")));
@@ -171,7 +170,8 @@ class ValidationBaseTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.throwExceptionWhenIdHasChanged(id, modelId));
+                                                            () -> validator
+                                                                    .throwExceptionWhenIdHasChanged(id, modelId));
 
         // assert
         List<ErrorDto> expectedErrors = List
@@ -201,7 +201,7 @@ class ValidationBaseTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validate(quarterWithNullLabel));
+                                                            () -> validator.validate(quarterWithNullLabel));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("label", "Quarter")));
         assertOkrResponseStatusException(exception, expectedErrors);
@@ -217,21 +217,23 @@ class ValidationBaseTest {
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validatorWithSeveralConstraints.validate(objective));
+                                                            () -> validatorWithSeveralConstraints.validate(objective));
 
-        List<ErrorDto> expectedErrors = List.of( //
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")), //
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")), //
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")), //
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")), //
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")), //
-                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective", "2", "250")) //
-        );
+        List<ErrorDto> expectedErrors = List
+                .of( //
+                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")), //
+                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")), //
+                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")), //
+                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")), //
+                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")), //
+                    new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective", "2", "250")) //
+                );
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
     static class DummyValidationService
-            extends ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
+            extends
+                ValidationBase<Quarter, Long, QuarterRepository, QuarterPersistenceService> {
 
         public DummyValidationService(QuarterPersistenceService quarterPersistenceService) {
             super(quarterPersistenceService);
@@ -247,7 +249,8 @@ class ValidationBaseTest {
     }
 
     static class DummyValidationServiceWithSeveralConstraints
-            extends ValidationBase<Objective, Long, ObjectiveRepository, ObjectivePersistenceService> {
+            extends
+                ValidationBase<Objective, Long, ObjectiveRepository, ObjectivePersistenceService> {
 
         public DummyValidationServiceWithSeveralConstraints(ObjectivePersistenceService objectivePersistenceService) {
             super(objectivePersistenceService);

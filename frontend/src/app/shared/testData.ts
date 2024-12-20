@@ -19,45 +19,47 @@ import { CheckInOrdinalMin } from './types/model/CheckInOrdinalMin';
 import { CheckInMetricMin } from './types/model/CheckInMetricMin';
 
 export const teamFormObject = {
-  name: 'newTeamName',
+  name: 'newTeamName'
 };
 
 export const marketingTeamWriteable: Team = {
   id: 1,
   version: 2,
   name: 'Marketing Team',
-  writeable: true,
+  writeable: true
 };
 
 export const marketingTeamNotWriteable: Team = {
   id: 1,
   version: 3,
   name: 'Marketing Team',
-  writeable: false,
+  writeable: false
 };
 
 export const team1: Team = {
   id: 1,
   version: 2,
   name: 'Team1',
-  writeable: false,
+  writeable: false
 };
 
 export const team2: Team = {
   id: 2,
   version: 3,
   name: 'Team2',
-  writeable: false,
+  writeable: false
 };
 
 export const team3: Team = {
   id: 3,
   version: 4,
   name: 'Team3',
-  writeable: false,
+  writeable: false
 };
 
-export const teamList = [team1, team2, team3];
+export const teamList = [team1,
+  team2,
+  team3];
 
 export const action1: Action = {
   id: 33,
@@ -65,7 +67,7 @@ export const action1: Action = {
   action: 'Drucker kaufen',
   priority: 0,
   isChecked: false,
-  keyResultId: 1,
+  keyResultId: 1
 };
 
 export const action2: Action = {
@@ -74,7 +76,7 @@ export const action2: Action = {
   action: 'Blätter kaufen',
   priority: 1,
   isChecked: true,
-  keyResultId: 2,
+  keyResultId: 2
 };
 
 export const action3: Action = {
@@ -83,24 +85,34 @@ export const action3: Action = {
   action: '',
   priority: 3,
   isChecked: false,
-  keyResultId: null,
+  keyResultId: null
 };
 
 export const addedAction: Action = {
   action: '',
   priority: 0,
-  keyResultId: 1,
+  keyResultId: 1
 } as Action;
 
-export const quarterMin: Quarter = new Quarter(1, 'GJ 23/24-Q1', null, null);
+export const quarterMin: Quarter = new Quarter(
+  1, 'GJ 23/24-Q1', null, null
+);
 
-export const quarter1: Quarter = new Quarter(1, 'GJ 22/23-Q4', new Date('2023-04-01'), new Date('2023-07-30'));
+export const quarter1: Quarter = new Quarter(
+  1, 'GJ 22/23-Q4', new Date('2023-04-01'), new Date('2023-07-30')
+);
 
-export const quarter2: Quarter = new Quarter(2, 'GJ 22/23-Q3', new Date('2023-01-01'), new Date('2023-03-31'));
+export const quarter2: Quarter = new Quarter(
+  2, 'GJ 22/23-Q3', new Date('2023-01-01'), new Date('2023-03-31')
+);
 
-export const quarterBacklog: Quarter = new Quarter(999, 'GJ 23/24-Q1', null, null);
+export const quarterBacklog: Quarter = new Quarter(
+  999, 'GJ 23/24-Q1', null, null
+);
 
-export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
+export const quarterList: Quarter[] = [quarter1,
+  quarter2,
+  quarterBacklog];
 
 export const checkInMetric: CheckInMetricMin = {
   id: 815,
@@ -110,7 +122,7 @@ export const checkInMetric: CheckInMetricMin = {
   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
   initiatives: 'Initiatives metric',
   changeInfo: 'Changeinfo metric',
-  writeable: true,
+  writeable: true
 } as CheckInMetricMin;
 
 export const checkInMetricWriteableFalse: CheckInMetricMin = {
@@ -121,7 +133,7 @@ export const checkInMetricWriteableFalse: CheckInMetricMin = {
   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
   initiatives: 'Initiatives metric writeable false',
   changeInfo: 'Changeinfo metric writeable false',
-  writeable: false,
+  writeable: false
 } as CheckInMetricMin;
 
 export const checkInOrdinal: CheckInOrdinalMin = {
@@ -132,7 +144,7 @@ export const checkInOrdinal: CheckInOrdinalMin = {
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
   initiatives: 'Initiatives ordinal',
   changeInfo: 'Changeinfo ordinal',
-  writeable: true,
+  writeable: true
 } as CheckInOrdinalMin;
 
 export const keyResultMetricMin: KeyResultMetricMin = {
@@ -144,7 +156,7 @@ export const keyResultMetricMin: KeyResultMetricMin = {
   baseline: 10.0,
   stretchGoal: 25.0,
   lastCheckIn: checkInMetric,
-  type: 'keyResult',
+  type: 'keyResult'
 } as KeyResultMetricMin;
 
 export const keyResultMetricMinScoring: KeyResultMetricMin = {
@@ -164,9 +176,9 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'Half way through',
     initiatives: 'Quality before quantity',
-    writeable: true,
+    writeable: true
   },
-  type: 'keyResult',
+  type: 'keyResult'
 } as KeyResultMetricMin;
 
 export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
@@ -186,9 +198,9 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'More Changes',
     initiatives: 'Some initatives',
-    writeable: true,
+    writeable: true
   },
-  type: 'keyResult',
+  type: 'keyResult'
 } as KeyResultMetricMin;
 
 export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
@@ -206,8 +218,8 @@ export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
     confidence: 8,
     createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
     initiatives: 'Initiatives of ordinal',
-    changeInfo: 'Changeinfo ordinal',
-  } as CheckInOrdinalMin,
+    changeInfo: 'Changeinfo ordinal'
+  } as CheckInOrdinalMin
 } as KeyResultOrdinalMin;
 
 export const keyResultOrdinalMin: KeyResultOrdinalMin = {
@@ -218,7 +230,7 @@ export const keyResultOrdinalMin: KeyResultOrdinalMin = {
   commitZone: '3 Birnen',
   targetZone: '2 Birnen und 2 Äpfel',
   stretchGoal: 'Alle Früchte',
-  lastCheckIn: checkInOrdinal,
+  lastCheckIn: checkInOrdinal
 } as KeyResultOrdinalMin;
 
 export const objectiveMin: ObjectiveMin = {
@@ -227,7 +239,8 @@ export const objectiveMin: ObjectiveMin = {
   title: 'Increase User Engagement',
   state: State.ONGOING,
   quarter: quarterMin,
-  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+  keyResults: [keyResultMetricMin,
+    keyResultOrdinalMin] as KeyresultMin[]
 } as ObjectiveMin;
 
 export const objectiveResponse1: any = {
@@ -236,7 +249,8 @@ export const objectiveResponse1: any = {
   title: 'Increase Environment Engagement',
   state: 'ONGOING',
   quarter: quarterMin,
-  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+  keyResults: [keyResultMetricMin,
+    keyResultOrdinalMin] as KeyresultMin[]
 };
 
 export const objectiveResponse2: any = {
@@ -245,7 +259,8 @@ export const objectiveResponse2: any = {
   title: 'Increase Social Engagement',
   state: 'DRAFT',
   quarter: quarterMin,
-  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+  keyResults: [keyResultMetricMin,
+    keyResultOrdinalMin] as KeyresultMin[]
 };
 
 export const objectiveResponse3: any = {
@@ -254,7 +269,8 @@ export const objectiveResponse3: any = {
   title: 'Increase Member Engagement',
   state: 'NOTSUCCESSFUL',
   quarter: quarterMin,
-  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+  keyResults: [keyResultMetricMin,
+    keyResultOrdinalMin] as KeyresultMin[]
 };
 
 export const objectiveResponse4: any = {
@@ -263,41 +279,51 @@ export const objectiveResponse4: any = {
   title: 'Increase Company Engagement',
   state: 'SUCCESSFUL',
   quarter: quarterMin,
-  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+  keyResults: [keyResultMetricMin,
+    keyResultOrdinalMin] as KeyresultMin[]
 };
 
 export const overViewEntity1: OverviewEntity = {
   team: marketingTeamWriteable,
-  objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
-  writeable: true,
+  objectives: [objectiveMin,
+    objectiveMin,
+    objectiveMin] as ObjectiveMin[],
+  writeable: true
 };
 
 export const overViewEntity2: OverviewEntity = {
   team: marketingTeamNotWriteable,
-  objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
-  writeable: true,
+  objectives: [objectiveMin,
+    objectiveMin,
+    objectiveMin] as ObjectiveMin[],
+  writeable: true
 };
 
 export const overViewEntityResponse1: any = {
   team: team1,
-  objectives: [objectiveResponse1, objectiveResponse2],
-  writable: true,
+  objectives: [objectiveResponse1,
+    objectiveResponse2],
+  writable: true
 };
 
 export const overViewEntityResponse2: any = {
   team: team2,
-  objectives: [objectiveResponse3, objectiveResponse4],
-  writable: false,
+  objectives: [objectiveResponse3,
+    objectiveResponse4],
+  writable: false
 };
 
-export const overviews: OverviewEntity[] = [overViewEntityResponse1, overViewEntityResponse2];
+export const overviews: OverviewEntity[] = [overViewEntityResponse1,
+  overViewEntityResponse2];
 
-export const quarter: Quarter = new Quarter(1, '23.02.2025', new Date(), new Date());
+export const quarter: Quarter = new Quarter(
+  1, '23.02.2025', new Date(), new Date()
+);
 
 export const keyResultObjective: KeyResultObjective = {
   id: 1,
   state: State.NOTSUCCESSFUL,
-  quarter: quarter,
+  quarter: quarter
 };
 
 export const keyResultMetricWithIdEight: KeyResultMetricMin = {
@@ -308,7 +334,7 @@ export const keyResultMetricWithIdEight: KeyResultMetricMin = {
   baseline: 5.0,
   stretchGoal: 15.0,
   lastCheckIn: checkInMetric,
-  keyResultType: 'keyResult',
+  keyResultType: 'keyResult'
 } as KeyResultMetricMin;
 
 export const objective: Objective = {
@@ -320,7 +346,7 @@ export const objective: Objective = {
   quarterId: 2,
   quarterLabel: 'GJ 22/23-Q2',
   state: State.SUCCESSFUL,
-  writeable: true,
+  writeable: true
 };
 
 export const objectiveWriteableFalse: Objective = {
@@ -332,7 +358,7 @@ export const objectiveWriteableFalse: Objective = {
   quarterId: 2,
   quarterLabel: 'GJ 22/23-Q2',
   state: State.NOTSUCCESSFUL,
-  writeable: false,
+  writeable: false
 };
 
 export const firstCheckIn: CheckInMetricMin = {
@@ -343,7 +369,7 @@ export const firstCheckIn: CheckInMetricMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
-  writeable: true,
+  writeable: true
 };
 
 export const secondCheckIn: CheckInMetricMin = {
@@ -354,7 +380,7 @@ export const secondCheckIn: CheckInMetricMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
-  writeable: true,
+  writeable: true
 };
 
 export const testUser: User = {
@@ -362,14 +388,12 @@ export const testUser: User = {
   firstname: 'Bob',
   lastname: 'Baumeister',
   isOkrChampion: false,
-  userTeamList: [
-    {
-      id: 1,
-      team: team1,
-      isTeamAdmin: false,
-    },
-  ],
-  email: 'bob.baumeister@puzzle.ch',
+  userTeamList: [{
+    id: 1,
+    team: team1,
+    isTeamAdmin: false
+  }],
+  email: 'bob.baumeister@puzzle.ch'
 };
 
 export const users: User[] = [
@@ -380,7 +404,7 @@ export const users: User[] = [
     lastname: 'Egiman',
     isOkrChampion: true,
     userTeamList: [],
-    email: 'peggimann@puzzle.ch',
+    email: 'peggimann@puzzle.ch'
   },
   {
     id: 3,
@@ -388,7 +412,7 @@ export const users: User[] = [
     lastname: 'Papier',
     isOkrChampion: false,
     userTeamList: [],
-    email: 'robin.papier@puzzle.ch',
+    email: 'robin.papier@puzzle.ch'
   },
   {
     id: 4,
@@ -396,8 +420,8 @@ export const users: User[] = [
     lastname: 'Owner',
     isOkrChampion: false,
     userTeamList: [],
-    email: 'keyresult.owner@puzzle.ch',
-  },
+    email: 'keyresult.owner@puzzle.ch'
+  }
 ];
 
 export const keyResult: KeyResultOrdinal = {
@@ -414,8 +438,10 @@ export const keyResult: KeyResultOrdinal = {
     id: 301,
     version: 1,
     state: State.DRAFT,
-    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
-    writeable: true,
+    quarter: new Quarter(
+      1, 'GJ 23/24-Q1', new Date(), new Date()
+    ),
+    writeable: true
   } as KeyResultObjective,
   lastCheckIn: {
     id: 745,
@@ -426,12 +452,12 @@ export const keyResult: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'info',
     initiatives: 'some',
-    writeable: true,
+    writeable: true
   } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: null,
-  writeable: true,
+  writeable: true
 };
 
 export const keyResultOrdinal: KeyResultOrdinal = {
@@ -448,8 +474,10 @@ export const keyResultOrdinal: KeyResultOrdinal = {
     id: 301,
     version: 1,
     state: State.DRAFT,
-    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
-    writeable: true,
+    quarter: new Quarter(
+      1, 'GJ 23/24-Q1', new Date(), new Date()
+    ),
+    writeable: true
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -460,12 +488,12 @@ export const keyResultOrdinal: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'Does not look good',
     initiatives: 'We have to be faster',
-    writeable: true,
+    writeable: true
   } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [],
-  writeable: true,
+  writeable: true
 };
 
 export const keyResultWriteableFalse: KeyResultOrdinal = {
@@ -482,8 +510,10 @@ export const keyResultWriteableFalse: KeyResultOrdinal = {
     id: 301,
     version: 1,
     state: State.DRAFT,
-    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
-    writeable: false,
+    quarter: new Quarter(
+      1, 'GJ 23/24-Q1', new Date(), new Date()
+    ),
+    writeable: false
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -494,12 +524,12 @@ export const keyResultWriteableFalse: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'Also not writeable',
     initiatives: 'Perhaps make it writeable',
-    writeable: false,
+    writeable: false
   } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [],
-  writeable: false,
+  writeable: false
 };
 
 export const keyResultMetric: KeyResultMetric = {
@@ -516,8 +546,10 @@ export const keyResultMetric: KeyResultMetric = {
     id: 302,
     version: 1,
     state: State.DRAFT,
-    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
-    writeable: true,
+    quarter: new Quarter(
+      1, 'GJ 23/24-Q1', new Date(), new Date()
+    ),
+    writeable: true
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -528,12 +560,13 @@ export const keyResultMetric: KeyResultMetric = {
     modifiedOn: new Date(),
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
-    writeable: true,
+    writeable: true
   } as CheckInMetric,
   createdOn: new Date(),
   modifiedOn: new Date(),
-  actionList: [action1, action2],
-  writeable: true,
+  actionList: [action1,
+    action2],
+  writeable: true
 };
 
 export const keyResultActions: KeyResultMetric = {
@@ -549,8 +582,10 @@ export const keyResultActions: KeyResultMetric = {
   objective: {
     id: 302,
     state: State.DRAFT,
-    quarter: new Quarter(1, 'GJ 23/24-Q1', new Date(), new Date()),
-    writeable: true,
+    quarter: new Quarter(
+      1, 'GJ 23/24-Q1', new Date(), new Date()
+    ),
+    writeable: true
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -560,10 +595,11 @@ export const keyResultActions: KeyResultMetric = {
     modifiedOn: new Date(),
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
-    writeable: true,
+    writeable: true
   } as CheckInMetric,
   createdOn: new Date(),
   modifiedOn: new Date(),
-  actionList: [action1, action2],
-  writeable: true,
+  actionList: [action1,
+    action2],
+  writeable: true
 };

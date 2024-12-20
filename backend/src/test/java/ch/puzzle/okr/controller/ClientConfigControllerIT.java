@@ -1,7 +1,13 @@
 package ch.puzzle.okr.controller;
 
+import static ch.puzzle.okr.controller.OverviewControllerIT.JSON_PATH_ROOT;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.service.clientconfig.ClientConfigService;
+import java.util.Map;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,13 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.Map;
-
-import static ch.puzzle.okr.controller.OverviewControllerIT.JSON_PATH_ROOT;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +35,8 @@ public class ClientConfigControllerIT {
     void shouldGetClientConfig() throws Exception {
         BDDMockito.given(configService.getConfigBasedOnActiveEnv(anyString())).willReturn(createClientConfigDto());
 
-        mvc.perform(get("/config").contentType(MediaType.APPLICATION_JSON))
+        mvc
+                .perform(get("/config").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath(JSON_PATH_ROOT, Matchers.aMapWithSize(10)))
                 .andExpect(jsonPath("$.activeProfile", Matchers.is("Active_Profile")))
@@ -54,8 +54,16 @@ public class ClientConfigControllerIT {
 
     private ClientConfigDto createClientConfigDto() {
         Map<String, String> customStyles = Map.of("font-family", "verdana", "font-size", "20px");
-        return new ClientConfigDto("Active_Profile", "Issuer", "Client_Id", "Favicon", "Logo", "Triangles",
-                "Background_Logo", "Title", "helpSiteUrl", customStyles);
+        return new ClientConfigDto("Active_Profile",
+                                   "Issuer",
+                                   "Client_Id",
+                                   "Favicon",
+                                   "Logo",
+                                   "Triangles",
+                                   "Background_Logo",
+                                   "Title",
+                                   "helpSiteUrl",
+                                   customStyles);
     }
 
 }

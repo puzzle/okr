@@ -1,9 +1,15 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.USER;
+import static ch.puzzle.okr.util.CollectionUtils.iterableToList;
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
-
-import java.util.List;
-import java.util.Optional;
-
-import static ch.puzzle.okr.Constants.USER;
-import static ch.puzzle.okr.util.CollectionUtils.iterableToList;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
@@ -45,11 +44,13 @@ class UserPersistenceServiceIT {
     @Test
     void saveShouldSaveUserWithEmptyUserTeamList() {
         // arrange
-        var newUser = User.Builder.builder() //
+        var newUser = User.Builder
+                .builder() //
                 .withFirstname("Hans") //
                 .withLastname("Muster") //
                 .withEmail("muster@puzzle.ch") //
-                .withUserTeamList(List.of()).build();
+                .withUserTeamList(List.of())
+                .build();
 
         // act
         createdUser = userPersistenceService.save(newUser);
@@ -63,11 +64,13 @@ class UserPersistenceServiceIT {
     @Test
     void saveShouldSaveUserWithNullUserTeamList() {
         // arrange
-        var newUser = User.Builder.builder() //
+        var newUser = User.Builder
+                .builder() //
                 .withFirstname("Hans") //
                 .withLastname("Muster") //
                 .withEmail("muster@puzzle.ch") //
-                .withUserTeamList(null).build();
+                .withUserTeamList(null)
+                .build();
 
         // act
         createdUser = userPersistenceService.save(newUser);
@@ -81,7 +84,8 @@ class UserPersistenceServiceIT {
     @Test
     void saveAllShouldSaveAllUsersInTheInputList() {
         // arrange
-        var newUser = User.Builder.builder() //
+        var newUser = User.Builder
+                .builder() //
                 .withFirstname("Hans") //
                 .withLastname("Muster") //
                 .withEmail("muster@puzzle.ch") //
@@ -115,7 +119,8 @@ class UserPersistenceServiceIT {
     @Test
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         // arrange
-        var newUser = User.Builder.builder() //
+        var newUser = User.Builder
+                .builder() //
                 .withId(null) //
                 .withFirstname("firstname") //
                 .withLastname("lastname") //
@@ -193,13 +198,14 @@ class UserPersistenceServiceIT {
 
         // assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, //
-                () -> userPersistenceService.findById(createdUser.getId()));
+                                                            () -> userPersistenceService.findById(createdUser.getId()));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     private User createUser() {
-        User newUser = User.Builder.builder() //
+        User newUser = User.Builder
+                .builder() //
                 .withId(null) //
                 .withFirstname("firstname") //
                 .withLastname("lastname") //
@@ -214,7 +220,7 @@ class UserPersistenceServiceIT {
     @Test
     void deleteByIdShouldThrowExceptionWhenIdIsNull() {
         InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, //
-                () -> userPersistenceService.deleteById(null));
+                                                                    () -> userPersistenceService.deleteById(null));
 
         assertEquals("The given id must not be null", exception.getMessage());
     }

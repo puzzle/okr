@@ -6,7 +6,7 @@ import { State } from '../shared/types/enums/State';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class OverviewService {
   constructor(private http: HttpClient) {}
@@ -15,10 +15,10 @@ export class OverviewService {
     const params = optionalValue({
       quarter: quarterId,
       team: teamIds,
-      objectiveQuery: objectiveQuery,
+      objectiveQuery: objectiveQuery
     });
-    return this.http.get<OverviewEntity[]>('/api/v2/overview', { params: params }).pipe(
-      map((overviews) => {
+    return this.http.get<OverviewEntity[]>('/api/v2/overview', { params: params })
+      .pipe(map((overviews) => {
         overviews.forEach((overview) => {
           overview.objectives.forEach((objective) => {
             objective.state = State[objective.state as string as keyof typeof State];
@@ -26,7 +26,6 @@ export class OverviewService {
           });
         });
         return overviews;
-      }),
-    );
+      }));
   }
 }

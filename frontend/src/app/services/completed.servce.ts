@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Completed } from '../shared/types/model/Completed';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CompletedService {
   constructor(private httpClient: HttpClient) {}

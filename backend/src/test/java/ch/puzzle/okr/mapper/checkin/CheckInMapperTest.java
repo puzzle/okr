@@ -1,5 +1,9 @@
 package ch.puzzle.okr.mapper.checkin;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
 import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
@@ -20,10 +24,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CheckInMapperTest {
@@ -110,8 +110,8 @@ public class CheckInMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows( //
-                ResponseStatusException.class, //
-                () -> checkInMapper.toDto(checkIn));
+                                                                       ResponseStatusException.class, //
+                                                                       () -> checkInMapper.toDto(checkIn));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
@@ -124,8 +124,8 @@ public class CheckInMapperTest {
 
         // act + assert
         ResponseStatusException responseStatusException = assertThrows( //
-                ResponseStatusException.class, //
-                () -> checkInMapper.toCheckIn(checkInDto));
+                                                                       ResponseStatusException.class, //
+                                                                       () -> checkInMapper.toCheckIn(checkInDto));
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 }

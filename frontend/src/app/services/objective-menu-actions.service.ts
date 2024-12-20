@@ -20,23 +20,26 @@ export interface ObjectiveMenuEntry {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ObjectiveMenuActionsService {
   afterActions: ObjectiveMenuAfterActions;
+
   actions: ObjectiveMenuActions;
+
   constructor(
     dialogService: DialogService,
     objectiveService: ObjectiveService,
     completedService: CompletedService,
-    refreshDataService: RefreshDataService,
+    refreshDataService: RefreshDataService
   ) {
     this.afterActions = new ObjectiveMenuAfterActions(objectiveService, completedService, refreshDataService);
     this.actions = new ObjectiveMenuActions(dialogService, refreshDataService, this.afterActions);
   }
 
   getMenu(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [...this.getSpecificMenuEntries(objective), ...this.getDefaultActions(objective)];
+    return [...this.getSpecificMenuEntries(objective),
+      ...this.getDefaultActions(objective)];
   }
 
   private getSpecificMenuEntries(objective: ObjectiveMin): ObjectiveMenuEntry[] {
@@ -55,15 +58,14 @@ export class ObjectiveMenuActionsService {
   }
 
   private getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [this.actions.editObjectiveAction(objective), this.getReleaseAction(objective)];
+    return [this.actions.editObjectiveAction(objective),
+      this.getReleaseAction(objective)];
   }
 
   private getOngoingMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [
-      this.actions.editObjectiveAction(objective),
+    return [this.actions.editObjectiveAction(objective),
       this.actions.completeObjectiveAction(objective),
-      this.actions.objectiveBackToDraft(),
-    ];
+      this.actions.objectiveBackToDraft()];
   }
 
   private getCompletedMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

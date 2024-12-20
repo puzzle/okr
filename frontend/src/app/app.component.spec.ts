@@ -27,44 +27,46 @@ const oauthServiceMock = {
   loadDiscoveryDocumentAndTryLogin(): Promise<any> {
     this.initCodeFlow();
     return Promise.resolve();
-  },
+  }
 };
 
 const routerMock = {
   root: jest.fn(),
   // Router
-  events: of(new NavigationEnd(0, 'http://localhost:4200/objective/2', 'http://localhost:4200/objective/2')),
+  events: of(new NavigationEnd(0, 'http://localhost:4200/objective/2', 'http://localhost:4200/objective/2'))
 };
 
-const routes: Routes = [
-  {
-    path: '',
-    component: OverviewComponent,
-    children: [{ path: 'objective/:id', component: ObjectiveDetailComponent, pathMatch: 'full' }],
-  },
-];
+const routes: Routes = [{
+  path: '',
+  component: OverviewComponent,
+  children: [{ path: 'objective/:id',
+    component: ObjectiveDetailComponent,
+    pathMatch: 'full' }]
+}];
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let loader: HarnessLoader;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes),
         HttpClientTestingModule,
         TranslateTestingModule.withTranslations({
-          de: de,
+          de: de
         }),
         OAuthModule.forRoot(),
         MatSidenavModule,
         NoopAnimationsModule,
-        CommonModule,
+        CommonModule
       ],
-      providers: [{ provide: OAuthService, useValue: oauthServiceMock }],
-      declarations: [AppComponent, OverviewComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [{ provide: OAuthService,
+        useValue: oauthServiceMock }],
+      declarations: [AppComponent,
+        OverviewComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
@@ -78,6 +80,7 @@ describe('AppComponent', () => {
   });
 
   test('should create the app', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

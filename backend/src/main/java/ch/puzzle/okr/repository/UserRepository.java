@@ -1,10 +1,9 @@
 package ch.puzzle.okr.repository;
 
 import ch.puzzle.okr.models.User;
-import org.springframework.data.repository.CrudRepository;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmail(String email);

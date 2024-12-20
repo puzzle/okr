@@ -1,16 +1,15 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import jakarta.persistence.TypedQuery;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-
-import java.util.List;
-
 import static ch.puzzle.okr.models.State.*;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 import static java.lang.String.format;
+
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import jakarta.persistence.TypedQuery;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 @Component
 public class AuthorizationCriteria<T> {
@@ -29,8 +28,9 @@ public class AuthorizationCriteria<T> {
             sb.append("\n and o.overviewId.teamId in (:" + PARAM_TEAM_IDS + ")");
         }
         if (shouldAddObjectiveFilter(objectiveQuery)) {
-            sb.append("\n and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:" + PARAM_OBJECTIVE_QUERY
-                    + ",'%'))");
+            sb
+                    .append("\n and lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:"
+                            + PARAM_OBJECTIVE_QUERY + ",'%'))");
         }
         String authorizationWhereClause = append(user, alias, "objectiveState", "overviewId.teamId");
         if (!authorizationWhereClause.isEmpty()) {
@@ -50,8 +50,14 @@ public class AuthorizationCriteria<T> {
             sb.append(format(" or %s.%s=:%s", alias, stateColumn, PARAM_ALL_DRAFT_STATE));
         } else {
             // users can read draft state of teams with admin role
-            sb.append(format(" or (%s.%s=:%s and %s.%s IN (:%s))", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias,
-                    teamIdColumn, PARAM_USER_TEAM_IDS));
+            sb
+                    .append(format(" or (%s.%s=:%s and %s.%s IN (:%s))",
+                                   alias,
+                                   stateColumn,
+                                   PARAM_TEAM_DRAFT_STATE,
+                                   alias,
+                                   teamIdColumn,
+                                   PARAM_USER_TEAM_IDS));
         }
         // all users can read published state
         sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
@@ -62,7 +68,7 @@ public class AuthorizationCriteria<T> {
     }
 
     public void setParameters(TypedQuery<T> typedQuery, List<Long> teamIds, String objectiveQuery,
-            AuthorizationUser user) {
+                              AuthorizationUser user) {
         if (shouldAddTeamFilter(teamIds)) {
             typedQuery.setParameter(PARAM_TEAM_IDS, teamIds);
         }

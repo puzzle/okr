@@ -16,9 +16,9 @@
       >
         <mat-option [value]="ALL_TEAMS">Alle Teams ({{ teams.length }})</mat-option>
         @for (team of teams; track team.id) {
-          <mat-option [attr.data-testId]="'select-team-dropdown-option'" [value]="team">
-            {{ team.name }}
-          </mat-option>
+        <mat-option [attr.data-testId]="'select-team-dropdown-option'" [value]="team">
+          {{ team.name }}
+        </mat-option>
         }
       </mat-select>
     </mat-form-field>

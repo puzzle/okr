@@ -1,6 +1,9 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.test.TestHelper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -10,17 +13,13 @@ import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import ch.puzzle.okr.test.TestHelper;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
 class AlignmentPersistenceServiceIT {
@@ -29,9 +28,12 @@ class AlignmentPersistenceServiceIT {
     private Alignment createdAlignment;
 
     private static ObjectiveAlignment createObjectiveAlignment(Long id) {
-        return ObjectiveAlignment.Builder.builder().withId(id)
+        return ObjectiveAlignment.Builder
+                .builder()
+                .withId(id)
                 .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
-                .withTargetObjective(Objective.Builder.builder().withId(4L).build()).build();
+                .withTargetObjective(Objective.Builder.builder().withId(4L).build())
+                .build();
     }
 
     private static KeyResultAlignment createKeyResultAlignment(Long id) {
@@ -39,9 +41,13 @@ class AlignmentPersistenceServiceIT {
     }
 
     private static KeyResultAlignment createKeyResultAlignment(Long id, int version) {
-        return KeyResultAlignment.Builder.builder().withId(id).withVersion(version)
+        return KeyResultAlignment.Builder
+                .builder()
+                .withId(id)
+                .withVersion(version)
                 .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
-                .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build()).build();
+                .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build())
+                .build();
     }
 
     @BeforeEach
@@ -105,7 +111,7 @@ class AlignmentPersistenceServiceIT {
         updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> alignmentPersistenceService.save(updateAlignment));
+                                                            () -> alignmentPersistenceService.save(updateAlignment));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Alignment")));
 

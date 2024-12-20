@@ -1,9 +1,9 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
-import { CheckInMetric } from './types/model/CheckInMetric';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
-  if (str === null || str === undefined || str.toString().trim() === '') {
+  if (str === null || str === undefined || str.toString()
+    .trim() === '') {
     return null;
   }
   const number: number = parseInt(str, 10);
@@ -22,43 +22,48 @@ export function getValueFromQuery(query: any, fallback?: number): number[] {
   return values.length > 0 ? values : [fallback];
 }
 
-export function optionalValue(param: object): { [p: string]: any } {
-  return Object.fromEntries(
-    Object.entries(param)
-      .filter(([_, v]) => v != undefined)
-      .filter(([_, v]) => v != '')
-      .filter(([_, v]) => {
-        if (Array.isArray(v)) {
-          return v.length > 0;
-        }
-        return true;
-      }),
-  );
+export function optionalValue(param: object): Record<string, any> {
+  return Object.fromEntries(Object.entries(param)
+    .filter(([_,
+      v]) => v != undefined)
+    .filter(([_,
+      v]) => v != '')
+    .filter(([_,
+      v]) => {
+      if (Array.isArray(v)) {
+        return v.length > 0;
+      }
+      return true;
+    }));
 }
 export function isLastCheckInNegative(baseline: number, stretchGoal: number, value: number): boolean {
   return (value > baseline && baseline > stretchGoal) || (value < baseline && baseline <= stretchGoal);
 }
 
 export function calculateCurrentPercentage(keyResultMetric: KeyResultMetricMin): number {
-  let value: number = +keyResultMetric.lastCheckIn?.value!;
-  let baseline: number = +keyResultMetric.baseline;
-  let stretchGoal: number = +keyResultMetric.stretchGoal;
+  const value: number = +keyResultMetric.lastCheckIn?.value!;
+  const baseline: number = +keyResultMetric.baseline;
+  const stretchGoal: number = +keyResultMetric.stretchGoal;
   if (isLastCheckInNegative(baseline, stretchGoal, value)) return 0;
   if (value == stretchGoal) return 100;
 
   return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
 }
 export function sanitize(query: string) {
-  return query.trim().toLowerCase();
+  return query.trim()
+    .toLowerCase();
 }
 
 export function getQueryString(query?: string) {
   const queryString = query || '';
   return sanitize(decodeURI(queryString));
 }
-export function optionalReplaceWithNulls(param: object): { [p: string]: any } {
+export function optionalReplaceWithNulls(param: object): Record<string, any> {
   const clearObject = optionalValue(param);
-  return Object.fromEntries(Object.entries(param).map(([k, v]) => [k, clearObject[k] === undefined ? null : v]));
+  return Object.fromEntries(Object.entries(param)
+    .map(([k,
+      v]) => [k,
+      clearObject[k] === undefined ? null : v]));
 }
 
 export function areEqual(arr1: number[], arr2: number[]) {
@@ -89,7 +94,8 @@ export function formInputCheck(form: FormGroup, propertyName: string) {
 }
 
 export function isMobileDevice() {
-  return window.navigator.userAgent.toLowerCase().includes('mobile');
+  return window.navigator.userAgent.toLowerCase()
+    .includes('mobile');
 }
 
 export function hasFormFieldErrors(formGroup: FormGroup, field: string) {

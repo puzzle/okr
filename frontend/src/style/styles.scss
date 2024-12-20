@@ -1,8 +1,8 @@
-@import "custom_angular";
-@import "_variables";
-@import "custom_bootstrap";
-@import "fonts/Roboto";
-@import "fonts/MaterialIcons";
+@import 'custom_angular';
+@import '_variables';
+@import 'custom_bootstrap';
+@import 'fonts/Roboto';
+@import 'fonts/MaterialIcons';
 
 html,
 body.okr {
@@ -10,84 +10,84 @@ body.okr {
   margin: 0;
   padding: 0;
   background: var(--okr-overview-background-color);
-  font-family: Roboto, "sans-serif";
+  font-family: Roboto, 'sans-serif';
   --bs-body-font-family: Roboto;
 
   h1 {
-    font-family: Roboto, "sans-serif";
+    font-family: Roboto, 'sans-serif';
     font-size: 1.5rem;
-    font-variation-settings: "wght" 600;
+    font-variation-settings: 'wght' 600;
   }
 
   h2 {
-    font-family: Roboto, "sans-serif";
+    font-family: Roboto, 'sans-serif';
     font-size: 1.25rem;
-    font-variation-settings: "wght" 600;
+    font-variation-settings: 'wght' 600;
     word-wrap: anywhere;
     @extend .linebreak;
     margin-bottom: 0;
   }
 
   h3 {
-    font-family: Roboto, "sans-serif";
+    font-family: Roboto, 'sans-serif';
     font-size: 1rem;
-    font-variation-settings: "wght" 400;
+    font-variation-settings: 'wght' 400;
     word-wrap: anywhere;
     margin-bottom: 0;
   }
 
   h4 {
-    font-family: Roboto, "sans-serif";
+    font-family: Roboto, 'sans-serif';
     font-size: 0.875rem;
-    font-variation-settings: "wght" 400;
+    font-variation-settings: 'wght' 400;
     margin-bottom: 0;
   }
 
   h5 {
-    font-family: Roboto, "sans-serif";
+    font-family: Roboto, 'sans-serif';
     font-size: 0.875rem;
-    font-variation-settings: "wght" 400;
+    font-variation-settings: 'wght' 400;
     margin-bottom: 0;
   }
 
   p {
-    font-family: Roboto, "sans-serif";
-    font-variation-settings: "wght" 400;
+    font-family: Roboto, 'sans-serif';
+    font-variation-settings: 'wght' 400;
     margin: 0;
     font-size: 14px;
   }
 
   span {
-    font-family: Roboto, "sans-serif";
-    font-variation-settings: "wght" 400;
+    font-family: Roboto, 'sans-serif';
+    font-variation-settings: 'wght' 400;
     font-size: 14px;
   }
 
   .quarter-filter-text span {
-    font-family: Roboto, "sans-serif";
-    font-variation-settings: "wght" 400;
+    font-family: Roboto, 'sans-serif';
+    font-variation-settings: 'wght' 400;
     font-size: 16px;
   }
 
   a {
-    font-family: Roboto, "sans-serif";
-    font-variation-settings: "wght" 400;
+    font-family: Roboto, 'sans-serif';
+    font-variation-settings: 'wght' 400;
     color: $pz-dark-blue;
     text-decoration: none;
     font-size: 0.875rem;
   }
 
   .font-size-14 {
-    font-family: Roboto, "sans-serif";
-    font-variation-settings: "wght" 400;
+    font-family: Roboto, 'sans-serif';
+    font-variation-settings: 'wght' 400;
     font-size: 0.875rem;
   }
 }
 
 // TODO: Find a better way to override the Angular Material default font once Angular 19 is installed. https://material.angular.io/guide/theming
 * {
-  font-family: Roboto, "sans-serif";
-  font-variation-settings: "wght" 400;
+  font-family: Roboto, 'sans-serif';
+  font-variation-settings: 'wght' 400;
 }
 
 .linebreak {
@@ -124,15 +124,15 @@ body pzsh-backdrop {
 }
 
 .text-small {
-  font-family: Roboto, "sans-serif";
-  font-variation-settings: "wght" 400;
+  font-family: Roboto, 'sans-serif';
+  font-variation-settings: 'wght' 400;
   font-size: 1rem;
 }
 
 @media screen and (max-width: 580px) {
   .text-small {
-    font-family: Roboto, "sans-serif";
-    font-variation-settings: "wght" 400;
+    font-family: Roboto, 'sans-serif';
+    font-variation-settings: 'wght' 400;
     font-size: 0.8rem;
   }
 }
@@ -170,7 +170,7 @@ input textarea {
 
 textarea,
 input:not([type]),
-input[type="text"] {
+input[type='text'] {
   @extend .ps-1;
 }
 
@@ -185,8 +185,8 @@ input[type="text"] {
 }
 
 .mat-mdc-checkbox .mdc-form-field {
-  font-family: Roboto, "sans-serif";
-  font-variation-settings: "wght" 400;
+  font-family: Roboto, 'sans-serif';
+  font-variation-settings: 'wght' 400;
   font-size: 1rem !important;
 }
 
@@ -270,7 +270,7 @@ img.add-cross-button {
 }
 
 .add-text {
-  font-family: Roboto, "sans-serif";
+  font-family: Roboto, 'sans-serif';
   margin-top: 1px;
   height: 2rem;
 }
@@ -331,8 +331,8 @@ table.okr-table {
     }
 
     > th {
-      font-family: Roboto, "sans-serif";
-      font-variation-settings: "wght" 700;
+      font-family: Roboto, 'sans-serif';
+      font-variation-settings: 'wght' 700;
       vertical-align: bottom;
       font-size: 0.75rem;
       border: none;
@@ -401,7 +401,7 @@ table.okr-table {
   padding-left: 2px;
 }
 
-@import "custom_bootstrap";
+@import 'custom_bootstrap';
 
 .spinner-container {
   @extend .mt-5;

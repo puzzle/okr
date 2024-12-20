@@ -18,35 +18,53 @@ describe('InviteUserDialogComponent', () => {
   let component: InviteUserDialogComponent;
   let fixture: ComponentFixture<InviteUserDialogComponent>;
 
-  const user1 = { firstname: 'user1', lastname: '1user', email: 'user1@user.ch' };
-  const user2 = { firstname: 'user2', lastname: '2user', email: 'user2@user.ch' };
-  const user3 = { firstname: 'user3', lastname: '3user', email: 'user3@user.ch' };
+  const user1 = { firstname: 'user1',
+    lastname: '1user',
+    email: 'user1@user.ch' };
+  const user2 = { firstname: 'user2',
+    lastname: '2user',
+    email: 'user2@user.ch' };
+  const user3 = { firstname: 'user3',
+    lastname: '3user',
+    email: 'user3@user.ch' };
 
   const userServiceMock = {
     createUsers: jest.fn(),
-    getUsers: jest.fn(),
+    getUsers: jest.fn()
   };
 
   const dialogRefMock = {
-    close: jest.fn(),
+    close: jest.fn()
   };
 
   const uniqueMailValidatorMock = {
     setAddedMails: jest.fn(),
-    validate: () => null,
+    validate: () => null
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [InviteUserDialogComponent, NewUserComponent, PuzzleIconComponent, PuzzleIconButtonComponent],
-      imports: [MatDialogModule, FormsModule, ReactiveFormsModule, MatFormFieldModule],
-      providers: [
-        { provide: UserService, useValue: userServiceMock },
-        { provide: DialogRef, useValue: dialogRefMock },
-        { provide: UniqueEmailValidator, useValue: uniqueMailValidatorMock },
+      declarations: [
+        InviteUserDialogComponent,
+        NewUserComponent,
+        PuzzleIconComponent,
+        PuzzleIconButtonComponent
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+      imports: [
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule
+      ],
+      providers: [{ provide: UserService,
+        useValue: userServiceMock },
+      { provide: DialogRef,
+        useValue: dialogRefMock },
+      { provide: UniqueEmailValidator,
+        useValue: uniqueMailValidatorMock }],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
 
     fixture = TestBed.createComponent(InviteUserDialogComponent);
     component = fixture.componentInstance;
@@ -60,12 +78,14 @@ describe('InviteUserDialogComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 
   it('addUser should add a user to the existing users', () => {
     component.addUser();
-    expect(component.form.controls.length).toBe(2);
+    expect(component.form.controls.length)
+      .toBe(2);
   });
 
   it('removeUser should remove given user from users array', () => {
@@ -79,8 +99,10 @@ describe('InviteUserDialogComponent', () => {
 
     component.removeUser(1);
 
-    expect(component.form.controls[0].value).toStrictEqual(user1);
-    expect(component.form.controls[1].value).toStrictEqual(user3);
+    expect(component.form.controls[0].value)
+      .toStrictEqual(user1);
+    expect(component.form.controls[1].value)
+      .toStrictEqual(user3);
   });
 
   it('registerUsers should call createUsers and close dialog if form is valid', fakeAsync(() => {
@@ -91,16 +113,21 @@ describe('InviteUserDialogComponent', () => {
     component.registerUsers();
     tick();
 
-    expect(userServiceMock.createUsers).toBeCalledTimes(1);
-    expect(userServiceMock.createUsers).toBeCalledWith(component.form.value);
-    expect(dialogRefMock.close).toBeCalledTimes(1);
+    expect(userServiceMock.createUsers)
+      .toBeCalledTimes(1);
+    expect(userServiceMock.createUsers)
+      .toBeCalledWith(component.form.value);
+    expect(dialogRefMock.close)
+      .toBeCalledTimes(1);
   }));
 
   it('registerUsers should not call createUsers form is not valid', fakeAsync(() => {
     component.registerUsers();
     tick();
 
-    expect(userServiceMock.createUsers).toBeCalledTimes(0);
-    expect(dialogRefMock.close).toBeCalledTimes(0);
+    expect(userServiceMock.createUsers)
+      .toBeCalledTimes(0);
+    expect(dialogRefMock.close)
+      .toBeCalledTimes(0);
   }));
 });

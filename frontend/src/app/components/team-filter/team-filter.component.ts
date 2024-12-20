@@ -61,8 +61,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     }
     this.subscription = this.teamService
       .getAllTeams()
-      .pipe(takeUntil(this.unsubscribe$),
-        filter((teams) => teams.length > 0))
+      .pipe(takeUntil(this.unsubscribe$), filter((teams) => teams.length > 0))
       .subscribe((teams: Team[]) => {
         this.teams$.next(teams);
         const teamQuery = this.route.snapshot.queryParams['teams'];

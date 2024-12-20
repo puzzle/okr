@@ -17,7 +17,7 @@ describe('okr check-in', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it(`should create check-in metric`, () => {
+  it('should create check-in metric', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('Very important keyresult')
@@ -39,7 +39,7 @@ describe('okr check-in', () => {
     cy.contains('We bought a new house');
   });
 
-  it(`should create check-in metric with confidence 0`, () => {
+  it('should create check-in metric with confidence 0', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('Very important keyresult')
@@ -61,7 +61,7 @@ describe('okr check-in', () => {
     cy.contains('We bought a new house');
   });
 
-  it(`should create check-in metric with value below baseline`, () => {
+  it('should create check-in metric with value below baseline', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This will not be good')
@@ -249,7 +249,7 @@ describe('okr check-in', () => {
     cy.contains('STRETCH');
   });
 
-  it(`should display confirm dialog when creating check-in on draft objective`, () => {
+  it('should display confirm dialog when creating check-in on draft objective', () => {
     overviewPage.addObjective()
       .fillObjectiveTitle('draft objective title')
       .selectQuarter('3')
@@ -270,7 +270,7 @@ describe('okr check-in', () => {
       .checkDescription('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
   });
 
-  it(`should only display last value div if last check-in is present`, () => {
+  it('should only display last value div if last check-in is present', () => {
     const objectiveName = uniqueSuffix('new objective');
 
     overviewPage.addObjective()
@@ -310,8 +310,12 @@ function getCurrentDate() {
 
   let dd_str = '' + dd;
   let mm_str = '' + mm;
-  if (dd < 10) dd_str = '0' + dd_str;
-  if (mm < 10) mm_str = '0' + mm_str;
+  if (dd < 10) {
+    dd_str = '0' + dd_str;
+  }
+  if (mm < 10) {
+    mm_str = '0' + mm_str;
+  }
 
   return dd_str + '.' + mm_str + '.' + yyyy;
 }

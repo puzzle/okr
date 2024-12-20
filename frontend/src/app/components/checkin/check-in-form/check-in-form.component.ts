@@ -72,6 +72,7 @@ export class CheckInFormComponent implements OnInit {
       this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
       return;
     }
+
     /* If KeyResult has lastCheckIn set checkIn to this value */
     if ((this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn != null) {
       this.checkIn = {
@@ -81,6 +82,7 @@ export class CheckInFormComponent implements OnInit {
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       return;
     }
+
     /* If Check-in is null set as object with confidence 5 default value */
     this.checkIn = { confidence: 5 } as CheckInMin;
   }
@@ -136,8 +138,10 @@ export class CheckInFormComponent implements OnInit {
 
   changeIsChecked(event: any, index: number) {
     const actions = this.dialogForm.value.actionList!;
-    actions[index] = { ...actions[index],
-      isChecked: event.checked };
+    actions[index] = {
+      ...actions[index],
+      isChecked: event.checked
+    };
     this.dialogForm.patchValue({ actionList: actions });
   }
 

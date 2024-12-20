@@ -196,7 +196,9 @@ export default class CyOverviewPage extends Page {
     return '';
   }
 
-  validatePage(): void {}
+  validatePage(): void {
+    // Does not need to be implemented this comment is for making linter happy
+  }
 
   protected doVisit(): void {
     this.elements.logo()

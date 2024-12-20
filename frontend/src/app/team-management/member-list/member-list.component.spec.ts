@@ -11,7 +11,7 @@ import { convertFromUser, convertFromUsers, UserTableEntry } from '../../shared/
 import { UserRole } from '../../shared/types/enums/UserRole';
 import { TeamService } from '../../services/team.service';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
-import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -164,8 +164,7 @@ describe('MemberListComponent', () => {
       id: 4,
       team: team1,
       isTeamAdmin: false
-    },
-    {
+    }, {
       id: 5,
       team: team2,
       isTeamAdmin: true
@@ -270,13 +269,12 @@ describe('MemberListComponent', () => {
     component.addMemberToTeam();
 
     expect(dialogService.open)
-      .toBeCalledWith(AddMemberToTeamDialogComponent,
-        expect.objectContaining({
-          data: {
-            team: team1,
-            currentUsersOfTeam: component.dataSource.filteredData
-          }
-        }));
+      .toBeCalledWith(AddMemberToTeamDialogComponent, expect.objectContaining({
+        data: {
+          team: team1,
+          currentUsersOfTeam: component.dataSource.filteredData
+        }
+      }));
   });
 
   it('should showAddMemberToTeam if selectedTeam is set and selectedTeam is writable', () => {
@@ -301,11 +299,10 @@ describe('MemberListComponent', () => {
     component.editTeam();
 
     expect(dialogService.open)
-      .toBeCalledWith(AddEditTeamDialog,
-        expect.objectContaining({
-          data: {
-            team: team1
-          }
-        }));
+      .toBeCalledWith(AddEditTeamDialogComponent, expect.objectContaining({
+        data: {
+          team: team1
+        }
+      }));
   });
 });

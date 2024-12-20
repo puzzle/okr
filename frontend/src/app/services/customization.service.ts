@@ -50,7 +50,7 @@ export class CustomizationService {
       return;
     }
 
-    this.document.querySelector('title')!.innerHTML = title;
+    (this.document.querySelector('title') as HTMLTitleElement)!.innerHTML = title;
   }
 
   private setStyleCustomizations(customStylesMap: CustomStyles) {
@@ -75,7 +75,7 @@ export class CustomizationService {
       return;
     }
 
-    const styles = this.document.querySelector('html')!.style;
+    const styles = (this.document.querySelector('html') as HTMLHtmlElement)!.style;
     if (!styles) {
       return;
     }
@@ -92,7 +92,7 @@ export class CustomizationService {
       return;
     }
 
-    const styles = this.document.querySelector('html')!.style;
+    const styles = (this.document.querySelector('html') as HTMLHtmlElement)!.style;
     if (!styles) {
       return;
     }

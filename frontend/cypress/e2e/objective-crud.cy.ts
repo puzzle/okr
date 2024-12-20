@@ -18,7 +18,7 @@ describe('crud operations', () => {
     'draft-icon.svg']].forEach(([objectiveTitle,
     buttonTestId,
     icon]) => {
-    it(`should create objective without key-results`, () => {
+    it('should create objective without key-results', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle(objectiveTitle)
         .selectQuarter('3');
@@ -32,7 +32,7 @@ describe('crud operations', () => {
     });
   });
 
-  it(`should display error message when title not set`, () => {
+  it('should display error message when title not set', () => {
     overviewPage.addObjective();
     cy.getByTestId('title')
       .first()
@@ -47,7 +47,7 @@ describe('crud operations', () => {
       .should('not.be.disabled');
   });
 
-  it(`should cancel creating an objective`, () => {
+  it('should cancel creating an objective', () => {
     const objectiveTitle = 'this is a canceled objective';
     overviewPage.addObjective()
       .selectQuarter('3')
@@ -57,7 +57,7 @@ describe('crud operations', () => {
       .should('not.exist');
   });
 
-  it(`should delete existing objective`, () => {
+  it('should delete existing objective', () => {
     overviewPage.getFirstObjective()
       .findByTestId('three-dot-menu')
       .click();
@@ -69,7 +69,7 @@ describe('crud operations', () => {
       .submit();
   });
 
-  it(`should open objective detail view via click`, () => {
+  it('should open objective detail view via click', () => {
     overviewPage.getFirstObjective()
       .find('.title')
       .click();
@@ -77,7 +77,7 @@ describe('crud operations', () => {
       .should('include', 'objective');
   });
 
-  it(`should edit objective`, () => {
+  it('should edit objective', () => {
     const updatedTitle = 'This is an updated title';
     overviewPage.getFirstObjective()
       .findByTestId('three-dot-menu')
@@ -90,7 +90,7 @@ describe('crud operations', () => {
       .should('exist');
   });
 
-  it(`should duplicate objective`, () => {
+  it('should duplicate objective', () => {
     const duplicatedTitle = 'This is a duplicated objective';
     overviewPage.getFirstObjective()
       .findByTestId('three-dot-menu')

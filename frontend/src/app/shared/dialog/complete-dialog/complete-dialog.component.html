@@ -14,7 +14,7 @@
           <button
             class="col successful valuation-card card-hover-successful"
             [ngClass]="{
-              'active-successful': completeForm.value.isSuccessful == true,
+              'active-successful': completeForm.value.isSuccessful === true,
               'non-active-successful': completeForm.value.isSuccessful === false,
             }"
             (click)="switchSuccessState('successful')"
@@ -28,7 +28,7 @@
             class="col not-successful valuation-card card-hover-not-successful"
             [ngClass]="{
               'active-not-successful': completeForm.value.isSuccessful === false,
-              'non-active-not-successful': completeForm.value.isSuccessful == true,
+              'non-active-not-successful': completeForm.value.isSuccessful === true,
             }"
             (click)="switchSuccessState('notSuccessful')"
             (keydown.enter)="switchSuccessState('notSuccessful')"

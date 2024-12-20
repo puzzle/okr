@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
@@ -7,7 +7,7 @@ import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserT
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
-import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
 import { DialogService } from '../../services/dialog.service';
@@ -17,7 +17,7 @@ import { DialogService } from '../../services/dialog.service';
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'
 })
-export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MemberListComponent implements OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
 
   selectedTeam$: BehaviorSubject<Team | undefined> = new BehaviorSubject<Team | undefined>(undefined);
@@ -34,8 +34,6 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly router: Router,
     private readonly dialogService: DialogService
   ) {}
-
-  public ngOnInit(): void {}
 
   public ngAfterViewInit() {
     this.userService
@@ -97,8 +95,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.TEAM', data)
       .afterClosed()
-      .pipe(filter((confirm) => confirm),
-        mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -110,7 +107,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   addMemberToTeam() {
     const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
       data: {
-        team: this.selectedTeam$.value!,
+        team: this.selectedTeam$.value,
         currentUsersOfTeam: this.dataSource.data
       }
     });
@@ -133,7 +130,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   editTeam(): void {
-    const dialogRef = this.dialogService.open(AddEditTeamDialog, { data: { team: this.selectedTeam$.value } });
+    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent, { data: { team: this.selectedTeam$.value } });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());
   }

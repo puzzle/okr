@@ -20,13 +20,13 @@ export class KeyresultService {
 
   saveKeyResult(keyResultDTO: KeyResultDTO): Observable<KeyResult> {
     if (keyResultDTO.id) {
-      return this.httpClient.put<KeyResult>(`/api/v2/keyresults/` + keyResultDTO.id, keyResultDTO);
+      return this.httpClient.put<KeyResult>('/api/v2/keyresults/' + keyResultDTO.id, keyResultDTO);
     } else {
       return this.httpClient.post<KeyResult>('/api/v2/keyresults', keyResultDTO);
     }
   }
 
   deleteKeyResult(keyResultId: number): Observable<any> {
-    return this.httpClient.delete<void>(`/api/v2/keyresults/` + keyResultId);
+    return this.httpClient.delete<void>('/api/v2/keyresults/' + keyResultId);
   }
 }

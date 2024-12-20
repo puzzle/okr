@@ -14,11 +14,15 @@ export function getValueFromQuery(query: any, fallback?: number): number[] {
   const values = Array.from([query])
     .flat()
     .filter((e) => e !== '')
-    .map((e) => (typeof e == 'string' ? e.split(',') : e))
+    .map((e) => {
+      return typeof e == 'string' ? e.split(',') : e;
+    })
     .flat()
     .map((id: any) => Number(id))
     .filter((id: number) => Number.isInteger(id));
-  if (fallback === undefined) return values;
+  if (fallback === undefined) {
+    return values;
+  }
   return values.length > 0 ? values : [fallback];
 }
 
@@ -36,19 +40,25 @@ export function optionalValue(param: object): Record<string, any> {
       return true;
     }));
 }
+
 export function isLastCheckInNegative(baseline: number, stretchGoal: number, value: number): boolean {
-  return (value > baseline && baseline > stretchGoal) || (value < baseline && baseline <= stretchGoal);
+  return value > baseline && baseline > stretchGoal || value < baseline && baseline <= stretchGoal;
 }
 
 export function calculateCurrentPercentage(keyResultMetric: KeyResultMetricMin): number {
   const value: number = +keyResultMetric.lastCheckIn?.value!;
   const baseline: number = +keyResultMetric.baseline;
   const stretchGoal: number = +keyResultMetric.stretchGoal;
-  if (isLastCheckInNegative(baseline, stretchGoal, value)) return 0;
-  if (value == stretchGoal) return 100;
+  if (isLastCheckInNegative(baseline, stretchGoal, value)) {
+    return 0;
+  }
+  if (value == stretchGoal) {
+    return 100;
+  }
 
-  return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
+  return Math.abs(value - baseline) / Math.abs(stretchGoal - baseline) * 100;
 }
+
 export function sanitize(query: string) {
   return query.trim()
     .toLowerCase();
@@ -58,6 +68,7 @@ export function getQueryString(query?: string) {
   const queryString = query || '';
   return sanitize(decodeURI(queryString));
 }
+
 export function optionalReplaceWithNulls(param: object): Record<string, any> {
   const clearObject = optionalValue(param);
   return Object.fromEntries(Object.entries(param)
@@ -67,7 +78,9 @@ export function optionalReplaceWithNulls(param: object): Record<string, any> {
 }
 
 export function areEqual(arr1: number[], arr2: number[]) {
-  if (arr1.length !== arr2.length) return false;
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
 
   // implement custom sort if necessary
   arr1.sort((a, b) => a - b);
@@ -75,7 +88,9 @@ export function areEqual(arr1: number[], arr2: number[]) {
 
   // use normal for loop so we can return immediately if not equal
   for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) return false;
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
   }
 
   return true;

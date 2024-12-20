@@ -56,10 +56,7 @@ export class SearchTeamManagementComponent {
 
     this.search.valueChanges
       .pipe(
-        takeUntilDestroyed(),
-        debounceTime(200),
-        map((v) => (v ? v.trim() : '')),
-        distinctUntilChanged()
+        takeUntilDestroyed(), debounceTime(200), map((v) => (v ?? '').trim()), distinctUntilChanged()
       )
       .subscribe((searchValue) => {
         this.searchValue$.next(searchValue);
@@ -152,6 +149,6 @@ export class SearchTeamManagementComponent {
   }
 
   private formatText(value: string, text: string): string {
-    return value.replaceAll(new RegExp(`(${text})`, 'ig'), `<strong>$1</strong>`);
+    return value.replaceAll(new RegExp(`(${text})`, 'ig'), '<strong>$1</strong>');
   }
 }

@@ -32,7 +32,7 @@ describe('OverviewService', () => {
     jest.spyOn(httpClient, 'get')
       .mockReturnValue(of(overviews));
     service.getOverview()
-      .subscribe((dashboard) => {
+      .subscribe(() => {
         overviews.forEach((overview) => overview.objectives.forEach((objective) => expect(typeof objective.state)
           .toBe('string')));
         done();

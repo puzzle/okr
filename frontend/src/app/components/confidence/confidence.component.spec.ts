@@ -45,7 +45,7 @@ describe('ConfidenceComponent', () => {
     });
     fixture.detectChanges();
     await fixture.whenStable();
-    const textField = fixture.debugElement.query(By.css("[data-testId='confidence']"));
+    const textField = fixture.debugElement.query(By.css('[data-testId=\'confidence\']'));
     const expectedLabel = expected + '/' + component.max;
     const sliderInputField = fixture.debugElement.query(By.css('mat-slider > input '));
 

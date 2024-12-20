@@ -15,7 +15,7 @@ export class UnitTransformationPipe implements PipeTransform {
 
   roundAndAddThousandSplitSign(value: number): string {
     return (+value.toFixed(2)).toLocaleString('en-US')
-      .replace(/,/g, "'");
+      .replace(/,/g, '\'');
   }
 
   transformLabel(label: string): string {

@@ -70,8 +70,8 @@ describe('UserService', () => {
 
     tick();
 
-    const req2 = httpMock.expectOne(`api/v1/users`);
-    const req3 = httpMock.expectOne(`api/v1/users/current`);
+    const req2 = httpMock.expectOne('api/v1/users');
+    const req3 = httpMock.expectOne('api/v1/users/current');
     req2.flush({});
     req3.flush({});
   }));
@@ -79,12 +79,12 @@ describe('UserService', () => {
   it('should call createAll and reloadUsers when createUsers is called', fakeAsync(() => {
     service.createUsers(users)
       .subscribe();
-    const req = httpMock.expectOne(`api/v1/users/createall`);
+    const req = httpMock.expectOne('api/v1/users/createall');
     req.flush(users);
 
     tick();
 
-    const req2 = httpMock.expectOne(`api/v1/users`);
+    const req2 = httpMock.expectOne('api/v1/users');
     req2.flush({});
   }));
 
@@ -96,7 +96,7 @@ describe('UserService', () => {
 
     tick();
 
-    const req2 = httpMock.expectOne(`api/v1/users`);
+    const req2 = httpMock.expectOne('api/v1/users');
     req2.flush({});
   }));
 });

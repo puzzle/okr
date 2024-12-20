@@ -3,4 +3,4 @@ export const getRouteToUserDetails = (userId: number, teamId?: number) => {
   return `/team-management${teamFragment}/details/member/${userId}`;
 };
 export const getRouteToTeam = (teamId: number) => `${getRouteToAllTeams()}/${teamId}`;
-export const getRouteToAllTeams = () => `/team-management`;
+export const getRouteToAllTeams = () => '/team-management';

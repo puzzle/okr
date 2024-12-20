@@ -4,8 +4,6 @@ import { TeamFilterComponent } from './team-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { MatChipsModule } from '@angular/material/chips';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TeamService } from '../../services/team.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { BehaviorSubject, of, Subject } from 'rxjs';
@@ -33,7 +31,6 @@ const userServiceMock = {
 describe('TeamFilterComponent', () => {
   let component: TeamFilterComponent;
   let fixture: ComponentFixture<TeamFilterComponent>;
-  let loader: HarnessLoader;
   let router: Router;
 
   beforeEach(() => {
@@ -55,7 +52,6 @@ describe('TeamFilterComponent', () => {
     });
     fixture = TestBed.createComponent(TeamFilterComponent);
     component = fixture.componentInstance;
-    loader = TestbedHarnessEnvironment.loader(fixture);
     teamServiceMock.getAllTeams.mockReturnValue(of(teamList));
     refreshDataServiceMock
       .markDataRefresh()

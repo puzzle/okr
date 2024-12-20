@@ -1,7 +1,9 @@
 import { PageObjectMapperBase } from './pageObjectMapperBase';
 
 export default class FilterHelper extends PageObjectMapperBase {
-  validatePage(): void {}
+  validatePage(): void {
+    // Does not need to be implemented this comment is for making linter happy
+  }
 
   optionShouldBeSelected(text: string, isOnOverview = true): this {
     if (isOnOverview) {

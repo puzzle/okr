@@ -22,7 +22,8 @@ export class ActionPlanComponent {
   listItems!: QueryList<ElementRef>;
 
   constructor(private actionService: ActionService,
-    public dialogService: DialogService) {}
+    public dialogService: DialogService) {
+  }
 
   handleKeyDown(event: Event, currentIndex: number) {
     let newIndex = currentIndex;
@@ -44,18 +45,18 @@ export class ActionPlanComponent {
     const currentActionPlan: Action[] = this.control.getValue()!;
     this.updateActionTexts(currentActionPlan);
     moveItemInArray(currentActionPlan, currentIndex, newIndex);
-    currentActionPlan.forEach((action: Action, index: number) => (action.priority = index));
+    currentActionPlan.forEach((action: Action, index: number) => action.priority = index);
     this.control.next(currentActionPlan);
   }
 
   updateActionTexts(currentActionPlan: Action[]) {
     const texts = Array.from(this.listItems)
       .map((input: any) => input.nativeElement.value);
-    currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
+    currentActionPlan.forEach((action: Action, index: number) => action.action = texts[index]);
   }
 
   increaseActiveItemWithTab() {
-    if (this.activeItem <= this.control.value!.length - 2) {
+    if (this.activeItem <= this.control.getValue()!.length - 2) {
       this.activeItem++;
     }
   }
@@ -70,8 +71,10 @@ export class ActionPlanComponent {
     const value: string = (event.container.element.nativeElement.children[event.previousIndex].children[1] as HTMLInputElement).value;
     const actions: Action[] = this.control.getValue()!;
     if (actions[event.previousIndex].action == '' && value != '') {
-      actions[event.previousIndex] = { ...actions[event.previousIndex],
-        action: value };
+      actions[event.previousIndex] = {
+        ...actions[event.previousIndex],
+        action: value
+      };
       this.control.next(actions);
     }
     if (event.previousContainer === event.container) {
@@ -122,9 +125,11 @@ export class ActionPlanComponent {
 
   addNewAction() {
     const actions: Action[] = this.control.getValue()!;
-    actions.push({ action: '',
+    actions.push({
+      action: '',
       priority: actions.length,
-      keyResultId: this.keyResultId } as Action);
+      keyResultId: this.keyResultId
+    } as Action);
     this.control.next(actions);
     this.activeItem = actions.length - 1;
   }

@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './add-edit-team-dialog.component.html',
   styleUrls: ['./add-edit-team-dialog.component.scss']
 })
-export class AddEditTeamDialog implements OnInit {
+export class AddEditTeamDialogComponent implements OnInit {
   teamForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required,
       Validators.minLength(2),
@@ -25,7 +25,7 @@ export class AddEditTeamDialog implements OnInit {
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(
-    public dialogRef: MatDialogRef<AddEditTeamDialog>,
+    public dialogRef: MatDialogRef<AddEditTeamDialogComponent>,
     private teamService: TeamService,
     private userService: UserService,
     private router: Router,
@@ -36,7 +36,8 @@ export class AddEditTeamDialog implements OnInit {
       }
       | undefined,
     private translate: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.data) {
@@ -67,15 +68,17 @@ export class AddEditTeamDialog implements OnInit {
   }
 
   private updateTeam() {
-    const updatedTeam: Team = {
-      ...this.teamForm.value,
-      id: this.data!.team.id,
-      version: this.data!.team.version
-    } as Team;
-    this.teamService.updateTeam(updatedTeam)
-      .subscribe((result) => {
-        this.dialogRef.close(result);
-      });
+    if (this.data) {
+      const updatedTeam: Team = {
+        ...this.teamForm.value,
+        id: this.data!.team.id,
+        version: this.data!.team.version
+      } as Team;
+      this.teamService.updateTeam(updatedTeam)
+        .subscribe((result) => {
+          this.dialogRef.close(result);
+        });
+    }
   }
 
   getErrorMessage(

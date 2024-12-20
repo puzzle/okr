@@ -116,7 +116,7 @@ describe('ActionPlanComponent', () => {
       action3]);
     component.handleKeyDown(keyEvent, 2);
 
-    expect((component.activeItem = 1));
+    expect(component.activeItem = 1);
     expect(component.control.getValue()!.toString())
       .toBe([action1,
         action3,
@@ -136,7 +136,7 @@ describe('ActionPlanComponent', () => {
     ]);
     component.handleKeyDown(keyEvent, 2);
 
-    expect((component.activeItem = 3));
+    expect(component.activeItem = 3);
     expect(component.control.getValue()!.toString())
       .toBe([
         action1,

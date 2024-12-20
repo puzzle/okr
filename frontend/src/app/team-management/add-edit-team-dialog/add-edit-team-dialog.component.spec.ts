@@ -1,6 +1,4 @@
-import { AddEditTeamDialog } from './add-edit-team-dialog.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HarnessLoader } from '@angular/cdk/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +8,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TeamService } from '../../services/team.service';
 import { of } from 'rxjs';
 import { marketingTeamWriteable, teamFormObject } from '../../shared/testData';
@@ -21,6 +18,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { AddEditTeamDialogComponent } from './add-edit-team-dialog.component';
 
 const dialogRefMock = {
   close: jest.fn()
@@ -37,9 +35,8 @@ const teamServiceMock = {
 };
 
 describe('TeamManagementComponent', () => {
-  let component: AddEditTeamDialog;
-  let fixture: ComponentFixture<AddEditTeamDialog>;
-  let loader: HarnessLoader;
+  let component: AddEditTeamDialogComponent;
+  let fixture: ComponentFixture<AddEditTeamDialogComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -54,7 +51,7 @@ describe('TeamManagementComponent', () => {
         MatCheckboxModule,
         MatDividerModule
       ],
-      declarations: [AddEditTeamDialog,
+      declarations: [AddEditTeamDialogComponent,
         DialogTemplateCoreComponent],
       providers: [
         provideRouter([]),
@@ -80,10 +77,9 @@ describe('TeamManagementComponent', () => {
           useValue: {} }
       ]
     });
-    fixture = TestBed.createComponent(AddEditTeamDialog);
+    fixture = TestBed.createComponent(AddEditTeamDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   it('should create', () => {

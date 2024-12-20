@@ -10,7 +10,7 @@ describe('okr objective backlog', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it(`should not have save button when creating objective in backlog quarter`, () => {
+  it('should not have save button when creating objective in backlog quarter', () => {
     overviewPage
       .addObjective()
       .fillObjectiveTitle('Objective in quarter backlog')
@@ -27,7 +27,7 @@ describe('okr objective backlog', () => {
     cy.contains('Objective in quarter backlog');
   });
 
-  it(`should edit objective and move it to backlog`, () => {
+  it('should edit objective and move it to backlog', () => {
     overviewPage.addObjective()
       .fillObjectiveTitle('Move to another quarter on edit')
       .submitDraftObjective();
@@ -50,7 +50,7 @@ describe('okr objective backlog', () => {
     cy.contains('This goes now to backlog');
   });
 
-  it(`should not be able to select backlog quarter when editing ongoing objective`, () => {
+  it('should not be able to select backlog quarter when editing ongoing objective', () => {
     overviewPage.addObjective()
       .fillObjectiveTitle('We can not move this to backlog')
       .submit();
@@ -67,7 +67,7 @@ describe('okr objective backlog', () => {
       .should('not.contain', 'Backlog');
   });
 
-  it(`should release objective to another quarter from backlog`, () => {
+  it('should release objective to another quarter from backlog', () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('We can not release this')
@@ -105,7 +105,7 @@ describe('okr objective backlog', () => {
     cy.contains('This is our first released objective');
   });
 
-  it(`should edit objective title in backlog`, () => {
+  it('should edit objective title in backlog', () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('This is possible for edit')
@@ -124,7 +124,7 @@ describe('okr objective backlog', () => {
     overviewPage.getObjectiveByNameAndState('My new title', 'draft');
   });
 
-  it(`should edit objective in backlog and change quarter`, () => {
+  it('should edit objective in backlog and change quarter', () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('This goes to other quarter later')
@@ -144,7 +144,7 @@ describe('okr objective backlog', () => {
     overviewPage.getObjectiveByNameAndState('This goes to other quarter later', 'draft');
   });
 
-  it(`should duplicate objective in backlog`, () => {
+  it('should duplicate objective in backlog', () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('Ready for duplicate in backlog')
@@ -189,7 +189,7 @@ describe('okr objective backlog', () => {
       .should('exist');
   });
 
-  it(`should duplicate ongoing objective to backlog`, () => {
+  it('should duplicate ongoing objective to backlog', () => {
     overviewPage.addObjective()
       .fillObjectiveTitle('Possible to duplicate into backlog')
       .submit();

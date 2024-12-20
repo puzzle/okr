@@ -21,15 +21,16 @@ export class CompleteDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { objectiveTitle: string },
-    private translate: TranslateService) {}
+    private translate: TranslateService) {
+  }
 
   switchSuccessState(input: string) {
     this.removeStandardHover();
     let successfulValue = this.completeForm.value.isSuccessful;
     if (
       successfulValue == null ||
-      (input == 'successful' && !successfulValue) ||
-      (input == 'notSuccessful' && successfulValue)
+      input === 'successful' ||
+      input === 'notSuccessful'
     ) {
       successfulValue = input == 'successful';
       this.completeForm.patchValue({ isSuccessful: successfulValue });

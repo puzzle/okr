@@ -28,7 +28,9 @@ export class TeamComponent {
     this.configService.config$.pipe(first())
       .subscribe((config: ClientConfig) => {
         const configuredIconSrc = config.customStyles['okr-add-objective-icon'];
-        if (configuredIconSrc) this.addIconSrc.next(configuredIconSrc);
+        if (configuredIconSrc) {
+          this.addIconSrc.next(configuredIconSrc);
+        }
       });
   }
 

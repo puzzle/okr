@@ -2,23 +2,23 @@ import Dialog from "./dialog";
 import Chainable = Cypress.Chainable;
 
 export default class TeamDialog extends Dialog {
-  override validatePage () {
+  override validatePage() {
     super.validatePage();
     this.getPage()
       .contains("Team erfassen");
   }
 
-  fillName (name: string) {
+  fillName(name: string) {
     this.fillInputByTestId("add-team-name", name);
     return this;
   }
 
-  override submit () {
+  override submit() {
     cy.getByTestId("save")
       .click();
   }
 
-  getPage (): Chainable {
+  getPage(): Chainable {
     return cy.get("app-add-edit-team-dialog");
   }
 }

@@ -37,7 +37,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
 
   protected readonly isLastCheckInNegative = isLastCheckInNegative;
 
-  constructor (
+  constructor(
     private keyResultService: KeyresultService,
     private refreshDataService: RefreshDataService,
     private dialogService: DialogService,
@@ -45,7 +45,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.keyResultId = this.getIdFromParams();
     this.loadKeyResult(this.keyResultId);
     this.refreshDataService.reloadKeyResultSubject.pipe(takeUntil(this.ngDestroy$))
@@ -54,12 +54,12 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.ngDestroy$.next();
     this.ngDestroy$.complete();
   }
 
-  private getIdFromParams (): number {
+  private getIdFromParams(): number {
     const id = this.route.snapshot.paramMap.get("id");
     if (!id) {
       throw Error("keyresult id is undefined");
@@ -67,7 +67,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     return parseInt(id);
   }
 
-  loadKeyResult (id: number): void {
+  loadKeyResult(id: number): void {
     this.keyResultService
       .getFullKeyResult(id)
       .pipe(catchError(() => EMPTY))
@@ -78,15 +78,15 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  castToMetric (keyResult: KeyResult) {
+  castToMetric(keyResult: KeyResult) {
     return keyResult as KeyResultMetric;
   }
 
-  castToOrdinal (keyResult: KeyResult) {
+  castToOrdinal(keyResult: KeyResult) {
     return keyResult as KeyResultOrdinal;
   }
 
-  checkInHistory () {
+  checkInHistory() {
     const dialogRef = this.dialogService.open(CheckInHistoryDialogComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
@@ -99,7 +99,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  openEditKeyResultDialog (keyResult: KeyResult) {
+  openEditKeyResultDialog(keyResult: KeyResult) {
     this.dialogService
       .open(KeyresultDialogComponent, {
         data: {
@@ -121,7 +121,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  checkForDraftState (keyResult: KeyResult) {
+  checkForDraftState(keyResult: KeyResult) {
     if (keyResult.objective.state.toUpperCase() === "DRAFT") {
       this.dialogService
         .openConfirmDialog("CONFIRMATION.DRAFT_CREATE")
@@ -136,7 +136,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  openCheckInForm () {
+  openCheckInForm() {
     const dialogRef = this.dialogService.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult$.getValue()
@@ -149,11 +149,11 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  backToOverview () {
+  backToOverview() {
     this.router.navigate([""]);
   }
 
-  getKeyResultWithCorrectType (keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
+  getKeyResultWithCorrectType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
     if (keyResult.keyResultType === "metric") {
       return keyResult as KeyresultMin as KeyResultMetricMin;
     } else {

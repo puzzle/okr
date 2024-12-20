@@ -16,7 +16,7 @@ export class RefreshDataService {
 
   public okrBannerHeightSubject: BehaviorSubject<number> = new BehaviorSubject<number>(DEFAULT_HEADER_HEIGHT_PX);
 
-  markDataRefresh () {
+  markDataRefresh() {
     this.reloadOverviewSubject.next();
   }
 }

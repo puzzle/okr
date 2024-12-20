@@ -39,7 +39,7 @@ describe("TeamManagementMobileFilterComponent", () => {
     navigateByUrl: jest.fn()
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientModule,

@@ -26,54 +26,54 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
 
   unsubscribe$ = new Subject<void>();
 
-  constructor (private readonly userService: UserService,
+  constructor(private readonly userService: UserService,
     private readonly dialogService: DialogService,
     private readonly location: Location) {}
 
-  ngOnInit () {
+  ngOnInit() {
     this.loadOkrUser();
     this.loadUserOkrData();
     this.updateUserTeamsStatusWhenTeamOfUserChanges();
   }
 
-  ngOnDestroy (): void {
+  ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  private loadOkrUser () {
+  private loadOkrUser() {
     this.userService
       .getOrInitCurrentUser()
       .pipe(takeUntil(this.unsubscribe$), tap((user) => this.okrUser = user))
       .subscribe();
   }
 
-  loadUserOkrData () {
+  loadUserOkrData() {
     this.userService
       .getUserOkrData(this.user)
       .pipe(takeUntil(this.unsubscribe$), tap((okrData) => this.userOkrData = okrData))
       .subscribe();
   }
 
-  updateUserTeamsStatusWhenTeamOfUserChanges (): void {
+  updateUserTeamsStatusWhenTeamOfUserChanges(): void {
     this.currentTeams$.subscribe(() => {
       this.loadUserMemberOfTeamsStatus();
     });
   }
 
-  loadUserMemberOfTeamsStatus () {
+  loadUserMemberOfTeamsStatus() {
     this.userService
       .isUserMemberOfTeams(this.user)
       .pipe(takeUntil(this.unsubscribe$), tap((isMemberOfTeams) => this.userIsMemberOfTeams = isMemberOfTeams))
       .subscribe();
   }
 
-  hasOkrUserRoleOkrChampion () {
+  hasOkrUserRoleOkrChampion() {
     if (this.okrUser == undefined) return false;
     return this.okrUser.isOkrChampion;
   }
 
-  deleteUserWithChecks () {
+  deleteUserWithChecks() {
     if (this.isUserMemberOfTeams()) {
       const dialogTitle = "User kann nicht gelöscht werden";
       const dialogText = `${getFullNameFromUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.dialogDetailsUserTeams()}`;
@@ -88,15 +88,15 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     this.deleteUser();
   }
 
-  private isUserMemberOfTeams (): boolean {
+  private isUserMemberOfTeams(): boolean {
     return this.userIsMemberOfTeams !== undefined ? this.userIsMemberOfTeams.valueOf() : true;
   }
 
-  private isUserOwnerOfKeyResults (): boolean {
+  private isUserOwnerOfKeyResults(): boolean {
     return this.userOkrData !== undefined ? this.userOkrData.keyResults.length > 0 : true;
   }
 
-  dialogDetailsUserTeams () {
+  dialogDetailsUserTeams() {
     if (this.userOkrData) {
       return this.user.userTeamList //
         .map((userTeam) => userTeam.team.name)
@@ -105,7 +105,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     return "";
   }
 
-  dialogDetailsUserKeyResults () {
+  dialogDetailsUserKeyResults() {
     if (this.userOkrData) {
       return this.userOkrData.keyResults
         .map((data) => data.keyResultName + "\n(Objective: " + data.objectiveName + ")")
@@ -114,7 +114,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     return "";
   }
 
-  showUnableToDeleteUserDialog (dialogTitle: string, dialogText: string) {
+  showUnableToDeleteUserDialog(dialogTitle: string, dialogText: string) {
     const data: ConfirmDialogData = {
       title: dialogTitle,
       text: dialogText,
@@ -125,7 +125,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     this.dialogService.openCustomizedConfirmDialog(data);
   }
 
-  deleteUser () {
+  deleteUser() {
     const data: ConfirmDialogData = {
       title: "User löschen",
       text: `Möchtest du den User ${this.user.firstname} ${this.user.lastname} wirklich löschen?`,

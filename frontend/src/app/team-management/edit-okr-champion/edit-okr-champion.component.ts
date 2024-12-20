@@ -15,7 +15,7 @@ export class EditOkrChampionComponent {
 
   edit = false;
 
-  constructor (
+  constructor(
     private readonly userService: UserService,
     private readonly teamService: TeamService,
     private readonly cd: ChangeDetectorRef,
@@ -23,7 +23,7 @@ export class EditOkrChampionComponent {
   ) {}
 
   @HostListener("document:click", ["$event"])
-  clickOutside (event: MouseEvent) {
+  clickOutside(event: MouseEvent) {
     if (this.elementRef.nativeElement.contains(event.target)) {
       return;
     }
@@ -34,18 +34,18 @@ export class EditOkrChampionComponent {
    * we set edit async, to ensure hostListener can detect outside-of-element clicks correctly
    * otherwise element of event.target is already hidden
    */
-  setEditAsync (edit: boolean) {
+  setEditAsync(edit: boolean) {
     setTimeout(() => {
       this.edit = edit;
       this.cd.markForCheck();
     }, 0);
   }
 
-  okrChampionEditable (): boolean {
+  okrChampionEditable(): boolean {
     return this.userService.getCurrentUser().isOkrChampion;
   }
 
-  setOkrChampion (okrChampion: boolean) {
+  setOkrChampion(okrChampion: boolean) {
     this.okrChampionChange.emit(okrChampion);
     this.setEditAsync(false);
     this.cd.markForCheck();

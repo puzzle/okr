@@ -27,7 +27,7 @@ export class DialogService {
     autoFocus: "first-tabbable"
   };
 
-  constructor (private readonly dialog: MatDialog,
+  constructor(private readonly dialog: MatDialog,
     private readonly translationService: TranslateService) {}
 
   open<T, D = any, R = any>(component: ComponentType<T>, config?: MatDialogConfig<D>): MatDialogRef<T, R> {
@@ -38,7 +38,7 @@ export class DialogService {
     });
   }
 
-  openConfirmDialog (translationKey: string, i18nData?: object): MatDialogRef<ConfirmDialogComponent> {
+  openConfirmDialog(translationKey: string, i18nData?: object): MatDialogRef<ConfirmDialogComponent> {
     const title = this.translationService.instant(`${translationKey}.TITLE`, i18nData);
     const text = this.translationService.instant(`${translationKey}.TEXT`, i18nData);
     return this.open(ConfirmDialogComponent, {
@@ -50,7 +50,7 @@ export class DialogService {
     });
   }
 
-  openCustomizedConfirmDialog (data: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent> {
+  openCustomizedConfirmDialog(data: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent> {
     return this.open(ConfirmDialogComponent, {
       panelClass: this.DIALOG_PANEL_CLASS_SMALL,
       data: {

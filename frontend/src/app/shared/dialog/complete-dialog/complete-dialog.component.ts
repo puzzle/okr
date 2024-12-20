@@ -19,11 +19,11 @@ export class CompleteDialogComponent {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor (public dialogRef: MatDialogRef<CompleteDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { objectiveTitle: string },
     private translate: TranslateService) {}
 
-  switchSuccessState (input: string) {
+  switchSuccessState(input: string) {
     this.removeStandardHover();
     let successfulValue = this.completeForm.value.isSuccessful;
     if (
@@ -36,21 +36,21 @@ export class CompleteDialogComponent {
     }
   }
 
-  closeDialog () {
+  closeDialog() {
     this.dialogRef.close({
       endState: this.completeForm.value.isSuccessful ? "SUCCESSFUL" : "NOTSUCCESSFUL",
       comment: this.completeForm.value.comment
     });
   }
 
-  removeStandardHover () {
+  removeStandardHover() {
     const elements = document.querySelectorAll(".card-hover");
     elements.forEach((el) => {
       el.classList.remove("card-hover");
     });
   }
 
-  getErrorMessage (error: string, field: string, maxLength: number): string {
+  getErrorMessage(error: string, field: string, maxLength: number): string {
     return field + this.translate.instant("DIALOG_ERRORS." + error)
       .format(maxLength);
   }

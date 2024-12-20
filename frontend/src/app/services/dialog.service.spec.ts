@@ -27,7 +27,7 @@ describe("DialogService", () => {
     jest.spyOn(matDialogSpy, "open");
   });
 
-  function expectData (current: ConfirmDialogData, expected: ConfirmDialogData) {
+  function expectData(current: ConfirmDialogData, expected: ConfirmDialogData) {
     expect(current.title)
       .toBe(expected.title);
     expect(current.text)
@@ -40,28 +40,28 @@ describe("DialogService", () => {
       .toBe(expected.closeButtonState);
   }
 
-  function expectYesButtonIsVisibleAndEnabled (dialog: ConfirmDialogComponent) {
+  function expectYesButtonIsVisibleAndEnabled(dialog: ConfirmDialogComponent) {
     expect(dialog.isYesButtonVisible())
       .toBe(true);
     expect(dialog.isYesButtonDisabled())
       .toBe(false);
   }
 
-  function expectNoButtonIsVisibleAndEnabled (dialog: ConfirmDialogComponent) {
+  function expectNoButtonIsVisibleAndEnabled(dialog: ConfirmDialogComponent) {
     expect(dialog.isNoButtonVisible())
       .toBe(true);
     expect(dialog.isNoButtonDisabled())
       .toBe(false);
   }
 
-  function expectCloseButtonIsHiddenAndEnabled (dialog: ConfirmDialogComponent) {
+  function expectCloseButtonIsHiddenAndEnabled(dialog: ConfirmDialogComponent) {
     expect(dialog.isCloseButtonVisible())
       .toBe(false);
     expect(dialog.isCloseButtonDisabled())
       .toBe(false);
   }
 
-  function expectNoButtonIsVisibleAndDisabled (dialog: ConfirmDialogComponent) {
+  function expectNoButtonIsVisibleAndDisabled(dialog: ConfirmDialogComponent) {
     expect(dialog.isNoButtonVisible())
       .toBe(true);
     expect(dialog.isNoButtonDisabled())

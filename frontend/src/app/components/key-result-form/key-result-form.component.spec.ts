@@ -37,13 +37,13 @@ describe("KeyResultFormComponent", () => {
   let fixture: ComponentFixture<KeyResultFormComponent>;
 
   const oauthMockService = {
-    getIdentityClaims () {
+    getIdentityClaims() {
       return { name: users[1].firstname + " " + users[1].lastname };
     }
   };
 
   const userService = {
-    getUsers () {
+    getUsers() {
       return of(users);
     },
     getCurrentUser: jest.fn()
@@ -153,7 +153,7 @@ describe("KeyResultFormComponent", () => {
         .toBeTruthy();
     });
 
-    it("should have logged in user as owner", waitForAsync(async () => {
+    it("should have logged in user as owner", waitForAsync(async() => {
       const userServiceSpy = jest.spyOn(userService, "getUsers");
       component.keyResultForm.setValue(keyResultForm);
       component.ngOnInit();

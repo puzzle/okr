@@ -49,7 +49,7 @@ describe("TeamComponent", () => {
   let component: TeamComponent;
   let fixture: ComponentFixture<TeamComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -101,7 +101,7 @@ describe("TeamComponent", () => {
       .toBeTruthy();
   });
 
-  it("should display add objective button if writeable is true", async () => {
+  it("should display add objective button if writeable is true", async() => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css("[data-testId=\"add-objective\"]"));
     expect(button)
@@ -130,7 +130,7 @@ describe("TeamComponent undefined values in config service", () => {
   let component: TeamComponent;
   let fixture: ComponentFixture<TeamComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [MatMenuModule,
         TranslateTestingModule.withTranslations({

@@ -30,7 +30,7 @@ describe("KeyresultDetailComponent", () => {
   let component: KeyresultDetailComponent;
   let fixture: ComponentFixture<KeyresultDetailComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -72,13 +72,13 @@ describe("KeyresultDetailComponent", () => {
       .toThrowError("keyresult id is undefined");
   });
 
-  it("should display edit keyresult button if writeable is true", async () => {
+  it("should display edit keyresult button if writeable is true", async() => {
     const button = fixture.debugElement.query(By.css("[data-testId=\"edit-keyResult\"]"));
     expect(button)
       .toBeTruthy();
   });
 
-  it("should not display edit keyresult button if writeable is false", async () => {
+  it("should not display edit keyresult button if writeable is false", async() => {
     jest.spyOn(keyResultServiceMock, "getFullKeyResult")
       .mockReturnValue(of(keyResultWriteableFalse));
     component.ngOnInit();
@@ -88,13 +88,13 @@ describe("KeyresultDetailComponent", () => {
       .toBeFalsy();
   });
 
-  it("should display add check-in button if writeable is true", async () => {
+  it("should display add check-in button if writeable is true", async() => {
     const button = fixture.debugElement.query(By.css("[data-testId=\"add-check-in\"]"));
     expect(button)
       .toBeTruthy();
   });
 
-  it("should not display add check-in button if writeable is false", async () => {
+  it("should not display add check-in button if writeable is false", async() => {
     jest.spyOn(keyResultServiceMock, "getFullKeyResult")
       .mockReturnValue(of(keyResultWriteableFalse));
     component.ngOnInit();

@@ -15,12 +15,12 @@ export class ShowEditRoleComponent {
 
   edit = false;
 
-  constructor (private readonly translate: TranslateService,
+  constructor(private readonly translate: TranslateService,
     private readonly elementRef: ElementRef,
     private readonly cd: ChangeDetectorRef) {}
 
   @HostListener("document:click", ["$event"])
-  clickOutside (event: MouseEvent) {
+  clickOutside(event: MouseEvent) {
     if (this.elementRef.nativeElement.contains(event.target)) {
       return;
     }
@@ -31,7 +31,7 @@ export class ShowEditRoleComponent {
    * we set edit async, to ensure hostListener can detect outside-of-element clicks correctly
    * otherwise element of event.target is already hidden
    */
-  setEditAsync ($event: MouseEvent, edit: boolean) {
+  setEditAsync($event: MouseEvent, edit: boolean) {
     $event.stopPropagation();
     setTimeout(() => {
       this.edit = edit;
@@ -39,19 +39,19 @@ export class ShowEditRoleComponent {
     }, 0);
   }
 
-  saveIsAdmin (isAdmin: boolean) {
+  saveIsAdmin(isAdmin: boolean) {
     this.edit = false;
     this.save.emit(isAdmin);
   }
 
-  getRole (): string {
+  getRole(): string {
     if (this.userTeam.isTeamAdmin) {
       return this.translate.instant("USER_ROLE.TEAM_ADMIN");
     }
     return this.translate.instant("USER_ROLE.TEAM_MEMBER");
   }
 
-  isEditable () {
+  isEditable() {
     return this.userTeam.team.writeable;
   }
 }

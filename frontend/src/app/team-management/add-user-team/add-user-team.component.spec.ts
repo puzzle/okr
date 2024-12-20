@@ -15,7 +15,7 @@ describe("AddUserTeamComponent", () => {
     getAllTeams: jest.fn()
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [AddUserTeamComponent],
       providers: [{ provide: TeamService,

@@ -23,7 +23,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
 
   private subscription?: Subscription;
 
-  constructor (
+  constructor(
     private oauthService: OAuthService,
     private userService: UserService,
     private configService: ConfigService,
@@ -31,7 +31,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
     private readonly cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.subscription = this.configService.config$.subscribe({
       next: (config) => {
         if (config.logo) {
@@ -45,11 +45,11 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
     this.initUserFullName();
   }
 
-  ngOnDestroy (): void {
+  ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
 
-  logOut () {
+  logOut() {
     const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
     this.router.navigateByUrl(currentUrlTree)
       .then(() => {
@@ -57,7 +57,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
       });
   }
 
-  private initUserFullName () {
+  private initUserFullName() {
     // user is loaded on base route resolver. We have to wait until routing is done.
     this.router.events.subscribe((val) => {
       if (!this.userFullName && val instanceof NavigationEnd) {

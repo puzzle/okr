@@ -12,7 +12,7 @@ export class OkrTangramComponent {
 
   trianglesSrc$ = new Observable<string>();
 
-  constructor (private readonly configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.trianglesSrc$ = this.configService.config$.pipe(map((config) => config.triangles || this.DEFAULT_TRIANGLE_SRC));
   }
 }

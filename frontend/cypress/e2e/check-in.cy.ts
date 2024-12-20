@@ -304,7 +304,7 @@ describe("OKR Check-in e2e tests", () => {
   });
 });
 
-function getCurrentDate () {
+function getCurrentDate() {
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = today.getMonth() + 1; // Months start at 0!

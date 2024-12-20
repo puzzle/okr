@@ -1,11 +1,11 @@
 import { PageObjectMapperBase } from "./pageObjectMapperBase";
 
 export default class FilterHelper extends PageObjectMapperBase {
-  validatePage (): void {
+  validatePage(): void {
     // Does not need to be implemented
   }
 
-  optionShouldBeSelected (text: string, onOverview = true): this {
+  optionShouldBeSelected(text: string, onOverview = true): this {
     if (onOverview) {
       cy.contains("h1:visible", text)
         .should("have.length", 1);
@@ -17,7 +17,7 @@ export default class FilterHelper extends PageObjectMapperBase {
     return this;
   }
 
-  optionShouldNotBeSelected (text: string): this {
+  optionShouldNotBeSelected(text: string): this {
     cy.contains("h1:visible", text)
       .should("not.exist");
     this.getOption(text)
@@ -27,13 +27,13 @@ export default class FilterHelper extends PageObjectMapperBase {
     return this;
   }
 
-  toggleOption (text: string): this {
+  toggleOption(text: string): this {
     this.getOption(text)
       .click();
     return this;
   }
 
-  private getOption (text: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  private getOption(text: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.contains("mat-chip:visible", text);
   }
 }

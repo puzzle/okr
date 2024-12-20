@@ -12,7 +12,7 @@ describe("NewUserComponent", () => {
   let component: NewUserComponent;
   let fixture: ComponentFixture<NewUserComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [NewUserComponent,
         PuzzleIconButtonComponent,

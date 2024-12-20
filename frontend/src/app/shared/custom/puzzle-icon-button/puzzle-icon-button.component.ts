@@ -19,7 +19,7 @@ export class PuzzleIconButtonComponent {
 
   imgSize = this.size - 2 * this.padding;
 
-  getStyle () {
+  getStyle() {
     return {
       "border-radius": this.size / 2 + "px",
       padding: this.padding + "px"

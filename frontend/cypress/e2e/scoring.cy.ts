@@ -111,7 +111,7 @@ describe("Scoring component e2e tests", () => {
   });
 });
 
-function setupMetricKR (
+function setupMetricKR(
   name: string, baseline: number, stretchgoal: number, value: number
 ) {
   CyOverviewPage.do()

@@ -10,7 +10,7 @@ describe("TeamRoleDropdownComponent", () => {
   let component: TeamRoleDropdownComponent;
   let fixture: ComponentFixture<TeamRoleDropdownComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

@@ -17,28 +17,28 @@ export class UserService {
 
   private usersLoaded = false;
 
-  constructor (private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
-  public getOrInitCurrentUser (): Observable<User> {
+  public getOrInitCurrentUser(): Observable<User> {
     if (this._currentUser) {
       return of(this._currentUser);
     }
     return this.reloadCurrentUser();
   }
 
-  public reloadCurrentUser (): Observable<User> {
+  public reloadCurrentUser(): Observable<User> {
     return this.httpClient.get<User>(this.API_URL + "/current")
       .pipe(tap((u) => this._currentUser = u));
   }
 
-  public getCurrentUser (): User {
+  public getCurrentUser(): User {
     if (!this._currentUser) {
       throw new Error("user should not be undefined here");
     }
     return this._currentUser;
   }
 
-  public getUsers (): Observable<User[]> {
+  public getUsers(): Observable<User[]> {
     if (!this.usersLoaded) {
       this.usersLoaded = true;
       this.reloadUsers();
@@ -46,16 +46,16 @@ export class UserService {
     return this.users.asObservable();
   }
 
-  public reloadUsers (): void {
+  public reloadUsers(): void {
     this.httpClient.get<User[]>(this.API_URL)
       .subscribe((users) => this.users.next(users));
   }
 
-  getUserById (id: number): Observable<User> {
+  getUserById(id: number): Observable<User> {
     return this.httpClient.get<User>(this.API_URL + "/" + id);
   }
 
-  setIsOkrChampion (user: User, isOkrChampion: boolean) {
+  setIsOkrChampion(user: User, isOkrChampion: boolean) {
     return this.httpClient.put(`${this.API_URL}/${user.id}/isokrchampion/${isOkrChampion}`, {})
       .pipe(tap(() => {
         this.reloadUsers();
@@ -64,21 +64,21 @@ export class UserService {
       }));
   }
 
-  createUsers (userList: NewUser[]) {
+  createUsers(userList: NewUser[]) {
     return this.httpClient.post<User>(`${this.API_URL}/createall`, userList)
       .pipe(tap(() => this.reloadUsers()));
   }
 
-  deleteUser (user: User) {
+  deleteUser(user: User) {
     return this.httpClient.delete<void>(`${this.API_URL}/${user.id}`, {})
       .pipe(tap(() => this.reloadUsers()));
   }
 
-  getUserOkrData (user: User): Observable<UserOkrData> {
+  getUserOkrData(user: User): Observable<UserOkrData> {
     return this.httpClient.get<UserOkrData>(`${this.API_URL}/${user.id}/userokrdata`, {});
   }
 
-  isUserMemberOfTeams (user: User): Observable<boolean> {
+  isUserMemberOfTeams(user: User): Observable<boolean> {
     return this.httpClient.get<boolean>(`${this.API_URL}/${user.id}/ismemberofteams`, {});
   }
 }

@@ -18,7 +18,7 @@ export class ConfidenceComponent implements OnChanges {
 
   @Input() checkIn!: CheckInMin;
 
-  ngOnChanges (changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     if (!changes["checkIn"]?.currentValue) {
       this.checkIn = { confidence: 5 } as CheckInMin;
     }

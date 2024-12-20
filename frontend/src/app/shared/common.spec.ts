@@ -301,7 +301,7 @@ describe("test common functions", () => {
       -10,
       0
     ]
-  ])("should calculate progress correctly", async (
+  ])("should calculate progress correctly", async(
     baseline: number, stretchGoal: number, value: number, filledPercentage: number
   ) => {
     const keyResult = {

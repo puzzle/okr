@@ -6,7 +6,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const oauthService = inject(OAuthService);
   const router = inject(Router);
   return oauthService.loadDiscoveryDocumentAndTryLogin()
-    .then(async () => {
+    .then(async() => {
     // if the login failed initialize code flow
       const validToken = oauthService.hasValidIdToken();
       if (!validToken) {

@@ -32,7 +32,7 @@ describe("MemberListTableComponent", () => {
     openConfirmDialog: jest.fn()
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [MatTableModule],
       declarations: [MemberListTableComponent],

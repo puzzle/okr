@@ -57,7 +57,7 @@ describe("ExampleDialogComponent", () => {
       .toBeTruthy();
   }));
 
-  it("should be able to set name", waitForAsync(async () => {
+  it("should be able to set name", waitForAsync(async() => {
     // Insert values into name input
     const nameInput = await loader.getHarness(MatInputHarness);
     await nameInput.setValue("Name");
@@ -73,7 +73,7 @@ describe("ExampleDialogComponent", () => {
       .toBe("Name");
   }));
 
-  it("should be able to set buttons", waitForAsync(async () => {
+  it("should be able to set buttons", waitForAsync(async() => {
     // Check radio button
     const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
     await buttons[0].check();
@@ -91,7 +91,7 @@ describe("ExampleDialogComponent", () => {
       .toBe(await buttons[0].getValue());
   }));
 
-  it("should be able to set select", async () => {
+  it("should be able to set select", async() => {
     let option = "";
     // Get mat-select element and click it (dropdown)
     await loader.getHarness(MatSelectHarness)
@@ -120,7 +120,7 @@ describe("ExampleDialogComponent", () => {
       .toBe(formObject.hobby);
   });
 
-  it("should display error message of too short input", waitForAsync(async () => {
+  it("should display error message of too short input", waitForAsync(async() => {
     // Insert values into name input which don't match length validator
     const nameInput = await loader.getHarness(MatInputHarness);
     await nameInput.setValue("Na");
@@ -136,7 +136,7 @@ describe("ExampleDialogComponent", () => {
       .toBeTruthy();
   }));
 
-  it("should display error message of required dropdown", waitForAsync(async () => {
+  it("should display error message of required dropdown", waitForAsync(async() => {
     // Open and close mat-select element to trigger validation
     const matSelect = await loader.getHarness(MatSelectHarness);
     await matSelect.open();
@@ -153,7 +153,7 @@ describe("ExampleDialogComponent", () => {
       .toBeTruthy();
   }));
 
-  it("should not save form unless radio button is checked", async () => {
+  it("should not save form unless radio button is checked", async() => {
     // Insert value into input
     const nameInput = loader.getHarness(MatInputHarness);
     const matSelect = loader.getHarness(MatSelectHarness);
@@ -199,7 +199,7 @@ describe("ExampleDialogComponent", () => {
       }));
   });
 
-  function advance (duration = 100) {
+  function advance(duration = 100) {
     tick(duration);
     fixture.detectChanges();
     tick(duration);

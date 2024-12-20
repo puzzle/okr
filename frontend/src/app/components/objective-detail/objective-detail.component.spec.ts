@@ -27,7 +27,7 @@ describe("ObjectiveDetailComponent", () => {
   let component: ObjectiveDetailComponent;
   let fixture: ComponentFixture<ObjectiveDetailComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -72,14 +72,14 @@ describe("ObjectiveDetailComponent", () => {
       .toContain(objective.description);
   });
 
-  it("should display add keyresult button if writeable is true", async () => {
+  it("should display add keyresult button if writeable is true", async() => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css("[data-testId=\"add-keyResult-objective-detail\"]"));
     expect(button)
       .toBeTruthy();
   });
 
-  it("should not display add keyresult button if writeable is false", async () => {
+  it("should not display add keyresult button if writeable is false", async() => {
     objectiveService.getFullObjective.mockReturnValue(of(objectiveWriteableFalse));
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css("[data-testId=\"add-keyResult-objective-detail\"]"));

@@ -3,27 +3,27 @@ import CheckInDialog from "./checkInDialog";
 import Chainable = Cypress.Chainable;
 
 export default class CheckInHistoryDialog extends Dialog {
-  override submit () {
+  override submit() {
     throw new Error("This dialog doesnt have a submit button");
   }
 
-  override cancel () {
+  override cancel() {
     cy.getByTestId("closeButton")
       .click();
   }
 
-  editLatestCheckIn () {
+  editLatestCheckIn() {
     cy.getByTestId("edit-check-in")
       .first()
       .click();
     return new CheckInDialog();
   }
 
-  getPage (): Chainable {
+  getPage(): Chainable {
     return cy.get("app-check-in-history-dialog");
   }
 
-  checkForAttribute (title: string, value: string) {
+  checkForAttribute(title: string, value: string) {
     cy.get("mat-dialog-container")
       .contains(value)
       .parent()

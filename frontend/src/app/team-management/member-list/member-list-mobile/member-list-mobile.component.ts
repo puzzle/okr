@@ -16,9 +16,9 @@ export class MemberListMobileComponent {
 
   @Input() selectedTeam$!: BehaviorSubject<Team | undefined>;
 
-  constructor () {}
+  constructor() {}
 
-  getMemberDetailsLink (userTableEntry: UserTableEntry) {
+  getMemberDetailsLink(userTableEntry: UserTableEntry) {
     return getRouteToUserDetails(userTableEntry.id, this.selectedTeam$.value?.id);
   }
 

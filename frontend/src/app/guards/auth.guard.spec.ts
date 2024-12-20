@@ -51,7 +51,7 @@ describe("authGuard", () => {
       .toBeTruthy();
   });
 
-  it("should not call initCodeFlow if token is valid and call router if state param exist", async () => {
+  it("should not call initCodeFlow if token is valid and call router if state param exist", async() => {
     jest.spyOn(oAuthMock, "hasValidIdToken")
       .mockReturnValue(true);
     route.queryParamMap.set("state", 1234);
@@ -70,7 +70,7 @@ describe("authGuard", () => {
       .toHaveBeenCalled();
   });
 
-  it("should not call router if state param does not exist", async () => {
+  it("should not call router if state param does not exist", async() => {
     jest.spyOn(oAuthMock, "hasValidIdToken")
       .mockReturnValue(true);
     route.queryParamMap.set("state", null);
@@ -82,7 +82,7 @@ describe("authGuard", () => {
     expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
   });
 
-  it("should call initCodeFlow if token is invalid", async () => {
+  it("should call initCodeFlow if token is invalid", async() => {
     jest.spyOn(oAuthMock, "hasValidIdToken")
       .mockReturnValue(false);
     const result = await runAuthGuardWithContext(authGuard);
@@ -96,7 +96,7 @@ describe("authGuard", () => {
     expect(oAuthMock.setupAutomaticSilentRefresh).not.toHaveBeenCalled();
   });
 
-  async function runAuthGuardWithContext (authGuard: any): Promise<boolean> {
+  async function runAuthGuardWithContext(authGuard: any): Promise<boolean> {
     return await TestBed.runInInjectionContext(() => authGuard(route, null));
   }
 });

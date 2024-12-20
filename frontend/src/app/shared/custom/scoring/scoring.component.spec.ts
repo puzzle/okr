@@ -83,7 +83,7 @@ describe("ScoringComponent", () => {
         target: 101,
         className: "score-stretch",
         borderClass: "none" }]
-    ])("should set styles correctly", async (object: any) => {
+    ])("should set styles correctly", async(object: any) => {
       component.targetPercent = object.target;
       component.commitPercent = object.commit;
       component.failPercent = object.fail;

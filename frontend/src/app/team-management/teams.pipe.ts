@@ -7,9 +7,9 @@ import { TranslateService } from "@ngx-translate/core";
 export class TeamsPipe implements PipeTransform {
   private readonly SEPARATOR = ", ";
 
-  constructor (private readonly translate: TranslateService) {}
+  constructor(private readonly translate: TranslateService) {}
 
-  transform (teams: string[], maxEntries: number | undefined): string {
+  transform(teams: string[], maxEntries: number | undefined): string {
     if (!teams?.length) {
       return "";
     }

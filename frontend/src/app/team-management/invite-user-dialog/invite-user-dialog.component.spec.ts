@@ -42,7 +42,7 @@ describe("InviteUserDialogComponent", () => {
     validate: () => null
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [
         InviteUserDialogComponent,

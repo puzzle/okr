@@ -10,7 +10,7 @@ describe("KeyresultComponent", () => {
   let component: KeyresultComponent;
   let fixture: ComponentFixture<KeyresultComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [KeyresultComponent,
         ScoringComponent,

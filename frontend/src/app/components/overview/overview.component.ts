@@ -33,7 +33,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   backgroundLogoSrc$ = new BehaviorSubject<string>("assets/images/empty.svg");
 
-  constructor (
+  constructor(
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
@@ -55,7 +55,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.refreshDataService.okrBannerHeightSubject.subscribe((e) => {
       this.overviewPadding.next(e);
       this.changeDetector.detectChanges();
@@ -72,7 +72,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadOverviewWithParams () {
+  loadOverviewWithParams() {
     const quarterQuery = this.activatedRoute.snapshot.queryParams["quarter"];
     const teamQuery = this.activatedRoute.snapshot.queryParams["teams"];
     const objectiveQuery = this.activatedRoute.snapshot.queryParams["objectiveQuery"];
@@ -83,7 +83,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.loadOverview(quarterId, teamIds, objectiveQueryString);
   }
 
-  loadOverview (quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
+  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
     this.overviewService
       .getOverview(quarterId, teamIds, objectiveQuery)
       .pipe(catchError(() => {
@@ -95,7 +95,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy (): void {
+  ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }

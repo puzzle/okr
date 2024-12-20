@@ -35,10 +35,10 @@ const quarters = [
 ];
 
 const quarterService = {
-  getAllQuarters (): Observable<Quarter[]> {
+  getAllQuarters(): Observable<Quarter[]> {
     return of(quarters);
   },
-  getCurrentQuarter (): Observable<Quarter> {
+  getCurrentQuarter(): Observable<Quarter> {
     return of(quarters[2]);
   }
 };
@@ -77,7 +77,7 @@ describe("QuarterFilterComponent", () => {
       .toBeTruthy();
   });
 
-  it("should set correct default quarter if no route param is defined", async () => {
+  it("should set correct default quarter if no route param is defined", async() => {
     jest.spyOn(component, "changeDisplayedQuarter");
     jest.spyOn(quarters[2] as any, "isCurrent")
       .mockReturnValue(true);
@@ -94,13 +94,13 @@ describe("QuarterFilterComponent", () => {
       .toHaveBeenCalledTimes(1);
   });
 
-  it("should set correct value in form according to route param", async () => {
+  it("should set correct value in form according to route param", async() => {
     jest.spyOn(component, "changeDisplayedQuarter");
     const routerHarnessPromise = RouterTestingHarness.create();
     const quarterSelectPromise = loader.getHarness(MatSelectHarness);
     await Promise.all([routerHarnessPromise,
       quarterSelectPromise])
-      .then(async ([routerHarness,
+      .then(async([routerHarness,
         quarterSelect]) => {
         await routerHarness.navigateByUrl("/?quarter=" + quarters[3].id);
 
@@ -119,7 +119,7 @@ describe("QuarterFilterComponent", () => {
       });
   });
 
-  it("should set default quarter if quarter id in route params does not exist", async () => {
+  it("should set default quarter if quarter id in route params does not exist", async() => {
     jest.spyOn(component, "changeDisplayedQuarter");
     const quarterSelect = await loader.getHarness(MatSelectHarness);
 

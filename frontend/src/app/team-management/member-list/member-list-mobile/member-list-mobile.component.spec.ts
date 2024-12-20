@@ -11,7 +11,7 @@ describe("MemberListMobileComponent", () => {
   let component: MemberListMobileComponent;
   let fixture: ComponentFixture<MemberListMobileComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [MemberListMobileComponent]
     })

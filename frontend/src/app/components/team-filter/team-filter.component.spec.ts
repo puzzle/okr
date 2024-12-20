@@ -66,7 +66,7 @@ describe("TeamFilterComponent", () => {
       .toBeTruthy();
   });
 
-  it("should select all chips per default", waitForAsync(async () => {
+  it("should select all chips per default", waitForAsync(async() => {
     jest.spyOn(component.teams$, "next");
     jest.spyOn(component, "changeTeamFilterParams");
     component.ngOnInit();
@@ -80,7 +80,7 @@ describe("TeamFilterComponent", () => {
       .toHaveBeenCalledTimes(1);
   }));
 
-  it("should select the right chips", waitForAsync(async () => {
+  it("should select the right chips", waitForAsync(async() => {
     const teamIds = teamList.map((e) => e.id)
       .filter((e, i) => i < 2);
     jest.spyOn(component.teams$, "next");
@@ -102,7 +102,7 @@ describe("TeamFilterComponent", () => {
       .toHaveBeenCalledTimes(1);
   }));
 
-  it("activeTeams array should contain every team when all teams are shown", waitForAsync(async () => {
+  it("activeTeams array should contain every team when all teams are shown", waitForAsync(async() => {
     const teamIds = teamList.map((e) => e.id);
     jest.spyOn(component.teams$, "next");
     jest.spyOn(component, "changeTeamFilterParams");
@@ -123,7 +123,7 @@ describe("TeamFilterComponent", () => {
       .toHaveBeenCalledTimes(1);
   }));
 
-  it("change filter params and reload", fakeAsync(async () => {
+  it("change filter params and reload", fakeAsync(async() => {
     component.activeTeams = teamList.map((e) => e.id)
       .filter((e, i) => i < 2);
     const routerHarness = await RouterTestingHarness.create();
@@ -249,7 +249,7 @@ describe("TeamFilterComponent", () => {
       .toStrictEqual([team1.id]);
   });
 
-  it("should use teams of user if no known teams are in url", async () => {
+  it("should use teams of user if no known teams are in url", async() => {
     const teamIds = [654,
       478];
     jest.spyOn(component.teams$, "next");
@@ -270,7 +270,7 @@ describe("TeamFilterComponent", () => {
       .toHaveBeenCalledTimes(1);
   });
 
-  it("should use teams of user if no teams are in url", async () => {
+  it("should use teams of user if no teams are in url", async() => {
     jest.spyOn(component.teams$, "next");
     jest.spyOn(component, "changeTeamFilterParams");
     const routerHarness = await RouterTestingHarness.create();
@@ -294,7 +294,7 @@ describe("TeamFilterComponent", () => {
     3],
   "1,2,3"],
   [[],
-    null]])("changeTeamFilterParams", async (currentTeams: number[], routingTeams: string | null) => {
+    null]])("changeTeamFilterParams", async(currentTeams: number[], routingTeams: string | null) => {
     component.activeTeams = currentTeams;
 
     jest.spyOn(router, "navigate");
@@ -308,7 +308,7 @@ describe("TeamFilterComponent", () => {
       .toHaveBeenCalledWith([], { queryParams: { teams: routingTeams } });
   });
 
-  it("should filter teams by toggled priority and then by name", async () => {
+  it("should filter teams by toggled priority and then by name", async() => {
     const teams = [
       { id: 1,
         version: 0,

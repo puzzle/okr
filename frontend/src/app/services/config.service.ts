@@ -9,7 +9,7 @@ import { ClientConfig } from "../shared/types/model/ClientConfig";
 export class ConfigService {
   public config$: Observable<ClientConfig>;
 
-  constructor (private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient) {
     this.config$ = this.httpClient.get<ClientConfig>("/config")
       .pipe(shareReplay());
   }

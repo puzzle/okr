@@ -49,35 +49,35 @@ describe("CheckInFormComponent", () => {
       .toBeTruthy();
   });
 
-  it("should format percent correctly", waitForAsync(async () => {
+  it("should format percent correctly", waitForAsync(async() => {
     component.keyResult = { ...keyResultMetric,
       unit: Unit.PERCENT };
     expect(component.generateUnitLabel())
       .toEqual("%");
   }));
 
-  it("should format chf correctly", waitForAsync(async () => {
+  it("should format chf correctly", waitForAsync(async() => {
     component.keyResult = { ...keyResultMetric,
       unit: Unit.CHF };
     expect(component.generateUnitLabel())
       .toEqual("CHF");
   }));
 
-  it("should format eur correctly", waitForAsync(async () => {
+  it("should format eur correctly", waitForAsync(async() => {
     component.keyResult = { ...keyResultMetric,
       unit: Unit.EUR };
     expect(component.generateUnitLabel())
       .toEqual("EUR");
   }));
 
-  it("should format fte correctly", waitForAsync(async () => {
+  it("should format fte correctly", waitForAsync(async() => {
     component.keyResult = { ...keyResultMetric,
       unit: Unit.FTE };
     expect(component.generateUnitLabel())
       .toEqual("FTE");
   }));
 
-  it("should format number correctly", waitForAsync(async () => {
+  it("should format number correctly", waitForAsync(async() => {
     component.keyResult = { ...keyResultMetric,
       unit: Unit.NUMBER };
     expect(component.generateUnitLabel())

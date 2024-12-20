@@ -33,11 +33,11 @@ const refreshDataServiceMock = {
 };
 
 class ResizeObserverMock {
-  observe () {}
+  observe() {}
 
-  unobserve () {}
+  unobserve() {}
 
-  disconnect () {}
+  disconnect() {}
 }
 
 describe("OverviewComponent", () => {
@@ -46,7 +46,7 @@ describe("OverviewComponent", () => {
 
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -102,7 +102,7 @@ describe("OverviewComponent", () => {
       .toHaveBeenCalled();
   });
 
-  it("should load default overview on init", async () => {
+  it("should load default overview on init", async() => {
     jest.spyOn(overviewService, "getOverview");
     markFiltersAsReady();
     expect(overviewService.getOverview)
@@ -149,7 +149,7 @@ describe("OverviewComponent", () => {
       [],
       "a a"
     ]
-  ])("should load overview based on queryparams", async (
+  ])("should load overview based on queryparams", async(
     query: string, quarterParam?: number, teamsParam?: number[], objectiveQueryParam?: string
   ) => {
     jest.spyOn(overviewService, "getOverview");
@@ -164,7 +164,7 @@ describe("OverviewComponent", () => {
       .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveQueryParam);
   });
 
-  it("should refresh overview Entities after getOverview is called", async () => {
+  it("should refresh overview Entities after getOverview is called", async() => {
     jest.spyOn(component.overviewEntities$, "next");
     jest.spyOn(component, "loadOverview");
     component.loadOverview();
@@ -174,7 +174,7 @@ describe("OverviewComponent", () => {
       .toHaveBeenCalledWith([overViewEntity1]);
   });
 
-  it("should get default if call throws error", async () => {
+  it("should get default if call throws error", async() => {
     overviewService.getOverview.mockReturnValue(of(new Error("")));
 
     jest.spyOn(component, "loadOverview");
@@ -183,7 +183,7 @@ describe("OverviewComponent", () => {
       .toHaveBeenLastCalledWith();
   });
 
-  function markFiltersAsReady () {
+  function markFiltersAsReady() {
     refreshDataServiceMock.quarterFilterReady.next(null);
     refreshDataServiceMock.teamFilterReady.next(null);
     fixture.detectChanges();

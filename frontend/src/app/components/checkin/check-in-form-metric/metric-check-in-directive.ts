@@ -15,20 +15,20 @@ export class MetricCheckInDirective implements ControlValueAccessor {
 
   protected readonly CHAR_REGEX = /[^0-9.]/g;
 
-  writeValue (): void {
+  writeValue(): void {
     // does not need to be implemented because the display value does not need to be modified
   }
 
-  registerOnChange (fn: (value: number | null) => void): void {
+  registerOnChange(fn: (value: number | null) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched (): void {
+  registerOnTouched(): void {
     // does not need to be implemented
   }
 
   @HostListener("input", ["$event.target.value"])
-  handleInput (param: string): void {
+  handleInput(param: string): void {
     const value: string = param || "0";
     if (value.toString()
       .at(0) == "-") {

@@ -24,7 +24,7 @@ export class AddEditTeamDialogComponent implements OnInit {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor (
+  constructor(
     public dialogRef: MatDialogRef<AddEditTeamDialogComponent>,
     private teamService: TeamService,
     private userService: UserService,
@@ -39,7 +39,7 @@ export class AddEditTeamDialogComponent implements OnInit {
   ) {
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     if (this.data) {
       this.teamForm.setValue({
         name: this.data.team.name
@@ -47,7 +47,7 @@ export class AddEditTeamDialogComponent implements OnInit {
     }
   }
 
-  saveTeam () {
+  saveTeam() {
     if (!this.data) {
       this.createNewTeam();
     } else {
@@ -55,7 +55,7 @@ export class AddEditTeamDialogComponent implements OnInit {
     }
   }
 
-  private createNewTeam () {
+  private createNewTeam() {
     const newTeam: Team = this.teamForm.value as Team;
     this.teamService.createTeam(newTeam)
       .subscribe((result) => {
@@ -67,7 +67,7 @@ export class AddEditTeamDialogComponent implements OnInit {
       });
   }
 
-  private updateTeam () {
+  private updateTeam() {
     if (this.data) {
       const updatedTeam: Team = {
         ...this.teamForm.value,
@@ -81,14 +81,14 @@ export class AddEditTeamDialogComponent implements OnInit {
     }
   }
 
-  getErrorMessage (
+  getErrorMessage(
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
     return field + this.translate.instant("DIALOG_ERRORS." + error)
       .format(firstNumber, secondNumber);
   }
 
-  getDialogTitle (): string {
+  getDialogTitle(): string {
     return this.data ? "Team bearbeiten" : "Team erfassen";
   }
 }

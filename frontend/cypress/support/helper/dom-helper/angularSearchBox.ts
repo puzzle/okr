@@ -3,13 +3,13 @@ import { PageObjectMapperBase } from "./pageObjectMapperBase";
 export default class AngularSearchBox extends PageObjectMapperBase {
   selector: string;
 
-  constructor (selector: string) {
+  constructor(selector: string) {
     super();
     this.selector = selector;
     this.validatePage();
   }
 
-  fill (value: string) {
+  fill(value: string) {
     const input = cy.get("input")
       .first();
     input.clear();
@@ -17,30 +17,30 @@ export default class AngularSearchBox extends PageObjectMapperBase {
     return this;
   }
 
-  shouldHaveOption (option: string) {
+  shouldHaveOption(option: string) {
     cy.contains(".mat-mdc-autocomplete-panel mat-option", option);
     return this;
   }
 
-  shouldHaveLabel (label: string) {
+  shouldHaveLabel(label: string) {
     cy.contains(".mat-mdc-autocomplete-panel .mat-mdc-optgroup-label", label);
     return this;
   }
 
-  selectOption (option: string) {
+  selectOption(option: string) {
     cy.contains(".mat-mdc-autocomplete-panel mat-option", option)
       .click();
   }
 
-  getPage () {
+  getPage() {
     return cy.get(this.selector);
   }
 
-  static from (selector: string): AngularSearchBox {
+  static from(selector: string): AngularSearchBox {
     return new this(selector);
   }
 
-  validatePage (): void {
+  validatePage(): void {
     this.getPage()
       .should("exist");
   }

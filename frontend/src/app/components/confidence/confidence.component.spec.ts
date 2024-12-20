@@ -34,7 +34,7 @@ describe("ConfidenceComponent", () => {
   it.each([[{ confidence: 8 } as CheckInMin,
     "8"],
   [null,
-    "5"]])("should set confidence of component with right value", async (checkIn: CheckInMin | null, expected: string) => {
+    "5"]])("should set confidence of component with right value", async(checkIn: CheckInMin | null, expected: string) => {
     component.checkIn = checkIn!;
     component.ngOnChanges({
       checkIn: new SimpleChange(null, component.checkIn, true)
@@ -52,7 +52,7 @@ describe("ConfidenceComponent", () => {
   });
 
   it.each([[true],
-    [false]])("should show slider on based on input var", async (editable) => {
+    [false]])("should show slider on based on input var", async(editable) => {
     component.edit = editable;
     fixture.detectChanges();
     const slider = fixture.debugElement.query(By.css("mat-slider"));

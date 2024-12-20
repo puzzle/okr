@@ -78,7 +78,7 @@ describe("SearchTeamManagementComponent", () => {
   let userServiceMock: Partial<UserService>;
   let activatedRouteMock: Partial<ActivatedRoute>;
   let navigateSpy: Spy;
-  beforeEach(async () => {
+  beforeEach(async() => {
     jest.useFakeTimers();
 
     teamServiceMock = {

@@ -25,7 +25,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
-  constructor (
+  constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private checkInService: CheckInService,
     private dialogService: DialogService,
@@ -33,13 +33,13 @@ export class CheckInHistoryDialogComponent implements OnInit {
     private refreshDataService: RefreshDataService
   ) {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.keyResult = this.data.keyResult;
     this.isComplete = this.data.isComplete;
     this.loadCheckInHistory();
   }
 
-  openCheckInDialogForm (checkIn: CheckInMin) {
+  openCheckInDialogForm(checkIn: CheckInMin) {
     const dialogRef = this.dialogService.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult,
@@ -54,7 +54,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
       });
   }
 
-  loadCheckInHistory () {
+  loadCheckInHistory() {
     this.checkInHistory$ = this.checkInService.getAllCheckInOfKeyResult(this.keyResult.id);
     this.checkInHistory$.subscribe((result) => {
       if (result.length == 0) {
@@ -63,15 +63,15 @@ export class CheckInHistoryDialogComponent implements OnInit {
     });
   }
 
-  getMetricKeyResult (): KeyResultMetric {
+  getMetricKeyResult(): KeyResultMetric {
     return this.keyResult as KeyResultMetric;
   }
 
-  getCheckInMetric (checkIn: CheckInMin): CheckInMetricMin {
+  getCheckInMetric(checkIn: CheckInMin): CheckInMetricMin {
     return checkIn as CheckInMetricMin;
   }
 
-  getCheckInOrdinal (checkIn: CheckInMin): CheckInOrdinalMin {
+  getCheckInOrdinal(checkIn: CheckInMin): CheckInOrdinalMin {
     return checkIn as CheckInOrdinalMin;
   }
 }

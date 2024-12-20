@@ -6,21 +6,21 @@ import { ToasterType } from "../shared/types/enums/ToasterType";
   providedIn: "root"
 })
 export class ToasterService {
-  constructor (private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService) {}
 
-  showSuccess (msg: string) {
+  showSuccess(msg: string) {
     this.toastr.success(msg, "Erfolgreich!");
   }
 
-  showError (msg: string) {
+  showError(msg: string) {
     this.toastr.error(msg, "Fehler!");
   }
 
-  showWarn (msg: string) {
+  showWarn(msg: string) {
     this.toastr.warning(msg, "Warnung!");
   }
 
-  showCustomToaster (msg: string, type?: ToasterType) {
+  showCustomToaster(msg: string, type?: ToasterType) {
     switch (type) {
       case ToasterType.SUCCESS:
         this.showSuccess(msg);

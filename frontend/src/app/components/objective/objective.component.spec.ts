@@ -88,7 +88,7 @@ describe("ObjectiveColumnComponent", () => {
       .toBeTruthy();
   });
 
-  test("Mat-menu should open and close", async () => {
+  test("Mat-menu should open and close", async() => {
     component.isWritable = true;
     fixture.detectChanges();
 
@@ -122,7 +122,7 @@ describe("ObjectiveColumnComponent", () => {
       .toBe(path);
   });
 
-  test("Mat-menu should not be present if writeable is false", async () => {
+  test("Mat-menu should not be present if writeable is false", async() => {
     component.isWritable = false;
     fixture.detectChanges();
     const menu = fixture.debugElement.query(By.css("[data-testid=\"objective-menu\"]"));
@@ -130,7 +130,7 @@ describe("ObjectiveColumnComponent", () => {
       .toBeFalsy();
   });
 
-  test("Create keyresult button should not be present if writeable is false", async () => {
+  test("Create keyresult button should not be present if writeable is false", async() => {
     component.isWritable = false;
     const button = fixture.debugElement.query(By.css("[data-testId=\"add-keyResult\"]"));
     expect(button)

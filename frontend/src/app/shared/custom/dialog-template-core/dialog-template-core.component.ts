@@ -11,7 +11,7 @@ export class DialogTemplateCoreComponent {
 
   @Input() title = "";
 
-  isValueReady (obj: any): boolean {
+  isValueReady(obj: any): boolean {
     if (obj == null) {
       return false;
     }

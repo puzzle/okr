@@ -9,7 +9,7 @@ import { UserTeam } from "../shared/types/model/UserTeam";
   providedIn: "root"
 })
 export class TeamService {
-  constructor (private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
 
@@ -17,7 +17,7 @@ export class TeamService {
 
   private readonly API_URL = "/api/v2/teams";
 
-  getAllTeams (): Observable<Team[]> {
+  getAllTeams(): Observable<Team[]> {
     if (!this.teamsLoaded) {
       this.reloadTeams();
       this.teamsLoaded = true;
@@ -25,7 +25,7 @@ export class TeamService {
     return this.teams.asObservable();
   }
 
-  reloadTeams (): void {
+  reloadTeams(): void {
     this.http.get<Team[]>(this.API_URL)
       .subscribe((teams) => {
         if (!this.teams) {
@@ -36,32 +36,32 @@ export class TeamService {
       });
   }
 
-  createTeam (team: Team): Observable<Team> {
+  createTeam(team: Team): Observable<Team> {
     return this.http.post<Team>(this.API_URL, team)
       .pipe(tap(() => this.reloadTeams()));
   }
 
-  updateTeam (team: Team): Observable<Team> {
+  updateTeam(team: Team): Observable<Team> {
     return this.http.put<Team>(`${this.API_URL}/${team.id}`, team)
       .pipe(tap(() => this.reloadTeams()));
   }
 
-  deleteTeam (id: number): Observable<void> {
+  deleteTeam(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`)
       .pipe(tap(() => this.reloadTeams()));
   }
 
-  addUsersToTeam (team: Team, selectedUsers: User[]): Observable<void> {
+  addUsersToTeam(team: Team, selectedUsers: User[]): Observable<void> {
     return this.http.put<void>(`${this.API_URL}/${team.id}/addusers`, selectedUsers);
   }
 
-  removeUserFromTeam (userId: number, team: Team): Observable<void> {
+  removeUserFromTeam(userId: number, team: Team): Observable<void> {
     return this.http
       .put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null)
       .pipe(tap(() => this.reloadTeams()));
   }
 
-  updateOrAddTeamMembership (userId: number, userTeam: UserTeam): Observable<void> {
+  updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
     return this.http
       .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`, {})
       .pipe(tap(() => this.reloadTeams()));

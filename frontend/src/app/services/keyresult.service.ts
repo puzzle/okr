@@ -8,9 +8,9 @@ import { KeyResultDTO } from "../shared/types/DTOs/KeyResultDTO";
   providedIn: "root"
 })
 export class KeyresultService {
-  constructor (private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
-  getFullKeyResult (keyresultId: number): Observable<KeyResult> {
+  getFullKeyResult(keyresultId: number): Observable<KeyResult> {
     return this.httpClient.get<KeyResult>("/api/v2/keyresults/" + keyresultId)
       .pipe(map((keyresult: any) => {
         keyresult.objective.quarter = keyresult.objective.keyResultQuarterDto;
@@ -18,7 +18,7 @@ export class KeyresultService {
       }));
   }
 
-  saveKeyResult (keyResultDTO: KeyResultDTO): Observable<KeyResult> {
+  saveKeyResult(keyResultDTO: KeyResultDTO): Observable<KeyResult> {
     if (keyResultDTO.id) {
       return this.httpClient.put<KeyResult>("/api/v2/keyresults/" + keyResultDTO.id, keyResultDTO);
     } else {
@@ -26,7 +26,7 @@ export class KeyresultService {
     }
   }
 
-  deleteKeyResult (keyResultId: number): Observable<any> {
+  deleteKeyResult(keyResultId: number): Observable<any> {
     return this.httpClient.delete<void>("/api/v2/keyresults/" + keyResultId);
   }
 }

@@ -6,9 +6,9 @@ import { TranslateService } from "@ngx-translate/core";
   name: "roles"
 })
 export class RolesPipe implements PipeTransform {
-  constructor (private translate: TranslateService) {}
+  constructor(private translate: TranslateService) {}
 
-  transform (roles: UserRole[]): string {
+  transform(roles: UserRole[]): string {
     if (!roles?.length) {
       return "";
     }

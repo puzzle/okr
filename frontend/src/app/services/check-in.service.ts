@@ -8,13 +8,13 @@ import { CheckIn } from "../shared/types/model/CheckIn";
   providedIn: "root"
 })
 export class CheckInService {
-  constructor (private httpclient: HttpClient) {}
+  constructor(private httpclient: HttpClient) {}
 
-  getAllCheckInOfKeyResult (keyResultId: number): Observable<CheckInMin[]> {
+  getAllCheckInOfKeyResult(keyResultId: number): Observable<CheckInMin[]> {
     return this.httpclient.get<CheckInMin[]>(`/api/v2/keyresults/${keyResultId}/checkins`);
   }
 
-  saveCheckIn (checkIn: CheckIn) {
+  saveCheckIn(checkIn: CheckIn) {
     if (checkIn.id) {
       return this.httpclient.put<any>("/api/v2/checkIns/" + checkIn.id, checkIn);
     } else {

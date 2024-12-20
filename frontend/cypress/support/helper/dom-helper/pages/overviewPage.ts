@@ -10,27 +10,27 @@ export default class CyOverviewPage extends Page {
     teammanagement: () => cy.getByTestId("team-management")
   };
 
-  visitGJForTests () {
+  visitGJForTests() {
     this.visitQuarter(998);
   }
 
-  visitBacklogQuarter () {
+  visitBacklogQuarter() {
     this.visitQuarter(999);
   }
 
-  visitCurrentQuarter () {
+  visitCurrentQuarter() {
     this.visitQuarter(2);
   }
 
-  visitNextQuarter () {
+  visitNextQuarter() {
     this.visitQuarter(3);
   }
 
-  private visitQuarter (quarter: number) {
+  private visitQuarter(quarter: number) {
     cy.visit(`/?quarter=${quarter}`);
   }
 
-  addObjective (teamName?: string) {
+  addObjective(teamName?: string) {
     if (teamName) {
       this.getTeamByName(teamName)
         .find(".add-objective")
@@ -44,7 +44,7 @@ export default class CyOverviewPage extends Page {
     return new ObjectiveDialog();
   }
 
-  addKeyResult (teamName?: string, objectiveName?: string) {
+  addKeyResult(teamName?: string, objectiveName?: string) {
     if (teamName && objectiveName) {
       this.getObjectiveByTeamAndName(teamName, objectiveName)
         .findByTestId("add-keyResult")
@@ -69,7 +69,7 @@ export default class CyOverviewPage extends Page {
     return new KeyResultDialog();
   }
 
-  addOngoingKeyResult () {
+  addOngoingKeyResult() {
     this.getObjectiveByState("ongoing")
       .findByTestId("add-keyResult")
       .first()
@@ -78,18 +78,18 @@ export default class CyOverviewPage extends Page {
     return new KeyResultDialog();
   }
 
-  getTeamByName (teamName: string) {
+  getTeamByName(teamName: string) {
     return cy.contains(".team-title", teamName)
       .parentsUntil("#overview")
       .last();
   }
 
-  getFirstObjective () {
+  getFirstObjective() {
     return cy.get(".objective")
       .first();
   }
 
-  getObjectiveByNameAndState (objectiveName: string, state: string) {
+  getObjectiveByNameAndState(objectiveName: string, state: string) {
     this.getObjectivesByNameAndState(objectiveName, state)
       .last()
       .as("objective")
@@ -97,13 +97,13 @@ export default class CyOverviewPage extends Page {
     return cy.get("@objective");
   }
 
-  getObjectivesByNameAndState (objectiveName: string, state: string) {
+  getObjectivesByNameAndState(objectiveName: string, state: string) {
     return getObjectiveColumns()
       .filter(filterByObjectiveName(objectiveName))
       .filter(filterByObjectiveState(state));
   }
 
-  getObjectiveByName (objectiveName: string) {
+  getObjectiveByName(objectiveName: string) {
     this.getObjectivesByName(objectiveName)
       .last()
       .as("objective")
@@ -111,7 +111,7 @@ export default class CyOverviewPage extends Page {
     return cy.get("@objective");
   }
 
-  getObjectiveByTeamAndName (teamName: string, objectiveName: string) {
+  getObjectiveByTeamAndName(teamName: string, objectiveName: string) {
     this.getTeamByName(teamName)
       .find(".objective")
       .filter(filterByObjectiveName(objectiveName))
@@ -122,22 +122,22 @@ export default class CyOverviewPage extends Page {
     return cy.get("@team");
   }
 
-  getKeyResultOfObjective (objectiveName: string, keyResultName: string) {
+  getKeyResultOfObjective(objectiveName: string, keyResultName: string) {
     return this.getAllKeyResultsOfObjective(objectiveName)
       .filter(filterByKeyResultName(keyResultName));
   }
 
-  getAllKeyResultsOfObjective (objectiveName: string) {
+  getAllKeyResultsOfObjective(objectiveName: string) {
     return this.getObjectiveByName(objectiveName)
       .find(".key-result");
   }
 
-  getObjectivesByName (objectiveName: string) {
+  getObjectivesByName(objectiveName: string) {
     return getObjectiveColumns()
       .filter(filterByObjectiveName(objectiveName));
   }
 
-  getObjectiveByState (state: string) {
+  getObjectiveByState(state: string) {
     this.getObjectivesByState(state)
       .first()
       .as("objective")
@@ -145,12 +145,12 @@ export default class CyOverviewPage extends Page {
     return cy.get("@objective");
   }
 
-  getObjectivesByState (state: string) {
+  getObjectivesByState(state: string) {
     return getObjectiveColumns()
       .filter(filterByObjectiveState(state));
   }
 
-  getKeyResultByName (keyResultName: string) {
+  getKeyResultByName(keyResultName: string) {
     this.getKeyResultsByName(keyResultName)
       .last()
       .as("keyResult")
@@ -158,12 +158,12 @@ export default class CyOverviewPage extends Page {
     return cy.get("@keyResult");
   }
 
-  getKeyResultsByName (keyresultName: string) {
+  getKeyResultsByName(keyresultName: string) {
     return getKeyResults()
       .filter(filterByKeyResultName(keyresultName));
   }
 
-  selectFromThreeDotMenu (optionName: string) {
+  selectFromThreeDotMenu(optionName: string) {
     cy.contains(optionName)
       .should("exist");
     cy.get(".objective-three-dot-menu")
@@ -176,7 +176,7 @@ export default class CyOverviewPage extends Page {
       .click();
   }
 
-  duplicateObjective (objectiveName: string) {
+  duplicateObjective(objectiveName: string) {
     cy.intercept("GET", "**/objectives/*/keyResults")
       .as("keyResults");
     this.getObjectiveByName(objectiveName)
@@ -187,20 +187,20 @@ export default class CyOverviewPage extends Page {
     return new ObjectiveDialog();
   }
 
-  visitTeammanagement (): void {
+  visitTeammanagement(): void {
     this.elements.teammanagement()
       .click();
   }
 
-  getURL (): string {
+  getURL(): string {
     return "";
   }
 
-  validatePage (): void {
+  validatePage(): void {
     // Does not need to be implemented
   }
 
-  protected doVisit (): void {
+  protected doVisit(): void {
     this.elements.logo()
       .click();
   }

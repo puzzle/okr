@@ -16,14 +16,14 @@ export class KeyresultComponent {
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
-  constructor (private router: Router) {}
+  constructor(private router: Router) {}
 
-  openDrawer () {
+  openDrawer() {
     this.router.navigate(["details/keyresult",
       this.keyResult.id]);
   }
 
-  getKeyResultWithCorrectType (): KeyResultOrdinalMin | KeyResultMetricMin {
+  getKeyResultWithCorrectType(): KeyResultOrdinalMin | KeyResultMetricMin {
     if (this.keyResult.keyResultType === "metric") {
       return this.keyResult as KeyResultMetricMin;
     } else {

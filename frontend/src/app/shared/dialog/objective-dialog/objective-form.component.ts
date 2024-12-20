@@ -66,7 +66,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor (
+  constructor(
     private route: ActivatedRoute,
     private teamService: TeamService,
     private quarterService: QuarterService,
@@ -85,7 +85,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  onSubmit (submitType: any): void {
+  onSubmit(submitType: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = this.data.objective.objectiveId == null ? submitType : this.state;
     const objectiveDTO: Objective = {
@@ -104,7 +104,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.teams$ = this.teamService.getAllTeams()
       .pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
@@ -134,7 +134,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  private handleDataInitialization (
+  private handleDataInitialization(
     objective: Objective,
     quarters: Quarter[],
     currentQuarter: Quarter,
@@ -174,12 +174,12 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  getSubmitFunction (id: number | undefined, objectiveDTO: any): Observable<Objective> {
+  getSubmitFunction(id: number | undefined, objectiveDTO: any): Observable<Objective> {
     if (this.data.action == "duplicate" && id) {
       objectiveDTO.id = null;
       objectiveDTO.state = "DRAFT" as State;
@@ -202,7 +202,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteObjective () {
+  deleteObjective() {
     const dialog = this.dialogService.openConfirmDialog("CONFIRMATION.DELETE.OBJECTIVE");
     dialog.afterClosed()
       .subscribe((result) => {
@@ -221,14 +221,14 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  objectiveToObjectiveMin (objectiveDto: Objective): ObjectiveMin {
+  objectiveToObjectiveMin(objectiveDto: Objective): ObjectiveMin {
     return {
       ...objectiveDto,
       state: State[objectiveDto.state as string as keyof typeof State]
     } as unknown as ObjectiveMin;
   }
 
-  closeDialog (objectiveDTO: Objective, willDelete = false, addKeyResult = false) {
+  closeDialog(objectiveDTO: Objective, willDelete = false, addKeyResult = false) {
     const value = this.objectiveForm.getRawValue();
     const objectiveMin: ObjectiveMin = this.objectiveToObjectiveMin(objectiveDTO);
     this.dialogRef.close({
@@ -239,14 +239,14 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  getErrorMessage (
+  getErrorMessage(
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
     return field + this.translate.instant("DIALOG_ERRORS." + error)
       .format(firstNumber, secondNumber);
   }
 
-  getDefaultObjective () {
+  getDefaultObjective() {
     return {
       id: 0,
       title: "",
@@ -257,7 +257,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     } as Objective;
   }
 
-  allowedToSaveBacklog () {
+  allowedToSaveBacklog() {
     const currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == this.objectiveForm.value.quarter);
     if (currentQuarter) {
       const isBacklogCurrent = !this.isBacklogQuarter(currentQuarter.label);
@@ -272,7 +272,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  allowedOption (quarter: Quarter) {
+  allowedOption(quarter: Quarter) {
     if (quarter.label == "Backlog") {
       if (this.data.action == "duplicate") {
         return true;
@@ -288,11 +288,11 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  isBacklogQuarter (label: string) {
+  isBacklogQuarter(label: string) {
     return GJ_REGEX_PATTERN.test(label);
   }
 
-  getDialogTitle (teamName: string): string {
+  getDialogTitle(teamName: string): string {
     if (this.data.action === "duplicate") {
       return `Objective von ${teamName} duplizieren`;
     }

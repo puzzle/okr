@@ -20,7 +20,7 @@ describe("TeamListComponent", () => {
     })
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [TeamListComponent],
       providers: [{ provide: TeamService,

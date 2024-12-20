@@ -16,11 +16,11 @@ import { ToasterType } from "../shared/types/enums/ToasterType";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor (private router: Router,
+  constructor(private router: Router,
     private toasterService: ToasterService,
     private translate: TranslateService) {}
 
-  intercept (request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)
       .pipe(filter((event) => event instanceof HttpResponse), tap((response) => {
         if (this.checkForToaster(response)) {
@@ -36,20 +36,20 @@ export class ErrorInterceptor implements HttpInterceptor {
       }));
   }
 
-  handleErrorToaster (response: any) {
+  handleErrorToaster(response: any) {
     const errors = response.error.errors.map((error: any) => this.translate.instant(ERROR_MESSAGE_KEY_PREFIX + error.errorKey)
       .format(error.params));
 
     errors.forEach((error: string) => this.toasterService.showError(error));
   }
 
-  handleDrawerError (request: any) {
+  handleDrawerError(request: any) {
     if (DRAWER_ROUTES.some((route) => request.url.includes(route))) {
       this.router.navigate([""]);
     }
   }
 
-  handleSuccessToaster (response: any, method: HttpType) {
+  handleSuccessToaster(response: any, method: HttpType) {
     const successMessageObj = this.getSuccessMessageKey(response.url, response.status, method);
     if (!successMessageObj) return;
 
@@ -62,7 +62,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 
-  getSuccessMessageKey (url: string, statusCode: number, method: HttpType) {
+  getSuccessMessageKey(url: string, statusCode: number, method: HttpType) {
     for (const key in SUCCESS_MESSAGE_MAP) {
       const value = SUCCESS_MESSAGE_MAP[key];
       if (!url.includes(key)) continue;
@@ -85,7 +85,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return undefined;
   }
 
-  checkForToaster (response: any): boolean {
+  checkForToaster(response: any): boolean {
     const requestURL = new URL(response.url);
     return window.location.hostname == requestURL.hostname && requestURL.pathname.startsWith("/api");
   }

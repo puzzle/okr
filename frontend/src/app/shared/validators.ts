@@ -13,7 +13,7 @@ import { NUMBER_REGEX, PERCENT_REGEX } from "./regexLibrary";
 export class UnitValueValidator implements Validator {
   @Input("unitValueValidator") unit: string | null = "";
 
-  validate (control: AbstractControl): ValidationErrors | null {
+  validate(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value;
     switch (this.unit) {
       case "PERCENT": {
@@ -34,13 +34,13 @@ export class UnitValueValidator implements Validator {
     }
   }
 
-  proceedRegex (value: string, regex: string) {
+  proceedRegex(value: string, regex: string) {
     return String(value)
       .match(regex) ? null : { valid: false };
   }
 }
 
-export function comparisonValidator (secondControl: AbstractControl): ValidatorFn {
+export function comparisonValidator(secondControl: AbstractControl): ValidatorFn {
   return (firstControl: AbstractControl): ValidationErrors | null => {
     return firstControl.value == secondControl.value ? { valid: false } : null;
   };

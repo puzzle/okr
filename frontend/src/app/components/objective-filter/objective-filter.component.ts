@@ -14,20 +14,20 @@ export class ObjectiveFilterComponent implements OnInit {
 
   query = "";
 
-  constructor (private router: Router,
+  constructor(private router: Router,
     private route: ActivatedRoute) {
     this.refresh.pipe(debounceTime(300))
       .subscribe(() => this.updateURL());
   }
 
-  updateURL () {
+  updateURL() {
     const sanitizedQuery = sanitize(this.query);
     const params = { objectiveQuery: sanitizedQuery };
     const optionalParams = optionalReplaceWithNulls(params);
     this.router.navigate([], { queryParams: optionalParams });
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.route.queryParams.pipe(map((p) => p["objectiveQuery"]))
       .subscribe((query) => {
         const objectiveQuery = getQueryString(query);

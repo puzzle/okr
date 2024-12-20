@@ -96,7 +96,7 @@ describe("ApplicationTopBarComponent", () => {
       .toBe("Bob Baumeister");
   });
 
-  it("logout function should get called on button click", async () => {
+  it("logout function should get called on button click", async() => {
     routerMock.navigateByUrl.mockReturnValue(of()
       .toPromise());
     const harness = await loader.getHarness(MatMenuHarness);

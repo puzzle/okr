@@ -1,15 +1,15 @@
 export abstract class PageObjectMapperBase {
-  abstract validatePage (): void;
+  abstract validatePage(): void;
 
   static do<T extends PageObjectMapperBase>(this: new () => T): T {
     return new this();
   }
 
-  run (arg: any) {
+  run(arg: any) {
     return this;
   }
 
-  checkForToaster (content: any, type: "success" | "error") {
+  checkForToaster(content: any, type: "success" | "error") {
     cy.get("#toast-container")
       .find(`.toast-${type}`)
       .contains(content)
@@ -17,7 +17,7 @@ export abstract class PageObjectMapperBase {
     return this;
   }
 
-  validateUrlParameter (key: string, value: any[]) {
+  validateUrlParameter(key: string, value: any[]) {
     cy.url()
       .then((url) => {
         const params = new URL(url).searchParams;

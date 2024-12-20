@@ -29,7 +29,7 @@ export class ObjectiveComponent {
 
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger | undefined;
 
-  constructor (
+  constructor(
     private readonly dialogService: DialogService,
     private readonly router: Router,
     private readonly refreshDataService: RefreshDataService,
@@ -37,16 +37,16 @@ export class ObjectiveComponent {
     private readonly objectiveMenuActionsService: ObjectiveMenuActionsService
   ) {}
 
-  @Input() set objective (objective: ObjectiveMin) {
+  @Input() set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
   }
 
-  getStateTooltip (stateString: string): string {
+  getStateTooltip(stateString: string): string {
     const state = this.getStateByValue(stateString);
     return this.translate.instant("INFORMATION.OBJECTIVE_STATE_TOOLTIP", { state: state });
   }
 
-  redirect (menuEntry: ObjectiveMenuEntry, objectiveMin: ObjectiveMin) {
+  redirect(menuEntry: ObjectiveMenuEntry, objectiveMin: ObjectiveMin) {
     const matDialogRef = menuEntry.action();
     matDialogRef
       .afterClosed()
@@ -59,12 +59,12 @@ export class ObjectiveComponent {
       });
   }
 
-  openObjectiveDetail (objectiveId: number) {
+  openObjectiveDetail(objectiveId: number) {
     this.router.navigate(["details/objective",
       objectiveId]);
   }
 
-  openAddKeyResultDialog (objective: ObjectiveMin) {
+  openAddKeyResultDialog(objective: ObjectiveMin) {
     this.dialogService
       .open(KeyresultDialogComponent, {
         data: {
@@ -81,11 +81,11 @@ export class ObjectiveComponent {
       });
   }
 
-  isObjectiveComplete (objective: ObjectiveMin): boolean {
+  isObjectiveComplete(objective: ObjectiveMin): boolean {
     return objective.state == State.SUCCESSFUL || objective.state == State.NOTSUCCESSFUL;
   }
 
-  getStateByValue (value: string): string {
+  getStateByValue(value: string): string {
     return Object.keys(State)
       .find((key) => State[key as keyof typeof State] === value) ?? "";
   }

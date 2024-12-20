@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { KeyresultComponent } from './keyresult.component';
-import { keyResultMetricMin } from '../../shared/testData';
-import { MatDialogModule } from '@angular/material/dialog';
-import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
-import { ConfidenceComponent } from '../confidence/confidence.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { KeyresultComponent } from "./keyresult.component";
+import { keyResultMetricMin } from "../../shared/testData";
+import { MatDialogModule } from "@angular/material/dialog";
+import { ScoringComponent } from "../../shared/custom/scoring/scoring.component";
+import { ConfidenceComponent } from "../confidence/confidence.component";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
-describe('KeyresultComponent', () => {
+describe("KeyresultComponent", () => {
   let component: KeyresultComponent;
   let fixture: ComponentFixture<KeyresultComponent>;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [KeyresultComponent,
         ScoringComponent,
@@ -26,7 +26,7 @@ describe('KeyresultComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component)
       .toBeTruthy();
   });

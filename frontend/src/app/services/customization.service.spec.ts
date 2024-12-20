@@ -1,43 +1,43 @@
-import { CustomizationService } from './customization.service';
-import { BehaviorSubject } from 'rxjs';
-import { ClientConfig } from '../shared/types/model/ClientConfig';
-import { ConfigService } from './config.service';
+import { CustomizationService } from "./customization.service";
+import { BehaviorSubject } from "rxjs";
+import { ClientConfig } from "../shared/types/model/ClientConfig";
+import { ConfigService } from "./config.service";
 
 class CallRecorder {
   private calls: Record<string, any[]> = {};
 
-  public add(key: string, value: any): void {
+  public add (key: string, value: any): void {
     if (!this.calls[key]) {
       this.calls[key] = [];
     }
     this.calls[key].push(value);
   }
 
-  public getCallByIdx(key: string, index = 0): any[] {
+  public getCallByIdx (key: string, index = 0): any[] {
     return this.calls[key][index];
   }
 
-  public getCallCount(key: string): number {
+  public getCallCount (key: string): number {
     return this.calls[key]?.length ?? 0;
   }
 
-  public clear(): void {
+  public clear (): void {
     this.calls = {};
   }
 }
 
-describe('CustomizationService', () => {
+describe("CustomizationService", () => {
   const body: ClientConfig = {
-    activeProfile: 'test',
-    issuer: 'some-issuer.com',
-    clientId: 'my-client-id',
-    title: 'title',
-    favicon: 'favicon',
-    logo: 'logo',
-    triangles: 'triangles',
-    backgroundLogo: 'backgroundLogo',
-    helpSiteUrl: 'https://wiki.puzzle.ch/Puzzle/OKRs',
-    customStyles: { cssVar1: 'foo' }
+    activeProfile: "test",
+    issuer: "some-issuer.com",
+    clientId: "my-client-id",
+    title: "title",
+    favicon: "favicon",
+    logo: "logo",
+    triangles: "triangles",
+    backgroundLogo: "backgroundLogo",
+    helpSiteUrl: "https://wiki.puzzle.ch/Puzzle/OKRs",
+    customStyles: { cssVar1: "foo" }
   };
 
   let service: CustomizationService;
@@ -54,22 +54,22 @@ describe('CustomizationService', () => {
     documentMock = {
       getElementById: (id: string) => {
         return {
-          setAttribute: function() {
+          setAttribute: function () {
             callRecorder.add(`${id}-setAttribute`, arguments);
           }
         } as unknown as HTMLElement;
       },
       querySelector: (selector: string) => {
         return {
-          set innerHTML(value: string) {
+          set innerHTML (value: string) {
             callRecorder.add(`${selector}.innerHTML`, arguments);
           },
-          get style() {
+          get style () {
             return {
-              setProperty: function() {
+              setProperty: function () {
                 callRecorder.add(`${selector}.style.setProperty`, arguments);
               },
-              removeProperty: function() {
+              removeProperty: function () {
                 callRecorder.add(`${selector}.style.removeProperty`, arguments);
               }
             };
@@ -80,7 +80,7 @@ describe('CustomizationService', () => {
     service = new CustomizationService(configServiceMock, documentMock);
   });
 
-  it('should call correct apis when config is ready', () => {
+  it("should call correct apis when config is ready", () => {
     const currentConfig = service.getCurrentConfig();
     expect(currentConfig?.title)
       .toBe(body.title);
@@ -94,42 +94,42 @@ describe('CustomizationService', () => {
       .toBe(body.backgroundLogo);
     expect(currentConfig?.helpSiteUrl)
       .toBe(body.helpSiteUrl);
-    expect(currentConfig?.customStyles['cssVar1'])
-      .toBe(body.customStyles['cssVar1']);
+    expect(currentConfig?.customStyles["cssVar1"])
+      .toBe(body.customStyles["cssVar1"]);
 
-    expect(callRecorder.getCallCount('title.innerHTML'))
+    expect(callRecorder.getCallCount("title.innerHTML"))
       .toBe(1);
-    expect(callRecorder.getCallCount('favicon-setAttribute'))
+    expect(callRecorder.getCallCount("favicon-setAttribute"))
       .toBe(1);
-    expect(callRecorder.getCallCount('html.style.setProperty'))
+    expect(callRecorder.getCallCount("html.style.setProperty"))
       .toBe(1);
-    expect(callRecorder.getCallCount('html.style.removeProperty'))
+    expect(callRecorder.getCallCount("html.style.removeProperty"))
       .toBe(0);
 
-    expect(callRecorder.getCallByIdx('title.innerHTML', 0)[0])
-      .toBe('title');
-    expect(callRecorder.getCallByIdx('favicon-setAttribute', 0)[0])
-      .toBe('href');
-    expect(callRecorder.getCallByIdx('favicon-setAttribute', 0)[1])
-      .toBe('favicon');
-    expect(callRecorder.getCallByIdx('html.style.setProperty', 0)[0])
-      .toBe('--cssVar1');
-    expect(callRecorder.getCallByIdx('html.style.setProperty', 0)[1])
-      .toBe('foo');
+    expect(callRecorder.getCallByIdx("title.innerHTML", 0)[0])
+      .toBe("title");
+    expect(callRecorder.getCallByIdx("favicon-setAttribute", 0)[0])
+      .toBe("href");
+    expect(callRecorder.getCallByIdx("favicon-setAttribute", 0)[1])
+      .toBe("favicon");
+    expect(callRecorder.getCallByIdx("html.style.setProperty", 0)[0])
+      .toBe("--cssVar1");
+    expect(callRecorder.getCallByIdx("html.style.setProperty", 0)[1])
+      .toBe("foo");
   });
 
-  it('should update if config changed afterwards', () => {
+  it("should update if config changed afterwards", () => {
     const bodySecond = {
-      activeProfile: 'test-second',
-      issuer: 'some-issuer.com-second',
-      clientId: 'my-client-id-second',
-      title: 'title-second',
-      favicon: 'favicon-second',
-      logo: 'logo-second',
-      triangles: 'triangles-second',
-      backgroundLogo: 'backgroundLogo-second',
-      helpSiteUrl: 'https://wiki.puzzle.ch/Puzzle/OKRs',
-      customStyles: { cssVarNew: 'bar' }
+      activeProfile: "test-second",
+      issuer: "some-issuer.com-second",
+      clientId: "my-client-id-second",
+      title: "title-second",
+      favicon: "favicon-second",
+      logo: "logo-second",
+      triangles: "triangles-second",
+      backgroundLogo: "backgroundLogo-second",
+      helpSiteUrl: "https://wiki.puzzle.ch/Puzzle/OKRs",
+      customStyles: { cssVarNew: "bar" }
     };
     configSubject.next(bodySecond);
 
@@ -146,29 +146,29 @@ describe('CustomizationService', () => {
       .toBe(bodySecond.backgroundLogo);
     expect(currentConfig?.helpSiteUrl)
       .toBe(bodySecond.helpSiteUrl);
-    expect(currentConfig?.customStyles['cssVarNew'])
-      .toBe(bodySecond.customStyles['cssVarNew']);
-    expect(currentConfig?.customStyles['cssVar1'])
+    expect(currentConfig?.customStyles["cssVarNew"])
+      .toBe(bodySecond.customStyles["cssVarNew"]);
+    expect(currentConfig?.customStyles["cssVar1"])
       .toBe(undefined);
 
-    expect(callRecorder.getCallCount('title.innerHTML'))
+    expect(callRecorder.getCallCount("title.innerHTML"))
       .toBe(2);
-    expect(callRecorder.getCallCount('favicon-setAttribute'))
+    expect(callRecorder.getCallCount("favicon-setAttribute"))
       .toBe(2);
-    expect(callRecorder.getCallCount('html.style.setProperty'))
+    expect(callRecorder.getCallCount("html.style.setProperty"))
       .toBe(2);
-    expect(callRecorder.getCallCount('html.style.removeProperty'))
+    expect(callRecorder.getCallCount("html.style.removeProperty"))
       .toBe(1);
 
-    expect(callRecorder.getCallByIdx('title.innerHTML', 1)[0])
-      .toBe('title-second');
-    expect(callRecorder.getCallByIdx('favicon-setAttribute', 1)[0])
-      .toBe('href');
-    expect(callRecorder.getCallByIdx('favicon-setAttribute', 1)[1])
-      .toBe('favicon-second');
-    expect(callRecorder.getCallByIdx('html.style.setProperty', 1)[0])
-      .toBe('--cssVarNew');
-    expect(callRecorder.getCallByIdx('html.style.setProperty', 1)[1])
-      .toBe('bar');
+    expect(callRecorder.getCallByIdx("title.innerHTML", 1)[0])
+      .toBe("title-second");
+    expect(callRecorder.getCallByIdx("favicon-setAttribute", 1)[0])
+      .toBe("href");
+    expect(callRecorder.getCallByIdx("favicon-setAttribute", 1)[1])
+      .toBe("favicon-second");
+    expect(callRecorder.getCallByIdx("html.style.setProperty", 1)[0])
+      .toBe("--cssVarNew");
+    expect(callRecorder.getCallByIdx("html.style.setProperty", 1)[1])
+      .toBe("bar");
   });
 });

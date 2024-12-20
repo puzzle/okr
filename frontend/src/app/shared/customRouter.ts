@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { NavigationExtras, Router } from "@angular/router";
 
 @Injectable()
 export class CustomRouter extends Router {
-  constructor() {
+  constructor () {
     super();
   }
 
-  override navigate(commands: any[], extras?: NavigationExtras | undefined): Promise<boolean> {
+  override navigate (commands: any[], extras?: NavigationExtras | undefined): Promise<boolean> {
     const customExtras = { ...extras,
-      queryParamsHandling: 'merge' } as NavigationExtras;
+      queryParamsHandling: "merge" } as NavigationExtras;
     return super.navigate(commands, customExtras);
   }
 }

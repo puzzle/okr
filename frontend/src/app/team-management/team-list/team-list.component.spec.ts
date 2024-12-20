@@ -1,14 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { TeamService } from '../../services/team.service';
-import { TeamListComponent } from './team-list.component';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { of } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
+import { TeamService } from "../../services/team.service";
+import { TeamListComponent } from "./team-list.component";
 
-describe('TeamListComponent', () => {
+describe("TeamListComponent", () => {
   let component: TeamListComponent;
   let fixture: ComponentFixture<TeamListComponent>;
-  let teamService: TeamService;
-  let route: ActivatedRoute;
   const paramTeamId = 1;
 
   const teamServiceMock = {
@@ -22,7 +20,7 @@ describe('TeamListComponent', () => {
     })
   };
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TeamListComponent],
       providers: [{ provide: TeamService,
@@ -36,23 +34,21 @@ describe('TeamListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TeamListComponent);
     component = fixture.componentInstance;
-    teamService = TestBed.inject(TeamService);
-    route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component)
       .toBeTruthy();
   });
 
-  it('should set selected teamid', () => {
+  it("should set selected teamid", () => {
     component.ngOnInit();
     expect(component.selectedTeamId)
       .toBe(paramTeamId);
   });
 
-  it('should set selected teamid', () => {
+  it("should set selected teamid", () => {
     activatedRouteMock.paramMap = of({
       get: () => undefined
     });

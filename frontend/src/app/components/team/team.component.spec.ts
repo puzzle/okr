@@ -1,25 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TeamComponent } from './team.component';
-import { MatIcon } from '@angular/material/icon';
-import { overViewEntity1, overViewEntity2 } from '../../shared/testData';
-import { ObjectiveComponent } from '../objective/objective.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MatMenuModule } from '@angular/material/menu';
-import { KeyresultComponent } from '../keyresult/keyresult.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { By } from '@angular/platform-browser';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { TranslateTestingModule } from 'ngx-translate-testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { TeamComponent } from "./team.component";
+import { MatIcon } from "@angular/material/icon";
+import { overViewEntity1, overViewEntity2 } from "../../shared/testData";
+import { ObjectiveComponent } from "../objective/objective.component";
+import { RouterTestingModule } from "@angular/router/testing";
+import { MatMenuModule } from "@angular/material/menu";
+import { KeyresultComponent } from "../keyresult/keyresult.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { By } from "@angular/platform-browser";
+import { RefreshDataService } from "../../services/refresh-data.service";
+import { TranslateTestingModule } from "ngx-translate-testing";
 // @ts-ignore
-import * as de from '../../../assets/i18n/de.json';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { ConfidenceComponent } from '../confidence/confidence.component';
-import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { DialogService } from '../../services/dialog.service';
-import { ConfigService } from '../../services/config.service';
-import { of } from 'rxjs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import * as de from "../../../assets/i18n/de.json";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { ConfidenceComponent } from "../confidence/confidence.component";
+import { ScoringComponent } from "../../shared/custom/scoring/scoring.component";
+import { ChangeDetectionStrategy } from "@angular/core";
+import { DialogService } from "../../services/dialog.service";
+import { ConfigService } from "../../services/config.service";
+import { of } from "rxjs";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 const dialogService = {
   open: jest.fn()
@@ -28,7 +28,7 @@ const dialogService = {
 const configServiceDefined = {
   config$: of({
     customStyles: {
-      'okr-add-objective-icon': 'new-icon-from-config-service.svg'
+      "okr-add-objective-icon": "new-icon-from-config-service.svg"
     }
   })
 };
@@ -36,7 +36,7 @@ const configServiceDefined = {
 const configServiceUndefined = {
   config$: of({
     customStyles: {
-      'okr-add-objective-icon': undefined
+      "okr-add-objective-icon": undefined
     }
   })
 };
@@ -45,11 +45,11 @@ const refreshDataServiceMock = {
   markDataRefresh: jest.fn()
 };
 
-describe('TeamComponent', () => {
+describe("TeamComponent", () => {
   let component: TeamComponent;
   let fixture: ComponentFixture<TeamComponent>;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -95,42 +95,42 @@ describe('TeamComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     fixture.detectChanges();
     expect(component)
       .toBeTruthy();
   });
 
-  it('should display add objective button if writeable is true', async() => {
+  it("should display add objective button if writeable is true", async () => {
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
+    const button = fixture.debugElement.query(By.css("[data-testId=\"add-objective\"]"));
     expect(button)
       .toBeTruthy();
   });
 
-  it('should not display add objective button if writeable is false', () => {
+  it("should not display add objective button if writeable is false", () => {
     component.overviewEntity = { ...overViewEntity2 };
     component.overviewEntity.writeable = false;
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
+    const button = fixture.debugElement.query(By.css("[data-testId=\"add-objective\"]"));
     expect(button)
       .toBeFalsy();
   });
 
-  it('should set value of addIconSrc if src from config service is defined', () => {
+  it("should set value of addIconSrc if src from config service is defined", () => {
     expect(component.addIconSrc.value)
-      .toBe('new-icon-from-config-service.svg');
-    const addObjectiveIcon = fixture.debugElement.query(By.css('[data-testId="add-objective-icon"]'));
-    expect(addObjectiveIcon.attributes['src'])
-      .toBe('new-icon-from-config-service.svg');
+      .toBe("new-icon-from-config-service.svg");
+    const addObjectiveIcon = fixture.debugElement.query(By.css("[data-testId=\"add-objective-icon\"]"));
+    expect(addObjectiveIcon.attributes["src"])
+      .toBe("new-icon-from-config-service.svg");
   });
 });
 
-describe('TeamComponent undefined values in config service', () => {
+describe("TeamComponent undefined values in config service", () => {
   let component: TeamComponent;
   let fixture: ComponentFixture<TeamComponent>;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatMenuModule,
         TranslateTestingModule.withTranslations({
@@ -154,11 +154,11 @@ describe('TeamComponent undefined values in config service', () => {
     fixture.detectChanges();
   });
 
-  it('should keep default value of addIconSrc if src from config service is undefined', () => {
+  it("should keep default value of addIconSrc if src from config service is undefined", () => {
     expect(component.addIconSrc.value)
-      .toBe('assets/icons/new-icon.svg');
-    const addObjectiveIcon = fixture.debugElement.query(By.css('[data-testId="add-objective-icon"]'));
-    expect(addObjectiveIcon.attributes['src'])
-      .toBe('assets/icons/new-icon.svg');
+      .toBe("assets/icons/new-icon.svg");
+    const addObjectiveIcon = fixture.debugElement.query(By.css("[data-testId=\"add-objective-icon\"]"));
+    expect(addObjectiveIcon.attributes["src"])
+      .toBe("assets/icons/new-icon.svg");
   });
 });

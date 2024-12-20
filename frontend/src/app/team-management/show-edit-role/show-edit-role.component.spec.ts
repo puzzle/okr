@@ -1,16 +1,16 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
 
-import { ShowEditRoleComponent } from './show-edit-role.component';
-import { testUser } from '../../shared/testData';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import * as de from '../../../assets/i18n/de.json';
+import { ShowEditRoleComponent } from "./show-edit-role.component";
+import { testUser } from "../../shared/testData";
+import { TranslateTestingModule } from "ngx-translate-testing";
+import * as de from "../../../assets/i18n/de.json";
 
-describe('ShowEditRoleComponent', () => {
+describe("ShowEditRoleComponent", () => {
   let component: ShowEditRoleComponent;
   let fixture: ComponentFixture<ShowEditRoleComponent>;
   const userTeam = { ...testUser.userTeamList[0] };
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ShowEditRoleComponent],
       imports: [TranslateTestingModule.withTranslations({ de: de })]
@@ -25,19 +25,19 @@ describe('ShowEditRoleComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component)
       .toBeTruthy();
   });
 
-  it('saveIsAdmin should set edit to false', () => {
+  it("saveIsAdmin should set edit to false", () => {
     component.edit = true;
     component.saveIsAdmin(true);
     expect(component.edit)
       .toBeFalsy();
   });
 
-  it('setEditAsync should set edit to given value', fakeAsync(() => {
+  it("setEditAsync should set edit to given value", fakeAsync(() => {
     component.edit = false;
     const mouseEvent = {
       stopPropagation: () => undefined

@@ -1,27 +1,27 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { MemberDetailComponent } from './member-detail.component';
-import { ActivatedRoute, provideRouter } from '@angular/router';
-import { delay, of } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { SharedModule } from '../../shared/shared.module';
-import { UserService } from '../../services/user.service';
-import { testUser } from '../../shared/testData';
-import { AddUserTeamComponent } from '../add-user-team/add-user-team.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { TeamService } from '../../services/team.service';
-import { ShowEditRoleComponent } from '../show-edit-role/show-edit-role.component';
-import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
-import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
-import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { DialogService } from '../../services/dialog.service';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
+import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { MemberDetailComponent } from "./member-detail.component";
+import { ActivatedRoute, provideRouter } from "@angular/router";
+import { delay, of } from "rxjs";
+import { TranslateModule } from "@ngx-translate/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { SharedModule } from "../../shared/shared.module";
+import { UserService } from "../../services/user.service";
+import { testUser } from "../../shared/testData";
+import { AddUserTeamComponent } from "../add-user-team/add-user-team.component";
+import { MatTableModule } from "@angular/material/table";
+import { MatIconModule } from "@angular/material/icon";
+import { TeamService } from "../../services/team.service";
+import { ShowEditRoleComponent } from "../show-edit-role/show-edit-role.component";
+import { PuzzleIconButtonComponent } from "../../shared/custom/puzzle-icon-button/puzzle-icon-button.component";
+import { PuzzleIconComponent } from "../../shared/custom/puzzle-icon/puzzle-icon.component";
+import { CommonModule } from "@angular/common";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { DialogService } from "../../services/dialog.service";
+import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { DialogTemplateCoreComponent } from "../../shared/custom/dialog-template-core/dialog-template-core.component";
 
-describe('MemberDetailComponent', () => {
+describe("MemberDetailComponent", () => {
   let component: MemberDetailComponent;
   let fixture: ComponentFixture<MemberDetailComponent>;
 
@@ -49,7 +49,7 @@ describe('MemberDetailComponent', () => {
     openConfirmDialog: jest.fn()
   };
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         MemberDetailComponent,
@@ -104,12 +104,12 @@ describe('MemberDetailComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReset();
   });
 
-  it('should create the component', () => {
+  it("should create the component", () => {
     expect(component)
       .toBeTruthy();
   });
 
-  it('should set selectedUserIsLoggedInUser and currentUserTeams correctly', (done) => {
+  it("should set selectedUserIsLoggedInUser and currentUserTeams correctly", (done) => {
     component.ngOnInit();
     component.currentUserTeams$.subscribe((userTeams) => {
       expect(userTeams)
@@ -122,7 +122,7 @@ describe('MemberDetailComponent', () => {
     });
   });
 
-  it('removeUserFromTeam should call removeUserFromTeam and loadUser', fakeAsync(() => {
+  it("removeUserFromTeam should call removeUserFromTeam and loadUser", fakeAsync(() => {
     const user = testUser;
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
@@ -142,7 +142,7 @@ describe('MemberDetailComponent', () => {
       .toHaveBeenCalledWith(user.id);
   }));
 
-  it('removeUserFromTeam should not call removeUserFromTeam if dialog canceled', fakeAsync(() => {
+  it("removeUserFromTeam should not call removeUserFromTeam if dialog canceled", fakeAsync(() => {
     const user = testUser;
     const userTeam = testUser.userTeamList[0];
     teamServiceMock.removeUserFromTeam.mockReturnValue(of());
@@ -158,7 +158,7 @@ describe('MemberDetailComponent', () => {
       .toHaveBeenCalledTimes(0);
   }));
 
-  it('addTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null', fakeAsync(() => {
+  it("addTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null", fakeAsync(() => {
     const user = testUser;
     const userTeam = testUser.userTeamList[0];
 
@@ -176,7 +176,7 @@ describe('MemberDetailComponent', () => {
       .toHaveBeenCalledWith(user.id);
   }));
 
-  it('updateTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null', fakeAsync(() => {
+  it("updateTeamRole should call updateOrAddTeamMembership, loadUser, reloadUsers and set userTeamEditId to null", fakeAsync(() => {
     const user = testUser;
     const userTeam = testUser.userTeamList[0];
 
@@ -194,7 +194,7 @@ describe('MemberDetailComponent', () => {
       .toHaveBeenCalledWith(user.id);
   }));
 
-  it('updateTeamRole should set isAdmin only after successfull request', fakeAsync(() => {
+  it("updateTeamRole should set isAdmin only after successfull request", fakeAsync(() => {
     const user = testUser;
     const userTeam = { ...testUser.userTeamList[0] };
     userTeam.isTeamAdmin = false;

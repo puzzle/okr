@@ -1,10 +1,10 @@
-import { UniqueEmailValidator } from './unique-mail.validator';
-import { users } from '../../shared/testData';
-import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { AbstractControl } from '@angular/forms';
+import { UniqueEmailValidator } from "./unique-mail.validator";
+import { users } from "../../shared/testData";
+import { TestBed } from "@angular/core/testing";
+import { of } from "rxjs";
+import { AbstractControl } from "@angular/forms";
 
-describe('UniqueMailDirective', () => {
+describe("UniqueMailDirective", () => {
   const userServiceMock = {
     getUsers: jest.fn()
   } as any;
@@ -13,7 +13,7 @@ describe('UniqueMailDirective', () => {
     userServiceMock.getUsers.mockReturnValue(of(users));
   });
 
-  it('should create an instance', () => {
+  it("should create an instance", () => {
     TestBed.runInInjectionContext(() => {
       const directive = new UniqueEmailValidator(userServiceMock);
       expect(directive)
@@ -21,7 +21,7 @@ describe('UniqueMailDirective', () => {
     });
   });
 
-  it('should return validationError if user exists, otherwise null', () => {
+  it("should return validationError if user exists, otherwise null", () => {
     TestBed.runInInjectionContext(() => {
       const directive = new UniqueEmailValidator(userServiceMock);
 
@@ -29,7 +29,7 @@ describe('UniqueMailDirective', () => {
       expect(directive.validate(control))
         .toStrictEqual({ notUniqueMail: { value: users[0].email } });
 
-      const notExistingMail = 'notexistinguser@test.com';
+      const notExistingMail = "notexistinguser@test.com";
       control = { value: notExistingMail } as AbstractControl;
       expect(directive.validate(control))
         .toStrictEqual(null);

@@ -1,14 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddUserTeamComponent } from './add-user-team.component';
-import { TeamService } from '../../services/team.service';
-import { team1, team2, team3, testUser } from '../../shared/testData';
-import { of } from 'rxjs';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { AddUserTeamComponent } from "./add-user-team.component";
+import { TeamService } from "../../services/team.service";
+import { team1, team2, team3, testUser } from "../../shared/testData";
+import { of } from "rxjs";
 
-describe('AddUserTeamComponent', () => {
+describe("AddUserTeamComponent", () => {
   let component: AddUserTeamComponent;
   let fixture: ComponentFixture<AddUserTeamComponent>;
-  let teamService: TeamService;
-
   const team1Copy = { ...team1 };
   const team2Copy = { ...team2 };
   const team3Copy = { ...team3 };
@@ -17,7 +15,7 @@ describe('AddUserTeamComponent', () => {
     getAllTeams: jest.fn()
   };
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AddUserTeamComponent],
       providers: [{ provide: TeamService,
@@ -29,7 +27,6 @@ describe('AddUserTeamComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddUserTeamComponent);
     component = fixture.componentInstance;
-    teamService = TestBed.inject(TeamService);
 
     teamServiceMock.getAllTeams.mockReturnValue(of([team1Copy,
       team2Copy,
@@ -39,12 +36,12 @@ describe('AddUserTeamComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component', () => {
+  it("should create the component", () => {
     expect(component)
       .toBeTruthy();
   });
 
-  it('should filter selectableAdminTeams correctly', (done) => {
+  it("should filter selectableAdminTeams correctly", (done) => {
     team1Copy.writeable = true;
     team2Copy.writeable = true;
     team3Copy.writeable = false;
@@ -58,7 +55,7 @@ describe('AddUserTeamComponent', () => {
     });
   });
 
-  it('should filter allAdminTeams correctly', (done) => {
+  it("should filter allAdminTeams correctly", (done) => {
     team1Copy.writeable = true;
     team2Copy.writeable = true;
     team3Copy.writeable = false;
@@ -76,7 +73,7 @@ describe('AddUserTeamComponent', () => {
     });
   });
 
-  it('createUserTeam should create the userTeam', () => {
+  it("createUserTeam should create the userTeam", () => {
     component.createUserTeam(team1Copy);
     expect(component.userTeam)
       .toStrictEqual({
@@ -85,12 +82,12 @@ describe('AddUserTeamComponent', () => {
       });
   });
 
-  it('save should throw exception if userTeam is undefined', () => {
+  it("save should throw exception if userTeam is undefined", () => {
     expect(() => component.save())
-      .toThrowError('UserTeam should be defined here');
+      .toThrowError("UserTeam should be defined here");
   });
 
-  it('save should emit addUserTeam event and set userTeam to undefined', (done) => {
+  it("save should emit addUserTeam event and set userTeam to undefined", (done) => {
     component.userTeam = testUser.userTeamList[0];
     component.addUserTeam.subscribe(() => {
       done();
@@ -100,7 +97,7 @@ describe('AddUserTeamComponent', () => {
       .toBe(undefined);
   });
 
-  it('should test showAddButton', () => {
+  it("should test showAddButton", () => {
     component.userTeam = testUser.userTeamList[0];
     expect(component.showAddButton(null))
       .toBeFalsy();
@@ -115,7 +112,7 @@ describe('AddUserTeamComponent', () => {
       .toBeTruthy();
   });
 
-  it('should test addButtonDisabled', () => {
+  it("should test addButtonDisabled", () => {
     expect(component.addButtonDisabled([team1Copy]))
       .toBeFalsy();
     expect(component.addButtonDisabled([]))

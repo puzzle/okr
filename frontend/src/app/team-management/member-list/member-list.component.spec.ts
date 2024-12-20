@@ -1,24 +1,24 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ActivatedRoute, provideRouter, Router } from '@angular/router';
-import { ChangeDetectorRef } from '@angular/core';
-import { of } from 'rxjs';
-import { MemberListComponent } from './member-list.component';
-import { UserService } from '../../services/user.service';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { User } from '../../shared/types/model/User';
-import { team1, team2, team3, testUser, users } from '../../shared/testData';
-import { convertFromUser, convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
-import { UserRole } from '../../shared/types/enums/UserRole';
-import { TeamService } from '../../services/team.service';
-import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
-import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import { MatTableDataSource } from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MemberListTableComponent } from './member-list-table/member-list-table.component';
-import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
-import { DialogService } from '../../services/dialog.service';
-import { provideHttpClient } from '@angular/common/http';
+import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { ActivatedRoute, provideRouter, Router } from "@angular/router";
+import { ChangeDetectorRef } from "@angular/core";
+import { of } from "rxjs";
+import { MemberListComponent } from "./member-list.component";
+import { UserService } from "../../services/user.service";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { User } from "../../shared/types/model/User";
+import { team1, team2, team3, testUser, users } from "../../shared/testData";
+import { convertFromUser, convertFromUsers, UserTableEntry } from "../../shared/types/model/UserTableEntry";
+import { UserRole } from "../../shared/types/enums/UserRole";
+import { TeamService } from "../../services/team.service";
+import { AddMemberToTeamDialogComponent } from "../add-member-to-team-dialog/add-member-to-team-dialog.component";
+import { AddEditTeamDialogComponent } from "../add-edit-team-dialog/add-edit-team-dialog.component";
+import { TranslateTestingModule } from "ngx-translate-testing";
+import { MatTableDataSource } from "@angular/material/table";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MemberListTableComponent } from "./member-list-table/member-list-table.component";
+import { MemberListMobileComponent } from "./member-list-mobile/member-list-mobile.component";
+import { DialogService } from "../../services/dialog.service";
+import { provideHttpClient } from "@angular/common/http";
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -46,7 +46,7 @@ const dialogService = {
   openConfirmDialog: jest.fn()
 };
 
-describe('MemberListComponent', () => {
+describe("MemberListComponent", () => {
   let component: MemberListComponent;
   let fixture: ComponentFixture<MemberListComponent>;
 
@@ -85,7 +85,7 @@ describe('MemberListComponent', () => {
     userServiceMock.reloadCurrentUser.mockReset();
     userServiceMock.reloadUsers.mockReset();
 
-    jest.spyOn(userServiceMock, 'getUsers')
+    jest.spyOn(userServiceMock, "getUsers")
       .mockReturnValue(of([]));
     userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
     userServiceMock.getCurrentUser.mockReturnValue(of(testUser));
@@ -95,12 +95,12 @@ describe('MemberListComponent', () => {
     teamServiceMock.deleteTeam.mockReset();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component)
       .toBeTruthy();
   });
 
-  it('should test method convertFromUser', () => {
+  it("should test method convertFromUser", () => {
     const user: User = { ...testUser };
     let userTableEntry = convertFromUser(user);
 
@@ -142,7 +142,7 @@ describe('MemberListComponent', () => {
       .toStrictEqual(user.userTeamList);
   });
 
-  it('should test method convertFromUsers', () => {
+  it("should test method convertFromUsers", () => {
     const usersCopy: User[] = JSON.parse(JSON.stringify(users));
     usersCopy[0].userTeamList.push({
       id: 1,
@@ -164,8 +164,7 @@ describe('MemberListComponent', () => {
       id: 4,
       team: team1,
       isTeamAdmin: false
-    },
-    {
+    }, {
       id: 5,
       team: team2,
       isTeamAdmin: true
@@ -179,14 +178,14 @@ describe('MemberListComponent', () => {
     // should be sorted
     expect(userTableEntries.map((ut) => ut.firstname))
       .toStrictEqual([
-        'Bob',
-        'Key Result',
-        'Paco',
-        'Robin'
+        "Bob",
+        "Key Result",
+        "Paco",
+        "Robin"
       ]);
   });
 
-  it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
+  it("ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly", fakeAsync(() => {
     userServiceMock.getUsers.mockReturnValue(of(users));
     teamServiceMock.getAllTeams.mockReturnValue(of([team1,
       team2,
@@ -203,7 +202,7 @@ describe('MemberListComponent', () => {
       .toBe(team1.name);
   }));
 
-  it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly if teamIdParam is null', fakeAsync(() => {
+  it("ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly if teamIdParam is null", fakeAsync(() => {
     activatedRouteMock.paramMap = of({
       get: () => null
     });
@@ -221,7 +220,7 @@ describe('MemberListComponent', () => {
     });
   }));
 
-  it('deleteTeam should trigger teamService.deleteTeam and navigate', fakeAsync(() => {
+  it("deleteTeam should trigger teamService.deleteTeam and navigate", fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
     dialogService.openConfirmDialog.mockReturnValue({
@@ -238,7 +237,7 @@ describe('MemberListComponent', () => {
     expect(teamServiceMock.deleteTeam)
       .toBeCalledWith(team.id);
     expect(routerMock.navigateByUrl)
-      .toBeCalledWith('team-management');
+      .toBeCalledWith("team-management");
     expect(routerMock.navigateByUrl)
       .toBeCalledTimes(1);
     expect(userServiceMock.reloadUsers)
@@ -247,7 +246,7 @@ describe('MemberListComponent', () => {
       .toBeCalledTimes(1);
   }));
 
-  it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
+  it("deleteTeam should not trigger teamService.deleteTeam if dialog is canceled", fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
     dialogService.openConfirmDialog.mockReturnValue({
@@ -261,7 +260,7 @@ describe('MemberListComponent', () => {
       .toBeCalledTimes(0);
   }));
 
-  it('addMemberToTeam should open dialog', () => {
+  it("addMemberToTeam should open dialog", () => {
     component.selectedTeam$.next(team1);
     component.dataSource = new MatTableDataSource<UserTableEntry>([]);
     dialogService.open.mockReturnValue({
@@ -270,16 +269,15 @@ describe('MemberListComponent', () => {
     component.addMemberToTeam();
 
     expect(dialogService.open)
-      .toBeCalledWith(AddMemberToTeamDialogComponent,
-        expect.objectContaining({
-          data: {
-            team: team1,
-            currentUsersOfTeam: component.dataSource.filteredData
-          }
-        }));
+      .toBeCalledWith(AddMemberToTeamDialogComponent, expect.objectContaining({
+        data: {
+          team: team1,
+          currentUsersOfTeam: component.dataSource.filteredData
+        }
+      }));
   });
 
-  it('should showAddMemberToTeam if selectedTeam is set and selectedTeam is writable', () => {
+  it("should showAddMemberToTeam if selectedTeam is set and selectedTeam is writable", () => {
     component.selectedTeam$.next(undefined);
     expect(component.showAddMemberToTeam())
       .toBeFalsy();
@@ -293,7 +291,7 @@ describe('MemberListComponent', () => {
       .toBeTruthy();
   });
 
-  it('edit team should open dialog', () => {
+  it("edit team should open dialog", () => {
     component.selectedTeam$.next(team1);
     dialogService.open.mockReturnValue({
       afterClosed: () => of(null)
@@ -301,11 +299,10 @@ describe('MemberListComponent', () => {
     component.editTeam();
 
     expect(dialogService.open)
-      .toBeCalledWith(AddEditTeamDialog,
-        expect.objectContaining({
-          data: {
-            team: team1
-          }
-        }));
+      .toBeCalledWith(AddEditTeamDialogComponent, expect.objectContaining({
+        data: {
+          team: team1
+        }
+      }));
   });
 });

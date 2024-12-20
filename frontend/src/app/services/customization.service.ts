@@ -1,26 +1,26 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { CustomizationConfig, CustomStyles } from '../shared/types/model/ClientConfig';
-import { ConfigService } from './config.service';
+import { Inject, Injectable } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+import { CustomizationConfig, CustomStyles } from "../shared/types/model/ClientConfig";
+import { ConfigService } from "./config.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class CustomizationService {
   private currentConfig?: CustomizationConfig;
 
-  constructor(configService: ConfigService,
+  constructor (configService: ConfigService,
     @Inject(DOCUMENT) private document: Document) {
     configService.config$.subscribe((config) => {
       this.updateCustomizations(config);
     });
   }
 
-  public getCurrentConfig() {
+  public getCurrentConfig () {
     return this.currentConfig;
   }
 
-  private updateCustomizations(config: CustomizationConfig) {
+  private updateCustomizations (config: CustomizationConfig) {
     this.setTitle(config.title);
     this.setFavicon(config.favicon);
     this.setStyleCustomizations(config.customStyles);
@@ -28,7 +28,7 @@ export class CustomizationService {
     this.currentConfig = config;
   }
 
-  private setFavicon(favicon: string) {
+  private setFavicon (favicon: string) {
     if (!favicon || this.currentConfig?.favicon === favicon) {
       return;
     }
@@ -37,11 +37,11 @@ export class CustomizationService {
       return;
     }
 
-    this.document.getElementById('favicon')
-      ?.setAttribute('href', favicon);
+    this.document.getElementById("favicon")
+      ?.setAttribute("href", favicon);
   }
 
-  private setTitle(title: string) {
+  private setTitle (title: string) {
     if (!title || this.currentConfig?.title === title) {
       return;
     }
@@ -50,10 +50,10 @@ export class CustomizationService {
       return;
     }
 
-    this.document.querySelector('title')!.innerHTML = title;
+    (this.document.querySelector("title") as HTMLTitleElement).innerHTML = title;
   }
 
-  private setStyleCustomizations(customStylesMap: CustomStyles) {
+  private setStyleCustomizations (customStylesMap: CustomStyles) {
     if (!customStylesMap || this.areStylesTheSame(customStylesMap)) {
       return;
     }
@@ -62,11 +62,11 @@ export class CustomizationService {
     this.setStyles(customStylesMap);
   }
 
-  private areStylesTheSame(customStylesMap: CustomStyles) {
+  private areStylesTheSame (customStylesMap: CustomStyles) {
     return JSON.stringify(this.currentConfig?.customStyles) === JSON.stringify(customStylesMap);
   }
 
-  private setStyles(customStylesMap: CustomStyles | undefined) {
+  private setStyles (customStylesMap: CustomStyles | undefined) {
     if (!customStylesMap) {
       return;
     }
@@ -75,7 +75,7 @@ export class CustomizationService {
       return;
     }
 
-    const styles = this.document.querySelector('html')!.style;
+    const styles = (this.document.querySelector("html") as HTMLHtmlElement).style;
     if (!styles) {
       return;
     }
@@ -87,12 +87,12 @@ export class CustomizationService {
       });
   }
 
-  private removeStyles(customStylesMap: CustomStyles | undefined) {
+  private removeStyles (customStylesMap: CustomStyles | undefined) {
     if (!customStylesMap) {
       return;
     }
 
-    const styles = this.document.querySelector('html')!.style;
+    const styles = (this.document.querySelector("html") as HTMLHtmlElement).style;
     if (!styles) {
       return;
     }

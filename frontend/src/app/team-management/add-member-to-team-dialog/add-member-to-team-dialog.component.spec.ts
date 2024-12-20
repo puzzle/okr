@@ -1,17 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserService } from '../../services/user.service';
-import { TeamService } from '../../services/team.service';
-import { AddMemberToTeamDialogComponent } from './add-member-to-team-dialog.component';
-import { SharedModule } from '../../shared/shared.module';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { team1, users } from '../../shared/testData';
-import { BehaviorSubject, of, skip } from 'rxjs';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { User } from '../../shared/types/model/User';
-import { MatTable } from '@angular/material/table';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { UserService } from "../../services/user.service";
+import { TeamService } from "../../services/team.service";
+import { AddMemberToTeamDialogComponent } from "./add-member-to-team-dialog.component";
+import { SharedModule } from "../../shared/shared.module";
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
+import { team1, users } from "../../shared/testData";
+import { BehaviorSubject, of, skip } from "rxjs";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { User } from "../../shared/types/model/User";
+import { MatTable } from "@angular/material/table";
 
-describe('AddMemberToTeamDialogComponent', () => {
+describe("AddMemberToTeamDialogComponent", () => {
   let component: AddMemberToTeamDialogComponent;
   let fixture: ComponentFixture<AddMemberToTeamDialogComponent>;
 
@@ -26,7 +26,7 @@ describe('AddMemberToTeamDialogComponent', () => {
 
   const matDialogRefMock = {};
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AddMemberToTeamDialogComponent],
       imports: [
@@ -65,12 +65,12 @@ describe('AddMemberToTeamDialogComponent', () => {
     component.selectedUsers$ = new BehaviorSubject<User[]>([]);
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component)
       .toBeTruthy();
   });
 
-  it('should set allPossibleUsers correctly', () => {
+  it("should set allPossibleUsers correctly", () => {
     component.ngOnInit();
     component.usersForSelection$!.subscribe((filteredUsers) => {
       expect(filteredUsers.length)
@@ -79,9 +79,9 @@ describe('AddMemberToTeamDialogComponent', () => {
     });
   });
 
-  it('should set filteredUsers correctly: search by PaCo', (done) => {
+  it("should set filteredUsers correctly: search by PaCo", (done) => {
     component.search = {
-      valueChanges: of('PaCo')
+      valueChanges: of("PaCo")
     } as any;
 
     component.ngOnInit();
@@ -90,14 +90,14 @@ describe('AddMemberToTeamDialogComponent', () => {
       expect(filteredUsers.length)
         .toBe(1);
       expect(filteredUsers[0].email)
-        .toBe('peggimann@puzzle.ch');
+        .toBe("peggimann@puzzle.ch");
       done();
     });
   });
 
-  it('should set filteredUsers correctly: dont show already selected users', (done) => {
+  it("should set filteredUsers correctly: dont show already selected users", (done) => {
     component.search = {
-      valueChanges: of('puzzle.ch')
+      valueChanges: of("puzzle.ch")
     } as any;
 
     component.selectedUsers$.next([users[1]]);
@@ -113,23 +113,23 @@ describe('AddMemberToTeamDialogComponent', () => {
       });
   });
 
-  it('should set teamname correctly', () => {
+  it("should set teamname correctly", () => {
     expect(component.getDialogTitle())
       .toBe(`Members zu Team ${team1.name} hinzufügen`);
   });
 
-  it('should return correct display value', () => {
+  it("should return correct display value", () => {
     expect(component.getDisplayValue(users[0]))
       .toBe(`${users[0].firstname} ${users[0].lastname} (${users[0].email})`);
   });
 
-  it('should add user to selected users and restore search value', () => {
-    component.search.setValue('test');
+  it("should add user to selected users and restore search value", () => {
+    component.search.setValue("test");
     component.selectedUsers$.next([users[1],
       users[2]]);
     component.selectUser(users[3]);
     expect(component.search.value)
-      .toBe('');
+      .toBe("");
     expect(component.selectedUsers$.getValue().length)
       .toBe(3);
     expect(component.selectedUsers$.getValue()
@@ -139,7 +139,7 @@ describe('AddMemberToTeamDialogComponent', () => {
         users[3].id]);
   });
 
-  it('should remove user from selected users', () => {
+  it("should remove user from selected users", () => {
     component.selectedUsers$.next([...users]);
     component.remove(users[0]);
     expect(component.selectedUsers$.getValue().length)

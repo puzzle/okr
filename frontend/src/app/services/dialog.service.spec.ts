@@ -1,15 +1,15 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { ConfirmDialogData, DialogService } from './dialog.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { AddEditTeamDialog } from '../team-management/add-edit-team-dialog/add-edit-team-dialog.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { ButtonState } from '../shared/types/enums/ButtonState';
+import { ConfirmDialogData, DialogService } from "./dialog.service";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { ConfirmDialogComponent } from "../shared/dialog/confirm-dialog/confirm-dialog.component";
+import { AddEditTeamDialogComponent } from "../team-management/add-edit-team-dialog/add-edit-team-dialog.component";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { provideHttpClient } from "@angular/common/http";
+import { ButtonState } from "../shared/types/enums/ButtonState";
 
-describe('DialogService', () => {
+describe("DialogService", () => {
   let service: DialogService;
   let matDialogSpy: MatDialog;
   let translateServiceSpy: TranslateService;
@@ -24,10 +24,10 @@ describe('DialogService', () => {
     matDialogSpy = TestBed.inject(MatDialog);
     service = TestBed.inject(DialogService);
     translateServiceSpy = TestBed.inject(TranslateService);
-    jest.spyOn(matDialogSpy, 'open');
+    jest.spyOn(matDialogSpy, "open");
   });
 
-  function expectData(current: ConfirmDialogData, expected: ConfirmDialogData) {
+  function expectData (current: ConfirmDialogData, expected: ConfirmDialogData) {
     expect(current.title)
       .toBe(expected.title);
     expect(current.text)
@@ -40,67 +40,67 @@ describe('DialogService', () => {
       .toBe(expected.closeButtonState);
   }
 
-  function expectYesButtonIsVisibleAndEnabled(dialog: ConfirmDialogComponent) {
+  function expectYesButtonIsVisibleAndEnabled (dialog: ConfirmDialogComponent) {
     expect(dialog.isYesButtonVisible())
       .toBe(true);
     expect(dialog.isYesButtonDisabled())
       .toBe(false);
   }
 
-  function expectNoButtonIsVisibleAndEnabled(dialog: ConfirmDialogComponent) {
+  function expectNoButtonIsVisibleAndEnabled (dialog: ConfirmDialogComponent) {
     expect(dialog.isNoButtonVisible())
       .toBe(true);
     expect(dialog.isNoButtonDisabled())
       .toBe(false);
   }
 
-  function expectCloseButtonIsHiddenAndEnabled(dialog: ConfirmDialogComponent) {
+  function expectCloseButtonIsHiddenAndEnabled (dialog: ConfirmDialogComponent) {
     expect(dialog.isCloseButtonVisible())
       .toBe(false);
     expect(dialog.isCloseButtonDisabled())
       .toBe(false);
   }
 
-  function expectNoButtonIsVisibleAndDisabled(dialog: ConfirmDialogComponent) {
+  function expectNoButtonIsVisibleAndDisabled (dialog: ConfirmDialogComponent) {
     expect(dialog.isNoButtonVisible())
       .toBe(true);
     expect(dialog.isNoButtonDisabled())
       .toBe(true);
   }
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service)
       .toBeTruthy();
   });
 
-  it('should open dialog', () => {
-    const dialog = service.open(AddEditTeamDialog, {
+  it("should open dialog", () => {
+    const dialog = service.open(AddEditTeamDialogComponent, {
       data: {
-        aProperty: 'aValue'
+        aProperty: "aValue"
       }
     });
     expect(dialog)
       .toBeInstanceOf(MatDialogRef);
     expect(dialog.componentInstance)
-      .toBeInstanceOf(AddEditTeamDialog);
+      .toBeInstanceOf(AddEditTeamDialogComponent);
 
     expect(matDialogSpy.open)
-      .toHaveBeenCalledWith(AddEditTeamDialog, {
+      .toHaveBeenCalledWith(AddEditTeamDialogComponent, {
         panelClass: service.DIALOG_PANEL_CLASS_DEFAULT,
         ...service.DIALOG_CONFIG,
         data: {
-          aProperty: 'aValue'
+          aProperty: "aValue"
         }
       });
   });
 
-  it('should open confirm dialog', () => {
+  it("should open confirm dialog", () => {
     const i18nData = {
-      team: 'the a-team'
+      team: "the a-team"
     };
-    jest.spyOn(service, 'open');
-    jest.spyOn(translateServiceSpy, 'instant');
-    const dialog = service.openConfirmDialog('DELETE.TEAM', i18nData);
+    jest.spyOn(service, "open");
+    jest.spyOn(translateServiceSpy, "instant");
+    const dialog = service.openConfirmDialog("DELETE.TEAM", i18nData);
 
     // Call function of own service
     expect(service.open)
@@ -110,9 +110,9 @@ describe('DialogService', () => {
     expect(translateServiceSpy.instant)
       .toHaveBeenCalledTimes(2);
     expect(translateServiceSpy.instant)
-      .toHaveBeenCalledWith('DELETE.TEAM.TITLE', i18nData);
+      .toHaveBeenCalledWith("DELETE.TEAM.TITLE", i18nData);
     expect(translateServiceSpy.instant)
-      .toHaveBeenCalledWith('DELETE.TEAM.TEXT', i18nData);
+      .toHaveBeenCalledWith("DELETE.TEAM.TEXT", i18nData);
 
     // Call function of angular material dialog
     expect(matDialogSpy.open)
@@ -120,33 +120,33 @@ describe('DialogService', () => {
     expect(dialog.componentInstance)
       .toBeInstanceOf(ConfirmDialogComponent);
     expect(dialog.componentInstance.data.title)
-      .toBe('DELETE.TEAM.TITLE');
+      .toBe("DELETE.TEAM.TITLE");
     expect(dialog.componentInstance.data.text)
-      .toBe('DELETE.TEAM.TEXT');
+      .toBe("DELETE.TEAM.TEXT");
 
     expect(matDialogSpy.open)
       .toHaveBeenCalledWith(ConfirmDialogComponent, {
         panelClass: service.DIALOG_PANEL_CLASS_SMALL,
         ...service.DIALOG_CONFIG,
         data: {
-          title: 'DELETE.TEAM.TITLE',
-          text: 'DELETE.TEAM.TEXT'
+          title: "DELETE.TEAM.TITLE",
+          text: "DELETE.TEAM.TEXT"
         }
       });
   });
 
-  it('should open customized confirm dialog with default visibility properties', () => {
+  it("should open customized confirm dialog with default visibility properties", () => {
     // arrange
     const data: ConfirmDialogData = {
-      title: 'Test title',
-      text: 'Test description',
+      title: "Test title",
+      text: "Test description",
       yesButtonState: undefined,
       noButtonState: undefined,
       closeButtonState: undefined
     };
 
-    jest.spyOn(service, 'open');
-    jest.spyOn(translateServiceSpy, 'instant');
+    jest.spyOn(service, "open");
+    jest.spyOn(translateServiceSpy, "instant");
 
     // act
     const dialog = service.openCustomizedConfirmDialog(data);
@@ -177,18 +177,18 @@ describe('DialogService', () => {
     expectCloseButtonIsHiddenAndEnabled(confirmDialogInstance);
   });
 
-  it('should open customized confirm dialog with explicit visibility properties', () => {
+  it("should open customized confirm dialog with explicit visibility properties", () => {
     // arrange
     const data: ConfirmDialogData = {
-      title: 'Test title',
-      text: 'Test description',
+      title: "Test title",
+      text: "Test description",
       yesButtonState: ButtonState.VisibleEnabled,
       noButtonState: ButtonState.VisibleDisabled,
       closeButtonState: ButtonState.Hidden
     };
 
-    jest.spyOn(service, 'open');
-    jest.spyOn(translateServiceSpy, 'instant');
+    jest.spyOn(service, "open");
+    jest.spyOn(translateServiceSpy, "instant");
 
     // act
     const dialog = service.openCustomizedConfirmDialog(data);

@@ -1,14 +1,14 @@
-import { TestBed } from '@angular/core/testing';
-import { ErrorInterceptor } from './error-interceptor.service';
-import { ToasterService } from '../services/toaster.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
-import { ToastrModule } from 'ngx-toastr';
-import '../../global';
-import { HttpType } from '../shared/types/enums/HttpType';
-import { ToasterType } from '../shared/types/enums/ToasterType';
+import { TestBed } from "@angular/core/testing";
+import { ErrorInterceptor } from "./error-interceptor.service";
+import { ToasterService } from "../services/toaster.service";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { Router } from "@angular/router";
+import { ToastrModule } from "ngx-toastr";
+import "../../global";
+import { HttpType } from "../shared/types/enums/HttpType";
+import { ToasterType } from "../shared/types/enums/ToasterType";
 
-describe('ErrorInterceptor', () => {
+describe("ErrorInterceptor", () => {
   let interceptor: ErrorInterceptor;
   let router: Router;
   let translator: TranslateService;
@@ -28,19 +28,19 @@ describe('ErrorInterceptor', () => {
     toaster = TestBed.inject(ToasterService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(interceptor)
       .toBeTruthy();
   });
 
-  it.each([['test',
+  it.each([["test",
     0],
-  ['objective',
+  ["objective",
     1],
-  ['keyresult',
-    1]])('handleDrawerError on route %p should be called %p times', (url: string, isCalledTimes: number) => {
+  ["keyresult",
+    1]])("handleDrawerError on route %p should be called %p times", (url: string, isCalledTimes: number) => {
     const requestMock = { url: url };
-    jest.spyOn(router, 'navigate');
+    jest.spyOn(router, "navigate");
 
     interceptor.handleDrawerError(requestMock);
 
@@ -48,14 +48,14 @@ describe('ErrorInterceptor', () => {
       .toHaveBeenCalledTimes(isCalledTimes);
   });
 
-  it.each([['NOT_AUTHORIZED_TO_READ',
-    ['Objective']],
-  ['NOT_AUTHORIZED_TO_WRITE',
-    ['Check-in']]])('handleErrorToaster should show correct toaster', (key: string, params: string[]) => {
-    const ERROR_PREFIX = 'ERROR.';
-    jest.spyOn(translator, 'instant');
-    jest.spyOn(toaster, 'showError');
-    jest.spyOn(String.prototype, 'format');
+  it.each([["NOT_AUTHORIZED_TO_READ",
+    ["Objective"]],
+  ["NOT_AUTHORIZED_TO_WRITE",
+    ["Check-in"]]])("handleErrorToaster should show correct toaster", (key: string, params: string[]) => {
+    const ERROR_PREFIX = "ERROR.";
+    jest.spyOn(translator, "instant");
+    jest.spyOn(toaster, "showError");
+    jest.spyOn(String.prototype, "format");
     const requestMock = {
       error: {
         errors: [{
@@ -75,75 +75,74 @@ describe('ErrorInterceptor', () => {
   });
 
   it.each([[
-    '/objective/1',
+    "/objective/1",
     200,
     HttpType.POST,
-    'OBJECTIVE',
+    "OBJECTIVE",
     ToasterType.SUCCESS,
-    'Objective erstellt'
+    "Objective erstellt"
   ],
   [
-    '/keyresult/1',
+    "/keyresult/1",
     200,
     HttpType.PUT,
-    'KEYRESULT',
+    "KEYRESULT",
     ToasterType.SUCCESS,
-    'Keyresult wurde aktualisiert'
+    "Keyresult wurde aktualisiert"
   ],
   [
-    '/keyresult/1',
+    "/keyresult/1",
     200,
     HttpType.DELETE,
-    'KEYRESULT',
+    "KEYRESULT",
     ToasterType.SUCCESS,
-    'Keyresult wurde gelöscht'
-  ]])('handleSuccessToaster should show toaster ',
-    (
-      url: string, code: number, method: HttpType, key: string, toasterType: ToasterType, message: string
-    ) => {
-      const SUCCESS_PREFIX = 'SUCCESS.';
-      jest.spyOn(translator, 'instant')
-        .mockReturnValue(message);
-      jest.spyOn(toaster, 'showCustomToaster');
-      jest.spyOn(interceptor, 'getSuccessMessageKey')
-        .mockReturnValue({ key: key,
-          toasterType: toasterType });
+    "Keyresult wurde gelöscht"
+  ]])("handleSuccessToaster should show toaster ", (
+    url: string, code: number, method: HttpType, key: string, toasterType: ToasterType, message: string
+  ) => {
+    const SUCCESS_PREFIX = "SUCCESS.";
+    jest.spyOn(translator, "instant")
+      .mockReturnValue(message);
+    jest.spyOn(toaster, "showCustomToaster");
+    jest.spyOn(interceptor, "getSuccessMessageKey")
+      .mockReturnValue({ key: key,
+        toasterType: toasterType });
 
-      const requestMock = {
-        url: url,
-        status: code
-      };
+    const requestMock = {
+      url: url,
+      status: code
+    };
 
-      interceptor.handleSuccessToaster(requestMock, method);
-      expect(interceptor.getSuccessMessageKey)
-        .toBeCalledWith(url, code, method);
-      expect(translator.instant)
-        .toBeCalledWith(SUCCESS_PREFIX + key);
-      expect(toaster.showCustomToaster)
-        .toBeCalledWith(message, toasterType);
-    });
+    interceptor.handleSuccessToaster(requestMock, method);
+    expect(interceptor.getSuccessMessageKey)
+      .toBeCalledWith(url, code, method);
+    expect(translator.instant)
+      .toBeCalledWith(SUCCESS_PREFIX + key);
+    expect(toaster.showCustomToaster)
+      .toBeCalledWith(message, toasterType);
+  });
 
   it.each([[
-    '/objective/1',
+    "/objective/1",
     200,
     HttpType.GET,
-    'OBJECTIVE'
+    "OBJECTIVE"
   ],
   [
-    '/keyresult/1',
+    "/keyresult/1",
     200,
     HttpType.GET,
-    'KEYRESULT'
+    "KEYRESULT"
   ],
   [
-    '/keyresult/1',
+    "/keyresult/1",
     200,
     HttpType.GET,
-    'KEYRESULT'
-  ]])('handleSuccessToaster should not show toaster ', (url: string, code: number, method: HttpType) => {
-    jest.spyOn(translator, 'instant');
-    jest.spyOn(toaster, 'showCustomToaster');
-    jest.spyOn(interceptor, 'getSuccessMessageKey')
+    "KEYRESULT"
+  ]])("handleSuccessToaster should not show toaster ", (url: string, code: number, method: HttpType) => {
+    jest.spyOn(translator, "instant");
+    jest.spyOn(toaster, "showCustomToaster");
+    jest.spyOn(interceptor, "getSuccessMessageKey")
       .mockReturnValue(undefined);
 
     const requestMock = {
@@ -163,130 +162,130 @@ describe('ErrorInterceptor', () => {
 
   it.each([
     [
-      '/teams/1',
+      "/teams/1",
       200,
       HttpType.GET,
       undefined
     ],
     [
-      '/teams/1',
+      "/teams/1",
       200,
       HttpType.PUT,
-      { key: 'TEAM.PUT',
+      { key: "TEAM.PUT",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/teams/1',
+      "/teams/1",
       200,
       HttpType.POST,
-      { key: 'TEAM.POST',
+      { key: "TEAM.POST",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/teams/1',
+      "/teams/1",
       200,
       HttpType.DELETE,
-      { key: 'TEAM.DELETE',
+      { key: "TEAM.DELETE",
         toasterType: ToasterType.SUCCESS }
     ],
 
     [
-      '/objectives/1',
+      "/objectives/1",
       200,
       HttpType.GET,
       undefined
     ],
     [
-      '/objectives/1',
+      "/objectives/1",
       200,
       HttpType.PUT,
-      { key: 'OBJECTIVE.PUT',
+      { key: "OBJECTIVE.PUT",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/objectives/1',
+      "/objectives/1",
       200,
       HttpType.POST,
-      { key: 'OBJECTIVE.POST',
+      { key: "OBJECTIVE.POST",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/objectives/1',
+      "/objectives/1",
       200,
       HttpType.DELETE,
-      { key: 'OBJECTIVE.DELETE',
+      { key: "OBJECTIVE.DELETE",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/objectives/1',
+      "/objectives/1",
       226,
       HttpType.PUT,
-      { key: 'OBJECTIVE.IM_USED',
+      { key: "OBJECTIVE.IM_USED",
         toasterType: ToasterType.WARN }
     ],
 
     [
-      '/keyresults/1',
+      "/keyresults/1",
       200,
       HttpType.GET,
       undefined
     ],
     [
-      '/keyresults/1',
+      "/keyresults/1",
       200,
       HttpType.PUT,
-      { key: 'KEY_RESULT.PUT',
+      { key: "KEY_RESULT.PUT",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/keyresults/1',
+      "/keyresults/1",
       200,
       HttpType.POST,
-      { key: 'KEY_RESULT.POST',
+      { key: "KEY_RESULT.POST",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/keyresults/1',
+      "/keyresults/1",
       200,
       HttpType.DELETE,
-      { key: 'KEY_RESULT.DELETE',
+      { key: "KEY_RESULT.DELETE",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/keyresults/1',
+      "/keyresults/1",
       226,
       HttpType.PUT,
-      { key: 'KEY_RESULT.IM_USED',
+      { key: "KEY_RESULT.IM_USED",
         toasterType: ToasterType.WARN }
     ],
 
     [
-      '/checkIns/1',
+      "/checkIns/1",
       200,
       HttpType.GET,
       undefined
     ],
     [
-      '/checkIns/1',
+      "/checkIns/1",
       200,
       HttpType.PUT,
-      { key: 'CHECK_IN.PUT',
+      { key: "CHECK_IN.PUT",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/checkIns/1',
+      "/checkIns/1",
       200,
       HttpType.POST,
-      { key: 'CHECK_IN.POST',
+      { key: "CHECK_IN.POST",
         toasterType: ToasterType.SUCCESS }
     ],
     [
-      '/checkIns/1',
+      "/checkIns/1",
       200,
       HttpType.DELETE,
       undefined
     ]
-  ])('getSuccessMessageKey should work', (
+  ])("getSuccessMessageKey should work", (
     url: string, code: number, method: HttpType, result: any
   ) => {
     const successMessageKey = interceptor.getSuccessMessageKey(url, code, method);
@@ -294,48 +293,46 @@ describe('ErrorInterceptor', () => {
       .toStrictEqual(result);
   });
 
-  it.each([['http://localhost:4200/',
-    'http://localhost:4200/api/objecive/1',
+  it.each([["http://localhost:4200/",
+    "http://localhost:4200/api/objecive/1",
     true],
-  ['http://localhost:4200/',
-    'http://habasch:4200/api/objecive/1',
+  ["http://localhost:4200/",
+    "http://habasch:4200/api/objecive/1",
     false],
-  ['http://localhost:4200/',
-    'http://habasch:4200/objecive/1',
-    false]])('checkIfSuccessToasterIsShown should work as intended',
-    (currentURL: string, requestURL: string, result: boolean) => {
-      const requestMock = { url: requestURL };
-      window.location.assign(currentURL);
+  ["http://localhost:4200/",
+    "http://habasch:4200/objecive/1",
+    false]])("checkIfSuccessToasterIsShown should work as intended", (currentURL: string, requestURL: string, result: boolean) => {
+    const requestMock = { url: requestURL };
+    window.location.assign(currentURL);
 
-      const b = interceptor.checkForToaster(requestMock);
-      expect(b)
-        .toBe(result);
-    });
+    const b = interceptor.checkForToaster(requestMock);
+    expect(b)
+      .toBe(result);
+  });
 
-  it('should return custom success message on objective creation in backlog', () => {
-    jest.spyOn(translator, 'instant')
-      .mockReturnValue('Das Objective wurde als Draft im Backlog gespeichert.');
-    jest.spyOn(toaster, 'showCustomToaster');
-    jest.spyOn(interceptor, 'getSuccessMessageKey')
-      .mockReturnValue({ key: 'OBJECTIVE.POST',
+  it("should return custom success message on objective creation in backlog", () => {
+    jest.spyOn(translator, "instant")
+      .mockReturnValue("Das Objective wurde als Draft im Backlog gespeichert.");
+    jest.spyOn(toaster, "showCustomToaster");
+    jest.spyOn(interceptor, "getSuccessMessageKey")
+      .mockReturnValue({ key: "OBJECTIVE.POST",
         toasterType: undefined });
 
     const mockHttpResponse = {
-      url: '"http://localhost:4200/api/v2/objectives"',
+      url: "\"http://localhost:4200/api/v2/objectives\"",
       status: 201,
-      statusText: 'Created',
+      statusText: "Created",
       ok: true,
       body: {
-        objectiveTitle: 'Das ist der Titel',
+        objectiveTitle: "Das ist der Titel",
         quarterId: 999
       }
     };
 
     interceptor.handleSuccessToaster(mockHttpResponse, HttpType.POST);
     expect(translator.instant)
-      .toBeCalledWith('SUCCESS.OBJECTIVE.POST_BACKLOG');
+      .toBeCalledWith("SUCCESS.OBJECTIVE.POST_BACKLOG");
     expect(toaster.showCustomToaster)
-      .toBeCalledWith('Das Objective wurde als Draft im Backlog gespeichert.',
-        undefined);
+      .toBeCalledWith("Das Objective wurde als Draft im Backlog gespeichert.", undefined);
   });
 });

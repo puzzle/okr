@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { OverviewService } from './overview.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { overviews } from '../shared/testData';
+import { OverviewService } from "./overview.service";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { of } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { overviews } from "../shared/testData";
 
 const httpClient = {
   get: jest.fn()
 };
 
-describe('OverviewService', () => {
+describe("OverviewService", () => {
   let service: OverviewService;
 
   beforeEach(() => {
@@ -23,18 +23,18 @@ describe('OverviewService', () => {
     service = TestBed.inject(OverviewService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service)
       .toBeTruthy();
   });
 
-  it('should set state of objectives correctly', (done) => {
-    jest.spyOn(httpClient, 'get')
+  it("should set state of objectives correctly", (done) => {
+    jest.spyOn(httpClient, "get")
       .mockReturnValue(of(overviews));
     service.getOverview()
-      .subscribe((dashboard) => {
+      .subscribe(() => {
         overviews.forEach((overview) => overview.objectives.forEach((objective) => expect(typeof objective.state)
-          .toBe('string')));
+          .toBe("string")));
         done();
       });
   });

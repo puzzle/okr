@@ -38,7 +38,9 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         }
     }
 
-    public PS getPersistenceService() { return persistenceService; }
+    public PS getPersistenceService() {
+        return persistenceService;
+    }
 
     public void validateOnGet(ID id) {
         throwExceptionWhenIdIsNull(id);

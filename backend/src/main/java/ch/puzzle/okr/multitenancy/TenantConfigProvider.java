@@ -59,7 +59,9 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
                 .toArray(String[]::new);
     }
 
-    public List<TenantConfig> getTenantConfigs() { return this.tenantConfigs.values().stream().toList(); }
+    public List<TenantConfig> getTenantConfigs() {
+        return this.tenantConfigs.values().stream().toList();
+    }
 
     private DataSourceConfig readDataSourceConfig(String tenantId) {
         return new DataSourceConfig(env.getProperty("okr.datasource.driver-class-name"),

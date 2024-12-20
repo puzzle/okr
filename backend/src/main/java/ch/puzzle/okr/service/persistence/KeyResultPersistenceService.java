@@ -19,7 +19,9 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
     }
 
     @Override
-    public String getModelName() { return KEY_RESULT; }
+    public String getModelName() {
+        return KEY_RESULT;
+    }
 
     public List<KeyResult> getKeyResultsByObjective(Long objectiveId) {
         return getRepository().findByObjectiveId(objectiveId);

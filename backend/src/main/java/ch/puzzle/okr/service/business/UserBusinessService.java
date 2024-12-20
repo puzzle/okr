@@ -29,7 +29,9 @@ public class UserBusinessService {
         this.cacheService = cacheService;
     }
 
-    public List<User> getAllUsers() { return userPersistenceService.findAll(); }
+    public List<User> getAllUsers() {
+        return userPersistenceService.findAll();
+    }
 
     public User getUserById(Long ownerId) {
         return userPersistenceService.findById(ownerId);

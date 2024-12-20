@@ -21,17 +21,29 @@ public class KeyResultMetric extends KeyResult {
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
-    public Double getBaseline() { return baseline; }
+    public Double getBaseline() {
+        return baseline;
+    }
 
-    public void setBaseline(Double baseline) { this.baseline = baseline; }
+    public void setBaseline(Double baseline) {
+        this.baseline = baseline;
+    }
 
-    public Double getStretchGoal() { return stretchGoal; }
+    public Double getStretchGoal() {
+        return stretchGoal;
+    }
 
-    public void setStretchGoal(Double stretchGoal) { this.stretchGoal = stretchGoal; }
+    public void setStretchGoal(Double stretchGoal) {
+        this.stretchGoal = stretchGoal;
+    }
 
-    public Unit getUnit() { return unit; }
+    public Unit getUnit() {
+        return unit;
+    }
 
-    public void setUnit(Unit unit) { this.unit = unit; }
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
 
     public KeyResultMetric() {
         super();

@@ -30,19 +30,33 @@ public class Quarter {
         setEndDate(builder.endDate);
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getLabel() { return label; }
+    public String getLabel() {
+        return label;
+    }
 
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-    public LocalDate getStartDate() { return startDate; }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
-    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
 
-    public LocalDate getEndDate() { return endDate; }
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 
-    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
     @Override
     public String toString() {

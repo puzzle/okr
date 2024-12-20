@@ -15,7 +15,9 @@ public class TeamPersistenceService extends PersistenceBase<Team, Long, TeamRepo
     }
 
     @Override
-    public String getModelName() { return TEAM; }
+    public String getModelName() {
+        return TEAM;
+    }
 
     public List<Team> findTeamsByName(String name) {
         return getRepository().findTeamsByName(name);

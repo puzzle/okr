@@ -15,7 +15,9 @@ public class ActionPersistenceService extends PersistenceBase<Action, Long, Acti
     }
 
     @Override
-    public String getModelName() { return ACTION; }
+    public String getModelName() {
+        return ACTION;
+    }
 
     public List<Action> getActionsByKeyResultIdOrderByPriorityAsc(Long keyResultId) {
         return getRepository().getActionsByKeyResultIdOrderByPriorityAsc(keyResultId);

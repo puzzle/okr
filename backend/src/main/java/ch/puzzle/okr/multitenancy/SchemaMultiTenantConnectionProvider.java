@@ -44,7 +44,9 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     @Override
-    protected ConnectionProvider getAnyConnectionProvider() { return getConnectionProvider(DEFAULT_TENANT_ID); }
+    protected ConnectionProvider getAnyConnectionProvider() {
+        return getConnectionProvider(DEFAULT_TENANT_ID);
+    }
 
     @Override
     protected ConnectionProvider selectConnectionProvider(String tenantIdentifier) {
@@ -109,5 +111,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         return configProperties;
     }
 
-    protected Properties getHibernateProperties() { return HibernateContext.getHibernateConfig(); }
+    protected Properties getHibernateProperties() {
+        return HibernateContext.getHibernateConfig();
+    }
 }

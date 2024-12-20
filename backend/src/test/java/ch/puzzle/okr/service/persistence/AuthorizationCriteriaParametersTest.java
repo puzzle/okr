@@ -128,7 +128,9 @@ public class AuthorizationCriteriaParametersTest {
 
         private final StringBuilder log = new StringBuilder();
 
-        public String getLog() { return log.toString(); }
+        public String getLog() {
+            return log.toString();
+        }
 
         @Override
         public <T> TypedQuery<Objective> setParameter(Parameter<T> parameter, T t) {

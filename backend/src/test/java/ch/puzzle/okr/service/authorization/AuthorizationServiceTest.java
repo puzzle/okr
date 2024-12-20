@@ -626,19 +626,29 @@ class AuthorizationServiceTest {
     private void setSecurityContext(Jwt token) {
         SecurityContextHolder.setContext(new SecurityContextImpl(new Authentication() {
             @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() { return null; }
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return null;
+            }
 
             @Override
-            public Object getCredentials() { return null; }
+            public Object getCredentials() {
+                return null;
+            }
 
             @Override
-            public Object getDetails() { return null; }
+            public Object getDetails() {
+                return null;
+            }
 
             @Override
-            public Object getPrincipal() { return token; }
+            public Object getPrincipal() {
+                return token;
+            }
 
             @Override
-            public boolean isAuthenticated() { return false; }
+            public boolean isAuthenticated() {
+                return false;
+            }
 
             @Override
             public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
@@ -646,7 +656,9 @@ class AuthorizationServiceTest {
             }
 
             @Override
-            public String getName() { return "unit test authentication"; }
+            public String getName() {
+                return "unit test authentication";
+            }
         }));
     }
 }

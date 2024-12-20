@@ -18,9 +18,13 @@ public class CheckInOrdinal extends CheckIn {
     private Zone zone;
 
     /* Getter and Setter */
-    public Zone getZone() { return zone; }
+    public Zone getZone() {
+        return zone;
+    }
 
-    public void setZone(Zone zone) { this.zone = zone; }
+    public void setZone(Zone zone) {
+        this.zone = zone;
+    }
 
     /* Constructor */
     public CheckInOrdinal() {

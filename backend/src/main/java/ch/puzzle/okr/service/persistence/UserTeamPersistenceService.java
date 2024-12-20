@@ -22,5 +22,7 @@ public class UserTeamPersistenceService extends PersistenceBase<UserTeam, Long, 
     }
 
     @Override
-    public String getModelName() { return USER_TEAM; }
+    public String getModelName() {
+        return USER_TEAM;
+    }
 }

@@ -53,51 +53,91 @@ public abstract class KeyResult implements WriteableInterface {
 
     private transient boolean writeable;
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public Objective getObjective() { return objective; }
+    public Objective getObjective() {
+        return objective;
+    }
 
-    public void setObjective(Objective objective) { this.objective = objective; }
+    public void setObjective(Objective objective) {
+        this.objective = objective;
+    }
 
-    public String getTitle() { return title; }
+    public String getTitle() {
+        return title;
+    }
 
-    public void setTitle(String title) { this.title = title; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public User getOwner() { return owner; }
+    public User getOwner() {
+        return owner;
+    }
 
-    public void setOwner(User owner) { this.owner = owner; }
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
-    public User getCreatedBy() { return createdBy; }
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
-    public LocalDateTime getCreatedOn() { return createdOn; }
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
 
-    public void setCreatedOn(LocalDateTime createdOn) { this.createdOn = createdOn; }
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
 
-    public LocalDateTime getModifiedOn() { return modifiedOn; }
+    public LocalDateTime getModifiedOn() {
+        return modifiedOn;
+    }
 
-    public void setModifiedOn(LocalDateTime modifiedOn) { this.modifiedOn = modifiedOn; }
+    public void setModifiedOn(LocalDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
 
-    public String getKeyResultType() { return keyResultType; }
+    public String getKeyResultType() {
+        return keyResultType;
+    }
 
     public void resetId() {
         this.id = null;
     }
 
-    private void setKeyResultType(String keyResultType) { this.keyResultType = keyResultType; }
+    private void setKeyResultType(String keyResultType) {
+        this.keyResultType = keyResultType;
+    }
 
     @Override
-    public boolean isWriteable() { return writeable; }
+    public boolean isWriteable() {
+        return writeable;
+    }
 
     @Override
-    public void setWriteable(boolean writeable) { this.writeable = writeable; }
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
 
     @Override
     public String toString() {

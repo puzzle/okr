@@ -15,7 +15,9 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
     }
 
     @Override
-    public String getModelName() { return USER; }
+    public String getModelName() {
+        return USER;
+    }
 
     public synchronized User getOrCreateUser(User user) {
         Optional<User> savedUser = getRepository().findByEmail(user.getEmail());

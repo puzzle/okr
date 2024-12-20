@@ -29,13 +29,21 @@ public abstract class Alignment {
         setAlignedObjective(builder.alignedObjective);
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public Objective getAlignedObjective() { return alignedObjective; }
+    public Objective getAlignedObjective() {
+        return alignedObjective;
+    }
 
-    public void setAlignedObjective(Objective alignedObjective) { this.alignedObjective = alignedObjective; }
+    public void setAlignedObjective(Objective alignedObjective) {
+        this.alignedObjective = alignedObjective;
+    }
 
     @Override
     public String toString() {

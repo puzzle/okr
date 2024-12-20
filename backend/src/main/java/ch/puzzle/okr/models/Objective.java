@@ -69,51 +69,95 @@ public class Objective implements WriteableInterface {
         setModifiedBy(builder.modifiedBy);
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public String getTitle() { return title; }
+    public String getTitle() {
+        return title;
+    }
 
-    public void setTitle(String title) { this.title = title; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public User getCreatedBy() { return createdBy; }
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
-    public Team getTeam() { return team; }
+    public Team getTeam() {
+        return team;
+    }
 
-    public void setTeam(Team team) { this.team = team; }
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
-    public Quarter getQuarter() { return quarter; }
+    public Quarter getQuarter() {
+        return quarter;
+    }
 
-    public void setQuarter(Quarter quarter) { this.quarter = quarter; }
+    public void setQuarter(Quarter quarter) {
+        this.quarter = quarter;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public LocalDateTime getModifiedOn() { return modifiedOn; }
+    public LocalDateTime getModifiedOn() {
+        return modifiedOn;
+    }
 
-    public void setModifiedOn(LocalDateTime modifiedOn) { this.modifiedOn = modifiedOn; }
+    public void setModifiedOn(LocalDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
 
-    public State getState() { return state; }
+    public State getState() {
+        return state;
+    }
 
-    public void setState(State state) { this.state = state; }
+    public void setState(State state) {
+        this.state = state;
+    }
 
-    public LocalDateTime getCreatedOn() { return createdOn; }
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
 
-    public void setCreatedOn(LocalDateTime createdOn) { this.createdOn = createdOn; }
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
 
-    public User getModifiedBy() { return modifiedBy; }
+    public User getModifiedBy() {
+        return modifiedBy;
+    }
 
-    public void setModifiedBy(User modifiedBy) { this.modifiedBy = modifiedBy; }
+    public void setModifiedBy(User modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
     @Override
-    public boolean isWriteable() { return writeable; }
+    public boolean isWriteable() {
+        return writeable;
+    }
 
     @Override
-    public void setWriteable(boolean writeable) { this.writeable = writeable; }
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
 
     @Override
     public String toString() {

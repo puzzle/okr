@@ -15,7 +15,9 @@ public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long, Ch
     }
 
     @Override
-    public String getModelName() { return CHECK_IN; }
+    public String getModelName() {
+        return CHECK_IN;
+    }
 
     public List<CheckIn> getCheckInsByKeyResultIdOrderByCheckInDateDesc(Long keyResultId) {
         return getRepository().findCheckInsByKeyResultIdOrderByCreatedOnDesc(keyResultId);

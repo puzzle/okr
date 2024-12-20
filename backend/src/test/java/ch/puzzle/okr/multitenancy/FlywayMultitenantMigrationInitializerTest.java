@@ -65,7 +65,9 @@ public class FlywayMultitenantMigrationInitializerTest {
             return mock(Flyway.class);
         }
 
-        public String getLog() { return log; }
+        public String getLog() {
+            return log;
+        }
     }
 
     private final TenantConfigProviderInterface providerInterfaceMock = new TenantConfigProviderInterface() {
@@ -85,7 +87,9 @@ public class FlywayMultitenantMigrationInitializerTest {
                                                                                                              dataSourceConfig);
 
         @Override
-        public List<TenantConfigProvider.TenantConfig> getTenantConfigs() { return List.of(tenantConfig); }
+        public List<TenantConfigProvider.TenantConfig> getTenantConfigs() {
+            return List.of(tenantConfig);
+        }
 
         @Override
         public Optional<TenantConfigProvider.TenantConfig> getTenantConfigById(String tenantId) {

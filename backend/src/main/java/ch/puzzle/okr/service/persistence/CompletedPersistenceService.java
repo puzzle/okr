@@ -14,7 +14,9 @@ public class CompletedPersistenceService extends PersistenceBase<Completed, Long
     }
 
     @Override
-    public String getModelName() { return COMPLETED; }
+    public String getModelName() {
+        return COMPLETED;
+    }
 
     public Completed getCompletedByObjectiveId(Long objectiveId) {
         return getRepository().findByObjectiveId(objectiveId);

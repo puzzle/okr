@@ -16,7 +16,9 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, Qu
     }
 
     @Override
-    public String getModelName() { return QUARTER; }
+    public String getModelName() {
+        return QUARTER;
+    }
 
     public List<Quarter> getMostCurrentQuarters() {
         return getRepository().findTop6ByOrderByStartDateDescWithoutNullStartDate();
@@ -26,5 +28,7 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, Qu
         return getRepository().findByLabel(label);
     }
 
-    public Quarter getCurrentQuarter() { return getRepository().getActiveQuarter(LocalDate.now()); }
+    public Quarter getCurrentQuarter() {
+        return getRepository().getActiveQuarter(LocalDate.now());
+    }
 }

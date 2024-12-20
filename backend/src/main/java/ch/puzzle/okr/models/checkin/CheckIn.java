@@ -51,45 +51,83 @@ public abstract class CheckIn implements WriteableInterface {
     private transient boolean writeable;
 
     /* Getter and Setter */
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public String getChangeInfo() { return changeInfo; }
+    public String getChangeInfo() {
+        return changeInfo;
+    }
 
-    public void setChangeInfo(String changeInfo) { this.changeInfo = changeInfo; }
+    public void setChangeInfo(String changeInfo) {
+        this.changeInfo = changeInfo;
+    }
 
-    public String getInitiatives() { return initiatives; }
+    public String getInitiatives() {
+        return initiatives;
+    }
 
-    public void setInitiatives(String initiatives) { this.initiatives = initiatives; }
+    public void setInitiatives(String initiatives) {
+        this.initiatives = initiatives;
+    }
 
-    public Integer getConfidence() { return confidence; }
+    public Integer getConfidence() {
+        return confidence;
+    }
 
-    public void setConfidence(Integer confidence) { this.confidence = confidence; }
+    public void setConfidence(Integer confidence) {
+        this.confidence = confidence;
+    }
 
-    public KeyResult getKeyResult() { return keyResult; }
+    public KeyResult getKeyResult() {
+        return keyResult;
+    }
 
-    public void setKeyResult(KeyResult keyResult) { this.keyResult = keyResult; }
+    public void setKeyResult(KeyResult keyResult) {
+        this.keyResult = keyResult;
+    }
 
-    public User getCreatedBy() { return createdBy; }
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
-    public LocalDateTime getCreatedOn() { return createdOn; }
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
 
-    public void setCreatedOn(LocalDateTime createdOn) { this.createdOn = createdOn; }
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
 
-    public LocalDateTime getModifiedOn() { return modifiedOn; }
+    public LocalDateTime getModifiedOn() {
+        return modifiedOn;
+    }
 
-    public void setModifiedOn(LocalDateTime modifiedOn) { this.modifiedOn = modifiedOn; }
+    public void setModifiedOn(LocalDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
 
-    public String getCheckInType() { return checkInType; }
+    public String getCheckInType() {
+        return checkInType;
+    }
 
     @Override
-    public boolean isWriteable() { return writeable; }
+    public boolean isWriteable() {
+        return writeable;
+    }
 
     @Override
-    public void setWriteable(boolean writeable) { this.writeable = writeable; }
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
 
     @Override
     public String toString() {

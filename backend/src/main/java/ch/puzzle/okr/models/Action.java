@@ -44,37 +44,63 @@ public class Action implements WriteableInterface {
         keyResult = builder.keyResult;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     public void resetId() {
         id = null;
     }
 
-    public String getAction() { return action; }
+    public String getAction() {
+        return action;
+    }
 
-    public void setAction(String action) { this.action = action; }
+    public void setAction(String action) {
+        this.action = action;
+    }
 
-    public int getPriority() { return priority; }
+    public int getPriority() {
+        return priority;
+    }
 
-    public void setPriority(int priority) { this.priority = priority; }
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
 
-    public boolean isChecked() { return isChecked; }
+    public boolean isChecked() {
+        return isChecked;
+    }
 
-    public void setChecked(boolean checked) { isChecked = checked; }
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
-    public KeyResult getKeyResult() { return keyResult; }
+    public KeyResult getKeyResult() {
+        return keyResult;
+    }
 
-    public void setKeyResult(KeyResult keyResult) { this.keyResult = keyResult; }
+    public void setKeyResult(KeyResult keyResult) {
+        this.keyResult = keyResult;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public void setVersion(int version) { this.version = version; }
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     @Override
-    public boolean isWriteable() { return writeable; }
+    public boolean isWriteable() {
+        return writeable;
+    }
 
     @Override
-    public void setWriteable(boolean writeable) { this.writeable = writeable; }
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
 
     @Override
     public String toString() {

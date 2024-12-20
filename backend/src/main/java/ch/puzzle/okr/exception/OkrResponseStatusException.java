@@ -54,5 +54,7 @@ public class OkrResponseStatusException extends ResponseStatusException {
         this.errors = errors;
     }
 
-    public List<ErrorDto> getErrors() { return errors; }
+    public List<ErrorDto> getErrors() {
+        return errors;
+    }
 }

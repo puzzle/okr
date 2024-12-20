@@ -16,7 +16,9 @@ public class SchemaMultiTenantConnectionProviderInternalsTest {
     private static class ConfigurableConnectionProviderMock extends SchemaMultiTenantConnectionProvider {
 
         @Override
-        protected Properties getHibernateProperties() { return new Properties(); }
+        protected Properties getHibernateProperties() {
+            return new Properties();
+        }
 
         public void registerProvider(String tenantIdentifier, ConnectionProvider connectionProvider) {
             connectionProviderMap.put(tenantIdentifier, connectionProvider);

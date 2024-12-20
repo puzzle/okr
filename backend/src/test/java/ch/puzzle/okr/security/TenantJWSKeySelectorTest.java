@@ -68,13 +68,19 @@ public class TenantJWSKeySelectorTest {
             JWSKeySelector<SecurityContext> fromUri(String uri) {
                 return (jwsHeader, securityContext) -> List.of(new Key() {
                     @Override
-                    public String getAlgorithm() { return MOCK_ALGORITHM; }
+                    public String getAlgorithm() {
+                        return MOCK_ALGORITHM;
+                    }
 
                     @Override
-                    public String getFormat() { return null; }
+                    public String getFormat() {
+                        return null;
+                    }
 
                     @Override
-                    public byte[] getEncoded() { return new byte[0]; }
+                    public byte[] getEncoded() {
+                        return new byte[0];
+                    }
                 });
             }
         };

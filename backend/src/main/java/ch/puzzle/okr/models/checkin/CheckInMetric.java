@@ -15,9 +15,13 @@ public class CheckInMetric extends CheckIn {
     private Double valueMetric;
 
     /* Getter and Setter */
-    public Double getValue() { return valueMetric; }
+    public Double getValue() {
+        return valueMetric;
+    }
 
-    public void setValue(Double value) { this.valueMetric = value; }
+    public void setValue(Double value) {
+        this.valueMetric = value;
+    }
 
     /* Constructor */
     public CheckInMetric() {

@@ -109,7 +109,9 @@ public class PersistenceBaseTestIT {
 
         var persistenceBaseForTest = new PersistenceBase<>(testRepository) {
             @Override
-            public String getModelName() { return "for_test"; }
+            public String getModelName() {
+                return "for_test";
+            }
         };
 
         // act + assert

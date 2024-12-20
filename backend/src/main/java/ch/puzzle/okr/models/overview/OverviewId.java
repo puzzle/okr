@@ -30,13 +30,21 @@ public class OverviewId implements Comparable<OverviewId>, Serializable {
         return new OverviewId(teamId, objectiveId, keyResultId, checkInId);
     }
 
-    public Long getTeamId() { return teamId; }
+    public Long getTeamId() {
+        return teamId;
+    }
 
-    public Long getObjectiveId() { return objectiveId; }
+    public Long getObjectiveId() {
+        return objectiveId;
+    }
 
-    public Long getKeyResultId() { return keyResultId; }
+    public Long getKeyResultId() {
+        return keyResultId;
+    }
 
-    public Long getCheckInId() { return checkInId; }
+    public Long getCheckInId() {
+        return checkInId;
+    }
 
     @Override
     public String toString() {

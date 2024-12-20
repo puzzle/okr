@@ -23,17 +23,29 @@ public class KeyResultOrdinal extends KeyResult {
     @Size(max = 400, message = "Attribute stretchZone has a max length of 400 characters")
     private String stretchZone;
 
-    public String getCommitZone() { return commitZone; }
+    public String getCommitZone() {
+        return commitZone;
+    }
 
-    public void setCommitZone(String commitZone) { this.commitZone = commitZone; }
+    public void setCommitZone(String commitZone) {
+        this.commitZone = commitZone;
+    }
 
-    public String getTargetZone() { return targetZone; }
+    public String getTargetZone() {
+        return targetZone;
+    }
 
-    public void setTargetZone(String targetZone) { this.targetZone = targetZone; }
+    public void setTargetZone(String targetZone) {
+        this.targetZone = targetZone;
+    }
 
-    public String getStretchZone() { return stretchZone; }
+    public String getStretchZone() {
+        return stretchZone;
+    }
 
-    public void setStretchZone(String stretchZone) { this.stretchZone = stretchZone; }
+    public void setStretchZone(String stretchZone) {
+        this.stretchZone = stretchZone;
+    }
 
     public KeyResultOrdinal() {
         super();

@@ -23,10 +23,14 @@ public class ObjectiveAlignment extends Alignment implements AlignmentInterface<
     }
 
     @Override
-    public Objective getAlignmentTarget() { return targetObjective; }
+    public Objective getAlignmentTarget() {
+        return targetObjective;
+    }
 
     @Override
-    public void setAlignmentTarget(Objective alignmentTarget) { targetObjective = alignmentTarget; }
+    public void setAlignmentTarget(Objective alignmentTarget) {
+        targetObjective = alignmentTarget;
+    }
 
     @Override
     public boolean equals(Object o) {

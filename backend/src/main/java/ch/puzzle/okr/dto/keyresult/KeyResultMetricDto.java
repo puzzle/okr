@@ -12,5 +12,7 @@ public record KeyResultMetricDto(Long id, int version, String keyResultType, Str
         KeyResultLastCheckInMetricDto lastCheckIn, LocalDateTime createdOn, LocalDateTime modifiedOn, boolean writeable,
         List<ActionDto> actionList) implements KeyResultDto {
     @Override
-    public List<ActionDto> getActionList() { return actionList; }
+    public List<ActionDto> getActionList() {
+        return actionList;
+    }
 }

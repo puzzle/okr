@@ -17,7 +17,9 @@ public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long
     }
 
     @Override
-    public String getModelName() { return ALIGNMENT; }
+    public String getModelName() {
+        return ALIGNMENT;
+    }
 
     public List<Alignment> findByAlignedObjectiveId(Long alignedObjectiveId) {
         return getRepository().findByAlignedObjectiveId(alignedObjectiveId);

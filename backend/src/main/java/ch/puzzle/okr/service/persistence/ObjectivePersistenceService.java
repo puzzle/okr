@@ -35,7 +35,9 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
     }
 
     @Override
-    public String getModelName() { return OBJECTIVE; }
+    public String getModelName() {
+        return OBJECTIVE;
+    }
 
     /**
      * Get the number of Objectives of a Team in a Quarter. The underling sql looks

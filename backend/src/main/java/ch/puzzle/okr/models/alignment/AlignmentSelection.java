@@ -32,15 +32,25 @@ public class AlignmentSelection {
         keyResultTitle = builder.keyResultTitle;
     }
 
-    public AlignmentSelectionId getAlignmentSelectionId() { return alignmentSelectionId; }
+    public AlignmentSelectionId getAlignmentSelectionId() {
+        return alignmentSelectionId;
+    }
 
-    public Long getTeamId() { return teamId; }
+    public Long getTeamId() {
+        return teamId;
+    }
 
-    public String getObjectiveTitle() { return objectiveTitle; }
+    public String getObjectiveTitle() {
+        return objectiveTitle;
+    }
 
-    public Long getQuarterId() { return quarterId; }
+    public Long getQuarterId() {
+        return quarterId;
+    }
 
-    public String getKeyResultTitle() { return keyResultTitle; }
+    public String getKeyResultTitle() {
+        return keyResultTitle;
+    }
 
     @Override
     public boolean equals(Object o) {

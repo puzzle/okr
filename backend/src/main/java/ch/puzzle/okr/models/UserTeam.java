@@ -37,25 +37,45 @@ public class UserTeam {
         this.isTeamAdmin = builder.isTeamAdmin;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public void setVersion(int version) { this.version = version; }
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
-    public User getUser() { return user; }
+    public User getUser() {
+        return user;
+    }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public Team getTeam() { return team; }
+    public Team getTeam() {
+        return team;
+    }
 
-    public void setTeam(Team team) { this.team = team; }
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
-    public boolean isTeamAdmin() { return isTeamAdmin; }
+    public boolean isTeamAdmin() {
+        return isTeamAdmin;
+    }
 
-    public void setTeamAdmin(boolean teamAdmin) { isTeamAdmin = teamAdmin; }
+    public void setTeamAdmin(boolean teamAdmin) {
+        isTeamAdmin = teamAdmin;
+    }
 
     @Override
     public boolean equals(Object o) {

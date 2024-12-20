@@ -48,7 +48,9 @@ public class QuarterBusinessService {
         return mostCurrentQuarterList;
     }
 
-    public Quarter getCurrentQuarter() { return quarterPersistenceService.getCurrentQuarter(); }
+    public Quarter getCurrentQuarter() {
+        return quarterPersistenceService.getCurrentQuarter();
+    }
 
     private String shortenYear(int fullYear) {
         return padWithZeros(2, fullYear % 100);
@@ -95,7 +97,9 @@ public class QuarterBusinessService {
         return Math.abs(nextQuarter - currentQuarter) == 2;
     }
 
-    YearMonth getCurrentYearMonth() { return YearMonth.now(); }
+    YearMonth getCurrentYearMonth() {
+        return YearMonth.now();
+    }
 
     Map<Integer, Integer> generateQuarters() {
         Map<Integer, Integer> quarters = new HashMap<>();

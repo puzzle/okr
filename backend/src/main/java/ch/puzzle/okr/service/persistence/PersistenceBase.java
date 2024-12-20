@@ -34,7 +34,9 @@ public abstract class PersistenceBase<T, ID, R> {
     }
 
     @SuppressWarnings(value = "unchecked casts")
-    public R getRepository() { return (R) repository; }
+    public R getRepository() {
+        return (R) repository;
+    }
 
     public T findById(ID id) throws OkrResponseStatusException {
         checkIdNull(id);

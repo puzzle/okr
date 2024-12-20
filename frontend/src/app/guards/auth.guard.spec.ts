@@ -18,7 +18,7 @@ const routerMock = {
 
 const route = { queryParamMap: new Map() };
 
-describe('authGuard', () => {
+describe('AuthGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => authGuard(...guardParameters));
 
@@ -48,7 +48,7 @@ describe('authGuard', () => {
     expect(executeGuard).toBeTruthy();
   });
 
-  it('should not call initCodeFlow if token is valid and call router if state param exist', async () => {
+  it('should not call initCodeFlow() if token is valid and call router if state param exist', async () => {
     jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(true);
     route.queryParamMap.set('state', 1234);
 
@@ -72,7 +72,7 @@ describe('authGuard', () => {
     expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
   });
 
-  it('should call initCodeFlow if token is invalid', async () => {
+  it('should call initCodeFlow() if token is invalid', async () => {
     jest.spyOn(oAuthMock, 'hasValidIdToken').mockReturnValue(false);
     const result = await runAuthGuardWithContext(authGuard);
 

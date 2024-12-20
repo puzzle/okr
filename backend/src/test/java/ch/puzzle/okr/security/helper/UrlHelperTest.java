@@ -26,7 +26,7 @@ public class UrlHelperTest {
         assertEquals(PITC, tenantFromIssUrl.get());
     }
 
-    @DisplayName("extractTenantFromIssUrl() returns input url if url does not contain slash")
+    @DisplayName("Should return a input url if the url does not contain a slash after calling extractTenantFromIssUrl()")
     @Test
     void extractTenantFromIssUrlReturnsInputIfUrlNotContainSlash() {
         // arrange
@@ -40,7 +40,7 @@ public class UrlHelperTest {
         assertEquals(issUrl, tenantFromIssUrl.get());
     }
 
-    @DisplayName("extractTenantFromIssUrl() returns empty if url is null")
+    @DisplayName("Should return empty if the url is null after calling extractTenantFromIssUrl()")
     @Test
     void extractTenantFromIssUrlReturnsEmptyIfUrlIsNull() {
         // arrange

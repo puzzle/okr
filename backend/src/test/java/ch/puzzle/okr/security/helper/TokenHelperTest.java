@@ -26,7 +26,7 @@ public class TokenHelperTest {
         helper = new TokenHelper();
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimTenant() returns tenant if claim tenant is found")
+    @DisplayName("Should return tenant if claim tenant is found after calling getTenantFromTokenUsingClaimTenant()")
     @Test
     void getTenantFromTokenUsingClaimTenantReturnsTenantIfClaimTenantFound() {
         // arrange
@@ -41,7 +41,7 @@ public class TokenHelperTest {
         assertEquals(PITC, tenant.get());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimTenant() returns empty if claim tenant not found")
+    @DisplayName("Should return empty if claim tenant is not found after calling getTenantFromTokenUsingClaimTenant()")
     @Test
     void getTenantFromTokenUsingClaimTenantReturnsEmptyIfClaimTenantNotFound() {
         // arrange
@@ -54,7 +54,7 @@ public class TokenHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimTenant() returns empty if claim tenant is found but value is null")
+    @DisplayName("Should return empty if claim tenant is found but value is null after calling getTenantFromTokenUsingClaimTenant()")
     @Test
     void getTenantFromTokenUsingClaimTenantReturnsEmptyIfClaimTenantFoundButValueIsNull() {
         // arrange
@@ -83,7 +83,7 @@ public class TokenHelperTest {
         assertEquals(PITC, tenant.get());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimIss() returns empty if claim iss is not found")
+    @DisplayName("Should return empty if claim iss is not found after calling getTenantFromTokenUsingClaimIss()")
     @Test
     void getTenantFromTokenUsingClaimIssReturnsEmptyIfClaimIssNotFound() {
         // arrange
@@ -96,7 +96,7 @@ public class TokenHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromTokenUsingClaimIss() returns empty if claim iss is found but value is null")
+    @DisplayName("Should return empty if claim iss is found but value is null after calling getTenantFromTokenUsingClaimIss()")
     @Test
     void getTenantFromTokenUsingClaimIssReturnsEmptyIfClaimIssFoundButValueIsNull() {
         // arrange

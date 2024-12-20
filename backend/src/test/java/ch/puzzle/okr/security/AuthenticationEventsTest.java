@@ -21,7 +21,7 @@ public class AuthenticationEventsTest {
         TenantContext.setCurrentTenant(DEFAULT_TENANT_ID);
     }
 
-    @DisplayName("onSuccess() puts Token from AuthenticationSuccessEvent in TenantContext")
+    @DisplayName("Should put token from authentication-success-event in tenant-context after calling onSuccess()")
     @Test
     void onSuccessPutsTokenFromAuthenticationSuccessEventInTenantContext() {
         // arrange

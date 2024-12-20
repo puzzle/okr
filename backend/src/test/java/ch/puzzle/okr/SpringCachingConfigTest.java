@@ -41,7 +41,7 @@ class SpringCachingConfigTest {
         cacheManager.getCache(AUTHORIZATION_USER_CACHE).clear();
     }
 
-    @DisplayName("before calling updateOrAddAuthorizationUser the User is not in the cache")
+    @DisplayName("Should confirm user is not in the cache before calling updateOrAddAuthorizationUser")
     @Test
     void shouldNotHaveCachedUserBeforeUpdateOrAddAuthorizationUser() {
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
@@ -50,7 +50,7 @@ class SpringCachingConfigTest {
         assertNull(cache.get(key, AuthorizationUser.class));
     }
 
-    @DisplayName("updateOrAddAuthorizationUser puts the User in the cache with key composed by Tenant and User Email")
+    @DisplayName("Should put user in the cache with key composed of tenant and user email when calling updateOrAddAuthorizationUser")
     @Test
     void shouldCacheUserGivenToUpdateOrAddAuthorizationUser() {
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);

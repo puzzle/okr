@@ -27,7 +27,7 @@ public class ClaimHelperTest {
         helper = new ClaimHelper();
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() returns tenant if claim tenant is found")
+    @DisplayName("Should return tenant if claim tenant is found after calling getTenantFromClaimsSetUsingClaimTenant()")
     @Test
     void getTenantFromClaimsSetUsingClaimTenantReturnsTenantIfClaimTenantFound() throws ParseException {
         // arrange
@@ -42,7 +42,7 @@ public class ClaimHelperTest {
         assertEquals(PITC, tenant.get());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() return empty if claim tenant is not found")
+    @DisplayName("Should return empty if claim tenant is not found after calling getTenantFromClaimsSetUsingClaimTenant()")
     @Test
     void getTenantFromClaimsSetUsingClaimTenantReturnEmptyIfClaimTenantNotFound() {
         // arrange
@@ -55,7 +55,7 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() returns empty if claim tenant is found but value is null")
+    @DisplayName("Should return empty if claim tenant is found but value is null after calling getTenantFromClaimsSetUsingClaimTenant()")
     @Test
     void getTenantFromClaimsSetUsingClaimTenantReturnsEmptyIfClaimTenantFoundButValueIsNull() throws ParseException {
         // arrange
@@ -69,7 +69,7 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimTenant() returns empty if claim tenant is found but parsing of claim failed")
+    @DisplayName("Should return empty if claim tenant is found but parsing of claim failed after calling getTenantFromClaimsSetUsingClaimTenant()")
     @Test
     void getTenantFromClaimsSetUsingClaimTenantReturnsEmptyIfParsingOfClaimFailed() throws ParseException {
         // arrange
@@ -98,7 +98,7 @@ public class ClaimHelperTest {
         assertEquals(PITC, tenant.get());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns empty if claim iss is not found")
+    @DisplayName("Should return empty if claim iss is not found after calling getTenantFromClaimsSetUsingClaimIss()")
     @Test
     void getTenantFromClaimsSetUsingClaimIssReturnsEmptyIfClaimIssNotFound() {
         // arrange
@@ -111,7 +111,7 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns empty if claim iss is found but value is null")
+    @DisplayName("Should return empty if claim iss is found but value is null after calling getTenantFromClaimsSetUsingClaimIss()")
     @Test
     void getTenantFromClaimsSetUsingClaimIssReturnsEmptyIfClaimIssFoundButValueIsNull() throws ParseException {
         // arrange
@@ -125,7 +125,7 @@ public class ClaimHelperTest {
         assertTrue(tenant.isEmpty());
     }
 
-    @DisplayName("getTenantFromClaimsSetUsingClaimIss() returns empty if parsing of claim failed")
+    @DisplayName("Should return empty if parsing of claim failed after calling getTenantFromClaimsSetUsingClaimIss()")
     @Test
     void getTenantFromClaimsSetUsingClaimIssReturnsEmptyIfParsingOfClaimFailed() throws ParseException {
         // arrange

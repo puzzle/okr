@@ -75,7 +75,7 @@ public class TenantConfigProviderTestIT {
         return tenantId + "_";
     }
 
-    @DisplayName("getTenantConfigs returns all TenantConfigs as List")
+    @DisplayName("Should return all tenant-configs as a list after calling getTenantConfigs")
     @Test
     public void shouldGetTenantConfigs() {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);

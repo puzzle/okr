@@ -57,6 +57,8 @@ export default tsEslint.config(
       'unused-imports/no-unused-imports': 'error',
       'no-undef': 'error',
       'prefer-rest-params': 'error',
+      'space-before-function-paren': ['error', 'never'],
+
       //Typescript eslint rules
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/no-unused-expressions': [
@@ -99,6 +101,7 @@ export default tsEslint.config(
       '@stylistic/array-bracket-newline': ['error', { minItems: 4 }],
       '@stylistic/semi-style': ['error'],
       '@stylistic/function-paren-newline': ['error', { minItems: 4 }],
+      '@stylistic/space-before-function-paren': ['error', 'never'],
       // This rule makes no sense
       '@stylistic/lines-around-comment': 'off',
       //Angular eslint rules

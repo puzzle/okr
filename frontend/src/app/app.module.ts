@@ -56,8 +56,8 @@ import { ObjectiveFilterComponent } from './components/objective-filter/objectiv
 import { ActionPlanComponent } from './components/action-plan/action-plan.component';
 import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { SharedModule } from './shared/shared.module';
-import { OauthInterceptor } from './interceptors/oauth.interceptor';
-import { ErrorInterceptor } from './interceptors/error-interceptor.service';
+import { OAuthInterceptor } from './interceptors/o-auth.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { CustomRouter } from './shared/customRouter';
 import { KeyResultFormComponent } from './components/key-result-form/key-result-form.component';
 import { KeyResultDialogComponent } from './components/key-result-dialog/key-result-dialog.component';
@@ -179,7 +179,7 @@ export const MY_FORMATS = {
       deps: [MAT_DATE_LOCALE],
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-    { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     {

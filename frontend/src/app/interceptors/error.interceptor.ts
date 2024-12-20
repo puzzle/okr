@@ -77,11 +77,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (toasterMessage.method == method) {
           for (let codeKey of toasterMessage.keysForCode || []) {
             if (codeKey.code == statusCode) {
-              const messageKey = value.KEY + '.' + codeKey.key;
+              const messageKey = value.key + '.' + codeKey.key;
               return { key: messageKey, toasterType: codeKey.toaster };
             }
           }
-          const messageKey = value.KEY + '.' + method;
+          const messageKey = value.key + '.' + method;
           return { key: messageKey, toasterType: ToasterType.SUCCESS };
         }
       }

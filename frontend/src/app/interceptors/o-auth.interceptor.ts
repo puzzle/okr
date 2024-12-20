@@ -6,19 +6,19 @@ import { OAuthService } from 'angular-oauth2-oidc';
 @Injectable({
   providedIn: 'root',
 })
-export class OauthInterceptor implements HttpInterceptor {
-  constructor(private oauthService: OAuthService) {}
+export class OAuthInterceptor implements HttpInterceptor {
+  constructor(private oAuthService: OAuthService) {}
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.match(/^(\/)?api/)) {
       return next.handle(req);
     }
 
     return merge(
-      of(this.oauthService.getAccessToken()).pipe(filter((token) => !!token)),
-      this.oauthService.events.pipe(
+      of(this.oAuthService.getAccessToken()).pipe(filter((token) => !!token)),
+      this.oAuthService.events.pipe(
         filter((e) => e.type === 'token_received'),
         timeout(500),
-        map((_) => this.oauthService.getAccessToken()),
+        map((_) => this.oAuthService.getAccessToken()),
       ),
     ).pipe(
       take(1),

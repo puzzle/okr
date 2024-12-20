@@ -7,11 +7,11 @@ import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 import { CompletedService } from '../../services/completed.servce';
 
 export class ObjectiveMenuAfterActions {
-  constructor (private readonly objectiveService: ObjectiveService,
+  constructor(private readonly objectiveService: ObjectiveService,
     private readonly completedService: CompletedService,
     private readonly refreshDataService: RefreshDataService) {}
 
-  completeObjective (objectiveMin: ObjectiveMin, result: { endState: string;
+  completeObjective(objectiveMin: ObjectiveMin, result: { endState: string;
     comment: string | null;
     objective: any; }) {
     this.objectiveService.getFullObjective(objectiveMin.id)
@@ -33,7 +33,7 @@ export class ObjectiveMenuAfterActions {
       });
   }
 
-  releaseFromQuarter (objectiveMin: ObjectiveMin) {
+  releaseFromQuarter(objectiveMin: ObjectiveMin) {
     this.objectiveService.getFullObjective(objectiveMin.id)
       .subscribe((objective: Objective) => {
         objective.state = 'ONGOING' as State;
@@ -44,7 +44,7 @@ export class ObjectiveMenuAfterActions {
       });
   }
 
-  objectiveBackToDraft (objectiveMin: ObjectiveMin) {
+  objectiveBackToDraft(objectiveMin: ObjectiveMin) {
     this.objectiveService.getFullObjective(objectiveMin.id)
       .subscribe((objective: Objective) => {
         objective.state = 'DRAFT' as State;
@@ -55,7 +55,7 @@ export class ObjectiveMenuAfterActions {
       });
   }
 
-  objectiveReopen (objectiveMin: ObjectiveMin) {
+  objectiveReopen(objectiveMin: ObjectiveMin) {
     this.objectiveService.getFullObjective(objectiveMin.id)
       .subscribe((objective: Objective) => {
         objective.state = 'ONGOING' as State;

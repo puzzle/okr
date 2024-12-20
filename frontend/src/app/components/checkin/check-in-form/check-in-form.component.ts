@@ -43,7 +43,7 @@ export class CheckInFormComponent implements OnInit {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor (
+  constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private checkInService: CheckInService,
@@ -55,16 +55,16 @@ export class CheckInFormComponent implements OnInit {
     this.setDefaultValues();
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.dialogForm.patchValue({ actionList: this.keyResult.actionList });
   }
 
-  getErrorMessage (error: string, field: string, maxLength: number): string {
+  getErrorMessage(error: string, field: string, maxLength: number): string {
     return field + this.translate.instant('DIALOG_ERRORS.' + error)
       .format(maxLength);
   }
 
-  setDefaultValues () {
+  setDefaultValues() {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
@@ -87,11 +87,11 @@ export class CheckInFormComponent implements OnInit {
     this.checkIn = { confidence: 5 } as CheckInMin;
   }
 
-  calculateTarget (keyResult: KeyResultMetric): number {
+  calculateTarget(keyResult: KeyResultMetric): number {
     return keyResult.stretchGoal - (keyResult.stretchGoal - keyResult.baseline) * 0.3;
   }
 
-  saveCheckIn () {
+  saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
     const baseCheckIn: any = {
       id: this.checkIn.id,
@@ -116,7 +116,7 @@ export class CheckInFormComponent implements OnInit {
       });
   }
 
-  getCheckInValue (): string {
+  getCheckInValue(): string {
     if ((this.checkIn as CheckInMetricMin).value != null) {
       return (this.checkIn as CheckInMetricMin).value!.toString();
     } else {
@@ -124,26 +124,26 @@ export class CheckInFormComponent implements OnInit {
     }
   }
 
-  getKeyResultMetric (): KeyResultMetric {
+  getKeyResultMetric(): KeyResultMetric {
     return this.keyResult as KeyResultMetric;
   }
 
-  getKeyResultOrdinal (): KeyResultOrdinal {
+  getKeyResultOrdinal(): KeyResultOrdinal {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  getActions (): Action[] {
+  getActions(): Action[] {
     return this.dialogForm.controls['actionList'].value || [];
   }
 
-  changeIsChecked (event: any, index: number) {
+  changeIsChecked(event: any, index: number) {
     const actions = this.dialogForm.value.actionList!;
     actions[index] = { ...actions[index],
       isChecked: event.checked };
     this.dialogForm.patchValue({ actionList: actions });
   }
 
-  getDialogTitle (): string {
+  getDialogTitle(): string {
     return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
   }
 }

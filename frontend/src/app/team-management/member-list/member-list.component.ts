@@ -26,7 +26,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private unsubscribe$ = new Subject<void>();
 
-  public constructor (
+  public constructor(
     private readonly userService: UserService,
     private readonly route: ActivatedRoute,
     private readonly cd: ChangeDetectorRef,
@@ -35,9 +35,9 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly dialogService: DialogService
   ) {}
 
-  public ngOnInit (): void {}
+  public ngOnInit(): void {}
 
-  public ngAfterViewInit () {
+  public ngAfterViewInit() {
     this.userService
       .getUsers()
       .pipe(takeUntil(this.unsubscribe$))
@@ -55,12 +55,12 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  public ngOnDestroy (): void {
+  public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  private setSelectedTeam (teams: Team[], teamIdParam: string | null) {
+  private setSelectedTeam(teams: Team[], teamIdParam: string | null) {
     if (!teamIdParam) {
       this.selectedTeam$.next(undefined);
       return;
@@ -70,7 +70,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cd.markForCheck();
   }
 
-  private setDataSourceForTeamOrAll (users: User[], teamIdParam: string | null) {
+  private setDataSourceForTeamOrAll(users: User[], teamIdParam: string | null) {
     if (!teamIdParam) {
       this.setDataSourceForAllTeams(users);
       this.cd.markForCheck();
@@ -80,16 +80,16 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cd.markForCheck();
   }
 
-  private setDataSourceForAllTeams (users: User[]) {
+  private setDataSourceForAllTeams(users: User[]) {
     this.dataSource.data = convertFromUsers(users, null);
   }
 
-  private setDataSourceForTeam (teamIdParam: string, users: User[]) {
+  private setDataSourceForTeam(teamIdParam: string, users: User[]) {
     const teamId = parseInt(teamIdParam);
     this.dataSource.data = convertFromUsers(users, teamId);
   }
 
-  deleteTeam (selectedTeam: Team) {
+  deleteTeam(selectedTeam: Team) {
     const data = {
       team: selectedTeam.name
     };
@@ -107,7 +107,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  addMemberToTeam () {
+  addMemberToTeam() {
     const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
       data: {
         team: this.selectedTeam$.value!,
@@ -118,21 +118,21 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(() => this.cd.markForCheck());
   }
 
-  inviteMember () {
+  inviteMember() {
     this.dialogService.open(InviteUserDialogComponent)
       .afterClosed()
       .subscribe();
   }
 
-  showInviteMember (): boolean {
+  showInviteMember(): boolean {
     return !this.selectedTeam$.value && this.userService.getCurrentUser().isOkrChampion;
   }
 
-  showAddMemberToTeam () {
+  showAddMemberToTeam() {
     return this.selectedTeam$.value?.writeable;
   }
 
-  editTeam (): void {
+  editTeam(): void {
     const dialogRef = this.dialogService.open(AddEditTeamDialog, { data: { team: this.selectedTeam$.value } });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());

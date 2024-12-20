@@ -6,22 +6,22 @@ import { ConfigService } from './config.service';
 class CallRecorder {
   private calls: Record<string, any[]> = {};
 
-  public add (key: string, value: any): void {
+  public add(key: string, value: any): void {
     if (!this.calls[key]) {
       this.calls[key] = [];
     }
     this.calls[key].push(value);
   }
 
-  public getCallByIdx (key: string, index = 0): any[] {
+  public getCallByIdx(key: string, index = 0): any[] {
     return this.calls[key][index];
   }
 
-  public getCallCount (key: string): number {
+  public getCallCount(key: string): number {
     return this.calls[key]?.length ?? 0;
   }
 
-  public clear (): void {
+  public clear(): void {
     this.calls = {};
   }
 }
@@ -54,22 +54,22 @@ describe('CustomizationService', () => {
     documentMock = {
       getElementById: (id: string) => {
         return {
-          setAttribute: function () {
+          setAttribute: function() {
             callRecorder.add(`${id}-setAttribute`, arguments);
           }
         } as unknown as HTMLElement;
       },
       querySelector: (selector: string) => {
         return {
-          set innerHTML (value: string) {
+          set innerHTML(value: string) {
             callRecorder.add(`${selector}.innerHTML`, arguments);
           },
-          get style () {
+          get style() {
             return {
-              setProperty: function () {
+              setProperty: function() {
                 callRecorder.add(`${selector}.style.setProperty`, arguments);
               },
-              removeProperty: function () {
+              removeProperty: function() {
                 callRecorder.add(`${selector}.style.removeProperty`, arguments);
               }
             };

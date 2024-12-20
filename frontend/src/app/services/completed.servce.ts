@@ -7,13 +7,13 @@ import { Completed } from '../shared/types/model/Completed';
   providedIn: 'root'
 })
 export class CompletedService {
-  constructor (private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
-  createCompleted (completed: Completed): Observable<Completed> {
+  createCompleted(completed: Completed): Observable<Completed> {
     return this.httpClient.post<Completed>('/api/v2/completed', completed);
   }
 
-  deleteCompleted (objectiveId: number): Observable<Completed> {
+  deleteCompleted(objectiveId: number): Observable<Completed> {
     return this.httpClient.delete<Completed>('/api/v2/completed/' + objectiveId);
   }
 }

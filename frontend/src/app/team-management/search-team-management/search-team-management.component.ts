@@ -39,7 +39,7 @@ export class SearchTeamManagementComponent {
 
   private users: User[] = [];
 
-  constructor (
+  constructor(
     private readonly userService: UserService,
     private readonly teamService: TeamService,
     private readonly router: Router,
@@ -71,20 +71,20 @@ export class SearchTeamManagementComponent {
       });
   }
 
-  selectUser (user: User) {
+  selectUser(user: User) {
     this.search.setValue('');
     const teamId: number = this.activatedRoute.snapshot.params['teamId'];
     this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId))
       .then();
   }
 
-  selectTeam (team: Team) {
+  selectTeam(team: Team) {
     this.search.setValue('');
     this.router.navigateByUrl(getRouteToTeam(team.id))
       .then();
   }
 
-  private applyFilter (filterValue: string): void {
+  private applyFilter(filterValue: string): void {
     if (!filterValue.length) {
       this.filteredUsers$.next([]);
       this.filteredTeams$.next([]);
@@ -99,7 +99,7 @@ export class SearchTeamManagementComponent {
       .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS));
   }
 
-  private sortByStringPosition (a: string, b: string, value: string): number {
+  private sortByStringPosition(a: string, b: string, value: string): number {
     const indexA = a.toLowerCase()
       .indexOf(value);
     const indexB = b.toLowerCase()
@@ -119,13 +119,13 @@ export class SearchTeamManagementComponent {
     return indexA - indexB;
   }
 
-  private updateTeamsAndUsers (teams: Team[], users: User[]) {
+  private updateTeamsAndUsers(teams: Team[], users: User[]) {
     this.teams = [...teams].sort((a, b) => a.name.localeCompare(b.name));
     this.users = users.sort((a, b) => (a.firstname + a.lastname).localeCompare(b.firstname + b.lastname));
     this.applyFilter(this.searchValue$.getValue());
   }
 
-  private filterTeams (teams: Team[], filterValue: string): FilteredTeam[] {
+  private filterTeams(teams: Team[], filterValue: string): FilteredTeam[] {
     return teams
       .filter((team) => this.containsText(team.name, filterValue))
       .map((team) => ({
@@ -135,7 +135,7 @@ export class SearchTeamManagementComponent {
       }));
   }
 
-  private filterUsers (users: User[], filterValue: string): FilteredUser[] {
+  private filterUsers(users: User[], filterValue: string): FilteredUser[] {
     return users
       .filter((user) => this.containsText(user.firstname + user.lastname + user.email, filterValue))
 
@@ -146,12 +146,12 @@ export class SearchTeamManagementComponent {
       }));
   }
 
-  private containsText (value: string, text: string): boolean {
+  private containsText(value: string, text: string): boolean {
     return value.toLowerCase()
       .indexOf(text.toLowerCase()) >= 0;
   }
 
-  private formatText (value: string, text: string): string {
+  private formatText(value: string, text: string): string {
     return value.replaceAll(new RegExp(`(${text})`, 'ig'), `<strong>$1</strong>`);
   }
 }

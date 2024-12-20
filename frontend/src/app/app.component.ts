@@ -11,7 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class AppComponent {
   readonly PATH_PREFIX = '../assets/icons/';
 
-  constructor (private matIconRegistry: MatIconRegistry,
+  constructor(private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon('pz-search',
       this.domSanitizer.bypassSecurityTrustResourceUrl(this.PATH_PREFIX + 'search-icon.svg'));

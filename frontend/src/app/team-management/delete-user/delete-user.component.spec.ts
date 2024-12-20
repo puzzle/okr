@@ -24,7 +24,7 @@ describe('DeleteUserComponent', () => {
   const dialogServiceMock = { openCustomizedConfirmDialog: jest.fn() };
   const mockLocation: jest.Mocked<Location> = { back: jest.fn() } as any;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [DeleteUserComponent],
       providers: [{ provide: UserService,
@@ -86,7 +86,7 @@ describe('DeleteUserComponent', () => {
 
   it('deleteUser() should not reload users when UserService throws an error', () => {
     // arrange
-    function createErrorSubject () {
+    function createErrorSubject() {
       const myError = new Subject<any>();
       myError.error('uups');
       return myError;

@@ -13,12 +13,12 @@ describe('Tab workflow tests', () => {
       .focus();
   });
 
-  function focusedShouldHaveTestId (testId: string) {
+  function focusedShouldHaveTestId(testId: string) {
     cy.focused()
       .should('have.attr', 'data-testId', testId);
   }
 
-  function tabAndCheck (testId: string, text?: string) {
+  function tabAndCheck(testId: string, text?: string) {
     cy.tabForwardUntil(`[data-testId="${testId}"]`);
     focusedShouldHaveTestId(testId);
     if (text) {
@@ -364,7 +364,7 @@ describe('Tab workflow tests', () => {
   });
 });
 
-function tabToThreeDotMenuOption (name: string) {
+function tabToThreeDotMenuOption(name: string) {
   cy.pressUntilContains(name, 'ArrowDown');
   cy.realPress('Enter');
 }

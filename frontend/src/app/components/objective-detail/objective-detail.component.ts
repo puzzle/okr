@@ -19,7 +19,7 @@ export class ObjectiveDetailComponent implements OnInit {
 
   objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
-  constructor (
+  constructor(
     private objectiveService: ObjectiveService,
     private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
@@ -27,12 +27,12 @@ export class ObjectiveDetailComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.objectiveId = this.getIdFromParams();
     this.loadObjective(this.objectiveId);
   }
 
-  private getIdFromParams (): number {
+  private getIdFromParams(): number {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       throw Error('objective id is undefined');
@@ -40,14 +40,14 @@ export class ObjectiveDetailComponent implements OnInit {
     return parseInt(id);
   }
 
-  loadObjective (id: number): void {
+  loadObjective(id: number): void {
     this.objectiveService
       .getFullObjective(id)
       .pipe(catchError(() => EMPTY))
       .subscribe((objective) => this.objective$.next(objective));
   }
 
-  openAddKeyResultDialog () {
+  openAddKeyResultDialog() {
     this.dialogService
       .open(KeyresultDialogComponent, {
         data: {
@@ -64,7 +64,7 @@ export class ObjectiveDetailComponent implements OnInit {
       });
   }
 
-  openEditObjectiveDialog () {
+  openEditObjectiveDialog() {
     this.dialogService
       .open(ObjectiveFormComponent, {
         data: {
@@ -85,7 +85,7 @@ export class ObjectiveDetailComponent implements OnInit {
       });
   }
 
-  backToOverview () {
+  backToOverview() {
     this.router.navigate(['']);
   }
 }

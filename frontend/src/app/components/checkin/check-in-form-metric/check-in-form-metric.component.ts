@@ -26,14 +26,14 @@ export class CheckInFormMetricComponent implements OnInit {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor (private translate: TranslateService) {}
+  constructor(private translate: TranslateService) {}
 
-  ngOnInit () {
+  ngOnInit() {
     this.dialogForm.controls['value'].setValidators([Validators.required,
       Validators.pattern('^-?\\d+\\.?\\d*$')]);
   }
 
-  generateUnitLabel (): string {
+  generateUnitLabel(): string {
     switch (this.keyResult.unit) {
       case 'PERCENT':
         return '%';
@@ -48,11 +48,11 @@ export class CheckInFormMetricComponent implements OnInit {
     }
   }
 
-  getErrorMessage (error: string, field: string): string {
+  getErrorMessage(error: string, field: string): string {
     return field + this.translate.instant('DIALOG_ERRORS.' + error);
   }
 
-  getCheckInMetric (): CheckInMetricMin {
+  getCheckInMetric(): CheckInMetricMin {
     return this.checkIn as CheckInMetricMin;
   }
 }

@@ -11,11 +11,11 @@ import {
 import { ObjectiveMenuAfterActions } from './ObjectiveMenuAfterActions';
 
 export class ObjectiveMenuActions {
-  constructor (private readonly dialogService: DialogService,
+  constructor(private readonly dialogService: DialogService,
     private readonly refreshDataService: RefreshDataService,
     private readonly afterActions: ObjectiveMenuAfterActions) {}
 
-  releaseFromQuarterAction (objective: ObjectiveMin): ObjectiveMenuEntry {
+  releaseFromQuarterAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.RELEASE');
     const afterAction: ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult) => this.afterActions.releaseFromQuarter(objective);
     return { displayName: 'Objective veröffentlichen',
@@ -23,7 +23,7 @@ export class ObjectiveMenuActions {
       afterAction: afterAction };
   }
 
-  releaseFromBacklogAction (objective: ObjectiveMin): ObjectiveMenuEntry {
+  releaseFromBacklogAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id },
       action: 'releaseBacklog' } };
     const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
@@ -33,7 +33,7 @@ export class ObjectiveMenuActions {
       afterAction };
   }
 
-  editObjectiveAction (objective: ObjectiveMin): ObjectiveMenuEntry {
+  editObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id } } };
     const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
     const afterAction: ObjectiveMenuAfterAction = () => {
@@ -44,7 +44,7 @@ export class ObjectiveMenuActions {
       afterAction: afterAction };
   }
 
-  duplicateObjectiveAction (objective: ObjectiveMin): ObjectiveMenuEntry {
+  duplicateObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id },
       action: 'duplicate' } };
     const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
@@ -54,7 +54,7 @@ export class ObjectiveMenuActions {
       afterAction: afterAction };
   }
 
-  completeObjectiveAction (objective: ObjectiveMin): ObjectiveMenuEntry {
+  completeObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = {
       data: { objectiveTitle: objective.title }
     };
@@ -66,7 +66,7 @@ export class ObjectiveMenuActions {
       afterAction: afterAction };
   }
 
-  objectiveBackToDraft (): ObjectiveMenuEntry {
+  objectiveBackToDraft(): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.TO_DRAFT');
     const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) => this.afterActions.objectiveBackToDraft(obj);
 
@@ -75,7 +75,7 @@ export class ObjectiveMenuActions {
       afterAction: afterAction };
   }
 
-  objectiveReopen (): ObjectiveMenuEntry {
+  objectiveReopen(): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.REOPEN');
     const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) => this.afterActions.objectiveReopen(obj);
 

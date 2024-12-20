@@ -29,19 +29,19 @@ export class ExampleDialogComponent {
     hobby: new FormControl<string>('', [Validators.required])
   });
 
-  constructor (public dialog: MatDialogRef<ExampleDialogComponent>,
+  constructor(public dialog: MatDialogRef<ExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any) {}
 
-  save () {
+  save() {
     this.dialog.close({ data: this.dialogForm.value });
   }
 
-  isTouchedOrDirty (name: string) {
+  isTouchedOrDirty(name: string) {
     return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
   }
 
   // Check if any errors are present if not return empty array if yes return error keys
-  getErrorKeysOfFormField (name: string) {
+  getErrorKeysOfFormField(name: string) {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }

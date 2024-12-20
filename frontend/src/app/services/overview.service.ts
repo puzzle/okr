@@ -9,9 +9,9 @@ import { OverviewEntity } from '../shared/types/model/OverviewEntity';
   providedIn: 'root'
 })
 export class OverviewService {
-  constructor (private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-  getOverview (quarterId?: number, teamIds?: number[], objectiveQuery?: string): Observable<OverviewEntity[]> {
+  getOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string): Observable<OverviewEntity[]> {
     const params = optionalValue({
       quarter: quarterId,
       team: teamIds,

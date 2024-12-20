@@ -21,11 +21,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
 class ResizeObserverMock {
-  observe () {}
+  observe() {}
 
-  unobserve () {}
+  unobserve() {}
 
-  disconnect () {}
+  disconnect() {}
 }
 
 const refreshDataServiceMock = {

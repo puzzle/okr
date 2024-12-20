@@ -33,23 +33,23 @@ export class NewUserComponent implements AfterViewInit {
 
   @ViewChild('firstInput') firstInput: any;
 
-  ngAfterViewInit (): void {
+  ngAfterViewInit(): void {
     this.firstInput.nativeElement.focus();
   }
 
-  remove () {
+  remove() {
     this.removeUser.emit();
   }
 
-  get firstname () {
+  get firstname() {
     return this.userFormGroup.controls.firstname;
   }
 
-  get lastname () {
+  get lastname() {
     return this.userFormGroup.controls.lastname;
   }
 
-  get email () {
+  get email() {
     return this.userFormGroup.controls.email;
   }
 }

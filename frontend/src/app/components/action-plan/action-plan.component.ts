@@ -21,10 +21,10 @@ export class ActionPlanComponent {
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
 
-  constructor (private actionService: ActionService,
+  constructor(private actionService: ActionService,
     public dialogService: DialogService) {}
 
-  handleKeyDown (event: Event, currentIndex: number) {
+  handleKeyDown(event: Event, currentIndex: number) {
     let newIndex = currentIndex;
     if ((event as KeyboardEvent).key === 'ArrowDown') {
       if (newIndex + 1 <= this.control.getValue()!.length - 1) {
@@ -39,7 +39,7 @@ export class ActionPlanComponent {
     this.listItems.get(this.activeItem)?.nativeElement.focus();
   }
 
-  changeItemPosition (newIndex: number, currentIndex: number) {
+  changeItemPosition(newIndex: number, currentIndex: number) {
     this.activeItem = newIndex;
     const currentActionPlan: Action[] = this.control.getValue()!;
     this.updateActionTexts(currentActionPlan);
@@ -48,25 +48,25 @@ export class ActionPlanComponent {
     this.control.next(currentActionPlan);
   }
 
-  updateActionTexts (currentActionPlan: Action[]) {
+  updateActionTexts(currentActionPlan: Action[]) {
     const texts = Array.from(this.listItems)
       .map((input: any) => input.nativeElement.value);
     currentActionPlan.forEach((action: Action, index: number) => (action.action = texts[index]));
   }
 
-  increaseActiveItemWithTab () {
+  increaseActiveItemWithTab() {
     if (this.activeItem <= this.control.value!.length - 2) {
       this.activeItem++;
     }
   }
 
-  decreaseActiveItemWithShiftTab () {
+  decreaseActiveItemWithShiftTab() {
     if (this.activeItem > 0) {
       this.activeItem--;
     }
   }
 
-  drop (event: CdkDragDrop<Action[] | null>) {
+  drop(event: CdkDragDrop<Action[] | null>) {
     const value: string = (event.container.element.nativeElement.children[event.previousIndex].children[1] as HTMLInputElement).value;
     const actions: Action[] = this.control.getValue()!;
     if (actions[event.previousIndex].action == '' && value != '') {
@@ -85,15 +85,15 @@ export class ActionPlanComponent {
     this.activeItem = event.currentIndex;
   }
 
-  adjustPriorities () {
+  adjustPriorities() {
     const actions: Action[] = this.control.getValue()!;
-    actions.forEach(function (action: Action, index: number) {
+    actions.forEach(function(action: Action, index: number) {
       action.priority = index;
     });
     this.control.next(actions);
   }
 
-  removeAction (index: number) {
+  removeAction(index: number) {
     const actions: Action[] = this.control.getValue()!;
     if (this.activeItem == index && this.activeItem > 0) {
       this.activeItem--;
@@ -120,7 +120,7 @@ export class ActionPlanComponent {
     }
   }
 
-  addNewAction () {
+  addNewAction() {
     const actions: Action[] = this.control.getValue()!;
     actions.push({ action: '',
       priority: actions.length,
@@ -133,7 +133,7 @@ export class ActionPlanComponent {
    * By default angular material adds a new entry inside the actionplan when the user presses enter
    *  to disable this behaviour we need this method which prevents the event from firing
    */
-  preventAddingNewItems (event: Event) {
+  preventAddingNewItems(event: Event) {
     event.preventDefault();
   }
 

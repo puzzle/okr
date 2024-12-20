@@ -91,7 +91,7 @@ describe('TeamManagementComponent', () => {
       .toBeTruthy();
   });
 
-  it('should call service method to save team', async () => {
+  it('should call service method to save team', async() => {
     component.teamForm.setValue(teamFormObject);
     jest.spyOn(teamServiceMock, 'createTeam')
       .mockReturnValue(of(teamFormObject));
@@ -103,7 +103,7 @@ describe('TeamManagementComponent', () => {
       .toHaveBeenCalledWith(teamFormObject as Team);
   });
 
-  it('should call service method to update team if data input is not null', async () => {
+  it('should call service method to update team if data input is not null', async() => {
     component.data = { team: marketingTeamWriteable };
     component.teamForm.setValue(teamFormObject);
     jest.spyOn(teamServiceMock, 'updateTeam')
@@ -120,7 +120,7 @@ describe('TeamManagementComponent', () => {
       } as Team);
   });
 
-  it('should set team values in from on init if data is not null', async () => {
+  it('should set team values in from on init if data is not null', async() => {
     component.data = { team: marketingTeamWriteable };
     component.ngOnInit();
     expect(component.teamForm.controls.name.value)

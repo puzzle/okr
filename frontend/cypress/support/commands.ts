@@ -62,7 +62,7 @@ Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number
   validateScoring(isOverview, percentage);
 });
 
-function loginWithCredentials (username: string, password: string) {
+function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
   cy.intercept('GET', '**/users/current')
     .as('getCurrentUser');

@@ -42,7 +42,7 @@ describe('TeamManagementComponent', () => {
     config$: of({})
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,

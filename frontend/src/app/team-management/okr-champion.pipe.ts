@@ -6,9 +6,9 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: true
 })
 export class OkrChampionPipe implements PipeTransform {
-  constructor (private readonly translate: TranslateService) {}
+  constructor(private readonly translate: TranslateService) {}
 
-  transform (isOkrChampion: boolean): string {
+  transform(isOkrChampion: boolean): string {
     return isOkrChampion ? this.translate.instant('SHARED.JA') : '-';
   }
 }

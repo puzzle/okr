@@ -22,7 +22,7 @@ export class TeamComponent {
 
   addIconSrc = new BehaviorSubject<string>('assets/icons/new-icon.svg');
 
-  constructor (private dialogService: DialogService,
+  constructor(private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
     private configService: ConfigService) {
     this.configService.config$.pipe(first())
@@ -34,7 +34,7 @@ export class TeamComponent {
 
   trackByObjectiveId: TrackByFunction<ObjectiveMin> = (index, objective) => objective.id;
 
-  createObjective () {
+  createObjective() {
     const matDialogRef = this.dialogService.open(ObjectiveFormComponent, {
       data: {
         objective: {
@@ -51,7 +51,7 @@ export class TeamComponent {
       });
   }
 
-  openAddKeyResultDialog (objective: Objective) {
+  openAddKeyResultDialog(objective: Objective) {
     this.dialogService
       .open(KeyresultDialogComponent, {
         data: {

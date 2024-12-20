@@ -7,9 +7,9 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class QuarterService {
-  constructor (private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-  getAllQuarters (): Observable<Quarter[]> {
+  getAllQuarters(): Observable<Quarter[]> {
     return this.http
       .get<Quarter[]>('/api/v2/quarters')
       .pipe(map((quarters) => quarters.map((quarter) => new Quarter(
@@ -17,7 +17,7 @@ export class QuarterService {
       ))));
   }
 
-  getCurrentQuarter (): Observable<Quarter> {
+  getCurrentQuarter(): Observable<Quarter> {
     return this.http.get<Quarter>('/api/v2/quarters/current');
   }
 }

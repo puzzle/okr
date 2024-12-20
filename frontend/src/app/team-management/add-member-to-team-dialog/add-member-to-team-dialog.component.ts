@@ -35,7 +35,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
 
   private readonly unsubscribe$ = new Subject<void>();
 
-  public constructor (
+  public constructor(
     private readonly userService: UserService,
     private readonly teamService: TeamService,
     public dialogRef: MatDialogRef<AddMemberToTeamDialogComponent>,
@@ -45,7 +45,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
     this.selectedUsers$.subscribe((users) => (this.dataSource = new MatTableDataSource<User>(users)));
   }
 
-  public ngOnInit (): void {
+  public ngOnInit(): void {
     this.usersForSelection$ = combineLatest([this.userService.getUsers(),
       this.selectedUsers$,
       this.search.valueChanges.pipe(startWith(''),
@@ -59,16 +59,16 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
         }));
   }
 
-  public ngOnDestroy () {
+  public ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  getDialogTitle (): string {
+  getDialogTitle(): string {
     return `Members zu Team ${this.data.team.name} hinzufügen`;
   }
 
-  addUsersToTeam (): void {
+  addUsersToTeam(): void {
     this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue())
       .subscribe(() => {
         this.userService.reloadUsers();
@@ -78,7 +78,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
       });
   }
 
-  private filter (allPossibleUsers: User[], searchValue: string, selectedUsers: User[]) {
+  private filter(allPossibleUsers: User[], searchValue: string, selectedUsers: User[]) {
     // filter currently current users of team
     const currentUserIds = this.data.currentUsersOfTeam.map((u) => u.id);
     const filteredUsers = allPossibleUsers.filter((u) => !currentUserIds.includes(u.id));
@@ -94,21 +94,21 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
     });
   }
 
-  getDisplayValue (user: User | ''): string {
+  getDisplayValue(user: User | ''): string {
     if (!user) {
       return '';
     }
     return `${user.firstname} ${user.lastname} (${user.email})`;
   }
 
-  selectUser (user: User) {
+  selectUser(user: User) {
     const newUsers = this.selectedUsers$.getValue();
     newUsers.push(user);
     this.selectedUsers$.next(newUsers);
     this.search.setValue('');
   }
 
-  remove (user: User): void {
+  remove(user: User): void {
     const filteredUsers = this.selectedUsers$.getValue()
       .filter((u) => u !== user);
     this.selectedUsers$.next(filteredUsers);

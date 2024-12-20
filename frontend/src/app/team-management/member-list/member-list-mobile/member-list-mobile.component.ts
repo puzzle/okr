@@ -16,11 +16,11 @@ export class MemberListMobileComponent implements OnInit {
 
   @Input() selectedTeam$!: BehaviorSubject<Team | undefined>;
 
-  constructor () {}
+  constructor() {}
 
-  ngOnInit (): void {}
+  ngOnInit(): void {}
 
-  getMemberDetailsLink (userTableEntry: UserTableEntry) {
+  getMemberDetailsLink(userTableEntry: UserTableEntry) {
     return getRouteToUserDetails(userTableEntry.id, this.selectedTeam$.value?.id);
   }
 

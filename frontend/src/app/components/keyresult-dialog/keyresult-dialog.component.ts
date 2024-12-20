@@ -34,7 +34,7 @@ export class KeyresultDialogComponent {
     keyResultType: new FormControl<string>('metric')
   });
 
-  constructor (
+  constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
       keyResult: KeyResult; },
     private keyResultService: KeyresultService,
@@ -42,11 +42,11 @@ export class KeyresultDialogComponent {
     public dialogRef: MatDialogRef<KeyresultDialogComponent>
   ) {}
 
-  isMetricKeyResult () {
+  isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
-  saveKeyResult (openNewDialog = false) {
+  saveKeyResult(openNewDialog = false) {
     const value = this.keyResultForm.value;
     const keyResult = this.isMetricKeyResult()
       ? ({ ...value,
@@ -68,7 +68,7 @@ export class KeyresultDialogComponent {
       });
   }
 
-  deleteKeyResult () {
+  deleteKeyResult() {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.KEYRESULT')
       .afterClosed()
@@ -81,22 +81,22 @@ export class KeyresultDialogComponent {
       });
   }
 
-  openNew () {
+  openNew() {
     this.saveKeyResult(true);
   }
 
-  isTouchedOrDirty (name: string) {
+  isTouchedOrDirty(name: string) {
     return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
   }
 
-  invalidOwner (): boolean {
+  invalidOwner(): boolean {
     return (
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
   }
 
-  getDialogTitle (): string {
+  getDialogTitle(): string {
     return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
   }
 }

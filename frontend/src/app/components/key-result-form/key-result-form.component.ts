@@ -36,11 +36,11 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   @Input()
   keyResult!: KeyResult | null;
 
-  constructor (public userService: UserService,
+  constructor(public userService: UserService,
     private oauthService: OAuthService,
     private translate: TranslateService) {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.users$ = this.userService.getUsers();
     this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''),
       filter((value) => typeof value === 'string'),
@@ -93,63 +93,63 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  isMetricKeyResult () {
+  isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
-  setMetricValuesInForm (keyResultMetric: KeyResultMetric) {
+  setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
     this.keyResultForm.controls['unit'].setValue(keyResultMetric.unit);
     this.keyResultForm.controls['baseline'].setValue(keyResultMetric.baseline);
     this.keyResultForm.controls['stretchGoal'].setValue(keyResultMetric.stretchGoal);
   }
 
-  setOrdinalValuesInForm (keyResultOrdinal: KeyResultOrdinal) {
+  setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {
     this.keyResultForm.controls['commitZone'].setValue(keyResultOrdinal.commitZone);
     this.keyResultForm.controls['targetZone'].setValue(keyResultOrdinal.targetZone);
     this.keyResultForm.controls['stretchZone'].setValue(keyResultOrdinal.stretchZone);
   }
 
-  isTouchedOrDirty (name: string) {
+  isTouchedOrDirty(name: string) {
     return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
   }
 
-  getErrorMessage (
+  getErrorMessage(
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
     return field + this.translate.instant('DIALOG_ERRORS.' + error)
       .format(firstNumber, secondNumber);
   }
 
-  filter (value: string): Observable<User[]> {
+  filter(value: string): Observable<User[]> {
     const filterValue = value.toLowerCase();
     return this.users$.pipe(map((users) => users.filter((user) => getFullNameFromUser(user)
       .toLowerCase()
       .includes(filterValue))));
   }
 
-  invalidOwner (): boolean {
+  invalidOwner(): boolean {
     return (
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
   }
 
-  getUserNameFromUser (user: User): string {
+  getUserNameFromUser(user: User): string {
     return user ? getFullNameFromUser(user) : '';
   }
 
-  getKeyResultId (): number | null {
+  getKeyResultId(): number | null {
     return this.keyResult ? this.keyResult.id : null;
   }
 
-  updateFormValidity () {}
+  updateFormValidity() {}
 
-  getLoggedInUserName () {
+  getLoggedInUserName() {
     return this.getUserNameFromUser(this.userService.getCurrentUser());
   }
 }

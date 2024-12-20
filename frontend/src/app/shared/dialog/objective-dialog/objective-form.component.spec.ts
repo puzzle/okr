@@ -45,7 +45,7 @@ interface MatDialogDataInterface {
 }
 
 const quarterService = {
-  getAllQuarters (): Observable<Quarter[]> {
+  getAllQuarters(): Observable<Quarter[]> {
     return of([new Quarter(
       1, quarter.label, quarter.startDate, quarter.endDate
     ),
@@ -56,7 +56,7 @@ const quarterService = {
       999, 'Backlog', null, null
     )]);
   },
-  getCurrentQuarter (): Observable<Quarter> {
+  getCurrentQuarter(): Observable<Quarter> {
     return of(new Quarter(
       2, quarter.label, quarter.startDate, quarter.endDate
     ));
@@ -295,7 +295,7 @@ describe('ObjectiveDialogComponent', () => {
         });
     });
 
-    it('should load default values into form onInit with defined objectiveId', async () => {
+    it('should load default values into form onInit with defined objectiveId', async() => {
       matDataMock.objective.objectiveId = 1;
       const routerHarness = await RouterTestingHarness.create();
       await routerHarness.navigateByUrl('/?quarter=2');
@@ -342,7 +342,7 @@ describe('ObjectiveDialogComponent', () => {
       });
     });
 
-    it('should return correct value if allowed to save to backlog', async () => {
+    it('should return correct value if allowed to save to backlog', async() => {
       component.quarters = quarterList;
       const isBacklogQuarterSpy = jest.spyOn(component, 'isBacklogQuarter');
       isBacklogQuarterSpy.mockReturnValue(false);
@@ -385,7 +385,7 @@ describe('ObjectiveDialogComponent', () => {
         .toBeTruthy();
     });
 
-    it('should return if option is allowed for quarter select', async () => {
+    it('should return if option is allowed for quarter select', async() => {
       const quarter: Quarter = new Quarter(
         1, 'Backlog', null, null
       );
@@ -480,7 +480,7 @@ describe('ObjectiveDialogComponent', () => {
         .toBeTruthy();
     });
 
-    it('should set correct default value if objective is released in backlog', async () => {
+    it('should set correct default value if objective is released in backlog', async() => {
       component.data = {
         objective: {
           objectiveId: 1,

@@ -35,13 +35,13 @@ describe('KeyresultDialogComponent', () => {
   let keyResultService: KeyresultService;
 
   const oauthMockService = {
-    getIdentityClaims () {
+    getIdentityClaims() {
       return { name: users[1].firstname + ' ' + users[1].lastname };
     }
   };
 
   const userService = {
-    getUsers () {
+    getUsers() {
       return of(users);
     },
     getCurrentUser: jest.fn()
@@ -311,7 +311,7 @@ describe('KeyresultDialogComponent', () => {
         .toBeTruthy();
     });
 
-    it('should be able to set title', waitForAsync(async () => {
+    it('should be able to set title', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: null,
         actionList: [],
@@ -337,7 +337,7 @@ describe('KeyresultDialogComponent', () => {
         .toBe(null);
     }));
 
-    it('should display error message of too short input', waitForAsync(async () => {
+    it('should display error message of too short input', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -362,7 +362,7 @@ describe('KeyresultDialogComponent', () => {
         .toBeTruthy();
     }));
 
-    it('should display error message of required', waitForAsync(async () => {
+    it('should display error message of required', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -484,7 +484,7 @@ describe('KeyresultDialogComponent', () => {
         .toBe(testUser);
     }));
 
-    it('should be able to set title and description', waitForAsync(async () => {
+    it('should be able to set title and description', waitForAsync(async() => {
       expect(component.keyResultForm.value.title)
         .toEqual('Der Titel ist hier');
       expect(component.keyResultForm.value.description)
@@ -517,7 +517,7 @@ describe('KeyresultDialogComponent', () => {
         .toBeFalsy();
     }));
 
-    it('should display error message of too short input', waitForAsync(async () => {
+    it('should display error message of too short input', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -539,7 +539,7 @@ describe('KeyresultDialogComponent', () => {
         .toBeTruthy();
     }));
 
-    it('should display error message of required', waitForAsync(async () => {
+    it('should display error message of required', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -648,7 +648,7 @@ describe('KeyresultDialogComponent', () => {
         .toBe(testUser);
     }));
 
-    it('should be able to set title and description', waitForAsync(async () => {
+    it('should be able to set title and description', waitForAsync(async() => {
       expect(component.keyResultForm.value.title)
         .toEqual('Der Titel ist hier');
       expect(component.keyResultForm.value.description)
@@ -681,7 +681,7 @@ describe('KeyresultDialogComponent', () => {
         .toBeFalsy();
     }));
 
-    it('should display error message of too short input', waitForAsync(async () => {
+    it('should display error message of too short input', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],
@@ -703,7 +703,7 @@ describe('KeyresultDialogComponent', () => {
         .toBeTruthy();
     }));
 
-    it('should display error message of required', waitForAsync(async () => {
+    it('should display error message of required', waitForAsync(async() => {
       component.keyResultForm.setValue({
         owner: testUser,
         actionList: [],

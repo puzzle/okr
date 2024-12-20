@@ -18,13 +18,13 @@ import { ObjectiveDetailComponent } from './components/objective-detail/objectiv
 import { CommonModule } from '@angular/common';
 
 const oauthServiceMock = {
-  configure (environment: AuthConfig): void {},
-  initCodeFlow (): void {},
-  setupAutomaticSilentRefresh (): void {},
-  hasValidAccessToken (): boolean {
+  configure(environment: AuthConfig): void {},
+  initCodeFlow(): void {},
+  setupAutomaticSilentRefresh(): void {},
+  hasValidAccessToken(): boolean {
     return true;
   },
-  loadDiscoveryDocumentAndTryLogin (): Promise<any> {
+  loadDiscoveryDocumentAndTryLogin(): Promise<any> {
     this.initCodeFlow();
     return Promise.resolve();
   }
@@ -49,7 +49,7 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let loader: HarnessLoader;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes),

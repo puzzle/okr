@@ -36,34 +36,34 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = this.allColumns;
 
-  constructor (private readonly teamService: TeamService,
+  constructor(private readonly teamService: TeamService,
     private readonly userService: UserService,
     private readonly dialogService: DialogService) {}
 
-  ngOnInit () {
+  ngOnInit() {
     this.selectedTeam$.pipe(takeUntil(this.unsubscribe$))
       .subscribe((team) => {
         team ? this.setColumnForTeam(team) : this.setColumnsForAllTeams();
       });
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  private setColumnForTeam (team: Team) {
+  private setColumnForTeam(team: Team) {
     this.displayedColumns = [...this.teamColumns];
     if (team.writeable) {
       this.displayedColumns.push('menu');
     }
   }
 
-  private setColumnsForAllTeams () {
+  private setColumnsForAllTeams() {
     this.displayedColumns = this.allColumns;
   }
 
-  removeMemberFromTeam (entry: UserTableEntry, event: MouseEvent) {
+  removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
     const i18nData = {
@@ -82,7 +82,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  saveUserTeamMembership (isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
+  saveUserTeamMembership(isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
     // make a copy and set value only after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
@@ -95,7 +95,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  getMemberDetailsLink (user: User, team?: Team) {
+  getMemberDetailsLink(user: User, team?: Team) {
     return getRouteToUserDetails(user.id, team?.id);
   }
 
@@ -103,7 +103,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
    * this method is only used in Team context. Therefore, it should only have one userTeam.
    * otherwise the method will throw an exception
    */
-  getSingleUserTeam (userTableEntry: UserTableEntry): UserTeam {
+  getSingleUserTeam(userTableEntry: UserTableEntry): UserTeam {
     if (userTableEntry.userTeamList.length !== 1) {
       throw Error('it should have exactly one UserTeam at this point');
     }

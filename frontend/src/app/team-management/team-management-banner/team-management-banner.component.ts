@@ -11,9 +11,9 @@ import { DialogService } from '../../services/dialog.service';
 export class TeamManagementBannerComponent {
   private dialogRef!: MatDialogRef<AddEditTeamDialog> | undefined;
 
-  public constructor (private dialogService: DialogService) {}
+  public constructor(private dialogService: DialogService) {}
 
-  createTeam (): void {
+  createTeam(): void {
     if (!this.dialogRef) {
       this.dialogRef = this.dialogService.open(AddEditTeamDialog);
       this.dialogRef.afterClosed()

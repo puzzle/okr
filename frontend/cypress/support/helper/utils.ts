@@ -5,12 +5,12 @@ export const uniqueSuffix = (value: string): string => {
   return `${value}-${uuidv4()}`;
 };
 
-export function pressUntilContains (text: string, key: keyof typeof keyCodeDefinitions) {
+export function pressUntilContains(text: string, key: keyof typeof keyCodeDefinitions) {
   const condition = (element: HTMLElement) => element.innerText.includes(text);
   pressUntil(key, condition);
 }
 
-export function doUntilSelector (
+export function doUntilSelector(
   selector: string, tab: () => void, limit = 100, count = 0
 ) {
   const condition = (element: HTMLElement) => Cypress.$(element)
@@ -20,11 +20,11 @@ export function doUntilSelector (
   );
 }
 
-function pressUntil (key: keyof typeof keyCodeDefinitions, condition: (elem: HTMLElement) => boolean) {
+function pressUntil(key: keyof typeof keyCodeDefinitions, condition: (elem: HTMLElement) => boolean) {
   doUntil(condition, () => cy.realPress(key));
 }
 
-function doUntil (
+function doUntil(
   condition: (element: HTMLElement) => boolean,
   tab: () => void,
   limit = 100,

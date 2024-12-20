@@ -5,20 +5,20 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'unitTransformation'
 })
 export class UnitTransformationPipe implements PipeTransform {
-  transform (value: number, label: string): string {
+  transform(value: number, label: string): string {
     return this.transformValue(value) + this.transformLabel(label);
   }
 
-  transformValue (value: number): string {
+  transformValue(value: number): string {
     return Number.isNaN(value) ? '0' : this.roundAndAddThousandSplitSign(value);
   }
 
-  roundAndAddThousandSplitSign (value: number): string {
+  roundAndAddThousandSplitSign(value: number): string {
     return (+value.toFixed(2)).toLocaleString('en-US')
       .replace(/,/g, "'");
   }
 
-  transformLabel (label: string): string {
+  transformLabel(label: string): string {
     switch (label) {
       case Unit.PERCENT:
         return '%';

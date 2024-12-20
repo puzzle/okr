@@ -49,7 +49,7 @@ describe('MemberDetailComponent', () => {
     openConfirmDialog: jest.fn()
   };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [
         MemberDetailComponent,

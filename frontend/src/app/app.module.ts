@@ -70,8 +70,8 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { CustomizationService } from './services/customization.service';
 import { MetricCheckInDirective } from './components/checkin/check-in-form-metric/metric-check-in-directive';
 
-function initOauthFactory (configService: ConfigService, oauthService: OAuthService) {
-  return async () => {
+function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
+  return async() => {
     const config = await firstValueFrom(configService.config$);
     oauthService.configure({
       ...environment.oauth,
@@ -81,11 +81,11 @@ function initOauthFactory (configService: ConfigService, oauthService: OAuthServ
   };
 }
 
-export function createTranslateLoader (http: HttpBackend) {
+export function createTranslateLoader(http: HttpBackend) {
   return new TranslateHttpLoader(new HttpClient(http), './assets/i18n/', '.json');
 }
 
-export function storageFactory (): OAuthStorage {
+export function storageFactory(): OAuthStorage {
   return localStorage;
 }
 
@@ -205,5 +205,5 @@ export const MY_FORMATS = {
   ]
 })
 export class AppModule {
-  constructor (private readonly customizationService: CustomizationService) {}
+  constructor(private readonly customizationService: CustomizationService) {}
 }

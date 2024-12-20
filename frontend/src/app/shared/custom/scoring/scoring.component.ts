@@ -54,11 +54,11 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('valueLabel')
   private valueLabel: ElementRef<HTMLSpanElement> | undefined = undefined;
 
-  constructor (private changeDetectionRef: ChangeDetectorRef) {
+  constructor(private changeDetectionRef: ChangeDetectorRef) {
     this.labelPercentage = new Observable<number>();
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.stretched = false;
     if (this.keyResult.lastCheckIn) {
       if (this.keyResult.keyResultType === 'metric') {
@@ -69,7 +69,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  ngAfterViewInit (): void {
+  ngAfterViewInit(): void {
     // Define width of scoring elements
     this.failElement!.nativeElement.style.width = this.failPercent + '%';
     this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
@@ -97,7 +97,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  calculatePercentageOrdinal () {
+  calculatePercentageOrdinal() {
     switch ((this.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone!) {
       case Zone.STRETCH:
         this.stretched = true;
@@ -120,7 +120,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  calculatePercentageMetric () {
+  calculatePercentageMetric() {
     if (this.keyResult.lastCheckIn !== null) {
       const keyResultMetric: KeyResultMetricMin = this.castToMetric();
       const percentage = calculateCurrentPercentage(keyResultMetric);
@@ -143,7 +143,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  getScoringColorClassAndSetBorder (): string | null {
+  getScoringColorClassAndSetBorder(): string | null {
     if (this.targetPercent > 100) {
       return 'score-stretch';
     } else if (this.targetPercent > 0 || (this.commitPercent == 100 && this.keyResult.keyResultType === 'metric')) {
@@ -158,7 +158,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  ngOnChanges (changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['keyResult']?.currentValue !== undefined || changes['keyResult']?.currentValue !== null) {
       if (this.commitElement != undefined) {
         this.resetPercentagesToZero();
@@ -170,13 +170,13 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  resetPercentagesToZero () {
+  resetPercentagesToZero() {
     this.commitPercent = 0;
     this.targetPercent = 0;
     this.failPercent = 0;
   }
 
-  removeStyleClass () {
+  removeStyleClass() {
     const classArray: string[] = [
       'score-red',
       'score-green',
@@ -191,7 +191,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  castToMetric (): KeyResultMetricMin {
+  castToMetric(): KeyResultMetricMin {
     return this.keyResult as KeyResultMetricMin;
   }
 

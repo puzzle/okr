@@ -6,7 +6,7 @@ interface ScoringValue {
   targetPercent: number;
 }
 
-export function validateScoring (isOverview: boolean, percentage: number) {
+export function validateScoring(isOverview: boolean, percentage: number) {
   const rgbCode = colorFromPercentage(percentage);
   const scoringValue = scoringValueFromPercentage(percentage);
 
@@ -26,14 +26,14 @@ export function validateScoring (isOverview: boolean, percentage: number) {
   validateScoringColor('target', rgbCode, isOverview);
 }
 
-export function getPercentageMetric (baseline: number, stretchGoal: number, value: number) {
+export function getPercentageMetric(baseline: number, stretchGoal: number, value: number) {
   if (isLastCheckInNegative(baseline, stretchGoal, value)) {
     return -1;
   }
   return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
 }
 
-export function getPercentageOrdinal (zone: string) {
+export function getPercentageOrdinal(zone: string) {
   if (zone == 'stretch') return 101;
   if (zone == 'target') return 99.99;
   if (zone == 'commit') return 70;
@@ -41,7 +41,7 @@ export function getPercentageOrdinal (zone: string) {
   return 0;
 }
 
-function validateScoringWidth (zone: string, percent: number, isOverview: boolean) {
+function validateScoringWidth(zone: string, percent: number, isOverview: boolean) {
   cy.getZone(zone, isOverview)
     .parent()
     .invoke('width')
@@ -53,7 +53,7 @@ function validateScoringWidth (zone: string, percent: number, isOverview: boolea
     });
 }
 
-function validateScoringColor (zone: string, rgbCode: string, isOverview: boolean) {
+function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean) {
   cy.getZone(zone, isOverview)
     .invoke('css', 'background-color')
     .should('equal', rgbCode);
@@ -69,21 +69,21 @@ function validateScoringColor (zone: string, rgbCode: string, isOverview: boolea
   }
 }
 
-function checkVisibilityOfScoringComponent (isOverview: boolean, displayProperty: string, componentTestId: string) {
+function checkVisibilityOfScoringComponent(isOverview: boolean, displayProperty: string, componentTestId: string) {
   (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
     .findByTestId(componentTestId)
     .invoke('css', 'display')
     .should('equal', displayProperty);
 }
 
-function colorFromPercentage (percentage: number) {
+function colorFromPercentage(percentage: number) {
   if (percentage >= 100) return 'rgba(0, 0, 0, 0)';
   if (percentage > 70) return 'rgb(30, 138, 41)';
   if (percentage > 30) return 'rgb(255, 214, 0)';
   return 'rgb(186, 56, 56)';
 }
 
-function scoringValueFromPercentage (percentage: number): ScoringValue {
+function scoringValueFromPercentage(percentage: number): ScoringValue {
   if (percentage >= 100) {
     return { failPercent: 0,
       commitPercent: 0,

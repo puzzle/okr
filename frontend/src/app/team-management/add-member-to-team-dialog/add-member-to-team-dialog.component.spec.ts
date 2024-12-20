@@ -26,7 +26,7 @@ describe('AddMemberToTeamDialogComponent', () => {
 
   const matDialogRefMock = {};
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [AddMemberToTeamDialogComponent],
       imports: [

@@ -15,7 +15,7 @@ export default class TeammanagementPage extends Page {
     teamSearch: () => AngularSearchBox.from('app-team-management-banner [data-testId="teamManagementSearch"]')
   };
 
-  override validatePage () {
+  override validatePage() {
     this.elements.teammanagement()
       .contains('Teamverwaltung');
     this.elements.backToOverview()
@@ -32,29 +32,29 @@ export default class TeammanagementPage extends Page {
       .contains('Member registrieren');
   }
 
-  protected doVisit (): this {
+  protected doVisit(): this {
     this.elements.logo()
       .click();
     return this;
   }
 
-  backToOverview (): void {
+  backToOverview(): void {
     this.elements.backToOverview()
       .click();
   }
 
-  visitOverview (): void {
+  visitOverview(): void {
     this.elements.logo()
       .click();
   }
 
-  addTeam (): TeamDialog {
+  addTeam(): TeamDialog {
     this.elements.addTeam()
       .click();
     return new TeamDialog();
   }
 
-  deleteTeam (teamName: string) {
+  deleteTeam(teamName: string) {
     cy.get('app-team-list .mat-mdc-list-item')
       .contains(teamName)
       .click();
@@ -68,7 +68,7 @@ export default class TeammanagementPage extends Page {
       .checkDescription(`Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`);
   }
 
-  getURL (): string {
+  getURL(): string {
     return 'team-management';
   }
 }

@@ -16,12 +16,12 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor (private readonly teamService: TeamService,
+  constructor(private readonly teamService: TeamService,
     private readonly route: ActivatedRoute) {
     this.teams$ = teamService.getAllTeams();
   }
 
-  public ngOnInit (): void {
+  public ngOnInit(): void {
     this.route.paramMap.pipe(takeUntil(this.unsubscribe$))
       .subscribe((params) => {
         const teamId = params.get('teamId');
@@ -29,7 +29,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnDestroy (): void {
+  public ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

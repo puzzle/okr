@@ -1,5 +1,5 @@
 export class Quarter {
-  constructor (
+  constructor(
     id: number, label: string, startDate: Date | null, endDate: Date | null
   ) {
     this.id = id;
@@ -16,11 +16,11 @@ export class Quarter {
 
   readonly endDate: Date | null;
 
-  fullLabel (): string {
+  fullLabel(): string {
     return this.isCurrent() ? this.label + ' Aktuell' : this.label;
   }
 
-  private isCurrent (): boolean {
+  private isCurrent(): boolean {
     if (this.startDate === null || this.endDate === null) {
       return false;
     }

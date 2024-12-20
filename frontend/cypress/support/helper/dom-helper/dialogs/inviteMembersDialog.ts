@@ -5,14 +5,14 @@ import Chainable = Cypress.Chainable;
 export default class InviteMembersDialog extends Dialog {
   private readonly firstnames: string[] = [];
 
-  override validatePage () {
+  override validatePage() {
     super.validatePage();
     this.getPage()
       .contains('Members registrieren')
       .should('exist');
   }
 
-  enterUser (firstName: string, lastName: string, email: string) {
+  enterUser(firstName: string, lastName: string, email: string) {
     firstName = uniqueSuffix(firstName);
     email = uniqueSuffix(email);
     this.firstnames.push(firstName);
@@ -28,23 +28,23 @@ export default class InviteMembersDialog extends Dialog {
     return this;
   }
 
-  addAnotherUser () {
+  addAnotherUser() {
     cy.contains('Weiterer Member hinzufügen')
       .click();
     return this;
   }
 
-  getFirstNames () {
+  getFirstNames() {
     return this.firstnames;
   }
 
-  override submit () {
+  override submit() {
     cy.getByTestId('invite')
       .click();
     return this.firstnames;
   }
 
-  getPage (): Chainable {
+  getPage(): Chainable {
     return cy.get('app-invite-user-dialog');
   }
 }

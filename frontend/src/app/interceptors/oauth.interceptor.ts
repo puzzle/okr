@@ -7,9 +7,9 @@ import { OAuthService } from 'angular-oauth2-oidc';
   providedIn: 'root'
 })
 export class OauthInterceptor implements HttpInterceptor {
-  constructor (private oauthService: OAuthService) {}
+  constructor(private oauthService: OAuthService) {}
 
-  intercept (req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.match(/^(\/)?api/)) {
       return next.handle(req);
     }

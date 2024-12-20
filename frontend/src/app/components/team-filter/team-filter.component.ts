@@ -30,7 +30,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   isMobile = false;
 
-  constructor (
+  constructor(
     private teamService: TeamService,
     private route: ActivatedRoute,
     private router: Router,
@@ -44,7 +44,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.refreshTeamData();
 
     this.breakpointObserver
@@ -55,7 +55,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       });
   }
 
-  private refreshTeamData () {
+  private refreshTeamData() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -82,12 +82,12 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  changeTeamFilterParams () {
+  changeTeamFilterParams() {
     const params = { teams: this.activeTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
     this.router
@@ -95,7 +95,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
       .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
-  toggleSelection (id: number) {
+  toggleSelection(id: number) {
     if (this.areAllTeamsShown()) {
       this.activeTeams = [id];
     } else if (this.activeTeams.includes(id)) {
@@ -110,27 +110,27 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     this.changeTeamFilterParams();
   }
 
-  areAllTeamsShown () {
+  areAllTeamsShown() {
     return areEqual(this.activeTeams, this.getAllTeamIds());
   }
 
-  toggleAll () {
+  toggleAll() {
     this.activeTeams = this.areAllTeamsShown() ? [] : this.getAllTeamIds();
     this.changeTeamFilterParams();
   }
 
-  getAllTeamIds () {
+  getAllTeamIds() {
     return this.teams$.getValue()
       .map((team) => team.id);
   }
 
-  getTeamName (id: number): string {
+  getTeamName(id: number): string {
     const teamName = this.teams$.getValue()
       .find((team) => team.id === id)?.name;
     return teamName ?? 'no team name';
   }
 
-  sortTeamsToggledPriority () {
+  sortTeamsToggledPriority() {
     return this.teams$.getValue()
       .sort((a, b) => {
         const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;

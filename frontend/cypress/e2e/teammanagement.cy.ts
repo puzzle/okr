@@ -35,7 +35,7 @@ describe('Team management tests', () => {
       checkTeamsSelected();
     });
 
-    function checkTeamsSelected () {
+    function checkTeamsSelected() {
       FilterHelper.do()
         .optionShouldBeSelected('LoremIpsum')
         .optionShouldBeSelected('/BBT');
@@ -543,12 +543,12 @@ describe('Team management tests', () => {
   });
 });
 
-function closeOverlay () {
+function closeOverlay() {
   cy.get('.cdk-overlay-backdrop')
     .click(-50, -50, { force: true });
 }
 
-function checkRolesForEsha () {
+function checkRolesForEsha() {
   cy.get('app-member-detail tbody tr')
     .eq(0)
     .should('contain', '/BBT')
@@ -559,7 +559,7 @@ function checkRolesForEsha () {
     .and('contain', 'Team-Member');
 }
 
-function editTeamNameAndTest (teamName: string) {
+function editTeamNameAndTest(teamName: string) {
   cy.intercept('PUT', '**/teams/*')
     .as('saveTeam');
   cy.getByTestId('editTeamButton')
@@ -577,7 +577,7 @@ function editTeamNameAndTest (teamName: string) {
   cy.contains(teamName);
 }
 
-function navigateToUser (userName: string) {
+function navigateToUser(userName: string) {
   cy.intercept('GET', '**/users/*')
     .as('getUser');
   cy.get('td')
@@ -586,7 +586,7 @@ function navigateToUser (userName: string) {
   cy.wait('@getUser');
 }
 
-function fillOutNewUser (firstname: string, lastname: string, email: string) {
+function fillOutNewUser(firstname: string, lastname: string, email: string) {
   cy.realType(firstname);
   cy.tabForward();
   cy.realType(lastname);

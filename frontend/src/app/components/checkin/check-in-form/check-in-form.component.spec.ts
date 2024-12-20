@@ -94,7 +94,7 @@ describe('CheckInFormComponent', () => {
       .toBeTruthy();
   });
 
-  it('should save check-in correctly if key result is metric', waitForAsync(async () => {
+  it('should save check-in correctly if key result is metric', waitForAsync(async() => {
     component.checkIn = checkInMetric;
     component.keyResult = keyResultMetric;
     component.dialogForm.controls['value'].setValue(checkInMetric?.value!.toString());
@@ -120,7 +120,7 @@ describe('CheckInFormComponent', () => {
       .toHaveBeenCalled();
   }));
 
-  it('should save check-in correctly if key result is ordinal', waitForAsync(async () => {
+  it('should save check-in correctly if key result is ordinal', waitForAsync(async() => {
     component.checkIn = checkInOrdinal;
     component.keyResult = keyResultOrdinal;
     component.dialogForm.controls['value'].setValue(checkInOrdinal?.zone!.toString());
@@ -144,7 +144,7 @@ describe('CheckInFormComponent', () => {
       });
   }));
 
-  it('should set default values if form check-in input is not null', waitForAsync(async () => {
+  it('should set default values if form check-in input is not null', waitForAsync(async() => {
     component.data.checkIn = checkInMetric;
     component.setDefaultValues();
     expect(component.dialogForm.value)
@@ -157,7 +157,7 @@ describe('CheckInFormComponent', () => {
       });
   }));
 
-  it('should set default values if last check-in of key result is not null', waitForAsync(async () => {
+  it('should set default values if last check-in of key result is not null', waitForAsync(async() => {
     component.keyResult = keyResultOrdinal;
     component.ngOnInit();
     component.setDefaultValues();
@@ -171,7 +171,7 @@ describe('CheckInFormComponent', () => {
       });
   }));
 
-  it('should set default values with actionList on KeyResult', waitForAsync(async () => {
+  it('should set default values with actionList on KeyResult', waitForAsync(async() => {
     component.keyResult = keyResultActions;
     component.ngOnInit();
     component.setDefaultValues();
@@ -186,7 +186,7 @@ describe('CheckInFormComponent', () => {
       });
   }));
 
-  it('should call actionService when saving CheckIn', waitForAsync(async () => {
+  it('should call actionService when saving CheckIn', waitForAsync(async() => {
     checkInServiceMock.saveCheckIn.mockReturnValue(of(true));
     actionServiceMock.updateActions.mockReturnValue(of(true));
 

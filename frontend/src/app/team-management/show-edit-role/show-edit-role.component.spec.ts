@@ -10,7 +10,7 @@ describe('ShowEditRoleComponent', () => {
   let fixture: ComponentFixture<ShowEditRoleComponent>;
   const userTeam = { ...testUser.userTeamList[0] };
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [ShowEditRoleComponent],
       imports: [TranslateTestingModule.withTranslations({ de: de })]

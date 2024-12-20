@@ -18,14 +18,14 @@ export class QuarterFilterComponent implements OnInit {
 
   currentQuarterId = -1;
 
-  constructor (
+  constructor(
     private quarterService: QuarterService,
     private router: Router,
     private route: ActivatedRoute,
     private refreshDataService: RefreshDataService
   ) {}
 
-  ngOnInit () {
+  ngOnInit() {
     const allQuarters$ = this.quarterService.getAllQuarters();
     const currentQuarter$ = this.quarterService.getCurrentQuarter();
     forkJoin([allQuarters$,
@@ -52,7 +52,7 @@ export class QuarterFilterComponent implements OnInit {
       });
   }
 
-  changeDisplayedQuarter () {
+  changeDisplayedQuarter() {
     const id = this.currentQuarterId;
     const quarterLabel = this.quarters.getValue()
       .find((e) => e.id == id)?.label || '';

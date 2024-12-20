@@ -34,28 +34,28 @@ export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
     overlayY: 'top'
   }];
 
-  constructor (private router: Router,
+  constructor(private router: Router,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute) {}
 
-  ngOnInit (): void {}
+  ngOnInit(): void {}
 
-  ngAfterContentInit (): void {
+  ngAfterContentInit(): void {
     document.body.classList.add('disable-scrolling');
     this.right = '0';
     this.loaded = true;
     this.cd.markForCheck();
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     document.body.classList.remove('disable-scrolling');
   }
 
-  close () {
+  close() {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  closeOnKeydown ($event: KeyboardEvent) {
+  closeOnKeydown($event: KeyboardEvent) {
     if (this.leaveKeys.includes($event.key)) {
       this.close();
     }

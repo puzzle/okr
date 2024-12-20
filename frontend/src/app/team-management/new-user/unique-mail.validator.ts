@@ -9,7 +9,7 @@ export class UniqueEmailValidator implements Validator {
 
   private addedMails: string[] = []; // mails added in form
 
-  constructor (private readonly userService: UserService) {
+  constructor(private readonly userService: UserService) {
     this.userService
       .getUsers()
       .pipe(takeUntilDestroyed())
@@ -18,13 +18,13 @@ export class UniqueEmailValidator implements Validator {
       });
   }
 
-  validate (control: AbstractControl): ValidationErrors | null {
+  validate(control: AbstractControl): ValidationErrors | null {
     const existingUser = this.existingUserMails.concat(this.addedMails)
       .includes(control.value);
     return existingUser ? { notUniqueMail: { value: control.value } } : null;
   }
 
-  setAddedMails (mails: string[]) {
+  setAddedMails(mails: string[]) {
     this.addedMails = mails;
   }
 }

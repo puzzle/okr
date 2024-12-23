@@ -72,7 +72,7 @@
     "ngx-translate-testing": "^7.0.0",
     "prettier": "^3.4.2",
     "typescript": "^5.5.4",
-    "typescript-eslint": "8.18.0",
+    "typescript-eslint": "8.18.2",
     "uuid": "^11.0.0"
   },
   "jest": {

@@ -28,13 +28,13 @@ describe('ShowEditRoleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('saveIsAdmin should set edit to false', () => {
+  it('should set edit to false using saveIsAdmin', () => {
     component.edit = true;
     component.saveIsAdmin(true);
     expect(component.edit).toBeFalsy();
   });
 
-  it('setEditAsync should set edit to given value', fakeAsync(() => {
+  it('should set edit to given value using setEditAsync', fakeAsync(() => {
     component.edit = false;
     const mouseEvent = {
       stopPropagation: () => undefined,

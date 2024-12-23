@@ -26,7 +26,7 @@ describe('TeamRoleDropdownComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('component onInit should create formControl', () => {
+  it('should create formControl using onInit', () => {
     component.isAdmin = false;
     component.ngOnInit();
     expect(JSON.stringify(component.adminControl)).toStrictEqual(
@@ -34,7 +34,7 @@ describe('TeamRoleDropdownComponent', () => {
     );
   });
 
-  it('triggerIsAdminChange should submit next value', (done) => {
+  it('should submit next value using triggerIsAdminChange', (done) => {
     component.isAdminChange.pipe(takeLast(1)).subscribe((val) => {
       expect(val).toBeFalsy();
       done();

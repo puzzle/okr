@@ -94,13 +94,13 @@ describe('TeamManagementMobileFilterComponent', () => {
     expect(component.teams).toStrictEqual(teamList);
   }));
 
-  it('navigate should navigate to team ', () => {
+  it('should navigate to team ', () => {
     component.navigate(team1);
     expect(routerMock.navigateByUrl).toBeCalledTimes(1);
     expect(routerMock.navigateByUrl).toBeCalledWith(getRouteToTeam(team1.id));
   });
 
-  it('navigate should navigate to all teams ', () => {
+  it('should navigate to all teams ', () => {
     component.navigate(component.ALL_TEAMS);
     expect(routerMock.navigateByUrl).toBeCalledTimes(1);
     expect(routerMock.navigateByUrl).toBeCalledWith(getRouteToAllTeams());

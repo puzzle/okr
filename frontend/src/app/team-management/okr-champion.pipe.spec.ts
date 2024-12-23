@@ -5,7 +5,7 @@ describe('OkrChampionPipe', () => {
     instant: () => 'Ja',
   } as any;
 
-  it('create an instance', () => {
+  it('should create an instance', () => {
     const pipe = new OkrChampionPipe(translateMock);
     expect(pipe).toBeTruthy();
   });

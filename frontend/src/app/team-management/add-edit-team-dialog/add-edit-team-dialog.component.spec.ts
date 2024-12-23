@@ -106,10 +106,12 @@ describe('TeamManagementComponent', () => {
     component.saveTeam();
 
     expect(teamServiceMock.updateTeam).toHaveBeenCalled();
-    expect(teamServiceMock.updateTeam).toHaveBeenCalledWith(expect.objectContaining({
-      id: marketingTeamWriteable.id,
-      version: marketingTeamWriteable.version,
-    }));
+    expect(teamServiceMock.updateTeam).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: marketingTeamWriteable.id,
+        version: marketingTeamWriteable.version,
+      }),
+    );
   });
 
   it('should set team values in from on init if data is not null', async () => {

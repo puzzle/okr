@@ -52,9 +52,9 @@ export class InviteUserDialogComponent {
 
   private createUserFormGroup() {
     return this.formBuilder.group({
-      firstname: this.formBuilder.control('', [Validators.required,
+      firstName: this.formBuilder.control('', [Validators.required,
         Validators.minLength(1)]),
-      lastname: this.formBuilder.control('', [Validators.required,
+      lastName: this.formBuilder.control('', [Validators.required,
         Validators.minLength(1)]),
       email: this.formBuilder.control('', [
         Validators.required,

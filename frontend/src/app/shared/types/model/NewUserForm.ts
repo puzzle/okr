@@ -1,5 +1,5 @@
 export interface NewUserForm<T> {
-  firstname: T;
+  firstName: T;
   email: T;
-  lastname: T;
+  lastName: T;
 }

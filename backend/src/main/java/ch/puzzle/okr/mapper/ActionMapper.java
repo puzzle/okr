@@ -44,7 +44,7 @@ public class ActionMapper {
                 .withVersion(actionDto.version())
                 .withAction(actionDto.action())
                 .withPriority(actionDto.priority())
-                .withIsChecked(actionDto.isChecked())
+                .isChecked(actionDto.isChecked())
                 .withKeyResult(keyResult)
                 .build();
     }

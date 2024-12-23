@@ -14,7 +14,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { OkrTangramComponent } from './custom/okr-tangram/okr-tangram.component';
 import { MatButtonModule } from '@angular/material/button';
-import { SidepanelComponent } from './sidepanel/sidepanel.component';
+import { SidePanelComponent } from './side-panel/side-panel.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
@@ -35,7 +35,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     ScoringComponent,
     CompleteDialogComponent,
     OkrTangramComponent,
-    SidepanelComponent,
+    SidePanelComponent,
     SpinnerComponent,
     DialogTemplateCoreComponent
   ],
@@ -69,7 +69,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     CompleteDialogComponent,
     OkrTangramComponent,
     UnitTransformationPipe,
-    SidepanelComponent,
+    SidePanelComponent,
     SpinnerComponent,
     DialogTemplateCoreComponent
   ]

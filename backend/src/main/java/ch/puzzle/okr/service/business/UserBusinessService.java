@@ -42,18 +42,18 @@ public class UserBusinessService {
         return userPersistenceService.getOrCreateUser(user);
     }
 
-    public User setIsOkrChampion(User user, boolean okrChampion) {
-        if (!okrChampion) {
+    public User setIsOkrChampion(User user, boolean isOkrChampion) {
+        if (!isOkrChampion) {
             checkAtLeastOneOkrChampionExists(user);
         }
-        user.setOkrChampion(okrChampion);
+        user.setOkrChampion(isOkrChampion);
         cacheService.emptyAuthorizationUsersCache();
         return userPersistenceService.save(user);
     }
 
     // checks if at least one okr champion remains after removing given one
     private void checkAtLeastOneOkrChampionExists(User user) {
-        var champions = userPersistenceService.findAllOkrChampions();
+        List<User> champions = userPersistenceService.findAllOkrChampions();
         champions
                 .stream()
                 .filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId()))
@@ -68,7 +68,7 @@ public class UserBusinessService {
 
     @Transactional
     public List<User> createUsers(List<User> userList) {
-        var userIter = userPersistenceService.saveAll(userList);
+        Iterable<User> userIter = userPersistenceService.saveAll(userList);
         return StreamSupport.stream(userIter.spliterator(), false).toList();
     }
 

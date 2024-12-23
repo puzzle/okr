@@ -6,7 +6,7 @@ import { ToasterType } from '../shared/types/enums/ToasterType';
 
 describe('ToasterService', () => {
   let service: ToasterService;
-  let toastr: ToastrService;
+  let toaster: ToastrService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,7 +14,7 @@ describe('ToasterService', () => {
       providers: [ToasterService]
     });
     service = TestBed.inject(ToasterService);
-    toastr = TestBed.inject(ToastrService);
+    toaster = TestBed.inject(ToastrService);
   });
 
   it('should be created', () => {
@@ -22,25 +22,25 @@ describe('ToasterService', () => {
       .toBeTruthy();
   });
 
-  it('showSuccess should call right method', () => {
-    jest.spyOn(toastr, 'success');
+  it('should call right method for showSuccess', () => {
+    jest.spyOn(toaster, 'success');
     service.showSuccess('test');
-    expect(toastr.success)
-      .toBeCalledWith('test', 'Erfolgreich!');
+    expect(toaster.success)
+      .toHaveBeenCalledWith('test', 'Erfolgreich!');
   });
 
-  it('showError should call right method', () => {
-    jest.spyOn(toastr, 'error');
+  it('should call right method for showError', () => {
+    jest.spyOn(toaster, 'error');
     service.showError('test');
-    expect(toastr.error)
-      .toBeCalledWith('test', 'Fehler!');
+    expect(toaster.error)
+      .toHaveBeenCalledWith('test', 'Fehler!');
   });
 
-  it('showWarn should call right method', () => {
-    jest.spyOn(toastr, 'warning');
+  it('should call right method for showWarn', () => {
+    jest.spyOn(toaster, 'warning');
     service.showWarn('test');
-    expect(toastr.warning)
-      .toBeCalledWith('test', 'Warnung!');
+    expect(toaster.warning)
+      .toHaveBeenCalledWith('test', 'Warnung!');
   });
 
   it.each([
@@ -56,12 +56,12 @@ describe('ToasterService', () => {
     [999,
       'message',
       'showSuccess']
-  ])('showWarn should call right method', (toasterType: number, message: string, func: any) => {
+  ])('should call right method for dynamic toaster', (toasterType: number, message: string, func: any) => {
     const spy = jest.spyOn(service, func);
 
     service.showCustomToaster(message, toasterType);
 
     expect(spy)
-      .toBeCalledWith(message);
+      .toHaveBeenCalledWith(message);
   });
 });

@@ -12,11 +12,11 @@ import { KeyresultService } from '../../services/keyresult.service';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
-  selector: 'app-keyresult-dialog',
-  templateUrl: './keyresult-dialog.component.html',
-  styleUrls: ['./keyresult-dialog.component.scss']
+  selector: 'app-key-result-dialog',
+  templateUrl: './key-result-dialog.component.html',
+  styleUrls: ['./key-result-dialog.component.scss']
 })
-export class KeyresultDialogComponent {
+export class KeyResultDialogComponent {
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required,
       Validators.minLength(2),
@@ -39,7 +39,7 @@ export class KeyresultDialogComponent {
       keyResult: KeyResult; },
     private keyResultService: KeyresultService,
     public dialogService: DialogService,
-    public dialogRef: MatDialogRef<KeyresultDialogComponent>
+    public dialogRef: MatDialogRef<KeyResultDialogComponent>
   ) {}
 
   isMetricKeyResult() {
@@ -70,7 +70,7 @@ export class KeyresultDialogComponent {
 
   deleteKeyResult() {
     this.dialogService
-      .openConfirmDialog('CONFIRMATION.DELETE.KEYRESULT')
+      .openConfirmDialog('CONFIRMATION.DELETE.KEY_RESULT')
       .afterClosed()
       .subscribe((result) => {
         if (result) {

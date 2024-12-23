@@ -4,7 +4,7 @@ import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDet
 import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
 
-describe('OKR Overview', () => {
+describe('okr key-result', () => {
   let overviewPage = new CyOverviewPage();
   let keyResultDetailPage = new KeyResultDetailPage();
 
@@ -14,7 +14,7 @@ describe('OKR Overview', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it('Create new metric KeyResult', () => {
+  it('should create new metric key-result', () => {
     overviewPage
       .addKeyResult()
       .checkForDialogTextMetric()
@@ -38,7 +38,7 @@ describe('OKR Overview', () => {
     cy.contains('Key Result bearbeiten');
   });
 
-  it('Create new ordinal KeyResult', () => {
+  it('should create new ordinal key-result', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('I am a ordinal keyresult')
@@ -66,7 +66,7 @@ describe('OKR Overview', () => {
     cy.contains('Key Result bearbeiten');
   });
 
-  it('Create new KeyResult and Save and New', () => {
+  it('should create new key-result and save and new', () => {
     overviewPage
       .addKeyResult()
       .checkForDialogTextMetric()
@@ -80,7 +80,7 @@ describe('OKR Overview', () => {
       .checkForDialogTextMetric();
   });
 
-  it('Create and edit KeyResult with Action Plan', () => {
+  it('should create and edit key-result with action plan', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This is a keyresult with an action plan')
@@ -104,11 +104,11 @@ describe('OKR Overview', () => {
     cy.contains('A new company');
 
     keyResultDetailPage.editKeyResult();
-    cy.getByTestId('actionInput')
+    cy.getByTestId('action-input')
       .should('have.length', 3);
   });
 
-  it('Edit a KeyResult without type change', () => {
+  it('should edit a key-result without type change', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('We want not to change keyresult title')
@@ -122,17 +122,17 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit')
       .should('not.be.disabled');
     cy.contains('Key Result bearbeiten');
-    cy.getByTestId('titleInput')
+    cy.getByTestId('title-input')
       .should('have.value', 'We want not to change keyresult title');
-    cy.getByTestId('commitZone')
+    cy.getByTestId('commit-zone')
       .should('have.value', 'My commit zone');
-    cy.getByTestId('targetZone')
+    cy.getByTestId('target-zone')
       .should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone')
+    cy.getByTestId('stretch-zone')
       .should('have.value', 'My stretch goal');
-    cy.getByTestId('ownerInput')
+    cy.getByTestId('owner-input')
       .should('have.value', 'Jaya Norris');
-    cy.getByTestId('descriptionInput')
+    cy.getByTestId('description-input')
       .should('have.value', 'This is my description');
 
     KeyResultDialog.do()
@@ -149,7 +149,7 @@ describe('OKR Overview', () => {
     cy.contains('This is my new description');
   });
 
-  it('Edit a KeyResult with type change', () => {
+  it('should edit a key-result with type change', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('Here we want to change keyresult title')
@@ -165,17 +165,17 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit')
       .should('not.be.disabled');
     cy.contains('Key Result bearbeiten');
-    cy.getByTestId('titleInput')
+    cy.getByTestId('title-input')
       .should('have.value', 'Here we want to change keyresult title');
-    cy.getByTestId('commitZone')
+    cy.getByTestId('commit-zone')
       .should('have.value', 'My commit zone');
-    cy.getByTestId('targetZone')
+    cy.getByTestId('target-zone')
       .should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone')
+    cy.getByTestId('stretch-zone')
       .should('have.value', 'My stretch goal');
-    cy.getByTestId('ownerInput')
+    cy.getByTestId('owner-input')
       .should('have.value', 'Jaya Norris');
-    cy.getByTestId('descriptionInput')
+    cy.getByTestId('description-input')
       .should('have.value', 'This is my description');
 
     KeyResultDialog.do()
@@ -217,11 +217,11 @@ describe('OKR Overview', () => {
     keyResultDetailPage.visit('Here we want to create a checkin')
       .editKeyResult();
 
-    cy.getByTestId('metricTab')
+    cy.getByTestId('metric-tab')
       .should('have.class', 'non-active');
   });
 
-  it('Check validation in keyresult dialog', () => {
+  it('should check validation in key-result dialog', () => {
     overviewPage.addKeyResult()
       .checkForDialogTextMetric();
     cy.getByTestId('submit')
@@ -234,7 +234,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit')
       .should('not.be.disabled');
 
-    cy.getByTestId('titleInput')
+    cy.getByTestId('title-input')
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -260,7 +260,7 @@ describe('OKR Overview', () => {
       .withMetricValues(Unit.PERCENT, '45', '52');
     cy.getByTestId('submit')
       .should('not.be.disabled');
-    cy.getByTestId('stretchGoal')
+    cy.getByTestId('stretch-goal')
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -276,14 +276,14 @@ describe('OKR Overview', () => {
       .withMetricValues(Unit.PERCENT, '45', '83');
     cy.getByTestId('submit')
       .should('not.be.disabled');
-    cy.getByTestId('ownerInput')
+    cy.getByTestId('owner-input')
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
 
-    cy.getByTestId('ownerInput')
+    cy.getByTestId('owner-input')
       .type('abc');
-    cy.getByTestId('titleInput')
+    cy.getByTestId('title-input')
       .type('Hello');
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -294,7 +294,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit')
       .should('not.be.disabled');
 
-    cy.getByTestId('ordinalTab')
+    cy.getByTestId('ordinal-tab')
       .click();
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -304,7 +304,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit')
       .should('not.be.disabled');
 
-    cy.getByTestId('commitZone')
+    cy.getByTestId('commit-zone')
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -314,7 +314,7 @@ describe('OKR Overview', () => {
       .withOrdinalValues('Commit', 'Target', 'Stretch');
     cy.getByTestId('submit')
       .should('not.be.disabled');
-    cy.getByTestId('targetZone')
+    cy.getByTestId('target-zone')
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -324,7 +324,7 @@ describe('OKR Overview', () => {
       .withOrdinalValues('Commit', 'Target', 'Stretch');
     cy.getByTestId('submit')
       .should('not.be.disabled');
-    cy.getByTestId('stretchZone')
+    cy.getByTestId('stretch-zone')
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -336,7 +336,7 @@ describe('OKR Overview', () => {
       .should('not.be.disabled');
   });
 
-  it('Delete existing keyresult', () => {
+  it('should delete existing key-result', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('A keyresult to delete')

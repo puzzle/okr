@@ -17,6 +17,7 @@ import ch.puzzle.okr.service.validation.OverviewValidationService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -108,8 +109,9 @@ class OverviewBusinessServiceTest {
         return overviews;
     }
 
+    @DisplayName("Should return correct list of overviews on getFilteredOverview()")
     @Test
-    void getFilteredOverviewShouldReturnListOfOverviews() {
+    void shouldReturnListOfOverviewsUsingGetFilteredOverview() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "Objective", authorizationUser))
                 .thenReturn(createOverviews());
 
@@ -126,8 +128,9 @@ class OverviewBusinessServiceTest {
                 authorizationUser);
     }
 
+    @DisplayName("Should return overviews of current quarter on getFilteredOverview() when quarter id is null")
     @Test
-    void getFilteredOverviewShouldReturnListOfOverviewsWhenQuarterIsNull() {
+    void shouldReturnListOfOverviewsWhenQuarterIsNullUsingGetFilteredOverview() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser))
                 .thenReturn(createOverviews());
         when(quarterBusinessService.getCurrentQuarter())
@@ -142,8 +145,9 @@ class OverviewBusinessServiceTest {
         verify(overviewPersistenceService, times(1)).getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser);
     }
 
+    @DisplayName("Should return empty list of overviews on getFilteredOverview() when team ids are null")
     @Test
-    void getFilteredOverviewShouldReturnEmptyListOfOverviewsWhenTeamIdsAreNull() {
+    void shouldReturnEmptyListOfOverviewsWhenTeamIdsAreNullUsingGetFilteredOverview() {
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser);
 
         assertEquals(0, overviews.size());
@@ -154,8 +158,9 @@ class OverviewBusinessServiceTest {
                 .getFilteredOverview(anyLong(), anyList(), anyString(), eq(authorizationUser));
     }
 
+    @DisplayName("Should throw exception on getFilteredOverview() when quarter id does not exist")
     @Test
-    void getFilteredOverviewShouldReturnExceptionWhenQuarterIdIsNonExistent() {
+    void shouldThrowNotFoundWhenQuarterIdIsNonExistentUsingGetFilteredOverview() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND))
                 .when(overviewValidationService)
                 .validateOnGet(eq(QUARTER_ID), anyList());
@@ -169,8 +174,9 @@ class OverviewBusinessServiceTest {
                 .getFilteredOverview(anyLong(), anyList(), anyString(), eq(authorizationUser));
     }
 
+    @DisplayName("Should throw exception on getFilteredOverview() when team id does not exist")
     @Test
-    void getFilteredOverviewShouldReturnExceptionWhenTeamIdIsNonExistent() {
+    void shouldThrowNotFoundWhenTeamIdIsNonExistentUsingGetFilteredOverview() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND))
                 .when(overviewValidationService)
                 .validateOnGet(QUARTER_ID, teamIds);
@@ -185,22 +191,9 @@ class OverviewBusinessServiceTest {
                 .getFilteredOverview(anyLong(), anyList(), any(), eq(authorizationUser));
     }
 
+    @DisplayName("Should return sorted list with teams that include the user first on getFilteredOverview()")
     @Test
-    void getFilteredOverviewShouldThrowExceptionWhenTeamIdIsNonExistent() {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND))
-                .when(overviewValidationService)
-                .validateOnGet(QUARTER_ID, teamIds);
-        assertThrows(ResponseStatusException.class,
-                     () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser));
-
-        verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never())
-                .getFilteredOverview(anyLong(), anyList(), anyString(), eq(authorizationUser));
-    }
-
-    @Test
-    void getFilteredOverviewShouldReturnSortedListUserTeamsFirst() {
+    void shouldReturnSortedListWithUserTeamsFirstUsingGetFilteredOverview() {
         Long firstLevelTeamId = 5L;
         AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))

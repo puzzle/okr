@@ -159,14 +159,14 @@ public class AssertHelper {
 
     private static void assertOwnerDto(User expected, KeyResultUserDto actual) {
         assertEquals(expected.getId(), actual.id());
-        assertEquals(expected.getFirstname(), actual.firstname());
-        assertEquals(expected.getLastname(), actual.lastname());
+        assertEquals(expected.getFirstName(), actual.firstName());
+        assertEquals(expected.getLastName(), actual.lastName());
     }
 
     private static void assertOwner(KeyResultUserDto expected, User actual) {
         assertEquals(expected.id(), actual.getId());
-        assertEquals(expected.firstname(), actual.getFirstname());
-        assertEquals(expected.lastname(), actual.getLastname());
+        assertEquals(expected.firstName(), actual.getFirstName());
+        assertEquals(expected.lastName(), actual.getLastName());
     }
 
     private static void assertCheckInMetricDto(KeyResultLastCheckInMetricDto expected,

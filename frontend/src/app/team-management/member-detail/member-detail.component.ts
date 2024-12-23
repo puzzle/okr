@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
-import { getFullNameFromUser, User } from '../../shared/types/model/User';
+import { getFullNameOfUser, User } from '../../shared/types/model/User';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/Team';
 import { UserTeam } from '../../shared/types/model/UserTeam';
@@ -34,7 +34,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     'role',
     'delete'];
 
-  readonly getFullNameFromUser = getFullNameFromUser;
+  readonly getFullNameFromUser = getFullNameOfUser;
 
   constructor(
     private readonly userService: UserService,
@@ -64,7 +64,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   private loadUser(userId: number) {
     this.userService
       .getUserById(userId)
-      .pipe(tap((user) => this.setSelectedUserIsLoggedinUser(user)))
+      .pipe(tap((user) => this.setSelectedUserIsLoggedInUser(user)))
       .subscribe((user) => {
         this.user = user;
         this.currentUserTeams$.next(user.userTeamList);
@@ -72,7 +72,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setSelectedUserIsLoggedinUser(selectedUser: User) {
+  private setSelectedUserIsLoggedInUser(selectedUser: User) {
     this.selectedUserIsLoggedInUser = selectedUser.id === this.userService.getCurrentUser().id;
   }
 
@@ -86,7 +86,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   removeUserFromTeam(userTeam: UserTeam, user: User) {
     const i18nData = {
-      user: getFullNameFromUser(user),
+      user: getFullNameOfUser(user),
       team: userTeam.team.name
     };
     this.dialogService
@@ -127,14 +127,14 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   isDeletable(userTeam: UserTeam): boolean {
-    return userTeam.team.writeable || this.selectedUserIsLoggedInUser;
+    return userTeam.team.isWriteable || this.selectedUserIsLoggedInUser;
   }
 
   navigateBack() {
     this.router.navigate(['../'], { relativeTo: this.route.parent });
   }
 
-  isOkrChampionChange(okrChampion: boolean, user: User) {
+  setIsOkrChampion(okrChampion: boolean, user: User) {
     this.userService.setIsOkrChampion(user, okrChampion)
       .subscribe(() => {
         this.loadUser(user.id);

@@ -21,8 +21,8 @@ public class UserMapperTest {
     private static final long USER_TEAM_ID = 100L;
     private static final long ID = 0L;
     private static final int VERSION = 1;
-    private static final String FIRSTNAME = "firstname";
-    private static final String LASTNAME = "lastname";
+    private static final String FIRST_NAME = "firstname";
+    private static final String LAST_NAME = "lastname";
     private static final String EMAIL = "a@b.ch";
     private static final boolean IS_OKR_CHAMPION = true;
 
@@ -35,8 +35,8 @@ public class UserMapperTest {
             .builder() //
             .withId(ID) //
             .withVersion(VERSION) //
-            .withFirstname(FIRSTNAME) //
-            .withLastname(LASTNAME) //
+            .withFirstName(FIRST_NAME) //
+            .withLastName(LAST_NAME) //
             .withEmail(EMAIL) //
             .withUserTeamList(List
                     .of(UserTeam.Builder
@@ -44,37 +44,37 @@ public class UserMapperTest {
                             .withId(USER_TEAM_ID) //
                             .withTeam(Team.Builder.builder().build()) //
                             .build())) //
-            .withOkrChampion(IS_OKR_CHAMPION) //
+            .isOkrChampion(IS_OKR_CHAMPION) //
             .build();
 
-    private final NewUserDto userDto = new NewUserDto(FIRSTNAME, LASTNAME, EMAIL);
+    private final NewUserDto userDto = new NewUserDto(FIRST_NAME, LAST_NAME, EMAIL);
 
     @BeforeEach
     void setup() {
         userMapper = new UserMapper(teamMapper);
     }
 
-    @DisplayName("toDto() without TeamList throws NullPointerException")
+    @DisplayName("Should throw NullPointerException when toDto() is called without teamList")
     @Test
-    void toDtoWithoutTeamListThrowsException() {
+    void shouldThrowExceptionWhenToDtoIsCalledWithoutTeamList() {
         // arrange
         User user = User.Builder
                 .builder() //
                 .withId(ID) //
                 .withVersion(VERSION) //
-                .withFirstname(FIRSTNAME) //
-                .withLastname(LASTNAME) //
+                .withFirstName(FIRST_NAME) //
+                .withLastName(LAST_NAME) //
                 .withEmail(EMAIL) //
-                .withOkrChampion(IS_OKR_CHAMPION) //
+                .isOkrChampion(IS_OKR_CHAMPION) //
                 .build();
 
         // act + assert
         assertThrows(NullPointerException.class, () -> userMapper.toDto(user));
     }
 
-    @DisplayName("toDto() should map User to Dto")
+    @DisplayName("Should map User to Dto when toDto() is called")
     @Test
-    void toDtoShouldMapUserToDto() {
+    void shouldMapUserToDtoWhenToDtoIsCalled() {
         // act
         UserDto userDto = userMapper.toDto(user);
 
@@ -83,9 +83,9 @@ public class UserMapperTest {
         assertUserDto(user, userDto);
     }
 
-    @DisplayName("toDtos() should map list of Users to Dtos")
+    @DisplayName("Should map list of users to dtos when toDtos() is called")
     @Test
-    void toDtosShouldMapListOfUsersToDtos() {
+    void shouldMapListOfUsersToDtosWhenToDtosIsCalled() {
         // act
         List<UserDto> userDtos = userMapper.toDtos(List.of(user));
 
@@ -97,7 +97,7 @@ public class UserMapperTest {
     private void assertUserDto(User expected, UserDto actual) {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
-        assertEquals(expected.getFirstname(), actual.firstname());
+        assertEquals(expected.getFirstName(), actual.firstName());
         assertEquals(expected.isOkrChampion(), actual.isOkrChampion());
         assertEquals(expected.getEmail(), actual.email());
 
@@ -105,9 +105,9 @@ public class UserMapperTest {
         assertEquals(expected.getUserTeamList().get(0).getId(), actual.userTeamList().get(0).id());
     }
 
-    @DisplayName("toUser() should map UserDto to User")
+    @DisplayName("Should map user-dto to user when toUser() is called")
     @Test
-    void toUserShouldMapUserDtoToUser() {
+    void shouldMapUserDtoToUserWhenToUserIsCalled() {
         // act
         User user = userMapper.toUser(userDto);
 
@@ -116,9 +116,9 @@ public class UserMapperTest {
         assertUser(userDto, user);
     }
 
-    @DisplayName("toUserList() should map List of UserDtos to List of Users")
+    @DisplayName("Should map list of user-dtos to list of users when toUserList() is called")
     @Test
-    void toUserListShouldMapUserDtoListToUserList() {
+    void shouldMapUserDtoListToUserListWhenToUserListIsCalled() {
         // act
         List<User> users = userMapper.toUserList(List.of(userDto));
 
@@ -128,8 +128,8 @@ public class UserMapperTest {
     }
 
     private void assertUser(NewUserDto expected, User actual) {
-        assertEquals(expected.firstname(), actual.getFirstname());
-        assertEquals(expected.lastname(), actual.getLastname());
+        assertEquals(expected.firstName(), actual.getFirstName());
+        assertEquals(expected.lastName(), actual.getLastName());
         assertEquals(expected.email(), actual.getEmail());
     }
 

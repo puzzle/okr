@@ -37,9 +37,9 @@ class CheckInPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName("getCheckInsByKeyResultIdOrderByCheckInDate() should get checkIns by keyResultId and order them by date desc")
+    @DisplayName("Should get checkIns by keyResultId and order them by date desc on getCheckInsByKeyResultIdOrderByCheckInDate() ")
     @Test
-    void getCheckInsByKeyResultIdOrderByCheckInDateShouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
+    void shouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
         // act
         List<CheckIn> checkIns = checkInPersistenceService
                 .getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
@@ -56,30 +56,28 @@ class CheckInPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName("getLastCheckInOfKeyResult() should get last checkIn of keyResult")
+    @DisplayName("Should get last checkIn of keyResult on getLastCheckInOfKeyResult()")
     @Test
-    void getLastCheckInOfKeyResultShouldGetLastCheckInOfKeyResult() {
+    void shouldGetLastCheckInOfKeyResult() {
         // act
         var lastCheckIn = checkInPersistenceService.getLastCheckInOfKeyResult(KEY_RESULT_ID);
 
         // assert
         var allCheckins = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(KEY_RESULT_ID);
         assertLastIsCreatedAfterAllOtherCheckIns(lastCheckIn, allCheckins);
-
     }
 
     private void assertLastIsCreatedAfterAllOtherCheckIns(CheckIn last, List<CheckIn> allCheckIns) {
-        for (CheckIn checkInLoop : allCheckIns) {
-            if (!Objects.equals(checkInLoop.getId(), last.getId())) {
-                assertTrue(last.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
+        for (CheckIn checkIn : allCheckIns) {
+            if (!Objects.equals(checkIn.getId(), last.getId())) {
+                assertTrue(last.getCreatedOn().isAfter(checkIn.getCreatedOn()));
             }
         }
     }
 
-    @DisplayName("getModelName() should return checkIn")
+    @DisplayName("Should return checkIn on getModelName()")
     @Test
-    void getModelNameShouldReturnCheckIn() {
+    void shouldReturnCheckIn() {
         assertEquals(CHECK_IN, checkInPersistenceService.getModelName());
     }
-
 }

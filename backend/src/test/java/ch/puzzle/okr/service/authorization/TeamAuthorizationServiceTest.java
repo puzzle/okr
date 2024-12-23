@@ -12,6 +12,7 @@ import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,8 +44,9 @@ class TeamAuthorizationServiceTest {
                                                                                                  List.of(),
                                                                                                  List.of()));
 
+    @DisplayName("Should return the created team")
     @Test
-    void createEntityShouldReturnTeam() {
+    void shouldReturnCreatedTeam() {
         when(teamBusinessService.createTeam(teamUnderTest, authorizationService.updateOrAddAuthorizationUser()))
                 .thenReturn(teamUnderTest);
 
@@ -52,8 +54,9 @@ class TeamAuthorizationServiceTest {
         assertEquals(teamUnderTest, team);
     }
 
+    @DisplayName("Should return the updated team when authorized as okr-champion")
     @Test
-    void updateEntityShouldReturnUpdatedTeamWhenAuthorizedAsOkrChampion() {
+    void shouldReturnUpdatedTeamWhenAuthorizedAsOkrChampion() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         when(teamBusinessService.updateTeam(teamUnderTest, id)).thenReturn(teamUnderTest);
@@ -62,8 +65,9 @@ class TeamAuthorizationServiceTest {
         assertEquals(teamUnderTest, team);
     }
 
+    @DisplayName("Should return the updated team when authorized as admin-user")
     @Test
-    void updateEntityShouldReturnUpdatedTeamWhenAuthorizedAsAdminUser() {
+    void shouldReturnUpdatedTeamWhenAuthorizedAsAdminUser() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(adminUser);
         when(teamBusinessService.updateTeam(teamUnderTest, id)).thenReturn(teamUnderTest);
@@ -72,8 +76,9 @@ class TeamAuthorizationServiceTest {
         assertEquals(teamUnderTest, team);
     }
 
+    @DisplayName("Should throw an exception when the user is authorized as a member")
     @Test
-    void updateEntityShouldThrowExceptionWhenAuthorizedAsMemberUser() {
+    void shouldThrowExceptionWhenAuthorizedAsMemberUser() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -83,8 +88,9 @@ class TeamAuthorizationServiceTest {
         assertEquals("NOT_AUTHORIZED_TO_WRITE", exception.getReason());
     }
 
+    @DisplayName("Should throw an exception when the user is authorized as a user with no teams")
     @Test
-    void updateEntityShouldThrowExceptionWhenAuthorizedAsUserWithNoTeams() {
+    void shouldThrowExceptionWhenAuthorizedAsUserWithNoTeams() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(userWithNoTeams);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -94,20 +100,23 @@ class TeamAuthorizationServiceTest {
         assertEquals("NOT_AUTHORIZED_TO_WRITE", exception.getReason());
     }
 
+    @DisplayName("Should successfully delete when authorized as an okr-champion")
     @Test
-    void deleteEntityByIdShouldPassThroughWhenAuthorizedAsOkrChampion() {
+    void shouldDeleteSuccessfullyWhenAuthorizedAsOkrChampion() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         teamAuthorizationService.deleteEntity(teamUnderTest.getId());
     }
 
+    @DisplayName("Should successfully delete when authorized as a team-admin")
     @Test
-    void deleteEntityByIdShouldPassThroughWhenAuthorizedAsTeamAdmin() {
+    void shouldDeleteSuccessfullyWhenAuthorizedAsTeamAdmin() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(adminUser);
         teamAuthorizationService.deleteEntity(teamUnderTest.getId());
     }
 
+    @DisplayName("Should throw an exception when the user is authorized as a member")
     @Test
-    void deleteEntityByIdShouldThrowExceptionWhenAuthorizedAsMemberUser() {
+    void shouldThrowExceptionWhenAuthorizedAsMemberUserForDeletion() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -116,8 +125,9 @@ class TeamAuthorizationServiceTest {
         assertEquals("NOT_AUTHORIZED_TO_DELETE", exception.getReason());
     }
 
+    @DisplayName("Should throw an exception when the user is authorized as a user with no teams for deletion")
     @Test
-    void deleteEntityByIdShouldThrowExceptionWhenAuthorizedAsUserWithNoTeams() {
+    void shouldThrowExceptionWhenAuthorizedAsUserWithNoTeamsForDeletion() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(userWithNoTeams);
 
@@ -127,9 +137,9 @@ class TeamAuthorizationServiceTest {
         assertEquals("NOT_AUTHORIZED_TO_DELETE", exception.getReason());
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should return all teams with writable={0}")
     @ValueSource(booleans = { true, false })
-    void getAllTeamsShouldReturnAllTeams(boolean isWriteable) {
+    void shouldReturnAllTeamsWithWritableFlag(boolean isWriteable) {
         List<Team> teamList = List.of(teamUnderTest, teamUnderTest);
         if (isWriteable) {
             when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
@@ -143,15 +153,17 @@ class TeamAuthorizationServiceTest {
         teams.forEach(team -> assertEquals(isWriteable, team.isWriteable()));
     }
 
+    @DisplayName("Should throw an exception if the user is not authorized to add users to a team")
     @Test
-    void addUsersToTeam_shouldThrowExceptionIfUserNotAuthorized() {
+    void shouldThrowExceptionIfUserNotAuthorizedToAddUsersToTeam() {
         when(authorizationService.updateOrAddAuthorizationUser())
                 .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of())));
         assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, List.of()));
     }
 
+    @DisplayName("Should call the teamBusinessService when adding users to a team")
     @Test
-    void addUsersToTeam_shouldCallTeamBusinessService() {
+    void shouldCallTeamBusinessServiceWhenAddingUsersToTeam() {
         var adminTeamId = 1L;
         var adminTeam = defaultTeam(adminTeamId);
         var usersList = List.of(1L, 2L);
@@ -159,6 +171,5 @@ class TeamAuthorizationServiceTest {
                 .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(adminTeam), List.of())));
         teamAuthorizationService.addUsersToTeam(adminTeamId, usersList);
         verify(teamBusinessService, times(1)).addUsersToTeam(adminTeamId, usersList);
-
     }
 }

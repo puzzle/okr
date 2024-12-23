@@ -1,4 +1,4 @@
-package ch.puzzle.okr.dto.userOkrData;
+package ch.puzzle.okr.dto.userokrdata;
 
 import java.util.List;
 

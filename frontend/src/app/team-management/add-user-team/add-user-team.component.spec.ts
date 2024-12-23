@@ -45,9 +45,9 @@ describe('AddUserTeamComponent', () => {
   });
 
   it('should filter selectableAdminTeams correctly', (done) => {
-    team1Copy.writeable = true;
-    team2Copy.writeable = true;
-    team3Copy.writeable = false;
+    team1Copy.isWriteable = true;
+    team2Copy.isWriteable = true;
+    team3Copy.isWriteable = false;
     component.ngOnInit();
     component.selectableAdminTeams$!.subscribe((teams) => {
       expect(teams.length)
@@ -59,9 +59,9 @@ describe('AddUserTeamComponent', () => {
   });
 
   it('should filter allAdminTeams correctly', (done) => {
-    team1Copy.writeable = true;
-    team2Copy.writeable = true;
-    team3Copy.writeable = false;
+    team1Copy.isWriteable = true;
+    team2Copy.isWriteable = true;
+    team3Copy.isWriteable = false;
     component.ngOnInit();
     component.allAdminTeams$!.subscribe((teams) => {
       expect(teams.length)
@@ -70,13 +70,13 @@ describe('AddUserTeamComponent', () => {
         .toBe(team1Copy.id);
       expect(teams[1].id)
         .toBe(team2Copy.id);
-      expect(component.showAddButton(teams))
+      expect(component.isAddButtonVisible(teams))
         .toBeTruthy();
       done();
     });
   });
 
-  it('createUserTeam should create the userTeam', () => {
+  it('should create the userTeam when createUserTeam is called', () => {
     component.createUserTeam(team1Copy);
     expect(component.userTeam)
       .toStrictEqual({
@@ -87,10 +87,10 @@ describe('AddUserTeamComponent', () => {
 
   it('save should throw exception if userTeam is undefined', () => {
     expect(() => component.save())
-      .toThrowError('UserTeam should be defined here');
+      .toThrow('UserTeam should be defined here');
   });
 
-  it('save should emit addUserTeam event and set userTeam to undefined', (done) => {
+  it('should emit addUserTeam event and set userTeam to undefined after save', (done) => {
     component.userTeam = testUser.userTeamList[0];
     component.addUserTeam.subscribe(() => {
       done();
@@ -102,25 +102,25 @@ describe('AddUserTeamComponent', () => {
 
   it('should test showAddButton', () => {
     component.userTeam = testUser.userTeamList[0];
-    expect(component.showAddButton(null))
+    expect(component.isAddButtonVisible(null))
       .toBeFalsy();
-    expect(component.showAddButton([team1Copy,
+    expect(component.isAddButtonVisible([team1Copy,
       team2Copy]))
       .toBeFalsy();
     component.userTeam = undefined;
-    expect(component.showAddButton([]))
+    expect(component.isAddButtonVisible([]))
       .toBeFalsy();
-    expect(component.showAddButton([team1Copy,
+    expect(component.isAddButtonVisible([team1Copy,
       team2Copy]))
       .toBeTruthy();
   });
 
   it('should test addButtonDisabled', () => {
-    expect(component.addButtonDisabled([team1Copy]))
+    expect(component.isAddButtonDisabled([team1Copy]))
       .toBeFalsy();
-    expect(component.addButtonDisabled([]))
+    expect(component.isAddButtonDisabled([]))
       .toBeTruthy();
-    expect(component.addButtonDisabled(null))
+    expect(component.isAddButtonDisabled(null))
       .toBeTruthy();
   });
 });

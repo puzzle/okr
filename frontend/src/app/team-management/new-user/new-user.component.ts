@@ -41,12 +41,12 @@ export class NewUserComponent implements AfterViewInit {
     this.removeUser.emit();
   }
 
-  get firstname() {
-    return this.userFormGroup.controls.firstname;
+  get firstName() {
+    return this.userFormGroup.controls.firstName;
   }
 
-  get lastname() {
-    return this.userFormGroup.controls.lastname;
+  get lastName() {
+    return this.userFormGroup.controls.lastName;
   }
 
   get email() {

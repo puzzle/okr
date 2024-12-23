@@ -57,9 +57,9 @@ public class ObjectiveMapperTest {
         objectiveMapper = new ObjectiveMapper(teamBusinessService, quarterBusinessService);
     }
 
-    @DisplayName("toDto() should map Objective to Dto")
+    @DisplayName("Should map objective to dto when calling toDto()")
     @Test
-    void toDtoShouldMapObjectiveToDto() {
+    void shouldMapObjectiveToDto() {
         // arrange
         Objective objective = Objective.Builder
                 .builder() //
@@ -96,9 +96,9 @@ public class ObjectiveMapperTest {
         assertEquals(expected.getModifiedOn(), actual.modifiedOn());
     }
 
-    @DisplayName("toObjective() should map Dto to Objective")
+    @DisplayName("Should map dto to objective when calling toObjective()")
     @Test
-    void toObjectiveShouldMapDtoToObjective() {
+    void shouldMapDtoToObjective() {
         // arrange
         when(teamBusinessService.getTeamById(TEAM_ID)).thenReturn(team);
         when(quarterBusinessService.getQuarterById(QUARTER_ID)).thenReturn(quarter);

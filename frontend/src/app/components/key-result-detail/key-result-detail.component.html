@@ -30,7 +30,7 @@
               src="../../../assets/icons/person-icon.svg"
               width="10"
             />
-            <h4 *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</h4>
+            <h4 *ngIf="keyResult.owner as owner">{{ owner.firstName }} {{ owner.lastName }}</h4>
           </span>
           <h4 *ngIf="keyResult?.objective?.quarter as quarter">{{ quarter.label }}</h4>
         </section>
@@ -45,7 +45,7 @@
             <h4 class="confidence-label">Confidence</h4>
             <app-confidence
               [checkIn]="getKeyResultWithCorrectType(keyResult).lastCheckIn!"
-              [edit]="false"
+              [isEdit]="false"
               class="bg-display-element"
             ></app-confidence>
           </span>
@@ -54,12 +54,12 @@
         <section class="d-flex gap-4 flex-row mb-2-rem">
           <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
             <div class="d-flex justify-content-start w-100 metric-label-div">
-              <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
+              <p class="key-result-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
                 Baseline: {{ keyResultMetric.baseline | unitTransformation: keyResultMetric.unit }}
               </p>
               <p
                 *ngIf="keyResultMetric.lastCheckIn as lastCheckIn"
-                class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center gap-1"
+                class="key-result-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center gap-1"
                 [ngClass]="{
                   'border-error': calculateCurrentPercentage(keyResultMetric) < 1,
                 }"
@@ -70,7 +70,7 @@
                   {{ +lastCheckIn.value | unitTransformation: keyResultMetric.unit }}
                 </span>
               </p>
-              <p class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center">
+              <p class="key-result-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center">
                 Stretch Goal: {{ keyResultMetric.stretchGoal | unitTransformation: keyResultMetric.unit }}
               </p>
             </div>
@@ -80,19 +80,19 @@
             <div class="d-flex justify-content-between w-100 ordinal-div mb-4">
               <div class="ordinal-col h-auto">
                 <h4 class="mb-1">Commit</h4>
-                <p class="keyResult-detail-attribute-show ordinal-box p-3 h-100">
+                <p class="key-result-detail-attribute-show ordinal-box p-3 h-100">
                   {{ keyResultOrdinal.commitZone }}
                 </p>
               </div>
               <div class="ordinal-col h-auto">
                 <h4 class="mb-1">Target</h4>
-                <p class="keyResult-detail-attribute-show ordinal-box p-3 h-100">
+                <p class="key-result-detail-attribute-show ordinal-box p-3 h-100">
                   {{ keyResultOrdinal.targetZone }}
                 </p>
               </div>
               <div class="ordinal-col h-auto">
                 <h4 class="mb-1">Stretch</h4>
-                <p class="keyResult-detail-attribute-show ordinal-box p-3 h-100">
+                <p class="key-result-detail-attribute-show ordinal-box p-3 h-100">
                   {{ keyResultOrdinal.stretchZone }}
                 </p>
               </div>
@@ -145,7 +145,7 @@
 
         <div class="d-flex align-items-center flex-row justify-content-start">
           <button
-            *ngIf="!isComplete && keyResult.writeable"
+            *ngIf="!isComplete && keyResult.isWriteable"
             cdkFocusInitial
             color="primary"
             mat-flat-button
@@ -155,7 +155,7 @@
             Check-in erfassen
           </button>
           <button
-            *ngIf="!isComplete && keyResult.writeable"
+            *ngIf="!isComplete && keyResult.isWriteable"
             (click)="openEditKeyResultDialog(keyResult)"
             class="ms-2"
             [attr.data-testId]="'edit-keyResult'"

@@ -76,8 +76,8 @@ public class TestDataHelper {
     private static final User owner = User.Builder
             .builder() //
             .withId(USER_ID) //
-            .withFirstname(USER_FIRSTNAME) //
-            .withLastname(USER_LASTNAME) //
+            .withFirstName(USER_FIRST_NAME) //
+            .withLastName(USER_LAST_NAME) //
             .build();
 
     private static final Quarter quarter = Quarter.Builder
@@ -131,7 +131,7 @@ public class TestDataHelper {
             .withVersion(ACTION_VERSION) //
             .withAction(ACTION_ACTION) //
             .withPriority(ACTION_PRIORITY) //
-            .withIsChecked(ACTION_IS_CHECKED) //
+            .isChecked(ACTION_IS_CHECKED) //
             .withKeyResult(keyResultMetric) //
             .build();
 
@@ -141,7 +141,7 @@ public class TestDataHelper {
             .withVersion(ACTION_VERSION) //
             .withAction(ACTION_ACTION) //
             .withPriority(ACTION_PRIORITY) //
-            .withIsChecked(ACTION_IS_CHECKED) //
+            .isChecked(ACTION_IS_CHECKED) //
             .withKeyResult(keyResultOrdinal) //
             .build();
 

@@ -90,7 +90,7 @@ describe('MemberListTableComponent', () => {
 
   it('should set displayedColumns for admin team correctly', fakeAsync(() => {
     const team = { ...team1 };
-    team.writeable = true;
+    team.isWriteable = true;
     component.selectedTeam$.next(team);
     tick();
     expect(component.displayedColumns)
@@ -123,13 +123,13 @@ describe('MemberListTableComponent', () => {
     tick();
 
     expect(teamServiceMock.removeUserFromTeam)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledWith(1);
     expect(teamServiceMock.removeUserFromTeam)
-      .toBeCalledWith(entry.id, component.selectedTeam$.value);
+      .toHaveBeenCalledWith(entry.id, component.selectedTeam$.value);
     expect(userServiceMock.reloadUsers)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledWith(1);
     expect(userServiceMock.reloadCurrentUser)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledWith(1);
   }));
 
   it('removeMemberFromTeam should not call removeUserFromTeam and reloadUsers if not confirmed', fakeAsync(() => {

@@ -11,14 +11,12 @@ import ch.puzzle.okr.multitenancy.customization.TenantClientCustomizationProvide
 import jakarta.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 public class ClientConfigServiceTest {
 
-    @DisplayName("getConfigBasedOnActiveEnv() should be successful when tenant is configured properly")
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should be successful on getConfigBasedOnActiveEnv() when tenant is configured properly with tenant {0} and hostname {1}")
     @CsvSource({ "pitc,pitc.ork.ch", "acme,acme-ork.ch" })
     void getConfigBasedOnActiveEnvShouldBeSuccessfulWhenTenantIsConfiguredProperly(String tenant, String hostname) {
         // arrange
@@ -33,8 +31,7 @@ public class ClientConfigServiceTest {
         assertClientConfigDto(configBasedOnActiveEnv, tenant);
     }
 
-    @DisplayName("getConfigBasedOnActiveEnv() should throw exception if client customization is not found")
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should throw exception on getConfigBasedOnActiveEnv() when client customization is not found for tenant {0}, hostname {1} and subdomain {2}")
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostname,
                                                                                       String subdomain) {
@@ -50,8 +47,7 @@ public class ClientConfigServiceTest {
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
-    @DisplayName("getConfigBasedOnActiveEnv() should throw exception if client config is not found")
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should throw exception getConfigBasedOnActiveEnv when client config is not found for tenant {0}, hostname {1} and subdomain {2} ")
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientConfigIsNotFound(String tenant, String hostname,
                                                                                String subdomain) {

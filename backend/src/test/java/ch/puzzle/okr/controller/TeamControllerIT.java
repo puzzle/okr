@@ -16,6 +16,7 @@ import java.util.List;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -57,7 +58,7 @@ class TeamControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"version":4,"name":"OKR","writeable":false}""";
+            {"id":7,"version":4,"name":"OKR","isWriteable":false}""";
 
     private static final String UPDATE_TEAM = """
             {
@@ -66,7 +67,7 @@ class TeamControllerIT {
             """;
 
     private static final String ADD_USERS = """
-            [{"id":31,"version":1,"firstname":"Findus","lastname":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstname":"Paco","lastname":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
+            [{"id":31,"version":1,"firstName":"Findus","lastName":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstName":"Paco","lastName":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
             """;
 
     @Autowired
@@ -82,6 +83,7 @@ class TeamControllerIT {
         BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
     }
 
+    @DisplayName("Should get all teams for the specified quarter")
     @Test
     void shouldGetAllTeams() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
@@ -96,6 +98,7 @@ class TeamControllerIT {
                 .andExpect(jsonPath("$[1].name", Is.is("OKR")));
     }
 
+    @DisplayName("Should get all teams when no quarter parameter is passed")
     @Test
     void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
@@ -104,6 +107,7 @@ class TeamControllerIT {
         BDDMockito.verify(teamMapper).toDto(teamPuzzle);
     }
 
+    @DisplayName("Should return empty list if no teams exist")
     @Test
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(Collections.emptyList());
@@ -114,8 +118,9 @@ class TeamControllerIT {
                 .andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
+    @DisplayName("Should return created team after creating a new team")
     @Test
-    void shouldReturnCreatedTeam() throws Exception {
+    void shouldReturnCreatedTeamAfterCreatingTeam() throws Exception {
         BDDMockito.given(teamAuthorizationService.createEntity(any())).willReturn(teamOKR);
 
         mvc
@@ -127,6 +132,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_TEAM));
     }
 
+    @DisplayName("Should return bad request when creating a team with null values")
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito
@@ -142,8 +148,9 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should return updated team after updating an existing team")
     @Test
-    void shouldReturnUpdatedTeam() throws Exception {
+    void shouldReturnUpdatedTeamAfterUpdatingTeam() throws Exception {
         TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", false);
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
@@ -161,8 +168,9 @@ class TeamControllerIT {
                 .andExpect(jsonPath("$.name", Is.is(teamDto.name())));
     }
 
+    @DisplayName("Should return not found when attempting to update a non-existent team")
     @Test
-    void shouldReturnNotFound() throws Exception {
+    void shouldReturnNotFoundWhenTeamToUpdateIsNotFound() throws Exception {
         BDDMockito
                 .given(teamAuthorizationService.updateEntity(any(), anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed team -> Attribut is invalid"));
@@ -175,8 +183,9 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should return bad request when updating team with invalid data")
     @Test
-    void shouldReturnBadRequest() throws Exception {
+    void shouldReturnBadRequestWhenUpdatingTeamWithInvalidData() throws Exception {
         BDDMockito
                 .given(teamAuthorizationService.updateEntity(any(), anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed team -> Attribut is invalid"));
@@ -189,6 +198,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should successfully delete a team")
     @Test
     void shouldDeleteTeam() throws Exception {
         mvc
@@ -196,8 +206,9 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should throw exception when deleting a team that does not exist")
     @Test
-    void throwExceptionWhenOTeamWithIdCantBeFoundWhileDeleting() throws Exception {
+    void shouldThrowExceptionWhenTeamWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found"))
                 .when(teamAuthorizationService)
                 .deleteEntity(anyLong());
@@ -206,8 +217,9 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @DisplayName("Should successfully add a user to a team")
     @Test
-    void addUsersToTeam_shouldReturnOk() throws Exception {
+    void shouldSuccessfullyAddUserToTeam() throws Exception {
         mvc
                 .perform(put(URL_TEAM_1 + "/addusers")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -216,8 +228,9 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should successfully remove a user from a team")
     @Test
-    void removeUserFromTeam_shouldReturnOk() throws Exception {
+    void shouldSuccessfullyRemoveUserFromTeam() throws Exception {
         mvc
                 .perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/removeuser")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -226,8 +239,9 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should successfully update or add team membership")
     @Test
-    void updateOrAddTeamMembership_shouldReturnOk() throws Exception {
+    void shouldSuccessfullyUpdateOrAddTeamMembership() throws Exception {
         mvc
                 .perform(put(URL_TEAM_1 + SUB_URL_USER_5 + "/updateaddteammembership/true")
                         .contentType(MediaType.APPLICATION_JSON)

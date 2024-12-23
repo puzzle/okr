@@ -8,6 +8,7 @@ import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import ch.puzzle.okr.service.validation.CompletedValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,8 +35,9 @@ class CompletedBusinessServiceTest {
     @Spy
     private CompletedBusinessService completedBusinessService;
 
+    @DisplayName("Should successfully create completed")
     @Test
-    void saveSuccessFulCompleted() {
+    void shouldSuccessfullyCreateCompleted() {
         Mockito.when(completedPersistenceService.save(any())).thenReturn(successfulCompleted);
 
         Completed completed = Completed.Builder
@@ -53,6 +55,7 @@ class CompletedBusinessServiceTest {
         assertEquals(successfulCompleted, savedCompleted);
     }
 
+    @DisplayName("Should be possible to save completed without comment")
     @Test
     void shouldBePossibleToSaveCompletedWithoutComment() {
         Completed completed = Completed.Builder
@@ -71,6 +74,7 @@ class CompletedBusinessServiceTest {
         assertEquals(savedCompleted, successfulCompleted);
     }
 
+    @DisplayName("Should delete all key-results and associated check-ins")
     @Test
     void shouldDeleteKeyResultAndAssociatedCheckIns() {
         when(completedPersistenceService.getCompletedByObjectiveId(anyLong())).thenReturn(successfulCompleted);
@@ -80,6 +84,7 @@ class CompletedBusinessServiceTest {
         verify(this.completedPersistenceService, times(1)).deleteById(1L);
     }
 
+    @DisplayName("Should do nothing if completed is null")
     @Test
     void shouldDoNothingIfCompletedIsNull() {
         when(completedPersistenceService.getCompletedByObjectiveId(anyLong())).thenReturn(null);

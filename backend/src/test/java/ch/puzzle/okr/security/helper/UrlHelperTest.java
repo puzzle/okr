@@ -12,10 +12,9 @@ public class UrlHelperTest {
 
     private static final String PITC = "pitc";
 
-    @DisplayName("extractTenantFromIssUrl() return tenant if Url contains slash")
-    @ParameterizedTest
+    @ParameterizedTest(name = "extractTenantFromIssUrl() returns tenant if Url contains slash")
     @ValueSource(strings = { "https://sso.puzzle.ch/auth/realms/pitc", "http://localhost:8544/realms/pitc" })
-    void extractTenantFromIssUrlReturnTenantIfUrlContainSlash(String issUrl) {
+    void extractTenantFromIssUrlReturnsTenantIfUrlContainSlash(String issUrl) {
         // arrange
 
         // act
@@ -26,9 +25,9 @@ public class UrlHelperTest {
         assertEquals(PITC, tenantFromIssUrl.get());
     }
 
-    @DisplayName("extractTenantFromIssUrl() return input url if url not contains slash")
+    @DisplayName("Should return a input url if the url does not contain a slash after calling extractTenantFromIssUrl()")
     @Test
-    void extractTenantFromIssUrlReturnInputIfUrlNotContainSlash() {
+    void extractTenantFromIssUrlReturnsInputIfUrlNotContainSlash() {
         // arrange
         String issUrl = "this_is_not_a_valid_url";
 
@@ -40,9 +39,9 @@ public class UrlHelperTest {
         assertEquals(issUrl, tenantFromIssUrl.get());
     }
 
-    @DisplayName("extractTenantFromIssUrl() return empty if url is null")
+    @DisplayName("Should return empty if the url is null after calling extractTenantFromIssUrl()")
     @Test
-    void extractTenantFromIssUrlReturnEmptyIfUrlIsNull() {
+    void extractTenantFromIssUrlReturnsEmptyIfUrlIsNull() {
         // arrange
         String issUrl = null;
 

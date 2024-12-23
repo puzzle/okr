@@ -15,7 +15,6 @@ import { CheckInOrdinalMin } from '../../shared/types/model/CheckInOrdinalMin';
 @Component({
   selector: 'app-check-in-history-dialog',
   templateUrl: './check-in-history-dialog.component.html',
-  styleUrls: ['./check-in-history-dialog.component.scss']
 })
 export class CheckInHistoryDialogComponent implements OnInit {
   keyResult!: KeyResult;

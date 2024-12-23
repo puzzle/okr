@@ -38,7 +38,7 @@ class ForwardFilterTest {
     void setup() {
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should not filter the path: {0}")
     @ValueSource(strings = { "/", "/api/", "/index.html", "/runtime.", "/polyfills.", "/main.", "/scripts.", "/styles.",
             "/favicon.ico", "/3rdpartylicenses.txt", "/assets/" })
     void shouldNotFilterTheRootPath(String requestUri) throws ServletException, IOException {

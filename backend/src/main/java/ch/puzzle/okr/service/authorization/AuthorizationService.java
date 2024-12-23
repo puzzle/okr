@@ -44,16 +44,16 @@ public class AuthorizationService {
         return authorizationUser.isUserMemberInTeam(teamId);
     }
 
-    public static void checkRoleWriteAndReadAll(AuthorizationUser user,
+    public static void checkRoleWriteAndReadAll(AuthorizationUser authorizationUser,
                                                 OkrResponseStatusException notAuthorizedException) {
-        if (hasRoleWriteAndReadAll(user)) {
+        if (hasRoleWriteAndReadAll(authorizationUser)) {
             return;
         }
         throw notAuthorizedException;
     }
 
-    public static boolean hasRoleWriteAndReadAll(AuthorizationUser user) {
-        return user.user().isOkrChampion();
+    public static boolean hasRoleWriteAndReadAll(AuthorizationUser authorizationUser) {
+        return authorizationUser.user().isOkrChampion();
     }
 
     public AuthorizationUser updateOrAddAuthorizationUser() {

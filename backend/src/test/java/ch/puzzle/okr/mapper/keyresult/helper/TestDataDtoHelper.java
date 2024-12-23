@@ -25,8 +25,8 @@ public class TestDataDtoHelper {
 
     private static final KeyResultUserDto ownerDto = new KeyResultUserDto( //
                                                                           USER_ID, //
-                                                                          USER_FIRSTNAME, //
-                                                                          USER_LASTNAME //
+                                                                          USER_FIRST_NAME, //
+                                                                          USER_LAST_NAME //
     );
 
     private static final KeyResultQuarterDto quarterDto = new KeyResultQuarterDto( //

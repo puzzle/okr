@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 
 public class QuarterFunctionTest {
 
-    @DisplayName("QuarterFunction should return correct current quarter data")
+    @DisplayName("Should return correct current quarter data")
     @Test
-    void quarterFunctionShouldReturnCorrectCurrentQuarterData() {
+    void shouldReturnCorrectCurrentQuarterData() {
         // arrange
         initQuarterData();
 
@@ -25,9 +25,9 @@ public class QuarterFunctionTest {
         assertEquals(expectedCurrent, currentQuarter);
     }
 
-    @DisplayName("QuarterFunction should return correct next quarter data")
+    @DisplayName("Should return correct next quarter data")
     @Test
-    void quarterFunctionShouldReturnCorrectNextQuarterData() {
+    void shouldReturnCorrectNextQuarterData() {
         // arrange
         initQuarterData();
 

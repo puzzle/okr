@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,8 +31,9 @@ class AlignmentSelectionPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("Should return correct alignment selections on getAlignmentSelectionByQuarterIdAndTeamIdNot()")
     @Test
-    void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnAlignmentSelections() {
+    void shouldReturnAlignmentSelections() {
         List<AlignmentSelection> alignmentSelections = alignmentSelectionPersistenceService
                 .getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);
 

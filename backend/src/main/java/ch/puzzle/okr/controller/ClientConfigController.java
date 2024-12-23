@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ClientConfigController {
 
-    private final ClientConfigService configService;
+    private final ClientConfigService clientConfigService;
 
-    public ClientConfigController(ClientConfigService configService) {
-        this.configService = configService;
+    public ClientConfigController(ClientConfigService clientConfigService) {
+        this.clientConfigService = clientConfigService;
     }
 
     @GetMapping("/config")
     public ResponseEntity<ClientConfigDto> getConfig(HttpServletRequest request) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
+                .body(clientConfigService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 
     @RequestMapping(value = "/**/{[path:[^\\.]*}")

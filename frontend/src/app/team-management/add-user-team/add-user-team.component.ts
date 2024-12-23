@@ -23,7 +23,7 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
 
   allAdminTeams$: Observable<Team[]> | undefined;
 
-  private unsubscribe$ = new Subject<void>();
+  private readonly unsubscribe$ = new Subject<void>();
 
   constructor(private readonly teamService: TeamService) {}
 
@@ -31,7 +31,7 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
     this.allAdminTeams$ = this.teamService.getAllTeams()
       .pipe(takeUntil(this.unsubscribe$),
         map((teams) => {
-          return teams.filter((t) => t.writeable);
+          return teams.filter((t) => t.isWriteable);
         }));
 
     this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$,
@@ -66,11 +66,11 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
     this.userTeam = undefined;
   }
 
-  showAddButton(adminTeams: Team[] | null) {
+  isAddButtonVisible(adminTeams: Team[] | null) {
     return !this.userTeam && adminTeams?.length;
   }
 
-  addButtonDisabled(selectableAdminTeams: Team[] | null) {
+  isAddButtonDisabled(selectableAdminTeams: Team[] | null) {
     return !selectableAdminTeams?.length;
   }
 }

@@ -66,7 +66,7 @@ function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
   cy.intercept('GET', '**/users/current')
     .as('getCurrentUser');
-  cy.origin(Cypress.env('login_url'), { args: { username,
+  cy.origin(Cypress.env('LOGIN_URL'), { args: { username,
     password } }, ({ username, password }) => {
     cy.get('input[name="username"]')
       .type(username);
@@ -79,9 +79,9 @@ function loginWithCredentials(username: string, password: string) {
   cy.url()
     .then((url) => {
       const currentUrl = new URL(url);
-      const baseURL = new URL(Cypress.config().baseUrl!);
+      const baseUrl = new URL(Cypress.config().baseUrl!);
       expect(currentUrl.pathname)
-        .equal(baseURL.pathname);
+        .equal(baseUrl.pathname);
     });
 }
 

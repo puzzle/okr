@@ -35,8 +35,9 @@ class ObjectiveAuthorizationServiceTest {
 
     private final Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
+    @DisplayName("Should return the created objective when authorized")
     @Test
-    void createEntityShouldReturnObjectiveWhenAuthorized() {
+    void shouldReturnCreatedObjectiveWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.createEntity(newObjective, authorizationUser)).thenReturn(newObjective);
 
@@ -44,8 +45,9 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(newObjective, objective);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to create an objective")
     @Test
-    void createEntityShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToCreateObjective() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
@@ -59,8 +61,9 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return an objective when authorized")
     @Test
-    void getEntityByIdShouldReturnObjectiveWhenAuthorized() {
+    void shouldReturnObjectiveByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.getEntityById(id)).thenReturn(newObjective);
@@ -69,8 +72,9 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(newObjective, objective);
     }
 
+    @DisplayName("Should return a writable objective when authorized")
     @Test
-    void getEntityByIdShouldReturnObjectiveWritableWhenAuthorized() {
+    void shouldReturnWritableObjectiveByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.hasRoleWriteForTeam(newObjective, authorizationUser)).thenReturn(true);
@@ -80,8 +84,9 @@ class ObjectiveAuthorizationServiceTest {
         assertTrue(objective.isWriteable());
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to get an objective by ID")
     @Test
-    void getEntityByIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToGetObjectiveById() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -95,18 +100,20 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return the updated objective when authorized")
     @Test
-    void updateEntityShouldReturnUpdatedObjectiveWhenAuthorized() {
+    void shouldReturnUpdatedObjectiveWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.updateEntity(id, newObjective, authorizationUser)).thenReturn(newObjective);
 
-        Objective Objective = objectiveAuthorizationService.updateEntity(id, newObjective);
-        assertEquals(newObjective, Objective);
+        Objective objective = objectiveAuthorizationService.updateEntity(id, newObjective);
+        assertEquals(newObjective, objective);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to update an objective")
     @Test
-    void updateEntityShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToUpdateObjective() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -121,23 +128,26 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return true when the quarter has changed for an objective")
     @Test
-    void isImUsedShouldReturnTrueWhenQuarterChanged() {
+    void shouldReturnTrueWhenQuarterHasChangedForObjective() {
         when(objectiveBusinessService.isImUsed(newObjective)).thenReturn(true);
 
         assertTrue(objectiveAuthorizationService.isImUsed(newObjective));
     }
 
+    @DisplayName("Should successfully delete an objective by ID when authorized")
     @Test
-    void deleteEntityByIdShouldPassThroughWhenAuthorized() {
+    void shouldDeleteObjectiveByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         objectiveAuthorizationService.deleteEntityById(id);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to delete an objective by ID")
     @Test
-    void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToDeleteObjectiveById() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -151,10 +161,9 @@ class ObjectiveAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
-    @DisplayName("duplicateEntity() should throw exception when not authorized")
+    @DisplayName("Should throw an exception when not authorized to duplicate an objective")
     @Test
-    void duplicateEntityShouldThrowExceptionWhenNotAuthorized() {
-        // arrange
+    void shouldThrowExceptionWhenNotAuthorizedToDuplicateObjective() {
         Long idExistingObjective = 13L;
         String reason = "junit test reason";
         Objective objective = Objective.Builder.builder().build();
@@ -167,22 +176,19 @@ class ObjectiveAuthorizationServiceTest {
                 .when(authorizationService)
                 .hasRoleCreateOrUpdate(objective, authorizationUser);
 
-        // act
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                                                          () -> objectiveAuthorizationService
                                                                  .duplicateEntity(idExistingObjective,
                                                                                   objective,
                                                                                   keyResults));
 
-        // assert
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
-    @DisplayName("duplicateEntity() should return duplicated Objective when authorized")
+    @DisplayName("Should return duplicated objective when authorized")
     @Test
-    void duplicateEntityShouldReturnDuplicatedObjectiveWhenAuthorized() {
-        // arrange
+    void shouldReturnDuplicatedObjectiveWhenAuthorized() {
         Long idExistingObjective = 13L;
 
         Objective newObjectiveWithoutKeyResults = Objective.Builder
@@ -204,16 +210,15 @@ class ObjectiveAuthorizationServiceTest {
                 .duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults, authorizationUser, keyResults))
                 .thenReturn(newObjectiveWithKeyResults);
 
-        // act
         Objective objective = objectiveAuthorizationService
                 .duplicateEntity(idExistingObjective, newObjectiveWithoutKeyResults, keyResults);
 
-        // assert
         assertEquals(newObjectiveWithKeyResults, objective);
     }
 
+    @DisplayName("Should return all corresponding key-results for an objective by ID")
     @Test
-    void getAllKeyResultsByObjectiveIdShouldReturnCorrectKeyResults() {
+    void shouldReturnAllKeyResultsForObjectiveById() {
         Long id = 13L;
         when(objectiveBusinessService.getAllKeyResultsByObjective(id))
                 .thenReturn(List.of(metricKeyResult, ordinalKeyResult));

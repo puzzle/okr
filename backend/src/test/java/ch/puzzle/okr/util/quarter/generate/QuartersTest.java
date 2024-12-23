@@ -13,8 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class QuartersTest {
 
-    @DisplayName("currentQuarter() should find current quarter for now and 12 months in future")
-    @ParameterizedTest
+    @ParameterizedTest(name = "currentQuarter() should find current quarter for now and 12 months in future")
     @MethodSource("futureDatesAndLabels")
     void currentQuarterShouldFindCurrentQuarterForNowAnd12MonthsInFuture(LocalDate date, String expectedLabelFirstYear,
                                                                          String expectedLabelSecondYear) {
@@ -22,12 +21,12 @@ public class QuartersTest {
         // arrange
         Quarters nowQuarters = new Quarters(date.getYear());
 
-        LocalDate in3Months = date.plusMonths(3);
-        Quarters in3MonthQuarters = new Quarters(in3Months.getYear());
+        LocalDate inThreeMonths = date.plusMonths(3);
+        Quarters inThreeMonthsQuarters = new Quarters(inThreeMonths.getYear());
 
         // act
         QuarterData currentQuarter = nowQuarters.currentQuarter(date);
-        QuarterData nextQuarter = in3MonthQuarters.currentQuarter(in3Months);
+        QuarterData nextQuarter = inThreeMonthsQuarters.currentQuarter(inThreeMonths);
 
         // assert
         assertEquals(expectedLabelFirstYear, currentQuarter.toString());
@@ -104,21 +103,20 @@ public class QuartersTest {
                                 "('GJ 25/26-Q2', '2025-10-01', '2025-12-31')"));
     }
 
-    @DisplayName("currentQuarter() should find current quarter for now and 7 months in past")
-    @ParameterizedTest
+    @ParameterizedTest(name = "currentQuarter() should find current quarter for now and seven months in past")
     @MethodSource("pastDatesAndLabels")
-    void currentQuarterShouldFindCurrentQuarterForNowAnd7MonthsInPast(LocalDate date, String expectedLabelFirstYear,
-                                                                      String expectedLabelSecondYear) {
+    void currentQuarterShouldFindCurrentQuarterForNowAndSevenMonthsInPast(LocalDate date, String expectedLabelFirstYear,
+                                                                          String expectedLabelSecondYear) {
 
         // arrange
         Quarters nowQuarters = new Quarters(date.getYear());
 
-        LocalDate in3Months = date.plusMonths(3);
-        Quarters in3MonthsQuarters = new Quarters(in3Months.getYear());
+        LocalDate inThreeMonths = date.plusMonths(3);
+        Quarters inThreeMonthsQuarters = new Quarters(inThreeMonths.getYear());
 
         // act
         QuarterData currentQuarter = nowQuarters.currentQuarter(date);
-        QuarterData nextQuarter = in3MonthsQuarters.currentQuarter(in3Months);
+        QuarterData nextQuarter = inThreeMonthsQuarters.currentQuarter(inThreeMonths);
 
         // assert
         assertEquals(expectedLabelFirstYear, currentQuarter.toString());
@@ -170,26 +168,25 @@ public class QuartersTest {
                                 "('GJ 24/25-Q2', '2024-10-01', '2024-12-31')"));
     }
 
-    @DisplayName("currentQuarter() should throw exception if no matching quarter is found for now")
+    @DisplayName("Should throw exception if no matching quarter is found when calling currentQuarter()")
     @Test
-    void currentQuarterShouldThrowExceptionIfNoMatchingQuarterIsFoundForNow() {
+    void shouldThrowExceptionIfNoMatchingQuarterIsFoundForNow() {
         // arrange
         LocalDate now = LocalDate.of(2024, 7, 15);
         Quarters allQuartersOfCurrentYear = new Quarters(now.getYear());
 
-        LocalDate in2Years = now.plusYears(2);
+        LocalDate inTwoYears = now.plusYears(2);
 
         // act
         RuntimeException exception = assertThrows(RuntimeException.class,
-                                                  () -> allQuartersOfCurrentYear.currentQuarter(in2Years));
+                                                  () -> allQuartersOfCurrentYear.currentQuarter(inTwoYears));
 
         // assert
         assertEquals(RuntimeException.class, exception.getClass());
         assertEquals("No current quarter found for 2026-07-15", exception.getMessage());
     }
 
-    @DisplayName("currentQuarter() should find current quarter for boundary dates")
-    @ParameterizedTest
+    @ParameterizedTest(name = "currentQuarter() should find current quarter for boundary dates")
     @MethodSource("boundaryDatesAndLabels")
     void currentQuarterShouldFindCurrentQuarterForBoundaryDates(LocalDate date, String expectedLabel) {
         // arrange

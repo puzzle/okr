@@ -14,9 +14,9 @@ create table if not exists person
     id        bigint       not null,
     version   int          not null,
     email     varchar(250) not null,
-    firstname varchar(50)  not null,
-    lastname  varchar(50)  not null,
-    is_okr_champion BOOLEAN DEFAULT FALSE,
+    first_name varchar(50)  not null,
+    last_name  varchar(50)  not null,
+    okr_champion BOOLEAN DEFAULT FALSE,
     primary key (id),
     constraint uk_person_email
         unique (email)
@@ -149,7 +149,7 @@ create table action
     version       int           not null,
     action        varchar(4096) not null,
     priority      integer       not null,
-    is_checked    boolean       not null,
+    checked    boolean       not null,
     key_result_id bigint        not null
         constraint fk_completed_key_result
             references key_result
@@ -247,7 +247,7 @@ CREATE SEQUENCE IF NOT EXISTS sequence_team;
 
 CREATE TABLE person_team
 (
-    is_team_admin BOOLEAN DEFAULT FALSE NOT NULL,
+    team_admin BOOLEAN DEFAULT FALSE NOT NULL,
     version       INTEGER               NOT NULL,
     id            BIGINT                NOT NULL,
     person_id     BIGINT,

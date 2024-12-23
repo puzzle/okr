@@ -11,20 +11,20 @@ import { CloseState } from '../../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { State } from '../../shared/types/enums/State';
 import { DATE_FORMAT } from '../../shared/constantLibary';
-import { calculateCurrentPercentage, isLastCheckInNegative } from '../../shared/common';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
+import { calculateCurrentPercentage } from '../../shared/common';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
 import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
 
 @Component({
-  selector: 'app-keyresult-detail',
-  templateUrl: './keyresult-detail.component.html',
-  styleUrls: ['./keyresult-detail.component.scss'],
+  selector: 'app-key-result-detail',
+  templateUrl: './key-result-detail.component.html',
+  styleUrls: ['./key-result-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KeyresultDetailComponent implements OnInit, OnDestroy {
+export class KeyResultDetailComponent implements OnInit, OnDestroy {
   @Input() keyResultId!: number;
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
@@ -34,8 +34,6 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
   isComplete = false;
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
-
-  protected readonly isLastCheckInNegative = isLastCheckInNegative;
 
   constructor(
     private keyResultService: KeyresultService,
@@ -82,7 +80,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
     return keyResult as KeyResultMetric;
   }
 
-  castToOrdinal(keyResult: KeyResult) {
+  castToOrdinal(keyResult: KeyResult): KeyResultOrdinal {
     return keyResult as KeyResultOrdinal;
   }
 
@@ -101,7 +99,7 @@ export class KeyresultDetailComponent implements OnInit, OnDestroy {
 
   openEditKeyResultDialog(keyResult: KeyResult) {
     this.dialogService
-      .open(KeyresultDialogComponent, {
+      .open(KeyResultDialogComponent, {
         data: {
           objective: keyResult.objective,
           keyResult: keyResult

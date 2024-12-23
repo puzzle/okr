@@ -52,6 +52,6 @@ export class ShowEditRoleComponent {
   }
 
   isEditable() {
-    return this.userTeam.team.writeable;
+    return this.userTeam.team.isWriteable;
   }
 }

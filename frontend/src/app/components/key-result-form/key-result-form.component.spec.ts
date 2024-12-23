@@ -15,7 +15,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
 import { User } from '../../shared/types/model/User';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { KeyresultTypeComponent } from '../keyresult-type/keyresult-type.component';
+import { KeyResultTypeComponent } from '../key-result-type/key-result-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -36,9 +36,9 @@ describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
   let fixture: ComponentFixture<KeyResultFormComponent>;
 
-  const oauthMockService = {
+  const oAuthMockService = {
     getIdentityClaims() {
-      return { name: users[1].firstname + ' ' + users[1].lastname };
+      return { name: users[1].firstName + ' ' + users[1].lastName };
     }
   };
 
@@ -126,7 +126,7 @@ describe('KeyResultFormComponent', () => {
           },
           {
             provide: OAuthService,
-            useValue: oauthMockService
+            useValue: oAuthMockService
           },
           provideRouter([]),
           provideHttpClient(),
@@ -135,7 +135,7 @@ describe('KeyResultFormComponent', () => {
         declarations: [
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
-          KeyresultTypeComponent,
+          KeyResultTypeComponent,
           ActionPlanComponent
         ]
       })
@@ -172,7 +172,7 @@ describe('KeyResultFormComponent', () => {
         .toBeFalsy();
     }));
 
-    it('should return right filtered user', () => {
+    it('should return correct filtered user', () => {
       let userObservable: Observable<User[]> = component.filter('baum');
 
       userObservable.subscribe((userList) => {
@@ -187,9 +187,9 @@ describe('KeyResultFormComponent', () => {
       });
     });
 
-    it('should return label from user', () => {
-      const userName: string = component.getUserNameFromUser(testUser);
-      expect(userName)
+    it('should get full name of user', () => {
+      const fullName: string = component.getFullNameOfUser(testUser);
+      expect(fullName)
         .toEqual('Bob Baumeister');
     });
 
@@ -209,7 +209,7 @@ describe('KeyResultFormComponent', () => {
         unit: 'CHF',
         createdOn: new Date(),
         modifiedOn: new Date(),
-        writeable: true
+        isWriteable: true
       };
       component.setMetricValuesInForm(fullKeyResultMetric);
 
@@ -237,7 +237,7 @@ describe('KeyResultFormComponent', () => {
         stretchZone: 'Eine Ziege',
         createdOn: new Date(),
         modifiedOn: new Date(),
-        writeable: true
+        isWriteable: true
       };
       component.setOrdinalValuesInForm(fullKeyResultOrdinal);
 
@@ -249,7 +249,7 @@ describe('KeyResultFormComponent', () => {
         .toEqual('Eine Ziege');
     });
 
-    it('should get metric value right', () => {
+    it('should correctly check if key-result is metric or ordinal', () => {
       expect(component.isMetricKeyResult())
         .toBeTruthy();
       component.keyResultForm.patchValue({ keyResultType: 'ordinal' });
@@ -257,15 +257,15 @@ describe('KeyResultFormComponent', () => {
         .toBeFalsy();
     });
 
-    it('should get username from user right', () => {
+    it('should get correct full name from user object', () => {
       const user = users[0];
-      expect(component.getUserNameFromUser(user))
+      expect(component.getFullNameOfUser(user))
         .toEqual('Bob Baumeister');
-      expect(component.getUserNameFromUser(null!))
+      expect(component.getFullNameOfUser(null!))
         .toEqual('');
     });
 
-    it('should get keyresult id right', () => {
+    it('should get correct key-result id', () => {
       expect(component.getKeyResultId())
         .toEqual(null);
       component.keyResult = keyResultOrdinal;
@@ -273,9 +273,9 @@ describe('KeyResultFormComponent', () => {
         .toEqual(101);
     });
 
-    it('should get username from oauthService  right', () => {
-      expect(component.getLoggedInUserName())
-        .toEqual(testUser.firstname + ' ' + testUser.lastname);
+    it('should get correct username from o-auth-service', () => {
+      expect(component.getFullNameOfLoggedInUser())
+        .toEqual(testUser.firstName + ' ' + testUser.lastName);
     });
   });
 });

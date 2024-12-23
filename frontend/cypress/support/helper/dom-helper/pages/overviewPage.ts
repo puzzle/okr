@@ -7,7 +7,7 @@ import { filterByKeyResultName, getKeyResults } from '../../keyResultHelper';
 export default class CyOverviewPage extends Page {
   elements = {
     logo: () => cy.getByTestId('logo'),
-    teammanagement: () => cy.getByTestId('team-management')
+    teamManagement: () => cy.getByTestId('team-management')
   };
 
   visitGJForTests() {
@@ -47,21 +47,21 @@ export default class CyOverviewPage extends Page {
   addKeyResult(teamName?: string, objectiveName?: string) {
     if (teamName && objectiveName) {
       this.getObjectiveByTeamAndName(teamName, objectiveName)
-        .findByTestId('add-keyResult')
+        .findByTestId('add-key-result')
         .first()
         .click();
     } else if (teamName) {
       this.getTeamByName(teamName)
-        .findByTestId('add-keyResult')
+        .findByTestId('add-key-result')
         .first()
         .click();
     } else if (objectiveName) {
       this.getObjectiveByName(objectiveName)
-        .findByTestId('add-keyResult')
+        .findByTestId('add-key-result')
         .first()
         .click();
     } else {
-      cy.getByTestId('add-keyResult')
+      cy.getByTestId('add-key-result')
         .first()
         .click();
     }
@@ -71,7 +71,7 @@ export default class CyOverviewPage extends Page {
 
   addOngoingKeyResult() {
     this.getObjectiveByState('ongoing')
-      .findByTestId('add-keyResult')
+      .findByTestId('add-key-result')
       .first()
       .click();
 
@@ -158,9 +158,9 @@ export default class CyOverviewPage extends Page {
     return cy.get('@keyResult');
   }
 
-  getKeyResultsByName(keyresultName: string) {
+  getKeyResultsByName(keyResultName: string) {
     return getKeyResults()
-      .filter(filterByKeyResultName(keyresultName));
+      .filter(filterByKeyResultName(keyResultName));
   }
 
   selectFromThreeDotMenu(optionName: string) {
@@ -187,8 +187,8 @@ export default class CyOverviewPage extends Page {
     return new ObjectiveDialog();
   }
 
-  visitTeammanagement(): void {
-    this.elements.teammanagement()
+  visitTeamManagement(): void {
+    this.elements.teamManagement()
       .click();
   }
 

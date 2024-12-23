@@ -83,7 +83,7 @@ describe('ScoringComponent', () => {
         target: 101,
         className: 'score-stretch',
         borderClass: 'none' }]
-    ])('should set styles correctly', async(object: any) => {
+    ])('should set styles correctly for given values', async(object: any) => {
       component.targetPercent = object.target;
       component.commitPercent = object.commit;
       component.failPercent = object.fail;
@@ -156,7 +156,7 @@ describe('ScoringComponent', () => {
     [{ zoneValue: Zone.TARGET,
       fail: 100,
       commit: 100,
-      target: 100 }]])('should set percentages correctly', (object: any) => {
+      target: 100 }]])('should set percentages correctly for ordinal zone', (object: any) => {
       // Reset component
       component.targetPercent = 0;
       component.commitPercent = 0;

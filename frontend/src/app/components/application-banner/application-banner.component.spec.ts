@@ -82,7 +82,7 @@ describe('ApplicationBannerComponent', () => {
       .toBeTruthy();
   });
 
-  it('should should hide banner if scrolled down', fakeAsync(() => {
+  it('should hide banner if scrolled down', fakeAsync(() => {
     // Set bannerHeight to default
     const bannerHeight = 160;
     // Scroll more than the height of the banner
@@ -97,7 +97,7 @@ describe('ApplicationBannerComponent', () => {
 
     // Assert that banner is hidden was changed
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style'])
+    expect(fixture.debugElement.query(By.css('#okr-banner')).attributes['style'])
       .toContain('top: -' + (PUZZLE_TOP_BAR_HEIGHT + bannerHeight));
   }));
 
@@ -113,11 +113,11 @@ describe('ApplicationBannerComponent', () => {
 
     // Assert that banner is visible
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style'])
+    expect(fixture.debugElement.query(By.css('#okr-banner')).attributes['style'])
       .toContain('top: ' + PUZZLE_TOP_BAR_HEIGHT);
   }));
 
-  it('should call setOKRBannerStyle() when changing header appearance', () => {
+  it('should call refreshBanner() when changing header appearance', () => {
     jest.spyOn(component, 'refreshBanner')
       .mockReturnValue();
 
@@ -131,7 +131,7 @@ describe('ApplicationBannerComponent', () => {
       .toHaveBeenCalled();
   });
 
-  it('should call correct method after call scroll()', () => {
+  it('should call changeHeaderAppearance() after calling scroll()', () => {
     jest.spyOn(component, 'changeHeaderAppearance');
 
     component.scroll();

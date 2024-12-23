@@ -81,7 +81,7 @@ public class TeamController {
     @PutMapping("/{id}/addusers")
     public void addUsersToTeam(@Parameter(description = "The ID of an Team to add to users to it.", required = true)
     @PathVariable long id, @RequestBody List<UserDto> userDtoList) {
-        var userIds = userDtoList.stream().map(UserDto::id).toList();
+        List<Long> userIds = userDtoList.stream().map(UserDto::id).toList();
         teamAuthorizationService.addUsersToTeam(id, userIds);
     }
 

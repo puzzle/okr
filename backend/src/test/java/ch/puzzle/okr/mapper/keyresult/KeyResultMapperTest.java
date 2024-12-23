@@ -59,9 +59,9 @@ public class KeyResultMapperTest {
         keyResultMapper = new KeyResultMapper(keyResultOrdinalMapper, keyResultMetricMapper);
     }
 
-    @DisplayName("toDto() should map KeyResultMetric to KeyResultMetricDto")
+    @DisplayName("Should map KeyResultMetric to KeyResultMetricDto when toDto() is called")
     @Test
-    void toDtoShouldMapKeyResultMetricToKeyResultMetricDto() {
+    void shouldMapKeyResultMetricToKeyResultMetricDto() {
         // arrange
         KeyResultMetric keyResultMetric = keyResultMetric();
         List<Action> actions = List.of();
@@ -73,9 +73,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultMetricDto.class, keyResultDto.getClass());
     }
 
-    @DisplayName("toDto() should map KeyResultOrdinal to KeyResultOrdinalDto")
+    @DisplayName("Should map KeyResultOrdinal to KeyResultOrdinalDto when toDto() is called")
     @Test
-    void toDtoShouldMapKeyResultOrdinalToKeyResultOrdinalDto() {
+    void shouldMapKeyResultOrdinalToKeyResultOrdinalDto() {
         // arrange
         KeyResultOrdinal keyResultOrdinal = keyResultOrdinal();
         List<Action> actions = List.of();
@@ -87,9 +87,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultOrdinalDto.class, keyResultDto.getClass());
     }
 
-    @DisplayName("toKeyResult() should map KeyResultMetricDto to KeyResultMetric")
+    @DisplayName("Should map KeyResultMetricDto to KeyResultMetric when toKeyResult() is called")
     @Test
-    void toKeyResultShouldMapKeyResultMetricDtoToKeyResultMetric() {
+    void shouldMapKeyResultMetricDtoToKeyResultMetricWhenToKeyResultIsCalled() {
         // arrange
         KeyResultMetricDto keyResultMetricDto = keyResultMetricDto();
 
@@ -100,9 +100,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultMetric.class, keyResult.getClass());
     }
 
-    @DisplayName("toKeyResult() should map KeyResultOrdinalDto to KeyResultOrdinal")
+    @DisplayName("Should map KeyResultOrdinalDto to KeyResultOrdinal when toKeyResult() is called")
     @Test
-    void toKeyResultShouldMapKeyResultOrdinalDtoToKeyResultOrdinal() {
+    void shouldMapKeyResultOrdinalDtoToKeyResultOrdinalWhenToKeyResultIsCalled() {
         // arrange
         KeyResultOrdinalDto keyResultOrdinalDto = keyResultOrdinalDto();
 
@@ -113,9 +113,9 @@ public class KeyResultMapperTest {
         assertEquals(KeyResultOrdinal.class, keyResult.getClass());
     }
 
-    @DisplayName("toDto() should throw Exception if KeyResult is not Metric or Ordinal")
+    @DisplayName("Should throw Exception if KeyResult is not Metric or Ordinal when toDto() is called")
     @Test
-    void toDtoShouldThrowExceptionIfKeyResultIsNotMetricOrOrdinal() {
+    void shouldThrowExceptionIfKeyResultIsNotMetricOrOrdinalWhenToDtoIsCalled() {
         // arrange
         KeyResult keyResult = new KeyResult() {
         };
@@ -128,9 +128,9 @@ public class KeyResultMapperTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
-    @DisplayName("toKeyResult() should throw Exception if KeyResultDto is not MetricDto or OrdinalDto")
+    @DisplayName("Should throw Exception if KeyResultDto is not MetricDto or OrdinalDto when toKeyResult() is called")
     @Test
-    void toKeyResultShouldThrowExceptionIfKeyResultDtoIsNotMetricOrOrdinal() {
+    void shouldThrowExceptionIfKeyResultDtoIsNotMetricDtoOrOrdinalDtoWhenToKeyResultIsCalled() {
         // arrange
         KeyResultDto keyResultDto = List::of;
 

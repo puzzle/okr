@@ -16,7 +16,7 @@
       </button>
       <button
         *ngIf="!data.keyResult"
-        [attr.data-testId]="'saveAndNew'"
+        [attr.data-testId]="'save-and-new'"
         (click)="openNew()"
         mat-stroked-button
         [disabled]="keyResultForm.invalid || invalidOwner()"
@@ -36,7 +36,7 @@
         color="primary"
         mat-button
         (click)="deleteKeyResult()"
-        [attr.data-testId]="'delete-keyResult'"
+        [attr.data-testId]="'delete-key-result'"
       >
         Key Result löschen
       </button>

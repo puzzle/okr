@@ -22,8 +22,8 @@ public class CheckInTestHelpers {
     public static final String INITIATIVES_1 = "Initiatives1";
     public static final String INITIATIVES_2 = "Initiatives2";
 
-    public static final String CHECK_IN_5_URL = "/api/v2/checkIns/5";
-    public static final String CHECK_IN_BASE_URL = "/api/v2/checkIns";
+    public static final String CHECK_IN_5_URL = "/api/v2/checkins/5";
+    public static final String CHECK_IN_BASE_URL = "/api/v2/checkins";
 
     public static final String JSON_CHANGE_INFO = "changeinfo";
     public static final String JSON_INITIATIVES = "initiatives";
@@ -51,7 +51,7 @@ public class CheckInTestHelpers {
             .withConfidence(5)
             .withChangeInfo(CHANGE_INFO)
             .withInitiatives(INITIATIVES)
-            .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
+            .withCreatedBy(User.Builder.builder().withId(1L).withFirstName("Frank").build())
             .withKeyResult(KeyResultMetric.Builder
                     .builder()
                     .withBaseline(3.0)
@@ -64,7 +64,7 @@ public class CheckInTestHelpers {
             .builder()
             .withZone(Zone.COMMIT)
             .withId(4L)
-            .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
+            .withCreatedBy(User.Builder.builder().withId(2L).withFirstName("Robert").build())
             .withCreatedOn(LocalDateTime.MAX)
             .withChangeInfo(CHANGE_INFO)
             .withInitiatives(INITIATIVES)
@@ -109,7 +109,7 @@ public class CheckInTestHelpers {
               "createdOn": null,
               "modifiedOn": null,
               "value": 23.0,
-              "writeable": false
+              "isWriteable": false
             }
             """;
 
@@ -124,7 +124,7 @@ public class CheckInTestHelpers {
             "createdOn": null,
             "modifiedOn": null,
             "zone": "STRETCH",
-            "writeable": false
+            "isWriteable": false
             }
             """;
 

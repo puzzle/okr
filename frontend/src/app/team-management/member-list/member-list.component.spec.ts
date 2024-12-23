@@ -106,10 +106,10 @@ describe('MemberListComponent', () => {
 
     expect(userTableEntry.id)
       .toBe(user.id);
-    expect(userTableEntry.firstname)
-      .toBe(user.firstname);
-    expect(userTableEntry.lastname)
-      .toBe(user.lastname);
+    expect(userTableEntry.firstName)
+      .toBe(user.firstName);
+    expect(userTableEntry.lastName)
+      .toBe(user.lastName);
     expect(userTableEntry.email)
       .toBe(user.email);
     expect(userTableEntry.roles)
@@ -177,7 +177,7 @@ describe('MemberListComponent', () => {
     // test that it makes a deep copy
     expect(userTableEntries).not.toBe(usersCopy);
     // should be sorted
-    expect(userTableEntries.map((ut) => ut.firstname))
+    expect(userTableEntries.map((ut) => ut.firstName))
       .toStrictEqual([
         'Bob',
         'Key Result',
@@ -284,11 +284,11 @@ describe('MemberListComponent', () => {
     expect(component.showAddMemberToTeam())
       .toBeFalsy();
     const teamCopy = { ...team1 };
-    teamCopy.writeable = false;
+    teamCopy.isWriteable = false;
     component.selectedTeam$.next(teamCopy);
     expect(component.showAddMemberToTeam())
       .toBeFalsy();
-    teamCopy.writeable = true;
+    teamCopy.isWriteable = true;
     expect(component.showAddMemberToTeam())
       .toBeTruthy();
   });

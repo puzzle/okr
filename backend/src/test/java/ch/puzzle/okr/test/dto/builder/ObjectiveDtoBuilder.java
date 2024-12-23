@@ -74,7 +74,7 @@ public class ObjectiveDtoBuilder {
         return this;
     }
 
-    public ObjectiveDtoBuilder withWriteable(boolean writeable) {
+    public ObjectiveDtoBuilder isWriteable(boolean writeable) {
         this.writeable = writeable;
         return this;
     }

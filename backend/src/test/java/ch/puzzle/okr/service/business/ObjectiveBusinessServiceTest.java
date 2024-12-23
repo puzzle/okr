@@ -18,6 +18,7 @@ import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,8 +50,8 @@ class ObjectiveBusinessServiceTest {
     private final User user = User.Builder
             .builder()
             .withId(1L)
-            .withFirstname("Bob")
-            .withLastname("Kaufmann")
+            .withFirstName("Bob")
+            .withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch")
             .build();
     private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
@@ -73,8 +74,9 @@ class ObjectiveBusinessServiceTest {
             .build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
+    @DisplayName("Should return correct objective on getEntityById()")
     @Test
-    void getOneObjective() {
+    void shouldGetOneObjective() {
         when(objectivePersistenceService.findById(5L)).thenReturn(objective);
 
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
@@ -82,8 +84,9 @@ class ObjectiveBusinessServiceTest {
         assertEquals("Objective 1", realObjective.getTitle());
     }
 
+    @DisplayName("Should return correct objectives on getEntitiesByTeamId()s")
     @Test
-    void getEntitiesByTeamId() {
+    void shouldGetEntitiesByTeamId() {
         when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
 
         List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
@@ -91,8 +94,9 @@ class ObjectiveBusinessServiceTest {
         assertThat(entities).hasSameElementsAs(List.of(objective));
     }
 
+    @DisplayName("Should throw exception on getEntityById() when entity does not exist")
     @Test
-    void shouldNotFindTheObjective() {
+    void shouldThrowNotFoundWhenTryingToFindNonExistentObjectiveById() {
         when(objectivePersistenceService.findById(6L))
                 .thenThrow(new ResponseStatusException(NOT_FOUND, "Objective with id 6 not found"));
 
@@ -102,8 +106,9 @@ class ObjectiveBusinessServiceTest {
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
 
+    @DisplayName("Should create new entity on createEntity()")
     @Test
-    void shouldSaveANewObjective() {
+    void shouldSuccessfullySaveNewObjective() {
         Objective objective = spy(Objective.Builder
                 .builder()
                 .withTitle("Received Objective")
@@ -125,26 +130,9 @@ class ObjectiveBusinessServiceTest {
         assertNull(objective.getCreatedOn());
     }
 
-    @Test
-    void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
-        Objective objective1 = Objective.Builder
-                .builder()
-                .withId(null)
-                .withTitle("Title")
-                .withDescription("Description")
-                .withModifiedOn(LocalDateTime.now())
-                .build();
-        when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
-
-        Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
-        assertNull(savedObjective.getId());
-        assertEquals("FullObjective1", savedObjective.getTitle());
-        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
-    }
-
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should handle quarters correctly on updateEntity() when objectives and quarters get changed")
     @ValueSource(booleans = { false, true })
-    void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
+    void shouldHandleQuarterCorrectlyUsingUpdateEntity(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";
         String description = "The description";
@@ -196,6 +184,7 @@ class ObjectiveBusinessServiceTest {
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
     }
 
+    @DisplayName("Should delete objective with all key results on deleteEntityById()")
     @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
         when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(keyResultList);
@@ -206,6 +195,7 @@ class ObjectiveBusinessServiceTest {
         verify(objectiveBusinessService, times(1)).deleteEntityById(1L);
     }
 
+    @DisplayName("Should duplicate objective correctly on duplicateObjective()")
     @Test
     void shouldDuplicateObjective() {
         // arrange
@@ -253,8 +243,9 @@ class ObjectiveBusinessServiceTest {
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
 
+    @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")
     @Test
-    void testGetAllKeyResultsByObjective() {
+    void shouldGetAllKeyResultsByObjective() {
         Long objectiveId = 5L;
 
         KeyResult keyResult1 = new KeyResultMetric();

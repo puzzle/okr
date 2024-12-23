@@ -12,7 +12,7 @@ export class ConfidenceComponent implements OnChanges {
 
   max = 10;
 
-  @Input() edit = true;
+  @Input() isEdit = true;
 
   @Input() isDetail = true;
 

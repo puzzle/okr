@@ -5,7 +5,7 @@ import { overViewEntity1, overViewEntity2 } from '../../shared/testData';
 import { ObjectiveComponent } from '../objective/objective.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
-import { KeyresultComponent } from '../keyresult/keyresult.component';
+import { KeyResultComponent } from '../key-result/key-result.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { RefreshDataService } from '../../services/refresh-data.service';
@@ -64,7 +64,7 @@ describe('TeamComponent', () => {
       declarations: [
         TeamComponent,
         ObjectiveComponent,
-        KeyresultComponent,
+        KeyResultComponent,
         ConfidenceComponent,
         ScoringComponent
       ],
@@ -110,7 +110,7 @@ describe('TeamComponent', () => {
 
   it('should not display add objective button if writeable is false', () => {
     component.overviewEntity = { ...overViewEntity2 };
-    component.overviewEntity.writeable = false;
+    component.overviewEntity.isWriteable = false;
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
     expect(button)

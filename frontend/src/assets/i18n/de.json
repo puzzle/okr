@@ -55,7 +55,7 @@
         "TITLE": "Objective löschen",
         "TEXT": "Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!"
       },
-      "KEYRESULT":{
+      "KEY_RESULT":{
         "TITLE": "Key Result löschen",
         "TEXT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
       },

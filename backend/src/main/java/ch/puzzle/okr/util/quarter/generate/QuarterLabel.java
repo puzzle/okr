@@ -19,8 +19,8 @@ public class QuarterLabel {
 
     public String label() {
         return "GJ " + //
-               formatYearAs2Digits(firstYearOfGeschaeftsJahr()) + "/" + //
-               formatYearAs2Digits(secondYearOfGeschaeftsJahr()) + "-Q" + //
+               formatYearAs2Digits(firstYearOfFiscalYear()) + "/" + //
+               formatYearAs2Digits(secondYearOfFiscalYear()) + "-Q" + //
                getQuarterDigit();
     }
 
@@ -35,27 +35,27 @@ public class QuarterLabel {
         return 2;
     }
 
-    private int firstYearOfGeschaeftsJahr() {
-        if (isNowInNewGeschaeftsJahr()) {
+    private int firstYearOfFiscalYear() {
+        if (isNowInNewFiscalYear()) {
             return date.getYear();
         }
         return date.getYear() - 1;
     }
 
-    private boolean isNowInNewGeschaeftsJahr() {
-        LocalDate startNewGJ = startOfNewGeschaeftsJahr();
+    private boolean isNowInNewFiscalYear() {
+        LocalDate startNewGJ = startOfNewFiscalYear();
         return date.equals(startNewGJ) || date.isAfter(startNewGJ);
     }
 
-    private int secondYearOfGeschaeftsJahr() {
-        return firstYearOfGeschaeftsJahr() + 1;
+    private int secondYearOfFiscalYear() {
+        return firstYearOfFiscalYear() + 1;
     }
 
     private int formatYearAs2Digits(int year) {
         return year % 1000;
     }
 
-    private LocalDate startOfNewGeschaeftsJahr() {
+    private LocalDate startOfNewFiscalYear() {
         return LocalDate.of(date.getYear(), 7, 1);
     }
 }

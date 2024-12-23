@@ -2,7 +2,7 @@ import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
 
-describe('CRUD operations', () => {
+describe('crud operations', () => {
   let overviewPage = new CyOverviewPage();
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('CRUD operations', () => {
     'draft-icon.svg']].forEach(([objectiveTitle,
     buttonTestId,
     icon]) => {
-    it(`Create objective, no keyresults`, () => {
+    it(`should create objective without key-results`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle(objectiveTitle)
         .selectQuarter('3');
@@ -32,7 +32,7 @@ describe('CRUD operations', () => {
     });
   });
 
-  it(`Create objective, should display error message`, () => {
+  it(`should display error message when title not set`, () => {
     overviewPage.addObjective();
     cy.getByTestId('title')
       .first()
@@ -47,7 +47,7 @@ describe('CRUD operations', () => {
       .should('not.be.disabled');
   });
 
-  it(`Create objective, cancel`, () => {
+  it(`should cancel creating an objective`, () => {
     const objectiveTitle = 'this is a canceled objective';
     overviewPage.addObjective()
       .selectQuarter('3')
@@ -57,7 +57,7 @@ describe('CRUD operations', () => {
       .should('not.exist');
   });
 
-  it(`Delete existing objective`, () => {
+  it(`should delete existing objective`, () => {
     overviewPage.getFirstObjective()
       .findByTestId('three-dot-menu')
       .click();
@@ -69,7 +69,7 @@ describe('CRUD operations', () => {
       .submit();
   });
 
-  it(`Open objective aside via click`, () => {
+  it(`should open objective detail view via click`, () => {
     overviewPage.getFirstObjective()
       .find('.title')
       .click();
@@ -77,7 +77,7 @@ describe('CRUD operations', () => {
       .should('include', 'objective');
   });
 
-  it(`update objective`, () => {
+  it(`should edit objective`, () => {
     const updatedTitle = 'This is an updated title';
     overviewPage.getFirstObjective()
       .findByTestId('three-dot-menu')
@@ -90,7 +90,7 @@ describe('CRUD operations', () => {
       .should('exist');
   });
 
-  it(`Duplicate objective`, () => {
+  it(`should duplicate objective`, () => {
     const duplicatedTitle = 'This is a duplicated objective';
     overviewPage.getFirstObjective()
       .findByTestId('three-dot-menu')

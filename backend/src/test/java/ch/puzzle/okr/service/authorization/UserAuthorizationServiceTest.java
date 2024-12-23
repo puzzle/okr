@@ -32,8 +32,9 @@ public class UserAuthorizationServiceTest {
     User user = defaultUserWithTeams(1L, List.of(defaultTeam(adminTeamId), defaultTeam(memberTeamId)), List.of());
     User user2 = defaultUserWithTeams(2L, List.of(), List.of(defaultTeam(adminTeamId), defaultTeam(memberTeamId)));
 
+    @DisplayName("Should return all users")
     @Test
-    void getAllUsersShouldReturnAllUsers() {
+    void shouldReturnAllUsers() {
         List<User> userList = List.of(user, user2);
         when(userBusinessService.getAllUsers()).thenReturn(userList);
         when(teamAuthorizationService.isUserWriteAllowed(adminTeamId)).thenReturn(true);
@@ -43,8 +44,9 @@ public class UserAuthorizationServiceTest {
         assertEquals(userList, users);
     }
 
+    @DisplayName("Should set team writable property correctly")
     @Test
-    void getAllUsers_shouldSetTeamWritableCorrectly() {
+    void shouldSetTeamWritableCorrectly() {
         List<User> userList = List.of(user, user2);
         when(userBusinessService.getAllUsers()).thenReturn(userList);
         when(teamAuthorizationService.isUserWriteAllowed(adminTeamId)).thenReturn(true);
@@ -57,8 +59,9 @@ public class UserAuthorizationServiceTest {
         assertFalse(users.get(1).getUserTeamList().get(1).getTeam().isWriteable());
     }
 
+    @DisplayName("Should call the businessService when setting OKR champion")
     @Test
-    void setOkrChampion_shouldCallBusinessService() {
+    void shouldCallBusinessServiceWhenSettingOkrChampion() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(true);
 
@@ -70,8 +73,9 @@ public class UserAuthorizationServiceTest {
         verify(userBusinessService, times(1)).setIsOkrChampion(user, true);
     }
 
+    @DisplayName("Should throw an error if logged-in user is not OKR champion")
     @Test
-    void setOkrChampion_shouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
+    void shouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(false);
 
@@ -82,8 +86,9 @@ public class UserAuthorizationServiceTest {
                      () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
     }
 
+    @DisplayName("Should call the businessService when creating users")
     @Test
-    void createUsers_shouldCallBusinessService() {
+    void shouldCallBusinessServiceWhenCreatingUsers() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(true);
 
@@ -96,8 +101,9 @@ public class UserAuthorizationServiceTest {
         verify(userBusinessService, times(1)).createUsers(users);
     }
 
+    @DisplayName("Should throw an error if logged-in user is not OKR champion when creating users")
     @Test
-    void createUsers_shouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
+    void shouldThrowErrorIfLoggedInUserIsNotOkrChampionWhenCreatingUsers() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(false);
 
@@ -107,9 +113,9 @@ public class UserAuthorizationServiceTest {
                      () -> userAuthorizationService.createUsers(List.of(user, user2)));
     }
 
-    @DisplayName("isUserMemberOfTeams() should return false if user is not member of teams")
+    @DisplayName("Should return false if user is not a member of teams")
     @Test
-    void isUserMemberOfTeamsShouldReturnFalseIfUserIsNotMemberOfTeams() {
+    void shouldReturnFalseIfUserIsNotMemberOfTeams() {
         // arrange
         Long userId = 1L;
         User userWithoutTeams = defaultUser(userId);
@@ -122,9 +128,9 @@ public class UserAuthorizationServiceTest {
         assertFalse(isUserMemberOfTeams);
     }
 
-    @DisplayName("isUserMemberOfTeams() should return true if user is member of teams")
+    @DisplayName("Should return true if user is a member of teams")
     @Test
-    void isUserMemberOfTeamsShouldReturnTrueIfUserIsMemberOfTeams() {
+    void shouldReturnTrueIfUserIsMemberOfTeams() {
         // arrange
         User userWithTeams = user2;
         Long userId = user2.getId();

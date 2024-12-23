@@ -26,17 +26,17 @@ describe('UserService', () => {
       .toBeTruthy();
   });
 
-  it('getUsers should only reload users when they are not loaded yet', (done) => {
+  it('should only reload getUsers when they are not loaded yet', (done) => {
     const spy = jest.spyOn(service, 'reloadUsers');
     service.getUsers()
       .subscribe(() => {
         expect(spy)
-          .toBeCalledTimes(1);
+          .toHaveBeenCalledTimes(1);
         httpMock.expectOne(URL);
         service.getUsers()
           .subscribe((users) => {
             expect(spy)
-              .toBeCalledTimes(1);
+              .toHaveBeenCalledTimes(1);
             expect(users)
               .toStrictEqual([]);
             done();
@@ -44,14 +44,14 @@ describe('UserService', () => {
       });
   });
 
-  it('get current user should throw error, when not loaded', () => {
+  it('should throw error if current User is not loaded', () => {
     expect(() => service.getCurrentUser())
-      .toThrowError('user should not be undefined here');
+      .toThrow('user should not be undefined here');
   });
 
-  it('init current user should load user', (done) => {
+  it('should load current user after user init', (done) => {
     expect(() => service.getCurrentUser())
-      .toThrowError('user should not be undefined here');
+      .toThrow('user should not be undefined here');
     service.getOrInitCurrentUser()
       .subscribe(() => {
         expect(service.getCurrentUser())
@@ -62,7 +62,7 @@ describe('UserService', () => {
     req.flush(users[0]);
   });
 
-  it('setIsOkrChampion should call put operation, reloadUsers and reloadCurrentUser', fakeAsync(() => {
+  it('should call put operation, reloadUsers and reloadCurrentUser when setIsOkrChampion is called', fakeAsync(() => {
     service.setIsOkrChampion(testUser, true)
       .subscribe();
     const req = httpMock.expectOne(`api/v1/users/${testUser.id}/isokrchampion/true`);
@@ -76,7 +76,7 @@ describe('UserService', () => {
     req3.flush({});
   }));
 
-  it('createUsers should call createAll and reloadUsers', fakeAsync(() => {
+  it('should call createAll and reloadUsers when createUsers is called', fakeAsync(() => {
     service.createUsers(users)
       .subscribe();
     const req = httpMock.expectOne(`api/v1/users/createall`);
@@ -88,7 +88,7 @@ describe('UserService', () => {
     req2.flush({});
   }));
 
-  it('deleteUser should call /userId and reloadUsers', fakeAsync(() => {
+  it('should call /userId and reloadUsers when deleteUser is called', fakeAsync(() => {
     service.deleteUser(testUser)
       .subscribe();
     const req = httpMock.expectOne(`api/v1/users/${testUser.id}`);

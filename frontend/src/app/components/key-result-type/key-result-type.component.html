@@ -2,7 +2,7 @@
   <button
     [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
     [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
-    [attr.data-testId]="'metricTab'"
+    [attr.data-testId]="'metric-tab'"
     class="tab-title"
     (click)="switchKeyResultType('metric')"
     (keydown.enter)="switchKeyResultType('metric')"
@@ -13,7 +13,7 @@
   <button
     [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
     [ngClass]="{ active: !isMetric, 'non-active': isMetric }"
-    [attr.data-testId]="'ordinalTab'"
+    [attr.data-testId]="'ordinal-tab'"
     class="tab-title"
     (click)="switchKeyResultType('ordinal')"
     (keydown.enter)="switchKeyResultType('ordinal')"
@@ -68,14 +68,14 @@
 
     <div class="col">
       <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="stretchGoal">Stretch Goal</label>
+        <label class="okr-form-label okr-form-col" for="stretch-goal">Stretch Goal</label>
         <div class="col">
           <input
-            [attr.data-testId]="'stretchGoal'"
+            [attr.data-testId]="'stretch-goal'"
             class="dialog-form-field"
             [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
             formControlName="stretchGoal"
-            id="stretchGoal"
+            id="stretch-goal"
           />
           <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
             <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
@@ -90,14 +90,14 @@
   <form [formGroup]="keyResultForm" class="okr-form-row row-cols-1 row-cols-md-3">
     <div class="col">
       <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="commitZone">Commit Zone</label>
+        <label class="okr-form-label okr-form-col" for="commit-zone">Commit Zone</label>
         <div class="col">
           <textarea
             class="big-dialog-form-field"
             [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
             formControlName="commitZone"
-            id="commitZone"
-            [attr.data-testId]="'commitZone'"
+            id="commit-zone"
+            [attr.data-testId]="'commit-zone'"
           ></textarea>
           <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'commitZone')">
             <span>{{ getErrorMessage("SIZE_BETWEEN", "Commit Zone", 1, 400) }}</span>
@@ -108,14 +108,14 @@
 
     <div class="col">
       <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="targetZone">Target Zone</label>
+        <label class="okr-form-label okr-form-col" for="target-zone">Target Zone</label>
         <div class="col">
           <textarea
-            [attr.data-testId]="'targetZone'"
+            [attr.data-testId]="'target-zone'"
             class="big-dialog-form-field"
             [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
             formControlName="targetZone"
-            id="targetZone"
+            id="target-zone"
           ></textarea>
           <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'targetZone')">
             <span>{{ getErrorMessage("SIZE_BETWEEN", "Target Zone", 1, 400) }}</span>
@@ -126,14 +126,14 @@
 
     <div class="col">
       <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="stretchZone">Stretch Goal</label>
+        <label class="okr-form-label okr-form-col" for="stretch-zone">Stretch Goal</label>
         <div class="col">
           <textarea
-            [attr.data-testId]="'stretchZone'"
+            [attr.data-testId]="'stretch-zone'"
             class="big-dialog-form-field"
             [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
             formControlName="stretchZone"
-            id="stretchZone"
+            id="stretch-zone"
           ></textarea>
           <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchZone')">
             <span>{{ getErrorMessage("SIZE_BETWEEN", "Stretch Zone", 1, 400) }}</span>

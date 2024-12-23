@@ -12,6 +12,7 @@ import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,8 +34,9 @@ class AuthorizationCriteriaIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("Should return objective on findObjectiveById() when user is has first level role")
     @Test
-    void appendObjectiveShouldReturnObjectiveWhenFirstLevelRole() {
+    void shouldReturnObjectiveWhenFindObjectiveByIdIsCalledByUserWithFirstLevelRole() {
         Long objectiveId = 5L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
@@ -42,8 +44,9 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
+    @DisplayName("Should return objective on findObjectiveById() when user is has second level role")
     @Test
-    void appendObjectiveShouldReturnObjectiveWhenSecondLevelRole() {
+    void shouldReturnObjectiveWhenFindObjectiveByIdIsCalledByUserWithSecondLevelRole() {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
@@ -51,8 +54,9 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
+    @DisplayName("Should return objective on findObjectiveById() when user is has member level role")
     @Test
-    void appendObjectiveShouldReturnObjectiveWhenMemberRole() {
+    void shouldReturnObjectiveWhenFindObjectiveByIdIsCalledByUserWithMemberLevelRole() {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
@@ -60,8 +64,9 @@ class AuthorizationCriteriaIT {
         assertEquals(objectiveId, objective.getId());
     }
 
+    @DisplayName("Should return correct overview on getFilteredOverview() when user has first level role and no team ids are supplied")
     @Test
-    void appendOverviewShouldReturnObjectiveWhenFirstLevelRoleAndTeamIdsEmpty() {
+    void shouldReturnCorrectOverviewWhenGetFilteredOverviewIsCalledByUserWithFirstLevelRoleAndNoTeamIdsSupplied() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         List<Overview> overviews = overviewPersistenceService
@@ -70,8 +75,9 @@ class AuthorizationCriteriaIT {
         assertEquals(18L, overviews.size());
     }
 
+    @DisplayName("Should return correct overview on getFilteredOverview() when user has second level role")
     @Test
-    void appendOverviewShouldReturnObjectiveWhenSecondLevelRole() {
+    void shouldReturnCorrectOverviewWhenGetFilteredOverviewIsCalledByUserWithSecondLevelRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         List<Overview> overviews = overviewPersistenceService
@@ -80,8 +86,9 @@ class AuthorizationCriteriaIT {
         assertEquals(6L, overviews.size());
     }
 
+    @DisplayName("Should return correct overview on getFilteredOverview() when user has member level role")
     @Test
-    void appendOverviewShouldReturnObjectiveWhenMemberRole() {
+    void shouldReturnCorrectOverviewWhenGetFilteredOverviewIsCalledByUserWithMemberLevelRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null));
         List<Overview> overviews = overviewPersistenceService

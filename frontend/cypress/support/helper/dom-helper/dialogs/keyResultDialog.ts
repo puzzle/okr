@@ -5,36 +5,36 @@ import Chainable = Cypress.Chainable;
 
 export default class KeyResultDialog extends Dialog {
   fillKeyResultTitle(title: string) {
-    this.fillInputByTestId('titleInput', title);
+    this.fillInputByTestId('title-input', title);
     return this;
   }
 
   fillKeyResultDescription(description: string) {
-    this.fillInputByTestId('descriptionInput', description);
+    this.fillInputByTestId('description-input', description);
     return this;
   }
 
   withMetricValues(unit: Unit, baseline: string, stretchGoal: string) {
-    cy.getByTestId('metricTab')
+    cy.getByTestId('metric-tab')
       .click();
     cy.getByTestId('unit')
       .select(unit);
     this.fillInputByTestId('baseline', baseline);
-    this.fillInputByTestId('stretchGoal', stretchGoal);
+    this.fillInputByTestId('stretch-goal', stretchGoal);
     return this;
   }
 
   withOrdinalValues(commitZone: string, targetZone: string, stretchGoal: string) {
-    cy.getByTestId('ordinalTab')
+    cy.getByTestId('ordinal-tab')
       .click();
-    this.fillInputByTestId('commitZone', commitZone);
-    this.fillInputByTestId('targetZone', targetZone);
-    this.fillInputByTestId('stretchZone', stretchGoal);
+    this.fillInputByTestId('commit-zone', commitZone);
+    this.fillInputByTestId('target-zone', targetZone);
+    this.fillInputByTestId('stretch-zone', stretchGoal);
     return this;
   }
 
   fillOwner(owner: string) {
-    this.fillInputByTestId('ownerInput', owner);
+    this.fillInputByTestId('owner-input', owner);
     cy.realPress('ArrowDown')
       .realPress('Enter');
     return this;
@@ -43,7 +43,7 @@ export default class KeyResultDialog extends Dialog {
   addActionPlanElement(action: string) {
     cy.getByTestId('add-action-plan-line')
       .click();
-    cy.getByTestId('actionInput')
+    cy.getByTestId('action-input')
       .filter((k, el) => {
         return (el as HTMLInputElement).value.trim() === '';
       })
@@ -53,7 +53,7 @@ export default class KeyResultDialog extends Dialog {
   }
 
   deleteKeyResult() {
-    cy.getByTestId('delete-keyResult')
+    cy.getByTestId('delete-key-result')
       .click();
     return new ConfirmDialog();
   }
@@ -94,7 +94,7 @@ export default class KeyResultDialog extends Dialog {
   }
 
   saveAndNew() {
-    cy.getByTestId('saveAndNew')
+    cy.getByTestId('save-and-new')
       .click();
   }
 

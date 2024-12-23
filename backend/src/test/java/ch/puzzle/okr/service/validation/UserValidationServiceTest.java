@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +35,6 @@ class UserValidationServiceTest {
     @MockBean
     UserPersistenceService userPersistenceService = Mockito.mock(UserPersistenceService.class);
 
-    User user1;
     User userMinimal;
     User user;
 
@@ -45,15 +45,15 @@ class UserValidationServiceTest {
         user = User.Builder
                 .builder()
                 .withId(1L)
-                .withFirstname("Bob")
-                .withLastname("Kaufmann")
+                .withFirstName("Bob")
+                .withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch")
                 .build();
 
         userMinimal = User.Builder
                 .builder()
-                .withFirstname("Max")
-                .withLastname("Mustermann")
+                .withFirstName("Max")
+                .withLastName("Mustermann")
                 .withEmail("max@mustermann.com")
                 .build();
 
@@ -75,47 +75,47 @@ class UserValidationServiceTest {
     private static Stream<Arguments> firstNameValidationArguments() {
         return Stream
                 .of(arguments(StringUtils.repeat('1', 51),
-                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstname", "User", "2", "50")))),
+                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstName", "User", "2", "50")))),
                     arguments(StringUtils.repeat('1', 1),
-                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstname", "User", "2", "50")))),
+                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstName", "User", "2", "50")))),
                     arguments("",
                               List
-                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")),
+                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstName", "User")),
                                           new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                       List.of("firstname", "User", "2", "50")))),
+                                                       List.of("firstName", "User", "2", "50")))),
                     arguments(" ",
                               List
-                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")),
+                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstName", "User")),
                                           new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                       List.of("firstname", "User", "2", "50")))),
-                    arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")))),
+                                                       List.of("firstName", "User", "2", "50")))),
+                    arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstName", "User")))),
                     arguments(null,
                               List
-                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")),
-                                          new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("firstname", "User")))));
+                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstName", "User")),
+                                          new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("firstName", "User")))));
     }
 
     private static Stream<Arguments> lastNameValidationArguments() {
         return Stream
                 .of(arguments(StringUtils.repeat('1', 51),
-                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastname", "User", "2", "50")))),
+                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastName", "User", "2", "50")))),
                     arguments(StringUtils.repeat('1', 1),
-                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastname", "User", "2", "50")))),
+                              List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastName", "User", "2", "50")))),
                     arguments("",
                               List
-                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")),
+                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastName", "User")),
                                           new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                       List.of("lastname", "User", "2", "50")))),
+                                                       List.of("lastName", "User", "2", "50")))),
                     arguments(" ",
                               List
-                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")),
+                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastName", "User")),
                                           new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                       List.of("lastname", "User", "2", "50")))),
-                    arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")))),
+                                                       List.of("lastName", "User", "2", "50")))),
+                    arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastName", "User")))),
                     arguments(null,
                               List
-                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")),
-                                          new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("lastname", "User")))));
+                                      .of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastName", "User")),
+                                          new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("lastName", "User")))));
     }
 
     private static Stream<Arguments> emailValidationArguments() {
@@ -149,6 +149,7 @@ class UserValidationServiceTest {
                                           new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("email", "User")))));
     }
 
+    @DisplayName("Should be successful on validateOnGet() when user id is valid")
     @Test
     void validateOnGetShouldBeSuccessfulWhenValidUserId() {
         validator.validateOnGet(1L);
@@ -157,6 +158,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
+    @DisplayName("Should throw exception on validateOnGet() when id is null")
     @Test
     void validateOnGetShouldThrowExceptionIfUserIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -169,6 +171,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should be successful on validateOnGetOrCreate() when user is valid")
     @Test
     void validateOnGetOrCreateShouldBeSuccessful() {
         validator.validateOnGetOrCreate(userMinimal);
@@ -177,6 +180,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).validate(userMinimal);
     }
 
+    @DisplayName("Should throw exception on validateOnGetOrCreate() when model is null")
     @Test
     void validateOnGetOrCreateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -190,6 +194,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should be successful on validateOnCreate() when user is valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnCreate(userMinimal);
@@ -198,6 +203,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).validate(userMinimal);
     }
 
+    @DisplayName("Should throw exception on validateCreate() when model is null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -210,6 +216,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should throw exception on validateCreate() when id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -222,67 +229,67 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateCreate() when model has invalid first name '{0}'")
     @MethodSource("firstNameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<ErrorDto> errors) {
-        User user2 = User.Builder
+        User user = User.Builder
                 .builder()
                 .withEmail("max@mail.com")
-                .withFirstname(name)
-                .withLastname("lastname")
+                .withFirstName(name)
+                .withLastName("lastname")
                 .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(user2));
+                                                            () -> validator.validateOnCreate(user));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateCreate() when model has invalid last name '{0}'")
     @MethodSource("lastNameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<ErrorDto> errors) {
-        User user2 = User.Builder
+        User user = User.Builder
                 .builder()
                 .withEmail("max@mail.com")
-                .withFirstname("firstname")
-                .withLastname(name)
+                .withFirstName("firstname")
+                .withLastName(name)
                 .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(user2));
+                                                            () -> validator.validateOnCreate(user));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateCreate() when model has invalid email '{0}'")
     @MethodSource("emailValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenEmailIsInvalid(String email, List<ErrorDto> errors) {
-        User user2 = User.Builder
+        User user = User.Builder
                 .builder()
                 .withEmail(email)
-                .withFirstname("firstname")
-                .withLastname("lastname")
-                .build();
+                .withFirstName("firstname")
+                .withLastName("lastname").build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnCreate(user2));
+                                                            () -> validator.validateOnCreate(user));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should throw exception on validateCreate() when model is missing attributes")
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         User userInvalid = User.Builder
                 .builder()
                 .withId(null)
-                .withLastname("Lastname")
-                .withFirstname("firstname")
+                .withLastName("Lastname")
+                .withFirstName("firstname")
                 .withEmail("falseemail")
                 .build();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -295,6 +302,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should be successful on validateCreate() when user is valid")
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnUpdate(user.getId(), user);
@@ -305,6 +313,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).validate(user);
     }
 
+    @DisplayName("Should be throw exception on validateOnUpdate() when model is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -317,6 +326,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should be throw exception on validateOnUpdate() when id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -332,6 +342,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should be throw exception on validateOnUpdate() when id has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -348,70 +359,71 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should be throw exception on validateOnUpdate() when model has invalid first name {0}")
     @MethodSource("firstNameValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<ErrorDto> errors) {
-        User user2 = User.Builder
+        User user = User.Builder
                 .builder()
                 .withId(3L)
                 .withEmail("max@mail.com")
-                .withFirstname(name)
-                .withLastname("lastname")
+                .withFirstName(name)
+                .withLastName("lastname")
                 .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(3L, user2));
+                                                            () -> validator.validateOnUpdate(3L, user));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should be throw exception on validateOnUpdate() when model has invalid last name {0}")
     @MethodSource("lastNameValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<ErrorDto> errors) {
-        User user2 = User.Builder
+        User user = User.Builder
                 .builder()
                 .withId(3L)
                 .withEmail("max@mail.com")
-                .withFirstname("firstname")
-                .withLastname(name)
+                .withFirstName("firstname")
+                .withLastName(name)
                 .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(3L, user2));
+                                                            () -> validator.validateOnUpdate(3L, user));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should be throw exception on validateOnUpdate() when model has invalid email {0}")
     @MethodSource("emailValidationArguments")
     void validateOnUpdateShouldThrowExceptionWhenEmailIsInvalid(String email, List<ErrorDto> errors) {
-        User user2 = User.Builder
+        User user = User.Builder
                 .builder()
                 .withId(3L)
                 .withEmail(email)
-                .withFirstname("firstname")
-                .withLastname("lastname")
+                .withFirstName("firstname")
+                .withLastName("lastname")
                 .build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(3L, user2));
+                                                            () -> validator.validateOnUpdate(3L, user));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when model is missing attributes")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         User userInvalid = User.Builder
                 .builder()
                 .withId(3L)
-                .withLastname("Lastname")
-                .withFirstname("firstname")
+                .withLastName("Lastname")
+                .withFirstName("firstname")
                 .withEmail("falseemail")
                 .build();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -424,6 +436,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should not throw error on validateAuthorisationToken() when token is valid")
     @Test
     void validateAuthorisationTokenShouldNotThrowError() {
         assertDoesNotThrow(() -> validator.validateAuthorisationToken(mockJwt));
@@ -431,6 +444,7 @@ class UserValidationServiceTest {
         verify(validator).validateAuthorisationToken(mockJwt);
     }
 
+    @DisplayName("Should throw error on validateAuthorisationToken() when token is null")
     @Test
     void validateAuthorisationTokenShouldThrowErrorWhenNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -443,6 +457,7 @@ class UserValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should be successful on validateOnDelete() when model is valid")
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidObjectiveId() {
         validator.validateOnDelete(1L);
@@ -451,6 +466,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
+    @DisplayName("Should throw exception on validateOnGet() when model is null")
     @Test
     void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

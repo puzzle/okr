@@ -15,6 +15,7 @@ import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,8 +25,8 @@ class CompletedPersistenceServiceIT {
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
     private Completed createdCompleted;
-    private static final String WIR_HABEN_ES_GUT_GESCHAFFT = "Wir haben es gut geschafft";
-    public static final String GUTE_LERNENDE = "Gute Lernende";
+    private static final String OBJECTIVE_COMMENT = "Wir haben es gut geschafft";
+    public static final String OBJECTIVE_TITLE = "Gute Lernende";
     public static final long OBJECTIVE_ID = 3L;
 
     private static Completed createCompleted(Long id) {
@@ -37,8 +38,8 @@ class CompletedPersistenceServiceIT {
                 .builder()
                 .withId(id)
                 .withVersion(version)
-                .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(GUTE_LERNENDE).build())
-                .withComment(WIR_HABEN_ES_GUT_GESCHAFFT)
+                .withObjective(Objective.Builder.builder().withId(OBJECTIVE_ID).withTitle(OBJECTIVE_TITLE).build())
+                .withComment(OBJECTIVE_COMMENT)
                 .build();
     }
 
@@ -64,16 +65,18 @@ class CompletedPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("Should save entity on save()")
     @Test
     void saveCompletedShouldSaveCompleted() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
 
         assertNotNull(createdCompleted.getId());
-        assertEquals(WIR_HABEN_ES_GUT_GESCHAFFT, createdCompleted.getComment());
+        assertEquals(OBJECTIVE_COMMENT, createdCompleted.getComment());
         assertEquals(OBJECTIVE_ID, createdCompleted.getObjective().getId());
-        assertEquals(GUTE_LERNENDE, createdCompleted.getObjective().getTitle());
+        assertEquals(OBJECTIVE_TITLE, createdCompleted.getObjective().getTitle());
     }
 
+    @DisplayName("Should update entity on save() when the entity already exists")
     @Test
     void updateCompletedShouldSaveCompleted() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
@@ -87,6 +90,7 @@ class CompletedPersistenceServiceIT {
         assertEquals(updateCompleted.getComment(), updatedCompleted.getComment());
     }
 
+    @DisplayName("Should throw exception on save() when entity was already updated in the mean time")
     @Test
     void updateCompletedShouldThrowExceptionWhenAlreadyUpdated() {
         createdCompleted = completedPersistenceService.save(createCompleted(null));
@@ -103,6 +107,7 @@ class CompletedPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should return correct entity on getCompletedByObjectiveId()")
     @Test
     void getCompletedShouldGetCompletedByObjectiveId() {
         Completed savedCompleted = completedPersistenceService.getCompletedByObjectiveId(6L);
@@ -113,8 +118,9 @@ class CompletedPersistenceServiceIT {
                      savedCompleted.getObjective().getTitle());
     }
 
+    @DisplayName("Should delete entity on deleteById()")
     @Test
-    void deleteCompletedIdShouldDeleteExistingCompletedByObjectiveId() {
+    void deleteByIdShouldDeleteExistingCompletedByObjectiveId() {
 
         completedPersistenceService.deleteById(3L);
 
@@ -128,6 +134,7 @@ class CompletedPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should throw exception on findById() when id does not exist")
     @Test
     void deleteCompletedShouldThrowExceptionWhenCompletedNotFound() {
         long noExistentId = getNonExistentId();

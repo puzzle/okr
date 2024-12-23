@@ -27,8 +27,6 @@ export class CheckInFormComponent implements OnInit {
 
   currentDate: Date;
 
-  continued = false;
-
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required,

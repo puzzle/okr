@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { distinct, map, ReplaySubject, take } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { trackByFn } from '../../shared/common';
-import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
 import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/objective-menu-actions.service';
@@ -66,7 +66,7 @@ export class ObjectiveComponent {
 
   openAddKeyResultDialog(objective: ObjectiveMin) {
     this.dialogService
-      .open(KeyresultDialogComponent, {
+      .open(KeyResultDialogComponent, {
         data: {
           objective: objective,
           keyResult: null

@@ -74,9 +74,9 @@ public class TenantConfigProviderTestIT {
         return tenantId + "_";
     }
 
-    @DisplayName("getTenantConfigs returns all TenantConfigs as List")
+    @DisplayName("Should return all tenant-configs as a list after calling getTenantConfigs")
     @Test
-    public void testGetTenantConfigs() {
+    public void shouldGetTenantConfigs() {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         List<TenantConfigProvider.TenantConfig> tenantConfigs = configProvider.getTenantConfigs();
         for (TenantConfigProvider.TenantConfig config : tenantConfigs) {
@@ -84,29 +84,26 @@ public class TenantConfigProviderTestIT {
         }
     }
 
-    @DisplayName("getTenantConfigById returns for an existing TenantId the TenantConfig as Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getTenantConfigById returns for an existing TenantId the TenantConfig as Optional")
     @CsvSource({ "pitc, acme" })
-    void testGetTenantConfigByIdForExistingTenantId(String tenantId) {
+    void shouldGetTenantConfigByIdForExistingTenantId(String tenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         Optional<TenantConfigProvider.TenantConfig> config = configProvider.getTenantConfigById(tenantId);
         assertTrue(config.isPresent());
         assertTenantConfigProvider(config.get());
     }
 
-    @DisplayName("getTenantConfigById returns for a non existing TenantId an empty Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getTenantConfigById returns for a non existing TenantId an empty Optional")
     @CsvSource({ "PITC-London" })
-    void testGetTenantConfigByIdForNonExistingTenantId(String nonExistingTenantId) {
+    void shouldGetEmptyTenantConfigForNonExistingTenantId(String nonExistingTenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         Optional<TenantConfigProvider.TenantConfig> config = configProvider.getTenantConfigById(nonExistingTenantId);
         assertTrue(config.isEmpty());
     }
 
-    @DisplayName("getJwkSetUri returns for an existing TenantId the JwkSetUri as Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getJwkSetUri returns for an existing TenantId the JwkSetUri as Optional")
     @CsvSource({ "pitc", "acme" })
-    void testGetJwkSetUriForExistingTenantId(String tenantId) {
+    void shouldGetJwkSetUriForExistingTenantId(String tenantId) {
         // arrange
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
 
@@ -118,10 +115,9 @@ public class TenantConfigProviderTestIT {
         assertEquals(prefix(tenantId) + JWK_SET_URI, jwkSetUri.get());
     }
 
-    @DisplayName("getJwkSetUri returns for a non existing TenantId an empty Optional")
-    @ParameterizedTest
+    @ParameterizedTest(name = "getJwkSetUri returns for a non existing TenantId an empty Optional")
     @CsvSource({ "PITC-London" })
-    void testGetJwkSetUriForNonExistingTenantId(String nonExistingTenantId) {
+    void shouldGetEmptyJwkSetUriForNonExistingTenantId(String nonExistingTenantId) {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         Optional<String> jwkSetUri = configProvider.getJwkSetUri(nonExistingTenantId);
         assertTrue(jwkSetUri.isEmpty());

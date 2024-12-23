@@ -2,13 +2,13 @@ import { inject, NgModule } from '@angular/core';
 import { ResolveFn, RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './components/overview/overview.component';
 import { of } from 'rxjs';
-import { SidepanelComponent } from './shared/sidepanel/sidepanel.component';
+import { SidePanelComponent } from './shared/side-panel/side-panel.component';
 import { authGuard } from './guards/auth.guard';
 import { UserService } from './services/user.service';
 import { User } from './shared/types/model/User';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
-import { KeyresultDetailComponent } from './components/keyresult-detail/keyresult-detail.component';
+import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';
 
 const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
@@ -28,14 +28,14 @@ const routes: Routes = [
     },
     children: [{
       path: 'details',
-      component: SidepanelComponent,
+      component: SidePanelComponent,
       children: [{
         path: 'objective/:id',
         component: ObjectiveDetailComponent
       },
       {
         path: 'keyresult/:id',
-        component: KeyresultDetailComponent
+        component: KeyResultDetailComponent
       }]
     }],
     canActivate: [authGuard]

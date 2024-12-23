@@ -27,14 +27,14 @@
       </div>
 
       <div class="okr-form-row okr-form-label-input-container">
-        <label class="okr-form-label okr-form-col" for="changeInfo">Kommentar/ Veränderung seit letztem Check-in (optional):</label
+        <label class="okr-form-label okr-form-col" for="change-info">Kommentar/ Veränderung seit letztem Check-in (optional):</label
         >
         <div class="okr-form-input">
           <textarea
             [attr.data-testId]="'changeInfo'"
             [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
             class="big-dialog-form-field"
-            id="changeInfo"
+            id="change-info"
             formControlName="changeInfo"
           ></textarea>
           <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'changeInfo')">
@@ -80,7 +80,7 @@
           </span>
           zu erreichen:
         </label>
-        <app-confidence [checkIn]="checkIn" [edit]="true"></app-confidence>
+        <app-confidence [checkIn]="checkIn" [isEdit]="true"></app-confidence>
       </div>
     </form>
   </ng-container>

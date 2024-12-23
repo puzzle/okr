@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class KeyResultTest {
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "resetId() should set the ID to null for all key result types")
     @MethodSource("provideKeyResults")
     void resetIdShouldSetIdToNull(KeyResult keyResult) {
 
@@ -23,5 +23,4 @@ class KeyResultTest {
                 .of(Arguments.of(KeyResultMetric.Builder.builder().withId(1L).build()),
                     Arguments.of(KeyResultOrdinal.Builder.builder().withId(1L).build()));
     }
-
 }

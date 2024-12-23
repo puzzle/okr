@@ -27,7 +27,7 @@ describe('ObjectiveFilterComponent', () => {
     return Promise.resolve(true);
   };
 
-  const oauthServiceMock = {
+  const oAuthServiceMock = {
     hasValidIdToken: jest.fn()
   };
 
@@ -41,7 +41,7 @@ describe('ObjectiveFilterComponent', () => {
       },
       {
         provide: OAuthService,
-        useValue: oauthServiceMock
+        useValue: oAuthServiceMock
       }],
       imports: [
         HttpClientTestingModule,
@@ -70,12 +70,12 @@ describe('ObjectiveFilterComponent', () => {
     loader.getHarness(MatInputHarness)
       .then((search) => {
         jest.spyOn(router, 'navigate');
-        jest.spyOn(component, 'updateURL');
+        jest.spyOn(component, 'updateUrl');
         search.setValue('this is a test');
         fixture.detectChanges();
         component.refresh.next();
         tick(200);
-        expect(component.updateURL)
+        expect(component.updateUrl)
           .toHaveBeenCalledTimes(0);
         tick(200);
         expect(router.navigate)
@@ -85,7 +85,7 @@ describe('ObjectiveFilterComponent', () => {
       });
   }));
 
-  it('should read from query  correctly', fakeAsync(() => {
+  it('should read from query correctly', fakeAsync(() => {
     const searchPromise = loader.getHarness(MatInputHarness);
     const routerPromise = RouterTestingHarness.create();
 

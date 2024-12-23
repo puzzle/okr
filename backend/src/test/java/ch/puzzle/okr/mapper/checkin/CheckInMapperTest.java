@@ -43,9 +43,9 @@ public class CheckInMapperTest {
         checkInMapper = new CheckInMapper(checkInMetricMapper, checkInOrdinalMapper);
     }
 
-    @DisplayName("toDto() should map CheckInMetric to CheckInMetricDto")
+    @DisplayName("Should map CheckInMetric to CheckInMetricDto when toDto() is called")
     @Test
-    void toDtoShouldMapCheckInMetricToCheckInMetricDto() {
+    void shouldMapCheckInMetricToCheckInMetricDtoWhenToDtoIsCalled() {
         // arrange
         CheckInMetric checkInMetric = TestDataHelper.checkInMetric();
 
@@ -56,9 +56,9 @@ public class CheckInMapperTest {
         assertEquals(CheckInMetricDto.class, checkInDto.getClass());
     }
 
-    @DisplayName("toDto() should map CheckInOrdinal to a CheckInOrdinalDto")
+    @DisplayName("Should map CheckInOrdinal to CheckInOrdinalDto when toDto() is called")
     @Test
-    void toDtoShouldMapCheckInOrdinalToCheckInOrdinalDto() {
+    void shouldMapCheckInOrdinalToCheckInOrdinalDtoWhenToDtoIsCalled() {
         // arrange
         CheckInOrdinal checkInOrdinal = TestDataHelper.checkInOrdinal();
 
@@ -69,9 +69,9 @@ public class CheckInMapperTest {
         assertEquals(CheckInOrdinalDto.class, checkInDto.getClass());
     }
 
-    @DisplayName("toCheckIn() should map Dto to CheckInMetric")
+    @DisplayName("Should map Dto to CheckInMetric when toCheckIn() is called")
     @Test
-    void toCheckInShouldMapDtoToCheckInMetric() {
+    void shouldMapDtoToCheckInMetricWhenToCheckInIsCalled() {
         // arrange
         KeyResult keyResult = TestDataHelper.keyResult();
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);
@@ -85,9 +85,9 @@ public class CheckInMapperTest {
         assertEquals(CheckInMetric.class, check.getClass());
     }
 
-    @DisplayName("toCheckIn() should map Dto to CheckInOrdinal")
+    @DisplayName("Should map Dto to CheckInOrdinal when toCheckIn() is called")
     @Test
-    void toCheckInShouldMapDtoToCheckInOrdinal() {
+    void shouldMapDtoToCheckInOrdinalWhenToCheckInIsCalled() {
         // arrange
         KeyResult keyResult = TestDataHelper.keyResult();
         when(keyResultBusinessService.getEntityById(keyResult.getId())).thenReturn(keyResult);
@@ -101,9 +101,9 @@ public class CheckInMapperTest {
         assertEquals(CheckInOrdinal.class, check.getClass());
     }
 
-    @DisplayName("toDto() should throw Exception if CheckIn is not Metric or Ordinal")
+    @DisplayName("Should throw Exception if CheckIn is not Metric or Ordinal when toDto() is called")
     @Test
-    void toDtoShouldThrowExceptionIfCheckInIsNotMetricOrOrdinal() {
+    void shouldThrowExceptionIfCheckInIsNotMetricOrOrdinalWhenToDtoIsCalled() {
         // arrange
         CheckIn checkIn = new CheckIn() {
         };
@@ -115,9 +115,9 @@ public class CheckInMapperTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseStatusException.getStatusCode());
     }
 
-    @DisplayName("toCheckIn() should throw Exception if CheckIn is not MetricDto or OrdinalDto")
+    @DisplayName("Should throw Exception if CheckIn is not MetricDto or OrdinalDto when toCheckIn() is called")
     @Test
-    void toCheckInShouldThrowExceptionIfCheckInIsNotMetricOrOrdinal() {
+    void shouldThrowExceptionIfCheckInIsNotMetricDtoOrOrdinalDtoWhenToCheckInIsCalled() {
         // arrange
         CheckInDto checkInDto = new CheckInDto() {
         };

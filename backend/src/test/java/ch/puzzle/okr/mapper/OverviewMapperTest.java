@@ -17,6 +17,7 @@ import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,16 +29,18 @@ class OverviewMapperTest {
     @InjectMocks
     private OverviewMapper overviewMapper;
 
+    @DisplayName("Should return an empty list when toDto() is called with no team found")
     @Test
-    void toDtoShouldReturnEmptyListWhenNoTeamFound() {
+    void shouldReturnEmptyListWhenToDtoIsCalledWithNoTeamFound() {
         List<Overview> overviews = List.of();
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertTrue(overviewDtos.isEmpty());
     }
 
+    @DisplayName("Should return one element when toDto() is called with a team without objectives")
     @Test
-    void toDtoShouldReturnEmptyListWhenTeamFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithTeamWithoutObjectives() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()
@@ -50,8 +53,9 @@ class OverviewMapperTest {
         assertEquals(0, overviewDtos.get(0).objectives().size());
     }
 
+    @DisplayName("Should return one element when toDto() is called with a single objective and no key-results")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithSingleObjectiveAndNoKeyResults() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()
@@ -66,8 +70,9 @@ class OverviewMapperTest {
         assertEquals(0, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
+    @DisplayName("Should return one element when toDto() is called with a single objective and a key-result")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithSingleObjectiveAndKeyResult() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()
@@ -89,8 +94,9 @@ class OverviewMapperTest {
         assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
+    @DisplayName("Should return one element when toDto() is called with an objective having multiple key results and check-ins")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultAndCheckInsFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithObjectiveHavingMultipleKeyResultsAndCheckIns() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()
@@ -115,8 +121,9 @@ class OverviewMapperTest {
         assertEquals(1, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
+    @DisplayName("Should return one element when toDto() is called with an objective having two key results and a check-in")
     @Test
-    void toDtoShouldReturnOneElementWhenObjectiveWithTwoKeyResultAndCheckInFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithObjectiveHavingTwoKeyResultsAndCheckIn() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()
@@ -153,8 +160,9 @@ class OverviewMapperTest {
         assertEquals(2, overviewDtos.get(0).objectives().get(0).keyResults().size());
     }
 
+    @DisplayName("Should return one element when toDto() is called with multiple objectives, key results, and check-ins")
     @Test
-    void toDtoShouldReturnOneElementWhenTwoObjectivesWithKeyResultAndCheckInFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithMultipleObjectivesKeyResultsAndCheckIns() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()
@@ -215,8 +223,9 @@ class OverviewMapperTest {
         assertEquals("checkIn", ((OverviewKeyResultOrdinalDto) keyResultDto).lastCheckIn().zone());
     }
 
+    @DisplayName("Should return one element when toDto() is called with multiple teams having objectives and key-results")
     @Test
-    void toDtoShouldReturnOneElementWhenTwoTeamsWithObjectivesAndKeyResultsFound() {
+    void shouldReturnOneElementWhenToDtoIsCalledWithMultipleTeamsHavingObjectivesAndKeyResults() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()
@@ -268,8 +277,9 @@ class OverviewMapperTest {
         assertEquals(2, overviewDtos.get(1).objectives().get(0).keyResults().size());
     }
 
+    @DisplayName("Should throw an exception when toDto() is called with an unsupported key result type")
     @Test
-    void toDtoShouldThrowExceptionWhenKeyResultTypeNotSupported() {
+    void shouldThrowExceptionWhenToDtoIsCalledWithUnsupportedKeyResultType() {
         List<Overview> overviews = List
                 .of(Overview.Builder
                         .builder()

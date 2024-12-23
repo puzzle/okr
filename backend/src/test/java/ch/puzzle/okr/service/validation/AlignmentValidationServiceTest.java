@@ -2,9 +2,7 @@ package ch.puzzle.okr.service.validation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.ErrorDto;
@@ -13,6 +11,7 @@ import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.service.persistence.AlignmentPersistenceService;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,21 +23,22 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @ExtendWith(MockitoExtension.class)
 class AlignmentValidationServiceTest {
+    private final Alignment keyResultAlignment = new KeyResultAlignment();
     @MockitoBean
     AlignmentPersistenceService alignmentPersistenceService = Mockito.mock(AlignmentPersistenceService.class);
-    private final Alignment keyResultAlignment = new KeyResultAlignment();
-
     @Spy
     @InjectMocks
     private AlignmentValidationService validator;
 
+    @DisplayName("Should throw exception on validateOnCreate()")
     @Test
-    void validateOnCreateShouldThrowException() {
+    void shouldThrowExceptionOnValidateOnCreate() {
         assertThrows(UnsupportedOperationException.class, () -> validator.validateOnCreate(keyResultAlignment));
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNull() {
         when(alignmentPersistenceService.getModelName()).thenReturn("Alignment");
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -50,8 +50,9 @@ class AlignmentValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when id of alignment is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdOfAlignmentIsNull() {
+    void shouldThrowExceptionOnValidateOnValidateOnUpdateWhenIdOfAlignmentIsNull() {
         when(alignmentPersistenceService.getModelName()).thenReturn("Alignment");
         Alignment alignment = KeyResultAlignment.Builder.builder().withId(null).build();
 
@@ -65,8 +66,9 @@ class AlignmentValidationServiceTest {
 
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when id has changed")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdHasChanged() {
         Alignment alignment = KeyResultAlignment.Builder.builder().withId(3L).build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -78,8 +80,9 @@ class AlignmentValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, 3L);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when model is invalid")
     @Test
-    void validateOnUpdateShouldValidateDto() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenModelIsInvalid() {
         when(alignmentPersistenceService.getModelName()).thenReturn("Alignment");
         Alignment alignment = KeyResultAlignment.Builder.builder().withId(2L).withAlignedObjective(null).withVersion(1)
                 .build();

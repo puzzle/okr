@@ -17,6 +17,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,8 +40,8 @@ class CheckInBusinessServiceTest {
     private User user = User.Builder
             .builder()
             .withEmail("Email")
-            .withFirstname("Firstname")
-            .withLastname("Lastname")
+            .withFirstName("Firstname")
+            .withLastName("Lastname")
             .build();
     private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder
             .builder()
@@ -77,6 +78,7 @@ class CheckInBusinessServiceTest {
             .withKeyResult(ordinalKeyResult)
             .build();
 
+    @DisplayName("Should get metric check-in")
     @Test
     void shouldGetMetricCheckIn() {
         when(checkInPersistenceService.findById(this.checkInMetric.getId())).thenReturn(this.checkInMetric);
@@ -88,6 +90,7 @@ class CheckInBusinessServiceTest {
         assertEquals(metricKeyResult.getId(), checkIn.getKeyResult().getId());
     }
 
+    @DisplayName("Should get ordinal check-in")
     @Test
     void shouldGetOrdinalCheckIn() {
         when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInOrdinal);
@@ -99,6 +102,7 @@ class CheckInBusinessServiceTest {
         assertEquals(ordinalKeyResult.getId(), checkIn.getKeyResult().getId());
     }
 
+    @DisplayName("Should update metric check-in with no type change")
     @Test
     void shouldUpdateCheckInMetricWhenNoTypeChange() {
         when(checkInPersistenceService.findById(this.checkInMetric.getId())).thenReturn(this.checkInMetric);
@@ -113,6 +117,7 @@ class CheckInBusinessServiceTest {
         assertEquals(this.checkInMetric.getCheckInType(), newCheckIn.getCheckInType());
     }
 
+    @DisplayName("Should update ordinal check-in with no type change")
     @Test
     void shouldUpdateCheckInOrdinalWhenNoTypeChange() {
         when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInOrdinal);
@@ -127,6 +132,7 @@ class CheckInBusinessServiceTest {
         assertEquals(this.checkInOrdinal.getCheckInType(), newCheckIn.getCheckInType());
     }
 
+    @DisplayName("Should save metric check-in")
     @Test
     void shouldSaveMetricCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
@@ -139,6 +145,7 @@ class CheckInBusinessServiceTest {
         assertEquals(((CheckInMetric) this.checkInMetric).getValue(), ((CheckInMetric) createdCheckIn).getValue());
     }
 
+    @DisplayName("Should save ordinal check-in")
     @Test
     void shouldSaveOrdinalCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInOrdinal);
@@ -151,12 +158,14 @@ class CheckInBusinessServiceTest {
         assertEquals(((CheckInOrdinal) this.checkInOrdinal).getZone(), ((CheckInOrdinal) createdCheckIn).getZone());
     }
 
+    @DisplayName("Should delete check-in")
     @Test
     void shouldDeleteCheckIn() {
         checkInBusinessService.deleteEntityById(this.checkInOrdinal.getId());
         verify(checkInPersistenceService, times(1)).deleteById(this.checkInOrdinal.getId());
     }
 
+    @DisplayName("Should get all check-ins by key result id")
     @Test
     void shouldGetCheckInsByKeyResultId() {
         checkInBusinessService.getCheckInsByKeyResultId(this.metricKeyResult.getId());
@@ -164,6 +173,7 @@ class CheckInBusinessServiceTest {
                 .getCheckInsByKeyResultIdOrderByCheckInDateDesc(this.metricKeyResult.getId());
     }
 
+    @DisplayName("Should get last check-in by key result id")
     @Test
     void shouldGetLastCheckInByKeyResultId() {
         checkInBusinessService.getLastCheckInByKeyResultId(this.ordinalKeyResult.getId());

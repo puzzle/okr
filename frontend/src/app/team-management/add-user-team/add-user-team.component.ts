@@ -20,7 +20,7 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
   selectableAdminTeams$: Observable<Team[]> | undefined;
   allAdminTeams$: Observable<Team[]> | undefined;
 
-  private unsubscribe$ = new Subject<void>();
+  private readonly unsubscribe$ = new Subject<void>();
 
   constructor(private readonly teamService: TeamService) {}
 
@@ -63,11 +63,11 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
     this.userTeam = undefined;
   }
 
-  showAddButton(adminTeams: Team[] | null) {
+  isAddButtonVisible(adminTeams: Team[] | null) {
     return !this.userTeam && adminTeams?.length;
   }
 
-  addButtonDisabled(selectableAdminTeams: Team[] | null) {
+  isAddButtonDisabled(selectableAdminTeams: Team[] | null) {
     return !selectableAdminTeams?.length;
   }
 }

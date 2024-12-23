@@ -91,16 +91,16 @@ describe('InviteUserDialogComponent', () => {
     component.registerUsers();
     tick();
 
-    expect(userServiceMock.createUsers).toBeCalledTimes(1);
-    expect(userServiceMock.createUsers).toBeCalledWith(component.form.value);
-    expect(dialogRefMock.close).toBeCalledTimes(1);
+    expect(userServiceMock.createUsers).toHaveBeenCalledTimes(1);
+    expect(userServiceMock.createUsers).toHaveBeenCalledWith(component.form.value);
+    expect(dialogRefMock.close).toHaveBeenCalledTimes(1);
   }));
 
   it('registerUsers should not call createUsers form is not valid', fakeAsync(() => {
     component.registerUsers();
     tick();
 
-    expect(userServiceMock.createUsers).toBeCalledTimes(0);
-    expect(dialogRefMock.close).toBeCalledTimes(0);
+    expect(userServiceMock.createUsers).toHaveBeenCalledTimes(0);
+    expect(dialogRefMock.close).toHaveBeenCalledTimes(0);
   }));
 });

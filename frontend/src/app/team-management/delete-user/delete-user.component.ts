@@ -84,7 +84,7 @@ export class DeleteUserComponent implements OnInit {
   deleteUserWithChecks() {
     if (this.isUserMemberOfTeams()) {
       const dialogTitle = `User kann nicht gelöscht werden`;
-      const dialogText = `${getFullNameOfUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.dialogDetailsUserTeams()}`;
+      const dialogText = `${getFullNameOfUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.getDialogDetailsUserTeams()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     } else if (this.isUserOwnerOfKeyResults()) {
@@ -104,7 +104,7 @@ export class DeleteUserComponent implements OnInit {
     return this.userOkrData !== undefined ? this.userOkrData.keyResults.length > 0 : true;
   }
 
-  dialogDetailsUserTeams() {
+  getDialogDetailsUserTeams() {
     if (this.userOkrData) {
       return this.user.userTeamList //
         .map((userTeam) => userTeam.team.name)

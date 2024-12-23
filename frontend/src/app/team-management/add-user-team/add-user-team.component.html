@@ -2,21 +2,21 @@
   <div
     class="tooltip-wrapper"
     [matTooltip]="'Der User ist bereits in allen Teams in welchen Sie Admin sind'"
-    [matTooltipDisabled]="!addButtonDisabled(selectableAdminTeams)"
+    [matTooltipDisabled]="!isAddButtonDisabled(selectableAdminTeams)"
   >
     <button
-      *ngIf="showAddButton(allAdminTeams$ | async)"
+      *ngIf="isAddButtonVisible(allAdminTeams$ | async)"
       (click)="createUserTeam(selectableAdminTeams[0])"
       [attr.data-testId]="'add-user'"
       class="mdc-button px-0 pe-2"
-      [disabled]="addButtonDisabled(selectableAdminTeams)"
+      [disabled]="isAddButtonDisabled(selectableAdminTeams)"
       color="primary"
       mat-button
     >
       <span class="d-flex align-items-center fw-bold add-text">
         <img
           [src]="
-            addButtonDisabled(selectableAdminTeams)
+            isAddButtonDisabled(selectableAdminTeams)
               ? '/assets/icons/new-icon-disabled.svg'
               : '/assets/icons/new-icon.svg'
           "

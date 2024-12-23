@@ -98,11 +98,11 @@ describe('AddMemberToTeamDialogComponent', () => {
     });
   });
 
-  it('should set teamname correctly', () => {
+  it('should set team name correctly im title', () => {
     expect(component.getDialogTitle()).toBe(`Members zu Team ${team1.name} hinzufügen`);
   });
 
-  it('should return correct display value', () => {
+  it('should return correct display value for given user', () => {
     expect(component.getDisplayValue(users[0])).toBe(`${users[0].firstName} ${users[0].lastName} (${users[0].email})`);
   });
 

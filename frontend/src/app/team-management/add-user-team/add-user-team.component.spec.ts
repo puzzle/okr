@@ -60,12 +60,12 @@ describe('AddUserTeamComponent', () => {
       expect(teams.length).toBe(2);
       expect(teams[0].id).toBe(team1Copy.id);
       expect(teams[1].id).toBe(team2Copy.id);
-      expect(component.showAddButton(teams)).toBeTruthy();
+      expect(component.isAddButtonVisible(teams)).toBeTruthy();
       done();
     });
   });
 
-  it('createUserTeam should create the userTeam', () => {
+  it('should create the userTeam when createUserTeam is called', () => {
     component.createUserTeam(team1Copy);
     expect(component.userTeam).toStrictEqual({
       team: team1Copy,
@@ -74,10 +74,10 @@ describe('AddUserTeamComponent', () => {
   });
 
   it('save should throw exception if userTeam is undefined', () => {
-    expect(() => component.save()).toThrowError('UserTeam should be defined here');
+    expect(() => component.save()).toThrow('UserTeam should be defined here');
   });
 
-  it('save should emit addUserTeam event and set userTeam to undefined', (done) => {
+  it('should emit addUserTeam event and set userTeam to undefined after save', (done) => {
     component.userTeam = testUser.userTeamList[0];
     component.addUserTeam.subscribe(() => {
       done();
@@ -88,16 +88,16 @@ describe('AddUserTeamComponent', () => {
 
   it('should test showAddButton', () => {
     component.userTeam = testUser.userTeamList[0];
-    expect(component.showAddButton(null)).toBeFalsy();
-    expect(component.showAddButton([team1Copy, team2Copy])).toBeFalsy();
+    expect(component.isAddButtonVisible(null)).toBeFalsy();
+    expect(component.isAddButtonVisible([team1Copy, team2Copy])).toBeFalsy();
     component.userTeam = undefined;
-    expect(component.showAddButton([])).toBeFalsy();
-    expect(component.showAddButton([team1Copy, team2Copy])).toBeTruthy();
+    expect(component.isAddButtonVisible([])).toBeFalsy();
+    expect(component.isAddButtonVisible([team1Copy, team2Copy])).toBeTruthy();
   });
 
   it('should test addButtonDisabled', () => {
-    expect(component.addButtonDisabled([team1Copy])).toBeFalsy();
-    expect(component.addButtonDisabled([])).toBeTruthy();
-    expect(component.addButtonDisabled(null)).toBeTruthy();
+    expect(component.isAddButtonDisabled([team1Copy])).toBeFalsy();
+    expect(component.isAddButtonDisabled([])).toBeTruthy();
+    expect(component.isAddButtonDisabled(null)).toBeTruthy();
   });
 });

@@ -63,7 +63,7 @@ describe('DeleteUserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deleteUser() should delete user and reload users', () => {
+  it('should delete and reload users after deleteUser is called', () => {
     // arrange
     userServiceMock.deleteUser.mockReturnValue(of(userServiceMock.deleteUser));
     dialogRefMock.afterClosed.mockReturnValue(of('some data'));
@@ -78,7 +78,7 @@ describe('DeleteUserComponent', () => {
     expect(mockLocation.back).toHaveBeenCalledTimes(1);
   });
 
-  it('deleteUser() should not reload users when UserService throws an error', () => {
+  it('should not reload users when UserService throws an error after deleteUser() is called', () => {
     // arrange
     function createErrorSubject() {
       const myError = new Subject<any>();
@@ -99,7 +99,7 @@ describe('DeleteUserComponent', () => {
     expect(mockLocation.back).toHaveBeenCalledTimes(0);
   });
 
-  it('deleteUserWithChecks() should not delete user which is member of a Team', () => {
+  it('should check deleteUserWithChecks() should not delete user which is member of a Team', () => {
     // arrange (user is member of team Lorem)
     component.userIsMemberOfTeams = true;
     component.user.userTeamList = [
@@ -129,7 +129,7 @@ describe('DeleteUserComponent', () => {
     });
   });
 
-  it('deleteUserWithChecks() should not delete user which has KeyResults', () => {
+  it('should not delete user which has KeyResults when deleteUserWithChecks() is called ', () => {
     // arrange (user has KeyResult one)
     component.userIsMemberOfTeams = false;
     component.userOkrData = {

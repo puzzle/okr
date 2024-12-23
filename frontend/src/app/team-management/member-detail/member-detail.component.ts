@@ -57,7 +57,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   private loadUser(userId: number) {
     this.userService
       .getUserById(userId)
-      .pipe(tap((user) => this.setSelectedUserIsLoggedinUser(user)))
+      .pipe(tap((user) => this.setSelectedUserIsLoggedInUser(user)))
       .subscribe((user) => {
         this.user = user;
         this.currentUserTeams$.next(user.userTeamList);
@@ -65,7 +65,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setSelectedUserIsLoggedinUser(selectedUser: User) {
+  private setSelectedUserIsLoggedInUser(selectedUser: User) {
     this.selectedUserIsLoggedInUser = selectedUser.id === this.userService.getCurrentUser().id;
   }
 
@@ -125,7 +125,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['../'], { relativeTo: this.route.parent });
   }
 
-  isOkrChampionChange(okrChampion: boolean, user: User) {
+  setIsOkrChampion(okrChampion: boolean, user: User) {
     this.userService.setIsOkrChampion(user, okrChampion).subscribe(() => {
       this.loadUser(user.id);
       this.teamService.reloadTeams();

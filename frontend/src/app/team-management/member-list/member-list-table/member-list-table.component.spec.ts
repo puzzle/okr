@@ -102,10 +102,10 @@ describe('MemberListTableComponent', () => {
     component.removeMemberFromTeam(entry as UserTableEntry, new MouseEvent('click'));
     tick();
 
-    expect(teamServiceMock.removeUserFromTeam).toBeCalledTimes(1);
-    expect(teamServiceMock.removeUserFromTeam).toBeCalledWith(entry.id, component.selectedTeam$.value);
-    expect(userServiceMock.reloadUsers).toBeCalledTimes(1);
-    expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
+    expect(teamServiceMock.removeUserFromTeam).toHaveBeenCalledWith(1);
+    expect(teamServiceMock.removeUserFromTeam).toHaveBeenCalledWith(entry.id, component.selectedTeam$.value);
+    expect(userServiceMock.reloadUsers).toHaveBeenCalledWith(1);
+    expect(userServiceMock.reloadCurrentUser).toHaveBeenCalledWith(1);
   }));
 
   it('removeMemberFromTeam should not call removeUserFromTeam and reloadUsers if not confirmed', fakeAsync(() => {

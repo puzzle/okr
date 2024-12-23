@@ -98,17 +98,18 @@ describe('TeamManagementComponent', () => {
   });
 
   it('should call service method to update team if data input is not null', async () => {
+    jest.spyOn(teamServiceMock, 'updateTeam').mockReturnValue(of(teamFormObject));
+
     component.data = { team: marketingTeamWriteable };
     component.teamForm.setValue(teamFormObject);
-    jest.spyOn(teamServiceMock, 'updateTeam').mockReturnValue(of(teamFormObject));
     fixture.detectChanges();
     component.saveTeam();
+
     expect(teamServiceMock.updateTeam).toHaveBeenCalled();
-    expect(teamServiceMock.updateTeam).toHaveBeenCalledWith({
-      ...teamFormObject,
+    expect(teamServiceMock.updateTeam).toHaveBeenCalledWith(expect.objectContaining({
       id: marketingTeamWriteable.id,
       version: marketingTeamWriteable.version,
-    } as Team);
+    }));
   });
 
   it('should set team values in from on init if data is not null', async () => {

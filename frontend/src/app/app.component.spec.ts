@@ -17,7 +17,7 @@ import { OverviewComponent } from './components/overview/overview.component';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { CommonModule } from '@angular/common';
 
-const oauthServiceMock = {
+const oAuthServiceMock = {
   configure(environment: AuthConfig): void {},
   initCodeFlow(): void {},
   setupAutomaticSilentRefresh(): void {},
@@ -62,7 +62,7 @@ describe('AppComponent', () => {
         NoopAnimationsModule,
         CommonModule,
       ],
-      providers: [{ provide: OAuthService, useValue: oauthServiceMock }],
+      providers: [{ provide: OAuthService, useValue: oAuthServiceMock }],
       declarations: [AppComponent, OverviewComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

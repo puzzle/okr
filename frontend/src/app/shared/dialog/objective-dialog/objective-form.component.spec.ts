@@ -137,7 +137,7 @@ describe('ObjectiveDialogComponent', () => {
         //Prepare data
         let title: string = 'title';
         let description: string = 'description';
-        let createKeyresults: boolean = true;
+        let createKeyResults: boolean = true;
         let quarter: number = 0;
         let team: number = 0;
         teamService.getAllTeams().subscribe((teams: { id: number }[]) => {
@@ -171,13 +171,13 @@ describe('ObjectiveDialogComponent', () => {
         expect(rawFormValue.quarter).toBe(quarter.toString());
         expect(rawFormValue.team).toBe(team);
         expect(rawFormValue.title).toBe(title);
-        expect(rawFormValue.createKeyResults).toBe(createKeyresults);
+        expect(rawFormValue.createKeyResults).toBe(createKeyResults);
 
         objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
         component.onSubmit(state);
 
         expect(dialogMock.close).toHaveBeenCalledWith({
-          addKeyResult: createKeyresults,
+          addKeyResult: createKeyResults,
           delete: false,
           objective: {
             description: description,

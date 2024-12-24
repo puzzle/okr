@@ -71,9 +71,7 @@ class KeyResultBusinessServiceTest {
                 .withTitle("Keyresult Metric")
                 .withObjective(objective)
 
-
                 .withOwner(user)
-
 
                 .withCreatedBy(user)
                 .build();

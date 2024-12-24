@@ -16,6 +16,7 @@ export class KeyResultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
 
   @Input() keyResult!: KeyResult | null;
+
   @Output() formValidityEmitter = new EventEmitter<boolean>();
 
   isMetric = true;

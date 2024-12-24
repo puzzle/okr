@@ -268,11 +268,7 @@ class UserValidationServiceTest {
     @ParameterizedTest(name = "should throw exception on validateCreate() when model has invalid email '{0}'")
     @MethodSource("emailValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenEmailIsInvalid(String email, List<ErrorDto> errors) {
-        User user = User.Builder
-                .builder()
-                .withEmail(email)
-                .withFirstName("firstname")
-                .withLastName("lastname").build();
+        User user = User.Builder.builder().withEmail(email).withFirstName("firstname").withLastName("lastname").build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(user));

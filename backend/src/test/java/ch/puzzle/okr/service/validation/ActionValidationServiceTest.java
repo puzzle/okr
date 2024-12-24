@@ -403,11 +403,7 @@ class ActionValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenAttrsAreMissing() {
         // arrange
-        Action actionInvalid = Action.Builder
-                .builder()
-                .withId(11L)
-                .isChecked(true)
-                .withKeyResult(keyResult).build();
+        Action actionInvalid = Action.Builder.builder().withId(11L).isChecked(true).withKeyResult(keyResult).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert

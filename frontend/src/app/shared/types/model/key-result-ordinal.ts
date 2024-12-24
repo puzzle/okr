@@ -1,5 +1,5 @@
-import { KeyResult } from './KeyResult';
-import { CheckInOrdinal } from './CheckInOrdinal';
+import { KeyResult } from './key-result';
+import { CheckInOrdinal } from './check-in-ordinal';
 
 export interface KeyResultOrdinal extends KeyResult {
   lastCheckIn: CheckInOrdinal | null;

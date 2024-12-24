@@ -58,7 +58,7 @@ import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { SharedModule } from './shared/shared.module';
 import { OAuthInterceptor } from './interceptors/o-auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { CustomRouter } from './shared/customRouter';
+import { CustomRouter } from './shared/custom-router';
 import { KeyResultFormComponent } from './components/key-result-form/key-result-form.component';
 import { KeyResultDialogComponent } from './components/key-result-dialog/key-result-dialog.component';
 import { CheckInHistoryDialogComponent } from './components/check-in-history-dialog/check-in-history-dialog.component';

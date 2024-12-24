@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
-import { getFullNameOfUser, User } from '../../shared/types/model/User';
+import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Team } from '../../shared/types/model/Team';
-import { UserTeam } from '../../shared/types/model/UserTeam';
+import { Team } from '../../shared/types/model/team';
+import { UserTeam } from '../../shared/types/model/user-team';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';

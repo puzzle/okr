@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogData } from '../../../services/dialog.service';
-import { ButtonState } from '../../types/enums/ButtonState';
+import { ButtonState } from '../../types/enums/button-state';
 
 @Component({
   selector: 'app-confirm-dialog',

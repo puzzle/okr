@@ -1,7 +1,7 @@
 import * as users from '../fixtures/users.json';
 import { getPercentageMetric, getPercentageOrdinal } from 'cypress/support/helper/scoringSupport';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
-import { Unit } from '../../src/app/shared/types/enums/Unit';
+import { Unit } from '../../src/app/shared/types/enums/unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
 describe('okr scoring', () => {

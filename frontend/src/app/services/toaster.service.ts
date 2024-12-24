@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { ToasterType } from '../shared/types/enums/ToasterType';
+import { ToasterType } from '../shared/types/enums/toaster-type';
 
 @Injectable({
   providedIn: 'root'

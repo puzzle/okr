@@ -1,22 +1,22 @@
-import { State } from './types/enums/State';
-import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
-import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
-import { KeyResultMin } from './types/model/KeyResultMin';
-import { ObjectiveMin } from './types/model/ObjectiveMin';
-import { OverviewEntity } from './types/model/OverviewEntity';
-import { KeyResultObjective } from './types/model/KeyResultObjective';
-import { Quarter } from './types/model/Quarter';
-import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
-import { Objective } from './types/model/Objective';
-import { User } from './types/model/User';
-import { KeyResultMetric } from './types/model/KeyResultMetric';
-import { Unit } from './types/enums/Unit';
-import { Team } from './types/model/Team';
-import { Action } from './types/model/Action';
-import { CheckInOrdinal } from './types/model/CheckInOrdinal';
-import { CheckInMetric } from './types/model/CheckInMetric';
-import { CheckInOrdinalMin } from './types/model/CheckInOrdinalMin';
-import { CheckInMetricMin } from './types/model/CheckInMetricMin';
+import { State } from './types/enums/state';
+import { KeyResultMetricMin } from './types/model/key-result-metric-min';
+import { KeyResultOrdinalMin } from './types/model/key-result-ordinal-min';
+import { KeyResultMin } from './types/model/key-result-min';
+import { ObjectiveMin } from './types/model/objective-min';
+import { OverviewEntity } from './types/model/overview-entity';
+import { KeyResultObjective } from './types/model/key-result-objective';
+import { Quarter } from './types/model/quarter';
+import { KeyResultOrdinal } from './types/model/key-result-ordinal';
+import { Objective } from './types/model/objective';
+import { User } from './types/model/user';
+import { KeyResultMetric } from './types/model/key-result-metric';
+import { Unit } from './types/enums/unit';
+import { Team } from './types/model/team';
+import { Action } from './types/model/action';
+import { CheckInOrdinal } from './types/model/check-in-ordinal';
+import { CheckInMetric } from './types/model/check-in-metric';
+import { CheckInOrdinalMin } from './types/model/check-in-ordinal-min';
+import { CheckInMetricMin } from './types/model/check-in-metric-min';
 
 export const teamFormObject = {
   name: 'newTeamName'

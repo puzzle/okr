@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '../../services/user.service';
 import { DeleteUserComponent } from './delete-user.component';
 import { of, Subject } from 'rxjs';
-import { testUser } from '../../shared/testData';
+import { testUser } from '../../shared/test-data';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 import { Location } from '@angular/common';
-import { ButtonState } from '../../shared/types/enums/ButtonState';
+import { ButtonState } from '../../shared/types/enums/button-state';
 
 describe('DeleteUserComponent', () => {
   let component: DeleteUserComponent;

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Objective } from '../shared/types/model/Objective';
+import { Objective } from '../shared/types/model/objective';
 import { Observable } from 'rxjs';
-import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
-import { User } from '../shared/types/model/User';
-import { CheckIn } from '../shared/types/model/CheckIn';
-import { Action } from '../shared/types/model/Action';
+import { KeyResultDto } from '../shared/types/DTOs/key-result-dto';
+import { User } from '../shared/types/model/user';
+import { CheckIn } from '../shared/types/model/check-in';
+import { Action } from '../shared/types/model/action';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class ObjectiveService {
     return this.httpClient.get<Objective>('/api/v2/objectives/' + id);
   }
 
-  getAllKeyResultsByObjective(id: number): Observable<KeyResultDTO[]> {
-    return this.httpClient.get<KeyResultDTO[]>('api/v2/objectives/' + id + '/keyResults');
+  getAllKeyResultsByObjective(id: number): Observable<KeyResultDto[]> {
+    return this.httpClient.get<KeyResultDto[]>('api/v2/objectives/' + id + '/keyResults');
   }
 
   createObjective(objectiveDTO: Objective): Observable<Objective> {

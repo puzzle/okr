@@ -14,8 +14,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TeamService } from '../../services/team.service';
 import { UserService } from '../../services/user.service';
 import { of } from 'rxjs';
-import { Team } from '../../shared/types/model/Team';
-import { User } from '../../shared/types/model/User';
+import { Team } from '../../shared/types/model/team';
+import { User } from '../../shared/types/model/user';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import Spy = jasmine.Spy;
 

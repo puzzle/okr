@@ -5,8 +5,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import '../../global';
-import { HttpType } from '../shared/types/enums/HttpType';
-import { ToasterType } from '../shared/types/enums/ToasterType';
+import { HttpType } from '../shared/types/enums/http-type';
+import { ToasterType } from '../shared/types/enums/toaster-type';
 
 describe('ErrorInterceptor', () => {
   let interceptor: ErrorInterceptor;

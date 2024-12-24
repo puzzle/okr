@@ -1,5 +1,5 @@
 import { UnitTransformationPipe } from './unit-transformation.pipe';
-import { Unit } from '../../types/enums/Unit';
+import { Unit } from '../../types/enums/unit';
 
 describe('UnitTransformationPipe', () => {
   it('should create an instance', () => {

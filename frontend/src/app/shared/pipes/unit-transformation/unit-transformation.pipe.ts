@@ -1,4 +1,4 @@
-import { Unit } from '../../types/enums/Unit';
+import { Unit } from '../../types/enums/unit';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

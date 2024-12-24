@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { CustomizationConfig, CustomStyles } from '../shared/types/model/ClientConfig';
+import { CustomizationConfig, CustomStyles } from '../shared/types/model/client-config';
 import { ConfigService } from './config.service';
 
 @Injectable({

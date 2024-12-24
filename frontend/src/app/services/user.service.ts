@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../shared/types/model/User';
-import { NewUser } from '../shared/types/model/NewUser';
-import { UserOkrData } from '../shared/types/model/UserOkrData';
+import { User } from '../shared/types/model/user';
+import { NewUser } from '../shared/types/model/new-user';
+import { UserOkrData } from '../shared/types/model/user-okr-data';
 
 @Injectable({
   providedIn: 'root'

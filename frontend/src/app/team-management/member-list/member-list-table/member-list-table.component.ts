@@ -1,13 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { UserTableEntry } from '../../../shared/types/model/UserTableEntry';
-import { User } from '../../../shared/types/model/User';
-import { Team } from '../../../shared/types/model/Team';
+import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
+import { User } from '../../../shared/types/model/user';
+import { Team } from '../../../shared/types/model/team';
 import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
-import { getRouteToUserDetails } from '../../../shared/routeUtils';
+import { getRouteToUserDetails } from '../../../shared/route-utils';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
-import { UserTeam } from '../../../shared/types/model/UserTeam';
+import { UserTeam } from '../../../shared/types/model/user-team';
 import { DialogService } from '../../../services/dialog.service';
 
 @Component({

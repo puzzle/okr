@@ -10,8 +10,8 @@ import {
   sanitize
 } from './common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { keyResultMetricMinScoring, keyResultOrdinalMinScoring } from './testData';
-import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
+import { keyResultMetricMinScoring, keyResultOrdinalMinScoring } from './test-data';
+import { KeyResultMetricMin } from './types/model/key-result-metric-min';
 
 describe('test common functions', () => {
   describe('getNumberOrNull', () => {

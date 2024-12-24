@@ -4,7 +4,7 @@ import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { ObjectiveService } from '../../services/objective.service';
-import { objective, objectiveWriteableFalse } from '../../shared/testData';
+import { objective, objectiveWriteableFalse } from '../../shared/test-data';
 import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';

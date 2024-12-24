@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { ComponentType } from '@angular/cdk/overlay';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { ButtonState } from '../shared/types/enums/ButtonState';
+import { ButtonState } from '../shared/types/enums/button-state';
 
 export interface ConfirmDialogData {
   title: string;

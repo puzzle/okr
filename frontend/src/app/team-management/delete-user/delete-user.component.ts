@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { getFullNameOfUser, User } from '../../shared/types/model/User';
+import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Location } from '@angular/common';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
-import { UserTeam } from '../../shared/types/model/UserTeam';
+import { UserTeam } from '../../shared/types/model/user-team';
 import { ConfirmDialogData, DialogService } from '../../services/dialog.service';
-import { ButtonState } from '../../shared/types/enums/ButtonState';
-import { UserOkrData } from '../../shared/types/model/UserOkrData';
+import { ButtonState } from '../../shared/types/enums/button-state';
+import { UserOkrData } from '../../shared/types/model/user-okr-data';
 
 @Component({
   selector: 'app-delete-user',

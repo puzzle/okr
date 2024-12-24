@@ -10,7 +10,7 @@ import {
   keyResultActions,
   keyResultMetric,
   keyResultOrdinal
-} from '../../../shared/testData';
+} from '../../../shared/test-data';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';

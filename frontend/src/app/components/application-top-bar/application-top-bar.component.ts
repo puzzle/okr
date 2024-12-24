@@ -4,7 +4,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { getFullNameOfUser } from '../../shared/types/model/User';
+import { getFullNameOfUser } from '../../shared/types/model/user';
 
 @Component({
   selector: 'app-application-top-bar',

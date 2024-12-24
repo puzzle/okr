@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfidenceComponent } from './confidence.component';
-import { checkInMetric } from '../../shared/testData';
+import { checkInMetric } from '../../shared/test-data';
 import { MatSliderModule } from '@angular/material/slider';
-import { CheckInMin } from '../../shared/types/model/CheckInMin';
+import { CheckInMin } from '../../shared/types/model/check-in-min';
 import { FormsModule } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { By } from '@angular/platform-browser';

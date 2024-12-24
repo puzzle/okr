@@ -6,7 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
 import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
 import { CommonModule } from '@angular/common';
-import { NewUserForm } from '../../shared/types/model/NewUserForm';
+import { NewUserForm } from '../../shared/types/model/new-user-form';
 
 describe('NewUserComponent', () => {
   let component: NewUserComponent;

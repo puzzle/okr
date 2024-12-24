@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NewUser } from '../../shared/types/model/NewUser';
+import { NewUser } from '../../shared/types/model/new-user';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { DialogRef } from '@angular/cdk/dialog';
-import { NewUserForm } from '../../shared/types/model/NewUserForm';
+import { NewUserForm } from '../../shared/types/model/new-user-form';
 import { UniqueEmailValidator } from '../new-user/unique-mail.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 

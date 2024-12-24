@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { KeyResultMin } from '../../shared/types/model/KeyResultMin';
+import { KeyResultMin } from '../../shared/types/model/key-result-min';
 import { Router } from '@angular/router';
-import { DATE_FORMAT } from '../../shared/constantLibary';
-import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
-import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
+import { DATE_FORMAT } from '../../shared/constant-library';
+import { KeyResultMetricMin } from '../../shared/types/model/key-result-metric-min';
+import { KeyResultOrdinalMin } from '../../shared/types/model/key-result-ordinal-min';
 
 @Component({
   selector: 'app-key-result',

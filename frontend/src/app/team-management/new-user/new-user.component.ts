@@ -8,7 +8,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlContainer, FormControl, FormGroup, NgForm } from '@angular/forms';
-import { NewUserForm } from '../../shared/types/model/NewUserForm';
+import { NewUserForm } from '../../shared/types/model/new-user-form';
 
 @Component({
   selector: 'app-new-user',

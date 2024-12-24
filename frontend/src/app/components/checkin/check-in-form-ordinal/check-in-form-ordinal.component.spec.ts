@@ -2,14 +2,14 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CheckInFormOrdinalComponent } from './check-in-form-ordinal.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { keyResultOrdinalMin } from '../../../shared/testData';
-import { KeyResultOrdinal } from '../../../shared/types/model/KeyResultOrdinal';
+import { keyResultOrdinalMin } from '../../../shared/test-data';
+import { KeyResultOrdinal } from '../../../shared/types/model/key-result-ordinal';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { Zone } from '../../../shared/types/enums/Zone';
+import { Zone } from '../../../shared/types/enums/zone';
 import { MatRadioButtonHarness } from '@angular/material/radio/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';

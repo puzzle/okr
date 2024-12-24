@@ -12,7 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { testUser } from '../../shared/testData';
+import { testUser } from '../../shared/test-data';
 import { UserService } from '../../services/user.service';
 import { ConfigService } from '../../services/config.service';
 import { DialogService } from '../../services/dialog.service';

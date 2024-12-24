@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Quarter } from '../shared/types/model/Quarter';
+import { Quarter } from '../shared/types/model/quarter';
 import { map, Observable } from 'rxjs';
 
 @Injectable({

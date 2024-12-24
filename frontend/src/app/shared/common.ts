@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
+import { KeyResultMetricMin } from './types/model/key-result-metric-min';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString()

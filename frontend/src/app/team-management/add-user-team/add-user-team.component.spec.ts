@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddUserTeamComponent } from './add-user-team.component';
 import { TeamService } from '../../services/team.service';
-import { team1, team2, team3, testUser } from '../../shared/testData';
+import { team1, team2, team3, testUser } from '../../shared/test-data';
 import { of } from 'rxjs';
 
 describe('AddUserTeamComponent', () => {

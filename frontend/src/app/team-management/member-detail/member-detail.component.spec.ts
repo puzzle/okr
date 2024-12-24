@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../../shared/shared.module';
 import { UserService } from '../../services/user.service';
-import { testUser } from '../../shared/testData';
+import { testUser } from '../../shared/test-data';
 import { AddUserTeamComponent } from '../add-user-team/add-user-team.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';

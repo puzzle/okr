@@ -42,21 +42,19 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA)
     public data: AddMemberToTeamDialogComponentData
   ) {
-    this.selectedUsers$.subscribe((users) => (this.dataSource = new MatTableDataSource<User>(users)));
+    this.selectedUsers$.subscribe((users) => this.dataSource = new MatTableDataSource<User>(users));
   }
 
   public ngOnInit(): void {
+    // directly after selecting object, filtervalue is an object.
     this.usersForSelection$ = combineLatest([this.userService.getUsers(),
       this.selectedUsers$,
-      this.search.valueChanges.pipe(startWith(''),
-        // directly after selecting object, filtervalue is an object.
-        filter((searchValue) => typeof searchValue === 'string'))])
-      .pipe(takeUntil(this.unsubscribe$),
-        map(([allPossibleUsers,
-          selectedUsers,
-          filterValue]) => {
-          return this.filter(allPossibleUsers, filterValue || '', selectedUsers);
-        }));
+      this.search.valueChanges.pipe(startWith(''), filter((searchValue) => typeof searchValue === 'string'))])
+      .pipe(takeUntil(this.unsubscribe$), map(([allPossibleUsers,
+        selectedUsers,
+        filterValue]) => {
+        return this.filter(allPossibleUsers, filterValue || '', selectedUsers);
+      }));
   }
 
   public ngOnDestroy() {

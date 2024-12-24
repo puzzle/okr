@@ -44,16 +44,14 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   private loadOkrUser() {
     this.userService
       .getOrInitCurrentUser()
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((user) => (this.okrUser = user)))
+      .pipe(takeUntil(this.unsubscribe$), tap((user) => this.okrUser = user))
       .subscribe();
   }
 
   loadUserOkrData() {
     this.userService
       .getUserOkrData(this.user)
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((okrData) => (this.userOkrData = okrData)))
+      .pipe(takeUntil(this.unsubscribe$), tap((okrData) => this.userOkrData = okrData))
       .subscribe();
   }
 
@@ -66,24 +64,25 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   loadUserMemberOfTeamsStatus() {
     this.userService
       .isUserMemberOfTeams(this.user)
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((isMemberOfTeams) => (this.userIsMemberOfTeams = isMemberOfTeams)))
+      .pipe(takeUntil(this.unsubscribe$), tap((isMemberOfTeams) => this.userIsMemberOfTeams = isMemberOfTeams))
       .subscribe();
   }
 
   hasOkrUserRoleOkrChampion() {
-    if (this.okrUser == undefined) return false;
+    if (this.okrUser == undefined) {
+      return false;
+    }
     return this.okrUser.isOkrChampion;
   }
 
   deleteUserWithChecks() {
     if (this.isUserMemberOfTeams()) {
-      const dialogTitle = `User kann nicht gelöscht werden`;
+      const dialogTitle = 'User kann nicht gelöscht werden';
       const dialogText = `${getFullNameOfUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.getDialogDetailsUserTeams()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     } else if (this.isUserOwnerOfKeyResults()) {
-      const dialogTitle = `User kann nicht gelöscht werden`;
+      const dialogTitle = 'User kann nicht gelöscht werden';
       const dialogText = `${getFullNameOfUser(this.user)} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
@@ -130,7 +129,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
 
   deleteUser() {
     const data: ConfirmDialogData = {
-      title: `User löschen`,
+      title: 'User löschen',
       text: `Möchtest du den User ${this.user.firstName} ${this.user.lastName} wirklich löschen?`,
       yesButtonState: ButtonState.VisibleEnabled,
       noButtonState: ButtonState.VisibleEnabled,
@@ -143,16 +142,15 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
         if (result) {
           this.userService
             .deleteUser(this.user)
-            .pipe(takeUntil(this.unsubscribe$),
-              tap({
-                next: () => {
-                  this.userService.reloadUsers();
-                  this.location.back();
-                },
-                error: () => {
-                  throw Error(`unable to delete user ${getFullNameOfUser(this.user)} (with id ${this.user.id})`);
-                }
-              }))
+            .pipe(takeUntil(this.unsubscribe$), tap({
+              next: () => {
+                this.userService.reloadUsers();
+                this.location.back();
+              },
+              error: () => {
+                throw Error(`unable to delete user ${getFullNameOfUser(this.user)} (with id ${this.user.id})`);
+              }
+            }))
             .subscribe();
         }
       });

@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfidenceComponent } from './confidence.component';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { checkInMetric } from '../../shared/testData';
 import { MatSliderModule } from '@angular/material/slider';
 import { CheckInMin } from '../../shared/types/model/CheckInMin';
@@ -13,7 +11,6 @@ import { By } from '@angular/platform-browser';
 describe('ConfidenceComponent', () => {
   let component: ConfidenceComponent;
   let fixture: ComponentFixture<ConfidenceComponent>;
-  let loader: HarnessLoader;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,7 +22,6 @@ describe('ConfidenceComponent', () => {
 
     fixture = TestBed.createComponent(ConfidenceComponent);
     component = fixture.componentInstance;
-    loader = TestbedHarnessEnvironment.loader(fixture);
     component.checkIn = checkInMetric;
     component.isEdit = true;
   });
@@ -45,7 +41,7 @@ describe('ConfidenceComponent', () => {
     });
     fixture.detectChanges();
     await fixture.whenStable();
-    const textField = fixture.debugElement.query(By.css("[data-testId='confidence']"));
+    const textField = fixture.debugElement.query(By.css('[data-testId=\'confidence\']'));
     const expectedLabel = expected + '/' + component.max;
     const sliderInputField = fixture.debugElement.query(By.css('mat-slider > input '));
 

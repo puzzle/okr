@@ -48,11 +48,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap
-      .pipe(takeUntil(this.unsubscribe$),
-        tap((params) => {
-          const id = this.getIdFromParams(params);
-          this.loadUser(id);
-        }))
+      .pipe(takeUntil(this.unsubscribe$), tap((params) => {
+        const id = this.getIdFromParams(params);
+        this.loadUser(id);
+      }))
       .subscribe();
   }
 
@@ -92,8 +91,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm),
-        mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)))
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();

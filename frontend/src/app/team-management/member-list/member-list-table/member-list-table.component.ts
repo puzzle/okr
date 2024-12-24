@@ -38,7 +38,8 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   constructor(private readonly teamService: TeamService,
     private readonly userService: UserService,
-    private readonly dialogService: DialogService) {}
+    private readonly dialogService: DialogService) {
+  }
 
   ngOnInit() {
     this.selectedTeam$.pipe(takeUntil(this.unsubscribe$))
@@ -73,8 +74,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm),
-        mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam$.value!)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam$.value as Team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()

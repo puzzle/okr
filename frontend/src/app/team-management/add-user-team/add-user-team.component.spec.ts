@@ -7,8 +7,6 @@ import { of } from 'rxjs';
 describe('AddUserTeamComponent', () => {
   let component: AddUserTeamComponent;
   let fixture: ComponentFixture<AddUserTeamComponent>;
-  let teamService: TeamService;
-
   const team1Copy = { ...team1 };
   const team2Copy = { ...team2 };
   const team3Copy = { ...team3 };
@@ -29,7 +27,6 @@ describe('AddUserTeamComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddUserTeamComponent);
     component = fixture.componentInstance;
-    teamService = TestBed.inject(TeamService);
 
     teamServiceMock.getAllTeams.mockReturnValue(of([team1Copy,
       team2Copy,

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { FormGroup, Validators } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
@@ -17,7 +17,6 @@ export class KeyResultTypeComponent implements OnInit {
 
   @Input() keyResult!: KeyResult | null;
 
-  @Output() formValidityEmitter = new EventEmitter<boolean>();
 
   isMetric = true;
 
@@ -29,7 +28,8 @@ export class KeyResultTypeComponent implements OnInit {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) {
+  }
 
   ngOnInit(): void {
     if (this.keyResult) {
@@ -65,7 +65,6 @@ export class KeyResultTypeComponent implements OnInit {
 
   async updateFormValidity() {
     await new Promise((r) => setTimeout(r, 100));
-    this.formValidityEmitter.emit(this.keyResultForm.invalid);
   }
 
   setValidatorsMetric() {
@@ -98,7 +97,7 @@ export class KeyResultTypeComponent implements OnInit {
   }
 
   switchKeyResultType(type: string) {
-    if (((type == 'metric' && !this.isMetric) || (type == 'ordinal' && this.isMetric)) && this.typeChangeAllowed) {
+    if ((type == 'metric' && !this.isMetric || type == 'ordinal' && this.isMetric) && this.typeChangeAllowed) {
       this.isMetric = !this.isMetric;
       const keyResultType = this.isMetric ? 'metric' : 'ordinal';
       this.keyResultForm.controls['keyResultType'].setValue(keyResultType);

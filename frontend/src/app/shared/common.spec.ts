@@ -301,21 +301,20 @@ describe('test common functions', () => {
       -10,
       0
     ]
-  ])('should calculate progress correctly',
-    async(
-      baseline: number, stretchGoal: number, value: number, filledPercentage: number
-    ) => {
-      const keyResult = {
-        ...keyResultMetricMinScoring,
-        baseline: baseline,
-        stretchGoal: stretchGoal,
-        lastCheckIn: { ...keyResultOrdinalMinScoring.lastCheckIn,
-          value: value }
-      } as KeyResultMetricMin;
-      const percentage = calculateCurrentPercentage(keyResult);
-      expect(percentage)
-        .toBe(filledPercentage);
-    });
+  ])('should calculate progress correctly', async(
+    baseline: number, stretchGoal: number, value: number, filledPercentage: number
+  ) => {
+    const keyResult = {
+      ...keyResultMetricMinScoring,
+      baseline: baseline,
+      stretchGoal: stretchGoal,
+      lastCheckIn: { ...keyResultOrdinalMinScoring.lastCheckIn,
+        value: value }
+    } as KeyResultMetricMin;
+    const percentage = calculateCurrentPercentage(keyResult);
+    expect(percentage)
+      .toBe(filledPercentage);
+  });
 
   it.each([
     ['t%20t',
@@ -352,11 +351,10 @@ describe('test common functions', () => {
       v2: 1 },
     { v: null,
       v2: 1 }]
-  ])('should give correct output for optionalReplaceWithNulls',
-    (obj1: Record<string, any>, obj2: Record<string, any>) => {
-      expect(optionalReplaceWithNulls(obj1))
-        .toStrictEqual(obj2);
-    });
+  ])('should give correct output for optionalReplaceWithNulls', (obj1: Record<string, any>, obj2: Record<string, any>) => {
+    expect(optionalReplaceWithNulls(obj1))
+      .toStrictEqual(obj2);
+  });
 
   test('should return correct class', () => {
     const testForm = new FormGroup({

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { TeamManagementComponent } from './team-management.component';
 import { TeamManagementRoutingModule } from './team-management-routing.module';
-import { AddEditTeamDialog } from './add-edit-team-dialog/add-edit-team-dialog.component';
+import { AddEditTeamDialogComponent } from './add-edit-team-dialog/add-edit-team-dialog.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,7 +46,7 @@ import { MatChip } from '@angular/material/chips';
 @NgModule({
   declarations: [
     TeamManagementComponent,
-    AddEditTeamDialog,
+    AddEditTeamDialogComponent,
     TeamManagementBannerComponent,
     TeamListComponent,
     MemberListComponent,

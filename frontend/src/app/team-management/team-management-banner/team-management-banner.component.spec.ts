@@ -2,7 +2,7 @@ import { TeamManagementBannerComponent } from './team-management-banner.componen
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { SearchTeamManagementComponent } from '../search-team-management/search-team-management.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -61,6 +61,6 @@ describe('TeamManagementBannerComponent', () => {
     expect(dialogServiceMock.open)
       .toBeCalledTimes(1);
     expect(dialogServiceMock.open)
-      .toBeCalledWith(AddEditTeamDialog);
+      .toBeCalledWith(AddEditTeamDialogComponent);
   }));
 });

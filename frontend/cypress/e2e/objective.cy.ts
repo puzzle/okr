@@ -11,7 +11,7 @@ describe('okr objective', () => {
   });
 
   describe('tests via click', () => {
-    it(`should release objective from draft to ongoing`, () => {
+    it('should release objective from draft to ongoing', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('A objective in state draft')
         .submitDraftObjective();
@@ -31,7 +31,7 @@ describe('okr objective', () => {
         .should('exist');
     });
 
-    it(`should complete objective with successful`, () => {
+    it('should complete objective with successful', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('We want to complete this successful')
         .submit();
@@ -58,7 +58,7 @@ describe('okr objective', () => {
       overviewPage.getObjectiveByNameAndState('We want to complete this successful', 'successful');
     });
 
-    it(`should complete objective with not-successful`, () => {
+    it('should complete objective with not-successful', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('A not successful objective')
         .submit();
@@ -84,7 +84,7 @@ describe('okr objective', () => {
       overviewPage.getObjectiveByNameAndState('A not successful objective', 'not-successful');
     });
 
-    it(`should reopen successful objective`, () => {
+    it('should reopen successful objective', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('This objective will be reopened after')
         .submit();
@@ -119,7 +119,7 @@ describe('okr objective', () => {
         .should('exist');
     });
 
-    it(`should cancel reopening successful objective`, () => {
+    it('should cancel reopening successful objective', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('The reopening of this objective will be canceled')
         .submit();
@@ -198,7 +198,7 @@ describe('okr objective', () => {
         .should('exist');
     });
 
-    it(`should search and find objectives`, () => {
+    it('should search and find objectives', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('Search after this objective')
         .submit();
@@ -258,7 +258,7 @@ describe('okr objective', () => {
         .should('not.exist');
     });
 
-    it(`should create objective in other quarter`, () => {
+    it('should create objective in other quarter', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('Objective in quarter 3')
         .selectQuarter('3')
@@ -272,7 +272,7 @@ describe('okr objective', () => {
       cy.contains('Objective in quarter 3');
     });
 
-    it(`should edit objective and move it to another quarter`, () => {
+    it('should edit objective and move it to another quarter', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('Move to another quarter on edit')
         .submit();
@@ -296,7 +296,7 @@ describe('okr objective', () => {
   });
 
   describe('tests via keyboard', () => {
-    it(`should open objective aside via enter`, () => {
+    it('should open objective aside via enter', () => {
       cy.getByTestId('objective')
         .first()
         .find('[tabindex]')

@@ -149,21 +149,20 @@ describe('OverviewComponent', () => {
       [],
       'a a'
     ]
-  ])('should load overview based on query-params',
-    async(
-      query: string, quarterParam?: number, teamsParam?: number[], objectiveParam?: string
-    ) => {
-      jest.spyOn(overviewService, 'getOverview');
-      jest.spyOn(component, 'loadOverview');
-      const routerHarness = await RouterTestingHarness.create();
-      await routerHarness.navigateByUrl('/' + query);
-      routerHarness.detectChanges();
-      component.loadOverviewWithParams();
-      expect(overviewService.getOverview)
-        .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveParam);
-      expect(component.loadOverview)
-        .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveParam);
-    });
+  ])('should load overview based on query-params', async(
+    query: string, quarterParam?: number, teamsParam?: number[], objectiveParam?: string
+  ) => {
+    jest.spyOn(overviewService, 'getOverview');
+    jest.spyOn(component, 'loadOverview');
+    const routerHarness = await RouterTestingHarness.create();
+    await routerHarness.navigateByUrl('/' + query);
+    routerHarness.detectChanges();
+    component.loadOverviewWithParams();
+    expect(overviewService.getOverview)
+      .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveParam);
+    expect(component.loadOverview)
+      .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveParam);
+  });
 
   it('should refresh overview entities after getOverview() is called', async() => {
     jest.spyOn(component.overviewEntities$, 'next');

@@ -150,73 +150,72 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it.each([['DRAFT'],
-      ['ONGOING']])('onSubmit create',
-      fakeAsync((state: string) => {
-        // Prepare data
-        const title = 'title';
-        const description = 'description';
-        const createKeyResults = true;
-        let quarter = 0;
-        let team = 0;
-        teamService.getAllTeams()
-          .subscribe((teams: { id: number }[]) => {
-            team = teams[0].id;
-          });
-        quarterService.getAllQuarters()
-          .subscribe((quarters) => {
-            quarter = quarters[1].id;
-          });
+      ['ONGOING']])('onSubmit create', fakeAsync((state: string) => {
+      // Prepare data
+      const title = 'title';
+      const description = 'description';
+      const createKeyResults = true;
+      let quarter = 0;
+      let team = 0;
+      teamService.getAllTeams()
+        .subscribe((teams: { id: number }[]) => {
+          team = teams[0].id;
+        });
+      quarterService.getAllQuarters()
+        .subscribe((quarters) => {
+          quarter = quarters[1].id;
+        });
 
-        // Get input elements and set values
-        const titleInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="title"]')).nativeElement;
-        titleInput.value = title;
-        const descriptionInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="description"]')).nativeElement;
-        descriptionInput.value = description;
-        loader.getHarness(MatCheckboxHarness)
-          .then((checkBox) => checkBox.check());
-        tick(200);
-        const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('[data-testId="quarterSelect"]')).nativeElement;
-        quarterSelect.value = quarter.toString();
-        // Trigger update of form
-        fixture.detectChanges();
-        titleInput.dispatchEvent(new Event('input'));
-        descriptionInput.dispatchEvent(new Event('input'));
-        quarterSelect.dispatchEvent(new Event('change'));
+      // Get input elements and set values
+      const titleInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="title"]')).nativeElement;
+      titleInput.value = title;
+      const descriptionInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="description"]')).nativeElement;
+      descriptionInput.value = description;
+      loader.getHarness(MatCheckboxHarness)
+        .then((checkBox) => checkBox.check());
+      tick(200);
+      const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('[data-testId="quarterSelect"]')).nativeElement;
+      quarterSelect.value = quarter.toString();
+      // Trigger update of form
+      fixture.detectChanges();
+      titleInput.dispatchEvent(new Event('input'));
+      descriptionInput.dispatchEvent(new Event('input'));
+      quarterSelect.dispatchEvent(new Event('change'));
 
-        const rawFormValue = component.objectiveForm.getRawValue();
-        expect(rawFormValue.description)
-          .toBe(description);
-        expect(rawFormValue.quarter)
-          .toBe(quarter.toString());
-        expect(rawFormValue.team)
-          .toBe(team);
-        expect(rawFormValue.title)
-          .toBe(title);
-        expect(rawFormValue.createKeyResults)
-          .toBe(createKeyResults);
+      const rawFormValue = component.objectiveForm.getRawValue();
+      expect(rawFormValue.description)
+        .toBe(description);
+      expect(rawFormValue.quarter)
+        .toBe(quarter.toString());
+      expect(rawFormValue.team)
+        .toBe(team);
+      expect(rawFormValue.title)
+        .toBe(title);
+      expect(rawFormValue.createKeyResults)
+        .toBe(createKeyResults);
 
-        objectiveService.createObjective.mockReturnValue(of({ ...objective,
-          state: state }));
-        component.onSubmit(state);
+      objectiveService.createObjective.mockReturnValue(of({ ...objective,
+        state: state }));
+      component.onSubmit(state);
 
-        expect(dialogMock.close)
-          .toHaveBeenCalledWith({
-            addKeyResult: createKeyResults,
-            delete: false,
-            objective: {
-              description: description,
-              id: 5,
-              version: 1,
-              quarterId: 2,
-              quarterLabel: 'GJ 22/23-Q2',
-              state: State[state as keyof typeof State],
-              teamId: 2,
-              title: title,
-              isWriteable: true
-            },
-            teamId: 1
-          });
-      }));
+      expect(dialogMock.close)
+        .toHaveBeenCalledWith({
+          addKeyResult: createKeyResults,
+          delete: false,
+          objective: {
+            description: description,
+            id: 5,
+            version: 1,
+            quarterId: 2,
+            quarterLabel: 'GJ 22/23-Q2',
+            state: State[state as keyof typeof State],
+            teamId: 2,
+            title: title,
+            isWriteable: true
+          },
+          teamId: 1
+        });
+    }));
 
     it('should create objective', () => {
       matDataMock.objective.objectiveId = undefined;

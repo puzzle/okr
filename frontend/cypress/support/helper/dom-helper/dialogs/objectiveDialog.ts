@@ -21,7 +21,7 @@ export default class ObjectiveDialog extends Dialog {
 
   toggleCreateKeyResults() {
     cy.getByTestId('keyResult-checkbox')
-      .find("[type='checkbox']")
+      .find('[type=\'checkbox\']')
       .check();
     return this;
   }

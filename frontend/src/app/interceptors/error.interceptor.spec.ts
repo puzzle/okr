@@ -97,31 +97,30 @@ describe('ErrorInterceptor', () => {
     'KEYRESULT',
     ToasterType.SUCCESS,
     'Keyresult wurde gelöscht'
-  ]])('should show correct success toaster when calling handleSuccessToaster()',
-    (
-      url: string, code: number, method: HttpType, key: string, toasterType: ToasterType, message: string
-    ) => {
-      const SUCCESS_PREFIX = 'SUCCESS.';
-      jest.spyOn(translator, 'instant')
-        .mockReturnValue(message);
-      jest.spyOn(toaster, 'showCustomToaster');
-      jest.spyOn(interceptor, 'getSuccessMessageKey')
-        .mockReturnValue({ key: key,
-          toasterType: toasterType });
+  ]])('should show correct success toaster when calling handleSuccessToaster()', (
+    url: string, code: number, method: HttpType, key: string, toasterType: ToasterType, message: string
+  ) => {
+    const SUCCESS_PREFIX = 'SUCCESS.';
+    jest.spyOn(translator, 'instant')
+      .mockReturnValue(message);
+    jest.spyOn(toaster, 'showCustomToaster');
+    jest.spyOn(interceptor, 'getSuccessMessageKey')
+      .mockReturnValue({ key: key,
+        toasterType: toasterType });
 
-      const requestMock = {
-        url: url,
-        status: code
-      };
+    const requestMock = {
+      url: url,
+      status: code
+    };
 
-      interceptor.handleSuccessToaster(requestMock, method);
-      expect(interceptor.getSuccessMessageKey)
-        .toBeCalledWith(url, code, method);
-      expect(translator.instant)
-        .toBeCalledWith(SUCCESS_PREFIX + key);
-      expect(toaster.showCustomToaster)
-        .toBeCalledWith(message, toasterType);
-    });
+    interceptor.handleSuccessToaster(requestMock, method);
+    expect(interceptor.getSuccessMessageKey)
+      .toBeCalledWith(url, code, method);
+    expect(translator.instant)
+      .toBeCalledWith(SUCCESS_PREFIX + key);
+    expect(toaster.showCustomToaster)
+      .toBeCalledWith(message, toasterType);
+  });
 
   it.each([[
     '/objective/1',
@@ -140,27 +139,26 @@ describe('ErrorInterceptor', () => {
     200,
     HttpType.GET,
     'KEYRESULT'
-  ]])('should not show toaster if handleSuccessToaster() returns undefined',
-    (url: string, code: number, method: HttpType) => {
-      jest.spyOn(translator, 'instant');
-      jest.spyOn(toaster, 'showCustomToaster');
-      jest.spyOn(interceptor, 'getSuccessMessageKey')
-        .mockReturnValue(undefined);
+  ]])('should not show toaster if handleSuccessToaster() returns undefined', (url: string, code: number, method: HttpType) => {
+    jest.spyOn(translator, 'instant');
+    jest.spyOn(toaster, 'showCustomToaster');
+    jest.spyOn(interceptor, 'getSuccessMessageKey')
+      .mockReturnValue(undefined);
 
-      const requestMock = {
-        url: url,
-        status: code
-      };
+    const requestMock = {
+      url: url,
+      status: code
+    };
 
-      interceptor.handleSuccessToaster(requestMock, method);
-      expect(interceptor.getSuccessMessageKey)
-        .toBeCalledWith(url, code, method);
+    interceptor.handleSuccessToaster(requestMock, method);
+    expect(interceptor.getSuccessMessageKey)
+      .toBeCalledWith(url, code, method);
 
-      expect(translator.instant)
-        .toBeCalledTimes(0);
-      expect(toaster.showCustomToaster)
-        .toBeCalledTimes(0);
-    });
+    expect(translator.instant)
+      .toBeCalledTimes(0);
+    expect(toaster.showCustomToaster)
+      .toBeCalledTimes(0);
+  });
 
   it.each([
     [
@@ -287,14 +285,13 @@ describe('ErrorInterceptor', () => {
       HttpType.DELETE,
       undefined
     ]
-  ])('should get correct success message object when calling getSuccessMessageKey()',
-    (
-      url: string, code: number, method: HttpType, result: any
-    ) => {
-      const successMessageKey = interceptor.getSuccessMessageKey(url, code, method);
-      expect(successMessageKey)
-        .toStrictEqual(result);
-    });
+  ])('should get correct success message object when calling getSuccessMessageKey()', (
+    url: string, code: number, method: HttpType, result: any
+  ) => {
+    const successMessageKey = interceptor.getSuccessMessageKey(url, code, method);
+    expect(successMessageKey)
+      .toStrictEqual(result);
+  });
 
   it.each([['http://localhost:4200/',
     'http://localhost:4200/api/objecive/1',
@@ -304,15 +301,14 @@ describe('ErrorInterceptor', () => {
     false],
   ['http://localhost:4200/',
     'http://habasch:4200/objecive/1',
-    false]])('should correctly determine if toaster is shown with checkIfSuccessToasterIsShown()',
-    (currentURL: string, requestURL: string, result: boolean) => {
-      const requestMock = { url: requestURL };
-      window.location.assign(currentURL);
+    false]])('should correctly determine if toaster is shown with checkIfSuccessToasterIsShown()', (currentURL: string, requestURL: string, result: boolean) => {
+    const requestMock = { url: requestURL };
+    window.location.assign(currentURL);
 
-      const b = interceptor.checkForToaster(requestMock);
-      expect(b)
-        .toBe(result);
-    });
+    const b = interceptor.checkForToaster(requestMock);
+    expect(b)
+      .toBe(result);
+  });
 
   it('should return custom success message on objective creation in backlog', () => {
     jest.spyOn(translator, 'instant')
@@ -337,7 +333,6 @@ describe('ErrorInterceptor', () => {
     expect(translator.instant)
       .toBeCalledWith('SUCCESS.OBJECTIVE.POST_BACKLOG');
     expect(toaster.showCustomToaster)
-      .toBeCalledWith('Das Objective wurde als Draft im Backlog gespeichert.',
-        undefined);
+      .toBeCalledWith('Das Objective wurde als Draft im Backlog gespeichert.', undefined);
   });
 });

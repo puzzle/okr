@@ -12,7 +12,7 @@ describe('MetricCheckInDirective', () => {
       200],
     ['200HelloWorld',
       200],
-    ["200'000",
+    ['200\'000',
       200000],
     ['1050&%ç*',
       1050],

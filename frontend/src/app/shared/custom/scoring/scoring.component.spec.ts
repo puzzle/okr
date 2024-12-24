@@ -162,8 +162,8 @@ describe('ScoringComponent', () => {
       component.commitPercent = 0;
       component.failPercent = 0;
 
-      // Set zone
-      (component.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone! = object.zoneValue;
+      // Set zone parenthesis needed to make lint happy
+      ((component.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone!) = object.zoneValue;
       component.calculatePercentageOrdinal();
 
       // Verify if percentage was set correctly

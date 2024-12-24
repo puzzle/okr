@@ -6,7 +6,7 @@
 
 >  <app-team *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn" [overviewEntity]="overviewEntity">
   </app-team>
-  <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
+  <div *ngIf="(overviewEntities$ | async)?.length === 0" class="d-flex align-items-center flex-column pt-5 gap-5">
     <p id="no-team-text">Kein Team ausgewählt</p>
     <img
       src="{{ this.backgroundLogoSrc$ | async }}"

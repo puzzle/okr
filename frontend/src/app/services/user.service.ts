@@ -28,7 +28,7 @@ export class UserService {
 
   public reloadCurrentUser(): Observable<User> {
     return this.httpClient.get<User>(this.API_URL + '/current')
-      .pipe(tap((u) => (this._currentUser = u)));
+      .pipe(tap((u) => this._currentUser = u));
   }
 
   public getCurrentUser(): User {

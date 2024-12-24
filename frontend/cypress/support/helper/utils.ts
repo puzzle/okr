@@ -30,7 +30,9 @@ function doUntil(
   limit = 100,
   count = 0
 ) {
-  if (count >= limit) return;
+  if (count >= limit) {
+    return;
+  }
 
   cy.focused()
     .then((element) => {

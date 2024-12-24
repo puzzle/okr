@@ -19,19 +19,17 @@ Cypress.Commands.add('getByTestId', (testId: string, text?: string): Chainable =
   }
 });
 
-Cypress.Commands.add('findByTestId',
-  { prevSubject: true },
-  (subject: JQuery<HTMLElement>, testId: string, text?: string): Chainable => {
-    const selector = `[data-testId=${testId}]`;
-    if (text) {
-      return cy.wrap(subject)
-        .find(selector)
-        .contains(text);
-    } else {
-      return cy.wrap(subject)
-        .find(selector);
-    }
-  });
+Cypress.Commands.add('findByTestId', { prevSubject: true }, (subject: JQuery<HTMLElement>, testId: string, text?: string): Chainable => {
+  const selector = `[data-testId=${testId}]`;
+  if (text) {
+    return cy.wrap(subject)
+      .find(selector)
+      .contains(text);
+  } else {
+    return cy.wrap(subject)
+      .find(selector);
+  }
+});
 
 Cypress.Commands.add('pressUntilContains', (text: string, key: keyof typeof keyCodeDefinitions) => {
   pressUntilContains(text, key);

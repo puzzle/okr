@@ -63,8 +63,7 @@ export class TeamService {
 
   updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
     return this.http
-      .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`,
-        {})
+      .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`, {})
       .pipe(tap(() => this.reloadTeams()));
   }
 }

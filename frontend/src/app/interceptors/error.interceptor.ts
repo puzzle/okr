@@ -22,20 +22,18 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)
-      .pipe(filter((event) => event instanceof HttpResponse),
-        tap((response) => {
-          if (this.checkForToaster(response)) {
-            const method = HttpType[request.method as keyof typeof HttpType];
-            this.handleSuccessToaster(response, method);
-          }
-        }),
-        catchError((response) => {
-          if (this.checkForToaster(response)) {
-            this.handleErrorToaster(response);
-          }
-          this.handleDrawerError(request);
-          return throwError(() => new Error(response));
-        }));
+      .pipe(filter((event) => event instanceof HttpResponse), tap((response) => {
+        if (this.checkForToaster(response)) {
+          const method = HttpType[request.method as keyof typeof HttpType];
+          this.handleSuccessToaster(response, method);
+        }
+      }), catchError((response) => {
+        if (this.checkForToaster(response)) {
+          this.handleErrorToaster(response);
+        }
+        this.handleDrawerError(request);
+        return throwError(() => new Error(response));
+      }));
   }
 
   handleErrorToaster(response: any) {
@@ -53,7 +51,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   handleSuccessToaster(response: any, method: HttpType) {
     const successMessageObj = this.getSuccessMessageKey(response.url, response.status, method);
-    if (!successMessageObj) return;
+    if (!successMessageObj) {
+      return;
+    }
 
     let messageKey = successMessageObj.key;
     const isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
@@ -67,7 +67,9 @@ export class ErrorInterceptor implements HttpInterceptor {
   getSuccessMessageKey(url: string, statusCode: number, method: HttpType) {
     for (const key in SUCCESS_MESSAGE_MAP) {
       const value = SUCCESS_MESSAGE_MAP[key];
-      if (!url.includes(key)) continue;
+      if (!url.includes(key)) {
+        continue;
+      }
 
       for (const toasterMessage of value.methods) {
         if (toasterMessage.method == method) {

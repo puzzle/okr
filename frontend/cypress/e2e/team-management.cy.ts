@@ -304,7 +304,7 @@ describe('okr team-management', () => {
           return true;
         })
         .then(() => {
-          expect(foundEsha).to.be.true;
+          expect(foundEsha).to.equal(true);
         });
     });
 
@@ -461,7 +461,7 @@ describe('okr team-management', () => {
             .trim() !== 'Findus Peterson') {
             return;
           }
-          $row.find(`[data-testId='edit-role']`)
+          $row.find('[data-testId=\'edit-role\']')
             .click();
           cy.wait(500); // wait for dialog to open
         })
@@ -495,7 +495,7 @@ describe('okr team-management', () => {
 
       ConfirmDialog.do()
         .checkTitle('Mitglied entfernen')
-        .checkDescription(`Möchtest du Findus Peterson wirklich aus dem Team '/BBT' entfernen?`)
+        .checkDescription('Möchtest du Findus Peterson wirklich aus dem Team \'/BBT\' entfernen?')
         .submit();
 
       cy.get('app-member-detail')

@@ -40,9 +40,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
-    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''),
-      filter((value) => typeof value === 'string'),
-      switchMap((value) => this.filter(value as string)));
+    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value as string)));
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
       this.keyResultForm.controls['title'].setValue(this.keyResult.title);
@@ -145,7 +143,9 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     return this.keyResult ? this.keyResult.id : null;
   }
 
-  updateFormValidity() {}
+  updateFormValidity() {
+    // Implemented because of interface this comment is to satisfy the linter
+  }
 
   getFullNameOfLoggedInUser() {
     return this.getFullNameOfUser(this.userService.getCurrentUser());

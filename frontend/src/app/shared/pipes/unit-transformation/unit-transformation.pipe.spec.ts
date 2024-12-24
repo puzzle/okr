@@ -41,7 +41,7 @@ describe('UnitTransformationPipe', () => {
   it('should format as Number with delimiter based on value', () => {
     const pipe = new UnitTransformationPipe();
     expect(pipe.transform(38000, Unit.NUMBER))
-      .toBe("38'000");
+      .toBe('38\'000');
   });
 
   it('should format as Number with two digits after dot', () => {

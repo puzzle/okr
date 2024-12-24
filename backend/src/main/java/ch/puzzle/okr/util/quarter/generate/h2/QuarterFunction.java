@@ -22,7 +22,7 @@ public class QuarterFunction {
     public static final int CURRENT_QUARTER_DB_ID = 2;
     public static final int NEXT_QUARTER_DB_ID = 3;
 
-    private static final Map<Integer, QuarterData> quarters = new HashMap<>();
+    private static Map<Integer, QuarterData> quarters = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(QuarterFunction.class);
 
     public static void initQuarterData() {

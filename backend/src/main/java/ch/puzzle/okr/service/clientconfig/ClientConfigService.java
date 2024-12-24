@@ -28,26 +28,26 @@ public class ClientConfigService {
         this.tenantClientCustomizationProvider = clientCustomizationProvider;
     }
 
-    public ClientConfigDto getConfigBasedOnActiveEnv(String hostname) {
-        String subdomain = hostname.split("\\.")[0];
-        String domainPrefixByHyphen = hostname.split("-")[0];
+    public ClientConfigDto getConfigBasedOnActiveEnv(String hostName) {
+        String subDomain = hostName.split("\\.")[0];
+        String domainPrefixByHyphen = hostName.split("-")[0];
 
-        Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostname,
-                                                                                   subdomain,
+        Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostName,
+                                                                                   subDomain,
                                                                                    domainPrefixByHyphen);
 
         if (tenantConfig.isEmpty()) {
             throw new EntityNotFoundException(MessageFormat
-                    .format("Could not find tenant config for subdomain:{0}", subdomain));
+                    .format("Could not find tenant config for subDomain:{0}", subDomain));
         }
 
-        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostname,
-                                                                                                     subdomain,
+        Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostName,
+                                                                                                     subDomain,
                                                                                                      domainPrefixByHyphen);
 
         if (tenantClientCustomization.isEmpty()) {
             throw new EntityNotFoundException(MessageFormat
-                    .format("Could not find tenant client customization for subdomain:{0}", subdomain));
+                    .format("Could not find tenant client customization for subDomain:{0}", subDomain));
         }
 
         return new ClientConfigDto(activeProfile, //

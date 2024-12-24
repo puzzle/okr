@@ -16,41 +16,41 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 public class ClientConfigServiceTest {
 
-    @ParameterizedTest(name = "Should be successful on getConfigBasedOnActiveEnv() when tenant is configured properly with tenant {0} and hostname {1}")
+    @ParameterizedTest(name = "Should be successful on getConfigBasedOnActiveEnv() when tenant is configured properly with tenant {0} and hostName {1}")
     @CsvSource({ "pitc,pitc.ork.ch", "acme,acme-ork.ch" })
-    void getConfigBasedOnActiveEnvShouldBeSuccessfulWhenTenantIsConfiguredProperly(String tenant, String hostname) {
+    void getConfigBasedOnActiveEnvShouldBeSuccessfulWhenTenantIsConfiguredProperly(String tenant, String hostName) {
         // arrange
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
         TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
         ClientConfigService service = getClientConfig(tenantConfig, tenantCustomization, tenant);
 
         // act
-        ClientConfigDto configBasedOnActiveEnv = service.getConfigBasedOnActiveEnv(hostname);
+        ClientConfigDto configBasedOnActiveEnv = service.getConfigBasedOnActiveEnv(hostName);
 
         // assert
         assertClientConfigDto(configBasedOnActiveEnv, tenant);
     }
 
-    @ParameterizedTest(name = "Should throw exception on getConfigBasedOnActiveEnv() when client customization is not found for tenant {0}, hostname {1} and subdomain {2}")
+    @ParameterizedTest(name = "Should throw exception on getConfigBasedOnActiveEnv() when client customization is not found for tenant {0}, hostName {1} and subDomain {2}")
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
-    void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostname,
-                                                                                      String subdomain) {
+    void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientCustomizationIsNotFound(String tenant, String hostName,
+                                                                                      String subDomain) {
         // arrange
         TenantConfigProvider.TenantConfig tenantConfig = getTenantConfig(tenant);
         ClientConfigService service = getClientConfig(tenantConfig, tenant);
 
         // act + assert
         EntityNotFoundException entityNotFoundException = //
-                assertThrows(EntityNotFoundException.class, () -> service.getConfigBasedOnActiveEnv(hostname));
+                assertThrows(EntityNotFoundException.class, () -> service.getConfigBasedOnActiveEnv(hostName));
 
-        String expectedErrorMessage = "Could not find tenant client customization for subdomain:" + subdomain;
+        String expectedErrorMessage = "Could not find tenant client customization for subDomain:" + subDomain;
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 
-    @ParameterizedTest(name = "Should throw exception getConfigBasedOnActiveEnv when client config is not found for tenant {0}, hostname {1} and subdomain {2} ")
+    @ParameterizedTest(name = "Should throw exception getConfigBasedOnActiveEnv when client config is not found for tenant {0}, hostname {1} and subDomain {2} ")
     @CsvSource({ "pitc,pitc.okr.ch,pitc", "acme,acme-okr.ch,acme-okr" })
     void getConfigBasedOnActiveEnvShouldThrowExceptionIfClientConfigIsNotFound(String tenant, String hostname,
-                                                                               String subdomain) {
+                                                                               String subDomain) {
         // arrange
         TenantClientCustomization tenantCustomization = getTenantClientCustomization(tenant);
         ClientConfigService service = getClientConfig(tenantCustomization, tenant);
@@ -59,7 +59,7 @@ public class ClientConfigServiceTest {
         EntityNotFoundException entityNotFoundException = //
                 assertThrows(EntityNotFoundException.class, () -> service.getConfigBasedOnActiveEnv(hostname));
 
-        String expectedErrorMessage = "Could not find tenant config for subdomain:" + subdomain;
+        String expectedErrorMessage = "Could not find tenant config for subDomain:" + subDomain;
         assertEquals(expectedErrorMessage, entityNotFoundException.getMessage());
     }
 

@@ -43,7 +43,7 @@ class ClientConfigServiceIT {
                             .of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
     }
 
-    @DisplayName("Should throw exception on getConfigBasedOnActiveEnv() when subdomain is invalid")
+    @DisplayName("Should throw exception on getConfigBasedOnActiveEnv() when subDomain is invalid")
     @Test
     void getConfigBasedOnActiveEnvWithInvalidSubdomainThrowsException() {
         assertThrowsExactly(EntityNotFoundException.class,

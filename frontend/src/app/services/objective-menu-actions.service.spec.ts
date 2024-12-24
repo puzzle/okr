@@ -28,17 +28,17 @@ describe('ObjectiveMenuActionsService', () => {
     specificMenuEntriesSpy = jest.spyOn(service as any, 'getSpecificMenuEntries');
   });
 
-  afterEach(() => {
-    expect(specificMenuEntriesSpy)
-      .toHaveBeenCalledTimes(1);
-  });
-
   it('should be created', () => {
     expect(service)
       .toBeTruthy();
   });
 
   describe('getMenu', () => {
+    afterEach(() => {
+      expect(specificMenuEntriesSpy)
+        .toHaveBeenCalledTimes(1);
+    });
+
     it('should return default and specific menu entries for an ongoing objective', () => {
       const spyOn = jest.spyOn(service as any, 'getOngoingMenuActions');
 
@@ -77,10 +77,6 @@ describe('ObjectiveMenuActionsService', () => {
       service.getMenu(notSuccessfulObjectiveMinLocal);
       expect(spyOn)
         .toHaveBeenCalledTimes(1);
-    });
-    afterEach(() => {
-        expect(specificMenuEntriesSpy)
-            .toHaveBeenCalledTimes(1);
     });
   });
 

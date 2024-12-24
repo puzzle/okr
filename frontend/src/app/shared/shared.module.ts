@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ExampleDialogComponent } from './dialog/example-dialog/example-dialog.component';
 import { ObjectiveFormComponent } from './dialog/objective-dialog/objective-form.component';
 import { ConfirmDialogComponent } from './dialog/confirm-dialog/confirm-dialog.component';
 import { ScoringComponent } from './custom/scoring/scoring.component';
@@ -28,7 +27,6 @@ import { MatTooltip } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
-    ExampleDialogComponent,
     ObjectiveFormComponent,
     ConfirmDialogComponent,
     UnitTransformationPipe,
@@ -62,7 +60,6 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatTooltip
   ],
   exports: [
-    ExampleDialogComponent,
     ObjectiveFormComponent,
     ConfirmDialogComponent,
     ScoringComponent,

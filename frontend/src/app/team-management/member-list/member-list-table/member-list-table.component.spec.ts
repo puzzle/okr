@@ -123,13 +123,13 @@ describe('MemberListTableComponent', () => {
     tick();
 
     expect(teamServiceMock.removeUserFromTeam)
-      .toHaveBeenCalledWith(1);
+      .toHaveBeenCalledTimes(1);
     expect(teamServiceMock.removeUserFromTeam)
       .toHaveBeenCalledWith(entry.id, component.selectedTeam$.value);
     expect(userServiceMock.reloadUsers)
-      .toHaveBeenCalledWith(1);
+      .toHaveBeenCalledTimes(1);
     expect(userServiceMock.reloadCurrentUser)
-      .toHaveBeenCalledWith(1);
+      .toHaveBeenCalledTimes(1);
   }));
 
   it('removeMemberFromTeam should not call removeUserFromTeam and reloadUsers if not confirmed', fakeAsync(() => {

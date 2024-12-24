@@ -310,8 +310,12 @@ function getCurrentDate() {
 
   let ddStr = '' + dd;
   let mmStr = '' + mm;
-  if (dd < 10) ddStr = '0' + ddStr;
-  if (mm < 10) mmStr = '0' + mmStr;
+  if (dd < 10) {
+    ddStr = '0' + ddStr;
+  }
+  if (mm < 10) {
+    mmStr = '0' + mmStr;
+  }
 
   return ddStr + '.' + mmStr + '.' + yyyy;
 }

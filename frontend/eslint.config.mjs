@@ -19,13 +19,11 @@ export default tsEslint.config(
       ...tsEslint.configs.stylistic,
       ...angular.configs.tsRecommended,
     ],
+    processor: angular.processInlineTemplates,
     languageOptions: {
       parserOptions: {
         project: ['./tsconfig.json', './tsconfig.spec.json'],
       },
-    },
-    processor: angular.processInlineTemplates,
-    languageOptions: {
       globals: {
         //Cypress things not recognized by eslint
         cy: 'readonly',

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeyResultComponent } from './key-result.component';
-import { keyResultMetricMin } from '../../shared/testData';
+import { keyResultMetricMin } from '../../shared/test-data';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 import { ConfidenceComponent } from '../confidence/confidence.component';

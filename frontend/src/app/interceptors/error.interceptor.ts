@@ -8,11 +8,11 @@ import {
   GJ_REGEX_PATTERN,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP
-} from '../shared/constantLibary';
+} from '../shared/constant-library';
 import { ToasterService } from '../services/toaster.service';
 import { TranslateService } from '@ngx-translate/core';
-import { HttpType } from '../shared/types/enums/HttpType';
-import { ToasterType } from '../shared/types/enums/ToasterType';
+import { HttpType } from '../shared/types/enums/http-type';
+import { ToasterType } from '../shared/types/enums/toaster-type';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

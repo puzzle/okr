@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TeamService } from '../../services/team.service';
-import { Team } from '../../shared/types/model/Team';
+import { Team } from '../../shared/types/model/team';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';

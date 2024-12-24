@@ -1,13 +1,13 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Subject, takeUntil } from 'rxjs';
-import { Team } from '../../shared/types/model/Team';
+import { Team } from '../../shared/types/model/team';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User } from '../../shared/types/model/User';
+import { User } from '../../shared/types/model/user';
 import { UserService } from '../../services/user.service';
 import { FormControl } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';
-import { UserTableEntry } from '../../shared/types/model/UserTableEntry';
+import { UserTableEntry } from '../../shared/types/model/user-table-entry';
 
 export interface AddMemberToTeamDialogComponentData {
   team: Team;

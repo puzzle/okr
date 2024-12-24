@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { getFullNameOfUser, User } from '../../shared/types/model/User';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
+import { getFullNameOfUser, User } from '../../shared/types/model/user';
+import { KeyResult } from '../../shared/types/model/key-result';
+import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
+import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { Action } from '../../shared/types/model/Action';
+import { Action } from '../../shared/types/model/action';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
 

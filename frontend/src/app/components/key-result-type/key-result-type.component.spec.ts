@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as de from '../../../assets/i18n/de.json';
 
 import { KeyResultTypeComponent } from './key-result-type.component';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { keyResultMetric, keyResultOrdinal, testUser } from '../../shared/testData';
+import { KeyResult } from '../../shared/types/model/key-result';
+import { keyResultMetric, keyResultOrdinal, testUser } from '../../shared/test-data';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { User } from '../../shared/types/model/User';
+import { User } from '../../shared/types/model/user';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;

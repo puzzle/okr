@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { optionalValue } from '../shared/common';
-import { State } from '../shared/types/enums/State';
-import { OverviewEntity } from '../shared/types/model/OverviewEntity';
+import { State } from '../shared/types/enums/state';
+import { OverviewEntity } from '../shared/types/model/overview-entity';
 
 @Injectable({
   providedIn: 'root'

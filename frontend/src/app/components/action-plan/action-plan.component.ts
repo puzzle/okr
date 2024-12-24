@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Action } from '../../shared/types/model/Action';
+import { Action } from '../../shared/types/model/action';
 import { ActionService } from '../../services/action.service';
 import { BehaviorSubject } from 'rxjs';
 import { trackByFn } from '../../shared/common';

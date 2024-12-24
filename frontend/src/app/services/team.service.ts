@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Team } from '../shared/types/model/Team';
+import { Team } from '../shared/types/model/team';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { User } from '../shared/types/model/User';
-import { UserTeam } from '../shared/types/model/UserTeam';
+import { User } from '../shared/types/model/user';
+import { UserTeam } from '../shared/types/model/user-team';
 
 @Injectable({
   providedIn: 'root'

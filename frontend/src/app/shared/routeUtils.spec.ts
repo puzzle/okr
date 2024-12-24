@@ -1,4 +1,4 @@
-import { getRouteToTeam, getRouteToUserDetails } from './routeUtils';
+import { getRouteToTeam, getRouteToUserDetails } from './route-utils';
 
 describe('routeUtils', () => {
   describe('getRouteToUserDetails', () => {

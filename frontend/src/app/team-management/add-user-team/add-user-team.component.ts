@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Team } from '../../shared/types/model/Team';
+import { Team } from '../../shared/types/model/team';
 import { TeamService } from '../../services/team.service';
 import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
-import { UserTeam } from '../../shared/types/model/UserTeam';
+import { UserTeam } from '../../shared/types/model/user-team';
 
 @Component({
   selector: 'app-add-user-team',

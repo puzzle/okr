@@ -1,9 +1,9 @@
-import { Objective } from '../../shared/types/model/Objective';
-import { State } from '../../shared/types/enums/State';
-import { Completed } from '../../shared/types/model/Completed';
+import { Objective } from '../../shared/types/model/objective';
+import { State } from '../../shared/types/enums/state';
+import { Completed } from '../../shared/types/model/completed';
 import { ObjectiveService } from '../../services/objective.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
+import { ObjectiveMin } from '../../shared/types/model/objective-min';
 import { CompletedService } from '../../services/completed.servce';
 
 export class ObjectiveMenuAfterActions {

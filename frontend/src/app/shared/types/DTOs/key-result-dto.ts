@@ -1,9 +1,9 @@
-import { User } from '../model/User';
-import { Objective } from '../model/Objective';
-import { CheckIn } from '../model/CheckIn';
-import { Action } from '../model/Action';
+import { User } from '../model/user';
+import { Objective } from '../model/objective';
+import { CheckIn } from '../model/check-in';
+import { Action } from '../model/action';
 
-export interface KeyResultDTO {
+export interface KeyResultDto {
   id: number | undefined;
   version: number;
   keyResultType: string | undefined;

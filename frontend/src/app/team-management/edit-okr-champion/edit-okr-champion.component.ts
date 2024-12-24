@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { User } from '../../shared/types/model/User';
+import { User } from '../../shared/types/model/user';
 import { UserService } from '../../services/user.service';
 import { TeamService } from '../../services/team.service';
 

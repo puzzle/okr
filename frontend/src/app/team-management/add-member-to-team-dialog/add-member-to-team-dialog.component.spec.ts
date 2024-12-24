@@ -4,11 +4,11 @@ import { TeamService } from '../../services/team.service';
 import { AddMemberToTeamDialogComponent } from './add-member-to-team-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { team1, users } from '../../shared/testData';
+import { team1, users } from '../../shared/test-data';
 import { BehaviorSubject, of, skip } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { User } from '../../shared/types/model/User';
+import { User } from '../../shared/types/model/user';
 import { MatTable } from '@angular/material/table';
 
 describe('AddMemberToTeamDialogComponent', () => {

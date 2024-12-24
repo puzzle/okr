@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { overViewEntity1 } from '../../shared/testData';
+import { overViewEntity1 } from '../../shared/test-data';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
 import { AppRoutingModule } from '../../app-routing.module';

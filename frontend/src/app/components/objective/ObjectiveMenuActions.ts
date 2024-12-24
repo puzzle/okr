@@ -1,6 +1,6 @@
 import { DialogService } from '../../services/dialog.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
+import { ObjectiveMin } from '../../shared/types/model/objective-min';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { CompleteDialogComponent } from '../../shared/dialog/complete-dialog/complete-dialog.component';
 import {

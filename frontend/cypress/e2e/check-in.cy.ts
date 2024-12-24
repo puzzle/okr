@@ -1,7 +1,7 @@
 import * as users from '../fixtures/users.json';
 import { uniqueSuffix } from '../support/helper/utils';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
-import { Unit } from '../../src/app/shared/types/enums/Unit';
+import { Unit } from '../../src/app/shared/types/enums/unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import CheckInDialog from '../support/helper/dom-helper/dialogs/checkInDialog';
 import CheckInHistoryDialog from '../support/helper/dom-helper/dialogs/checkInHistoryDialog';

@@ -6,8 +6,20 @@ import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
 import htmlParser from '@html-eslint/parser'
 import { createRegexForWords } from './eslintHelper.mjs'
+import checkFile from 'eslint-plugin-check-file'
 
 export default tsEslint.config(
+  {
+    files: ['src/app/shared/types/**/*'],
+    rules: {
+      'check-file/filename-naming-convention': [
+        'error',
+        {
+          '**/*.{js,ts}': 'KEBAB_CASE',
+        },
+      ],
+    },
+  },
   {
     ignores: ['cypress/downloads/**/*'],
   },
@@ -214,6 +226,7 @@ export default tsEslint.config(
       'unused-imports': unusedImports,
       '@stylistic': stylistic,
       '@html-eslint': html,
+      'check-file': checkFile,
     },
   }
 )

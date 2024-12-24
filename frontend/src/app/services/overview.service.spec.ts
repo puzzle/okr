@@ -4,7 +4,7 @@ import { OverviewService } from './overview.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { overviews } from '../shared/testData';
+import { overviews } from '../shared/test-data';
 
 const httpClient = {
   get: jest.fn()

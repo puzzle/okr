@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
-import { Team } from '../../shared/types/model/Team';
+import { Team } from '../../shared/types/model/team';
 import { TeamService } from '../../services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../../shared/common';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { UserService } from '../../services/user.service';
-import { extractTeamsFromUser } from '../../shared/types/model/User';
+import { extractTeamsFromUser } from '../../shared/types/model/user';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({

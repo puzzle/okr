@@ -21,7 +21,7 @@ import { MemberListTableComponent } from './member-list/member-list-table/member
 import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
-import { testUser, users } from '../shared/testData';
+import { testUser, users } from '../shared/test-data';
 import { UserService } from '../services/user.service';
 import { ConfigService } from '../services/config.service';
 

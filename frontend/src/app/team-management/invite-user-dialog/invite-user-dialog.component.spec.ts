@@ -7,7 +7,7 @@ import { NewUserComponent } from '../new-user/new-user.component';
 import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
 import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
 import { UserService } from '../../services/user.service';
-import { testUser } from '../../shared/testData';
+import { testUser } from '../../shared/test-data';
 import { DialogRef } from '@angular/cdk/dialog';
 import { of } from 'rxjs';
 import { UniqueEmailValidator } from '../new-user/unique-mail.validator';

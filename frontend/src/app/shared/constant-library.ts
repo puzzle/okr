@@ -1,5 +1,5 @@
-import { HttpType } from './types/enums/HttpType';
-import { ToasterType } from './types/enums/ToasterType';
+import { HttpType } from './types/enums/http-type';
+import { ToasterType } from './types/enums/toaster-type';
 import { HttpStatusCode } from '@angular/common/http';
 
 type MessageKeyMap = Record<string, {

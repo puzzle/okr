@@ -1,5 +1,5 @@
-import { State } from '../enums/State';
-import { Quarter } from './Quarter';
+import { State } from '../enums/state';
+import { Quarter } from './quarter';
 
 export interface KeyResultObjective {
   id: number;

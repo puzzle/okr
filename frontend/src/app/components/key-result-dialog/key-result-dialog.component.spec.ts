@@ -7,14 +7,14 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
-import { testUser, users } from '../../shared/testData';
-import { State } from '../../shared/types/enums/State';
-import { KeyResult } from '../../shared/types/model/KeyResult';
+import { testUser, users } from '../../shared/test-data';
+import { State } from '../../shared/types/enums/state';
+import { KeyResult } from '../../shared/types/model/key-result';
 import { of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
+import { KeyResultObjective } from '../../shared/types/model/key-result-objective';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyResultTypeComponent } from '../key-result-type/key-result-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
@@ -27,7 +27,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
-import { Quarter } from '../../shared/types/model/Quarter';
+import { Quarter } from '../../shared/types/model/quarter';
 
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;

@@ -7,7 +7,7 @@ import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-
 import { AddEditTeamDialogComponent } from '../team-management/add-edit-team-dialog/add-edit-team-dialog.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { ButtonState } from '../shared/types/enums/ButtonState';
+import { ButtonState } from '../shared/types/enums/button-state';
 
 describe('DialogService', () => {
   let service: DialogService;

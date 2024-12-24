@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ToasterService } from './toaster.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { ToasterType } from '../shared/types/enums/ToasterType';
+import { ToasterType } from '../shared/types/enums/toaster-type';
 
 describe('ToasterService', () => {
   let service: ToasterService;

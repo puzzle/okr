@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { keyResult, keyResultWriteableFalse } from '../../shared/testData';
+import { keyResult, keyResultWriteableFalse } from '../../shared/test-data';
 import { By } from '@angular/platform-browser';
 import { KeyResultService } from '../../services/key-result.service';
 import { MatIconModule } from '@angular/material/icon';

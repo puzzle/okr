@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 
 import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter.component';
 import { TeamService } from '../../services/team.service';
-import { team1, teamList } from '../../shared/testData';
+import { team1, teamList } from '../../shared/test-data';
 import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchTeamManagementComponent } from '../search-team-management/search-team-management.component';
@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { getRouteToAllTeams, getRouteToTeam } from '../../shared/routeUtils';
+import { getRouteToAllTeams, getRouteToTeam } from '../../shared/route-utils';
 
 describe('TeamManagementMobileFilterComponent', () => {
   let component: TeamManagementMobileFilterComponent;

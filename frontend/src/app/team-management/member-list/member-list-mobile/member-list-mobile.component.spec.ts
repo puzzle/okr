@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MemberListMobileComponent } from './member-list-mobile.component';
-import { Team } from '../../../shared/types/model/Team';
+import { Team } from '../../../shared/types/model/team';
 import { BehaviorSubject } from 'rxjs';
-import { team1 } from '../../../shared/testData';
-import { UserTableEntry } from '../../../shared/types/model/UserTableEntry';
+import { team1 } from '../../../shared/test-data';
+import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { MatTableDataSource } from '@angular/material/table';
 
 describe('MemberListMobileComponent', () => {

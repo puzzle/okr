@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { KeyResult } from '../shared/types/model/KeyResult';
+import { KeyResult } from '../shared/types/model/key-result';
 import { map, Observable } from 'rxjs';
-import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
+import { KeyResultDto } from '../shared/types/DTOs/key-result-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class KeyResultService {
       }));
   }
 
-  saveKeyResult(keyResultDTO: KeyResultDTO): Observable<KeyResult> {
+  saveKeyResult(keyResultDTO: KeyResultDto): Observable<KeyResult> {
     if (keyResultDTO.id) {
       return this.httpClient.put<KeyResult>('/api/v2/keyresults/' + keyResultDTO.id, keyResultDTO);
     } else {

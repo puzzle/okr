@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CheckInFormMetricComponent } from './check-in-form-metric.component';
-import { checkInMetric, keyResultMetric } from '../../../shared/testData';
+import { checkInMetric, keyResultMetric } from '../../../shared/test-data';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { Unit } from '../../../shared/types/enums/Unit';
+import { Unit } from '../../../shared/types/enums/unit';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import * as de from '../../../../assets/i18n/de.json';
 

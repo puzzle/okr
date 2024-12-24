@@ -1,6 +1,6 @@
-import { KeyResultObjective } from './KeyResultObjective';
-import { User } from './User';
-import { Action } from './Action';
+import { KeyResultObjective } from './key-result-objective';
+import { User } from './user';
+import { Action } from './action';
 
 export interface KeyResult {
   id: number;

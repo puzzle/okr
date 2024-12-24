@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { TeamService } from '../../services/team.service';
-import { Team } from '../../shared/types/model/Team';
-import { User } from '../../shared/types/model/User';
+import { Team } from '../../shared/types/model/team';
+import { User } from '../../shared/types/model/user';
 import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { getRouteToTeam, getRouteToUserDetails } from '../../shared/routeUtils';
+import { getRouteToTeam, getRouteToUserDetails } from '../../shared/route-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 
 export interface FilteredUser extends User {

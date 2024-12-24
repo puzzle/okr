@@ -182,9 +182,9 @@ describe('DialogService', () => {
     const data: ConfirmDialogData = {
       title: 'Test title',
       text: 'Test description',
-      yesButtonState: ButtonState.VisibleEnabled,
-      noButtonState: ButtonState.VisibleDisabled,
-      closeButtonState: ButtonState.Hidden
+      yesButtonState: ButtonState.VISIBLE_ENABLED,
+      noButtonState: ButtonState.VISIBLE_DISABLED,
+      closeButtonState: ButtonState.HIDDEN
     };
 
     jest.spyOn(service, 'open');

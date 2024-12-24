@@ -1,6 +1,6 @@
 import { KeyResultDialogComponent } from './key-result-dialog.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultService } from '../../services/key-result.service';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -32,7 +32,7 @@ import { Quarter } from '../../shared/types/model/Quarter';
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;
   let fixture: ComponentFixture<KeyResultDialogComponent>;
-  let keyResultService: KeyresultService;
+  let keyResultService: KeyResultService;
 
   const oAuthMockService = {
     getIdentityClaims() {
@@ -269,7 +269,7 @@ describe('KeyResultDialogComponent', () => {
           provideRouter([]),
           provideHttpClient(),
           provideHttpClientTesting(),
-          KeyresultService,
+          KeyResultService,
           TranslateService,
           { provide: UserService,
             useValue: userService },
@@ -303,7 +303,7 @@ describe('KeyResultDialogComponent', () => {
       userService.getCurrentUser.mockReturnValue(testUser);
 
       fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyresultService);
+      keyResultService = TestBed.inject(KeyResultService);
     });
 
     it('should create', () => {
@@ -436,7 +436,7 @@ describe('KeyResultDialogComponent', () => {
           provideRouter([]),
           provideHttpClient(),
           provideHttpClientTesting(),
-          KeyresultService,
+          KeyResultService,
           {
             provide: MatDialogRef,
             useValue: {
@@ -466,7 +466,7 @@ describe('KeyResultDialogComponent', () => {
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyresultService);
+      keyResultService = TestBed.inject(KeyResultService);
       fullKeyResultMetric.id = 3;
     });
 
@@ -603,7 +603,7 @@ describe('KeyResultDialogComponent', () => {
           provideRouter([]),
           provideHttpClient(),
           provideHttpClientTesting(),
-          KeyresultService,
+          KeyResultService,
           {
             provide: MatDialogRef,
             useValue: matDialogRefMock
@@ -631,7 +631,7 @@ describe('KeyResultDialogComponent', () => {
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyresultService);
+      keyResultService = TestBed.inject(KeyResultService);
     });
 
     afterEach(() => {

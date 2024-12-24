@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
+import { KeyResultMin } from '../../shared/types/model/KeyResultMin';
 import { Router } from '@angular/router';
 import { DATE_FORMAT } from '../../shared/constantLibary';
 import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
@@ -12,7 +12,7 @@ import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KeyResultComponent {
-  @Input() keyResult!: KeyresultMin;
+  @Input() keyResult!: KeyResultMin;
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
 

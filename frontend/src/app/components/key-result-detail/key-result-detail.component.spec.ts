@@ -7,7 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { keyResult, keyResultWriteableFalse } from '../../shared/testData';
 import { By } from '@angular/platform-browser';
-import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultService } from '../../services/key-result.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
@@ -42,7 +42,7 @@ describe('KeyResultDetailComponent', () => {
         ScoringComponent,
         ConfidenceComponent],
       providers: [{
-        provide: KeyresultService,
+        provide: KeyResultService,
         useValue: keyResultServiceMock
       },
       {

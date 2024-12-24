@@ -7,14 +7,14 @@ import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
 @Injectable({
   providedIn: 'root'
 })
-export class KeyresultService {
+export class KeyResultService {
   constructor(private httpClient: HttpClient) {}
 
-  getFullKeyResult(keyresultId: number): Observable<KeyResult> {
-    return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyresultId)
-      .pipe(map((keyresult: any) => {
-        keyresult.objective.quarter = keyresult.objective.keyResultQuarterDto;
-        return keyresult;
+  getFullKeyResult(keyResultId: number): Observable<KeyResult> {
+    return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyResultId)
+      .pipe(map((keyResult: any) => {
+        keyResult.objective.quarter = keyResult.objective.keyResultQuarterDto;
+        return keyResult;
       }));
   }
 

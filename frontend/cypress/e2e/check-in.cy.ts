@@ -126,7 +126,7 @@ describe('okr check-in', () => {
       .fillCheckInInitiatives('Will be difficult')
       .submit();
     keyResultDetailPage
-      .showAllCheckins()
+      .showAllCheckIns()
       .checkForAttribute('Confidence:', '5 / 10')
       .checkForAttribute('Confidence:', '6 / 10')
       .checkForAttribute('Veränderungen:', 'We bought a new house')
@@ -156,7 +156,7 @@ describe('okr check-in', () => {
       .fillCheckInInitiatives('A cat would be great')
       .submit();
     cy.contains('Aktuell: 30 CHF');
-    keyResultDetailPage.showAllCheckins();
+    keyResultDetailPage.showAllCheckIns();
     cy.contains('Check-in History');
     cy.contains('Wert: 30 CHF');
     CheckInHistoryDialog.do()
@@ -191,7 +191,7 @@ describe('okr check-in', () => {
       .fillCheckInInitiatives('A cat would be great')
       .submit();
     cy.contains('Aktuell: 30 EUR');
-    keyResultDetailPage.showAllCheckins();
+    keyResultDetailPage.showAllCheckIns();
     cy.contains('Check-in History');
     cy.contains('Wert: 30 EUR');
     CheckInHistoryDialog.do()
@@ -213,7 +213,7 @@ describe('okr check-in', () => {
       .fillCheckInInitiatives('A cat would be great')
       .submit();
     cy.contains('Aktuell: 30 FTE');
-    keyResultDetailPage.showAllCheckins();
+    keyResultDetailPage.showAllCheckIns();
     cy.contains('Check-in History');
     cy.contains('Wert: 30 FTE');
   });
@@ -233,7 +233,7 @@ describe('okr check-in', () => {
       .fillCheckInCommentary('There is a new car')
       .fillCheckInInitiatives('Buy now a new pool')
       .submit();
-    keyResultDetailPage.showAllCheckins()
+    keyResultDetailPage.showAllCheckIns()
       .editLatestCheckIn();
     cy.contains('For editing ordinal checkin');
     cy.contains('Confidence um Target Zone zu erreichen');
@@ -308,14 +308,10 @@ function getCurrentDate() {
   const mm = today.getMonth() + 1; // Months start at 0!
   const dd = today.getDate();
 
-  let dd_str = '' + dd;
-  let mm_str = '' + mm;
-  if (dd < 10) {
-    dd_str = '0' + dd_str;
-  }
-  if (mm < 10) {
-    mm_str = '0' + mm_str;
-  }
+  let ddStr = '' + dd;
+  let mmStr = '' + mm;
+  if (dd < 10) ddStr = '0' + ddStr;
+  if (mm < 10) mmStr = '0' + mmStr;
 
-  return dd_str + '.' + mm_str + '.' + yyyy;
+  return ddStr + '.' + mmStr + '.' + yyyy;
 }

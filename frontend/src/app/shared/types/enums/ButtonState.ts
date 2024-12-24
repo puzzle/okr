@@ -1,5 +1,5 @@
 export enum ButtonState {
-  VisibleEnabled,
-  VisibleDisabled,
-  Hidden
+  VISIBLE_ENABLED,
+  VISIBLE_DISABLED,
+  HIDDEN
 }

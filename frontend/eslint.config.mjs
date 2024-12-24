@@ -12,7 +12,7 @@ export default tsEslint.config(
     ignores: ['cypress/downloads/**/*'],
   },
   {
-    files: ['**/*.ts'],
+    files: ['src/**/*.ts', 'cypress/**/*.ts'],
     extends: [
       eslint.configs.recommended,
       ...tsEslint.configs.recommended,
@@ -169,7 +169,7 @@ export default tsEslint.config(
   },
 
   {
-    files: ['**/*.spec.ts'],
+    files: ['src/**/*.spec.ts', 'cypress/**/*.spec.ts'],
     extends: [...tsEslint.configs.recommended],
     rules: {
       //Rules removed for Test files because they are unnecessary for tests

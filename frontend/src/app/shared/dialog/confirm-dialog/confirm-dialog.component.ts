@@ -25,9 +25,9 @@ export class ConfirmDialogComponent implements OnInit {
   ngOnInit() {
     this.dialogTitle = this.data.title;
     this.dialogText = this.data.text;
-    this.yesButtonState = this.data.yesButtonState ?? ButtonState.VisibleEnabled;
-    this.noButtonState = this.data.noButtonState ?? ButtonState.VisibleEnabled;
-    this.closeButtonState = this.data.closeButtonState ?? ButtonState.Hidden;
+    this.yesButtonState = this.data.yesButtonState ?? ButtonState.VISIBLE_ENABLED;
+    this.noButtonState = this.data.noButtonState ?? ButtonState.VISIBLE_ENABLED;
+    this.closeButtonState = this.data.closeButtonState ?? ButtonState.HIDDEN;
   }
 
   closeAndDelete() {
@@ -35,28 +35,28 @@ export class ConfirmDialogComponent implements OnInit {
   }
 
   isYesButtonVisible() {
-    return this.yesButtonState === ButtonState.VisibleEnabled || this.yesButtonState === ButtonState.VisibleDisabled;
+    return this.yesButtonState === ButtonState.VISIBLE_ENABLED || this.yesButtonState === ButtonState.VISIBLE_DISABLED;
   }
 
   isYesButtonDisabled() {
-    return this.yesButtonState === ButtonState.VisibleDisabled;
+    return this.yesButtonState === ButtonState.VISIBLE_DISABLED;
   }
 
   isNoButtonVisible() {
-    return this.noButtonState === ButtonState.VisibleEnabled || this.noButtonState === ButtonState.VisibleDisabled;
+    return this.noButtonState === ButtonState.VISIBLE_ENABLED || this.noButtonState === ButtonState.VISIBLE_DISABLED;
   }
 
   isNoButtonDisabled() {
-    return this.noButtonState === ButtonState.VisibleDisabled;
+    return this.noButtonState === ButtonState.VISIBLE_DISABLED;
   }
 
   isCloseButtonVisible() {
     return (
-      this.closeButtonState === ButtonState.VisibleEnabled || this.closeButtonState === ButtonState.VisibleDisabled
+      this.closeButtonState === ButtonState.VISIBLE_ENABLED || this.closeButtonState === ButtonState.VISIBLE_DISABLED
     );
   }
 
   isCloseButtonDisabled() {
-    return this.closeButtonState === ButtonState.VisibleDisabled;
+    return this.closeButtonState === ButtonState.VISIBLE_DISABLED;
   }
 }

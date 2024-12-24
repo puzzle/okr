@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultService } from '../../services/key-result.service';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -116,7 +116,7 @@ describe('KeyResultFormComponent', () => {
           })
         ],
         providers: [
-          KeyresultService,
+          KeyResultService,
           TranslateService,
           { provide: UserService,
             useValue: userService },

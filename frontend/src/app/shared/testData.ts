@@ -1,7 +1,7 @@
 import { State } from './types/enums/State';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
-import { KeyresultMin } from './types/model/KeyresultMin';
+import { KeyResultMin } from './types/model/KeyResultMin';
 import { ObjectiveMin } from './types/model/ObjectiveMin';
 import { OverviewEntity } from './types/model/OverviewEntity';
 import { KeyResultObjective } from './types/model/KeyResultObjective';
@@ -240,7 +240,7 @@ export const objectiveMin: ObjectiveMin = {
   state: State.ONGOING,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
-    keyResultOrdinalMin] as KeyresultMin[]
+    keyResultOrdinalMin] as KeyResultMin[]
 } as ObjectiveMin;
 
 export const objectiveResponse1: any = {
@@ -250,7 +250,7 @@ export const objectiveResponse1: any = {
   state: 'ONGOING',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
-    keyResultOrdinalMin] as KeyresultMin[]
+    keyResultOrdinalMin] as KeyResultMin[]
 };
 
 export const objectiveResponse2: any = {
@@ -260,7 +260,7 @@ export const objectiveResponse2: any = {
   state: 'DRAFT',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
-    keyResultOrdinalMin] as KeyresultMin[]
+    keyResultOrdinalMin] as KeyResultMin[]
 };
 
 export const objectiveResponse3: any = {
@@ -270,7 +270,7 @@ export const objectiveResponse3: any = {
   state: 'NOTSUCCESSFUL',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
-    keyResultOrdinalMin] as KeyresultMin[]
+    keyResultOrdinalMin] as KeyResultMin[]
 };
 
 export const objectiveResponse4: any = {
@@ -280,7 +280,7 @@ export const objectiveResponse4: any = {
   state: 'SUCCESSFUL',
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
-    keyResultOrdinalMin] as KeyresultMin[]
+    keyResultOrdinalMin] as KeyResultMin[]
 };
 
 export const overViewEntity1: OverviewEntity = {

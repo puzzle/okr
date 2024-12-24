@@ -8,7 +8,7 @@ import { KeyResult } from '../../shared/types/model/KeyResult';
 import { KeyResultMetricDTO } from '../../shared/types/DTOs/KeyResultMetricDTO';
 import { KeyResultOrdinalDTO } from '../../shared/types/DTOs/KeyResultOrdinalDTO';
 import { CloseState } from '../../shared/types/enums/CloseState';
-import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultService } from '../../services/key-result.service';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
@@ -37,7 +37,7 @@ export class KeyResultDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
       keyResult: KeyResult; },
-    private keyResultService: KeyresultService,
+    private keyResultService: KeyResultService,
     public dialogService: DialogService,
     public dialogRef: MatDialogRef<KeyResultDialogComponent>
   ) {}

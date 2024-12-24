@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/KeyResult';
-import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultService } from '../../services/key-result.service';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../check-in-history-dialog/check-in-history-dialog.component';
@@ -14,7 +14,7 @@ import { DATE_FORMAT } from '../../shared/constantLibary';
 import { calculateCurrentPercentage } from '../../shared/common';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { DialogService } from '../../services/dialog.service';
-import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
+import { KeyResultMin } from '../../shared/types/model/KeyResultMin';
 import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
 
@@ -36,7 +36,7 @@ export class KeyResultDetailComponent implements OnInit, OnDestroy {
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(
-    private keyResultService: KeyresultService,
+    private keyResultService: KeyResultService,
     private refreshDataService: RefreshDataService,
     private dialogService: DialogService,
     private router: Router,
@@ -153,9 +153,9 @@ export class KeyResultDetailComponent implements OnInit, OnDestroy {
 
   getKeyResultWithCorrectType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
     if (keyResult.keyResultType === 'metric') {
-      return keyResult as KeyresultMin as KeyResultMetricMin;
+      return keyResult as KeyResultMin as KeyResultMetricMin;
     } else {
-      return keyResult as KeyresultMin as KeyResultOrdinalMin;
+      return keyResult as KeyResultMin as KeyResultOrdinalMin;
     }
   }
 

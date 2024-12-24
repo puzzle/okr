@@ -41,10 +41,9 @@ class KeyResultDeserializerTest {
         objectMapper = new ObjectMapper();
     }
 
-    @DisplayName("deserialize() should return KeyResultMetricDto for metric json")
+    @DisplayName("deserialize() should call helper with correct params for metric key-result json")
     @Test
-    void deserializeShouldReturnKeyResultMetricDtoForMetricJson() throws Exception {
-
+    void deserializeShouldCallHelperWithCorrectParamsForKeyResultMetricJson() throws Exception {
         when(deserializerHelper.deserializeMetricOrdinal(any(), any(), any())) //
                 .thenReturn(null);
         JsonParser jsonParser = objectMapper.getFactory().createParser(KeyResultTestHelpers.KEY_RESULT_METRIC_JSON);
@@ -62,10 +61,10 @@ class KeyResultDeserializerTest {
                 .of(Arguments.of(KEY_RESULT_METRIC_JSON, "metric"), Arguments.of(KEY_RESULT_ORDINAL_JSON, "ordinal"));
     }
 
-    @DisplayName("deserialize() should call helper with correct params")
+    @DisplayName("getKeyResultType() should return the correct key-result type for given json")
     @ParameterizedTest
     @MethodSource("keyResultTypes")
-    void shouldReturnCorrectKeyResulType(String json, String type) throws Exception {
+    void getKeyResultTypeShouldReturnCorrectTypeForKeyResultJson(String json, String type) throws Exception {
         // arrange
         JsonNode jsonNode = TestHelper.getJsonNode(json);
 
@@ -76,8 +75,9 @@ class KeyResultDeserializerTest {
         assertEquals(type, keyResultType);
     }
 
+    @DisplayName("getKeyResultType() should return null for missing attribute")
     @Test
-    void shouldReturnNullForMissingAttribute() throws Exception {
+    void getKeyResultTypeShouldReturnNullForMissingAttribute() throws Exception {
         // arrange
         JsonNode jsonNode = TestHelper.getJsonNode("");
 
@@ -87,5 +87,4 @@ class KeyResultDeserializerTest {
         // assert
         assertNull(keyResultType);
     }
-
 }

@@ -12,6 +12,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -78,14 +79,15 @@ class ActionControllerIT {
                 .withId(3L)
                 .withAction("Neues Haus")
                 .withPriority(1)
-                .withIsChecked(true)
+                .isChecked(true)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build())
                 .build();
         BDDMockito.given(actionMapper.toActions(any())).willReturn(List.of(action, action));
     }
 
+    @DisplayName("Should successfully update multiple actions")
     @Test
-    void updateSuccessfulActions() throws Exception {
+    void shouldSuccessfullyUpdateMultipleActions() throws Exception {
         mvc
                 .perform(put(BASEURL)
                         .content(SUCCESSFUL_UPDATE_BODY)
@@ -97,8 +99,9 @@ class ActionControllerIT {
         verify(actionAuthorizationService, times(1)).updateEntities(any());
     }
 
+    @DisplayName("Should successfully update a single action")
     @Test
-    void updateSuccessfulOnlyOneAction() throws Exception {
+    void shouldSuccessfullyUpdateSingleAction() throws Exception {
         mvc
                 .perform(put(BASEURL)
                         .content(SUCCESSFUL_UPDATE_BODY_SINGLE_ACTION)
@@ -110,15 +113,17 @@ class ActionControllerIT {
         verify(actionAuthorizationService, times(1)).updateEntities(any());
     }
 
+    @DisplayName("Should successfully delete an action")
     @Test
-    void shouldDeleteAction() throws Exception {
+    void shouldSuccessfullyDeleteAction() throws Exception {
         mvc
                 .perform(delete("/api/v2/action/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @DisplayName("Should throw exception when action with given id cannot be found while deleting")
     @Test
-    void throwExceptionWhenActionWithIdCantBeFoundWhileDeleting() throws Exception {
+    void shouldThrowExceptionWhenActionWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Action not found"))
                 .when(actionAuthorizationService)
                 .deleteActionByActionId(anyLong());

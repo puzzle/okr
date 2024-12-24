@@ -4,7 +4,7 @@
       <div class="d-flex px-3">
         <h2 *ngIf="selectedTeam$.value">{{ selectedTeam$.value!.name }}</h2>
         <app-puzzle-icon-button
-          *ngIf="selectedTeam$.value?.writeable"
+          *ngIf="selectedTeam$.value?.isWriteable"
           (click)="editTeam()"
           [attr.data-testId]="'editTeamButton'"
           icon="edit.svg"
@@ -53,7 +53,7 @@
         </span>
       </button>
     </div>
-    <div class="menu mx-2" *ngIf="selectedTeam$.value?.writeable">
+    <div class="menu mx-2" *ngIf="selectedTeam$.value?.isWriteable">
       <app-puzzle-icon-button
         icon="three-dot-menu-icon.svg"
         alt="Menu Icon"

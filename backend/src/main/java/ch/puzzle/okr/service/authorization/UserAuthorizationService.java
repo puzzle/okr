@@ -3,9 +3,10 @@ package ch.puzzle.okr.service.authorization;
 import static ch.puzzle.okr.Constants.USER;
 
 import ch.puzzle.okr.ErrorKey;
-import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
+import ch.puzzle.okr.dto.userokrdata.UserOkrDataDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.mapper.UserOkrDataMapper;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -32,7 +33,7 @@ public class UserAuthorizationService {
     }
 
     public List<User> getAllUsers() {
-        var allUsers = userBusinessService.getAllUsers();
+        List<User> allUsers = userBusinessService.getAllUsers();
         allUsers.forEach(this::setTeamWritableForUser);
         return allUsers;
     }
@@ -42,18 +43,18 @@ public class UserAuthorizationService {
     }
 
     private void setTeamWritableForUserTeam(UserTeam userTeam) {
-        var team = userTeam.getTeam();
+        Team team = userTeam.getTeam();
         team.setWriteable(teamAuthorizationService.isUserWriteAllowed(team.getId()));
     }
 
     public User getById(long id) {
-        var user = userBusinessService.getUserById(id);
+        User user = userBusinessService.getUserById(id);
         setTeamWritableForUser(user);
         return user;
     }
 
     public User setIsOkrChampion(long id, boolean isOkrChampion) {
-        var user = userBusinessService.getUserById(id);
+        User user = userBusinessService.getUserById(id);
         AuthorizationService
                 .checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
                                           OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));

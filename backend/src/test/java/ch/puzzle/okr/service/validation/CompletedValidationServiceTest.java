@@ -45,8 +45,8 @@ class CompletedValidationServiceTest {
         this.user = User.Builder
                 .builder()
                 .withId(1L)
-                .withFirstname("Bob")
-                .withLastname("Kaufmann")
+                .withFirstName("Bob")
+                .withLastName("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch")
                 .build();
         this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
@@ -95,16 +95,18 @@ class CompletedValidationServiceTest {
                                                        List.of("comment", "Completed", "0", "4096")))));
     }
 
+    @DisplayName("Should be successful on validateOnCreate() when model is valid")
     @Test
-    void validateOnCreateShouldBeSuccessfulWhenCompletedIsValid() {
+    void shouldBeSuccessfulOnValidateOnCreateWhenCompletedIsValid() {
         validator.validateOnCreate(this.validCompleted);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(this.validCompleted);
         verify(validator, times(1)).validate(this.validCompleted);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when model is null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(null));
@@ -113,8 +115,9 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
         // arrange
         Completed completed = Completed.Builder
                 .builder() //
@@ -131,9 +134,9 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateOnCreate() when model has invalid comment {0}")
     @MethodSource("nameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
+    void shouldThrowExceptionOnValidateOnCreateWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         // arrange
         Completed completed = Completed.Builder
                 .builder() //
@@ -148,8 +151,9 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnCreateWhenAttrsAreMissing() {
         // arrange
         Completed completedInvalid = Completed.Builder
                 .builder() //
@@ -166,9 +170,9 @@ class CompletedValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnUpdate() should throw exception")
+    @DisplayName("Should throw exception on validateOnUpdate()")
     @Test
-    void validateOnUpdateShouldThrowException() {
+    void shouldThrowOnValidateOnUpdateException() {
         // arrange
         Long id = 1L;
         Completed completed = Completed.Builder.builder().build();

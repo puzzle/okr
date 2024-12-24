@@ -54,7 +54,7 @@ public class PersistenceBaseTestIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("findById() should return single entity if entity with id exists")
+    @DisplayName("Should return single entity on findById() when entity with id exists")
     @Test
     void findByIdShouldReturnSingleEntityIfEntityWithIdExists() {
         var foundUser = persistenceBase.findById(USER_PACO_ID);
@@ -63,7 +63,7 @@ public class PersistenceBaseTestIT {
         assertUser("Paco", "Eggimann", "peggimann@puzzle.ch", foundUser);
     }
 
-    @DisplayName("findById() should throw exception if entity with id does not exist")
+    @DisplayName("Should throw exception on findById() when entity with id does not exist")
     @Test
     void findByIdShouldThrowExceptionIfEntityWithIdDoesNotExist() {
         var exception = assertThrows(ResponseStatusException.class,
@@ -73,7 +73,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
     }
 
-    @DisplayName("findById() should throw exception if id is null")
+    @DisplayName("Should throw exception on findById() when id is null")
     @Test
     void findByIdShouldThrowExceptionIfIdIsNull() {
         var exception = assertThrows(ResponseStatusException.class, () -> persistenceBase.findById(null));
@@ -82,7 +82,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("ATTRIBUTE_NULL", exception);
     }
 
-    @DisplayName("findAll() should return all entities as list")
+    @DisplayName("Should return all entities as list on findAll()")
     @Test
     void findAllShouldReturnAllEntitiesAsList() throws ResponseStatusException {
         var userList = persistenceBase.findAll();
@@ -90,7 +90,7 @@ public class PersistenceBaseTestIT {
         assertThat(userList.size()).isGreaterThanOrEqualTo(7);
     }
 
-    @DisplayName("save() should add new entity")
+    @DisplayName("Should add new entity on save()")
     @Test
     void saveShouldAddNewEntity() throws ResponseStatusException {
         User uniqueUser = createUserWithUniqueName("Fritz");
@@ -100,7 +100,7 @@ public class PersistenceBaseTestIT {
         assertUser("Fritz", "Muster", "hans.muster@puzzle.ch", createdUser);
     }
 
-    @DisplayName("save() should throw exception in the case of optimistic locking failure")
+    @DisplayName("Should throw exception on save() in the case of optimistic locking failure")
     @Test
     void saveShouldThrowExceptionInTheCaseOfOptimisticLockingFailure() throws ResponseStatusException {
         // arrange
@@ -122,7 +122,7 @@ public class PersistenceBaseTestIT {
         assertErrorKey("DATA_HAS_BEEN_UPDATED", exception);
     }
 
-    @DisplayName("save() existing entity with different data should update existing entity")
+    @DisplayName("Should updated existing entity with new data on save()")
     @Test
     void saveExistingEntityWithDifferentDataShouldUpdateExistingEntity() throws ResponseStatusException {
         // arrange
@@ -132,19 +132,19 @@ public class PersistenceBaseTestIT {
         var foundUser = persistenceBase.findById(createdUserId);
 
         // pro-condition
-        assertEquals("Ueli", createdUser.getFirstname());
+        assertEquals("Ueli", createdUser.getFirstName());
 
         // act
-        foundUser.setFirstname("Pekka");
+        foundUser.setFirstName("Pekka");
         persistenceBase.save(foundUser);
         foundUser = persistenceBase.findById(createdUserId);
 
         // assert
         assertEquals(createdUserId, foundUser.getId());
-        assertEquals("Pekka", foundUser.getFirstname());
+        assertEquals("Pekka", foundUser.getFirstName());
     }
 
-    @DisplayName("deleteById() should delete entity")
+    @DisplayName("Should delete entity on deleteById()")
     @Test
     void deleteByIdShouldDeleteEntity() throws ResponseStatusException {
         // arrange
@@ -161,8 +161,8 @@ public class PersistenceBaseTestIT {
 
     private static void assertUser(String expectedFirstName, String expectedLastName, String expectedEmail,
                                    User currentUser) {
-        assertEquals(expectedFirstName, currentUser.getFirstname());
-        assertEquals(expectedLastName, currentUser.getLastname());
+        assertEquals(expectedFirstName, currentUser.getFirstName());
+        assertEquals(expectedLastName, currentUser.getLastName());
         assertEquals(expectedEmail, currentUser.getEmail());
     }
 
@@ -180,8 +180,8 @@ public class PersistenceBaseTestIT {
     private static User createUserWithUniqueName(String name) {
         return User.Builder
                 .builder()
-                .withFirstname(name)
-                .withLastname("Muster")
+                .withFirstName(name)
+                .withLastName("Muster")
                 .withEmail("hans.muster@puzzle.ch")
                 .build();
     }

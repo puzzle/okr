@@ -9,6 +9,6 @@ export default defineConfig({
     viewportHeight: 1080
   },
   env: {
-    login_url: 'http://localhost:8544'
+    LOGIN_URL: 'http://localhost:8544'
   }
 });

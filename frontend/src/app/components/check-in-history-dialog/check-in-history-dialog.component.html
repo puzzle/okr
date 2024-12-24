@@ -12,7 +12,7 @@
               class="col-auto"
               mat-icon-button
               (click)="openCheckInDialogForm(checkIn)"
-              *ngIf="!isComplete && checkIn.writeable"
+              *ngIf="!isComplete && checkIn.isWriteable"
               [attr.data-testId]="'edit-check-in'"
             >
               <img

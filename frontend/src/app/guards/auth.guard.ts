@@ -3,17 +3,17 @@ import { inject } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const oauthService = inject(OAuthService);
+  const oAuthService = inject(OAuthService);
   const router = inject(Router);
-  return oauthService.loadDiscoveryDocumentAndTryLogin()
+  return oAuthService.loadDiscoveryDocumentAndTryLogin()
     .then(async() => {
     // if the login failed initialize code flow
-      const validToken = oauthService.hasValidIdToken();
+      const validToken = oAuthService.hasValidIdToken();
       if (!validToken) {
-        oauthService.initCodeFlow();
+        oAuthService.initCodeFlow();
         return false;
       }
-      oauthService.setupAutomaticSilentRefresh();
+      oAuthService.setupAutomaticSilentRefresh();
       // redirect route to remove state query param. do it only, if this param exist to avoid infinite loop
       if (route.queryParamMap.get('state')) {
         await router.navigateByUrl('');

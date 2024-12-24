@@ -42,8 +42,8 @@ describe('DeleteUserComponent', () => {
     component = fixture.componentInstance;
     component.user = {
       id: 2,
-      firstname: 'Hans',
-      lastname: 'Muster',
+      firstName: 'Hans',
+      lastName: 'Muster',
       isOkrChampion: false,
       userTeamList: [],
       email: 'hans.muster@puzzle.ch'
@@ -66,7 +66,7 @@ describe('DeleteUserComponent', () => {
       .toBeTruthy();
   });
 
-  it('deleteUser() should delete user and reload users', () => {
+  it('should delete and reload users after deleteUser is called', () => {
     // arrange
     userServiceMock.deleteUser.mockReturnValue(of(userServiceMock.deleteUser));
     dialogRefMock.afterClosed.mockReturnValue(of('some data'));
@@ -84,7 +84,7 @@ describe('DeleteUserComponent', () => {
       .toHaveBeenCalledTimes(1);
   });
 
-  it('deleteUser() should not reload users when UserService throws an error', () => {
+  it('should not reload users when UserService throws an error after deleteUser() is called', () => {
     // arrange
     function createErrorSubject() {
       const myError = new Subject<any>();
@@ -108,7 +108,7 @@ describe('DeleteUserComponent', () => {
       .toHaveBeenCalledTimes(0);
   });
 
-  it('deleteUserWithChecks() should not delete user which is member of a Team', () => {
+  it('should check deleteUserWithChecks() should not delete user which is member of a Team', () => {
     // arrange (user is member of team Lorem)
     component.userIsMemberOfTeams = true;
     component.user.userTeamList = [{
@@ -117,7 +117,7 @@ describe('DeleteUserComponent', () => {
         id: 1,
         version: 2,
         name: 'Lorem',
-        writeable: true
+        isWriteable: true
       },
       isTeamAdmin: false
     }];
@@ -138,7 +138,7 @@ describe('DeleteUserComponent', () => {
       });
   });
 
-  it('deleteUserWithChecks() should not delete user which has KeyResults', () => {
+  it('should not delete user which has KeyResults when deleteUserWithChecks() is called ', () => {
     // arrange (user has KeyResult one)
     component.userIsMemberOfTeams = false;
     component.userOkrData = {
@@ -215,7 +215,7 @@ describe('DeleteUserComponent', () => {
         id: 1,
         version: 2,
         name: 'Lorem',
-        writeable: true
+        isWriteable: true
       },
       isTeamAdmin: false
     }]);

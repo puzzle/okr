@@ -40,14 +40,14 @@ class UserPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
-    @DisplayName("save() should save user with empty user team list")
+    @DisplayName("Should save user on save() with empty user team list")
     @Test
     void saveShouldSaveUserWithEmptyUserTeamList() {
         // arrange
         var newUser = User.Builder
                 .builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
+                .withFirstName("Hans") //
+                .withLastName("Muster") //
                 .withEmail("muster@puzzle.ch") //
                 .withUserTeamList(List.of())
                 .build();
@@ -60,14 +60,14 @@ class UserPersistenceServiceIT {
         assertUser("Hans", "Muster", "muster@puzzle.ch", createdUser);
     }
 
-    @DisplayName("save() should save user with null value for user team list")
+    @DisplayName("Should save user with null value for user team list on save()")
     @Test
     void saveShouldSaveUserWithNullUserTeamList() {
         // arrange
         var newUser = User.Builder
                 .builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
+                .withFirstName("Hans") //
+                .withLastName("Muster") //
                 .withEmail("muster@puzzle.ch") //
                 .withUserTeamList(null)
                 .build();
@@ -80,14 +80,14 @@ class UserPersistenceServiceIT {
         assertUser("Hans", "Muster", "muster@puzzle.ch", createdUser);
     }
 
-    @DisplayName("saveAll() should save all users in the input list")
+    @DisplayName("Should save all users in the input list on saveAll()")
     @Test
     void saveAllShouldSaveAllUsersInTheInputList() {
         // arrange
         var newUser = User.Builder
                 .builder() //
-                .withFirstname("Hans") //
-                .withLastname("Muster") //
+                .withFirstName("Hans") //
+                .withLastName("Muster") //
                 .withEmail("muster@puzzle.ch") //
                 .build();
 
@@ -102,7 +102,7 @@ class UserPersistenceServiceIT {
         assertUser("Hans", "Muster", "muster@puzzle.ch", createdUser);
     }
 
-    @DisplayName("getOrCreateUser() should return single user when user found")
+    @DisplayName("Should return single user on getOrCreateUser() when user found")
     @Test
     void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
         // arrange
@@ -115,15 +115,15 @@ class UserPersistenceServiceIT {
         assertUser(11L, "Alice", "Wunderland", "wunderland@puzzle.ch", returnedUser);
     }
 
-    @DisplayName("getOrCreateUser() should return saved user when user not found")
+    @DisplayName("Should return saved user on getOrCreateUser() when user not found")
     @Test
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         // arrange
         var newUser = User.Builder
                 .builder() //
                 .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
+                .withFirstName("firstname") //
+                .withLastName("lastname") //
                 .withEmail("lastname@puzzle.ch") //
                 .build();
 
@@ -136,30 +136,30 @@ class UserPersistenceServiceIT {
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName("findByEmail() should return user if email is found")
+    @DisplayName("Should return user on findByEmail() when email is found")
     @Test
     void findByEmailShouldReturnUserIfEmailIsFound() {
         Optional<User> user = userPersistenceService.findByEmail("gl@gl.com");
 
         assertTrue(user.isPresent());
-        assertEquals("Jaya", user.get().getFirstname());
-        assertEquals("Norris", user.get().getLastname());
+        assertEquals("Jaya", user.get().getFirstName());
+        assertEquals("Norris", user.get().getLastName());
     }
 
-    @DisplayName("findByEmail() should return empty optional if email is not found")
+    @DisplayName("Should return empty optional on findByEmail() when email is not found")
     @Test
     void findByEmailShouldReturnEmptyOptionalIfEmailIsNotFound() {
         assertTrue(userPersistenceService.findByEmail("not_valid@gl.com").isEmpty());
     }
 
-    @DisplayName("findByEmail() should return empty optional if email is null")
+    @DisplayName("Should return empty optional on findByEmail() when email is null")
     @Test
     void findByEmailShouldReturnEmptyOptionalIfEmailIsNull() {
         assertTrue(userPersistenceService.findByEmail(null).isEmpty());
     }
 
     // uses data from V100_0_0__TestData.sql
-    @DisplayName("findAllOkrChampions() should return all okr champions")
+    @DisplayName("Should return all okr champions on findAllOkrChampions()")
     @Test
     void findAllOkrChampionsShouldReturnAllOkrChampions() {
         // act
@@ -170,7 +170,7 @@ class UserPersistenceServiceIT {
         assertUser(61L, "Jaya", "Norris", "gl@gl.com", allOkrChampions.getFirst());
     }
 
-    @DisplayName("getModelName() should return user")
+    @DisplayName("Should return user on getModelName()")
     @Test
     void getModelNameShouldReturnUser() {
         assertEquals(USER, userPersistenceService.getModelName());
@@ -182,14 +182,14 @@ class UserPersistenceServiceIT {
     }
 
     private void assertUser(String firstName, String lastName, String email, User currentUser) {
-        assertEquals(firstName, currentUser.getFirstname());
-        assertEquals(lastName, currentUser.getLastname());
+        assertEquals(firstName, currentUser.getFirstName());
+        assertEquals(lastName, currentUser.getLastName());
         assertEquals(email, currentUser.getEmail());
     }
 
-    @DisplayName("deleteById() should delete user when user found")
+    @DisplayName("Should delete user on deleteById() when user exists")
     @Test
-    void deleteByIdShouldDeleteUserWhenUserFound() {
+    void deleteByIdShouldDeleteUserWhenUserExists() {
         // arrange
         User user = createUser();
 
@@ -207,8 +207,8 @@ class UserPersistenceServiceIT {
         User newUser = User.Builder
                 .builder() //
                 .withId(null) //
-                .withFirstname("firstname") //
-                .withLastname("lastname") //
+                .withFirstName("firstname") //
+                .withLastName("lastname") //
                 .withEmail("lastname@puzzle.ch") //
                 .build();
         createdUser = userPersistenceService.getOrCreateUser(newUser);
@@ -216,7 +216,7 @@ class UserPersistenceServiceIT {
         return createdUser;
     }
 
-    @DisplayName("deleteById() should throw exception when Id is null")
+    @DisplayName("Should throw exception on deleteById() when Id is null")
     @Test
     void deleteByIdShouldThrowExceptionWhenIdIsNull() {
         InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, //

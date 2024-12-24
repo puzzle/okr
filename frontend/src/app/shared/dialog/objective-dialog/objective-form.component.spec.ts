@@ -155,7 +155,7 @@ describe('ObjectiveDialogComponent', () => {
         // Prepare data
         const title = 'title';
         const description = 'description';
-        const createKeyresults = true;
+        const createKeyResults = true;
         let quarter = 0;
         let team = 0;
         teamService.getAllTeams()
@@ -193,7 +193,7 @@ describe('ObjectiveDialogComponent', () => {
         expect(rawFormValue.title)
           .toBe(title);
         expect(rawFormValue.createKeyResults)
-          .toBe(createKeyresults);
+          .toBe(createKeyResults);
 
         objectiveService.createObjective.mockReturnValue(of({ ...objective,
           state: state }));
@@ -201,7 +201,7 @@ describe('ObjectiveDialogComponent', () => {
 
         expect(dialogMock.close)
           .toHaveBeenCalledWith({
-            addKeyResult: createKeyresults,
+            addKeyResult: createKeyResults,
             delete: false,
             objective: {
               description: description,
@@ -212,7 +212,7 @@ describe('ObjectiveDialogComponent', () => {
               state: State[state as keyof typeof State],
               teamId: 2,
               title: title,
-              writeable: true
+              isWriteable: true
             },
             teamId: 1
           });

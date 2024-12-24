@@ -21,8 +21,8 @@ public class TestDataConstants {
     public static final boolean CHECK_IN_IS_WRITABLE = true;
 
     public static final long USER_ID = 101L;
-    public static final String USER_FIRSTNAME = "owner firstname";
-    public static final String USER_LASTNAME = "owner lastname";
+    public static final String USER_FIRST_NAME = "owner firstname";
+    public static final String USER_LAST_NAME = "owner lastname";
 
     public static final long QUARTER_ID = 102L;
     public static final String QUARTER_LABEL = "GJ 2024 Q1";

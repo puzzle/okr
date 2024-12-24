@@ -22,56 +22,56 @@ public class QuarterFunction {
     public static final int CURRENT_QUARTER_DB_ID = 2;
     public static final int NEXT_QUARTER_DB_ID = 3;
 
-    private static final Map<Integer, QuarterData> QUARTERS = new HashMap<>();
+    private static Map<Integer, QuarterData> quarters = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(QuarterFunction.class);
 
     public static void initQuarterData() {
         LocalDate now = LocalDate.now();
         registerCurrentQuarterForDate(now, CURRENT_QUARTER_DB_ID);
 
-        LocalDate in3Months = now.plusMonths(3);
-        registerCurrentQuarterForDate(in3Months, NEXT_QUARTER_DB_ID);
+        LocalDate inThreeMonths = now.plusMonths(3);
+        registerCurrentQuarterForDate(inThreeMonths, NEXT_QUARTER_DB_ID);
     }
 
     private static void registerCurrentQuarterForDate(LocalDate date, int dbId) {
         Quarters quarters = new Quarters(date.getYear());
         QuarterData currentQuarter = quarters.currentQuarter(date);
-        QUARTERS.put(dbId, currentQuarter);
+        QuarterFunction.quarters.put(dbId, currentQuarter);
     }
 
     public static String currentQuarterLabel() {
-        var label = QUARTERS.get(CURRENT_QUARTER_DB_ID).label();
+        String label = quarters.get(CURRENT_QUARTER_DB_ID).label();
         logger.info("currentQuarterLabel    : {}", label);
         return label;
 
     }
 
     public static String currentQuarterStartDate() {
-        var start = QUARTERS.get(CURRENT_QUARTER_DB_ID).startDateAsIsoString();
+        String start = quarters.get(CURRENT_QUARTER_DB_ID).startDateAsIsoString();
         logger.info("currentQuarterStartDate: {}", start);
         return start;
     }
 
     public static String currentQuarterEndDate() {
-        var end = QUARTERS.get(CURRENT_QUARTER_DB_ID).endDateAsIsoString();
+        String end = quarters.get(CURRENT_QUARTER_DB_ID).endDateAsIsoString();
         logger.info("currentQuarterEndDate  : {}", end);
         return end;
     }
 
     public static String nextQuarterLabel() {
-        var label = QUARTERS.get(NEXT_QUARTER_DB_ID).label();
+        String label = quarters.get(NEXT_QUARTER_DB_ID).label();
         logger.info("nextQuarterLabel       : {}", label);
         return label;
     }
 
     public static String nextQuarterStartDate() {
-        var start = QUARTERS.get(NEXT_QUARTER_DB_ID).startDateAsIsoString();
+        String start = quarters.get(NEXT_QUARTER_DB_ID).startDateAsIsoString();
         logger.info("nextQuarterStartDate   : {}", start);
         return start;
     }
 
     public static String nextQuarterEndDate() {
-        var end = QUARTERS.get(NEXT_QUARTER_DB_ID).endDateAsIsoString();
+        String end = quarters.get(NEXT_QUARTER_DB_ID).endDateAsIsoString();
         logger.info("nextQuarterEndDate     : {}", end);
         return end;
     }

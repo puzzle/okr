@@ -23,7 +23,7 @@ public class CacheService {
     }
 
     @CacheEvict(value = AUTHORIZATION_USER_CACHE, allEntries = true)
-    @Scheduled(fixedRateString = "${caching.authorization.users.TTL}")
+    @Scheduled(fixedRateString = "${caching.authorization.users.ttl}")
     public void emptyAuthorizationUsersCache() {
         logger.info("emptying authorization users cache");
     }

@@ -3,7 +3,7 @@
     <label class="okr-form-label okr-form-col" for="title">Titel</label>
     <div class="okr-form-input">
       <textarea
-        [attr.data-testId]="'titleInput'"
+        [attr.data-testId]="'title-input'"
         class="big-dialog-form-field"
         [ngClass]="formInputCheck(keyResultForm, 'title')"
         formControlName="title"
@@ -15,11 +15,11 @@
     </div>
   </div>
 
-  <app-keyresult-type
+  <app-key-result-type
     (formValidityEmitter)="updateFormValidity()"
-    [keyresult]="keyResult"
+    [keyResult]="keyResult"
     [keyResultForm]="keyResultForm"
-  ></app-keyresult-type>
+  ></app-key-result-type>
 
   <div class="okr-form-row okr-form-label-input-container">
     <label class="okr-form-label okr-form-col" for="owner">Owner</label>
@@ -28,14 +28,14 @@
         (keydown.enter)="$event.preventDefault()"
         [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
         class="owner-input"
-        [attr.data-testId]="'ownerInput'"
+        [attr.data-testId]="'owner-input'"
         [matAutocomplete]="auto"
         formControlName="owner"
         id="owner"
       />
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameFromUser.bind(this)">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getFullNameOfUser.bind(this)">
         <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-          {{ user.firstname + " " + user.lastname }}
+          {{ user.firstName + " " + user.lastName }}
         </mat-option>
       </mat-autocomplete>
       <mat-error *ngIf="invalidOwner()">
@@ -48,7 +48,7 @@
     <label class="okr-form-label okr-form-col" for="description">Beschreibung (optional)</label>
     <div class="okr-form-input">
       <textarea
-        [attr.data-testId]="'descriptionInput'"
+        [attr.data-testId]="'description-input'"
         class="big-dialog-form-field"
         [ngClass]="formInputCheck(keyResultForm, 'description')"
         formControlName="description"

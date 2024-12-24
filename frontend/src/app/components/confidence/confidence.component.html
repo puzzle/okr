@@ -1,10 +1,12 @@
 <span class="okr-form-row bg-inherit flex-nowrap align-items-center mx-0" *ngIf="checkIn.confidence || checkIn.confidence === 0">
-  <div class="bg-inherit d-flex justify-content-center align-items-center w-auto" [ngClass]="[edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show', isDetail ? 'height' : '']">
-    <p class="fw-normal text-black p-0" data-testid="confidence">{{ checkIn.confidence }}/{{ max }}</p>
+  <div class="bg-inherit d-flex justify-content-center align-items-center w-auto" [ngClass]="[isEdit ? 'key-result-attribute-edit' : 'key-result-attribute-show', isDetail ? 'height' : '']">
+    <p class="fw-normal text-black sub-title-key-result p-0" [attr.data-testId]="'confidence'">
+      {{ checkIn.confidence }}/{{ max }}
+    </p>
   </div>
 
   <mat-slider
-    *ngIf="edit"
+    *ngIf="isEdit"
     [max]="max"
     [min]="min"
     [step]="1"

@@ -1,11 +1,11 @@
-<div id="topBarHeight">
-  <div id="okrTopbar">
+<div id="top-bar-height">
+  <div id="okr-top-bar">
     <a
       routerLink="/"
       queryParamsHandling="preserve"
       class="d-flex h-100 align-items-center ps-4"
-    >
-      <img
+
+    >  <img
         [attr.data-testId]="'logo'"
         alt="okr-logo"
         height="32"
@@ -17,7 +17,7 @@
       <button
         routerLink="team-management"
         [attr.data-testId]="'team-management'"
-        class="topBarEntry btn visible-by-default"
+        class="top-bar-entry btn visible-by-default"
         queryParamsHandling="preserve"
       >
         <mat-icon
@@ -30,8 +30,8 @@
 
       <button
         *ngIf="this.helpSiteUrl | async as helpSiteUrl"
-        id="hilfeButton"
-        class="topBarEntry btn"
+        id="help-button"
+        class="top-bar-entry btn"
         [attr.data-testId]="'help-button'"
         (click)="window.open(helpSiteUrl, '_blank')"
       >
@@ -48,15 +48,15 @@
         (menuOpened)="menuIsOpen = true"
         [attr.data-testId]="'user-options'"
         [matMenuTriggerFor]="menu"
-        class="topBarEntry flex-nowrap btn"
+        class="top-bar-entry flex-nowrap btn"
       >
         <mat-icon
           aria-hidden="false"
           aria-label="person icon"
           fontIcon="person_outline"
-          id="topbar-user"
+          id="top-bar-user"
         ></mat-icon>
-        <span [attr.data-testId]="'user-name'" class="fw-normal fs-6 d-none d-md-flex">{{ userFullName }}</span>
+        <span [attr.data-testId]="'username'" class="fw-normal fs-6 d-none d-md-flex">{{ userFullName }}</span>
         <mat-icon *ngIf="!menuIsOpen">expand_more</mat-icon>
         <mat-icon *ngIf="menuIsOpen">expand_less</mat-icon>
       </button>

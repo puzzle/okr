@@ -4,15 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class QuarterLabelTest {
 
-    @DisplayName("label() should return label with year and quarter info")
-    @ParameterizedTest
+    @ParameterizedTest(name = "label() should return label with year and quarter info")
     @MethodSource("datesAndLabels")
     void labelShouldReturnLabelWithYearAndQuarterInfo(LocalDate date, String expectedLabel) {
         QuarterLabel quarterLabel = new QuarterLabel(date);

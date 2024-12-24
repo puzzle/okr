@@ -1,0 +1,12 @@
+@import '../style/variables';
+.sidebar__content {
+  padding: 32px;
+}
+
+.side-panel {
+  transition: right 300ms;
+  position: relative;
+  right: -100%;
+  padding-bottom: $top-bar-height;
+  width: 100vw !important;
+}

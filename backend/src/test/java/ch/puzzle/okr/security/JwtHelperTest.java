@@ -20,8 +20,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 public class JwtHelperTest {
 
-    private static final String TOKEN_CLAIMS_KEY_FIRSTNAME = "given_name";
-    private static final String TOKEN_CLAIMS_KEY_LASTNAME = "family_name";
+    private static final String TOKEN_CLAIMS_KEY_FIRST_NAME = "given_name";
+    private static final String TOKEN_CLAIMS_KEY_LAST_NAME = "family_name";
     private static final String TOKEN_CLAIMS_KEY_EMAIL = "email";
     private static final String HANS = "Hans";
     private static final String MUSTER = "Muster";
@@ -31,7 +31,7 @@ public class JwtHelperTest {
     private static final String PITC = "pitc";
 
     // ok
-    @DisplayName("getUserFromJwt() extracts User data from Token")
+    @DisplayName("Should extract user data from token after calling getUserFromJwt()")
     @Test
     void getUserFromJwtExtractsUserDataFromToken() {
         // arrange
@@ -39,38 +39,38 @@ public class JwtHelperTest {
         when(tokenWithUserDataMock.getClaims())
                 .thenReturn(Map
                         .of( //
-                            TOKEN_CLAIMS_KEY_FIRSTNAME,
+                            TOKEN_CLAIMS_KEY_FIRST_NAME,
                             HANS, //
-                            TOKEN_CLAIMS_KEY_LASTNAME,
+                            TOKEN_CLAIMS_KEY_LAST_NAME,
                             MUSTER, //
                             TOKEN_CLAIMS_KEY_EMAIL,
                             EMAIL //
                         ));
 
         JwtHelper jwtHelper = new JwtHelper(null, //
-                                            TOKEN_CLAIMS_KEY_FIRSTNAME,
-                                            TOKEN_CLAIMS_KEY_LASTNAME,
+                                            TOKEN_CLAIMS_KEY_FIRST_NAME,
+                                            TOKEN_CLAIMS_KEY_LAST_NAME,
                                             TOKEN_CLAIMS_KEY_EMAIL);
 
         // act
         User userFromToken = jwtHelper.getUserFromJwt(tokenWithUserDataMock);
 
         // assert
-        assertEquals(HANS, userFromToken.getFirstname());
-        assertEquals(MUSTER, userFromToken.getLastname());
+        assertEquals(HANS, userFromToken.getFirstName());
+        assertEquals(MUSTER, userFromToken.getLastName());
         assertEquals(EMAIL, userFromToken.getEmail());
     }
 
     // ok
-    @DisplayName("getUserFromJwt() throws Exception if Token not contains User data")
+    @DisplayName("Should throw Exception if token does not contain user data after calling getUserFromJwt()")
     @Test
     void getUserFromJwtThrowsExceptionIfTokenNotContainsUserData() {
         // arrange
         Jwt tokenWithNoUserDataMock = mock(Jwt.class);
 
         JwtHelper jwtHelper = new JwtHelper(null, //
-                                            TOKEN_CLAIMS_KEY_FIRSTNAME,
-                                            TOKEN_CLAIMS_KEY_LASTNAME,
+                                            TOKEN_CLAIMS_KEY_FIRST_NAME,
+                                            TOKEN_CLAIMS_KEY_LAST_NAME,
                                             TOKEN_CLAIMS_KEY_EMAIL);
 
         // act + assert
@@ -81,7 +81,7 @@ public class JwtHelperTest {
         assertEquals(BAD_REQUEST, okrResponseStatusException.getStatusCode());
     }
 
-    @DisplayName("getTenantFromToken() returns Tenant if Tenant found in TenantConfigProvider")
+    @DisplayName("Should return tenant from token if tenant is found in tenant-config-provider after calling getTenantFromToken()")
     @Test
     void getTenantFromTokenReturnsTenantIfTenantFoundInTenantConfigProvider() {
         // arrange
@@ -109,7 +109,7 @@ public class JwtHelperTest {
         assertEquals(PITC, tenantFromToken);
     }
 
-    @DisplayName("getTenantFromToken() throws Exception if Tenant not found in TenantConfigProvider")
+    @DisplayName("Should throw Exception if tenant is not found in tenant-config-provider after calling getTenantFromToken()")
     @Test
     void getTenantFromTokenThrowsExceptionIfTenantNotFoundInTenantConfigProvider() {
         // arrange
@@ -124,7 +124,7 @@ public class JwtHelperTest {
         assertThrows(EntityNotFoundException.class, () -> jwtHelper.getTenantFromToken(tokenMock));
     }
 
-    @DisplayName("getTenantFromJWTClaimsSet() returns Tenant if Tenant found in TenantConfigProvider")
+    @DisplayName("Should return tenant from JWTClaimsSet if tenant is found in tenant-config-provider after calling getTenantFromJWTClaimsSet()")
     @Test
     void getTenantFromJWTClaimsSetReturnsTenantIfTenantFoundInTenantConfigProvider() throws ParseException {
         // arrange
@@ -152,7 +152,7 @@ public class JwtHelperTest {
         assertEquals(PITC, tenantFromToken);
     }
 
-    @DisplayName("getTenantFromJWTClaimsSet() throws Exception if ClaimSet can not be parsed")
+    @DisplayName("Should throw Exception if JWTClaimsSet cannot be parsed after calling getTenantFromJWTClaimsSet()")
     @Test
     void getTenantFromJWTClaimsSetThrowsExceptionIfClaimSetCanNotBeParsed() throws ParseException {
         // arrange

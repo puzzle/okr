@@ -11,7 +11,7 @@
           class="d-flex align-items-center justify-content-center"
           mat-icon-button
           (click)="backToOverview()"
-          [attr.data-testId]="'closeDrawer'"
+          [attr.data-testId]="'close-drawer'"
         >
           <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
         </button>
@@ -30,10 +30,10 @@
 
         <div class="d-flex align-items-center flex-row justify-content-start" *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'">
           <button
-            *ngIf="objective.writeable"
+            *ngIf="objective.isWriteable"
             mat-flat-button
             (click)="openAddKeyResultDialog()"
-            [attr.data-testId]="'add-keyResult-objective-detail'"
+            [attr.data-testId]="'add-key-result-objective-detail'"
             mat-button
             color="primary"
             disableRipple="true"
@@ -43,7 +43,7 @@
           </button>
           <button
             (click)="openEditObjectiveDialog()"
-            *ngIf="objective.writeable"
+            *ngIf="objective.isWriteable"
             class="ms-2"
             [attr.data-testId]="'edit-objective'"
             color="primary"

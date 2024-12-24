@@ -27,7 +27,7 @@ describe('ConfidenceComponent', () => {
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
     component.checkIn = checkInMetric;
-    component.edit = true;
+    component.isEdit = true;
   });
 
   it('should create', () => {
@@ -38,14 +38,14 @@ describe('ConfidenceComponent', () => {
   it.each([[{ confidence: 8 } as CheckInMin,
     '8'],
   [null,
-    '5']])('should set confidence of component with right value', async(checkIn: CheckInMin | null, expected: string) => {
+    '5']])('should set confidence of component with correct value', async(checkIn: CheckInMin | null, expected: string) => {
     component.checkIn = checkIn!;
     component.ngOnChanges({
       checkIn: new SimpleChange(null, component.checkIn, true)
     });
     fixture.detectChanges();
     await fixture.whenStable();
-    const textField = fixture.debugElement.query(By.css("[data-testid='confidence']"));
+    const textField = fixture.debugElement.query(By.css("[data-testId='confidence']"));
     const expectedLabel = expected + '/' + component.max;
     const sliderInputField = fixture.debugElement.query(By.css('mat-slider > input '));
 
@@ -57,7 +57,7 @@ describe('ConfidenceComponent', () => {
 
   it.each([[true],
     [false]])('should show slider on based on input var', async(editable) => {
-    component.edit = editable;
+    component.isEdit = editable;
     fixture.detectChanges();
     const slider = fixture.debugElement.query(By.css('mat-slider'));
 

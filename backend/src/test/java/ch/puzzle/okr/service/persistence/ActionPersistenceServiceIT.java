@@ -15,6 +15,7 @@ import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,7 +37,7 @@ class ActionPersistenceServiceIT {
                 .withVersion(version)
                 .withAction("Neue Katze")
                 .withPriority(0)
-                .withIsChecked(false)
+                .isChecked(false)
                 .withKeyResult(KeyResultMetric.Builder
                         .builder()
                         .withBaseline(1.0)
@@ -69,8 +70,9 @@ class ActionPersistenceServiceIT {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("Should create new entity on save()")
     @Test
-    void saveActionShouldSaveNewAction() {
+    void shouldCreateNewEntityWhenSaveIsCalled() {
         Action action = createAction(null);
 
         createdAction = actionPersistenceService.save(action);
@@ -82,8 +84,9 @@ class ActionPersistenceServiceIT {
         assertEquals(action.isChecked(), createdAction.isChecked());
     }
 
+    @DisplayName("Should update action on save() when the action has been modified")
     @Test
-    void updateActionShouldUpdateAction() {
+    void shouldUpdateActionWhenSaveIsCalledWithModifiedAction() {
         Action action = createAction(null);
         createdAction = actionPersistenceService.save(action);
         createdAction.setAction(UPDATED_ACTION);
@@ -96,8 +99,9 @@ class ActionPersistenceServiceIT {
         assertEquals(4, updateAction.getPriority());
     }
 
+    @DisplayName("Should throw exception on save() when the action has already been updated")
     @Test
-    void updateActionShouldThrowExceptionWhenAlreadyUpdated() {
+    void shouldThrowExceptionWhenSaveIsCalledOnAlreadyUpdatedAction() {
         createdAction = actionPersistenceService.save(createAction(null));
         Action changedAction = createAction(createdAction.getId(), 0);
         changedAction.setAction(UPDATED_ACTION);
@@ -111,15 +115,17 @@ class ActionPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    @DisplayName("Should return list of all actions on findAll()")
     @Test
-    void getAllActionsShouldReturnListOfAllActions() {
+    void shouldReturnListOfAllActionsWhenFindAllIsCalled() {
         List<Action> actions = actionPersistenceService.findAll();
 
         assertEquals(11, actions.size());
     }
 
+    @DisplayName("Should return list of actions from a key result ordered by ascending priority on getActionsByKeyResultIdOrderByPriorityAsc()")
     @Test
-    void getAllActionsByKeyResultIdShouldReturnListOfAllActionsFromThisKeyResultOrderASC() {
+    void shouldReturnListOfActionsForKeyResultOrderedByPriorityWhenGetActionsByKeyResultIdOrderByPriorityAscIsCalled() {
         List<Action> actions = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(6L);
 
         assertEquals(3, actions.size());
@@ -128,8 +134,9 @@ class ActionPersistenceServiceIT {
         assertEquals(3, actions.get(2).getPriority());
     }
 
+    @DisplayName("Should return correct action on findById()")
     @Test
-    void getActionByIdShouldReturnActionProperly() {
+    void shouldReturnCorrectActionWhenFindByIdIsCalled() {
         Action action = actionPersistenceService.findById(1L);
 
         assertEquals(1L, action.getId());
@@ -139,6 +146,7 @@ class ActionPersistenceServiceIT {
         assertEquals(8L, action.getKeyResult().getId());
     }
 
+    @DisplayName("Should delete action on delete()")
     @Test
     void shouldDeleteActionById() {
         Action action = createAction(null);

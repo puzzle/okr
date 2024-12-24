@@ -33,8 +33,8 @@ public class KeyResultTestHelpers {
     public static final String STRETCH_ZONE = "Ein Wald";
     public static final String QUARTER_LABEL = "GJ 22/23-Q4";
     public static final Zone LAST_CHECK_IN_ZONE = Zone.COMMIT;
-    public static final String FIRSTNAME = "Johnny";
-    public static final String LASTNAME = "Appleseed";
+    public static final String FIRST_NAME = "Johnny";
+    public static final String LAST_NAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
     public static final Unit KEY_RESULT_UNIT = Unit.FTE;
     public static final String KEY_RESULT_CREATED_ON = "-999999999-01-01T00:00:00";
@@ -47,7 +47,7 @@ public class KeyResultTestHelpers {
     public static final String JSON_PATH_DESCRIPTION = "$.description";
     public static final String JSON_PATH_KEY_RESULT_TYPE = "$.keyResultType";
     public static final String JSON_PATH_STRETCH_GOAL = "$.stretchGoal";
-    public static final String JSON_PATH_OWNER_FIRSTNAME = "$.owner.firstname";
+    public static final String JSON_PATH_OWNER_FIRST_NAME = "$.owner.firstName";
     public static final String JSON_PATH_OBJECTIVE_STATE = "$.objective.state";
     public static final String JSON_PATH_ID_LAST_CHECK_IN_VALUE = "$.lastCheckIn.value";
     public static final String JSON_PATH_LAST_CHECK_IN_CONFIDENCE = "$.lastCheckIn.confidence";
@@ -80,8 +80,8 @@ public class KeyResultTestHelpers {
     public static final User user = User.Builder
             .builder()
             .withId(1L)
-            .withFirstname("Bob")
-            .withLastname("Kaufmann")
+            .withFirstName("Bob")
+            .withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch")
             .build();
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder
@@ -130,7 +130,7 @@ public class KeyResultTestHelpers {
                                                                       12D,
                                                                       true);
 
-    public static final KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, FIRSTNAME, LASTNAME);
+    public static final KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, FIRST_NAME, LAST_NAME);
     public static final KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L,
                                                                                           QUARTER_LABEL,
                                                                                           LocalDate.MIN,
@@ -352,8 +352,8 @@ public class KeyResultTestHelpers {
               "stretchZone": "5",
               "owner": {
                 "id": 1000,
-                "firstname": "Jaya",
-                "lastname": "Norris"
+                "firstName": "Jaya",
+                "lastName": "Norris"
               },
               "objective": {
                 "id": 1000,
@@ -363,7 +363,7 @@ public class KeyResultTestHelpers {
               "lastCheckIn": null,
               "createdOn": null,
               "modifiedOn": null,
-              "writeable": false,
+              "isWriteable": false,
               "actionList": []
             }
             """;
@@ -380,8 +380,8 @@ public class KeyResultTestHelpers {
               "unit": "NUMBER",
               "owner": {
                 "id": 1000,
-                "firstname": "Jaya",
-                "lastname": "Norris"
+                "firstName": "Jaya",
+                "lastName": "Norris"
               },
               "objective": {
                 "id": 1000,
@@ -391,7 +391,7 @@ public class KeyResultTestHelpers {
               "lastCheckIn": null,
               "createdOn": null,
               "modifiedOn": null,
-              "writeable": false,
+              "isWriteable": false,
               "actionList": []
             }
             """;

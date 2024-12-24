@@ -3,6 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { ShowEditRoleComponent } from './show-edit-role.component';
 import { testUser } from '../../shared/testData';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 
 describe('ShowEditRoleComponent', () => {
@@ -30,14 +31,14 @@ describe('ShowEditRoleComponent', () => {
       .toBeTruthy();
   });
 
-  it('saveIsAdmin should set edit to false', () => {
+  it('should set edit to false using saveIsAdmin', () => {
     component.edit = true;
     component.saveIsAdmin(true);
     expect(component.edit)
       .toBeFalsy();
   });
 
-  it('setEditAsync should set edit to given value', fakeAsync(() => {
+  it('should set edit to given value using setEditAsync', fakeAsync(() => {
     component.edit = false;
     const mouseEvent = {
       stopPropagation: () => undefined

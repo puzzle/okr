@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v2/checkIns")
+@RequestMapping("api/v2/checkins")
 public class CheckInController {
 
     private final CheckInMapper checkInMapper;

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -82,6 +83,7 @@ class AlignmentControllerIT {
             .withObjectiveTitle("Objective 8")
             .build();
 
+    @DisplayName("Should get all objectives with their key-results")
     @Test
     void shouldGetAllObjectivesWithKeyResults() throws Exception {
         List<AlignmentSelection> alignmentSelections = new ArrayList<>();
@@ -108,6 +110,7 @@ class AlignmentControllerIT {
                 .andExpect(jsonPath("$[2].keyResults.size()", Is.is(0)));
     }
 
+    @DisplayName("Should return empty list when all objectives are filtered")
     @Test
     void shouldGetAllObjectivesWithKeyResultsIfAllObjectivesFiltered() throws Exception {
         BDDMockito
@@ -120,6 +123,7 @@ class AlignmentControllerIT {
                 .andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
+    @DisplayName("Should return objective with empty key-result List when no key-results are present in the filtered quarter")
     @Test
     void shouldReturnObjectiveWithEmptyKeyResultListWhenNoKeyResultsInFilteredQuarter() throws Exception {
         BDDMockito

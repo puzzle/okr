@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FilteredTeam, FilteredUser, SearchTeamManagementComponent } from './search-team-management.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,48 +24,48 @@ const teams: Team[] = [
     id: 1,
     version: 1,
     name: 'ZZ the Puzzle Team - Keyword',
-    writeable: false
+    isWriteable: false
   },
   {
     id: 2,
     version: 1,
     name: 'The Puzzle Team - Keyword',
-    writeable: false
+    isWriteable: false
   },
   {
     id: 3,
     version: 1,
     name: 'Puzzle Team - No',
-    writeable: false
+    isWriteable: false
   },
   {
     id: 4,
     version: 1,
     name: 'Team Ruedi - Noname',
-    writeable: false
+    isWriteable: false
   }
 ];
 
 const users: User[] = [{
   id: 2,
-  firstname: 'Pete',
-  lastname: 'Parrot',
+  firstName: 'Pete',
+  lastName: 'Parrot',
   email: 'parrot@puzzle.ch',
   userTeamList: [],
   isOkrChampion: false
 },
 {
   id: 1,
-  firstname: 'Martin',
-  lastname: 'Käser',
+  firstName: 'Martin',
+  lastName: 'Käser',
   email: 'kaeser@puzzle.ch',
   userTeamList: [],
   isOkrChampion: false
 },
 {
   id: 3,
-  firstname: 'Ruedi',
-  lastname: 'Peters',
+  firstName: 'Ruedi',
+  lastName: 'Peters',
   email: 'rpeter@gmail.com',
   userTeamList: [],
   isOkrChampion: false

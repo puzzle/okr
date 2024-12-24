@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,7 @@ class KeyResultBusinessServiceIT {
     private static Action createAction1(KeyResult keyResult) {
         return Action.Builder
                 .builder()
-                .withIsChecked(false)
+                .isChecked(false)
                 .withAction("Neuer Drucker")
                 .withPriority(0)
                 .withKeyResult(keyResult)
@@ -110,11 +111,29 @@ class KeyResultBusinessServiceIT {
     private static Action createAction2(KeyResult keyResult) {
         return Action.Builder
                 .builder()
-                .withIsChecked(false)
+                .isChecked(false)
                 .withAction("Neues Papier")
                 .withPriority(0)
                 .withKeyResult(keyResult)
                 .build();
+    }
+
+    private static void assertKeyResult(KeyResult expected, KeyResult actual) {
+        assertEquals(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getKeyResultType(), actual.getKeyResultType());
+        assertEquals(expected.getModifiedOn(), actual.getModifiedOn());
+        if (expected instanceof KeyResultMetric keyResultMetric) {
+            assertEquals(keyResultMetric.getBaseline(), ((KeyResultMetric) actual).getBaseline());
+            assertEquals(keyResultMetric.getStretchGoal(), ((KeyResultMetric) actual).getStretchGoal());
+            assertEquals(keyResultMetric.getUnit(), ((KeyResultMetric) actual).getUnit());
+        } else if (expected instanceof KeyResultOrdinal keyResultOrdinal) {
+            assertEquals(keyResultOrdinal.getCommitZone(), ((KeyResultOrdinal) actual).getCommitZone());
+            assertEquals(keyResultOrdinal.getStretchZone(), ((KeyResultOrdinal) actual).getStretchZone());
+            assertEquals(keyResultOrdinal.getTargetZone(), ((KeyResultOrdinal) actual).getTargetZone());
+        } else {
+            throw new IllegalArgumentException("keyResultType not supported, " + expected);
+        }
     }
 
     @BeforeEach
@@ -155,8 +174,9 @@ class KeyResultBusinessServiceIT {
         return null;
     }
 
+    @DisplayName("Should update metric key-result and type should stay metric")
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithSameTypeMetric() {
+    void shouldUpdateMetricKeyResultWithSameTypeUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
@@ -166,8 +186,9 @@ class KeyResultBusinessServiceIT {
         assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
 
+    @DisplayName("Should update metric key-result and type should stay metric and keep action list")
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithSameTypeMetricWithActionList() {
+    void shouldUpdateMetricKeyResultWithSameTypeWithActionListUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
         action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
@@ -180,8 +201,9 @@ class KeyResultBusinessServiceIT {
         assertSameActions(List.of(action1, action2), updatedKeyResult);
     }
 
+    @DisplayName("Should update ordinal key-result and type should stay ordinal")
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithSameTypeOrdinal() {
+    void shouldUpdateOrdinalKeyResultWithSameTypeUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
@@ -192,11 +214,11 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntitiesShouldRecreateKeyResultMetric() {
+    void shouldRecreateOrdinalKeyResultAsMetricUsingUpdateEntities() {
         KeyResult savedKeyResult = keyResultBusinessService
                 .createEntity(createKeyResultOrdinal(null), authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
-        KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
+        KeyResult changedKeyResult = createKeyResultMetric(createdKeyResultId);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService
                 .updateEntities(changedKeyResult.getId(), changedKeyResult, List.of());
@@ -205,8 +227,9 @@ class KeyResultBusinessServiceIT {
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
+    @DisplayName("Should update ordinal key-result and type should stay ordinal and keep action list")
     @Test
-    void updateEntitiesShouldRecreateKeyResultMetricWithActionList() {
+    void shouldRecreateOrdinalKeyResultAsMetricWithActionListUsingUpdateEntities() {
         KeyResult savedKeyResult = keyResultBusinessService
                 .createEntity(createKeyResultOrdinal(null), authorizationUser);
         action1 = actionBusinessService.createEntity(createAction1(savedKeyResult));
@@ -215,19 +238,20 @@ class KeyResultBusinessServiceIT {
         Long createdKeyResultId = changedKeyResult.getId();
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService
-                .updateEntities(changedKeyResult.getId(), changedKeyResult, List.of(action1, action2));
+                .updateEntities(createdKeyResultId, changedKeyResult, List.of(action1, action2));
         createdKeyResult = updatedKeyResult.keyResult();
 
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
         assertSameActions(List.of(action1, action2), updatedKeyResult);
     }
 
+    @DisplayName("Should update metric key-result to ordinal key-result")
     @Test
-    void updateEntitiesShouldRecreateKeyResultOrdinal() {
+    void shouldRecreateMetricKeyResultAsOrdinalUsingUpdateEntities() {
         KeyResult savedKeyResult = keyResultBusinessService
                 .createEntity(createKeyResultMetric(null), authorizationUser);
         Long createdKeyResultId = savedKeyResult.getId();
-        KeyResult changedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
+        KeyResult changedKeyResult = createKeyResultOrdinal(createdKeyResultId);
 
         KeyResultWithActionList updatedKeyResult = keyResultBusinessService
                 .updateEntities(changedKeyResult.getId(), changedKeyResult, List.of());
@@ -236,8 +260,9 @@ class KeyResultBusinessServiceIT {
         assertRecreatedKeyResult(updatedKeyResult.keyResult(), createdKeyResultId);
     }
 
+    @DisplayName("Should update ordinal key-result as metric and keep action list")
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInMetric() {
+    void shouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckInUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
 
@@ -249,8 +274,9 @@ class KeyResultBusinessServiceIT {
         assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }
 
+    // No displayname because i dont understand the test
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInMetricWithActionList() {
+    void shouldUpdateOrdinalKeyResultWithDifferentTypeAndCheckInWithActionListUsingUpdateEntities() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
         action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
@@ -267,8 +293,9 @@ class KeyResultBusinessServiceIT {
         assertUpdatedActions(List.of(action1, action2), updatedKeyResult);
     }
 
+    // No displayname because i dont understand the test
     @Test
-    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInOrdinal() {
+    void shouldUpdateMetricKeyResultWithDifferentTypeAndCheckInUsingUpdateEntity() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         checkInBusinessService.createEntity(createCheckInMetric(createdKeyResult), authorizationUser);
 
@@ -302,24 +329,6 @@ class KeyResultBusinessServiceIT {
         assertEquals(expected.getDescription(), actual.getDescription());
         assertEquals(expected.getOwner(), actual.getOwner());
         assertEquals(expected.getModifiedOn(), actual.getModifiedOn());
-    }
-
-    private static void assertKeyResult(KeyResult expected, KeyResult actual) {
-        assertEquals(expected.getTitle(), actual.getTitle());
-        assertEquals(expected.getDescription(), actual.getDescription());
-        assertEquals(expected.getKeyResultType(), actual.getKeyResultType());
-        assertEquals(expected.getModifiedOn(), actual.getModifiedOn());
-        if (expected instanceof KeyResultMetric keyResultMetric) {
-            assertEquals(keyResultMetric.getBaseline(), ((KeyResultMetric) actual).getBaseline());
-            assertEquals(keyResultMetric.getStretchGoal(), ((KeyResultMetric) actual).getStretchGoal());
-            assertEquals(keyResultMetric.getUnit(), ((KeyResultMetric) actual).getUnit());
-        } else if (expected instanceof KeyResultOrdinal keyResultOrdinal) {
-            assertEquals(keyResultOrdinal.getCommitZone(), ((KeyResultOrdinal) actual).getCommitZone());
-            assertEquals(keyResultOrdinal.getStretchZone(), ((KeyResultOrdinal) actual).getStretchZone());
-            assertEquals(keyResultOrdinal.getTargetZone(), ((KeyResultOrdinal) actual).getTargetZone());
-        } else {
-            throw new IllegalArgumentException("keyResultType not supported, " + expected);
-        }
     }
 
     private void assertSameActions(List<Action> expected, KeyResultWithActionList actual) {

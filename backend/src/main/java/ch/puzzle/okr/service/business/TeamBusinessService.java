@@ -56,8 +56,8 @@ public class TeamBusinessService {
     public Team createTeam(Team team, AuthorizationUser authorizationUser) {
         validator.validateOnCreate(team);
         cacheService.emptyAuthorizationUsersCache();
-        var savedTeam = teamPersistenceService.save(team);
-        var currentUser = authorizationUser.user();
+        Team savedTeam = teamPersistenceService.save(team);
+        User currentUser = authorizationUser.user();
         addTeamMembership(savedTeam.getId(), true, currentUser, currentUser.getUserTeamList());
         userPersistenceService.save(currentUser);
         return savedTeam;
@@ -81,11 +81,11 @@ public class TeamBusinessService {
     }
 
     private void deleteUserTeamList(Long id) {
-        var team = teamPersistenceService.findById(id);
+        Team team = teamPersistenceService.findById(id);
         // remove userTeam from each user, otherwise they are still in the session and
         // are not deleted
         team.getUserTeamList().forEach(userTeam -> {
-            var user = userTeam.getUser();
+            User user = userTeam.getUser();
             user.getUserTeamList().remove(userTeam);
         });
         userTeamPersistenceService.deleteAll(team.getUserTeamList());
@@ -106,10 +106,10 @@ public class TeamBusinessService {
 
     @Transactional
     public void addUsersToTeam(long teamId, List<Long> userIdList) {
-        var team = teamPersistenceService.findById(teamId);
-        for (var userId : userIdList) {
-            var user = userPersistenceService.findById(userId);
-            var userTeam = UserTeam.Builder.builder().withTeam(team).withUser(user).withTeamAdmin(false).build();
+        Team team = teamPersistenceService.findById(teamId);
+        for (Long userId : userIdList) {
+            User user = userPersistenceService.findById(userId);
+            UserTeam userTeam = UserTeam.Builder.builder().withTeam(team).withUser(user).isTeamAdmin(false).build();
             user.getUserTeamList().add(userTeam);
             userPersistenceService.save(user);
         }
@@ -118,13 +118,13 @@ public class TeamBusinessService {
 
     @Transactional
     public void removeUserFromTeam(long teamId, long userId) {
-        var user = userPersistenceService.findById(userId);
-        var team = this.teamPersistenceService.findById(teamId);
+        User user = userPersistenceService.findById(userId);
+        Team team = this.teamPersistenceService.findById(teamId);
 
         checkTeamHasAtLeastOneAdmin(team, user);
 
-        var userTeamList = user.getUserTeamList();
-        var userTeamToRemove = userTeamList
+        List<UserTeam> userTeamList = user.getUserTeamList();
+        UserTeam userTeamToRemove = userTeamList
                 .stream()
                 .filter(ut -> ut.getTeam().getId() == teamId)
                 .findFirst()
@@ -149,9 +149,9 @@ public class TeamBusinessService {
 
     @Transactional
     public void updateOrAddTeamMembership(long teamId, long userId, boolean isAdmin) {
-        var user = userPersistenceService.findById(userId);
+        User user = userPersistenceService.findById(userId);
         List<UserTeam> userTeamList = user.getUserTeamList();
-        for (var ut : userTeamList) {
+        for (UserTeam ut : userTeamList) {
             if (ut.getTeam().getId().equals(teamId)) {
                 updateTeamMembership(isAdmin, ut, user);
                 return;
@@ -173,8 +173,8 @@ public class TeamBusinessService {
     }
 
     private void addTeamMembership(long teamId, boolean isAdmin, User user, List<UserTeam> userTeamList) {
-        var team = teamPersistenceService.findById(teamId);
-        var userTeam = UserTeam.Builder.builder().withTeam(team).withTeamAdmin(isAdmin).withUser(user).build();
+        Team team = teamPersistenceService.findById(teamId);
+        UserTeam userTeam = UserTeam.Builder.builder().withTeam(team).isTeamAdmin(isAdmin).withUser(user).build();
         userTeamList.add(userTeam);
     }
 

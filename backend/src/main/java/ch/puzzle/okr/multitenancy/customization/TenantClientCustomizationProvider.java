@@ -62,7 +62,7 @@ public class TenantClientCustomizationProvider {
                                                                      tenantId)),
                                              env
                                                      .getProperty(MessageFormat
-                                                             .format("okr.tenants.{0}.clientcustomization.helpSiteUrl",
+                                                             .format("okr.tenants.{0}.clientcustomization.help-site-url",
                                                                      tenantId)),
                                              getCustomCssStyles(tenantId) //
         );

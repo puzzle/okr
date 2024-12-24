@@ -2,8 +2,9 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
-import ch.puzzle.okr.dto.userOkrData.UserOkrDataDto;
+import ch.puzzle.okr.dto.userokrdata.UserOkrDataDto;
 import ch.puzzle.okr.mapper.UserMapper;
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UserAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +45,7 @@ public class UserController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping(path = "/current")
     public UserDto getCurrentUser() {
-        var currentUser = this.authorizationService.updateOrAddAuthorizationUser().user();
+        User currentUser = this.authorizationService.updateOrAddAuthorizationUser().user();
         return userMapper.toDto(currentUser);
     }
 
@@ -54,7 +55,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public UserDto getUserById(@Parameter(description = "The ID for requested user.", required = true)
     @PathVariable long id) {
-        var user = this.userAuthorizationService.getById(id);
+        User user = this.userAuthorizationService.getById(id);
         return userMapper.toDto(user);
     }
 
@@ -64,7 +65,7 @@ public class UserController {
     @PutMapping(path = "/{id}/isokrchampion/{isOkrChampion}")
     public UserDto setOkrChampion(@Parameter(description = "The ID for requested user.", required = true)
     @PathVariable long id, @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean isOkrChampion) {
-        var user = this.userAuthorizationService.setIsOkrChampion(id, isOkrChampion);
+        User user = this.userAuthorizationService.setIsOkrChampion(id, isOkrChampion);
         return userMapper.toDto(user);
     }
 
@@ -74,7 +75,7 @@ public class UserController {
     @PostMapping(path = "/createall")
     public List<UserDto> createUsers(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The users to create", required = true)
     @RequestBody List<NewUserDto> newUserDtoList) {
-        var createdUsers = this.userAuthorizationService.createUsers(userMapper.toUserList(newUserDtoList));
+        List<User> createdUsers = this.userAuthorizationService.createUsers(userMapper.toUserList(newUserDtoList));
         return userMapper.toDtos(createdUsers);
     }
 

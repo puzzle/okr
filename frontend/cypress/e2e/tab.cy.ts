@@ -3,7 +3,7 @@ import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import { Unit } from '../../src/app/shared/types/enums/Unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 
-describe('Tab workflow tests', () => {
+describe('tabbing workflows', () => {
   let overviewPage = new CyOverviewPage();
   beforeEach(() => {
     cy.loginAsUser(users.gl);
@@ -35,8 +35,8 @@ describe('Tab workflow tests', () => {
     cy.pressUntilContains('Logout', 'ArrowDown');
     focusedShouldHaveTestId('logout');
     cy.realPress('Escape');
-    tabAndCheck('quarterFilter', 'GJ');
-    tabAndCheck('objectiveSearch');
+    tabAndCheck('quarter-filter', 'GJ');
+    tabAndCheck('objective-search');
     cy.tabForward();
     cy.focused()
       .children('img')
@@ -54,10 +54,10 @@ describe('Tab workflow tests', () => {
     tabAndCheck('objective');
     tabAndCheck('three-dot-menu');
     tabAndCheck('key-result');
-    tabAndCheck('add-keyResult', 'Key Result hinzufügen');
+    tabAndCheck('add-key-result', 'Key Result hinzufügen');
   });
 
-  describe('Objective', () => {
+  describe('objective', () => {
     it('should be able to tab objective dialog', () => {
       tabAndCheck('add-objective', 'Objective hinzufügen');
       cy.realPress('Enter');
@@ -154,44 +154,44 @@ describe('Tab workflow tests', () => {
         .focus();
       cy.realPress('Enter')
         .tabForward();
-      focusedShouldHaveTestId('closeDrawer');
-      tabAndCheck('add-keyResult-objective-detail', 'Key Result hinzufügen');
+      focusedShouldHaveTestId('close-drawer');
+      tabAndCheck('add-key-result-objective-detail', 'Key Result hinzufügen');
       tabAndCheck('edit-objective', 'Objective bearbeiten');
     });
   });
 
-  describe('Keyresult & Check-In', () => {
-    it('Should be able to tab Keyresult dialog', () => {
-      tabAndCheck('add-keyResult', 'Key Result hinzufügen');
+  describe('keyresult & checkin', () => {
+    it('should be able to tab key-result dialog', () => {
+      tabAndCheck('add-key-result', 'Key Result hinzufügen');
       cy.realPress('Enter');
       focusedShouldHaveTestId('close-dialog');
-      tabAndCheck('titleInput');
+      tabAndCheck('title-input');
       cy.focused()
         .type('Title');
       tabAndCheck('unit');
       tabAndCheck('baseline');
-      tabAndCheck('stretchGoal');
-      tabAndCheck('ownerInput');
-      tabAndCheck('descriptionInput');
-      tabAndCheck('actionInput');
+      tabAndCheck('stretch-goal');
+      tabAndCheck('owner-input');
+      tabAndCheck('description-input');
+      tabAndCheck('action-input');
       tabAndCheck('add-action-plan-line', 'Weitere Action hinzufügen');
-      tabAndCheck('ordinalTab', 'Ordinal');
+      tabAndCheck('ordinal-tab', 'Ordinal');
       cy.realPress('Enter');
-      tabAndCheck('commitZone');
+      tabAndCheck('commit-zone');
       cy.focused()
         .type('Commit');
-      tabAndCheck('targetZone');
+      tabAndCheck('target-zone');
       cy.focused()
         .type('Target');
-      tabAndCheck('stretchZone');
+      tabAndCheck('stretch-zone');
       cy.focused()
         .type('Stretch');
       tabAndCheck('submit', 'Speichern');
-      tabAndCheck('saveAndNew', 'Speichern & Neu');
+      tabAndCheck('save-and-new', 'Speichern & Neu');
       tabAndCheck('cancel', 'Abbrechen');
     });
 
-    it('Should tab keyresult detail view', () => {
+    it('should tab key-result detail view', () => {
       overviewPage.getObjectiveByState('ongoing')
         .findByTestId('key-result')
         .first()
@@ -210,7 +210,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('edit-keyResult', 'Key Result bearbeiten');
     });
 
-    it('Should tab create-check-in metric', () => {
+    it('should tab create check-in metric', () => {
       overviewPage
         .addOngoingKeyResult()
         .fillKeyResultTitle('A metric Keyresult for tabbing tests')
@@ -235,7 +235,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('cancel', 'Abbrechen');
     });
 
-    it('Should tab create-check-in ordinal', () => {
+    it('should tab create check-in ordinal', () => {
       overviewPage
         .addOngoingKeyResult()
         .fillKeyResultTitle('A ordinal Keyresult for tabbing tests')
@@ -274,8 +274,8 @@ describe('Tab workflow tests', () => {
     });
   });
 
-  describe('Team management', () => {
-    it('Should tab team management', () => {
+  describe('team-management', () => {
+    it('should tab team-management', () => {
       tabAndCheck('team-management', 'Teamverwaltung');
       cy.realPress('Enter');
       tabAndCheck('routerLink-to-overview', 'Zurück zur OKR Übersicht');
@@ -284,7 +284,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('all-teams-selector', 'Alle Teams (4)');
       tabAndCheck('invite-member', 'Member registrieren');
     });
-    it('Should tab create team', () => {
+    it('should tab create team', () => {
       cy.getByTestId('team-management')
         .click();
       tabAndCheck('add-team');
@@ -297,7 +297,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('save', 'Speichern');
       tabAndCheck('cancel', 'Abbrechen');
     });
-    it('Should tab register member', () => {
+    it('should tab register member', () => {
       cy.getByTestId('team-management')
         .click();
       tabAndCheck('invite-member');
@@ -315,7 +315,7 @@ describe('Tab workflow tests', () => {
       tabAndCheck('invite', 'Einladen');
       tabAndCheck('new-member-cancel', 'Abbrechen');
     });
-    it('Should tab edit member', () => {
+    it('should tab edit member', () => {
       cy.getByTestId('team-management')
         .click();
       cy.pressUntilContains('Alice Wunderland', 'Tab');

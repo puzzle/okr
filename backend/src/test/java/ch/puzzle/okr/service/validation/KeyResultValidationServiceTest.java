@@ -41,8 +41,8 @@ class KeyResultValidationServiceTest {
     private final User user = User.Builder
             .builder()
             .withId(1L)
-            .withFirstname("Bob")
-            .withLastname("Kaufmann")
+            .withFirstName("Bob")
+            .withLastName("Kaufmann")
             .withEmail("kaufmann@puzzle.ch")
             .build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
@@ -133,16 +133,18 @@ class KeyResultValidationServiceTest {
                                           new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))));
     }
 
+    @DisplayName("Should be successful on validateOnGet() when id is valid")
     @Test
-    void validateOnGetShouldBeSuccessfulWhenValidKeyResultId() {
+    void shouldBeSuccessfulOnValidateOnGetWhenValidKeyResultId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
+    @DisplayName("Should throw exception on validateOnGet() when id is null")
     @Test
-    void validateOnGetShouldThrowExceptionIfKeyResultIdIsNull() {
+    void shouldThrowExceptionOnValidateOnGetIfKeyResultIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnGet(null));
@@ -153,16 +155,18 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should be successful on validateOnCreate() when key result is valid")
     @Test
-    void validateOnCreateShouldBeSuccessfulWhenKeyResultIsValid() {
+    void shouldBeSuccessfulOnValidateOnCreateWhenKeyResultIsValid() {
         validator.validateOnCreate(fullKeyResult);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(fullKeyResult);
         verify(validator, times(1)).validate(fullKeyResult);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when key result is null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(null));
@@ -171,8 +175,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(keyResultMetric));
@@ -181,9 +186,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateOnCreate() when model has invalid name {0}")
     @MethodSource("nameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
+    void shouldThrowExceptionOnValidateOnCreateWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
         KeyResult keyResult = KeyResultMetric.Builder
                 .builder() //
@@ -204,8 +209,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, errors);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnCreateWhenAttrsAreMissing() {
         // arrange
         KeyResult keyResultInvalid = KeyResultMetric.Builder
                 .builder() //
@@ -229,8 +235,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should be successful on validateOnUpdate() when model is valid")
     @Test
-    void validateOnUpdateShouldBeSuccessfulWhenKeyResultIsValid() {
+    void shouldBeSuccessfulOnValidateOnUpdateWhenKeyResultIsValid() {
         // arrange
         Long id = 5L;
         KeyResult keyResult = KeyResultMetric.Builder
@@ -259,8 +266,9 @@ class KeyResultValidationServiceTest {
         verify(validator, times(1)).validate(keyResult);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when model is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenModelIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, null));
@@ -269,8 +277,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(null, keyResultOrdinal));
@@ -282,8 +291,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when id has changed")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdHasChanged() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, keyResultMetric));
@@ -296,9 +306,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateOnUpdate() when model has invalid name {0}")
     @MethodSource("nameValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
+    void shouldThrowExceptionOnValidateOnUpdateWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         // arrange
         Long id = 3L;
         KeyResult keyResult = KeyResultMetric.Builder
@@ -322,8 +332,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, errors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when attributes are missing")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenAttrsAreMissing() {
         // arrange
         Long id = 11L;
         KeyResult keyResultInvalid = KeyResultMetric.Builder
@@ -349,19 +360,21 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
-    void validateOnDeleteShouldBeSuccessfulWhenValidKeyResultId() {
-        validator.validateOnGet(1L);
+    void shouldBeSuccessfulOnValidateOnDeleteWhenValidKeyResultId() {
+        validator.validateOnDelete(1L);
 
-        verify(validator, times(1)).validateOnGet(1L);
+        verify(validator, times(1)).validateOnDelete(1L);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
+    @DisplayName("Should throw exception on validateOnDelete() when id is valid")
     @Test
-    void validateOnDeleteShouldThrowExceptionIfKeyResultIdIsNull() {
+    void shouldThrowExceptionOnValidateOnDeleteWhenKeyResultIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnGet(null));
+                                                            () -> validator.validateOnDelete(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
@@ -369,9 +382,9 @@ class KeyResultValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnUpdate() should throw exception when Objective Id (of input and saved KeyResuslt) has changed")
+    @DisplayName("Should throw exception on validateOnUpdate() when objective id (of input and saved KeyResult) has changed")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenObjectiveIdOfKeyResultHasChanged() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenObjectiveIdOfKeyResultHasChanged() {
         // arrange
         Long keyResultId = 1L;
         Long objectiveId = 2L;

@@ -1,10 +1,10 @@
-<app-application-banner id="bannerComponent"></app-application-banner>
+<app-application-banner id="banner-component"></app-application-banner>
 <div
   id="overview"
   class="overview-container px-sm-4"
   [ngStyle]="{ 'padding-top.px': overviewPadding | async }"
->
-  <app-team *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn" [overviewEntity]="overviewEntity">
+
+>  <app-team *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn" [overviewEntity]="overviewEntity">
   </app-team>
   <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
     <p id="no-team-text">Kein Team ausgewählt</p>

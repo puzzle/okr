@@ -9,6 +9,7 @@ import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import java.util.Map;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -31,6 +32,7 @@ public class ClientConfigControllerIT {
     @MockBean
     private ClientConfigService configService;
 
+    @DisplayName("Should get client config with correct values")
     @Test
     void shouldGetClientConfig() throws Exception {
         BDDMockito.given(configService.getConfigBasedOnActiveEnv(anyString())).willReturn(createClientConfigDto());
@@ -47,7 +49,7 @@ public class ClientConfigControllerIT {
                 .andExpect(jsonPath("$.triangles", Matchers.is("Triangles")))
                 .andExpect(jsonPath("$.backgroundLogo", Matchers.is("Background_Logo")))
                 .andExpect(jsonPath("$.title", Matchers.is("Title")))
-                .andExpect(jsonPath("$.helpSiteUrl", Matchers.is("helpSiteUrl")))
+                .andExpect(jsonPath("$.helpSiteUrl", Matchers.is("Help_Site_Url")))
                 .andExpect(jsonPath("$.customStyles.font-family", Matchers.is("verdana")))
                 .andExpect(jsonPath("$.customStyles.font-size", Matchers.is("20px")));
     }
@@ -62,7 +64,7 @@ public class ClientConfigControllerIT {
                                    "Triangles",
                                    "Background_Logo",
                                    "Title",
-                                   "helpSiteUrl",
+                                   "Help_Site_Url",
                                    customStyles);
     }
 

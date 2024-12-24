@@ -7,6 +7,7 @@ import ch.puzzle.okr.dto.ClientConfigDto;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -21,10 +22,10 @@ class ClientConfigServiceIT {
     @Autowired
     private ClientConfigService clientConfigService;
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should get correct config on getConfigBasedOnActiveEnv() based on the hostname {0}, active profile {1}, issuer {2} and client id {3}")
     @MethodSource("tenantConfigs")
-    void getConfigBasedOnActiveEnv_validSubdomain_returnsCorrectTenantConfig(String hostname, String activeProfile,
-                                                                             String issuer, String clientId) {
+    void getConfigBasedOnActiveEnvWithValidSubdomainReturnsCorrectTenantConfig(String hostname, String activeProfile,
+                                                                               String issuer, String clientId) {
 
         // arrange + act
         ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv(hostname);
@@ -42,14 +43,16 @@ class ClientConfigServiceIT {
                             .of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
     }
 
+    @DisplayName("Should throw exception on getConfigBasedOnActiveEnv() when subDomain is invalid")
     @Test
-    void getConfigBasedOnActiveEnv_invalidSubdomain_throwsException() {
+    void getConfigBasedOnActiveEnvWithInvalidSubdomainThrowsException() {
         assertThrowsExactly(EntityNotFoundException.class,
                             () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
     }
 
+    @DisplayName("Should return config with correct values on getConfigBasedOnActiveEnv()")
     @Test
-    void getClientConfig_withOtherValues_returnsRightValues() {
+    void getClientConfigWithOtherValuesReturnsCorrectValues() {
         // arrange + act
         ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
 

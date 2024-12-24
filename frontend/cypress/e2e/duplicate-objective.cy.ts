@@ -10,12 +10,12 @@ beforeEach(() => {
   cy.loginAsUser(users.gl);
 });
 
-describe('Functionality of duplicating objectives and their belonging keyResults', () => {
+describe('functionality of duplicating objectives and their belonging key-results', () => {
   const firstKeyResultName = 'New structure that rewards funny guys and innovation before the end of Q1.';
   const secondKeyResultName = 'Monthly town halls between our people and leadership teams over the next four months.';
   const thirdKeyResultName = 'High employee satisfaction scores (80%+) throughout the year.';
 
-  it('Should be able to duplicate a objective into this quarter, including all keyResults', () => {
+  it('should be able to duplicate a objective into this quarter, including all keyResults', () => {
     const duplicatedTitle = 'This is a duplicated objective with all keyResults';
 
     overviewPage
@@ -32,7 +32,7 @@ describe('Functionality of duplicating objectives and their belonging keyResults
       .should('exist');
   });
 
-  it('Should be able to duplicate a objective into this quarter, only including one keyResult', () => {
+  it('should be able to duplicate a objective into this quarter, only including one key-result', () => {
     const duplicatedTitle = 'This is a duplicated objective with one keyResult';
 
     overviewPage
@@ -50,8 +50,8 @@ describe('Functionality of duplicating objectives and their belonging keyResults
       .should('not.contain', thirdKeyResultName);
   });
 
-  it('Should not show option to select keyResults when objective with no keyResults is being duplicated', () => {
-    const duplicatedTitle = 'This is a duplicated objective without any keyResults';
+  it('should not show option to select key-results when objective with no key-results is being duplicated', () => {
+    const duplicatedTitle = 'This is a duplicated objective without any key-results';
 
     overviewPage.duplicateObjective('should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
     cy.contains('Key Results:')
@@ -64,8 +64,8 @@ describe('Functionality of duplicating objectives and their belonging keyResults
       .should('exist');
   });
 
-  it('Should be able to duplicate a objective into the next quarter, including all keyResults', () => {
-    const duplicatedTitle = 'This is a default objective with all keyResults in quarter 3!';
+  it('should be able to duplicate a objective into the next quarter, including all key-results', () => {
+    const duplicatedTitle = 'This is a default objective with all key-results in quarter 3!';
 
     overviewPage
       .duplicateObjective('Build a company culture that kills the competition.')
@@ -84,7 +84,7 @@ describe('Functionality of duplicating objectives and their belonging keyResults
       .should('exist');
   });
 
-  it('Should not duplicate objective when cancel button is clicked', () => {
+  it('should not duplicate objective when cancel button is clicked', () => {
     const duplicatedTitle = 'This is a never existing objective';
 
     overviewPage
@@ -98,10 +98,10 @@ describe('Functionality of duplicating objectives and their belonging keyResults
   });
 });
 
-describe('Verify functionality of scoring adjustment on duplicated objectives', () => {
-  const keyresultDetailPage = new KeyResultDetailPage();
+describe('verify functionality of scoring adjustment on duplicated objectives', () => {
+  const keyResultDetailPage = new KeyResultDetailPage();
 
-  it('Duplicate ordinal checkin and validate value of scoring component', () => {
+  it('should not duplicate check-ins with objective', () => {
     overviewPage
       .addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
       .fillKeyResultTitle('stretch keyresult for testing')
@@ -109,7 +109,7 @@ describe('Verify functionality of scoring adjustment on duplicated objectives', 
       .submit();
 
     cy.contains('stretch keyresult for testing');
-    keyresultDetailPage
+    keyResultDetailPage
       .visit('stretch keyresult for testing')
       .createCheckIn()
       .selectOrdinalCheckInZone('stretch')
@@ -120,7 +120,7 @@ describe('Verify functionality of scoring adjustment on duplicated objectives', 
 
     cy.intercept('GET', '**/overview?*')
       .as('indexPage');
-    keyresultDetailPage.close();
+    keyResultDetailPage.close();
     cy.wait('@indexPage');
 
     overviewPage

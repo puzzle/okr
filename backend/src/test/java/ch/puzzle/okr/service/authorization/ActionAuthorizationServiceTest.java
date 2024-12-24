@@ -13,6 +13,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.ActionBusinessService;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,7 +39,7 @@ class ActionAuthorizationServiceTest {
             .builder()
             .withId(1L)
             .withAction("Neue Katze")
-            .withIsChecked(false)
+            .isChecked(false)
             .withPriority(0)
             .withKeyResult(keyResult)
             .build();
@@ -46,15 +47,15 @@ class ActionAuthorizationServiceTest {
             .builder()
             .withId(2L)
             .withAction("Neues Lama")
-            .withIsChecked(true)
+            .isChecked(true)
             .withPriority(1)
             .withKeyResult(keyResult)
             .build();
     private final List<Action> actionList = List.of(action1, action2);
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should return a list of actions when writable is {0}")
     @ValueSource(booleans = { true, false })
-    void getActionsByKeyResultShouldReturnListOfActions(boolean isWriteable) {
+    void shouldReturnListOfActionsByKeyResultBasedOnWritable(boolean isWriteable) {
         keyResult.setWriteable(isWriteable);
         when(actionBusinessService.getActionsByKeyResultId(anyLong())).thenReturn(actionList);
 
@@ -64,8 +65,9 @@ class ActionAuthorizationServiceTest {
         foundActionList.forEach(action -> assertEquals(isWriteable, action.isWriteable()));
     }
 
+    @DisplayName("Should return created action when authorized")
     @Test
-    void createEntityShouldReturnCreatedActionWhenAuthorized() {
+    void shouldReturnCreatedActionWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         action1.setWriteable(false);
@@ -78,8 +80,9 @@ class ActionAuthorizationServiceTest {
         verify(actionBusinessService, times(1)).createEntities(receivedActionList);
     }
 
+    @DisplayName("Should throw exception when creating entity without authorization")
     @Test
-    void createEntityShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenCreatingEntityWithoutAuthorization() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
@@ -92,8 +95,9 @@ class ActionAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should update actions when authorized")
     @Test
-    void updateEntitiesShouldUpdateActionWhenAuthorized() {
+    void shouldUpdateActionsWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         actionAuthorizationService.updateEntities(actionList);
@@ -101,8 +105,9 @@ class ActionAuthorizationServiceTest {
         verify(actionBusinessService, times(1)).updateEntities(actionList);
     }
 
+    @DisplayName("Should throw exception when updating entities without authorization")
     @Test
-    void updateEntitiesShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenUpdatingEntitiesWithoutAuthorization() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
@@ -115,8 +120,9 @@ class ActionAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should delete entity by ID when authorized")
     @Test
-    void deleteEntityByIdShouldPassThroughWhenAuthorized() {
+    void shouldDeleteEntityByIdWhenAuthorized() {
         Long id = 5L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
@@ -125,8 +131,9 @@ class ActionAuthorizationServiceTest {
         verify(actionBusinessService, times(1)).deleteEntityById(id);
     }
 
+    @DisplayName("Should throw exception when deleting entity without authorization")
     @Test
-    void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenDeletingEntityWithoutAuthorization() {
         Long id = 8L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);

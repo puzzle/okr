@@ -3,7 +3,7 @@ import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
 import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
-describe('OKR Objective e2e tests', () => {
+describe('okr objective', () => {
   let overviewPage = new CyOverviewPage();
   beforeEach(() => {
     overviewPage = new CyOverviewPage();
@@ -11,7 +11,7 @@ describe('OKR Objective e2e tests', () => {
   });
 
   describe('tests via click', () => {
-    it(`Release Objective from Draft to Ongoing`, () => {
+    it(`should release objective from draft to ongoing`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('A objective in state draft')
         .submitDraftObjective();
@@ -31,7 +31,7 @@ describe('OKR Objective e2e tests', () => {
         .should('exist');
     });
 
-    it(`Complete Objective with Successful`, () => {
+    it(`should complete objective with successful`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('We want to complete this successful')
         .submit();
@@ -58,7 +58,7 @@ describe('OKR Objective e2e tests', () => {
       overviewPage.getObjectiveByNameAndState('We want to complete this successful', 'successful');
     });
 
-    it(`Complete Objective with Not-Successful`, () => {
+    it(`should complete objective with not-successful`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('A not successful objective')
         .submit();
@@ -84,7 +84,7 @@ describe('OKR Objective e2e tests', () => {
       overviewPage.getObjectiveByNameAndState('A not successful objective', 'not-successful');
     });
 
-    it(`Reopen Successful Objective`, () => {
+    it(`should reopen successful objective`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('This objective will be reopened after')
         .submit();
@@ -119,7 +119,7 @@ describe('OKR Objective e2e tests', () => {
         .should('exist');
     });
 
-    it(`Cancel Reopen Successful Objective`, () => {
+    it(`should cancel reopening successful objective`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('The reopening of this objective will be canceled')
         .submit();
@@ -155,7 +155,7 @@ describe('OKR Objective e2e tests', () => {
         .should('exist');
     });
 
-    it('Cancel Ongoing objective back to draft state', () => {
+    it('should cancel putting ongoing objective back to draft state', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('This objective will be returned to draft state')
         .submit();
@@ -176,7 +176,7 @@ describe('OKR Objective e2e tests', () => {
         .should('exist');
     });
 
-    it('Ongoing objective back to draft state', () => {
+    it('should put ongoing objective back to draft state', () => {
       overviewPage
         .addObjective()
         .fillObjectiveTitle('Putting this objective back to draft state will be canceled')
@@ -198,7 +198,7 @@ describe('OKR Objective e2e tests', () => {
         .should('exist');
     });
 
-    it(`Search for Objective`, () => {
+    it(`should search and find objectives`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('Search after this objective')
         .submit();
@@ -213,10 +213,10 @@ describe('OKR Objective e2e tests', () => {
       cy.scrollTo(0, 0);
       cy.wait(500);
 
-      cy.getByTestId('objectiveSearch')
+      cy.getByTestId('objective-search')
         .first()
         .click();
-      cy.getByTestId('objectiveSearch')
+      cy.getByTestId('objective-search')
         .first()
         .type('Search after')
         .wait(350);
@@ -225,7 +225,7 @@ describe('OKR Objective e2e tests', () => {
       cy.contains('We dont want to search for this')
         .should('not.exist');
 
-      cy.getByTestId('objectiveSearch')
+      cy.getByTestId('objective-search')
         .first()
         .as('objective-search')
         .clear();
@@ -258,7 +258,7 @@ describe('OKR Objective e2e tests', () => {
         .should('not.exist');
     });
 
-    it(`Create Objective in other quarter`, () => {
+    it(`should create objective in other quarter`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('Objective in quarter 3')
         .selectQuarter('3')
@@ -272,7 +272,7 @@ describe('OKR Objective e2e tests', () => {
       cy.contains('Objective in quarter 3');
     });
 
-    it(`Edit Objective and move to other quarter`, () => {
+    it(`should edit objective and move it to another quarter`, () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('Move to another quarter on edit')
         .submit();
@@ -296,7 +296,7 @@ describe('OKR Objective e2e tests', () => {
   });
 
   describe('tests via keyboard', () => {
-    it(`Open objective aside via enter`, () => {
+    it(`should open objective aside via enter`, () => {
       cy.getByTestId('objective')
         .first()
         .find('[tabindex]')

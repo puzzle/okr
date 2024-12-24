@@ -16,9 +16,9 @@ export class CheckInService {
 
   saveCheckIn(checkIn: CheckIn) {
     if (checkIn.id) {
-      return this.httpclient.put<any>('/api/v2/checkIns/' + checkIn.id, checkIn);
+      return this.httpclient.put<any>('/api/v2/checkins/' + checkIn.id, checkIn);
     } else {
-      return this.httpclient.post<any>('/api/v2/checkIns', checkIn);
+      return this.httpclient.post<any>('/api/v2/checkins', checkIn);
     }
   }
 }

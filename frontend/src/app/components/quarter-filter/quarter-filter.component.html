@@ -6,7 +6,7 @@
   <mat-select
     [(ngModel)]="currentQuarterId"
     (ngModelChange)="changeDisplayedQuarter()"
-    [attr.data-testId]="'quarterFilter'"
+    [attr.data-testId]="'quarter-filter'"
     ngDefaultControl
   >
     <mat-option *ngFor="let quarter of quarters | async" [value]="quarter.id">

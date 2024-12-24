@@ -34,12 +34,17 @@ describe('ObjectiveMenuActionsService', () => {
   });
 
   describe('getMenu', () => {
+    afterEach(() => {
+      expect(specificMenuEntriesSpy)
+        .toHaveBeenCalledTimes(1);
+    });
+
     it('should return default and specific menu entries for an ongoing objective', () => {
       const spyOn = jest.spyOn(service as any, 'getOngoingMenuActions');
 
-      const objectiveMinLocal: ObjectiveMin = objectiveMin;
-      objectiveMinLocal.state = State.ONGOING;
-      service.getMenu(objectiveMinLocal);
+      const ongoingObjectiveMin: ObjectiveMin = objectiveMin;
+      ongoingObjectiveMin.state = State.ONGOING;
+      service.getMenu(ongoingObjectiveMin);
       expect(spyOn)
         .toHaveBeenCalledTimes(1);
     });
@@ -47,9 +52,9 @@ describe('ObjectiveMenuActionsService', () => {
     it('should return draft menu entries for a draft objective', () => {
       const spyOn = jest.spyOn(service as any, 'getDraftMenuActions');
 
-      const objectiveMinLocal: ObjectiveMin = objectiveMin;
-      objectiveMinLocal.state = State.DRAFT;
-      service.getMenu(objectiveMinLocal);
+      const draftObjectiveMin: ObjectiveMin = objectiveMin;
+      draftObjectiveMin.state = State.DRAFT;
+      service.getMenu(draftObjectiveMin);
       expect(spyOn)
         .toHaveBeenCalledTimes(1);
     });
@@ -57,9 +62,9 @@ describe('ObjectiveMenuActionsService', () => {
     it('should return completed menu entries for a successful objective', () => {
       const spyOn = jest.spyOn(service as any, 'getCompletedMenuActions');
 
-      const objectiveMinLocal: ObjectiveMin = objectiveMin;
-      objectiveMinLocal.state = State.SUCCESSFUL;
-      service.getMenu(objectiveMinLocal);
+      const successfulObjectiveMin: ObjectiveMin = objectiveMin;
+      successfulObjectiveMin.state = State.SUCCESSFUL;
+      service.getMenu(successfulObjectiveMin);
       expect(spyOn)
         .toHaveBeenCalledTimes(1);
     });
@@ -67,20 +72,16 @@ describe('ObjectiveMenuActionsService', () => {
     it('should return completed menu entries for a non-successful objective', () => {
       const spyOn = jest.spyOn(service as any, 'getCompletedMenuActions');
 
-      const objectiveMinLocal: ObjectiveMin = objectiveMin;
-      objectiveMinLocal.state = State.NOTSUCCESSFUL;
-      service.getMenu(objectiveMinLocal);
+      const notSuccessfulObjectiveMinLocal: ObjectiveMin = objectiveMin;
+      notSuccessfulObjectiveMinLocal.state = State.NOTSUCCESSFUL;
+      service.getMenu(notSuccessfulObjectiveMinLocal);
       expect(spyOn)
-        .toHaveBeenCalledTimes(1);
-    });
-    afterEach(() => {
-      expect(specificMenuEntriesSpy)
         .toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('getReleaseAction', () => {
-    it('should return release from backlog action for an objective in backlog quarter', () => {
+  describe('get correct release action', () => {
+    it('should return release from backlog action for an objective in the backlog quarter', () => {
       jest.spyOn(service as any, 'isInBacklogQuarter')
         .mockReturnValue(true);
       const spyOn = jest.spyOn(service as any, 'isInBacklogQuarter')
@@ -91,7 +92,7 @@ describe('ObjectiveMenuActionsService', () => {
         .toHaveBeenCalledTimes(1);
     });
 
-    it('should return release from quarter action for an objective in non-backlog quarter', () => {
+    it('should return release from quarter action for an objective in a non-backlog quarter', () => {
       const spyOn = jest.spyOn(service as any, 'isInBacklogQuarter')
         .mockReturnValue(false);
       // @ts-expect-error

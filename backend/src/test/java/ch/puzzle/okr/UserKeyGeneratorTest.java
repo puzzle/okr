@@ -6,6 +6,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class UserKeyGeneratorTest {
@@ -15,8 +16,9 @@ class UserKeyGeneratorTest {
         TenantContext.setCurrentTenant(null);
     }
 
+    @DisplayName("Should generate tenant and user information correctly")
     @Test
-    void generate_shouldReturnTenantAndUserInfo() {
+    void shouldGenerateTenantAndUserInfo() {
         Object notUsedObject = new Object();
         Method notUsedMethod = notUsedObject.getClass().getEnclosingMethod();
 

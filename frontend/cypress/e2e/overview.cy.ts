@@ -1,17 +1,17 @@
 import * as users from '../fixtures/users.json';
 import FilterHelper from '../support/helper/dom-helper/filterHelper';
 
-describe('OKR Overview', () => {
+describe('okr overview', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
   });
 
-  it('should have the current quarter with label Aktuell', () => {
-    cy.getByTestId('quarterFilter')
+  it('should have the current quarter with label "Aktuell"', () => {
+    cy.getByTestId('quarter-filter')
       .contains('Aktuell');
   });
 
-  it('Check order of teams', () => {
+  it('should have correctly ordered teams', () => {
     FilterHelper.do()
       .optionShouldNotBeSelected('Alle')
       .toggleOption('Alle');
@@ -31,7 +31,7 @@ describe('OKR Overview', () => {
       });
   });
 
-  it('Check font ', () => {
+  it('should use correct font', () => {
     cy.get('.team-title')
       .first()
       .invoke('css', 'font-family')

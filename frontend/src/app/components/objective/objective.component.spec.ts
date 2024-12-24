@@ -7,10 +7,9 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { State } from '../../shared/types/enums/State';
-import { OverviewService } from '../../services/overview.service';
 import { objectiveMin } from '../../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
-import { KeyresultComponent } from '../keyresult/keyresult.component';
+import { KeyResultComponent } from '../key-result/key-result.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -23,10 +22,6 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { ObjectiveService } from '../../services/objective.service';
 import { CompletedService } from '../../services/completed.servce';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const overviewServiceMock = {
-  getObjectiveWithKeyresults: jest.fn()
-};
 
 const objectiveServiceMock = {
   getFullObjective: jest.fn()
@@ -42,15 +37,13 @@ describe('ObjectiveColumnComponent', () => {
   let fixture: ComponentFixture<ObjectiveComponent>;
   let loader: HarnessLoader;
   beforeEach(() => {
-    overviewServiceMock.getObjectiveWithKeyresults.mockReset();
-
     TestBed.configureTestingModule({
       declarations: [
         ObjectiveComponent,
-        KeyresultComponent,
+        KeyResultComponent,
         ScoringComponent,
         ConfidenceComponent,
-        KeyresultComponent
+        KeyResultComponent
       ],
       imports: [
         MatMenuModule,
@@ -64,15 +57,11 @@ describe('ObjectiveColumnComponent', () => {
           de: de
         })
       ],
-      providers: [
-        { provide: OverviewService,
-          useValue: overviewServiceMock },
-        { provide: ObjectiveService,
-          useValue: objectiveServiceMock },
-        { provide: CompletedService,
-          useValue: completedServiceMock },
-        provideHttpClient(withInterceptorsFromDi())
-      ]
+      providers: [{ provide: ObjectiveService,
+        useValue: objectiveServiceMock },
+      { provide: CompletedService,
+        useValue: completedServiceMock },
+      provideHttpClient(withInterceptorsFromDi())]
     })
       .compileComponents();
 
@@ -88,11 +77,11 @@ describe('ObjectiveColumnComponent', () => {
       .toBeTruthy();
   });
 
-  test('Mat-menu should open and close', async() => {
+  test('mat-menu should open and close', async() => {
     component.isWritable = true;
     fixture.detectChanges();
 
-    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '[data-testid="three-dot-menu"]' }));
+    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '[data-testId="three-dot-menu"]' }));
     expect(await menu.isOpen())
       .toBeFalsy();
     await menu.open();
@@ -112,27 +101,27 @@ describe('ObjectiveColumnComponent', () => {
       'assets/icons/successful-icon.svg'],
     [State.NOTSUCCESSFUL,
       'assets/icons/not-successful-icon.svg']
-  ])('Status-indicator should change based on the state given by the service', (state: State, path) => {
+  ])('status-indicator should change based on the state given by the service', (state: State, path) => {
     component.objective = { ...objectiveMin,
       state: state };
     fixture.detectChanges();
-    const image = fixture.debugElement.query(By.css('[data-testid="objective-state"]'));
+    const image = fixture.debugElement.query(By.css('[data-testId="objective-state"]'));
     const statusIndicatorSrc = image.attributes['src'];
     expect(statusIndicatorSrc)
       .toBe(path);
   });
 
-  test('Mat-menu should not be present if writeable is false', async() => {
+  test('mat-menu should not be present if is-writeable is false', async() => {
     component.isWritable = false;
     fixture.detectChanges();
-    const menu = fixture.debugElement.query(By.css('[data-testid="objective-menu"]'));
+    const menu = fixture.debugElement.query(By.css('[data-testId="objective-menu"]'));
     expect(menu)
       .toBeFalsy();
   });
 
-  test('Create keyresult button should not be present if writeable is false', async() => {
+  test('create key-result button should not be present if is-writeable is false', async() => {
     component.isWritable = false;
-    const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult"]'));
+    const button = fixture.debugElement.query(By.css('[data-testId="add-key-result"]'));
     expect(button)
       .toBeFalsy();
   });

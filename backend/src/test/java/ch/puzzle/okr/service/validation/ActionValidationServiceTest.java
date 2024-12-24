@@ -41,7 +41,7 @@ class ActionValidationServiceTest {
             .builder() //
             .withId(null) //
             .withAction("Neue Katze") //
-            .withIsChecked(false) //
+            .isChecked(false) //
             .withPriority(0) //
             .withKeyResult(keyResult)
             .build();
@@ -50,7 +50,7 @@ class ActionValidationServiceTest {
             .builder() //
             .withId(2L) //
             .withAction("Neues Lama") //
-            .withIsChecked(true) // //
+            .isChecked(true) // //
             .withPriority(1)
             .withKeyResult(keyResult)
             .build();
@@ -90,7 +90,7 @@ class ActionValidationServiceTest {
                                                        .builder() //
                                                        .withId(id)
                                                        .withAction("Action")
-                                                       .withIsChecked(false)
+                                                       .isChecked(false)
                                                        .withPriority(1) //
                                                        .withKeyResult(null)
                                                        .build(),
@@ -99,7 +99,7 @@ class ActionValidationServiceTest {
                                                        .builder() //
                                                        .withId(id)
                                                        .withAction("Action")
-                                                       .withIsChecked(false)
+                                                       .isChecked(false)
                                                        .withPriority(1) //
                                                        .withKeyResult(null)
                                                        .build())),
@@ -110,7 +110,7 @@ class ActionValidationServiceTest {
                                                        .builder() //
                                                        .withId(id)
                                                        .withAction("Action")
-                                                       .withIsChecked(false)
+                                                       .isChecked(false)
                                                        .withPriority(1) //
                                                        .withKeyResult(keyResult)
                                                        .build(),
@@ -119,7 +119,7 @@ class ActionValidationServiceTest {
                                                        .builder() //
                                                        .withId(id)
                                                        .withAction("Action")
-                                                       .withIsChecked(false)
+                                                       .isChecked(false)
                                                        .withPriority(1) //
                                                        .withKeyResult(null)
                                                        .build())),
@@ -130,7 +130,7 @@ class ActionValidationServiceTest {
                                                        .builder() //
                                                        .withId(id)
                                                        .withAction("Action")
-                                                       .withIsChecked(false)
+                                                       .isChecked(false)
                                                        .withPriority(1) //
                                                        .withKeyResult(null)
                                                        .build(),
@@ -139,7 +139,7 @@ class ActionValidationServiceTest {
                                                        .builder() //
                                                        .withId(id)
                                                        .withAction("Action")
-                                                       .withIsChecked(false)
+                                                       .isChecked(false)
                                                        .withPriority(1)
                                                        .withKeyResult(keyResult)
                                                        .build())));
@@ -150,16 +150,18 @@ class ActionValidationServiceTest {
         Mockito.lenient().when(actionPersistenceService.getModelName()).thenReturn("Action");
     }
 
+    @DisplayName("Should be successful on validateOnCreate() when action is valid")
     @Test
-    void validateOnCreateShouldBeSuccessfulWhenActionIsValid() {
+    void shouldBeSuccessfulOnValidateOnCreateWhenActionIsValid() {
         validator.validateOnCreate(action1);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action1);
         verify(validator, times(1)).validate(action1);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when model is null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenModelIsNull() {
         // arrange
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(null));
@@ -171,8 +173,9 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should be successful on validateOnCreate() when id is not null")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
         // arrange
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnCreate(action2));
@@ -184,15 +187,15 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateOnCreate() when model has invalid text {0}")
     @MethodSource("actionValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenActionIsInvalid(String actionText, List<ErrorDto> errors) {
+    void shouldThrowExceptionOnValidateOnCreateWhenActionIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
         Action action = Action.Builder
                 .builder()
                 .withId(null)
                 .withAction(actionText)
-                .withIsChecked(false)
+                .isChecked(false)
                 .withPriority(1)
                 .withKeyResult(keyResult)
                 .build();
@@ -204,10 +207,11 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, errors);
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when attributes are missing")
     @Test
-    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnCreateWhenAttrsAreMissing() {
         // arrange
-        Action actionInvalid = Action.Builder.builder().withIsChecked(true).build();
+        Action actionInvalid = Action.Builder.builder().isChecked(true).build();
 
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -220,8 +224,9 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should be successful on validateOnUpdate() when action is valid")
     @Test
-    void validateOnUpdateShouldBeSuccessfulWhenActionIsValid() {
+    void shouldBeSuccessfulOnValidateOnUpdateWhenActionIsValid() {
         // arrange
         when(actionPersistenceService.findById(anyLong())).thenReturn(action2);
 
@@ -237,8 +242,9 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).validate(action2);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when model is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenModelIsNull() {
         // arrange
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, null));
@@ -250,8 +256,9 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNull() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(null, action1));
@@ -265,8 +272,9 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when id has changed")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdHasChanged() {
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator.validateOnUpdate(1L, action2));
@@ -281,8 +289,9 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when no entity can be found")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenEntityDoesNotExist() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenEntityDoesNotExist() {
         // arrange
         String reason = "MODEL_WITH_ID_NOT_FOUND";
         when(actionPersistenceService.findById(anyLong()))
@@ -300,10 +309,10 @@ class ActionValidationServiceTest {
         assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
     }
 
-    @DisplayName("validateOnUpdate() should throw exception when KeyResult is not set")
+    @DisplayName("Should throw exception on validateOnUpdate() when KeyResult is not set")
     @ParameterizedTest
     @MethodSource("actionPairArgument")
-    void validateOnUpdateShouldThrowExceptionWhenKeyResultNotSet(ActionPair actionPair) {
+    void shouldThrowExceptionOnValidateOnUpdateWhenKeyResultNotSet(ActionPair actionPair) {
         // arrange
         Action action = actionPair.action();
         Action saveAction = actionPair.saveAction();
@@ -325,14 +334,15 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when key result id has changed")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenKeyResultIdHasChanged() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenKeyResultIdHasChanged() {
         // arrange
         Action action = Action.Builder
                 .builder()
                 .withId(action2.getId())
                 .withAction("Action")
-                .withIsChecked(false)
+                .isChecked(false)
                 .withPriority(1)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(11L).withTitle("KR Title").build())
                 .build();
@@ -352,15 +362,15 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "should throw exception on validateOnUpdate() when model has invalid text {0}")
     @MethodSource("actionValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String actionText, List<ErrorDto> errors) {
+    void shouldThrowExceptionOnValidateOnUpdateWhenTitleIsInvalid(String actionText, List<ErrorDto> errors) {
         // arrange
         Action action = Action.Builder
                 .builder()
                 .withId(3L)
                 .withAction(actionText)
-                .withIsChecked(false)
+                .isChecked(false)
                 .withPriority(1)
                 .withKeyResult(keyResult)
                 .build();
@@ -372,10 +382,11 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, errors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when key result is missing in model")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenKeyResultIsMissing() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenKeyResultIsMissing() {
         // arrange
-        Action actionInvalid = Action.Builder.builder().withId(11L).withIsChecked(true).build();
+        Action actionInvalid = Action.Builder.builder().withId(11L).isChecked(true).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert
@@ -388,15 +399,11 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
+    @DisplayName("Should throw exception on validateOnUpdate() when attributes are missing")
     @Test
-    void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenAttrsAreMissing() {
         // arrange
-        Action actionInvalid = Action.Builder
-                .builder()
-                .withId(11L)
-                .withIsChecked(true)
-                .withKeyResult(keyResult)
-                .build();
+        Action actionInvalid = Action.Builder.builder().withId(11L).isChecked(true).withKeyResult(keyResult).build();
         when(actionPersistenceService.findById(anyLong())).thenReturn(actionInvalid);
 
         // act + assert
@@ -409,9 +416,9 @@ class ActionValidationServiceTest {
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 
-    @DisplayName("validateOnGetByKeyResultId() should be successful when id is not null")
+    @DisplayName("Should be successful on validateOnGetByKeyResultId() when id is not null")
     @Test
-    void validateOnGetByKeyResultIdShouldBeSuccessfulWhenIdIsNotNull() {
+    void shouldBeSuccessfulInValidateOnGetByKeyResultIdWhenIdIsNotNull() {
         // arrange
         Long id = 1L;
         doNothing().when(keyResultValidationService).validateOnGet(id);
@@ -421,9 +428,9 @@ class ActionValidationServiceTest {
         verify(actionPersistenceService, never()).getModelName();
     }
 
-    @DisplayName("validateOnGetByKeyResultId() should throw exception when id is null")
+    @DisplayName("Should throw exception on validateOnGetByKeyResultId() when id is null")
     @Test
-    void validateOnGetByKeyResultIdShouldThrowExceptionWhenIdIsNull() {
+    void shouldThrowExceptionOnValidateOnGetByKeyResultIdWhenIdIsNull() {
         // arrange
         Long id = null;
         doThrow(OkrResponseStatusException.class).when(keyResultValidationService).validateOnGet(id);

@@ -10,6 +10,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,8 +30,9 @@ class CheckInAuthorizationServiceTest {
 
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
+    @DisplayName("Should return a check-in when authorized")
     @Test
-    void getEntityByIdShouldReturnCheckInWhenAuthorized() {
+    void shouldReturnCheckInWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(checkInBusinessService.getEntityById(id)).thenReturn(checkInMetric);
@@ -39,8 +41,9 @@ class CheckInAuthorizationServiceTest {
         assertEquals(checkInMetric, checkIn);
     }
 
+    @DisplayName("Should return a writeable check-in when authorized")
     @Test
-    void getEntityByIdShouldReturnCheckInWritableWhenAuthorized() {
+    void shouldReturnCheckInWritableWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.hasRoleWriteForTeam(checkInMetric, authorizationUser)).thenReturn(true);
@@ -50,8 +53,9 @@ class CheckInAuthorizationServiceTest {
         assertTrue(checkIn.isWriteable());
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized")
     @Test
-    void getEntityByIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenUserNotAuthorizedForEntityById() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -65,8 +69,9 @@ class CheckInAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return a created check-in when authorized")
     @Test
-    void createEntityShouldReturnCreatedCheckInWhenAuthorized() {
+    void shouldReturnCreatedCheckInWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(checkInBusinessService.createEntity(checkInMetric, authorizationUser)).thenReturn(checkInMetric);
 
@@ -74,8 +79,9 @@ class CheckInAuthorizationServiceTest {
         assertEquals(checkInMetric, checkIn);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to create entity")
     @Test
-    void createEntityShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenUserNotAuthorizedToCreateEntity() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
@@ -88,8 +94,9 @@ class CheckInAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should return an updated check-in when authorized")
     @Test
-    void updateEntityShouldReturnUpdatedCheckInWhenAuthorized() {
+    void shouldReturnUpdatedCheckInWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(checkInBusinessService.updateEntity(id, checkInMetric, authorizationUser)).thenReturn(checkInMetric);
@@ -98,8 +105,9 @@ class CheckInAuthorizationServiceTest {
         assertEquals(checkInMetric, checkIn);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to update entity")
     @Test
-    void updateEntityShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenUserNotAuthorizedToUpdateEntity() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -114,16 +122,18 @@ class CheckInAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should successfully delete entity by ID when authorized")
     @Test
-    void deleteEntityByIdShouldPassThroughWhenAuthorized() {
+    void shouldDeleteEntityByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         checkInAuthorizationService.deleteEntityById(id);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to delete entity by ID")
     @Test
-    void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenUserNotAuthorizedToDeleteEntityById() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);

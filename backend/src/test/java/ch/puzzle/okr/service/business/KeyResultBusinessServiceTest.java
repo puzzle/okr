@@ -20,6 +20,7 @@ import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -69,7 +70,9 @@ class KeyResultBusinessServiceTest {
                 .withId(5L)
                 .withTitle("Keyresult Metric")
                 .withObjective(objective)
+
                 .withOwner(user)
+
                 .withCreatedBy(user)
                 .build();
         ordinalKeyResult = KeyResultOrdinal.Builder
@@ -108,12 +111,13 @@ class KeyResultBusinessServiceTest {
                 .withId(3L)
                 .withAction("Neues Haus")
                 .withPriority(1)
-                .withIsChecked(true)
+                .isChecked(true)
                 .withKeyResult(metricKeyResult)
                 .build();
         actions = List.of(action, action);
     }
 
+    @DisplayName("Should return correct metric key-result")
     @Test
     void shouldGetMetricKeyResultById() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(metricKeyResult);
@@ -123,6 +127,7 @@ class KeyResultBusinessServiceTest {
         assertEquals(5, keyResult.getId());
     }
 
+    @DisplayName("Should return correct ordinal key-result")
     @Test
     void shouldGetOrdinalKeyResultById() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(ordinalKeyResult);
@@ -132,6 +137,7 @@ class KeyResultBusinessServiceTest {
         assertEquals(7, keyResult.getId());
     }
 
+    @DisplayName("Should throw exception when calling updateEntity() instead of updateEntities()")
     @Test
     void shouldThrowExceptionWhenDefaultMethodUsed() {
         IllegalCallerException exception = assertThrows(IllegalCallerException.class,
@@ -143,9 +149,9 @@ class KeyResultBusinessServiceTest {
         assertEquals("unsupported method 'updateEntity' use updateEntities() instead", exception.getMessage());
     }
 
+    @DisplayName("Should edit metric key-result without changing type")
     @Test
-    void shouldEditMetricKeyResultWhenNoTypeChange() {
-        List<CheckIn> emptyList = Collections.emptyList();
+    void shouldEditMetricKeyResultWithoutTypeChange() {
         KeyResult newKeyresult = spy(KeyResultMetric.Builder
                 .builder()
                 .withId(1L)
@@ -163,9 +169,9 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
+    @DisplayName("Should edit ordinal key-result without changing type")
     @Test
-    void shouldEditOrdinalKeyResultWhenNoTypeChange() {
-        List<CheckIn> emptyList = Collections.emptyList();
+    void shouldEditOrdinalKeyResultWithoutTypeChange() {
         KeyResult newKeyresult = spy(KeyResultOrdinal.Builder
                 .builder()
                 .withId(1L)
@@ -183,8 +189,9 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
 
+    @DisplayName("Should edit metric key-result with type change")
     @Test
-    void shouldEditMetricKeyResultWhenATypeChange() {
+    void shouldEditMetricKeyResultWithTypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(KeyResultMetric.Builder
                 .builder()
@@ -206,8 +213,9 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
+    @DisplayName("Should edit ordinal key-result with type change")
     @Test
-    void shouldEditOrdinalKeyResultWhenATypeChange() {
+    void shouldEditOrdinalKeyResultWithTypeChange() {
         List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(KeyResultOrdinal.Builder
                 .builder()
@@ -228,6 +236,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
 
+    // No displayname because i dont understand the test
     @Test
     void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = checkIns;
@@ -249,6 +258,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
+    // No displayname because i dont understand the test
     @Test
     void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = checkIns;
@@ -270,8 +280,9 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
 
+    @DisplayName("Should save metric key-result")
     @Test
-    void saveMetricKeyResult() {
+    void shouldSaveMetricKeyResult() {
         KeyResult newKeyresult = spy(KeyResultMetric.Builder
                 .builder()
                 .withBaseline(4.0)
@@ -288,8 +299,9 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Metric save", savedKeyResult.getTitle());
     }
 
+    @DisplayName("Should save ordinal key-result")
     @Test
-    void saveOrdinalKeyResult() {
+    void shouldSaveOrdinalKeyResult() {
         KeyResult newKeyresult = spy(KeyResultOrdinal.Builder
                 .builder()
                 .withCommitZone("Eine Pflanze")
@@ -306,6 +318,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult ordinal save", savedKeyResult.getTitle());
     }
 
+    @DisplayName("Should be possible to save metric key-result without description")
     @Test
     void shouldBePossibleToSaveMetricKeyResultWithoutDescription() {
         KeyResult newKeyresult = spy(KeyResultMetric.Builder
@@ -323,6 +336,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Metric save", keyResult.getTitle());
     }
 
+    @DisplayName("Should be possible to save ordinal key-result without description")
     @Test
     void shouldBePossibleToSaveOrdinalKeyResultWithoutDescription() {
         KeyResult newKeyresult = spy(KeyResultOrdinal.Builder
@@ -341,6 +355,7 @@ class KeyResultBusinessServiceTest {
         assertNull(keyResult.getDescription());
     }
 
+    @DisplayName("Should return all key-results by objective no matter the type")
     @Test
     void shouldGetAllKeyResultsByObjective() {
         when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(keyResults);
@@ -352,6 +367,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("Keyresult Ordinal", keyResultList.get(1).getTitle());
     }
 
+    @DisplayName("Should return an empty list when no key-results are found by objective")
     @Test
     void shouldReturnEmptyListWhenNoKeyResultInObjective() {
         when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(Collections.emptyList());
@@ -361,6 +377,7 @@ class KeyResultBusinessServiceTest {
         assertEquals(0, keyResultList.size());
     }
 
+    @DisplayName("Should get all check-ins by key-result")
     @Test
     void shouldGetAllCheckInsByKeyResult() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(metricKeyResult);
@@ -375,6 +392,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("newMail@tese.com", checkInList.get(0).getCreatedBy().getEmail());
     }
 
+    @DisplayName("Should return an empty list when no check-ins are found by key-result")
     @Test
     void shouldReturnEmptyListWhenNoCheckInsInKeyResult() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(metricKeyResult);
@@ -384,8 +402,9 @@ class KeyResultBusinessServiceTest {
         assertEquals(0, checkInList.size());
     }
 
+    @DisplayName("Should throw exception when getting check-ins from an non-existent key-result")
     @Test
-    void shouldThrowExceptionWhenGetcheckInsFromNonExistingKeyResult() {
+    void shouldThrowExceptionWhenGettingCheckInsFromNonExistentKeyResult() {
         when(keyResultPersistenceService.findById(1L))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -394,6 +413,7 @@ class KeyResultBusinessServiceTest {
         assertEquals("KeyResult with id 1 not found", exception.getReason());
     }
 
+    @DisplayName("Should delete key-result and associated check-ins and actions")
     @Test
     void shouldDeleteKeyResultAndAssociatedCheckInsAndActions() {
         when(checkInBusinessService.getCheckInsByKeyResultId(1L)).thenReturn(checkIns);
@@ -406,8 +426,9 @@ class KeyResultBusinessServiceTest {
         verify(keyResultPersistenceService, times(1)).deleteById(1L);
     }
 
+    @DisplayName("Should return false for imUsed on unused metric key-result")
     @Test
-    void shouldReturnImUsedProperlyFalse1() {
+    void shouldReturnFalseForImUsedOnMetricKeyResult() {
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = keyResultBusinessService.isImUsed(1L, metricKeyResult);
@@ -415,8 +436,9 @@ class KeyResultBusinessServiceTest {
         assertFalse(returnValue);
     }
 
+    @DisplayName("Should return false for imUsed on unused ordinal key-result")
     @Test
-    void shouldReturnImUsedProperlyFalse2() {
+    void shouldReturnFalseForImUsedOnOrdinalKeyResult() {
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = keyResultBusinessService.isImUsed(1L, ordinalKeyResult);
@@ -424,8 +446,9 @@ class KeyResultBusinessServiceTest {
         assertFalse(returnValue);
     }
 
+    @DisplayName("Should return false for isImUsed() on metric key-result with check-ins")
     @Test
-    void shouldReturnImUsedProperlyFalse3() {
+    void shouldReturnFalseForImUsedOnMetricKeyResultWithCheckIns() {
         when(keyResultPersistenceService.findById(any())).thenReturn(metricKeyResult);
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 
@@ -434,8 +457,9 @@ class KeyResultBusinessServiceTest {
         assertFalse(returnValue);
     }
 
+    @DisplayName("Should return true for isImUsed() on ordinal key-result type changing type with check-ins")
     @Test
-    void shouldReturnImUsedProperlyTrue1() {
+    void shouldReturnTrueForImUsedOnKeyResultWithCheckInsAfterTypeChange() {
         when(keyResultPersistenceService.findById(any())).thenReturn(metricKeyResult);
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 

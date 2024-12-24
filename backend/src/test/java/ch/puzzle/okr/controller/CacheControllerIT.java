@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import ch.puzzle.okr.service.CacheService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,8 +26,9 @@ class CacheControllerIT {
     @MockBean
     private CacheService cacheService;
 
+    @DisplayName("Should empty authorization cache of users")
     @Test
-    void shouldEmptyAuthorisationUsersCache() throws Exception {
+    void shouldEmptyAuthorizationUsersCache() throws Exception {
         mvc
                 .perform(post("/api/v2/caches/emptyAuthorizationUsersCache")
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -34,6 +36,7 @@ class CacheControllerIT {
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
+    @DisplayName("Should empty all caches")
     @Test
     void shouldEmptyAllCaches() throws Exception {
         mvc

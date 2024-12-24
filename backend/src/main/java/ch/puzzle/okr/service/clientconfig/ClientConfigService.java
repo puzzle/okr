@@ -29,25 +29,25 @@ public class ClientConfigService {
     }
 
     public ClientConfigDto getConfigBasedOnActiveEnv(String hostName) {
-        String subdomain = hostName.split("\\.")[0];
+        String subDomain = hostName.split("\\.")[0];
         String domainPrefixByHyphen = hostName.split("-")[0];
 
         Optional<TenantConfigProvider.TenantConfig> tenantConfig = getTenantConfig(hostName,
-                                                                                   subdomain,
+                                                                                   subDomain,
                                                                                    domainPrefixByHyphen);
 
         if (tenantConfig.isEmpty()) {
             throw new EntityNotFoundException(MessageFormat
-                    .format("Could not find tenant config for subdomain:{0}", subdomain));
+                    .format("Could not find tenant config for subDomain:{0}", subDomain));
         }
 
         Optional<TenantClientCustomization> tenantClientCustomization = getTenantClientCustomization(hostName,
-                                                                                                     subdomain,
+                                                                                                     subDomain,
                                                                                                      domainPrefixByHyphen);
 
         if (tenantClientCustomization.isEmpty()) {
             throw new EntityNotFoundException(MessageFormat
-                    .format("Could not find tenant client customization for subdomain:{0}", subdomain));
+                    .format("Could not find tenant client customization for subDomain:{0}", subDomain));
         }
 
         return new ClientConfigDto(activeProfile, //
@@ -62,7 +62,7 @@ public class ClientConfigService {
                                    tenantClientCustomization.get().customStyles()); //
     }
 
-    private Optional<TenantConfigProvider.TenantConfig> getTenantConfig(String hostname, String... tenantsFromUrl) {
+    private Optional<TenantConfigProvider.TenantConfig> getTenantConfig(String hostName, String... tenantsFromUrl) {
         for (String tenant : tenantsFromUrl) {
             Optional<TenantConfigProvider.TenantConfig> tenantConfig = tenantConfigProvider.getTenantConfigById(tenant);
             if (tenantConfig.isPresent()) {
@@ -71,11 +71,11 @@ public class ClientConfigService {
             }
             logger.info("get config found for " + tenant + ": failed");
         }
-        logger.info("no config found for " + hostname + ": failed");
+        logger.info("no config found for " + hostName + ": failed");
         return Optional.empty();
     }
 
-    private Optional<TenantClientCustomization> getTenantClientCustomization(String hostname,
+    private Optional<TenantClientCustomization> getTenantClientCustomization(String hostName,
                                                                              String... tenantsFromUrl) {
         for (String tenant : tenantsFromUrl) {
             Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider
@@ -86,7 +86,7 @@ public class ClientConfigService {
             }
             logger.info("get client customization for " + tenant + ": failed");
         }
-        logger.info("no client customization found for " + hostname + ": failed");
+        logger.info("no client customization found for " + hostName + ": failed");
         return Optional.empty();
     }
 }

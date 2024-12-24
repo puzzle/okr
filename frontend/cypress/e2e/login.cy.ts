@@ -1,40 +1,40 @@
 import * as users from '../fixtures/users.json';
 
-describe('OKR Login', () => {
+describe('okr login', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
   });
 
-  it('Login and check correct name is displayed', () => {
+  it('should display correct username after login', () => {
     cy.title()
       .should('equal', 'Puzzle OKR');
-    cy.getByTestId('user-name')
+    cy.getByTestId('username')
       .contains(users.gl.name);
   });
 
-  it('Login  and logout', () => {
+  it('should login and logout', () => {
     cy.title()
       .should('equal', 'Puzzle OKR');
     cy.getByTestId('user-options')
       .click();
     cy.getByTestId('logout')
       .click();
-    cy.origin(Cypress.env('login_url'), () => {
+    cy.origin(Cypress.env('LOGIN_URL'), () => {
       cy.url()
-        .should('include', Cypress.env('login_url'));
+        .should('include', Cypress.env('LOGIN_URL'));
       cy.get('#kc-page-title')
         .contains('Sign in to your account');
     });
   });
 
-  it('Click on the Hilfe button should open a new tab with the correct URL', () => {
+  it('should open correct help page when clicking help button', () => {
     cy.window()
       .then((win) => {
         cy.stub(win, 'open')
           .as('openWindow');
       });
 
-    cy.get('#hilfeButton')
+    cy.get('#help-button')
       .click();
     cy.get('@openWindow')
       .should('be.calledWith', 'https://wiki.puzzle.ch/Puzzle/OKRs');

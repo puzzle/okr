@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class AuthorizationCriteriaParametersTest {
 
-    @DisplayName("setParameters() should be successful with default authorization user")
+    @DisplayName("Should be successful on setParameters() with default authorization user")
     @Test
     void setParametersShouldBeSuccessfulWithDefaultAuthorizationUser() {
         // arrange
@@ -38,17 +38,17 @@ public class AuthorizationCriteriaParametersTest {
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    @DisplayName("setParameters() should be successful when user is okr champion")
+    @DisplayName("Should be successful on setParameters() when user is okr champion")
     @Test
     void setParametersShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
         var user = User.Builder
                 .builder() //
                 .withId(23L) //
-                .withFirstname("Hanna") //
-                .withLastname("muster") //
+                .withFirstName("Hanna") //
+                .withLastName("muster") //
                 .withEmail("hanna.muster@example.com") //
-                .withOkrChampion(true) //
+                .isOkrChampion(true) //
                 .build();
         var criteria = new AuthorizationCriteria<Objective>();
         TypedQueryMock<Objective> typedQueryMock = new TypedQueryMock<>();
@@ -65,7 +65,7 @@ public class AuthorizationCriteriaParametersTest {
         assertEquals(expected, typedQueryMock.getLog());
     }
 
-    @DisplayName("setParameters() should be successful when team ids or objective query are empty")
+    @DisplayName("Should be successful on setParameters() when team ids or objective query are empty")
     @ParameterizedTest
     @MethodSource("provideListAndString")
     void setParametersShouldBeSuccessfulWhenTeamIdsOrObjectiveQueryAreEmpty(List<Long> teamIds, String objectiveQuery) {
@@ -95,7 +95,7 @@ public class AuthorizationCriteriaParametersTest {
                     Arguments.of(null, ""));
     }
 
-    @DisplayName("setParameters() should be successful when team ids and objective query are not empty")
+    @DisplayName("Should be successful on setParameters() when team ids and objective query are not empty")
     @Test
     void setParametersShouldBeSuccessfulWhenTeamIdsAndObjectiveQueryAreNotEmpty() {
         // arrange

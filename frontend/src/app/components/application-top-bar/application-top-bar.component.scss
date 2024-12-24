@@ -1,6 +1,6 @@
 @import '../style/variables';
 
-#topBarHeight {
+#top-bar-height {
   height: $top-bar-height;
 }
 
@@ -8,7 +8,7 @@ span.d-none.d-md-flex {
   font-size: 16px;
 }
 
-#okrTopbar {
+#okr-top-bar {
   display: flex;
   position: fixed;
   top: 0;
@@ -19,7 +19,7 @@ span.d-none.d-md-flex {
   background-color: var(--okr-topbar-background-color);
 }
 
-.topBarEntry {
+.top-bar-entry {
   display: flex;
   justify-content: center;
   align-items: center;

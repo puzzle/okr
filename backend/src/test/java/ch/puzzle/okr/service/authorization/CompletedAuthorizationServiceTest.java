@@ -11,6 +11,7 @@ import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.CompletedBusinessService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,8 +37,9 @@ class CompletedAuthorizationServiceTest {
             .withObjective(Objective.Builder.builder().withId(objectiveId).withTitle("Completed 1").build())
             .build();
 
+    @DisplayName("Should return the created object when authorized")
     @Test
-    void createCompletedShouldReturnObjectiveWhenAuthorized() {
+    void shouldReturnCreatedCompletedWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(completedBusinessService.createCompleted(newCompleted)).thenReturn(newCompleted);
 
@@ -45,8 +47,9 @@ class CompletedAuthorizationServiceTest {
         assertEquals(newCompleted, completed);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to create completed object")
     @Test
-    void createCompletedShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToCreateCompleted() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
@@ -60,15 +63,17 @@ class CompletedAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
+    @DisplayName("Should successfully delete completed object by objective ID when authorized")
     @Test
-    void deleteCompletedByObjectiveIdShouldPassThroughWhenAuthorized() {
+    void shouldDeleteCompletedByObjectiveIdWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
         completedAuthorizationService.deleteCompletedByObjectiveId(13L);
     }
 
+    @DisplayName("Should throw an exception when the user is not authorized to delete completed object by objective ID")
     @Test
-    void deleteCompletedByObjectiveIdShouldThrowExceptionWhenNotAuthorized() {
+    void shouldThrowExceptionWhenNotAuthorizedToDeleteCompletedByObjectiveId() {
         String reason = "junit test reason";
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))

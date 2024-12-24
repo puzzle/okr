@@ -17,7 +17,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class AuthorizationCriteriaTest {
 
-    @DisplayName("appendObjective() should be successful with default authorization user")
+    @DisplayName("Should be successful on appendObjective() with default authorization user")
     @Test
     void appendObjectiveShouldBeSuccessfulWithDefaultAuthorizationUser() {
         // arrange
@@ -31,17 +31,17 @@ public class AuthorizationCriteriaTest {
         assertEquals(expected, current);
     }
 
-    @DisplayName("appendObjective() should be successful when user is okrChampion")
+    @DisplayName("Should be successful on appendObjective() when user is okrChampion")
     @Test
     void appendObjectiveShouldBeSuccessfulWhenUserIsOkrChampion() {
         // arrange
         var user = User.Builder
                 .builder() //
                 .withId(23L) //
-                .withFirstname("Hanna") //
-                .withLastname("muster") //
+                .withFirstName("Hanna") //
+                .withLastName("muster") //
                 .withEmail("hanna.muster@example.com") //
-                .withOkrChampion(true) //
+                .isOkrChampion(true) //
                 .build();
         var criteria = new AuthorizationCriteria<Objective>();
 
@@ -53,8 +53,7 @@ public class AuthorizationCriteriaTest {
         assertEquals(expected, current);
     }
 
-    @DisplayName("appendOverview() should be successful when team ids or objective query are empty")
-    @ParameterizedTest
+    @ParameterizedTest(name = "should be successful on appendOverview() when team ids ({0}) or objectives query ({0}) are empty")
     @MethodSource("provideListAndString")
     void appendOverviewShouldBeSuccessfulWhenTeamIdsOrObjectiveQueryAreEmpty(List<Long> teamIds,
                                                                              String objectiveQuery) {
@@ -78,7 +77,7 @@ public class AuthorizationCriteriaTest {
                     Arguments.of(null, ""));
     }
 
-    @DisplayName("appendOverview() should be successful when team ids and objective query are not empty")
+    @DisplayName("Should be successful on appendOverview() when team ids and objective query are not empty")
     @Test
     void appendOverviewShouldBeSuccessfulWhenTeamIdsAndObjectiveQueryAreNotEmpty() {
         // arrange

@@ -2,7 +2,7 @@ import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
 
-describe('OKR Objective Backlog e2e tests', () => {
+describe('okr objective backlog', () => {
   let overviewPage = new CyOverviewPage();
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it(`Create Objective in backlog quarter should not have save button`, () => {
+  it(`should not have save button when creating objective in backlog quarter`, () => {
     overviewPage
       .addObjective()
       .fillObjectiveTitle('Objective in quarter backlog')
@@ -27,7 +27,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.contains('Objective in quarter backlog');
   });
 
-  it(`Edit Objective and move to backlog`, () => {
+  it(`should edit objective and move it to backlog`, () => {
     overviewPage.addObjective()
       .fillObjectiveTitle('Move to another quarter on edit')
       .submitDraftObjective();
@@ -50,7 +50,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.contains('This goes now to backlog');
   });
 
-  it(`Edit ongoing Objective can not choose backlog in quarter select`, () => {
+  it(`should not be able to select backlog quarter when editing ongoing objective`, () => {
     overviewPage.addObjective()
       .fillObjectiveTitle('We can not move this to backlog')
       .submit();
@@ -67,7 +67,7 @@ describe('OKR Objective Backlog e2e tests', () => {
       .should('not.contain', 'Backlog');
   });
 
-  it(`Can release Objective to another quarter from backlog`, () => {
+  it(`should release objective to another quarter from backlog`, () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('We can not release this')
@@ -105,7 +105,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.contains('This is our first released objective');
   });
 
-  it(`Can edit Objective title in backlog`, () => {
+  it(`should edit objective title in backlog`, () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('This is possible for edit')
@@ -124,7 +124,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     overviewPage.getObjectiveByNameAndState('My new title', 'draft');
   });
 
-  it(`Can edit Objective in backlog and change quarter`, () => {
+  it(`should edit objective in backlog and change quarter`, () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('This goes to other quarter later')
@@ -144,7 +144,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     overviewPage.getObjectiveByNameAndState('This goes to other quarter later', 'draft');
   });
 
-  it(`Can duplicate in backlog`, () => {
+  it(`should duplicate objective in backlog`, () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('Ready for duplicate in backlog')
@@ -164,7 +164,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     overviewPage.getObjectiveByNameAndState('This is a new duplication in backlog', 'draft');
   });
 
-  it('should duplicate from backlog', () => {
+  it('should duplicate objective from backlog to another quarter', () => {
     overviewPage.visitBacklogQuarter();
     overviewPage.addObjective()
       .fillObjectiveTitle('Ready for duplicate to another quarter')
@@ -189,7 +189,7 @@ describe('OKR Objective Backlog e2e tests', () => {
       .should('exist');
   });
 
-  it(`Can duplicate ongoing Objective to backlog`, () => {
+  it(`should duplicate ongoing objective to backlog`, () => {
     overviewPage.addObjective()
       .fillObjectiveTitle('Possible to duplicate into backlog')
       .submit();

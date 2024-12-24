@@ -5,21 +5,42 @@ import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
 import htmlParser from '@html-eslint/parser'
+import { createRegexForWords } from './eslintHelper.mjs'
+import checkFile from 'eslint-plugin-check-file'
 
 export default tsEslint.config(
+  {
+    files: ['src/app/shared/types/**/*'],
+    rules: {
+      'check-file/filename-naming-convention': [
+        'error',
+        {
+          '**/*.{js,ts}': 'KEBAB_CASE',
+        },
+      ],
+    },
+  },
   {
     ignores: ['cypress/downloads/**/*'],
   },
   {
-    files: ['**/*.ts'],
+    files: ['src/**/*.ts', 'cypress/**/*.ts'],
     extends: [
       eslint.configs.recommended,
       ...tsEslint.configs.recommended,
       ...tsEslint.configs.stylistic,
       ...angular.configs.tsRecommended,
     ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './tsconfig.spec.json'],
+      },
+    },
     processor: angular.processInlineTemplates,
     languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './tsconfig.spec.json'],
+      },
       globals: {
         //Cypress things not recognized by eslint
         cy: 'readonly',
@@ -130,10 +151,40 @@ export default tsEslint.config(
           style: 'kebab-case',
         },
       ],
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: ['class', 'interface'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'variable',
+          modifiers: [],
+          format: ['camelCase', 'UPPER_CASE'],
+        },
+        {
+          selector: 'enum',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'enumMember',
+          format: ['UPPER_CASE'],
+        },
+        {
+          selector: ['method', 'function'],
+          format: ['camelCase'],
+        },
+        {
+          selector: 'typeParameter',
+          format: ['PascalCase'],
+        },
+      ],
+      'id-match': ['error', createRegexForWords(['KeyResult', 'CheckIn', 'TeamManagement', 'StretchGoal'])],
     },
   },
+
   {
-    files: ['**/*.spec.ts'],
+    files: ['src/**/*.spec.ts', 'cypress/**/*.spec.ts'],
     extends: [...tsEslint.configs.recommended],
     rules: {
       //Rules removed for Test files because they are unnecessary for tests
@@ -159,6 +210,13 @@ export default tsEslint.config(
       '@html-eslint/require-img-alt': 'off',
       '@html-eslint/indent': ['error', 2],
       '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
+      '@html-eslint/id-naming-convention': [
+        'error',
+        'regex',
+        {
+          pattern: `(?=(^[a-z]+(-[a-z]+)*$))(?=(${createRegexForWords(['KeyResult', 'CheckIn', 'TeamManagement', 'StretchGoal'])}))`,
+        },
+      ],
       //Doesn't work with Angular 17+
       '@html-eslint/element-newline': 'off',
     },
@@ -168,6 +226,7 @@ export default tsEslint.config(
       'unused-imports': unusedImports,
       '@stylistic': stylistic,
       '@html-eslint': html,
+      'check-file': checkFile,
     },
   }
 )

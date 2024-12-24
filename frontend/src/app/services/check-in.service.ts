@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CheckInMin } from '../shared/types/model/CheckInMin';
+import { CheckInMin } from '../shared/types/model/check-in-min';
 import { Observable } from 'rxjs';
-import { CheckIn } from '../shared/types/model/CheckIn';
+import { CheckIn } from '../shared/types/model/check-in';
 
 @Injectable({
   providedIn: 'root'

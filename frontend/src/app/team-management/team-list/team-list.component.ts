@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { Team } from '../../shared/types/model/Team';
+import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

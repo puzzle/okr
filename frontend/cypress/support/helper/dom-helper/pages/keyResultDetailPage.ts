@@ -44,7 +44,7 @@ export default class KeyResultDetailPage extends Page {
     return new KeyResultDialog();
   }
 
-  showAllCheckins() {
+  showAllCheckIns() {
     this.elements.showAllCheckins()
       .click();
     return new CheckInHistoryDialog();

@@ -1,4 +1,4 @@
-export interface KeyresultMin {
+export interface KeyResultMin {
   id: number;
   version: number;
   title: string;

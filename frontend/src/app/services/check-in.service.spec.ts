@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { CheckInService } from './check-in.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { firstCheckIn, keyResultMetricWithIdEight, secondCheckIn } from '../shared/testData';
-import { CheckInMetricMin } from '../shared/types/model/CheckInMetricMin';
+import { firstCheckIn, keyResultMetricWithIdEight, secondCheckIn } from '../shared/test-data';
+import { CheckInMetricMin } from '../shared/types/model/check-in-metric-min';
 
 describe('CheckInService', () => {
   let service: CheckInService;

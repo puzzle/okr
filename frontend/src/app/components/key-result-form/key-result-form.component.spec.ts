@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultService } from '../../services/key-result.service';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { keyResultOrdinal, testUser, users } from '../../shared/testData';
-import { State } from '../../shared/types/enums/State';
+import { keyResultOrdinal, testUser, users } from '../../shared/test-data';
+import { State } from '../../shared/types/enums/state';
 import { Observable, of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
-import { User } from '../../shared/types/model/User';
+import { KeyResultObjective } from '../../shared/types/model/key-result-objective';
+import { User } from '../../shared/types/model/user';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyResultTypeComponent } from '../key-result-type/key-result-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
@@ -21,16 +21,16 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 import { KeyResultFormComponent } from './key-result-form.component';
-import { Action } from '../../shared/types/model/Action';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
+import { Action } from '../../shared/types/model/action';
+import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
+import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
-import { Quarter } from '../../shared/types/model/Quarter';
+import { Quarter } from '../../shared/types/model/quarter';
 
 describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
@@ -116,7 +116,7 @@ describe('KeyResultFormComponent', () => {
           })
         ],
         providers: [
-          KeyresultService,
+          KeyResultService,
           TranslateService,
           { provide: UserService,
             useValue: userService },

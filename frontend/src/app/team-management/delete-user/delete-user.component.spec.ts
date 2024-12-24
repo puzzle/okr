@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '../../services/user.service';
 import { DeleteUserComponent } from './delete-user.component';
 import { of, Subject } from 'rxjs';
-import { testUser } from '../../shared/testData';
+import { testUser } from '../../shared/test-data';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../services/dialog.service';
 import { Location } from '@angular/common';
-import { ButtonState } from '../../shared/types/enums/ButtonState';
+import { ButtonState } from '../../shared/types/enums/button-state';
 
 describe('DeleteUserComponent', () => {
   let component: DeleteUserComponent;
@@ -132,9 +132,9 @@ describe('DeleteUserComponent', () => {
       .toHaveBeenCalledWith({
         title: 'User kann nicht gelöscht werden',
         text: 'Hans Muster ist in folgenden Teams und kann daher nicht gelöscht werden: Lorem',
-        yesButtonState: ButtonState.Hidden,
-        noButtonState: ButtonState.Hidden,
-        closeButtonState: ButtonState.VisibleEnabled
+        yesButtonState: ButtonState.HIDDEN,
+        noButtonState: ButtonState.HIDDEN,
+        closeButtonState: ButtonState.VISIBLE_ENABLED
       });
   });
 
@@ -160,9 +160,9 @@ describe('DeleteUserComponent', () => {
       .toHaveBeenCalledWith({
         title: 'User kann nicht gelöscht werden',
         text: 'Hans Muster ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\none\n(Objective: two)',
-        yesButtonState: ButtonState.Hidden,
-        noButtonState: ButtonState.Hidden,
-        closeButtonState: ButtonState.VisibleEnabled
+        yesButtonState: ButtonState.HIDDEN,
+        noButtonState: ButtonState.HIDDEN,
+        closeButtonState: ButtonState.VISIBLE_ENABLED
       });
   });
 
@@ -185,9 +185,9 @@ describe('DeleteUserComponent', () => {
       .toHaveBeenCalledWith({
         title: 'User löschen',
         text: 'Möchtest du den User Hans Muster wirklich löschen?',
-        yesButtonState: ButtonState.VisibleEnabled,
-        noButtonState: ButtonState.VisibleEnabled,
-        closeButtonState: ButtonState.Hidden
+        yesButtonState: ButtonState.VISIBLE_ENABLED,
+        noButtonState: ButtonState.VISIBLE_ENABLED,
+        closeButtonState: ButtonState.HIDDEN
       });
   });
 

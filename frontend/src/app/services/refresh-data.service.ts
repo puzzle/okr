@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { DEFAULT_HEADER_HEIGHT_PX } from '../shared/constantLibary';
+import { DEFAULT_HEADER_HEIGHT_PX } from '../shared/constant-library';
 
 @Injectable({
   providedIn: 'root'

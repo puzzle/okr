@@ -1,7 +1,7 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
-import { Unit } from '../../src/app/shared/types/enums/Unit';
+import { Unit } from '../../src/app/shared/types/enums/unit';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
 
 describe('okr key-result', () => {

@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { UserTableEntry } from '../../../shared/types/model/UserTableEntry';
+import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject } from 'rxjs';
-import { Team } from '../../../shared/types/model/Team';
-import { getFullNameOfUser } from '../../../shared/types/model/User';
-import { getRouteToUserDetails } from '../../../shared/routeUtils';
+import { Team } from '../../../shared/types/model/team';
+import { getFullNameOfUser } from '../../../shared/types/model/user';
+import { getRouteToUserDetails } from '../../../shared/route-utils';
 
 @Component({
   selector: 'app-member-list-mobile',

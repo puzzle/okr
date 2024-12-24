@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
+import { OverviewEntity } from '../../shared/types/model/overview-entity';
 import {
   BehaviorSubject,
   catchError,

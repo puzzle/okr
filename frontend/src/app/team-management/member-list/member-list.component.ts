@@ -2,10 +2,10 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { User } from '../../shared/types/model/User';
-import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
+import { User } from '../../shared/types/model/user';
+import { convertFromUsers, UserTableEntry } from '../../shared/types/model/user-table-entry';
 import { TeamService } from '../../services/team.service';
-import { Team } from '../../shared/types/model/Team';
+import { Team } from '../../shared/types/model/team';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';

@@ -1,5 +1,5 @@
 import Dialog from './dialog';
-import { Unit } from '../../../../../src/app/shared/types/enums/Unit';
+import { Unit } from '../../../../../src/app/shared/types/enums/unit';
 import ConfirmDialog from './confirmDialog';
 import Chainable = Cypress.Chainable;
 

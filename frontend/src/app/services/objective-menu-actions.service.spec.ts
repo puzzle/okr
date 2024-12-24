@@ -5,9 +5,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
-import { State } from '../shared/types/enums/State';
-import { objectiveMin } from '../shared/testData';
+import { ObjectiveMin } from '../shared/types/model/objective-min';
+import { State } from '../shared/types/enums/state';
+import { objectiveMin } from '../shared/test-data';
 
 describe('ObjectiveMenuActionsService', () => {
   let service: ObjectiveMenuActionsService;

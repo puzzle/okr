@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
-import { OverviewEntity } from '../../shared/types/model/OverviewEntity';
+import { OverviewEntity } from '../../shared/types/model/overview-entity';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { Objective } from '../../shared/types/model/Objective';
+import { Objective } from '../../shared/types/model/objective';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
+import { ObjectiveMin } from '../../shared/types/model/objective-min';
 import { DialogService } from '../../services/dialog.service';
 import { ConfigService } from '../../services/config.service';
-import { ClientConfig } from '../../shared/types/model/ClientConfig';
+import { ClientConfig } from '../../shared/types/model/client-config';
 import { BehaviorSubject, first } from 'rxjs';
 
 @Component({

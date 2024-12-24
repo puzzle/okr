@@ -1,6 +1,6 @@
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn } from '@angular/forms';
 import { Directive, Input } from '@angular/core';
-import { NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
+import { NUMBER_REGEX, PERCENT_REGEX } from './regex-library';
 
 @Directive({
   selector: '[unitValueValidator]',

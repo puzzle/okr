@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
+import { ObjectiveMin } from '../../shared/types/model/objective-min';
 import { Router } from '@angular/router';
 import { distinct, map, ReplaySubject, take } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
@@ -8,7 +8,7 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
 import { ObjectiveMenuActionsService, ObjectiveMenuEntry } from '../../services/objective-menu-actions.service';
-import { State } from '../../shared/types/enums/State';
+import { State } from '../../shared/types/enums/state';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Objective } from '../../shared/types/model/Objective';
+import { Objective } from '../../shared/types/model/objective';
 import { ObjectiveService } from '../../services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';

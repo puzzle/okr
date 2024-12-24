@@ -10,12 +10,12 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { Zone } from '../../types/enums/Zone';
-import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
+import { Zone } from '../../types/enums/zone';
+import { KeyResultMetricMin } from '../../types/model/key-result-metric-min';
 import { Observable, of } from 'rxjs';
 import { calculateCurrentPercentage } from '../../common';
-import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
-import { CheckInOrdinalMin } from '../../types/model/CheckInOrdinalMin';
+import { KeyResultOrdinalMin } from '../../types/model/key-result-ordinal-min';
+import { CheckInOrdinalMin } from '../../types/model/check-in-ordinal-min';
 
 @Component({
   selector: 'app-scoring',

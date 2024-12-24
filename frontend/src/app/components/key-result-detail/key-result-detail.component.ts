@@ -1,22 +1,22 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { KeyresultService } from '../../services/keyresult.service';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
+import { KeyResult } from '../../shared/types/model/key-result';
+import { KeyResultService } from '../../services/key-result.service';
+import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
+import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { CheckInHistoryDialogComponent } from '../check-in-history-dialog/check-in-history-dialog.component';
 import { BehaviorSubject, catchError, EMPTY, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { CloseState } from '../../shared/types/enums/CloseState';
+import { CloseState } from '../../shared/types/enums/close-state';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
-import { State } from '../../shared/types/enums/State';
-import { DATE_FORMAT } from '../../shared/constantLibary';
+import { State } from '../../shared/types/enums/state';
+import { DATE_FORMAT } from '../../shared/constant-library';
 import { calculateCurrentPercentage } from '../../shared/common';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { DialogService } from '../../services/dialog.service';
-import { KeyresultMin } from '../../shared/types/model/KeyresultMin';
-import { KeyResultMetricMin } from '../../shared/types/model/KeyResultMetricMin';
-import { KeyResultOrdinalMin } from '../../shared/types/model/KeyResultOrdinalMin';
+import { KeyResultMin } from '../../shared/types/model/key-result-min';
+import { KeyResultMetricMin } from '../../shared/types/model/key-result-metric-min';
+import { KeyResultOrdinalMin } from '../../shared/types/model/key-result-ordinal-min';
 
 @Component({
   selector: 'app-key-result-detail',
@@ -36,7 +36,7 @@ export class KeyResultDetailComponent implements OnInit, OnDestroy {
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(
-    private keyResultService: KeyresultService,
+    private keyResultService: KeyResultService,
     private refreshDataService: RefreshDataService,
     private dialogService: DialogService,
     private router: Router,
@@ -153,9 +153,9 @@ export class KeyResultDetailComponent implements OnInit, OnDestroy {
 
   getKeyResultWithCorrectType(keyResult: KeyResult): KeyResultOrdinalMin | KeyResultMetricMin {
     if (keyResult.keyResultType === 'metric') {
-      return keyResult as KeyresultMin as KeyResultMetricMin;
+      return keyResult as KeyResultMin as KeyResultMetricMin;
     } else {
-      return keyResult as KeyresultMin as KeyResultOrdinalMin;
+      return keyResult as KeyResultMin as KeyResultOrdinalMin;
     }
   }
 

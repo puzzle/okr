@@ -36,6 +36,13 @@ https://eslint.org/
 We use **prettier** to format scss json and yaml files:
 https://prettier.io/
 
+We use **prettier** to format scss json and yaml files:
+https://prettier.io/
+
+If you get a does not match pattern error, it is likely because of the custom words for the OKR tool
+here is a regex101 project that showcases how the regex works:
+https://regex101.com/r/VUyAt6/1
+
 ## Test Coverage
 
 For generating the coverage of our frontend specs (jest), you can use following command:

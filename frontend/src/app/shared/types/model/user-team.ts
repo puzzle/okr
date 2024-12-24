@@ -1,4 +1,4 @@
-import { Team } from './Team';
+import { Team } from './team';
 
 export interface UserTeam {
   id?: number;

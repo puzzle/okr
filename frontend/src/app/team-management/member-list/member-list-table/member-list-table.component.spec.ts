@@ -1,12 +1,12 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { MemberListTableComponent } from './member-list-table.component';
-import { team1, testUser } from '../../../shared/testData';
+import { team1, testUser } from '../../../shared/test-data';
 import { BehaviorSubject, of } from 'rxjs';
-import { UserTableEntry } from '../../../shared/types/model/UserTableEntry';
+import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { UserService } from '../../../services/user.service';
 import { TeamService } from '../../../services/team.service';
-import { Team } from '../../../shared/types/model/Team';
+import { Team } from '../../../shared/types/model/team';
 import { MatTableModule } from '@angular/material/table';
 import { DialogService } from '../../../services/dialog.service';
 

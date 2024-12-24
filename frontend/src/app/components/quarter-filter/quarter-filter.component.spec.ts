@@ -3,7 +3,7 @@ import { QuarterFilterComponent } from './quarter-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OverviewService } from '../../services/overview.service';
 import { Observable, of } from 'rxjs';
-import { Quarter } from '../../shared/types/model/Quarter';
+import { Quarter } from '../../shared/types/model/quarter';
 import { QuarterService } from '../../services/quarter.service';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';

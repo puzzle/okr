@@ -1,7 +1,7 @@
 import { fakeAsync, getTestBed, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from './user.service';
-import { testUser, users } from '../shared/testData';
+import { testUser, users } from '../shared/test-data';
 
 describe('UserService', () => {
   let service: UserService;

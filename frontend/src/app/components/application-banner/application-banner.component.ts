@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/constantLibary';
+import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/constant-library';
 
 @Component({
   selector: 'app-application-banner',

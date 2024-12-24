@@ -1,4 +1,4 @@
-import { Objective } from './Objective';
+import { Objective } from './objective';
 
 export interface Completed {
   id: number | null;

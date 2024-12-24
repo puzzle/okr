@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { UserRole } from '../shared/types/enums/UserRole';
+import { UserRole } from '../shared/types/enums/user-role';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({

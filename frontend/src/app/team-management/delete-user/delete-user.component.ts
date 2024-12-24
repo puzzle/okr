@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { getFullNameOfUser, User } from '../../shared/types/model/User';
+import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Location } from '@angular/common';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
-import { UserTeam } from '../../shared/types/model/UserTeam';
+import { UserTeam } from '../../shared/types/model/user-team';
 import { ConfirmDialogData, DialogService } from '../../services/dialog.service';
-import { ButtonState } from '../../shared/types/enums/ButtonState';
-import { UserOkrData } from '../../shared/types/model/UserOkrData';
+import { ButtonState } from '../../shared/types/enums/button-state';
+import { UserOkrData } from '../../shared/types/model/user-okr-data';
 
 @Component({
   selector: 'app-delete-user',
@@ -120,9 +120,9 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     const data: ConfirmDialogData = {
       title: dialogTitle,
       text: dialogText,
-      yesButtonState: ButtonState.Hidden,
-      noButtonState: ButtonState.Hidden,
-      closeButtonState: ButtonState.VisibleEnabled
+      yesButtonState: ButtonState.HIDDEN,
+      noButtonState: ButtonState.HIDDEN,
+      closeButtonState: ButtonState.VISIBLE_ENABLED
     };
     this.dialogService.openCustomizedConfirmDialog(data);
   }
@@ -131,9 +131,9 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     const data: ConfirmDialogData = {
       title: 'User löschen',
       text: `Möchtest du den User ${this.user.firstName} ${this.user.lastName} wirklich löschen?`,
-      yesButtonState: ButtonState.VisibleEnabled,
-      noButtonState: ButtonState.VisibleEnabled,
-      closeButtonState: ButtonState.Hidden
+      yesButtonState: ButtonState.VISIBLE_ENABLED,
+      noButtonState: ButtonState.VISIBLE_ENABLED,
+      closeButtonState: ButtonState.HIDDEN
     };
     const dialog = this.dialogService.openCustomizedConfirmDialog(data);
 

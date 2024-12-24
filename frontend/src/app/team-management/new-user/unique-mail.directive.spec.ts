@@ -1,5 +1,5 @@
 import { UniqueEmailValidator } from './unique-mail.validator';
-import { users } from '../../shared/testData';
+import { users } from '../../shared/test-data';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { AbstractControl } from '@angular/forms';

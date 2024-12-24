@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { SidePanelComponent } from './shared/side-panel/side-panel.component';
 import { authGuard } from './guards/auth.guard';
 import { UserService } from './services/user.service';
-import { User } from './shared/types/model/User';
+import { User } from './shared/types/model/user';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';

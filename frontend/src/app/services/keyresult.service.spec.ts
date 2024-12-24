@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { KeyresultService } from './keyresult.service';
+import { KeyResultService } from './key-result.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('KeyresultService', () => {
-  let service: KeyresultService;
+  let service: KeyResultService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
-    service = TestBed.inject(KeyresultService);
+    service = TestBed.inject(KeyResultService);
   });
 
   it('should be created', () => {

@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { ShowEditRoleComponent } from './show-edit-role.component';
-import { testUser } from '../../shared/testData';
+import { testUser } from '../../shared/test-data';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';

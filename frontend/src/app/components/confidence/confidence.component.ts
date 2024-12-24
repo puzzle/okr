@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { CheckInMin } from '../../shared/types/model/CheckInMin';
+import { CheckInMin } from '../../shared/types/model/check-in-min';
 
 @Component({
   selector: 'app-confidence',

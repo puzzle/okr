@@ -1,6 +1,6 @@
 import { CustomizationService } from './customization.service';
 import { BehaviorSubject } from 'rxjs';
-import { ClientConfig } from '../shared/types/model/ClientConfig';
+import { ClientConfig } from '../shared/types/model/client-config';
 import { ConfigService } from './config.service';
 
 class CallRecorder {

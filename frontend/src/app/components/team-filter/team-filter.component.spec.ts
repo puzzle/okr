@@ -7,11 +7,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { TeamService } from '../../services/team.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { team1, team2, team3, teamList, testUser } from '../../shared/testData';
+import { team1, team2, team3, teamList, testUser } from '../../shared/test-data';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../services/user.service';
-import { extractTeamsFromUser } from '../../shared/types/model/User';
+import { extractTeamsFromUser } from '../../shared/types/model/user';
 import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
 
 const teamServiceMock = {

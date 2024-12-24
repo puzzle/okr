@@ -1,21 +1,21 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Quarter } from '../../types/model/Quarter';
+import { Quarter } from '../../types/model/quarter';
 import { TeamService } from '../../../services/team.service';
-import { Team } from '../../types/model/Team';
+import { Team } from '../../types/model/team';
 import { QuarterService } from '../../../services/quarter.service';
 import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { State } from '../../types/enums/State';
-import { ObjectiveMin } from '../../types/model/ObjectiveMin';
-import { Objective } from '../../types/model/Objective';
+import { State } from '../../types/enums/state';
+import { ObjectiveMin } from '../../types/model/objective-min';
+import { Objective } from '../../types/model/objective';
 import { formInputCheck, getValueFromQuery, hasFormFieldErrors } from '../../common';
 import { ActivatedRoute } from '@angular/router';
-import { GJ_REGEX_PATTERN } from '../../constantLibary';
+import { GJ_REGEX_PATTERN } from '../../constant-library';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
-import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
+import { KeyResultDto } from '../../types/DTOs/key-result-dto';
 
 @Component({
   selector: 'app-objective-form',
@@ -54,9 +54,9 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
   state: string | null = null;
 
-  keyResults$: Observable<KeyResultDTO[]> = of([]);
+  keyResults$: Observable<KeyResultDto[]> = of([]);
 
-  keyResults: KeyResultDTO[] = [];
+  keyResults: KeyResultDto[] = [];
 
   version!: number;
 
@@ -126,7 +126,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
         objective,
         quarters,
         currentQuarter,
-        keyResults]: [Objective, Quarter[], Quarter, KeyResultDTO[]
+        keyResults]: [Objective, Quarter[], Quarter, KeyResultDto[]
       ]) => {
         this.handleDataInitialization(
           objective, quarters, currentQuarter, keyResults, this.data.objective.objectiveId != null
@@ -138,7 +138,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     objective: Objective,
     quarters: Quarter[],
     currentQuarter: Quarter,
-    keyResults: KeyResultDTO[],
+    keyResults: KeyResultDto[],
     isEditing: boolean
   ): void {
     this.quarters = quarters;

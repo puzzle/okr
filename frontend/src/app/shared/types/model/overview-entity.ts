@@ -1,5 +1,5 @@
-import { ObjectiveMin } from './ObjectiveMin';
-import { TeamMin } from './TeamMin';
+import { ObjectiveMin } from './objective-min';
+import { TeamMin } from './team-min';
 
 export interface OverviewEntity {
   team: TeamMin;

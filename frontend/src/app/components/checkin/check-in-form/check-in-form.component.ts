@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { KeyResultMetric } from '../../../shared/types/model/KeyResultMetric';
+import { KeyResultMetric } from '../../../shared/types/model/key-result-metric';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { KeyResult } from '../../../shared/types/model/KeyResult';
-import { KeyResultOrdinal } from '../../../shared/types/model/KeyResultOrdinal';
-import { CheckInMin } from '../../../shared/types/model/CheckInMin';
+import { KeyResult } from '../../../shared/types/model/key-result';
+import { KeyResultOrdinal } from '../../../shared/types/model/key-result-ordinal';
+import { CheckInMin } from '../../../shared/types/model/check-in-min';
 import { CheckInService } from '../../../services/check-in.service';
-import { Action } from '../../../shared/types/model/Action';
+import { Action } from '../../../shared/types/model/action';
 import { ActionService } from '../../../services/action.service';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
-import { CheckIn } from '../../../shared/types/model/CheckIn';
-import { CheckInMetricMin } from '../../../shared/types/model/CheckInMetricMin';
-import { CheckInOrdinalMin } from '../../../shared/types/model/CheckInOrdinalMin';
+import { CheckIn } from '../../../shared/types/model/check-in';
+import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
+import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
 
 @Component({
   selector: 'app-check-in-form',

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckInHistoryDialogComponent } from './check-in-history-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { checkInMetric, checkInMetricWriteableFalse, keyResult } from '../../shared/testData';
+import { checkInMetric, checkInMetricWriteableFalse, keyResult } from '../../shared/test-data';
 import { By } from '@angular/platform-browser';
 import { DialogService } from '../../services/dialog.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';

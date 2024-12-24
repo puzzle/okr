@@ -1,20 +1,20 @@
 import { KeyResultDialogComponent } from './key-result-dialog.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultService } from '../../services/key-result.service';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
-import { testUser, users } from '../../shared/testData';
-import { State } from '../../shared/types/enums/State';
-import { KeyResult } from '../../shared/types/model/KeyResult';
+import { testUser, users } from '../../shared/test-data';
+import { State } from '../../shared/types/enums/state';
+import { KeyResult } from '../../shared/types/model/key-result';
 import { of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
+import { KeyResultObjective } from '../../shared/types/model/key-result-objective';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyResultTypeComponent } from '../key-result-type/key-result-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
@@ -27,12 +27,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
-import { Quarter } from '../../shared/types/model/Quarter';
+import { Quarter } from '../../shared/types/model/quarter';
 
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;
   let fixture: ComponentFixture<KeyResultDialogComponent>;
-  let keyResultService: KeyresultService;
+  let keyResultService: KeyResultService;
 
   const oAuthMockService = {
     getIdentityClaims() {
@@ -269,7 +269,7 @@ describe('KeyResultDialogComponent', () => {
           provideRouter([]),
           provideHttpClient(),
           provideHttpClientTesting(),
-          KeyresultService,
+          KeyResultService,
           TranslateService,
           { provide: UserService,
             useValue: userService },
@@ -303,7 +303,7 @@ describe('KeyResultDialogComponent', () => {
       userService.getCurrentUser.mockReturnValue(testUser);
 
       fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyresultService);
+      keyResultService = TestBed.inject(KeyResultService);
     });
 
     it('should create', () => {
@@ -436,7 +436,7 @@ describe('KeyResultDialogComponent', () => {
           provideRouter([]),
           provideHttpClient(),
           provideHttpClientTesting(),
-          KeyresultService,
+          KeyResultService,
           {
             provide: MatDialogRef,
             useValue: {
@@ -466,7 +466,7 @@ describe('KeyResultDialogComponent', () => {
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyresultService);
+      keyResultService = TestBed.inject(KeyResultService);
       fullKeyResultMetric.id = 3;
     });
 
@@ -603,7 +603,7 @@ describe('KeyResultDialogComponent', () => {
           provideRouter([]),
           provideHttpClient(),
           provideHttpClientTesting(),
-          KeyresultService,
+          KeyResultService,
           {
             provide: MatDialogRef,
             useValue: matDialogRefMock
@@ -631,7 +631,7 @@ describe('KeyResultDialogComponent', () => {
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyresultService);
+      keyResultService = TestBed.inject(KeyResultService);
     });
 
     afterEach(() => {

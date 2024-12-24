@@ -9,15 +9,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../../services/objective.service';
-import { keyResult, objective, quarter, quarterList } from '../../testData';
+import { keyResult, objective, quarter, quarterList } from '../../test-data';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Quarter } from '../../types/model/Quarter';
+import { Quarter } from '../../types/model/quarter';
 import { QuarterService } from '../../../services/quarter.service';
 import { TeamService } from '../../../services/team.service';
-import { State } from '../../types/enums/State';
+import { State } from '../../types/enums/state';
 import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -29,7 +29,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { Team } from '../../types/model/Team';
+import { Team } from '../../types/model/team';
 
 const objectiveService = {
   getFullObjective: jest.fn(),

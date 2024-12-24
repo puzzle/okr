@@ -1,5 +1,5 @@
-import { UserTeam } from './UserTeam';
-import { UserTableEntry } from './UserTableEntry';
+import { UserTeam } from './user-team';
+import { UserTableEntry } from './user-table-entry';
 
 export interface User {
   id: number;

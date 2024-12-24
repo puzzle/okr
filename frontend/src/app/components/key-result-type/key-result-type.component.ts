@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { KeyResult } from '../../shared/types/model/KeyResult';
+import { KeyResult } from '../../shared/types/model/key-result';
 import { FormGroup, Validators } from '@angular/forms';
-import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
-import { Unit } from '../../shared/types/enums/Unit';
+import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
+import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
+import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
 

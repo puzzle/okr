@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { TeamService } from '../../services/team.service';
-import { Team } from '../../shared/types/model/Team';
+import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { getRouteToAllTeams, getRouteToTeam } from '../../shared/routeUtils';
+import { getRouteToAllTeams, getRouteToTeam } from '../../shared/route-utils';
 import { combineLatest } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 

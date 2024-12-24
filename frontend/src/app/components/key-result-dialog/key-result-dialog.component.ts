@@ -1,14 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../shared/types/model/User';
-import { Action } from '../../shared/types/model/Action';
+import { User } from '../../shared/types/model/user';
+import { Action } from '../../shared/types/model/action';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Objective } from '../../shared/types/model/Objective';
-import { KeyResult } from '../../shared/types/model/KeyResult';
-import { KeyResultMetricDTO } from '../../shared/types/DTOs/KeyResultMetricDTO';
-import { KeyResultOrdinalDTO } from '../../shared/types/DTOs/KeyResultOrdinalDTO';
-import { CloseState } from '../../shared/types/enums/CloseState';
-import { KeyresultService } from '../../services/keyresult.service';
+import { Objective } from '../../shared/types/model/objective';
+import { KeyResult } from '../../shared/types/model/key-result';
+import { KeyResultMetricDto } from '../../shared/types/DTOs/key-result-metric-dto';
+import { KeyResultOrdinalDto } from '../../shared/types/DTOs/key-result-ordinal-dto';
+import { CloseState } from '../../shared/types/enums/close-state';
+import { KeyResultService } from '../../services/key-result.service';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
@@ -37,7 +37,7 @@ export class KeyResultDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
       keyResult: KeyResult; },
-    private keyResultService: KeyresultService,
+    private keyResultService: KeyResultService,
     public dialogService: DialogService,
     public dialogRef: MatDialogRef<KeyResultDialogComponent>
   ) {}
@@ -50,10 +50,10 @@ export class KeyResultDialogComponent {
     const value = this.keyResultForm.value;
     const keyResult = this.isMetricKeyResult()
       ? ({ ...value,
-        objective: this.data.objective } as KeyResultMetricDTO)
+        objective: this.data.objective } as KeyResultMetricDto)
       : ({ ...value,
         objective: this.data.objective,
-        id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
+        id: this.data.keyResult?.id } as KeyResultOrdinalDto);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version!;
     keyResult.actionList = keyResult.actionList!.filter((action: Action) => action.action !== '');

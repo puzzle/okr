@@ -143,7 +143,9 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     return this.keyResult ? this.keyResult.id : null;
   }
 
-  updateFormValidity() {}
+  updateFormValidity() {
+    // Implemented because of interface this comment is to satisfy the linter
+  }
 
   getFullNameOfLoggedInUser() {
     return this.getFullNameOfUser(this.userService.getCurrentUser());

@@ -19,6 +19,11 @@ export default tsEslint.config(
       ...tsEslint.configs.stylistic,
       ...angular.configs.tsRecommended,
     ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './tsconfig.spec.json'],
+      },
+    },
     processor: angular.processInlineTemplates,
     languageOptions: {
       parserOptions: {

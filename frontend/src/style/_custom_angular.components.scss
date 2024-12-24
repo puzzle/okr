@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables';
 
 .mdc-button {
   border-radius: 0.5rem !important;
@@ -50,7 +50,7 @@
 
 //Offset for top bar
 .cdk-overlay-backdrop.cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
-  margin-top: $top-bar-height;
+  margin-top: variables.$top-bar-height;
 }
 
 .mat-mdc-standard-chip {

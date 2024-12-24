@@ -1,18 +1,18 @@
 <app-dialog-template-core [title]="dialogTitle">
   <ng-container content>
     <div class="linebreak bg-display-element p-2 fw-normal mb-3">
-      <span class="information">{{ this.dialogText.trim() }}</span>
+      <span class="information">{{ dialogText.trim() }}</span>
     </div>
   </ng-container>
 
   <ng-container actions>
     <div class="col-auto">
       <button
-        *ngIf="this.isYesButtonVisible()"
-        [disabled]="this.isYesButtonDisabled()"
+        *ngIf="isYesButtonVisible()"
+        [disabled]="isYesButtonDisabled()"
         [attr.data-testId]="'confirm-yes'"
         type="submit"
-        (click)="this.closeAndDelete()"
+        (click)="closeAndDelete()"
         color="primary"
         mat-flat-button
       >
@@ -20,8 +20,8 @@
       </button>
 
       <button
-        *ngIf="this.isNoButtonVisible()"
-        [disabled]="this.isNoButtonDisabled()"
+        *ngIf="isNoButtonVisible()"
+        [disabled]="isNoButtonDisabled()"
         mat-button
         mat-dialog-close
         color="primary"
@@ -30,8 +30,8 @@
         Nein
       </button>
       <button
-        *ngIf="this.isCloseButtonVisible()"
-        [disabled]="this.isCloseButtonDisabled()"
+        *ngIf="isCloseButtonVisible()"
+        [disabled]="isCloseButtonDisabled()"
         mat-button
         mat-dialog-close
         color="primary"

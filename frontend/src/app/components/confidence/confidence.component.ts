@@ -5,7 +5,8 @@ import { CheckInMin } from '../../shared/types/model/CheckInMin';
   selector: 'app-confidence',
   templateUrl: './confidence.component.html',
   styleUrls: ['./confidence.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class ConfidenceComponent implements OnChanges {
   min = 0;

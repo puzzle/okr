@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'teams'
+  name: 'teams',
+  standalone: false
 })
 export class TeamsPipe implements PipeTransform {
   private readonly SEPARATOR = ', ';

@@ -9,7 +9,7 @@
         [attr.data-testId]="'logo'"
         alt="okr-logo"
         height="32"
-        src="{{ this.logoSrc$ | async }}"
+        src="{{ logoSrc$ | async }}"
         priority
       />
     </a>
@@ -29,7 +29,7 @@
       </button>
 
       <button
-        *ngIf="this.helpSiteUrl | async as helpSiteUrl"
+        *ngIf="helpSiteUrl | async as helpSiteUrl"
         id="help-button"
         class="top-bar-entry btn"
         [attr.data-testId]="'help-button'"

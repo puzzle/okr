@@ -4,7 +4,8 @@ import { Observable, of } from 'rxjs';
 @Component({
   selector: 'app-dialog-template-core',
   templateUrl: './dialog-template-core.component.html',
-  styleUrl: './dialog-template-core.component.scss'
+  styleUrl: './dialog-template-core.component.scss',
+  standalone: false
 })
 export class DialogTemplateCoreComponent {
   @Input() observable: Observable<any> = of({});

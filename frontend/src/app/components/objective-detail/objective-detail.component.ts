@@ -12,7 +12,8 @@ import { DialogService } from '../../services/dialog.service';
   selector: 'app-objective-detail',
   templateUrl: './objective-detail.component.html',
   styleUrl: 'objective-detail.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class ObjectiveDetailComponent implements OnInit {
   objectiveId!: number;

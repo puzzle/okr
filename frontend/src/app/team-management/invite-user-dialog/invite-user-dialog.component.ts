@@ -10,7 +10,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-invite-user-dialog',
   templateUrl: './invite-user-dialog.component.html',
-  styleUrl: './invite-user-dialog.component.scss'
+  styleUrl: './invite-user-dialog.component.scss',
+  standalone: false
 })
 export class InviteUserDialogComponent {
   form: FormArray<FormGroup<NewUserForm<FormControl>>>;

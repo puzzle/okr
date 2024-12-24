@@ -13,7 +13,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   selector: 'app-team-filter',
   templateUrl: './team-filter.component.html',
   styleUrls: ['./team-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);

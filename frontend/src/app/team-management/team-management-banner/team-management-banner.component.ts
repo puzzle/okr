@@ -6,7 +6,8 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-team-management-banner',
   templateUrl: './team-management-banner.component.html',
-  styleUrl: './team-management-banner.component.scss'
+  styleUrl: './team-management-banner.component.scss',
+  standalone: false
 })
 export class TeamManagementBannerComponent {
   private dialogRef!: MatDialogRef<AddEditTeamDialogComponent> | undefined;

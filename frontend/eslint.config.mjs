@@ -130,6 +130,8 @@ export default tsEslint.config(
           style: 'kebab-case',
         },
       ],
+      // Off because angular our files are not standalone
+      '@angular-eslint/prefer-standalone': 'off',
     },
   },
   {

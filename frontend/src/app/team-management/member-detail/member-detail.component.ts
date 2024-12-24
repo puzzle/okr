@@ -13,7 +13,8 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
-  styleUrl: './member-detail.component.scss'
+  styleUrl: './member-detail.component.scss',
+  standalone: false
 })
 export class MemberDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;

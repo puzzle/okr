@@ -14,7 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-key-result-form',
   templateUrl: './key-result-form.component.html',
   styleUrls: ['./key-result-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class KeyResultFormComponent implements OnInit, OnDestroy {
   users$!: Observable<User[]>;

@@ -1,7 +1,7 @@
-@import '../style/variables';
+@use 'variables';
 
 #top-bar-height {
-  height: $top-bar-height;
+  height: variables.$top-bar-height;
 }
 
 span.d-none.d-md-flex {

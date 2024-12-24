@@ -5,7 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-show-edit-role',
   templateUrl: './show-edit-role.component.html',
-  styleUrl: './show-edit-role.component.scss'
+  styleUrl: './show-edit-role.component.scss',
+  standalone: false
 })
 export class ShowEditRoleComponent {
   @Input({ required: true }) userTeam!: UserTeam;

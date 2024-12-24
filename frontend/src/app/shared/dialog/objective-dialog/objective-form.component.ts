@@ -21,7 +21,8 @@ import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
   selector: 'app-objective-form',
   templateUrl: './objective-form.component.html',
   styleUrls: ['./objective-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   objectiveForm = new FormGroup({

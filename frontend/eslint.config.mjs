@@ -5,6 +5,7 @@ import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
 import htmlParser from '@html-eslint/parser'
+import { createRegexForWords } from './eslintHelper.mjs'
 
 export default tsEslint.config(
   {
@@ -18,6 +19,11 @@ export default tsEslint.config(
       ...tsEslint.configs.stylistic,
       ...angular.configs.tsRecommended,
     ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './tsconfig.spec.json'],
+      },
+    },
     processor: angular.processInlineTemplates,
     languageOptions: {
       globals: {
@@ -130,8 +136,38 @@ export default tsEslint.config(
           style: 'kebab-case',
         },
       ],
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: ['class', 'interface'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'variable',
+          modifiers: [],
+          format: ['camelCase', 'UPPER_CASE'],
+        },
+        {
+          selector: 'enum',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'enumMember',
+          format: ['UPPER_CASE'],
+        },
+        {
+          selector: ['method', 'function'],
+          format: ['camelCase'],
+        },
+        {
+          selector: 'typeParameter',
+          format: ['PascalCase'],
+        },
+      ],
+      'id-match': ['error', createRegexForWords(['KeyResult', 'CheckIn', 'TeamManagement', 'StretchGoal'])],
     },
   },
+
   {
     files: ['**/*.spec.ts'],
     extends: [...tsEslint.configs.recommended],
@@ -159,6 +195,13 @@ export default tsEslint.config(
       '@html-eslint/require-img-alt': 'off',
       '@html-eslint/indent': ['error', 2],
       '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
+      '@html-eslint/id-naming-convention': [
+        'error',
+        'regex',
+        {
+          pattern: `(?=(^[a-z]+(-[a-z]+)*$))(?=(${createRegexForWords(['KeyResult', 'CheckIn', 'TeamManagement', 'StretchGoal'])}))`,
+        },
+      ],
       //Doesn't work with Angular 17+
       '@html-eslint/element-newline': 'off',
     },

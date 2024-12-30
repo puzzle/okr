@@ -69,6 +69,7 @@
     "cypress-real-events": "^1.13.0",
     "jest-preset-angular": "^14.4.2",
     "eslint": "^9.17.0",
+    "eslint-plugin-check-file": "^2.8.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "ngx-translate-testing": "^7.0.0",
     "prettier": "^3.4.2",

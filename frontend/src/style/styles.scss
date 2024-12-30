@@ -113,7 +113,7 @@ body.okr {
 .dialog-data-show {
   @extend .okr-form-label;
   @extend .linebreak;
-  @extend .bg-display-element !optional;
+  @extend .bg-display-element;
   @extend .fs-6;
   @extend .fw-normal;
   @extend .px-2;

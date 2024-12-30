@@ -1,3 +1,4 @@
+@use 'sass:color';
 //Get color palette for color https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
 
 $pz-dark-blue: #1e5a96;
@@ -21,17 +22,17 @@ $dialog-action-buttons-div-height: 52px;
 $dialog-content-padding-y: 20px;
 
 $pz-dark-blue-palette: (
-  50: lighten($pz-dark-blue, 50%),
-  100: lighten($pz-dark-blue, 40%),
-  200: lighten($pz-dark-blue, 30%),
-  300: lighten($pz-dark-blue, 20%),
-  400: lighten($pz-dark-blue, 10%),
+  50: color.adjust($pz-dark-blue, $lightness: 50%),
+  100: color.adjust($pz-dark-blue, $lightness: 40%),
+  200: color.adjust($pz-dark-blue, $lightness: 30%),
+  300: color.adjust($pz-dark-blue, $lightness: 20%),
+  400: color.adjust($pz-dark-blue, $lightness: 10%),
   500: $pz-dark-blue,
-  600: darken($pz-dark-blue, 10%),
-  700: darken($pz-dark-blue, 20%),
-  800: darken($pz-dark-blue, 30%),
-  900: darken($pz-dark-blue, 40%),
-  1000: darken($pz-dark-blue, 50%),
+  600: color.adjust($pz-dark-blue, $lightness: -10%),
+  700: color.adjust($pz-dark-blue, $lightness: -20%),
+  800: color.adjust($pz-dark-blue, $lightness: -30%),
+  900: color.adjust($pz-dark-blue, $lightness: -40%),
+  1000: color.adjust($pz-dark-blue, $lightness: -50%),
   contrast: (
     50: rgba(black, 0.87),
     100: rgba(black, 0.87),

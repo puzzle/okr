@@ -11,7 +11,8 @@ import { UserOkrData } from '../../shared/types/model/user-okr-data';
 @Component({
   selector: 'app-delete-user',
   templateUrl: './delete-user.component.html',
-  styleUrl: './delete-user.component.scss'
+  styleUrl: './delete-user.component.scss',
+  standalone: false
 })
 export class DeleteUserComponent implements OnInit, OnDestroy {
   @Input({ required: true }) user!: User;

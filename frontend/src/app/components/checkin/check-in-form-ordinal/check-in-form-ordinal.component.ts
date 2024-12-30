@@ -7,7 +7,8 @@ import { CheckInMin } from '../../../shared/types/model/check-in-min';
 @Component({
   selector: 'app-check-in-form-ordinal',
   templateUrl: './check-in-form-ordinal.component.html',
-  styleUrls: ['./check-in-form-ordinal.component.scss']
+  styleUrls: ['./check-in-form-ordinal.component.scss'],
+  standalone: false
 })
 export class CheckInFormOrdinalComponent {
   @Input()

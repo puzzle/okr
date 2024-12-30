@@ -6,7 +6,8 @@ import { TeamService } from '../../services/team.service';
 @Component({
   selector: 'app-edit-okr-champion',
   templateUrl: './edit-okr-champion.component.html',
-  styleUrl: './edit-okr-champion.component.scss'
+  styleUrl: './edit-okr-champion.component.scss',
+  standalone: false
 })
 export class EditOkrChampionComponent {
   @Input({ required: true }) user!: User;

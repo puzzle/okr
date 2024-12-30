@@ -7,7 +7,8 @@ import { UserTeam } from '../../shared/types/model/user-team';
 @Component({
   selector: 'app-add-user-team',
   templateUrl: './add-user-team.component.html',
-  styleUrl: './add-user-team.component.scss'
+  styleUrl: './add-user-team.component.scss',
+  standalone: false
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
   @Output()

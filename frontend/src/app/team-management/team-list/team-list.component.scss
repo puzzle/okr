@@ -1,4 +1,4 @@
-@import '../../../style/_variables.scss';
+@use 'variables';
 
 :host {
   width: 100%;
@@ -11,10 +11,10 @@
     > mat-nav-list {
       padding: 0;
 
-      background-color: $light-grey;
+      background-color: variables.$light-grey;
 
       .selected {
-        background-color: $pz-dark-blue;
+        background-color: variables.$pz-dark-blue;
 
         ::ng-deep .mdc-list-item__primary-text {
           color: white;

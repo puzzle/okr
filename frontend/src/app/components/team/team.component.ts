@@ -14,7 +14,8 @@ import { BehaviorSubject, first } from 'rxjs';
   selector: 'app-team',
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class TeamComponent {
   @Input({ required: true })

@@ -1,4 +1,4 @@
-@import '../style/variables';
+@use 'variables';
 .sidebar__content {
   padding: 32px;
 }
@@ -7,6 +7,6 @@
   transition: right 300ms;
   position: relative;
   right: -100%;
-  padding-bottom: $top-bar-height;
+  padding-bottom: variables.$top-bar-height;
   width: 100vw !important;
 }

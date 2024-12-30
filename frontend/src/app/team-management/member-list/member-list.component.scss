@@ -1,4 +1,4 @@
-@import '../../../style/_variables.scss';
+@use 'variables';
 
 :host {
   width: 100%;
@@ -12,7 +12,7 @@
     #member-header {
       display: flex;
       align-items: center;
-      background-color: $dark-grey;
+      background-color: variables.$dark-grey;
       width: 100%;
       min-height: 57px;
       justify-content: space-between;

@@ -58,9 +58,11 @@ describe('crud operations', () => {
       .should('not.exist');
   });
 
-  it(`should delete existing objective`, () => {
-    op.getObjectiveByState('ongoing').findByTestId('three-dot-menu').click();
-    op.selectFromThreeDotMenu('Objective löschen');
+  it('should delete existing objective', () => {
+    overviewPage.getObjectiveByState('ongoing')
+      .findByTestId('three-dot-menu')
+      .click();
+    overviewPage.selectFromThreeDotMenu('Objective löschen');
     ConfirmDialog.do()
       .checkTitle('Objective löschen')
       .checkDescription('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')

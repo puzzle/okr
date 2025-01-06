@@ -54,7 +54,8 @@ export class ObjectiveMenuActionsService {
   }
 
   private getDefaultActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [this.actions.duplicateObjectiveAction(objective), this.actions.deleteObjectiveAction(objective)];
+    return [this.actions.duplicateObjectiveAction(objective),
+      this.actions.deleteObjectiveAction(objective)];
   }
 
   private getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {

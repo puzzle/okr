@@ -45,9 +45,10 @@ export class ObjectiveMenuAfterActions {
   }
 
   deleteObjective(objective: ObjectiveMin) {
-    this.objectiveService.deleteObjective(objective.id).subscribe(() => {
-      this.refreshDataService.markDataRefresh();
-    });
+    this.objectiveService.deleteObjective(objective.id)
+      .subscribe(() => {
+        this.refreshDataService.markDataRefresh();
+      });
   }
 
   objectiveBackToDraft(objectiveMin: ObjectiveMin) {

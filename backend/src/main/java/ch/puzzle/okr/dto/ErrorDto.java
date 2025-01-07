@@ -1,7 +1,6 @@
 package ch.puzzle.okr.dto;
 
 import ch.puzzle.okr.ErrorKey;
-
 import java.io.Serializable;
 import java.util.List;
 

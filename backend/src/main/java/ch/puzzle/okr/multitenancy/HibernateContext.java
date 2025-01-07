@@ -1,9 +1,8 @@
 package ch.puzzle.okr.multitenancy;
 
 import ch.puzzle.okr.exception.HibernateContextException;
-import org.springframework.core.env.ConfigurableEnvironment;
-
 import java.util.Properties;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 public class HibernateContext {
     public static final String HIBERNATE_CONNECTION_URL = "hibernate.connection.url";

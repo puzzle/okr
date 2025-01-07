@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import ch.puzzle.okr.exception.HibernateContextException;
 import java.util.Properties;
 import java.util.stream.Stream;
-import ch.puzzle.okr.exception.HibernateContextException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class HibernateContextTest {
 
         // act + assert
         HibernateContextException exception = assertThrows(HibernateContextException.class,
-                () -> setHibernateConfig(dbConfig));
+                                                           () -> setHibernateConfig(dbConfig));
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
 
@@ -45,7 +45,7 @@ public class HibernateContextTest {
 
         // act + assert
         HibernateContextException exception = assertThrows(HibernateContextException.class,
-                () -> setHibernateConfig(dbConfig));
+                                                           () -> setHibernateConfig(dbConfig));
         assertTrue(exception.getMessage().startsWith("Invalid hibernate configuration"));
     }
 
@@ -90,7 +90,7 @@ public class HibernateContextTest {
 
         // act + assert
         HibernateContextException exception = assertThrows(HibernateContextException.class,
-                HibernateContext::getHibernateConfig);
+                                                           HibernateContext::getHibernateConfig);
         assertEquals("No cached hibernate configuration found", exception.getMessage());
     }
 

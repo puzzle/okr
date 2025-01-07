@@ -17,17 +17,14 @@ public class JwtStatusLogger {
 
     public static void logStatus(String claim, Object context, boolean isOk) {
         if (isOk) {
-            logger
-                    .atInfo().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(isOk));
+            logger.atInfo().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(isOk));
         } else {
-            logger
-                    .atWarn().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(isOk));
+            logger.atWarn().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(isOk));
         }
     }
 
     public static void logStatus(String claim, Object context, ParseException e) {
-        logger
-                .atWarn().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(false), e);
+        logger.atWarn().log(LOG_MESSAGE, claim, context.getClass().getSimpleName(), statusToSymbol(false), e);
     }
 
     private static String statusToSymbol(boolean isOk) {

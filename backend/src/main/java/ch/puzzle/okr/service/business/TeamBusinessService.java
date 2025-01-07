@@ -138,9 +138,10 @@ public class TeamBusinessService {
     }
 
     private void checkTeamHasAtLeastOneAdmin(Team team, User user) {
-        boolean hasAdmin = team.getUserTeamList().stream()
-                .anyMatch(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId()))
-                ;
+        boolean hasAdmin = team
+                .getUserTeamList()
+                .stream()
+                .anyMatch(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId()));
         if (!hasAdmin) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.TRIED_TO_DELETE_LAST_ADMIN);
         }

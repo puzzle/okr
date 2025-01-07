@@ -35,8 +35,8 @@ import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -50,23 +50,23 @@ import org.springframework.web.server.ResponseStatusException;
 @WebMvcTest(KeyResultController.class)
 class KeyResultControllerIT {
 
-    @MockBean
+    @MockitoBean
     KeyResultMapper keyResultMapper;
-    @MockBean
+    @MockitoBean
     CheckInMapper checkInMapper;
-    @MockBean
+    @MockitoBean
     ActionMapper actionMapper;
-    @MockBean
+    @MockitoBean
     KeyResultAuthorizationService keyResultAuthorizationService;
-    @MockBean
+    @MockitoBean
     ActionAuthorizationService actionAuthorizationService;
-    @MockBean
+    @MockitoBean
     UserPersistenceService userPersistenceService;
-    @MockBean
+    @MockitoBean
     ObjectivePersistenceService objectivePersistenceService;
-    @MockBean
+    @MockitoBean
     private KeyResultBusinessService keyResultBusinessService;
-    @SpyBean
+    @MockitoSpyBean
     DeserializerHelper deserializerHelper;
     @Autowired
     private MockMvc mvc;

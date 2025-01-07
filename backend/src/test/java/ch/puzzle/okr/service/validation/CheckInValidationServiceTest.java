@@ -30,11 +30,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInValidationServiceTest {
-    @MockBean
+    @MockitoBean
     CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
 
     private final User user = User.Builder

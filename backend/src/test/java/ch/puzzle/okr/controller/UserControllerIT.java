@@ -26,7 +26,7 @@ import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -64,11 +64,11 @@ class UserControllerIT {
     static UserDto userBobDto = new UserDto(9L, 4, FIRST_NAME_2, LAST_NAME_2, EMAIL_2, new ArrayList<>(), false);
     @Autowired
     private MockMvc mvc;
-    @MockBean
+    @MockitoBean
     private UserAuthorizationService userAuthorizationService;
-    @MockBean
+    @MockitoBean
     private AuthorizationService authorizationService;
-    @MockBean
+    @MockitoBean
     private UserMapper userMapper;
 
     @BeforeEach

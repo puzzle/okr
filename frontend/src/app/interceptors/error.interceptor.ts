@@ -5,9 +5,7 @@ import { Router } from '@angular/router';
 import {
   DRAWER_ROUTES,
   ERROR_MESSAGE_KEY_PREFIX,
-  GJ_REGEX_PATTERN,
-  MessageEntry,
-  MessageStatusCode,
+  GJ_REGEX_PATTERN, MessageEntry, MessageStatusCode,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP
 } from '../shared/constant-library';
@@ -84,7 +82,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       }
 
       const messageKey = value.KEY + '.' + method;
-      return { key: messageKey, toasterType: ToasterType.SUCCESS };
+      return { key: messageKey,
+        toasterType: ToasterType.SUCCESS };
     }
     return undefined;
   }
@@ -102,7 +101,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     for (const codeKey of codeKeys) {
       if (codeKey.code == statusCode) {
         const messageKey = entry.KEY + '.' + codeKey.key;
-        return { key: messageKey, toasterType: codeKey.toaster };
+        return { key: messageKey,
+          toasterType: codeKey.toaster };
       }
     }
     return undefined;

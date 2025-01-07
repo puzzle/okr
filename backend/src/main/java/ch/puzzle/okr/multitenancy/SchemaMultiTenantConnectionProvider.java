@@ -5,6 +5,7 @@ import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
 import ch.puzzle.okr.exception.ConnectionProviderException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.*;
 import org.hibernate.cfg.MappingSettings;

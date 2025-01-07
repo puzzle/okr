@@ -71,7 +71,7 @@ public class ClientConfigService {
             }
             logger.info("get config found for {} : failed", tenant);
         }
-        logger.info("no config found for {} : failed", hostname);
+        logger.info("no config found for {} : failed", hostName);
         return Optional.empty();
     }
 

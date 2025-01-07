@@ -1,12 +1,11 @@
 package ch.puzzle.okr.util.quarter.generate.h2;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-
 import static ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class QuarterFunctionTest {
 
@@ -18,9 +17,9 @@ public class QuarterFunctionTest {
 
         // act
         String currentQuarter = "(" //
-                + currentQuarterLabel() + ", " //
-                + currentQuarterStartDate() + ", " //
-                + currentQuarterEndDate() + ")";
+                                + currentQuarterLabel() + ", " //
+                                + currentQuarterStartDate() + ", " //
+                                + currentQuarterEndDate() + ")";
 
         // assert
         String expectedCurrent = "(GJ 24/25-Q2, 2024-10-01, 2024-12-31)";
@@ -35,9 +34,9 @@ public class QuarterFunctionTest {
 
         // act
         String nextQuarter = "(" //
-                + nextQuarterLabel() + ", " //
-                + nextQuarterStartDate() + ", " //
-                + nextQuarterEndDate() + ")";
+                             + nextQuarterLabel() + ", " //
+                             + nextQuarterStartDate() + ", " //
+                             + nextQuarterEndDate() + ")";
 
         // assert
         String expectedNext = "(GJ 24/25-Q3, 2025-01-01, 2025-03-31)";

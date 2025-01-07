@@ -7,6 +7,8 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../services/dialog.service';
+import { CompletedService } from '../../services/completed.servce';
+import { Completed } from '../../shared/types/model/Completed';
 
 @Component({
   selector: 'app-objective-detail',
@@ -17,11 +19,12 @@ import { DialogService } from '../../services/dialog.service';
 })
 export class ObjectiveDetailComponent implements OnInit {
   objectiveId!: number;
-
+  completed!: Completed;
   objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
   constructor(
     private objectiveService: ObjectiveService,
+    private completedService: CompletedService,
     private dialogService: DialogService,
     private refreshDataService: RefreshDataService,
     private router: Router,
@@ -31,6 +34,7 @@ export class ObjectiveDetailComponent implements OnInit {
   ngOnInit(): void {
     this.objectiveId = this.getIdFromParams();
     this.loadObjective(this.objectiveId);
+    this.loadComponent(this.objectiveId);
   }
 
   private getIdFromParams(): number {
@@ -46,6 +50,15 @@ export class ObjectiveDetailComponent implements OnInit {
       .getFullObjective(id)
       .pipe(catchError(() => EMPTY))
       .subscribe((objective) => this.objective$.next(objective));
+  }
+
+  loadComponent(id: number): void {
+    this.completedService
+      .getCompleted(id)
+      .pipe(catchError(() => EMPTY))
+      .subscribe((completed: Completed) => {
+        this.completed = completed;
+      });
   }
 
   openAddKeyResultDialog() {

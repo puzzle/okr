@@ -36,10 +36,6 @@ public class CompletedBusinessService {
     }
 
     public Completed getCompletedByObjectiveId(Long objectiveId) {
-        Completed completed = completedPersistenceService.getCompletedByObjectiveId(objectiveId);
-        if (completed == null) {
-            throw new OkrResponseStatusException(NOT_FOUND, "Did not find the Completed with requested Objective id");
-        }
-        return completed;
+        return completedPersistenceService.getCompletedByObjectiveId(objectiveId);
     }
 }

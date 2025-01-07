@@ -35,6 +35,7 @@ import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -48,6 +49,7 @@ import org.springframework.web.server.ResponseStatusException;
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(KeyResultController.class)
+@Import(DeserializerHelper.class)
 class KeyResultControllerIT {
 
     @MockitoBean
@@ -66,8 +68,6 @@ class KeyResultControllerIT {
     ObjectivePersistenceService objectivePersistenceService;
     @MockitoBean
     private KeyResultBusinessService keyResultBusinessService;
-    @MockitoSpyBean
-    DeserializerHelper deserializerHelper;
     @Autowired
     private MockMvc mvc;
 

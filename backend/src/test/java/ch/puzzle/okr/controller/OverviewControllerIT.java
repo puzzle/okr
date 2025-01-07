@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import ch.puzzle.okr.mapper.AlignmentSelectionMapper;
 import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
@@ -24,6 +25,7 @@ import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -34,14 +36,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(OverviewController.class)
+@Import(OverviewMapper.class)
 class OverviewControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockitoBean
     private OverviewAuthorizationService overviewAuthorizationService;
-    // Dashboard and OverviewMapper are required for testing
-    @MockitoSpyBean
-    private OverviewMapper overviewMapper;
 
     public static final String PUZZLE = "Puzzle";
     public static final String DESCRIPTION = "This is a description";

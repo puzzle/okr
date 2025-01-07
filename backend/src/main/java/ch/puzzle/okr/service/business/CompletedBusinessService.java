@@ -1,8 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import ch.puzzle.okr.service.validation.CompletedValidationService;

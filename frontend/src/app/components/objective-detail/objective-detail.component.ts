@@ -8,7 +8,7 @@ import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/obj
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../services/dialog.service';
 import { CompletedService } from '../../services/completed.servce';
-import { Completed } from '../../shared/types/model/Completed';
+import { Completed } from '../../shared/types/model/completed';
 
 @Component({
   selector: 'app-objective-detail',
@@ -19,7 +19,9 @@ import { Completed } from '../../shared/types/model/Completed';
 })
 export class ObjectiveDetailComponent implements OnInit {
   objectiveId!: number;
+
   completed!: Completed;
+
   objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
   constructor(

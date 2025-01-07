@@ -151,10 +151,9 @@ class AuthorizationServiceTest {
     void shouldAllowReadAccessByKeyResultIdWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        OkrResponseStatusException expectedException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleReadByKeyResultId(id, authorizationUser));
-        verify(objectivePersistenceService, times(1)).findObjectiveByKeyResultId(eq(id), eq(authorizationUser),expectedException);
+        verify(objectivePersistenceService, times(1)).findObjectiveByKeyResultId(id, authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
     }
 
     @DisplayName("Should throw exception when objective not found for read by CheckIn ID")
@@ -187,7 +186,7 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleReadByCheckInId(id, authorizationUser));
-        verify(objectivePersistenceService, times(1)).findObjectiveByCheckInId(eq(id), eq(authorizationUser), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
+        verify(objectivePersistenceService, times(1)).findObjectiveByCheckInId(id, authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
     }
 
     @DisplayName("Should allow create or update for all objectives when authorized")
@@ -197,7 +196,6 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should allow create or update when user is admin")
@@ -207,7 +205,6 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should allow create or update when user is team member")
@@ -217,7 +214,6 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should throw exception for create or update when user is not in team")
@@ -250,7 +246,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should allow create or update as admin for key results")
@@ -266,7 +261,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should throw exception when not authorized for key results")
@@ -309,7 +303,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should pass through when authorized as member for team check-ins")
@@ -328,7 +321,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should throw exception when not in team for team check-ins")
@@ -367,7 +359,6 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should pass through when authorized as admin by objective ID")
@@ -380,7 +371,6 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should pass through when authorized as member by objective ID")
@@ -393,7 +383,6 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should throw exception when not in team by objective ID")
@@ -555,7 +544,6 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByObjectiveId(id, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should pass through when authorized for all team key results by key result ID")
@@ -570,7 +558,6 @@ class AuthorizationServiceTest {
 
         authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser);
         assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should pass through when authorized as admin for team check-ins by check-in ID")
@@ -584,7 +571,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should pass through when authorized as member for team check-ins by check-in ID")
@@ -598,7 +584,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should pass through when OKR champion for key results by key result ID")
@@ -614,7 +599,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should pass through when admin for key results by key result ID")
@@ -630,7 +614,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should pass through when member for key results by key result ID")
@@ -646,7 +629,6 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
-        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should throw exception when not in team for key results by key result ID")

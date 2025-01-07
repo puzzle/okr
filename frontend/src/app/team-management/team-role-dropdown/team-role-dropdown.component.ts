@@ -4,7 +4,6 @@ import { FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-team-role-dropdown',
   templateUrl: './team-role-dropdown.component.html',
-  styleUrl: './team-role-dropdown.component.scss',
   standalone: false
 })
 export class TeamRoleDropdownComponent implements OnInit {

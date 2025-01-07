@@ -70,8 +70,8 @@ class ActionValidationServiceTest {
                 .of(arguments(StringUtils.repeat('1', 5000),
                               List
                                       .of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN",
-                                                       List.of("action", "Action", "0", "4096")))),
-                    arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")))));
+                                                       List.of("actionPoint", "Action", "0", "4096")))),
+                    arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("actionPoint", "Action")))));
     }
 
     private record ActionPair(Action action, Action saveAction) {
@@ -219,7 +219,7 @@ class ActionValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List
                 .of( //
-                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")), //
+                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("actionPoint", "Action")), //
                     new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "Action")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
@@ -415,7 +415,7 @@ class ActionValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List
                 .of( //
-                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")));
+                    new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("actionPoint", "Action")));
         assertOkrResponseStatusException(exception, expectedErrors);
     }
 

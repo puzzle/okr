@@ -104,8 +104,8 @@ public class Action implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Action{" + "id=" + id + ", version=" + version + ", action='" + actionPoint + '\'' + ", priority=" + priority
-               + ", checked=" + checked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
+        return "Action{" + "id=" + id + ", version=" + version + ", action='" + actionPoint + '\'' + ", priority="
+               + priority + ", checked=" + checked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
     }
 
     @Override

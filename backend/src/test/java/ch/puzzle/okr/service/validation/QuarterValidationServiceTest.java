@@ -82,7 +82,7 @@ class QuarterValidationServiceTest {
         when(quarter.getEndDate()).thenReturn(LocalDate.now());
 
         // act
-        assertDoesNotThrow(() ->QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+        assertDoesNotThrow(() -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
 
         // assert (does nothing ... so nothing to check here)
     }

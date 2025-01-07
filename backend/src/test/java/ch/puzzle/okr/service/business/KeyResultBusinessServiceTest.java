@@ -143,9 +143,7 @@ class KeyResultBusinessServiceTest {
         Long id = metricKeyResult.getId();
         IllegalCallerException exception = assertThrows(IllegalCallerException.class,
                                                         () -> keyResultBusinessService
-                                                                .updateEntity(id,
-                                                                              metricKeyResult,
-                                                                              authorizationUser));
+                                                                .updateEntity(id, metricKeyResult, authorizationUser));
 
         assertEquals("unsupported method 'updateEntity' use updateEntities() instead", exception.getMessage());
     }

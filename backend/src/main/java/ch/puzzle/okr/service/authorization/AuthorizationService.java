@@ -190,7 +190,7 @@ public class AuthorizationService {
     }
 
     protected void hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team,
-                                     OkrResponseStatusException notAuthorizedException) {
+                                       OkrResponseStatusException notAuthorizedException) {
         if (hasRoleWriteForTeam(authorizationUser, team)) {
             return;
         }

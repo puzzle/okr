@@ -6,7 +6,6 @@ import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.ErrorDto;
 import java.util.List;
 import java.util.Objects;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 

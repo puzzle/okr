@@ -116,11 +116,13 @@ class AuthorizationServiceTest {
     @Test
     void shouldAllowReadAccessByObjectiveIdWhenPermitted() {
         Long id = 1L;
-        OkrResponseStatusException okrResponseStatusException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, OBJECTIVE);
+        OkrResponseStatusException okrResponseStatusException = OkrResponseStatusException
+                .of(NOT_AUTHORIZED_TO_READ, OBJECTIVE);
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleReadByObjectiveId(id, authorizationUser));
-        verify(objectivePersistenceService, times(1)).findObjectiveById(id, authorizationUser, okrResponseStatusException);
+        verify(objectivePersistenceService, times(1))
+                .findObjectiveById(id, authorizationUser, okrResponseStatusException);
     }
 
     @DisplayName("Should throw exception when objective not found for read by KeyResult ID")
@@ -153,7 +155,10 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleReadByKeyResultId(id, authorizationUser));
-        verify(objectivePersistenceService, times(1)).findObjectiveByKeyResultId(id, authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
+        verify(objectivePersistenceService, times(1))
+                .findObjectiveByKeyResultId(id,
+                                            authorizationUser,
+                                            OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
     }
 
     @DisplayName("Should throw exception when objective not found for read by CheckIn ID")
@@ -162,8 +167,7 @@ class AuthorizationServiceTest {
         Long id = 13L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        OkrResponseStatusException expectedException = OkrResponseStatusException
-                .of(NOT_AUTHORIZED_TO_READ, CHECK_IN);
+        OkrResponseStatusException expectedException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN);
         when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
                 .thenThrow(expectedException);
 
@@ -186,7 +190,10 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleReadByCheckInId(id, authorizationUser));
-        verify(objectivePersistenceService, times(1)).findObjectiveByCheckInId(id, authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
+        verify(objectivePersistenceService, times(1))
+                .findObjectiveByCheckInId(id,
+                                          authorizationUser,
+                                          OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
     }
 
     @DisplayName("Should allow create or update for all objectives when authorized")
@@ -242,7 +249,7 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
         when(objectivePersistenceService
-                     .findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser), any()))
+                .findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
         assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser));

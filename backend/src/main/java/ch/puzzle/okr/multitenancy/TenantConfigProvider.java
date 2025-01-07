@@ -93,27 +93,29 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
             if (!(o instanceof TenantConfig that)) {
                 return false;
             }
-            return Objects.equals(tenantId(), that.tenantId()) && Objects.equals(clientId(), that.clientId()) &&
-                   Objects.equals(jwkSetUri(), that.jwkSetUri()) && Objects.equals(issuerUrl(), that.issuerUrl()) &&
-                   Objects.deepEquals(okrChampionEmails(), that.okrChampionEmails()) &&
-                   Objects.equals(dataSourceConfig(), that.dataSourceConfig());
+            return Objects.equals(tenantId(), that.tenantId()) && Objects.equals(clientId(), that.clientId())
+                   && Objects.equals(jwkSetUri(), that.jwkSetUri()) && Objects.equals(issuerUrl(), that.issuerUrl())
+                   && Objects.deepEquals(okrChampionEmails(), that.okrChampionEmails())
+                   && Objects.equals(dataSourceConfig(), that.dataSourceConfig());
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(tenantId(),
-                                Arrays.hashCode(okrChampionEmails()),
-                                jwkSetUri(),
-                                issuerUrl(),
-                                clientId(),
-                                dataSourceConfig());
+            return Objects
+                    .hash(tenantId(),
+                          Arrays.hashCode(okrChampionEmails()),
+                          jwkSetUri(),
+                          issuerUrl(),
+                          clientId(),
+                          dataSourceConfig());
         }
 
         @Override
         public String toString() {
-            return "TenantConfig{" + "tenantId='" + tenantId + '\'' + ", okrChampionEmails=" +
-                   Arrays.toString(okrChampionEmails) + ", jwkSetUri='" + jwkSetUri + '\'' + ", issuerUrl='" +
-                   issuerUrl + '\'' + ", clientId='" + clientId + '\'' + ", dataSourceConfig=" + dataSourceConfig + '}';
+            return "TenantConfig{" + "tenantId='" + tenantId + '\'' + ", okrChampionEmails="
+                   + Arrays.toString(okrChampionEmails) + ", jwkSetUri='" + jwkSetUri + '\'' + ", issuerUrl='"
+                   + issuerUrl + '\'' + ", clientId='" + clientId + '\'' + ", dataSourceConfig=" + dataSourceConfig
+                   + '}';
         }
     }
 

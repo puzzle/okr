@@ -83,8 +83,7 @@ class UserAuthorizationServiceTest {
         when(userBusinessService.getUserById(user.getId())).thenReturn(user);
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
-        assertThrows(OkrResponseStatusException.class,
-                     () -> userAuthorizationService.setIsOkrChampion(userId, true));
+        assertThrows(OkrResponseStatusException.class, () -> userAuthorizationService.setIsOkrChampion(userId, true));
     }
 
     @DisplayName("Should call the businessService when creating users")
@@ -111,8 +110,7 @@ class UserAuthorizationServiceTest {
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
-        assertThrows(OkrResponseStatusException.class,
-                     () -> userAuthorizationService.createUsers(userList));
+        assertThrows(OkrResponseStatusException.class, () -> userAuthorizationService.createUsers(userList));
     }
 
     @DisplayName("Should return false if user is not a member of teams")

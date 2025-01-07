@@ -60,9 +60,8 @@ public class UserBusinessService {
                 .filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId()))
                 .findAny();
 
-        if (optionalUser.isEmpty()){
-            throw  new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION);
+        if (optionalUser.isEmpty()) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION);
         }
     }
 

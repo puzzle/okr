@@ -1,13 +1,13 @@
 package ch.puzzle.okr.service.business;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import ch.puzzle.okr.service.validation.CompletedValidationService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class CompletedBusinessService {

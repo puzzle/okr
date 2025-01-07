@@ -100,7 +100,6 @@ describe('CheckInFormComponent', () => {
     component.dialogForm.controls['value'].setValue(checkInMetric?.value!.toString());
     component.dialogForm.controls['confidence'].setValue(checkInMetric.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInMetric.changeInfo);
-    component.dialogForm.controls['initiatives'].setValue(checkInMetric.initiatives);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInMetric));
     actionServiceMock.updateActions.mockReturnValue(of(action2));
@@ -113,7 +112,6 @@ describe('CheckInFormComponent', () => {
         confidence: checkInMetric.confidence,
         value: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
-        initiatives: checkInMetric.initiatives,
         keyResultId: keyResultMetric.id
       });
     expect(actionServiceMock.updateActions)
@@ -126,7 +124,6 @@ describe('CheckInFormComponent', () => {
     component.dialogForm.controls['value'].setValue(checkInOrdinal?.zone!.toString());
     component.dialogForm.controls['confidence'].setValue(checkInOrdinal.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInOrdinal.changeInfo);
-    component.dialogForm.controls['initiatives'].setValue(checkInOrdinal.initiatives);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInOrdinal));
     actionServiceMock.updateActions.mockReturnValue(of(action2));
@@ -139,7 +136,6 @@ describe('CheckInFormComponent', () => {
         confidence: checkInOrdinal.confidence,
         zone: checkInOrdinal.zone,
         changeInfo: checkInOrdinal.changeInfo,
-        initiatives: checkInOrdinal.initiatives,
         keyResultId: keyResultOrdinal.id
       });
   }));
@@ -152,7 +148,6 @@ describe('CheckInFormComponent', () => {
         confidence: checkInMetric.confidence,
         value: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
-        initiatives: checkInMetric.initiatives,
         actionList: undefined
       });
   }));
@@ -166,7 +161,6 @@ describe('CheckInFormComponent', () => {
         confidence: keyResultOrdinal.lastCheckIn!.confidence,
         value: '',
         changeInfo: '',
-        initiatives: '',
         actionList: []
       });
   }));
@@ -180,7 +174,6 @@ describe('CheckInFormComponent', () => {
         confidence: keyResultActions.lastCheckIn!.confidence,
         value: '',
         changeInfo: '',
-        initiatives: '',
         actionList: [action1,
           action2]
       });

@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CheckIn } from '../../../shared/types/model/check-in';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-check-in-form',
@@ -28,13 +29,16 @@ export class CheckInFormComponent implements OnInit {
 
   currentDate: Date;
 
+  actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
+
+  isAddingAction = false;
+
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required,
       Validators.min(0),
       Validators.max(10)]),
     changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
-    initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
     actionList: new FormControl<Action[]>([])
   });
 
@@ -55,7 +59,9 @@ export class CheckInFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dialogForm.patchValue({ actionList: this.keyResult.actionList });
+    const actionList = this.keyResult.actionList;
+    this.actionList$.next(actionList);
+    this.dialogForm.patchValue({ actionList: actionList });
   }
 
   getErrorMessage(error: string, field: string, maxLength: number): string {
@@ -70,7 +76,6 @@ export class CheckInFormComponent implements OnInit {
       this.dialogForm.controls.value.setValue(this.getCheckInValue());
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
-      this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
       return;
     }
 
@@ -100,7 +105,6 @@ export class CheckInFormComponent implements OnInit {
       keyResultId: this.keyResult.id,
       confidence: this.dialogForm.controls.confidence.value,
       changeInfo: this.dialogForm.controls.changeInfo.value,
-      initiatives: this.dialogForm.controls.initiatives.value,
       actionList: this.dialogForm.controls.actionList.value
     };
     const checkIn: CheckIn = {
@@ -148,5 +152,24 @@ export class CheckInFormComponent implements OnInit {
 
   getDialogTitle(): string {
     return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
+  }
+
+  openActionEdit() {
+    const actionList: Action[] = this.actionList$.value as Action[];
+    actionList.push({
+      action: '',
+      priority: actionList.length,
+      keyResultId: this.keyResult.id
+    } as Action);
+    this.actionList$.next(actionList);
+    this.isAddingAction = true;
+  }
+
+  closeActionEdit() {
+    let actionList: Action[] = this.actionList$.value as Action[];
+    actionList = actionList.filter((action) => action.action.trim() != '');
+    this.actionList$.next(actionList);
+    this.dialogForm.patchValue({ actionList: actionList });
+    this.isAddingAction = false;
   }
 }

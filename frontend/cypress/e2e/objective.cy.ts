@@ -52,10 +52,15 @@ describe('okr objective', () => {
 
       cy.getByTestId('successful')
         .click();
+      cy.getByTestId('completeComment')
+        .type('Abgeschlossenes Objective');
       cy.getByTestId('submit')
         .click();
 
       overviewPage.getObjectiveByNameAndState('We want to complete this successful', 'successful');
+      overviewPage.getObjectiveByNameAndState('We want to complete this successful', 'successful')
+        .click();
+      cy.contains('Abgeschlossenes Objective');
     });
 
     it('should complete objective with not-successful', () => {
@@ -78,10 +83,15 @@ describe('okr objective', () => {
 
       cy.getByTestId('not-successful')
         .click();
+      cy.getByTestId('completeComment')
+        .type('Abgeschlossenes Objective');
       cy.getByTestId('submit')
         .click();
 
       overviewPage.getObjectiveByNameAndState('A not successful objective', 'not-successful');
+      overviewPage.getObjectiveByNameAndState('A not successful objective', 'not-successful')
+        .click();
+      cy.contains('Abgeschlossenes Objective');
     });
 
     it('should reopen successful objective', () => {

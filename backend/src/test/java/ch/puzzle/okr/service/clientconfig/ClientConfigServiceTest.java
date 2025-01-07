@@ -14,7 +14,7 @@ import java.util.Optional;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class ClientConfigServiceTest {
+class ClientConfigServiceTest {
 
     @ParameterizedTest(name = "Should be successful on getConfigBasedOnActiveEnv() when tenant is configured properly with tenant {0} and hostName {1}")
     @CsvSource({ "pitc,pitc.ork.ch", "acme,acme-ork.ch" })

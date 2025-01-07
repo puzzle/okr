@@ -77,13 +77,14 @@ class UserAuthorizationServiceTest {
     @Test
     void shouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
         var loggedInUser = defaultUser(1L);
+        Long userId = user.getId();
         loggedInUser.setOkrChampion(false);
 
         when(userBusinessService.getUserById(user.getId())).thenReturn(user);
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
         assertThrows(OkrResponseStatusException.class,
-                     () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
+                     () -> userAuthorizationService.setIsOkrChampion(userId, true));
     }
 
     @DisplayName("Should call the businessService when creating users")
@@ -106,11 +107,12 @@ class UserAuthorizationServiceTest {
     void shouldThrowErrorIfLoggedInUserIsNotOkrChampionWhenCreatingUsers() {
         var loggedInUser = defaultUser(1L);
         loggedInUser.setOkrChampion(false);
+        List<User> userList = List.of(user, user2);
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
         assertThrows(OkrResponseStatusException.class,
-                     () -> userAuthorizationService.createUsers(List.of(user, user2)));
+                     () -> userAuthorizationService.createUsers(userList));
     }
 
     @DisplayName("Should return false if user is not a member of teams")

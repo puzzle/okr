@@ -1,6 +1,7 @@
 package ch.puzzle.okr.deserializer;
 
 import static ch.puzzle.okr.Constants.*;
+import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -144,10 +145,10 @@ class DeserializerHelperTest {
         when(deserializer.getKeyResultType(any())).thenReturn(null);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
-
+        Map<String, Class<? extends CheckInDto>> CHECK_IN_MAP = Map.of("", CheckInOrdinalDto.class);
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
-            deserializerHelper.deserializeMetricOrdinal(jsonParser, Map.of("", CheckInOrdinalDto.class), deserializer)
+            deserializerHelper.deserializeMetricOrdinal(jsonParser, CHECK_IN_MAP, deserializer)
         );
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());

@@ -87,6 +87,34 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
 
     public record TenantConfig(String tenantId, String[] okrChampionEmails, String jwkSetUri, String issuerUrl,
             String clientId, DataSourceConfig dataSourceConfig) {
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof TenantConfig that)) {
+                return false;
+            }
+            return Objects.equals(tenantId(), that.tenantId()) && Objects.equals(clientId(), that.clientId()) &&
+                   Objects.equals(jwkSetUri(), that.jwkSetUri()) && Objects.equals(issuerUrl(), that.issuerUrl()) &&
+                   Objects.deepEquals(okrChampionEmails(), that.okrChampionEmails()) &&
+                   Objects.equals(dataSourceConfig(), that.dataSourceConfig());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(tenantId(),
+                                Arrays.hashCode(okrChampionEmails()),
+                                jwkSetUri(),
+                                issuerUrl(),
+                                clientId(),
+                                dataSourceConfig());
+        }
+
+        @Override
+        public String toString() {
+            return "TenantConfig{" + "tenantId='" + tenantId + '\'' + ", okrChampionEmails=" +
+                   Arrays.toString(okrChampionEmails) + ", jwkSetUri='" + jwkSetUri + '\'' + ", issuerUrl='" +
+                   issuerUrl + '\'' + ", clientId='" + clientId + '\'' + ", dataSourceConfig=" + dataSourceConfig + '}';
+        }
     }
 
     public record DataSourceConfig(String driverClassName, String url, String name, String password, String schema) {
@@ -94,24 +122,5 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     public record OauthConfig(String jwkSetUri, String frontendClientIssuerUrl, String frontendClientId) {
-    }
-
-    @Override
-    public String toString() {
-        return "TenantConfigProvider{" + "tenantConfigs=" + tenantConfigs + ", env=" + env + '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TenantConfigProvider that = (TenantConfigProvider) o;
-        return Objects.equals(getTenantConfigs(), that.getTenantConfigs()) && Objects.equals(env, that.env);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getTenantConfigs(), env);
     }
 }

@@ -164,9 +164,10 @@ class TeamValidationServiceTest {
     @DisplayName("Should be throw exception on validateOnUpdate() when team id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIdIsNull() {
+        Long teamId = teamWithIdNull.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator
-                                                                    .validateOnUpdate(teamWithIdNull.getId(),
+                                                                    .validateOnUpdate(teamId,
                                                                                       teamWithIdNull));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithIdNull);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithIdNull.getId());
@@ -193,9 +194,10 @@ class TeamValidationServiceTest {
     @DisplayName("Should be throw exception on validateOnUpdate() when team name is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNameIsNull() {
+        Long teamId = teamWithoutNameWithId.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator
-                                                                    .validateOnUpdate(teamWithoutNameWithId.getId(),
+                                                                    .validateOnUpdate(teamId,
                                                                                       teamWithoutNameWithId));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutNameWithId);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithoutNameWithId.getId());

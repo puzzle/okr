@@ -189,7 +189,7 @@ public class AuthorizationService {
                             OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, CHECK_IN));
     }
 
-    private void hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team,
+    protected void hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team,
                                      OkrResponseStatusException notAuthorizedException) {
         if (hasRoleWriteForTeam(authorizationUser, team)) {
             return;
@@ -197,7 +197,7 @@ public class AuthorizationService {
         throw notAuthorizedException;
     }
 
-    private boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team) {
+    protected boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team) {
         return hasRoleWriteForTeam(authorizationUser, team.getId());
     }
 }

@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
+import static ch.puzzle.okr.Constants.*;
 import static ch.puzzle.okr.ErrorKey.*;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteForTeam;
@@ -8,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import ch.puzzle.okr.dto.ErrorDto;
@@ -114,12 +115,12 @@ class AuthorizationServiceTest {
     @DisplayName("Should allow read access by objective ID when permitted")
     @Test
     void shouldAllowReadAccessByObjectiveIdWhenPermitted() {
-        Long id = 13L;
+        Long id = 1L;
+        OkrResponseStatusException okrResponseStatusException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, OBJECTIVE);
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any()))
-                .thenReturn(new Objective());
 
-        authorizationService.hasRoleReadByObjectiveId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleReadByObjectiveId(id, authorizationUser));
+        verify(objectivePersistenceService, times(1)).findObjectiveById(id, authorizationUser, okrResponseStatusException);
     }
 
     @DisplayName("Should throw exception when objective not found for read by KeyResult ID")
@@ -150,12 +151,10 @@ class AuthorizationServiceTest {
     void shouldAllowReadAccessByKeyResultIdWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        OkrResponseStatusException expectedException = OkrResponseStatusException
-                .of(NOT_AUTHORIZED_TO_READ, "KeyResult");
-        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any()))
-                .thenReturn(new Objective());
+        OkrResponseStatusException expectedException = OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT);
 
-        authorizationService.hasRoleReadByKeyResultId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleReadByKeyResultId(id, authorizationUser));
+        verify(objectivePersistenceService, times(1)).findObjectiveByKeyResultId(eq(id), eq(authorizationUser),expectedException);
     }
 
     @DisplayName("Should throw exception when objective not found for read by CheckIn ID")
@@ -165,7 +164,7 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         OkrResponseStatusException expectedException = OkrResponseStatusException
-                .of(NOT_AUTHORIZED_TO_READ, "Check-in");
+                .of(NOT_AUTHORIZED_TO_READ, CHECK_IN);
         when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
                 .thenThrow(expectedException);
 
@@ -174,7 +173,7 @@ class AuthorizationServiceTest {
                                                                           .hasRoleReadByCheckInId(id,
                                                                                                   authorizationUser));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_READ, "Check-in"));
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
 
         assertEquals(UNAUTHORIZED, actualException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(actualException.getErrors());
@@ -184,12 +183,11 @@ class AuthorizationServiceTest {
     @DisplayName("Should allow read access by CheckIn ID when permitted")
     @Test
     void shouldAllowReadAccessByCheckInIdWhenPermitted() {
-        Long id = 13L;
+        Long id = 6L;
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
-        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
-                .thenReturn(new Objective());
 
-        authorizationService.hasRoleReadByCheckInId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleReadByCheckInId(id, authorizationUser));
+        verify(objectivePersistenceService, times(1)).findObjectiveByCheckInId(eq(id), eq(authorizationUser), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
     }
 
     @DisplayName("Should allow create or update for all objectives when authorized")
@@ -198,7 +196,8 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
 
-        authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should allow create or update when user is admin")
@@ -207,7 +206,8 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should allow create or update when user is team member")
@@ -216,13 +216,14 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(3L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
-        authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should throw exception for create or update when user is not in team")
     @Test
     void shouldThrowExceptionForCreateOrUpdateWhenUserIsNotInTeam() {
-        var id = otherTeams.get(0).getId();
+        var id = otherTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -244,18 +245,18 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(okrChampion);
-
         when(objectivePersistenceService
-                .findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser), any()))
+                     .findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should allow create or update as admin for key results")
     @Test
     void shouldAllowCreateOrUpdateAsAdminForKeyResults() {
-        var id = adminTeams.get(0).getId();
+        var id = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
@@ -264,13 +265,14 @@ class AuthorizationServiceTest {
                 .findObjectiveById(eq(keyResult.getObjective().getId()), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should throw exception when not authorized for key results")
     @Test
     void shouldThrowExceptionWhenNotAuthorizedForKeyResults() {
-        var id = otherTeams.get(0).getId();
+        var id = otherTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
@@ -294,7 +296,7 @@ class AuthorizationServiceTest {
     @DisplayName("Should allow create or update as admin for team check-ins")
     @Test
     void shouldPassThroughWhenAuthorizedAsAdminForTeamCheckIns() {
-        var id = adminTeams.get(0).getId();
+        var id = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -306,13 +308,14 @@ class AuthorizationServiceTest {
                                             any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should pass through when authorized as member for team check-ins")
     @Test
     void shouldPassThroughWhenAuthorizedAsMemberForTeamCheckIns() {
-        var id = memberTeams.get(0).getId();
+        var id = memberTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -324,13 +327,14 @@ class AuthorizationServiceTest {
                                             any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should throw exception when not in team for team check-ins")
     @Test
     void shouldThrowExceptionWhenNotInTeamForTeamCheckIns() {
-        var id = otherTeams.get(0).getId();
+        var id = otherTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -362,37 +366,40 @@ class AuthorizationServiceTest {
 
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
-        authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should pass through when authorized as admin by objective ID")
     @Test
     void shouldPassThroughWhenAuthorizedAsAdminByObjectiveId() {
-        var id = adminTeams.get(0).getId();
+        var id = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
-        authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should pass through when authorized as member by objective ID")
     @Test
     void shouldPassThroughWhenAuthorizedAsMemberByObjectiveId() {
-        var id = memberTeams.get(0).getId();
+        var id = memberTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
-        authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should throw exception when not in team by objective ID")
     @Test
     void shouldThrowExceptionWhenNotInTeamByObjectiveId() {
-        var id = otherTeams.get(0).getId();
+        var id = otherTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -422,7 +429,7 @@ class AuthorizationServiceTest {
     @DisplayName("Should return true when authorized as admin for team")
     @Test
     void shouldReturnTrueWhenAuthorizedAsAdminForTeam() {
-        var id = adminTeams.get(0).getId();
+        var id = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -432,7 +439,7 @@ class AuthorizationServiceTest {
     @DisplayName("Should return true when authorized as member for team")
     @Test
     void shouldReturnTrueWhenAuthorizedAsMemberForTeam() {
-        var id = memberTeams.get(0).getId();
+        var id = memberTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -442,7 +449,7 @@ class AuthorizationServiceTest {
     @DisplayName("Should return false when not member of team")
     @Test
     void shouldReturnFalseWhenNotMemberOfTeam() {
-        var id = otherTeams.get(0).getId();
+        var id = otherTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
@@ -466,7 +473,7 @@ class AuthorizationServiceTest {
     @DisplayName("Should return true when authorized as admin for key results")
     @Test
     void shouldReturnTrueWhenAuthorizedAsAdminForKeyResults() {
-        var id = adminTeams.get(0).getId();
+        var id = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
@@ -510,7 +517,7 @@ class AuthorizationServiceTest {
     @DisplayName("Should return true when authorized as admin for check-ins")
     @Test
     void shouldReturnTrueWhenAuthorizedAsAdminForCheckIns() {
-        var id = adminTeams.get(0).getId();
+        var id = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(id).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -547,7 +554,8 @@ class AuthorizationServiceTest {
 
         when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
-        authorizationService.hasRoleDeleteByObjectiveId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByObjectiveId(id, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     @DisplayName("Should pass through when authorized for all team key results by key result ID")
@@ -561,38 +569,42 @@ class AuthorizationServiceTest {
                 .thenReturn(objective);
 
         authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should pass through when authorized as admin for team check-ins by check-in ID")
     @Test
     void shouldPassThroughWhenAuthorizedAsAdminForTeamCheckInsByCheckInId() {
-        var id = adminTeams.get(0).getId();
+        var id = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should pass through when authorized as member for team check-ins by check-in ID")
     @Test
     void shouldPassThroughWhenAuthorizedAsMemberForTeamCheckInsByCheckInId() {
-        var id = memberTeams.get(0).getId();
+        var id = memberTeams.getFirst().getId();
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
 
         when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     @DisplayName("Should pass through when OKR champion for key results by key result ID")
     @Test
     void shouldPassThroughWhenOkrChampionForKeyResultsByKeyResultId() {
-        var otherTeamId = otherTeams.get(0).getId();
+        var otherTeamId = otherTeams.getFirst().getId();
         Objective objective = Objective.Builder
                 .builder()
                 .withTeam(Team.Builder.builder().withId(otherTeamId).build())
@@ -601,13 +613,14 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should pass through when admin for key results by key result ID")
     @Test
     void shouldPassThroughWhenAdminForKeyResultsByKeyResultId() {
-        var otherTeamId = adminTeams.get(0).getId();
+        var otherTeamId = adminTeams.getFirst().getId();
         Objective objective = Objective.Builder
                 .builder()
                 .withTeam(Team.Builder.builder().withId(otherTeamId).build())
@@ -616,13 +629,14 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should pass through when member for key results by key result ID")
     @Test
     void shouldPassThroughWhenMemberForKeyResultsByKeyResultId() {
-        var otherTeamId = memberTeams.get(0).getId();
+        var otherTeamId = memberTeams.getFirst().getId();
         Objective objective = Objective.Builder
                 .builder()
                 .withTeam(Team.Builder.builder().withId(otherTeamId).build())
@@ -631,13 +645,14 @@ class AuthorizationServiceTest {
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(1L), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser);
+        assertDoesNotThrow(() -> authorizationService.hasRoleDeleteByKeyResultId(1L, authorizationUser));
+        verify(authorizationService, times(1)).hasRoleWriteForTeam(authorizationUser, objective.getTeam(), OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     @DisplayName("Should throw exception when not in team for key results by key result ID")
     @Test
     void shouldThrowExceptionWhenNotInTeamForKeyResultsByKeyResultId() {
-        var otherTeamId = otherTeams.get(0).getId();
+        var otherTeamId = otherTeams.getFirst().getId();
         Objective objective = Objective.Builder
                 .builder()
                 .withTeam(Team.Builder.builder().withId(otherTeamId).build())

@@ -149,10 +149,14 @@ describe('ActionPlanComponent', () => {
         action1,
         action3
       ].toString());
-    expect(component.control.getValue()![0].priority == 0);
-    expect(component.control.getValue()![1].priority == 1);
-    expect(component.control.getValue()![2].priority == 2);
-    expect(component.control.getValue()![3].priority == 3);
+    expect(component.control.getValue()![0].priority)
+      .toBe(0);
+    expect(component.control.getValue()![1].priority)
+      .toBe(1);
+    expect(component.control.getValue()![2].priority)
+      .toBe(2);
+    expect(component.control.getValue()![3].priority)
+      .toBe(3);
   });
 
   it('should increase active item index', () => {

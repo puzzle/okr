@@ -80,7 +80,7 @@ class UserBusinessServiceTest {
     void shouldReturnEmptyListOfUsers() throws ResponseStatusException {
         List<User> userList = userBusinessService.getAllUsers();
 
-        Assertions.assertThat(userList.size()).isZero();
+        Assertions.assertThat(userList).isEmpty();
     }
 
     @DisplayName("Should return correct user on getUserById()")

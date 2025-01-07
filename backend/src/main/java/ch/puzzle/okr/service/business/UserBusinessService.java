@@ -62,7 +62,7 @@ public class UserBusinessService {
 
         if (optionalUser.isEmpty()){
             throw  new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION)
+                                                 ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION);
         }
     }
 

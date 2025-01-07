@@ -1,8 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
 import static ch.puzzle.okr.test.TestHelper.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -104,14 +103,14 @@ class TeamAuthorizationServiceTest {
     @Test
     void shouldDeleteSuccessfullyWhenAuthorizedAsOkrChampion() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
-        teamAuthorizationService.deleteEntity(teamUnderTest.getId());
+        assertDoesNotThrow(() -> teamAuthorizationService.deleteEntity(teamUnderTest.getId()));
     }
 
     @DisplayName("Should successfully delete when authorized as a team-admin")
     @Test
     void shouldDeleteSuccessfullyWhenAuthorizedAsTeamAdmin() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(adminUser);
-        teamAuthorizationService.deleteEntity(teamUnderTest.getId());
+        assertDoesNotThrow(() -> teamAuthorizationService.deleteEntity(teamUnderTest.getId()));
     }
 
     @DisplayName("Should throw an exception when the user is authorized as a member")

@@ -33,6 +33,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import static ch.puzzle.okr.test.KeyResultTestHelpers.JSON_PATH_ID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CompletedController.class)
@@ -120,6 +127,23 @@ class CompletedControllerIT {
 
         mvc
                 .perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @DisplayName("get() should get Completed by Objective id")
+    @Test
+    void shouldGetMetricCompletedWithId() throws Exception {
+        mvc.perform(get("/api/v2/completed/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @DisplayName("get() should throw exception when Completed with id cant be found")
+    @Test
+    void getShouldThrowExceptionWhenCompletedWithIdCantBeFound() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found"))
+                .when(completedAuthorizationService).getCompletedByObjectiveId(anyLong());
+
+        mvc.perform(get("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

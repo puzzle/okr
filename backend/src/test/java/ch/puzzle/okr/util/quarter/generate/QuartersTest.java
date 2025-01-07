@@ -11,7 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class QuartersTest {
+class QuartersTest {
 
     @ParameterizedTest(name = "currentQuarter() should find current quarter for now and 12 months in future")
     @MethodSource("futureDatesAndLabels")

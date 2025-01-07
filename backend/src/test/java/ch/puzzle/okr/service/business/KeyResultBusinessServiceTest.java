@@ -140,9 +140,10 @@ class KeyResultBusinessServiceTest {
     @DisplayName("Should throw exception when calling updateEntity() instead of updateEntities()")
     @Test
     void shouldThrowExceptionWhenDefaultMethodUsed() {
+        Long id = metricKeyResult.getId();
         IllegalCallerException exception = assertThrows(IllegalCallerException.class,
                                                         () -> keyResultBusinessService
-                                                                .updateEntity(metricKeyResult.getId(),
+                                                                .updateEntity(id,
                                                                               metricKeyResult,
                                                                               authorizationUser));
 

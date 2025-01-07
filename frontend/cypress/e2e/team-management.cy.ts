@@ -83,8 +83,8 @@ describe('okr team-management', () => {
         .click();
 
       ConfirmDialog.do()
-        .checkTitle('Mitglied entfernen')
-        .checkDescription(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`)
+        .checkForContentOnDialog('Mitglied entfernen')
+        .checkForContentOnDialog(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`)
         .submit();
 
       cy.wait('@removeUser');
@@ -107,8 +107,8 @@ describe('okr team-management', () => {
 
       // cancel dialog
       ConfirmDialog.do()
-        .checkTitle('Mitglied entfernen')
-        .checkDescription(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`)
+        .checkForContentOnDialog('Mitglied entfernen')
+        .checkForContentOnDialog(`Möchtest du Jaya Norris wirklich aus dem Team '${teamName}' entfernen?`)
         .cancel();
 
       cy.get('@removeUser.all')
@@ -494,8 +494,8 @@ describe('okr team-management', () => {
         .click();
 
       ConfirmDialog.do()
-        .checkTitle('Mitglied entfernen')
-        .checkDescription('Möchtest du Findus Peterson wirklich aus dem Team \'/BBT\' entfernen?')
+        .checkForContentOnDialog('Mitglied entfernen')
+        .checkForContentOnDialog('Möchtest du Findus Peterson wirklich aus dem Team \'/BBT\' entfernen?')
         .submit();
 
       cy.get('app-member-detail')
@@ -513,8 +513,8 @@ describe('okr team-management', () => {
         .click();
 
       ConfirmDialog.do()
-        .checkTitle('Mitglied entfernen')
-        .checkDescription(`Möchtest du ${nameEsha} wirklich aus dem Team '/BBT' entfernen?`)
+        .checkForContentOnDialog('Mitglied entfernen')
+        .checkForContentOnDialog(`Möchtest du ${nameEsha} wirklich aus dem Team '/BBT' entfernen?`)
         .submit();
 
       cy.wait('@removeUser');
@@ -524,8 +524,8 @@ describe('okr team-management', () => {
         .click();
 
       ConfirmDialog.do()
-        .checkTitle('Mitglied entfernen')
-        .checkDescription(`Möchtest du ${nameEsha} wirklich aus dem Team 'LoremIpsum' entfernen?`)
+        .checkForContentOnDialog('Mitglied entfernen')
+        .checkForContentOnDialog(`Möchtest du ${nameEsha} wirklich aus dem Team 'LoremIpsum' entfernen?`)
         .submit();
 
       cy.get('app-member-detail')

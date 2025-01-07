@@ -16,7 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class UserMapperTest {
+class UserMapperTest {
 
     private static final long USER_TEAM_ID = 100L;
     private static final long ID = 0L;

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class ClaimHelperTest {
+class ClaimHelperTest {
 
     private static final String PITC = "pitc";
     private ClaimHelper helper;

@@ -18,18 +18,18 @@ import org.springframework.http.HttpStatus;
 /**
  * @param <T>
  *            the Type or entity of the repository
- * @param <ID>
+ * @param <I>
  *            the Identifier or primary key of the entity
  * @param <R>
  *            the Repository of the entity
  */
-public abstract class PersistenceBase<T, ID, R> {
+public abstract class PersistenceBase<T, I, R> {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceBase.class);
 
-    private final CrudRepository<T, ID> repository;
+    private final CrudRepository<T, I> repository;
 
-    protected PersistenceBase(CrudRepository<T, ID> repository) {
+    protected PersistenceBase(CrudRepository<T, I> repository) {
         this.repository = repository;
     }
 
@@ -38,18 +38,18 @@ public abstract class PersistenceBase<T, ID, R> {
         return (R) repository;
     }
 
-    public T findById(ID id) throws OkrResponseStatusException {
+    public T findById(I id) throws OkrResponseStatusException {
         checkIdNull(id);
         return repository.findById(id).orElseThrow(() -> createEntityNotFoundException(id));
     }
 
-    public void checkIdNull(ID id) {
+    public void checkIdNull(I id) {
         if (id == null) {
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL, List.of("ID", getModelName()));
         }
     }
 
-    public OkrResponseStatusException createEntityNotFoundException(ID id) {
+    public OkrResponseStatusException createEntityNotFoundException(I id) {
         throw new OkrResponseStatusException(NOT_FOUND, ErrorKey.MODEL_WITH_ID_NOT_FOUND, List.of(getModelName(), id));
     }
 
@@ -68,7 +68,7 @@ public abstract class PersistenceBase<T, ID, R> {
         return iteratorToList(repository.findAll());
     }
 
-    public void deleteById(ID id) {
+    public void deleteById(I id) {
         repository.deleteById(id);
     }
 

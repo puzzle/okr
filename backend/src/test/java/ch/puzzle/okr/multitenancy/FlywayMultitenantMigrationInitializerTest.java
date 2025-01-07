@@ -25,7 +25,7 @@ import org.mockito.Mockito;
  * Mockito Mock, which does nothing. And later, flyway.migrate() is called on
  * the Mockito Mock, which does nothing.
  */
-public class FlywayMultitenantMigrationInitializerTest {
+class FlywayMultitenantMigrationInitializerTest {
 
     private static final String NOT_USED = "not_used";
     private static final String URL = "url";

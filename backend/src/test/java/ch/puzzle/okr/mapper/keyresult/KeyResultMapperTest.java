@@ -30,7 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
-public class KeyResultMapperTest {
+class KeyResultMapperTest {
 
     private KeyResultMapper keyResultMapper;
     @Mock

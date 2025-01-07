@@ -119,8 +119,9 @@ class TeamAuthorizationServiceTest {
     void shouldThrowExceptionWhenAuthorizedAsMemberUserForDeletion() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
 
+        Long id = teamUnderTest.getId();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamAuthorizationService.deleteEntity(teamUnderTest.getId()));
+                () -> teamAuthorizationService.deleteEntity(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_DELETE", exception.getReason());
     }
@@ -158,7 +159,8 @@ class TeamAuthorizationServiceTest {
     void shouldThrowExceptionIfUserNotAuthorizedToAddUsersToTeam() {
         when(authorizationService.updateOrAddAuthorizationUser())
                 .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of())));
-        assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, List.of()));
+        List<Long> emptyUserIdsList = List.of();
+        assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, emptyUserIdsList));
     }
 
     @DisplayName("Should call the teamBusinessService when adding users to a team")

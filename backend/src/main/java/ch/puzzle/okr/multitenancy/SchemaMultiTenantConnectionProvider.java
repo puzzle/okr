@@ -19,7 +19,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
 
     private static final Logger logger = LoggerFactory.getLogger(SchemaMultiTenantConnectionProvider.class);
 
-    final Map<String, ConnectionProvider> connectionProviderMap;
+    protected final Map<String, ConnectionProvider> connectionProviderMap;
 
     public SchemaMultiTenantConnectionProvider() {
         this.connectionProviderMap = new HashMap<>();

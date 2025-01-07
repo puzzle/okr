@@ -40,7 +40,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
-    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value as string)));
+    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value)));
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
       this.keyResultForm.controls['title'].setValue(this.keyResult.title);

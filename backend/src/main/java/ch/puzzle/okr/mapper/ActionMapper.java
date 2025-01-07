@@ -19,7 +19,7 @@ public class ActionMapper {
     public ActionDto toDto(Action action) {
         return new ActionDto(action.getId(),
                              action.getVersion(),
-                             action.getAction(),
+                             action.getActionPoint(),
                              action.getPriority(),
                              action.isChecked(),
                              action.getKeyResult().getId(),

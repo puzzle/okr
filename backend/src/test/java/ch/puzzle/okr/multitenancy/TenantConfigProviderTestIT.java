@@ -18,7 +18,7 @@ import org.springframework.core.env.Environment;
 
 @SpringIntegrationTest
 @SpringBootConfiguration
-public class TenantConfigProviderTestIT {
+class TenantConfigProviderTestIT {
     private static final String JWK_SET_URI = "jwkSetUri";
     private static final String FRONTEND_CLIENT_ISSUER_URL = "frontendClientIssuerUrl";
     private static final String FRONTEND_CLIENT_ID = "frontendClientId";
@@ -76,7 +76,7 @@ public class TenantConfigProviderTestIT {
 
     @DisplayName("Should return all tenant-configs as a list after calling getTenantConfigs")
     @Test
-    public void shouldGetTenantConfigs() {
+    void shouldGetTenantConfigs() {
         TenantConfigProvider configProvider = new TenantConfigProvider(tenantIds, env);
         List<TenantConfigProvider.TenantConfig> tenantConfigs = configProvider.getTenantConfigs();
         for (TenantConfigProvider.TenantConfig config : tenantConfigs) {

@@ -50,7 +50,7 @@ public class Objective implements WriteableInterface {
     @ManyToOne
     private User modifiedBy;
 
-    private transient boolean writeable;
+    private boolean writeable;
 
     public Objective() {
     }

@@ -95,4 +95,23 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
 
     public record OauthConfig(String jwkSetUri, String frontendClientIssuerUrl, String frontendClientId) {
     }
+
+    @Override
+    public String toString() {
+        return "TenantConfigProvider{" + "tenantConfigs=" + tenantConfigs + ", env=" + env + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TenantConfigProvider that = (TenantConfigProvider) o;
+        return Objects.equals(getTenantConfigs(), that.getTenantConfigs()) && Objects.equals(env, that.env);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTenantConfigs(), env);
+    }
 }

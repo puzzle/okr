@@ -44,13 +44,13 @@ class ForwardFilterTest {
     void shouldNotFilterTheRootPath(String requestUri) throws ServletException, IOException {
         // given
         when(request.getRequestURI()).thenReturn(requestUri);
-        doNothing().when(filterChain).doFilter(Mockito.eq(request), Mockito.eq(response));
+        doNothing().when(filterChain).doFilter(request, response);
 
         // when
         forwardFilter.doFilter(request, response, filterChain);
 
         // then
-        verify(filterChain, times(1)).doFilter(Mockito.eq(request), Mockito.eq(response));
+        verify(filterChain, times(1)).doFilter(request, response);
         verify(request, never()).getRequestDispatcher(anyString());
     }
 }

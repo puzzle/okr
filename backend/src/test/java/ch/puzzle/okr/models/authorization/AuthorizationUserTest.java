@@ -22,13 +22,13 @@ class AuthorizationUserTest {
 
     @DisplayName("Should return all team-ids when extracting team-ids of a user")
     @Test
-    public void shouldReturnAllTeamIdsWhenExtractingTeamIdsOfUser() {
+    void shouldReturnAllTeamIdsWhenExtractingTeamIdsOfUser() {
         assertEquals(List.of(1L, 2L, 3L, 4L, 5L), authorizationUser.extractTeamIds());
     }
 
     @DisplayName("Should return correctly if a user is a member in a team")
     @Test
-    public void shouldCorrectlyCheckIfUserIsMemberInTeam() {
+    void shouldCorrectlyCheckIfUserIsMemberInTeam() {
         assertTrue(authorizationUser.isUserMemberInTeam(1L));
         assertTrue(authorizationUser.isUserMemberInTeam(2L));
         assertTrue(authorizationUser.isUserMemberInTeam(3L));
@@ -39,7 +39,7 @@ class AuthorizationUserTest {
 
     @DisplayName("Should return correctly if a user is an admin in a team")
     @Test
-    public void shouldCorrectlyCheckIfUserIsAdminInTeam() {
+    void shouldCorrectlyCheckIfUserIsAdminInTeam() {
         assertTrue(authorizationUser.isUserAdminInTeam(1L));
         assertTrue(authorizationUser.isUserAdminInTeam(3L));
         assertFalse(authorizationUser.isUserAdminInTeam(2L));
@@ -47,5 +47,4 @@ class AuthorizationUserTest {
         assertFalse(authorizationUser.isUserAdminInTeam(5L));
         assertFalse(authorizationUser.isUserAdminInTeam(6L));
     }
-
 }

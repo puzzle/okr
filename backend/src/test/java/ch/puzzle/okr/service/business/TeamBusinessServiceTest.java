@@ -165,9 +165,9 @@ class TeamBusinessServiceTest {
 
         verify(teamPersistenceService, times(1)).save(team);
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
-        assertEquals(user.getUserTeamList().size(), 1);
-        assertEquals(user.getUserTeamList().get(0).getTeam().getId(), team.getId());
-        assertTrue(user.getUserTeamList().get(0).isTeamAdmin());
+        assertEquals(1, user.getUserTeamList().size());
+        assertEquals(user.getUserTeamList().getFirst().getTeam().getId(), team.getId());
+        assertTrue(user.getUserTeamList().getFirst().isTeamAdmin());
     }
 
     @DisplayName("Should update team on updateTeam()")
@@ -302,7 +302,7 @@ class TeamBusinessServiceTest {
         assertFalse(user.getUserTeamList().get(2).isTeamAdmin());
         assertEquals(user.getUserTeamList().get(2).getTeam().getId(), team3.getId());
 
-        assertEquals(user.getUserTeamList().size(), 3);
+        assertEquals(3, user.getUserTeamList().size());
         verify(cacheService, times(2)).emptyAuthorizationUsersCache();
     }
 }

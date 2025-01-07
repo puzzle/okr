@@ -78,7 +78,7 @@ class ActionPersistenceServiceIT {
         createdAction = actionPersistenceService.save(action);
 
         assertNotNull(createdAction.getId());
-        assertEquals(action.getAction(), createdAction.getAction());
+        assertEquals(action.getActionPoint(), createdAction.getActionPoint());
         assertEquals(action.getKeyResult(), createdAction.getKeyResult());
         assertEquals(action.getPriority(), createdAction.getPriority());
         assertEquals(action.isChecked(), createdAction.isChecked());
@@ -89,13 +89,13 @@ class ActionPersistenceServiceIT {
     void shouldUpdateActionWhenSaveIsCalledWithModifiedAction() {
         Action action = createAction(null);
         createdAction = actionPersistenceService.save(action);
-        createdAction.setAction(UPDATED_ACTION);
+        createdAction.setActionPoint(UPDATED_ACTION);
         createdAction.setPriority(4);
 
         Action updateAction = actionPersistenceService.save(createdAction);
 
         assertEquals(createdAction.getId(), updateAction.getId());
-        assertEquals(UPDATED_ACTION, updateAction.getAction());
+        assertEquals(UPDATED_ACTION, updateAction.getActionPoint());
         assertEquals(4, updateAction.getPriority());
     }
 
@@ -104,7 +104,7 @@ class ActionPersistenceServiceIT {
     void shouldThrowExceptionWhenSaveIsCalledOnAlreadyUpdatedAction() {
         createdAction = actionPersistenceService.save(createAction(null));
         Action changedAction = createAction(createdAction.getId(), 0);
-        changedAction.setAction(UPDATED_ACTION);
+        changedAction.setActionPoint(UPDATED_ACTION);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> actionPersistenceService.save(changedAction));
@@ -140,7 +140,7 @@ class ActionPersistenceServiceIT {
         Action action = actionPersistenceService.findById(1L);
 
         assertEquals(1L, action.getId());
-        assertEquals("Neues Haus", action.getAction());
+        assertEquals("Neues Haus", action.getActionPoint());
         assertEquals(1, action.getPriority());
         assertTrue(action.isChecked());
         assertEquals(8L, action.getKeyResult().getId());

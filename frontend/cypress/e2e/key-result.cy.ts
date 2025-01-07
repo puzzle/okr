@@ -348,8 +348,8 @@ describe('okr key-result', () => {
       .visit('A keyresult to delete')
       .editKeyResult()
       .deleteKeyResult()
-      .checkTitle('Key Result löschen')
-      .checkDescription('Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!')
+      .checkForContentOnDialog('Key Result löschen')
+      .checkForContentOnDialog('Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!')
       .submit();
 
     cy.contains('Puzzle ITC');

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class TenantClientCustomizationProviderTest {
+class TenantClientCustomizationProviderTest {
 
     @DisplayName("extractCssNameFromPropertyName() should return css name for valid property name")
     @ParameterizedTest

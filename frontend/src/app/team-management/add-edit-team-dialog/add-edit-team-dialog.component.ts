@@ -72,8 +72,8 @@ export class AddEditTeamDialogComponent implements OnInit {
     if (this.data) {
       const updatedTeam: Team = {
         ...this.teamForm.value,
-        id: this.data!.team.id,
-        version: this.data!.team.version
+        id: this.data.team.id,
+        version: this.data.team.version
       } as Team;
       this.teamService.updateTeam(updatedTeam)
         .subscribe((result) => {

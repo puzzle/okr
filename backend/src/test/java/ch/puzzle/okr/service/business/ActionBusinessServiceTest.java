@@ -61,7 +61,7 @@ class ActionBusinessServiceTest {
         Action action = actionBusinessService.getEntityById(action1.getId());
 
         assertEquals(action1.getId(), action.getId());
-        assertEquals(action1.getAction(), action.getAction());
+        assertEquals(action1.getActionPoint(), action.getActionPoint());
         assertEquals(action1.getKeyResult(), action.getKeyResult());
         assertEquals(action1.getPriority(), action.getPriority());
         assertEquals(action1.isChecked(), action.isChecked());

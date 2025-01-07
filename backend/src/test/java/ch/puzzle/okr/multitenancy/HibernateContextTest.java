@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-public class HibernateContextTest {
+class HibernateContextTest {
 
     @BeforeEach
     void setUp() {

@@ -18,7 +18,7 @@ public class Action implements WriteableInterface {
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
-    private String action;
+    private String actionPoint;
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private int priority;
@@ -30,7 +30,7 @@ public class Action implements WriteableInterface {
     @ManyToOne
     private KeyResult keyResult;
 
-    private transient boolean writeable;
+    private boolean writeable;
 
     public Action() {
     }
@@ -38,7 +38,7 @@ public class Action implements WriteableInterface {
     private Action(Builder builder) {
         id = builder.id;
         version = builder.version;
-        action = builder.action;
+        actionPoint = builder.action;
         priority = builder.priority;
         checked = builder.checked;
         keyResult = builder.keyResult;
@@ -52,12 +52,12 @@ public class Action implements WriteableInterface {
         id = null;
     }
 
-    public String getAction() {
-        return action;
+    public String getActionPoint() {
+        return actionPoint;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setActionPoint(String action) {
+        this.actionPoint = action;
     }
 
     public int getPriority() {
@@ -104,7 +104,7 @@ public class Action implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Action{" + "id=" + id + ", version=" + version + ", action='" + action + '\'' + ", priority=" + priority
+        return "Action{" + "id=" + id + ", version=" + version + ", action='" + actionPoint + '\'' + ", priority=" + priority
                + ", checked=" + checked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
     }
 
@@ -117,12 +117,12 @@ public class Action implements WriteableInterface {
         Action action1 = (Action) o;
         return version == action1.version && priority == action1.priority && checked == action1.checked
                && writeable == action1.writeable && Objects.equals(id, action1.id)
-               && Objects.equals(action, action1.action) && Objects.equals(keyResult, action1.keyResult);
+               && Objects.equals(actionPoint, action1.actionPoint) && Objects.equals(keyResult, action1.keyResult);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, action, priority, checked, keyResult, writeable);
+        return Objects.hash(id, version, actionPoint, priority, checked, keyResult, writeable);
     }
 
     public static final class Builder {

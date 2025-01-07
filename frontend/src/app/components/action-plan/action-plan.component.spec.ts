@@ -116,14 +116,18 @@ describe('ActionPlanComponent', () => {
       action3]);
     component.handleKeyDown(keyEvent, 2);
 
-    expect(component.activeItem = 1);
+    expect(component.activeItem)
+      .toBe(1);
     expect(component.control.getValue()!.toString())
       .toBe([action1,
         action3,
         action2].toString());
-    expect(component.control.getValue()![0].priority == 0);
-    expect(component.control.getValue()![1].priority == 1);
-    expect(component.control.getValue()![2].priority == 2);
+    expect(component.control.getValue()![0].priority)
+      .toBe(0);
+    expect(component.control.getValue()![1].priority)
+      .toBe(1);
+    expect(component.control.getValue()![2].priority)
+      .toBe(2);
   });
 
   it('should increase index of active item', () => {
@@ -136,7 +140,8 @@ describe('ActionPlanComponent', () => {
     ]);
     component.handleKeyDown(keyEvent, 2);
 
-    expect(component.activeItem = 3);
+    expect(component.activeItem)
+      .toBe(3);
     expect(component.control.getValue()!.toString())
       .toBe([
         action1,

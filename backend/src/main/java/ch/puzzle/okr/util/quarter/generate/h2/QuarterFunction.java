@@ -20,6 +20,9 @@ public class QuarterFunction {
 
     private static final Logger logger = LoggerFactory.getLogger(QuarterFunction.class);
 
+    private QuarterFunction() {
+    }
+
     private static QuarterData currentQuarter;
     private static QuarterData nextQuarter;
 

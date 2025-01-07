@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 
-public class TenantJwtIssuerValidatorTest {
+class TenantJwtIssuerValidatorTest {
 
     private static final String PITC = "pitc";
     private static final String ISSUER_URL = "issuerUrl";

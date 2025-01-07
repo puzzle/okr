@@ -125,7 +125,7 @@ public class AssertHelper {
     private static void assertActionDto(Action expected, ActionDto actual) {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
-        assertEquals(expected.getAction(), actual.action());
+        assertEquals(expected.getActionPoint(), actual.action());
         assertEquals(expected.getPriority(), actual.priority());
         assertEquals(expected.isChecked(), actual.isChecked());
         assertEquals(expected.getKeyResult().getId(), actual.keyResultId());

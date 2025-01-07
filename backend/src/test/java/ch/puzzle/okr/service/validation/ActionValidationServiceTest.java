@@ -297,9 +297,10 @@ class ActionValidationServiceTest {
         when(actionPersistenceService.findById(anyLong()))
                 .thenThrow(new OkrResponseStatusException(BAD_REQUEST, reason));
 
+        Long actionId = action2.getId();
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(action2.getId(), action2));
+                                                            () -> validator.validateOnUpdate(actionId, action2));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action2);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action2.getId());
@@ -346,11 +347,13 @@ class ActionValidationServiceTest {
                 .withPriority(1)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(11L).withTitle("KR Title").build())
                 .build();
+
         when(actionPersistenceService.findById(anyLong())).thenReturn(action2);
 
+        Long actionId = action.getId();
         // act + assert
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator.validateOnUpdate(action.getId(), action));
+                                                            () -> validator.validateOnUpdate(actionId, action));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action.getId());

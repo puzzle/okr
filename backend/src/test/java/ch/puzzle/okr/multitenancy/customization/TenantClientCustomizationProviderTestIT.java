@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.springframework.core.env.Environment;
 
 @SpringIntegrationTest
-public class TenantClientCustomizationProviderTestIT {
+class TenantClientCustomizationProviderTestIT {
     private static final String LOGO = "logo";
     private static final String TRIANGLES = "triangles";
     private static final String BACKGROUND_LOGO = "background-logo";

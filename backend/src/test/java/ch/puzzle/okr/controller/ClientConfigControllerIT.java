@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ClientConfigController.class)
-public class ClientConfigControllerIT {
+class ClientConfigControllerIT {
 
     @Autowired
     private MockMvc mvc;

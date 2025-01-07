@@ -146,9 +146,9 @@ class DeserializerHelperTest {
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
 
         // act + assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            deserializerHelper.deserializeMetricOrdinal(jsonParser, Map.of("", CheckInOrdinalDto.class), deserializer);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
+            deserializerHelper.deserializeMetricOrdinal(jsonParser, Map.of("", CheckInOrdinalDto.class), deserializer)
+        );
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("unsupported entity DTO to deserialize", exception.getReason());

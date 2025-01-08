@@ -59,13 +59,17 @@ export class ObjectiveMenuActionsService {
 
   private getDraftMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
     return [this.actions.editObjectiveAction(objective),
-      this.getReleaseAction(objective)];
+      this.getReleaseAction(objective),
+      this.actions.deleteObjectiveAction()];
   }
 
   private getOngoingMenuActions(objective: ObjectiveMin): ObjectiveMenuEntry[] {
-    return [this.actions.editObjectiveAction(objective),
+    return [
+      this.actions.editObjectiveAction(objective),
       this.actions.completeObjectiveAction(objective),
-      this.actions.objectiveBackToDraft()];
+      this.actions.objectiveBackToDraft(),
+      this.actions.deleteObjectiveAction()
+    ];
   }
 
   private getCompletedMenuActions(): ObjectiveMenuEntry[] {

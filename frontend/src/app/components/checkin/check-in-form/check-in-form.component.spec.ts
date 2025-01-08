@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CheckInService } from '../../../services/check-in.service';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
@@ -31,6 +31,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { Action } from '../../../shared/types/model/action';
 
 const dialogMock = {
   close: jest.fn()
@@ -101,6 +102,7 @@ describe('CheckInFormComponent', () => {
     component.dialogForm.controls['confidence'].setValue(checkInMetric.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInMetric.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInMetric.initiatives);
+    component.actionList$ = new BehaviorSubject<Action[] | null>([] as Action[]);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInMetric));
     actionServiceMock.updateActions.mockReturnValue(of(action2));
@@ -127,6 +129,7 @@ describe('CheckInFormComponent', () => {
     component.dialogForm.controls['confidence'].setValue(checkInOrdinal.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInOrdinal.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInOrdinal.initiatives);
+    component.actionList$ = new BehaviorSubject<Action[] | null>([] as Action[]);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInOrdinal));
     actionServiceMock.updateActions.mockReturnValue(of(action2));

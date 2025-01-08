@@ -112,8 +112,7 @@ export class CheckInFormComponent implements OnInit {
       keyResultId: this.keyResult.id,
       confidence: this.dialogForm.controls.confidence.value,
       changeInfo: this.dialogForm.controls.changeInfo.value,
-      initiatives: this.dialogForm.controls.initiatives.value,
-      actionList: this.dialogForm.controls.actionList.value
+      initiatives: this.dialogForm.controls.initiatives.value
     };
     const checkIn: CheckIn = {
       ...baseCheckIn,

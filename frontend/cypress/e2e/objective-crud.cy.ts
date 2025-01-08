@@ -59,7 +59,11 @@ describe('crud operations', () => {
   });
 
   it('should delete existing objective', () => {
-    overviewPage.getObjectiveByState('ongoing')
+    const objectiveTitle = "This objective will be deleted by the three dot menu!"
+    overviewPage.addObjective()
+      .fillObjectiveTitle(objectiveTitle)
+      .submit();
+    overviewPage.getObjectiveByName(objectiveTitle)
       .findByTestId('three-dot-menu')
       .click();
     overviewPage.selectFromThreeDotMenu('Objective löschen');
@@ -67,10 +71,15 @@ describe('crud operations', () => {
       .checkTitle('Objective löschen')
       .checkDescription('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')
       .submit();
+    cy.contains(objectiveTitle).should('not.exist')
   });
 
   it('should delete existing objective using edit dialog', () => {
-    overviewPage.getFirstObjective()
+    const objectiveTitle = "This objective will be deleted by accessing the edit button!"
+    overviewPage.addObjective()
+      .fillObjectiveTitle(objectiveTitle)
+      .submit();
+    overviewPage.getObjectiveByName(objectiveTitle)
       .findByTestId('three-dot-menu')
       .click();
     overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
@@ -79,6 +88,7 @@ describe('crud operations', () => {
       .checkTitle('Objective löschen')
       .checkDescription('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')
       .submit();
+    cy.contains(objectiveTitle).should('not.exist')
   });
 
   it('should open objective detail view via click', () => {

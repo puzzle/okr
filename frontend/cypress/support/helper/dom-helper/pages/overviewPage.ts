@@ -3,6 +3,7 @@ import ObjectiveDialog from '../dialogs/objectiveDialog';
 import { Page } from './page';
 import KeyResultDialog from '../dialogs/keyResultDialog';
 import { filterByKeyResultName, getKeyResults } from '../../keyResultHelper';
+import CompleteDialog from '../dialogs/completeDialog';
 
 export default class CyOverviewPage extends Page {
   elements = {
@@ -185,6 +186,34 @@ export default class CyOverviewPage extends Page {
     this.selectFromThreeDotMenu('Objective duplizieren');
     cy.wait('@keyResults');
     return new ObjectiveDialog();
+  }
+
+  completeObjective(title: string, successful: boolean, comment?: string) {
+    this.addObjective()
+      .fillObjectiveTitle(title)
+      .submit();
+
+    this
+      .getObjectiveByNameAndState(title, 'ongoing')
+      .findByTestId('three-dot-menu')
+      .click();
+    this.selectFromThreeDotMenu('Objective abschliessen');
+
+    cy.contains('Bewertung');
+    cy.contains('Objective erreicht');
+    cy.contains('Objective nicht erreicht');
+    cy.contains('Kommentar (optional)');
+    cy.contains('Objective abschliessen');
+    cy.contains('Abbrechen');
+
+    successful ? cy.getByTestId('successful')
+      .click() : cy.getByTestId('not-successful')
+      .click();
+    if (comment) {
+      cy.getByTestId('completeComment')
+        .type(comment);
+    }
+    return new CompleteDialog();
   }
 
   visitTeamManagement(): void {

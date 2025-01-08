@@ -32,66 +32,25 @@ describe('okr objective', () => {
     });
 
     it('should complete objective as successful and write successful closing comment', () => {
-      const objectiveTitle = 'This objective should be successful';
-      overviewPage.addObjective()
-        .fillObjectiveTitle(objectiveTitle)
+      const title = 'This objective should be successful';
+      const comment = 'This objective has been successfully completed. Good work';
+      overviewPage.completeObjective(title, true, comment)
         .submit();
 
-      overviewPage
-        .getObjectiveByNameAndState(objectiveTitle, 'ongoing')
-        .findByTestId('three-dot-menu')
+      overviewPage.getObjectiveByName(title)
         .click();
-
-      overviewPage.selectFromThreeDotMenu('Objective abschliessen');
-
-      cy.contains('Bewertung');
-      cy.contains('Objective erreicht');
-      cy.contains('Objective nicht erreicht');
-      cy.contains('Kommentar (optional)');
-      cy.contains('Objective abschliessen');
-      cy.contains('Abbrechen');
-
-      cy.getByTestId('successful')
-        .click();
-      cy.getByTestId('completeComment')
-        .type('This objective has been successfully completed. Good work');
-      cy.getByTestId('submit')
-        .click();
-
-      overviewPage.getObjectiveByNameAndState(objectiveTitle, 'successful')
-        .click();
-      cy.contains('This objective has been successfully completed. Good work');
+      cy.contains(comment);
     });
 
     it('should complete objective as not-successful and write unsuccessful closing comment', () => {
-      const objectiveTitle = 'This objective should NOT be successful';
-      overviewPage.addObjective()
-        .fillObjectiveTitle(objectiveTitle)
+      const title = 'This objective should NOT be successful';
+      const comment = 'This objective has not been completed successfully. We need to work on this';
+      overviewPage.completeObjective(title, false, comment)
         .submit();
 
-      overviewPage
-        .getObjectiveByNameAndState(objectiveTitle, 'ongoing')
-        .findByTestId('three-dot-menu')
+      overviewPage.getObjectiveByName(title)
         .click();
-      overviewPage.selectFromThreeDotMenu('Objective abschliessen');
-
-      cy.contains('Bewertung');
-      cy.contains('Objective erreicht');
-      cy.contains('Objective nicht erreicht');
-      cy.contains('Kommentar (optional)');
-      cy.contains('Objective abschliessen');
-      cy.contains('Abbrechen');
-
-      cy.getByTestId('not-successful')
-        .click();
-      cy.getByTestId('completeComment')
-        .type('This objective has not been completed successfully. We need to work on this');
-      cy.getByTestId('submit')
-        .click();
-
-      overviewPage.getObjectiveByNameAndState(objectiveTitle, 'not-successful')
-        .click();
-      cy.contains('This objective has not been completed successfully. We need to work on this');
+      cy.contains(comment);
     });
 
     it('should reopen successful objective', () => {

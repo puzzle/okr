@@ -39,6 +39,7 @@ export class CheckInFormComponent implements OnInit {
       Validators.min(0),
       Validators.max(10)]),
     changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
+    initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
     actionList: new FormControl<Action[]>([])
   });
 
@@ -76,6 +77,7 @@ export class CheckInFormComponent implements OnInit {
       this.dialogForm.controls.value.setValue(this.getCheckInValue());
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
+      this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
       return;
     }
 
@@ -105,6 +107,7 @@ export class CheckInFormComponent implements OnInit {
       keyResultId: this.keyResult.id,
       confidence: this.dialogForm.controls.confidence.value,
       changeInfo: this.dialogForm.controls.changeInfo.value,
+      initiatives: this.dialogForm.controls.initiatives.value,
       actionList: this.dialogForm.controls.actionList.value
     };
     const checkIn: CheckIn = {

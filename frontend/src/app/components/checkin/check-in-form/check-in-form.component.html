@@ -36,9 +36,9 @@
           <span class="d-flex align-items-center add-text">
             <img
               src="../../../assets/icons/new-icon.svg"
-              alt="Add action button"
+              alt="Add action icon"
               class="add-cross-button"
-              id="add-action"
+              id="add-action-icon"
             />
             Action hinzufügen
           </span>
@@ -83,6 +83,22 @@
         [dialogForm]="dialogForm"
         [keyResult]="getKeyResultOrdinal()"
       ></app-check-in-form-ordinal>
+
+      <div class="okr-form-row okr-form-label-input-container">
+        <label class="okr-form-label okr-form-col" for="initiatives">Massnahmen (optional):</label>
+        <div class="okr-form-input">
+          <textarea
+            [attr.data-testId]="'initiatives'"
+            [ngClass]="formInputCheck(dialogForm, 'initiatives')"
+            class="big-dialog-form-field"
+            formControlName="initiatives"
+            id="initiatives"
+          ></textarea>
+          <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'initiatives')">
+            <span>{{ getErrorMessage("MAX_VALUE", "Massnahmen", 4096) }}</span>
+          </mat-error>
+        </div>
+      </div>
 
       <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col confidence-label">

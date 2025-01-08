@@ -101,6 +101,11 @@ export class CheckInFormComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
+
+    let actionList: Action[] = this.actionList$.value as Action[];
+    actionList = actionList.filter((action) => action.action.trim() != '');
+    this.dialogForm.patchValue({ actionList: actionList });
+
     const baseCheckIn: any = {
       id: this.checkIn.id,
       version: this.checkIn.version,

@@ -51,7 +51,7 @@
     "@angular-devkit/build-angular": "^19.0.4",
     "@angular/cli": "~19.0.4",
     "@angular/compiler-cli": "^19.0.3",
-    "@cypress/schematic": "^2.5.2",
+    "@cypress/schematic": "^3.0.0",
     "@cypress/skip-test": "^2.6.1",
     "eslint-plugin-i18n-json": "^4.0.1",
     "@angular-eslint/eslint-plugin-template": "^19.0.2",

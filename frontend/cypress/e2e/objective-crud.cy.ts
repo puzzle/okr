@@ -93,6 +93,28 @@ describe('crud operations', () => {
       .should('not.exist');
   });
 
+  it('should not be able to delete a completed objective', () => {
+    const objectiveTitle = 'Should not delete this completed objective!';
+    overviewPage.addObjective()
+      .fillObjectiveTitle(objectiveTitle)
+      .submit();
+
+    overviewPage.getObjectiveByName(objectiveTitle)
+      .findByTestId('three-dot-menu')
+      .click();
+    overviewPage.selectFromThreeDotMenu('Objective abschliessen');
+    cy.getByTestId('successful')
+      .click();
+    cy.getByTestId('submit')
+      .click();
+
+    overviewPage.getObjectiveByName(objectiveTitle)
+      .findByTestId('three-dot-menu')
+      .click();
+    cy.contains('Objective löschen')
+      .should('not.exist');
+  });
+
   it('should open objective detail view via click', () => {
     overviewPage.getFirstObjective()
       .find('.title')

@@ -145,6 +145,9 @@ describe('CheckInFormComponent', () => {
         initiatives: checkInOrdinal.initiatives,
         keyResultId: keyResultOrdinal.id
       });
+
+    expect(actionServiceMock.updateActions)
+      .toHaveBeenCalled();
   }));
 
   it('should set default values if form check-in input is not null', waitForAsync(async() => {

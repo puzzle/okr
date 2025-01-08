@@ -28,6 +28,7 @@ describe('okr check-in', () => {
       .visit('Very important keyresult')
       .createCheckIn()
       .checkForDialogTextMetric()
+      .addActionToActionPlan('A new action on the action-plan')
       .fillMetricCheckInValue('30')
       .setCheckInConfidence(6)
       .fillCheckInCommentary('We bought a new house')
@@ -37,6 +38,7 @@ describe('okr check-in', () => {
     cy.contains('6/10');
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
     cy.contains('We bought a new house');
+    cy.contains('- A new action on the action-plan');
   });
 
   it('should create check-in metric with confidence 0', () => {
@@ -92,6 +94,7 @@ describe('okr check-in', () => {
       .visit('A new ordinal keyresult for our company')
       .createCheckIn()
       .checkForDialogTextOrdinal()
+      .addActionToActionPlan('A new action on the action-plan')
       .selectOrdinalCheckInZone('commit')
       .setCheckInConfidence(6)
       .fillCheckInCommentary('There is a new car')
@@ -101,6 +104,7 @@ describe('okr check-in', () => {
     cy.contains('6/10');
     cy.contains('There is a new car');
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
+    cy.contains('- A new action on the action-plan');
   });
 
   it('should generate check-in list', () => {

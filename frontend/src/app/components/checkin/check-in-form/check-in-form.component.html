@@ -33,6 +33,7 @@
           class="fw-bold col-auto"
           id="add-action-button"
           (click)="openActionEdit()"
+          [attr.data-testId]="'add-action'"
         >
           <span class="d-flex align-items-center add-text">
             <img
@@ -52,6 +53,7 @@
           mat-button
           color="primary"
           (click)="closeActionEdit()"
+          [attr.data-testId]="'save-new-actions'"
         >Speichern</button>
       </ng-template>
 

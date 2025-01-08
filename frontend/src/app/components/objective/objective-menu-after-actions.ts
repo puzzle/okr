@@ -4,7 +4,7 @@ import { Completed } from '../../shared/types/model/completed';
 import { ObjectiveService } from '../../services/objective.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveMin } from '../../shared/types/model/objective-min';
-import { CompletedService } from '../../services/completed.servce';
+import { CompletedService } from '../../services/completed.service';
 
 export class ObjectiveMenuAfterActions {
   constructor(private readonly objectiveService: ObjectiveService,

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CompletedService } from './completed.servce';
+import { CompletedService } from './completed.service';
 
 describe('CompletedService', () => {
   let service: CompletedService;

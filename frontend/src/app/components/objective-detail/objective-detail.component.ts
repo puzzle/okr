@@ -7,7 +7,7 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../services/dialog.service';
-import { CompletedService } from '../../services/completed.servce';
+import { CompletedService } from '../../services/completed.service';
 import { Completed } from '../../shared/types/model/completed';
 
 @Component({

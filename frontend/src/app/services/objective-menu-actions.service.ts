@@ -8,7 +8,7 @@ import { ObjectiveService } from './objective.service';
 import { RefreshDataService } from './refresh-data.service';
 import { ObjectiveMenuActions } from '../components/objective/objective-menu-actions';
 import { GJ_REGEX_PATTERN } from '../shared/constant-library';
-import { CompletedService } from './completed.servce';
+import { CompletedService } from './completed.service';
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
 export type ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult: any) => any;

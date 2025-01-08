@@ -54,7 +54,7 @@ export class ObjectiveMenuActions {
       afterAction: afterAction };
   }
 
-  deleteObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
+  deleteObjectiveAction(): ObjectiveMenuEntry {
     const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
     const afterAction: ObjectiveMenuAfterAction = (objective, dialogResult) => this.afterActions.deleteObjective(objective);
     return { displayName: 'Objective löschen',

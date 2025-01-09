@@ -11,6 +11,7 @@ import { RefreshDataService } from '../../services/refresh-data.service';
 import { DialogService } from '../../services/dialog.service';
 import { CheckInMetricMin } from '../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../shared/types/model/check-in-ordinal-min';
+import { CheckIn } from '../../shared/types/model/check-in';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -22,7 +23,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
 
   isComplete!: boolean;
 
-  checkInHistory$: Observable<CheckInMin[]> = of([]);
+  checkInHistory$: Observable<CheckIn[]> = of([]);
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
 

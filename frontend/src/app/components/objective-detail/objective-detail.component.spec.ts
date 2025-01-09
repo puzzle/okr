@@ -4,15 +4,25 @@ import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { ObjectiveService } from '../../services/objective.service';
-import { objective, objectiveWriteableFalse } from '../../shared/test-data';
+import {
+  completed,
+  notCompleted,
+  objective,
+  objectiveWriteableFalse
+} from '../../shared/test-data';
 import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { CompletedService } from '../../services/completed.service';
 
 const objectiveService = {
   getFullObjective: jest.fn()
+};
+
+const completedService = {
+  getCompleted: jest.fn()
 };
 
 const activatedRouteMock = {
@@ -37,6 +47,8 @@ describe('ObjectiveDetailComponent', () => {
       ],
       providers: [{ provide: ObjectiveService,
         useValue: objectiveService },
+      { provide: CompletedService,
+        useValue: completedService },
       { provide: ActivatedRoute,
         useValue: activatedRouteMock }],
       declarations: [ObjectiveDetailComponent]
@@ -46,6 +58,7 @@ describe('ObjectiveDetailComponent', () => {
     fixture = TestBed.createComponent(ObjectiveDetailComponent);
     component = fixture.componentInstance;
     objectiveService.getFullObjective.mockReturnValue(of(objective));
+    completedService.getCompleted.mockReturnValue(of(completed));
     activatedRouteMock.snapshot.paramMap.get = jest.fn();
     activatedRouteMock.snapshot.paramMap.get.mockReturnValue(of(1));
   });
@@ -85,5 +98,20 @@ describe('ObjectiveDetailComponent', () => {
     const button = fixture.debugElement.query(By.css('[data-testId="add-key-result-objective-detail"]'));
     expect(button)
       .toBeFalsy();
+  });
+
+  it('should not display Completed comment if objective is completed', async() => {
+    completedService.getCompleted.mockReturnValue(of(notCompleted));
+    fixture.detectChanges();
+    const completedComment = fixture.debugElement.query(By.css('[data-testId="completed-comment"]'))?.nativeElement.innerHTML;
+    expect(completedComment)
+      .toBeFalsy();
+  });
+
+  it('should display Completed comment if objective is completed', () => {
+    fixture.detectChanges();
+    const completedComment = fixture.debugElement.query(By.css('[data-testId="completed-comment"]'))?.nativeElement.innerHTML;
+    expect(completedComment)
+      .toContain('Abschlusskommentar');
   });
 });

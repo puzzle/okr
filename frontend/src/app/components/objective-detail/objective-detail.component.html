@@ -30,7 +30,7 @@
           <p>{{ objective.description }}</p>
         </div>
 
-        <div class="d-flex align-items-center flex-row justify-content-start" *ngIf="objective.state.toString() !== 'SUCCESSFUL' && objective.state.toString() !== 'NOTSUCCESSFUL'; else Completed">
+        <div class="d-flex align-items-center flex-row justify-content-start" *ngIf="objective.state.toString() !== 'SUCCESSFUL' && objective.state.toString() !== 'NOTSUCCESSFUL'">
           <button
             *ngIf="objective.isWriteable"
             mat-flat-button
@@ -54,14 +54,12 @@
             Objective bearbeiten
           </button>
         </div>
-        <ng-template #Completed>
-          <ng-container *ngIf="completed.comment">
-            <h3 class="mb-1">Abschlusskommentar</h3>
-            <div class="linebreak">
-              <p>{{ completed.comment }}</p>
-            </div>
-          </ng-container>
-        </ng-template>
+        <ng-container *ngIf="completed.comment">
+          <h3 [attr.data-testId]="'completed-comment'" class="mb-1">Abschlusskommentar</h3>
+          <div class="linebreak">
+            <p>{{ completed.comment }}</p>
+          </div>
+        </ng-container>
       </section>
     </div>
   </ng-container>

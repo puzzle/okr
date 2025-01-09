@@ -17,6 +17,7 @@ import { CheckInOrdinal } from './types/model/check-in-ordinal';
 import { CheckInMetric } from './types/model/check-in-metric';
 import { CheckInOrdinalMin } from './types/model/check-in-ordinal-min';
 import { CheckInMetricMin } from './types/model/check-in-metric-min';
+import { Completed } from './types/model/completed';
 
 export const teamFormObject = {
   name: 'newTeamName'
@@ -361,6 +362,20 @@ export const objectiveWriteableFalse: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.NOTSUCCESSFUL,
   isWriteable: false
+};
+
+export const completed: Completed = {
+  id: 1,
+  version: 1,
+  objective: objective,
+  comment: 'This is Completed'
+};
+
+export const notCompleted: Completed = {
+  id: 1,
+  version: 1,
+  objective: objective,
+  comment: null
 };
 
 export const firstCheckIn: CheckInMetricMin = {

@@ -37,7 +37,7 @@ describe('okr objective', () => {
       overviewPage.completeObjective(title, true, comment)
         .submit();
 
-      overviewPage.getObjectiveByName(title)
+      overviewPage.getObjectiveByNameAndState(title, 'successful')
         .click();
       cy.contains(comment);
     });
@@ -48,7 +48,7 @@ describe('okr objective', () => {
       overviewPage.completeObjective(title, false, comment)
         .submit();
 
-      overviewPage.getObjectiveByName(title)
+      overviewPage.getObjectiveByNameAndState(title, 'not-successful')
         .click();
       cy.contains(comment);
     });

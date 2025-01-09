@@ -6,7 +6,6 @@ export default class CompleteDialog extends Dialog {
       .click();
   }
 
-
   getPage(): Cypress.Chainable {
     return cy.get('app-complete-dialog');
   }

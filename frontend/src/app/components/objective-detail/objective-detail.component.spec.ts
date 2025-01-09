@@ -109,6 +109,7 @@ describe('ObjectiveDetailComponent', () => {
   });
 
   it('should display Completed comment if objective is completed', () => {
+    objectiveService.getFullObjective.mockReturnValue(of(objectiveWriteableFalse));
     fixture.detectChanges();
     const completedComment = fixture.debugElement.query(By.css('[data-testId="completed-comment"]'))?.nativeElement.innerHTML;
     expect(completedComment)

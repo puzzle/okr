@@ -7,7 +7,6 @@ import { OverviewEntity } from './types/model/overview-entity';
 import { KeyResultObjective } from './types/model/key-result-objective';
 import { Quarter } from './types/model/quarter';
 import { KeyResultOrdinal } from './types/model/key-result-ordinal';
-import { Objective } from './types/model/objective';
 import { User } from './types/model/user';
 import { KeyResultMetric } from './types/model/key-result-metric';
 import { Unit } from './types/enums/unit';
@@ -340,7 +339,7 @@ export const keyResultMetricWithIdEight: KeyResultMetricMin = {
   keyResultType: 'keyResult'
 } as KeyResultMetricMin;
 
-export const objective: Objective = {
+export const objective: any = {
   id: 5,
   version: 1,
   title: 'title',
@@ -348,11 +347,11 @@ export const objective: Objective = {
   teamId: 2,
   quarterId: 2,
   quarterLabel: 'GJ 22/23-Q2',
-  state: State.SUCCESSFUL,
+  state: 'ONGOING',
   isWriteable: true
 };
 
-export const objectiveWriteableFalse: Objective = {
+export const objectiveWriteableFalse: any = {
   id: 6,
   version: 1,
   title: 'titleWriteableFalse',
@@ -360,7 +359,7 @@ export const objectiveWriteableFalse: Objective = {
   teamId: 2,
   quarterId: 2,
   quarterLabel: 'GJ 22/23-Q2',
-  state: State.NOTSUCCESSFUL,
+  state: 'NOTSUCCESSFUL',
   isWriteable: false
 };
 

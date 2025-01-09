@@ -1,13 +1,13 @@
 package ch.puzzle.okr.mapper.checkin.helper;
 
+import static ch.puzzle.okr.mapper.checkin.helper.TestDataConstants.*;
+
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-
-import static ch.puzzle.okr.mapper.checkin.helper.TestDataConstants.*;
 
 public class TestDataHelper {
 

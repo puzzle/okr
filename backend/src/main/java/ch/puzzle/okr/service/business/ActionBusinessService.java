@@ -51,6 +51,9 @@ public class ActionBusinessService {
             } else {
                 savedActions.add(updateEntity(action.getId(), action));
             }
+            if (action.getAction().isEmpty()){
+                deleteEntityById(action.getId());
+            }
         });
         return savedActions;
     }

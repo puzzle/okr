@@ -3,7 +3,6 @@ package ch.puzzle.okr.models.overview;
 import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.WriteableInterface;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import org.hibernate.annotations.Immutable;
 

@@ -11,7 +11,10 @@ import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+
 import java.time.LocalDateTime;
+
+import static ch.puzzle.okr.mapper.checkin.helper.TestDataConstants.CHECK_IN_CREATED_BY;
 
 public class CheckInTestHelpers {
     public static final String CHANGE_INFO = "ChangeInfo";
@@ -42,7 +45,72 @@ public class CheckInTestHelpers {
 
     public static final String JSON_PATH_VALUE = "$.value";
     public static final String JSON_PATH_ZONE = "$.zone";
-
+    public static final CheckIn checkInOrdinal = CheckInOrdinal.Builder
+            .builder()
+            .withZone(Zone.COMMIT)
+            .withId(4L)
+            .withCreatedBy(User.Builder.builder().withId(2L).withFirstName("Robert").build())
+            .withCreatedOn(LocalDateTime.MAX)
+            .withChangeInfo(CHANGE_INFO)
+            .withInitiatives(INITIATIVES)
+            .withKeyResult(KeyResultOrdinal.Builder
+                    .builder()
+                    .withCommitZone("Baum")
+                    .withTargetZone("Wald")
+                    .withId(9L)
+                    .build())
+            .build();
+    /* Test DTOs */
+    public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L,
+            1,
+            CHANGE_INFO_1,
+            INITIATIVES_1,
+            6,
+            1L,
+            CHECK_IN_CREATED_BY, //
+            LocalDateTime.MAX,
+            LocalDateTime.MAX,
+            46D,
+            true);
+    public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L,
+            1,
+            CHANGE_INFO_2,
+            INITIATIVES_2,
+            5,
+            2L,
+            CHECK_IN_CREATED_BY, //
+            LocalDateTime.MAX,
+            LocalDateTime.MAX,
+            Zone.COMMIT,
+            true);
+    public static final String CHECK_IN_METRIC_JSON = """
+            {
+              "id": 42,
+              "version": 0,
+              "changeInfo": "Change_Info",
+              "initiatives": "Initiatives",
+              "confidence": 5,
+              "keyResultId": 1000,
+              "createdOn": null,
+              "modifiedOn": null,
+              "value": 23.0,
+              "isWriteable": false
+            }
+            """;
+    public static final String CHECK_IN_ORDINAL_JSON = """
+            {
+            "id": 43,
+            "version": 0,
+            "changeInfo": "Change_Info",
+            "initiatives": "Initiatives",
+            "confidence": 7,
+            "keyResultId": 1001,
+            "createdOn": null,
+            "modifiedOn": null,
+            "zone": "STRETCH",
+            "isWriteable": false
+            }
+            """;
     /* Test entities */
     static final Objective objective = Objective.Builder.builder().withId(1L).build();
     public static final CheckIn checkInMetric = CheckInMetric.Builder
@@ -60,73 +128,6 @@ public class CheckInTestHelpers {
                     .withObjective(objective)
                     .build())
             .build();
-    public static final CheckIn checkInOrdinal = CheckInOrdinal.Builder
-            .builder()
-            .withZone(Zone.COMMIT)
-            .withId(4L)
-            .withCreatedBy(User.Builder.builder().withId(2L).withFirstName("Robert").build())
-            .withCreatedOn(LocalDateTime.MAX)
-            .withChangeInfo(CHANGE_INFO)
-            .withInitiatives(INITIATIVES)
-            .withKeyResult(KeyResultOrdinal.Builder
-                    .builder()
-                    .withCommitZone("Baum")
-                    .withTargetZone("Wald")
-                    .withId(9L)
-                    .build())
-            .build();
-
-    /* Test DTOs */
-    public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L,
-                                                                           1,
-                                                                           CHANGE_INFO_1,
-                                                                           INITIATIVES_1,
-                                                                           6,
-                                                                           1L,
-                                                                           LocalDateTime.MAX,
-                                                                           LocalDateTime.MAX,
-                                                                           46D,
-                                                                           true);
-    public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L,
-                                                                             1,
-                                                                             CHANGE_INFO_2,
-                                                                             INITIATIVES_2,
-                                                                             5,
-                                                                             2L,
-                                                                             LocalDateTime.MAX,
-                                                                             LocalDateTime.MAX,
-                                                                             Zone.COMMIT,
-                                                                             true);
-
-    public static final String CHECK_IN_METRIC_JSON = """
-            {
-              "id": 42,
-              "version": 0,
-              "changeInfo": "Change_Info",
-              "initiatives": "Initiatives",
-              "confidence": 5,
-              "keyResultId": 1000,
-              "createdOn": null,
-              "modifiedOn": null,
-              "value": 23.0,
-              "isWriteable": false
-            }
-            """;
-
-    public static final String CHECK_IN_ORDINAL_JSON = """
-            {
-            "id": 43,
-            "version": 0,
-            "changeInfo": "Change_Info",
-            "initiatives": "Initiatives",
-            "confidence": 7,
-            "keyResultId": 1001,
-            "createdOn": null,
-            "modifiedOn": null,
-            "zone": "STRETCH",
-            "isWriteable": false
-            }
-            """;
 
     private CheckInTestHelpers() {
     }

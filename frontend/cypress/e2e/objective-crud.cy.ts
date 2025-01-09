@@ -68,8 +68,8 @@ describe('crud operations', () => {
       .click();
     overviewPage.selectFromThreeDotMenu('Objective löschen');
     ConfirmDialog.do()
-      .checkTitle('Objective löschen')
-      .checkDescription('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')
+      .checkForContentOnDialog('Objective löschen')
+      .checkForContentOnDialog('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')
       .submit();
     cy.contains(objectiveTitle)
       .should('not.exist');

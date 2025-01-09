@@ -30,7 +30,7 @@ public class CompletedAuthorizationService {
 
     public Completed getCompletedByObjectiveId(Long objectiveId) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        authorizationService.hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
+        authorizationService.hasRoleReadByObjectiveId(objectiveId, authorizationUser);
         return completedBusinessService.getCompletedByObjectiveId(objectiveId);
     }
 }

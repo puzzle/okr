@@ -304,7 +304,93 @@ describe('okr check-in', () => {
       .siblings('div')
       .contains('10%');
   });
+
+  it('should be able to add actions to the action plan when creating a check-in', () => {
+    const keyResultTitle = 'This key-result will be used for testing the action plan while creating check-ins';
+    overviewPage.addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
+      .fillKeyResultTitle(keyResultTitle)
+      .withMetricValues(Unit.NUMBER, '1', '5')
+      .addActionPlanElement('First action')
+      .addActionPlanElement('Second action')
+      .addActionPlanElement('Third action')
+      .submit();
+
+    keyResultDetailPage.visit(keyResultTitle);
+    keyResultDetailPage.editKeyResult();
+    cy.getByTestId('action-input')
+      .should('have.length', 3);
+    cy.getByTestId('cancel')
+      .click();
+
+    keyResultDetailPage.createCheckIn()
+      .addActionToActionPlan('Fourth action')
+      .fillCheckInCommentary('Add a fourth action to the action plan')
+      .fillMetricCheckInValue('3')
+      .submit();
+
+    keyResultDetailPage.editKeyResult();
+    cy.getByTestId('action-input')
+      .should('have.length', 4);
+    cy.contains('Fourth action')
+      .should('exist');
+    cy.getByTestId('cancel')
+      .click();
+  });
+
+  it.only('should be able to check actions of the action plan when creating a check-in', () => {
+    keyResultDetailPage.visit('This key-result will be used for testing the action plan while creating check-ins');
+
+    keyResultDetailPage.createCheckIn()
+      .checkActionOfActionPlan(0)
+      .fillCheckInCommentary('Check first action of action plan')
+      .fillMetricCheckInValue('4')
+      .submit();
+
+    isChecked('First action');
+    cy.contains('Second action')
+      .should('exist');
+    cy.contains('Third action')
+      .should('exist');
+    cy.contains('Fourth action')
+      .should('exist');
+  });
+
+  it('should not save action plan changes when check-in is not saved', () => {
+    keyResultDetailPage.visit('This key-result will be used for testing the action plan while creating check-ins');
+
+    keyResultDetailPage.createCheckIn()
+      .addActionToActionPlan('Fifth action!')
+      .checkActionOfActionPlan(1)
+      .fillCheckInCommentary('This should not appear anywhere!')
+      .fillMetricCheckInValue('5')
+      .cancel();
+
+    cy.contains('First action')
+      .should('exist');
+    cy.contains('Second action')
+      .should('exist');
+    cy.contains('Third action')
+      .should('exist');
+    cy.contains('Fourth action')
+      .should('exist');
+    cy.contains('Fifth action!')
+      .should('not.exist');
+
+    isChecked('Second action', false);
+
+    cy.contains('Check first action of action plan')
+      .should('exist');
+    cy.contains('This should not appear anywhere!')
+      .should('not.exist');
+  });
 });
+
+function isChecked(element: string, checked = true) {
+  const assertion = checked ? 'include' : 'not.include';
+  cy.contains(element)
+    .should('have.css', 'text-decoration')
+    .and(assertion, 'line-through');
+}
 
 function getCurrentDate() {
   const today = new Date();

@@ -14,7 +14,6 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-key-result-dialog',
   templateUrl: './key-result-dialog.component.html',
-  styleUrls: ['./key-result-dialog.component.scss'],
   standalone: false
 })
 export class KeyResultDialogComponent {

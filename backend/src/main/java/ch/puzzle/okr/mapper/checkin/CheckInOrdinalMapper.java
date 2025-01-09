@@ -21,10 +21,7 @@ public class CheckInOrdinalMapper {
                                      checkInOrdinal.getInitiatives(), //
                                      checkInOrdinal.getConfidence(), //
                                      checkInOrdinal.getKeyResult().getId(), //
-                                     checkInOrdinal.getCreatedBy().getFirstName() + " "
-                                                                            + checkInOrdinal
-                                                                                    .getCreatedBy()
-                                                                                    .getLastName(), //
+                                     checkInOrdinal.getCreatedBy().getFullName(), //
                                      checkInOrdinal.getCreatedOn(), //
                                      checkInOrdinal.getModifiedOn(), //
                                      checkInOrdinal.getZone(), //

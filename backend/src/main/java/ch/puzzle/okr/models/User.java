@@ -105,6 +105,10 @@ public class User {
         this.okrChampion = okrChampion;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", version=" + version + ", firstName='" + firstName + '\'' + ", lastName='"

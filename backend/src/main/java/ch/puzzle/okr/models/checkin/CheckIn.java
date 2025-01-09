@@ -5,7 +5,10 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -50,6 +53,22 @@ public abstract class CheckIn implements WriteableInterface {
 
     @Transient
     private boolean writeable;
+
+    /* Constructor */
+    protected CheckIn() {
+    }
+
+    protected CheckIn(Builder<?> builder) {
+        id = builder.id;
+        version = builder.version;
+        setChangeInfo(builder.changeInfo);
+        setInitiatives(builder.initiatives);
+        setConfidence(builder.confidence);
+        setKeyResult(builder.keyResult);
+        setCreatedBy(builder.createdBy);
+        setCreatedOn(builder.createdOn);
+        setModifiedOn(builder.modifiedOn);
+    }
 
     /* Getter and Setter */
     public Long getId() {
@@ -165,22 +184,6 @@ public abstract class CheckIn implements WriteableInterface {
                       createdOn,
                       modifiedOn,
                       checkInType);
-    }
-
-    /* Constructor */
-    protected CheckIn() {
-    }
-
-    protected CheckIn(Builder<?> builder) {
-        id = builder.id;
-        version = builder.version;
-        setChangeInfo(builder.changeInfo);
-        setInitiatives(builder.initiatives);
-        setConfidence(builder.confidence);
-        setKeyResult(builder.keyResult);
-        setCreatedBy(builder.createdBy);
-        setCreatedOn(builder.createdOn);
-        setModifiedOn(builder.modifiedOn);
     }
 
     @SuppressWarnings(value = "unchecked")

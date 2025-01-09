@@ -1,6 +1,7 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('crud operations', () => {
   let overviewPage = new CyOverviewPage();
@@ -58,7 +59,28 @@ describe('crud operations', () => {
   });
 
   it('should delete existing objective', () => {
-    overviewPage.getFirstObjective()
+    const objectiveTitle = 'This objective will be deleted by the three dot menu!';
+    overviewPage.addObjective()
+      .fillObjectiveTitle(objectiveTitle)
+      .submit();
+    overviewPage.getObjectiveByName(objectiveTitle)
+      .findByTestId('three-dot-menu')
+      .click();
+    overviewPage.selectFromThreeDotMenu('Objective löschen');
+    ConfirmDialog.do()
+      .checkTitle('Objective löschen')
+      .checkDescription('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')
+      .submit();
+    cy.contains(objectiveTitle)
+      .should('not.exist');
+  });
+
+  it('should delete existing objective using edit dialog', () => {
+    const objectiveTitle = 'This objective will be deleted by accessing the edit button!';
+    overviewPage.addObjective()
+      .fillObjectiveTitle(objectiveTitle)
+      .submit();
+    overviewPage.getObjectiveByName(objectiveTitle)
       .findByTestId('three-dot-menu')
       .click();
     overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
@@ -67,6 +89,30 @@ describe('crud operations', () => {
       .checkTitle('Objective löschen')
       .checkDescription('Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadurch ebenfalls gelöscht!')
       .submit();
+    cy.contains(objectiveTitle)
+      .should('not.exist');
+  });
+
+  it('should not be able to delete a completed objective', () => {
+    const objectiveTitle = 'Should not delete this completed objective!';
+    overviewPage.addObjective()
+      .fillObjectiveTitle(objectiveTitle)
+      .submit();
+
+    overviewPage.getObjectiveByName(objectiveTitle)
+      .findByTestId('three-dot-menu')
+      .click();
+    overviewPage.selectFromThreeDotMenu('Objective abschliessen');
+    cy.getByTestId('successful')
+      .click();
+    cy.getByTestId('submit')
+      .click();
+
+    overviewPage.getObjectiveByName(objectiveTitle)
+      .findByTestId('three-dot-menu')
+      .click();
+    cy.contains('Objective löschen')
+      .should('not.exist');
   });
 
   it('should open objective detail view via click', () => {

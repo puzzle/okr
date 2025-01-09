@@ -9,7 +9,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,15 +16,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @ExtendWith(MockitoExtension.class)
 class QuarterValidationServiceTest {
-    @MockBean
-    QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
 
     @Spy
     @InjectMocks

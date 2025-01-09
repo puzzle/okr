@@ -24,12 +24,12 @@ import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,17 +37,16 @@ import org.springframework.web.server.ResponseStatusException;
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CheckInController.class)
+@Import(DeserializerHelper.class)
 class CheckInControllerIT {
     @Autowired
     private MockMvc mvc;
-    @MockBean
+    @MockitoBean
     private CheckInAuthorizationService checkInAuthorizationService;
-    @MockBean
+    @MockitoBean
     private CheckInMapper checkInMapper;
-    @MockBean
+    @MockitoBean
     private KeyResultBusinessService keyResultBusinessService;
-    @SpyBean
-    DeserializerHelper deserializerHelper;
 
     @BeforeEach
     void setUp() {

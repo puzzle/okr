@@ -28,11 +28,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
@@ -134,17 +134,17 @@ class ObjectiveControllerIT {
 
     @Autowired
     private MockMvc mvc;
-    @MockBean
+    @MockitoBean
     private ObjectiveAuthorizationService objectiveAuthorizationService;
     @Mock
     private AuthorizationService authorizationService;
-    @MockBean
+    @MockitoBean
     private ActionAuthorizationService actionAuthorizationService;
-    @MockBean
+    @MockitoBean
     private ObjectiveMapper objectiveMapper;
-    @MockBean
+    @MockitoBean
     private KeyResultMapper keyResultMapper;
-    @MockBean
+    @MockitoBean
     private DeserializerHelper deserializerHelper;
 
     @BeforeEach

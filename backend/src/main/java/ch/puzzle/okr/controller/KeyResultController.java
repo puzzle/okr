@@ -67,8 +67,6 @@ public class KeyResultController {
     @GetMapping("/{id}/checkins")
     public List<CheckInDto> getCheckInsFromKeyResult(@Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true)
     @PathVariable long id) {
-        System.out
-                .println(keyResultAuthorizationService.getAllCheckInsByKeyResult(id).getFirst().getCreatedBy().getId());
         return keyResultAuthorizationService.getAllCheckInsByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 

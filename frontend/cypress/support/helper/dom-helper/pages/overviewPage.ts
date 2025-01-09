@@ -188,7 +188,7 @@ export default class CyOverviewPage extends Page {
     return new ObjectiveDialog();
   }
 
-  completeObjective(title: string, successful: boolean, comment?: string) {
+  completeObjective(title: string) {
     this.addObjective()
       .fillObjectiveTitle(title)
       .submit();
@@ -206,13 +206,6 @@ export default class CyOverviewPage extends Page {
     cy.contains('Objective abschliessen');
     cy.contains('Abbrechen');
 
-    successful ? cy.getByTestId('successful')
-      .click() : cy.getByTestId('not-successful')
-      .click();
-    if (comment) {
-      cy.getByTestId('completeComment')
-        .type(comment);
-    }
     return new CompleteDialog();
   }
 

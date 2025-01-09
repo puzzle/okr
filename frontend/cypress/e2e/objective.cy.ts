@@ -34,7 +34,9 @@ describe('okr objective', () => {
     it('should complete objective as successful and write successful closing comment', () => {
       const title = 'This objective should be successful';
       const comment = 'This objective has been successfully completed. Good work';
-      overviewPage.completeObjective(title, true, comment)
+      overviewPage.completeObjective(title)
+        .completeAs(true)
+        .writeClosingComment(comment)
         .submit();
 
       overviewPage.getObjectiveByNameAndState(title, 'successful')
@@ -45,7 +47,9 @@ describe('okr objective', () => {
     it('should complete objective as not-successful and write unsuccessful closing comment', () => {
       const title = 'This objective should NOT be successful';
       const comment = 'This objective has not been completed successfully. We need to work on this';
-      overviewPage.completeObjective(title, false, comment)
+      overviewPage.completeObjective(title)
+        .completeAs(false)
+        .writeClosingComment(comment)
         .submit();
 
       overviewPage.getObjectiveByNameAndState(title, 'not-successful')

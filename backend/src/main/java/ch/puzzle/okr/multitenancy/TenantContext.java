@@ -18,6 +18,7 @@ public class TenantContext {
 
     public static void setCurrentTenant(String tenant) {
         logger.debug("Setting current TenantContext to tenant: {}", tenant);
+        CURRENT_TENANT.remove();
         CURRENT_TENANT.set(tenant);
     }
 }

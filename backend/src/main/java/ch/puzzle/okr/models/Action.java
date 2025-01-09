@@ -30,6 +30,7 @@ public class Action implements WriteableInterface {
     @ManyToOne
     private KeyResult keyResult;
 
+    @Transient
     private boolean writeable;
 
     public Action() {

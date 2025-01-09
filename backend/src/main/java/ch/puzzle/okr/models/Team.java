@@ -25,7 +25,8 @@ public class Team implements WriteableInterface {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "team", cascade = CascadeType.ALL)
     private List<UserTeam> userTeamList;
 
-    private transient boolean writeable;
+    @Transient
+    private boolean writeable;
 
     public Team() {
     }

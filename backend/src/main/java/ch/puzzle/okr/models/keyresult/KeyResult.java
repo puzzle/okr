@@ -51,6 +51,7 @@ public abstract class KeyResult implements WriteableInterface {
     @Column(name = "key_result_type", insertable = false, updatable = false)
     private String keyResultType;
 
+    @Transient
     private boolean writeable;
 
     public Long getId() {

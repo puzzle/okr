@@ -2,10 +2,8 @@ package ch.puzzle.okr.models.overview;
 
 import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.WriteableInterface;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import org.hibernate.annotations.Immutable;
 
@@ -36,7 +34,8 @@ public class Overview implements WriteableInterface {
     private Integer confidence;
     private LocalDateTime checkInCreatedOn;
 
-    private transient boolean writeable;
+    @Transient
+    private boolean writeable;
 
     public Overview() {
     }

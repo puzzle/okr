@@ -11,17 +11,14 @@ body.okr {
   margin: 0;
   padding: 0;
   background: var(--okr-overview-background-color);
-  font-family: Roboto, 'sans-serif';
   --bs-body-font-family: Roboto;
 
   h1 {
-    font-family: Roboto, 'sans-serif';
     font-size: 1.5rem;
     font-variation-settings: 'wght' 600;
   }
 
   h2 {
-    font-family: Roboto, 'sans-serif';
     font-size: 1.25rem;
     font-variation-settings: 'wght' 600;
     word-wrap: anywhere;
@@ -30,7 +27,6 @@ body.okr {
   }
 
   h3 {
-    font-family: Roboto, 'sans-serif';
     font-size: 1rem;
     font-variation-settings: 'wght' 400;
     word-wrap: anywhere;
@@ -38,40 +34,34 @@ body.okr {
   }
 
   h4 {
-    font-family: Roboto, 'sans-serif';
     font-size: 0.875rem;
     font-variation-settings: 'wght' 400;
     margin-bottom: 0;
   }
 
   h5 {
-    font-family: Roboto, 'sans-serif';
     font-size: 0.875rem;
     font-variation-settings: 'wght' 400;
     margin-bottom: 0;
   }
 
   p {
-    font-family: Roboto, 'sans-serif';
     font-variation-settings: 'wght' 400;
     margin: 0;
     font-size: 14px;
   }
 
   span {
-    font-family: Roboto, 'sans-serif';
     font-variation-settings: 'wght' 400;
     font-size: 14px;
   }
 
   .quarter-filter-text span {
-    font-family: Roboto, 'sans-serif';
     font-variation-settings: 'wght' 400;
     font-size: 16px;
   }
 
   a {
-    font-family: Roboto, 'sans-serif';
     font-variation-settings: 'wght' 400;
     color: variables.$pz-dark-blue;
     text-decoration: none;
@@ -79,7 +69,6 @@ body.okr {
   }
 
   .font-size-14 {
-    font-family: Roboto, 'sans-serif';
     font-variation-settings: 'wght' 400;
     font-size: 0.875rem;
   }
@@ -87,8 +76,9 @@ body.okr {
 
 // TODO: Find a better way to override the Angular Material default font once Angular 19 is installed. https://material.angular.io/guide/theming
 * {
-  font-family: Roboto, 'sans-serif';
+  font-family: Roboto, sans-serif;
   font-variation-settings: 'wght' 400;
+  line-height: 115% !important;
 }
 
 .linebreak {
@@ -125,14 +115,12 @@ body pzsh-backdrop {
 }
 
 .text-small {
-  font-family: Roboto, 'sans-serif';
   font-variation-settings: 'wght' 400;
   font-size: 1rem;
 }
 
 @media screen and (max-width: 580px) {
   .text-small {
-    font-family: Roboto, 'sans-serif';
     font-variation-settings: 'wght' 400;
     font-size: 0.8rem;
   }
@@ -186,7 +174,6 @@ input[type='text'] {
 }
 
 .mat-mdc-checkbox .mdc-form-field {
-  font-family: Roboto, 'sans-serif';
   font-variation-settings: 'wght' 400;
   font-size: 1rem !important;
 }
@@ -262,13 +249,8 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 }
 
 .sub-title-key-result {
-  font-family: Roboto, 'sans-serif';
   font-variation-settings: 'wght' 400;
   font-size: 0.9rem !important;
-}
-
-* {
-  line-height: 115% !important;
 }
 
 img.add-cross-button {
@@ -277,7 +259,6 @@ img.add-cross-button {
 }
 
 .add-text {
-  font-family: Roboto, 'sans-serif';
   margin-top: 1px;
   height: 2rem;
 }
@@ -338,7 +319,6 @@ table.okr-table {
     }
 
     > th {
-      font-family: Roboto, 'sans-serif';
       font-variation-settings: 'wght' 700;
       vertical-align: bottom;
       font-size: 0.75rem;

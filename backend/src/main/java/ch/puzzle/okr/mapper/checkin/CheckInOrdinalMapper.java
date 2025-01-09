@@ -16,16 +16,19 @@ public class CheckInOrdinalMapper {
 
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
         return new CheckInOrdinalDto(checkInOrdinal.getId(),
-                checkInOrdinal.getVersion(), //
-                checkInOrdinal.getChangeInfo(), //
-                checkInOrdinal.getInitiatives(), //
-                checkInOrdinal.getConfidence(), //
-                checkInOrdinal.getKeyResult().getId(), //
-                checkInOrdinal.getCreatedBy().getFirstName() + " " + checkInOrdinal.getCreatedBy().getLastName(), //
-                checkInOrdinal.getCreatedOn(), //
-                checkInOrdinal.getModifiedOn(), //
-                checkInOrdinal.getZone(), //
-                checkInOrdinal.isWriteable());
+                                     checkInOrdinal.getVersion(), //
+                                     checkInOrdinal.getChangeInfo(), //
+                                     checkInOrdinal.getInitiatives(), //
+                                     checkInOrdinal.getConfidence(), //
+                                     checkInOrdinal.getKeyResult().getId(), //
+                                     checkInOrdinal.getCreatedBy().getFirstName() + " "
+                                                                            + checkInOrdinal
+                                                                                    .getCreatedBy()
+                                                                                    .getLastName(), //
+                                     checkInOrdinal.getCreatedOn(), //
+                                     checkInOrdinal.getModifiedOn(), //
+                                     checkInOrdinal.getZone(), //
+                                     checkInOrdinal.isWriteable());
     }
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {

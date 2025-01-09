@@ -16,16 +16,17 @@ public class CheckInMetricMapper {
 
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
         return new CheckInMetricDto(checkInMetric.getId(), //
-                checkInMetric.getVersion(), //
-                checkInMetric.getChangeInfo(), //
-                checkInMetric.getInitiatives(), //
-                checkInMetric.getConfidence(), //
-                checkInMetric.getKeyResult().getId(), //
-                checkInMetric.getCreatedBy().getFirstName() + " " + checkInMetric.getCreatedBy().getLastName(), //
-                checkInMetric.getCreatedOn(), //
-                checkInMetric.getModifiedOn(), //
-                checkInMetric.getValue(), //
-                checkInMetric.isWriteable());
+                                    checkInMetric.getVersion(), //
+                                    checkInMetric.getChangeInfo(), //
+                                    checkInMetric.getInitiatives(), //
+                                    checkInMetric.getConfidence(), //
+                                    checkInMetric.getKeyResult().getId(), //
+                                    checkInMetric.getCreatedBy().getFirstName() + " "
+                                                                          + checkInMetric.getCreatedBy().getLastName(), //
+                                    checkInMetric.getCreatedOn(), //
+                                    checkInMetric.getModifiedOn(), //
+                                    checkInMetric.getValue(), //
+                                    checkInMetric.isWriteable());
     }
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {

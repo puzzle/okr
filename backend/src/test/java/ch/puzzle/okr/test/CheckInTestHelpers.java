@@ -1,5 +1,7 @@
 package ch.puzzle.okr.test;
 
+import static ch.puzzle.okr.mapper.checkin.helper.TestDataConstants.CHECK_IN_CREATED_BY;
+
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
 import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
@@ -11,10 +13,7 @@ import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-
 import java.time.LocalDateTime;
-
-import static ch.puzzle.okr.mapper.checkin.helper.TestDataConstants.CHECK_IN_CREATED_BY;
 
 public class CheckInTestHelpers {
     public static final String CHANGE_INFO = "ChangeInfo";
@@ -62,27 +61,27 @@ public class CheckInTestHelpers {
             .build();
     /* Test DTOs */
     public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L,
-            1,
-            CHANGE_INFO_1,
-            INITIATIVES_1,
-            6,
-            1L,
-            CHECK_IN_CREATED_BY, //
-            LocalDateTime.MAX,
-            LocalDateTime.MAX,
-            46D,
-            true);
+                                                                           1,
+                                                                           CHANGE_INFO_1,
+                                                                           INITIATIVES_1,
+                                                                           6,
+                                                                           1L,
+                                                                           CHECK_IN_CREATED_BY, //
+                                                                           LocalDateTime.MAX,
+                                                                           LocalDateTime.MAX,
+                                                                           46D,
+                                                                           true);
     public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L,
-            1,
-            CHANGE_INFO_2,
-            INITIATIVES_2,
-            5,
-            2L,
-            CHECK_IN_CREATED_BY, //
-            LocalDateTime.MAX,
-            LocalDateTime.MAX,
-            Zone.COMMIT,
-            true);
+                                                                             1,
+                                                                             CHANGE_INFO_2,
+                                                                             INITIATIVES_2,
+                                                                             5,
+                                                                             2L,
+                                                                             CHECK_IN_CREATED_BY, //
+                                                                             LocalDateTime.MAX,
+                                                                             LocalDateTime.MAX,
+                                                                             Zone.COMMIT,
+                                                                             true);
     public static final String CHECK_IN_METRIC_JSON = """
             {
               "id": 42,

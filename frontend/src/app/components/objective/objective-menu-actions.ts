@@ -8,7 +8,7 @@ import {
   ObjectiveMenuAfterAction,
   ObjectiveMenuEntry
 } from '../../services/objective-menu-actions.service';
-import { ObjectiveMenuAfterActions } from './ObjectiveMenuAfterActions';
+import { ObjectiveMenuAfterActions } from './objective-menu-after-actions';
 
 export class ObjectiveMenuActions {
   constructor(private readonly dialogService: DialogService,

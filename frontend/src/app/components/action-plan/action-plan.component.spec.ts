@@ -150,7 +150,7 @@ describe('ActionPlanComponent', () => {
         action3
       ].toString());
     expect(component.control.getValue()![0].priority)
-      .toBe(0);
+      .toBe(2);
     expect(component.control.getValue()![1].priority)
       .toBe(1);
     expect(component.control.getValue()![2].priority)

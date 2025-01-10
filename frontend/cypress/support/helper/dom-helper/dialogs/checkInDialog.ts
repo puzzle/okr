@@ -41,12 +41,16 @@ export default class CheckInDialog extends Dialog {
 
   setCheckInConfidence(confidence: number) {
     cy.getByTestId('confidence-slider')
-      .find('input')
-      .focus();
+      .as('slider');
+    const input = cy.get('@slider')
+      .find('input');
+
     for (let i = 0; i < 10; i++) {
+      input.focus();
       cy.realPress('ArrowLeft');
     }
     for (let i = 0; i < confidence; i++) {
+      input.focus();
       cy.realPress('ArrowRight');
     }
     return this;

@@ -2,7 +2,7 @@ export interface CheckInMin {
   id?: number;
   version: number;
   confidence: number;
-  createdBy?: string;
+  createdBy: string;
   createdOn: Date;
   changeInfo: string;
   initiatives: string;

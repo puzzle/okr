@@ -61,6 +61,6 @@ public class TestDataHelper {
 
     public static CheckInOrdinal checkInOrdinal() {
         checkInOrdinal.setWriteable(CHECK_IN_IS_WRITEABLE);
-        return (CheckInOrdinal) TestDataHelper.checkInOrdinal;
+        return (CheckInOrdinal) checkInOrdinal;
     }
 }

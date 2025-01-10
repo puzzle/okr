@@ -87,7 +87,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageOrdinal() {
-    switch ((this.keyResult.lastCheckIn as CheckInOrdinalMin)!.zone!) {
+    switch ((this.keyResult.lastCheckIn as CheckInOrdinalMin).zone!) {
       case Zone.STRETCH:
         this.stretched = true;
         break;

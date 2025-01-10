@@ -18,7 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-public class JwtHelperTest {
+class JwtHelperTest {
 
     private static final String TOKEN_CLAIMS_KEY_FIRST_NAME = "given_name";
     private static final String TOKEN_CLAIMS_KEY_LAST_NAME = "family_name";

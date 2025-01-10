@@ -38,8 +38,8 @@ public class CheckInOrdinal extends CheckIn {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof CheckInOrdinal) {
-            return super.equals(o) && Objects.equals(zone, ((CheckInOrdinal) o).zone);
+        if (o instanceof CheckInOrdinal checkInOrdinal) {
+            return super.equals(o) && Objects.equals(zone, checkInOrdinal.zone);
         }
         return false;
     }

@@ -73,7 +73,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         if (isImUsed) {
             objective.setQuarter(savedObjective.getQuarter());
         }
-        logger.debug("quarter has changed and is{}changeable, {}", spaceOrNot(isImUsed), objective);
+        logger.atDebug().log("quarter has changed and is{}changeable, {}", spaceOrNot(isImUsed), objective);
     }
 
     private String spaceOrNot(boolean isImUsed) {

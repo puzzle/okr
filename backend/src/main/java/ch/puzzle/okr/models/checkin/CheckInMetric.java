@@ -35,8 +35,8 @@ public class CheckInMetric extends CheckIn {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof CheckInMetric) {
-            return super.equals(o) && Objects.equals(valueMetric, ((CheckInMetric) o).valueMetric);
+        if (o instanceof CheckInMetric checkInMetric) {
+            return super.equals(o) && Objects.equals(valueMetric, checkInMetric.valueMetric);
         }
         return false;
     }

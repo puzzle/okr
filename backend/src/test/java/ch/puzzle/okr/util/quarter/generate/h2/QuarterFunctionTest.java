@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class QuarterFunctionTest {
+class QuarterFunctionTest {
 
     @DisplayName("QuarterFunction should return correct current quarter data")
     @Test

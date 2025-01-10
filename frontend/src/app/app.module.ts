@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -188,14 +188,10 @@ export const MY_FORMATS = {
       multi: true },
     { provide: OAuthStorage,
       useFactory: storageFactory },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initOauthFactory,
-      deps: [ConfigService,
-        OAuthService,
-        Injector],
-      multi: true
-    },
+    provideAppInitializer(() => {
+      const initializerFn = initOauthFactory(inject(ConfigService), inject(OAuthService));
+      return initializerFn();
+    }),
     {
       provide: Router,
       useClass: CustomRouter

@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class QuarterLabelTest {
+class QuarterLabelTest {
 
     @ParameterizedTest(name = "label() should return label with year and quarter info")
     @MethodSource("datesAndLabels")

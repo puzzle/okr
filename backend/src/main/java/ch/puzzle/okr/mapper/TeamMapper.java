@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TeamMapper {
 
-    public TeamMapper() {
-    }
-
     public TeamDto toDto(Team team) {
         return new TeamDto(team.getId(), team.getVersion(), team.getName(), team.isWriteable());
     }

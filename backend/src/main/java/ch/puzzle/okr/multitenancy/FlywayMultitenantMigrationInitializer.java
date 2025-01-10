@@ -18,7 +18,7 @@ public class FlywayMultitenantMigrationInitializer {
     }
 
     public void migrateFlyway() {
-        this.tenantConfigProvider.getTenantConfigs().forEach((tenantConfig) -> {
+        this.tenantConfigProvider.getTenantConfigs().forEach(tenantConfig -> {
             TenantConfigProvider.DataSourceConfig dataSourceConfig = this.tenantConfigProvider
                     .getTenantConfigById(tenantConfig.tenantId())
                     .map(TenantConfigProvider.TenantConfig::dataSourceConfig)

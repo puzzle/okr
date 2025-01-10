@@ -5,7 +5,6 @@ import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.dto.UserTeamDto;
 import ch.puzzle.okr.models.User;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,7 +28,7 @@ public class UserMapper {
                                            user.getVersion(),
                                            teamMapper.toDto(ut.getTeam()),
                                            ut.isTeamAdmin()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new UserDto(user.getId(),
                            user.getVersion(),

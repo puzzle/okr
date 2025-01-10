@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import ch.puzzle.okr.exception.HibernateContextException;
 import java.util.Properties;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-public class HibernateContextTest {
+class HibernateContextTest {
 
     @BeforeEach
     void setUp() {
@@ -29,7 +30,8 @@ public class HibernateContextTest {
         DbConfig dbConfig = null;
 
         // act + assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> setHibernateConfig(dbConfig));
+        HibernateContextException exception = assertThrows(HibernateContextException.class,
+                                                           () -> setHibernateConfig(dbConfig));
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
 
@@ -42,7 +44,8 @@ public class HibernateContextTest {
         DbConfig dbConfig = new DbConfig(url, username, password, tenant);
 
         // act + assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> setHibernateConfig(dbConfig));
+        HibernateContextException exception = assertThrows(HibernateContextException.class,
+                                                           () -> setHibernateConfig(dbConfig));
         assertTrue(exception.getMessage().startsWith("Invalid hibernate configuration"));
     }
 
@@ -86,7 +89,8 @@ public class HibernateContextTest {
         // arrange
 
         // act + assert
-        RuntimeException exception = assertThrows(RuntimeException.class, HibernateContext::getHibernateConfig);
+        HibernateContextException exception = assertThrows(HibernateContextException.class,
+                                                           HibernateContext::getHibernateConfig);
         assertEquals("No cached hibernate configuration found", exception.getMessage());
     }
 

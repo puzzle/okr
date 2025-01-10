@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class QuarterRangeCheckerTest {
+class QuarterRangeCheckerTest {
 
     @DisplayName("Should return false if Quarter is null when nowIsInQuarter() is called")
     @Test

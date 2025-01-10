@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class UserUpdateHelperTest {
+class UserUpdateHelperTest {
     private AuthorizationRegistrationService.UserUpdateHelper helper;
 
     @BeforeEach

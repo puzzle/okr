@@ -141,8 +141,7 @@ class ObjectiveAuthorizationServiceTest {
     void shouldDeleteObjectiveByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-
-        objectiveAuthorizationService.deleteEntityById(id);
+        assertDoesNotThrow(() -> objectiveAuthorizationService.deleteEntityById(id));
     }
 
     @DisplayName("Should throw an exception when the user is not authorized to delete an objective by ID")

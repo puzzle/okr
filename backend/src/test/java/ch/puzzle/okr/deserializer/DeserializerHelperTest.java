@@ -144,11 +144,13 @@ class DeserializerHelperTest {
         when(deserializer.getKeyResultType(any())).thenReturn(null);
 
         JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
-
+        Map<String, Class<? extends CheckInDto>> CHECK_IN_MAP = Map.of("", CheckInOrdinalDto.class);
         // act + assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            deserializerHelper.deserializeMetricOrdinal(jsonParser, Map.of("", CheckInOrdinalDto.class), deserializer);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> deserializerHelper
+                                                                 .deserializeMetricOrdinal(jsonParser,
+                                                                                           CHECK_IN_MAP,
+                                                                                           deserializer));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("unsupported entity DTO to deserialize", exception.getReason());

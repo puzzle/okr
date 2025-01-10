@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.ErrorDto;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -56,5 +57,18 @@ public class OkrResponseStatusException extends ResponseStatusException {
 
     public List<ErrorDto> getErrors() {
         return errors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof OkrResponseStatusException that)) {
+            return false;
+        }
+        return Objects.equals(getErrors(), that.getErrors());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getErrors());
     }
 }

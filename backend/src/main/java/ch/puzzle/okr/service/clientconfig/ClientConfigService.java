@@ -66,12 +66,12 @@ public class ClientConfigService {
         for (String tenant : tenantsFromUrl) {
             Optional<TenantConfigProvider.TenantConfig> tenantConfig = tenantConfigProvider.getTenantConfigById(tenant);
             if (tenantConfig.isPresent()) {
-                logger.info("get config for " + tenant + ": OK");
+                logger.info("get config for {} :Ok", tenant);
                 return tenantConfig;
             }
-            logger.info("get config found for " + tenant + ": failed");
+            logger.info("get config found for {} : failed", tenant);
         }
-        logger.info("no config found for " + hostName + ": failed");
+        logger.info("no config found for {} : failed", hostName);
         return Optional.empty();
     }
 
@@ -81,12 +81,12 @@ public class ClientConfigService {
             Optional<TenantClientCustomization> tenantCustomization = tenantClientCustomizationProvider
                     .getTenantClientCustomizationsById(tenant);
             if (tenantCustomization.isPresent()) {
-                logger.info("get client customization for " + tenant + ": OK");
+                logger.info("get client customization for {} : OK", tenant);
                 return tenantCustomization;
             }
-            logger.info("get client customization for " + tenant + ": failed");
+            logger.info("get client customization for {} : failed", tenant);
         }
-        logger.info("no client customization found for " + hostName + ": failed");
+        logger.info("no client customization found for {} : failed", hostName);
         return Optional.empty();
     }
 }

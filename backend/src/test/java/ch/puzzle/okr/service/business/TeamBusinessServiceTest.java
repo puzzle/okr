@@ -165,9 +165,9 @@ class TeamBusinessServiceTest {
 
         verify(teamPersistenceService, times(1)).save(team);
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
-        assertEquals(user.getUserTeamList().size(), 1);
-        assertEquals(user.getUserTeamList().get(0).getTeam().getId(), team.getId());
-        assertTrue(user.getUserTeamList().get(0).isTeamAdmin());
+        assertEquals(1, user.getUserTeamList().size());
+        assertEquals(user.getUserTeamList().getFirst().getTeam().getId(), team.getId());
+        assertTrue(user.getUserTeamList().getFirst().isTeamAdmin());
     }
 
     @DisplayName("Should update team on updateTeam()")
@@ -240,21 +240,27 @@ class TeamBusinessServiceTest {
     @Test
     void shouldThrowExceptionWhenNoTeamFoundUsingRemoveUserFromTeam() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team3));
+        Long userId = user.getId();
+        Long teamId = team1.getId();
+
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
 
-        assertThrows(RuntimeException.class, () -> teamBusinessService.removeUserFromTeam(team2.getId(), user.getId()));
+        assertThrows(RuntimeException.class, () -> teamBusinessService.removeUserFromTeam(teamId, userId));
     }
 
     @DisplayName("Should throw exception on removeUserFromTeam() when user is the last admin")
     @Test
     void shouldThrowExceptionWhenLastAdminGetsRemoved() {
         var user = defaultUserWithTeams(2L, List.of(team1), List.of(team3));
+        Long userId = user.getId();
+        Long teamId = team1.getId();
+
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
 
         assertThrows(OkrResponseStatusException.class,
-                     () -> teamBusinessService.removeUserFromTeam(team1.getId(), user.getId()),
+                     () -> teamBusinessService.removeUserFromTeam(teamId, userId),
                      ErrorKey.TRIED_TO_DELETE_LAST_ADMIN.toString());
     }
 
@@ -275,11 +281,13 @@ class TeamBusinessServiceTest {
     void shouldThrowExceptionIfLastAdminRoleIsRemoved() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of());
         team1.setUserTeamList(new ArrayList<>(user.getUserTeamList()));
+        Long userId = user.getId();
+        Long teamId = team1.getId();
 
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
 
         assertThrows(OkrResponseStatusException.class,
-                     () -> teamBusinessService.updateOrAddTeamMembership(team1.getId(), user.getId(), false));
+                     () -> teamBusinessService.updateOrAddTeamMembership(teamId, userId, false));
     }
 
     @DisplayName("Should add user to team on updateOrAddTeamMembership() when user is not already in the team")
@@ -302,7 +310,7 @@ class TeamBusinessServiceTest {
         assertFalse(user.getUserTeamList().get(2).isTeamAdmin());
         assertEquals(user.getUserTeamList().get(2).getTeam().getId(), team3.getId());
 
-        assertEquals(user.getUserTeamList().size(), 3);
+        assertEquals(3, user.getUserTeamList().size());
         verify(cacheService, times(2)).emptyAuthorizationUsersCache();
     }
 }

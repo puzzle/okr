@@ -38,10 +38,10 @@ public class KeyResultMapper {
     }
 
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {
-        if (keyResultDto instanceof KeyResultMetricDto) {
-            return keyResultMetricMapper.toKeyResultMetric((KeyResultMetricDto) keyResultDto);
-        } else if (keyResultDto instanceof KeyResultOrdinalDto) {
-            return keyResultOrdinalMapper.toKeyResultOrdinal((KeyResultOrdinalDto) keyResultDto);
+        if (keyResultDto instanceof KeyResultMetricDto keyResultMetricDto) {
+            return keyResultMetricMapper.toKeyResultMetric(keyResultMetricDto);
+        } else if (keyResultDto instanceof KeyResultOrdinalDto keyResultOrdinalDto) {
+            return keyResultOrdinalMapper.toKeyResultOrdinal(keyResultOrdinalDto);
         } else {
             throw new ResponseStatusException(BAD_REQUEST,
                                               String

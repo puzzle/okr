@@ -35,7 +35,7 @@ describe('okr overview', () => {
     cy.get('.team-title')
       .first()
       .invoke('css', 'font-family')
-      .should('eq', 'Roboto, "sans-serif"');
+      .should('eq', 'Roboto, sans-serif');
     cy.get('.team-title')
       .first()
       .invoke('css', 'font-variation-settings')

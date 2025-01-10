@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -122,10 +123,11 @@ class KeyResultAuthorizationServiceTest {
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
                 .when(authorizationService)
                 .hasRoleCreateOrUpdate(metricKeyResult, authorizationUser);
+        List<Action> emptyActionList = List.of();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                                                          () -> keyResultAuthorizationService
-                                                                 .updateEntities(id, metricKeyResult, List.of()));
+                                                                 .updateEntities(id, metricKeyResult, emptyActionList));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
@@ -147,8 +149,7 @@ class KeyResultAuthorizationServiceTest {
     void shouldDeleteKeyResultByIdWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
-
-        keyResultAuthorizationService.deleteEntityById(id);
+        assertDoesNotThrow(() -> keyResultAuthorizationService.deleteEntityById(id));
     }
 
     @DisplayName("Should throw an exception when the user is not authorized to delete key-result by ID")

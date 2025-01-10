@@ -26,7 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
-public class CheckInMapperTest {
+class CheckInMapperTest {
 
     private CheckInMapper checkInMapper;
     @Mock

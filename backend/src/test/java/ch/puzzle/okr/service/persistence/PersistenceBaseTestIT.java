@@ -29,7 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
  * Tests depending on data from V100_0_0__TestData.sql
  */
 @SpringIntegrationTest
-public class PersistenceBaseTestIT {
+class PersistenceBaseTestIT {
 
     private User createdUser;
 
@@ -87,7 +87,8 @@ public class PersistenceBaseTestIT {
     void findAllShouldReturnAllEntitiesAsList() throws ResponseStatusException {
         var userList = persistenceBase.findAll();
 
-        assertThat(userList.size()).isGreaterThanOrEqualTo(7);
+        assertThat(userList).hasSizeGreaterThanOrEqualTo(7);
+
     }
 
     @DisplayName("Should add new entity on save()")

@@ -147,7 +147,7 @@ create table action
     id            bigint        not null
         primary key,
     version       int           not null,
-    action        varchar(4096) not null,
+    action_point        varchar(4096) not null,
     priority      integer       not null,
     checked    boolean       not null,
     key_result_id bigint        not null

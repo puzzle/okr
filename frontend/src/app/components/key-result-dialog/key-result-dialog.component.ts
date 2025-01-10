@@ -14,7 +14,6 @@ import { DialogService } from '../../services/dialog.service';
 @Component({
   selector: 'app-key-result-dialog',
   templateUrl: './key-result-dialog.component.html',
-  styleUrls: ['./key-result-dialog.component.scss'],
   standalone: false
 })
 export class KeyResultDialogComponent {
@@ -56,7 +55,7 @@ export class KeyResultDialogComponent {
         objective: this.data.objective,
         id: this.data.keyResult?.id } as KeyResultOrdinalDto);
     keyResult.id = this.data.keyResult?.id;
-    keyResult.version = this.data.keyResult?.version!;
+    keyResult.version = this.data.keyResult?.version;
     keyResult.actionList = keyResult.actionList!.filter((action: Action) => action.action !== '');
     this.keyResultService.saveKeyResult(keyResult)
       .subscribe((returnValue) => {

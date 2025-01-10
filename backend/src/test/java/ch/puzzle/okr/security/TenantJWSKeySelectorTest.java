@@ -16,7 +16,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TenantJWSKeySelectorTest {
+class TenantJWSKeySelectorTest {
     private static final String PITC = "pitc";
     private static final String JWK_SET_URI = "jwkSetUri";
     private static final String MOCK_ALGORITHM = "mock_algorithm";

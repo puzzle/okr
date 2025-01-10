@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class CheckInOrdinalMapperTest {
+class CheckInOrdinalMapperTest {
 
     private CheckInOrdinalMapper checkInOrdinalMapper;
     @Mock

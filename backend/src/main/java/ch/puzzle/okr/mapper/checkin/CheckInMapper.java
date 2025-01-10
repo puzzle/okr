@@ -34,10 +34,10 @@ public class CheckInMapper {
     }
 
     public CheckIn toCheckIn(CheckInDto checkInDto) {
-        if (checkInDto instanceof CheckInMetricDto) {
-            return checkInMetricMapper.toCheckInMetric((CheckInMetricDto) checkInDto);
-        } else if (checkInDto instanceof CheckInOrdinalDto) {
-            return checkInOrdinalMapper.toCheckInOrdinal((CheckInOrdinalDto) checkInDto);
+        if (checkInDto instanceof CheckInMetricDto checkInMetricDto) {
+            return checkInMetricMapper.toCheckInMetric(checkInMetricDto);
+        } else if (checkInDto instanceof CheckInOrdinalDto checkInOrdinalDto) {
+            return checkInOrdinalMapper.toCheckInOrdinal(checkInOrdinalDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                               String

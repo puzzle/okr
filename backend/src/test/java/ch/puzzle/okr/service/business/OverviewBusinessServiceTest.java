@@ -165,8 +165,10 @@ class OverviewBusinessServiceTest {
                 .when(overviewValidationService)
                 .validateOnGet(eq(QUARTER_ID), anyList());
 
+        List<Long> emptyTeamIdsList = List.of();
         assertThrows(ResponseStatusException.class,
-                     () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser));
+                     () -> overviewBusinessService
+                             .getFilteredOverview(QUARTER_ID, emptyTeamIdsList, "", authorizationUser));
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, never()).validateOnGet(QUARTER_ID, teamIds);

@@ -51,10 +51,10 @@ public class KeyResultMetric extends KeyResult {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof KeyResultMetric) {
-            return super.equals(o) && Objects.equals(baseline, ((KeyResultMetric) o).baseline)
-                   && Objects.equals(stretchGoal, ((KeyResultMetric) o).stretchGoal)
-                   && Objects.equals(unit, ((KeyResultMetric) o).unit);
+        if (o instanceof KeyResultMetric keyResultMetric) {
+            return super.equals(o) && Objects.equals(baseline, keyResultMetric.baseline)
+                   && Objects.equals(stretchGoal, keyResultMetric.stretchGoal)
+                   && Objects.equals(unit, keyResultMetric.unit);
         }
         return false;
     }

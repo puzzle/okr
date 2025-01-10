@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class CurrentTenantIdentifierResolverImplTest {
+class CurrentTenantIdentifierResolverImplTest {
 
     @DisplayName("Should return current TenantId from TenantContext")
     @Test

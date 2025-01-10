@@ -265,9 +265,9 @@ describe('okr check-in', () => {
     keyResultDetailPage.elements.addCheckin()
       .click();
     ConfirmDialog.do()
-      .checkTitle('Check-in im Draft-Status');
+      .checkForContentOnDialog('Check-in im Draft-Status');
     ConfirmDialog.do()
-      .checkDescription('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
+      .checkForContentOnDialog('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
   });
 
   it('should only display last value div if last check-in is present', () => {

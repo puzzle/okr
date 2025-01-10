@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 // uses test date from V100_0_0__TestData.sql
 @SpringIntegrationTest
-public class UserTeamPersistenceServiceIT {
+class UserTeamPersistenceServiceIT {
     private static final Long ID_OF_USER_ALICE = 11L; // user Alice is only in team Lorem
     private static final Long ID_OF_TEAM_LOREM = 6L; // team Lorem has 3 users
 

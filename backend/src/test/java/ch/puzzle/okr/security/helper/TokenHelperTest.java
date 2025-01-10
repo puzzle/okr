@@ -15,7 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-public class TokenHelperTest {
+class TokenHelperTest {
 
     private static final String PITC = "pitc";
     private TokenHelper helper;

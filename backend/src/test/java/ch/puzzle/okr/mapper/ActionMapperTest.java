@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ActionMapperTest {
+class ActionMapperTest {
 
     private static final long ID = 0L;
     private static final int VERSION = 1;
@@ -69,7 +69,7 @@ public class ActionMapperTest {
     private void assertActionDto(Action expected, ActionDto actual) {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
-        assertEquals(expected.getAction(), actual.action());
+        assertEquals(expected.getActionPoint(), actual.action());
         assertEquals(expected.getPriority(), actual.priority());
         assertEquals(expected.isChecked(), actual.isChecked());
         assertEquals(expected.getKeyResult().getId(), actual.keyResultId());
@@ -152,7 +152,7 @@ public class ActionMapperTest {
     private void assertAction(ActionDto expected, Action actual) {
         assertEquals(expected.id(), actual.getId());
         assertEquals(expected.version(), actual.getVersion());
-        assertEquals(expected.action(), actual.getAction());
+        assertEquals(expected.action(), actual.getActionPoint());
         assertEquals(expected.priority(), actual.getPriority());
         assertEquals(expected.isChecked(), actual.isChecked());
         assertFalse(actual.isWriteable());

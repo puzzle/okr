@@ -23,8 +23,8 @@ describe('okr objective', () => {
       overviewPage.selectFromThreeDotMenu('Objective veröffentlichen');
 
       ConfirmDialog.do()
-        .checkTitle('Objective veröffentlichen')
-        .checkDescription('Soll dieses Objective veröffentlicht werden?')
+        .checkForContentOnDialog('Objective veröffentlichen')
+        .checkForContentOnDialog('Soll dieses Objective veröffentlicht werden?')
         .submit();
 
       overviewPage.getObjectiveByNameAndState('A objective in state draft', 'ongoing')
@@ -111,8 +111,8 @@ describe('okr objective', () => {
       overviewPage.selectFromThreeDotMenu('Objective wiedereröffnen');
 
       ConfirmDialog.do()
-        .checkTitle('Objective wiedereröffnen')
-        .checkDescription('Soll dieses Objective wiedereröffnet werden?')
+        .checkForContentOnDialog('Objective wiedereröffnen')
+        .checkForContentOnDialog('Soll dieses Objective wiedereröffnet werden?')
         .submit();
 
       overviewPage.getObjectiveByNameAndState('This objective will be reopened after', 'ongoing')
@@ -146,8 +146,8 @@ describe('okr objective', () => {
       overviewPage.selectFromThreeDotMenu('Objective wiedereröffnen');
 
       ConfirmDialog.do()
-        .checkTitle('Objective wiedereröffnen')
-        .checkDescription('Soll dieses Objective wiedereröffnet werden?')
+        .checkForContentOnDialog('Objective wiedereröffnen')
+        .checkForContentOnDialog('Soll dieses Objective wiedereröffnet werden?')
         .cancel();
 
       overviewPage
@@ -167,8 +167,8 @@ describe('okr objective', () => {
       overviewPage.selectFromThreeDotMenu('Objective als Draft speichern');
 
       ConfirmDialog.do()
-        .checkTitle('Objective als Draft speichern')
-        .checkDescription('Soll dieses Objective als Draft gespeichert werden?')
+        .checkForContentOnDialog('Objective als Draft speichern')
+        .checkForContentOnDialog('Soll dieses Objective als Draft gespeichert werden?')
         .submit();
 
       overviewPage
@@ -189,8 +189,8 @@ describe('okr objective', () => {
       overviewPage.selectFromThreeDotMenu('Objective als Draft speichern');
 
       ConfirmDialog.do()
-        .checkTitle('Objective als Draft speichern')
-        .checkDescription('Soll dieses Objective als Draft gespeichert werden?')
+        .checkForContentOnDialog('Objective als Draft speichern')
+        .checkForContentOnDialog('Soll dieses Objective als Draft gespeichert werden?')
         .cancel();
 
       overviewPage

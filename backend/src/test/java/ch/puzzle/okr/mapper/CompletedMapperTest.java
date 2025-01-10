@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class CompletedMapperTest {
+class CompletedMapperTest {
     private static final long COMPLETED_ID = 0L;
     private static final String COMPLETED_COMMENT = "some comment";
     private static final long OBJECTIVE_ID = 23L;

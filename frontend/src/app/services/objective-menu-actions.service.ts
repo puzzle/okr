@@ -3,10 +3,10 @@ import { DialogService } from './dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ObjectiveMin } from '../shared/types/model/objective-min';
 import { State } from '../shared/types/enums/state';
-import { ObjectiveMenuAfterActions } from '../components/objective/ObjectiveMenuAfterActions';
+import { ObjectiveMenuAfterActions } from '../components/objective/objective-menu-after-actions';
 import { ObjectiveService } from './objective.service';
 import { RefreshDataService } from './refresh-data.service';
-import { ObjectiveMenuActions } from '../components/objective/ObjectiveMenuActions';
+import { ObjectiveMenuActions } from '../components/objective/objective-menu-actions';
 import { GJ_REGEX_PATTERN } from '../shared/constant-library';
 import { CompletedService } from './completed.servce';
 

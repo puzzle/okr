@@ -1,8 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
 import static ch.puzzle.okr.test.TestHelper.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -104,14 +103,14 @@ class TeamAuthorizationServiceTest {
     @Test
     void shouldDeleteSuccessfullyWhenAuthorizedAsOkrChampion() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
-        teamAuthorizationService.deleteEntity(teamUnderTest.getId());
+        assertDoesNotThrow(() -> teamAuthorizationService.deleteEntity(teamUnderTest.getId()));
     }
 
     @DisplayName("Should successfully delete when authorized as a team-admin")
     @Test
     void shouldDeleteSuccessfullyWhenAuthorizedAsTeamAdmin() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(adminUser);
-        teamAuthorizationService.deleteEntity(teamUnderTest.getId());
+        assertDoesNotThrow(() -> teamAuthorizationService.deleteEntity(teamUnderTest.getId()));
     }
 
     @DisplayName("Should throw an exception when the user is authorized as a member")
@@ -119,8 +118,9 @@ class TeamAuthorizationServiceTest {
     void shouldThrowExceptionWhenAuthorizedAsMemberUserForDeletion() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
 
+        Long id = teamUnderTest.getId();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamAuthorizationService.deleteEntity(teamUnderTest.getId()));
+                () -> teamAuthorizationService.deleteEntity(id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_DELETE", exception.getReason());
     }
@@ -158,7 +158,8 @@ class TeamAuthorizationServiceTest {
     void shouldThrowExceptionIfUserNotAuthorizedToAddUsersToTeam() {
         when(authorizationService.updateOrAddAuthorizationUser())
                 .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of())));
-        assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, List.of()));
+        List<Long> emptyUserIdsList = List.of();
+        assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, emptyUserIdsList));
     }
 
     @DisplayName("Should call the teamBusinessService when adding users to a team")

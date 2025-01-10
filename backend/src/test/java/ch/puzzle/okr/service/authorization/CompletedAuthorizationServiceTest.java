@@ -1,8 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -68,7 +67,7 @@ class CompletedAuthorizationServiceTest {
     void shouldDeleteCompletedByObjectiveIdWhenAuthorized() {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
-        completedAuthorizationService.deleteCompletedByObjectiveId(13L);
+        assertDoesNotThrow(() -> completedAuthorizationService.deleteCompletedByObjectiveId(13L));
     }
 
     @DisplayName("Should throw an exception when the user is not authorized to delete completed object by objective ID")

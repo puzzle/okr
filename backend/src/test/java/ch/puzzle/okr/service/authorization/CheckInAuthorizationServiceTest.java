@@ -128,7 +128,7 @@ class CheckInAuthorizationServiceTest {
         Long id = 13L;
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
 
-        checkInAuthorizationService.deleteEntityById(id);
+        assertDoesNotThrow(() -> checkInAuthorizationService.deleteEntityById(id));
     }
 
     @DisplayName("Should throw an exception when the user is not authorized to delete entity by ID")

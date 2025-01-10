@@ -5,9 +5,10 @@ import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
 import ch.puzzle.okr.exception.ConnectionProviderException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.*;
-import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.MappingSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
@@ -18,7 +19,7 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
 
     private static final Logger logger = LoggerFactory.getLogger(SchemaMultiTenantConnectionProvider.class);
 
-    final Map<String, ConnectionProvider> connectionProviderMap;
+    final transient Map<String, ConnectionProvider> connectionProviderMap;
 
     public SchemaMultiTenantConnectionProvider() {
         this.connectionProviderMap = new HashMap<>();
@@ -34,7 +35,10 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         String schema = convertTenantIdToSchemaName(tenantIdentifier);
         logger.debug("Setting schema to {}", schema);
 
-        connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
+        try (Statement sqlStatement = connection.createStatement()) {
+            sqlStatement.execute(String.format("SET SCHEMA '%s';", schema));
+        }
+
         return connection;
     }
 
@@ -83,10 +87,10 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     protected Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
         Properties properties = getHibernateProperties();
         if (properties == null || properties.isEmpty()) {
-            throw new RuntimeException("Cannot load hibernate properties from application.properties)");
+            throw new ConnectionProviderException("Cannot load hibernate properties from application.properties)");
         }
         if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
-            properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
+            properties.put(MappingSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
         }
         return properties;
     }

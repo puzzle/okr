@@ -66,8 +66,9 @@ class AlignmentBusinessServiceTest {
                 .when(alignmentValidationService)
                 .validateOnUpdate(eq(1L), any(KeyResultAlignment.class));
 
+        KeyResultAlignment keyResultAlignment = new KeyResultAlignment();
         assertThrows(OkrResponseStatusException.class,
-                     () -> alignmentBusinessService.updateEntity(1L, new KeyResultAlignment()));
+                     () -> alignmentBusinessService.updateEntity(1L, keyResultAlignment));
     }
 
     @DisplayName("Should save new entity when updating entity")

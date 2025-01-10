@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class SchemaMultiTenantConnectionProviderInternalsTest {
+class SchemaMultiTenantConnectionProviderInternalsTest {
 
     private static final String TENANT_ID = "pitc";
 

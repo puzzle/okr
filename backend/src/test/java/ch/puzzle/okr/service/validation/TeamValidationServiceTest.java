@@ -164,10 +164,9 @@ class TeamValidationServiceTest {
     @DisplayName("Should be throw exception on validateOnUpdate() when team id is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIdIsNull() {
+        Long teamId = teamWithIdNull.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> validator
-                                                                    .validateOnUpdate(teamWithIdNull.getId(),
-                                                                                      teamWithIdNull));
+                                                            () -> validator.validateOnUpdate(teamId, teamWithIdNull));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithIdNull);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithIdNull.getId());
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
@@ -193,10 +192,10 @@ class TeamValidationServiceTest {
     @DisplayName("Should be throw exception on validateOnUpdate() when team name is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNameIsNull() {
+        Long teamId = teamWithoutNameWithId.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                                                             () -> validator
-                                                                    .validateOnUpdate(teamWithoutNameWithId.getId(),
-                                                                                      teamWithoutNameWithId));
+                                                                    .validateOnUpdate(teamId, teamWithoutNameWithId));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutNameWithId);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithoutNameWithId.getId());
         verify(validator, times(1)).validate(teamWithoutNameWithId);

@@ -9,6 +9,7 @@ import ch.puzzle.okr.service.validation.UserValidationService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -54,12 +55,14 @@ public class UserBusinessService {
     // checks if at least one okr champion remains after removing given one
     private void checkAtLeastOneOkrChampionExists(User user) {
         List<User> champions = userPersistenceService.findAllOkrChampions();
-        champions
+        Optional<User> optionalUser = champions
                 .stream()
                 .filter(c -> c.isOkrChampion() && !Objects.equals(c.getId(), user.getId()))
-                .findAny()
-                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                                  ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION));
+                .findAny();
+
+        if (optionalUser.isEmpty()) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION);
+        }
     }
 
     public User saveUser(User user) {

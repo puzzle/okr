@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ObjectiveMapperTest {
+class ObjectiveMapperTest {
 
     private static final long TEAM_ID = 23L;
     private static final long QUARTER_ID = 10L;

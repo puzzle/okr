@@ -192,13 +192,14 @@ class UserPersistenceServiceIT {
     void deleteByIdShouldDeleteUserWhenUserExists() {
         // arrange
         User user = createUser();
+        Long userId = user.getId();
 
         // act
         userPersistenceService.deleteById(user.getId());
 
         // assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, //
-                                                            () -> userPersistenceService.findById(createdUser.getId()));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                                                            () -> userPersistenceService.findById(userId));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }

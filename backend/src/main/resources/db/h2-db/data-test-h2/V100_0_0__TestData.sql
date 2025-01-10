@@ -147,7 +147,7 @@ insert into completed (id, version, objective_id, comment) values
        (2,1, 6, 'War leider nicht moeglich'),
        (3,1, 10, 'Schade');
 
-insert into action (id, version, action, priority, checked, key_result_id) values
+insert into action (id, version, action_point, priority, checked, key_result_id) values
                                                       (1,  1, 'Neues Haus', 1, true, 8),
                                                       (2,  1, 'Neue Katze', 2, true, 8),
                                                       (3,  1, 'Neuer Garten', 3, true, 10),

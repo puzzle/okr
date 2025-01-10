@@ -48,7 +48,8 @@ public abstract class CheckIn implements WriteableInterface {
     @Column(name = "check_in_type", insertable = false, updatable = false)
     private String checkInType;
 
-    private transient boolean writeable;
+    @Transient
+    private boolean writeable;
 
     /* Getter and Setter */
     public Long getId() {

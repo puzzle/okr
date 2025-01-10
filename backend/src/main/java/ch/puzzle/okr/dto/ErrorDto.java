@@ -1,9 +1,10 @@
 package ch.puzzle.okr.dto;
 
 import ch.puzzle.okr.ErrorKey;
+import java.io.Serializable;
 import java.util.List;
 
-public record ErrorDto(String errorKey, List<String> params) {
+public record ErrorDto(String errorKey, List<String> params) implements Serializable {
 
     public static ErrorDto of(ErrorKey errorKey, String param) {
         return of(errorKey.name(), List.of(param));

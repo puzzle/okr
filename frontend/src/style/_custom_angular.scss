@@ -20,7 +20,5 @@ $pz-theme: mat.m2-define-light-theme(
 
 .header-form-field {
   @include mat.form-field-density(-4);
-  & {
-    border-radius: 5px;
-  }
+  border-radius: 5px;
 }

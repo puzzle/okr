@@ -109,7 +109,7 @@ export class ActionPlanComponent {
         .subscribe((result) => {
           if (result) {
             if (actions[index].id) {
-              this.actionService.deleteAction(actions[index].id!)
+              this.actionService.deleteAction(actions[index].id)
                 .subscribe();
             }
             actions.splice(index, 1);

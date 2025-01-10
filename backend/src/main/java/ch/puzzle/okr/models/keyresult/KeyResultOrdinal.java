@@ -53,10 +53,10 @@ public class KeyResultOrdinal extends KeyResult {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof KeyResultOrdinal) {
-            return super.equals(o) && Objects.equals(commitZone, ((KeyResultOrdinal) o).commitZone)
-                   && Objects.equals(targetZone, ((KeyResultOrdinal) o).targetZone)
-                   && Objects.equals(stretchZone, ((KeyResultOrdinal) o).stretchZone);
+        if (o instanceof KeyResultOrdinal keyResultOrdinal) {
+            return super.equals(o) && Objects.equals(commitZone, keyResultOrdinal.commitZone)
+                   && Objects.equals(targetZone, keyResultOrdinal.targetZone)
+                   && Objects.equals(stretchZone, keyResultOrdinal.stretchZone);
         }
         return false;
     }

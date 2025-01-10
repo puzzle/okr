@@ -28,6 +28,7 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
         return getRepository().findByEmail(email);
     }
 
+    @Override
     public User save(User user) {
         if (user.getUserTeamList() == null) {
             user.setUserTeamList(List.of());

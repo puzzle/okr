@@ -64,8 +64,8 @@ export default class TeamManagementPage extends Page {
       .click();
 
     return ConfirmDialog.do()
-      .checkTitle('Team löschen')
-      .checkDescription(`Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`);
+      .checkForContentOnDialog('Team löschen')
+      .checkForContentOnDialog(`Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`);
   }
 
   getURL(): string {

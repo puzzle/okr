@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 @SpringIntegrationTest
-public class SchemaMultiTenantConnectionProviderTest {
+class SchemaMultiTenantConnectionProviderTest {
     @Mock
     Connection connection;
     @Mock

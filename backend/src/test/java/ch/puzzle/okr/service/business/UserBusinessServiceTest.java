@@ -64,7 +64,7 @@ class UserBusinessServiceTest {
 
         List<User> userList = userBusinessService.getAllUsers();
 
-        Assertions.assertThat(userList.size()).isEqualTo(2);
+        Assertions.assertThat(userList).hasSize(2);
         Assertions.assertThat(userList.getFirst().getId()).isEqualTo(2);
         Assertions.assertThat(userList.getFirst().getFirstName()).isEqualTo("Alice");
         Assertions.assertThat(userList.get(0).getLastName()).isEqualTo("Wunderland");
@@ -80,7 +80,7 @@ class UserBusinessServiceTest {
     void shouldReturnEmptyListOfUsers() throws ResponseStatusException {
         List<User> userList = userBusinessService.getAllUsers();
 
-        Assertions.assertThat(userList.size()).isEqualTo(0);
+        Assertions.assertThat(userList).isEmpty();
     }
 
     @DisplayName("Should return correct user on getUserById()")

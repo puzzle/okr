@@ -82,7 +82,7 @@ class QuarterValidationServiceTest {
         when(quarter.getEndDate()).thenReturn(LocalDate.now());
 
         // act
-        QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter);
+        assertDoesNotThrow(() -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter));
 
         // assert (does nothing ... so nothing to check here)
     }
@@ -90,15 +90,19 @@ class QuarterValidationServiceTest {
     @DisplayName("Should throw exception when validateOnCreate() is called")
     @Test
     void shouldThrowExceptionOnValidateOnCreate() {
-        Exception exception = assertThrows(IllegalCallerException.class, () -> validator.validateOnCreate(any()));
+        Quarter any = any();
+        Exception exception = assertThrows(IllegalCallerException.class, () -> validator.validateOnCreate(any));
         assertEquals("This method must not be called", exception.getMessage());
     }
 
     @DisplayName("Should throw exception when validateOnUpdate() is called")
     @Test
     void shouldThrowExceptionOnValidateOnUpdate() {
+        Quarter any = any();
+        Long anyLong = anyLong();
+
         Exception exception = assertThrows(IllegalCallerException.class,
-                                           () -> validator.validateOnUpdate(anyLong(), any()));
+                                           () -> validator.validateOnUpdate(anyLong, any));
         assertEquals("This method must not be called because there is no update of quarters", exception.getMessage());
     }
 

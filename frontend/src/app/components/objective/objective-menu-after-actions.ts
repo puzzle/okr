@@ -13,7 +13,7 @@ export class ObjectiveMenuAfterActions {
 
   completeObjective(objectiveMin: ObjectiveMin, result: { endState: string;
     comment: string | null;
-    objective: any; }) {
+    objective: Objective; }) {
     this.objectiveService.getFullObjective(objectiveMin.id)
       .subscribe((objective: Objective) => {
         objective.state = result.endState as State;
@@ -23,6 +23,7 @@ export class ObjectiveMenuAfterActions {
           objective: objective,
           comment: result.comment
         };
+
         this.objectiveService.updateObjective(objective)
           .subscribe(() => {
             this.completedService.createCompleted(completed)

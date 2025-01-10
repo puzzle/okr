@@ -4,7 +4,6 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { getFullNameOfUser } from '../../shared/types/model/user';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -62,7 +61,7 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
     // user is loaded on base route resolver. We have to wait until routing is done.
     this.router.events.subscribe((val) => {
       if (!this.userFullName && val instanceof NavigationEnd) {
-        this.userFullName = getFullNameOfUser(this.userService.getCurrentUser());
+        this.userFullName = this.userService.getCurrentUser().fullName;
         this.cd.markForCheck();
       }
     });

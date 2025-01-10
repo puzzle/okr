@@ -6,6 +6,8 @@ import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
+import { User } from '../../shared/types/model/user';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-key-result-type',
@@ -17,6 +19,8 @@ export class KeyResultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
 
   @Input() keyResult!: KeyResult | null;
+
+  @Input() users: Observable<User[]> = new Subject();
 
 
   isMetric = true;
@@ -112,4 +116,17 @@ export class KeyResultTypeComponent implements OnInit {
     return field + this.translate.instant('DIALOG_ERRORS.' + error)
       .format(firstNumber, secondNumber);
   }
+
+  isTouchedOrDirty(name: string) {
+    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
+  }
+
+  invalidOwner(): boolean {
+    return (
+      !!this.isTouchedOrDirty('owner') &&
+      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
+    );
+  }
+
+  protected readonly User = User;
 }

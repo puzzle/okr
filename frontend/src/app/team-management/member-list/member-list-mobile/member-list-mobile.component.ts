@@ -3,7 +3,6 @@ import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject } from 'rxjs';
 import { Team } from '../../../shared/types/model/team';
-import { getFullNameOfUser } from '../../../shared/types/model/user';
 import { getRouteToUserDetails } from '../../../shared/route-utils';
 
 @Component({
@@ -20,6 +19,4 @@ export class MemberListMobileComponent {
   getMemberDetailsLink(userTableEntry: UserTableEntry) {
     return getRouteToUserDetails(userTableEntry.id, this.selectedTeam$.value?.id);
   }
-
-  protected readonly getFullNameFromUser = getFullNameOfUser;
 }

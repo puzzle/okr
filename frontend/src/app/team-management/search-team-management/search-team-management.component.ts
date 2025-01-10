@@ -136,12 +136,11 @@ export class SearchTeamManagementComponent {
   private filterUsers(users: User[], filterValue: string): FilteredUser[] {
     return users
       .filter((user) => this.containsText(user.firstName + user.lastName + user.email, filterValue))
-
       .map((user) => ({
         ...user,
         displayValue: `${user.firstName} ${user.lastName} (${user.email})`,
         htmlValue: this.formatText(`${user.firstName} ${user.lastName} (${user.email})`, filterValue)
-      }));
+      } as FilteredUser));
   }
 
   private containsText(value: string, text: string): boolean {

@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../../shared/common';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { UserService } from '../../services/user.service';
-import { extractTeamsFromUser } from '../../shared/types/model/user';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
@@ -70,7 +69,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         const knownTeams = this.getAllTeamIds()
           .filter((teamId) => teamIds?.includes(teamId));
         if (knownTeams.length == 0) {
-          this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
+          this.activeTeams = this.userService.getCurrentUser().teamList
             .map((team) => team.id);
         } else {
           this.activeTeams = knownTeams;

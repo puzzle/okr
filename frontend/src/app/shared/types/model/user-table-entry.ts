@@ -2,15 +2,20 @@ import { User } from './user';
 import { UserRole } from '../enums/user-role';
 import { UserTeam } from './user-team';
 
-export interface UserTableEntry {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
+export class UserTableEntry extends User {
   teams: string[];
+
   roles: string[];
-  isOkrChampion: boolean;
-  userTeamList: UserTeam[];
+
+  constructor(
+    id: number, firstName: string, lastName: string, email: string, userTeamList: UserTeam[], isOkrChampion: boolean, teams: string[], roles: string[]
+  ) {
+    super(
+      id, firstName, lastName, email, userTeamList, isOkrChampion
+    );
+    this.teams = teams;
+    this.roles = roles;
+  }
 }
 
 export const convertFromUsers = (users: User[], teamId: number | null): UserTableEntry[] => {
@@ -43,14 +48,8 @@ export const convertFromUser = (user: User): UserTableEntry => {
     roles.push(UserRole.TEAM_MEMBER);
   }
 
-  return {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    teams,
-    roles,
-    isOkrChampion: user.isOkrChampion,
-    userTeamList: user.userTeamList
-  };
+
+  return new UserTableEntry(
+    user.id, user.firstName, user.lastName, user.email, user.userTeamList, user.isOkrChampion, teams, roles
+  );
 };

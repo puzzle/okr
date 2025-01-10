@@ -86,14 +86,11 @@ export class KeyResultDialogComponent {
   }
 
   isTouchedOrDirty(name: string) {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
+    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched || false;
   }
 
   invalidOwner(): boolean {
-    return (
-      !!this.isTouchedOrDirty('owner') &&
-      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
-    );
+    return this.isTouchedOrDirty('owner') && (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner);
   }
 
   getDialogTitle(): string {

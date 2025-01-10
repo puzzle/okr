@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { getFullNameOfUser, User } from '../../shared/types/model/user';
+import { User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
@@ -19,7 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class KeyResultFormComponent implements OnInit, OnDestroy {
   users$!: Observable<User[]>;
 
-  filteredUsers$: Observable<User[]> | undefined = of([]);
+  filteredUsers$: Observable<User[]> = of([]);
 
   actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
 
@@ -40,7 +40,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
-    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value)));
+    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value))) || of([]);
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
       this.keyResultForm.controls['title'].setValue(this.keyResult.title);
@@ -77,7 +77,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
         .subscribe((users) => {
           const loggedInUser = this.getFullNameOfLoggedInUser();
           users.forEach((user) => {
-            if (getFullNameOfUser(user) === loggedInUser) {
+            if (user.fullName === loggedInUser) {
               this.keyResultForm.controls['owner'].setValue(user);
             }
           });
@@ -123,7 +123,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   filter(value: string): Observable<User[]> {
     const filterValue = value.toLowerCase();
-    return this.users$.pipe(map((users) => users.filter((user) => getFullNameOfUser(user)
+    return this.users$.pipe(map((users) => users.filter((user) => user.fullName
       .toLowerCase()
       .includes(filterValue))));
   }
@@ -136,7 +136,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   }
 
   getFullNameOfUser(user: User): string {
-    return user ? getFullNameOfUser(user) : '';
+    return user?.fullName || '';
   }
 
   getKeyResultId(): number | null {

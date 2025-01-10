@@ -26,27 +26,51 @@
 
 <ng-container *ngIf="isMetric; else ordinalBlock">
   <form [formGroup]="keyResultForm" class="okr-form-row row-cols-1 row-cols-md-3">
-    <div class="col">
-      <div class="okr-form-row">
+    <div class="col-4 ">
+      <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col" for="unit">Einheit</label>
-        <div class="col">
-          <select
-            class="dialog-form-field unit-dropdown bg-white"
-            [ngClass]="formInputCheck(keyResultForm, 'unit')"
-            formControlName="unit"
-            id="unit"
-            [attr.data-testId]="'unit'"
-          >
-            <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
-              {{ "UNIT." + unit.value | translate }}
-            </option>
-          </select>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
-            <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
+        <select
+          class="dialog-form-field unit-dropdown bg-white"
+          [ngClass]="formInputCheck(keyResultForm, 'unit')"
+          formControlName="unit"
+          id="unit"
+          [attr.data-testId]="'unit'"
+        >
+          <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
+            {{ "UNIT." + unit.value | translate }}
+          </option>
+        </select>
+        <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
+          <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
+        </mat-error>
+      </div>
+    </div>
+
+    <div class="col-8">
+      <div class="okr-form-row okr-form-label-input-container">
+        <label class="okr-form-label okr-form-col" for="owner">Owner</label>
+        <div class="okr-form-input">
+          <input
+            (keydown.enter)="$event.preventDefault()"
+            [attr.data-testId]="'owner-input'"
+            [matAutocomplete]="auto"
+            [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+            class="owner-input"
+            formControlName="owner"
+            id="owner"
+          />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="User.getFullNameOfUser.bind(this)">
+            <mat-option *ngFor="let user of users | async" [value]="user">
+              {{ user.firstName + " " + user.lastName }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="invalidOwner()">
+            <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
           </mat-error>
         </div>
       </div>
     </div>
+
 
     <div class="col">
       <div class="okr-form-row">

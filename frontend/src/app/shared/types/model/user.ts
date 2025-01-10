@@ -1,19 +1,38 @@
 import { UserTeam } from './user-team';
-import { UserTableEntry } from './user-table-entry';
 
-export interface User {
+export class User {
   id: number;
+
   firstName: string;
+
   lastName: string;
+
   email: string;
+
   userTeamList: UserTeam[];
+
   isOkrChampion: boolean;
+
+  constructor(
+    id: number, firstName: string, lastName: string, email: string, userTeamList: UserTeam[], isOkrChampion: boolean
+  ) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.userTeamList = userTeamList;
+    this.isOkrChampion = isOkrChampion;
+  }
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
+  get teamList() {
+    return this.userTeamList.map((ut) => ut.team);
+  }
+
+  static getFullNameOfUser(user: User) {
+    return user.fullName;
+  }
 }
-
-export const extractTeamsFromUser = (user: User) => {
-  return user.userTeamList.map((u) => u.team);
-};
-
-export const getFullNameOfUser = (user: User | UserTableEntry) => {
-  return `${user.firstName} ${user.lastName}`;
-};

@@ -32,8 +32,7 @@ VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),
        (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman', FALSE),
        (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', FALSE),
        (61, 1, 'gl@gl.com', 'Jaya', 'Norris', TRUE),
-       (71, 1, 'bl@bl.com', 'Just', 'Bl', FALSE);
-
+       (71, 1, 'member@member.com', 'Abraham', 'Woodard', FALSE);
 
 CREATE ALIAS INIT_QUARTER_DATA FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.initQuarterData';
 CREATE ALIAS CURRENT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterLabel';

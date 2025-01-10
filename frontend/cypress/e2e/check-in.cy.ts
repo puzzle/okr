@@ -68,7 +68,7 @@ describe('okr check-in', () => {
       .cancel();
 
     cy.logout();
-    cy.loginAsUser(users.bl);
+    cy.loginAsUser(users.member);
 
     FilterHelper.do()
       .toggleOption('Alle');
@@ -84,7 +84,7 @@ describe('okr check-in', () => {
     keyResultDetailPage.checkForToaster('Das Check-in wurde erfolgreich aktualisiert', 'success');
 
     CheckInHistoryDialog.do()
-      .checkOnDialog(() => cy.contains('Esha Harris'))
+      .checkOnDialog(() => cy.contains('Abraham Woodard'))
       .checkForAttribute('Confidence:', '7 / 10')
       .cancel();
   });

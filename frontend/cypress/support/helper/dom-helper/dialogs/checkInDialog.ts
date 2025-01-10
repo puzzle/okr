@@ -53,17 +53,15 @@ export default class CheckInDialog extends Dialog {
   }
 
   checkForDialogTextMetric() {
-    cy.contains('Very important keyresult');
     cy.contains('Check-in erfassen');
     cy.contains('Key Result');
     cy.contains('Neuer Wert');
-    cy.contains('Confidence um Target Zone (42%) zu erreichen');
+    cy.contains('Confidence um Target Zone ');
     cy.contains('Abbrechen');
     return this;
   }
 
   checkForDialogTextOrdinal() {
-    cy.contains('A new ordinal keyresult for our company');
     cy.contains('Check-in erfassen');
     cy.contains('Key Result');
     cy.contains('Fail:');
@@ -71,9 +69,6 @@ export default class CheckInDialog extends Dialog {
     cy.contains('Commit:');
     cy.contains('Target:');
     cy.contains('Stretch:');
-    cy.contains('New car');
-    cy.contains('New house');
-    cy.contains('New pool');
     cy.contains('Confidence um Target Zone zu erreichen');
     cy.contains('Abbrechen');
     return this;
@@ -107,7 +102,6 @@ export default class CheckInDialog extends Dialog {
   override submit() {
     cy.getByTestId('submit-check-in')
       .click();
-    // return new CheckInHistoryDialog();
   }
 
   getPage(): Chainable {

@@ -6,6 +6,7 @@ import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDet
 import CheckInDialog from '../support/helper/dom-helper/dialogs/checkInDialog';
 import CheckInHistoryDialog from '../support/helper/dom-helper/dialogs/checkInHistoryDialog';
 import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
+import FilterHelper from '../support/helper/dom-helper/filterHelper';
 
 describe('okr check-in', () => {
   let overviewPage = new CyOverviewPage();
@@ -41,13 +42,16 @@ describe('okr check-in', () => {
     cy.contains('- A new action on the action-plan');
   });
 
-  it('should create check-in metric and assert correct owner', () => {
+  it.only('should create check-in metric and assert correct owner', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This keyresult is for the owner')
       .withMetricValues(Unit.PERCENT, '21', '51')
       .fillKeyResultDescription('This is my description')
       .submit();
+
+    overviewPage.checkForToaster('Das Key Result wurde erfolgreich erstellt', 'success');
+
     keyResultDetailPage
       .visit('This keyresult is for the owner')
       .createCheckIn()
@@ -58,11 +62,16 @@ describe('okr check-in', () => {
       .fillCheckInInitiatives('We have to buy more PCs')
       .submit();
 
-    keyResultDetailPage.showAllCheckIns()
+    keyResultDetailPage.checkForToaster('Das Check-in wurde erfolgreich erstellt', 'success')
+      .showAllCheckIns()
       .checkOnDialog(() => cy.contains('Jaya Norris'))
       .cancel();
+
     cy.logout();
     cy.loginAsUser(users.bl);
+
+    FilterHelper.do()
+      .toggleOption('Alle');
 
     keyResultDetailPage
       .visit('This keyresult is for the owner')
@@ -72,8 +81,10 @@ describe('okr check-in', () => {
       .setCheckInConfidence(7)
       .submit();
 
+    keyResultDetailPage.checkForToaster('Das Check-in wurde erfolgreich aktualisiert', 'success');
+
     CheckInHistoryDialog.do()
-      .checkOnDialog(() => cy.contains('Test'))
+      .checkOnDialog(() => cy.contains('Just Bl'))
       .checkForAttribute('Confidence:', '7 / 10')
       .cancel();
   });

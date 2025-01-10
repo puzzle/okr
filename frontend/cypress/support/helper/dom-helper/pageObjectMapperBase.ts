@@ -13,7 +13,7 @@ export abstract class PageObjectMapperBase {
     cy.get('#toast-container')
       .find(`.toast-${type}`)
       .contains(content)
-      .should('exist');
+      .click();
     return this;
   }
 

@@ -31,7 +31,9 @@ VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),
        (31, 1, 'peterson@puzzle.ch', 'Findus', 'Peterson', FALSE),
        (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman', FALSE),
        (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', FALSE),
-       (61, 1, 'gl@gl.com', 'Jaya', 'Norris', TRUE);
+       (61, 1, 'gl@gl.com', 'Jaya', 'Norris', TRUE),
+       (71, 1, 'bl@bl.com', 'Just', 'Bl', FALSE);
+
 
 CREATE ALIAS INIT_QUARTER_DATA FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.initQuarterData';
 CREATE ALIAS CURRENT_QUARTER_LABEL FOR 'ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction.currentQuarterLabel';
@@ -72,7 +74,10 @@ VALUES (1, 1, 1, 4, TRUE),
        (7, 1, 51, 6, TRUE),
        -- gl@gl.ch
        (8, 1, 61, 5, TRUE),
-       (9, 1, 61, 6, FALSE);
+       (9, 1, 61, 6, FALSE),
+
+       (10, 1, 71, 6, true);
+
 
 insert into objective (id, version, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
                               modified_by_id, created_on)

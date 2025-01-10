@@ -176,7 +176,8 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'Half way through',
     initiatives: 'Quality before quantity',
-    isWriteable: true
+    isWriteable: true,
+    createdBy: 'Bob Baumeister'
   },
   type: 'keyResult'
 } as KeyResultMetricMin;
@@ -198,7 +199,8 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'More Changes',
     initiatives: 'Some initatives',
-    isWriteable: true
+    isWriteable: true,
+    createdBy: 'Bob Baumeister'
   },
   type: 'keyResult'
 } as KeyResultMetricMin;
@@ -369,7 +371,8 @@ export const firstCheckIn: CheckInMetricMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
-  isWriteable: true
+  isWriteable: true,
+  createdBy: 'Bob Baumeister'
 };
 
 export const secondCheckIn: CheckInMetricMin = {
@@ -380,7 +383,8 @@ export const secondCheckIn: CheckInMetricMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
-  isWriteable: true
+  isWriteable: true,
+  createdBy: 'Bob Baumeister'
 };
 
 export const testUser: User = {

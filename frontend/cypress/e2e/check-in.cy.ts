@@ -78,6 +78,7 @@ describe('okr check-in', () => {
       .showAllCheckIns()
       .checkOnDialog(() => cy.contains('Jaya Norris'))
       .editLatestCheckIn()
+      .checkForDialogTextMetric()
       .setCheckInConfidence(7)
       .submit();
 

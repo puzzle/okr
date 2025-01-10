@@ -40,20 +40,23 @@ export default class CheckInDialog extends Dialog {
   }
 
   setCheckInConfidence(confidence: number) {
-    cy.getByTestId('confidence-slider')
-      .as('slider');
-    const input = cy.get('@slider')
-      .find('input');
-
     for (let i = 0; i < 10; i++) {
-      input.focus();
+      this.focusConfidenceSlider();
       cy.realPress('ArrowLeft');
     }
     for (let i = 0; i < confidence; i++) {
-      input.focus();
+      this.focusConfidenceSlider();
       cy.realPress('ArrowRight');
     }
     return this;
+  }
+
+  private focusConfidenceSlider() {
+    cy.getByTestId('confidence-slider')
+      .as('slider');
+    cy.get('@slider')
+      .find('input')
+      .focus();
   }
 
   checkForDialogTextMetric() {

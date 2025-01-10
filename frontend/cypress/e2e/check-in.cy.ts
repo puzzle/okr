@@ -42,7 +42,7 @@ describe('okr check-in', () => {
     cy.contains('- A new action on the action-plan');
   });
 
-  it('should create check-in metric and assert correct owner', () => {
+  it.only('should create check-in metric and assert correct owner', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This keyresult is for the owner')
@@ -68,7 +68,7 @@ describe('okr check-in', () => {
       .cancel();
 
     cy.logout();
-    cy.loginAsUser(users.member);
+    cy.loginAsUser(users.bbt);
 
     FilterHelper.do()
       .toggleOption('Alle');
@@ -85,7 +85,7 @@ describe('okr check-in', () => {
     keyResultDetailPage.checkForToaster('Das Check-in wurde erfolgreich aktualisiert', 'success');
 
     CheckInHistoryDialog.do()
-      .checkOnDialog(() => cy.contains('Abraham Woodard'))
+      .checkOnDialog(() => cy.contains('Ashleigh Russell'))
       .checkForAttribute('Confidence:', '7 / 10')
       .cancel();
   });

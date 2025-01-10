@@ -33,6 +33,6 @@ export class User {
   }
 
   static getFullNameOfUser(user: User) {
-    return user.fullName;
+    return user?.fullName || '';
   }
 }

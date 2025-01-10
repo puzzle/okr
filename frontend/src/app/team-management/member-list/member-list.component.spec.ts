@@ -101,7 +101,7 @@ describe('MemberListComponent', () => {
   });
 
   it('should test method convertFromUser', () => {
-    const user: User = { ...testUser };
+    const user: User = testUser;
     let userTableEntry = convertFromUser(user);
 
     expect(userTableEntry.id)

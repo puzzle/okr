@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confi
 import { DialogService } from '../../services/dialog.service';
 import { Location } from '@angular/common';
 import { ButtonState } from '../../shared/types/enums/button-state';
+import { User } from '../../shared/types/model/user';
 
 describe('DeleteUserComponent', () => {
   let component: DeleteUserComponent;
@@ -40,14 +41,10 @@ describe('DeleteUserComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DeleteUserComponent);
     component = fixture.componentInstance;
-    component.user = {
-      id: 2,
-      firstName: 'Hans',
-      lastName: 'Muster',
-      isOkrChampion: false,
-      userTeamList: [],
-      email: 'hans.muster@puzzle.ch'
-    };
+    component.user = new User(
+      2, 'Hans', 'Muster', 'hans.muster@puzzle.ch', [], false
+    );
+
     component.currentTeams$ = new Subject();
     userServiceMock.getOrInitCurrentUser.mockReturnValue(of(testUser));
     userServiceMock.getUserOkrData.mockReturnValue(of({ keyResults: [] }));

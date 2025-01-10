@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 
 import { KeyResultTypeComponent } from './key-result-type.component';
@@ -8,6 +9,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../../shared/types/model/user';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;
@@ -71,6 +73,8 @@ describe('KeyResultTypeComponent', () => {
         imports: [TranslateTestingModule.withTranslations({
           de: de
         }),
+        MatAutocompleteModule,
+
         ReactiveFormsModule]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
@@ -149,6 +153,7 @@ describe('KeyResultTypeComponent', () => {
         imports: [TranslateTestingModule.withTranslations({
           de: de
         }),
+        MatAutocompleteModule,
         ReactiveFormsModule]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
@@ -227,6 +232,7 @@ describe('KeyResultTypeComponent', () => {
         imports: [TranslateTestingModule.withTranslations({
           de: de
         }),
+        MatAutocompleteModule,
         ReactiveFormsModule]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);

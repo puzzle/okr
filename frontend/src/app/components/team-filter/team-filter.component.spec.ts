@@ -11,7 +11,6 @@ import { team1, team2, team3, teamList, testUser } from '../../shared/test-data'
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../services/user.service';
-import { extractTeamsFromUser } from '../../shared/types/model/user';
 import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
 
 const teamServiceMock = {
@@ -264,7 +263,7 @@ describe('TeamFilterComponent', () => {
     expect(component.activeTeams.length)
       .toBe(1);
     expect(component.activeTeams)
-      .toStrictEqual(extractTeamsFromUser(testUser)
+      .toStrictEqual(testUser.teamList
         .map((team) => team.id));
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
@@ -283,7 +282,7 @@ describe('TeamFilterComponent', () => {
     expect(component.activeTeams.length)
       .toBe(1);
     expect(component.activeTeams)
-      .toStrictEqual(extractTeamsFromUser(testUser)
+      .toStrictEqual(testUser.teamList
         .map((team) => team.id));
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);

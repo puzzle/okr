@@ -17,6 +17,7 @@ import { CheckInOrdinal } from './types/model/check-in-ordinal';
 import { CheckInMetric } from './types/model/check-in-metric';
 import { CheckInOrdinalMin } from './types/model/check-in-ordinal-min';
 import { CheckInMetricMin } from './types/model/check-in-metric-min';
+import { UserTeam } from './types/model/user-team';
 
 export const teamFormObject = {
   name: 'newTeamName'
@@ -383,45 +384,27 @@ export const secondCheckIn: CheckInMetricMin = {
   isWriteable: true
 };
 
-export const testUser: User = {
+const userTeamList: UserTeam[] = [{
   id: 1,
-  firstName: 'Bob',
-  lastName: 'Baumeister',
-  isOkrChampion: false,
-  userTeamList: [{
-    id: 1,
-    team: team1,
-    isTeamAdmin: false
-  }],
-  email: 'bob.baumeister@puzzle.ch'
-};
+  team: team1,
+  isTeamAdmin: false
+}];
+
+export const testUser: User = new User(
+  1, 'Bob', 'Baumeister', 'bob.baumeister@puzzle.ch', userTeamList, false
+);
 
 export const users: User[] = [
   testUser,
-  {
-    id: 2,
-    firstName: 'Paco',
-    lastName: 'Egiman',
-    isOkrChampion: true,
-    userTeamList: [],
-    email: 'peggimann@puzzle.ch'
-  },
-  {
-    id: 3,
-    firstName: 'Robin',
-    lastName: 'Papier',
-    isOkrChampion: false,
-    userTeamList: [],
-    email: 'robin.papier@puzzle.ch'
-  },
-  {
-    id: 4,
-    firstName: 'Key Result',
-    lastName: 'Owner',
-    isOkrChampion: false,
-    userTeamList: [],
-    email: 'keyresult.owner@puzzle.ch'
-  }
+  new User(
+    2, 'Paco', 'Egiman', 'peggimann@puzzle.ch', [], true
+  ),
+  new User(
+    3, 'Robin', 'Papier', 'robin.papier@puzzle.ch', [], false
+  ),
+  new User(
+    4, 'Key Result', 'Owner', 'keyresult.owner@puzzle.ch', [], false
+  )
 ];
 
 export const keyResult: KeyResultOrdinal = {

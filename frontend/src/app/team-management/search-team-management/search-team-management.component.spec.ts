@@ -46,30 +46,16 @@ const teams: Team[] = [
   }
 ];
 
-const users: User[] = [{
-  id: 2,
-  firstName: 'Pete',
-  lastName: 'Parrot',
-  email: 'parrot@puzzle.ch',
-  userTeamList: [],
-  isOkrChampion: false
-},
-{
-  id: 1,
-  firstName: 'Martin',
-  lastName: 'Käser',
-  email: 'kaeser@puzzle.ch',
-  userTeamList: [],
-  isOkrChampion: false
-},
-{
-  id: 3,
-  firstName: 'Ruedi',
-  lastName: 'Peters',
-  email: 'rpeter@gmail.com',
-  userTeamList: [],
-  isOkrChampion: false
-}];
+
+const users: User[] = [new User(
+  2, 'Pete', 'Parrot', 'parrot@puzzle.ch', [], false
+),
+new User(
+  1, 'Martin', 'Käser', 'kaeser@puzzle.ch', [], false
+),
+new User(
+  3, 'Ruedi', 'Peters', 'rpeter@gmail.com', [], false
+)];
 
 describe('SearchTeamManagementComponent', () => {
   let component: SearchTeamManagementComponent;

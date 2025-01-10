@@ -13,7 +13,7 @@ public class TestDataConstants {
     public static final int CHECK_IN_CONFIDENCE = 30;
     public static final double CHECK_IN_METRIC_VALUE = 23;
     public static final Zone CHECK_IN_ORDINAL_ZONE = Zone.STRETCH;
-    public static final String CHECK_IN_CREATED_BY = "Paco Eggimann";
+    public static final String CHECK_IN_CREATED_BY = "Test User";
     public static final LocalDateTime CHECK_IN_CREATE_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 20, 12, 35, 0);
     public static final LocalDateTime CHECK_IN_MODIFIED_DATE_TIME = LocalDateTime.of(2024, Month.MAY, 21, 8, 0, 0);
     public static final long KEY_RESULT_ID = 20L;

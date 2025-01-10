@@ -50,7 +50,7 @@
       <ng-template #actionPlanComponent>
         <app-action-plan [control]="actionList$" [keyResultId]="keyResult.id"></app-action-plan>
         <button
-          mat-button
+          mat-flat-button
           color="primary"
           (click)="closeActionEdit()"
           [attr.data-testId]="'save-new-actions'"

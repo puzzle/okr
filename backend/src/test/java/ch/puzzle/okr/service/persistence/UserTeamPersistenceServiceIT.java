@@ -40,19 +40,19 @@ class UserTeamPersistenceServiceIT {
         var user = userPersistenceService.findById(ID_OF_USER_ALICE);
         var team = teamPersistenceService.findById(ID_OF_TEAM_LOREM);
 
-        // preconditions: user Alice is in team Lorem and team Lorem has 3 users
-        assertUserIsInTeam(ID_OF_USER_ALICE, ID_OF_TEAM_LOREM, 3);
+        // preconditions: user Alice is in team Lorem and team Lorem has 4 users
+        assertUserIsInTeam(ID_OF_USER_ALICE, ID_OF_TEAM_LOREM, 4);
 
         // arrange
-        var userTeamToRemove = user.getUserTeamList().get(0); // Alice is only in Team Lorem
+        var userTeamToRemove = user.getUserTeamList().getFirst(); // Alice is only in Team Lorem
 
         // act
         user.getUserTeamList().remove(userTeamToRemove);
         team.getUserTeamList().remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
 
-        // assert: user Alice is no longer in team Lorem and team Lorem has 2 users
-        assertUserIsRemovedFromTeam(ID_OF_USER_ALICE, ID_OF_TEAM_LOREM, 2);
+        // assert: user Alice is no longer in team Lorem and team Lorem has 3 users
+        assertUserIsRemovedFromTeam(ID_OF_USER_ALICE, ID_OF_TEAM_LOREM, 3);
     }
 
     @DisplayName("Should remove list of users from team on deleteAll()")

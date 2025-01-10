@@ -8,6 +8,21 @@ Cypress.Commands.add('loginAsUser', (user: any) => {
   overviewIsLoaded();
 });
 
+Cypress.Commands.add('logout', () => {
+  cy.title()
+    .should('equal', 'Puzzle OKR');
+  cy.getByTestId('user-options')
+    .as('userOptions');
+  cy.get('@userOptions')
+    .click();
+
+  cy.getByTestId('logout')
+    .as('logoutButton');
+  cy.get('@logoutButton')
+    .click();
+});
+
+
 Cypress.Commands.add('getByTestId', (testId: string, text?: string): Chainable => {
   const selector = `[data-testId=${testId}]`;
 

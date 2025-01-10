@@ -41,6 +41,43 @@ describe('okr check-in', () => {
     cy.contains('- A new action on the action-plan');
   });
 
+  it('should create check-in metric and assert correct owner', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This keyresult is for the owner')
+      .withMetricValues(Unit.PERCENT, '21', '51')
+      .fillKeyResultDescription('This is my description')
+      .submit();
+    keyResultDetailPage
+      .visit('This keyresult is for the owner')
+      .createCheckIn()
+      .checkForDialogTextMetric()
+      .fillMetricCheckInValue('30')
+      .setCheckInConfidence(6)
+      .fillCheckInCommentary('We bought a new house')
+      .fillCheckInInitiatives('We have to buy more PCs')
+      .submit();
+
+    keyResultDetailPage.showAllCheckIns()
+      .checkOnDialog(() => cy.contains('Jaya Norris'))
+      .cancel();
+    cy.logout();
+    cy.loginAsUser(users.bl);
+
+    keyResultDetailPage
+      .visit('This keyresult is for the owner')
+      .showAllCheckIns()
+      .checkOnDialog(() => cy.contains('Jaya Norris'))
+      .editLatestCheckIn()
+      .setCheckInConfidence(7)
+      .submit();
+
+    CheckInHistoryDialog.do()
+      .checkOnDialog(() => cy.contains('Test'))
+      .checkForAttribute('Confidence:', '7 / 10')
+      .cancel();
+  });
+
   it('should create check-in metric with confidence 0', () => {
     overviewPage
       .addKeyResult()
@@ -252,6 +289,7 @@ describe('okr check-in', () => {
     cy.contains('Buy now a new pool');
     cy.contains('STRETCH');
   });
+
 
   it('should display confirm dialog when creating check-in on draft objective', () => {
     overviewPage.addObjective()

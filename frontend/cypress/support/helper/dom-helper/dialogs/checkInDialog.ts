@@ -107,6 +107,7 @@ export default class CheckInDialog extends Dialog {
   override submit() {
     cy.getByTestId('submit-check-in')
       .click();
+    // return new CheckInHistoryDialog();
   }
 
   getPage(): Chainable {

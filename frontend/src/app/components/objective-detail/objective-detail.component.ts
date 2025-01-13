@@ -10,6 +10,7 @@ import { DialogService } from '../../services/dialog.service';
 import { CompletedService } from '../../services/completed.service';
 import { Completed } from '../../shared/types/model/completed';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { State } from '../../shared/types/enums/state';
 
 @Component({
   selector: 'app-objective-detail',
@@ -36,7 +37,7 @@ export class ObjectiveDetailComponent implements OnInit {
     this.objective$
       .pipe(takeUntilDestroyed())
       .subscribe((objective) => {
-        if (objective.state?.toString() === 'NOTSUCCESSFUL' || objective.state?.toString() === 'SUCCESSFUL') {
+        if (objective.state === State.NOTSUCCESSFUL || objective.state === State.SUCCESSFUL) {
           this.loadCompleted(this.objectiveId);
         }
       });
@@ -109,4 +110,6 @@ export class ObjectiveDetailComponent implements OnInit {
   backToOverview() {
     this.router.navigate(['']);
   }
+
+  protected readonly State = State;
 }

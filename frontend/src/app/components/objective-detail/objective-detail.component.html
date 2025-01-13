@@ -29,7 +29,7 @@
         >
           <p>{{ objective.description }}</p>
         </div>
-        <div *ngIf="objective.state.toString() !== 'SUCCESSFUL' && objective.state.toString() !== 'NOTSUCCESSFUL'; else isCompleted" class="d-flex align-items-center flex-row justify-content-start">
+        <div *ngIf="objective.state !== State.SUCCESSFUL && objective.state !== State.NOTSUCCESSFUL; else isCompleted" class="d-flex align-items-center flex-row justify-content-start">
           <button
             *ngIf="objective.isWriteable"
             mat-flat-button

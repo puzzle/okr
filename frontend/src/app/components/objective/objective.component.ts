@@ -3,7 +3,7 @@ import { ObjectiveMin } from '../../shared/types/model/objective-min';
 import { Router } from '@angular/router';
 import { distinct, map, ReplaySubject, take } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { trackByFn } from '../../shared/common';
+import { getSvgForState, trackByFn } from '../../shared/common';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
@@ -90,4 +90,6 @@ export class ObjectiveComponent {
     return Object.keys(State)
       .find((key) => State[key as keyof typeof State] === value) ?? '';
   }
+
+  protected readonly getSvgForState = getSvgForState;
 }

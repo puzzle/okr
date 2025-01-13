@@ -17,6 +17,7 @@ import { CheckInMetric } from './types/model/check-in-metric';
 import { CheckInOrdinalMin } from './types/model/check-in-ordinal-min';
 import { CheckInMetricMin } from './types/model/check-in-metric-min';
 import { Completed } from './types/model/completed';
+import { Objective } from './types/model/objective';
 
 export const teamFormObject = {
   name: 'newTeamName'
@@ -245,41 +246,41 @@ export const objectiveMin: ObjectiveMin = {
     keyResultOrdinalMin] as KeyResultMin[]
 } as ObjectiveMin;
 
-export const objectiveResponse1: any = {
+export const objectiveResponse1: ObjectiveMin = {
   id: 101,
   version: 1,
   title: 'Increase Environment Engagement',
-  state: 'ONGOING',
+  state: State.ONGOING,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
 };
 
-export const objectiveResponse2: any = {
+export const objectiveResponse2: ObjectiveMin = {
   id: 102,
   version: 1,
   title: 'Increase Social Engagement',
-  state: 'DRAFT',
+  state: State.DRAFT,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
 };
 
-export const objectiveResponse3: any = {
+export const objectiveResponse3: ObjectiveMin = {
   id: 103,
   version: 1,
   title: 'Increase Member Engagement',
-  state: 'NOTSUCCESSFUL',
+  state: State.NOTSUCCESSFUL,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
 };
 
-export const objectiveResponse4: any = {
+export const objectiveResponse4: ObjectiveMin = {
   id: 104,
   version: 1,
   title: 'Increase Company Engagement',
-  state: 'SUCCESSFUL',
+  state: State.SUCCESSFUL,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
@@ -339,7 +340,7 @@ export const keyResultMetricWithIdEight: KeyResultMetricMin = {
   keyResultType: 'keyResult'
 } as KeyResultMetricMin;
 
-export const objective: any = {
+export const objective: Objective = {
   id: 5,
   version: 1,
   title: 'title',
@@ -347,11 +348,11 @@ export const objective: any = {
   teamId: 2,
   quarterId: 2,
   quarterLabel: 'GJ 22/23-Q2',
-  state: 'ONGOING',
+  state: State.ONGOING,
   isWriteable: true
 };
 
-export const objectiveWriteableFalse: any = {
+export const objectiveWriteableFalse: Objective = {
   id: 6,
   version: 1,
   title: 'titleWriteableFalse',
@@ -359,7 +360,7 @@ export const objectiveWriteableFalse: any = {
   teamId: 2,
   quarterId: 2,
   quarterLabel: 'GJ 22/23-Q2',
-  state: 'NOTSUCCESSFUL',
+  state: State.NOTSUCCESSFUL,
   isWriteable: false
 };
 

@@ -7,6 +7,12 @@ export default abstract class Dialog extends PageObjectMapperBase {
     this.validatePage();
   }
 
+  checkOnDialog(check: () => void) {
+    this.getPage()
+      .within(() => check());
+    return this;
+  }
+
   override validatePage() {
     this.getPage()
       .should('exist');

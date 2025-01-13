@@ -6,6 +6,7 @@ import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDet
 import CheckInDialog from '../support/helper/dom-helper/dialogs/checkInDialog';
 import CheckInHistoryDialog from '../support/helper/dom-helper/dialogs/checkInHistoryDialog';
 import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
+import FilterHelper from '../support/helper/dom-helper/filterHelper';
 
 describe('okr check-in', () => {
   let overviewPage = new CyOverviewPage();
@@ -39,6 +40,54 @@ describe('okr check-in', () => {
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
     cy.contains('We bought a new house');
     cy.contains('- A new action on the action-plan');
+  });
+
+  it.only('should create check-in metric and assert correct owner', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This keyresult is for the owner')
+      .withMetricValues(Unit.PERCENT, '21', '51')
+      .fillKeyResultDescription('This is my description')
+      .submit();
+
+    overviewPage.checkForToaster('Das Key Result wurde erfolgreich erstellt', 'success');
+
+    keyResultDetailPage
+      .visit('This keyresult is for the owner')
+      .createCheckIn()
+      .checkForDialogTextMetric()
+      .fillMetricCheckInValue('30')
+      .setCheckInConfidence(6)
+      .fillCheckInCommentary('We bought a new house')
+      .fillCheckInInitiatives('We have to buy more PCs')
+      .submit();
+
+    keyResultDetailPage.checkForToaster('Das Check-in wurde erfolgreich erstellt', 'success')
+      .showAllCheckIns()
+      .checkOnDialog(() => cy.contains('Jaya Norris'))
+      .cancel();
+
+    cy.logout();
+    cy.loginAsUser(users.bbt);
+
+    FilterHelper.do()
+      .toggleOption('Alle');
+
+    keyResultDetailPage
+      .visit('This keyresult is for the owner')
+      .showAllCheckIns()
+      .checkOnDialog(() => cy.contains('Jaya Norris'))
+      .editLatestCheckIn()
+      .checkForDialogTextMetric()
+      .setCheckInConfidence(7)
+      .submit();
+
+    keyResultDetailPage.checkForToaster('Das Check-in wurde erfolgreich aktualisiert', 'success');
+
+    CheckInHistoryDialog.do()
+      .checkOnDialog(() => cy.contains('Ashleigh Russell'))
+      .checkForAttribute('Confidence:', '7 / 10')
+      .cancel();
   });
 
   it('should create check-in metric with confidence 0', () => {
@@ -252,6 +301,7 @@ describe('okr check-in', () => {
     cy.contains('Buy now a new pool');
     cy.contains('STRETCH');
   });
+
 
   it('should display confirm dialog when creating check-in on draft objective', () => {
     overviewPage.addObjective()

@@ -38,7 +38,7 @@ public class CheckInBusinessService implements BusinessServiceInterface<Long, Ch
     public CheckIn updateEntity(Long id, CheckIn checkIn, AuthorizationUser authorizationUser) {
         CheckIn savedCheckIn = checkInPersistenceService.findById(id);
         checkIn.setCreatedOn(savedCheckIn.getCreatedOn());
-        checkIn.setCreatedBy(savedCheckIn.getCreatedBy());
+        checkIn.setCreatedBy(authorizationUser.user());
         checkIn.setModifiedOn(LocalDateTime.now());
         validator.validateOnUpdate(id, checkIn);
         return checkInPersistenceService.save(checkIn);

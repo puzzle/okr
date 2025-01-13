@@ -21,6 +21,7 @@ public class CheckInMetricMapper {
                                     checkInMetric.getInitiatives(), //
                                     checkInMetric.getConfidence(), //
                                     checkInMetric.getKeyResult().getId(), //
+                                    checkInMetric.getCreatedBy().getFullName(), //
                                     checkInMetric.getCreatedOn(), //
                                     checkInMetric.getModifiedOn(), //
                                     checkInMetric.getValue(), //

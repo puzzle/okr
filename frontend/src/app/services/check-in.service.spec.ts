@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CheckInService } from './check-in.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { firstCheckIn, keyResultMetricWithIdEight, secondCheckIn } from '../shared/test-data';
-import { CheckInMetricMin } from '../shared/types/model/check-in-metric-min';
+import { CheckIn } from '../shared/types/model/check-in';
 
 describe('CheckInService', () => {
   let service: CheckInService;
@@ -25,12 +25,12 @@ describe('CheckInService', () => {
       .subscribe((checkIns) => {
         expect(checkIns[0].confidence)
           .toBe(firstCheckIn.confidence);
-        expect((checkIns[0] as CheckInMetricMin).value)
+        expect((checkIns[0] as CheckIn))
           .toBe(firstCheckIn.value);
 
         expect(checkIns[1].confidence)
           .toBe(secondCheckIn.confidence);
-        expect((checkIns[1] as CheckInMetricMin).value)
+        expect((checkIns[1] as CheckIn))
           .toBe(secondCheckIn.value);
       });
   });

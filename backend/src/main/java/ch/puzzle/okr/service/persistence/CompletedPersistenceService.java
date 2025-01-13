@@ -19,6 +19,8 @@ public class CompletedPersistenceService extends PersistenceBase<Completed, Long
     }
 
     public Completed getCompletedByObjectiveId(Long objectiveId) {
-        return getRepository().findByObjectiveId(objectiveId).orElseThrow(() -> createEntityNotFoundException(objectiveId));
+        return getRepository()
+                .findByObjectiveId(objectiveId)
+                .orElseThrow(() -> createEntityNotFoundException(objectiveId));
     }
 }

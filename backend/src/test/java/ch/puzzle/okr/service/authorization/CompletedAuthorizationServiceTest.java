@@ -96,8 +96,8 @@ class CompletedAuthorizationServiceTest {
                 .hasRoleReadByObjectiveId(objectiveId, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> completedAuthorizationService
-                        .getCompletedByObjectiveId(objectiveId));
+                                                         () -> completedAuthorizationService
+                                                                 .getCompletedByObjectiveId(objectiveId));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }

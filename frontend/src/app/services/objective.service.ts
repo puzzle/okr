@@ -3,9 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Objective } from '../shared/types/model/objective';
 import { Observable } from 'rxjs';
 import { KeyResultDto } from '../shared/types/DTOs/key-result-dto';
-import { User } from '../shared/types/model/user';
-import { CheckIn } from '../shared/types/model/check-in';
-import { Action } from '../shared/types/model/action';
 
 @Injectable({
   providedIn: 'root'
@@ -36,17 +33,7 @@ export class ObjectiveService {
   duplicateObjective(objectiveId: number,
     duplicateObjectiveDto: {
       keyResults: {
-        owner: User;
-        modifiedOn: Date | null | undefined;
-        keyResultType: string | undefined;
-        description: string;
-        actionList: Action[] | null;
-        id: undefined;
-        lastCheckIn: CheckIn | null | undefined;
-        title: string;
-        version: number;
-        createdOn: Date | null | undefined;
-        objective: Objective;
+        id: number | undefined;
       }[];
       objective: any;
     }): Observable<Objective> {

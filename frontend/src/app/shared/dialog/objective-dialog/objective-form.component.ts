@@ -187,12 +187,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       objectiveDTO.state = 'DRAFT' as State;
       return this.objectiveService.duplicateObjective(id, {
         objective: objectiveDTO,
-        keyResults: this.keyResults
-          .filter((keyResult, index) => this.objectiveForm.value.keyResults?.[index] ?? false)
-          .map((result) => ({
-            ...result,
-            id: undefined
-          }))
+        keyResults: this.keyResults.map((keyResult) => ({ id: keyResult.id }))
       });
     } else {
       if (this.data.action == 'releaseBacklog') {

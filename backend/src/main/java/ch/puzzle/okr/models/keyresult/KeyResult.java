@@ -1,14 +1,12 @@
 package ch.puzzle.okr.models.keyresult;
 
-import ch.puzzle.okr.models.MessageKey;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.WriteableInterface;
+import ch.puzzle.okr.models.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -50,6 +48,9 @@ public abstract class KeyResult implements WriteableInterface {
 
     @Column(name = "key_result_type", insertable = false, updatable = false)
     private String keyResultType;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "keyResult", cascade = CascadeType.ALL)
+    private List<Action> actionList;
 
     @Transient
     private boolean writeable;
@@ -130,6 +131,14 @@ public abstract class KeyResult implements WriteableInterface {
         this.keyResultType = keyResultType;
     }
 
+    public List<Action> getActionList() {
+        return actionList;
+    }
+
+    public void setActionList(List<Action> actionList) {
+        this.actionList = actionList;
+    }
+
     @Override
     public boolean isWriteable() {
         return writeable;
@@ -145,7 +154,7 @@ public abstract class KeyResult implements WriteableInterface {
         return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title
                + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy
                + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType
-               + ", writeable=" + writeable + '\'' + '}';
+               + ", actionList=" + actionList + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -160,7 +169,8 @@ public abstract class KeyResult implements WriteableInterface {
                && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner)
                && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn)
                && Objects.equals(modifiedOn, keyResult.modifiedOn)
-               && Objects.equals(keyResultType, keyResult.keyResultType);
+               && Objects.equals(keyResultType, keyResult.keyResultType)
+               && Objects.equals(actionList, keyResult.actionList);
     }
 
     @Override
@@ -175,7 +185,8 @@ public abstract class KeyResult implements WriteableInterface {
                       createdBy,
                       createdOn,
                       modifiedOn,
-                      keyResultType);
+                      keyResultType,
+                      actionList);
     }
 
     protected KeyResult() {
@@ -192,6 +203,7 @@ public abstract class KeyResult implements WriteableInterface {
         setCreatedOn(builder.createdOn);
         setModifiedOn(builder.modifiedOn);
         setKeyResultType(builder.keyResultType);
+        setActionList(builder.actionList);
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -206,6 +218,7 @@ public abstract class KeyResult implements WriteableInterface {
         private LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
         private final String keyResultType;
+        private List<Action> actionList;
 
         protected Builder(String keyResultType) {
             this.keyResultType = keyResultType;
@@ -253,6 +266,11 @@ public abstract class KeyResult implements WriteableInterface {
 
         public T withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
+            return (T) this;
+        }
+
+        public T withActionList(List<Action> actionList) {
+            this.actionList = actionList;
             return (T) this;
         }
 

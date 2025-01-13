@@ -104,13 +104,9 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> duplicateObjective(@Parameter(description = "The ID for duplicating an Objective.", required = true)
     @PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as JSON", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
         Objective objective = objectiveMapper.toObjective(duplicateObjectiveDto.objective());
-        List<KeyResult> keyResults = duplicateObjectiveDto
-                .keyResults()
-                .stream()
-                .map(keyResultMapper::toKeyResult)
-                .toList();
+        List<Long> keyResultIds = duplicateObjectiveDto.keyResultIds();
         ObjectiveDto duplicatedObjectiveDto = objectiveMapper
-                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective, keyResults));
+                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective, keyResultIds));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 

@@ -116,17 +116,17 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
      *            New Objective with no KeyResults
      * @param authorizationUser
      *            AuthorizationUser
-     * @param keyResults
-     *            KeyResults to copy
+     * @param keyResultIds
+     *            KeyResultIds to copy
      *
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
     public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser,
-                                        List<KeyResult> keyResults) {
+                                        List<Long> keyResultIds) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
-        for (KeyResult keyResult : keyResults) {
-            duplicateKeyResult(authorizationUser, keyResult, duplicatedObjective);
+        for (Long keyResult : keyResultIds) {
+            duplicateKeyResult(authorizationUser, keyResultBusinessService.getEntityById(keyResult), duplicatedObjective);
         }
         return duplicatedObjective;
     }
@@ -152,6 +152,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withUnit(((KeyResultMetric) keyResult).getUnit()) //
                 .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
                 .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
+                .withActionList(keyResult.getActionList())
                 .build();
     }
 
@@ -165,6 +166,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withCommitZone(((KeyResultOrdinal) keyResult).getCommitZone()) //
                 .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
                 .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
+                .withActionList(keyResult.getActionList())
                 .build();
     }
 

@@ -78,7 +78,8 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
           const loggedInUser = this.getFullNameOfLoggedInUser();
           users.forEach((user) => {
             if (getFullNameOfUser(user) === loggedInUser) {
-              this.keyResultForm.controls['owner'].setValue(user);
+              this.keyResultForm.get('owner')
+                ?.setValue(user);
             }
           });
         });
@@ -99,15 +100,19 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   }
 
   setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
-    this.keyResultForm.controls['unit'].setValue(keyResultMetric.unit);
-    this.keyResultForm.controls['baseline'].setValue(keyResultMetric.baseline);
-    this.keyResultForm.controls['stretchGoal'].setValue(keyResultMetric.stretchGoal);
+    /*
+     * this.keyResultForm.controls['unit'].setValue(keyResultMetric.unit);
+     * this.keyResultForm.controls['baseline'].setValue(keyResultMetric.baseline);
+     * this.keyResultForm.controls['stretchGoal'].setValue(keyResultMetric.stretchGoal);
+     */
   }
 
   setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {
-    this.keyResultForm.controls['commitZone'].setValue(keyResultOrdinal.commitZone);
-    this.keyResultForm.controls['targetZone'].setValue(keyResultOrdinal.targetZone);
-    this.keyResultForm.controls['stretchZone'].setValue(keyResultOrdinal.stretchZone);
+    /*
+     * this.keyResultForm.controls['commitZone'].setValue(keyResultOrdinal.commitZone);
+     * this.keyResultForm.controls['targetZone'].setValue(keyResultOrdinal.targetZone);
+     * this.keyResultForm.controls['stretchZone'].setValue(keyResultOrdinal.stretchZone);
+     */
   }
 
   isTouchedOrDirty(name: string) {

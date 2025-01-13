@@ -23,123 +23,171 @@
   </button>
   <div class="buffer col flex-fill tab-title"></div>
 </div>
+<ng-container *ngIf="isMetric;">
+  <div>
+    <div class="okr-form-row">
 
-<ng-container *ngIf="isMetric; else ordinalBlock">
-  <form [formGroup]="keyResultForm" class="okr-form-row row-cols-1 row-cols-md-3">
-    <div class="col">
-      <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="unit">Einheit</label>
-        <div class="col">
-          <select
-            class="dialog-form-field unit-dropdown bg-white"
-            [ngClass]="formInputCheck(keyResultForm, 'unit')"
-            formControlName="unit"
-            id="unit"
-            [attr.data-testId]="'unit'"
-          >
-            <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
-              {{ "UNIT." + unit.value | translate }}
-            </option>
-          </select>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
-            <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
-          </mat-error>
+      <div class="col-4" formGroupName="metric">
+        <div class="okr-form-row okr-form-label-input-container">
+          <label class="okr-form-label okr-form-col" for="unit">Einheit</label>
+          <div class="okr-form-input">
+
+            <select
+              [ngClass]="formInputCheck(keyResultForm, 'unit')"
+              formControlName="unit"
+              id="unit"
+              [attr.data-testId]="'unit'"
+            >
+              <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
+                {{ "UNIT." + unit.value | translate }}
+              </option>
+            </select>
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
+              <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
+            </mat-error>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="okr-form-row okr-form-label-input-container">
+          <label class="okr-form-label okr-form-col" for="owner">Owner</label>
+          <div class="okr-form-input">
+            <input
+              (keydown.enter)="$event.preventDefault()"
+              [attr.data-testId]="'owner-input'"
+              [matAutocomplete]="auto"
+              [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+              formControlName="owner"
+              id="owner"
+            />
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getFullNameOfUser.bind(this)">
+              <mat-option *ngFor="let user of users | async" [value]="user">
+                {{ user.firstName + " " + user.lastName }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="invalidOwner()">
+              <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
+            </mat-error>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="okr-form-row" formGroupName="metric">
+
+      <div class="col">
+        <div class="okr-form-row">
+          <label class="okr-form-label okr-form-col" for="baseline">Baseline</label>
+          <div class="col">
+            <input
+              [attr.data-testId]="'baseline'"
+              class="dialog-form-field"
+              [ngClass]="formInputCheck(keyResultForm, 'baseline')"
+              formControlName="baseline"
+              id="baseline"
+            />
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'baseline')">
+              <span>{{ getErrorMessage("MUST_BE_NUMBER", "Baseline", null, null) }}</span>
+            </mat-error>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="okr-form-row">
+          <label class="okr-form-label okr-form-col" for="stretch-goal">Target</label>
+          <div class="col">
+            <input
+              [attr.data-testId]="'target-goal'"
+              class="dialog-form-field"
+              [ngClass]="formInputCheck(keyResultForm, 'targetGoal')"
+              formControlName="targetGoal"
+              id="target-goal"
+            />
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
+              <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
+            </mat-error>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="okr-form-row">
+          <label class="okr-form-label okr-form-col" for="stretch-goal">Stretch</label>
+          <div class="col">
+            <input
+              [attr.data-testId]="'stretch-goal'"
+              class="dialog-form-field"
+              [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
+              formControlName="stretchGoal"
+              id="stretch-goal"
+            />
+            <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
+              <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
+            </mat-error>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col">
-      <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="baseline">Baseline</label>
-        <div class="col">
-          <input
-            [attr.data-testId]="'baseline'"
-            class="dialog-form-field"
-            [ngClass]="formInputCheck(keyResultForm, 'baseline')"
-            formControlName="baseline"
-            id="baseline"
-          />
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'baseline')">
-            <span>{{ getErrorMessage("MUST_BE_NUMBER", "Baseline", null, null) }}</span>
-          </mat-error>
-        </div>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="stretch-goal">Stretch Goal</label>
-        <div class="col">
-          <input
-            [attr.data-testId]="'stretch-goal'"
-            class="dialog-form-field"
-            [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
-            formControlName="stretchGoal"
-            id="stretch-goal"
-          />
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
-            <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
-          </mat-error>
-        </div>
-      </div>
-    </div>
-  </form>
+  </div>
 </ng-container>
 
-<ng-template #ordinalBlock>
-  <form [formGroup]="keyResultForm" class="okr-form-row row-cols-1 row-cols-md-3">
-    <div class="col">
-      <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="commit-zone">Commit Zone</label>
-        <div class="col">
-          <textarea
-            class="big-dialog-form-field"
-            [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
-            formControlName="commitZone"
-            id="commit-zone"
-            [attr.data-testId]="'commit-zone'"
-          ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'commitZone')">
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Commit Zone", 1, 400) }}</span>
-          </mat-error>
-        </div>
-      </div>
-    </div>
+<!--<ng-template #ordinalBlock>-->
+<!--  <div formGroupName="ordinal" class="okr-form-row row-cols-1 row-cols-md-3">-->
+<!--    <div class="col">-->
+<!--      <div class="okr-form-row">-->
+<!--        <label class="okr-form-label okr-form-col" for="commit-zone">Commit Zone</label>-->
+<!--        <div class="col">-->
+<!--          <textarea-->
+<!--            class="big-dialog-form-field"-->
+<!--            [ngClass]="formInputCheck(keyResultForm, 'commitZone')"-->
+<!--            formControlName="commitZone"-->
+<!--            id="commit-zone"-->
+<!--            [attr.data-testId]="'commit-zone'"-->
+<!--          ></textarea>-->
+<!--          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'commitZone')">-->
+<!--            <span>{{ getErrorMessage("SIZE_BETWEEN", "Commit Zone", 1, 400) }}</span>-->
+<!--          </mat-error>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="col">
-      <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="target-zone">Target Zone</label>
-        <div class="col">
-          <textarea
-            [attr.data-testId]="'target-zone'"
-            class="big-dialog-form-field"
-            [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
-            formControlName="targetZone"
-            id="target-zone"
-          ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'targetZone')">
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Target Zone", 1, 400) }}</span>
-          </mat-error>
-        </div>
-      </div>
-    </div>
+<!--    <div class="col">-->
+<!--      <div class="okr-form-row">-->
+<!--        <label class="okr-form-label okr-form-col" for="target-zone">Target Zone</label>-->
+<!--        <div class="col">-->
+<!--          <textarea-->
+<!--            [attr.data-testId]="'target-zone'"-->
+<!--            class="big-dialog-form-field"-->
+<!--            [ngClass]="formInputCheck(keyResultForm, 'targetZone')"-->
+<!--            formControlName="targetZone"-->
+<!--            id="target-zone"-->
+<!--          ></textarea>-->
+<!--          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'targetZone')">-->
+<!--            <span>{{ getErrorMessage("SIZE_BETWEEN", "Target Zone", 1, 400) }}</span>-->
+<!--          </mat-error>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="col">
-      <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="stretch-zone">Stretch Goal</label>
-        <div class="col">
-          <textarea
-            [attr.data-testId]="'stretch-zone'"
-            class="big-dialog-form-field"
-            [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
-            formControlName="stretchZone"
-            id="stretch-zone"
-          ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchZone')">
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Stretch Zone", 1, 400) }}</span>
-          </mat-error>
-        </div>
-      </div>
-    </div>
-  </form>
-</ng-template>
+<!--    <div class="col">-->
+<!--      <div class="okr-form-row">-->
+<!--        <label class="okr-form-label okr-form-col" for="stretch-zone">Stretch Goal</label>-->
+<!--        <div class="col">-->
+<!--          <textarea-->
+<!--            [attr.data-testId]="'stretch-zone'"-->
+<!--            class="big-dialog-form-field"-->
+<!--            [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"-->
+<!--            formControlName="stretchZone"-->
+<!--            id="stretch-zone"-->
+<!--          ></textarea>-->
+<!--          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchZone')">-->
+<!--            <span>{{ getErrorMessage("SIZE_BETWEEN", "Stretch Zone", 1, 400) }}</span>-->
+<!--          </mat-error>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->

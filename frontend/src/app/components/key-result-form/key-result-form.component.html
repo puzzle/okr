@@ -21,28 +21,6 @@
     [keyResultForm]="keyResultForm"
   ></app-key-result-type>
 
-  <div class="okr-form-row okr-form-label-input-container">
-    <label class="okr-form-label okr-form-col" for="owner">Owner</label>
-    <div class="okr-form-input">
-      <input
-        (keydown.enter)="$event.preventDefault()"
-        [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
-        class="owner-input"
-        [attr.data-testId]="'owner-input'"
-        [matAutocomplete]="auto"
-        formControlName="owner"
-        id="owner"
-      />
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getFullNameOfUser.bind(this)">
-        <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-          {{ user.firstName + " " + user.lastName }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-error *ngIf="invalidOwner()">
-        <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
-      </mat-error>
-    </div>
-  </div>
 
   <div class="okr-form-row okr-form-label-input-container">
     <label class="okr-form-label okr-form-col" for="description">Beschreibung (optional)</label>

@@ -150,8 +150,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withDescription(keyResult.getDescription()) //
                 .withOwner(keyResult.getOwner()) //
                 .withUnit(((KeyResultMetric) keyResult).getUnit()) //
-                .withBaseline(0D) //
-                .withStretchGoal(1D) //
+                .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
+                .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
                 .build();
     }
 
@@ -162,9 +162,9 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withTitle(keyResult.getTitle()) //
                 .withDescription(keyResult.getDescription()) //
                 .withOwner(keyResult.getOwner()) //
-                .withCommitZone("-") //
-                .withTargetZone("-") //
-                .withStretchZone("-") //
+                .withCommitZone(((KeyResultOrdinal) keyResult).getCommitZone()) //
+                .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
+                .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
                 .build();
     }
 

@@ -79,6 +79,31 @@ export default class CheckInDialog extends Dialog {
     return this;
   }
 
+  addActionToActionPlan(action: string) {
+    cy.getByTestId('add-action')
+      .click();
+    cy.getByTestId('action-input')
+      .filter((k, el) => {
+        return (el as HTMLInputElement).value.trim() === '';
+      })
+      .first()
+      .type(action);
+    cy.getByTestId('save-new-actions')
+      .click();
+    return this;
+  }
+
+  checkActionOfActionPlan(actionIndex: number) {
+    cy.get('[id^=mat-mdc-checkbox-]')
+      .filter((index, elem) => {
+        // Keep only elements with an ID that matches the pattern
+        return (/^mat-mdc-checkbox-\d+$/).test(elem.id);
+      })
+      .eq(actionIndex)
+      .click();
+    return this;
+  }
+
   override submit() {
     cy.getByTestId('submit-check-in')
       .click();

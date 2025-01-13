@@ -104,7 +104,7 @@ export class ActionPlanComponent {
     }
     if (actions[index].action !== '' || actions[index].id) {
       this.dialogService
-        .openConfirmDialog('DELETE.ACTION')
+        .openConfirmDialog('CONFIRMATION.DELETE.ACTION')
         .afterClosed()
         .subscribe((result) => {
           if (result) {

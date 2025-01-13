@@ -30,7 +30,7 @@ public class ActionBusinessService {
 
     @Transactional
     public List<Action> createEntities(List<Action> actionList) {
-        return actionList.stream().map(this::createEntity).toList();
+        return actionList.stream().filter(e -> !e.getActionPoint().isEmpty()).map(this::createEntity).toList();
     }
 
     @Transactional
@@ -50,6 +50,9 @@ public class ActionBusinessService {
                 savedActions.add(createEntity(action));
             } else {
                 savedActions.add(updateEntity(action.getId(), action));
+            }
+            if (action.getActionPoint().isEmpty()) {
+                deleteEntityById(action.getId());
             }
         });
         return savedActions;

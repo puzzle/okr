@@ -8,23 +8,54 @@
         </span>
       </div>
 
-      <div *ngIf="getActions().length > 0" class="okr-form-row okr-form-label-input-container">
-        <label class="okr-form-label okr-form-col">Action Plan:</label>
-        <div class="col">
-          <span *ngFor="let action of getActions(); let i = index" class="okr-form-row">
-            <mat-checkbox
-              #checkbox
-              (change)="changeIsChecked($event, i)"
-              [checked]="action.isChecked"
-              class="col-auto"
-            >
-            </mat-checkbox>
-            <div class="col bg-display-element break-word okr-form-label d-flex align-items-center" [ngClass]="{ 'text-decoration-line-through': checkbox.checked }">
-              {{ action.action }}
-            </div>
-          </span>
+      <div *ngIf="!isAddingAction; else actionPlanComponent">
+        <div *ngIf="getActions().length > 0" class="okr-form-row okr-form-label-input-container">
+          <label class="okr-form-label okr-form-col">Action Plan:</label>
+          <div class="col">
+            <span *ngFor="let action of getActions(); let i = index" class="okr-form-row">
+              <mat-checkbox
+                #checkbox
+                (change)="changeIsChecked($event, i)"
+                [checked]="action.isChecked"
+                class="col-auto"
+              >
+              </mat-checkbox>
+              <div class="col bg-display-element break-word okr-form-label d-flex align-items-center" [ngClass]="{ 'text-decoration-line-through': checkbox.checked }">
+                {{ action.action }}
+              </div>
+            </span>
+          </div>
         </div>
+
+        <button
+          mat-button
+          color="primary"
+          class="fw-bold col-auto"
+          id="add-action-button"
+          (click)="openActionEdit()"
+          [attr.data-testId]="'add-action'"
+        >
+          <span class="d-flex align-items-center add-text">
+            <img
+              src="../../../assets/icons/new-icon.svg"
+              alt="Add action icon"
+              class="add-cross-button"
+              id="add-action-icon"
+            />
+            Action hinzufügen
+          </span>
+        </button>
       </div>
+
+      <ng-template #actionPlanComponent>
+        <app-action-plan [control]="actionList$" [keyResultId]="keyResult.id"></app-action-plan>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="closeActionEdit()"
+          [attr.data-testId]="'save-new-actions'"
+        >Speichern</button>
+      </ng-template>
 
       <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col" for="change-info">Kommentar/ Veränderung seit letztem Check-in (optional):</label

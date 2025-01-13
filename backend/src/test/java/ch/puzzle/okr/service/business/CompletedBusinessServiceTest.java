@@ -93,4 +93,15 @@ class CompletedBusinessServiceTest {
 
         verify(validator, never()).validateOnDelete(anyLong());
     }
+
+    @DisplayName("Should get completed by objective id")
+    @Test
+    void shouldGetCompleted() {
+        when(completedPersistenceService.getCompletedByObjectiveId(anyLong())).thenReturn(successfulCompleted);
+
+        this.completedBusinessService.getCompletedByObjectiveId(1L);
+
+        verify(this.completedPersistenceService, times(1)).getCompletedByObjectiveId(1L);
+    }
+
 }

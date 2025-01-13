@@ -17,11 +17,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
 
 @SpringIntegrationTest
 class CompletedPersistenceServiceIT {
+    private static final Logger log = LoggerFactory.getLogger(CompletedPersistenceServiceIT.class);
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
     private Completed createdCompleted;
@@ -118,6 +121,20 @@ class CompletedPersistenceServiceIT {
                      savedCompleted.getObjective().getTitle());
     }
 
+    @DisplayName("Should throw exception on getCompletedByObjectiveId() when id does not exist")
+    @Test
+    void getCompletedShouldThrowExceptionWhenCompletedNotFound() {
+        long noExistentId = getNonExistentId();
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> completedPersistenceService.getCompletedByObjectiveId(noExistentId));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND",List.of(COMPLETED, String.valueOf(noExistentId))));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
     @DisplayName("Should delete entity on deleteById()")
     @Test
     void deleteByIdShouldDeleteExistingCompletedByObjectiveId() {
@@ -152,6 +169,6 @@ class CompletedPersistenceServiceIT {
 
     private long getNonExistentId() {
         long id = completedPersistenceService.findAll().stream().mapToLong(Completed::getId).max().orElse(10L);
-        return id + 1;
+        return id + 10;
     }
 }

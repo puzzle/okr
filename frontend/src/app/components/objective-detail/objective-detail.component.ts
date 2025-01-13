@@ -32,17 +32,19 @@ export class ObjectiveDetailComponent implements OnInit {
     private refreshDataService: RefreshDataService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-    this.objectiveId = this.getIdFromParams();
-    this.loadObjective(this.objectiveId);
-    this.objective$.pipe(takeUntilDestroyed())
+  ) {
+    this.objective$
+      .pipe(takeUntilDestroyed())
       .subscribe((objective) => {
         if (objective.state?.toString() === 'NOTSUCCESSFUL' || objective.state?.toString() === 'SUCCESSFUL') {
           this.loadCompleted(this.objectiveId);
         }
       });
+  }
+
+  ngOnInit(): void {
+    this.objectiveId = this.getIdFromParams();
+    this.loadObjective(this.objectiveId);
   }
 
   private getIdFromParams(): number {

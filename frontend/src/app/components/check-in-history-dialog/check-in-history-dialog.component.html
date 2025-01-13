@@ -3,15 +3,15 @@
     <ng-container *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory">
       <div *ngFor="let checkIn of checkInHistory; index as i" class="bg-display-element p-1 okr-form-row">
         <div class="col okr-form-label">
-          <div class="okr-form-row">
-            <span class="fw-bold col-6">
+          <div class="okr-form-row py-1">
+            <span class="fw-bold col-6 d-flex align-items-end">
               {{ checkIn.createdOn | date: DATE_FORMAT }}
             </span>
-            <span class="col-5">
+            <span class="col-5 d-flex align-items-end">
               <img
                 ngSrc="assets/icons/person-icon.svg"
                 alt="author icon"
-                class="mb-1"
+                class="mb-1 me-1"
                 width="12"
                 height="12"
               />
@@ -34,7 +34,7 @@
               </button>
             </div>
           </div>
-          <div class="okr-form-row mb-1">
+          <div class="okr-form-row">
             <span class="d-flex col-6 justify-content-start">
               <h4 class="fst-italic me-1">Wert:</h4>
               <ng-container *ngIf="keyResult.keyResultType === 'metric' && getCheckInMetric(checkIn) as metricCheckIn">

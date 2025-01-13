@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
-import { CompletedService } from '../../services/completed.servce';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ObjectiveMenuAfterActions } from './objective-menu-after-actions';
 import { objective, objectiveMin } from '../../shared/test-data';
@@ -10,6 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { State } from '../../shared/types/enums/state';
 import { Completed } from '../../shared/types/model/completed';
+import { CompletedService } from '../../services/completed.service';
 
 describe('ObjectiveMenuAfterActions', () => {
   let objectiveMenuAfterActions: ObjectiveMenuAfterActions;

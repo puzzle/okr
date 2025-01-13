@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Objective } from '../../shared/types/model/objective';
 import { ObjectiveService } from '../../services/objective.service';
-import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, Observable } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../services/dialog.service';
 import { CompletedService } from '../../services/completed.service';
 import { Completed } from '../../shared/types/model/completed';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-objective-detail',
@@ -20,7 +21,7 @@ import { Completed } from '../../shared/types/model/completed';
 export class ObjectiveDetailComponent implements OnInit {
   objectiveId!: number;
 
-  completed!: Completed;
+  completed = new Observable<Completed>();
 
   objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
@@ -36,7 +37,12 @@ export class ObjectiveDetailComponent implements OnInit {
   ngOnInit(): void {
     this.objectiveId = this.getIdFromParams();
     this.loadObjective(this.objectiveId);
-    this.loadComponent(this.objectiveId);
+    this.objective$.pipe(takeUntilDestroyed())
+      .subscribe((objective) => {
+        if (objective.state?.toString() === 'NOTSUCCESSFUL' || objective.state?.toString() === 'SUCCESSFUL') {
+          this.loadCompleted(this.objectiveId);
+        }
+      });
   }
 
   private getIdFromParams(): number {
@@ -54,13 +60,10 @@ export class ObjectiveDetailComponent implements OnInit {
       .subscribe((objective) => this.objective$.next(objective));
   }
 
-  loadComponent(id: number): void {
-    this.completedService
+  loadCompleted(id: number): void {
+    this.completed = this.completedService
       .getCompleted(id)
-      .pipe(catchError(() => EMPTY))
-      .subscribe((completed: Completed) => {
-        this.completed = completed;
-      });
+      .pipe(catchError(() => EMPTY));
   }
 
   openAddKeyResultDialog() {

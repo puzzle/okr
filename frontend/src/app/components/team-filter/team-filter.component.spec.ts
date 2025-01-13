@@ -263,7 +263,7 @@ describe('TeamFilterComponent', () => {
     expect(component.activeTeams.length)
       .toBe(1);
     expect(component.activeTeams)
-      .toStrictEqual(testUser.teamList
+      .toStrictEqual(testUser.getTeamList
         .map((team) => team.id));
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
@@ -282,7 +282,7 @@ describe('TeamFilterComponent', () => {
     expect(component.activeTeams.length)
       .toBe(1);
     expect(component.activeTeams)
-      .toStrictEqual(testUser.teamList
+      .toStrictEqual(testUser.getTeamList
         .map((team) => team.id));
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);

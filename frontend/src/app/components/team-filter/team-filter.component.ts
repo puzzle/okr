@@ -68,9 +68,11 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         const teamIds = getValueFromQuery(teamQuery);
         const knownTeams = this.getAllTeamIds()
           .filter((teamId) => teamIds?.includes(teamId));
+        console.log('teamList', this.userService.getCurrentUser()
+          .getTeamList());
+
         if (knownTeams.length == 0) {
-          this.activeTeams = this.userService.getCurrentUser().teamList
-            .map((team) => team.id);
+          this.activeTeams = this.userService.getCurrentUser().userTeamList.map((ut) => ut.team.id);
         } else {
           this.activeTeams = knownTeams;
         }

@@ -77,7 +77,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
         .subscribe((users) => {
           const loggedInUser = this.getFullNameOfLoggedInUser();
           users.forEach((user) => {
-            if (user.fullName === loggedInUser) {
+            if (user.getFullName() === loggedInUser) {
               this.keyResultForm.controls['owner'].setValue(user);
             }
           });
@@ -123,7 +123,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   filter(value: string): Observable<User[]> {
     const filterValue = value.toLowerCase();
-    return this.users$.pipe(map((users) => users.filter((user) => user.fullName
+    return this.users$.pipe(map((users) => users.filter((user) => user.getFullName()
       .toLowerCase()
       .includes(filterValue))));
   }
@@ -136,7 +136,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   }
 
   getFullNameOfUser(user: User): string {
-    return user?.fullName || '';
+    return user?.getFullName() || '';
   }
 
   getKeyResultId(): number | null {

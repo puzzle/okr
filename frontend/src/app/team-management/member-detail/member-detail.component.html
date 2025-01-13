@@ -7,7 +7,7 @@
   <div *ngIf="user as userRef; else spinner">
     <div class="w-100 d-flex justify-content-between align-items-center mb-3">
       <h2>
-        {{ userRef.fullName }}
+        {{ userRef.getFullName }}
         <span *ngIf="selectedUserIsLoggedInUser">(ich)</span>
       </h2>
       <button

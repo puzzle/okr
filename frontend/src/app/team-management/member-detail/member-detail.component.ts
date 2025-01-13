@@ -84,7 +84,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   removeUserFromTeam(userTeam: UserTeam, user: User) {
     const i18nData = {
-      user: user.fullName,
+      user: user.getFullName,
       team: userTeam.team.name
     };
     this.dialogService

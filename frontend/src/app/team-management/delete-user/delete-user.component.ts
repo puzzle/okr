@@ -78,12 +78,12 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   deleteUserWithChecks() {
     if (this.isUserMemberOfTeams()) {
       const dialogTitle = 'User kann nicht gelöscht werden';
-      const dialogText = `${this.user.fullName} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.getDialogDetailsUserTeams()}`;
+      const dialogText = `${this.user.getFullName} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.getDialogDetailsUserTeams()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     } else if (this.isUserOwnerOfKeyResults()) {
       const dialogTitle = 'User kann nicht gelöscht werden';
-      const dialogText = `${this.user.fullName} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
+      const dialogText = `${this.user.getFullName} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     }
@@ -148,7 +148,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
                 this.location.back();
               },
               error: () => {
-                throw Error(`unable to delete user ${this.user.fullName} (with id ${this.user.id})`);
+                throw Error(`unable to delete user ${this.user.getFullName} (with id ${this.user.id})`);
               }
             }))
             .subscribe();

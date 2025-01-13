@@ -61,7 +61,8 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
     // user is loaded on base route resolver. We have to wait until routing is done.
     this.router.events.subscribe((val) => {
       if (!this.userFullName && val instanceof NavigationEnd) {
-        this.userFullName = this.userService.getCurrentUser().fullName;
+        this.userFullName = this.userService.getCurrentUser()
+          .getFullName();
         this.cd.markForCheck();
       }
     });

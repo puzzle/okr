@@ -1,4 +1,5 @@
 import { UserTeam } from './user-team';
+import { Team } from './team';
 
 export class User {
   id: number;
@@ -24,15 +25,16 @@ export class User {
     this.isOkrChampion = isOkrChampion;
   }
 
-  get fullName() {
+  getFullName() {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  get teamList() {
-    return this.userTeamList.map((ut) => ut.team);
+  getTeamList(): Team[] {
+    this.userTeamList.forEach((ut: UserTeam) => console.log('ut', ut));
+    return [];
   }
 
   static getFullNameOfUser(user: User) {
-    return user?.fullName || '';
+    return user?.getFullName() || '';
   }
 }

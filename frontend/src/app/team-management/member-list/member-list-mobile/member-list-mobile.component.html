@@ -5,7 +5,7 @@
   </div>
   <div class="member-content">
     <div [ngClass]="{ 'single-line': !member.teams.length }">
-      <a [routerLink]="getMemberDetailsLink(member)">{{member.fullName }}</a>
+      <a [routerLink]="getMemberDetailsLink(member)">{{member.getFullName }}</a>
     </div>
     @if (member.teams.length) {
     <div>{{ member.teams }}</div>

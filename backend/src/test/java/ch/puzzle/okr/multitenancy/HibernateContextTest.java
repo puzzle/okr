@@ -32,7 +32,7 @@ class HibernateContextTest {
         DbConfig dbConfig = null;
 
         // act + assert
-        HibernateContextException exception = assertThrows(HibernateContextException.class,
+        var exception = assertThrows(HibernateContextException.class,
                                                            () -> setHibernateConfig(dbConfig));
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
@@ -91,7 +91,7 @@ class HibernateContextTest {
         // arrange: no DbConfig is set
 
         // act + assert
-        HibernateContextException exception = assertThrows(HibernateContextException.class,
+        var exception = assertThrows(HibernateContextException.class,
                                                            HibernateContext::getHibernateConfig);
         assertEquals("No cached hibernate configuration found", exception.getMessage());
     }
@@ -146,9 +146,17 @@ class HibernateContextTest {
         setHibernateConfig(dbConfig);
 
         String tenantId = "tenantId", tenantName = "tenantName", tenantPassword = "tenantPassword";
-        var tenantConfig = new TenantConfigProvider.TenantConfig(tenantId, new String[] {}, NOT_USED, NOT_USED,
-                NOT_USED, null, // fly user config not used in test
-                new TenantConfigProvider.DataSourceConfig(NOT_USED, NOT_USED, tenantName, tenantPassword, NOT_USED));
+        var tenantConfig = new TenantConfigProvider.TenantConfig(tenantId,
+                                                                 new String[]{},
+                                                                 NOT_USED,
+                                                                 NOT_USED,
+                                                                 NOT_USED,
+                                                                 null, // fly user config not used in test
+                                                                 new TenantConfigProvider.DataSourceConfig(NOT_USED,
+                                                                                                           NOT_USED,
+                                                                                                           tenantName,
+                                                                                                           tenantPassword,
+                                                                                                           NOT_USED));
 
         TenantConfigs.add(tenantId, tenantConfig); // cache tenant db config
 

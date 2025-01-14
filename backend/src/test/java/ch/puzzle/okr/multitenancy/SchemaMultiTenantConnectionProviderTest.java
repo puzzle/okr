@@ -1,23 +1,16 @@
 package ch.puzzle.okr.multitenancy;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.okr.exception.ConnectionProviderException;
 import ch.puzzle.okr.test.SpringIntegrationTest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -70,7 +63,7 @@ class SchemaMultiTenantConnectionProviderTest {
     void createAndCacheNewConnectionProviderShouldThrowExceptionIfTenantIdIsNull() {
         // act + assert
         var exception = assertThrows(ConnectionProviderException.class,
-                () -> connectionProvider.createAndCacheNewConnectionProvider(null));
+                                     () -> connectionProvider.createAndCacheNewConnectionProvider(null));
 
         assertEquals("Cannot create new connection provider for tenant: null", exception.getMessage());
     }
@@ -80,7 +73,7 @@ class SchemaMultiTenantConnectionProviderTest {
     void getHibernatePropertiesForTenantIdentifierShouldThrowExceptionIfTenantIdIsNull() {
         // act + assert
         var exception = assertThrows(ConnectionProviderException.class,
-                () -> connectionProvider.getHibernatePropertiesForTenantIdentifier(null));
+                                     () -> connectionProvider.getHibernatePropertiesForTenantIdentifier(null));
 
         assertEquals("No hibernate configuration found for tenant: null", exception.getMessage());
     }

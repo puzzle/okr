@@ -56,7 +56,8 @@ class TenantJwtIssuerValidatorTest {
                                                                   "jwkSetUri", //
                                                                   ISSUER_URL,
                                                                   "clientId",
-                                                                  null, null)));
+                                                                  null,
+                                                                  null)));
 
         TenantJwtIssuerValidator tenantJwtIssuerValidator = new TenantJwtIssuerValidator(tenantConfigProviderWithPitcConfig,
                                                                                          jwtHelper) {

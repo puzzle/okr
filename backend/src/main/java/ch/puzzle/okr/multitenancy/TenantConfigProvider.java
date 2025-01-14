@@ -1,5 +1,7 @@
 package ch.puzzle.okr.multitenancy;
 
+import static java.text.MessageFormat.format;
+
 import java.text.MessageFormat;
 import java.util.*;
 import org.slf4j.Logger;
@@ -8,14 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
-import java.util.*;
-
-import static java.text.MessageFormat.format;
-
 /**
- * Reads the configuration of the tenants (as TenantConfig objects) from the applicationX.properties and caches each
- * TenantConfig in the TenantConfigs class.
+ * Reads the configuration of the tenants (as TenantConfig objects) from the
+ * applicationX.properties and caches each TenantConfig in the TenantConfigs
+ * class.
  */
 @Component
 public class TenantConfigProvider implements TenantConfigProviderInterface {
@@ -24,7 +22,9 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     private final Environment env;
 
     private enum DbType {
-        BOOTSTRAP, APP, FLY;
+        BOOTSTRAP,
+        APP,
+        FLY;
 
         public String nameUsedInProperties() {
             return this.name().toLowerCase();
@@ -38,8 +38,10 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
         this.env = env;
         for (String tenantId : tenantIds) {
             OauthConfig c = readOauthConfig(tenantId);
-            TenantConfig tenantConfig = createTenantConfig(c.jwkSetUri(), c.frontendClientIssuerUrl(),
-                    c.frontendClientId(), tenantId);
+            TenantConfig tenantConfig = createTenantConfig(c.jwkSetUri(),
+                                                           c.frontendClientIssuerUrl(),
+                                                           c.frontendClientId(),
+                                                           tenantId);
 
             tenantConfigs.put(tenantId, tenantConfig);
             cacheTenantConfig(tenantId, tenantConfig); // cache tenantConfig for Hibernate connections
@@ -52,9 +54,10 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     private void logCachingTenantConfig(String tenantId, TenantConfig tenantConfig) {
-        logger.info("cache TenantConfig: tenantId={}, users={}", //
-                tenantId, //
-                tenantConfig.dataSourceConfigFlyway().name() + " | " + tenantConfig.dataSourceConfigApp().name());
+        logger
+                .info("cache TenantConfig: tenantId={}, users={}", //
+                      tenantId, //
+                      tenantConfig.dataSourceConfigFlyway().name() + " | " + tenantConfig.dataSourceConfigApp().name());
     }
 
     public static TenantConfigProvider.TenantConfig getCachedTenantConfig(String tenantId) {
@@ -68,26 +71,28 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
 
     private OauthConfig readOauthConfig(String tenantId) {
         return new OauthConfig( //
-                getProperty("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri", tenantId),
-                               getProperty("okr.tenants.{0}.security.oauth2.frontend.issuer-url",
-                                                       tenantId),
-                               getProperty("okr.tenants.{0}.security.oauth2.frontend.client-id",
-                                                       tenantId));
+                               getProperty("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri", tenantId),
+                               getProperty("okr.tenants.{0}.security.oauth2.frontend.issuer-url", tenantId),
+                               getProperty("okr.tenants.{0}.security.oauth2.frontend.client-id", tenantId));
     }
 
     private TenantConfig createTenantConfig(String jwkSetUriTemplate, String frontendClientIssuerUrl,
-            String frontendClientId, String tenantId) {
+                                            String frontendClientId, String tenantId) {
 
-        return new TenantConfig(tenantId, getOkrChampionEmailsFromTenant(tenantId), jwkSetUriTemplate, //
-                frontendClientIssuerUrl, frontendClientId, //
-                this.readDataSourceConfigFlyway(tenantId), //
-                this.readDataSourceConfigApp(tenantId));
+        return new TenantConfig(tenantId,
+                                getOkrChampionEmailsFromTenant(tenantId),
+                                jwkSetUriTemplate, //
+                                frontendClientIssuerUrl,
+                                frontendClientId, //
+                                this.readDataSourceConfigFlyway(tenantId), //
+                                this.readDataSourceConfigApp(tenantId));
     }
 
     private String[] getOkrChampionEmailsFromTenant(String tenantId) {
         return Arrays
                 .stream(getProperty("okr.tenants.{0}.user.champion.emails", tenantId, "").split(EMAIL_DELIMITER))
-                .map(String::trim).toArray(String[]::new);
+                .map(String::trim)
+                .toArray(String[]::new);
     }
 
     public List<TenantConfig> getTenantConfigs() {
@@ -104,10 +109,12 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
 
     private DataSourceConfig readDataSourceConfig(String tenantId, DbType dbType) {
         return new DataSourceConfig( //
-                getProperty("okr.datasource.driver-class-name"),
-                getProperty("okr.tenants.{0}.datasource.url", tenantId),
-                                    getProperty("okr.tenants.{0}.datasource.username." + dbType.nameUsedInProperties(), tenantId),
-                                    getProperty("okr.tenants.{0}.datasource.password." + dbType.nameUsedInProperties(), tenantId),
+                                    getProperty("okr.datasource.driver-class-name"),
+                                    getProperty("okr.tenants.{0}.datasource.url", tenantId),
+                                    getProperty("okr.tenants.{0}.datasource.username." + dbType.nameUsedInProperties(),
+                                                tenantId),
+                                    getProperty("okr.tenants.{0}.datasource.password." + dbType.nameUsedInProperties(),
+                                                tenantId),
                                     getProperty("okr.tenants.{0}.datasource.schema", tenantId));
     }
 
@@ -142,7 +149,8 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
             return Objects.equals(tenantId(), that.tenantId()) && Objects.equals(clientId(), that.clientId())
                    && Objects.equals(jwkSetUri(), that.jwkSetUri()) && Objects.equals(issuerUrl(), that.issuerUrl())
                    && Objects.deepEquals(okrChampionEmails(), that.okrChampionEmails())
-                   && Objects.equals(dataSourceConfig(), that.dataSourceConfig());
+                   && Objects.equals(dataSourceConfigFlyway(), that.dataSourceConfigFlyway())
+                   && Objects.equals(dataSourceConfigApp(), that.dataSourceConfigApp());
         }
 
         @Override
@@ -153,15 +161,21 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
                           jwkSetUri(),
                           issuerUrl(),
                           clientId(),
-                          dataSourceConfig());
+                          dataSourceConfigFlyway(),
+                          dataSourceConfigApp());
         }
 
         @Override
         public String toString() {
-            return "TenantConfig{" + "tenantId='" + tenantId + '\'' + ", okrChampionEmails="
-                   + Arrays.toString(okrChampionEmails) + ", jwkSetUri='" + jwkSetUri + '\'' + ", issuerUrl='"
-                   + issuerUrl + '\'' + ", clientId='" + clientId + '\'' + ", dataSourceConfig=" + dataSourceConfig
-                   + '}';
+            return "TenantConfig{" +
+                    "tenantId='" + tenantId + '\'' +
+                    ", okrChampionEmails=" + Arrays.toString(okrChampionEmails) +
+                    ", jwkSetUri='" + jwkSetUri + '\'' +
+                    ", issuerUrl='" + issuerUrl + '\'' +
+                    ", clientId='" + clientId + '\'' +
+                    ", dataSourceConfigFlyway=" + dataSourceConfigFlyway +
+                    ", dataSourceConfigApp=" + dataSourceConfigApp +
+                    '}';
         }
     }
 

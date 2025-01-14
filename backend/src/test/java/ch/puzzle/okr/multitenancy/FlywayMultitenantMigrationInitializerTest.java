@@ -1,9 +1,9 @@
 package ch.puzzle.okr.multitenancy;
 
-import jakarta.persistence.EntityNotFoundException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import org.flywaydb.core.Flyway;
@@ -73,13 +73,29 @@ class FlywayMultitenantMigrationInitializerTest {
     }
 
     private final TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(NOT_USED,
-            new String[] { NOT_USED }, NOT_USED, NOT_USED, NOT_USED,
-            new TenantConfigProvider.DataSourceConfig(NOT_USED, URL, NAME, PASSWORD, SCHEMA), // flyway user config
-            null // app user config; not used in this test
+                                                                                                         new String[]{
+                                                                                                                 NOT_USED },
+                                                                                                         NOT_USED,
+                                                                                                         NOT_USED,
+                                                                                                         NOT_USED,
+                                                                                                         new TenantConfigProvider.DataSourceConfig(NOT_USED,
+                                                                                                                                                   URL,
+                                                                                                                                                   NAME,
+                                                                                                                                                   PASSWORD,
+                                                                                                                                                   SCHEMA), // flyway
+                                                                                                                                                            // user
+                                                                                                                                                            // config
+                                                                                                         null // app
+                                                                                                              // user
+                                                                                                              // config;
+                                                                                                              // not
+                                                                                                              // used in
+                                                                                                              // this
+                                                                                                              // test
     );
 
-    private TenantConfigProviderInterface mockTenantConfigProviderInterface(
-            List<TenantConfigProvider.TenantConfig> tenantConfigs, TenantConfigProvider.TenantConfig tenantConfigById) {
+    private TenantConfigProviderInterface mockTenantConfigProviderInterface(List<TenantConfigProvider.TenantConfig> tenantConfigs,
+                                                                            TenantConfigProvider.TenantConfig tenantConfigById) {
 
         return new TenantConfigProviderInterface() {
             @Override
@@ -108,8 +124,8 @@ class FlywayMultitenantMigrationInitializerTest {
             mockedStatic.when(Flyway::configure).thenReturn(fluentConfiguration);
 
             // returns for getTenantConfigs() and getTenantConfigById() tenantConfig
-            var migrationInitializer = new FlywayMultitenantMigrationInitializer(mockTenantConfigProviderInterface(List.of(tenantConfig), tenantConfig),
-                    new String[] { SCRIPT_LOCATION });
+            var migrationInitializer = new FlywayMultitenantMigrationInitializer(mockTenantConfigProviderInterface(List
+                    .of(tenantConfig), tenantConfig), new String[]{ SCRIPT_LOCATION });
 
             // act
             migrationInitializer.migrateFlyway();
@@ -129,14 +145,16 @@ class FlywayMultitenantMigrationInitializerTest {
             var fluentConfiguration = new FluentConfigurationSpy();
             mockedStatic.when(Flyway::configure).thenReturn(fluentConfiguration);
 
-            // returns for getTenantConfigs() tenantConfig and for getTenantConfigById() empty Optional
-            var migrationInitializer = new FlywayMultitenantMigrationInitializer(
-                    mockTenantConfigProviderInterface(List.of(tenantConfig), null), //
-                    new String[] { SCRIPT_LOCATION });
+            // returns for getTenantConfigs() tenantConfig and for getTenantConfigById()
+            // empty Optional
+            var migrationInitializer = new FlywayMultitenantMigrationInitializer(mockTenantConfigProviderInterface(List
+                    .of(tenantConfig), null), //
+                                                                                 new String[]{ SCRIPT_LOCATION });
 
             // act + assert
-            var entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, //
-                    migrationInitializer::migrateFlyway);
+            var entityNotFoundException = Assertions
+                    .assertThrows(EntityNotFoundException.class, //
+                                  migrationInitializer::migrateFlyway);
 
             assertEquals("Cannot find tenant for configuring flyway migration", entityNotFoundException.getMessage());
         }

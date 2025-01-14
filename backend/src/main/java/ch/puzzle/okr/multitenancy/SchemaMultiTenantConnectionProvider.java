@@ -15,13 +15,6 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.MessageFormat;
-import java.util.*;
-
-import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
-
 /**
  * The central piece of code of multitenancy.
  *

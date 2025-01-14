@@ -32,8 +32,9 @@ public class FlywayMultitenantMigrationInitializer {
 
             Flyway tenantSchemaFlyway = Flyway
                     .configure() //
-                    .dataSource(dataSourceConfigFlyway.url(), dataSourceConfigFlyway.name(),
-                            dataSourceConfigFlyway.password()) //
+                    .dataSource(dataSourceConfigFlyway.url(),
+                                dataSourceConfigFlyway.name(),
+                                dataSourceConfigFlyway.password()) //
                     .locations(scriptLocations) //
                     .baselineOnMigrate(Boolean.TRUE) //
                     .schemas(dataSourceConfigFlyway.schema()) //

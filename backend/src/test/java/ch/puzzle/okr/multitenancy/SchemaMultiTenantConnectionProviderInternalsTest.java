@@ -1,5 +1,8 @@
 package ch.puzzle.okr.multitenancy;
 
+import static ch.puzzle.okr.multitenancy.HibernateContext.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 
 import ch.puzzle.okr.exception.ConnectionProviderException;
@@ -12,11 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
-import java.util.Properties;
-
-import static ch.puzzle.okr.multitenancy.HibernateContext.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class SchemaMultiTenantConnectionProviderInternalsTest {
 
@@ -28,15 +26,18 @@ class SchemaMultiTenantConnectionProviderInternalsTest {
     private static MockedStatic<HibernateContext> mockedStatic;
 
     /**
-     * A mock for the SchemaMultiTenantConnectionProvider, which is configurable. It can be configured via static
-     * factory methods: use cachedConnectionProvider(), for a cached ConnectionProvider.Or use
-     * inPropertiesDefinedConnectionProvider(), for no cached ConnectionProvider, but the data for creating a
-     * ConnectionProvider is defined in the (hibernate) properties.
+     * A mock for the SchemaMultiTenantConnectionProvider, which is configurable. It
+     * can be configured via static factory methods: use cachedConnectionProvider(),
+     * for a cached ConnectionProvider.Or use
+     * inPropertiesDefinedConnectionProvider(), for no cached ConnectionProvider,
+     * but the data for creating a ConnectionProvider is defined in the (hibernate)
+     * properties.
      */
     private static class ConnectionProviderMock extends SchemaMultiTenantConnectionProvider {
 
         public static ConnectionProviderMock cachedConnectionProvider( //
-                String tenantId, ConnectionProvider connectionProvider) {
+                                                                      String tenantId,
+                                                                      ConnectionProvider connectionProvider) {
             return new ConnectionProviderMock(tenantId, connectionProvider);
         }
 
@@ -45,7 +46,8 @@ class SchemaMultiTenantConnectionProviderInternalsTest {
         }
 
         public static ConnectionProviderMock inPropertiesDefinedConnectionProvider( //
-                String tenantId, Properties hibernateProperties) {
+                                                                                   String tenantId,
+                                                                                   Properties hibernateProperties) {
             return new ConnectionProviderMock(tenantId, hibernateProperties);
         }
 
@@ -100,7 +102,7 @@ class SchemaMultiTenantConnectionProviderInternalsTest {
 
         // act + assert
         var exception = assertThrows(ConnectionProviderException.class,
-                () -> mockProvider.getConnectionProvider(tenantId));
+                                     () -> mockProvider.getConnectionProvider(tenantId));
 
         // assert
         assertEquals("Cannot create new connection provider for tenant: null", exception.getMessage());
@@ -131,8 +133,7 @@ class SchemaMultiTenantConnectionProviderInternalsTest {
     @DisplayName("getConnectionProvider() should throw exception when ConnectionProvider is not cached and tenant is not configured in hibernate properties")
     @ParameterizedTest
     @ValueSource(strings = { TENANT_ID, TENANT_ID_ACME })
-    void getConnectionProviderShouldThrowExceptionWhenConnectionProviderIsNotCachedAndTenantIsNotConfiguredInHibernateProperties(
-            String tenantId) {
+    void getConnectionProviderShouldThrowExceptionWhenConnectionProviderIsNotCachedAndTenantIsNotConfiguredInHibernateProperties(String tenantId) {
         // arrange
         var mockProvider = ConnectionProviderMock.inPropertiesDefinedConnectionProvider(tenantId, new Properties());
 
@@ -216,8 +217,7 @@ class SchemaMultiTenantConnectionProviderInternalsTest {
     @DisplayName("getConnectionProvider() should cache ConnectionProvider for tenantId if ConnectionProvider is not cached but in hibernate properties")
     @ParameterizedTest
     @ValueSource(strings = { TENANT_ID, TENANT_ID_ACME })
-    void getConnectionProviderShouldCacheConnectionProviderForTenantIdIfConnectionProviderIsNotCachedButInHibernateProperties(
-            String tenantId) {
+    void getConnectionProviderShouldCacheConnectionProviderForTenantIdIfConnectionProviderIsNotCachedButInHibernateProperties(String tenantId) {
         // arrange
         Properties properties = getConfigAsProperties(tenantId);
         var mockProvider = ConnectionProviderMock.inPropertiesDefinedConnectionProvider(tenantId, properties);

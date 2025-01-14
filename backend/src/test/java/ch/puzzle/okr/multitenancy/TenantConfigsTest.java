@@ -1,13 +1,13 @@
 package ch.puzzle.okr.multitenancy;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TenantConfigsTest {
 
@@ -26,11 +26,21 @@ public class TenantConfigsTest {
 
     private TenantConfigProvider.TenantConfig createTenantConfig(String tenantId) {
         return new TenantConfigProvider.TenantConfig( //
-                tenantId, null, "jwkSetUri", "issuerUrl", "clientId", //
-                new TenantConfigProvider.DataSourceConfig("driverClassName", "url", //
-                        "flyway_" + tenantId, "password", "schema_" + tenantId),
-                new TenantConfigProvider.DataSourceConfig("driverClassName", "url", //
-                        "app_" + tenantId, "password", "schema_" + tenantId));
+                                                     tenantId,
+                                                     null,
+                                                     "jwkSetUri",
+                                                     "issuerUrl",
+                                                     "clientId", //
+                                                     new TenantConfigProvider.DataSourceConfig("driverClassName",
+                                                                                               "url", //
+                                                                                               "flyway_" + tenantId,
+                                                                                               "password",
+                                                                                               "schema_" + tenantId),
+                                                     new TenantConfigProvider.DataSourceConfig("driverClassName",
+                                                                                               "url", //
+                                                                                               "app_" + tenantId,
+                                                                                               "password",
+                                                                                               "schema_" + tenantId));
     }
 
     @DisplayName("add() should add TenantConfig for tenantId in the map")

@@ -1,15 +1,17 @@
 package ch.puzzle.okr.multitenancy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ch.puzzle.okr.exception.HibernateContextException;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * Reads the (not tenant specific) hibernate configuration form the "hibernate.x" properties in the
- * applicationX.properties file. It then caches the configuration as DbConfig object. The data from the DbConfig object
- * is used by the SchemaMultiTenantConnectionProvider via getHibernateConfig() and getHibernateConfig(tenantId).
+ * Reads the (not tenant specific) hibernate configuration form the
+ * "hibernate.x" properties in the applicationX.properties file. It then caches
+ * the configuration as DbConfig object. The data from the DbConfig object is
+ * used by the SchemaMultiTenantConnectionProvider via getHibernateConfig() and
+ * getHibernateConfig(tenantId).
  *
  * <pre>
  * getHibernateConfig() returns the cached DbConfig as properties.
@@ -131,13 +133,16 @@ public class HibernateContext {
     }
 
     private static void logUsedHibernateConfig(Properties hibernateConfig) {
-        logger.info("use DbConfig: user={}",
-                hibernateConfig.getProperty(HibernateContext.HIBERNATE_CONNECTION_USERNAME)); //
+        logger
+                .info("use DbConfig: user={}",
+                      hibernateConfig.getProperty(HibernateContext.HIBERNATE_CONNECTION_USERNAME)); //
     }
 
     private static void logUsedHibernateConfig(String tenantId, Properties hibernateConfig) {
-        logger.info("use DbConfig: tenant={} user={}", tenantId,
-                hibernateConfig.getProperty(HibernateContext.HIBERNATE_CONNECTION_USERNAME));
+        logger
+                .info("use DbConfig: tenant={} user={}",
+                      tenantId,
+                      hibernateConfig.getProperty(HibernateContext.HIBERNATE_CONNECTION_USERNAME));
     }
 
 }

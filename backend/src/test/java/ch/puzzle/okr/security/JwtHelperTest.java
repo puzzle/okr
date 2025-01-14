@@ -97,7 +97,8 @@ class JwtHelperTest {
                                                                   "jwkSetUri",
                                                                   "issuerUrl", //
                                                                   "clientId",
-                                                                  null, null) //
+                                                                  null,
+                                                                  null) //
                         ));
 
         JwtHelper jwtHelper = new JwtHelper(tenantConfigProviderMock, null, null, null);
@@ -140,7 +141,8 @@ class JwtHelperTest {
                                                                   "jwkSetUri",
                                                                   "issuerUrl", //
                                                                   "clientId",
-                                                                  null, null) //
+                                                                  null,
+                                                                  null) //
                         ));
 
         JwtHelper jwtHelper = new JwtHelper(tenantConfigProviderWithDataMock, null, null, null);

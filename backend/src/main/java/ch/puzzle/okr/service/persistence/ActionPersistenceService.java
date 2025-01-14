@@ -1,11 +1,13 @@
 package ch.puzzle.okr.service.persistence;
 
-import static ch.puzzle.okr.Constants.ACTION;
-
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.repository.ActionRepository;
-import java.util.List;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static ch.puzzle.okr.Constants.ACTION;
 
 @Service
 public class ActionPersistenceService extends PersistenceBase<Action, Long, ActionRepository> {
@@ -21,5 +23,16 @@ public class ActionPersistenceService extends PersistenceBase<Action, Long, Acti
 
     public List<Action> getActionsByKeyResultIdOrderByPriorityAsc(Long keyResultId) {
         return getRepository().getActionsByKeyResultIdOrderByPriorityAsc(keyResultId);
+    }
+
+    public void duplicateActionList(KeyResult oldKeyResult, KeyResult newKeyResult) {
+        List<Action> actionList = getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId());
+        if (actionList != null) {
+            actionList.forEach(action -> {
+                action.setKeyResult(newKeyResult);
+                action.resetId();
+                this.save(action);
+            });
+        }
     }
 }

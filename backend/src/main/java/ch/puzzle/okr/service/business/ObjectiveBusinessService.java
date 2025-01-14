@@ -1,24 +1,26 @@
 package ch.puzzle.okr.service.business;
 
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
@@ -27,15 +29,17 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
+    private final ActionPersistenceService actionPersistenceService;
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
                                     ObjectiveValidationService validator,
                                     ObjectivePersistenceService objectivePersistenceService,
-                                    CompletedBusinessService completedBusinessService) {
+                                    CompletedBusinessService completedBusinessService, ActionPersistenceService actionPersistenceService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
+        this.actionPersistenceService = actionPersistenceService;
     }
 
     private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
@@ -110,12 +114,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     /**
      * Create a new Objective (with a new ID) and copy from a source Objective
      * the KeyResults. The CheckIns are not copied.
-     * @param objective
-     *            New Objective with no KeyResults
-     * @param authorizationUser
-     *            AuthorizationUser
-     * @param keyResultIds
-     *            KeyResultIds to copy
+     *
+     * @param objective         New Objective with no KeyResults
+     * @param authorizationUser AuthorizationUser
+     * @param keyResultIds      KeyResultIds to copy
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
@@ -124,8 +126,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
         for (Long keyResult : keyResultIds) {
             duplicateKeyResult(authorizationUser,
-                               keyResultBusinessService.getEntityById(keyResult),
-                               duplicatedObjective);
+                    keyResultBusinessService.getEntityById(keyResult),
+                    duplicatedObjective);
         }
         return duplicatedObjective;
     }
@@ -152,7 +154,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
                 .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
                 .build();
-        copyOfMetricKeyResult.setActionList(duplicateActionList(keyResult, copyOfMetricKeyResult));
+        actionPersistenceService.duplicateActionList(keyResult, copyOfMetricKeyResult);
         return copyOfMetricKeyResult;
     }
 
@@ -167,28 +169,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
                 .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
                 .build();
-
-        copyOfOrdinalKeyResult.setActionList(duplicateActionList(keyResult, copyOfOrdinalKeyResult));
+        actionPersistenceService.duplicateActionList(copyOfOrdinalKeyResult, keyResult);
         return copyOfOrdinalKeyResult;
     }
 
-    public List<Action> duplicateActionList(KeyResult oldKeyResult, KeyResult newKeyResult) {
-        List<Action> actionList = oldKeyResult.getActionList();
-        if (actionList != null) {
-            actionList = actionList
-                    .stream()
-                    .map(e -> Action.Builder
-                            .builder()
-                            .withKeyResult(newKeyResult)
-                            .isChecked(e.isChecked())
-                            .withAction(e.getActionPoint())
-                            .withPriority(e.getPriority())
-                            .withVersion(e.getVersion())
-                            .build())
-                    .toList();
-        }
-        return actionList;
-    }
 
     @Transactional
     public void deleteEntityById(Long id) {

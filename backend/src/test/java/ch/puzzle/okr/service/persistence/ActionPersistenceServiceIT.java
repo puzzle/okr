@@ -1,18 +1,14 @@
 package ch.puzzle.okr.service.persistence;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
-
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,8 +16,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+
 @SpringIntegrationTest
 class ActionPersistenceServiceIT {
+    private static final String UPDATED_ACTION = "Updated Action";
     Action createdAction;
     @Autowired
     private ActionPersistenceService actionPersistenceService;
@@ -47,8 +51,6 @@ class ActionPersistenceServiceIT {
                         .build())
                 .build();
     }
-
-    private static final String UPDATED_ACTION = "Updated Action";
 
     @BeforeEach
     void setUp() {
@@ -107,7 +109,7 @@ class ActionPersistenceServiceIT {
         changedAction.setActionPoint(UPDATED_ACTION);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> actionPersistenceService.save(changedAction));
+                () -> actionPersistenceService.save(changedAction));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Action")));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
@@ -119,7 +121,7 @@ class ActionPersistenceServiceIT {
     @Test
     void shouldReturnListOfAllActionsWhenFindAllIsCalled() {
         List<Action> actions = actionPersistenceService.findAll();
-
+        System.out.println(actions.getFirst());
         assertEquals(11, actions.size());
     }
 
@@ -160,4 +162,31 @@ class ActionPersistenceServiceIT {
         actions = actionPersistenceService.findAll();
         assertEquals(11, actions.size());
     }
+
+    @DisplayName("Should duplicate ActionList")
+    @Test
+    void shouldDuplicateActionList() {
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(9L).build();
+        KeyResult oldKeyResult = KeyResultMetric.Builder.builder().withId(6L).build();
+
+        actionPersistenceService.duplicateActionList(oldKeyResult, newKeyResult);
+
+        List<Action> newKeyResultActionList = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(newKeyResult.getId());
+        List<Action> oldKeyResultActionList = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId());
+
+        // assert that id changes to new key result
+        assertNotEquals(newKeyResultActionList.getFirst().getKeyResult().getId(),
+                oldKeyResultActionList.getFirst().getKeyResult().getId());
+
+        // assert that all other attributes stay the same
+        assertThat(newKeyResultActionList.getFirst())
+                .extracting("priority", "version", "checked", "actionPoint")
+                .containsExactly(
+                        oldKeyResultActionList.getFirst().getPriority(),
+                        oldKeyResultActionList.getFirst().getVersion(),
+                        oldKeyResultActionList.getFirst().isChecked(),
+                        oldKeyResultActionList.getFirst().getActionPoint());
+
+    }
+
 }

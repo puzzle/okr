@@ -13,6 +13,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import java.time.LocalDateTime;
@@ -43,6 +44,8 @@ class ObjectiveBusinessServiceTest {
     CompletedBusinessService completedBusinessService;
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
+    @Mock
+    ActionPersistenceService actionPersistenceService;
 
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
@@ -279,39 +282,6 @@ class ObjectiveBusinessServiceTest {
         verify(objectiveBusinessService, times(1)).makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
 
         verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
-    }
-
-    @DisplayName("Should duplicate ActionList")
-    @Test
-    void shouldDuplicateActionList() {
-        KeyResult oldKeyResult = KeyResultMetric.Builder.builder().withId(1L).build();
-        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(2L).build();
-
-        Action action = Action.Builder
-                .builder()
-                .withKeyResult(oldKeyResult)
-                .withPriority(1)
-                .withVersion(1)
-                .isChecked(true)
-                .withAction("Action Point 1")
-                .build();
-
-        oldKeyResult.setActionList(List.of(action));
-
-        newKeyResult.setActionList(objectiveBusinessService.duplicateActionList(oldKeyResult, newKeyResult));
-
-        // assert that id changes to new key result
-        assertNotEquals(newKeyResult.getActionList().getFirst().getKeyResult().getId(),
-                        oldKeyResult.getActionList().getFirst().getKeyResult().getId());
-
-        // assert that all other attributes stay the same
-        assertThat(newKeyResult.getActionList().getFirst())
-                .extracting("priority", "version", "checked", "actionPoint")
-                .containsExactly(oldKeyResult.getActionList().getFirst().getPriority(),
-                                 oldKeyResult.getActionList().getFirst().getVersion(),
-                                 oldKeyResult.getActionList().getFirst().isChecked(),
-                                 oldKeyResult.getActionList().getFirst().getActionPoint());
-
     }
 
     @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")

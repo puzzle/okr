@@ -14,6 +14,7 @@ describe('functionality of duplicating objectives and their belonging key-result
   const firstKeyResultName = 'New structure that rewards funny guys and innovation before the end of Q1.';
   const secondKeyResultName = 'Monthly town halls between our people and leadership teams over the next four months.';
   const thirdKeyResultName = 'High employee satisfaction scores (80%+) throughout the year.';
+  const keyResultDetailPage = new KeyResultDetailPage();
 
   it('should be able to duplicate a objective into this quarter, including all keyResults', () => {
     const duplicatedTitle = 'This is a duplicated objective with all keyResults';
@@ -95,6 +96,24 @@ describe('functionality of duplicating objectives and their belonging key-result
 
     cy.contains(duplicatedTitle)
       .should('not.exist');
+  });
+  it('should duplicate all attributes of key-result', () => {
+    overviewPage
+      .duplicateObjective('Build a company culture that kills the competition.')
+      .submit();
+    keyResultDetailPage.visit('New structure that rewards funny guys and innovation before the end of Q1.');
+    cy.contains('Baseline: 5%');
+    cy.contains('Stretch Goal: 1%');
+    cy.contains('5/10');
+    cy.contains('Metrisch');
+    cy.contains('Paco Eggimann');
+    cy.contains('GJ 24/25-Q3');
+    cy.contains('Action Plan')
+      .then(() => {
+        cy.contains('Neue Pflanzen');
+        cy.contains('Ein Buch');
+        cy.contains('Mehr Getränke');
+      });
   });
 });
 

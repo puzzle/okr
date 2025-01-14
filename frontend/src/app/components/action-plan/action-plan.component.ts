@@ -15,7 +15,7 @@ import { DialogService } from '../../services/dialog.service';
 export class ActionPlanComponent {
   @Input() control: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([]);
 
-  @Input() keyResultId!: number | null;
+  @Input() keyResultId?: number;
 
   activeItem = 0;
 

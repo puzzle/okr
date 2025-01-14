@@ -52,7 +52,7 @@ export class KeyResultTypeComponent implements OnInit {
         ? this.keyResultForm.patchValue({ ...this.castToMetric(this.keyResult) })
         : this.keyResultForm.patchValue({ ...this.castToOrdinal(this.keyResult) });
     }
-    // this.switchValidators();
+    this.setValidators(this.keyResultForm.value.keyResultType);
   }
 
   castToMetric(keyResult: KeyResult) {
@@ -63,61 +63,7 @@ export class KeyResultTypeComponent implements OnInit {
     return keyResult as KeyResultOrdinal;
   }
 
-  switchValidators() {
-    /*
-     * if (this.isMetric) {
-     *   this.setValidatorsMetric();
-     *   this.clearValidatorsOrdinal();
-     *   this.keyResultForm.updateValueAndValidity();
-     * } else {
-     *   this.setValidatorsOrdinal();
-     *   this.clearValidatorsMetric();
-     *   this.keyResultForm.updateValueAndValidity();
-     * }
-     * this.updateFormValidity();
-     */
-  }
-
-  async updateFormValidity() {
-    await new Promise((r) => setTimeout(r, 100));
-  }
-
-  setValidatorsMetric() {
-    /*
-     * this.keyResultForm.controls['unit'].setValidators([Validators.required]);
-     * this.keyResultForm.controls['baseline'].setValidators([Validators.required,
-     *   Validators.pattern('^-?\\d+\\.?\\d*$')]);
-     * this.keyResultForm.controls['stretchGoal'].setValidators([Validators.required,
-     *   Validators.pattern('^-?\\d+\\.?\\d*$')]);
-     */
-  }
-
-  setValidatorsOrdinal() {
-    /*
-     * this.keyResultForm.controls['commitZone'].setValidators([Validators.required,
-     *   Validators.maxLength(400)]);
-     * this.keyResultForm.controls['targetZone'].setValidators([Validators.required,
-     *   Validators.maxLength(400)]);
-     * this.keyResultForm.controls['stretchZone'].setValidators([Validators.required,
-     *   Validators.maxLength(400)]);
-     */
-  }
-
-  clearValidatorsMetric() {
-
-  }
-
-  clearValidatorsOrdinal() {
-
-  }
-
-  switchKeyResultType(type: string) {
-    if ((type == 'metric' && !this.isMetric || type == 'ordinal' && this.isMetric) && this.typeChangeAllowed) {
-      this.isMetric = !this.isMetric;
-      const keyResultType = this.isMetric ? 'metric' : 'ordinal';
-      this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
-      // this.switchValidators();
-    }
+  setValidators(type: string) {
     if (type == 'metric') {
       this.keyResultForm.get('metric')
         ?.enable();
@@ -130,6 +76,15 @@ export class KeyResultTypeComponent implements OnInit {
       this.keyResultForm.get('ordinal')
         ?.enable();
     }
+  }
+
+  switchKeyResultType(type: string) {
+    if ((type == 'metric' && !this.isMetric || type == 'ordinal' && this.isMetric) && this.typeChangeAllowed) {
+      this.isMetric = !this.isMetric;
+      const keyResultType = this.isMetric ? 'metric' : 'ordinal';
+      this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
+    }
+    this.setValidators(type);
   }
 
   getErrorMessage(

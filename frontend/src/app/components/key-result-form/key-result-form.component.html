@@ -16,7 +16,6 @@
   </div>
 
   <app-key-result-type
-    (formValidityEmitter)="updateFormValidity()"
     [keyResult]="keyResult"
     [keyResultForm]="keyResultForm"
     [users]="filteredUsers$"
@@ -39,5 +38,5 @@
     </div>
   </div>
 
-  <app-action-plan [control]="actionList$" [keyResultId]="getKeyResultId()"></app-action-plan>
+  <app-action-plan [control]="actionList$" [keyResultId]="keyResult?.id"></app-action-plan>
 </form>

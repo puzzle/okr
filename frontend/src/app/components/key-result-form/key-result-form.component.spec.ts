@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { keyResultOrdinal, testUser, users } from '../../shared/test-data';
+import { testUser, users } from '../../shared/test-data';
 import { State } from '../../shared/types/enums/state';
 import { Observable, of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -186,12 +186,14 @@ describe('KeyResultFormComponent', () => {
           .toEqual(2);
       });
     });
-
-    it('should get full name of user', () => {
-      const fullName: string = component.getFullNameOfUser(testUser);
-      expect(fullName)
-        .toEqual('Bob Baumeister');
-    });
+    /*
+     *
+     * it('should get full name of user', () => {
+     *   const fullName: string = component.getFullNameOfUser(testUser);
+     *   expect(fullName)
+     *     .toEqual('Bob Baumeister');
+     * });
+     */
 
     it('should set metric values', () => {
       const fullKeyResultMetric: KeyResultMetric = {
@@ -257,21 +259,23 @@ describe('KeyResultFormComponent', () => {
         .toBeFalsy();
     });
 
-    it('should get correct full name from user object', () => {
-      const user = users[0];
-      expect(component.getFullNameOfUser(user))
-        .toEqual('Bob Baumeister');
-      expect(component.getFullNameOfUser(null!))
-        .toEqual('');
-    });
-
-    it('should get correct key-result id', () => {
-      expect(component.getKeyResultId())
-        .toEqual(null);
-      component.keyResult = keyResultOrdinal;
-      expect(component.getKeyResultId())
-        .toEqual(101);
-    });
+    /*
+     * it('should get correct full name from user object', () => {
+     *   const user = users[0];
+     *   expect(component.getFullNameOfUser(user))
+     *     .toEqual('Bob Baumeister');
+     *   expect(component.getFullNameOfUser(null!))
+     *     .toEqual('');
+     * });
+     *
+     * it('should get correct key-result id', () => {
+     *   expect(component.keyResult.id)
+     *     .toEqual(undefined);
+     *   component.keyResult = keyResultOrdinal;
+     *   expect(component.getKeyResultId())
+     *     .toEqual(101);
+     * });
+     */
 
     it('should get correct username from o-auth-service', () => {
       expect(component.getFullNameOfLoggedInUser())

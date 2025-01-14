@@ -1,14 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Action } from '../../shared/types/model/action';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-key-result-form',
@@ -16,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })
-export class KeyResultFormComponent implements OnInit, OnDestroy {
+export class KeyResultFormComponent implements OnInit {
   users$!: Observable<User[]>;
 
   filteredUsers$: Observable<User[]> = of([]);
@@ -27,7 +28,6 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  private unsubscribe$ = new Subject<void>();
 
   @Input()
   keyResultForm!: FormGroup;
@@ -36,17 +36,32 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
   keyResult!: KeyResult | null;
 
   constructor(public userService: UserService,
-    private translate: TranslateService) {}
+    private translate: TranslateService) {
+    this.users$.pipe(takeUntilDestroyed())
+      .subscribe((users) => {
+        const loggedInUser = this.getFullNameOfLoggedInUser();
+        users.forEach((user) => {
+          if (getFullNameOfUser(user) === loggedInUser) {
+            this.keyResultForm.get('owner')
+              ?.setValue(user);
+          }
+        });
+      });
+  }
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
     this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value))) || of([]);
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
-      this.keyResultForm.controls['title'].setValue(this.keyResult.title);
-      this.keyResultForm.controls['description'].setValue(this.keyResult.description);
-      this.keyResultForm.controls['owner'].setValue(this.keyResult.owner);
-      this.keyResultForm.controls['keyResultType'].setValue(this.keyResult.keyResultType);
+      this.keyResultForm.get('title')
+        ?.setValue(this.keyResult.title);
+      this.keyResultForm.get('description')
+        ?.setValue(this.keyResult.description);
+      this.keyResultForm.get('owner')
+        ?.setValue(this.keyResult.owner);
+      this.keyResultForm.get('keyResultType')
+        ?.setValue(this.keyResult.keyResultType);
       this.isMetricKeyResult()
         ? this.setMetricValuesInForm(this.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.keyResult as KeyResultOrdinal);
@@ -72,17 +87,6 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
         priority: 2,
         keyResultId: null,
         isChecked: false }]);
-
-      this.users$.pipe(takeUntil(this.unsubscribe$))
-        .subscribe((users) => {
-          const loggedInUser = this.getFullNameOfLoggedInUser();
-          users.forEach((user) => {
-            if (getFullNameOfUser(user) === loggedInUser) {
-              this.keyResultForm.get('owner')
-                ?.setValue(user);
-            }
-          });
-        });
     }
 
     this.actionList$.subscribe((value) => {
@@ -90,33 +94,32 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
   setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
-    /*
-     * this.keyResultForm.controls['unit'].setValue(keyResultMetric.unit);
-     * this.keyResultForm.controls['baseline'].setValue(keyResultMetric.baseline);
-     * this.keyResultForm.controls['stretchGoal'].setValue(keyResultMetric.stretchGoal);
-     */
+    this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.setValue(keyResultMetric.unit);
+    this.keyResultForm.get('metric')
+      ?.get('baseline')
+      ?.setValue(keyResultMetric.baseline);
+    this.keyResultForm.get('metric')
+      ?.get('stretchGoal')
+      ?.setValue(keyResultMetric.stretchGoal);
   }
 
   setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {
-    /*
-     * this.keyResultForm.controls['commitZone'].setValue(keyResultOrdinal.commitZone);
-     * this.keyResultForm.controls['targetZone'].setValue(keyResultOrdinal.targetZone);
-     * this.keyResultForm.controls['stretchZone'].setValue(keyResultOrdinal.stretchZone);
-     */
-  }
-
-  isTouchedOrDirty(name: string) {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
+    this.keyResultForm.get('ordinal')
+      ?.get('commitZone')
+      ?.setValue(keyResultOrdinal.commitZone);
+    this.keyResultForm.get('ordinal')
+      ?.get('targetZone')
+      ?.setValue(keyResultOrdinal.targetZone);
+    this.keyResultForm.get('ordinal')
+      ?.get('stretchZone')
+      ?.setValue(keyResultOrdinal.stretchZone);
   }
 
   getErrorMessage(
@@ -133,26 +136,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
       .includes(filterValue))));
   }
 
-  invalidOwner(): boolean {
-    return (
-      !!this.isTouchedOrDirty('owner') &&
-      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
-    );
-  }
-
-  getFullNameOfUser(user: User): string {
-    return user ? getFullNameOfUser(user) : '';
-  }
-
-  getKeyResultId(): number | null {
-    return this.keyResult ? this.keyResult.id : null;
-  }
-
-  updateFormValidity() {
-    // Implemented because of interface this comment is to satisfy the linter
-  }
-
   getFullNameOfLoggedInUser() {
-    return this.getFullNameOfUser(this.userService.getCurrentUser());
+    return getFullNameOfUser(this.userService.getCurrentUser());
   }
 }

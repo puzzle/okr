@@ -32,6 +32,18 @@ import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
+    @InjectMocks
+    @Spy
+    ObjectiveBusinessService objectiveBusinessService;
+    @Mock
+    ObjectivePersistenceService objectivePersistenceService;
+    @Mock
+    KeyResultBusinessService keyResultBusinessService;
+    @Mock
+    CompletedBusinessService completedBusinessService;
+    @Mock
+    ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
+
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
@@ -61,17 +73,7 @@ class ObjectiveBusinessServiceTest {
             .withObjective(objective)
             .build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
-    @InjectMocks
-    @Spy
-    ObjectiveBusinessService objectiveBusinessService;
-    @Mock
-    ObjectivePersistenceService objectivePersistenceService;
-    @Mock
-    KeyResultBusinessService keyResultBusinessService;
-    @Mock
-    CompletedBusinessService completedBusinessService;
-    @Mock
-    ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
+
 
     @DisplayName("Should return correct objective on getEntityById()")
     @Test

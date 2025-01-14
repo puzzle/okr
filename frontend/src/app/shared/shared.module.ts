@@ -24,6 +24,7 @@ import { DialogTemplateCoreComponent } from './custom/dialog-template-core/dialo
 import { MatDividerModule } from '@angular/material/divider';
 import { UnitTransformationPipe } from './pipes/unit-transformation/unit-transformation.pipe';
 import { MatTooltip } from '@angular/material/tooltip';
+import { ErrorComponent } from './custom/error/error.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MatTooltip } from '@angular/material/tooltip';
     OkrTangramComponent,
     SidePanelComponent,
     SpinnerComponent,
-    DialogTemplateCoreComponent
+    DialogTemplateCoreComponent,
+    ErrorComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +70,9 @@ import { MatTooltip } from '@angular/material/tooltip';
     UnitTransformationPipe,
     SidePanelComponent,
     SpinnerComponent,
-    DialogTemplateCoreComponent
+    DialogTemplateCoreComponent,
+    ErrorComponent
+
   ]
 })
 export class SharedModule {}

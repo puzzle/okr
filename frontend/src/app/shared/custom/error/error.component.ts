@@ -1,15 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { MatError } from '@angular/material/form-field';
-import { NgForOf } from '@angular/common';
 import { FormGroup, ValidationErrors } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-error',
-  imports: [MatError,
-    NgForOf],
   templateUrl: './error.component.html',
-  styleUrl: './error.component.scss'
+  styleUrl: './error.component.scss',
+  standalone: false
 })
 export class ErrorComponent {
   @Input() form?: FormGroup;

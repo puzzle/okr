@@ -10,7 +10,7 @@ import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
-import { User } from '../../shared/types/model/user';
+import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
@@ -134,4 +134,6 @@ export class KeyResultTypeComponent implements OnInit {
   currentKeyResultType(): string {
     return this.keyResultForm.get('keyResultType')?.value;
   }
+
+  protected readonly getFullNameOfUser = getFullNameOfUser;
 }

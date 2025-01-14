@@ -109,10 +109,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
     /**
      * Create a new Objective (with a new ID) and copy from a source Objective
-     * (identified by id) the KeyResults. The CheckIns are not copied.
-     *
-     * @param id
-     *            ID of the source Objective
+     * the KeyResults. The CheckIns are not copied.
      * @param objective
      *            New Objective with no KeyResults
      * @param authorizationUser

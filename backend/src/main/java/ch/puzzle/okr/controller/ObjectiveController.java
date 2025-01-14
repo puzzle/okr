@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 import static org.springframework.http.HttpStatus.IM_USED;
 import static org.springframework.http.HttpStatus.OK;
 

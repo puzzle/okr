@@ -86,7 +86,7 @@ export const action3: Action = {
   action: '',
   priority: 3,
   isChecked: false,
-  keyResultId: null
+  keyResultId: undefined
 };
 
 export const addedAction: Action = {

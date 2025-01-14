@@ -1,6 +1,9 @@
 import { HttpType } from './types/enums/http-type';
 import { ToasterType } from './types/enums/toaster-type';
 import { HttpStatusCode } from '@angular/common/http';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Unit } from './types/enums/unit';
+import { User } from './types/model/user';
 
 type MessageKeyMap = Record<string, MessageEntry>;
 
@@ -76,3 +79,36 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
       { method: HttpType.DELETE }]
   }
 };
+
+export function getKeyResultForm(): FormGroup {
+  return new FormGroup({
+    title: new FormControl('', [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)]),
+    description: new FormControl('', [Validators.maxLength(4096)]),
+    owner: new FormControl({} as User, [Validators.required,
+      Validators.nullValidator]),
+    actionList: new FormControl([]),
+    keyResultType: new FormControl('metric'),
+    metric: new FormGroup({
+      unit: new FormControl(Unit.NUMBER, [Validators.required]),
+      baseline: new FormControl(0, [Validators.required,
+        Validators.pattern('^-?\\d+\\.?\\d*$')]),
+      targetGoal: new FormControl(0, [Validators.required,
+        Validators.pattern('^-?\\d+\\.?\\d*$')]),
+      stretchGoal: new FormControl(0, [Validators.required,
+        Validators.pattern('^-?\\d+\\.?\\d*$')])
+    }),
+    ordinal: new FormGroup({
+      commitZone: new FormControl('', [Validators.required,
+        Validators.maxLength(400),
+        Validators.minLength(5)]),
+      targetZone: new FormControl('', [Validators.required,
+        Validators.maxLength(400),
+        Validators.minLength(5)]),
+      stretchZone: new FormControl('', [Validators.required,
+        Validators.maxLength(400),
+        Validators.minLength(5)])
+    })
+  });
+}

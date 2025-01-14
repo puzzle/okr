@@ -10,7 +10,7 @@ import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
-import { getFullNameOfUser, User } from '../../shared/types/model/user';
+import { User } from '../../shared/types/model/user';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
@@ -26,13 +26,9 @@ export class KeyResultTypeComponent implements OnInit {
 
   @Input() keyResultForm!: FormGroup;
 
-  @Input() keyResult!: KeyResult | null;
+  @Input() keyResult?: KeyResult;
 
   @Input() users: Observable<User[]> = new Subject();
-
-  isMetric = true;
-
-  typeChangeAllowed = true;
 
   protected readonly Unit = Unit;
 
@@ -45,13 +41,22 @@ export class KeyResultTypeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.keyResult) {
-      this.typeChangeAllowed = (this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn?.id == null;
-      this.isMetric = this.keyResult.keyResultType == 'metric';
-      this.isMetric
-        ? this.keyResultForm.patchValue({ ...this.castToMetric(this.keyResult) })
-        : this.keyResultForm.patchValue({ ...this.castToOrdinal(this.keyResult) });
+    if (!this.keyResult) {
+      return;
     }
+    this.keyResultForm.patchValue({ ...this.keyResult });
+    if (this.currentKeyResultType() == 'metric') {
+      const keyResultMetric = this.castToMetric(this.keyResult);
+      const krUnit = Unit[keyResultMetric.unit as keyof typeof Unit];
+      this.keyResultForm.get('metric')
+        ?.patchValue({ ...keyResultMetric,
+          unit: krUnit });
+    }
+
+    if (this.currentKeyResultType() == 'ordinal') {
+      this.keyResultForm.patchValue({ ordinal: { ...this.castToOrdinal(this.keyResult) } });
+    }
+
     this.setValidators(this.keyResultForm.value.keyResultType);
   }
 
@@ -78,13 +83,13 @@ export class KeyResultTypeComponent implements OnInit {
     }
   }
 
-  switchKeyResultType(type: string) {
-    if ((type == 'metric' && !this.isMetric || type == 'ordinal' && this.isMetric) && this.typeChangeAllowed) {
-      this.isMetric = !this.isMetric;
-      const keyResultType = this.isMetric ? 'metric' : 'ordinal';
-      this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
+  switchKeyResultType(newType: string) {
+    if (newType !== this.currentKeyResultType() && this.isTypeChangeAllowed()) {
+      this.keyResultForm.get('keyResultType')
+        ?.setValue(newType);
+      console.log(this.keyResultForm.get('keyResultType')?.value);
     }
-    this.setValidators(type);
+    this.setValidators(newType);
   }
 
   getErrorMessage(
@@ -94,16 +99,39 @@ export class KeyResultTypeComponent implements OnInit {
       .format(firstNumber, secondNumber);
   }
 
+  /*
+   * getErrorMessage(formfield: any) {
+   *   if (!formfield.errors) {
+   *     return;
+   *   }
+   *   return Object.keys(formfield.errors).map((errorKey: any) =>
+   *       this.translate.instant(
+   *           'ERRORS.' + errorKey,
+   *           formfield.errors[errorKey],
+   *       ),
+   *   );
+   * }
+   */
+
+
   isTouchedOrDirty(name: string) {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
+    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched || false;
   }
 
   invalidOwner(): boolean {
-    return (
-      !!this.isTouchedOrDirty('owner') &&
-      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
-    );
+    // return (this.isTouchedOrDirty('owner') && (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner));
+    return false;
   }
 
-  protected readonly getFullNameOfUser = getFullNameOfUser;
+  isTypeChangeAllowed() {
+    return (this.keyResult as KeyResultMetric | KeyResultOrdinal)?.lastCheckIn?.id == null;
+  }
+
+  isMetric() {
+    return this.currentKeyResultType() == 'metric';
+  }
+
+  currentKeyResultType(): string {
+    return this.keyResultForm.get('keyResultType')?.value;
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/objective';
 import { KeyResult } from '../../shared/types/model/key-result';
@@ -8,8 +8,8 @@ import { KeyResultOrdinalDto } from '../../shared/types/DTOs/key-result-ordinal-
 import { CloseState } from '../../shared/types/enums/close-state';
 import { KeyResultService } from '../../services/key-result.service';
 import { DialogService } from '../../services/dialog.service';
-import { Unit } from '../../shared/types/enums/unit';
-import { BehaviorSubject } from 'rxjs';
+import { UserService } from '../../services/user.service';
+import { getKeyResultForm } from '../../shared/constant-library';
 
 
 @Component({
@@ -18,28 +18,7 @@ import { BehaviorSubject } from 'rxjs';
   standalone: false
 })
 export class KeyResultDialogComponent {
-  isMetric = new BehaviorSubject<boolean>(true);
-
   keyResultForm: FormGroup;
-  /*
-   *     = new FormGroup({
-   *   title: new FormControl<string>('', [Validators.required,
-   *     Validators.minLength(2),
-   *     Validators.maxLength(250)]),
-   *   description: new FormControl<string>('', [Validators.maxLength(4096)]),
-   *   owner: new FormControl<User | string | null>(null, [Validators.required,
-   *     Validators.nullValidator]),
-   *   actionList: new FormControl<Action[]>([]),
-   *   unit: new FormControl<Unit>(Unit.NUMBER),
-   *   baseline: new FormControl<number>(0, this.getValidatorsForKeyResultMetric(this.isMetric)),
-   *   targetGoal: new FormControl<number>(0),
-   *   stretchGoal: new FormControl<number>(0),
-   *   commitZone: new FormControl<string>(""),
-   *   targetZone: new FormControl<string>(""),
-   *   stretchZone: new FormControl<string>(""),
-   *   keyResultType: new FormControl<string>('metric')
-   * });
-   */
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
@@ -47,56 +26,13 @@ export class KeyResultDialogComponent {
     private keyResultService: KeyResultService,
     public dialogService: DialogService,
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
-    private fb: FormBuilder
+    private userService: UserService
   ) {
-    this.keyResultForm = this.fb.group({
-      // general: this.fb.group({
-      title: ['',
-        [Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(250)]],
-      description: ['',
-        [Validators.maxLength(4096)]],
-      owner: [null,
-        [Validators.required,
-          Validators.nullValidator]],
-      actionList: [[]],
-      keyResultType: ['metric'],
-      // }),
-      metric: this.fb.group({
-        unit: [Unit.NUMBER,
-          [Validators.required]],
-        baseline: [0,
-          [Validators.required,
-            Validators.pattern('^-?\\d+\\.?\\d*$')]],
-        targetGoal: [0,
-          [Validators.required,
-            Validators.pattern('^-?\\d+\\.?\\d*$')]],
-        stretchGoal: [0,
-          [Validators.required,
-            Validators.pattern('^-?\\d+\\.?\\d*$')]]
-      }),
-      ordinal: this.fb.group({
-        commitZone: ['',
-          [Validators.required,
-            Validators.maxLength(2)]],
-        targetZone: ['',
-          [Validators.required,
-            Validators.maxLength(2)]],
-        stretchZone: ['',
-          [Validators.required,
-            Validators.maxLength(2)]]
-      })
-    });
+    this.keyResultForm = getKeyResultForm();
   }
 
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
-  }
-
-  updateValidators() {
-
-    // this.keyResultForm.controls['metric']?.forEach((control: FormControl) => control.setValidators(this.getValidatorsForKeyResultMetric(this.isMetric.value));
   }
 
   saveKeyResult(openNewDialog = false) {
@@ -137,18 +73,22 @@ export class KeyResultDialogComponent {
     this.saveKeyResult(true);
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
+  isTouchedOrDirty(name: string): boolean {
+    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched || false;
   }
 
   invalidOwner(): boolean {
-    return (
-      !!this.isTouchedOrDirty('owner') &&
-      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
-    );
+    return this.isTouchedOrDirty('owner') && (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner);
   }
 
   getDialogTitle(): string {
     return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
+  }
+
+  ownerValidator(nameRe: RegExp): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const forbidden = nameRe.test(control.value);
+      return forbidden ? { forbiddenName: { value: control.value } } : null;
+    };
   }
 }

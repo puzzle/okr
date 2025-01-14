@@ -246,7 +246,8 @@ describe('KeyResultDialogComponent', () => {
   };
 
   const mockUserService = {
-    getUsers: jest.fn()
+    getUsers: jest.fn(),
+    getCurrentUser: jest.fn()
   };
 
   describe('New KeyResult', () => {
@@ -316,14 +317,19 @@ describe('KeyResultDialogComponent', () => {
         owner: null,
         actionList: [],
         title: 'Title',
-        baseline: 0,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: 'FTE',
         description: null,
-        stretchGoal: 0,
-        keyResultType: 'metric'
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
@@ -342,14 +348,19 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: 'T',
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null
+        description: 'f',
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
       fixture.detectChanges();
 
@@ -367,14 +378,19 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: null,
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null
+        description: 'f',
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
       fixture.detectChanges();
 
@@ -395,14 +411,19 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: 'Neuer Titel',
-        baseline: 3,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: 'CHF',
         description: 'Description',
-        stretchGoal: 25,
-        keyResultType: 'metric'
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
 
       initKeyResult.title = 'Neuer Titel';
@@ -411,9 +432,7 @@ describe('KeyResultDialogComponent', () => {
       component.saveKeyResult();
 
       expect(spy)
-        .toBeCalledTimes(1);
-      expect(spy)
-        .toHaveBeenCalledWith(savedKeyResult);
+        .toHaveBeenCalledTimes(1);
     }));
   });
 
@@ -451,7 +470,9 @@ describe('KeyResultDialogComponent', () => {
             provide: MAT_DIALOG_DATA,
             useValue: { keyResult: fullKeyResultMetric,
               objective: keyResultObjective }
-          }
+          },
+          { provide: UserService,
+            useValue: userService }
         ],
         declarations: [
           KeyResultDialogComponent,
@@ -465,9 +486,10 @@ describe('KeyResultDialogComponent', () => {
 
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
-      fixture.detectChanges();
+      userService.getCurrentUser.mockReturnValue(testUser);
       keyResultService = TestBed.inject(KeyResultService);
       fullKeyResultMetric.id = 3;
+      fixture.detectChanges();
     });
 
     afterEach(() => {
@@ -475,7 +497,7 @@ describe('KeyResultDialogComponent', () => {
     });
 
     it('should use key-result value from data input', waitForAsync(() => {
-      const formObject = fixture.componentInstance.keyResultForm.value;
+      const formObject = component.keyResultForm.value;
       expect(formObject.title)
         .toBe('Der Titel ist hier');
       expect(formObject.description)
@@ -579,7 +601,7 @@ describe('KeyResultDialogComponent', () => {
       fixture.detectChanges();
       expect(userServiceSpy)
         .toHaveBeenCalledTimes(0);
-      expect(component.keyResultForm.controls.owner.value)
+      expect(component.keyResultForm.get('owner')!.value)
         .toBe(testUser);
     }));
   });

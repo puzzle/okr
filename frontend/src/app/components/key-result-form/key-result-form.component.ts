@@ -18,7 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: false
 })
 export class KeyResultFormComponent implements OnInit {
-  users$!: Observable<User[]>;
+  users$ = new Observable<User[]>();
 
   filteredUsers$: Observable<User[]> = of([]);
 
@@ -33,7 +33,7 @@ export class KeyResultFormComponent implements OnInit {
   keyResultForm!: FormGroup;
 
   @Input()
-  keyResult!: KeyResult | null;
+  keyResult?: KeyResult;
 
   constructor(public userService: UserService,
     private translate: TranslateService) {
@@ -73,19 +73,19 @@ export class KeyResultFormComponent implements OnInit {
         version: 1,
         action: '',
         priority: 0,
-        keyResultId: null,
+        keyResultId: undefined,
         isChecked: false },
       { id: null,
         version: 1,
         action: '',
         priority: 1,
-        keyResultId: null,
+        keyResultId: undefined,
         isChecked: false },
       { id: null,
         version: 1,
         action: '',
         priority: 2,
-        keyResultId: null,
+        keyResultId: undefined,
         isChecked: false }]);
     }
 

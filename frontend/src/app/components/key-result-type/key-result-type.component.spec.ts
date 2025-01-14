@@ -12,11 +12,13 @@ import { of } from 'rxjs';
 import { getKeyResultForm } from '../../shared/constant-library';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { getValueOfForm } from '../../shared/common';
+import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;
   let fixture: ComponentFixture<KeyResultTypeComponent>;
-
+  const formGroupDirective = new FormGroupDirective([], []);
+  formGroupDirective.form = getKeyResultForm();
 
   describe('Edit Metric', () => {
     beforeEach(() => {
@@ -27,13 +29,16 @@ describe('KeyResultTypeComponent', () => {
             de: de
           }),
           ReactiveFormsModule],
-        providers: [FormGroupDirective]
+        providers: [FormGroupDirective,
+          { provide: FormGroupDirective,
+            useValue: formGroupDirective }]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
       component.keyResultForm = getKeyResultForm();
-      component.keyResult = keyResultMetric;
+      component.keyResult = { ...keyResultMetric } as KeyResultMetric;
       component.users = of(users);
+
       fixture.detectChanges();
     });
 
@@ -124,7 +129,9 @@ describe('KeyResultTypeComponent', () => {
         }),
         MatAutocompleteModule,
         ReactiveFormsModule],
-        providers: [FormGroupDirective]
+        providers: [FormGroupDirective,
+          { provide: FormGroupDirective,
+            useValue: formGroupDirective }]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
@@ -198,7 +205,9 @@ describe('KeyResultTypeComponent', () => {
             de: de
           }),
           ReactiveFormsModule],
-        providers: [FormGroupDirective]
+        providers: [FormGroupDirective,
+          { provide: FormGroupDirective,
+            useValue: formGroupDirective }]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;

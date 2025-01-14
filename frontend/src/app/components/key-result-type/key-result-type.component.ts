@@ -44,12 +44,15 @@ export class KeyResultTypeComponent implements OnInit {
     if (!this.keyResult) {
       return;
     }
+
     this.keyResultForm.patchValue({ ...this.keyResult });
+
     if (this.currentKeyResultType() == 'metric') {
       const keyResultMetric = this.castToMetric(this.keyResult);
       const krUnit = Unit[keyResultMetric.unit as keyof typeof Unit];
       this.keyResultForm.get('metric')
         ?.patchValue({ ...keyResultMetric,
+          targetGoal: 70,
           unit: krUnit });
     }
 
@@ -87,7 +90,6 @@ export class KeyResultTypeComponent implements OnInit {
     if (newType !== this.currentKeyResultType() && this.isTypeChangeAllowed()) {
       this.keyResultForm.get('keyResultType')
         ?.setValue(newType);
-      console.log(this.keyResultForm.get('keyResultType')?.value);
     }
     this.setValidators(newType);
   }
@@ -114,10 +116,6 @@ export class KeyResultTypeComponent implements OnInit {
    */
 
 
-  isTouchedOrDirty(name: string) {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched || false;
-  }
-
   invalidOwner(): boolean {
     // return (this.isTouchedOrDirty('owner') && (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner));
     return false;
@@ -132,7 +130,7 @@ export class KeyResultTypeComponent implements OnInit {
   }
 
   currentKeyResultType(): string {
-    return this.keyResultForm.get('keyResultType')?.value;
+    return this.keyResultForm?.get('keyResultType')?.value;
   }
 
   protected readonly getFullNameOfUser = getFullNameOfUser;

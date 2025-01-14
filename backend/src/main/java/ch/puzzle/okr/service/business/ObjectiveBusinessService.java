@@ -186,6 +186,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                             .isChecked(e.isChecked())
                             .withAction(e.getActionPoint())
                             .withPriority(e.getPriority())
+                            .withVersion(e.getVersion())
                             .build())
                     .toList();
         }

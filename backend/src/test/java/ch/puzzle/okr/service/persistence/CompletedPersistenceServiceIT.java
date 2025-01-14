@@ -118,12 +118,6 @@ class CompletedPersistenceServiceIT {
                      savedCompleted.getObjective().getTitle());
     }
 
-    @DisplayName("Should throw exception on getCompletedByObjectiveId() when id does not exist")
-    @Test
-    void getCompletedShouldThrowExceptionWhenCompletedNotFound() {
-
-    }
-
     @DisplayName("Should delete entity on deleteById()")
     @Test
     void deleteByIdShouldDeleteExistingCompletedByObjectiveId() {

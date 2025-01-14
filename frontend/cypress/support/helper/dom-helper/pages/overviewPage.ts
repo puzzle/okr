@@ -182,6 +182,7 @@ export default class CyOverviewPage extends Page {
       .as('keyResults');
     this.getObjectiveByName(objectiveName)
       .findByTestId('three-dot-menu')
+      .should('be.visible')
       .click();
     this.selectFromThreeDotMenu('Objective duplizieren');
     cy.wait('@keyResults');

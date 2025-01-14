@@ -9,7 +9,6 @@ import { UserService } from '../../services/user.service';
 import { Action } from '../../shared/types/model/action';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-key-result-form',
@@ -37,31 +36,14 @@ export class KeyResultFormComponent implements OnInit {
 
   constructor(public userService: UserService,
     private translate: TranslateService) {
-    this.users$.pipe(takeUntilDestroyed())
-      .subscribe((users) => {
-        const loggedInUser = this.getFullNameOfLoggedInUser();
-        users.forEach((user) => {
-          if (getFullNameOfUser(user) === loggedInUser) {
-            this.keyResultForm.get('owner')
-              ?.setValue(user);
-          }
-        });
-      });
   }
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
     this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value))) || of([]);
     if (this.keyResult) {
-      this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
-      this.keyResultForm.get('title')
-        ?.setValue(this.keyResult.title);
-      this.keyResultForm.get('description')
-        ?.setValue(this.keyResult.description);
-      this.keyResultForm.get('owner')
-        ?.setValue(this.keyResult.owner);
-      this.keyResultForm.get('keyResultType')
-        ?.setValue(this.keyResult.keyResultType);
+      this.keyResultForm.patchValue({ ...this.keyResult });
+
       this.isMetricKeyResult()
         ? this.setMetricValuesInForm(this.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.keyResult as KeyResultOrdinal);
@@ -106,13 +88,6 @@ export class KeyResultFormComponent implements OnInit {
   setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {
     this.keyResultForm.get('ordinal')
       ?.patchValue({ ...keyResultOrdinal });
-  }
-
-  getErrorMessage(
-    error: string, field: string, firstNumber: number | null, secondNumber: number | null
-  ): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error)
-      .format(firstNumber, secondNumber);
   }
 
   filter(value: string): Observable<User[]> {

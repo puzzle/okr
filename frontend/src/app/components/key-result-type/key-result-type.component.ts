@@ -5,7 +5,6 @@ import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Observable, Subject } from 'rxjs';
 
@@ -32,7 +31,7 @@ export class KeyResultTypeComponent {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor(private translate: TranslateService, private parentF: FormGroupDirective) {
+  constructor(private parentF: FormGroupDirective) {
     this.childForm = this.parentF.form;
   }
 
@@ -41,10 +40,6 @@ export class KeyResultTypeComponent {
       this.keyResultForm.get('keyResultType')
         ?.setValue(newType);
     }
-  }
-
-  invalidOwner() {
-    return this.keyResultForm.get('owner')?.invalid || false;
   }
 
   isTypeChangeAllowed() {

@@ -9,9 +9,7 @@
         formControlName="title"
         id="title"
       ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'title')">
-        <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
-      </mat-error>
+      <app-error [controlPath]="['title']"></app-error>
     </div>
   </div>
 
@@ -32,9 +30,7 @@
         formControlName="description"
         id="description"
       ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'description')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
-      </mat-error>
+      <app-error [controlPath]="['description']"></app-error>
     </div>
   </div>
 

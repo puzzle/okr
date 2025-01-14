@@ -56,13 +56,13 @@
           (keydown.enter)="$event.preventDefault()"
           [attr.data-testId]="'owner-input'"
           [matAutocomplete]="auto"
-          [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+          [ngClass]="formInputCheck(keyResultForm, 'unit')"
           formControlName="owner"
           id="owner"
         />
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getFullNameOfUser.bind(this)">
           <mat-option *ngFor="let user of users | async" [value]="user">
-            {{ user.firstName + " " + user.lastName }}
+            {{ getFullNameOfUser(user) }}
           </mat-option>
         </mat-autocomplete>
         <app-error [controlPath]="['metric', 'owner']"></app-error>

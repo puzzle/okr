@@ -32,6 +32,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { getValueOfForm } from '../../shared/common';
+import { ErrorComponent } from '../../shared/custom/error/error.component';
 
 
 describe('KeyResultDialogComponent', () => {
@@ -211,7 +212,8 @@ describe('KeyResultDialogComponent', () => {
           KeyResultFormComponent,
           KeyResultTypeComponent,
           ActionPlanComponent,
-          DialogTemplateCoreComponent
+          DialogTemplateCoreComponent,
+          ErrorComponent
         ]
       })
         .compileComponents();
@@ -352,6 +354,13 @@ describe('KeyResultDialogComponent', () => {
       expect(spy)
         .toHaveBeenCalledTimes(1);
     }));
+
+    it('should have logged in user as owner', waitForAsync(() => {
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.get('owner')?.value)
+        .toBe(testUser);
+    }));
   });
 
   describe('Edit KeyResult Metric', () => {
@@ -405,10 +414,6 @@ describe('KeyResultDialogComponent', () => {
 
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
-      /*
-       * userService.getCurrentUser.mockReturnValue(testUser);
-       * fullKeyResultMetric.id = 3;
-       */
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyResultService);
     });

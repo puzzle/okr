@@ -178,29 +178,6 @@ describe('KeyResultTypeComponent', () => {
         .toBeTruthy();
     });
 
-    /*
-     * it('should have logged in user as owner', waitForAsync(async() => {
-     *   const form = getKeyResultForm(testUser)
-     *   // form.get('keyResultType')?.setValue('ordinal');
-     *   const userServiceSpy = jest.spyOn(userService, 'getUsers');
-     *   component.keyResultForm.setValue(getKeyResultForm(testUser));
-     *   component.ngOnInit();
-     *   fixture.detectChanges();
-     *
-     *   const formObject = component.keyResultForm.value;
-     *   expect(formObject.title)
-     *       .toBe('Title');
-     *   expect(formObject.description)
-     *       .toBe(null);
-     *   expect(userServiceSpy)
-     *       .toHaveBeenCalled();
-     *   expect(component.keyResultForm.controls['owner'].value)
-     *       .toBe(testUser);
-     *   expect(component.keyResultForm.invalid)
-     *       .toBeFalsy();
-     * }));
-     */
-
     it('should use default values', () => {
       expect(getValueOfForm(component.keyResultForm, ['metric',
         'unit']))

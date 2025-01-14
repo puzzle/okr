@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/objective';
@@ -17,7 +17,7 @@ import { UserService } from '../../services/user.service';
   templateUrl: './key-result-dialog.component.html',
   standalone: false
 })
-export class KeyResultDialogComponent {
+export class KeyResultDialogComponent implements OnInit {
   keyResultForm: FormGroup = getKeyResultForm();
 
   constructor(
@@ -28,12 +28,6 @@ export class KeyResultDialogComponent {
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private userService: UserService
   ) {
-    this.setValidators(this.keyResultForm.get('keyResultType')?.value);
-    this.keyResultForm.get('owner')
-      ?.setValue(this.userService.getCurrentUser());
-    this.keyResultForm.get('keyResultType')?.valueChanges.subscribe((value) => {
-      this.setValidators(value);
-    });
   }
 
   isMetricKeyResult() {
@@ -94,5 +88,14 @@ export class KeyResultDialogComponent {
       this.keyResultForm.get('ordinal')
         ?.enable();
     }
+  }
+
+  ngOnInit(): void {
+    this.setValidators(this.keyResultForm.get('keyResultType')?.value);
+    this.keyResultForm.get('owner')
+      ?.setValue(this.userService.getCurrentUser());
+    this.keyResultForm.get('keyResultType')?.valueChanges.subscribe((value) => {
+      this.setValidators(value);
+    });
   }
 }

@@ -32,6 +32,7 @@ import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template
 import { Quarter } from '../../shared/types/model/quarter';
 import { getKeyResultForm } from '../../shared/constant-library';
 import { getValueOfForm } from '../../shared/common';
+import { ErrorComponent } from '../../shared/custom/error/error.component';
 
 describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
@@ -106,7 +107,8 @@ describe('KeyResultFormComponent', () => {
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
           KeyResultTypeComponent,
-          ActionPlanComponent
+          ActionPlanComponent,
+          ErrorComponent
         ]
       })
         .compileComponents();
@@ -210,24 +212,6 @@ describe('KeyResultFormComponent', () => {
       expect(component.isMetricKeyResult())
         .toBeFalsy();
     });
-
-    /*
-     * it('should get correct full name from user object', () => {
-     *   const user = users[0];
-     *   expect(component.getFullNameOfUser(user))
-     *     .toEqual('Bob Baumeister');
-     *   expect(component.getFullNameOfUser(null!))
-     *     .toEqual('');
-     * });
-     *
-     * it('should get correct key-result id', () => {
-     *   expect(component.keyResult.id)
-     *     .toEqual(undefined);
-     *   component.keyResult = keyResultOrdinal;
-     *   expect(component.getKeyResultId())
-     *     .toEqual(101);
-     * });
-     */
 
     it('should get correct username from o-auth-service', () => {
       expect(component.getFullNameOfLoggedInUser())

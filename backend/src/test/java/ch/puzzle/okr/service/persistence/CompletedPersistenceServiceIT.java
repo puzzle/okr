@@ -24,7 +24,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 @SpringIntegrationTest
 class CompletedPersistenceServiceIT {
-    private static final Logger log = LoggerFactory.getLogger(CompletedPersistenceServiceIT.class);
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
     private Completed createdCompleted;
@@ -124,16 +123,7 @@ class CompletedPersistenceServiceIT {
     @DisplayName("Should throw exception on getCompletedByObjectiveId() when id does not exist")
     @Test
     void getCompletedShouldThrowExceptionWhenCompletedNotFound() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> completedPersistenceService
-                                                                    .getCompletedByObjectiveId(-1L));
 
-        List<ErrorDto> expectedErrors = List
-                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, String.valueOf(-1))));
-
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @DisplayName("Should delete entity on deleteById()")

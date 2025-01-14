@@ -1,9 +1,11 @@
 package ch.puzzle.okr.service.business;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
@@ -84,7 +86,7 @@ class CompletedBusinessServiceTest {
         verify(this.completedPersistenceService, times(1)).deleteById(1L);
     }
 
-    @DisplayName("Should do nothing if completed is null")
+    @DisplayName("Should do nothing if completed to delete is null")
     @Test
     void shouldDoNothingIfCompletedIsNull() {
         when(completedPersistenceService.getCompletedByObjectiveId(anyLong())).thenReturn(null);
@@ -102,6 +104,17 @@ class CompletedBusinessServiceTest {
         this.completedBusinessService.getCompletedByObjectiveId(1L);
 
         verify(this.completedPersistenceService, times(1)).getCompletedByObjectiveId(1L);
+    }
+
+    @DisplayName("Should throw exception if completed is null")
+    @Test
+    void shouldThrowExceptionIfCompletedIsNull() {
+        when(completedPersistenceService.getCompletedByObjectiveId(-1L)).thenReturn(null);
+        when(completedPersistenceService.getModelName()).thenCallRealMethod();
+
+        assertThrows(OkrResponseStatusException.class, () -> completedBusinessService.getCompletedByObjectiveId(-1L));
+
+        verify(this.completedPersistenceService, times(1)).getCompletedByObjectiveId(-1L);
     }
 
 }

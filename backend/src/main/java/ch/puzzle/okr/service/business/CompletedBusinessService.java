@@ -38,7 +38,6 @@ public class CompletedBusinessService {
     }
 
     public Completed getCompletedByObjectiveId(Long objectiveId) {
-        validator.validateOnGet(objectiveId);
         Completed completed = completedPersistenceService.getCompletedByObjectiveId(objectiveId);
         // Must exist in business service in order to prevent error while deleting
         // ongoing objectives

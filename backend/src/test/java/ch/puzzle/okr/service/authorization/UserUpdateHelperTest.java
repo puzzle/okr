@@ -55,7 +55,7 @@ class UserUpdateHelperTest {
                                                                                                null,
                                                                                                null,
                                                                                                null,
-                                                                                               null);
+                                                                                               null, null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(noChampionUser, tenantConfig);
@@ -75,7 +75,7 @@ class UserUpdateHelperTest {
                                                                                                null,
                                                                                                null,
                                                                                                null,
-                                                                                               null);
+                                                                                               null, null);
 
         // act
         User updatedUser = helper.setOkrChampionFromProperties(championUser, tenantConfig);

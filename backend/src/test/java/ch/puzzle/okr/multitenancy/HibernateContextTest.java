@@ -18,6 +18,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 class HibernateContextTest {
 
+    private static final String NOT_USED = "not_used";
+
     @BeforeEach
     void setUp() {
         resetHibernateConfig();
@@ -41,7 +43,7 @@ class HibernateContextTest {
                                                                               String password, String tenant) {
 
         // arrange
-        DbConfig dbConfig = new DbConfig(url, username, password, tenant);
+        var dbConfig = new DbConfig(url, username, password, tenant);
 
         // act + assert
         HibernateContextException exception = assertThrows(HibernateContextException.class,
@@ -62,13 +64,13 @@ class HibernateContextTest {
                     Arguments.of("url", "username", "password", ""));
     }
 
-    @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and set it")
+    @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and cache it")
     @Test
-    void extractAndSetHibernateConfigShouldExtractHibernatePropertiesFromEnvironmentAndSetIt() {
+    void extractAndSetHibernateConfigShouldExtractHibernatePropertiesFromEnvironmentAndCacheIt() {
         // arrange
         String url = "url", username = "username", password = "password", multiTenancy = "multiTenancy";
 
-        ConfigurableEnvironment environment = mock(ConfigurableEnvironment.class);
+        var environment = mock(ConfigurableEnvironment.class);
         when(environment.getProperty(HIBERNATE_CONNECTION_URL)).thenReturn(url);
         when(environment.getProperty(HIBERNATE_CONNECTION_USERNAME)).thenReturn(username);
         when(environment.getProperty(HIBERNATE_CONNECTION_PASSWORD)).thenReturn(password);
@@ -76,7 +78,7 @@ class HibernateContextTest {
 
         // act
         extractAndSetHibernateConfig(environment);
-        Properties hibernateProperties = getHibernateConfig();
+        var hibernateProperties = getHibernateConfig();
 
         // assert
         assertNotNull(hibernateProperties);
@@ -86,7 +88,7 @@ class HibernateContextTest {
     @DisplayName("getHibernateConfig() should throw exception if setHibernateConfig() is not called before with valid configuration")
     @Test
     void getHibernateConfigShouldThrowExceptionIfSetHibernateConfigIsNotCalledBeforeWithValidConfiguration() {
-        // arrange
+        // arrange: no DbConfig is set
 
         // act + assert
         HibernateContextException exception = assertThrows(HibernateContextException.class,
@@ -99,15 +101,63 @@ class HibernateContextTest {
     void getHibernateConfigShouldReturnHibernateConfigAsPropertiesIfDbConfigIsValid() {
         // arrange
         String url = "url", username = "username", password = "password", multiTenancy = "multiTenancy";
-        DbConfig dbConfig = new DbConfig(url, username, password, multiTenancy);
+        var dbConfig = new DbConfig(url, username, password, multiTenancy);
         setHibernateConfig(dbConfig);
 
         // act
-        Properties hibernateProperties = getHibernateConfig();
+        var hibernateProperties = getHibernateConfig();
 
         // assert
         assertNotNull(hibernateProperties);
         assertProperties(url, username, password, multiTenancy, hibernateProperties);
+    }
+
+    @DisplayName("getHibernateConfigForTenantId() should throw exception if setHibernateConfig() is not called before with valid configuration")
+    @Test
+    void getHibernateConfigForTenantIdShouldThrowExceptionIfSetHibernateConfigIsNotCalledBeforeWithValidConfiguration() {
+        // arrange: no DbConfig is set
+
+        // act + assert
+        var exception = assertThrows(RuntimeException.class, () -> getHibernateConfig("tenantId"));
+        assertEquals("No cached hibernate configuration found (for tenant tenantId)", exception.getMessage());
+    }
+
+    @DisplayName("setHibernateConfigForTenantId() should throw exception when no tenant config is cached")
+    @Test
+    void setHibernateConfigForTenantIdShouldThrowExceptionWhenNoTenantConfigIsCached() {
+        // arrange
+        String url = "url", username = "username", password = "password", multiTenancy = "multiTenancy";
+        var dbConfig = new DbConfig(url, username, password, multiTenancy);
+        setHibernateConfig(dbConfig);
+
+        var tenantId = "tenantId"; // but no tenant config is cached
+
+        // act + assert
+        var exception = assertThrows(RuntimeException.class, () -> getHibernateConfig(tenantId));
+        assertEquals("No cached tenant configuration found (for tenant tenantId)", exception.getMessage());
+    }
+
+    @DisplayName("getHibernateConfigForTenantId() should return hibernate config with patched tenant username and password as properties if db config is valid")
+    @Test
+    void getHibernateConfigForTenantIdShouldReturnHibernateConfigWithPatchedTenantUserNameAndPasswordAsPropertiesIfDbConfigIsValid() {
+        // arrange
+        String url = "url", username = "username", password = "password", multiTenancy = "multiTenancy";
+        var dbConfig = new DbConfig(url, username, password, multiTenancy);
+        setHibernateConfig(dbConfig);
+
+        String tenantId = "tenantId", tenantName = "tenantName", tenantPassword = "tenantPassword";
+        var tenantConfig = new TenantConfigProvider.TenantConfig(tenantId, new String[] {}, NOT_USED, NOT_USED,
+                NOT_USED, null, // fly user config not used in test
+                new TenantConfigProvider.DataSourceConfig(NOT_USED, NOT_USED, tenantName, tenantPassword, NOT_USED));
+
+        TenantConfigs.add(tenantId, tenantConfig); // cache tenant db config
+
+        // act
+        var hibernateProperties = getHibernateConfig(tenantId);
+
+        // assert
+        assertNotNull(hibernateProperties);
+        assertProperties(url, tenantName, tenantPassword, multiTenancy, hibernateProperties);
     }
 
     private void assertProperties(String url, String username, String password, String multiTenancy,

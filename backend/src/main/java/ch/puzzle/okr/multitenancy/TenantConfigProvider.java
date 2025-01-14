@@ -2,79 +2,125 @@ package ch.puzzle.okr.multitenancy;
 
 import java.text.MessageFormat;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+import java.util.*;
+
+import static java.text.MessageFormat.format;
+
+/**
+ * Reads the configuration of the tenants (as TenantConfig objects) from the applicationX.properties and caches each
+ * TenantConfig in the TenantConfigs class.
+ */
 @Component
 public class TenantConfigProvider implements TenantConfigProviderInterface {
     private static final String EMAIL_DELIMITER = ",";
     private final Map<String, TenantConfig> tenantConfigs = new HashMap<>();
     private final Environment env;
 
+    private enum DbType {
+        BOOTSTRAP, APP, FLY;
+
+        public String nameUsedInProperties() {
+            return this.name().toLowerCase();
+        }
+    }
+
+    private static final Logger logger = LoggerFactory.getLogger(TenantConfigProvider.class);
+
     public TenantConfigProvider(final @Value("${okr.tenant-ids}")
     String[] tenantIds, Environment env) {
         this.env = env;
         for (String tenantId : tenantIds) {
             OauthConfig c = readOauthConfig(tenantId);
-            tenantConfigs
-                    .put(tenantId,
-                         createTenantConfig(c.jwkSetUri(),
-                                            c.frontendClientIssuerUrl(),
-                                            c.frontendClientId(),
-                                            tenantId));
+            TenantConfig tenantConfig = createTenantConfig(c.jwkSetUri(), c.frontendClientIssuerUrl(),
+                    c.frontendClientId(), tenantId);
+
+            tenantConfigs.put(tenantId, tenantConfig);
+            cacheTenantConfig(tenantId, tenantConfig); // cache tenantConfig for Hibernate connections
         }
     }
 
+    private void cacheTenantConfig(String tenantId, TenantConfig tenantConfig) {
+        TenantConfigs.add(tenantId, tenantConfig);
+        logCachingTenantConfig(tenantId, tenantConfig);
+    }
+
+    private void logCachingTenantConfig(String tenantId, TenantConfig tenantConfig) {
+        logger.info("cache TenantConfig: tenantId={}, users={}", //
+                tenantId, //
+                tenantConfig.dataSourceConfigFlyway().name() + " | " + tenantConfig.dataSourceConfigApp().name());
+    }
+
+    public static TenantConfigProvider.TenantConfig getCachedTenantConfig(String tenantId) {
+        return TenantConfigs.get(tenantId);
+    }
+
+    // for tests
+    public static void clearTenantConfigsCache() {
+        TenantConfigs.clear();
+    }
+
     private OauthConfig readOauthConfig(String tenantId) {
-        return new OauthConfig(env
-                .getProperty(MessageFormat
-                        .format("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri", tenantId)),
-                               env
-                                       .getProperty(MessageFormat
-                                               .format("okr.tenants.{0}.security.oauth2.frontend.issuer-url",
-                                                       tenantId)),
-                               env
-                                       .getProperty(MessageFormat
-                                               .format("okr.tenants.{0}.security.oauth2.frontend.client-id",
-                                                       tenantId)));
+        return new OauthConfig( //
+                getProperty("okr.tenants.{0}.security.oauth2.resourceserver.jwt.jwk-set-uri", tenantId),
+                               getProperty("okr.tenants.{0}.security.oauth2.frontend.issuer-url",
+                                                       tenantId),
+                               getProperty("okr.tenants.{0}.security.oauth2.frontend.client-id",
+                                                       tenantId));
     }
 
     private TenantConfig createTenantConfig(String jwkSetUriTemplate, String frontendClientIssuerUrl,
-                                            String frontendClientId, String tenantId) {
-        return new TenantConfig(tenantId,
-                                getOkrChampionEmailsFromTenant(tenantId),
-                                jwkSetUriTemplate,
-                                frontendClientIssuerUrl,
-                                frontendClientId,
-                                this.readDataSourceConfig(tenantId));
+            String frontendClientId, String tenantId) {
+
+        return new TenantConfig(tenantId, getOkrChampionEmailsFromTenant(tenantId), jwkSetUriTemplate, //
+                frontendClientIssuerUrl, frontendClientId, //
+                this.readDataSourceConfigFlyway(tenantId), //
+                this.readDataSourceConfigApp(tenantId));
     }
 
     private String[] getOkrChampionEmailsFromTenant(String tenantId) {
         return Arrays
-                .stream(env
-                        .getProperty(MessageFormat.format("okr.tenants.{0}.user.champion.emails", tenantId), "")
-                        .split(EMAIL_DELIMITER))
-                .map(String::trim)
-                .toArray(String[]::new);
+                .stream(getProperty("okr.tenants.{0}.user.champion.emails", tenantId, "").split(EMAIL_DELIMITER))
+                .map(String::trim).toArray(String[]::new);
     }
 
     public List<TenantConfig> getTenantConfigs() {
         return this.tenantConfigs.values().stream().toList();
     }
 
-    private DataSourceConfig readDataSourceConfig(String tenantId) {
-        return new DataSourceConfig(env.getProperty("okr.datasource.driver-class-name"),
-                                    env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.url", tenantId)),
-                                    env
-                                            .getProperty(MessageFormat
-                                                    .format("okr.tenants.{0}.datasource.username", tenantId)),
-                                    env
-                                            .getProperty(MessageFormat
-                                                    .format("okr.tenants.{0}.datasource.password", tenantId)),
-                                    env
-                                            .getProperty(MessageFormat
-                                                    .format("okr.tenants.{0}.datasource.schema", tenantId)));
+    private DataSourceConfig readDataSourceConfigFlyway(String tenantId) {
+        return readDataSourceConfig(tenantId, DbType.FLY);
+    }
+
+    private DataSourceConfig readDataSourceConfigApp(String tenantId) {
+        return readDataSourceConfig(tenantId, DbType.APP);
+    }
+
+    private DataSourceConfig readDataSourceConfig(String tenantId, DbType dbType) {
+        return new DataSourceConfig( //
+                getProperty("okr.datasource.driver-class-name"),
+                getProperty("okr.tenants.{0}.datasource.url", tenantId),
+                                    getProperty("okr.tenants.{0}.datasource.username." + dbType.nameUsedInProperties(), tenantId),
+                                    getProperty("okr.tenants.{0}.datasource.password." + dbType.nameUsedInProperties(), tenantId),
+                                    getProperty("okr.tenants.{0}.datasource.schema", tenantId));
+    }
+
+    private String getProperty(String key) {
+        return env.getProperty(String.format(key));
+    }
+
+    private String getProperty(String key, String tenantId) {
+        return env.getProperty(MessageFormat.format(key, tenantId));
+    }
+
+    private String getProperty(String key, String tenantId, String defaultValue) {
+        return env.getProperty(format(key, tenantId), defaultValue);
     }
 
     public Optional<TenantConfig> getTenantConfigById(String tenantId) {
@@ -86,7 +132,7 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
     }
 
     public record TenantConfig(String tenantId, String[] okrChampionEmails, String jwkSetUri, String issuerUrl,
-            String clientId, DataSourceConfig dataSourceConfig) {
+            String clientId, DataSourceConfig dataSourceConfigFlyway, DataSourceConfig dataSourceConfigApp) {
 
         @Override
         public boolean equals(Object o) {

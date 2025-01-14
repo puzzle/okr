@@ -42,7 +42,8 @@
             </option>
           </select>
 
-          <mat-error *ngFor="let error of getErrorMessages('unit')">{{ error }}</mat-error>
+          <app-error [form]="keyResultForm" [controlPath]="['metric', 'unit']"></app-error>
+
         </div>
       </div>
     </div>
@@ -66,7 +67,7 @@
             {{ user.firstName + " " + user.lastName }}
           </mat-option>
         </mat-autocomplete>
-        <mat-error *ngFor="let error of getErrorMessages('owner')">{{ error }}</mat-error>
+        <app-error [form]="keyResultForm" [controlPath]="['metric', 'owner']"></app-error>
       </div>
     </div>
   </div>
@@ -85,7 +86,7 @@
             formControlName="baseline"
             id="baseline"
           />
-          <mat-error *ngFor="let error of getErrorMessages('baseline')">{{ error }}</mat-error>
+          <app-error [form]="keyResultForm" [controlPath]="['metric', 'baseline']"></app-error>
         </div>
       </div>
     </div>
@@ -101,7 +102,8 @@
             formControlName="targetGoal"
             id="target-goal"
           />
-          <mat-error *ngFor="let error of getErrorMessages('targetGoal')">{{ error }}</mat-error>
+          <app-error [form]="keyResultForm" [controlPath]="['metric', 'targetGoal']"></app-error>
+
         </div>
       </div>
     </div>
@@ -117,7 +119,8 @@
             formControlName="stretchGoal"
             id="stretch-goal"
           />
-          <mat-error *ngFor="let error of getErrorMessages('stretchGoal')">{{ error }}</mat-error>
+          <app-error [form]="keyResultForm" [controlPath]="['metric', 'stretchGoal']"></app-error>
+
         </div>
       </div>
     </div>
@@ -138,7 +141,7 @@
             id="commit-zone"
             [attr.data-testId]="'commit-zone'"
           ></textarea>
-          <mat-error *ngFor="let error of getErrorMessages('commitZone')">{{ error }}</mat-error>
+          <app-error [form]="keyResultForm" [controlPath]="['ordinal', 'commitZone']"></app-error>
         </div>
       </div>
     </div>
@@ -154,7 +157,7 @@
             formControlName="targetZone"
             id="target-zone"
           ></textarea>
-          <mat-error *ngFor="let error of getErrorMessages('targetZone')">{{ error }}</mat-error>
+          <app-error [form]="keyResultForm" [controlPath]="['ordinal', 'targetZone']"></app-error>
         </div>
       </div>
     </div>
@@ -170,9 +173,11 @@
             formControlName="stretchZone"
             id="stretch-zone"
           ></textarea>
-          <mat-error *ngFor="let error of getErrorMessages('stretchZone')">{{ error }}</mat-error>
+          <app-error [form]="keyResultForm" [controlPath]="['ordinal','stretchZone']"></app-error>
         </div>
       </div>
     </div>
   </div>
 </ng-template>
+
+

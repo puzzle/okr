@@ -62,7 +62,7 @@ class ObjectiveControllerIT {
                 "objective": %s,
                 "keyResults": [%s,%s]
             }
-            """.formatted(JSON, KEY_RESULT_METRIC_JSON, KEY_RESULT_ORDINAL_JSON);
+            """.formatted(JSON, 1L, 2L);
 
     private static final String CREATE_NEW_OBJECTIVE = """
             {
@@ -341,16 +341,13 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
-    @DisplayName("Should return is created when an ojective was duplicated")
+    @DisplayName("Should return is created when an objective was duplicated")
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
-        BDDMockito
-                .given(objectiveAuthorizationService.duplicateEntity(anyLong(), any(), anyList()))
-                .willReturn(objective1);
         BDDMockito.given(keyResultMapper.toDto(any(KeyResultMetric.class), any())).willReturn(keyResultMetricDto);
         BDDMockito.given(keyResultMapper.toDto(any(KeyResultOrdinal.class), any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
-        BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
+        BDDMockito.given(objectiveMapper.toDto(any())).willReturn(objective1Dto);
 
         mvc
                 .perform(post(URL_DUPLICATE_OBJECTIVE_5)

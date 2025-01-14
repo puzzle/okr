@@ -250,6 +250,52 @@ class ObjectiveBusinessServiceTest {
         verify(keyResultBusinessService, times(2)).createEntity(any(), any());
     }
 
+    @DisplayName("Should duplicate metric key result")
+    @Test
+    void shouldDuplicateMetricKeyResult() {
+        Objective objective = Objective.Builder
+                .builder() //
+                .withId(23L) //
+                .withTitle("Objective 1") //
+                .build();
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withTitle("Metric").build();
+        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
+        verify(objectiveBusinessService.makeCopyOfKeyResultMetric(keyResultMetric, objective), times(1));
+        verify(keyResultBusinessService.createEntity(keyResultMetric, authorizationUser), times(1));
+    }
+
+    @DisplayName("Should duplicate ordinal key result")
+    @Test
+    void shouldDuplicateOrdinalKeyResult() {
+        Objective objective = Objective.Builder
+                .builder() //
+                .withId(23L) //
+                .withTitle("Objective 1") //
+                .build();
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withTitle("Ordinal").build();
+        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
+        verify(objectiveBusinessService.makeCopyOfKeyResultMetric(keyResultOrdinal, objective), times(1));
+        verify(keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser), times(1));
+    }
+
+    @DisplayName("Should duplicate ActionList")
+    @Test
+    void shouldDuplicateActionList() {
+        KeyResult oldKeyResult = KeyResultMetric.Builder.builder().withId(1L).build();
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(2L).build();
+
+        Action action1 = Action.Builder.builder().withKeyResult(oldKeyResult).withPriority(1).withVersion(1).build();
+        Action action2 = Action.Builder.builder().withKeyResult(oldKeyResult).withPriority(2).withVersion(2).build();
+
+        when(oldKeyResult.getActionList()).thenReturn(List.of(action1, action2));
+
+        newKeyResult.setActionList(objectiveBusinessService.duplicateActionList(oldKeyResult, newKeyResult));
+        assertNotEquals(newKeyResult.getActionList().getFirst().getKeyResult().getId(),
+                        oldKeyResult.getActionList().getFirst().getKeyResult().getId());
+        assertNotEquals(newKeyResult.getActionList().getLast().getKeyResult(),
+                        oldKeyResult.getActionList().getLast().getKeyResult());
+    }
+
     @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")
     @Test
     void shouldGetAllKeyResultsByObjective() {

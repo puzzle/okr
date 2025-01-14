@@ -144,7 +144,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         }
     }
 
-    private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
+    public KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
         KeyResult copyOfMetricKeyResult = KeyResultMetric.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //
@@ -155,22 +155,11 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
                 .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
                 .build();
-        List<Action> actionList = keyResult
-                .getActionList()
-                .stream()
-                .map(e -> Action.Builder
-                        .builder()
-                        .withKeyResult(copyOfMetricKeyResult)
-                        .isChecked(e.isChecked())
-                        .withAction(e.getActionPoint())
-                        .withPriority(e.getPriority())
-                        .build())
-                .toList();
-        copyOfMetricKeyResult.setActionList(actionList);
+        copyOfMetricKeyResult.setActionList(duplicateActionList(keyResult, copyOfMetricKeyResult));
         return copyOfMetricKeyResult;
     }
 
-    private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
+    public KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
         KeyResult copyOfOrdinalKeyResult = KeyResultOrdinal.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //
@@ -181,19 +170,26 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
                 .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
                 .build();
-        List<Action> actionList = keyResult
-                .getActionList()
-                .stream()
-                .map(e -> Action.Builder
-                        .builder()
-                        .withKeyResult(copyOfOrdinalKeyResult)
-                        .isChecked(e.isChecked())
-                        .withAction(e.getActionPoint())
-                        .withPriority(e.getPriority())
-                        .build())
-                .toList();
-        copyOfOrdinalKeyResult.setActionList(actionList);
+
+        copyOfOrdinalKeyResult.setActionList(duplicateActionList(keyResult, copyOfOrdinalKeyResult));
         return copyOfOrdinalKeyResult;
+    }
+
+    public List<Action> duplicateActionList(KeyResult oldKeyResult, KeyResult newKeyResult) {
+        List<Action> actionList = oldKeyResult.getActionList();
+        if (!actionList.isEmpty()) {
+            actionList = actionList
+                    .stream()
+                    .map(e -> Action.Builder
+                            .builder()
+                            .withKeyResult(newKeyResult)
+                            .isChecked(e.isChecked())
+                            .withAction(e.getActionPoint())
+                            .withPriority(e.getPriority())
+                            .build())
+                    .toList();
+        }
+        return actionList;
     }
 
     @Transactional

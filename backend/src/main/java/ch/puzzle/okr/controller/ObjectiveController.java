@@ -11,7 +11,6 @@ import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -8,7 +8,8 @@ import { KeyResultDto } from '../shared/types/DTOs/key-result-dto';
   providedIn: 'root'
 })
 export class ObjectiveService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
   getFullObjective(id: number) {
     return this.httpClient.get<Objective>('/api/v2/objectives/' + id);
@@ -32,9 +33,7 @@ export class ObjectiveService {
 
   duplicateObjective(objectiveId: number,
     duplicateObjectiveDto: {
-      keyResults: {
-        id: number | undefined;
-      }[];
+      keyResultIds: (number | undefined)[];
       objective: any;
     }): Observable<Objective> {
     return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, duplicateObjectiveDto);

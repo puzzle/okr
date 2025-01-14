@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -126,7 +127,9 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                                         List<Long> keyResultIds) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
         for (Long keyResult : keyResultIds) {
-            duplicateKeyResult(authorizationUser, keyResultBusinessService.getEntityById(keyResult), duplicatedObjective);
+            duplicateKeyResult(authorizationUser,
+                               keyResultBusinessService.getEntityById(keyResult),
+                               duplicatedObjective);
         }
         return duplicatedObjective;
     }
@@ -143,6 +146,18 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
+
+        List<Action> actionList = keyResult
+                .getActionList()
+                .stream()
+                .map(e -> Action.Builder
+                        .builder()
+                        .withKeyResult(e.getKeyResult())
+                        .isChecked(e.isChecked())
+                        .withAction(e.getActionPoint())
+                        .withPriority(e.getPriority())
+                        .build())
+                .toList();
         return KeyResultMetric.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //
@@ -152,11 +167,23 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withUnit(((KeyResultMetric) keyResult).getUnit()) //
                 .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
                 .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
-                .withActionList(keyResult.getActionList())
+                .withActionList(actionList)
                 .build();
     }
 
     private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
+
+        List<Action> actionList = keyResult
+                .getActionList()
+                .stream()
+                .map(e -> Action.Builder
+                        .builder()
+                        .withKeyResult(e.getKeyResult())
+                        .isChecked(e.isChecked())
+                        .withAction(e.getActionPoint())
+                        .withPriority(e.getPriority())
+                        .build())
+                .toList();
         return KeyResultOrdinal.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //
@@ -166,7 +193,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withCommitZone(((KeyResultOrdinal) keyResult).getCommitZone()) //
                 .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
                 .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
-                .withActionList(keyResult.getActionList())
+                .withActionList(actionList)
                 .build();
     }
 

@@ -28,7 +28,7 @@ public class Action implements WriteableInterface {
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
-//    @JoinColumn(name = "key_result_id")
+    // @JoinColumn(name = "key_result_id")
     private KeyResult keyResult;
 
     @Transient

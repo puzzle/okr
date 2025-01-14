@@ -41,9 +41,7 @@
               {{ "UNIT." + unit.value | translate }}
             </option>
           </select>
-
-          <app-error [form]="keyResultForm" [controlPath]="['metric', 'unit']"></app-error>
-
+          <app-error [controlPath]="['metric', 'unit']"></app-error>
         </div>
       </div>
     </div>
@@ -67,7 +65,7 @@
             {{ user.firstName + " " + user.lastName }}
           </mat-option>
         </mat-autocomplete>
-        <app-error [form]="keyResultForm" [controlPath]="['metric', 'owner']"></app-error>
+        <app-error [controlPath]="['metric', 'owner']"></app-error>
       </div>
     </div>
   </div>
@@ -86,7 +84,7 @@
             formControlName="baseline"
             id="baseline"
           />
-          <app-error [form]="keyResultForm" [controlPath]="['metric', 'baseline']"></app-error>
+          <app-error [controlPath]="['metric', 'baseline']"></app-error>
         </div>
       </div>
     </div>
@@ -102,7 +100,7 @@
             formControlName="targetGoal"
             id="target-goal"
           />
-          <app-error [form]="keyResultForm" [controlPath]="['metric', 'targetGoal']"></app-error>
+          <app-error [controlPath]="['metric', 'targetGoal']"></app-error>
 
         </div>
       </div>
@@ -119,8 +117,7 @@
             formControlName="stretchGoal"
             id="stretch-goal"
           />
-          <app-error [form]="keyResultForm" [controlPath]="['metric', 'stretchGoal']"></app-error>
-
+          <app-error [controlPath]="['metric', 'stretchGoal']"></app-error>
         </div>
       </div>
     </div>
@@ -141,7 +138,7 @@
             id="commit-zone"
             [attr.data-testId]="'commit-zone'"
           ></textarea>
-          <app-error [form]="keyResultForm" [controlPath]="['ordinal', 'commitZone']"></app-error>
+          <app-error [controlPath]="['ordinal', 'commitZone']"></app-error>
         </div>
       </div>
     </div>
@@ -157,7 +154,7 @@
             formControlName="targetZone"
             id="target-zone"
           ></textarea>
-          <app-error [form]="keyResultForm" [controlPath]="['ordinal', 'targetZone']"></app-error>
+          <app-error [controlPath]="['ordinal', 'targetZone']"></app-error>
         </div>
       </div>
     </div>
@@ -173,7 +170,7 @@
             formControlName="stretchZone"
             id="stretch-zone"
           ></textarea>
-          <app-error [form]="keyResultForm" [controlPath]="['ordinal','stretchZone']"></app-error>
+          <app-error [controlPath]="['ordinal','stretchZone']"></app-error>
         </div>
       </div>
     </div>

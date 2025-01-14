@@ -68,7 +68,6 @@ import { ApplicationTopBarComponent } from './components/application-top-bar/app
 import { A11yModule } from '@angular/cdk/a11y';
 import { CustomizationService } from './services/customization.service';
 import { MetricCheckInDirective } from './components/checkin/check-in-form-metric/metric-check-in-directive';
-import { ErrorComponent } from './shared/custom/error/error.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async() => {
@@ -170,8 +169,7 @@ export const MY_FORMATS = {
     CdkDrag,
     A11yModule,
     CdkDragHandle,
-    SharedModule,
-    ErrorComponent
+    SharedModule
   ],
   providers: [
     { provide: MAT_DATE_FORMATS,

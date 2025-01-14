@@ -5,6 +5,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { FormGroupDirective } from '@angular/forms';
 
 describe('ErrorComponent', () => {
   let component: ErrorComponent;
@@ -13,7 +14,10 @@ describe('ErrorComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [ErrorComponent],
-      providers: [TranslateService],
+      providers: [TranslateService,
+        FormGroupDirective,
+        { provide: FormGroupDirective,
+          useValue: new FormGroupDirective([], []) }],
       imports: [TranslateModule.forRoot(),
         TranslateTestingModule.withTranslations({
           de: de

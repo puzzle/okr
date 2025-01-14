@@ -32,8 +32,7 @@ class HibernateContextTest {
         DbConfig dbConfig = null;
 
         // act + assert
-        var exception = assertThrows(HibernateContextException.class,
-                                                           () -> setHibernateConfig(dbConfig));
+        var exception = assertThrows(HibernateContextException.class, () -> setHibernateConfig(dbConfig));
         assertEquals("Invalid hibernate configuration null", exception.getMessage());
     }
 
@@ -91,8 +90,7 @@ class HibernateContextTest {
         // arrange: no DbConfig is set
 
         // act + assert
-        var exception = assertThrows(HibernateContextException.class,
-                                                           HibernateContext::getHibernateConfig);
+        var exception = assertThrows(HibernateContextException.class, HibernateContext::getHibernateConfig);
         assertEquals("No cached hibernate configuration found", exception.getMessage());
     }
 

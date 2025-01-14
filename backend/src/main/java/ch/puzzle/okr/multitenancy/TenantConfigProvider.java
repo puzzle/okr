@@ -167,15 +167,10 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
 
         @Override
         public String toString() {
-            return "TenantConfig{" +
-                    "tenantId='" + tenantId + '\'' +
-                    ", okrChampionEmails=" + Arrays.toString(okrChampionEmails) +
-                    ", jwkSetUri='" + jwkSetUri + '\'' +
-                    ", issuerUrl='" + issuerUrl + '\'' +
-                    ", clientId='" + clientId + '\'' +
-                    ", dataSourceConfigFlyway=" + dataSourceConfigFlyway +
-                    ", dataSourceConfigApp=" + dataSourceConfigApp +
-                    '}';
+            return "TenantConfig{" + "tenantId='" + tenantId + '\'' + ", okrChampionEmails="
+                   + Arrays.toString(okrChampionEmails) + ", jwkSetUri='" + jwkSetUri + '\'' + ", issuerUrl='"
+                   + issuerUrl + '\'' + ", clientId='" + clientId + '\'' + ", dataSourceConfigFlyway="
+                   + dataSourceConfigFlyway + ", dataSourceConfigApp=" + dataSourceConfigApp + '}';
         }
     }
 

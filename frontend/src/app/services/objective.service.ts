@@ -35,6 +35,6 @@ export class ObjectiveService {
     keyResultIds: (number | undefined)[];
     objective: any;
   }): Observable<Objective> {
-    return this.httpClient.post<Objective>('/api/v2/objectives', duplicateObjectiveDto);
+    return this.httpClient.post<Objective>('/api/v2/objectives/duplicate', duplicateObjectiveDto);
   }
 }

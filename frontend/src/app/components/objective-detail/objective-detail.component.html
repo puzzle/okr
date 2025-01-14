@@ -19,7 +19,7 @@
 
       <section class="me-3">
         <h3 class="mb-1">Beschrieb</h3>
-        <div class="linebreak" *ngIf="objective.description === ''">
+        <div class="linebreak mb-3" *ngIf="objective.description === ''">
           <p>-</p>
         </div>
         <div
@@ -29,8 +29,7 @@
         >
           <p>{{ objective.description }}</p>
         </div>
-
-        <div class="d-flex align-items-center flex-row justify-content-start" *ngIf="objective.state.toUpperCase() !== 'SUCCESSFUL' && objective.state.toUpperCase() !== 'NOTSUCCESSFUL'">
+        <div *ngIf="objective.state !== State.SUCCESSFUL && objective.state !== State.NOTSUCCESSFUL; else isCompleted" class="d-flex align-items-center flex-row justify-content-start">
           <button
             *ngIf="objective.isWriteable"
             mat-flat-button
@@ -54,6 +53,14 @@
             Objective bearbeiten
           </button>
         </div>
+        <ng-template #isCompleted>
+          <div *ngIf="(completed | async)?.comment && (completed | async) as completed">
+            <h3 [attr.data-testId]="'completed-comment'" class="mb-1">Abschlusskommentar</h3>
+            <div class="linebreak">
+              <p>{{ completed.comment }}</p>
+            </div>
+          </div>
+        </ng-template>
       </section>
     </div>
   </ng-container>

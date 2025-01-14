@@ -27,4 +27,10 @@ public class CompletedAuthorizationService {
         authorizationService.hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
         completedBusinessService.deleteCompletedByObjectiveId(objectiveId);
     }
+
+    public Completed getCompletedByObjectiveId(Long objectiveId) {
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
+        authorizationService.hasRoleReadByObjectiveId(objectiveId, authorizationUser);
+        return completedBusinessService.getCompletedByObjectiveId(objectiveId);
+    }
 }

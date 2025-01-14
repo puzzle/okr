@@ -85,4 +85,20 @@ class CompletedAuthorizationServiceTest {
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
+
+    @DisplayName("Should throw an exception when the user is not authorized to get completed object by objective ID")
+    @Test
+    void shouldThrowExceptionWhenNotAuthorizedToGetCompletedByObjectiveId() {
+        String reason = "junit test reason";
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
+                .when(authorizationService)
+                .hasRoleReadByObjectiveId(objectiveId, authorizationUser);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                                                         () -> completedAuthorizationService
+                                                                 .getCompletedByObjectiveId(objectiveId));
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
+        assertEquals(reason, exception.getReason());
+    }
 }

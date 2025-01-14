@@ -12,7 +12,7 @@
           <img
             (click)="$event.stopPropagation()"
             [attr.data-testId]="'objective-state'"
-            [src]="'assets/icons/' + objective.state"
+            [src]="'assets/icons/' + getSvgForState(objective.state)"
             alt="The objectives state"
             class="icon"
             matTooltip="{{ getStateTooltip(objective.state) }}"

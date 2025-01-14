@@ -7,7 +7,6 @@ import { OverviewEntity } from './types/model/overview-entity';
 import { KeyResultObjective } from './types/model/key-result-objective';
 import { Quarter } from './types/model/quarter';
 import { KeyResultOrdinal } from './types/model/key-result-ordinal';
-import { Objective } from './types/model/objective';
 import { User } from './types/model/user';
 import { KeyResultMetric } from './types/model/key-result-metric';
 import { Unit } from './types/enums/unit';
@@ -17,6 +16,8 @@ import { CheckInOrdinal } from './types/model/check-in-ordinal';
 import { CheckInMetric } from './types/model/check-in-metric';
 import { CheckInOrdinalMin } from './types/model/check-in-ordinal-min';
 import { CheckInMetricMin } from './types/model/check-in-metric-min';
+import { Completed } from './types/model/completed';
+import { Objective } from './types/model/objective';
 
 export const teamFormObject = {
   name: 'newTeamName'
@@ -245,41 +246,41 @@ export const objectiveMin: ObjectiveMin = {
     keyResultOrdinalMin] as KeyResultMin[]
 } as ObjectiveMin;
 
-export const objectiveResponse1: any = {
+export const objectiveResponse1: ObjectiveMin = {
   id: 101,
   version: 1,
   title: 'Increase Environment Engagement',
-  state: 'ONGOING',
+  state: State.ONGOING,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
 };
 
-export const objectiveResponse2: any = {
+export const objectiveResponse2: ObjectiveMin = {
   id: 102,
   version: 1,
   title: 'Increase Social Engagement',
-  state: 'DRAFT',
+  state: State.DRAFT,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
 };
 
-export const objectiveResponse3: any = {
+export const objectiveResponse3: ObjectiveMin = {
   id: 103,
   version: 1,
   title: 'Increase Member Engagement',
-  state: 'NOTSUCCESSFUL',
+  state: State.NOTSUCCESSFUL,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
 };
 
-export const objectiveResponse4: any = {
+export const objectiveResponse4: ObjectiveMin = {
   id: 104,
   version: 1,
   title: 'Increase Company Engagement',
-  state: 'SUCCESSFUL',
+  state: State.SUCCESSFUL,
   quarter: quarterMin,
   keyResults: [keyResultMetricMin,
     keyResultOrdinalMin] as KeyResultMin[]
@@ -347,7 +348,7 @@ export const objective: Objective = {
   teamId: 2,
   quarterId: 2,
   quarterLabel: 'GJ 22/23-Q2',
-  state: State.SUCCESSFUL,
+  state: State.ONGOING,
   isWriteable: true
 };
 
@@ -361,6 +362,20 @@ export const objectiveWriteableFalse: Objective = {
   quarterLabel: 'GJ 22/23-Q2',
   state: State.NOTSUCCESSFUL,
   isWriteable: false
+};
+
+export const completed: Completed = {
+  id: 1,
+  version: 1,
+  objective: objective,
+  comment: 'This is Completed'
+};
+
+export const notCompleted: Completed = {
+  id: 1,
+  version: 1,
+  objective: objective,
+  comment: null
 };
 
 export const firstCheckIn: CheckInMetricMin = {

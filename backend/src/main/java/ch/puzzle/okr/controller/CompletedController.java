@@ -47,4 +47,14 @@ public class CompletedController {
     public void deleteCompletedByObjectiveId(@PathVariable long objectiveId) {
         completedAuthorizationService.deleteCompletedByObjectiveId(objectiveId);
     }
+
+    @Operation(summary = "Get Completed by Objective Id", description = "Get Completed from one Objective by objectiveId.")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned Completed by Objective Id"),
+            @ApiResponse(responseCode = "401", description = "Not authorized to get Completed Reference", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Completed with requested Objective id") })
+    @GetMapping("/{objectiveId}")
+    public CompletedDto getCompletedByObjectiveId(@PathVariable long objectiveId) {
+        Completed completedByObjectiveId = completedAuthorizationService.getCompletedByObjectiveId(objectiveId);
+        return completedMapper.toDto(completedByObjectiveId);
+    }
 }

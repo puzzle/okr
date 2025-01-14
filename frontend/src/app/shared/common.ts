@@ -1,5 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/key-result-metric-min';
+import { State } from './types/enums/state';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString()
@@ -119,4 +120,18 @@ export function hasFormFieldErrors(formGroup: FormGroup, field: string) {
   } else {
     return false;
   }
+}
+
+export function getSvgForState(objectiveState: State) {
+  const svgMapping = new Map([
+    ['ONGOING',
+      'ongoing-icon.svg'],
+    ['NOTSUCCESSFUL',
+      'not-successful-icon.svg'],
+    ['SUCCESSFUL',
+      'successful-icon.svg'],
+    ['DRAFT',
+      'draft-icon.svg']
+  ]);
+  return svgMapping.get(objectiveState);
 }

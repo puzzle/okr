@@ -16,4 +16,8 @@ export class CompletedService {
   deleteCompleted(objectiveId: number): Observable<Completed> {
     return this.httpClient.delete<Completed>('/api/v2/completed/' + objectiveId);
   }
+
+  getCompleted(objectiveId: number): Observable<Completed> {
+    return this.httpClient.get<Completed>('/api/v2/completed/' + objectiveId);
+  }
 }

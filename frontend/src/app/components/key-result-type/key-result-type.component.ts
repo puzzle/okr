@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
-import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
+import { ControlContainer, FormGroup, FormGroupDirective, ValidationErrors } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
@@ -46,23 +46,21 @@ export class KeyResultTypeComponent {
   getErrorMessage(
     error: string, field: string, firstNumber: number | null, secondNumber: number | null
   ): string {
+    console.log(error);
     return field + this.translate.instant('DIALOG_ERRORS.' + error)
       .format(firstNumber, secondNumber);
   }
 
-  /*
-   * getErrorMessage(formfield: any) {
-   *   if (!formfield.errors) {
-   *     return;
-   *   }
-   *   return Object.keys(formfield.errors).map((errorKey: any) =>
-   *       this.translate.instant(
-   *           'ERRORS.' + errorKey,
-   *           formfield.errors[errorKey],
-   *       ),
-   *   );
-   * }
-   */
+
+  getErrorMessages(controlName: string) {
+    const formField = this.keyResultForm.get(controlName);
+    if (!formField?.errors) {
+      return;
+    }
+    return Object.keys(formField.errors)
+      .map((errorKey: any) => this.translate.instant('ERRORS.' + errorKey, formField.errors?.[errorKey] || { error: {} } as ValidationErrors));
+  }
+
 
   invalidOwner() {
     return this.keyResultForm.get('owner')?.invalid || false;

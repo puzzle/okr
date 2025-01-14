@@ -28,6 +28,11 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/quarter';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
+import * as de from '../../../assets/i18n/de.json';
+import { getValueOfForm } from '../../shared/common';
+
 
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;
@@ -252,6 +257,7 @@ describe('KeyResultDialogComponent', () => {
 
   describe('New KeyResult', () => {
     beforeEach(() => {
+      mockUserService.getCurrentUser.mockReturnValue(testUser);
       TestBed.configureTestingModule({
         imports: [
           MatDialogModule,
@@ -264,7 +270,10 @@ describe('KeyResultDialogComponent', () => {
           MatIconModule,
           TranslateModule.forRoot(),
           DragDropModule,
-          MatDividerModule
+          MatDividerModule,
+          TranslateTestingModule.withTranslations({
+            de: de
+          })
         ],
         providers: [
           provideRouter([]),
@@ -439,6 +448,7 @@ describe('KeyResultDialogComponent', () => {
   describe('Edit KeyResult Metric', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(users);
+      mockUserService.getCurrentUser.mockReturnValue(testUser);
       TestBed.configureTestingModule({
         imports: [
           MatDialogModule,
@@ -468,11 +478,11 @@ describe('KeyResultDialogComponent', () => {
             provide: MAT_DIALOG_DATA,
             useValue: { keyResult: fullKeyResultMetric,
               objective: keyResultObjective }
-          }
-          /*
-           * { provide: UserService,
-           *   useValue: userService }
-           */
+          },
+
+          { provide: UserService,
+            useValue: userService }
+
         ],
         declarations: [
           KeyResultDialogComponent,
@@ -551,11 +561,36 @@ describe('KeyResultDialogComponent', () => {
       expect(component.keyResultForm.get('owner')!.value)
         .toBe(testUser);
     }));
+
+    it('should use values from input', () => {
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'unit']))
+        .toEqual('CHF');
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'baseline']))
+        .toEqual(3);
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'stretchGoal']))
+        .toEqual(25);
+
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'commitZone']))
+        .toEqual('');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'targetZone']))
+        .toEqual('');
+
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'stretchZone']))
+        .toEqual('');
+    });
   });
 
   describe('Edit KeyResult Ordinal', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(users);
+      mockUserService.getCurrentUser.mockReturnValue(testUser);
+
       TestBed.configureTestingModule({
         imports: [
           MatDialogModule,
@@ -585,6 +620,10 @@ describe('KeyResultDialogComponent', () => {
             provide: MAT_DIALOG_DATA,
             useValue: { keyResult: fullKeyResultOrdinal,
               objective: keyResultObjective }
+          },
+          {
+            provide: UserService,
+            useValue: userService
           }
         ],
         declarations: [
@@ -605,6 +644,30 @@ describe('KeyResultDialogComponent', () => {
 
     afterEach(() => {
       mockUserService.getUsers.mockReset();
+    });
+
+    it('should use values from input', () => {
+      // Default value
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'unit']))
+        .toEqual('NUMBER');
+
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'baseline']))
+        .toEqual(0);
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'stretchGoal']))
+        .toEqual(0);
+
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'commitZone']))
+        .toEqual('Commit zone');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'targetZone']))
+        .toEqual('Target zone');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'stretchZone']))
+        .toEqual('Stretch goal');
     });
 
     it('should use key-result value from data input', waitForAsync(() => {

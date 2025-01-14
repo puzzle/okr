@@ -41,9 +41,8 @@
               {{ "UNIT." + unit.value | translate }}
             </option>
           </select>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
-            <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
-          </mat-error>
+
+          <mat-error *ngFor="let error of getErrorMessages('unit')">{{ error }}</mat-error>
         </div>
       </div>
     </div>
@@ -67,9 +66,7 @@
             {{ user.firstName + " " + user.lastName }}
           </mat-option>
         </mat-autocomplete>
-        <mat-error *ngIf="invalidOwner()">
-          <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
-        </mat-error>
+        <mat-error *ngFor="let error of getErrorMessages('owner')">{{ error }}</mat-error>
       </div>
     </div>
   </div>
@@ -88,9 +85,7 @@
             formControlName="baseline"
             id="baseline"
           />
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'baseline')">
-            <span>{{ getErrorMessage("MUST_BE_NUMBER", "Baseline", null, null) }}</span>
-          </mat-error>
+          <mat-error *ngFor="let error of getErrorMessages('baseline')">{{ error }}</mat-error>
         </div>
       </div>
     </div>
@@ -106,9 +101,7 @@
             formControlName="targetGoal"
             id="target-goal"
           />
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
-            <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
-          </mat-error>
+          <mat-error *ngFor="let error of getErrorMessages('targetGoal')">{{ error }}</mat-error>
         </div>
       </div>
     </div>
@@ -124,9 +117,7 @@
             formControlName="stretchGoal"
             id="stretch-goal"
           />
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
-            <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
-          </mat-error>
+          <mat-error *ngFor="let error of getErrorMessages('stretchGoal')">{{ error }}</mat-error>
         </div>
       </div>
     </div>
@@ -147,9 +138,7 @@
             id="commit-zone"
             [attr.data-testId]="'commit-zone'"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'commitZone')">
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Commit Zone", 1, 400) }}</span>
-          </mat-error>
+          <mat-error *ngFor="let error of getErrorMessages('commitZone')">{{ error }}</mat-error>
         </div>
       </div>
     </div>
@@ -165,9 +154,7 @@
             formControlName="targetZone"
             id="target-zone"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'targetZone')">
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Target Zone", 1, 400) }}</span>
-          </mat-error>
+          <mat-error *ngFor="let error of getErrorMessages('targetZone')">{{ error }}</mat-error>
         </div>
       </div>
     </div>
@@ -183,9 +170,7 @@
             formControlName="stretchZone"
             id="stretch-zone"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchZone')">
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Stretch Zone", 1, 400) }}</span>
-          </mat-error>
+          <mat-error *ngFor="let error of getErrorMessages('stretchZone')">{{ error }}</mat-error>
         </div>
       </div>
     </div>

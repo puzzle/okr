@@ -13,6 +13,7 @@ import { getKeyResultForm } from '../../shared/constant-library';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { getValueOfForm } from '../../shared/common';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;
@@ -24,11 +25,14 @@ describe('KeyResultTypeComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [KeyResultTypeComponent],
-        imports: [MatAutocompleteModule,
+        imports: [
+          MatAutocompleteModule,
+          MatFormFieldModule,
           TranslateTestingModule.withTranslations({
             de: de
           }),
-          ReactiveFormsModule],
+          ReactiveFormsModule
+        ],
         providers: [FormGroupDirective,
           { provide: FormGroupDirective,
             useValue: formGroupDirective }]
@@ -47,33 +51,6 @@ describe('KeyResultTypeComponent', () => {
         .toBeTruthy();
     });
 
-    it('should use values from input', () => {
-      expect(component.isTypeChangeAllowed())
-        .toBeFalsy();
-      expect(component.isMetric)
-        .toBeTruthy();
-
-      expect(getValueOfForm(component.keyResultForm, ['metric',
-        'unit']))
-        .toEqual('PERCENT');
-      expect(getValueOfForm(component.keyResultForm, ['metric',
-        'baseline']))
-        .toEqual(30);
-      expect(getValueOfForm(component.keyResultForm, ['metric',
-        'stretchGoal']))
-        .toEqual(100);
-
-      expect(getValueOfForm(component.keyResultForm, ['ordinal',
-        'commitZone']))
-        .toEqual('');
-      expect(getValueOfForm(component.keyResultForm, ['ordinal',
-        'targetZone']))
-        .toEqual('');
-
-      expect(getValueOfForm(component.keyResultForm, ['ordinal',
-        'stretchZone']))
-        .toEqual('');
-    });
 
     it('should switch type of key-result', () => {
       jest.spyOn(component, 'isTypeChangeAllowed')
@@ -124,11 +101,14 @@ describe('KeyResultTypeComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [KeyResultTypeComponent],
-        imports: [TranslateTestingModule.withTranslations({
-          de: de
-        }),
-        MatAutocompleteModule,
-        ReactiveFormsModule],
+        imports: [
+          TranslateTestingModule.withTranslations({
+            de: de
+          }),
+          MatFormFieldModule,
+          MatAutocompleteModule,
+          ReactiveFormsModule
+        ],
         providers: [FormGroupDirective,
           { provide: FormGroupDirective,
             useValue: formGroupDirective }]
@@ -144,33 +124,6 @@ describe('KeyResultTypeComponent', () => {
     it('should create', () => {
       expect(component)
         .toBeTruthy();
-    });
-
-    it('should use values from input', () => {
-      expect(component.isTypeChangeAllowed())
-        .toBeTruthy();
-
-      // Default value
-      expect(getValueOfForm(component.keyResultForm, ['metric',
-        'unit']))
-        .toEqual('NUMBER');
-
-      expect(getValueOfForm(component.keyResultForm, ['metric',
-        'baseline']))
-        .toEqual(0);
-      expect(getValueOfForm(component.keyResultForm, ['metric',
-        'stretchGoal']))
-        .toEqual(0);
-
-      expect(getValueOfForm(component.keyResultForm, ['ordinal',
-        'commitZone']))
-        .toEqual('Grundriss steht');
-      expect(getValueOfForm(component.keyResultForm, ['ordinal',
-        'targetZone']))
-        .toEqual('Gebäude gebaut');
-      expect(getValueOfForm(component.keyResultForm, ['ordinal',
-        'stretchZone']))
-        .toEqual('Inneneinrichtung gestaltet');
     });
 
     it('should select ordinal tab', () => {
@@ -200,11 +153,14 @@ describe('KeyResultTypeComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [KeyResultTypeComponent],
-        imports: [MatAutocompleteModule,
+        imports: [
+          MatAutocompleteModule,
           TranslateTestingModule.withTranslations({
             de: de
           }),
-          ReactiveFormsModule],
+          ReactiveFormsModule,
+          MatFormFieldModule
+        ],
         providers: [FormGroupDirective,
           { provide: FormGroupDirective,
             useValue: formGroupDirective }]

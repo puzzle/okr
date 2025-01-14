@@ -101,7 +101,8 @@ public class ObjectiveController {
     @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Duplicated a given Objective", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }) })
     @PostMapping("/duplicate")
-    public ResponseEntity<ObjectiveDto> duplicateObjective(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as JSON", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
+    public ResponseEntity<ObjectiveDto> duplicateObjective(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as JSON", required = true)
+    @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
         Objective objective = objectiveMapper.toObjective(duplicateObjectiveDto.objective());
         List<Long> keyResultIds = duplicateObjectiveDto.keyResultIds();
         ObjectiveDto duplicatedObjectiveDto = objectiveMapper

@@ -100,26 +100,12 @@ export class KeyResultFormComponent implements OnInit {
 
   setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
     this.keyResultForm.get('metric')
-      ?.get('unit')
-      ?.setValue(keyResultMetric.unit);
-    this.keyResultForm.get('metric')
-      ?.get('baseline')
-      ?.setValue(keyResultMetric.baseline);
-    this.keyResultForm.get('metric')
-      ?.get('stretchGoal')
-      ?.setValue(keyResultMetric.stretchGoal);
+      ?.patchValue({ ...keyResultMetric });
   }
 
   setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {
     this.keyResultForm.get('ordinal')
-      ?.get('commitZone')
-      ?.setValue(keyResultOrdinal.commitZone);
-    this.keyResultForm.get('ordinal')
-      ?.get('targetZone')
-      ?.setValue(keyResultOrdinal.targetZone);
-    this.keyResultForm.get('ordinal')
-      ?.get('stretchZone')
-      ?.setValue(keyResultOrdinal.stretchZone);
+      ?.patchValue({ ...keyResultOrdinal });
   }
 
   getErrorMessage(

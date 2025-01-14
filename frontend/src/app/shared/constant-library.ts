@@ -1,9 +1,9 @@
 import { HttpType } from './types/enums/http-type';
 import { ToasterType } from './types/enums/toaster-type';
 import { HttpStatusCode } from '@angular/common/http';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Unit } from './types/enums/unit';
-import { User } from './types/model/user';
+import { getFullNameOfUser, User } from './types/model/user';
 
 type MessageKeyMap = Record<string, MessageEntry>;
 
@@ -87,7 +87,8 @@ export function getKeyResultForm(): FormGroup {
       Validators.maxLength(250)]),
     description: new FormControl('', [Validators.maxLength(4096)]),
     owner: new FormControl<User>({} as User, [Validators.required,
-      Validators.nullValidator]),
+      Validators.nullValidator,
+      ownerValidator()]),
     actionList: new FormControl([]),
     keyResultType: new FormControl('metric'),
     metric: new FormGroup({
@@ -102,13 +103,23 @@ export function getKeyResultForm(): FormGroup {
     ordinal: new FormGroup({
       commitZone: new FormControl('', [Validators.required,
         Validators.maxLength(400),
-        Validators.minLength(5)]),
+        Validators.minLength(2)]),
       targetZone: new FormControl('', [Validators.required,
         Validators.maxLength(400),
-        Validators.minLength(5)]),
+        Validators.minLength(2)]),
       stretchZone: new FormControl('', [Validators.required,
         Validators.maxLength(400),
-        Validators.minLength(5)])
+        Validators.minLength(2)])
     })
   });
+}
+
+function ownerValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const user = control.value as User;
+    if (user?.id > 0 && getFullNameOfUser(user).length > 3) {
+      return null;
+    }
+    return { invalidUser: { value: control.value } };
+  };
 }

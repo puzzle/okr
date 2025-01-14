@@ -9,6 +9,7 @@ import { CloseState } from '../../shared/types/enums/close-state';
 import { KeyResultService } from '../../services/key-result.service';
 import { DialogService } from '../../services/dialog.service';
 import { getKeyResultForm } from '../../shared/constant-library';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -24,8 +25,16 @@ export class KeyResultDialogComponent {
       keyResult: KeyResult; },
     private keyResultService: KeyResultService,
     public dialogService: DialogService,
-    public dialogRef: MatDialogRef<KeyResultDialogComponent>
-  ) {}
+    public dialogRef: MatDialogRef<KeyResultDialogComponent>,
+    private userService: UserService
+  ) {
+    this.setValidators(this.keyResultForm.get('keyResultType')?.value);
+    this.keyResultForm.get('owner')
+      ?.setValue(this.userService.getCurrentUser());
+    this.keyResultForm.get('keyResultType')?.valueChanges.subscribe((value) => {
+      this.setValidators(value);
+    });
+  }
 
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
@@ -70,5 +79,20 @@ export class KeyResultDialogComponent {
 
   getDialogTitle(): string {
     return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
+  }
+
+  setValidators(type: string) {
+    if (type == 'metric') {
+      this.keyResultForm.get('metric')
+        ?.enable();
+      this.keyResultForm.get('ordinal')
+        ?.disable();
+    }
+    if (type == 'ordinal') {
+      this.keyResultForm.get('metric')
+        ?.disable();
+      this.keyResultForm.get('ordinal')
+        ?.enable();
+    }
   }
 }

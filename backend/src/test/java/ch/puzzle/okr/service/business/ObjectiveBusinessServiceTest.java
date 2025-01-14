@@ -1,5 +1,13 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.models.State.DRAFT;
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -7,6 +15,9 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,18 +29,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static ch.puzzle.okr.models.State.DRAFT;
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
@@ -131,7 +130,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @ParameterizedTest(name = "Should handle quarters correctly on updateEntity() when objectives and quarters get changed")
-    @ValueSource(booleans = {false, true})
+    @ValueSource(booleans = { false, true })
     void shouldHandleQuarterCorrectlyUsingUpdateEntity(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";
@@ -179,7 +178,7 @@ class ObjectiveBusinessServiceTest {
 
         assertEquals(hasKeyResultAnyCheckIns, isImUsed);
         assertEquals(hasKeyResultAnyCheckIns ? savedObjective.getQuarter() : changedObjective.getQuarter(),
-                updatedEntity.getQuarter());
+                     updatedEntity.getQuarter());
         assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
     }
@@ -237,9 +236,9 @@ class ObjectiveBusinessServiceTest {
 
         Objective duplicatedObjective = objectiveBusinessService
                 .duplicateObjective(sourceObjective.getId(),
-                        newObjective,
-                        authorizationUser,
-                        keyResults.stream().map(KeyResult::getId).toList());
+                                    newObjective,
+                                    authorizationUser,
+                                    keyResults.stream().map(KeyResult::getId).toList());
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());
@@ -261,11 +260,9 @@ class ObjectiveBusinessServiceTest {
                 .build();
         KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withTitle("Metric").build();
         objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
-        verify(objectiveBusinessService, times(1))
-                .makeCopyOfKeyResultMetric(keyResultMetric, objective);
+        verify(objectiveBusinessService, times(1)).makeCopyOfKeyResultMetric(keyResultMetric, objective);
 
-        verify(keyResultBusinessService, times(1))
-                .createEntity(any(KeyResult.class), any(AuthorizationUser.class));
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
     }
 
     @DisplayName("Should duplicate ordinal key result")
@@ -278,11 +275,9 @@ class ObjectiveBusinessServiceTest {
                 .build();
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withTitle("Ordinal").build();
         objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
-        verify(objectiveBusinessService, times(1))
-                .makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
+        verify(objectiveBusinessService, times(1)).makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
 
-        verify(keyResultBusinessService, times(1))
-                .createEntity(any(KeyResult.class), any(AuthorizationUser.class));
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
     }
 
     @DisplayName("Should duplicate ActionList")
@@ -291,26 +286,30 @@ class ObjectiveBusinessServiceTest {
         KeyResult oldKeyResult = KeyResultMetric.Builder.builder().withId(1L).build();
         KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(2L).build();
 
-        Action action = Action.Builder.builder().withKeyResult(oldKeyResult).withPriority(1).withVersion(1)
-                .isChecked(true).withAction("Action Point 1").build();
+        Action action = Action.Builder
+                .builder()
+                .withKeyResult(oldKeyResult)
+                .withPriority(1)
+                .withVersion(1)
+                .isChecked(true)
+                .withAction("Action Point 1")
+                .build();
 
         oldKeyResult.setActionList(List.of(action));
 
         newKeyResult.setActionList(objectiveBusinessService.duplicateActionList(oldKeyResult, newKeyResult));
 
-        //assert that id changes to new key result
+        // assert that id changes to new key result
         assertNotEquals(newKeyResult.getActionList().getFirst().getKeyResult().getId(),
-                oldKeyResult.getActionList().getFirst().getKeyResult().getId());
+                        oldKeyResult.getActionList().getFirst().getKeyResult().getId());
 
-        //assert that all other attributes stay the same
+        // assert that all other attributes stay the same
         assertThat(newKeyResult.getActionList().getFirst())
                 .extracting("priority", "version", "checked", "actionPoint")
-                .containsExactly(
-                        oldKeyResult.getActionList().getFirst().getPriority(),
-                        oldKeyResult.getActionList().getFirst().getVersion(),
-                        oldKeyResult.getActionList().getFirst().isChecked(),
-                        oldKeyResult.getActionList().getFirst().getActionPoint()
-                );
+                .containsExactly(oldKeyResult.getActionList().getFirst().getPriority(),
+                                 oldKeyResult.getActionList().getFirst().getVersion(),
+                                 oldKeyResult.getActionList().getFirst().isChecked(),
+                                 oldKeyResult.getActionList().getFirst().getActionPoint());
 
     }
 

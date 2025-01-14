@@ -57,10 +57,11 @@ export class KeyResultTypeComponent implements OnInit {
     }
 
     if (this.currentKeyResultType() == 'ordinal') {
-      this.keyResultForm.patchValue({ ordinal: { ...this.castToOrdinal(this.keyResult) } });
+      this.keyResultForm.get('ordinal')
+        ?.patchValue({ ...this.castToOrdinal(this.keyResult) });
     }
 
-    this.setValidators(this.keyResultForm.value.keyResultType);
+    // this.setValidators(this.keyResultForm.value.keyResultType);
   }
 
   castToMetric(keyResult: KeyResult) {

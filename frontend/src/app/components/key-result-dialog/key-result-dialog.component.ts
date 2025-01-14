@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/objective';
 import { KeyResult } from '../../shared/types/model/key-result';
@@ -8,7 +8,6 @@ import { KeyResultOrdinalDto } from '../../shared/types/DTOs/key-result-ordinal-
 import { CloseState } from '../../shared/types/enums/close-state';
 import { KeyResultService } from '../../services/key-result.service';
 import { DialogService } from '../../services/dialog.service';
-import { UserService } from '../../services/user.service';
 import { getKeyResultForm } from '../../shared/constant-library';
 
 
@@ -18,18 +17,15 @@ import { getKeyResultForm } from '../../shared/constant-library';
   standalone: false
 })
 export class KeyResultDialogComponent {
-  keyResultForm: FormGroup;
+  keyResultForm: FormGroup = getKeyResultForm();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
       keyResult: KeyResult; },
     private keyResultService: KeyResultService,
     public dialogService: DialogService,
-    public dialogRef: MatDialogRef<KeyResultDialogComponent>,
-    private userService: UserService
-  ) {
-    this.keyResultForm = getKeyResultForm();
-  }
+    public dialogRef: MatDialogRef<KeyResultDialogComponent>
+  ) {}
 
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
@@ -41,10 +37,9 @@ export class KeyResultDialogComponent {
       ? ({ ...value,
         objective: this.data.objective } as KeyResultMetricDto)
       : ({ ...value,
-        objective: this.data.objective,
-        id: this.data.keyResult?.id } as KeyResultOrdinalDto);
+        objective: this.data.objective } as KeyResultOrdinalDto);
     keyResult.id = this.data.keyResult?.id;
-    keyResult.version = this.data.keyResult?.version!;
+    keyResult.version = this.data.keyResult?.version;
     this.keyResultService.saveKeyResult(keyResult)
       .subscribe((returnValue) => {
         this.dialogRef.close({
@@ -73,22 +68,7 @@ export class KeyResultDialogComponent {
     this.saveKeyResult(true);
   }
 
-  isTouchedOrDirty(name: string): boolean {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched || false;
-  }
-
-  invalidOwner(): boolean {
-    return this.isTouchedOrDirty('owner') && (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner);
-  }
-
   getDialogTitle(): string {
     return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
-  }
-
-  ownerValidator(nameRe: RegExp): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const forbidden = nameRe.test(control.value);
-      return forbidden ? { forbiddenName: { value: control.value } } : null;
-    };
   }
 }

@@ -8,7 +8,7 @@
         [attr.data-testId]="'submit'"
         type="submit"
         (click)="saveKeyResult()"
-        [disabled]="keyResultForm.invalid || invalidOwner()"
+        [disabled]="keyResultForm.invalid"
         color="primary"
         mat-flat-button
       >
@@ -19,7 +19,7 @@
         [attr.data-testId]="'save-and-new'"
         (click)="openNew()"
         mat-stroked-button
-        [disabled]="keyResultForm.invalid || invalidOwner()"
+        [disabled]="keyResultForm.invalid"
         color="primary"
       >
         Speichern & Neu

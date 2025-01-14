@@ -177,7 +177,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
     public List<Action> duplicateActionList(KeyResult oldKeyResult, KeyResult newKeyResult) {
         List<Action> actionList = oldKeyResult.getActionList();
-        if (!actionList.isEmpty()) {
+        if (actionList != null) {
             actionList = actionList
                     .stream()
                     .map(e -> Action.Builder

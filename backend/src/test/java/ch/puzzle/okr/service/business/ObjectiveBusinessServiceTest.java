@@ -261,8 +261,11 @@ class ObjectiveBusinessServiceTest {
                 .build();
         KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withTitle("Metric").build();
         objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
-        verify(objectiveBusinessService.makeCopyOfKeyResultMetric(keyResultMetric, objective), times(1));
-        verify(keyResultBusinessService.createEntity(keyResultMetric, authorizationUser), times(1));
+        verify(objectiveBusinessService, times(1))
+                .makeCopyOfKeyResultMetric(keyResultMetric, objective);
+
+        verify(keyResultBusinessService, times(1))
+                .createEntity(any(KeyResult.class), any(AuthorizationUser.class));
     }
 
     @DisplayName("Should duplicate ordinal key result")
@@ -275,8 +278,11 @@ class ObjectiveBusinessServiceTest {
                 .build();
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withTitle("Ordinal").build();
         objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
-        verify(objectiveBusinessService.makeCopyOfKeyResultMetric(keyResultOrdinal, objective), times(1));
-        verify(keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser), times(1));
+        verify(objectiveBusinessService, times(1))
+                .makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
+
+        verify(keyResultBusinessService, times(1))
+                .createEntity(any(KeyResult.class), any(AuthorizationUser.class));
     }
 
     @DisplayName("Should duplicate ActionList")

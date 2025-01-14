@@ -19,7 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class KeyResultFormComponent implements OnInit, OnDestroy {
   users$!: Observable<User[]>;
 
-  filteredUsers$: Observable<User[]> | undefined = of([]);
+  filteredUsers$: Observable<User[]> = of([]);
 
   actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
 
@@ -40,7 +40,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
-    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value)));
+    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(startWith(''), filter((value) => typeof value === 'string'), switchMap((value) => this.filter(value))) || of([]);
     if (this.keyResult) {
       this.keyResultForm.patchValue({ actionList: this.keyResult.actionList });
       this.keyResultForm.controls['title'].setValue(this.keyResult.title);

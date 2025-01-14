@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Action } from '../../shared/types/model/action';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/objective';
@@ -65,16 +65,28 @@ export class KeyResultDialogComponent {
       keyResultType: ['metric'],
       // }),
       metric: this.fb.group({
-        unit: [Unit.NUMBER],
+        unit: [Unit.NUMBER,
+          [Validators.required]],
         baseline: [0,
-          this.getValidatorsForKeyResultMetric(true)],
-        targetGoal: [0],
-        stretchGoal: [0]
+          [Validators.required,
+            Validators.pattern('^-?\\d+\\.?\\d*$')]],
+        targetGoal: [0,
+          [Validators.required,
+            Validators.pattern('^-?\\d+\\.?\\d*$')]],
+        stretchGoal: [0,
+          [Validators.required,
+            Validators.pattern('^-?\\d+\\.?\\d*$')]]
       }),
       ordinal: this.fb.group({
-        commitZone: [''],
-        targetZone: [''],
-        stretchZone: ['']
+        commitZone: ['',
+          [Validators.required,
+            Validators.maxLength(2)]],
+        targetZone: ['',
+          [Validators.required,
+            Validators.maxLength(2)]],
+        stretchZone: ['',
+          [Validators.required,
+            Validators.maxLength(2)]]
       })
     });
   }
@@ -139,22 +151,5 @@ export class KeyResultDialogComponent {
 
   getDialogTitle(): string {
     return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
-  }
-
-  getValidatorsForKeyResultMetric(isMetric: boolean): ValidatorFn[] {
-    return isMetric
-      ? [Validators.required,
-        Validators.maxLength(400)]
-      : [];
-  }
-
-  toggle() {
-    if (this.keyResultForm.get('metric')?.disabled) {
-      this.keyResultForm.get('metric')
-        ?.enable();
-    } else {
-      this.keyResultForm.get('metric')
-        ?.disable();
-    }
   }
 }

@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
-import { ControlContainer,
+import {
+  ControlContainer,
   FormGroup,
-  FormGroupDirective } from '@angular/forms';
+  FormGroupDirective
+} from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
@@ -114,7 +116,19 @@ export class KeyResultTypeComponent implements OnInit {
       this.isMetric = !this.isMetric;
       const keyResultType = this.isMetric ? 'metric' : 'ordinal';
       this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
-      this.switchValidators();
+      // this.switchValidators();
+    }
+    if (type == 'metric') {
+      this.keyResultForm.get('metric')
+        ?.enable();
+      this.keyResultForm.get('ordinal')
+        ?.disable();
+    }
+    if (type == 'ordinal') {
+      this.keyResultForm.get('metric')
+        ?.disable();
+      this.keyResultForm.get('ordinal')
+        ?.enable();
     }
   }
 

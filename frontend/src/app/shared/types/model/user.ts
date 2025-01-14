@@ -15,5 +15,5 @@ export const extractTeamsFromUser = (user: User) => {
 };
 
 export const getFullNameOfUser = (user: User | UserTableEntry) => {
-  return `${user.firstName} ${user.lastName}`;
+  return `${user?.firstName || ''} ${user?.lastName || ''}`;
 };

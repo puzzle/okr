@@ -2,6 +2,7 @@ import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
+import { wait } from 'cypress-real-events/utils';
 
 let overviewPage = new CyOverviewPage();
 
@@ -42,6 +43,7 @@ describe('functionality of duplicating objectives and their belonging key-result
       .excludeKeyResults([secondKeyResultName,
         thirdKeyResultName])
       .submit();
+    wait(1000);
 
     overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName);
 

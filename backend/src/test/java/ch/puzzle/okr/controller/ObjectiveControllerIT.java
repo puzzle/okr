@@ -49,7 +49,7 @@ class ObjectiveControllerIT {
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
     private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
-    private static final String URL_DUPLICATE_OBJECTIVE_5 = "/api/v2/objectives/5";
+    private static final String URL_DUPLICATE_OBJECTIVE_5 = "/api/v2/objectives/duplicate";
     private static final String JSON = """
             {
                "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",

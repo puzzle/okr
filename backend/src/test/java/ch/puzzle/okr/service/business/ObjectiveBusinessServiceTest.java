@@ -235,8 +235,7 @@ class ObjectiveBusinessServiceTest {
         when(keyResultBusinessService.getEntityById(2L)).thenReturn(keyResultMetric);
 
         Objective duplicatedObjective = objectiveBusinessService
-                .duplicateObjective(sourceObjective.getId(),
-                                    newObjective,
+                .duplicateObjective(newObjective,
                                     authorizationUser,
                                     keyResults.stream().map(KeyResult::getId).toList());
 

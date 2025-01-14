@@ -15,10 +15,10 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
         super(objectiveBusinessService, authorizationService);
     }
 
-    public Objective duplicateEntity(Long id, Objective objective, List<Long> keyResultIds) {
+    public Objective duplicateEntity(Objective objective, List<Long> keyResultIds) {
         AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(objective, authorizationUser);
-        return getBusinessService().duplicateObjective(id, objective, authorizationUser, keyResultIds);
+        return getBusinessService().duplicateObjective(objective, authorizationUser, keyResultIds);
     }
 
     public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {

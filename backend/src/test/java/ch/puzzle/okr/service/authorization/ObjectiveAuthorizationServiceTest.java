@@ -162,7 +162,6 @@ class ObjectiveAuthorizationServiceTest {
     @DisplayName("Should throw an exception when not authorized to duplicate an objective")
     @Test
     void shouldThrowExceptionWhenNotAuthorizedToDuplicateObjective() {
-        Long idExistingObjective = 13L;
         String reason = "junit test reason";
         Objective objective = Objective.Builder.builder().build();
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
@@ -172,8 +171,7 @@ class ObjectiveAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                                                          () -> objectiveAuthorizationService
-                                                                 .duplicateEntity(idExistingObjective,
-                                                                                  objective,
+                                                                 .duplicateEntity(objective,
                                                                                   new ArrayList<>()));
 
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
@@ -183,8 +181,6 @@ class ObjectiveAuthorizationServiceTest {
     @DisplayName("Should return duplicated objective when authorized")
     @Test
     void shouldReturnDuplicatedObjectiveWhenAuthorized() {
-        Long idExistingObjective = 13L;
-
         Objective newObjectiveWithoutKeyResults = Objective.Builder
                 .builder() //
                 .withTitle("Objective without KeyResults")
@@ -201,15 +197,13 @@ class ObjectiveAuthorizationServiceTest {
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService
-                .duplicateObjective(idExistingObjective,
-                                    newObjectiveWithoutKeyResults,
+                .duplicateObjective(newObjectiveWithoutKeyResults,
                                     authorizationUser,
                                     keyResults.stream().map(KeyResult::getId).toList()))
                 .thenReturn(newObjectiveWithKeyResults);
 
         Objective objective = objectiveAuthorizationService
-                .duplicateEntity(idExistingObjective,
-                                 newObjectiveWithoutKeyResults,
+                .duplicateEntity(newObjectiveWithoutKeyResults,
                                  keyResults.stream().map(KeyResult::getId).toList());
 
         assertEquals(newObjectiveWithKeyResults, objective);

@@ -122,7 +122,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
-    public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser,
+    public Objective duplicateObjective(Objective objective, AuthorizationUser authorizationUser,
                                         List<Long> keyResultIds) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
         for (Long keyResult : keyResultIds) {

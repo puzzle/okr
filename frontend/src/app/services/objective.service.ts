@@ -31,11 +31,10 @@ export class ObjectiveService {
     return this.httpClient.delete<Objective>(`/api/v2/objectives/${objectiveId}`);
   }
 
-  duplicateObjective(objectiveId: number,
-    duplicateObjectiveDto: {
-      keyResultIds: (number | undefined)[];
-      objective: any;
-    }): Observable<Objective> {
-    return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, duplicateObjectiveDto);
+  duplicateObjective(duplicateObjectiveDto: {
+    keyResultIds: (number | undefined)[];
+    objective: any;
+  }): Observable<Objective> {
+    return this.httpClient.post<Objective>('/api/v2/objectives', duplicateObjectiveDto);
   }
 }

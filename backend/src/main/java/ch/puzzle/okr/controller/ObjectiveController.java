@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 import static org.springframework.http.HttpStatus.IM_USED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -99,13 +100,12 @@ public class ObjectiveController {
     @Operation(summary = "Duplicate Objective", description = "Duplicate a given Objective")
     @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Duplicated a given Objective", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }) })
-    @PostMapping("/{id}")
-    public ResponseEntity<ObjectiveDto> duplicateObjective(@Parameter(description = "The ID for duplicating an Objective.", required = true)
-    @PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as JSON", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
+    @PostMapping("/duplicate")
+    public ResponseEntity<ObjectiveDto> duplicateObjective(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as JSON", required = true) @RequestBody DuplicateObjectiveDto duplicateObjectiveDto) {
         Objective objective = objectiveMapper.toObjective(duplicateObjectiveDto.objective());
         List<Long> keyResultIds = duplicateObjectiveDto.keyResultIds();
         ObjectiveDto duplicatedObjectiveDto = objectiveMapper
-                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective, keyResultIds));
+                .toDto(objectiveAuthorizationService.duplicateEntity(objective, keyResultIds));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 

@@ -54,9 +54,11 @@
           </button>
         </div>
         <ng-template #isCompleted>
-          <h3 [attr.data-testId]="'completed-comment'" class="mb-1">Abschlusskommentar</h3>
-          <div class="linebreak">
-            <p>{{ (completed | async)?.comment }}</p>
+          <div *ngIf="(completed | async)?.comment && (completed | async) as completed">
+            <h3 [attr.data-testId]="'completed-comment'" class="mb-1">Abschlusskommentar</h3>
+            <div class="linebreak">
+              <p>{{ completed.comment }}</p>
+            </div>
           </div>
         </ng-template>
       </section>

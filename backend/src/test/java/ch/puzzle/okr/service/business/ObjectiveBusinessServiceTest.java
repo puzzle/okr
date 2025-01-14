@@ -33,18 +33,6 @@ import org.springframework.web.server.ResponseStatusException;
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
-    @InjectMocks
-    @Spy
-    ObjectiveBusinessService objectiveBusinessService;
-    @Mock
-    ObjectivePersistenceService objectivePersistenceService;
-    @Mock
-    KeyResultBusinessService keyResultBusinessService;
-    @Mock
-    CompletedBusinessService completedBusinessService;
-    @Mock
-    ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
-
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final User user = User.Builder
@@ -73,6 +61,17 @@ class ObjectiveBusinessServiceTest {
             .withObjective(objective)
             .build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
+    @InjectMocks
+    @Spy
+    ObjectiveBusinessService objectiveBusinessService;
+    @Mock
+    ObjectivePersistenceService objectivePersistenceService;
+    @Mock
+    KeyResultBusinessService keyResultBusinessService;
+    @Mock
+    CompletedBusinessService completedBusinessService;
+    @Mock
+    ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
 
     @DisplayName("Should return correct objective on getEntityById()")
     @Test
@@ -206,14 +205,18 @@ class ObjectiveBusinessServiceTest {
                 .build();
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder
                 .builder() //
+                .withId(1L) //
                 .withTitle("Ordinal 1") //
                 .withObjective(sourceObjective) //
+                .withActionList(new ArrayList<>()) //
                 .build();
         KeyResult keyResultMetric = KeyResultMetric.Builder
                 .builder() //
+                .withId(2L) //
                 .withTitle("Metric 1") //
                 .withObjective(sourceObjective) //
                 .withUnit(Unit.FTE) //
+                .withActionList(new ArrayList<>()) //
                 .build();
 
         List<KeyResult> keyResults = new ArrayList<>();
@@ -228,10 +231,14 @@ class ObjectiveBusinessServiceTest {
                 .build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
+        when(keyResultBusinessService.getEntityById(1L)).thenReturn(keyResultOrdinal);
+        when(keyResultBusinessService.getEntityById(2L)).thenReturn(keyResultMetric);
 
-        // act
         Objective duplicatedObjective = objectiveBusinessService
-                .duplicateObjective(sourceObjective.getId(), newObjective, authorizationUser, keyResults);
+                .duplicateObjective(sourceObjective.getId(),
+                                    newObjective,
+                                    authorizationUser,
+                                    keyResults.stream().map(KeyResult::getId).toList());
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());

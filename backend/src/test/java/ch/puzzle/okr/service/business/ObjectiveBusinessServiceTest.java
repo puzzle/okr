@@ -263,18 +263,14 @@ class ObjectiveBusinessServiceTest {
                 .withId(23L) //
                 .withTitle("Objective 1") //
                 .build();
-        KeyResult keyResultMetric = KeyResultMetric.Builder.builder()
-                                                           .withId(1L)
-                                                           .withTitle("Metric")
-                                                           .build();
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withId(1L).withTitle("Metric").build();
 
-        KeyResult newKeyResult = KeyResultMetric.Builder.builder()
-                                                        .withId(2L)
-                                                        .withTitle("Metric Copy")
-                                                        .build();
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(2L).withTitle("Metric Copy").build();
 
-        when(objectiveBusinessService.makeCopyOfKeyResultMetric(keyResultMetric, objective)).thenReturn(keyResultMetric);
-        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class))).thenReturn(newKeyResult);
+        when(objectiveBusinessService.makeCopyOfKeyResultMetric(keyResultMetric, objective))
+                .thenReturn(keyResultMetric);
+        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class)))
+                .thenReturn(newKeyResult);
 
         objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
 
@@ -291,18 +287,14 @@ class ObjectiveBusinessServiceTest {
                 .withId(23L) //
                 .withTitle("Objective 1") //
                 .build();
-        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder()
-                                                             .withId(1L)
-                                                             .withTitle("Ordinal")
-                                                             .build();
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Ordinal").build();
 
-        KeyResult newKeyResult = KeyResultOrdinal.Builder.builder()
-                                                         .withId(2L)
-                                                         .withTitle("Ordinal Copy")
-                                                         .build();
+        KeyResult newKeyResult = KeyResultOrdinal.Builder.builder().withId(2L).withTitle("Ordinal Copy").build();
 
-        when(objectiveBusinessService.makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective)).thenReturn(keyResultOrdinal);
-        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class))).thenReturn(newKeyResult);
+        when(objectiveBusinessService.makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective))
+                .thenReturn(keyResultOrdinal);
+        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class)))
+                .thenReturn(newKeyResult);
 
         objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
 

@@ -118,7 +118,6 @@ class ActionPersistenceServiceIT {
     @Test
     void shouldReturnListOfAllActionsWhenFindAllIsCalled() {
         List<Action> actions = actionPersistenceService.findAll();
-        System.out.println(actions.getFirst());
         assertEquals(11, actions.size());
     }
 

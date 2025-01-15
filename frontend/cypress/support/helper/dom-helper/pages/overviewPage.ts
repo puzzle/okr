@@ -34,7 +34,7 @@ export default class CyOverviewPage extends Page {
   addObjective(teamName?: string) {
     if (teamName) {
       this.getTeamByName(teamName)
-        .find('.add-objective')
+        .findByTestId('add-objective')
         .first()
         .click();
       return new ObjectiveDialog();

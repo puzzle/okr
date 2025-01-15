@@ -1,9 +1,12 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
@@ -136,5 +139,31 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     public List<KeyResult> getKeyResultsOwnedByUser(long id) {
         return keyResultPersistenceService.getKeyResultsOwnedByUser(id);
+    }
+
+    public KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
+        return KeyResultMetric.Builder
+                .builder() //
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withUnit(((KeyResultMetric) keyResult).getUnit()) //
+                .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
+                .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
+                .build();
+    }
+
+    public KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
+        return KeyResultOrdinal.Builder
+                .builder() //
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withCommitZone(((KeyResultOrdinal) keyResult).getCommitZone()) //
+                .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
+                .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
+                .build();
     }
 }

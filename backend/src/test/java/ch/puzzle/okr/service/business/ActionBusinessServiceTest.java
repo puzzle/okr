@@ -180,7 +180,7 @@ class ActionBusinessServiceTest {
         when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId()))
                 .thenReturn(Collections.emptyList());
 
-        List<Action> result = actionBusinessService.createDuplicateOfActions(oldKeyResult, newKeyResult);
+        List<Action> result = actionBusinessService.createDuplicates(oldKeyResult, newKeyResult);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -210,7 +210,7 @@ class ActionBusinessServiceTest {
         when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId()))
                 .thenReturn(List.of(action1, action2));
 
-        List<Action> result = actionBusinessService.createDuplicateOfActions(oldKeyResult, newKeyResult);
+        List<Action> result = actionBusinessService.createDuplicates(oldKeyResult, newKeyResult);
 
         assertNotNull(result);
         assertEquals(2, result.size());

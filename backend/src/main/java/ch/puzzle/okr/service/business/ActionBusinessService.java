@@ -77,7 +77,7 @@ public class ActionBusinessService {
         getActionsByKeyResultId(keyResultId).forEach(action -> deleteEntityById(action.getId()));
     }
 
-    public List<Action> createDuplicateOfActions(KeyResult oldKeyResult, KeyResult newKeyResult) {
+    public List<Action> createDuplicates(KeyResult oldKeyResult, KeyResult newKeyResult) {
         List<Action> actionList = actionPersistenceService
                 .getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId());
         if (actionList == null) {

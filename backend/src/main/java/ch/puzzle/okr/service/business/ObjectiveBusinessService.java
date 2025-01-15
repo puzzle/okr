@@ -143,43 +143,17 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         KeyResult newKeyResult = null;
 
         if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
-            KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
+            KeyResult keyResultMetric = keyResultBusinessService.makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
             newKeyResult = keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
         } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
-            KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
+            KeyResult keyResultOrdinal = keyResultBusinessService.makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
             newKeyResult = keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
         } else {
             throw new UnsupportedOperationException("Unsupported KeyResultType: " + keyResult.getKeyResultType());
         }
 
-        List<Action> copiedActions = actionBusinessService.createDuplicateOfActions(keyResult, newKeyResult);
-        actionPersistenceService.saveDuplicatedActions(copiedActions);
-    }
-
-    public KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
-        return KeyResultMetric.Builder
-                .builder() //
-                .withObjective(duplicatedObjective) //
-                .withTitle(keyResult.getTitle()) //
-                .withDescription(keyResult.getDescription()) //
-                .withOwner(keyResult.getOwner()) //
-                .withUnit(((KeyResultMetric) keyResult).getUnit()) //
-                .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
-                .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
-                .build();
-    }
-
-    public KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
-        return KeyResultOrdinal.Builder
-                .builder() //
-                .withObjective(duplicatedObjective) //
-                .withTitle(keyResult.getTitle()) //
-                .withDescription(keyResult.getDescription()) //
-                .withOwner(keyResult.getOwner()) //
-                .withCommitZone(((KeyResultOrdinal) keyResult).getCommitZone()) //
-                .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
-                .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
-                .build();
+        List<Action> copiedActions = actionBusinessService.createDuplicates(keyResult, newKeyResult);
+        copiedActions.forEach(actionPersistenceService::save);
     }
 
     @Transactional

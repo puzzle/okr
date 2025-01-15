@@ -44,6 +44,8 @@ class KeyResultBusinessServiceTest {
     ActionBusinessService actionBusinessService;
     @Mock
     AlignmentBusinessService alignmentBusinessService;
+    @Mock
+    ObjectiveBusinessService objectiveBusinessService;
     @InjectMocks
     private KeyResultBusinessService keyResultBusinessService;
     List<KeyResult> keyResults;
@@ -465,5 +467,54 @@ class KeyResultBusinessServiceTest {
         boolean returnValue = keyResultBusinessService.isImUsed(1L, ordinalKeyResult);
 
         assertTrue(returnValue);
+    }
+
+    // To be refactored
+    @DisplayName("Should duplicate metric key result")
+    @Test
+    void shouldDuplicateMetricKeyResult() {
+        Objective objective = Objective.Builder
+                .builder() //
+                .withId(23L) //
+                .withTitle("Objective 1") //
+                .build();
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withId(1L).withTitle("Metric").build();
+
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(2L).withTitle("Metric Copy").build();
+
+        when(keyResultBusinessService.makeCopyOfKeyResultMetric(keyResultMetric, objective))
+                .thenReturn(keyResultMetric);
+        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class)))
+                .thenReturn(newKeyResult);
+
+        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
+
+        verify(keyResultBusinessService, times(1)).makeCopyOfKeyResultMetric(keyResultMetric, objective);
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
+        verify(actionBusinessService, times(1)).createDuplicates(keyResultMetric, newKeyResult);
+    }
+
+    @DisplayName("Should duplicate ordinal key result")
+    @Test
+    void shouldDuplicateOrdinalKeyResult() {
+        Objective objective = Objective.Builder
+                .builder() //
+                .withId(23L) //
+                .withTitle("Objective 1") //
+                .build();
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Ordinal").build();
+
+        KeyResult newKeyResult = KeyResultOrdinal.Builder.builder().withId(2L).withTitle("Ordinal Copy").build();
+
+        when(keyResultBusinessService.makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective))
+                .thenReturn(keyResultOrdinal);
+        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class)))
+                .thenReturn(newKeyResult);
+
+        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
+
+        verify(keyResultBusinessService, times(1)).makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
+        verify(actionBusinessService, times(1)).createDuplicates(keyResultOrdinal, newKeyResult);
     }
 }

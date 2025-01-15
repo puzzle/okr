@@ -2,6 +2,8 @@ import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
+import { uniqueSuffix } from '../support/helper/utils';
+import { Unit } from '../../src/app/shared/types/enums/unit';
 
 let overviewPage = new CyOverviewPage();
 
@@ -96,22 +98,71 @@ describe('functionality of duplicating objectives and their belonging key-result
     cy.contains(duplicatedTitle)
       .should('not.exist');
   });
-  it('should duplicate all attributes of key-result', () => {
+
+  it.only('should duplicate all attributes of the corresponding keyResults as well', () => {
+    const objectiveTitle = uniqueSuffix('What an awesome objective.');
+    const duplicatedTitle = uniqueSuffix('This objective has two keyResults with lots and lots of values that should be duplicated!');
+
     overviewPage
-      .duplicateObjective('Build a company culture that kills the competition.')
+      .addObjective('LoremIpsum')
+      .fillObjectiveTitle(objectiveTitle)
       .submit();
-    keyResultDetailPage.visit('New structure that rewards funny guys and innovation before the end of Q1.');
-    cy.contains('Baseline: 5%');
-    cy.contains('Stretch Goal: 1%');
-    cy.contains('5/10');
+
+    overviewPage
+      .addKeyResult('LoremIpsum', objectiveTitle)
+      .fillKeyResultTitle('A metric keyResult with lots of values')
+      .withMetricValues(Unit.CHF, '1', '5')
+      .fillKeyResultDescription('Its very sunny today.')
+      .addActionPlanElement('Action')
+      .addActionPlanElement('Plan')
+      .addActionPlanElement('Element')
+      .submit();
+
+    overviewPage
+      .addKeyResult('LoremIpsum', objectiveTitle)
+      .fillKeyResultTitle('A ordinal keyResult with lots of values')
+      .withOrdinalValues('CommitZ', 'TargetZ', 'StretchZ')
+      .fillKeyResultDescription('Its very sunny today.')
+      .addActionPlanElement('One')
+      .addActionPlanElement('More')
+      .addActionPlanElement('Element')
+      .submit();
+
+    overviewPage
+      .duplicateObjective(objectiveTitle)
+      .fillObjectiveTitle(duplicatedTitle)
+      .submit();
+
+    cy.contains(duplicatedTitle);
+
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, 'A metric keyResult with lots of values')
+      .click();
+    cy.contains('Baseline: 1 CHF');
+    cy.contains('Stretch Goal: 5 CHF');
     cy.contains('Metrisch');
-    cy.contains('Paco Eggimann');
-    cy.contains('GJ 24/25-Q3');
+    cy.contains('Jaya Norris');
+    cy.contains('Its very sunny today.');
     cy.contains('Action Plan')
       .then(() => {
-        cy.contains('Neue Pflanzen');
-        cy.contains('Ein Buch');
-        cy.contains('Mehr Getränke');
+        cy.contains('Action');
+        cy.contains('Plan');
+        cy.contains('Element');
+      });
+    keyResultDetailPage.close();
+
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, 'A ordinal keyResult with lots of values')
+      .click();
+    cy.contains('CommitZ');
+    cy.contains('TargetZ');
+    cy.contains('StretchZ');
+    cy.contains('Ordinal');
+    cy.contains('Jaya Norris');
+    cy.contains('Its very sunny today.');
+    cy.contains('Action Plan')
+      .then(() => {
+        cy.contains('One');
+        cy.contains('More');
+        cy.contains('Element');
       });
   });
 });

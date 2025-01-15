@@ -22,8 +22,4 @@ public class ActionPersistenceService extends PersistenceBase<Action, Long, Acti
     public List<Action> getActionsByKeyResultIdOrderByPriorityAsc(Long keyResultId) {
         return getRepository().getActionsByKeyResultIdOrderByPriorityAsc(keyResultId);
     }
-
-    public void saveDuplicatedActions(List<Action> actions) {
-        actions.forEach(this::save);
-    }
 }

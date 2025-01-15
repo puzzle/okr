@@ -148,6 +148,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
             KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
             newKeyResult = keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
+        } else {
+            throw new UnsupportedOperationException("Unsupported KeyResultType: " + keyResult.getKeyResultType());
         }
 
         List<Action> copiedActions = actionBusinessService.createDuplicateOfActions(keyResult, newKeyResult);

@@ -41,6 +41,8 @@ class ObjectiveBusinessServiceTest {
     @Mock
     KeyResultBusinessService keyResultBusinessService;
     @Mock
+    ActionBusinessService actionBusinessService;
+    @Mock
     CompletedBusinessService completedBusinessService;
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
@@ -261,11 +263,24 @@ class ObjectiveBusinessServiceTest {
                 .withId(23L) //
                 .withTitle("Objective 1") //
                 .build();
-        KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withTitle("Metric").build();
-        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
-        verify(objectiveBusinessService, times(1)).makeCopyOfKeyResultMetric(keyResultMetric, objective);
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder()
+                                                           .withId(1L)
+                                                           .withTitle("Metric")
+                                                           .build();
 
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder()
+                                                        .withId(2L)
+                                                        .withTitle("Metric Copy")
+                                                        .build();
+
+        when(objectiveBusinessService.makeCopyOfKeyResultMetric(keyResultMetric, objective)).thenReturn(keyResultMetric);
+        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class))).thenReturn(newKeyResult);
+
+        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
+
+        verify(objectiveBusinessService, times(1)).makeCopyOfKeyResultMetric(keyResultMetric, objective);
         verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
+        verify(actionBusinessService, times(1)).createDuplicateOfActions(keyResultMetric, newKeyResult);
     }
 
     @DisplayName("Should duplicate ordinal key result")
@@ -276,11 +291,24 @@ class ObjectiveBusinessServiceTest {
                 .withId(23L) //
                 .withTitle("Objective 1") //
                 .build();
-        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withTitle("Ordinal").build();
-        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
-        verify(objectiveBusinessService, times(1)).makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder()
+                                                             .withId(1L)
+                                                             .withTitle("Ordinal")
+                                                             .build();
 
+        KeyResult newKeyResult = KeyResultOrdinal.Builder.builder()
+                                                         .withId(2L)
+                                                         .withTitle("Ordinal Copy")
+                                                         .build();
+
+        when(objectiveBusinessService.makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective)).thenReturn(keyResultOrdinal);
+        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class))).thenReturn(newKeyResult);
+
+        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
+
+        verify(objectiveBusinessService, times(1)).makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
         verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
+        verify(actionBusinessService, times(1)).createDuplicateOfActions(keyResultOrdinal, newKeyResult);
     }
 
     @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")

@@ -182,7 +182,9 @@ export default class CyOverviewPage extends Page {
       .as('keyResults');
     this.getObjectiveByName(objectiveName)
       .findByTestId('three-dot-menu')
-      .scrollIntoView()
+      .as('objectiveThreeDotMenu')
+      .scrollIntoView();
+    cy.get('@objectiveThreeDotMenu')
       .should('exist')
       .should('be.visible')
       .click();

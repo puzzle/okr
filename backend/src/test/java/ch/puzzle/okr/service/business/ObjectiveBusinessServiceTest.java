@@ -77,7 +77,6 @@ class ObjectiveBusinessServiceTest {
             .build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
-
     @DisplayName("Should return correct objective on getEntityById()")
     @Test
     void shouldGetOneObjective() {

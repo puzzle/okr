@@ -78,23 +78,23 @@ public class ActionBusinessService {
     }
 
     public List<Action> createDuplicateOfActions(KeyResult oldKeyResult, KeyResult newKeyResult) {
-        List<Action> actionList = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId());
+        List<Action> actionList = actionPersistenceService
+                .getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId());
         if (actionList == null) {
             return Collections.emptyList();
         }
 
-        return actionList.stream()
-                         .map(action -> {
-                             Action newAction = Action.Builder.builder()
-                                                              .withAction(action.getActionPoint())
-                                                              .isChecked(action.isChecked())
-                                                              .withPriority(action.getPriority())
-                                                              .withVersion(action.getVersion())
-                                                              .withKeyResult(newKeyResult)
-                                                              .build();
-                             validator.validate(newAction);
-                             return newAction;
-                         })
-                         .toList();
+        return actionList.stream().map(action -> {
+            Action newAction = Action.Builder
+                    .builder()
+                    .withAction(action.getActionPoint())
+                    .isChecked(action.isChecked())
+                    .withPriority(action.getPriority())
+                    .withVersion(action.getVersion())
+                    .withKeyResult(newKeyResult)
+                    .build();
+            validator.validate(newAction);
+            return newAction;
+        }).toList();
     }
 }

@@ -42,7 +42,7 @@ describe('okr check-in', () => {
     cy.contains('- A new action on the action-plan');
   });
 
-  it.only('should create check-in metric and assert correct owner', () => {
+  it('should create check-in metric and assert correct owner', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This keyresult is for the owner')

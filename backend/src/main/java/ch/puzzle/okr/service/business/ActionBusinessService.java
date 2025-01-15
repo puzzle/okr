@@ -1,10 +1,12 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.validation.ActionValidationService;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -73,5 +75,26 @@ public class ActionBusinessService {
     @Transactional
     public void deleteEntitiesByKeyResultId(Long keyResultId) {
         getActionsByKeyResultId(keyResultId).forEach(action -> deleteEntityById(action.getId()));
+    }
+
+    public List<Action> createDuplicateOfActions(KeyResult oldKeyResult, KeyResult newKeyResult) {
+        List<Action> actionList = actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId());
+        if (actionList == null) {
+            return Collections.emptyList();
+        }
+
+        return actionList.stream()
+                         .map(action -> {
+                             Action newAction = Action.Builder.builder()
+                                                              .withAction(action.getActionPoint())
+                                                              .isChecked(action.isChecked())
+                                                              .withPriority(action.getPriority())
+                                                              .withVersion(action.getVersion())
+                                                              .withKeyResult(newKeyResult)
+                                                              .build();
+                             validator.validate(newAction);
+                             return newAction;
+                         })
+                         .toList();
     }
 }

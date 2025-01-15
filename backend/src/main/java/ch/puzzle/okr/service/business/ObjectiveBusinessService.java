@@ -30,16 +30,19 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
     private final ActionPersistenceService actionPersistenceService;
+    private final ActionBusinessService actionBusinessService;
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
                                     ObjectiveValidationService validator,
                                     ObjectivePersistenceService objectivePersistenceService,
-                                    CompletedBusinessService completedBusinessService, ActionPersistenceService actionPersistenceService) {
+                                    CompletedBusinessService completedBusinessService, ActionPersistenceService actionPersistenceService,
+                                    ActionBusinessService actionBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
         this.actionPersistenceService = actionPersistenceService;
+        this.actionBusinessService = actionBusinessService;
     }
 
     private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
@@ -112,12 +115,12 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     /**
-     * Create a new Objective (with a new ID) and copy from a source Objective
-     * the KeyResults. The CheckIns are not copied.
+     * Create a new Objective and copy the KeyResults from the source Objective.
+     * The CheckIns are not copied.
      *
      * @param objective         New Objective with no KeyResults
      * @param authorizationUser AuthorizationUser
-     * @param keyResultIds      KeyResultIds to copy
+     * @param keyResultIds      KeyResultIds to get and copy
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
@@ -134,17 +137,22 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
     public void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
                                    Objective duplicatedObjective) {
+        KeyResult newKeyResult = null;
+
         if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
             KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
-            keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
+            newKeyResult = keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
         } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
             KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
-            keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
+            newKeyResult = keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
         }
+
+        List<Action> copiedActions = actionBusinessService.createDuplicateOfActions(keyResult, newKeyResult);
+        actionPersistenceService.saveDuplicatedActions(copiedActions);
     }
 
     public KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
-        KeyResult copyOfMetricKeyResult = KeyResultMetric.Builder
+        return KeyResultMetric.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //
                 .withTitle(keyResult.getTitle()) //
@@ -154,12 +162,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
                 .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
                 .build();
-        actionPersistenceService.duplicateActionList(keyResult, copyOfMetricKeyResult);
-        return copyOfMetricKeyResult;
     }
 
     public KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
-        KeyResult copyOfOrdinalKeyResult = KeyResultOrdinal.Builder
+        return KeyResultOrdinal.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //
                 .withTitle(keyResult.getTitle()) //
@@ -169,10 +175,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
                 .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
                 .build();
-        actionPersistenceService.duplicateActionList(copyOfOrdinalKeyResult, keyResult);
-        return copyOfOrdinalKeyResult;
     }
-
 
     @Transactional
     public void deleteEntityById(Long id) {

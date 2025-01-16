@@ -182,6 +182,16 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is the new title')
+      .run(cy.getByTestId('ordinal-tab')
+        .click())
+      .run(cy.getByTestId('metric-tab')
+        .click())
+      .checkOnDialog(() => cy.getByTestId('baseline')
+        .should('have.value', '0'))
+      .checkOnDialog(() => cy.getByTestId('target-goal')
+        .should('have.value', '7'))
+      .checkOnDialog(() => cy.getByTestId('stretch-goal')
+        .should('have.value', '10'))
       .withMetricValues(
         Unit.PERCENT, '5', '8.5', undefined
       )

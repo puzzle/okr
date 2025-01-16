@@ -419,7 +419,8 @@ describe('KeyResultDialogComponent', () => {
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
           ActionPlanComponent,
-          KeyResultTypeComponent
+          KeyResultTypeComponent,
+          ErrorComponent
         ]
       })
         .compileComponents();
@@ -528,8 +529,6 @@ describe('KeyResultDialogComponent', () => {
     });
 
     it('should set right owner, validators and type on init', () => {
-      component.keyResultForm.get('keyResultType')!.setValue('metric');
-      component.ngOnInit();
       expect(component.keyResultForm.get('metric')!.enabled)
         .toBe(true);
       expect(component.keyResultForm.get('keyResultType')!.value)

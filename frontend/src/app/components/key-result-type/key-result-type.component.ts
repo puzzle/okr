@@ -68,8 +68,14 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   updateMetricValue(changed: KeyResultMetricField, value: any) {
+    if (Object.values(value)
+      .find((e) => e === undefined)) {
+      return;
+    }
     const formGroupMetric = this.keyResultForm.get('metric');
+    console.log(formGroupMetric?.value, value);
     const formGroupValue = this.getMetricValue(formGroupMetric?.value, value);
+    // console.log(formGroupValue);
     const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed);
     formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
   }

@@ -93,15 +93,15 @@ export class KeyResultDialogComponent implements OnInit {
   setValidators(type: string) {
     if (type == 'metric') {
       this.keyResultForm.get('metric')
-        ?.enable();
+        ?.enable({ emitEvent: false });
       this.keyResultForm.get('ordinal')
-        ?.disable();
+        ?.disable({ emitEvent: false });
     }
     if (type == 'ordinal') {
       this.keyResultForm.get('metric')
-        ?.disable();
+        ?.disable({ emitEvent: false });
       this.keyResultForm.get('ordinal')
-        ?.enable();
+        ?.enable({ emitEvent: false });
     }
   }
 

@@ -167,7 +167,7 @@ describe('okr key-result', () => {
     cy.contains('This is my new description');
   });
 
-  it.only('should edit a metric key-result without type change', () => {
+  it('should edit a metric key-result without type change', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('We want not to change metric keyresult title')
@@ -182,6 +182,15 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is the new title')
+      .checkOnDialog(() => cy.getByTestId('baseline')
+        .should('have.value', '0'))
+      .checkOnDialog(() => cy.getByTestId('target-goal')
+        .should('have.value', '7'))
+      .checkOnDialog(() => cy.getByTestId('stretch-goal')
+        .should('have.value', '10'))
+      .withMetricValues(
+        Unit.PERCENT, '0', '70', undefined
+      )
       .run(cy.getByTestId('ordinal-tab')
         .click())
       .run(cy.getByTestId('metric-tab')
@@ -189,9 +198,9 @@ describe('okr key-result', () => {
       .checkOnDialog(() => cy.getByTestId('baseline')
         .should('have.value', '0'))
       .checkOnDialog(() => cy.getByTestId('target-goal')
-        .should('have.value', '7'))
+        .should('have.value', '70'))
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
-        .should('have.value', '10'))
+        .should('have.value', '100'))
       .withMetricValues(
         Unit.PERCENT, '5', '8.5', undefined
       )

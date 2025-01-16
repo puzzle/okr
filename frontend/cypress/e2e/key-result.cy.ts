@@ -19,12 +19,25 @@ describe('okr key-result', () => {
       .addKeyResult()
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult')
+      .fillOwner('Bob Baumeister')
+      .fillKeyResultDescription('This is my description');
+
+    keyResultDialog.withMetricValues(
+      Unit.PERCENT, '0', '7', undefined
+    );
+    cy.getByTestId('stretch-goal')
+      .should('have.value', '10');
+
+    keyResultDialog.withMetricValues(
+      Unit.PERCENT, '0', undefined, '100'
+    );
+    cy.getByTestId('target-goal')
+      .should('have.value', '70');
+
+    keyResultDialog
       .withMetricValues(
         Unit.PERCENT, '21', undefined, '52'
       )
-      .fillOwner('Bob Baumeister')
-      .fillKeyResultDescription('This is my description');
-    keyResultDialog
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
 
@@ -113,7 +126,7 @@ describe('okr key-result', () => {
       .should('have.length', 3);
   });
 
-  it('should edit a key-result without type change', () => {
+  it('should edit an ordinal key-result without type change', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('We want not to change keyresult title')
@@ -150,6 +163,34 @@ describe('okr key-result', () => {
     cy.contains('New commit');
     cy.contains('New target');
     cy.contains('New stretch');
+    cy.contains('Jaya Norris');
+    cy.contains('This is my new description');
+  });
+
+  it.only('should edit a metric key-result without type change', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('We want not to change metric keyresult title')
+      .withMetricValues(
+        Unit.PERCENT, '0', undefined, '10'
+      )
+      .checkForDialogTextMetric()
+      .fillKeyResultDescription('This is my description')
+      .submit();
+    keyResultDetailPage.visit('We want not to change metric keyresult title')
+      .editKeyResult();
+
+    KeyResultDialog.do()
+      .fillKeyResultTitle('This is the new title')
+      .withMetricValues(
+        Unit.PERCENT, '5', '8.5', undefined
+      )
+      .checkOnDialog(() => cy.getByTestId('stretch-goal')
+        .should('have.value', '10'))
+      .fillKeyResultDescription('This is my new description')
+      .submit();
+
+    cy.contains('This is the new title');
     cy.contains('Jaya Norris');
     cy.contains('This is my new description');
   });

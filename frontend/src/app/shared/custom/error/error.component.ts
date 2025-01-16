@@ -23,10 +23,11 @@ export class ErrorComponent {
 
   getErrorMessages(): string[] {
     const formField = this.getFormControl();
-    if (!formField?.errors || !formField?.dirty || !formField?.touched) {
+
+    if (!formField?.dirty && !formField?.touched || formField?.valid) {
       return [];
     }
-    return Object.entries(formField.errors)
+    return Object.entries(formField.errors || {})
       .map(([key,
         value]) => this.buildErrorMessage(key, value));
   }

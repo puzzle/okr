@@ -8,19 +8,19 @@ import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Observable, Subject } from 'rxjs';
 
-enum KeyResultMetricField {
+export enum KeyResultMetricField {
   BASELINE,
   TARGETGOAL,
   STRETCHGOAL,
   NONE
 }
 
-interface MetricControl {
+export interface MetricControl {
   identifier: KeyResultMetricField;
   control: FormControl<any> | null;
 }
 
-interface MetricValue {
+export interface MetricValue {
   baseline: number;
   targetGoal: number;
   stretchGoal: number;
@@ -74,22 +74,28 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   updateMetricValue(changed: KeyResultMetricField, value: any) {
     const formGroupMetric = this.keyResultForm.get('metric');
-    let formGroupValue = { ...formGroupMetric?.value,
-      ...value };
-    formGroupValue = { baseline: +formGroupValue.baseline,
+    const formGroupValue = this.getMetricValue(formGroupMetric?.value, value);
+    /*
+     * const controls = this.getMetricControls();
+     * const changedControlsAmount = controls.filter((obj) => obj.control?.dirty).length;
+     * if (this.isCreating() && changedControlsAmount == 2) {
+     *   const unchangedControl = controls.find((obj) => obj.control?.dirty === false);
+     *   const identifier: KeyResultMetricField = unchangedControl?.identifier as KeyResultMetricField || KeyResultMetricField.NONE;
+     *   const newMetricValue = this.calculateValueForField(formGroupValue, identifier);
+     *   formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
+     *   return
+     * }
+     */
+    const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed);
+    formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
+  }
+
+  getMetricValue(formGroupValue: any, fieldValue: any): MetricValue {
+    formGroupValue = { ...formGroupValue,
+      ...fieldValue };
+    return { baseline: +formGroupValue.baseline,
       targetGoal: +formGroupValue.targetGoal,
       stretchGoal: +formGroupValue.stretchGoal } as MetricValue;
-    const controls = this.getMetricControls();
-    const changedControlsAmount = controls.filter((obj) => obj.control?.dirty).length;
-    if (this.isCreating() && changedControlsAmount == 2) {
-      const unchangedControl = controls.find((obj) => obj.control?.dirty === false);
-      const identifier: KeyResultMetricField = unchangedControl?.identifier as KeyResultMetricField || KeyResultMetricField.NONE;
-      const newMetricValue = this.calculateValueForField(formGroupValue, identifier);
-      formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
-    } else {
-      const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed);
-      formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
-    }
   }
 
   calculateValueAfterChanged(values: MetricValue, changed: KeyResultMetricField) {
@@ -111,7 +117,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
     console.log(values);
     switch (field) {
       case KeyResultMetricField.BASELINE: {
-        return { baseline: (values.targetGoal - (values.stretchGoal - values.baseline)) / 0.3 };
+        return { baseline: (values.targetGoal - values.stretchGoal * 0.7) / 0.3 };
       }
 
       case KeyResultMetricField.TARGETGOAL: {
@@ -132,27 +138,27 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     const formGroupMetric = this.keyResultForm.get('metric');
-    const formGroupValue = formGroupMetric?.value;
-    delete formGroupValue['unit'];
     formGroupMetric?.get('baseline')?.valueChanges.subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
     formGroupMetric?.get('targetGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGETGOAL, { targetGoal: value }));
     formGroupMetric?.get('stretchGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCHGOAL, { stretchGoal: value }));
   }
 
 
-  getMetricControls(): MetricControl[] {
-    const formGroupMetric: FormGroup = this.keyResultForm.get('metric') as FormGroup;
-    const controls = formGroupMetric?.controls;
-    delete controls['unit'];
-    return Object.keys(controls)
-      .map((key: string) => {
-        return { identifier: KeyResultMetricField[key.toUpperCase() as keyof typeof KeyResultMetricField],
-          control: formGroupMetric?.get(key) } as MetricControl;
-      });
-  }
-
-  isCreating() {
-    return this.keyResult?.id == null;
-  }
+  /*
+   * getMetricControls(): MetricControl[] {
+   *   const formGroupMetric: FormGroup = this.keyResultForm.get('metric') as FormGroup;
+   *   const controls = formGroupMetric?.controls;
+   *   delete controls['unit'];
+   *   return Object.keys(controls)
+   *     .map((key: string) => {
+   *       return { identifier: KeyResultMetricField[key.toUpperCase() as keyof typeof KeyResultMetricField],
+   *         control: formGroupMetric?.get(key) } as MetricControl;
+   *     });
+   * }
+   *
+   * isCreating() {
+   *   return this.keyResult?.id == null;
+   * }
+   */
 }
 

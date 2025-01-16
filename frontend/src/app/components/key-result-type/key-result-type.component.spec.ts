@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
-import { KeyResultTypeComponent } from './key-result-type.component';
+import { KeyResultMetricField, KeyResultTypeComponent, MetricValue } from './key-result-type.component';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { keyResultMetric, keyResultOrdinal, users } from '../../shared/test-data';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -14,6 +14,7 @@ import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { getValueOfForm } from '../../shared/common';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ErrorComponent } from '../../shared/custom/error/error.component';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;
@@ -152,7 +153,8 @@ describe('KeyResultTypeComponent', () => {
   describe('Create', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [KeyResultTypeComponent],
+        declarations: [KeyResultTypeComponent,
+          ErrorComponent],
         imports: [
           MatAutocompleteModule,
           TranslateTestingModule.withTranslations({
@@ -176,6 +178,113 @@ describe('KeyResultTypeComponent', () => {
     it('should create', () => {
       expect(component)
         .toBeTruthy();
+    });
+
+    it.each([[{ baseline: 0,
+      targetGoal: 0,
+      stretchGoal: 5 },
+    KeyResultMetricField.BASELINE,
+    KeyResultMetricField.TARGETGOAL],
+    [{ baseline: 0,
+      targetGoal: 0,
+      stretchGoal: 5 },
+    KeyResultMetricField.STRETCHGOAL,
+    KeyResultMetricField.TARGETGOAL],
+    [{ baseline: 0,
+      targetGoal: 0,
+      stretchGoal: 5 },
+    KeyResultMetricField.TARGETGOAL,
+    KeyResultMetricField.STRETCHGOAL]])
+    ('Should call calculateValueForField with the correct enum', (values: MetricValue, changed: KeyResultMetricField, result: KeyResultMetricField) => {
+      const spyInstance = jest.spyOn(component, 'calculateValueForField');
+
+      component.calculateValueAfterChanged(values, changed);
+      expect(spyInstance)
+        .toHaveBeenCalledWith(values, result);
+    });
+
+    it.each([
+      [{ baseline: NaN,
+        targetGoal: 8.5,
+        stretchGoal: 10 },
+      KeyResultMetricField.BASELINE,
+      { baseline: 5 }],
+      [{ baseline: NaN,
+        targetGoal: 6.5,
+        stretchGoal: 5 },
+      KeyResultMetricField.BASELINE,
+      { baseline: 10 }],
+      [{ baseline: NaN,
+        targetGoal: -8.5,
+        stretchGoal: -10 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -5 }],
+      [{ baseline: NaN,
+        targetGoal: -6.5,
+        stretchGoal: -5 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -10 }],
+      [{ baseline: NaN,
+        targetGoal: 2,
+        stretchGoal: 5 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -5 }],
+
+      [{ baseline: 5,
+        targetGoal: NaN,
+        stretchGoal: 10 },
+      KeyResultMetricField.TARGETGOAL,
+      { targetGoal: 8.5 }],
+      [{ baseline: 10,
+        targetGoal: NaN,
+        stretchGoal: 5 },
+      KeyResultMetricField.TARGETGOAL,
+      { targetGoal: 6.5 }],
+      [{ baseline: -5,
+        targetGoal: NaN,
+        stretchGoal: -10 },
+      KeyResultMetricField.TARGETGOAL,
+      { targetGoal: -8.5 }],
+      [{ baseline: -10,
+        targetGoal: NaN,
+        stretchGoal: -5 },
+      KeyResultMetricField.TARGETGOAL,
+      { targetGoal: -6.5 }],
+      [{ baseline: -5,
+        targetGoal: NaN,
+        stretchGoal: 5 },
+      KeyResultMetricField.TARGETGOAL,
+      { targetGoal: 2 }],
+
+      [{ baseline: 5,
+        targetGoal: 8.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCHGOAL,
+      { stretchGoal: 10 }],
+      [{ baseline: 10,
+        targetGoal: 6.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCHGOAL,
+      { stretchGoal: 5 }],
+      [{ baseline: -5,
+        targetGoal: -8.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCHGOAL,
+      { stretchGoal: -10 }],
+      [{ baseline: -10,
+        targetGoal: -6.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCHGOAL,
+      { stretchGoal: -5 }],
+      [{ baseline: -5,
+        targetGoal: 2,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCHGOAL,
+      { stretchGoal: 5 }]
+    ])
+    ('calculateValueForField should calculate correct', (values: MetricValue, targetField: KeyResultMetricField, result: any) => {
+      expect(component.calculateValueForField(values, targetField))
+        .toEqual(result);
     });
 
     it('should use default values', () => {

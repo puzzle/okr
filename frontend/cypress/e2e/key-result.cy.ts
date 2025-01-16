@@ -248,13 +248,14 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Baseline muss eine Zahl sein');
+    cy.contains('baseline ist ein Pflichtfeld.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, 'abc', '52');
+      .fillKeyResultTitle('My title')
+      .withMetricValues(Unit.CHF, 'abc', '123');
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Baseline muss eine Zahl sein');
+    cy.contains('baseline muss eine Zahl sein.');
 
     KeyResultDialog.do()
       .withMetricValues(Unit.PERCENT, '45', '52');
@@ -264,13 +265,13 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch Goal muss eine Zahl sein');
+    cy.contains('stretchGoal ist ein Pflichtfeld.');
 
     KeyResultDialog.do()
       .withMetricValues(Unit.PERCENT, '45', 'abc');
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch Goal muss eine Zahl sein');
+    cy.contains('stretchGoal muss eine Zahl sein.');
 
     KeyResultDialog.do()
       .withMetricValues(Unit.PERCENT, '45', '83');
@@ -308,7 +309,12 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Commit Zone muss folgende Länge haben: 1-400 Zeichen');
+    cy.contains('commitZone ist ein Pflichtfeld.');
+    KeyResultDialog.do()
+      .withOrdinalValues('a', 'Target', 'Stretch');
+    cy.getByTestId('submit')
+      .should('be.disabled');
+    cy.contains('commitZone muss mindestens 2 Zeichen lang sein.');
 
     KeyResultDialog.do()
       .withOrdinalValues('Commit', 'Target', 'Stretch');
@@ -318,7 +324,12 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Target Zone muss folgende Länge haben: 1-400 Zeichen');
+    cy.contains('targetZone ist ein Pflichtfeld.');
+    KeyResultDialog.do()
+      .withOrdinalValues('Commit', 'b', 'Stretch');
+    cy.getByTestId('submit')
+      .should('be.disabled');
+    cy.contains('targetZone muss mindestens 2 Zeichen lang sein.');
 
     KeyResultDialog.do()
       .withOrdinalValues('Commit', 'Target', 'Stretch');
@@ -328,12 +339,12 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch Zone muss folgende Länge haben: 1-400 Zeichen');
-
+    cy.contains('stretchZone ist ein Pflichtfeld.');
     KeyResultDialog.do()
-      .withOrdinalValues('Commit', 'Target', 'Stretch');
+      .withOrdinalValues('Commit', 'Target', 'c');
     cy.getByTestId('submit')
-      .should('not.be.disabled');
+      .should('be.disabled');
+    cy.contains('stretchZone muss mindestens 2 Zeichen lang sein.');
   });
 
   it('should delete existing key-result', () => {

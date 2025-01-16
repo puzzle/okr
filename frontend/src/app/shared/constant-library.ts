@@ -120,6 +120,6 @@ function ownerValidator(): ValidatorFn {
     if (user?.id > 0 && getFullNameOfUser(user).length > 3) {
       return null;
     }
-    return { invalidUser: { value: control.value } };
+    return { invalid_user: { value: control.value } };
   };
 }

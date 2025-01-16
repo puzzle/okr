@@ -58,10 +58,14 @@ describe('KeyResultDialogComponent', () => {
     title: 'Das ist ein Objective',
     description: 'Das ist die Beschreibung',
     state: State.ONGOING,
-    team: { id: 1,
-      name: 'Das Puzzle Team' },
-    quarter: { id: 1,
-      label: 'GJ 22/23-Q2' }
+    team: {
+      id: 1,
+      name: 'Das Puzzle Team'
+    },
+    quarter: {
+      id: 1,
+      label: 'GJ 22/23-Q2'
+    }
   };
 
   const keyResultObjective: KeyResultObjective = {
@@ -191,16 +195,20 @@ describe('KeyResultDialogComponent', () => {
           provideHttpClientTesting(),
           KeyResultService,
           TranslateService,
-          { provide: UserService,
-            useValue: userService },
+          {
+            provide: UserService,
+            useValue: userService
+          },
           {
             provide: MatDialogRef,
             useValue: matDialogRefMock
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { objective: fullObjective,
-              keyResult: undefined }
+            useValue: {
+              objective: fullObjective,
+              keyResult: undefined
+            }
           },
           {
             provide: OAuthService,
@@ -394,12 +402,16 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultMetric,
-              objective: keyResultObjective }
+            useValue: {
+              keyResult: fullKeyResultMetric,
+              objective: keyResultObjective
+            }
           },
 
-          { provide: UserService,
-            useValue: userService }
+          {
+            provide: UserService,
+            useValue: userService
+          }
 
         ],
         declarations: [
@@ -498,6 +510,33 @@ describe('KeyResultDialogComponent', () => {
         'stretchZone']))
         .toEqual('');
     });
+
+    it('should set validators for metric', () => {
+      component.setValidators('metric');
+      expect(component.keyResultForm.get('metric')!.enabled)
+        .toBe(true);
+      expect(component.keyResultForm.get('ordinal')!.enabled)
+        .toBe(false);
+    });
+
+    it('should set validators for ordinal', () => {
+      component.setValidators('ordinal');
+      expect(component.keyResultForm.get('ordinal')!.enabled)
+        .toBe(true);
+      expect(component.keyResultForm.get('metric')!.enabled)
+        .toBe(false);
+    });
+
+    it('should set right owner, validators and type on init', () => {
+      component.keyResultForm.get('keyResultType')!.setValue('metric');
+      component.ngOnInit();
+      expect(component.keyResultForm.get('metric')!.enabled)
+        .toBe(true);
+      expect(component.keyResultForm.get('keyResultType')!.value)
+        .toEqual('metric');
+      expect(component.keyResultForm.get('owner')!.value)
+        .toEqual(testUser);
+    });
   });
 
   describe('Edit KeyResult Ordinal', () => {
@@ -532,8 +571,10 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultOrdinal,
-              objective: keyResultObjective }
+            useValue: {
+              keyResult: fullKeyResultOrdinal,
+              objective: keyResultObjective
+            }
           },
           {
             provide: UserService,

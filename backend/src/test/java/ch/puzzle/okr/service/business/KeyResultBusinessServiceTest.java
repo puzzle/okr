@@ -27,6 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -58,6 +59,7 @@ class KeyResultBusinessServiceTest {
     List<CheckIn> checkIns;
     List<Action> actions;
     @InjectMocks
+    @Spy
     private KeyResultBusinessService keyResultBusinessService;
 
     @BeforeEach
@@ -470,9 +472,9 @@ class KeyResultBusinessServiceTest {
         assertTrue(returnValue);
     }
 
-    @DisplayName("Should successfully duplicate a key result")
+    @DisplayName("Should successfully duplicate a metric key result")
     @Test
-    void shouldSuccessfullyDuplicateKeyResult() {
+    void shouldSuccessfullyDuplicateMetricKeyResult() {
         Objective objective = Objective.Builder.builder().withId(5L).withTitle("A new Objective").build();
 
         KeyResult keyResultMetric = KeyResultMetric.Builder
@@ -486,10 +488,9 @@ class KeyResultBusinessServiceTest {
                 .withStretchGoal(50.0)
                 .build();
 
-        KeyResult duplicatedKeyResult = keyResultBusinessService
-                .duplicateKeyResult(authorizationUser, keyResultMetric, objective);
+        KeyResult test = keyResultBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
 
-        verify(actionBusinessService, times(1)).duplicateActions(keyResultMetric, duplicatedKeyResult);
-        assertEquals(keyResultMetric, duplicatedKeyResult);
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResultMetric.class), any());
+        verify(actionBusinessService, times(1)).duplicateActions(any(KeyResultMetric.class), any());
     }
 }

@@ -10,8 +10,8 @@ import { Observable, Subject } from 'rxjs';
 
 export enum KeyResultMetricField {
   BASELINE,
-  TARGETGOAL,
-  STRETCHGOAL,
+  TARGET_GOAL,
+  STRETCH_GOAL,
   NONE
 }
 
@@ -84,12 +84,12 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   calculateValueAfterChanged(values: MetricValue, changed: KeyResultMetricField) {
     switch (changed) {
-      case KeyResultMetricField.STRETCHGOAL:
+      case KeyResultMetricField.STRETCH_GOAL:
       case KeyResultMetricField.BASELINE: {
-        return this.calculateValueForField(values, KeyResultMetricField.TARGETGOAL);
+        return this.calculateValueForField(values, KeyResultMetricField.TARGET_GOAL);
       }
-      case KeyResultMetricField.TARGETGOAL: {
-        return this.calculateValueForField(values, KeyResultMetricField.STRETCHGOAL);
+      case KeyResultMetricField.TARGET_GOAL: {
+        return this.calculateValueForField(values, KeyResultMetricField.STRETCH_GOAL);
       }
       case KeyResultMetricField.NONE: {
         return {};
@@ -103,11 +103,11 @@ export class KeyResultTypeComponent implements AfterContentInit {
         return { baseline: (values.targetGoal - values.stretchGoal * 0.7) / 0.3 };
       }
 
-      case KeyResultMetricField.TARGETGOAL: {
+      case KeyResultMetricField.TARGET_GOAL: {
         return { targetGoal: (values.stretchGoal - values.baseline) * 0.7 + values.baseline };
       }
 
-      case KeyResultMetricField.STRETCHGOAL: {
+      case KeyResultMetricField.STRETCH_GOAL: {
         return { stretchGoal: (values.targetGoal - values.baseline) / 0.7 + values.baseline };
       }
 
@@ -122,8 +122,8 @@ export class KeyResultTypeComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     const formGroupMetric = this.keyResultForm.get('metric');
     formGroupMetric?.get('baseline')?.valueChanges.subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
-    formGroupMetric?.get('targetGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGETGOAL, { targetGoal: value }));
-    formGroupMetric?.get('stretchGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCHGOAL, { stretchGoal: value }));
+    formGroupMetric?.get('targetGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
+    formGroupMetric?.get('stretchGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
   }
 }
 

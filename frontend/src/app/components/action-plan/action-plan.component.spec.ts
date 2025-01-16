@@ -19,7 +19,6 @@ const actionServiceMock = {
 describe('ActionPlanComponent', () => {
   let component: ActionPlanComponent;
   let fixture: ComponentFixture<ActionPlanComponent>;
-  let matDialogRef: MatDialogRef<ActionPlanComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,10 +36,6 @@ describe('ActionPlanComponent', () => {
           provide: ActionService,
           useValue: actionServiceMock
         },
-        {
-          provide: MatDialogRef,
-          useValue: matDialogRef
-        }
       ]
     });
     fixture = TestBed.createComponent(ActionPlanComponent);

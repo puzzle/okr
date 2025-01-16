@@ -10,11 +10,12 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.validation.ActionValidationService;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -171,14 +172,14 @@ class ActionBusinessServiceTest {
         verify(actionPersistenceService, times(1)).deleteById(action1.getId());
     }
 
-    @DisplayName("Should return a empty list when no actions are defined")
-    @Test
-    void shouldReturnEmptyListWhenActionsAreEmpty() {
+    @ParameterizedTest(name = "Should return a empty list when actions are null or empty")
+    @NullAndEmptySource
+    void shouldReturnEmptyListWhenActionsAreEmpty(List<Action> actions) {
         KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(9L).build();
         KeyResult oldKeyResult = KeyResultMetric.Builder.builder().withId(6L).build();
 
         when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId()))
-                .thenReturn(Collections.emptyList());
+                .thenReturn(actions);
 
         List<Action> result = actionBusinessService.duplicateActions(oldKeyResult, newKeyResult);
 

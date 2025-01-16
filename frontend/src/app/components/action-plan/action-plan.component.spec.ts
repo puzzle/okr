@@ -19,7 +19,6 @@ const actionServiceMock = {
 describe('ActionPlanComponent', () => {
   let component: ActionPlanComponent;
   let fixture: ComponentFixture<ActionPlanComponent>;
-  let matDialogRef: MatDialogRef<ActionPlanComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,18 +29,12 @@ describe('ActionPlanComponent', () => {
         CdkDrag,
         TranslateModule.forRoot()
       ],
-      providers: [
-        TranslateService,
+      providers: [TranslateService,
         DialogService,
         {
           provide: ActionService,
           useValue: actionServiceMock
-        },
-        {
-          provide: MatDialogRef,
-          useValue: matDialogRef
-        }
-      ]
+        }]
     });
     fixture = TestBed.createComponent(ActionPlanComponent);
     component = fixture.componentInstance;

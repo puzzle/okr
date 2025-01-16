@@ -22,10 +22,7 @@ export class ErrorComponent {
   }
 
   getErrorMessages(): string[] {
-    let formField = this.form || this.parentF.form;
-    for (const key of this.controlPath) {
-      formField = formField?.get(key) as FormGroup;
-    }
+    const formField = this.getFormControl();
     if (!formField?.errors || !formField?.dirty || !formField?.touched) {
       return [];
     }
@@ -39,5 +36,13 @@ export class ErrorComponent {
 
     return this.translate.instant('DIALOG_ERRORS.' + key.toUpperCase(), { fieldName: displayName,
       ...value });
+  }
+
+  getFormControl() {
+    let formField = this.form || this.parentF.form;
+    for (const key of this.controlPath) {
+      formField = formField?.get(key) as FormGroup;
+    }
+    return formField;
   }
 }

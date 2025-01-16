@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterContentInit, Component, Input } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
@@ -16,7 +16,7 @@ import { Observable, Subject } from 'rxjs';
   viewProviders: [{ provide: ControlContainer,
     useExisting: FormGroupDirective }]
 })
-export class KeyResultTypeComponent {
+export class KeyResultTypeComponent implements AfterContentInit {
   childForm: FormGroup;
 
   @Input() keyResultForm!: FormGroup;
@@ -54,5 +54,13 @@ export class KeyResultTypeComponent {
     return this.keyResultForm?.get('keyResultType')?.value;
   }
 
+  updateMetricValue(value: any) {
+    console.log(value);
+  }
+
   protected readonly getFullNameOfUser = getFullNameOfUser;
+
+  ngAfterContentInit(): void {
+    this.keyResultForm.get('metric')?.valueChanges.subscribe((value: any) => this.updateMetricValue(value));
+  }
 }

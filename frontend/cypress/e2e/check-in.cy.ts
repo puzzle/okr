@@ -22,7 +22,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('Very important keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '51')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '51'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage
@@ -46,7 +48,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This keyresult is for the owner')
-      .withMetricValues(Unit.PERCENT, '21', '51')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '51'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
 
@@ -94,7 +98,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('Very important keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '51')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '51'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage
@@ -116,7 +122,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This will not be good')
-      .withMetricValues(Unit.PERCENT, '21', '52')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '52'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage
@@ -160,7 +168,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This will give a checkin list')
-      .withMetricValues(Unit.PERCENT, '21', '52')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '52'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage
@@ -197,7 +207,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('Here we edit a metric checkin')
-      .withMetricValues(Unit.CHF, '10', '300')
+      .withMetricValues(
+        Unit.CHF, '10', undefined, '300'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage
@@ -232,7 +244,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('A new KeyResult for checking checkin list')
-      .withMetricValues(Unit.EUR, '10', '300')
+      .withMetricValues(
+        Unit.EUR, '10', undefined, '300'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage
@@ -254,7 +268,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('There is another kr with fte')
-      .withMetricValues(Unit.FTE, '10', '300')
+      .withMetricValues(
+        Unit.FTE, '10', undefined, '300'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage
@@ -312,7 +328,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult(undefined, 'draft objective title')
       .fillKeyResultTitle('I am a metric keyresult for testing')
-      .withMetricValues(Unit.PERCENT, '21', '52')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '52'
+      )
       .fillKeyResultDescription('This is my description')
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult for testing');
@@ -335,7 +353,9 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult(undefined, objectiveName)
       .fillKeyResultTitle('I am a keyresult metric')
-      .withMetricValues(Unit.PERCENT, '45', '60')
+      .withMetricValues(
+        Unit.PERCENT, '45', undefined, '60'
+      )
       .fillKeyResultDescription('Description')
       .submit();
     keyResultDetailPage.visit('I am a keyresult metric')
@@ -359,7 +379,9 @@ describe('okr check-in', () => {
     const keyResultTitle = 'This key-result will be used for testing the action plan while creating check-ins';
     overviewPage.addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
       .fillKeyResultTitle(keyResultTitle)
-      .withMetricValues(Unit.NUMBER, '1', '5')
+      .withMetricValues(
+        Unit.NUMBER, '1', undefined, '5'
+      )
       .addActionPlanElement('First action')
       .addActionPlanElement('Second action')
       .addActionPlanElement('Third action')

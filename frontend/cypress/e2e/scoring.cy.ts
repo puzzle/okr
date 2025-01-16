@@ -119,7 +119,9 @@ function setupMetricKr(
   CyOverviewPage.do()
     .addKeyResult()
     .fillKeyResultTitle(name)
-    .withMetricValues(Unit.PERCENT, baseline.toString(), stretchGoal.toString())
+    .withMetricValues(
+      Unit.PERCENT, baseline.toString(), undefined, stretchGoal.toString()
+    )
     .submit();
   KeyResultDetailPage.do()
     .visit(name)

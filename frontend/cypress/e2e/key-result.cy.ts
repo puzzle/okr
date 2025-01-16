@@ -15,13 +15,16 @@ describe('okr key-result', () => {
   });
 
   it('should create new metric key-result', () => {
-    overviewPage
+    const keyResultDialog = overviewPage
       .addKeyResult()
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '52')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '52'
+      )
       .fillOwner('Bob Baumeister')
-      .fillKeyResultDescription('This is my description')
+      .fillKeyResultDescription('This is my description');
+    keyResultDialog
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
 
@@ -71,7 +74,9 @@ describe('okr key-result', () => {
       .addKeyResult()
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult with a new one')
-      .withMetricValues(Unit.PERCENT, '21', '52')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '52'
+      )
       .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description when creating and then open a new')
       .saveAndNew();
@@ -180,7 +185,9 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is my new title for the new metric keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '56')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '56'
+      )
       .fillKeyResultDescription('This is my new description')
       .submit();
 
@@ -221,7 +228,7 @@ describe('okr key-result', () => {
       .should('have.class', 'non-active');
   });
 
-  it.only('should check validation in key-result dialog', () => {
+  it('should check validation in key-result dialog', () => {
     overviewPage.addKeyResult()
       .checkForDialogTextMetric();
     cy.getByTestId('submit')
@@ -258,13 +265,17 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .fillKeyResultTitle('My title')
-      .withMetricValues(Unit.CHF, 'abc', '123');
+      .withMetricValues(
+        Unit.CHF, 'abc', undefined, '123'
+      );
     cy.getByTestId('submit')
       .should('be.disabled');
     cy.contains('Baseline muss eine Zahl sein.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, '45', '52');
+      .withMetricValues(
+        Unit.PERCENT, '45', undefined, '52'
+      );
     cy.getByTestId('submit')
       .should('not.be.disabled');
     cy.getByTestId('stretch-goal')
@@ -274,13 +285,17 @@ describe('okr key-result', () => {
     cy.contains('Stretch Goal ist ein Pflichtfeld.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, '45', 'abc');
+      .withMetricValues(
+        Unit.PERCENT, '45', undefined, 'abc'
+      );
     cy.getByTestId('submit')
       .should('be.disabled');
     cy.contains('Stretch Goal muss eine Zahl sein.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, '45', '83');
+      .withMetricValues(
+        Unit.PERCENT, '45', undefined, '83'
+      );
     cy.getByTestId('submit')
       .should('not.be.disabled');
     cy.getByTestId('owner-input')

@@ -1,15 +1,8 @@
 package ch.puzzle.okr.service.business;
 
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-
-import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
-import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import jakarta.transaction.Transactional;
@@ -28,20 +21,17 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
-    private final ActionPersistenceService actionPersistenceService;
     private final ActionBusinessService actionBusinessService;
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
                                     ObjectiveValidationService validator,
                                     ObjectivePersistenceService objectivePersistenceService,
                                     CompletedBusinessService completedBusinessService,
-                                    ActionPersistenceService actionPersistenceService,
                                     ActionBusinessService actionBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
-        this.actionPersistenceService = actionPersistenceService;
         this.actionBusinessService = actionBusinessService;
     }
 
@@ -123,7 +113,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
      * @param authorizationUser
      *            AuthorizationUser
      * @param keyResultIds
-     *            KeyResultIds to get and copy
+     *            KeyResultIds to get and duplicate
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
@@ -131,29 +121,12 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                                         List<Long> keyResultIds) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
         for (Long keyResult : keyResultIds) {
-            duplicateKeyResult(authorizationUser,
-                               keyResultBusinessService.getEntityById(keyResult),
-                               duplicatedObjective);
+            keyResultBusinessService
+                    .duplicateKeyResult(authorizationUser,
+                                        keyResultBusinessService.getEntityById(keyResult),
+                                        duplicatedObjective);
         }
         return duplicatedObjective;
-    }
-
-    public void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
-                                   Objective duplicatedObjective) {
-        KeyResult newKeyResult = null;
-
-        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
-            KeyResult keyResultMetric = keyResultBusinessService.makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
-            newKeyResult = keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
-            KeyResult keyResultOrdinal = keyResultBusinessService.makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
-            newKeyResult = keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
-        } else {
-            throw new UnsupportedOperationException("Unsupported KeyResultType: " + keyResult.getKeyResultType());
-        }
-
-        List<Action> copiedActions = actionBusinessService.createDuplicates(keyResult, newKeyResult);
-        copiedActions.forEach(actionPersistenceService::save);
     }
 
     @Transactional

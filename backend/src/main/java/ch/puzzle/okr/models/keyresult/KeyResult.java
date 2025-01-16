@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -204,7 +203,6 @@ public abstract class KeyResult implements WriteableInterface {
         private LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
         private final String keyResultType;
-        private List<Action> actionList;
 
         protected Builder(String keyResultType) {
             this.keyResultType = keyResultType;
@@ -252,11 +250,6 @@ public abstract class KeyResult implements WriteableInterface {
 
         public T withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
-            return (T) this;
-        }
-
-        public T withActionList(List<Action> actionList) {
-            this.actionList = actionList;
             return (T) this;
         }
 

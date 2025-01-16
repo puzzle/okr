@@ -1,7 +1,13 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -12,6 +18,8 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,15 +30,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Collections;
-import java.util.List;
-
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultBusinessServiceTest {
@@ -146,8 +145,8 @@ class KeyResultBusinessServiceTest {
     void shouldThrowExceptionWhenDefaultMethodUsed() {
         Long id = metricKeyResult.getId();
         IllegalCallerException exception = assertThrows(IllegalCallerException.class,
-                () -> keyResultBusinessService
-                        .updateEntity(id, metricKeyResult, authorizationUser));
+                                                        () -> keyResultBusinessService
+                                                                .updateEntity(id, metricKeyResult, authorizationUser));
 
         assertEquals("unsupported method 'updateEntity' use updateEntities() instead", exception.getMessage());
     }
@@ -471,43 +470,26 @@ class KeyResultBusinessServiceTest {
         assertTrue(returnValue);
     }
 
-    // To be refactored
-    @DisplayName("Should duplicate metric key result")
+    @DisplayName("Should successfully duplicate a key result")
     @Test
-    void shouldDuplicateMetricKeyResult() {
-        Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("New Metric").build();
+    void shouldSuccessfullyDuplicateKeyResult() {
+        Objective objective = Objective.Builder.builder().withId(5L).withTitle("A new Objective").build();
 
-        KeyResult duplicatedKeyResult = keyResultBusinessService.makeCopyOfKeyResultMetric(metricKeyResult, newObjective);
-
-        assertNotEquals(metricKeyResult.getObjective().getId(),duplicatedKeyResult.getObjective().getId());
-        assertEquals(metricKeyResult.getKeyResultType(), duplicatedKeyResult.getKeyResultType());
-        assertEquals(metricKeyResult.getDescription(), duplicatedKeyResult.getDescription());
-        assertEquals(metricKeyResult.getVersion(), duplicatedKeyResult.getVersion());
-        assertEquals(metricKeyResult.getTitle(), duplicatedKeyResult.getTitle());
-
-    }
-
-    @DisplayName("Should duplicate ordinal key result")
-    @Test
-    void shouldDuplicateOrdinalKeyResult() {
-        Objective objective = Objective.Builder
-                .builder() //
-                .withId(23L) //
-                .withTitle("Objective 1") //
+        KeyResult keyResultMetric = KeyResultMetric.Builder
+                .builder()
+                .withId(1L)
+                .withTitle("Metric KeyResult")
+                .withDescription("Description of metric key result")
+                .withOwner(User.Builder.builder().build())
+                .withUnit(Unit.NUMBER)
+                .withBaseline(10.0)
+                .withStretchGoal(50.0)
                 .build();
-        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Ordinal").build();
 
-        KeyResult newKeyResult = KeyResultOrdinal.Builder.builder().withId(2L).withTitle("Ordinal Copy").build();
+        KeyResult duplicatedKeyResult = keyResultBusinessService
+                .duplicateKeyResult(authorizationUser, keyResultMetric, objective);
 
-        when(keyResultBusinessService.makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective))
-                .thenReturn(keyResultOrdinal);
-        when(keyResultBusinessService.createEntity(any(KeyResult.class), any(AuthorizationUser.class)))
-                .thenReturn(newKeyResult);
-
-        objectiveBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
-
-        verify(keyResultBusinessService, times(1)).makeCopyOfKeyResultOrdinal(keyResultOrdinal, objective);
-        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResult.class), any(AuthorizationUser.class));
-        verify(actionBusinessService, times(1)).createDuplicates(keyResultOrdinal, newKeyResult);
+        verify(actionBusinessService, times(1)).duplicateActions(keyResultMetric, duplicatedKeyResult);
+        assertEquals(keyResultMetric, duplicatedKeyResult);
     }
 }

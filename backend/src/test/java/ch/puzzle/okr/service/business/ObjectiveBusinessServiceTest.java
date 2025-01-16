@@ -214,7 +214,6 @@ class ObjectiveBusinessServiceTest {
                 .withId(1L) //
                 .withTitle("Ordinal 1") //
                 .withObjective(sourceObjective) //
-                .withActionList(new ArrayList<>()) //
                 .build();
         KeyResult keyResultMetric = KeyResultMetric.Builder
                 .builder() //
@@ -222,7 +221,6 @@ class ObjectiveBusinessServiceTest {
                 .withTitle("Metric 1") //
                 .withObjective(sourceObjective) //
                 .withUnit(Unit.FTE) //
-                .withActionList(new ArrayList<>()) //
                 .build();
 
         List<KeyResult> keyResults = new ArrayList<>();
@@ -252,7 +250,7 @@ class ObjectiveBusinessServiceTest {
 
         // called for creating the new Objective and the new keyResults
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
-        verify(keyResultBusinessService, times(2)).createEntity(any(), any());
+        verify(keyResultBusinessService, times(2)).duplicateKeyResult(any(), any(), any());
     }
 
     @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")

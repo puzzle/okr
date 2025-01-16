@@ -77,14 +77,16 @@ public class ActionBusinessService {
         getActionsByKeyResultId(keyResultId).forEach(action -> deleteEntityById(action.getId()));
     }
 
-    public List<Action> createDuplicates(KeyResult oldKeyResult, KeyResult newKeyResult) {
+    public List<Action> duplicateActions(KeyResult oldKeyResult, KeyResult newKeyResult) {
         List<Action> actionList = actionPersistenceService
                 .getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId());
         if (actionList == null) {
             return Collections.emptyList();
         }
 
-        return actionList.stream().map(action -> {
+        List<Action> duplicatedActions = new ArrayList<>();
+
+        actionList.forEach(action -> {
             Action newAction = Action.Builder
                     .builder()
                     .withAction(action.getActionPoint())
@@ -94,7 +96,10 @@ public class ActionBusinessService {
                     .withKeyResult(newKeyResult)
                     .build();
             validator.validate(newAction);
-            return newAction;
-        }).toList();
+            actionPersistenceService.save(newAction);
+            duplicatedActions.add(newAction);
+        });
+
+        return duplicatedActions;
     }
 }

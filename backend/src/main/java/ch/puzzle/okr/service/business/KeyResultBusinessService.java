@@ -1,5 +1,8 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -141,7 +144,26 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         return keyResultPersistenceService.getKeyResultsOwnedByUser(id);
     }
 
-    public KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
+    @Transactional
+    public KeyResult duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
+                                        Objective duplicatedObjective) {
+        KeyResult newKeyResult;
+
+        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
+            KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
+            newKeyResult = createEntity(keyResultMetric, authorizationUser);
+        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
+            KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
+            newKeyResult = createEntity(keyResultOrdinal, authorizationUser);
+        } else {
+            throw new UnsupportedOperationException("Unsupported KeyResultType: " + keyResult.getKeyResultType());
+        }
+
+        actionBusinessService.duplicateActions(keyResult, newKeyResult);
+        return newKeyResult;
+    }
+
+    private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
         return KeyResultMetric.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //
@@ -154,7 +176,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
                 .build();
     }
 
-    public KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
+    private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
         return KeyResultOrdinal.Builder
                 .builder() //
                 .withObjective(duplicatedObjective) //

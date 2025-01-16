@@ -91,7 +91,7 @@
 
     <div class="col">
       <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="target-goal">Target</label>
+        <label class="okr-form-label okr-form-col" for="target-goal">Target Goal</label>
         <div class="col">
           <input
             [attr.data-testId]="'target-goal'"
@@ -100,7 +100,7 @@
             formControlName="targetGoal"
             id="target-goal"
           />
-          <app-error [controlPath]="['metric', 'targetGoal']" [name]="'Target'"></app-error>
+          <app-error [controlPath]="['metric', 'targetGoal']" [name]="'Target Goal'"></app-error>
 
         </div>
       </div>
@@ -108,7 +108,7 @@
 
     <div class="col">
       <div class="okr-form-row">
-        <label class="okr-form-label okr-form-col" for="stretch-goal">Stretch</label>
+        <label class="okr-form-label okr-form-col" for="stretch-goal">Stretch Goal</label>
         <div class="col">
           <input
             [attr.data-testId]="'stretch-goal'"
@@ -117,7 +117,7 @@
             formControlName="stretchGoal"
             id="stretch-goal"
           />
-          <app-error [controlPath]="['metric', 'stretchGoal']" [name]="'Stretch'"></app-error>
+          <app-error [controlPath]="['metric', 'stretchGoal']" [name]="'Stretch Goal'"></app-error>
         </div>
       </div>
     </div>

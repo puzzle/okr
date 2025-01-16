@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, Input } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
-import { ControlContainer, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
@@ -13,11 +13,6 @@ export enum KeyResultMetricField {
   TARGETGOAL,
   STRETCHGOAL,
   NONE
-}
-
-export interface MetricControl {
-  identifier: KeyResultMetricField;
-  control: FormControl<any> | null;
 }
 
 export interface MetricValue {
@@ -75,17 +70,6 @@ export class KeyResultTypeComponent implements AfterContentInit {
   updateMetricValue(changed: KeyResultMetricField, value: any) {
     const formGroupMetric = this.keyResultForm.get('metric');
     const formGroupValue = this.getMetricValue(formGroupMetric?.value, value);
-    /*
-     * const controls = this.getMetricControls();
-     * const changedControlsAmount = controls.filter((obj) => obj.control?.dirty).length;
-     * if (this.isCreating() && changedControlsAmount == 2) {
-     *   const unchangedControl = controls.find((obj) => obj.control?.dirty === false);
-     *   const identifier: KeyResultMetricField = unchangedControl?.identifier as KeyResultMetricField || KeyResultMetricField.NONE;
-     *   const newMetricValue = this.calculateValueForField(formGroupValue, identifier);
-     *   formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
-     *   return
-     * }
-     */
     const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed);
     formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
   }
@@ -114,7 +98,6 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   calculateValueForField(values: MetricValue, field: KeyResultMetricField) {
-    console.log(values);
     switch (field) {
       case KeyResultMetricField.BASELINE: {
         return { baseline: (values.targetGoal - values.stretchGoal * 0.7) / 0.3 };
@@ -142,23 +125,5 @@ export class KeyResultTypeComponent implements AfterContentInit {
     formGroupMetric?.get('targetGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGETGOAL, { targetGoal: value }));
     formGroupMetric?.get('stretchGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCHGOAL, { stretchGoal: value }));
   }
-
-
-  /*
-   * getMetricControls(): MetricControl[] {
-   *   const formGroupMetric: FormGroup = this.keyResultForm.get('metric') as FormGroup;
-   *   const controls = formGroupMetric?.controls;
-   *   delete controls['unit'];
-   *   return Object.keys(controls)
-   *     .map((key: string) => {
-   *       return { identifier: KeyResultMetricField[key.toUpperCase() as keyof typeof KeyResultMetricField],
-   *         control: formGroupMetric?.get(key) } as MetricControl;
-   *     });
-   * }
-   *
-   * isCreating() {
-   *   return this.keyResult?.id == null;
-   * }
-   */
 }
 

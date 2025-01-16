@@ -1,12 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 import ch.puzzle.okr.deserializer.DeserializerHelper;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
@@ -17,7 +10,6 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
-import java.time.LocalDateTime;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +28,17 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static ch.puzzle.okr.test.KeyResultTestHelpers.keyResultMetricDto;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.keyResultOrdinalDto;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
@@ -60,9 +63,9 @@ class ObjectiveControllerIT {
     private static final String DUPLICATE_OBJECTIVE = """
             {
                 "objective": %s,
-                "keyResults": [%s,%s]
+                "keyResultIds": [1,2]
             }
-            """.formatted(JSON, 1L, 2L);
+            """.formatted(JSON);
 
     private static final String CREATE_NEW_OBJECTIVE = """
             {
@@ -110,27 +113,27 @@ class ObjectiveControllerIT {
             .withModifiedOn(LocalDateTime.MAX)
             .build();
     private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L,
-                                                                       1,
-                                                                       OBJECTIVE_TITLE_1,
-                                                                       1L,
-                                                                       1L,
-                                                                       "GJ 22/23-Q2",
-                                                                       DESCRIPTION,
-                                                                       State.DRAFT,
-                                                                       LocalDateTime.MAX,
-                                                                       LocalDateTime.MAX,
-                                                                       true);
+            1,
+            OBJECTIVE_TITLE_1,
+            1L,
+            1L,
+            "GJ 22/23-Q2",
+            DESCRIPTION,
+            State.DRAFT,
+            LocalDateTime.MAX,
+            LocalDateTime.MAX,
+            true);
     private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L,
-                                                                       1,
-                                                                       OBJECTIVE_TITLE_2,
-                                                                       1L,
-                                                                       1L,
-                                                                       "GJ 22/23-Q2",
-                                                                       DESCRIPTION,
-                                                                       State.DRAFT,
-                                                                       LocalDateTime.MIN,
-                                                                       LocalDateTime.MIN,
-                                                                       true);
+            1,
+            OBJECTIVE_TITLE_2,
+            1L,
+            1L,
+            "GJ 22/23-Q2",
+            DESCRIPTION,
+            State.DRAFT,
+            LocalDateTime.MIN,
+            LocalDateTime.MIN,
+            true);
 
     @Autowired
     private MockMvc mvc;
@@ -181,16 +184,16 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnCreatedObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(null,
-                                                      1,
-                                                      "Program Faster",
-                                                      1L,
-                                                      1L,
-                                                      "GJ 22/23-Q2",
-                                                      "Just be faster",
-                                                      State.DRAFT,
-                                                      null,
-                                                      null,
-                                                      true);
+                1,
+                "Program Faster",
+                1L,
+                1L,
+                "GJ 22/23-Q2",
+                "Just be faster",
+                State.DRAFT,
+                null,
+                null,
+                true);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
@@ -211,7 +214,7 @@ class ObjectiveControllerIT {
         BDDMockito
                 .given(objectiveAuthorizationService.createEntity(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                       "Missing attribute title when creating objective"));
+                        "Missing attribute title when creating objective"));
 
         mvc
                 .perform(post(URL_BASE_OBJECTIVE)
@@ -225,16 +228,16 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnUpdatedObjectiveWhenUpdatingObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L,
-                                                      1,
-                                                      TITLE,
-                                                      1L,
-                                                      1L,
-                                                      "GJ 22/23-Q2",
-                                                      UPDATED_DESCRIPTION,
-                                                      State.NOTSUCCESSFUL,
-                                                      LocalDateTime.MIN,
-                                                      LocalDateTime.MAX,
-                                                      true);
+                1,
+                TITLE,
+                1L,
+                1L,
+                "GJ 22/23-Q2",
+                UPDATED_DESCRIPTION,
+                State.NOTSUCCESSFUL,
+                LocalDateTime.MIN,
+                LocalDateTime.MAX,
+                true);
         Objective objective = Objective.Builder
                 .builder()
                 .withId(1L)
@@ -261,16 +264,16 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnImUsed() throws Exception {
         ObjectiveDto testObjectiveDto = new ObjectiveDto(1L,
-                                                         1,
-                                                         TITLE,
-                                                         1L,
-                                                         1L,
-                                                         "GJ 22/23-Q2",
-                                                         UPDATED_DESCRIPTION,
-                                                         State.SUCCESSFUL,
-                                                         LocalDateTime.MAX,
-                                                         LocalDateTime.MAX,
-                                                         true);
+                1,
+                TITLE,
+                1L,
+                1L,
+                "GJ 22/23-Q2",
+                UPDATED_DESCRIPTION,
+                State.SUCCESSFUL,
+                LocalDateTime.MAX,
+                LocalDateTime.MAX,
+                true);
         Objective objectiveImUsed = Objective.Builder
                 .builder()
                 .withId(1L)
@@ -298,7 +301,7 @@ class ObjectiveControllerIT {
         BDDMockito
                 .given(objectiveAuthorizationService.updateEntity(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                                       "Failed objective -> Attribut is invalid"));
+                        "Failed objective -> Attribut is invalid"));
 
         mvc
                 .perform(put(URL_OBJECTIVE_10)
@@ -314,7 +317,7 @@ class ObjectiveControllerIT {
         BDDMockito
                 .given(objectiveAuthorizationService.updateEntity(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                       "Failed objective -> Attribut is invalid"));
+                        "Failed objective -> Attribut is invalid"));
 
         mvc
                 .perform(put(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -344,10 +347,12 @@ class ObjectiveControllerIT {
     @DisplayName("Should return is created when an objective was duplicated")
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
+        BDDMockito.given(objectiveMapper.toObjective(any(ObjectiveDto.class))).willReturn(objective1);
         BDDMockito.given(keyResultMapper.toDto(any(KeyResultMetric.class), any())).willReturn(keyResultMetricDto);
         BDDMockito.given(keyResultMapper.toDto(any(KeyResultOrdinal.class), any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
-        BDDMockito.given(objectiveMapper.toDto(any())).willReturn(objective1Dto);
+        BDDMockito.given(objectiveAuthorizationService.duplicateEntity(objective1, List.of(1L, 2L))).willReturn(objective1);
+        BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 
         mvc
                 .perform(post(URL_DUPLICATE_OBJECTIVE_5)

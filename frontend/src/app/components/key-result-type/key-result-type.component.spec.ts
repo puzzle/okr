@@ -194,8 +194,7 @@ describe('KeyResultTypeComponent', () => {
       targetGoal: 0,
       stretchGoal: 5 },
     KeyResultMetricField.TARGET_GOAL,
-    KeyResultMetricField.STRETCH_GOAL]])
-    ('Should call calculateValueForField with the correct enum', (values: MetricValue, changed: KeyResultMetricField, result: KeyResultMetricField) => {
+    KeyResultMetricField.STRETCH_GOAL]])('Should call calculateValueForField with the correct enum', (values: MetricValue, changed: KeyResultMetricField, result: KeyResultMetricField) => {
       const spyInstance = jest.spyOn(component, 'calculateValueForField');
 
       component.calculateValueAfterChanged(values, changed);
@@ -281,8 +280,7 @@ describe('KeyResultTypeComponent', () => {
         stretchGoal: NaN },
       KeyResultMetricField.STRETCH_GOAL,
       { stretchGoal: 5 }]
-    ])
-    ('calculateValueForField should calculate correct', (values: MetricValue, targetField: KeyResultMetricField, result: any) => {
+    ])('calculateValueForField should calculate correct', (values: MetricValue, targetField: KeyResultMetricField, result: any) => {
       expect(component.calculateValueForField(values, targetField))
         .toEqual(result);
     });

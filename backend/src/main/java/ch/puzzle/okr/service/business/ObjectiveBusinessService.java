@@ -113,7 +113,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
      * @param authorizationUser
      *            AuthorizationUser
      * @param keyResultIds
-     *            Ids of the keyresults which should be duplicated, the new keyresults will be associated with the newly duplicated objective
+     *            Ids of the keyresults which should be duplicated, the new
+     *            keyresults will be associated with the newly duplicated objective
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional

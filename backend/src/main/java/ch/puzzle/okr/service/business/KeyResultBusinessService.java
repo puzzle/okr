@@ -147,13 +147,13 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     @Transactional
     public KeyResult duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
                                         Objective duplicatedObjective) {
-                KeyResult newKeyResult = switch (keyResult.getKeyResultType()){
+        KeyResult newKeyResult = switch (keyResult.getKeyResultType()) {
             case KEY_RESULT_TYPE_METRIC -> makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
             case KEY_RESULT_TYPE_ORDINAL -> makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
-            default -> throw new UnsupportedOperationException("Unsupported KeyResultType: " + keyResult.getKeyResultType());
+            default ->
+                throw new UnsupportedOperationException("Unsupported KeyResultType: " + keyResult.getKeyResultType());
         };
         newKeyResult = createEntity(newKeyResult, authorizationUser);
-        
 
         actionBusinessService.duplicateActions(keyResult, newKeyResult);
         return newKeyResult;

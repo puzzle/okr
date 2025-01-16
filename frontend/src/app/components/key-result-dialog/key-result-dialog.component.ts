@@ -21,8 +21,10 @@ export class KeyResultDialogComponent implements OnInit {
   keyResultForm: FormGroup = getKeyResultForm();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
-      keyResult: KeyResult; },
+    @Inject(MAT_DIALOG_DATA) public data: {
+      objective: Objective;
+      keyResult: KeyResult;
+    },
     private keyResultService: KeyResultService,
     public dialogService: DialogService,
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
@@ -35,12 +37,25 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   saveKeyResult(openNewDialog = false) {
-    const value = this.keyResultForm.value;
+    const valueWithType = this.keyResultForm.value;
+    // Disable to get Value without Type
+    this.keyResultForm.controls['metric'].disable();
+    this.keyResultForm.controls['ordinal'].disable();
+    const valueWithoutType = this.keyResultForm.value;
+    // reEnable
+    this.keyResultForm.controls['metric'].enable();
+    this.keyResultForm.controls['ordinal'].enable();
     const keyResult = this.isMetricKeyResult()
-      ? ({ ...value,
-        objective: this.data.objective } as KeyResultMetricDto)
-      : ({ ...value,
-        objective: this.data.objective } as KeyResultOrdinalDto);
+      ? ({
+        ...valueWithoutType,
+        ...valueWithType.metric,
+        objective: this.data.objective
+      } as KeyResultMetricDto)
+      : ({
+        ...valueWithoutType,
+        ...valueWithType.ordinal,
+        objective: this.data.objective
+      } as KeyResultOrdinalDto);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
     this.keyResultService.saveKeyResult(keyResult)

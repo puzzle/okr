@@ -99,7 +99,7 @@ describe('functionality of duplicating objectives and their belonging key-result
       .should('not.exist');
   });
 
-  it.only('should duplicate all attributes of the corresponding keyResults as well', () => {
+  it('should duplicate all attributes of the corresponding keyResults as well', () => {
     const objectiveTitle = uniqueSuffix('What an awesome objective.');
     const duplicatedTitle = uniqueSuffix('This objective has two keyResults with lots and lots of values that should be duplicated!');
 

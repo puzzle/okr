@@ -61,7 +61,7 @@ export default class KeyResultDialog extends Dialog {
   checkForDialogTextMetric() {
     cy.contains('Einheit');
     cy.contains('Baseline');
-    cy.contains('Stretch Goal');
+    cy.contains('Stretch');
     this.checkForDialogText();
     return this;
   }

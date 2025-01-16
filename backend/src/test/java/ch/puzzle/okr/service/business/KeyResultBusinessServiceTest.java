@@ -493,4 +493,26 @@ class KeyResultBusinessServiceTest {
         verify(keyResultBusinessService, times(1)).createEntity(any(KeyResultMetric.class), any());
         verify(actionBusinessService, times(1)).duplicateActions(any(KeyResultMetric.class), any());
     }
+
+    @DisplayName("Should successfully duplicate an ordinal key result")
+    @Test
+    void shouldSuccessfullyDuplicateOrdinalKeyResult() {
+        Objective objective = Objective.Builder.builder().withId(5L).withTitle("A new Objective").build();
+
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder
+                .builder()
+                .withId(1L)
+                .withTitle("Ordinal KeyResult")
+                .withDescription("Description of metric key result")
+                .withOwner(User.Builder.builder().build())
+                .withCommitZone("We should be commited to this")
+                .withTargetZone("We could reach this target here")
+                .withStretchZone("Reaching this would be awesome!")
+                .build();
+
+        KeyResult test = keyResultBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
+
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResultOrdinal.class), any());
+        verify(actionBusinessService, times(1)).duplicateActions(any(KeyResultOrdinal.class), any());
+    }
 }

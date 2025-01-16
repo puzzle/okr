@@ -84,7 +84,7 @@
             formControlName="baseline"
             id="baseline"
           />
-          <app-error [controlPath]="['metric', 'baseline']"></app-error>
+          <app-error [controlPath]="['metric', 'baseline']" [name]="'Baseline'"></app-error>
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@
             formControlName="targetGoal"
             id="target-goal"
           />
-          <app-error [controlPath]="['metric', 'targetGoal']"></app-error>
+          <app-error [controlPath]="['metric', 'targetGoal']" [name]="'Target'"></app-error>
 
         </div>
       </div>
@@ -117,7 +117,7 @@
             formControlName="stretchGoal"
             id="stretch-goal"
           />
-          <app-error [controlPath]="['metric', 'stretchGoal']"></app-error>
+          <app-error [controlPath]="['metric', 'stretchGoal']" [name]="'Stretch'"></app-error>
         </div>
       </div>
     </div>
@@ -138,7 +138,7 @@
             id="commit-zone"
             [attr.data-testId]="'commit-zone'"
           ></textarea>
-          <app-error [controlPath]="['ordinal', 'commitZone']"></app-error>
+          <app-error [controlPath]="['ordinal', 'commitZone']" [name]="'Commit Zone'"></app-error>
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@
             formControlName="targetZone"
             id="target-zone"
           ></textarea>
-          <app-error [controlPath]="['ordinal', 'targetZone']"></app-error>
+          <app-error [controlPath]="['ordinal', 'targetZone']" [name]="'Target Zone'"></app-error>
         </div>
       </div>
     </div>
@@ -170,7 +170,7 @@
             formControlName="stretchZone"
             id="stretch-zone"
           ></textarea>
-          <app-error [controlPath]="['ordinal','stretchZone']"></app-error>
+          <app-error [controlPath]="['ordinal','stretchZone']" [name]="'Stretch Zone'"></app-error>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { FormGroupDirective } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 
 describe('ErrorComponent', () => {
   let component: ErrorComponent;
@@ -16,8 +16,10 @@ describe('ErrorComponent', () => {
       declarations: [ErrorComponent],
       providers: [TranslateService,
         FormGroupDirective,
-        { provide: FormGroupDirective,
-          useValue: new FormGroupDirective([], []) }],
+        {
+          provide: FormGroupDirective,
+          useValue: new FormGroupDirective([], [])
+        }],
       imports: [TranslateModule.forRoot(),
         TranslateTestingModule.withTranslations({
           de: de
@@ -33,5 +35,18 @@ describe('ErrorComponent', () => {
   it('should create', () => {
     expect(component)
       .toBeTruthy();
+  });
+
+  const controlPath = ['title'];
+
+  const form = new FormGroup({
+    title: new FormControl<string>('')
+  });
+
+  const name = 'Title';
+
+
+  it('should get right error message', () => {
+
   });
 });

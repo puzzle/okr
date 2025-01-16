@@ -29,14 +29,12 @@ describe('ActionPlanComponent', () => {
         CdkDrag,
         TranslateModule.forRoot()
       ],
-      providers: [
-        TranslateService,
+      providers: [TranslateService,
         DialogService,
         {
           provide: ActionService,
           useValue: actionServiceMock
-        },
-      ]
+        }]
     });
     fixture = TestBed.createComponent(ActionPlanComponent);
     component = fixture.componentInstance;

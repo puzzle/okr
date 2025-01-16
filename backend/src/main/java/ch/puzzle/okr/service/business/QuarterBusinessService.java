@@ -112,7 +112,8 @@ public class QuarterBusinessService {
         return quarters;
     }
 
-    @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
+    // @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
+    @Scheduled(cron = "0/5 * * * * ?")
     public void scheduledGenerationQuarters() {
         Map<Integer, Integer> quarters = generateQuarters();
         YearMonth currentYearMonth = getCurrentYearMonth();
@@ -122,10 +123,10 @@ public class QuarterBusinessService {
         int nextQuarter = quarters.get(nextQuarterYearMonth.getMonthValue());
 
         // If we are in the last month of a quarter, generate the next quarter
-        if (isInLastMonthOfQuarter(currentQuarter, nextQuarter)) {
+//        if (isInLastMonthOfQuarter(currentQuarter, nextQuarter)) {
             logger.info("Generated quarters on last day of month");
             String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
             generateQuarter(nextQuarterYearMonth.atDay(1).atStartOfDay(), label);
-        }
+//        }
     }
 }

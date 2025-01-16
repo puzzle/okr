@@ -221,7 +221,7 @@ describe('okr key-result', () => {
       .should('have.class', 'non-active');
   });
 
-  it.only('should check validation in key-result dialog', () => {
+  it('should check validation in key-result dialog', () => {
     overviewPage.addKeyResult()
       .checkForDialogTextMetric();
     cy.getByTestId('submit')

@@ -109,7 +109,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
      * CheckIns are not copied.
      *
      * @param objective
-     *            New Objective with no KeyResults
+     *            Objective to be duplicated
      * @param authorizationUser
      *            AuthorizationUser
      * @param keyResultIds

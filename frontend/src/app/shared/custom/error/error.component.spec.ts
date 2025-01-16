@@ -1,52 +1,81 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { ErrorComponent } from './error.component';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-// @ts-ignore
-import * as de from '../../../../assets/i18n/de.json';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 
 describe('ErrorComponent', () => {
   let component: ErrorComponent;
-  let fixture: ComponentFixture<ErrorComponent>;
+  let translateService: TranslateService;
+  let formGroupDirective: FormGroupDirective;
 
-  beforeEach(async() => {
-    await TestBed.configureTestingModule({
-      declarations: [ErrorComponent],
-      providers: [TranslateService,
-        FormGroupDirective,
-        {
-          provide: FormGroupDirective,
-          useValue: new FormGroupDirective([], [])
-        }],
-      imports: [TranslateModule.forRoot(),
-        TranslateTestingModule.withTranslations({
-          de: de
-        })]
-    })
-      .compileComponents();
+  beforeEach(() => {
+    const translateServiceMock = {
+      instant: jest.fn()
+    };
 
-    fixture = TestBed.createComponent(ErrorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      providers: [{ provide: TranslateService,
+        useValue: translateServiceMock },
+      FormGroupDirective]
+    });
+
+    translateService = TestBed.inject(TranslateService);
+    formGroupDirective = TestBed.inject(FormGroupDirective);
+    translateServiceMock.instant.mockReturnValue('Translated error');
+    component = new ErrorComponent(translateService, formGroupDirective);
   });
 
-  it('should create', () => {
-    expect(component)
-      .toBeTruthy();
+  it('should return no error messages if form field is clean or untouched or has no errors', () => {
+    component.form = new FormGroup({
+      testField: new FormControl('', Validators.required)
+    });
+    component.controlPath = ['testField'];
+
+    const errorMessages = component.getErrorMessages();
+
+    expect(errorMessages)
+      .toEqual([]);
   });
 
-  const controlPath = ['title'];
+  it('should return error messages if form field is dirty and touched with errors', () => {
+    const formControl = new FormControl('', [Validators.required]);
+    formControl.markAsDirty();
+    formControl.markAsTouched();
+    formControl.setErrors({ required: true });
 
-  const form = new FormGroup({
-    title: new FormControl<string>('')
+    component.form = new FormGroup({ testField: formControl });
+    component.controlPath = ['testField'];
+    component.name = 'Test Field';
+
+    const errorMessages = component.getErrorMessages();
+
+    expect(errorMessages)
+      .toEqual(['Translated error']);
   });
 
-  const name = 'Title';
+  it('should build an error message with a translated key and parameters', () => {
+    const errorMessage = component.buildErrorMessage('required', { min: 5 });
 
+    expect(errorMessage)
+      .toBe('Translated error');
+  });
 
-  it('should get right error message', () => {
+  it('should traverse the control path to get the correct form control', () => {
+    const nestedFormGroup = new FormGroup({
+      nestedField: new FormControl('', Validators.required)
+    });
+    const rootFormGroup = new FormGroup({
+      parentField: nestedFormGroup
+    });
 
+    component.form = rootFormGroup;
+    component.controlPath = ['parentField',
+      'nestedField'];
+
+    const formControl = component.getFormControl();
+
+    expect(formControl)
+      .toBe(nestedFormGroup.get('nestedField'));
   });
 });

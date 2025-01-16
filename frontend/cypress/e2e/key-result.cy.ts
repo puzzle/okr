@@ -227,9 +227,7 @@ describe('okr key-result', () => {
     cy.getByTestId('submit')
       .should('be.disabled');
     KeyResultDialog.do()
-      .fillKeyResultTitle('I am a metric keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '52')
-      .fillKeyResultDescription('This is my description');
+      .fillKeyResultTitle('I am a metric keyresult');
 
     cy.getByTestId('submit')
       .should('not.be.disabled');
@@ -239,6 +237,14 @@ describe('okr key-result', () => {
     cy.getByTestId('submit')
       .should('be.disabled');
     cy.contains('Titel ist ein Pflichtfeld.');
+
+
+    KeyResultDialog.do()
+      .fillKeyResultTitle('a');
+    cy.getByTestId('submit')
+      .should('be.disabled');
+    cy.contains('Titel muss mindestens 2 Zeichen lang sein.');
+
 
     KeyResultDialog.do()
       .fillKeyResultTitle('My title');

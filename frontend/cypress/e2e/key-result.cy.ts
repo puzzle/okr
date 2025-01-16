@@ -271,13 +271,13 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch ist ein Pflichtfeld.');
+    cy.contains('Stretch Goal ist ein Pflichtfeld.');
 
     KeyResultDialog.do()
       .withMetricValues(Unit.PERCENT, '45', 'abc');
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch muss eine Zahl sein.');
+    cy.contains('Stretch Goal muss eine Zahl sein.');
 
     KeyResultDialog.do()
       .withMetricValues(Unit.PERCENT, '45', '83');

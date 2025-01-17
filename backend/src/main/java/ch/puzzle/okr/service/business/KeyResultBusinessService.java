@@ -1,9 +1,15 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
@@ -136,5 +142,46 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     public List<KeyResult> getKeyResultsOwnedByUser(long id) {
         return keyResultPersistenceService.getKeyResultsOwnedByUser(id);
+    }
+
+    @Transactional
+    public KeyResult duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
+                                        Objective duplicatedObjective) {
+        KeyResult newKeyResult = switch (keyResult.getKeyResultType()) {
+            case KEY_RESULT_TYPE_METRIC -> makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
+            case KEY_RESULT_TYPE_ORDINAL -> makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
+            default ->
+                throw new UnsupportedOperationException("Unsupported KeyResultType: " + keyResult.getKeyResultType());
+        };
+        newKeyResult = createEntity(newKeyResult, authorizationUser);
+
+        actionBusinessService.duplicateActions(keyResult, newKeyResult);
+        return newKeyResult;
+    }
+
+    private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
+        return KeyResultMetric.Builder
+                .builder() //
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withUnit(((KeyResultMetric) keyResult).getUnit()) //
+                .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
+                .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
+                .build();
+    }
+
+    private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
+        return KeyResultOrdinal.Builder
+                .builder() //
+                .withObjective(duplicatedObjective) //
+                .withTitle(keyResult.getTitle()) //
+                .withDescription(keyResult.getDescription()) //
+                .withOwner(keyResult.getOwner()) //
+                .withCommitZone(((KeyResultOrdinal) keyResult).getCommitZone()) //
+                .withTargetZone(((KeyResultOrdinal) keyResult).getTargetZone()) //
+                .withStretchZone(((KeyResultOrdinal) keyResult).getStretchZone()) //
+                .build();
     }
 }

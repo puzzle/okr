@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,8 +46,8 @@ class KeyResultBusinessServiceTest {
     ActionBusinessService actionBusinessService;
     @Mock
     AlignmentBusinessService alignmentBusinessService;
-    @InjectMocks
-    private KeyResultBusinessService keyResultBusinessService;
+    @Mock
+    ObjectiveBusinessService objectiveBusinessService;
     List<KeyResult> keyResults;
     User user;
     Objective objective;
@@ -56,6 +58,9 @@ class KeyResultBusinessServiceTest {
     CheckIn checkIn3;
     List<CheckIn> checkIns;
     List<Action> actions;
+    @InjectMocks
+    @Spy
+    private KeyResultBusinessService keyResultBusinessService;
 
     @BeforeEach
     void setup() {
@@ -465,5 +470,49 @@ class KeyResultBusinessServiceTest {
         boolean returnValue = keyResultBusinessService.isImUsed(1L, ordinalKeyResult);
 
         assertTrue(returnValue);
+    }
+
+    @DisplayName("Should successfully duplicate a metric key result")
+    @Test
+    void shouldSuccessfullyDuplicateMetricKeyResult() {
+        Objective objective = Objective.Builder.builder().withId(5L).withTitle("A new Objective").build();
+
+        KeyResult keyResultMetric = KeyResultMetric.Builder
+                .builder()
+                .withId(1L)
+                .withTitle("Metric KeyResult")
+                .withDescription("Description of metric key result")
+                .withOwner(User.Builder.builder().build())
+                .withUnit(Unit.NUMBER)
+                .withBaseline(10.0)
+                .withStretchGoal(50.0)
+                .build();
+
+        KeyResult test = keyResultBusinessService.duplicateKeyResult(authorizationUser, keyResultMetric, objective);
+
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResultMetric.class), any());
+        verify(actionBusinessService, times(1)).duplicateActions(any(KeyResultMetric.class), any());
+    }
+
+    @DisplayName("Should successfully duplicate an ordinal key result")
+    @Test
+    void shouldSuccessfullyDuplicateOrdinalKeyResult() {
+        Objective objective = Objective.Builder.builder().withId(5L).withTitle("A new Objective").build();
+
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder
+                .builder()
+                .withId(1L)
+                .withTitle("Ordinal KeyResult")
+                .withDescription("Description of metric key result")
+                .withOwner(User.Builder.builder().build())
+                .withCommitZone("We should be commited to this")
+                .withTargetZone("We could reach this target here")
+                .withStretchZone("Reaching this would be awesome!")
+                .build();
+
+        KeyResult test = keyResultBusinessService.duplicateKeyResult(authorizationUser, keyResultOrdinal, objective);
+
+        verify(keyResultBusinessService, times(1)).createEntity(any(KeyResultOrdinal.class), any());
+        verify(actionBusinessService, times(1)).duplicateActions(any(KeyResultOrdinal.class), any());
     }
 }

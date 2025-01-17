@@ -1,13 +1,8 @@
 package ch.puzzle.okr.service.business;
 
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
-import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import jakarta.transaction.Transactional;
@@ -26,15 +21,18 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
+    private final ActionBusinessService actionBusinessService;
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
                                     ObjectiveValidationService validator,
                                     ObjectivePersistenceService objectivePersistenceService,
-                                    CompletedBusinessService completedBusinessService) {
+                                    CompletedBusinessService completedBusinessService,
+                                    ActionBusinessService actionBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
+        this.actionBusinessService = actionBusinessService;
     }
 
     private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
@@ -107,65 +105,29 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     /**
-     * Create a new Objective (with a new ID) and copy from a source Objective
-     * (identified by id) the KeyResults. The CheckIns are not copied.
+     * Create a new Objective and copy the KeyResults from the source Objective. The
+     * CheckIns are not copied.
      *
-     * @param id
-     *            ID of the source Objective
      * @param objective
-     *            New Objective with no KeyResults
+     *            Objective to be duplicated
      * @param authorizationUser
      *            AuthorizationUser
-     * @param keyResults
-     *            KeyResults to copy
-     *
+     * @param keyResultIds
+     *            Ids of the keyresults which should be duplicated, the new
+     *            keyresults will be associated with the newly duplicated objective
      * @return New Objective with copied KeyResults form the source Objective
      */
     @Transactional
-    public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser,
-                                        List<KeyResult> keyResults) {
+    public Objective duplicateObjective(Objective objective, AuthorizationUser authorizationUser,
+                                        List<Long> keyResultIds) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
-        for (KeyResult keyResult : keyResults) {
-            duplicateKeyResult(authorizationUser, keyResult, duplicatedObjective);
+        for (Long keyResult : keyResultIds) {
+            keyResultBusinessService
+                    .duplicateKeyResult(authorizationUser,
+                                        keyResultBusinessService.getEntityById(keyResult),
+                                        duplicatedObjective);
         }
         return duplicatedObjective;
-    }
-
-    private void duplicateKeyResult(AuthorizationUser authorizationUser, KeyResult keyResult,
-                                    Objective duplicatedObjective) {
-        if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
-            KeyResult keyResultMetric = makeCopyOfKeyResultMetric(keyResult, duplicatedObjective);
-            keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-        } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
-            KeyResult keyResultOrdinal = makeCopyOfKeyResultOrdinal(keyResult, duplicatedObjective);
-            keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
-        }
-    }
-
-    private KeyResult makeCopyOfKeyResultMetric(KeyResult keyResult, Objective duplicatedObjective) {
-        return KeyResultMetric.Builder
-                .builder() //
-                .withObjective(duplicatedObjective) //
-                .withTitle(keyResult.getTitle()) //
-                .withDescription(keyResult.getDescription()) //
-                .withOwner(keyResult.getOwner()) //
-                .withUnit(((KeyResultMetric) keyResult).getUnit()) //
-                .withBaseline(0D) //
-                .withStretchGoal(1D) //
-                .build();
-    }
-
-    private KeyResult makeCopyOfKeyResultOrdinal(KeyResult keyResult, Objective duplicatedObjective) {
-        return KeyResultOrdinal.Builder
-                .builder() //
-                .withObjective(duplicatedObjective) //
-                .withTitle(keyResult.getTitle()) //
-                .withDescription(keyResult.getDescription()) //
-                .withOwner(keyResult.getOwner()) //
-                .withCommitZone("-") //
-                .withTargetZone("-") //
-                .withStretchZone("-") //
-                .build();
     }
 
     @Transactional

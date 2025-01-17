@@ -13,6 +13,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import java.time.LocalDateTime;
@@ -32,7 +33,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
-    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     @InjectMocks
     @Spy
     ObjectiveBusinessService objectiveBusinessService;
@@ -41,10 +41,15 @@ class ObjectiveBusinessServiceTest {
     @Mock
     KeyResultBusinessService keyResultBusinessService;
     @Mock
+    ActionBusinessService actionBusinessService;
+    @Mock
     CompletedBusinessService completedBusinessService;
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
+    @Mock
+    ActionPersistenceService actionPersistenceService;
 
+    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final User user = User.Builder
@@ -206,11 +211,13 @@ class ObjectiveBusinessServiceTest {
                 .build();
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder
                 .builder() //
+                .withId(1L) //
                 .withTitle("Ordinal 1") //
                 .withObjective(sourceObjective) //
                 .build();
         KeyResult keyResultMetric = KeyResultMetric.Builder
                 .builder() //
+                .withId(2L) //
                 .withTitle("Metric 1") //
                 .withObjective(sourceObjective) //
                 .withUnit(Unit.FTE) //
@@ -228,10 +235,13 @@ class ObjectiveBusinessServiceTest {
                 .build();
 
         when(objectivePersistenceService.save(any())).thenReturn(newObjective);
+        when(keyResultBusinessService.getEntityById(1L)).thenReturn(keyResultOrdinal);
+        when(keyResultBusinessService.getEntityById(2L)).thenReturn(keyResultMetric);
 
-        // act
         Objective duplicatedObjective = objectiveBusinessService
-                .duplicateObjective(sourceObjective.getId(), newObjective, authorizationUser, keyResults);
+                .duplicateObjective(newObjective,
+                                    authorizationUser,
+                                    keyResults.stream().map(KeyResult::getId).toList());
 
         // assert
         assertNotEquals(sourceObjective.getId(), duplicatedObjective.getId());
@@ -240,7 +250,7 @@ class ObjectiveBusinessServiceTest {
 
         // called for creating the new Objective and the new keyResults
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
-        verify(keyResultBusinessService, times(2)).createEntity(any(), any());
+        verify(keyResultBusinessService, times(2)).duplicateKeyResult(any(), any(), any());
     }
 
     @DisplayName("Should get all key result associated with the objective on getAllKeyResultsByObjective()")

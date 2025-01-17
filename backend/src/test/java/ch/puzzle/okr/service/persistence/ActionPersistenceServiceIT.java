@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @SpringIntegrationTest
 class ActionPersistenceServiceIT {
+    private static final String UPDATED_ACTION = "Updated Action";
     Action createdAction;
     @Autowired
     private ActionPersistenceService actionPersistenceService;
@@ -47,8 +48,6 @@ class ActionPersistenceServiceIT {
                         .build())
                 .build();
     }
-
-    private static final String UPDATED_ACTION = "Updated Action";
 
     @BeforeEach
     void setUp() {
@@ -119,7 +118,6 @@ class ActionPersistenceServiceIT {
     @Test
     void shouldReturnListOfAllActionsWhenFindAllIsCalled() {
         List<Action> actions = actionPersistenceService.findAll();
-
         assertEquals(11, actions.size());
     }
 

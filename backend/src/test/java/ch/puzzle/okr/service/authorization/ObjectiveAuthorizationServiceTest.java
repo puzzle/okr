@@ -25,15 +25,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveAuthorizationServiceTest {
-    @InjectMocks
-    private ObjectiveAuthorizationService objectiveAuthorizationService;
+    private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
+    private final Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     @Mock
     ObjectiveBusinessService objectiveBusinessService;
     @Mock
     AuthorizationService authorizationService;
-    private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
-
-    private final Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+    @InjectMocks
+    private ObjectiveAuthorizationService objectiveAuthorizationService;
 
     @DisplayName("Should return the created objective when authorized")
     @Test
@@ -163,13 +162,8 @@ class ObjectiveAuthorizationServiceTest {
     @DisplayName("Should throw an exception when not authorized to duplicate an objective")
     @Test
     void shouldThrowExceptionWhenNotAuthorizedToDuplicateObjective() {
-        Long idExistingObjective = 13L;
         String reason = "junit test reason";
         Objective objective = Objective.Builder.builder().build();
-
-        List<KeyResult> keyResults = new ArrayList<>();
-        keyResults.add(metricKeyResult);
-
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason))
                 .when(authorizationService)
@@ -177,9 +171,7 @@ class ObjectiveAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                                                          () -> objectiveAuthorizationService
-                                                                 .duplicateEntity(idExistingObjective,
-                                                                                  objective,
-                                                                                  keyResults));
+                                                                 .duplicateEntity(objective, new ArrayList<>()));
 
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
@@ -188,8 +180,6 @@ class ObjectiveAuthorizationServiceTest {
     @DisplayName("Should return duplicated objective when authorized")
     @Test
     void shouldReturnDuplicatedObjectiveWhenAuthorized() {
-        Long idExistingObjective = 13L;
-
         Objective newObjectiveWithoutKeyResults = Objective.Builder
                 .builder() //
                 .withTitle("Objective without KeyResults")
@@ -206,11 +196,13 @@ class ObjectiveAuthorizationServiceTest {
 
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService
-                .duplicateObjective(idExistingObjective, newObjectiveWithoutKeyResults, authorizationUser, keyResults))
+                .duplicateObjective(newObjectiveWithoutKeyResults,
+                                    authorizationUser,
+                                    keyResults.stream().map(KeyResult::getId).toList()))
                 .thenReturn(newObjectiveWithKeyResults);
 
         Objective objective = objectiveAuthorizationService
-                .duplicateEntity(idExistingObjective, newObjectiveWithoutKeyResults, keyResults);
+                .duplicateEntity(newObjectiveWithoutKeyResults, keyResults.stream().map(KeyResult::getId).toList());
 
         assertEquals(newObjectiveWithKeyResults, objective);
     }

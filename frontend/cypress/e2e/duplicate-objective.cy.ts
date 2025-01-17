@@ -2,6 +2,8 @@ import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
+import { uniqueSuffix } from '../support/helper/utils';
+import { Unit } from '../../src/app/shared/types/enums/unit';
 
 let overviewPage = new CyOverviewPage();
 
@@ -14,6 +16,7 @@ describe('functionality of duplicating objectives and their belonging key-result
   const firstKeyResultName = 'New structure that rewards funny guys and innovation before the end of Q1.';
   const secondKeyResultName = 'Monthly town halls between our people and leadership teams over the next four months.';
   const thirdKeyResultName = 'High employee satisfaction scores (80%+) throughout the year.';
+  const keyResultDetailPage = new KeyResultDetailPage();
 
   it('should be able to duplicate a objective into this quarter, including all keyResults', () => {
     const duplicatedTitle = 'This is a duplicated objective with all keyResults';
@@ -41,7 +44,6 @@ describe('functionality of duplicating objectives and their belonging key-result
       .excludeKeyResults([secondKeyResultName,
         thirdKeyResultName])
       .submit();
-
     overviewPage.getKeyResultOfObjective(duplicatedTitle, firstKeyResultName);
 
     overviewPage
@@ -95,6 +97,73 @@ describe('functionality of duplicating objectives and their belonging key-result
 
     cy.contains(duplicatedTitle)
       .should('not.exist');
+  });
+
+  it('should duplicate all attributes of the corresponding keyResults as well', () => {
+    const objectiveTitle = uniqueSuffix('What an awesome objective.');
+    const duplicatedTitle = uniqueSuffix('This objective has two keyResults with lots and lots of values that should be duplicated!');
+
+    overviewPage
+      .addObjective('LoremIpsum')
+      .fillObjectiveTitle(objectiveTitle)
+      .submit();
+
+    overviewPage
+      .addKeyResult('LoremIpsum', objectiveTitle)
+      .fillKeyResultTitle('A metric keyResult with lots of values')
+      .withMetricValues(Unit.CHF, '1', '5')
+      .fillKeyResultDescription('Its very sunny today.')
+      .addActionPlanElement('Action')
+      .addActionPlanElement('Plan')
+      .addActionPlanElement('Element')
+      .submit();
+
+    overviewPage
+      .addKeyResult('LoremIpsum', objectiveTitle)
+      .fillKeyResultTitle('A ordinal keyResult with lots of values')
+      .withOrdinalValues('CommitZ', 'TargetZ', 'StretchZ')
+      .fillKeyResultDescription('Its very sunny today.')
+      .addActionPlanElement('One')
+      .addActionPlanElement('More')
+      .addActionPlanElement('Element')
+      .submit();
+
+    overviewPage
+      .duplicateObjective(objectiveTitle)
+      .fillObjectiveTitle(duplicatedTitle)
+      .submit();
+
+    cy.contains(duplicatedTitle);
+
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, 'A metric keyResult with lots of values')
+      .click();
+    cy.contains('Baseline: 1 CHF');
+    cy.contains('Stretch Goal: 5 CHF');
+    cy.contains('Metrisch');
+    cy.contains('Jaya Norris');
+    cy.contains('Its very sunny today.');
+    cy.contains('Action Plan')
+      .then(() => {
+        cy.contains('Action');
+        cy.contains('Plan');
+        cy.contains('Element');
+      });
+    keyResultDetailPage.close();
+
+    overviewPage.getKeyResultOfObjective(duplicatedTitle, 'A ordinal keyResult with lots of values')
+      .click();
+    cy.contains('CommitZ');
+    cy.contains('TargetZ');
+    cy.contains('StretchZ');
+    cy.contains('Ordinal');
+    cy.contains('Jaya Norris');
+    cy.contains('Its very sunny today.');
+    cy.contains('Action Plan')
+      .then(() => {
+        cy.contains('One');
+        cy.contains('More');
+        cy.contains('Element');
+      });
   });
 });
 

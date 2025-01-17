@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -15,6 +14,8 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -169,5 +170,65 @@ class ActionBusinessServiceTest {
     void shouldDeleteAction() {
         actionBusinessService.deleteEntityById(action1.getId());
         verify(actionPersistenceService, times(1)).deleteById(action1.getId());
+    }
+
+    @ParameterizedTest(name = "Should return a empty list when actions are {0}")
+    @NullAndEmptySource
+    void shouldReturnEmptyListWhenActionsAreEmpty(List<Action> actions) {
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(9L).build();
+        KeyResult oldKeyResult = KeyResultMetric.Builder.builder().withId(6L).build();
+
+        when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId()))
+                .thenReturn(actions);
+
+        List<Action> result = actionBusinessService.duplicateActions(oldKeyResult, newKeyResult);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @DisplayName("Should duplicate all actions when there are actions defined")
+    @Test
+    void shouldDuplicateActionsWhenActionsExist() {
+        KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(9L).build();
+        KeyResult oldKeyResult = KeyResultMetric.Builder.builder().withId(6L).build();
+
+        Action action1 = Action.Builder
+                .builder()
+                .withAction("Neuer Drucker")
+                .withKeyResult(newKeyResult)
+                .isChecked(false)
+                .withPriority(1)
+                .build();
+        Action action2 = Action.Builder
+                .builder()
+                .withAction("Neues Papier")
+                .withKeyResult(newKeyResult)
+                .isChecked(true)
+                .withPriority(2)
+                .build();
+
+        when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(oldKeyResult.getId()))
+                .thenReturn(List.of(action1, action2));
+
+        List<Action> result = actionBusinessService.duplicateActions(oldKeyResult, newKeyResult);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        Action newAction1 = result.getFirst();
+        assertEquals("Neuer Drucker", newAction1.getActionPoint());
+        assertFalse(newAction1.isChecked());
+        assertEquals(1, newAction1.getPriority());
+        assertEquals(newKeyResult, newAction1.getKeyResult());
+
+        Action newAction2 = result.get(1);
+        assertEquals("Neues Papier", newAction2.getActionPoint());
+        assertTrue(newAction2.isChecked());
+        assertEquals(2, newAction2.getPriority());
+        assertEquals(newKeyResult, newAction2.getKeyResult());
+
+        verify(validator, times(2)).validate(any(Action.class));
+        verify(actionPersistenceService, times(2)).save(any(Action.class));
     }
 }

@@ -1,6 +1,7 @@
 package ch.puzzle.okr.controller;
 
-import static ch.puzzle.okr.test.KeyResultTestHelpers.*;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.keyResultMetricDto;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.keyResultOrdinalDto;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -18,6 +19,7 @@ import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,7 +51,7 @@ class ObjectiveControllerIT {
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
     private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
-    private static final String URL_DUPLICATE_OBJECTIVE_5 = "/api/v2/objectives/5";
+    private static final String URL_DUPLICATE_OBJECTIVE_5 = "/api/v2/objectives/duplicate";
     private static final String JSON = """
             {
                "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
@@ -60,9 +62,9 @@ class ObjectiveControllerIT {
     private static final String DUPLICATE_OBJECTIVE = """
             {
                 "objective": %s,
-                "keyResults": [%s,%s]
+                "keyResultIds": [1,2]
             }
-            """.formatted(JSON, KEY_RESULT_METRIC_JSON, KEY_RESULT_ORDINAL_JSON);
+            """.formatted(JSON);
 
     private static final String CREATE_NEW_OBJECTIVE = """
             {
@@ -341,15 +343,16 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
-    @DisplayName("Should return is created when an ojective was duplicated")
+    @DisplayName("Should return is created when an objective was duplicated")
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
-        BDDMockito
-                .given(objectiveAuthorizationService.duplicateEntity(anyLong(), any(), anyList()))
-                .willReturn(objective1);
+        BDDMockito.given(objectiveMapper.toObjective(any(ObjectiveDto.class))).willReturn(objective1);
         BDDMockito.given(keyResultMapper.toDto(any(KeyResultMetric.class), any())).willReturn(keyResultMetricDto);
         BDDMockito.given(keyResultMapper.toDto(any(KeyResultOrdinal.class), any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
+        BDDMockito
+                .given(objectiveAuthorizationService.duplicateEntity(objective1, List.of(1L, 2L)))
+                .willReturn(objective1);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
 
         mvc

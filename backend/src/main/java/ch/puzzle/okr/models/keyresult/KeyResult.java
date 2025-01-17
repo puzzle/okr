@@ -1,9 +1,6 @@
 package ch.puzzle.okr.models.keyresult;
 
-import ch.puzzle.okr.models.MessageKey;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.WriteableInterface;
+import ch.puzzle.okr.models.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

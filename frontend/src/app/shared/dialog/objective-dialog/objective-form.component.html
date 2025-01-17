@@ -103,17 +103,32 @@
       >
         Als Draft speichern
       </button>
-      <button
-        *ngIf="allowedToSaveBacklog()"
-        [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
-        color="primary"
-        mat-stroked-button
-        type="submit"
-        (click)="onSubmit('ONGOING')"
-        [attr.data-testId]="'save'"
-      >
-        Speichern
-      </button>
+      <span *ngIf="!this.data.objective.objectiveId; else test" class="ps-2 pe-2">
+        <button
+          [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
+          mat-stroked-button
+          color="primary"
+          type="submit"
+          (click)="onSubmit('ONGOING')"
+          [attr.data-testId]="'save'"
+        >
+          Speichern
+        </button>
+      </span>
+
+      <ng-template #test>
+        <button
+          [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
+          mat-flat-button
+          color="primary"
+          type="submit"
+          (click)="onSubmit('ONGOING')"
+          [attr.data-testId]="'save'"
+        >
+          Speichern
+        </button>
+      </ng-template>
+
       <button
         color="primary"
         mat-button

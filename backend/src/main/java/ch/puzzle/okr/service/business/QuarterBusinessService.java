@@ -3,6 +3,8 @@ package ch.puzzle.okr.service.business;
 import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
 
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ public class QuarterBusinessService {
 
     private final QuarterPersistenceService quarterPersistenceService;
     private final QuarterValidationService validator;
+    private final TenantConfigProvider tenantConfigProvider;
 
     @Value("${okr.quarter.business.year.start}")
     private int quarterStart;
@@ -31,9 +34,10 @@ public class QuarterBusinessService {
     private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-                                  QuarterValidationService validator) {
+                                  QuarterValidationService validator, TenantConfigProvider tenantConfigProvider) {
         this.quarterPersistenceService = quarterPersistenceService;
         this.validator = validator;
+        this.tenantConfigProvider = tenantConfigProvider;
     }
 
     public Quarter getQuarterById(Long quarterId) {
@@ -112,7 +116,8 @@ public class QuarterBusinessService {
         return quarters;
     }
 
-    // @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
+    // @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the
+    // last day of every month
     @Scheduled(cron = "0/5 * * * * ?")
     public void scheduledGenerationQuarters() {
         Map<Integer, Integer> quarters = generateQuarters();
@@ -122,11 +127,23 @@ public class QuarterBusinessService {
         int currentQuarter = quarters.get(currentYearMonth.getMonthValue());
         int nextQuarter = quarters.get(nextQuarterYearMonth.getMonthValue());
 
+        String initialTenant = TenantContext.getCurrentTenant();
+
+        List<String> tenantSchemas = this.tenantConfigProvider
+                .getTenantConfigs()
+                .stream()
+                .map(TenantConfigProvider.TenantConfig::tenantId)
+                .toList();
         // If we are in the last month of a quarter, generate the next quarter
-//        if (isInLastMonthOfQuarter(currentQuarter, nextQuarter)) {
-            logger.info("Generated quarters on last day of month");
+        // if (isInLastMonthOfQuarter(currentQuarter, nextQuarter)) {
+        for (String schema : tenantSchemas) {
+            logger.info("Generated quarters on last day of month for tenant {}", schema);
             String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
+            TenantContext.setCurrentTenant(schema);
             generateQuarter(nextQuarterYearMonth.atDay(1).atStartOfDay(), label);
-//        }
+            // }
+        }
+
+        TenantContext.setCurrentTenant(initialTenant);
     }
 }

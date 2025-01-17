@@ -105,6 +105,7 @@
       </button>
       <span *ngIf="!this.data.objective.objectiveId; else test" class="ps-2 pe-2">
         <button
+          *ngIf="allowedToSaveBacklog()"
           [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
           mat-stroked-button
           color="primary"

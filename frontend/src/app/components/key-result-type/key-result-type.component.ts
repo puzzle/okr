@@ -104,17 +104,19 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   calculateValueForField(values: MetricValue, field: KeyResultMetricField) {
+    const roundToTwoDecimals = (num: number) => parseFloat(num.toFixed(2));
+
     switch (field) {
       case KeyResultMetricField.BASELINE: {
-        return { baseline: (values.targetGoal - values.stretchGoal * 0.7) / 0.3 };
+        return { baseline: roundToTwoDecimals((values.targetGoal - values.stretchGoal * 0.7) / 0.3) };
       }
 
       case KeyResultMetricField.TARGET_GOAL: {
-        return { targetGoal: (values.stretchGoal - values.baseline) * 0.7 + values.baseline };
+        return { targetGoal: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.7 + values.baseline) };
       }
 
       case KeyResultMetricField.STRETCH_GOAL: {
-        return { stretchGoal: (values.targetGoal - values.baseline) / 0.7 + values.baseline };
+        return { stretchGoal: roundToTwoDecimals((values.targetGoal - values.baseline) / 0.7 + values.baseline) };
       }
 
       case KeyResultMetricField.NONE: {

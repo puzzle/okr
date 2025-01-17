@@ -172,7 +172,7 @@ class ActionBusinessServiceTest {
         verify(actionPersistenceService, times(1)).deleteById(action1.getId());
     }
 
-    @ParameterizedTest(name = "Should return a empty list when actions are null or empty")
+    @ParameterizedTest(name = "Should return a empty list when actions are {0}")
     @NullAndEmptySource
     void shouldReturnEmptyListWhenActionsAreEmpty(List<Action> actions) {
         KeyResult newKeyResult = KeyResultMetric.Builder.builder().withId(9L).build();

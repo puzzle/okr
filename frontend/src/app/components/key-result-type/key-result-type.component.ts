@@ -129,16 +129,17 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     const formGroupMetric = this.keyResultForm.get('metric');
+    const isControlValid = (control: string) => formGroupMetric?.get(control)?.valid || false;
     this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: formGroupMetric?.get('stretchGoal')?.value });
 
     formGroupMetric?.get('baseline')?.valueChanges
-      .pipe(filter(() => formGroupMetric?.get('baseline')?.valid || false))
+      .pipe(filter(() => isControlValid('baseline')))
       .subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
     formGroupMetric?.get('targetGoal')?.valueChanges
-      .pipe(filter(() => formGroupMetric?.get('targetGoal')?.valid || false))
+      .pipe(filter(() => isControlValid('targetGoal')))
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
     formGroupMetric?.get('stretchGoal')?.valueChanges
-      .pipe(filter(() => formGroupMetric?.get('stretchGoal')?.valid || false))
+      .pipe(filter(() => isControlValid('stretchGoal')))
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
   }
 }

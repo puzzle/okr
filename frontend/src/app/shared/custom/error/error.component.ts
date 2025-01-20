@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-error',
   templateUrl: './error.component.html',
-  styleUrl: './error.component.scss',
   standalone: false,
   viewProviders: [{ provide: ControlContainer,
     useExisting: FormGroupDirective }]

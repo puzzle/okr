@@ -94,11 +94,14 @@ export function getKeyResultForm(): FormGroup {
     metric: new FormGroup({
       unit: new FormControl<Unit>(Unit.NUMBER, [Validators.required]),
       baseline: new FormControl(0, [Validators.required,
-        numberValidator()]),
+        numberValidator(),
+        Validators.maxLength(20)]),
       targetGoal: new FormControl(0, [Validators.required,
-        numberValidator()]),
+        numberValidator(),
+        Validators.maxLength(20)]),
       stretchGoal: new FormControl(0, [Validators.required,
-        numberValidator()])
+        numberValidator(),
+        Validators.maxLength(20)])
     }),
     ordinal: new FormGroup({
       commitZone: new FormControl('', [Validators.required,

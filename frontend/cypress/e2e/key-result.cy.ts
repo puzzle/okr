@@ -23,6 +23,11 @@ describe('okr key-result', () => {
       .fillKeyResultDescription('This is my description');
 
     keyResultDialog.withMetricValues(
+      Unit.PERCENT, '999999999999999999999999999999', '7', undefined
+    );
+    keyResultDialog.checkOnDialog(() => cy.contains('Baseline darf maximal 20 Zeichen lang sein.'));
+
+    keyResultDialog.withMetricValues(
       Unit.PERCENT, '0', '7', undefined
     );
     cy.getByTestId('stretch-goal')

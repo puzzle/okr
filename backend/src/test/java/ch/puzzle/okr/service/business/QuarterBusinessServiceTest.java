@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import java.time.LocalDate;
@@ -28,12 +29,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class QuarterBusinessServiceTest {
     @Mock
     QuarterPersistenceService quarterPersistenceService;
+
+    @Mock TenantConfigProvider tenantConfigProvider;
 
     @Mock
     QuarterValidationService quarterValidationService;

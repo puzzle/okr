@@ -6,7 +6,7 @@ import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
-import { Observable, Subject } from 'rxjs';
+import { filter, Observable, Subject } from 'rxjs';
 
 export enum KeyResultMetricField {
   BASELINE,
@@ -128,9 +128,12 @@ export class KeyResultTypeComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     const formGroupMetric = this.keyResultForm.get('metric');
     this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: formGroupMetric?.get('stretchGoal')?.value });
-    formGroupMetric?.get('baseline')?.valueChanges.subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
-    formGroupMetric?.get('targetGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
-    formGroupMetric?.get('stretchGoal')?.valueChanges.subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
+    formGroupMetric?.get('baseline')?.valueChanges.pipe(filter((value: any) => formGroupMetric?.get('baseline')?.valid || false))
+      .subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
+    formGroupMetric?.get('targetGoal')?.valueChanges.pipe(filter((value: any) => formGroupMetric?.get('targetGoal')?.valid || false))
+      .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
+    formGroupMetric?.get('stretchGoal')?.valueChanges.pipe(filter((value: any) => formGroupMetric?.get('stretchGoal')?.valid || false))
+      .subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
   }
 }
 

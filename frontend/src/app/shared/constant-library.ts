@@ -94,11 +94,11 @@ export function getKeyResultForm(): FormGroup {
     metric: new FormGroup({
       unit: new FormControl<Unit>(Unit.NUMBER, [Validators.required]),
       baseline: new FormControl(0, [Validators.required,
-        Validators.pattern('^-?\\d+\\.?\\d*$')]),
+        numberValidator()]),
       targetGoal: new FormControl(0, [Validators.required,
-        Validators.pattern('^-?\\d+\\.?\\d*$')]),
+        numberValidator()]),
       stretchGoal: new FormControl(0, [Validators.required,
-        Validators.pattern('^-?\\d+\\.?\\d*$')])
+        numberValidator()])
     }),
     ordinal: new FormGroup({
       commitZone: new FormControl('', [Validators.required,
@@ -121,5 +121,12 @@ function ownerValidator(): ValidatorFn {
       return null;
     }
     return { invalid_user: { value: control.value } };
+  };
+}
+
+function numberValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const isAllowed = (/^-?\d+\.?\d*$/).test(control.value);
+    return isAllowed ? null : { number: { value: control.value } };
   };
 }

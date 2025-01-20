@@ -23,7 +23,6 @@ export class ErrorComponent {
 
   getErrorMessages(): string[] {
     const formField = this.getFormControl();
-
     if (!formField?.dirty && !formField?.touched || formField?.valid) {
       return [];
     }
@@ -34,7 +33,6 @@ export class ErrorComponent {
 
   buildErrorMessage(key: string, value: any): string {
     const displayName = this.name || this.controlPath[this.controlPath.length - 1];
-
     return this.translate.instant('DIALOG_ERRORS.' + key.toUpperCase(), { fieldName: displayName,
       ...value });
   }

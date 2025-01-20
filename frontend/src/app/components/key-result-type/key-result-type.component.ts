@@ -68,11 +68,13 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   updateMetricValue(changed: KeyResultMetricField, value: any) {
-    if (Object.values(value)
-      .find((e) => e === undefined)) {
+    const formGroupMetric = this.keyResultForm.get('metric');
+    const hasUndefinedValue = Object.values(value)
+      .some((v) => v === undefined);
+    if (hasUndefinedValue || formGroupMetric?.invalid) {
       return;
     }
-    const formGroupMetric = this.keyResultForm.get('metric');
+
     const formGroupValue = this.getMetricValue(formGroupMetric?.value, value);
     const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed);
     formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
@@ -128,11 +130,15 @@ export class KeyResultTypeComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     const formGroupMetric = this.keyResultForm.get('metric');
     this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: formGroupMetric?.get('stretchGoal')?.value });
-    formGroupMetric?.get('baseline')?.valueChanges.pipe(filter((value: any) => formGroupMetric?.get('baseline')?.valid || false))
+
+    formGroupMetric?.get('baseline')?.valueChanges
+      .pipe(filter(() => formGroupMetric?.get('baseline')?.valid || false))
       .subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
-    formGroupMetric?.get('targetGoal')?.valueChanges.pipe(filter((value: any) => formGroupMetric?.get('targetGoal')?.valid || false))
+    formGroupMetric?.get('targetGoal')?.valueChanges
+      .pipe(filter(() => formGroupMetric?.get('targetGoal')?.valid || false))
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
-    formGroupMetric?.get('stretchGoal')?.valueChanges.pipe(filter((value: any) => formGroupMetric?.get('stretchGoal')?.valid || false))
+    formGroupMetric?.get('stretchGoal')?.valueChanges
+      .pipe(filter(() => formGroupMetric?.get('stretchGoal')?.valid || false))
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
   }
 }

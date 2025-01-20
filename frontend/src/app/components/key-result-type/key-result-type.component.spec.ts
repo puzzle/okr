@@ -228,6 +228,11 @@ describe('KeyResultTypeComponent', () => {
         stretchGoal: 5 },
       KeyResultMetricField.BASELINE,
       { baseline: -5 }],
+      [{ baseline: NaN,
+        targetGoal: 5,
+        stretchGoal: 10 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -6.67 }],
 
       [{ baseline: 5,
         targetGoal: NaN,
@@ -254,6 +259,11 @@ describe('KeyResultTypeComponent', () => {
         stretchGoal: 5 },
       KeyResultMetricField.TARGET_GOAL,
       { targetGoal: 2 }],
+      [{ baseline: 0,
+        targetGoal: NaN,
+        stretchGoal: 5.34 },
+      KeyResultMetricField.TARGET_GOAL,
+      { targetGoal: 3.74 }],
 
       [{ baseline: 5,
         targetGoal: 8.5,

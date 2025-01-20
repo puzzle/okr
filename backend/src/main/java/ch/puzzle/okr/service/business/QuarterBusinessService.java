@@ -83,7 +83,7 @@ public class QuarterBusinessService {
         return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
-    protected void generateQuarter(LocalDate start, String label, String schema) {
+    private void generateQuarter(LocalDate start, String label, String schema) {
         TenantContext.setCurrentTenant(schema);
 
         YearMonth yearMonth = YearMonth.from(start);
@@ -108,7 +108,7 @@ public class QuarterBusinessService {
         return YearMonth.now();
     }
 
-    public Map<Integer, Integer> generateQuarters() {
+    Map<Integer, Integer> generateQuarters() {
         Map<Integer, Integer> quarters = new HashMap<>();
         int quarterIndexZeroBased = quarterStart - 1;
         for (int i = 0; i < 12; i++) {

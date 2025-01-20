@@ -153,8 +153,8 @@ class QuarterPersistenceServiceIT {
 
         quarterBusinessService.scheduledGenerationQuarters();
 
-        Mockito.verify(quarterBusinessService, Mockito.times(amountOfInvocations)).generateQuarter(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
         Mockito.verify(quarterPersistenceService, Mockito.times(amountOfInvocations)).save(ArgumentMatchers.any());
+
         List<Quarter> createdQuarters = quarterPersistenceService.findAll().stream().filter(quarter -> quarter.getLabel().equals(expectedLabel)).toList();
         assertEquals(amountOfInvocations, createdQuarters.size());
         assertEquals(4+ amountOfInvocations, quarterBusinessService.getQuarters().size());

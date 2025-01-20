@@ -85,6 +85,10 @@ public class TenantConfigProvider implements TenantConfigProviderInterface {
         return getTenantConfigById(tenantId).map(TenantConfig::jwkSetUri);
     }
 
+    public List<String> getAllTenantIds() {
+        return new ArrayList<>(this.tenantConfigs.keySet());
+    }
+
     public record TenantConfig(String tenantId, String[] okrChampionEmails, String jwkSetUri, String issuerUrl,
             String clientId, DataSourceConfig dataSourceConfig) {
 

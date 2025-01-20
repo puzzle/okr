@@ -36,12 +36,15 @@ Cypress.Commands.add('getByTestId', (testId: string, text?: string): Chainable =
 
 Cypress.Commands.add('findByTestId', { prevSubject: true }, (subject: JQuery<HTMLElement>, testId: string, text?: string): Chainable => {
   const selector = `[data-testId=${testId}]`;
+  cy.wrap(subject)
+    .as('subject');
+  const element = cy.get('@subject')
+    .find(selector);
   if (text) {
-    return cy.wrap(subject)
-      .find(selector)
+    return element
       .contains(text);
   } else {
-    return cy.wrap(subject)
+    return element
       .find(selector);
   }
 });

@@ -40,6 +40,9 @@ export default class CyOverviewPage extends Page {
       return new ObjectiveDialog();
     }
     cy.getByTestId('add-objective')
+      .as('addObjective');
+
+    cy.get('@addObjective')
       .first()
       .click();
     return new ObjectiveDialog();
@@ -63,6 +66,8 @@ export default class CyOverviewPage extends Page {
         .click();
     } else {
       cy.getByTestId('add-key-result')
+        .as('addKeyResult');
+      cy.get('@addKeyResult')
         .first()
         .click();
     }
@@ -173,20 +178,26 @@ export default class CyOverviewPage extends Page {
       .scrollIntoView();
 
     cy.get('@option')
-      .should('have.class', 'objective-menu-option')
+      .should('have.class', 'objective-menu-option');
+
+    cy.get('@option')
       .click();
   }
 
   duplicateObjective(objectiveName: string) {
     cy.intercept('GET', '**/objectives/*/keyResults')
       .as('keyResults');
+
     this.getObjectiveByName(objectiveName)
       .findByTestId('three-dot-menu')
       .as('objectiveThreeDotMenu')
       .scrollIntoView();
+
     cy.get('@objectiveThreeDotMenu')
       .should('exist')
-      .should('be.visible')
+      .should('be.visible');
+
+    cy.get('@objectiveThreeDotMenu')
       .click();
     this.selectFromThreeDotMenu('Objective duplizieren');
     cy.wait('@keyResults');

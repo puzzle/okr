@@ -1,24 +1,23 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
 
 @Service
 public class QuarterBusinessService {

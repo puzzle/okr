@@ -266,6 +266,51 @@ describe('okr objective', () => {
       overviewPage.visitNextQuarter();
       cy.contains('Move to another quarter on edit');
     });
+
+    it.only('should have primary button on all objective dialogs', () => {
+      overviewPage
+        .addObjective()
+        .fillObjectiveTitle('A objective for testing purposes')
+        .checkForPrimaryButton('save-draft')
+        .submit();
+
+      overviewPage
+        .openThreeDotMenuOfObjective('A objective for testing purposes')
+        .selectFromThreeDotMenu('Objective bearbeiten');
+      ObjectiveDialog.do()
+        .checkForPrimaryButton('save')
+        .cancel();
+
+      overviewPage
+        .openThreeDotMenuOfObjective('A objective for testing purposes')
+        .selectFromThreeDotMenu('Objective abschliessen');
+      cy.getByTestId('successful')
+        .click();
+      cy.getByTestId('submit')
+        .should('have.attr', 'color', 'primary')
+        .and('have.attr', 'mat-flat-button');
+      cy.getByTestId('cancel')
+        .click();
+
+      overviewPage
+        .openThreeDotMenuOfObjective('A objective for testing purposes')
+        .selectFromThreeDotMenu('Objective als Draft speichern');
+      ConfirmDialog.do()
+        .checkForPrimaryButton()
+        .cancel();
+
+      overviewPage
+        .openThreeDotMenuOfObjective('A objective for testing purposes')
+        .selectFromThreeDotMenu('Objective löschen');
+      ConfirmDialog.do()
+        .checkForPrimaryButton()
+        .cancel();
+
+      overviewPage
+        .duplicateObjective('A objective for testing purposes')
+        .checkForPrimaryButton('save')
+        .cancel();
+    });
   });
 
   describe('tests via keyboard', () => {

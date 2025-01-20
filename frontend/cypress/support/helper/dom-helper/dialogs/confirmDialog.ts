@@ -19,6 +19,13 @@ export default class ConfirmDialog extends Dialog {
       .click();
   }
 
+  checkForPrimaryButton() {
+    cy.getByTestId('confirm-yes')
+      .should('have.attr', 'color', 'primary')
+      .and('have.attr', 'mat-flat-button');
+    return this;
+  }
+
   getPage(): Chainable {
     return cy.get('app-confirm-dialog');
   }

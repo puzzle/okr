@@ -99,6 +99,13 @@ export default class KeyResultDialog extends Dialog {
     cy.contains('Abbrechen');
   }
 
+  checkForPrimaryButton() {
+    cy.getByTestId('submit')
+      .should('have.attr', 'color', 'primary')
+      .and('have.attr', 'mat-flat-button');
+    return this;
+  }
+
   override submit() {
     cy.getByTestId('submit')
       .click();

@@ -453,4 +453,19 @@ describe('okr key-result', () => {
     cy.get('A keyresult to delete')
       .should('not.exist');
   });
+
+  it('should have primary button on all keyResult dialogs', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('A keyResult for testing purposes')
+      .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
+      .checkForPrimaryButton()
+      .submit();
+
+    keyResultDetailPage
+      .visit('A keyResult for testing purposes')
+      .editKeyResult()
+      .checkForPrimaryButton()
+      .cancel();
+  });
 });

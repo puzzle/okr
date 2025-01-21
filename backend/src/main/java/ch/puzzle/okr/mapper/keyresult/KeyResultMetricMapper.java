@@ -10,6 +10,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.business.UnitBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -21,15 +22,19 @@ public class KeyResultMetricMapper {
     private final ObjectiveBusinessService objectiveBusinessService;
     private final CheckInBusinessService checkInBusinessService;
     private final ActionMapper actionMapper;
+    private final UnitBusinessService unitBusinessService;
 
     public KeyResultMetricMapper(UserBusinessService userBusinessService,
                                  ObjectiveBusinessService objectiveBusinessService,
-                                 CheckInBusinessService checkInBusinessService, ActionMapper actionMapper) {
+                                 CheckInBusinessService checkInBusinessService, ActionMapper actionMapper,
+                                 UnitBusinessService unitBusinessService) {
         this.userBusinessService = userBusinessService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionMapper = actionMapper;
+        this.unitBusinessService = unitBusinessService;
     }
+
 
     public KeyResultDto toDto(KeyResultMetric keyResult, List<Action> actionList) {
         KeyResultUserDto ownerDto = new KeyResultUserDto( //
@@ -73,7 +78,7 @@ public class KeyResultMetricMapper {
                 .builder() //
                 .withBaseline(keyResultMetricDto.baseline()) //
                 .withStretchGoal(keyResultMetricDto.stretchGoal()) //
-                .withUnit(Unit.Builder.builder().unitName(keyResultMetricDto.unit()).build()) // TODO create unit businessservice and use find method
+                .withUnit(unitBusinessService.findUnitByName(keyResultMetricDto.unit()))
                 .withId(keyResultMetricDto.id()) //
                 .withVersion(keyResultMetricDto.version()) //
                 .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id())) //

@@ -23,7 +23,6 @@ public class UnitValidationService extends ValidationBase<Unit, Long, UnitReposi
     @Override
     public void validateOnCreate(Unit model) {
         throwExceptionWhenModelIsNull(model);
-        throwExceptionWhenIdIsNotNull(model.getId());
 
         validate(model);
     }

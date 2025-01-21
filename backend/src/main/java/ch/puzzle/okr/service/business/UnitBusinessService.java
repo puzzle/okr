@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
@@ -8,6 +9,8 @@ import ch.puzzle.okr.service.validation.UnitValidationService;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +26,8 @@ public class UnitBusinessService {
     public Unit findUnitByName(String unitName) {
         return unitPersistenceService
                 .findUnitByUnitName(unitName)
-                .orElseThrow(() -> OkrResponseStatusException.of(ErrorKey.UNIT_NOT_FOUND, unitName));
+                .orElseThrow( ()-> new OkrResponseStatusException(HttpStatus.NOT_FOUND, ErrorKey.MODEL_NOT_FOUND_BY_PROPERTY, List.of(
+                        Constants.UNIT, "unit name", unitName)));
     }
 
     public Unit getEntityById(Long id) {
@@ -45,9 +49,11 @@ public class UnitBusinessService {
     }
 
     @Transactional
-    public Unit updateEntity(Long id, Unit action) {
-        validator.validateOnUpdate(id, action);
-        return unitPersistenceService.save(action);
+    public Unit updateEntity(Long id, Unit newUnit) {
+        validator.validateOnUpdate(id, newUnit);
+        Unit oldUnit = unitPersistenceService.findById(id);
+        oldUnit.setUnitName(newUnit.getUnitName());
+        return unitPersistenceService.save(oldUnit);
     }
 
     @Transactional

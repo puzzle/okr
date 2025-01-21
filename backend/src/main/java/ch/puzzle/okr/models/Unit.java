@@ -3,9 +3,13 @@ package ch.puzzle.okr.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.util.Objects;
 
 @Entity(name = "unit")
+@EntityListeners(AuditingEntityListener.class)
 public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_unit")
@@ -32,8 +36,9 @@ public class Unit {
     @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String unitName;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @ManyToOne
+    @CreatedBy
+//    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private User createdBy;
 
     public Long getId() {

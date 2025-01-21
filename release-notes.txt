@@ -1,0 +1,31 @@
+=============================================================================
+Release Notes Puzzle OKR
+=============================================================================
+
+Version     Neuerungen
+-----------------------------------------------------------------------------
+V3.0        - Erweiterung #1313: Update auf Flyway 11.2.0
+            - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der actionplan übernommen
+            - Erweiterung #1309: Update auf angular-cli monorepo 19.1.1
+            - Erweiterung #1308: Update auf typescript 5.7.3
+            - Erweiterung #1307: Update auf angular-cli monorepo 19.1.0
+            - Erweiterung #1306: Update auf angular monorepo 19.1.0
+            - Fehlerbehebung #1298: SCSS-Warnungen behoben
+            - Erweiterung #1304: Update von quay.io/keycloak/keycloak Docker tag auf 26.1.0
+            - Fehlerbehebung #1236: Flaky E2E-Test gefixt
+            - Erweiterung #1302: Update auf spotless-maven-plugin 2.44.2
+            - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Objective-Detailansicht angezeigt
+            - Erweiterung #1296: Update auf typescript-eslint monorepo 8.20.0
+            - Erweiterung #1295: Update von quay.io/keycloak/keycloak Docker tag auf 26.0.8
+            - Erweiterung #925: In der Check-In history anzeigen wer das Check-In erfasst hat
+            - Erweiterung #888: Beim Check-In erstellen können nun neue actions zum Actionplan hinzugefügt werden
+            - Erweiterung #1291: Update von @stylistic/eslint-plugin auf 2.13.0
+            - Erweiterung #1290: Update von springdoc-openapi-starter-webmvc-ui auf 2.8.3
+            - Erweiterung #1289: Update von eslint monorepo auf 9.18.0
+            - Erweiterung #1287: Update von jest-preset-angular auf 14.5.0
+            - Erweiterung #1285: Update von uuid auf 11.0.5
+            - Fehlerbehebung #1220: Sonar code smells und risks behoben
+            - Fehlerbehebung #1223: Deprecated mockito Annotationen ersetzt
+            -
+
+V2.0        - Fehlerbehebung #949: Bugfix

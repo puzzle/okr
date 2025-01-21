@@ -17,6 +17,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.business.UnitBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,13 +43,17 @@ class KeyResultMapperTest {
     @InjectMocks
     private ActionMapper actionMapper;
 
+    @Mock
+    UnitBusinessService unitBusinessService;
+
     @BeforeEach
     void setup() {
         KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper( //
                                                                                 userBusinessService, //
                                                                                 objectiveBusinessService, //
                                                                                 checkInBusinessService, //
-                                                                                actionMapper);
+                                                                                actionMapper,
+                                                                                unitBusinessService);
 
         KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper( //
                                                                                    userBusinessService, //

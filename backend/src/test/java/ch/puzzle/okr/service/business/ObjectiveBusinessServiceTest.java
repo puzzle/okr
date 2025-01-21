@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import static ch.puzzle.okr.models.State.DRAFT;
+import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -220,7 +221,7 @@ class ObjectiveBusinessServiceTest {
                 .withId(2L) //
                 .withTitle("Metric 1") //
                 .withObjective(sourceObjective) //
-                .withUnit(Unit.FTE) //
+                .withUnit(FTE_UNIT) //
                 .build();
 
         List<KeyResult> keyResults = new ArrayList<>();

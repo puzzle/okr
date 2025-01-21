@@ -10,6 +10,7 @@ import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.test.CheckInTestHelpers;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
+import ch.puzzle.okr.test.TestHelper;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
@@ -171,7 +172,7 @@ class DeserializerHelperTest {
         assertEquals("BESCHREIBUNG", keyResultMetricDto.description());
         assertEquals(1.0, keyResultMetricDto.baseline());
         assertEquals(5.0, keyResultMetricDto.stretchGoal());
-        assertEquals(Unit.NUMBER, keyResultMetricDto.unit());
+        assertEquals(TestHelper.NUMBER_UNIT.getUnitName(), keyResultMetricDto.unit());
 
         KeyResultUserDto owner = keyResultMetricDto.owner();
         assertOwner(owner);

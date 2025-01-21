@@ -16,6 +16,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
+import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -63,7 +64,7 @@ class CheckInValidationServiceTest {
             .builder()
             .withBaseline(13D)
             .withStretchGoal(25D)
-            .withUnit(Unit.NUMBER)
+            .withUnit(TestHelper.NUMBER_UNIT)
             .withId(8L)
             .withTitle("Keyresult Metric")
             .withObjective(objective)

@@ -3,6 +3,7 @@ package ch.puzzle.okr.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity(name = "unit")
 public class Unit {
@@ -10,6 +11,19 @@ public class Unit {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_unit")
     @SequenceGenerator(name = "sequence_unit", allocationSize = 1)
     private Long id;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Unit unit)) {
+            return false;
+        }
+        return Objects.equals(getUnitName(), unit.getUnitName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getUnitName());
+    }
 
     @Version
     private int version;
@@ -64,13 +78,14 @@ public class Unit {
         setCreatedBy(builder.createdBy);
     }
 
-
     public static final class Builder {
         private Long id;
         private int version;
         private @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-        @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN) String unitName;
-        private @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) User createdBy;
+        @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+        String unitName;
+        private @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+        User createdBy;
 
         private Builder() {
         }
@@ -90,7 +105,7 @@ public class Unit {
         }
 
         public Builder unitName(@NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-                                @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN) String val) {
+        @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN) String val) {
             unitName = val;
             return this;
         }

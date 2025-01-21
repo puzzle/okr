@@ -70,7 +70,7 @@ public class TestDataDtoHelper {
                                                                                         KEY_RESULT_DESCRIPTION, //
                                                                                         KEY_RESULT_BASELINE, //
                                                                                         KEY_RESULT_STRETCH_GOAL, //
-                                                                                        KEY_RESULT_UNIT, //
+                                                                                        KEY_RESULT_UNIT.getUnitName(), //
                                                                                         ownerDto, //
                                                                                         objectiveDto, //
                                                                                         lastCheckInMetricDto, //

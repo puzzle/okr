@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,7 +60,7 @@ class KeyResultBusinessServiceIT {
                 .builder()
                 .withBaseline(3.0)
                 .withStretchGoal(5.0)
-                .withUnit(Unit.FTE)
+                .withUnit(FTE_UNIT)
                 .withId(id)
                 .withTitle("Title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())

@@ -2,8 +2,8 @@ package ch.puzzle.okr.models.keyresult;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.MessageKey;
+import ch.puzzle.okr.models.Unit;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;

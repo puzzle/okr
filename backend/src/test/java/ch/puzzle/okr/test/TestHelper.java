@@ -2,6 +2,7 @@ package ch.puzzle.okr.test;
 
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -125,4 +126,12 @@ public class TestHelper {
     public static JsonNode getJsonNode(String json) throws IOException {
         return new ObjectMapper().readTree(json);
     }
+
+    public static final Unit NUMBER_UNIT = Unit.Builder.builder().unitName("NUMBER").build();
+    public static final Unit METRIC_UNIT = Unit.Builder.builder().unitName("METRIC").build();
+    public static final Unit FTE_UNIT = Unit.Builder.builder().unitName("FTE").build();
+    public static final Unit CHF_UNIT = Unit.Builder.builder().unitName("CHF").build();
+    public static final Unit EUR_UNIT = Unit.Builder.builder().unitName("EUR").build();
+    public static final Unit PERCENT_UNIT = Unit.Builder.builder().unitName("PERCENT").build();
+
 }

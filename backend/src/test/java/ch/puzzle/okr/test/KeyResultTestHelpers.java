@@ -7,6 +7,7 @@ import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -35,7 +36,7 @@ public class KeyResultTestHelpers {
     public static final String FIRST_NAME = "Johnny";
     public static final String LAST_NAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
-    public static final Unit KEY_RESULT_UNIT = Unit.FTE;
+    public static final Unit KEY_RESULT_UNIT = TestHelper.FTE_UNIT;
     public static final String KEY_RESULT_CREATED_ON = "-999999999-01-01T00:00:00";
     public static final String OBJECTIVE_STATE_ONGOING = "ONGOING";
     public static final String JSON_PATH_ID = "$.id";
@@ -332,7 +333,7 @@ public class KeyResultTestHelpers {
                                                                                        DESCRIPTION,
                                                                                        1.0,
                                                                                        5.0,
-                                                                                       KEY_RESULT_UNIT,
+                                                                                       KEY_RESULT_UNIT.getUnitName(),
                                                                                        keyResultUserDto,
                                                                                        keyResultObjectiveDto,
                                                                                        keyResultLastCheckInDto,

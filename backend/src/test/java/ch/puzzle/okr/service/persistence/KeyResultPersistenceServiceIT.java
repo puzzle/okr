@@ -33,7 +33,7 @@ class KeyResultPersistenceServiceIT {
                 .builder()
                 .withBaseline(3.0)
                 .withStretchGoal(5.0)
-                .withUnit(Unit.FTE)
+                .withUnit(TestHelper.FTE_UNIT)
                 .withId(id)
                 .withTitle("Title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())

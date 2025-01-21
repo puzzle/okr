@@ -3,7 +3,6 @@ package ch.puzzle.okr.mapper.keyresult;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.models.Action;
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -34,7 +33,6 @@ public class KeyResultMetricMapper {
         this.actionMapper = actionMapper;
         this.unitBusinessService = unitBusinessService;
     }
-
 
     public KeyResultDto toDto(KeyResultMetric keyResult, List<Action> actionList) {
         KeyResultUserDto ownerDto = new KeyResultUserDto( //

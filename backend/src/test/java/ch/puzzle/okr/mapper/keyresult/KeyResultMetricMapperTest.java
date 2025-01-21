@@ -15,12 +15,10 @@ import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.service.business.CheckInBusinessService;
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
-import ch.puzzle.okr.service.business.ObjectiveBusinessService;
-import ch.puzzle.okr.service.business.UserBusinessService;
+import ch.puzzle.okr.service.business.*;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
+import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,6 +46,8 @@ class KeyResultMetricMapperTest {
     private KeyResultValidationService validator;
     @Mock
     private KeyResultPersistenceService keyResultPersistenceService;
+    @Mock
+    private UnitBusinessService unitBusinessService;
 
     @BeforeEach
     void setup() {
@@ -56,7 +56,8 @@ class KeyResultMetricMapperTest {
                                                           userBusinessService, //
                                                           objectiveBusinessService, //
                                                           checkInBusinessService, //
-                                                          actionMapper);
+                                                          actionMapper,
+                                                          unitBusinessService);
     }
 
     @DisplayName("Should map a KeyResultMetric to a Dto with CheckIn when toDto() is called")
@@ -100,6 +101,7 @@ class KeyResultMetricMapperTest {
         // arrange
         when(userBusinessService.getUserById(anyLong())).thenReturn(owner());
         when(objectiveBusinessService.getEntityById(anyLong())).thenReturn(objective());
+        when(unitBusinessService.findUnitByName("NUMBER")).thenReturn(TestHelper.NUMBER_UNIT);
         KeyResultMetricDto keyResultMetricDto = TestDataDtoHelper.keyResultMetricDto();
 
         // act

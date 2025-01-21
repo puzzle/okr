@@ -1,7 +1,9 @@
 package ch.puzzle.okr.mapper.keyresult.helper;
 
 import ch.puzzle.okr.models.State;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.checkin.Zone;
+import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -37,7 +39,7 @@ public class TestDataConstants {
     public static final String KEY_RESULT_DESCRIPTION = "keyresult description";
     public static final double KEY_RESULT_BASELINE = 55D;
     public static final double KEY_RESULT_STRETCH_GOAL = 80D;
-    public static final Unit KEY_RESULT_UNIT = Unit.NUMBER;
+    public static final Unit KEY_RESULT_UNIT = TestHelper.NUMBER_UNIT;
 
     public static final String KEY_RESULT_COMMIT_ZONE = "commit zone";
     public static final String KEY_RESULT_TARGET_ZONE = "target zone";

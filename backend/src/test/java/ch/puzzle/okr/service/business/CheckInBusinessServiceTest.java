@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.test.TestHelper.CHF_UNIT;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,7 +54,7 @@ class CheckInBusinessServiceTest {
             .builder()
             .withBaseline(10D)
             .withStretchGoal(50D)
-            .withUnit(Unit.CHF)
+            .withUnit(CHF_UNIT)
             .withId(8L)
             .withTitle("Keyresult Metric")
             .build();

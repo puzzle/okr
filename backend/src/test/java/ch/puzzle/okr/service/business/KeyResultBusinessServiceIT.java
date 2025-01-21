@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -52,15 +53,21 @@ class KeyResultBusinessServiceIT {
     @Autowired
     private ActionBusinessService actionBusinessService;
 
+    @Autowired
+    private  UnitBusinessService unitBusinessService;
+
+    private Unit UNIT;
+
+
     @Mock
     private AuthorizationService authorizationService;
 
-    private static KeyResult createKeyResultMetric(Long id) {
+    private KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder
                 .builder()
                 .withBaseline(3.0)
                 .withStretchGoal(5.0)
-                .withUnit(FTE_UNIT)
+                .withUnit(this.UNIT)
                 .withId(id)
                 .withTitle("Title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
@@ -139,6 +146,7 @@ class KeyResultBusinessServiceIT {
     @BeforeEach
     void setUp() {
         TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+        this.UNIT = unitBusinessService.findUnitByName(FTE_UNIT.getUnitName());
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
     }
 

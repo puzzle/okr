@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;

@@ -1,9 +1,107 @@
 package ch.puzzle.okr.models;
 
-public enum Unit {
-    PERCENT,
-    CHF,
-    EUR,
-    FTE,
-    NUMBER
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+@Entity(name = "unit")
+public class Unit {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_unit")
+    @SequenceGenerator(name = "sequence_unit", allocationSize = 1)
+    private Long id;
+
+    @Version
+    private int version;
+
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    private String unitName;
+
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @ManyToOne
+    private User createdBy;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Unit() {
+    }
+
+    private Unit(Builder builder) {
+        setId(builder.id);
+        setVersion(builder.version);
+        setUnitName(builder.unitName);
+        setCreatedBy(builder.createdBy);
+    }
+
+
+    public static final class Builder {
+        private Long id;
+        private int version;
+        private @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+        @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN) String unitName;
+        private @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) User createdBy;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder id(Long val) {
+            id = val;
+            return this;
+        }
+
+        public Builder version(int val) {
+            version = val;
+            return this;
+        }
+
+        public Builder unitName(@NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+                                @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN) String val) {
+            unitName = val;
+            return this;
+        }
+
+        public Builder createdBy(@NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL) User val) {
+            createdBy = val;
+            return this;
+        }
+
+        public Unit build() {
+            return new Unit(this);
+        }
+    }
 }

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import ch.puzzle.okr.dto.checkin.*;
 import ch.puzzle.okr.dto.keyresult.*;
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.test.CheckInTestHelpers;
 import ch.puzzle.okr.test.KeyResultTestHelpers;

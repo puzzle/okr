@@ -3,6 +3,7 @@ package ch.puzzle.okr.mapper.keyresult;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -57,7 +58,7 @@ public class KeyResultMetricMapper {
                                       keyResult.getDescription(), //
                                       keyResult.getBaseline(), //
                                       keyResult.getStretchGoal(), //
-                                      keyResult.getUnit(), //
+                                      keyResult.getUnit().getUnitName(), //
                                       ownerDto,
                                       objectiveDto, //
                                       lastCheckInDto, //
@@ -72,7 +73,7 @@ public class KeyResultMetricMapper {
                 .builder() //
                 .withBaseline(keyResultMetricDto.baseline()) //
                 .withStretchGoal(keyResultMetricDto.stretchGoal()) //
-                .withUnit(keyResultMetricDto.unit()) //
+                .withUnit(Unit.Builder.builder().unitName(keyResultMetricDto.unit()).build()) // TODO create unit businessservice and use find method
                 .withId(keyResultMetricDto.id()) //
                 .withVersion(keyResultMetricDto.version()) //
                 .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id())) //

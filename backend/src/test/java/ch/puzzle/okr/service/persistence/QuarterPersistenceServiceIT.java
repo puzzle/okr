@@ -143,7 +143,7 @@ class QuarterPersistenceServiceIT {
     void testCronJob(int month, int quarterIndex, int amountOfInvocations) {
         int startQuarter = 7;
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", startQuarter);
-        int nextYear = Year.now().atMonth(startQuarter).plusMonths(month + 12).getYear();
+        int nextYear = Year.now().atMonth(startQuarter).plusMonths(month + 12 - 1).getYear();
         int nextYearShort = nextYear % 1000;
         String expectedLabel = "GJ " + nextYearShort + "/" + (nextYearShort + 1) + "-Q" + quarterIndex;
 

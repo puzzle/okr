@@ -13,7 +13,9 @@ describe('okr login', () => {
   });
 
   it('should login and logout', () => {
-    cy.logout();
+    cy.origin('http://pitc.okr.localhost:4200', () => {
+      cy.logout();
+    });
     cy.origin(Cypress.env('LOGIN_URL'), () => {
       cy.url()
         .should('include', Cypress.env('LOGIN_URL'));

@@ -1,27 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, Component, Input } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
-import { FormGroup, Validators } from '@angular/forms';
+import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
+import { getFullNameOfUser, User } from '../../shared/types/model/user';
+import { Observable, Subject } from 'rxjs';
+
+export enum KeyResultMetricField {
+  BASELINE,
+  TARGET_GOAL,
+  STRETCH_GOAL,
+  NONE
+}
+
+export interface MetricValue {
+  baseline: number;
+  targetGoal: number;
+  stretchGoal: number;
+}
 
 @Component({
   selector: 'app-key-result-type',
   templateUrl: './key-result-type.component.html',
   styleUrls: ['./key-result-type.component.scss'],
-  standalone: false
+  standalone: false,
+  viewProviders: [{ provide: ControlContainer,
+    useExisting: FormGroupDirective }]
 })
-export class KeyResultTypeComponent implements OnInit {
+export class KeyResultTypeComponent implements AfterContentInit {
+  childForm: FormGroup;
+
   @Input() keyResultForm!: FormGroup;
 
-  @Input() keyResult!: KeyResult | null;
+  @Input() keyResult?: KeyResult;
 
-
-  isMetric = true;
-
-  typeChangeAllowed = true;
+  @Input() users: Observable<User[]> = new Subject();
 
   protected readonly Unit = Unit;
 
@@ -29,87 +44,101 @@ export class KeyResultTypeComponent implements OnInit {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor(private translate: TranslateService) {
+  constructor(private parentF: FormGroupDirective) {
+    this.childForm = this.parentF.form;
   }
 
-  ngOnInit(): void {
-    if (this.keyResult) {
-      this.typeChangeAllowed = (this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn?.id == null;
-      this.isMetric = this.keyResult.keyResultType == 'metric';
-      this.isMetric
-        ? this.keyResultForm.patchValue({ ...this.castToMetric(this.keyResult) })
-        : this.keyResultForm.patchValue({ ...this.castToOrdinal(this.keyResult) });
-    }
-    this.switchValidators();
-  }
-
-  castToMetric(keyResult: KeyResult) {
-    return keyResult as KeyResultMetric;
-  }
-
-  castToOrdinal(keyResult: KeyResult) {
-    return keyResult as KeyResultOrdinal;
-  }
-
-  switchValidators() {
-    if (this.isMetric) {
-      this.setValidatorsMetric();
-      this.clearValidatorsOrdinal();
-      this.keyResultForm.updateValueAndValidity();
-    } else {
-      this.setValidatorsOrdinal();
-      this.clearValidatorsMetric();
-      this.keyResultForm.updateValueAndValidity();
-    }
-    this.updateFormValidity();
-  }
-
-  async updateFormValidity() {
-    await new Promise((r) => setTimeout(r, 100));
-  }
-
-  setValidatorsMetric() {
-    this.keyResultForm.controls['unit'].setValidators([Validators.required]);
-    this.keyResultForm.controls['baseline'].setValidators([Validators.required,
-      Validators.pattern('^-?\\d+\\.?\\d*$')]);
-    this.keyResultForm.controls['stretchGoal'].setValidators([Validators.required,
-      Validators.pattern('^-?\\d+\\.?\\d*$')]);
-  }
-
-  setValidatorsOrdinal() {
-    this.keyResultForm.controls['commitZone'].setValidators([Validators.required,
-      Validators.maxLength(400)]);
-    this.keyResultForm.controls['targetZone'].setValidators([Validators.required,
-      Validators.maxLength(400)]);
-    this.keyResultForm.controls['stretchZone'].setValidators([Validators.required,
-      Validators.maxLength(400)]);
-  }
-
-  clearValidatorsMetric() {
-    this.keyResultForm.controls['unit'].clearValidators();
-    this.keyResultForm.controls['baseline'].clearValidators();
-    this.keyResultForm.controls['stretchGoal'].clearValidators();
-  }
-
-  clearValidatorsOrdinal() {
-    this.keyResultForm.controls['commitZone'].clearValidators();
-    this.keyResultForm.controls['targetZone'].clearValidators();
-    this.keyResultForm.controls['stretchZone'].clearValidators();
-  }
-
-  switchKeyResultType(type: string) {
-    if ((type == 'metric' && !this.isMetric || type == 'ordinal' && this.isMetric) && this.typeChangeAllowed) {
-      this.isMetric = !this.isMetric;
-      const keyResultType = this.isMetric ? 'metric' : 'ordinal';
-      this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
-      this.switchValidators();
+  switchKeyResultType(newType: string) {
+    if (newType !== this.currentKeyResultType() && this.isTypeChangeAllowed()) {
+      this.keyResultForm.get('keyResultType')
+        ?.setValue(newType);
     }
   }
 
-  getErrorMessage(
-    error: string, field: string, firstNumber: number | null, secondNumber: number | null
-  ): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error)
-      .format(firstNumber, secondNumber);
+  isTypeChangeAllowed() {
+    return (this.keyResult as KeyResultMetric | KeyResultOrdinal)?.lastCheckIn?.id == null;
+  }
+
+  isMetric() {
+    return this.currentKeyResultType() == 'metric';
+  }
+
+  currentKeyResultType(): string {
+    return this.keyResultForm?.get('keyResultType')?.value;
+  }
+
+  updateMetricValue(changed: KeyResultMetricField, value: any) {
+    const formGroupMetric = this.keyResultForm.get('metric');
+    formGroupMetric?.updateValueAndValidity();
+
+    const hasUndefinedValue = Object.values(value)
+      .some((v) => v === undefined);
+    if (hasUndefinedValue || formGroupMetric?.invalid) {
+      return;
+    }
+
+    const formGroupValue = this.getMetricValue(formGroupMetric?.value, value);
+    const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed);
+    formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
+  }
+
+  getMetricValue(formGroupValue: any, fieldValue: any): MetricValue {
+    formGroupValue = { ...formGroupValue,
+      ...fieldValue };
+    return { baseline: +formGroupValue.baseline,
+      targetGoal: +formGroupValue.targetGoal,
+      stretchGoal: +formGroupValue.stretchGoal } as MetricValue;
+  }
+
+  calculateValueAfterChanged(values: MetricValue, changed: KeyResultMetricField) {
+    switch (changed) {
+      case KeyResultMetricField.STRETCH_GOAL:
+      case KeyResultMetricField.BASELINE: {
+        return this.calculateValueForField(values, KeyResultMetricField.TARGET_GOAL);
+      }
+      case KeyResultMetricField.TARGET_GOAL: {
+        return this.calculateValueForField(values, KeyResultMetricField.STRETCH_GOAL);
+      }
+      case KeyResultMetricField.NONE: {
+        return {};
+      }
+    }
+  }
+
+  calculateValueForField(values: MetricValue, field: KeyResultMetricField) {
+    const roundToTwoDecimals = (num: number) => parseFloat(num.toFixed(2));
+
+    switch (field) {
+      case KeyResultMetricField.BASELINE: {
+        return { baseline: roundToTwoDecimals((values.targetGoal - values.stretchGoal * 0.7) / 0.3) };
+      }
+
+      case KeyResultMetricField.TARGET_GOAL: {
+        return { targetGoal: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.7 + values.baseline) };
+      }
+
+      case KeyResultMetricField.STRETCH_GOAL: {
+        return { stretchGoal: roundToTwoDecimals((values.targetGoal - values.baseline) / 0.7 + values.baseline) };
+      }
+
+      case KeyResultMetricField.NONE: {
+        return {};
+      }
+    }
+  }
+
+  protected readonly getFullNameOfUser = getFullNameOfUser;
+
+  ngAfterContentInit(): void {
+    const formGroupMetric = this.keyResultForm.get('metric');
+    this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: formGroupMetric?.get('stretchGoal')?.value });
+
+    formGroupMetric?.get('baseline')?.valueChanges
+      .subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
+    formGroupMetric?.get('targetGoal')?.valueChanges
+      .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
+    formGroupMetric?.get('stretchGoal')?.valueChanges
+      .subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
   }
 }
+

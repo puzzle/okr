@@ -123,10 +123,15 @@
     }
   },
   "DIALOG_ERRORS": {
+    "REQUIRED": "{{fieldName}} ist ein Pflichtfeld.",
+    "MINLENGTH": "{{fieldName}} muss mindestens {{requiredLength}} Zeichen lang sein.",
+    "MAXLENGTH": "{{fieldName}} darf maximal {{requiredLength}} Zeichen lang sein.",
+    "NUMBER": "{{fieldName}} muss eine Zahl sein.",
     "MUST_BE_NUMBER": " muss eine Zahl sein.",
     "MUST_SELECT": " muss ausgewählt sein.",
     "MAX_VALUE": " darf maximal eine Länge von {0} Zeichen haben.",
-    "SIZE_BETWEEN": " muss folgende Länge haben: {0}-{1} Zeichen."
+    "SIZE_BETWEEN": " muss folgende Länge haben: {0}-{1} Zeichen.",
+    "INVALID_USER": "Owner muss ausgewählt sein"
   },
   "USER_ROLE": {
     "TEAM_ADMIN": "Team-Admin",

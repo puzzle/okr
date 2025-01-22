@@ -1,83 +1,49 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+// @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
-
-import { KeyResultTypeComponent } from './key-result-type.component';
+import { KeyResultMetricField, KeyResultTypeComponent, MetricValue } from './key-result-type.component';
 import { KeyResult } from '../../shared/types/model/key-result';
-import { keyResultMetric, keyResultOrdinal, testUser } from '../../shared/test-data';
+import { keyResultMetric, keyResultOrdinal, users } from '../../shared/test-data';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { By } from '@angular/platform-browser';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { User } from '../../shared/types/model/user';
+import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { of } from 'rxjs';
+import { getKeyResultForm } from '../../shared/constant-library';
+import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
+import { getValueOfForm } from '../../shared/common';
+import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ErrorComponent } from '../../shared/custom/error/error.component';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;
   let fixture: ComponentFixture<KeyResultTypeComponent>;
-
-  const metricKeyResult: KeyResult = keyResultMetric;
-  const ordinalKeyResult: KeyResult = keyResultOrdinal;
-
-  const metricKeyResultForm = new FormGroup({
-    title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250)]),
-    description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string | null>(testUser, [Validators.required,
-      Validators.nullValidator]),
-    unit: new FormControl<string | null>('PERCENT'),
-    baseline: new FormControl<number | null>(30),
-    stretchGoal: new FormControl<number | null>(100),
-    commitZone: new FormControl<string | null>(null),
-    targetZone: new FormControl<string | null>(null),
-    stretchZone: new FormControl<string | null>(null),
-    keyResultType: new FormControl<string>('metric')
-  });
-
-  const ordinalKeyResultForm = new FormGroup({
-    title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250)]),
-    description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string | null>(testUser, [Validators.required,
-      Validators.nullValidator]),
-    unit: new FormControl<string | null>(null),
-    baseline: new FormControl<number | null>(null),
-    stretchGoal: new FormControl<number | null>(null),
-    commitZone: new FormControl<string | null>('Commit'),
-    targetZone: new FormControl<string | null>('Target'),
-    stretchZone: new FormControl<string | null>('Stretch'),
-    keyResultType: new FormControl<string>('metric')
-  });
-
-  const emptyKeyResultForm = new FormGroup({
-    title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250)]),
-    description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string | null>(testUser, [Validators.required,
-      Validators.nullValidator]),
-    unit: new FormControl<string | null>(null),
-    baseline: new FormControl<number | null>(null),
-    stretchGoal: new FormControl<number | null>(null),
-    commitZone: new FormControl<string | null>(null),
-    targetZone: new FormControl<string | null>(null),
-    stretchZone: new FormControl<string | null>(null),
-    keyResultType: new FormControl<string>('metric')
-  });
+  const formGroupDirective = new FormGroupDirective([], []);
+  formGroupDirective.form = getKeyResultForm();
 
   describe('Edit Metric', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [KeyResultTypeComponent],
-        imports: [TranslateTestingModule.withTranslations({
-          de: de
-        }),
-        ReactiveFormsModule]
+        imports: [
+          MatAutocompleteModule,
+          MatFormFieldModule,
+          TranslateTestingModule.withTranslations({
+            de: de
+          }),
+          ReactiveFormsModule
+        ],
+        providers: [FormGroupDirective,
+          { provide: FormGroupDirective,
+            useValue: formGroupDirective }]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
-      component.keyResultForm = metricKeyResultForm;
-      fixture.detectChanges();
-      component.keyResult = metricKeyResult;
+      component.keyResultForm = getKeyResultForm();
+      component.keyResult = { ...keyResultMetric } as KeyResultMetric;
+      component.users = of(users);
+
       fixture.detectChanges();
     });
 
@@ -86,44 +52,30 @@ describe('KeyResultTypeComponent', () => {
         .toBeTruthy();
     });
 
-    it('should use values from input', () => {
-      expect(component.typeChangeAllowed)
-        .toBeTruthy();
-      expect(component.isMetric)
-        .toBeTruthy();
-      expect(component.keyResultForm.value.unit)
-        .toEqual('PERCENT');
-      expect(component.keyResultForm.value.baseline)
-        .toEqual(30);
-      expect(component.keyResultForm.value.stretchGoal)
-        .toEqual(100);
-      expect(component.keyResultForm.value.targetZone)
-        .toBeNull();
-      expect(component.keyResultForm.value.commitZone)
-        .toBeNull();
-      expect(component.keyResultForm.value.stretchZone)
-        .toBeNull();
-    });
 
     it('should switch type of key-result', () => {
-      component.isMetric = true;
-      component.typeChangeAllowed = true;
+      jest.spyOn(component, 'isTypeChangeAllowed')
+        .mockReturnValue(true);
 
       component.switchKeyResultType('metric');
       expect(component.isMetric)
         .toBeTruthy();
+
       component.switchKeyResultType('ordinal');
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeFalsy();
-      component.typeChangeAllowed = false;
+
+      jest.spyOn(component, 'isTypeChangeAllowed')
+        .mockReturnValue(false);
 
       component.switchKeyResultType('metric');
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeFalsy();
     });
 
     it('should select metric tab', () => {
-      component.isMetric = true;
+      jest.spyOn(component, 'isMetric')
+        .mockReturnValue(true);
 
       const activeTab = document.getElementsByClassName('active')[0];
       expect(activeTab.innerHTML)
@@ -131,31 +83,42 @@ describe('KeyResultTypeComponent', () => {
     });
 
     it('should change to ordinal from html click', () => {
-      component.typeChangeAllowed = true;
+      jest.spyOn(component, 'isTypeChangeAllowed')
+        .mockReturnValue(true);
 
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeTruthy();
       const ordinalTab = fixture.debugElement.query(By.css('[data-testId="ordinal-tab"]'));
       ordinalTab.nativeElement.click();
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeFalsy();
     });
   });
 
   describe('Edit Ordinal', () => {
+    const form = getKeyResultForm();
+    form.get('keyResultType')
+      ?.setValue('ordinal');
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [KeyResultTypeComponent],
-        imports: [TranslateTestingModule.withTranslations({
-          de: de
-        }),
-        ReactiveFormsModule]
+        imports: [
+          TranslateTestingModule.withTranslations({
+            de: de
+          }),
+          MatFormFieldModule,
+          MatAutocompleteModule,
+          ReactiveFormsModule
+        ],
+        providers: [FormGroupDirective,
+          { provide: FormGroupDirective,
+            useValue: formGroupDirective }]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
-      component.keyResultForm = ordinalKeyResultForm;
-      fixture.detectChanges();
-      component.keyResult = ordinalKeyResult;
+      component.keyResultForm = form;
+      component.keyResult = { ...keyResultOrdinal,
+        lastCheckIn: null } as KeyResultOrdinal;
       fixture.detectChanges();
     });
 
@@ -164,42 +127,9 @@ describe('KeyResultTypeComponent', () => {
         .toBeTruthy();
     });
 
-    it('should use values from input', () => {
-      expect(component.typeChangeAllowed)
-        .toBeTruthy();
-      expect(component.keyResultForm.value.unit)
-        .toBeNull();
-      expect(component.keyResultForm.value.baseline)
-        .toBeNull();
-      expect(component.keyResultForm.value.stretchGoal)
-        .toBeNull();
-      expect(component.keyResultForm.value.commitZone)
-        .toEqual('Commit');
-      expect(component.keyResultForm.value.targetZone)
-        .toEqual('Target');
-      expect(component.keyResultForm.value.stretchZone)
-        .toEqual('Stretch');
-    });
-
-    it('should switch type of key-result', () => {
-      component.isMetric = true;
-      component.typeChangeAllowed = true;
-
-      component.switchKeyResultType('metric');
-      expect(component.isMetric)
-        .toBeTruthy();
-      component.switchKeyResultType('ordinal');
-      expect(component.isMetric)
-        .toBeFalsy();
-      component.typeChangeAllowed = false;
-
-      component.switchKeyResultType('metric');
-      expect(component.isMetric)
-        .toBeFalsy();
-    });
-
     it('should select ordinal tab', () => {
-      component.isMetric = false;
+      jest.spyOn(component, 'isMetric')
+        .mockReturnValue(false);
       fixture.detectChanges();
 
       const activeTab = document.getElementsByClassName('active')[0];
@@ -208,14 +138,14 @@ describe('KeyResultTypeComponent', () => {
     });
 
     it('should change to metric from html click', () => {
-      component.typeChangeAllowed = true;
-      component.isMetric = false;
+      jest.spyOn(component, 'isTypeChangeAllowed')
+        .mockReturnValue(true);
 
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeFalsy();
       const metricTab = fixture.debugElement.query(By.css('[data-testId="metric-tab"]'));
       metricTab.nativeElement.click();
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeTruthy();
     });
   });
@@ -223,15 +153,23 @@ describe('KeyResultTypeComponent', () => {
   describe('Create', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [KeyResultTypeComponent],
-        imports: [TranslateTestingModule.withTranslations({
-          de: de
-        }),
-        ReactiveFormsModule]
+        declarations: [KeyResultTypeComponent,
+          ErrorComponent],
+        imports: [
+          MatAutocompleteModule,
+          TranslateTestingModule.withTranslations({
+            de: de
+          }),
+          ReactiveFormsModule,
+          MatFormFieldModule
+        ],
+        providers: [FormGroupDirective,
+          { provide: FormGroupDirective,
+            useValue: formGroupDirective }]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
-      component.keyResultForm = emptyKeyResultForm;
+      component.keyResultForm = getKeyResultForm();
       fixture.detectChanges();
       component.keyResult = {} as KeyResult;
       fixture.detectChanges();
@@ -242,40 +180,170 @@ describe('KeyResultTypeComponent', () => {
         .toBeTruthy();
     });
 
+    it.each([[{ baseline: 0,
+      targetGoal: 0,
+      stretchGoal: 5 },
+    KeyResultMetricField.BASELINE,
+    KeyResultMetricField.TARGET_GOAL],
+    [{ baseline: 0,
+      targetGoal: 0,
+      stretchGoal: 5 },
+    KeyResultMetricField.STRETCH_GOAL,
+    KeyResultMetricField.TARGET_GOAL],
+    [{ baseline: 0,
+      targetGoal: 0,
+      stretchGoal: 5 },
+    KeyResultMetricField.TARGET_GOAL,
+    KeyResultMetricField.STRETCH_GOAL]])('Should call calculateValueForField with the correct enum', (values: MetricValue, changed: KeyResultMetricField, result: KeyResultMetricField) => {
+      const spyInstance = jest.spyOn(component, 'calculateValueForField');
+
+      component.calculateValueAfterChanged(values, changed);
+      expect(spyInstance)
+        .toHaveBeenCalledWith(values, result);
+    });
+
+    it.each([
+      [{ baseline: NaN,
+        targetGoal: 8.5,
+        stretchGoal: 10 },
+      KeyResultMetricField.BASELINE,
+      { baseline: 5 }],
+      [{ baseline: NaN,
+        targetGoal: 6.5,
+        stretchGoal: 5 },
+      KeyResultMetricField.BASELINE,
+      { baseline: 10 }],
+      [{ baseline: NaN,
+        targetGoal: -8.5,
+        stretchGoal: -10 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -5 }],
+      [{ baseline: NaN,
+        targetGoal: -6.5,
+        stretchGoal: -5 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -10 }],
+      [{ baseline: NaN,
+        targetGoal: 2,
+        stretchGoal: 5 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -5 }],
+      [{ baseline: NaN,
+        targetGoal: 5,
+        stretchGoal: 10 },
+      KeyResultMetricField.BASELINE,
+      { baseline: -6.67 }],
+
+      [{ baseline: 5,
+        targetGoal: NaN,
+        stretchGoal: 10 },
+      KeyResultMetricField.TARGET_GOAL,
+      { targetGoal: 8.5 }],
+      [{ baseline: 10,
+        targetGoal: NaN,
+        stretchGoal: 5 },
+      KeyResultMetricField.TARGET_GOAL,
+      { targetGoal: 6.5 }],
+      [{ baseline: -5,
+        targetGoal: NaN,
+        stretchGoal: -10 },
+      KeyResultMetricField.TARGET_GOAL,
+      { targetGoal: -8.5 }],
+      [{ baseline: -10,
+        targetGoal: NaN,
+        stretchGoal: -5 },
+      KeyResultMetricField.TARGET_GOAL,
+      { targetGoal: -6.5 }],
+      [{ baseline: -5,
+        targetGoal: NaN,
+        stretchGoal: 5 },
+      KeyResultMetricField.TARGET_GOAL,
+      { targetGoal: 2 }],
+      [{ baseline: 0,
+        targetGoal: NaN,
+        stretchGoal: 5.34 },
+      KeyResultMetricField.TARGET_GOAL,
+      { targetGoal: 3.74 }],
+
+      [{ baseline: 5,
+        targetGoal: 8.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCH_GOAL,
+      { stretchGoal: 10 }],
+      [{ baseline: 10,
+        targetGoal: 6.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCH_GOAL,
+      { stretchGoal: 5 }],
+      [{ baseline: -5,
+        targetGoal: -8.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCH_GOAL,
+      { stretchGoal: -10 }],
+      [{ baseline: -10,
+        targetGoal: -6.5,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCH_GOAL,
+      { stretchGoal: -5 }],
+      [{ baseline: -5,
+        targetGoal: 2,
+        stretchGoal: NaN },
+      KeyResultMetricField.STRETCH_GOAL,
+      { stretchGoal: 5 }]
+    ])('calculateValueForField should calculate correct', (values: MetricValue, targetField: KeyResultMetricField, result: any) => {
+      expect(component.calculateValueForField(values, targetField))
+        .toEqual(result);
+    });
+
     it('should use default values', () => {
-      expect(component.keyResultForm.value.unit)
-        .toBeNull();
-      expect(component.keyResultForm.value.baseline)
-        .toBeNull();
-      expect(component.keyResultForm.value.stretchGoal)
-        .toBeNull();
-      expect(component.keyResultForm.value.commitZone)
-        .toBeNull();
-      expect(component.keyResultForm.value.targetZone)
-        .toBeNull();
-      expect(component.keyResultForm.value.stretchZone)
-        .toBeNull();
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'unit']))
+        .toEqual('NUMBER');
+
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'baseline']))
+        .toEqual(0);
+
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'targetGoal']))
+        .toEqual(0);
+
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'stretchGoal']))
+        .toEqual(0);
+
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'commitZone']))
+        .toEqual('');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'targetZone']))
+        .toEqual('');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'stretchZone']))
+        .toEqual('');
     });
 
     it('should switch type of key-result', () => {
-      component.isMetric = true;
-      component.typeChangeAllowed = true;
+      jest.spyOn(component, 'isTypeChangeAllowed')
+        .mockReturnValue(true);
 
       component.switchKeyResultType('metric');
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeTruthy();
       component.switchKeyResultType('ordinal');
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeFalsy();
-      component.typeChangeAllowed = false;
+      jest.spyOn(component, 'isTypeChangeAllowed')
+        .mockReturnValue(false);
 
       component.switchKeyResultType('metric');
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeFalsy();
     });
 
     it('should select metric tab', () => {
-      component.isMetric = true;
+      jest.spyOn(component, 'isMetric')
+        .mockReturnValue(true);
 
       const activeTab = document.getElementsByClassName('active')[0];
       expect(activeTab.innerHTML)
@@ -283,13 +351,14 @@ describe('KeyResultTypeComponent', () => {
     });
 
     it('should change to ordinal from html click', () => {
-      component.typeChangeAllowed = true;
+      jest.spyOn(component, 'isTypeChangeAllowed')
+        .mockReturnValue(true);
 
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeTruthy();
       const ordinalTab = fixture.debugElement.query(By.css('[data-testId="ordinal-tab"]'));
       ordinalTab.nativeElement.click();
-      expect(component.isMetric)
+      expect(component.isMetric())
         .toBeFalsy();
     });
   });

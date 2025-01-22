@@ -135,3 +135,11 @@ export function getSvgForState(objectiveState: State) {
   ]);
   return svgMapping.get(objectiveState);
 }
+
+export function getValueOfForm(form: FormGroup, keys: string[]) {
+  let currentControl = form;
+  for (const key of keys) {
+    currentControl = currentControl.get(key) as FormGroup;
+  }
+  return currentControl.value;
+}

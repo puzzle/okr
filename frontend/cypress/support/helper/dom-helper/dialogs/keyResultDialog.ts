@@ -14,13 +14,23 @@ export default class KeyResultDialog extends Dialog {
     return this;
   }
 
-  withMetricValues(unit: Unit, baseline: string, stretchGoal: string) {
+  withMetricValues(
+    unit: Unit, baseline?: string, targetGoal?: string, stretchGoal?: string
+  ) {
     cy.getByTestId('metric-tab')
       .click();
     cy.getByTestId('unit')
       .select(unit);
-    this.fillInputByTestId('baseline', baseline);
-    this.fillInputByTestId('stretch-goal', stretchGoal);
+
+    if (baseline !== undefined) {
+      this.fillInputByTestId('baseline', baseline);
+    }
+    if (targetGoal !== undefined) {
+      this.fillInputByTestId('target-goal', targetGoal);
+    }
+    if (stretchGoal !== undefined) {
+      this.fillInputByTestId('stretch-goal', stretchGoal);
+    }
     return this;
   }
 
@@ -61,6 +71,7 @@ export default class KeyResultDialog extends Dialog {
   checkForDialogTextMetric() {
     cy.contains('Einheit');
     cy.contains('Baseline');
+    cy.contains('Target Goal');
     cy.contains('Stretch Goal');
     this.checkForDialogText();
     return this;

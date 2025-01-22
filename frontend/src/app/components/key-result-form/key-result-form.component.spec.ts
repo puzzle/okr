@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeyResultService } from '../../services/key-result.service';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { keyResultOrdinal, testUser, users } from '../../shared/test-data';
+import { testUser, users } from '../../shared/test-data';
 import { State } from '../../shared/types/enums/state';
 import { Observable, of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -21,7 +21,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 import { KeyResultFormComponent } from './key-result-form.component';
-import { Action } from '../../shared/types/model/action';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -31,6 +30,9 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/quarter';
+import { getKeyResultForm } from '../../shared/constant-library';
+import { getValueOfForm } from '../../shared/common';
+import { ErrorComponent } from '../../shared/custom/error/error.component';
 
 describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
@@ -57,20 +59,6 @@ describe('KeyResultFormComponent', () => {
     getUsers: jest.fn()
   };
 
-  const keyResultForm = {
-    owner: null,
-    actionList: [],
-    title: 'Title',
-    baseline: 0,
-    stretchZone: null,
-    targetZone: null,
-    commitZone: null,
-    unit: 'FTE',
-    description: null,
-    stretchGoal: 0,
-    keyResultType: 'metric'
-  };
-
   const keyResultObjective: KeyResultObjective = {
     id: 2,
     state: State.ONGOING,
@@ -78,23 +66,6 @@ describe('KeyResultFormComponent', () => {
       1, 'GJ 22/23-Q2', new Date(), new Date()
     )
   };
-
-  const keyResultFormGroup = new FormGroup({
-    title: new FormControl<string>('', [Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250)]),
-    description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string | null>(null, [Validators.required,
-      Validators.nullValidator]),
-    actionList: new FormControl<Action[]>([]),
-    unit: new FormControl<string | null>(null),
-    baseline: new FormControl<number | null>(null),
-    stretchGoal: new FormControl<number | null>(null),
-    commitZone: new FormControl<string | null>(null),
-    targetZone: new FormControl<string | null>(null),
-    stretchZone: new FormControl<string | null>(null),
-    keyResultType: new FormControl<string>('metric')
-  });
 
   describe('New KeyResult', () => {
     beforeEach(() => {
@@ -136,14 +107,15 @@ describe('KeyResultFormComponent', () => {
           KeyResultFormComponent,
           DialogTemplateCoreComponent,
           KeyResultTypeComponent,
-          ActionPlanComponent
+          ActionPlanComponent,
+          ErrorComponent
         ]
       })
         .compileComponents();
 
       fixture = TestBed.createComponent(KeyResultFormComponent);
       component = fixture.componentInstance;
-      component.keyResultForm = keyResultFormGroup;
+      component.keyResultForm = getKeyResultForm();
       userService.getCurrentUser.mockReturnValue(testUser);
       fixture.detectChanges();
     });
@@ -153,24 +125,6 @@ describe('KeyResultFormComponent', () => {
         .toBeTruthy();
     });
 
-    it('should have logged in user as owner', waitForAsync(async() => {
-      const userServiceSpy = jest.spyOn(userService, 'getUsers');
-      component.keyResultForm.setValue(keyResultForm);
-      component.ngOnInit();
-      fixture.detectChanges();
-
-      const formObject = component.keyResultForm.value;
-      expect(formObject.title)
-        .toBe('Title');
-      expect(formObject.description)
-        .toBe(null);
-      expect(userServiceSpy)
-        .toHaveBeenCalled();
-      expect(component.keyResultForm.controls['owner'].value)
-        .toBe(testUser);
-      expect(component.keyResultForm.invalid)
-        .toBeFalsy();
-    }));
 
     it('should return correct filtered user', () => {
       let userObservable: Observable<User[]> = component.filter('baum');
@@ -185,12 +139,6 @@ describe('KeyResultFormComponent', () => {
         expect(userList.length)
           .toEqual(2);
       });
-    });
-
-    it('should get full name of user', () => {
-      const fullName: string = component.getFullNameOfUser(testUser);
-      expect(fullName)
-        .toEqual('Bob Baumeister');
     });
 
     it('should set metric values', () => {
@@ -213,11 +161,16 @@ describe('KeyResultFormComponent', () => {
       };
       component.setMetricValuesInForm(fullKeyResultMetric);
 
-      expect(component.keyResultForm.controls['baseline'].value)
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'baseline']))
         .toEqual(3);
-      expect(component.keyResultForm.controls['stretchGoal'].value)
+
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'stretchGoal']))
         .toEqual(25);
-      expect(component.keyResultForm.controls['unit'].value)
+
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'unit']))
         .toEqual('CHF');
     });
 
@@ -241,11 +194,14 @@ describe('KeyResultFormComponent', () => {
       };
       component.setOrdinalValuesInForm(fullKeyResultOrdinal);
 
-      expect(component.keyResultForm.controls['commitZone'].value)
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'commitZone']))
         .toEqual('Eine Kuh');
-      expect(component.keyResultForm.controls['targetZone'].value)
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'targetZone']))
         .toEqual('Ein Schaf');
-      expect(component.keyResultForm.controls['stretchZone'].value)
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'stretchZone']))
         .toEqual('Eine Ziege');
     });
 
@@ -255,22 +211,6 @@ describe('KeyResultFormComponent', () => {
       component.keyResultForm.patchValue({ keyResultType: 'ordinal' });
       expect(component.isMetricKeyResult())
         .toBeFalsy();
-    });
-
-    it('should get correct full name from user object', () => {
-      const user = users[0];
-      expect(component.getFullNameOfUser(user))
-        .toEqual('Bob Baumeister');
-      expect(component.getFullNameOfUser(null!))
-        .toEqual('');
-    });
-
-    it('should get correct key-result id', () => {
-      expect(component.getKeyResultId())
-        .toEqual(null);
-      component.keyResult = keyResultOrdinal;
-      expect(component.getKeyResultId())
-        .toEqual(101);
     });
 
     it('should get correct username from o-auth-service', () => {

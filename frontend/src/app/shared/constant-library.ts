@@ -1,6 +1,9 @@
 import { HttpType } from './types/enums/http-type';
 import { ToasterType } from './types/enums/toaster-type';
 import { HttpStatusCode } from '@angular/common/http';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Unit } from './types/enums/unit';
+import { getFullNameOfUser, User } from './types/model/user';
 
 type MessageKeyMap = Record<string, MessageEntry>;
 
@@ -76,3 +79,57 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
       { method: HttpType.DELETE }]
   }
 };
+
+export function getKeyResultForm(): FormGroup {
+  return new FormGroup({
+    title: new FormControl('', [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250)]),
+    description: new FormControl('', [Validators.maxLength(4096)]),
+    owner: new FormControl<User>({} as User, [Validators.required,
+      Validators.nullValidator,
+      ownerValidator()]),
+    actionList: new FormControl([]),
+    keyResultType: new FormControl('metric'),
+    metric: new FormGroup({
+      unit: new FormControl<Unit>(Unit.NUMBER, [Validators.required]),
+      baseline: new FormControl(0, [Validators.required,
+        numberValidator(),
+        Validators.maxLength(20)]),
+      targetGoal: new FormControl(0, [Validators.required,
+        numberValidator(),
+        Validators.maxLength(20)]),
+      stretchGoal: new FormControl(0, [Validators.required,
+        numberValidator(),
+        Validators.maxLength(20)])
+    }),
+    ordinal: new FormGroup({
+      commitZone: new FormControl('', [Validators.required,
+        Validators.maxLength(400),
+        Validators.minLength(2)]),
+      targetZone: new FormControl('', [Validators.required,
+        Validators.maxLength(400),
+        Validators.minLength(2)]),
+      stretchZone: new FormControl('', [Validators.required,
+        Validators.maxLength(400),
+        Validators.minLength(2)])
+    })
+  });
+}
+
+function ownerValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const user = control.value as User;
+    if (user?.id > 0 && getFullNameOfUser(user).length > 3) {
+      return null;
+    }
+    return { invalid_user: { value: control.value } };
+  };
+}
+
+function numberValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const isAllowed = (/^-?\d+\.?\d*$/).test(control.value);
+    return isAllowed ? null : { number: { value: control.value } };
+  };
+}

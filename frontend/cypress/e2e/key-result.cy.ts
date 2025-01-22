@@ -15,13 +15,34 @@ describe('okr key-result', () => {
   });
 
   it('should create new metric key-result', () => {
-    overviewPage
+    const keyResultDialog = overviewPage
       .addKeyResult()
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '52')
       .fillOwner('Bob Baumeister')
-      .fillKeyResultDescription('This is my description')
+      .fillKeyResultDescription('This is my description');
+
+    keyResultDialog.withMetricValues(
+      Unit.PERCENT, '999999999999999999999999999999', '7', undefined
+    );
+    keyResultDialog.checkOnDialog(() => cy.contains('Baseline darf maximal 20 Zeichen lang sein.'));
+
+    keyResultDialog.withMetricValues(
+      Unit.PERCENT, '0', '7', undefined
+    );
+    cy.getByTestId('stretch-goal')
+      .should('have.value', '10');
+
+    keyResultDialog.withMetricValues(
+      Unit.PERCENT, '0', undefined, '100'
+    );
+    cy.getByTestId('target-goal')
+      .should('have.value', '70');
+
+    keyResultDialog
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '52'
+      )
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
 
@@ -71,7 +92,9 @@ describe('okr key-result', () => {
       .addKeyResult()
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult with a new one')
-      .withMetricValues(Unit.PERCENT, '21', '52')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '52'
+      )
       .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description when creating and then open a new')
       .saveAndNew();
@@ -108,7 +131,7 @@ describe('okr key-result', () => {
       .should('have.length', 3);
   });
 
-  it('should edit a key-result without type change', () => {
+  it('should edit an ordinal key-result without type change', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('We want not to change keyresult title')
@@ -149,6 +172,53 @@ describe('okr key-result', () => {
     cy.contains('This is my new description');
   });
 
+  it('should edit a metric key-result without type change', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('We want not to change metric keyresult title')
+      .withMetricValues(
+        Unit.PERCENT, '0', undefined, '10'
+      )
+      .checkForDialogTextMetric()
+      .fillKeyResultDescription('This is my description')
+      .submit();
+    keyResultDetailPage.visit('We want not to change metric keyresult title')
+      .editKeyResult();
+
+    KeyResultDialog.do()
+      .fillKeyResultTitle('This is the new title')
+      .checkOnDialog(() => cy.getByTestId('baseline')
+        .should('have.value', '0'))
+      .checkOnDialog(() => cy.getByTestId('target-goal')
+        .should('have.value', '7'))
+      .checkOnDialog(() => cy.getByTestId('stretch-goal')
+        .should('have.value', '10'))
+      .withMetricValues(
+        Unit.PERCENT, '0', '70', undefined
+      )
+      .run(cy.getByTestId('ordinal-tab')
+        .click())
+      .run(cy.getByTestId('metric-tab')
+        .click())
+      .checkOnDialog(() => cy.getByTestId('baseline')
+        .should('have.value', '0'))
+      .checkOnDialog(() => cy.getByTestId('target-goal')
+        .should('have.value', '70'))
+      .checkOnDialog(() => cy.getByTestId('stretch-goal')
+        .should('have.value', '100'))
+      .withMetricValues(
+        Unit.PERCENT, '5', '8.5', undefined
+      )
+      .checkOnDialog(() => cy.getByTestId('stretch-goal')
+        .should('have.value', '10'))
+      .fillKeyResultDescription('This is my new description')
+      .submit();
+
+    cy.contains('This is the new title');
+    cy.contains('Jaya Norris');
+    cy.contains('This is my new description');
+  });
+
   it('should edit a key-result with type change', () => {
     overviewPage
       .addKeyResult()
@@ -180,7 +250,9 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .fillKeyResultTitle('This is my new title for the new metric keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '56')
+      .withMetricValues(
+        Unit.PERCENT, '21', undefined, '56'
+      )
       .fillKeyResultDescription('This is my new description')
       .submit();
 
@@ -227,9 +299,7 @@ describe('okr key-result', () => {
     cy.getByTestId('submit')
       .should('be.disabled');
     KeyResultDialog.do()
-      .fillKeyResultTitle('I am a metric keyresult')
-      .withMetricValues(Unit.PERCENT, '21', '52')
-      .fillKeyResultDescription('This is my description');
+      .fillKeyResultTitle('I am a metric keyresult');
 
     cy.getByTestId('submit')
       .should('not.be.disabled');
@@ -238,7 +308,15 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Titel muss folgende Länge haben: 2-250 Zeichen');
+    cy.contains('Titel ist ein Pflichtfeld.');
+
+
+    KeyResultDialog.do()
+      .fillKeyResultTitle('a');
+    cy.getByTestId('submit')
+      .should('be.disabled');
+    cy.contains('Titel muss mindestens 2 Zeichen lang sein.');
+
 
     KeyResultDialog.do()
       .fillKeyResultTitle('My title');
@@ -248,32 +326,41 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Baseline muss eine Zahl sein');
+    cy.contains('Baseline ist ein Pflichtfeld.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, 'abc', '52');
+      .fillKeyResultTitle('My title')
+      .withMetricValues(
+        Unit.CHF, 'abc', undefined, '123'
+      );
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Baseline muss eine Zahl sein');
+    cy.contains('Baseline muss eine Zahl sein.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, '45', '52');
+      .withMetricValues(
+        Unit.PERCENT, '45', undefined, '52'
+      );
     cy.getByTestId('submit')
       .should('not.be.disabled');
     cy.getByTestId('stretch-goal')
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch Goal muss eine Zahl sein');
+    cy.contains('Stretch Goal ist ein Pflichtfeld.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, '45', 'abc');
+      .withMetricValues(
+        Unit.PERCENT, '45', undefined, 'abc'
+      );
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch Goal muss eine Zahl sein');
+    cy.contains('Stretch Goal muss eine Zahl sein.');
 
     KeyResultDialog.do()
-      .withMetricValues(Unit.PERCENT, '45', '83');
+      .withMetricValues(
+        Unit.PERCENT, '45', undefined, '83'
+      );
     cy.getByTestId('submit')
       .should('not.be.disabled');
     cy.getByTestId('owner-input')
@@ -308,7 +395,12 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Commit Zone muss folgende Länge haben: 1-400 Zeichen');
+    cy.contains('Commit Zone ist ein Pflichtfeld.');
+    KeyResultDialog.do()
+      .withOrdinalValues('a', 'Target', 'Stretch');
+    cy.getByTestId('submit')
+      .should('be.disabled');
+    cy.contains('Commit Zone muss mindestens 2 Zeichen lang sein.');
 
     KeyResultDialog.do()
       .withOrdinalValues('Commit', 'Target', 'Stretch');
@@ -318,7 +410,12 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Target Zone muss folgende Länge haben: 1-400 Zeichen');
+    cy.contains('Target Zone ist ein Pflichtfeld.');
+    KeyResultDialog.do()
+      .withOrdinalValues('Commit', 'b', 'Stretch');
+    cy.getByTestId('submit')
+      .should('be.disabled');
+    cy.contains('Target Zone muss mindestens 2 Zeichen lang sein.');
 
     KeyResultDialog.do()
       .withOrdinalValues('Commit', 'Target', 'Stretch');
@@ -328,12 +425,12 @@ describe('okr key-result', () => {
       .clear();
     cy.getByTestId('submit')
       .should('be.disabled');
-    cy.contains('Stretch Zone muss folgende Länge haben: 1-400 Zeichen');
-
+    cy.contains('Stretch Zone ist ein Pflichtfeld.');
     KeyResultDialog.do()
-      .withOrdinalValues('Commit', 'Target', 'Stretch');
+      .withOrdinalValues('Commit', 'Target', 'c');
     cy.getByTestId('submit')
-      .should('not.be.disabled');
+      .should('be.disabled');
+    cy.contains('Stretch Zone muss mindestens 2 Zeichen lang sein.');
   });
 
   it('should delete existing key-result', () => {

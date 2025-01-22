@@ -111,7 +111,9 @@ describe('functionality of duplicating objectives and their belonging key-result
     overviewPage
       .addKeyResult('LoremIpsum', objectiveTitle)
       .fillKeyResultTitle('A metric keyResult with lots of values')
-      .withMetricValues(Unit.CHF, '1', '5')
+      .withMetricValues(
+        Unit.CHF, '1', undefined, '5'
+      )
       .fillKeyResultDescription('Its very sunny today.')
       .addActionPlanElement('Action')
       .addActionPlanElement('Plan')

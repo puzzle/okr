@@ -9,40 +9,16 @@
         formControlName="title"
         id="title"
       ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'title')">
-        <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
-      </mat-error>
+      <app-error [controlPath]="['title']" [name]="'Titel'"></app-error>
     </div>
   </div>
 
   <app-key-result-type
-    (formValidityEmitter)="updateFormValidity()"
     [keyResult]="keyResult"
     [keyResultForm]="keyResultForm"
+    [users]="filteredUsers$"
   ></app-key-result-type>
 
-  <div class="okr-form-row okr-form-label-input-container">
-    <label class="okr-form-label okr-form-col" for="owner">Owner</label>
-    <div class="okr-form-input">
-      <input
-        (keydown.enter)="$event.preventDefault()"
-        [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
-        class="owner-input"
-        [attr.data-testId]="'owner-input'"
-        [matAutocomplete]="auto"
-        formControlName="owner"
-        id="owner"
-      />
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getFullNameOfUser.bind(this)">
-        <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-          {{ user.firstName + " " + user.lastName }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-error *ngIf="invalidOwner()">
-        <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
-      </mat-error>
-    </div>
-  </div>
 
   <div class="okr-form-row okr-form-label-input-container">
     <label class="okr-form-label okr-form-col" for="description">Beschreibung (optional)</label>
@@ -54,11 +30,9 @@
         formControlName="description"
         id="description"
       ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'description')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
-      </mat-error>
+      <app-error [controlPath]="['description']" [name]="'Beschreibung'"></app-error>
     </div>
   </div>
 
-  <app-action-plan [control]="actionList$" [keyResultId]="getKeyResultId()"></app-action-plan>
+  <app-action-plan [control]="actionList$" [keyResultId]="keyResult?.id"></app-action-plan>
 </form>

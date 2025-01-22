@@ -1,7 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../shared/types/model/user';
-import { Action } from '../../shared/types/model/action';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/objective';
 import { KeyResult } from '../../shared/types/model/key-result';
@@ -10,52 +8,56 @@ import { KeyResultOrdinalDto } from '../../shared/types/DTOs/key-result-ordinal-
 import { CloseState } from '../../shared/types/enums/close-state';
 import { KeyResultService } from '../../services/key-result.service';
 import { DialogService } from '../../services/dialog.service';
+import { getKeyResultForm } from '../../shared/constant-library';
+import { UserService } from '../../services/user.service';
+
 
 @Component({
   selector: 'app-key-result-dialog',
   templateUrl: './key-result-dialog.component.html',
   standalone: false
 })
-export class KeyResultDialogComponent {
-  keyResultForm = new FormGroup({
-    title: new FormControl<string>('', [Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250)]),
-    description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string | null>(null, [Validators.required,
-      Validators.nullValidator]),
-    actionList: new FormControl<Action[]>([]),
-    unit: new FormControl<string | null>(null),
-    baseline: new FormControl<number | null>(null),
-    stretchGoal: new FormControl<number | null>(null),
-    commitZone: new FormControl<string | null>(null),
-    targetZone: new FormControl<string | null>(null),
-    stretchZone: new FormControl<string | null>(null),
-    keyResultType: new FormControl<string>('metric')
-  });
+export class KeyResultDialogComponent implements OnInit {
+  keyResultForm: FormGroup = getKeyResultForm();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { objective: Objective;
-      keyResult: KeyResult; },
+    @Inject(MAT_DIALOG_DATA) public data: {
+      objective: Objective;
+      keyResult: KeyResult;
+    },
     private keyResultService: KeyResultService,
     public dialogService: DialogService,
-    public dialogRef: MatDialogRef<KeyResultDialogComponent>
-  ) {}
+    public dialogRef: MatDialogRef<KeyResultDialogComponent>,
+    private userService: UserService
+  ) {
+  }
 
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
   saveKeyResult(openNewDialog = false) {
-    const value = this.keyResultForm.value;
+    const valueWithType = this.keyResultForm.value;
+    // Disable to get Value without Type
+    this.keyResultForm.controls['metric'].disable();
+    this.keyResultForm.controls['ordinal'].disable();
+    const valueWithoutType = this.keyResultForm.value;
+    // reEnable
+    this.keyResultForm.controls['metric'].enable();
+    this.keyResultForm.controls['ordinal'].enable();
     const keyResult = this.isMetricKeyResult()
-      ? ({ ...value,
-        objective: this.data.objective } as KeyResultMetricDto)
-      : ({ ...value,
-        objective: this.data.objective,
-        id: this.data.keyResult?.id } as KeyResultOrdinalDto);
+      ? ({
+        ...valueWithoutType,
+        ...valueWithType.metric,
+        objective: this.data.objective
+      } as KeyResultMetricDto)
+      : ({
+        ...valueWithoutType,
+        ...valueWithType.ordinal,
+        objective: this.data.objective
+      } as KeyResultOrdinalDto);
     keyResult.id = this.data.keyResult?.id;
-    keyResult.version = this.data.keyResult?.version!;
+    keyResult.version = this.data.keyResult?.version;
     this.keyResultService.saveKeyResult(keyResult)
       .subscribe((returnValue) => {
         this.dialogRef.close({
@@ -84,18 +86,31 @@ export class KeyResultDialogComponent {
     this.saveKeyResult(true);
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
-  }
-
-  invalidOwner(): boolean {
-    return (
-      !!this.isTouchedOrDirty('owner') &&
-      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
-    );
-  }
-
   getDialogTitle(): string {
     return this.data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen';
+  }
+
+  setValidators(type: string) {
+    if (type == 'metric') {
+      this.keyResultForm.get('metric')
+        ?.enable({ emitEvent: false });
+      this.keyResultForm.get('ordinal')
+        ?.disable({ emitEvent: false });
+    }
+    if (type == 'ordinal') {
+      this.keyResultForm.get('metric')
+        ?.disable({ emitEvent: false });
+      this.keyResultForm.get('ordinal')
+        ?.enable({ emitEvent: false });
+    }
+  }
+
+  ngOnInit(): void {
+    this.setValidators(this.keyResultForm.get('keyResultType')?.value);
+    this.keyResultForm.get('owner')
+      ?.setValue(this.userService.getCurrentUser());
+    this.keyResultForm.get('keyResultType')?.valueChanges.subscribe((value) => {
+      this.setValidators(value);
+    });
   }
 }

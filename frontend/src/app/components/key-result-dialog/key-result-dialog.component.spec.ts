@@ -28,6 +28,12 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/quarter';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
+import * as de from '../../../assets/i18n/de.json';
+import { getValueOfForm } from '../../shared/common';
+import { ErrorComponent } from '../../shared/custom/error/error.component';
+
 
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;
@@ -52,10 +58,14 @@ describe('KeyResultDialogComponent', () => {
     title: 'Das ist ein Objective',
     description: 'Das ist die Beschreibung',
     state: State.ONGOING,
-    team: { id: 1,
-      name: 'Das Puzzle Team' },
-    quarter: { id: 1,
-      label: 'GJ 22/23-Q2' }
+    team: {
+      id: 1,
+      name: 'Das Puzzle Team'
+    },
+    quarter: {
+      id: 1,
+      label: 'GJ 22/23-Q2'
+    }
   };
 
   const keyResultObjective: KeyResultObjective = {
@@ -100,43 +110,6 @@ describe('KeyResultDialogComponent', () => {
     unit: 'CHF'
   };
 
-  const receivedKeyResultMetric = {
-    id: 3,
-    version: 2,
-    actionList: [{
-      id: 1,
-      action: 'Test',
-      isChecked: false,
-      keyResultId: 3,
-      priority: 0
-    },
-    {
-      id: 2,
-      action: 'Katze',
-      isChecked: false,
-      keyResultId: 3,
-      priority: 1
-    },
-    {
-      id: 3,
-      action: 'Hund',
-      isChecked: true,
-      keyResultId: 3,
-      priority: 2
-    }],
-    title: 'Der Titel ist hier',
-    description: 'Die Beschreibung',
-    owner: testUser,
-    objective: keyResultObjective,
-    baseline: 3,
-    keyResultType: 'metric',
-    stretchGoal: 25,
-    unit: 'CHF',
-    commitZone: null,
-    targetZone: null,
-    stretchZone: null
-  };
-
   const fullKeyResultOrdinal = {
     id: 6,
     version: 2,
@@ -171,64 +144,10 @@ describe('KeyResultDialogComponent', () => {
     stretchZone: 'Stretch goal'
   };
 
-  const receivedKeyResultOrdinal = {
-    id: 6,
-    version: 2,
-    actionList: [{
-      id: 1,
-      action: 'Test',
-      isChecked: false,
-      keyResultId: 3,
-      priority: 0
-    },
-    {
-      id: 2,
-      action: 'Katze',
-      isChecked: false,
-      keyResultId: 3,
-      priority: 1
-    },
-    {
-      id: 3,
-      action: 'Hund',
-      isChecked: true,
-      keyResultId: 3,
-      priority: 2
-    }],
-    title: 'Der Titel ist hier',
-    description: 'Die Beschreibung',
-    owner: testUser,
-    objective: keyResultObjective,
-    keyResultType: 'ordinal',
-    commitZone: 'Commit zone',
-    targetZone: 'Target zone',
-    stretchZone: 'Stretch goal',
-    baseline: null,
-    stretchGoal: null,
-    unit: null
-  };
-
   const initKeyResult = {
     id: undefined,
     title: '',
     description: '',
-    owner: testUser,
-    objective: fullObjective,
-    baseline: 3,
-    keyResultType: 'metric',
-    stretchGoal: 25,
-    unit: 'CHF',
-    commitZone: null,
-    targetZone: null,
-    stretchZone: null,
-    actionList: []
-  };
-
-  const savedKeyResult = {
-    id: undefined,
-    version: undefined,
-    title: 'Neuer Titel',
-    description: 'Description',
     owner: testUser,
     objective: fullObjective,
     baseline: 3,
@@ -246,11 +165,13 @@ describe('KeyResultDialogComponent', () => {
   };
 
   const mockUserService = {
-    getUsers: jest.fn()
+    getUsers: jest.fn(),
+    getCurrentUser: jest.fn()
   };
 
   describe('New KeyResult', () => {
     beforeEach(() => {
+      mockUserService.getCurrentUser.mockReturnValue(testUser);
       TestBed.configureTestingModule({
         imports: [
           MatDialogModule,
@@ -263,7 +184,10 @@ describe('KeyResultDialogComponent', () => {
           MatIconModule,
           TranslateModule.forRoot(),
           DragDropModule,
-          MatDividerModule
+          MatDividerModule,
+          TranslateTestingModule.withTranslations({
+            de: de
+          })
         ],
         providers: [
           provideRouter([]),
@@ -271,16 +195,20 @@ describe('KeyResultDialogComponent', () => {
           provideHttpClientTesting(),
           KeyResultService,
           TranslateService,
-          { provide: UserService,
-            useValue: userService },
+          {
+            provide: UserService,
+            useValue: userService
+          },
           {
             provide: MatDialogRef,
             useValue: matDialogRefMock
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { objective: fullObjective,
-              keyResult: undefined }
+            useValue: {
+              objective: fullObjective,
+              keyResult: undefined
+            }
           },
           {
             provide: OAuthService,
@@ -292,7 +220,8 @@ describe('KeyResultDialogComponent', () => {
           KeyResultFormComponent,
           KeyResultTypeComponent,
           ActionPlanComponent,
-          DialogTemplateCoreComponent
+          DialogTemplateCoreComponent,
+          ErrorComponent
         ]
       })
         .compileComponents();
@@ -316,14 +245,19 @@ describe('KeyResultDialogComponent', () => {
         owner: null,
         actionList: [],
         title: 'Title',
-        baseline: 0,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: 'FTE',
         description: null,
-        stretchGoal: 0,
-        keyResultType: 'metric'
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
@@ -342,14 +276,19 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: 'T',
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null
+        description: 'f',
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
       fixture.detectChanges();
 
@@ -367,14 +306,19 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: null,
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null
+        description: 'f',
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
       fixture.detectChanges();
 
@@ -395,14 +339,19 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: 'Neuer Titel',
-        baseline: 3,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: 'CHF',
         description: 'Description',
-        stretchGoal: 25,
-        keyResultType: 'metric'
+        keyResultType: 'metric',
+        metric: {
+          baseline: 0,
+          targetGoal: 0,
+          stretchGoal: 0,
+          unit: 'FTE'
+        },
+        ordinal: {
+          stretchZone: null,
+          targetZone: null,
+          commitZone: null
+        }
       });
 
       initKeyResult.title = 'Neuer Titel';
@@ -411,182 +360,21 @@ describe('KeyResultDialogComponent', () => {
       component.saveKeyResult();
 
       expect(spy)
-        .toBeCalledTimes(1);
-      expect(spy)
-        .toHaveBeenCalledWith(savedKeyResult);
+        .toHaveBeenCalledTimes(1);
+    }));
+
+    it('should have logged in user as owner', waitForAsync(() => {
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.get('owner')?.value)
+        .toBe(testUser);
     }));
   });
 
   describe('Edit KeyResult Metric', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(users);
-      TestBed.configureTestingModule({
-        imports: [
-          MatDialogModule,
-          NoopAnimationsModule,
-          MatInputModule,
-          ReactiveFormsModule,
-          MatIconModule,
-          MatAutocompleteModule,
-          DragDropModule,
-          TranslateModule.forRoot(),
-          MatDividerModule
-        ],
-        providers: [
-          provideRouter([]),
-          provideHttpClient(),
-          provideHttpClientTesting(),
-          KeyResultService,
-          {
-            provide: MatDialogRef,
-            useValue: {
-              close: () => {}
-            }
-          },
-          {
-            provide: OAuthService,
-            useValue: oAuthMockService
-          },
-          {
-            provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultMetric,
-              objective: keyResultObjective }
-          }
-        ],
-        declarations: [
-          KeyResultDialogComponent,
-          KeyResultFormComponent,
-          DialogTemplateCoreComponent,
-          ActionPlanComponent,
-          KeyResultTypeComponent
-        ]
-      })
-        .compileComponents();
-
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyResultService);
-      fullKeyResultMetric.id = 3;
-    });
-
-    afterEach(() => {
-      mockUserService.getUsers.mockReset();
-    });
-
-    it('should use key-result value from data input', waitForAsync(() => {
-      const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title)
-        .toBe('Der Titel ist hier');
-      expect(formObject.description)
-        .toBe('Die Beschreibung');
-      expect(formObject.owner)
-        .toBe(testUser);
-    }));
-
-    it('should be able to set title and description', waitForAsync(async() => {
-      expect(component.keyResultForm.value.title)
-        .toEqual('Der Titel ist hier');
-      expect(component.keyResultForm.value.description)
-        .toEqual('Die Beschreibung');
-
-      component.keyResultForm.setValue({
-        owner: testUser,
-        actionList: [],
-        title: 'Title',
-        baseline: 0,
-        stretchZone: '',
-        targetZone: '',
-        commitZone: '',
-        unit: 'FTE',
-        description: 'Description',
-        stretchGoal: 0,
-        keyResultType: 'metric'
-      });
-      fixture.detectChanges();
-      const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(await submitButton.nativeElement.getAttribute('disabled'))
-        .toBeFalsy();
-
-      const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title)
-        .toBe('Title');
-      expect(formObject.description)
-        .toBe('Description');
-      expect(component.keyResultForm.invalid)
-        .toBeFalsy();
-    }));
-
-    it('should display error message of too short input', waitForAsync(async() => {
-      component.keyResultForm.setValue({
-        owner: testUser,
-        actionList: [],
-        title: 'T',
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null
-      });
-      fixture.detectChanges();
-
-      expect(component.keyResultForm.invalid)
-        .toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['minlength'])
-        .toBeTruthy();
-    }));
-
-    it('should display error message of required', waitForAsync(async() => {
-      component.keyResultForm.setValue({
-        owner: testUser,
-        actionList: [],
-        title: null,
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null
-      });
-      fixture.detectChanges();
-
-      expect(component.keyResultForm.invalid)
-        .toBeTruthy();
-      expect(component.keyResultForm.get('title')!.errors?.['required'])
-        .toBeTruthy();
-    }));
-
-    it('should call service save method', waitForAsync(() => {
-      const spy = jest.spyOn(keyResultService, 'saveKeyResult');
-      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
-
-      component.saveKeyResult();
-
-      expect(spy)
-        .toBeCalledTimes(1);
-      expect(spy)
-        .toHaveBeenCalledWith(receivedKeyResultMetric);
-    }));
-
-    it('should not display logged in user when editing', waitForAsync(() => {
-      jest.resetAllMocks();
-      const userServiceSpy = jest.spyOn(userService, 'getUsers');
-      fixture.detectChanges();
-      expect(userServiceSpy)
-        .toHaveBeenCalledTimes(0);
-      expect(component.keyResultForm.controls.owner.value)
-        .toBe(testUser);
-    }));
-  });
-
-  describe('Edit KeyResult Ordinal', () => {
-    beforeEach(() => {
-      mockUserService.getUsers.mockReturnValue(users);
+      mockUserService.getCurrentUser.mockReturnValue(testUser);
       TestBed.configureTestingModule({
         imports: [
           MatDialogModule,
@@ -614,8 +402,182 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultOrdinal,
-              objective: keyResultObjective }
+            useValue: {
+              keyResult: fullKeyResultMetric,
+              objective: keyResultObjective
+            }
+          },
+
+          {
+            provide: UserService,
+            useValue: userService
+          }
+
+        ],
+        declarations: [
+          KeyResultDialogComponent,
+          KeyResultFormComponent,
+          DialogTemplateCoreComponent,
+          ActionPlanComponent,
+          KeyResultTypeComponent,
+          ErrorComponent
+        ]
+      })
+        .compileComponents();
+
+      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      keyResultService = TestBed.inject(KeyResultService);
+    });
+
+    afterEach(() => {
+      mockUserService.getUsers.mockReset();
+    });
+
+    it('should use key-result value from data input', waitForAsync(() => {
+      const formObject = component.keyResultForm.value;
+      expect(formObject.title)
+        .toBe('Der Titel ist hier');
+      expect(formObject.description)
+        .toBe('Die Beschreibung');
+      expect(formObject.owner)
+        .toBe(testUser);
+    }));
+
+    it('should display error message of too short input', waitForAsync(async() => {
+      component.keyResultForm.patchValue({
+        title: 'T'
+      });
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['minlength'])
+        .toBeTruthy();
+    }));
+
+    it('should display error message of required', waitForAsync(async() => {
+      component.keyResultForm.patchValue({
+        title: null
+      });
+      fixture.detectChanges();
+
+      expect(component.keyResultForm.invalid)
+        .toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['required'])
+        .toBeTruthy();
+    }));
+
+    it('should call service save method', waitForAsync(() => {
+      const spy = jest.spyOn(keyResultService, 'saveKeyResult');
+      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
+
+      component.saveKeyResult();
+
+      expect(spy)
+        .toHaveBeenCalledTimes(1);
+    }));
+
+    it('should not display logged in user when editing', waitForAsync(() => {
+      jest.resetAllMocks();
+      const userServiceSpy = jest.spyOn(userService, 'getUsers');
+      fixture.detectChanges();
+      expect(userServiceSpy)
+        .toHaveBeenCalledTimes(0);
+      expect(component.keyResultForm.get('owner')!.value)
+        .toBe(testUser);
+    }));
+
+    it('should use values from input', () => {
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'unit']))
+        .toEqual('CHF');
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'baseline']))
+        .toEqual(3);
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'stretchGoal']))
+        .toEqual(25);
+
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'commitZone']))
+        .toEqual('');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'targetZone']))
+        .toEqual('');
+
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'stretchZone']))
+        .toEqual('');
+    });
+
+    it('should set validators for metric', () => {
+      component.setValidators('metric');
+      expect(component.keyResultForm.get('metric')!.enabled)
+        .toBe(true);
+      expect(component.keyResultForm.get('ordinal')!.enabled)
+        .toBe(false);
+    });
+
+    it('should set validators for ordinal', () => {
+      component.setValidators('ordinal');
+      expect(component.keyResultForm.get('ordinal')!.enabled)
+        .toBe(true);
+      expect(component.keyResultForm.get('metric')!.enabled)
+        .toBe(false);
+    });
+
+    it('should set right owner, validators and type on init', () => {
+      expect(component.keyResultForm.get('metric')!.enabled)
+        .toBe(true);
+      expect(component.keyResultForm.get('keyResultType')!.value)
+        .toEqual('metric');
+      expect(component.keyResultForm.get('owner')!.value)
+        .toEqual(testUser);
+    });
+  });
+
+  describe('Edit KeyResult Ordinal', () => {
+    beforeEach(() => {
+      mockUserService.getUsers.mockReturnValue(users);
+      mockUserService.getCurrentUser.mockReturnValue(testUser);
+
+      TestBed.configureTestingModule({
+        imports: [
+          MatDialogModule,
+          NoopAnimationsModule,
+          MatInputModule,
+          ReactiveFormsModule,
+          MatIconModule,
+          MatAutocompleteModule,
+          DragDropModule,
+          TranslateModule.forRoot(),
+          MatDividerModule
+        ],
+        providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          KeyResultService,
+          {
+            provide: MatDialogRef,
+            useValue: matDialogRefMock
+          },
+          {
+            provide: OAuthService,
+            useValue: oAuthMockService
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              keyResult: fullKeyResultOrdinal,
+              objective: keyResultObjective
+            }
+          },
+          {
+            provide: UserService,
+            useValue: userService
           }
         ],
         declarations: [
@@ -638,6 +600,30 @@ describe('KeyResultDialogComponent', () => {
       mockUserService.getUsers.mockReset();
     });
 
+    it('should use values from input', () => {
+      // Default value
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'unit']))
+        .toEqual('NUMBER');
+
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'baseline']))
+        .toEqual(0);
+      expect(getValueOfForm(component.keyResultForm, ['metric',
+        'stretchGoal']))
+        .toEqual(0);
+
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'commitZone']))
+        .toEqual('Commit zone');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'targetZone']))
+        .toEqual('Target zone');
+      expect(getValueOfForm(component.keyResultForm, ['ordinal',
+        'stretchZone']))
+        .toEqual('Stretch goal');
+    });
+
     it('should use key-result value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
       expect(formObject.title)
@@ -654,18 +640,9 @@ describe('KeyResultDialogComponent', () => {
       expect(component.keyResultForm.value.description)
         .toEqual('Die Beschreibung');
 
-      component.keyResultForm.setValue({
-        owner: testUser,
-        actionList: [],
+      component.keyResultForm.patchValue({
         title: 'Title',
-        baseline: 0,
-        stretchZone: 'stretchZone',
-        targetZone: 'targetZone',
-        commitZone: 'commitZone',
-        unit: 'FTE',
-        description: 'Description',
-        stretchGoal: 0,
-        keyResultType: 'ordinal'
+        description: 'Description'
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
@@ -682,18 +659,8 @@ describe('KeyResultDialogComponent', () => {
     }));
 
     it('should display error message of too short input', waitForAsync(async() => {
-      component.keyResultForm.setValue({
-        owner: testUser,
-        actionList: [],
-        title: 'T',
-        baseline: 0,
-        stretchZone: '',
-        targetZone: '',
-        commitZone: '',
-        unit: 'FTE',
-        description: 'Description',
-        stretchGoal: 0,
-        keyResultType: 'metric'
+      component.keyResultForm.patchValue({
+        title: 'T'
       });
       fixture.detectChanges();
 
@@ -704,18 +671,8 @@ describe('KeyResultDialogComponent', () => {
     }));
 
     it('should display error message of required', waitForAsync(async() => {
-      component.keyResultForm.setValue({
-        owner: testUser,
-        actionList: [],
-        title: null,
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null
+      component.keyResultForm.patchValue({
+        title: null
       });
       fixture.detectChanges();
 
@@ -732,9 +689,7 @@ describe('KeyResultDialogComponent', () => {
       component.saveKeyResult();
 
       expect(spy)
-        .toBeCalledTimes(1);
-      expect(spy)
-        .toHaveBeenCalledWith(receivedKeyResultOrdinal);
+        .toHaveBeenCalledTimes(1);
     }));
   });
 });

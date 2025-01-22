@@ -4,54 +4,58 @@ Release Notes Puzzle OKR
 
 Version     Neuerungen
 -----------------------------------------------------------------------------
-WIP         - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der actionplan übernommen
-            - Fehlerbehebung #1298: SCSS-Warnungen behoben
-            - Fehlerbehebung #1236: Flaky E2E-Test gefixt
-            - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der objective-detailansicht angezeigt
-            - Erweiterung #925: In der Check-In history anzeigen wer das Check-In erfasst hat
-            - Erweiterung #888: Beim Check-In erstellen können nun neue actions zum Actionplan hinzugefügt werden
-            - Fehlerbehebung #1220: Sonar code smells und risks behoben
-            - Fehlerbehebung #1223: Deprecated mockito Annotationen ersetzt
-            - Erweiterung #1128: Löschen eines Objectives ist nun auch über das drei-punkte-menu möglich
-            - Fehlerbehebung #1270: Tests failen nun nicht mehr wenn ein neues quarter beginnt
+WIP         - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Detailansicht des Objectives angezeigt
+            - Erweiterung #925: In der Check-in history wird nun angezeigt, wer das Check-in erfasst hat
+            - Erweiterung #888: Beim Check-in erstellen können nun neue actions zum Actionplan hinzugefügt werden
+            - Erweiterung #1128: Löschen eines Objectives ist nun auch über das Drei-Punkte-Menü möglich
             - Erweiterung #1070: Update von Angular auf V19
-            - Erweiterung #1135: Neuen formatter für front- und backend implementiert
-            - Fehlerbehebung #1171: Einhaltung von naming conventions im gesamten Tool sichergestellt
-            - Fehlerbehebung #1256: Style von objective duplizieren Dialog verbessert
-            - Fehlerbehebung #1227: Schriftgrössen und Stärken im gesamten Tool berichtigt
-            - Erweiterung #614: Beim Duplizieren kann ausgewählt werden, welche key-results dupliziert werden sollen
-            - Erweiterung #1204: Die Demo- und Stagingumgebung sind nun Visuell voneinander unterscheidbar und haben konfigurierbare Styles
-            - Fehlerbehebung #1237: Styling von filter im mobile-header verbessert
-            - Erweiterung #937: Feld das den Wert eines ordinalen Check-Ins festhält von "value" auf "zone" umbenannt
-            - Fehlerbehebung #1225: Korrektes Laden der Schriftart sichergestellt
-            - Erweiterung #1224: Roboto-flex als Schriftart gesetzt
+            - Erweiterung #1135: Neuen formatter für Front- und Backend implementiert
+            - Erweiterung #614: Beim Duplizieren kann ausgewählt werden, welche Key Results dupliziert werden sollen
+            - Erweiterung #1204: Die Demo- und Stagingumgebung sind nun visuell voneinander unterscheidbar und haben konfigurierbare Styles
+            - Erweiterung #937: Feld das den Wert eines ordinalen Check-ins festhält von "value" auf "zone" umbenannt
+            - Erweiterung #1224: Roboto Flex als Schriftart gesetzt
             - Erweiterung #1009: Deserializer aufgeräumt
             - Erweiterung #1183: Pipeline implementiert, die automatisch auf SonarQube pusht
-            - Fehlerbehebung #1211: Korrekte Hilfe-Seite URLs für die Umgebungen setzen
-            - Erweiterung #1198: Dev-DB so angepasst, dass die Testuser jetzt teams zugeordnet sind
-            - Erweiterung #623: Den Header auf der Mobil-Ansicht schöner gestaltet und erweitert
-            - Erweiterung #710: Die URL auf die Hilfeseite pro Umgebung individuell konfigurierbar machen
+            - Erweiterung #1198: Dev Datenbank so angepasst, dass die Testuser jetzt Teams zugeordnet sind
+            - Erweiterung #623: Den Header auf der Mobilen Ansicht schöner gestaltet und erweitert
+            - Erweiterung #710: Die URL auf die Hilfeseite pro Umgebung individuell konfigurierbar gemacht
             - Erweiterung #931: Das Löschen von eingeladenen Members ist nun möglich
-            - Erweiterung #987: Workflow auf Github erstellt, der die demo-pods zurücksetzt
-            - Erweiterung #923: E2E-Tests laufen auf der pipeline schneller durch und sind schöner geschrieben
-            - Erweiterung #1136: Angular Pipes zu einer Pipe vereint und diese vereinfacht
-            - Erweiterung #1169: Deploy workflows aufgeräumt
+            - Erweiterung #987: Workflow auf Github erstellt, der die Demo-Pods zurücksetzt
+            - Erweiterung #923: E2E-Tests schöner geschrieben und ihre Laufzeit auf der pipeline verkürzt
+            - Erweiterung #1136: Angular Pipes zu einer Pipe vereint und diese auch noch vereinfacht
+            - Erweiterung #1169: Deploy Workflows aufgeräumt
             - Erweiterung #1172: Main in Prod gemerged
             - Dependency updates
 
-V3.0        - Fehlerbehebung #1167: Staging deploy pipeline gefixt
-            - Erweiterung #1014: Schriftart und Abstände in der gesamten Applikation korrigiert
+            - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der Actionplan übernommen
+            - Fehlerbehebung #1298: SCSS-Warnungen behoben
+            - Fehlerbehebung #1236: Flaky E2E-Tests gefixt
+            - Fehlerbehebung #1220: Sonar code smells und risks behoben
+            - Fehlerbehebung #1223: Deprecated Mockito Annotationen ersetzt
+            - Fehlerbehebung #1270: Tests failen nun nicht mehr, wenn ein neues Quarter beginnt
+            - Fehlerbehebung #1171: Einhaltung von naming conventions im gesamten Tool sichergestellt
+            - Fehlerbehebung #1256: Style von Objective duplizieren Dialog verbessert
+            - Fehlerbehebung #1227: Schriftgrössen- und Stärken im gesamten Tool berichtigt
+            - Fehlerbehebung #1237: Styling von Filter im Mobile Header verbessert
+            - Fehlerbehebung #1225: Korrektes Laden der Schriftart sichergestellt
+            - Fehlerbehebung #1211: Korrekte Hilfeseite URLs für die Umgebungen gesetzt
+
+
+V3.0        - Erweiterung #1014: Schriftart und Abstände in der gesamten Applikation korrigiert
+            - Erweiterung #1115: Das deployment auf die Demoinstanz erfolgt nun nicht mehr bei jedem merge, sondern nur noch beim manuellen Anstossen des Workflows
+            - Erweiterung #883: Dokumentiert wie man die Cypress-Tests lokal startet
+            - Erweiterung #1137: Dev Branch gemerged
+            - Erweiterung #1092: Node-Version in Staging-Deploy-Action wird nun über eine env Variable gesetzt
+            - Erweiterung #1091: Tenant ACME von Staging-Umgebung entfernt
+            - Erweiterung #1022: Multitenancy Branch in main Branch gemerged
+            - Erweiterung #958: Die Quarters in der Testdatenbank wurden aufgeräumt, sodass wir nun nur noch vier Quarters brauchen
+            - Dependency updates
+
+            - Fehlerbehebung #1167: Staging-Deploy-Pipeline gefixt
             - Fehlerbehebung #1150: Die Löschung eines Objectives führt nun nicht mehr zu einer ungewollten Fehlermeldung
             - Fehlerbehebung #1143: Das aktuelle Quarter im Quarterfilter ist nun wieder als solches gekennzeichnet
-            - Erweiterung #1115: Das deployment auf die Demoinstanz erfolgt nun nicht mehr bei jedem merge, sondern nur noch beim manuellen Anstossen des Workflows
-            - Erweiterung #883: Dokumentiert wie man Cypress-Tests lokal startet
-            - Fehlerbehebung #1141: Korrekte Java-Version in Dockerfile gesetzt
+            - Fehlerbehebung #1141: Korrekte Java-Version im Dockerfile gesetzt
             - Fehlerbehebung #1140: Limit für maximale SCSS-Grösse erhöht
-            - Erweiterung #1137: Dev branch gemerged
-            - Erweiterung #1092: Node-Version in staging deploy action wird nun über eine env Variable gesetzt
-            - Erweiterung #1091: Tenant ACME von staging Umgebung entfernt
-            - Erweiterung #1022: Multitenancy Branch in main Branch gemerged
             - Fehlerbehebung #949: Es wurde ein Authentifizierungsproblem behoben, durch das die Seite nach dem Aus- und wieder Einloggen zuerst nicht angezeigt wurde
-            - Erweiterung #958: Die Quarters in der Testdatenbank wurden aufgeräumt, so dass wir nun nur noch vier Quarters brauchen
-            - Dependency updates
+
             - ...

@@ -137,10 +137,10 @@ class QuarterPersistenceServiceIT {
         assertEquals(QUARTER, quarterPersistenceService.getModelName());
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Should generate quarter with Cron-Job when current month is the last month of the current quarter")
     @CsvSource(value = { "1,1,0", "2,1,0", "3,1,1", "4,1,0", "5,1,0", "6,2,1", "7,1,0", "8,1,0", "9,3,1", "10,3,0",
             "11,1,0", "12,4,1" })
-    void testCronJob(int month, int quarterIndex, int amountOfInvocations) {
+    void shouldGenerateQuarterWithCronJob(int month, int quarterIndex, int amountOfInvocations) {
         int startQuarter = 7;
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", startQuarter);
         int nextYear = Year.now().atMonth(startQuarter).plusMonths(month + 12 - 1).getYear();

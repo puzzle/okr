@@ -12,6 +12,8 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,7 +131,7 @@ public class QuarterBusinessService {
 
         String initialTenant = TenantContext.getCurrentTenant();
 
-        List<String> tenantSchemas = this.tenantConfigProvider.getAllTenantIds();
+        Set<String> tenantSchemas = this.tenantConfigProvider.getAllTenantIds();
         // If we are in the last month of a quarter, generate the next quarter
         if (isInLastMonthOfQuarter(currentQuarter, nextQuarter)) {
             for (String schema : tenantSchemas) {

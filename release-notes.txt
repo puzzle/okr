@@ -6,7 +6,7 @@ Version     Neuerungen
 -----------------------------------------------------------------------------
 WIP         - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Detailansicht des Objectives angezeigt
             - Erweiterung #925: In der Check-in history wird nun angezeigt, wer das Check-in erfasst hat
-            - Erweiterung #888: Beim Check-in erstellen können nun neue actions zum Actionplan hinzugefügt werden
+            - Erweiterung #888: Beim Check-in erstellen können nun neue Actions zum Actionplan hinzugefügt werden
             - Erweiterung #1128: Löschen eines Objectives ist nun auch über das Drei-Punkte-Menü möglich
             - Erweiterung #1070: Update von Angular auf V19
             - Erweiterung #1135: Neuen formatter für Front- und Backend implementiert
@@ -17,15 +17,13 @@ WIP         - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives
             - Erweiterung #1009: Deserializer aufgeräumt
             - Erweiterung #1183: Pipeline implementiert, die automatisch auf SonarQube pusht
             - Erweiterung #1198: Dev Datenbank so angepasst, dass die Testuser jetzt Teams zugeordnet sind
-            - Erweiterung #623: Den Header auf der Mobilen Ansicht schöner gestaltet und erweitert
+            - Erweiterung #623: Den Header auf der mobilen Ansicht schöner gestaltet und erweitert
             - Erweiterung #710: Die URL auf die Hilfeseite pro Umgebung individuell konfigurierbar gemacht
             - Erweiterung #931: Das Löschen von eingeladenen Members ist nun möglich
             - Erweiterung #987: Workflow auf Github erstellt, der die Demo-Pods zurücksetzt
             - Erweiterung #923: E2E-Tests schöner geschrieben und ihre Laufzeit auf der pipeline verkürzt
             - Erweiterung #1136: Angular Pipes zu einer Pipe vereint und diese auch noch vereinfacht
             - Erweiterung #1169: Deploy Workflows aufgeräumt
-            - Erweiterung #1172: Main in Prod gemerged
-            - Dependency updates
 
             - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der Actionplan übernommen
             - Fehlerbehebung #1298: SCSS-Warnungen behoben
@@ -40,6 +38,7 @@ WIP         - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives
             - Fehlerbehebung #1225: Korrektes Laden der Schriftart sichergestellt
             - Fehlerbehebung #1211: Korrekte Hilfeseite URLs für die Umgebungen gesetzt
 
+            - Wartung: Updates diverser Dependencies
 
 V3.0        - Erweiterung #1014: Schriftart und Abstände in der gesamten Applikation korrigiert
             - Erweiterung #1115: Das deployment auf die Demoinstanz erfolgt nun nicht mehr bei jedem merge, sondern nur noch beim manuellen Anstossen des Workflows
@@ -57,5 +56,7 @@ V3.0        - Erweiterung #1014: Schriftart und Abstände in der gesamten Applik
             - Fehlerbehebung #1141: Korrekte Java-Version im Dockerfile gesetzt
             - Fehlerbehebung #1140: Limit für maximale SCSS-Grösse erhöht
             - Fehlerbehebung #949: Es wurde ein Authentifizierungsproblem behoben, durch das die Seite nach dem Aus- und wieder Einloggen zuerst nicht angezeigt wurde
+
+            - Wartung: Updates diverser Dependencies
 
             - ...

@@ -14,8 +14,8 @@ This project contains two parts:
 
 ## Development
 
-After implementing a new feature or resolving a bug, note this in the `release-notes.txt` file at the top
-of the current WIP version changes.
+After implementing a new feature or resolving a bug, note it in the `release-notes.txt` file at the top
+of the respective category ("Erweiterung", "Fehlerbehebung" or "Wartung") in the current WIP version changes.
 
 ## Docker
 

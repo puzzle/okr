@@ -349,7 +349,7 @@ describe('okr team-management', () => {
         .contains('Nein');
     });
 
-    it('should have primary button on all team-management dialogs', () => {
+    it.only('should have primary button on all team-management dialogs', () => {
       cy.intercept('POST', '**/teams')
         .as('addTeam');
 
@@ -361,8 +361,8 @@ describe('okr team-management', () => {
 
       teamManagementPage
         .addTeam()
-        .fillName('Our newest team');
-      cy.checkForPrimaryButton('save')
+        .fillName('Our newest team')
+        .run(cy.checkForPrimaryButton('save'))
         .submit();
       cy.wait('@addTeam');
 

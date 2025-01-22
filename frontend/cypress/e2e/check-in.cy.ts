@@ -460,13 +460,14 @@ describe('okr check-in', () => {
     keyResultDetailPage.visit('Very important keyresult')
       .createCheckIn()
       .checkForPrimaryButton('submit-check-in')
-      .cancel()
+      .cancel();
 
     keyResultDetailPage
       .showAllCheckIns()
       .editLatestCheckIn()
       .checkForPrimaryButton('submit-check-in')
       .cancel();
+  });
 });
 
 function isChecked(element: string, checked = true) {

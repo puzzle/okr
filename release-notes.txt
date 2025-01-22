@@ -7,7 +7,7 @@ Version     Neuerungen
 V3.0 (WIP)  - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der actionplan übernommen
             - Fehlerbehebung #1298: SCSS-Warnungen behoben
             - Fehlerbehebung #1236: Flaky E2E-Test gefixt
-            - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Objective-Detailansicht angezeigt
+            - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der objective-detailansicht angezeigt
             - Erweiterung #925: In der Check-In history anzeigen wer das Check-In erfasst hat
             - Erweiterung #888: Beim Check-In erstellen können nun neue actions zum Actionplan hinzugefügt werden
             - Fehlerbehebung #1220: Sonar code smells und risks behoben
@@ -50,7 +50,7 @@ V2.0        - Fehlerbehebung #1167: Staging deploy pipeline gefixt
             - Erweiterung #1137: Dev branch gemerged
             - Erweiterung #1092: Node-Version in staging deploy action wird nun über eine env Variable gesetzt
             - Erweiterung #1091: Tenant ACME von staging Umgebung entfernt
-            - Erweiterung #1022: multitenancy Branch in main Branch gemerged
+            - Erweiterung #1022: Multitenancy Branch in main Branch gemerged
             - Fehlerbehebung #949: Es wurde ein Authentifizierungsproblem behoben, durch das die Seite nach dem Aus- und wieder Einloggen zuerst nicht angezeigt wurde
             - Erweiterung #958: Die Quarters in der Testdatenbank wurden aufgeräumt, so dass wir nun nur noch vier Quarters brauchen
             - Dependency updates

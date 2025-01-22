@@ -12,6 +12,11 @@ This project contains two parts:
 ## Backend
 [Backend description](backend/README.md)
 
+## Development
+
+After implementing a new feature or resolving a bug, note it in the `release-notes.txt` file at the top
+of the respective category ("Erweiterung", "Fehlerbehebung" or "Wartung") in the current WIP version changes.
+
 ## Docker
 
 Start docker container in docker folder.

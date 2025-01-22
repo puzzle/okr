@@ -459,14 +459,14 @@ describe('okr check-in', () => {
   it('should have primary button on all check-in dialogs', () => {
     keyResultDetailPage.visit('Very important keyresult')
       .createCheckIn()
-      .checkForPrimaryButton('submit-check-in')
+      .run(cy.checkForPrimaryButton('submit-check-in'))
       .cancel();
 
     keyResultDetailPage
       .showAllCheckIns()
-      .checkForPrimaryButton('closeButton')
+      .run(cy.checkForPrimaryButton('closeButton'))
       .editLatestCheckIn()
-      .checkForPrimaryButton('submit-check-in')
+      .run(cy.checkForPrimaryButton('submit-check-in'))
       .cancel();
   });
 });

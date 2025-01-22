@@ -356,19 +356,19 @@ describe('okr team-management', () => {
       teamManagementPage.elements.registerMember()
         .click();
       InviteMembersDialog.do()
-        .checkForPrimaryButton('invite')
+        .run(cy.checkForPrimaryButton('invite'))
         .close();
 
       teamManagementPage
         .addTeam()
-        .fillName('Our newest team')
-        .checkForPrimaryButton('save')
+        .fillName('Our newest team');
+      cy.checkForPrimaryButton('save')
         .submit();
       cy.wait('@addTeam');
 
       cy.getByTestId('editTeamButton')
         .click();
-      checkForPrimaryButton('save');
+      cy.checkForPrimaryButton('save');
       cy.getByTestId('cancel')
         .click();
 
@@ -379,7 +379,7 @@ describe('okr team-management', () => {
       cy.get('span')
         .contains('Paco Eggimann')
         .click();
-      checkForPrimaryButton('save');
+      cy.checkForPrimaryButton('save');
       cy.getByTestId('close-dialog')
         .click();
     });

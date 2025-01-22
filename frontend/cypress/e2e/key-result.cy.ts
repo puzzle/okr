@@ -459,13 +459,13 @@ describe('okr key-result', () => {
       .addKeyResult()
       .fillKeyResultTitle('A keyResult for testing purposes')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
-      .checkForPrimaryButton('submit')
+      .run(cy.checkForPrimaryButton('submit'))
       .submit();
 
     keyResultDetailPage
       .visit('A keyResult for testing purposes')
       .editKeyResult()
-      .checkForPrimaryButton('submit')
+      .run(cy.checkForPrimaryButton('submit'))
       .cancel();
   });
 });

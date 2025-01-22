@@ -103,7 +103,7 @@
       >
         Als Draft speichern
       </button>
-      <span *ngIf="!this.data.objective.objectiveId; else test" class="ps-2 pe-2">
+      <span *ngIf="!this.data.objective.objectiveId; else primaryFlatButton" class="ps-2 pe-2">
         <button
           *ngIf="allowedToSaveBacklog()"
           [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
@@ -117,8 +117,9 @@
         </button>
       </span>
 
-      <ng-template #test>
+      <ng-template #primaryFlatButton>
         <button
+          *ngIf="allowedToSaveBacklog()"
           [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
           mat-flat-button
           color="primary"

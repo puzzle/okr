@@ -46,13 +46,6 @@ export default class ObjectiveDialog extends Dialog {
     return this;
   }
 
-  checkForPrimaryButton(submitButtonId: string) {
-    cy.getByTestId(submitButtonId)
-      .should('have.attr', 'color', 'primary')
-      .and('have.attr', 'mat-flat-button');
-    return this;
-  }
-
   getPage(): Chainable {
     return cy.get('app-objective-form')
       .should('exist');

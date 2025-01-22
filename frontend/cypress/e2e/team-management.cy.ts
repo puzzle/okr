@@ -348,6 +348,10 @@ describe('okr team-management', () => {
       cy.getByTestId('edit-okr-champion-readonly')
         .contains('Nein');
     });
+
+    it('should have primary button on all team-management dialogs', () => {
+
+    });
   });
 
   describe('as "BL"', () => {

@@ -33,6 +33,13 @@ export default abstract class Dialog extends PageObjectMapperBase {
       .click();
   }
 
+  checkForPrimaryButton(submitButtonId: string) {
+    cy.getByTestId(submitButtonId)
+      .should('have.attr', 'color', 'primary')
+      .and('have.attr', 'mat-flat-button');
+    return this;
+  }
+
   protected fillInputByTestId(testId: string, value: string) {
     const elem = cy.getByTestId(testId);
     this.fillInput(elem, value);

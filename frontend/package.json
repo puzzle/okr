@@ -54,7 +54,7 @@
     "@cypress/skip-test": "^2.6.1",
     "@eslint/js": "^9.17.0",
     "@html-eslint/eslint-plugin": "^0.32.0",
-    "@html-eslint/parser": "^0.32.0",
+    "@html-eslint/parser": "^0.33.0",
     "@stylistic/eslint-plugin": "^2.12.1",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",

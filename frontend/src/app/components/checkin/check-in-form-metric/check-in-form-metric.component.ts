@@ -30,7 +30,7 @@ export class CheckInFormMetricComponent implements OnInit {
 
   ngOnInit() {
     this.dialogForm.controls['value'].setValidators([Validators.required,
-      Validators.pattern('^-?\\d+\\.?\\d*$')]);
+      Validators.pattern('^\\s*-?\\d+\\.?\\d*\\s*$')]);
   }
 
   generateUnitLabel(): string {

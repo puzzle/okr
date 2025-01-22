@@ -38,7 +38,7 @@ public class Unit {
 
     @CreatedBy
 //    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User createdBy;
 
     public Long getId() {

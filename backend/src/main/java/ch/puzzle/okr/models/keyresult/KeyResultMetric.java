@@ -18,7 +18,7 @@ public class KeyResultMetric extends KeyResult {
     private Double stretchGoal;
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @ManyToOne(cascade=CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Unit unit;
 
     public Double getBaseline() {

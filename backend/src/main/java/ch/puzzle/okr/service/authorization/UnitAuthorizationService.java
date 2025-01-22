@@ -26,13 +26,19 @@ public class UnitAuthorizationService {
 
     public Unit editUnit(Unit unit) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        if(!isOwner(unit, authorizationUser)) {
-            throw new OkrResponseStatusException(HttpStatus.FORBIDDEN, ErrorKey.NOT_AUTHORIZED_TO_WRITE, Constants.UNIT);
+        if (!isOwner(unit, authorizationUser)) {
+            throw new OkrResponseStatusException(HttpStatus.FORBIDDEN,
+                                                 ErrorKey.NOT_AUTHORIZED_TO_WRITE,
+                                                 Constants.UNIT);
         }
         return unitBusinessService.updateEntity(unit.getId(), unit);
     }
 
     private boolean isOwner(Unit unit, AuthorizationUser authorizationUser) {
-        return unitBusinessService.getEntityById(unit.getId()).getCreatedBy().getId().equals(authorizationUser.user().getId());
+        return unitBusinessService
+                .getEntityById(unit.getId())
+                .getCreatedBy()
+                .getId()
+                .equals(authorizationUser.user().getId());
     }
 }

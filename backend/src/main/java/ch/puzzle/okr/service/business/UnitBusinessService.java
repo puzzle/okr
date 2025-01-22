@@ -9,7 +9,6 @@ import ch.puzzle.okr.service.validation.UnitValidationService;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +25,9 @@ public class UnitBusinessService {
     public Unit findUnitByName(String unitName) {
         return unitPersistenceService
                 .findUnitByUnitName(unitName)
-                .orElseThrow( ()-> new OkrResponseStatusException(HttpStatus.NOT_FOUND, ErrorKey.MODEL_NOT_FOUND_BY_PROPERTY, List.of(
-                        Constants.UNIT, "unit name", unitName)));
+                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.NOT_FOUND,
+                                                                  ErrorKey.MODEL_NOT_FOUND_BY_PROPERTY,
+                                                                  List.of(Constants.UNIT, "unit name", unitName)));
     }
 
     public Unit getEntityById(Long id) {

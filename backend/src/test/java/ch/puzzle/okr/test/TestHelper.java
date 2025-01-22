@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.nimbusds.jwt.JWT;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 public class TestHelper {
@@ -41,7 +39,7 @@ public class TestHelper {
                 .build();
     }
 
-    public static Jwt getUserJwt(){
+    public static Jwt getUserJwt() {
         Map<String, Object> claims = new HashMap<>();
         claims.put("name", FIRST_NAME + " " + LAST_NAME);
         claims.put("preferred_username", FIRST_NAME);
@@ -150,16 +148,15 @@ public class TestHelper {
         final String AUTH0_TOKEN = "token";
         final String SUB = "sub";
         final String AUTH0ID = "sms|12345678";
-        // This is a place to add general and maybe custom claims which should be available after parsing token in the live system
+        // This is a place to add general and maybe custom claims which should be
+        // available after parsing token in the live system
 
-        //This is an object that represents contents of jwt token after parsing
-        return new Jwt(
-                AUTH0_TOKEN,
-                Instant.now(),
-                Instant.now().plusSeconds(120),
-                Map.of("alg", "RS256", "typ", "JWT"),
-                claims
-        );
+        // This is an object that represents contents of jwt token after parsing
+        return new Jwt(AUTH0_TOKEN,
+                       Instant.now(),
+                       Instant.now().plusSeconds(120),
+                       Map.of("alg", "RS256", "typ", "JWT"),
+                       claims);
     }
 
 }

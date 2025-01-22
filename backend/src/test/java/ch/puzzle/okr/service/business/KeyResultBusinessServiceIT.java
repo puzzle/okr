@@ -54,10 +54,9 @@ class KeyResultBusinessServiceIT {
     private ActionBusinessService actionBusinessService;
 
     @Autowired
-    private  UnitBusinessService unitBusinessService;
+    private UnitBusinessService unitBusinessService;
 
     private Unit UNIT;
-
 
     @Mock
     private AuthorizationService authorizationService;

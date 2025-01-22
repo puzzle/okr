@@ -30,29 +30,37 @@ public class UnitController {
             @ApiResponse(responseCode = "400", description = "Can't update Actions, attributes are not set", content = @Content) })
     @PostMapping
     public UnitDto createUnit(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update existing Actions.", required = true)
-                           @RequestBody UnitDto unitDto) {
+    @RequestBody UnitDto unitDto) {
         Unit unit = unitMapper.toUnit(unitDto);
         return unitMapper.toDto(unitAuthorizationService.createUnit(unit));
     }
 
-
-//    @Operation(summary = "Update Actions", description = "Update Actions of KeyResult")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Updated Actions of KeyResult", content = {
-//                    @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
-//            @ApiResponse(responseCode = "400", description = "Can't update Actions, attributes are not set", content = @Content) })
-//    @PutMapping
-//    public void updateUnit(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update existing Actions.", required = true)
-//    @RequestBody List<ActionDto> actionDtoList) {
-//        List<Action> actionList = unitMapper.toActions(actionDtoList);
-//        unitAuthorizationService.updateEntities(actionList);
-//    }
-//
-//    @Operation(summary = "Delete Action by Id", description = "Delete Action by Id")
-//    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Action by Id"),
-//            @ApiResponse(responseCode = "404", description = "Did not find the Action with requested id") })
-//    @DeleteMapping("/{unitId}")
-//    public void deleteUnitById(@PathVariable long unitId) {
-//        unitAuthorizationService.deleteActionByActionId(actionId);
-//    }
+    // @Operation(summary = "Update Actions", description = "Update Actions of
+    // KeyResult")
+    // @ApiResponses(value = {
+    // @ApiResponse(responseCode = "200", description = "Updated Actions of
+    // KeyResult", content = {
+    // @Content(mediaType = "application/json", schema = @Schema(implementation =
+    // ActionDto.class)) }),
+    // @ApiResponse(responseCode = "400", description = "Can't update Actions,
+    // attributes are not set", content = @Content) })
+    // @PutMapping
+    // public void
+    // updateUnit(@io.swagger.v3.oas.annotations.parameters.RequestBody(description
+    // = "The Action as json to update existing Actions.", required = true)
+    // @RequestBody List<ActionDto> actionDtoList) {
+    // List<Action> actionList = unitMapper.toActions(actionDtoList);
+    // unitAuthorizationService.updateEntities(actionList);
+    // }
+    //
+    // @Operation(summary = "Delete Action by Id", description = "Delete Action by
+    // Id")
+    // @ApiResponses(value = { @ApiResponse(responseCode = "200", description =
+    // "Deleted Action by Id"),
+    // @ApiResponse(responseCode = "404", description = "Did not find the Action
+    // with requested id") })
+    // @DeleteMapping("/{unitId}")
+    // public void deleteUnitById(@PathVariable long unitId) {
+    // unitAuthorizationService.deleteActionByActionId(actionId);
+    // }
 }

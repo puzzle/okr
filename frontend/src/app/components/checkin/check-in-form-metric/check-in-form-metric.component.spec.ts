@@ -83,4 +83,41 @@ describe('CheckInFormComponent', () => {
     expect(component.generateUnitLabel())
       .toEqual('');
   }));
+
+
+  it.each([
+    [0,
+      true],
+    [150,
+      true],
+    [-23,
+      true],
+    [12.3,
+      true],
+    [-100.3,
+      true],
+    ['123',
+      true],
+    ['-123.4',
+      true],
+    ['',
+      false],
+    ['asdf',
+      false],
+    ['a1',
+      false],
+    ['1a',
+      false],
+    [null,
+      false]
+  ])('should correctly validate value input', (value, validity) => {
+    component.dialogForm = new FormGroup({
+      value: new FormControl<string>('', [Validators.required])
+    });
+
+    component.ngOnInit();
+    component.dialogForm.setValue({ value: value });
+    expect(component.dialogForm.valid)
+      .toEqual(validity);
+  });
 });

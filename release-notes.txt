@@ -4,7 +4,7 @@ Release Notes Puzzle OKR
 
 Version     Neuerungen
 -----------------------------------------------------------------------------
-V3.0 (WIP)  - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der actionplan übernommen
+WIP         - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der actionplan übernommen
             - Fehlerbehebung #1298: SCSS-Warnungen behoben
             - Fehlerbehebung #1236: Flaky E2E-Test gefixt
             - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der objective-detailansicht angezeigt
@@ -39,7 +39,7 @@ V3.0 (WIP)  - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun
             - Erweiterung #1172: Main in Prod gemerged
             - Dependency updates
 
-V2.0        - Fehlerbehebung #1167: Staging deploy pipeline gefixt
+V3.0        - Fehlerbehebung #1167: Staging deploy pipeline gefixt
             - Erweiterung #1014: Schriftart und Abstände in der gesamten Applikation korrigiert
             - Fehlerbehebung #1150: Die Löschung eines Objectives führt nun nicht mehr zu einer ungewollten Fehlermeldung
             - Fehlerbehebung #1143: Das aktuelle Quarter im Quarterfilter ist nun wieder als solches gekennzeichnet

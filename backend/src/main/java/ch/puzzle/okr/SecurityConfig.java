@@ -41,7 +41,6 @@ import org.springframework.security.web.header.writers.StaticHeadersWriter;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableJpaAuditing
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 

@@ -39,21 +39,27 @@ public class TestHelper {
                 .build();
     }
 
-    public static Jwt getUserJwt() {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("name", FIRST_NAME + " " + LAST_NAME);
-        claims.put("preferred_username", FIRST_NAME);
-        claims.put("given_name", FIRST_NAME);
-        claims.put("family_name", LAST_NAME);
-        claims.put("email", EMAIL);
-        return generateJWT(claims);
-    }
-
     public static User defaultOkrChampion(Long id) {
         var user = defaultUser(id);
         user.setOkrChampion(true);
         return user;
     }
+
+    public static User glUser() {
+        return glUser(61L);
+    }
+
+    public static User glUser(Long id) {
+        return  User.Builder
+                .builder()
+                .withId(id)
+                .withFirstName("Jaya")
+                .withLastName("Norris")
+                .withEmail("gl@gl.com")
+                .build();
+    }
+
+
 
     public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
         var user = defaultUser(userId);

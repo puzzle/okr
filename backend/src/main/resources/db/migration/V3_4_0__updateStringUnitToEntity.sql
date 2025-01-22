@@ -29,9 +29,6 @@ $$
             ALTER TABLE key_result
                 add COLUMN unit_id bigint;
 
-            --             exec_text := format('create view overview as %s',
---                                 overview_view_def);
---             execute exec_text;
             UPDATE key_result
             SET unit_id = (
                 SELECT id

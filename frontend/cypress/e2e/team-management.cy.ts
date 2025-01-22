@@ -628,9 +628,3 @@ function fillOutNewUser(firstName: string, lastName: string, email: string) {
   cy.tabForward();
   cy.realType(email);
 }
-
-function checkForPrimaryButton(submitButtonId: string) {
-  cy.getByTestId(submitButtonId)
-    .should('have.attr', 'color', 'primary')
-    .and('have.attr', 'mat-flat-button');
-}

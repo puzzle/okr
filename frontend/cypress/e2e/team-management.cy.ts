@@ -350,7 +350,38 @@ describe('okr team-management', () => {
     });
 
     it('should have primary button on all team-management dialogs', () => {
+      cy.intercept('POST', '**/teams')
+        .as('addTeam');
 
+      teamManagementPage.elements.registerMember()
+        .click();
+      InviteMembersDialog.do()
+        .checkForPrimaryButton('invite')
+        .close();
+
+      teamManagementPage
+        .addTeam()
+        .fillName('Our newest team')
+        .checkForPrimaryButton('save')
+        .submit();
+      cy.wait('@addTeam');
+
+      cy.getByTestId('editTeamButton')
+        .click();
+      checkForPrimaryButton('save');
+      cy.getByTestId('cancel')
+        .click();
+
+      cy.getByTestId('add-team-member')
+        .click();
+      cy.getByTestId('search-member-to-add')
+        .click();
+      cy.get('span')
+        .contains('Paco Eggimann')
+        .click();
+      checkForPrimaryButton('save');
+      cy.getByTestId('close-dialog')
+        .click();
     });
   });
 
@@ -596,4 +627,10 @@ function fillOutNewUser(firstName: string, lastName: string, email: string) {
   cy.realType(lastName);
   cy.tabForward();
   cy.realType(email);
+}
+
+function checkForPrimaryButton(submitButtonId: string) {
+  cy.getByTestId(submitButtonId)
+    .should('have.attr', 'color', 'primary')
+    .and('have.attr', 'mat-flat-button');
 }

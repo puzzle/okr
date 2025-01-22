@@ -464,6 +464,7 @@ describe('okr check-in', () => {
 
     keyResultDetailPage
       .showAllCheckIns()
+      .checkForPrimaryButton('closeButton')
       .editLatestCheckIn()
       .checkForPrimaryButton('submit-check-in')
       .cancel();

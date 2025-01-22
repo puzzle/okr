@@ -13,10 +13,7 @@ import ch.puzzle.okr.service.validation.QuarterValidationService;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -124,7 +121,7 @@ class QuarterBusinessServiceTest {
     @ValueSource(ints = { 3, 6, 9, 12 })
     void shouldGenerateQuarterIfLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
-        Mockito.doReturn(List.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
+        Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
         quarterBusinessService.scheduledGenerationQuarters();
@@ -145,7 +142,7 @@ class QuarterBusinessServiceTest {
     @MethodSource("generateQuarterParams")
     void shouldGenerateCorrectQuarter(int quarterStart, String quarterFormat, YearMonth currentYearMonth,
                                       String expectedLabel) {
-        Mockito.doReturn(List.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
+        Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
 
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", quarterStart);
         ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", quarterFormat);

@@ -59,7 +59,15 @@ public class TestHelper {
                 .build();
     }
 
-
+    public static User invalidUser() {
+        return  User.Builder
+                .builder()
+                .withId(-1L)
+                .withFirstName("Invalid")
+                .withLastName("User")
+                .withEmail("invalid@user.ch")
+                .build();
+    }
 
     public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
         var user = defaultUser(userId);
@@ -108,7 +116,7 @@ public class TestHelper {
     }
 
     public static Jwt defaultJwtToken() {
-        return mockJwtToken(FIRST_NAME, LAST_NAME, EMAIL);
+        return mockJwtToken(glUser());
     }
 
     public static Jwt mockJwtToken(User user) {
@@ -149,20 +157,4 @@ public class TestHelper {
     public static final Unit CHF_UNIT = Unit.Builder.builder().unitName("CHF").build();
     public static final Unit EUR_UNIT = Unit.Builder.builder().unitName("EUR").build();
     public static final Unit PERCENT_UNIT = Unit.Builder.builder().unitName("PERCENT").build();
-
-    private static Jwt generateJWT(Map<String, Object> claims) {
-        final String AUTH0_TOKEN = "token";
-        final String SUB = "sub";
-        final String AUTH0ID = "sms|12345678";
-        // This is a place to add general and maybe custom claims which should be
-        // available after parsing token in the live system
-
-        // This is an object that represents contents of jwt token after parsing
-        return new Jwt(AUTH0_TOKEN,
-                       Instant.now(),
-                       Instant.now().plusSeconds(120),
-                       Map.of("alg", "RS256", "typ", "JWT"),
-                       claims);
-    }
-
 }

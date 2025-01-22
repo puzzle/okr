@@ -1,5 +1,7 @@
 package ch.puzzle.okr.controller;
 
+import static ch.puzzle.okr.test.TestHelper.glUser;
+import static ch.puzzle.okr.test.TestHelper.invalidUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -32,7 +34,6 @@ class UnitControllerIT {
     private MockMvc mvc;
     private final String URL_BASE = "/api/v2/unit";
     String CREATE_UNIT_BODY = "{\"unitName\":\"TestUnit\"}";
-    private final User GL_USER = TestHelper.glUser();
 
     @Autowired
     private UnitPersistenceService unitPersistenceService;
@@ -43,8 +44,8 @@ class UnitControllerIT {
     }
 
     @Test
-    void test() throws Exception {
-        Jwt jwt = TestHelper.mockJwtToken(GL_USER);
+    void shouldReturnNewUnitWithCurrentUserAsOwner() throws Exception {
+        Jwt jwt = TestHelper.mockJwtToken(glUser());
         mvc
                 .perform(post(URL_BASE)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -58,5 +59,17 @@ class UnitControllerIT {
         Assertions.assertTrue(testUnit.isPresent());
         Assertions.assertEquals("TestUnit", testUnit.get().getUnitName());
         Assertions.assertEquals("gl@gl.com", testUnit.get().getCreatedBy().getEmail());
+    }
+
+    @Test
+    void shouldReturn401ForInvalidUser() throws Exception {
+        mvc
+                .perform(post(URL_BASE)
+                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                 .content(CREATE_UNIT_BODY)
+                                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+        Optional<Unit> testUnit = unitPersistenceService.findUnitByUnitName("TestUnit");
+        Assertions.assertTrue(testUnit.isEmpty());
     }
 }

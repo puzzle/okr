@@ -7,14 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +33,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 class QuarterBusinessServiceTest {
     @Mock
     QuarterPersistenceService quarterPersistenceService;
+
+    @Mock
+    TenantConfigProvider tenantConfigProvider;
 
     @Mock
     QuarterValidationService quarterValidationService;
@@ -119,6 +121,7 @@ class QuarterBusinessServiceTest {
     @ValueSource(ints = { 3, 6, 9, 12 })
     void shouldGenerateQuarterIfLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
+        Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
         quarterBusinessService.scheduledGenerationQuarters();
@@ -139,6 +142,8 @@ class QuarterBusinessServiceTest {
     @MethodSource("generateQuarterParams")
     void shouldGenerateCorrectQuarter(int quarterStart, String quarterFormat, YearMonth currentYearMonth,
                                       String expectedLabel) {
+        Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
+
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", quarterStart);
         ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", quarterFormat);
 

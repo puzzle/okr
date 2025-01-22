@@ -3,13 +3,16 @@ package ch.puzzle.okr.service.business;
 import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
 
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,7 @@ public class QuarterBusinessService {
 
     private final QuarterPersistenceService quarterPersistenceService;
     private final QuarterValidationService validator;
+    private final TenantConfigProvider tenantConfigProvider;
 
     @Value("${okr.quarter.business.year.start}")
     private int quarterStart;
@@ -31,9 +35,10 @@ public class QuarterBusinessService {
     private String quarterFormat;
 
     public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
-                                  QuarterValidationService validator) {
+                                  QuarterValidationService validator, TenantConfigProvider tenantConfigProvider) {
         this.quarterPersistenceService = quarterPersistenceService;
         this.validator = validator;
+        this.tenantConfigProvider = tenantConfigProvider;
     }
 
     public Quarter getQuarterById(Long quarterId) {
@@ -78,12 +83,14 @@ public class QuarterBusinessService {
         return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
-    private void generateQuarter(LocalDateTime start, String label) {
+    private void generateQuarter(LocalDate start, String label, String schema) {
+        TenantContext.setCurrentTenant(schema);
+
         YearMonth yearMonth = YearMonth.from(start);
         Quarter quarter = Quarter.Builder
                 .builder()
                 .withLabel(label)
-                .withStartDate(start.toLocalDate())
+                .withStartDate(start)
                 .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
                 .build();
         validator.validateOnGeneration(quarter);
@@ -97,7 +104,7 @@ public class QuarterBusinessService {
         return Math.abs(nextQuarter - currentQuarter) == 2;
     }
 
-    YearMonth getCurrentYearMonth() {
+    public YearMonth getCurrentYearMonth() {
         return YearMonth.now();
     }
 
@@ -121,11 +128,18 @@ public class QuarterBusinessService {
         int currentQuarter = quarters.get(currentYearMonth.getMonthValue());
         int nextQuarter = quarters.get(nextQuarterYearMonth.getMonthValue());
 
+        String initialTenant = TenantContext.getCurrentTenant();
+
+        Set<String> tenantSchemas = this.tenantConfigProvider.getAllTenantIds();
         // If we are in the last month of a quarter, generate the next quarter
         if (isInLastMonthOfQuarter(currentQuarter, nextQuarter)) {
-            logger.info("Generated quarters on last day of month");
-            String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
-            generateQuarter(nextQuarterYearMonth.atDay(1).atStartOfDay(), label);
+            for (String schema : tenantSchemas) {
+                logger.info("Generated quarters on last day of month for tenant {}", schema);
+                String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
+                generateQuarter(nextQuarterYearMonth.atDay(1), label, schema);
+            }
         }
+
+        TenantContext.setCurrentTenant(initialTenant);
     }
 }

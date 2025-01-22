@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Set;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -148,7 +150,7 @@ class QuarterPersistenceServiceIT {
         String expectedLabel = "GJ " + nextYearShort + "/" + (nextYearShort + 1) + "-Q" + quarterIndex;
 
         Mockito.doReturn(YearMonth.of(nextYear, month)).when(quarterBusinessService).getCurrentYearMonth();
-        Mockito.doReturn(List.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
+        Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
 
         quarterBusinessService.scheduledGenerationQuarters();
 

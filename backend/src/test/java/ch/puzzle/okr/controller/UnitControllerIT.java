@@ -85,7 +85,7 @@ class UnitControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.owner.email", Is.is("gl@gl.com")))
                 .andExpect(jsonPath("$.unitName", Is.is("TestUnit")));
-        Optional<Unit> testUnit = unitPersistenceService.findUnitByUnitName("TestUnit");
+        Optional<Unit> testUnit = Optional.ofNullable(unitPersistenceService.findUnitByUnitName("TestUnit"));
         Assertions.assertTrue(testUnit.isPresent());
         Assertions.assertEquals("TestUnit", testUnit.get().getUnitName());
         Assertions.assertEquals("gl@gl.com", testUnit.get().getCreatedBy().getEmail());

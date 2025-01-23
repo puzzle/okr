@@ -7,10 +7,10 @@ import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.service.persistence.UnitPersistenceService;
 import ch.puzzle.okr.service.validation.UnitValidationService;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UnitBusinessService {
@@ -27,15 +27,13 @@ public class UnitBusinessService {
     }
 
     public List<Unit> findUnitsByUser(Long userId) {
+        validator.validateOnGet(userId);
         return unitPersistenceService.findUnitsByUser(userId);
     }
 
     public Unit findUnitByName(String unitName) {
         return unitPersistenceService
-                .findUnitByUnitName(unitName)
-                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.NOT_FOUND,
-                                                                  ErrorKey.MODEL_NOT_FOUND_BY_PROPERTY,
-                                                                  List.of(Constants.UNIT, "unit name", unitName)));
+                .findUnitByUnitName(unitName);
     }
 
     public Unit getEntityById(Long id) {
@@ -44,24 +42,15 @@ public class UnitBusinessService {
     }
 
     @Transactional
-    public Unit createEntity(Unit action) {
-        validator.validateOnCreate(action);
-        return unitPersistenceService.save(action);
+    public Unit createEntity(Unit unit) {
+        validator.validateOnCreate(unit);
+        return unitPersistenceService.save(unit);
     }
 
     @Transactional
-    public List<Unit> updateEntities(List<Unit> actionList) {
-        List<Unit> savedActions = new ArrayList<>();
-
-        return savedActions;
-    }
-
-    @Transactional
-    public Unit updateEntity(Long id, Unit newUnit) {
-        validator.validateOnUpdate(id, newUnit);
-        Unit oldUnit = unitPersistenceService.findById(id);
-        oldUnit.setUnitName(newUnit.getUnitName());
-        return unitPersistenceService.save(oldUnit);
+    public Unit updateEntity(Long id, Unit unit) {
+        validator.validateOnUpdate(id, unit);
+        return unitPersistenceService.save(unit);
     }
 
     @Transactional

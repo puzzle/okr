@@ -37,7 +37,7 @@ export class CheckInFormComponent implements OnInit {
   dialogForm = new FormGroup({
     metricValue: new FormControl<number | undefined>(undefined, [Validators.required,
       numberValidator()]),
-    ordinalZone: new FormControl<Zone>(Zone.COMMIT, [Validators.required]),
+    ordinalZone: new FormControl<Zone>(Zone.FAIL, [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required,
       Validators.min(0),
       Validators.max(10)]),

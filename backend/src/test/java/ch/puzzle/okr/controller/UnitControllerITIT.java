@@ -1,5 +1,11 @@
 package ch.puzzle.okr.controller;
 
+import static ch.puzzle.okr.test.TestHelper.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import ch.puzzle.okr.dto.UnitDto;
 import ch.puzzle.okr.mapper.UnitMapper;
 import ch.puzzle.okr.models.Unit;
@@ -7,6 +13,7 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UnitAuthorizationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,24 +31,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
-import static ch.puzzle.okr.test.TestHelper.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(UnitController.class)
 class UnitControllerITIT {
     private final String URL_BASE = "/api/v2/units";
     private final ObjectMapper objectMapper = new ObjectMapper();
-    @Autowired private MockMvc mvc;
-    @MockitoBean private UnitAuthorizationService unitAuthorizationService;
-    @MockitoBean private AuthorizationService authorizationService;
-    @MockitoBean private UnitMapper unitMapper;
+    @Autowired
+    private MockMvc mvc;
+    @MockitoBean
+    private UnitAuthorizationService unitAuthorizationService;
+    @MockitoBean
+    private AuthorizationService authorizationService;
+    @MockitoBean
+    private UnitMapper unitMapper;
 
     @BeforeEach
     void setUp() {
@@ -87,9 +90,9 @@ class UnitControllerITIT {
 
         mvc
                 .perform(post(URL_BASE)
-                                 .content(unitJson)
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .content(unitJson)
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.owner.email", Is.is("gl@gl.com")))
                 .andExpect(jsonPath("$.unitName", Is.is("FTE")));
@@ -99,12 +102,13 @@ class UnitControllerITIT {
     void shouldReturn401ForInvalidUserWhenCreatingUnit() throws Exception {
         UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
-        when(unitAuthorizationService.createUnit(any(Unit.class))).thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        when(unitAuthorizationService.createUnit(any(Unit.class)))
+                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
         mvc
                 .perform(post(URL_BASE)
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
@@ -112,14 +116,14 @@ class UnitControllerITIT {
     void shouldReturn200ForUserWhenUpdatingUnit() throws Exception {
         UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
-        when(unitAuthorizationService.updateUnit(any(),any(Unit.class))).thenReturn(FTE_UNIT);
+        when(unitAuthorizationService.updateUnit(any(), any(Unit.class))).thenReturn(FTE_UNIT);
 
         mvc
                 .perform(put(URL_BASE + "/100")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.unitName", Is.is("FTE")));
     }
@@ -128,13 +132,14 @@ class UnitControllerITIT {
     void shouldReturn403ForWrongUserWhenUpdatingUnit() throws Exception {
         UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
-        when(unitAuthorizationService.updateUnit(any(),any(Unit.class))).thenThrow(new ResponseStatusException(HttpStatus.FORBIDDEN));
+        when(unitAuthorizationService.updateUnit(any(), any(Unit.class)))
+                .thenThrow(new ResponseStatusException(HttpStatus.FORBIDDEN));
         mvc
                 .perform(put(URL_BASE + "/100")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
@@ -153,9 +158,9 @@ class UnitControllerITIT {
     void shouldReturn200ForRightUserWhenDeletingUnit() throws Exception {
         mvc
                 .perform(delete(URL_BASE + "/101")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         verify(unitAuthorizationService, times(1)).deleteUnitById(101L);
     }

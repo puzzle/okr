@@ -10,6 +10,7 @@ export interface Objective {
   teamId: number;
   quarterId: number;
   quarterLabel: string;
+  isBacklogQuarter: boolean;
   createdOn?: Date;
   modifiedOn?: Date;
   createdBy?: User;

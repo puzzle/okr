@@ -55,7 +55,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
 
     let messageKey = successMessageObj.key;
-    console.log(response.body);
     const isBacklogQuarter = response.body?.isBacklogQuarter;
     if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
       messageKey += '_BACKLOG';

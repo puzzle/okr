@@ -107,6 +107,10 @@ public class TestHelper {
         return UserTeam.Builder.builder().withId(id).withTeam(defaultTeam(1L)).withUser(user).build();
     }
 
+    public static AuthorizationUser okrChampionAuthorizationUser() {
+        return mockAuthorizationUser(1L, FIRST_NAME, LAST_NAME, EMAIL, true);
+    }
+
     public static AuthorizationUser defaultAuthorizationUser() {
         return mockAuthorizationUser(1L, FIRST_NAME, LAST_NAME, EMAIL, false);
     }

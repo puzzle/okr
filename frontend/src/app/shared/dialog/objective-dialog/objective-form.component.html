@@ -103,7 +103,7 @@
       >
         Als Draft speichern
       </button>
-      <span class="pe-2">
+      <span [ngClass]="data.objective.objectiveId ? 'pe-2': 'pe-2 ps-2'">
         <button
           mat-button
           *ngIf="allowedToSaveBacklog()"

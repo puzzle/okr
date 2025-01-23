@@ -36,7 +36,7 @@ describe('CheckInFormComponent', () => {
     component.keyResult = keyResultMetric;
     component.checkIn = checkInMetric;
     component.dialogForm = new FormGroup({
-      value: new FormControl<string>('', [Validators.required]),
+      metricValue: new FormControl<string>('', [Validators.required]),
       confidence: new FormControl<number>(5, [Validators.required,
         Validators.min(1),
         Validators.max(10)])
@@ -116,7 +116,7 @@ describe('CheckInFormComponent', () => {
       false]
   ])('should correctly validate value input', (value, validity) => {
     component.dialogForm = new FormGroup({
-      value: new FormControl<string>('', [Validators.required])
+      metricValue: new FormControl<string>('', [Validators.required])
     });
 
     component.ngOnInit();

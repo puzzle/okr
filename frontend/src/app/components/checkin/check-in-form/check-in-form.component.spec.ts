@@ -32,6 +32,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { Action } from '../../../shared/types/model/action';
+import { Zone } from '../../../shared/types/enums/zone';
 
 const dialogMock = {
   close: jest.fn()
@@ -125,7 +126,7 @@ describe('CheckInFormComponent', () => {
   it('should save check-in correctly if key-result is ordinal', waitForAsync(async() => {
     component.checkIn = checkInOrdinal;
     component.keyResult = keyResultOrdinal;
-    component.dialogForm.controls['value'].setValue(checkInOrdinal?.zone!.toString());
+    component.dialogForm.controls['ordinalZone'].setValue(checkInOrdinal?.zone as Zone);
     component.dialogForm.controls['confidence'].setValue(checkInOrdinal.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInOrdinal.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInOrdinal.initiatives);
@@ -156,7 +157,7 @@ describe('CheckInFormComponent', () => {
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: checkInMetric.confidence,
-        value: checkInMetric.value!.toString(),
+        metricValue: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
         actionList: undefined
@@ -167,10 +168,10 @@ describe('CheckInFormComponent', () => {
     component.keyResult = keyResultOrdinal;
     component.ngOnInit();
     component.setDefaultValues();
-    expect(component.dialogForm.value)
+    expect(component.dialogForm.ordinalZone)
       .toStrictEqual({
         confidence: keyResultOrdinal.lastCheckIn!.confidence,
-        value: '',
+        metricValue: {},
         changeInfo: '',
         initiatives: '',
         actionList: []

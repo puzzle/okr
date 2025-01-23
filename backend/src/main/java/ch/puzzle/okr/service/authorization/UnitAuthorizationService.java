@@ -15,13 +15,10 @@ import org.springframework.stereotype.Service;
 public class UnitAuthorizationService {
     private final UnitBusinessService unitBusinessService;
     private final AuthorizationService authorizationService;
-    private final UnitValidationService unitValidationService;
 
-    public UnitAuthorizationService(UnitBusinessService unitBusinessService, AuthorizationService authorizationService,
-                                    UnitValidationService unitValidationService) {
+    public UnitAuthorizationService(UnitBusinessService unitBusinessService, AuthorizationService authorizationService) {
         this.unitBusinessService = unitBusinessService;
         this.authorizationService = authorizationService;
-        this.unitValidationService = unitValidationService;
     }
 
     public List<Unit> getAllUnits() {

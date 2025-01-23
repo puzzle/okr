@@ -10,7 +10,6 @@
     "watch:prod": "ng build --watch",
     "test": "jest --silent",
     "prestart": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'hook copied'",
-    "prebuild": "version=$(grep -oP '<version>\\K.*(?=-SNAPSHOT</version>)' ../pom.xml); echo \"export const version = 'v$version';\" > src/app/version.ts\n",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
     "cypress:open-test": "concurrently \"npm start\" \"cypress open\"",

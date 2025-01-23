@@ -12,6 +12,7 @@
     "prestart": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'hook copied'",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
+    "cypress:run:file": "cypress run --browser chrome --spec",
     "cypress:open-test": "concurrently \"npm start\" \"cypress open\"",
     "cypress:run-test": "npm run build && concurrently \"npm run serve:dist\" \"cypress run\"",
     "e2e": "ng e2e",

@@ -76,7 +76,7 @@ export class ObjectiveMenuActionsService {
   }
 
   private getReleaseAction(objective: ObjectiveMin): ObjectiveMenuEntry {
-    return !objective.quarter.isBacklogQuarter
+    return objective.quarter.isBacklogQuarter
       ? this.actions.releaseFromBacklogAction(objective)
       : this.actions.releaseFromQuarterAction();
   }

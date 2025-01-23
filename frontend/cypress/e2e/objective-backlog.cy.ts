@@ -33,9 +33,7 @@ describe('okr objective backlog', () => {
       .submitDraftObjective();
 
     overviewPage
-      .getObjectiveByNameAndState('Move to another quarter on edit', 'draft')
-      .findByTestId('three-dot-menu')
-      .click();
+      .openThreeDotMenuOfObjective('Move to another quarter on edit', 'draft');
     overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
 
     ObjectiveDialog.do()
@@ -56,9 +54,7 @@ describe('okr objective backlog', () => {
       .submit();
 
     overviewPage
-      .getObjectiveByNameAndState('We can not move this to backlog', 'ongoing')
-      .findByTestId('three-dot-menu')
-      .click();
+      .openThreeDotMenuOfObjective('We can not move this to backlog', 'ongoing');
     overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
 
     cy.get('select#quarter')
@@ -73,9 +69,7 @@ describe('okr objective backlog', () => {
       .fillObjectiveTitle('We can not release this')
       .submitDraftObjective();
 
-    overviewPage.getObjectiveByNameAndState('We can not release this', 'draft')
-      .findByTestId('three-dot-menu')
-      .click();
+    overviewPage.openThreeDotMenuOfObjective('We can not release this', 'draft');
     overviewPage.selectFromThreeDotMenu('Objective veröffentlichen');
 
     cy.contains('Objective veröffentlichen');
@@ -112,9 +106,7 @@ describe('okr objective backlog', () => {
       .submitDraftObjective();
 
     overviewPage
-      .getObjectiveByNameAndState('This is possible for edit', 'draft')
-      .findByTestId('three-dot-menu')
-      .click();
+      .openThreeDotMenuOfObjective('This is possible for edit', 'draft');
     overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
 
     ObjectiveDialog.do()
@@ -131,9 +123,7 @@ describe('okr objective backlog', () => {
       .submitDraftObjective();
 
     overviewPage
-      .getObjectiveByNameAndState('This goes to other quarter later', 'draft')
-      .findByTestId('three-dot-menu')
-      .click();
+      .openThreeDotMenuOfObjective('This goes to other quarter later', 'draft');
     overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
 
     ObjectiveDialog.do()
@@ -151,9 +141,7 @@ describe('okr objective backlog', () => {
       .submitDraftObjective();
 
     overviewPage
-      .getObjectiveByNameAndState('Ready for duplicate in backlog', 'draft')
-      .findByTestId('three-dot-menu')
-      .click();
+      .openThreeDotMenuOfObjective('Ready for duplicate in backlog', 'draft');
     overviewPage.selectFromThreeDotMenu('Objective duplizieren');
 
     ObjectiveDialog.do()
@@ -170,9 +158,7 @@ describe('okr objective backlog', () => {
       .fillObjectiveTitle('Ready for duplicate to another quarter')
       .submitDraftObjective();
     overviewPage
-      .getObjectiveByNameAndState('Ready for duplicate to another quarter', 'draft')
-      .findByTestId('three-dot-menu')
-      .click();
+      .openThreeDotMenuOfObjective('Ready for duplicate to another quarter', 'draft');
     overviewPage.selectFromThreeDotMenu('Objective duplizieren');
 
     ObjectiveDialog.do()
@@ -195,9 +181,7 @@ describe('okr objective backlog', () => {
       .submit();
 
     overviewPage
-      .getObjectiveByNameAndState('Possible to duplicate into backlog', 'ongoing')
-      .findByTestId('three-dot-menu')
-      .click();
+      .openThreeDotMenuOfObjective('Possible to duplicate into backlog', 'ongoing');
     overviewPage.selectFromThreeDotMenu('Objective duplizieren');
 
     ObjectiveDialog.do()

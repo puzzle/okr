@@ -348,6 +348,32 @@ describe('okr team-management', () => {
       cy.getByTestId('edit-okr-champion-readonly')
         .contains('Nein');
     });
+
+    it('should have primary button on all team-management dialogs', () => {
+      teamManagementPage.elements.registerMember()
+        .click();
+      InviteMembersDialog.do()
+        .run(cy.buttonShouldBePrimary('invite'))
+        .close();
+
+      cy.contains('LoremIpsum')
+        .click();
+      cy.getByTestId('edit-team-button')
+        .click();
+
+      cy.buttonShouldBePrimary('save');
+      cy.getByTestId('cancel')
+        .click();
+
+      cy.getByTestId('add-team-member')
+        .click();
+      cy.getByTestId('search-member-to-add')
+        .click();
+      cy.get('span')
+        .contains('Paco Eggimann')
+        .click();
+      cy.buttonShouldBePrimary('save');
+    });
   });
 
   describe('as "BL"', () => {
@@ -375,7 +401,7 @@ describe('okr team-management', () => {
         .click();
       cy.getByTestId('teamMoreButton')
         .should('not.exist');
-      cy.getByTestId('editTeamButton')
+      cy.getByTestId('edit-team-button')
         .should('not.exist');
       cy.getByTestId('member-list-more')
         .should('not.exist');
@@ -562,7 +588,7 @@ function checkRolesForEsha() {
 function editTeamNameAndTest(teamName: string) {
   cy.intercept('PUT', '**/teams/*')
     .as('saveTeam');
-  cy.getByTestId('editTeamButton')
+  cy.getByTestId('edit-team-button')
     .click();
   cy.getByTestId('add-team-name')
     .as('team-name')

@@ -204,7 +204,7 @@ describe('tabbing workflows', () => {
       cy.contains('Check-in History');
       focusedShouldHaveTestId('close-dialog');
       tabAndCheck('edit-check-in');
-      tabAndCheck('closeButton', 'Schliessen');
+      tabAndCheck('close-button', 'Schliessen');
       cy.realPress('Enter');
       tabAndCheck('add-check-in', 'Check-in erfassen');
       tabAndCheck('edit-keyResult', 'Key Result bearbeiten');

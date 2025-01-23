@@ -164,6 +164,18 @@ export default class CyOverviewPage extends Page {
       .filter(filterByKeyResultName(keyResultName));
   }
 
+  openThreeDotMenuOfObjective(objectiveName: string, objectiveState?: string) {
+    objectiveState
+      ? this.getObjectiveByNameAndState(objectiveName, objectiveState)
+        .findByTestId('three-dot-menu')
+        .click()
+      : this
+        .getObjectiveByName(objectiveName)
+        .findByTestId('three-dot-menu')
+        .click();
+    return this;
+  }
+
   selectFromThreeDotMenu(optionName: string) {
     cy.contains(optionName)
       .should('exist');

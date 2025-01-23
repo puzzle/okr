@@ -455,6 +455,19 @@ describe('okr check-in', () => {
     cy.contains('This should not appear anywhere!')
       .should('not.exist');
   });
+
+  it('should have a primary button on every check-in dialog', () => {
+    keyResultDetailPage.visit('Very important keyresult')
+      .createCheckIn()
+      .run(cy.buttonShouldBePrimary('submit-check-in'))
+      .cancel();
+
+    keyResultDetailPage
+      .showAllCheckIns()
+      .run(cy.buttonShouldBePrimary('close-button'))
+      .editLatestCheckIn()
+      .run(cy.buttonShouldBePrimary('submit-check-in'));
+  });
 });
 
 function isChecked(element: string, checked = true) {

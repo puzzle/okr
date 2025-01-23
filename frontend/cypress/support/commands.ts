@@ -75,6 +75,12 @@ Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number
   validateScoring(isOverview, percentage);
 });
 
+Cypress.Commands.add('buttonShouldBePrimary', (buttonId: string) => {
+  cy.getByTestId(buttonId)
+    .should('have.attr', 'color', 'primary')
+    .and('have.attr', 'mat-flat-button');
+});
+
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
   cy.intercept('GET', '**/users/current')

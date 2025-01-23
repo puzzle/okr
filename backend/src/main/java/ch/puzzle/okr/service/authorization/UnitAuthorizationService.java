@@ -34,7 +34,7 @@ public class UnitAuthorizationService {
         return unitBusinessService.createEntity(unit);
     }
 
-    public Unit editUnit(Long unitId, Unit unit) {
+    public Unit updateUnit(Long unitId, Unit unit) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         validateOwner(unit, authorizationUser);
         return unitBusinessService.updateEntity(unitId, unit);

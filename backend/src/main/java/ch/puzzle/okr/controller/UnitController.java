@@ -66,7 +66,7 @@ public class UnitController {
     public UnitDto updateUnit(@Parameter(description = "The ID for updating a Team.", required = true)
     @PathVariable long unitId, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update existing Actions.", required = true) @RequestBody UnitDto unitDto) {
         Unit unit = unitMapper.toUnit(unitDto);
-        return unitMapper.toDto(unitAuthorizationService.editUnit(unitId, unit));
+        return unitMapper.toDto(unitAuthorizationService.updateUnit(unitId, unit));
     }
 
     @Operation(summary = "Delete Action by Id", description = "Delete Action by Id")

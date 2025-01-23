@@ -15,7 +15,6 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
 import { KeyResultDto } from '../../types/DTOs/key-result-dto';
-import { quarter } from '../../test-data';
 
 @Component({
   selector: 'app-objective-form',
@@ -147,8 +146,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const teamId = isEditing ? objective.teamId : this.data.objective.teamId;
     const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
     let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
-
-    if (currentQuarter && currentQuarter.isBacklogQuarter && this.data.action == 'releaseBacklog') {
+    if (currentQuarter && !currentQuarter.isBacklogQuarter && this.data.action == 'releaseBacklog') {
       quarterId = quarters[1].id;
     }
 
@@ -261,7 +259,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   allowedToSaveBacklog() {
     const currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == this.objectiveForm.value.quarter);
     if (currentQuarter) {
-      const isBacklogCurrent = quarter.isBacklogQuarter;
+      const isBacklogCurrent = currentQuarter.isBacklogQuarter;
       if (this.data.action == 'duplicate') {
         return true;
       }

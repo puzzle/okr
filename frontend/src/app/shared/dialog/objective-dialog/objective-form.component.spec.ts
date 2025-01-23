@@ -47,18 +47,18 @@ interface MatDialogDataInterface {
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
     return of([new Quarter(
-      1, quarter.label, quarter.startDate, quarter.endDate
+      1, quarter.label, quarter.startDate, quarter.endDate, quarter.isBacklogQuarter
     ),
     new Quarter(
-      2, quarter.label, quarter.startDate, quarter.endDate
+      2, quarter.label, quarter.startDate, quarter.endDate, quarter.isBacklogQuarter
     ),
     new Quarter(
-      999, 'Backlog', null, null
+      999, 'Backlog', null, null, true
     )]);
   },
   getCurrentQuarter(): Observable<Quarter> {
     return of(new Quarter(
-      2, quarter.label, quarter.startDate, quarter.endDate
+      2, quarter.label, quarter.startDate, quarter.endDate, quarter.isBacklogQuarter
     ));
   }
 };
@@ -343,8 +343,7 @@ describe('ObjectiveDialogComponent', () => {
 
     it('should return correct value if allowed to save to backlog', async() => {
       component.quarters = quarterList;
-      const isBacklogQuarterSpy = jest.spyOn(component, 'isBacklogQuarter');
-      isBacklogQuarterSpy.mockReturnValue(false);
+
 
       component.data.action = 'duplicate';
       fixture.detectChanges();
@@ -365,20 +364,17 @@ describe('ObjectiveDialogComponent', () => {
         .toBeFalsy();
 
       component.objectiveForm.controls.quarter.setValue(2);
-      isBacklogQuarterSpy.mockReturnValue(true);
       fixture.detectChanges();
       expect(component.allowedToSaveBacklog())
         .toBeTruthy();
 
       component.objectiveForm.controls.quarter.setValue(999);
       component.data.objective.objectiveId = undefined;
-      isBacklogQuarterSpy.mockReturnValue(false);
       fixture.detectChanges();
       expect(component.allowedToSaveBacklog())
         .toBeFalsy();
 
       component.objectiveForm.controls.quarter.setValue(2);
-      isBacklogQuarterSpy.mockReturnValue(true);
       fixture.detectChanges();
       expect(component.allowedToSaveBacklog())
         .toBeTruthy();
@@ -386,7 +382,7 @@ describe('ObjectiveDialogComponent', () => {
 
     it('should return if option is allowed for quarter select', async() => {
       const quarter: Quarter = new Quarter(
-        1, 'Backlog', null, null
+        1, 'Backlog', null, null, true
       );
 
       const data = {
@@ -487,9 +483,6 @@ describe('ObjectiveDialogComponent', () => {
         },
         action: 'releaseBacklog'
       };
-
-      const isBacklogQuarterSpy = jest.spyOn(component, 'isBacklogQuarter');
-      isBacklogQuarterSpy.mockReturnValue(false);
 
       const routerHarness = await RouterTestingHarness.create();
       await routerHarness.navigateByUrl('/?quarter=999');

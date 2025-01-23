@@ -114,7 +114,6 @@ describe('CheckInFormComponent', () => {
         id: checkInMetric.id,
         version: checkInMetric.version,
         confidence: checkInMetric.confidence,
-        metricValue: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
         keyResultId: keyResultMetric.id
@@ -184,7 +183,6 @@ describe('CheckInFormComponent', () => {
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: keyResultActions.lastCheckIn!.confidence,
-        value: '',
         changeInfo: '',
         initiatives: '',
         actionList: [action1,

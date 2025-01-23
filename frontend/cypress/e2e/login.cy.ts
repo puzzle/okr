@@ -14,7 +14,7 @@ describe('okr login', () => {
 
   it.only('should login and logout', () => {
     cy.logout();
-    cy.origin('http://localhost:8544', () => {
+    cy.origin(Cypress.env('LOGIN_URL'), () => {
       cy.url()
         .should('include', Cypress.env('LOGIN_URL'));
       cy.get('#kc-page-title')

@@ -1,11 +1,18 @@
 package ch.puzzle.okr.controller;
 
+import static ch.puzzle.okr.test.TestHelper.bbtJwtToken;
+import static ch.puzzle.okr.test.TestHelper.glJwtToken;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import ch.puzzle.okr.dto.UnitDto;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.persistence.UnitPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,21 +24,12 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
-
-import static ch.puzzle.okr.test.TestHelper.bbtJwtToken;
-import static ch.puzzle.okr.test.TestHelper.glJwtToken;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 @AutoConfigureMockMvc
 @SpringIntegrationTest
 class UnitControllerIT {
     @Autowired
     private MockMvc mvc;
     private final String URL_BASE = "/api/v2/unit";
-
 
     @Autowired
     private UnitPersistenceService unitPersistenceService;
@@ -51,8 +49,8 @@ class UnitControllerIT {
         mvc
                 .perform(post(URL_BASE)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .content(unitJson)
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .content(unitJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.owner.email", Is.is("gl@gl.com")))
@@ -69,7 +67,8 @@ class UnitControllerIT {
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(post(URL_BASE)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()).content(unitJson)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content(unitJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
@@ -80,10 +79,10 @@ class UnitControllerIT {
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(put(URL_BASE + "/100")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.unitName", Is.is("UPDATED_UNIT")));
     }
@@ -92,11 +91,12 @@ class UnitControllerIT {
     void shouldReturn403ForWrongUserWhenUpdatingUnit() throws Exception {
         UnitDto unitDTO = new UnitDto(100L, "UPDATED_UNIT", null);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
-        mvc.perform(put(URL_BASE + "/100")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                            .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
-                            .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+        mvc
+                .perform(put(URL_BASE + "/100")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 }

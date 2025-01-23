@@ -16,8 +16,7 @@ public class UnitAuthorizationService {
     private final AuthorizationService authorizationService;
     private final UnitValidationService unitValidationService;
 
-    public UnitAuthorizationService(UnitBusinessService unitBusinessService,
-                                    AuthorizationService authorizationService,
+    public UnitAuthorizationService(UnitBusinessService unitBusinessService, AuthorizationService authorizationService,
                                     UnitValidationService unitValidationService) {
         this.unitBusinessService = unitBusinessService;
         this.authorizationService = authorizationService;

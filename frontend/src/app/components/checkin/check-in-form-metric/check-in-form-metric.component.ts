@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { KeyResultMetric } from '../../../shared/types/model/key-result-metric';
 import { CheckInMin } from '../../../shared/types/model/check-in-min';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
@@ -12,7 +12,7 @@ import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-mi
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })
-export class CheckInFormMetricComponent implements OnInit {
+export class CheckInFormMetricComponen {
   @Input()
   keyResult!: KeyResultMetric;
 
@@ -27,11 +27,6 @@ export class CheckInFormMetricComponent implements OnInit {
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(private translate: TranslateService) {}
-
-  ngOnInit() {
-    this.dialogForm.controls['metricValue'].setValidators([Validators.required,
-      Validators.pattern('^\\s*-?\\d+\\.?\\d*\\s*$')]);
-  }
 
   generateUnitLabel(): string {
     switch (this.keyResult.unit) {

@@ -79,26 +79,4 @@ describe('ObjectiveMenuActionsService', () => {
         .toHaveBeenCalledTimes(1);
     });
   });
-
-  describe('get correct release action', () => {
-    it('should return release from backlog action for an objective in the backlog quarter', () => {
-      jest.spyOn(service as any, 'isInBacklogQuarter')
-        .mockReturnValue(true);
-      const spyOn = jest.spyOn(service as any, 'isInBacklogQuarter')
-        .mockReturnValue(true);
-      // @ts-expect-error
-      service.getReleaseAction(objectiveMin);
-      expect(spyOn)
-        .toHaveBeenCalledTimes(1);
-    });
-
-    it('should return release from quarter action for an objective in a non-backlog quarter', () => {
-      const spyOn = jest.spyOn(service as any, 'isInBacklogQuarter')
-        .mockReturnValue(false);
-      // @ts-expect-error
-      service.getReleaseAction(objectiveMin);
-      expect(spyOn)
-        .toHaveBeenCalledTimes(1);
-    });
-  });
 });

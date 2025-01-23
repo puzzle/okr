@@ -12,7 +12,7 @@ describe('okr login', () => {
       .contains(users.gl.name);
   });
 
-  it.only('should login and logout', () => {
+  it('should login and logout', () => {
     cy.logout();
     cy.origin(Cypress.env('LOGIN_URL'), () => {
       cy.get('#kc-page-title')

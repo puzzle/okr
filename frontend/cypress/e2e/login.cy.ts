@@ -14,8 +14,7 @@ describe('okr login', () => {
 
   it.only('should login and logout', () => {
     cy.logout();
-    cy.url()
-      .should('include', Cypress.env('LOGIN_URL'));
+    cy.wait(100);
     cy.origin(Cypress.env('LOGIN_URL'), () => {
       cy.url()
         .should('include', Cypress.env('LOGIN_URL'));

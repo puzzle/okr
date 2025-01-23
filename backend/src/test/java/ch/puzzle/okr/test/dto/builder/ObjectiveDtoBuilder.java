@@ -11,6 +11,7 @@ public class ObjectiveDtoBuilder {
     private Long teamId;
     private Long quarterId;
     private String quarterLabel;
+    private boolean backlogQuarter;
     private String description;
     private State state;
     private LocalDateTime createdOn;
@@ -54,6 +55,11 @@ public class ObjectiveDtoBuilder {
         return this;
     }
 
+    public ObjectiveDtoBuilder withBacklogQuarter(boolean backlogQuarter) {
+        this.backlogQuarter = backlogQuarter;
+        return this;
+    }
+
     public ObjectiveDtoBuilder withDescription(String description) {
         this.description = description;
         return this;
@@ -86,6 +92,7 @@ public class ObjectiveDtoBuilder {
                                 teamId,
                                 quarterId,
                                 quarterLabel,
+                                backlogQuarter,
                                 description,
                                 state,
                                 createdOn,

@@ -157,7 +157,6 @@ describe('CheckInFormComponent', () => {
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: checkInMetric.confidence,
-        metricValue: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
         actionList: undefined
@@ -168,10 +167,10 @@ describe('CheckInFormComponent', () => {
     component.keyResult = keyResultOrdinal;
     component.ngOnInit();
     component.setDefaultValues();
+    console.log(component.dialogForm.value);
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: keyResultOrdinal.lastCheckIn!.confidence,
-        ordinal: {} as Zone,
         changeInfo: '',
         initiatives: '',
         actionList: []

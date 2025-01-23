@@ -127,7 +127,7 @@ function ownerValidator(): ValidatorFn {
   };
 }
 
-function numberValidator(): ValidatorFn {
+export function numberValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const isAllowed = (/^-?\d+\.?\d*$/).test(control.value);
     return isAllowed ? null : { number: { value: control.value } };

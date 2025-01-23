@@ -14,6 +14,7 @@ import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-mi
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
 import { BehaviorSubject } from 'rxjs';
 import { Zone } from '../../../shared/types/enums/zone';
+import { numberValidator } from '../../../shared/constant-library';
 
 @Component({
   selector: 'app-check-in-form',
@@ -35,7 +36,7 @@ export class CheckInFormComponent implements OnInit {
 
   dialogForm = new FormGroup({
     metricValue: new FormControl<number | undefined>(undefined, [Validators.required,
-      Validators.pattern('^\\s*-?\\d+\\.?\\d*\\s*$')]),
+      numberValidator()]),
     ordinalZone: new FormControl<Zone>(Zone.COMMIT, [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required,
       Validators.min(0),
@@ -103,8 +104,8 @@ export class CheckInFormComponent implements OnInit {
 
   setValueOrZone() {
     this.keyResult.keyResultType === 'metric'
-      ? this.dialogForm.controls.metricValue.setValue(Number.parseFloat(this.getCheckInValue()))
-      : this.dialogForm.controls.ordinalZone.setValue(this.getCheckInValue() as Zone);
+      ? this.dialogForm.controls.metricValue.setValue((this.checkIn as CheckInMetricMin).value)
+      : this.dialogForm.controls.ordinalZone.setValue((this.checkIn as CheckInOrdinalMin).zone);
   }
 
   calculateTarget(keyResult: KeyResultMetric): number {
@@ -136,14 +137,6 @@ export class CheckInFormComponent implements OnInit {
             this.dialogRef.close();
           });
       });
-  }
-
-  getCheckInValue(): string {
-    if ((this.checkIn as CheckInMetricMin).value != null) {
-      return (this.checkIn as CheckInMetricMin).value!.toString();
-    } else {
-      return (this.checkIn as CheckInOrdinalMin).zone!;
-    }
   }
 
   getKeyResultMetric(): KeyResultMetric {

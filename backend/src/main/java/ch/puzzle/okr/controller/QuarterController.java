@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-
 import ch.puzzle.okr.dto.QuarterDto;
 import ch.puzzle.okr.mapper.QuarterMapper;
 import ch.puzzle.okr.models.Quarter;
@@ -23,7 +22,6 @@ public class QuarterController {
 
     private final QuarterMapper quarterMapper;
 
-
     private final QuarterBusinessService quarterBusinessService;
 
     public QuarterController(QuarterBusinessService quarterBusinessService) {
@@ -36,7 +34,9 @@ public class QuarterController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class)) }) })
     @GetMapping("")
     public ResponseEntity<List<QuarterDto>> getCurrentQuarters() {
-        return ResponseEntity.status(HttpStatus.OK).body(quarterMapper.toDtos(this.quarterBusinessService.getQuarters()));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(quarterMapper.toDtos(this.quarterBusinessService.getQuarters()));
     }
 
     @Operation(summary = "Get current quarter", description = "Get the current quarter depending on current date")
@@ -44,6 +44,8 @@ public class QuarterController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class)) }) })
     @GetMapping("/current")
     public ResponseEntity<QuarterDto> getCurrentQuarter() {
-        return ResponseEntity.status(HttpStatus.OK).body(quarterMapper.toDto(this.quarterBusinessService.getCurrentQuarter()));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(quarterMapper.toDto(this.quarterBusinessService.getCurrentQuarter()));
     }
 }

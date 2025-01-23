@@ -1,11 +1,11 @@
 package ch.puzzle.okr.models;
 
+import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
-
 
 @Entity
 public class Quarter {
@@ -60,7 +60,7 @@ public class Quarter {
         this.endDate = endDate;
     }
 
-    public boolean isBacklogQuarter(){
+    public boolean isBacklogQuarter() {
         return Objects.equals(this.label, BACK_LOG_QUARTER_LABEL) && this.startDate == null && this.endDate == null;
     }
 

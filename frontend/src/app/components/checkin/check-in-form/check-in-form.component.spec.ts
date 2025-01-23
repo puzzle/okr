@@ -29,7 +29,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
+import {
+  DialogTemplateCoreComponent
+} from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { Action } from '../../../shared/types/model/action';
 import { Zone } from '../../../shared/types/enums/zone';
@@ -73,14 +75,22 @@ describe('CheckInFormComponent', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: MAT_DIALOG_DATA,
-          useValue: { keyResult: {} } },
-        { provide: MatDialogRef,
-          useValue: dialogMock },
-        { provide: CheckInService,
-          useValue: checkInServiceMock },
-        { provide: ActionService,
-          useValue: actionServiceMock }
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { keyResult: {} }
+        },
+        {
+          provide: MatDialogRef,
+          useValue: dialogMock
+        },
+        {
+          provide: CheckInService,
+          useValue: checkInServiceMock
+        },
+        {
+          provide: ActionService,
+          useValue: actionServiceMock
+        }
       ],
       declarations: [CheckInFormComponent,
         DialogTemplateCoreComponent,
@@ -116,6 +126,7 @@ describe('CheckInFormComponent', () => {
         confidence: checkInMetric.confidence,
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
+        value: checkInMetric.value,
         keyResultId: keyResultMetric.id
       });
     expect(actionServiceMock.updateActions)

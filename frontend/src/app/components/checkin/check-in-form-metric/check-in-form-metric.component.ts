@@ -12,7 +12,7 @@ import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-mi
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })
-export class CheckInFormMetricComponen {
+export class CheckInFormMetricComponent {
   @Input()
   keyResult!: KeyResultMetric;
 

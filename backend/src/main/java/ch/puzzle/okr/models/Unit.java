@@ -36,7 +36,6 @@ public class Unit {
     private String unitName;
 
     @CreatedBy
-    // @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne(cascade = CascadeType.MERGE)
     private User createdBy;
 

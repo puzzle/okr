@@ -49,6 +49,16 @@ public class TestHelper {
         return glUser(61L);
     }
 
+    public static User bbtUser() {
+        return User.Builder
+                .builder()
+                .withId(71L)
+                .withFirstName("Ashleigh")
+                .withLastName("Russell")
+                .withEmail("bbt@bbt.com")
+                .build();
+    }
+
     public static User glUser(Long id) {
         return User.Builder
                 .builder()
@@ -115,7 +125,11 @@ public class TestHelper {
         return new AuthorizationUser(user);
     }
 
-    public static Jwt defaultJwtToken() {
+    public static Jwt bbtJwtToken() {
+        return mockJwtToken(bbtUser());
+    }
+
+    public static Jwt glJwtToken() {
         return mockJwtToken(glUser());
     }
 

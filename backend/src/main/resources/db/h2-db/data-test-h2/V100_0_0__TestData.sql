@@ -53,6 +53,10 @@ values (1, 0, 'PERCENT', 1),
        (5, 0, 'FTE', 1),
        (6, 0, 'UNKNOWN', 1);
 
+insert into unit (id, version, unit_name, created_by_id)
+values (100, 0, 'TO_BE_UPDATED', 61);
+
+
 insert into quarter (id, label, start_date, end_date)
 values (2, CURRENT_QUARTER_LABEL(), CURRENT_QUARTER_START_DATE(), CURRENT_QUARTER_END_DATE()),
        (3, NEXT_QUARTER_LABEL(), NEXT_QUARTER_START_DATE(), NEXT_QUARTER_END_DATE()),

@@ -40,12 +40,11 @@ public class UnitAuthorizationService {
         return unitBusinessService.updateEntity(unitId, unit);
     }
 
-    public Unit deleteUnitById(Long unitId) {
+    public void deleteUnitById(Long unitId) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         Unit unit = unitBusinessService.getEntityById(unitId);
         validateOwner(unit, authorizationUser);
         unitBusinessService.deleteEntityById(unitId);
-        return unit;
     }
 
     private void validateOwner(Unit unit, AuthorizationUser authorizationUser) {

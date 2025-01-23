@@ -145,7 +145,7 @@ class UnitControllerITIT {
 
     @Test
     void shouldReturn403ForWrongUserWhenDeletingUnit() throws Exception {
-        when(unitAuthorizationService.deleteUnitById(any())).thenThrow(new ResponseStatusException(HttpStatus.FORBIDDEN));
+        doThrow(new ResponseStatusException(HttpStatus.FORBIDDEN)).when(unitAuthorizationService).deleteUnitById(101L);
         mvc
                 .perform(delete(URL_BASE + "/101")
                                  .with(SecurityMockMvcRequestPostProcessors.csrf())

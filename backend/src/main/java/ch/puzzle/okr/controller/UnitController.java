@@ -73,7 +73,7 @@ public class UnitController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Action by Id"),
             @ApiResponse(responseCode = "404", description = "Did not find the Action   with requested id") })
     @DeleteMapping("/{unitId}")
-    public Unit deleteUnitById(@PathVariable long unitId) {
-        return unitAuthorizationService.deleteUnitById(unitId);
+    public void deleteUnitById(@PathVariable long unitId) {
+        unitAuthorizationService.deleteUnitById(unitId);
     }
 }

@@ -179,14 +179,15 @@ export default class CyOverviewPage extends Page {
   selectFromThreeDotMenu(optionName: string) {
     cy.contains(optionName)
       .should('exist');
+
     cy.get('.objective-three-dot-menu')
       .contains(optionName)
-      .scrollIntoView()
-      .as('option');
-
+      .as('option')
+      .scrollIntoView();
 
     cy.get('@option')
-      .should('have.class', 'objective-menu-option')
+      .should('be.visible')
+      .and('have.class', 'objective-menu-option')
       .click();
   }
 

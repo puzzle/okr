@@ -181,12 +181,14 @@ export default class CyOverviewPage extends Page {
       .should('exist');
 
     cy.get('.objective-three-dot-menu')
-      .contains(optionName)
-      .as('option')
-      .scrollIntoView()
-      .should('be.visible')
-      .and('have.class', 'objective-menu-option')
-      .click();
+      .should('exist')
+      .and('be.visible')
+      .within(() => {
+        cy.contains(optionName)
+          .should('be.visible')
+          .and('have.class', 'objective-menu-option')
+          .click();
+      });
   }
 
   duplicateObjective(objectiveName: string) {

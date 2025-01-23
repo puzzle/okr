@@ -181,9 +181,9 @@ export default class CyOverviewPage extends Page {
       .should('exist');
     cy.get('.objective-three-dot-menu')
       .contains(optionName)
-      .as('option')
       .scrollIntoView()
-      .wait(100);
+      .as('option');
+
 
     cy.get('@option')
       .should('have.class', 'objective-menu-option')

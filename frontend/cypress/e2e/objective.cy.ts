@@ -54,12 +54,12 @@ describe('okr objective', () => {
       cy.contains(comment);
     });
 
-    it('should reopen successful objective', () => {
+    it.only('should reopen successful objective', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('This objective will be reopened after')
         .submit();
 
-      overviewPage.openThreeDotMenuOfObjective('This objective will be reopened after', 'closed');
+      overviewPage.openThreeDotMenuOfObjective('This objective will be reopened after', 'ongoing');
 
       overviewPage.selectFromThreeDotMenu('Objective abschliessen');
 

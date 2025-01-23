@@ -127,9 +127,10 @@ describe('CheckInFormComponent', () => {
       false]
   ])('should correctly validate value input', (value, validity) => {
     component.dialogForm = new FormGroup({
-      metricValue: new FormControl<string>('', [Validators.required])
+      metricValue: new FormControl<number>(undefined, [Validators.required,
+        Validators.pattern('^\\s*-?\\d+\\.?\\d*\\s*$')])
     });
-    component.dialogForm.setValue({ value: value });
+    component.dialogForm.setValue({ metricValue: value });
     expect(component.dialogForm.valid)
       .toEqual(validity);
   });

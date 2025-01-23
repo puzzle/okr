@@ -14,6 +14,7 @@ import { CheckIn } from '../../../shared/types/model/check-in';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
 import { BehaviorSubject } from 'rxjs';
+import { Zone } from '../../../shared/types/enums/zone';
 
 @Component({
   selector: 'app-check-in-form',
@@ -34,7 +35,8 @@ export class CheckInFormComponent implements OnInit {
   isAddingAction = false;
 
   dialogForm = new FormGroup({
-    value: new FormControl<string>('', [Validators.required]),
+    metricValue: new FormControl<number | undefined>(undefined, [Validators.required]),
+    ordinalZone: new FormControl<Zone>(Zone.COMMIT, [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required,
       Validators.min(0),
       Validators.max(10)]),
@@ -42,6 +44,9 @@ export class CheckInFormComponent implements OnInit {
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
     actionList: new FormControl<Action[]>([])
   });
+
+  checkInTypes: string[] = ['metricValue',
+    'ordinalZone'];
 
   protected readonly formInputCheck = formInputCheck;
 
@@ -57,6 +62,7 @@ export class CheckInFormComponent implements OnInit {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
     this.setDefaultValues();
+    this.setValidators(this.keyResult.keyResultType);
   }
 
   ngOnInit() {
@@ -74,7 +80,9 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
-      this.dialogForm.controls.value.setValue(this.getCheckInValue());
+      this.keyResult.keyResultType === 'metric'
+        ? this.dialogForm.controls.metricValue.setValue(Number.parseFloat(this.getCheckInValue()))
+        : this.dialogForm.controls.ordinalZone.setValue(this.valueToZone(this.getCheckInValue())!);
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
       this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
@@ -115,7 +123,8 @@ export class CheckInFormComponent implements OnInit {
     };
     const checkIn: CheckIn = {
       ...baseCheckIn,
-      [this.keyResult.keyResultType === 'ordinal' ? 'zone' : 'value']: this.dialogForm.controls.value.value
+      [this.keyResult.keyResultType === 'ordinal' ? 'zone' : 'value']:
+      this.dialogForm.controls[this.keyResult.keyResultType === 'ordinal' ? 'ordinalZone' : 'metricValue'].value
     };
 
     this.checkInService.saveCheckIn(checkIn)
@@ -177,5 +186,21 @@ export class CheckInFormComponent implements OnInit {
     this.actionList$.next(actionList);
     this.dialogForm.patchValue({ actionList: actionList });
     this.isAddingAction = false;
+  }
+
+  setValidators(type: string) {
+    this.checkInTypes.map((e) => this.dialogForm.get(e))
+      .forEach((e) => e?.disable({ emitEvent: false }));
+    this.dialogForm.get(this.checkInTypes.filter((formName) => formName.includes(type)))
+      ?.enable({ emitEvent: false });
+  }
+
+  valueToZone(value: string) {
+    for (const zone in Zone) {
+      if (zone === value) {
+        return zone as Zone;
+      }
+    }
+    return;
   }
 }

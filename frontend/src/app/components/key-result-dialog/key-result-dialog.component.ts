@@ -98,20 +98,6 @@ export class KeyResultDialogComponent implements OnInit {
       .forEach((e) => e?.disable({ emitEvent: false }));
     this.keyResultForm.get(type)
       ?.enable({ emitEvent: false });
-    /*
-     * if (type == 'metric') {
-     *   this.keyResultForm.get('metric')
-     *     ?.enable({ emitEvent: false });
-     *   this.keyResultForm.get('ordinal')
-     *     ?.disable({ emitEvent: false });
-     * }
-     * if (type == 'ordinal') {
-     *   this.keyResultForm.get('metric')
-     *     ?.disable({ emitEvent: false });
-     *   this.keyResultForm.get('ordinal')
-     *     ?.enable({ emitEvent: false });
-     * }
-     */
   }
 
   ngOnInit(): void {

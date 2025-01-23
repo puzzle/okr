@@ -29,7 +29,7 @@ export class CheckInFormMetricComponent implements OnInit {
   constructor(private translate: TranslateService) {}
 
   ngOnInit() {
-    this.dialogForm.controls['value'].setValidators([Validators.required,
+    this.dialogForm.controls['metricValue'].setValidators([Validators.required,
       Validators.pattern('^\\s*-?\\d+\\.?\\d*\\s*$')]);
   }
 

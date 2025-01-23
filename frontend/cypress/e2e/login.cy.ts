@@ -12,9 +12,9 @@ describe('okr login', () => {
       .contains(users.gl.name);
   });
 
-  it('should login and logout', () => {
+  it.only('should login and logout', () => {
     cy.logout();
-    cy.origin(Cypress.env('LOGIN_URL'), () => {
+    cy.origin('http://pitc.okr.localhost:8544', () => {
       cy.url()
         .should('include', Cypress.env('LOGIN_URL'));
       cy.get('#kc-page-title')

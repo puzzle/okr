@@ -20,6 +20,9 @@ import { UserService } from '../../services/user.service';
 export class KeyResultDialogComponent implements OnInit {
   keyResultForm: FormGroup = getKeyResultForm();
 
+  keyResultTypes: string[] = ['metric',
+    'ordinal'];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
       objective: Objective;
@@ -91,18 +94,24 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   setValidators(type: string) {
-    if (type == 'metric') {
-      this.keyResultForm.get('metric')
-        ?.enable({ emitEvent: false });
-      this.keyResultForm.get('ordinal')
-        ?.disable({ emitEvent: false });
-    }
-    if (type == 'ordinal') {
-      this.keyResultForm.get('metric')
-        ?.disable({ emitEvent: false });
-      this.keyResultForm.get('ordinal')
-        ?.enable({ emitEvent: false });
-    }
+    this.keyResultTypes.map((e) => this.keyResultForm.get(e))
+      .forEach((e) => e?.disable({ emitEvent: false }));
+    this.keyResultForm.get(type)
+      ?.enable({ emitEvent: false });
+    /*
+     * if (type == 'metric') {
+     *   this.keyResultForm.get('metric')
+     *     ?.enable({ emitEvent: false });
+     *   this.keyResultForm.get('ordinal')
+     *     ?.disable({ emitEvent: false });
+     * }
+     * if (type == 'ordinal') {
+     *   this.keyResultForm.get('metric')
+     *     ?.disable({ emitEvent: false });
+     *   this.keyResultForm.get('ordinal')
+     *     ?.enable({ emitEvent: false });
+     * }
+     */
   }
 
   ngOnInit(): void {

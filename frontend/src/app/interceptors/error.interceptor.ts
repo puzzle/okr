@@ -4,8 +4,7 @@ import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   DRAWER_ROUTES,
-  ERROR_MESSAGE_KEY_PREFIX,
-  MessageEntry, MessageStatusCode,
+  ERROR_MESSAGE_KEY_PREFIX, MessageEntry, MessageStatusCode,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP
 } from '../shared/constant-library';
@@ -56,8 +55,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
 
     let messageKey = successMessageObj.key;
-    const isBacklogQuarter = response.body?.quarter?.isBacklogQuarter;
-    console.log('hallo' + isBacklogQuarter);
+    console.log(response.body);
+    const isBacklogQuarter = response.body?.isBacklogQuarter;
     if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
       messageKey += '_BACKLOG';
     }

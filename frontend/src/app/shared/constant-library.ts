@@ -32,6 +32,8 @@ export const DATE_FORMAT = 'dd.MM.yyyy';
 export const DRAWER_ROUTES = ['objective',
   'keyresult'];
 
+export const GJ_REGEX_PATTERN = /^GJ \d{2}\/\d{2}-Q\d$/;
+
 export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   teams: {
     KEY: 'TEAM',

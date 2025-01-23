@@ -4,6 +4,7 @@ import static ch.puzzle.okr.Constants.UNIT;
 
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.repository.UnitRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,9 @@ public class UnitPersistenceService extends PersistenceBase<Unit, Long, UnitRepo
 
     public Optional<Unit> findUnitByUnitName(String unitName) {
         return getRepository().findUnitByUnitName(unitName);
+    }
+
+    public List<Unit> findUnitsByUser(Long userId) {
+        return getRepository().findAllByCreatedById(userId);
     }
 }

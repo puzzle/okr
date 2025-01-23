@@ -22,6 +22,14 @@ public class UnitBusinessService {
         this.validator = validator;
     }
 
+    public List<Unit> getAllUnits() {
+        return unitPersistenceService.findAll();
+    }
+
+    public List<Unit> findUnitsByUser(Long userId) {
+        return unitPersistenceService.findUnitsByUser(userId);
+    }
+
     public Unit findUnitByName(String unitName) {
         return unitPersistenceService
                 .findUnitByUnitName(unitName)

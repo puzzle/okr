@@ -11,10 +11,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v2/unit")
+@RequestMapping("api/v2/units")
 public class UnitController {
     private final UnitAuthorizationService unitAuthorizationService;
     private final UnitMapper unitMapper;
@@ -22,6 +23,26 @@ public class UnitController {
     public UnitController(UnitAuthorizationService unitAuthorizationService, UnitMapper unitMapper) {
         this.unitAuthorizationService = unitAuthorizationService;
         this.unitMapper = unitMapper;
+    }
+
+    @Operation(summary = "Update Actions", description = "Update Actions of KeyResult")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated Actions of KeyResult", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Can't update Actions, attributes are not set", content = @Content) })
+    @GetMapping("/user")
+    public List<UnitDto> getUnitsByUser() {
+        return unitAuthorizationService.getUnitsOfUser().stream().map(unitMapper::toDto).toList();
+    }
+
+    @Operation(summary = "Update Actions", description = "Update Actions of KeyResult")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated Actions of KeyResult", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Can't update Actions, attributes are not set", content = @Content) })
+    @GetMapping
+    public List<UnitDto> getAllUnits() {
+        return unitAuthorizationService.getAllUnits().stream().map(unitMapper::toDto).toList();
     }
 
     @Operation(summary = "Update Actions", description = "Update Actions of KeyResult")
@@ -47,15 +68,12 @@ public class UnitController {
         Unit unit = unitMapper.toUnit(unitDto);
         return unitMapper.toDto(unitAuthorizationService.editUnit(unitId, unit));
     }
-    //
-    // @Operation(summary = "Delete Action by Id", description = "Delete Action by
-    // Id")
-    // @ApiResponses(value = { @ApiResponse(responseCode = "200", description =
-    // "Deleted Action by Id"),
-    // @ApiResponse(responseCode = "404", description = "Did not find the Action
-    // with requested id") })
-    // @DeleteMapping("/{unitId}")
-    // public void deleteUnitById(@PathVariable long unitId) {
-    // unitAuthorizationService.deleteActionByActionId(actionId);
-    // }
+
+    @Operation(summary = "Delete Action by Id", description = "Delete Action by Id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Action by Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the Action   with requested id") })
+    @DeleteMapping("/{unitId}")
+    public Unit deleteUnitById(@PathVariable long unitId) {
+        return unitAuthorizationService.deleteUnitById(unitId);
+    }
 }

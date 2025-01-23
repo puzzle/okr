@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.UnitBusinessService;
 import ch.puzzle.okr.service.validation.UnitValidationService;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,26 +24,42 @@ public class UnitAuthorizationService {
         this.unitValidationService = unitValidationService;
     }
 
+    public List<Unit> getAllUnits() {
+        return unitBusinessService.getAllUnits();
+    }
+
+    public List<Unit> getUnitsOfUser() {
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
+        return unitBusinessService.findUnitsByUser(authorizationUser.user().getId());
+    }
+
     public Unit createUnit(Unit unit) {
         return unitBusinessService.createEntity(unit);
     }
 
     public Unit editUnit(Long unitId, Unit unit) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        unitValidationService.validateOnUpdate(unitId, unit);
-        if (!isOwner(unit, authorizationUser)) {
-            throw new OkrResponseStatusException(HttpStatus.FORBIDDEN,
-                                                 ErrorKey.NOT_AUTHORIZED_TO_WRITE,
-                                                 Constants.UNIT);
-        }
-        return unitBusinessService.updateEntity(unit.getId(), unit);
+        validateOwner(unit, authorizationUser);
+        return unitBusinessService.updateEntity(unitId, unit);
     }
 
-    private boolean isOwner(Unit unit, AuthorizationUser authorizationUser) {
-        return unitBusinessService
+    public Unit deleteUnitById(Long unitId) {
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
+        Unit unit = unitBusinessService.getEntityById(unitId);
+        validateOwner(unit, authorizationUser);
+        unitBusinessService.deleteEntityById(unitId);
+        return unit;
+    }
+
+    private void validateOwner(Unit unit, AuthorizationUser authorizationUser) {
+        boolean isOwner = unitBusinessService
                 .getEntityById(unit.getId())
                 .getCreatedBy()
                 .getId()
                 .equals(authorizationUser.user().getId());
+        if (isOwner) {
+            return;
+        }
+        throw new OkrResponseStatusException(HttpStatus.FORBIDDEN, ErrorKey.NOT_AUTHORIZED_TO_DELETE, Constants.UNIT);
     }
 }

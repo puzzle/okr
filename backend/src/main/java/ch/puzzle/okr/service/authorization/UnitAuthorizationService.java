@@ -6,7 +6,6 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.UnitBusinessService;
-import ch.puzzle.okr.service.validation.UnitValidationService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,8 @@ public class UnitAuthorizationService {
     private final UnitBusinessService unitBusinessService;
     private final AuthorizationService authorizationService;
 
-    public UnitAuthorizationService(UnitBusinessService unitBusinessService, AuthorizationService authorizationService) {
+    public UnitAuthorizationService(UnitBusinessService unitBusinessService,
+                                    AuthorizationService authorizationService) {
         this.unitBusinessService = unitBusinessService;
         this.authorizationService = authorizationService;
     }

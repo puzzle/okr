@@ -13,7 +13,19 @@ describe('okr login', () => {
   });
 
   it.only('should login and logout', () => {
-    cy.logout();
+    cy.title()
+      .should('equal', 'Puzzle OKR');
+    cy.getByTestId('user-options')
+      .as('userOptions');
+    cy.get('@userOptions')
+      .click();
+
+    cy.getByTestId('logout')
+      .as('logoutButton');
+    cy.get('@logoutButton')
+      .click();
+
+    cy.wait(1000);
     cy.origin(Cypress.env('LOGIN_URL'), () => {
       cy.url()
         .should('include', Cypress.env('LOGIN_URL'));

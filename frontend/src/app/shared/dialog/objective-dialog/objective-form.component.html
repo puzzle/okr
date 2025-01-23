@@ -103,12 +103,13 @@
       >
         Als Draft speichern
       </button>
-      <span *ngIf="!this.data.objective.objectiveId; else primaryFlatButton" class="ps-2 pe-2">
+      <span class="pe-2">
         <button
+          mat-button
           *ngIf="allowedToSaveBacklog()"
           [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
-          mat-stroked-button
           color="primary"
+          [ngClass]="data.objective.objectiveId ? 'mat-mdc-unelevated-button': 'mat-mdc-outlined-button'"
           type="submit"
           (click)="onSubmit('ONGOING')"
           [attr.data-testId]="'save'"
@@ -116,21 +117,6 @@
           Speichern
         </button>
       </span>
-
-      <ng-template #primaryFlatButton>
-        <button
-          *ngIf="allowedToSaveBacklog()"
-          [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
-          mat-flat-button
-          color="primary"
-          type="submit"
-          (click)="onSubmit('ONGOING')"
-          [attr.data-testId]="'save'"
-        >
-          Speichern
-        </button>
-      </ng-template>
-
       <button
         color="primary"
         mat-button

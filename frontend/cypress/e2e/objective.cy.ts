@@ -16,10 +16,7 @@ describe('okr objective', () => {
         .fillObjectiveTitle('A objective in state draft')
         .submitDraftObjective();
 
-      overviewPage
-        .getObjectiveByNameAndState('A objective in state draft', 'draft')
-        .findByTestId('three-dot-menu')
-        .click();
+      overviewPage.openThreeDotMenuOfObjective('A objective in state draft', 'draft');
       overviewPage.selectFromThreeDotMenu('Objective veröffentlichen');
 
       ConfirmDialog.do()
@@ -62,10 +59,7 @@ describe('okr objective', () => {
         .fillObjectiveTitle('This objective will be reopened after')
         .submit();
 
-      overviewPage
-        .getObjectiveByNameAndState('This objective will be reopened after', 'ongoing')
-        .findByTestId('three-dot-menu')
-        .click();
+      overviewPage.openThreeDotMenuOfObjective('This objective will be reopened after', 'closed');
 
       overviewPage.selectFromThreeDotMenu('Objective abschliessen');
 
@@ -77,9 +71,7 @@ describe('okr objective', () => {
       cy.wait(500);
 
       overviewPage
-        .getObjectiveByNameAndState('This objective will be reopened after', 'successful')
-        .findByTestId('three-dot-menu')
-        .click();
+        .openThreeDotMenuOfObjective('This objective will be reopened after', 'successful');
 
       overviewPage.selectFromThreeDotMenu('Objective wiedereröffnen');
 
@@ -98,9 +90,7 @@ describe('okr objective', () => {
         .submit();
 
       overviewPage
-        .getObjectiveByNameAndState('The reopening of this objective will be canceled', 'ongoing')
-        .findByTestId('three-dot-menu')
-        .click();
+        .openThreeDotMenuOfObjective('The reopening of this objective will be canceled', 'ongoing');
 
       overviewPage.selectFromThreeDotMenu('Objective abschliessen');
 
@@ -112,9 +102,7 @@ describe('okr objective', () => {
       cy.wait(500);
 
       overviewPage
-        .getObjectiveByNameAndState('he reopening of this objective will be canceled', 'successful')
-        .findByTestId('three-dot-menu')
-        .click();
+        .openThreeDotMenuOfObjective('he reopening of this objective will be canceled', 'successful');
 
       overviewPage.selectFromThreeDotMenu('Objective wiedereröffnen');
 
@@ -134,9 +122,7 @@ describe('okr objective', () => {
         .submit();
 
       overviewPage
-        .getObjectiveByNameAndState('This objective will be returned to draft state', 'ongoing')
-        .findByTestId('three-dot-menu')
-        .click();
+        .openThreeDotMenuOfObjective('This objective will be returned to draft state', 'ongoing');
       overviewPage.selectFromThreeDotMenu('Objective als Draft speichern');
 
       ConfirmDialog.do()
@@ -156,9 +142,7 @@ describe('okr objective', () => {
         .submit();
 
       overviewPage
-        .getObjectiveByNameAndState('Putting this objective back to draft state will be canceled', 'ongoing')
-        .findByTestId('three-dot-menu')
-        .click();
+        .openThreeDotMenuOfObjective('Putting this objective back to draft state will be canceled', 'ongoing');
       overviewPage.selectFromThreeDotMenu('Objective als Draft speichern');
 
       ConfirmDialog.do()
@@ -251,9 +235,7 @@ describe('okr objective', () => {
         .submit();
 
       overviewPage
-        .getObjectiveByNameAndState('Move to another quarter on edit', 'ongoing')
-        .findByTestId('three-dot-menu')
-        .click();
+        .openThreeDotMenuOfObjective('Move to another quarter on edit', 'ongoing');
 
       overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
       ObjectiveDialog.do()

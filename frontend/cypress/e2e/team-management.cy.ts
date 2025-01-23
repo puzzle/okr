@@ -349,7 +349,7 @@ describe('okr team-management', () => {
         .contains('Nein');
     });
 
-    it.only('should have primary button on all team-management dialogs', () => {
+    it('should have primary button on all team-management dialogs', () => {
       teamManagementPage.elements.registerMember()
         .click();
       InviteMembersDialog.do()

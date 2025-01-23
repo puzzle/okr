@@ -63,9 +63,8 @@ describe('crud operations', () => {
     overviewPage.addObjective()
       .fillObjectiveTitle(objectiveTitle)
       .submit();
-    overviewPage.getObjectiveByName(objectiveTitle)
-      .findByTestId('three-dot-menu')
-      .click();
+    overviewPage.openThreeDotMenuOfObjective(objectiveTitle);
+
     overviewPage.selectFromThreeDotMenu('Objective löschen');
     ConfirmDialog.do()
       .checkForContentOnDialog('Objective löschen')
@@ -80,9 +79,8 @@ describe('crud operations', () => {
     overviewPage.addObjective()
       .fillObjectiveTitle(objectiveTitle)
       .submit();
-    overviewPage.getObjectiveByName(objectiveTitle)
-      .findByTestId('three-dot-menu')
-      .click();
+    overviewPage.openThreeDotMenuOfObjective(objectiveTitle);
+
     overviewPage.selectFromThreeDotMenu('Objective bearbeiten');
     ObjectiveDialog.do()
       .deleteObjective()
@@ -99,18 +97,16 @@ describe('crud operations', () => {
       .fillObjectiveTitle(objectiveTitle)
       .submit();
 
-    overviewPage.getObjectiveByName(objectiveTitle)
-      .findByTestId('three-dot-menu')
-      .click();
+    overviewPage.openThreeDotMenuOfObjective(objectiveTitle);
+
     overviewPage.selectFromThreeDotMenu('Objective abschliessen');
     cy.getByTestId('successful')
       .click();
     cy.getByTestId('submit')
       .click();
 
-    overviewPage.getObjectiveByName(objectiveTitle)
-      .findByTestId('three-dot-menu')
-      .click();
+    overviewPage.openThreeDotMenuOfObjective(objectiveTitle);
+
     cy.contains('Objective löschen')
       .should('not.exist');
   });

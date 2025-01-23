@@ -164,11 +164,15 @@ export default class CyOverviewPage extends Page {
       .filter(filterByKeyResultName(keyResultName));
   }
 
-  openThreeDotMenuOfObjective(objectiveName: string) {
-    this
-      .getObjectiveByName(objectiveName)
-      .findByTestId('three-dot-menu')
-      .click();
+  openThreeDotMenuOfObjective(objectiveName: string, objectiveState?: string) {
+    objectiveState
+      ? this.getObjectiveByNameAndState(objectiveName, objectiveState)
+        .findByTestId('three-dot-menu')
+        .click()
+      : this
+        .getObjectiveByName(objectiveName)
+        .findByTestId('three-dot-menu')
+        .click();
     return this;
   }
 

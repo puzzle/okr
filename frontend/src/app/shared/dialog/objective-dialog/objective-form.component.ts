@@ -12,10 +12,10 @@ import { ObjectiveMin } from '../../types/model/objective-min';
 import { Objective } from '../../types/model/objective';
 import { formInputCheck, getValueFromQuery, hasFormFieldErrors } from '../../common';
 import { ActivatedRoute } from '@angular/router';
-import { GJ_REGEX_PATTERN } from '../../constant-library';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
 import { KeyResultDto } from '../../types/DTOs/key-result-dto';
+import { quarter } from '../../test-data';
 
 @Component({
   selector: 'app-objective-form',
@@ -148,7 +148,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     const newEditQuarter = isEditing ? currentQuarter.id : objective.quarterId;
     let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
 
-    if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+    if (currentQuarter && currentQuarter.isBacklogQuarter && this.data.action == 'releaseBacklog') {
       quarterId = quarters[1].id;
     }
 
@@ -261,7 +261,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   allowedToSaveBacklog() {
     const currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == this.objectiveForm.value.quarter);
     if (currentQuarter) {
-      const isBacklogCurrent = !this.isBacklogQuarter(currentQuarter.label);
+      const isBacklogCurrent = quarter.isBacklogQuarter;
       if (this.data.action == 'duplicate') {
         return true;
       }
@@ -289,10 +289,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     } else {
       return true;
     }
-  }
-
-  isBacklogQuarter(label: string) {
-    return GJ_REGEX_PATTERN.test(label);
   }
 
   getDialogTitle(teamName: string): string {

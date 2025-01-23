@@ -1,12 +1,15 @@
 export class Quarter {
   constructor(
-    id: number, label: string, startDate: Date | null, endDate: Date | null
+    id: number, label: string, startDate: Date | null, endDate: Date | null, isBacklogQuarter: boolean
   ) {
     this.id = id;
     this.label = label;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.isBacklogQuarter = isBacklogQuarter;
   }
+
+  readonly isBacklogQuarter: boolean;
 
   readonly id: number;
 

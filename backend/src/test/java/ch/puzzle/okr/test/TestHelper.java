@@ -50,7 +50,7 @@ public class TestHelper {
     }
 
     public static User glUser(Long id) {
-        return  User.Builder
+        return User.Builder
                 .builder()
                 .withId(id)
                 .withFirstName("Jaya")
@@ -60,7 +60,7 @@ public class TestHelper {
     }
 
     public static User invalidUser() {
-        return  User.Builder
+        return User.Builder
                 .builder()
                 .withId(-1L)
                 .withFirstName("Invalid")

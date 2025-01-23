@@ -6,6 +6,7 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.UnitBusinessService;
+import ch.puzzle.okr.service.validation.UnitValidationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +14,23 @@ import org.springframework.stereotype.Service;
 public class UnitAuthorizationService {
     private final UnitBusinessService unitBusinessService;
     private final AuthorizationService authorizationService;
+    private final UnitValidationService unitValidationService;
 
     public UnitAuthorizationService(UnitBusinessService unitBusinessService,
-                                    AuthorizationService authorizationService) {
+                                    AuthorizationService authorizationService,
+                                    UnitValidationService unitValidationService) {
         this.unitBusinessService = unitBusinessService;
         this.authorizationService = authorizationService;
+        this.unitValidationService = unitValidationService;
     }
 
     public Unit createUnit(Unit unit) {
         return unitBusinessService.createEntity(unit);
     }
 
-    public Unit editUnit(Unit unit) {
+    public Unit editUnit(Long unitId, Unit unit) {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
+        unitValidationService.validateOnUpdate(unitId, unit);
         if (!isOwner(unit, authorizationUser)) {
             throw new OkrResponseStatusException(HttpStatus.FORBIDDEN,
                                                  ErrorKey.NOT_AUTHORIZED_TO_WRITE,

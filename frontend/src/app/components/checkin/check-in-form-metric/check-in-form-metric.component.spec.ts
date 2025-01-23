@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { Unit } from '../../../shared/types/enums/unit';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+// @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
 
 describe('CheckInFormComponent', () => {
@@ -50,36 +51,46 @@ describe('CheckInFormComponent', () => {
   });
 
   it('should format percent correctly', waitForAsync(async() => {
-    component.keyResult = { ...keyResultMetric,
-      unit: Unit.PERCENT };
+    component.keyResult = {
+      ...keyResultMetric,
+      unit: Unit.PERCENT
+    };
     expect(component.generateUnitLabel())
       .toEqual('%');
   }));
 
   it('should format chf correctly', waitForAsync(async() => {
-    component.keyResult = { ...keyResultMetric,
-      unit: Unit.CHF };
+    component.keyResult = {
+      ...keyResultMetric,
+      unit: Unit.CHF
+    };
     expect(component.generateUnitLabel())
       .toEqual('CHF');
   }));
 
   it('should format eur correctly', waitForAsync(async() => {
-    component.keyResult = { ...keyResultMetric,
-      unit: Unit.EUR };
+    component.keyResult = {
+      ...keyResultMetric,
+      unit: Unit.EUR
+    };
     expect(component.generateUnitLabel())
       .toEqual('EUR');
   }));
 
   it('should format fte correctly', waitForAsync(async() => {
-    component.keyResult = { ...keyResultMetric,
-      unit: Unit.FTE };
+    component.keyResult = {
+      ...keyResultMetric,
+      unit: Unit.FTE
+    };
     expect(component.generateUnitLabel())
       .toEqual('FTE');
   }));
 
   it('should format number correctly', waitForAsync(async() => {
-    component.keyResult = { ...keyResultMetric,
-      unit: Unit.NUMBER };
+    component.keyResult = {
+      ...keyResultMetric,
+      unit: Unit.NUMBER
+    };
     expect(component.generateUnitLabel())
       .toEqual('');
   }));
@@ -118,8 +129,6 @@ describe('CheckInFormComponent', () => {
     component.dialogForm = new FormGroup({
       metricValue: new FormControl<string>('', [Validators.required])
     });
-
-    component.ngOnInit();
     component.dialogForm.setValue({ value: value });
     expect(component.dialogForm.valid)
       .toEqual(validity);

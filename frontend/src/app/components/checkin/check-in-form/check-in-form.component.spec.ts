@@ -99,7 +99,7 @@ describe('CheckInFormComponent', () => {
   it('should save check-in correctly if key-result is metric', waitForAsync(async() => {
     component.checkIn = checkInMetric;
     component.keyResult = keyResultMetric;
-    component.dialogForm.controls['value'].setValue(checkInMetric?.value!.toString());
+    component.dialogForm.controls['metricValue'].setValue(checkInMetric?.value);
     component.dialogForm.controls['confidence'].setValue(checkInMetric.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInMetric.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInMetric.initiatives);
@@ -114,7 +114,7 @@ describe('CheckInFormComponent', () => {
         id: checkInMetric.id,
         version: checkInMetric.version,
         confidence: checkInMetric.confidence,
-        value: checkInMetric.value!.toString(),
+        metricValue: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
         keyResultId: keyResultMetric.id
@@ -168,10 +168,10 @@ describe('CheckInFormComponent', () => {
     component.keyResult = keyResultOrdinal;
     component.ngOnInit();
     component.setDefaultValues();
-    expect(component.dialogForm.ordinalZone)
+    expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: keyResultOrdinal.lastCheckIn!.confidence,
-        metricValue: {},
+        ordinal: {} as Zone,
         changeInfo: '',
         initiatives: '',
         actionList: []

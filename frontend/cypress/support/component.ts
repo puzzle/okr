@@ -7,7 +7,7 @@ declare global {
       loginAsUser(user: any): Chainable;
       logout(): void;
       getByTestId(testsId: string, text?: string): Chainable;
-      checkForPrimaryButton(submitButtonId: string): Chainable;
+      buttonShouldBePrimary(buttonId: string): Chainable;
       findByTestId(testId: string, text?: string): Chainable;
       pressUntilContains(text: string, key: keyof typeof keyCodeDefinitions): void;
       tabForward(): void;

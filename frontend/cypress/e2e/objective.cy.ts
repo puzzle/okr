@@ -271,14 +271,14 @@ describe('okr objective', () => {
       overviewPage
         .addObjective()
         .fillObjectiveTitle('A objective for testing purposes')
-        .run(cy.checkForPrimaryButton('save-draft'))
+        .run(cy.buttonShouldBePrimary('save-draft'))
         .submit();
 
       overviewPage
         .openThreeDotMenuOfObjective('A objective for testing purposes')
         .selectFromThreeDotMenu('Objective bearbeiten');
       ObjectiveDialog.do()
-        .run(cy.checkForPrimaryButton('save'))
+        .run(cy.buttonShouldBePrimary('save'))
         .cancel();
 
       overviewPage
@@ -286,7 +286,7 @@ describe('okr objective', () => {
         .selectFromThreeDotMenu('Objective abschliessen');
       cy.getByTestId('successful')
         .click();
-      cy.checkForPrimaryButton('submit');
+      cy.buttonShouldBePrimary('submit');
       cy.getByTestId('cancel')
         .click();
 
@@ -294,25 +294,25 @@ describe('okr objective', () => {
         .openThreeDotMenuOfObjective('A objective for testing purposes')
         .selectFromThreeDotMenu('Objective als Draft speichern');
       ConfirmDialog.do()
-        .run(cy.checkForPrimaryButton('confirm-yes'))
+        .run(cy.buttonShouldBePrimary('confirm-yes'))
         .cancel();
 
       overviewPage
         .openThreeDotMenuOfObjective('A objective for testing purposes')
         .selectFromThreeDotMenu('Objective löschen');
       ConfirmDialog.do()
-        .run(cy.checkForPrimaryButton('confirm-yes'))
+        .run(cy.buttonShouldBePrimary('confirm-yes'))
         .cancel();
 
       overviewPage
         .duplicateObjective('A objective for testing purposes')
-        .run(cy.checkForPrimaryButton('save'))
+        .run(cy.buttonShouldBePrimary('save'))
         .cancel();
 
       overviewPage
         .getObjectiveByName('A objective for testing purposes')
         .click();
-      cy.checkForPrimaryButton('add-key-result-objective-detail');
+      cy.buttonShouldBePrimary('add-key-result-objective-detail');
     });
   });
 

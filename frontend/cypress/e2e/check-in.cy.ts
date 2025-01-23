@@ -456,18 +456,17 @@ describe('okr check-in', () => {
       .should('not.exist');
   });
 
-  it('should have primary button on all check-in dialogs', () => {
+  it('should have a primary button on every check-in dialog', () => {
     keyResultDetailPage.visit('Very important keyresult')
       .createCheckIn()
-      .run(cy.checkForPrimaryButton('submit-check-in'))
+      .run(cy.buttonShouldBePrimary('submit-check-in'))
       .cancel();
 
     keyResultDetailPage
       .showAllCheckIns()
-      .run(cy.checkForPrimaryButton('closeButton'))
+      .run(cy.buttonShouldBePrimary('close-button'))
       .editLatestCheckIn()
-      .run(cy.checkForPrimaryButton('submit-check-in'))
-      .cancel();
+      .run(cy.buttonShouldBePrimary('submit-check-in'));
   });
 });
 

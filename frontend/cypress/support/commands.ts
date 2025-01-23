@@ -75,8 +75,8 @@ Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number
   validateScoring(isOverview, percentage);
 });
 
-Cypress.Commands.add('checkForPrimaryButton', (submitButtonId: string) => {
-  cy.getByTestId(submitButtonId)
+Cypress.Commands.add('buttonShouldBePrimary', (buttonId: string) => {
+  cy.getByTestId(buttonId)
     .should('have.attr', 'color', 'primary')
     .and('have.attr', 'mat-flat-button');
 });

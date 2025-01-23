@@ -454,18 +454,17 @@ describe('okr key-result', () => {
       .should('not.exist');
   });
 
-  it('should have primary button on all keyResult dialogs', () => {
+  it('should have a primary button on every key-result dialog', () => {
     overviewPage
       .addKeyResult()
-      .fillKeyResultTitle('A keyResult for testing purposes')
+      .fillKeyResultTitle('A key-result for testing purposes')
       .withOrdinalValues('My commit zone', 'My target zone', 'My stretch goal')
-      .run(cy.checkForPrimaryButton('submit'))
+      .run(cy.buttonShouldBePrimary('submit'))
       .submit();
 
     keyResultDetailPage
-      .visit('A keyResult for testing purposes')
+      .visit('A key-result for testing purposes')
       .editKeyResult()
-      .run(cy.checkForPrimaryButton('submit'))
-      .cancel();
+      .run(cy.buttonShouldBePrimary('submit'));
   });
 });

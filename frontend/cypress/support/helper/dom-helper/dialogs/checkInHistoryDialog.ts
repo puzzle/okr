@@ -8,7 +8,7 @@ export default class CheckInHistoryDialog extends Dialog {
   }
 
   override cancel() {
-    cy.getByTestId('closeButton')
+    cy.getByTestId('close-button')
       .click();
   }
 

@@ -16,6 +16,8 @@ export class ErrorComponent {
 
   @Input() name?: string;
 
+  @Input() maxErrors: number = Number.POSITIVE_INFINITY;
+
 
   constructor(private translate: TranslateService, private parentF: FormGroupDirective) {
   }
@@ -27,7 +29,8 @@ export class ErrorComponent {
     }
     return Object.entries(formField.errors || {})
       .map(([key,
-        value]) => this.buildErrorMessage(key, value));
+        value]) => this.buildErrorMessage(key, value))
+      .slice(0, this.maxErrors);
   }
 
   buildErrorMessage(key: string, value: any): string {

@@ -72,11 +72,6 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.patchValue({ actionList: actionList });
   }
 
-  getErrorMessage(error: string, field: string, maxLength: number): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error)
-      .format(maxLength);
-  }
-
   setDefaultValues() {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     this.checkIn = this.data.checkIn;

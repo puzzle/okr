@@ -43,10 +43,6 @@ export class CheckInFormMetricComponent {
     }
   }
 
-  getErrorMessage(error: string, field: string): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error);
-  }
-
   getCheckInMetric(): CheckInMetricMin {
     return this.checkIn as CheckInMetricMin;
   }

@@ -17,9 +17,7 @@
           <span class="okr-form-label col-auto h-fit ps-0">{{ generateUnitLabel() }}</span>
         </form>
       </div>
-      <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'metricValue')">
-        <span>{{ getErrorMessage("MUST_BE_NUMBER", "Neuer Wert") }}</span>
-      </mat-error>
+      <app-error [controlPath]="['metricValue']" [name]="'Wert'"></app-error>
     </div>
   </div>
 

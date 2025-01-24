@@ -129,7 +129,7 @@ function ownerValidator(): ValidatorFn {
 
 export function numberValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const isAllowed = (/^\s*-?\d+\.?\d*\s$/).test(control.value);
+    const isAllowed = !Number.isNaN(+control.value);
     return isAllowed ? null : { number: { value: control.value } };
   };
 }

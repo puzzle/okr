@@ -2,7 +2,7 @@ name: 'Deptrack deploy'
 
 on:
   push:
-    branches: [ production ]
+    branches: [ main ]
 
 jobs:
   generate-and-push-sbom:

@@ -115,11 +115,17 @@ export class CheckInFormComponent implements OnInit {
       id: this.checkIn.id,
       version: this.checkIn.version,
       keyResultId: this.keyResult.id,
-      ...this.dialogForm.value
+      confidence: this.dialogForm.controls.confidence.value,
+      changeInfo: this.dialogForm.controls.changeInfo.value,
+      initiatives: this.dialogForm.controls.initiatives.value
     };
 
-    baseCheckIn.value = this.dialogForm.controls.metricValue.value;
-    baseCheckIn.zone = this.dialogForm.controls.ordinalZone.value;
+    if (this.keyResult.keyResultType === 'metric') {
+      baseCheckIn.value = this.dialogForm.controls.metricValue.value;
+    }
+    if (this.keyResult.keyResultType === 'ordinal') {
+      baseCheckIn.zone = this.dialogForm.controls.ordinalZone.value;
+    }
 
     this.checkInService.saveCheckIn(baseCheckIn)
       .subscribe(() => {

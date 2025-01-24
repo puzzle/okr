@@ -1,8 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.service.persistence.UnitPersistenceService;
 import ch.puzzle.okr.service.validation.UnitValidationService;
@@ -66,6 +65,7 @@ class UnitBusinessServiceTest {
     @DisplayName("Should get alignment selection by quarter id and all teams except ignored team")
     @Test
     void shouldCallUpdateMethodOnPersistenceService() {
+        when(unitPersistenceService.findById(1L)).thenReturn(FTE_UNIT);
         Long id = 1L;
         unitBusinessService.updateEntity(id, FTE_UNIT);
         verify(unitPersistenceService, times(1)).save(FTE_UNIT);

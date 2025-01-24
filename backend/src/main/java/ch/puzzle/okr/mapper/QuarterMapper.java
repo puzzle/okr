@@ -2,9 +2,8 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.QuarterDto;
 import ch.puzzle.okr.models.Quarter;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class QuarterMapper {

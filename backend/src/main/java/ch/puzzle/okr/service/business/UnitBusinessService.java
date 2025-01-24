@@ -42,9 +42,11 @@ public class UnitBusinessService {
     }
 
     @Transactional
-    public Unit updateEntity(Long id, Unit unit) {
-        validator.validateOnUpdate(id, unit);
-        return unitPersistenceService.save(unit);
+    public Unit updateEntity(Long id, Unit newUnit) {
+        validator.validateOnUpdate(id, newUnit);
+        Unit oldUnit = unitPersistenceService.findById(id);
+        oldUnit.setUnitName(newUnit.getUnitName());
+        return unitPersistenceService.save(oldUnit);
     }
 
     @Transactional

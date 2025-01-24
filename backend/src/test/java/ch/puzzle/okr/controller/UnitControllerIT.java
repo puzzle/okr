@@ -36,10 +36,12 @@ import org.springframework.web.server.ResponseStatusException;
 @SpringIntegrationTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UnitControllerIT {
-    @Autowired private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
     private final String URL_BASE = "/api/v2/units";
 
-    @Autowired private UnitPersistenceService unitPersistenceService;
+    @Autowired
+    private UnitPersistenceService unitPersistenceService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -51,19 +53,13 @@ class UnitControllerIT {
     @Test
     @Order(1)
     void shouldReturnAllUnits() throws Exception {
-        List<String> unitNames = List.of("PERCENT",
-                                         "NUMBER",
-                                         "CHF",
-                                         "EUR",
-                                         "FTE",
-                                         "UNKNOWN",
-                                         "TO_BE_UPDATED",
-                                         "TO_BE_DELETED");
+        List<String> unitNames = List
+                .of("PERCENT", "NUMBER", "CHF", "EUR", "FTE", "UNKNOWN", "TO_BE_UPDATED", "TO_BE_DELETED");
         mvc
                 .perform(get(URL_BASE)
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(8)))
                 .andExpect(jsonPath("$[*].unitName", Matchers.containsInAnyOrder(unitNames.toArray())));
@@ -75,9 +71,9 @@ class UnitControllerIT {
         List<String> unitNames = List.of("TO_BE_UPDATED", "TO_BE_DELETED");
         mvc
                 .perform(get(URL_BASE + "/user")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[*].unitName", Matchers.containsInAnyOrder(unitNames.toArray())));
@@ -91,10 +87,10 @@ class UnitControllerIT {
 
         mvc
                 .perform(post(URL_BASE)
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.owner.email", Is.is("gl@gl.com")))
                 .andExpect(jsonPath("$.unitName", Is.is("TestUnit")));
@@ -111,9 +107,9 @@ class UnitControllerIT {
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(post(URL_BASE)
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
@@ -124,10 +120,10 @@ class UnitControllerIT {
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(put(URL_BASE + "/100")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.unitName", Is.is("UPDATED_UNIT")));
     }
@@ -139,10 +135,10 @@ class UnitControllerIT {
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(put(URL_BASE + "/100")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
-                                 .content(unitJson)
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
+                        .content(unitJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
@@ -151,9 +147,9 @@ class UnitControllerIT {
     void shouldReturn403ForWrongUserWhenDeletingUnit() throws Exception {
         mvc
                 .perform(delete(URL_BASE + "/101")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
@@ -162,9 +158,9 @@ class UnitControllerIT {
     void shouldReturn200ForRightUserWhenDeletingUnit() throws Exception {
         mvc
                 .perform(delete(URL_BASE + "/101")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
@@ -231,9 +227,9 @@ class UnitControllerIT {
 
             mvc
                     .perform(post(URL_BASE)
-                                     .content(unitJson)
-                                     .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                     .contentType(MediaType.APPLICATION_JSON))
+                            .content(unitJson)
+                            .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(jsonPath("$.owner.email", Is.is("gl@gl.com")))
                     .andExpect(jsonPath("$.unitName", Is.is("FTE")));
@@ -247,9 +243,9 @@ class UnitControllerIT {
                     .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
             mvc
                     .perform(post(URL_BASE)
-                                     .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                     .content(unitJson)
-                                     .contentType(MediaType.APPLICATION_JSON))
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .content(unitJson)
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.status().isUnauthorized());
         }
 
@@ -261,10 +257,10 @@ class UnitControllerIT {
 
             mvc
                     .perform(put(URL_BASE + "/100")
-                                     .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                     .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                     .content(unitJson)
-                                     .contentType(MediaType.APPLICATION_JSON))
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                            .content(unitJson)
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(jsonPath("$.unitName", Is.is("FTE")));
         }
@@ -277,21 +273,23 @@ class UnitControllerIT {
                     .thenThrow(new ResponseStatusException(HttpStatus.FORBIDDEN));
             mvc
                     .perform(put(URL_BASE + "/100")
-                                     .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                     .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
-                                     .content(unitJson)
-                                     .contentType(MediaType.APPLICATION_JSON))
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
+                            .content(unitJson)
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.status().isForbidden());
         }
 
         @Test
         void shouldReturn403ForWrongUserWhenDeletingUnit() throws Exception {
-            doThrow(new ResponseStatusException(HttpStatus.FORBIDDEN)).when(unitAuthorizationService).deleteUnitById(101L);
+            doThrow(new ResponseStatusException(HttpStatus.FORBIDDEN))
+                    .when(unitAuthorizationService)
+                    .deleteUnitById(101L);
             mvc
                     .perform(delete(URL_BASE + "/101")
-                                     .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                     .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
-                                     .contentType(MediaType.APPLICATION_JSON))
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.status().isForbidden());
         }
 
@@ -299,10 +297,11 @@ class UnitControllerIT {
         void shouldReturn200ForRightUserWhenDeletingUnit() throws Exception {
             mvc
                     .perform(delete(URL_BASE + "/101")
-                                     .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                     .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
-                                     .contentType(MediaType.APPLICATION_JSON))
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(glJwtToken()))
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.status().isOk());
             verify(unitAuthorizationService, times(1)).deleteUnitById(101L);
-        }}
+        }
+    }
 }

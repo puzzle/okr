@@ -1,5 +1,11 @@
 package ch.puzzle.okr.service.authorization;
 
+import static ch.puzzle.okr.test.TestHelper.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.UnitBusinessService;
@@ -12,21 +18,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import static ch.puzzle.okr.test.TestHelper.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-
 @ExtendWith(MockitoExtension.class)
 class UnitAuthorizationServiceTest {
 
     private final AuthorizationUser adminUser = mockAuthorizationUser(glUser());
     private final Unit simpleUnit = Unit.Builder.builder().id(1L).unitName("Unit").createdBy(glUser()).build();
     private final Unit simpleUnit2 = Unit.Builder.builder().id(2L).unitName("Unit2").createdBy(bbtUser()).build();
-    @Mock UnitBusinessService unitBusinessService;
-    @Mock AuthorizationService authorizationService;
-    @InjectMocks private UnitAuthorizationService unitAuthorizationService;
+    @Mock
+    UnitBusinessService unitBusinessService;
+    @Mock
+    AuthorizationService authorizationService;
+    @InjectMocks
+    private UnitAuthorizationService unitAuthorizationService;
 
     @BeforeEach
     void setUp() {

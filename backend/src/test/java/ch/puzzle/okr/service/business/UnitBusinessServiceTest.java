@@ -1,28 +1,26 @@
 package ch.puzzle.okr.service.business;
 
+import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import ch.puzzle.okr.service.persistence.UnitPersistenceService;
 import ch.puzzle.okr.service.validation.UnitValidationService;
-import ch.puzzle.okr.test.TestHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UnitBusinessServiceTest {
-    @Mock UnitPersistenceService unitPersistenceService;
-    @Mock UnitValidationService unitValidationService;
-    @InjectMocks UnitBusinessService unitBusinessService;
-
+    @Mock
+    UnitPersistenceService unitPersistenceService;
+    @Mock
+    UnitValidationService unitValidationService;
+    @InjectMocks
+    UnitBusinessService unitBusinessService;
 
     @DisplayName("Should get alignment selection by quarter id and all teams except ignored team")
     @Test

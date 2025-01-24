@@ -148,9 +148,9 @@ class UnitControllerITIT {
         doThrow(new ResponseStatusException(HttpStatus.FORBIDDEN)).when(unitAuthorizationService).deleteUnitById(101L);
         mvc
                 .perform(delete(URL_BASE + "/101")
-                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                 .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.jwt().jwt(bbtJwtToken()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 

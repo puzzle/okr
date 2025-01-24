@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.repository.UnitRepository;
 import ch.puzzle.okr.service.persistence.UnitPersistenceService;

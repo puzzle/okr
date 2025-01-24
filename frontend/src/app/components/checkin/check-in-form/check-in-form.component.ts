@@ -111,18 +111,15 @@ export class CheckInFormComponent implements OnInit {
 
     const actionList: Action[] = this.actionList$.value as Action[];
     this.dialogForm.patchValue({ actionList: actionList });
-
     const baseCheckIn: any = {
       id: this.checkIn.id,
       version: this.checkIn.version,
       keyResultId: this.keyResult.id,
-      confidence: this.dialogForm.controls.confidence.value,
-      changeInfo: this.dialogForm.controls.changeInfo.value,
-      initiatives: this.dialogForm.controls.initiatives.value
+      ...this.dialogForm.value
     };
-    this.keyResult.keyResultType === 'metric'
-      ? baseCheckIn.value = this.dialogForm.controls.metricValue.value
-      : baseCheckIn.zone = this.dialogForm.controls.ordinalZone.value;
+
+    baseCheckIn.value = this.dialogForm.controls.metricValue.value;
+    baseCheckIn.zone = this.dialogForm.controls.ordinalZone.value;
 
     this.checkInService.saveCheckIn(baseCheckIn)
       .subscribe(() => {

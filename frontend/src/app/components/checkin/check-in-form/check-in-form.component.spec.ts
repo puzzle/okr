@@ -177,7 +177,6 @@ describe('CheckInFormComponent', () => {
     component.keyResult = keyResultOrdinal;
     component.ngOnInit();
     component.setDefaultValues();
-    console.log(component.dialogForm.value);
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: keyResultOrdinal.lastCheckIn!.confidence,

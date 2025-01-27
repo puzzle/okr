@@ -7,7 +7,6 @@ import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { actionListToItemList, formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
 import { ActionService } from '../../services/action.service';
 import { FormControlsOf, Item } from '../action-plan/action-plan.component';
 
@@ -35,8 +34,7 @@ export class KeyResultFormComponent implements OnInit {
   @Input()
   keyResult?: KeyResult;
 
-  constructor(public userService: UserService,
-    private translate: TranslateService, public actionService: ActionService) {
+  constructor(public userService: UserService, public actionService: ActionService) {
   }
 
   ngOnInit(): void {
@@ -48,12 +46,18 @@ export class KeyResultFormComponent implements OnInit {
       this.isMetricKeyResult()
         ? this.setMetricValuesInForm(this.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.keyResult as KeyResultOrdinal);
+
       actionListToItemList(this.keyResult.actionList)
         .forEach((e) => {
           this.addNewItem(e);
         });
+    } else {
+      this.addNewItem();
+      this.addNewItem();
+      this.addNewItem();
     }
   }
+
 
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
@@ -80,11 +84,11 @@ export class KeyResultFormComponent implements OnInit {
     return getFullNameOfUser(this.userService.getCurrentUser());
   }
 
-  addNewItem(item: Item) {
+  addNewItem(item?: Item) {
     const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item.item),
-      id: new FormControl<number | undefined>(item.id),
-      isChecked: new FormControl<boolean>(item.isChecked)
+      item: new FormControl<string>(item?.item || ''),
+      id: new FormControl<number | undefined>(item?.id || undefined),
+      isChecked: new FormControl<boolean>(item?.isChecked || false)
     } as FormControlsOf<Item>);
     (this.keyResultForm.get('actionList') as FormArray)?.push(newFormGroup);
   }

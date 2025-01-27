@@ -1,7 +1,6 @@
 import { AfterContentInit, Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Action } from '../../shared/types/model/action';
-import { ActionService } from '../../services/action.service';
 import { trackByFn } from '../../shared/common';
 import { DialogService } from '../../services/dialog.service';
 import {
@@ -41,10 +40,7 @@ export class ActionPlanComponent implements AfterContentInit {
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
 
-  constructor(
-    private actionService: ActionService,
-    public dialogService: DialogService, private parentF: FormGroupDirective, private formArrayNameF: FormArrayName
-  ) {
+  constructor(public dialogService: DialogService, private parentF: FormGroupDirective, private formArrayNameF: FormArrayName) {
   }
 
   changeItemPosition(currentIndex: number, newIndex: number) {
@@ -115,11 +111,5 @@ export class ActionPlanComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     this.form = this.parentF.form;
-    if (this.getFormControlArray()
-      ?.getRawValue().length === 0) {
-      this.addNewItem();
-      this.addNewItem();
-      this.addNewItem();
-    }
   }
 }

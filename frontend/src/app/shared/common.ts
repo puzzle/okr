@@ -154,7 +154,7 @@ export function actionListToItemList(actionList: Action[]): Item[] {
   });
 }
 
-export function itemListToActionList(itemList: Item[], keyResultId: number): Action[] {
+export function itemListToActionList(itemList: Item[], keyResultId: number | null): Action[] {
   return itemList.map((item: Item, index) => {
     return {
       id: item.id,

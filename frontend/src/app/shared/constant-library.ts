@@ -10,7 +10,7 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { Unit } from './types/enums/unit';
+import { IUnit } from './types/enums/unit';
 import { getFullNameOfUser, User } from './types/model/user';
 import { FormControlsOf, Item } from '../components/action-plan/action-plan.component';
 
@@ -99,7 +99,7 @@ export function getKeyResultForm(): FormGroup {
     actionList: new FormArray<FormGroup<FormControlsOf<Item>>>([]),
     keyResultType: new FormControl('metric'),
     metric: new FormGroup({
-      unit: new FormControl<Unit>(Unit.NUMBER, [Validators.required]),
+      unit: new FormControl<IUnit | undefined>(undefined, [Validators.required]),
       baseline: new FormControl(0, [Validators.required,
         numberValidator(),
         Validators.maxLength(20)]),

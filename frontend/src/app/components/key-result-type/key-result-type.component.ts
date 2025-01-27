@@ -3,10 +3,11 @@ import { KeyResult } from '../../shared/types/model/key-result';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { Unit } from '../../shared/types/enums/unit';
+import { IUnit, Unit } from '../../shared/types/enums/unit';
 import { formInputCheck } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
-import { Observable, Subject } from 'rxjs';
+import { map, Observable, startWith, Subject, tap } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 export enum KeyResultMetricField {
   BASELINE,
@@ -43,6 +44,20 @@ export class KeyResultTypeComponent implements AfterContentInit {
   protected readonly formInputCheck = formInputCheck;
 
   constructor(private parentF: FormGroupDirective) {
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
+
+  unitOptions: IUnit[] = [
+    { unitName: 'Percent' },
+    { unitName: 'Number' },
+    { unitName: 'Currency' },
+    { unitName: 'Custom' }
+  ];
+
+  filteredUnitOptions = new Observable<IUnit[]>();
+
+  unitSearchTerm = '';
+
+  constructor(private parentF: FormGroupDirective, private translate: TranslateService) {
     this.childForm = this.parentF.form;
   }
 
@@ -137,6 +152,27 @@ export class KeyResultTypeComponent implements AfterContentInit {
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
     formGroupMetric?.get('stretchGoal')?.valueChanges
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
+
+    this.filteredUnitOptions = formGroupMetric!.get('unit')!.valueChanges.pipe(startWith(''), tap((value) => {
+      if (typeof value !== 'string') {
+        return;
+      }
+      this.unitSearchTerm = value;
+    }), map((value) => this._filter(value || '')));
+  }
+
+  createNew() {
+    const newUnit = { unitName: this.unitSearchTerm };
+    this.unitOptions.push(newUnit);
+    this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.updateValueAndValidity();
+  }
+
+  private _filter(value: string): IUnit[] {
+    const filterValue = value.toLowerCase();
+    return this.unitOptions.filter((option) => option.unitName.toLowerCase()
+      .includes(filterValue));
   }
 }
 

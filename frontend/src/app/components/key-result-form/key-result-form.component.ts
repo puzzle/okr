@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { Action } from '../../shared/types/model/action';
-import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
+import { actionListToItemList, formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
+import { ActionService } from '../../services/action.service';
+import { FormControlsOf, Item } from '../action-plan/action-plan.component';
 
 @Component({
   selector: 'app-key-result-form',
@@ -21,7 +22,7 @@ export class KeyResultFormComponent implements OnInit {
 
   filteredUsers$: Observable<User[]> = of([]);
 
-  actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
+  actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
 
   protected readonly formInputCheck = formInputCheck;
 
@@ -35,7 +36,7 @@ export class KeyResultFormComponent implements OnInit {
   keyResult?: KeyResult;
 
   constructor(public userService: UserService,
-    private translate: TranslateService) {
+    private translate: TranslateService, public actionService: ActionService) {
   }
 
   ngOnInit(): void {
@@ -47,33 +48,11 @@ export class KeyResultFormComponent implements OnInit {
       this.isMetricKeyResult()
         ? this.setMetricValuesInForm(this.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.keyResult as KeyResultOrdinal);
-
-      this.actionList$ = new BehaviorSubject<Action[] | null>(this.keyResult.actionList);
+      actionListToItemList(this.keyResult.actionList)
+        .forEach((e) => {
+          this.addNewItem(e);
+        });
     }
-    if (!this.keyResult) {
-      this.actionList$ = new BehaviorSubject<Action[] | null>([{ id: null,
-        version: 1,
-        action: '',
-        priority: 0,
-        keyResultId: undefined,
-        isChecked: false },
-      { id: null,
-        version: 1,
-        action: '',
-        priority: 1,
-        keyResultId: undefined,
-        isChecked: false },
-      { id: null,
-        version: 1,
-        action: '',
-        priority: 2,
-        keyResultId: undefined,
-        isChecked: false }]);
-    }
-
-    this.actionList$.subscribe((value) => {
-      this.keyResultForm.patchValue({ actionList: value });
-    });
   }
 
   isMetricKeyResult() {
@@ -99,5 +78,14 @@ export class KeyResultFormComponent implements OnInit {
 
   getFullNameOfLoggedInUser() {
     return getFullNameOfUser(this.userService.getCurrentUser());
+  }
+
+  addNewItem(item: Item) {
+    const newFormGroup = new FormGroup({
+      item: new FormControl<string>(item.item),
+      id: new FormControl<number | undefined>(item.id),
+      isChecked: new FormControl<boolean>(item.isChecked)
+    } as FormControlsOf<Item>);
+    (this.keyResultForm.get('actionList') as FormArray)?.push(newFormGroup);
   }
 }

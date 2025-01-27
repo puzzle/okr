@@ -2,8 +2,7 @@
   <label for="action-list" class="okr-form-label">Action Plan (optional)</label>
   <div
     cdkDropList
-    *ngIf="control?.getValue()"
-    [cdkDropListData]="control | async"
+    *ngIf="this.form"
     (keydown.enter)="preventAddingNewItems($event)"
     class="okr-form-col d-flex flex-column gap-2"
     (cdkDropListDropped)="drop($event)"
@@ -11,37 +10,38 @@
   >
     <div
       class="action-point-item"
-      *ngFor="let action of (control | async)!; index as i; trackBy: trackByFn"
+      *ngFor="let item of getFormControlArray().controls!; index as i; trackBy: trackByFn"
+      [formGroupName]="i"
       cdkDrag
     >
       <div class="drag-drop-dots">
         <img
           cdkDragHandle
           class="icons"
-          src="../../../assets/icons/drag_indicator.svg"
+          src="assets/icons/drag_indicator.svg"
           alt="Drag indicator"
         />
       </div>
       <input
         #listItem
-        (keydown.arrowDown)="handleKeyDown($event, i)"
-        (keydown.arrowUp)="handleKeyDown($event, i)"
-        (focusin)="activeItem = i"
-        (input)="updateActionTexts(control.value!)"
+        (keydown.arrowUp)="changeItemPosition(i, i - 1)"
+        (keydown.arrowDown)="changeItemPosition(i, i + 1)"
         class="action-input"
-        [value]="action.action"
+        formControlName="item"
         [attr.data-testId]="'action-input'"
       />
-      <img
-        tabindex="0"
-        (keydown.tab)="increaseActiveItemWithTab()"
-        (keydown.shift.tab)="decreaseActiveItemWithShiftTab()"
+      <button
         (keydown.enter)="removeAction(i)"
-        class="icons bin-icon cursor-pointer focus-outline"
-        src="../../../assets/icons/delete-icon.svg"
-        alt="Delete bin"
         (click)="removeAction(i)"
-      />
+        class="btn btn-link"
+
+      ><img
+
+          class="icons bin-icon cursor-pointer focus-outline"
+          src="assets/icons/delete-icon.svg"
+          alt="Delete bin"
+        />
+      </button>
     </div>
   </div>
 
@@ -52,11 +52,11 @@
       class="fw-bold col-auto"
       id="add-action-button"
       [attr.data-testId]="'add-action-plan-line'"
-      (click)="addNewAction()"
+      (click)="addNewItem()"
     >
       <span class="d-flex align-items-center add-text">
         <img
-          src="../../../assets/icons/new-icon.svg"
+          src="assets/icons/new-icon.svg"
           alt="Add action icon"
           class="add-cross-button"
           id="add-action-icon"

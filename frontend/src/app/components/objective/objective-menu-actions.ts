@@ -4,8 +4,8 @@ import { ObjectiveMin } from '../../shared/types/model/objective-min';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { CompleteDialogComponent } from '../../shared/dialog/complete-dialog/complete-dialog.component';
 import {
-  ObjectiveMenuAction,
-  ObjectiveMenuAfterAction,
+  MenuAction,
+  MenuAfterAction,
   ObjectiveMenuEntry
 } from '../../services/objective-menu-actions.service';
 import { ObjectiveMenuAfterActions } from './objective-menu-after-actions';
@@ -16,8 +16,8 @@ export class ObjectiveMenuActions {
     private readonly afterActions: ObjectiveMenuAfterActions) {}
 
   releaseFromQuarterAction(): ObjectiveMenuEntry {
-    const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.RELEASE');
-    const afterAction: ObjectiveMenuAfterAction = (objective: ObjectiveMin) => this.afterActions.releaseFromQuarter(objective);
+    const action: MenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.RELEASE');
+    const afterAction: MenuAfterAction<ObjectiveMin> = (objective: ObjectiveMin) => this.afterActions.releaseFromQuarter(objective);
     return { displayName: 'Objective veröffentlichen',
       action: action,
       afterAction: afterAction };
@@ -26,8 +26,8 @@ export class ObjectiveMenuActions {
   releaseFromBacklogAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id },
       action: 'releaseBacklog' } };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
-    const afterAction: ObjectiveMenuAfterAction = () => this.refreshDataService.markDataRefresh();
+    const action: MenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
+    const afterAction: MenuAfterAction<ObjectiveMin> = () => this.refreshDataService.markDataRefresh();
     return { displayName: 'Objective veröffentlichen',
       action: action,
       afterAction };
@@ -35,8 +35,8 @@ export class ObjectiveMenuActions {
 
   editObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id } } };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
-    const afterAction: ObjectiveMenuAfterAction = () => {
+    const action: MenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
+    const afterAction: MenuAfterAction<ObjectiveMin> = () => {
       this.refreshDataService.markDataRefresh();
     };
     return { displayName: 'Objective bearbeiten',
@@ -47,16 +47,16 @@ export class ObjectiveMenuActions {
   duplicateObjectiveAction(objective: ObjectiveMin): ObjectiveMenuEntry {
     const config = { data: { objective: { objectiveId: objective.id },
       action: 'duplicate' } };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
-    const afterAction: ObjectiveMenuAfterAction = () => this.refreshDataService.markDataRefresh();
+    const action: MenuAction = () => this.dialogService.open(ObjectiveFormComponent, config);
+    const afterAction: MenuAfterAction<ObjectiveMin> = () => this.refreshDataService.markDataRefresh();
     return { displayName: 'Objective duplizieren',
       action: action,
       afterAction: afterAction };
   }
 
   deleteObjectiveAction(): ObjectiveMenuEntry {
-    const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
-    const afterAction: ObjectiveMenuAfterAction = (objective, dialogResult) => this.afterActions.deleteObjective(objective);
+    const action: MenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.DELETE.OBJECTIVE');
+    const afterAction: MenuAfterAction<ObjectiveMin> = (objective, dialogResult) => this.afterActions.deleteObjective(objective);
     return { displayName: 'Objective löschen',
       action: action,
       afterAction: afterAction };
@@ -66,8 +66,8 @@ export class ObjectiveMenuActions {
     const config = {
       data: { objectiveTitle: objective.title }
     };
-    const action: ObjectiveMenuAction = () => this.dialogService.open(CompleteDialogComponent, config);
-    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin, result: any) => this.afterActions.completeObjective(obj, result);
+    const action: MenuAction = () => this.dialogService.open(CompleteDialogComponent, config);
+    const afterAction: MenuAfterAction<ObjectiveMin> = (obj: ObjectiveMin, result: any) => this.afterActions.completeObjective(obj, result);
 
     return { displayName: 'Objective abschliessen',
       action: action,
@@ -75,8 +75,8 @@ export class ObjectiveMenuActions {
   }
 
   objectiveBackToDraft(): ObjectiveMenuEntry {
-    const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.TO_DRAFT');
-    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin) => this.afterActions.objectiveBackToDraft(obj);
+    const action: MenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.TO_DRAFT');
+    const afterAction: MenuAfterAction<ObjectiveMin> = (obj: ObjectiveMin) => this.afterActions.objectiveBackToDraft(obj);
 
     return { displayName: 'Objective als Draft speichern',
       action: action,
@@ -84,8 +84,8 @@ export class ObjectiveMenuActions {
   }
 
   objectiveReopen(): ObjectiveMenuEntry {
-    const action: ObjectiveMenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.REOPEN');
-    const afterAction: ObjectiveMenuAfterAction = (obj: ObjectiveMin) => this.afterActions.objectiveReopen(obj);
+    const action: MenuAction = () => this.dialogService.openConfirmDialog('CONFIRMATION.REOPEN');
+    const afterAction: MenuAfterAction<ObjectiveMin> = (obj: ObjectiveMin) => this.afterActions.objectiveReopen(obj);
 
     return { displayName: 'Objective wiedereröffnen',
       action: action,

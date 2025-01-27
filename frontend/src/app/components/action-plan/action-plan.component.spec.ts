@@ -95,7 +95,7 @@ describe('ActionPlanComponent', () => {
   it('should add new action with empty text into array', () => {
     component.control = new BehaviorSubject<Action[] | null>([]);
     component.keyResultId = addedAction.keyResultId;
-    component.addNewAction();
+    component.addNewItem();
     expect(component.control.getValue())
       .toHaveLength(1);
     expect(component.control.getValue()![0])

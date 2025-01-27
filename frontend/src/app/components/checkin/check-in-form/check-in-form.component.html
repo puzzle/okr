@@ -48,7 +48,9 @@
       </div>
 
       <ng-template #actionPlanComponent>
-        <app-action-plan [control]="actionList$" [keyResultId]="keyResult.id"></app-action-plan>
+        <div formArrayName="arrayList">
+          <app-action-plan></app-action-plan>
+        </div>
         <button
           mat-flat-button
           color="primary"

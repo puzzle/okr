@@ -10,6 +10,7 @@ import { KeyResultService } from '../../services/key-result.service';
 import { DialogService } from '../../services/dialog.service';
 import { getKeyResultForm } from '../../shared/constant-library';
 import { UserService } from '../../services/user.service';
+import { KeyResultDto } from '../../shared/types/DTOs/key-result-dto';
 
 
 @Component({
@@ -39,28 +40,24 @@ export class KeyResultDialogComponent implements OnInit {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
+  saveActionPoints() {
+
+  }
+
   saveKeyResult(openNewDialog = false) {
-    const valueWithType = this.keyResultForm.value;
-    // Disable to get Value without Type
-    this.keyResultForm.controls['metric'].disable();
-    this.keyResultForm.controls['ordinal'].disable();
-    const valueWithoutType = this.keyResultForm.value;
-    // reEnable
     this.keyResultForm.controls['metric'].enable();
     this.keyResultForm.controls['ordinal'].enable();
-    const keyResult = this.isMetricKeyResult()
-      ? ({
-        ...valueWithoutType,
-        ...valueWithType.metric,
-        objective: this.data.objective
-      } as KeyResultMetricDto)
-      : ({
-        ...valueWithoutType,
-        ...valueWithType.ordinal,
-        objective: this.data.objective
-      } as KeyResultOrdinalDto);
+    let keyResult: KeyResultDto = this.keyResultForm.value;
+
+    if (this.isMetricKeyResult()) {
+      keyResult = keyResult as KeyResultMetricDto;
+    } else {
+      keyResult = keyResult as KeyResultOrdinalDto;
+    }
+    keyResult.objective = this.data.objective;
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
+
     this.keyResultService.saveKeyResult(keyResult)
       .subscribe((returnValue) => {
         this.dialogRef.close({

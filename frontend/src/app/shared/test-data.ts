@@ -473,7 +473,7 @@ export const keyResult: KeyResultOrdinal = {
   } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
-  actionList: null,
+  actionList: [],
   isWriteable: true
 };
 

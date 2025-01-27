@@ -34,5 +34,8 @@
     </div>
   </div>
 
-  <app-action-plan [control]="actionList$" [keyResultId]="keyResult?.id"></app-action-plan>
+
+  <div formArrayName="actionList">
+    <app-action-plan [onDelete]="actionPlanOnDelete"></app-action-plan>
+  </div>
 </form>

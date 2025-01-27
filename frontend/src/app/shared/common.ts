@@ -1,6 +1,8 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/key-result-metric-min';
 import { State } from './types/enums/state';
+import { Action } from './types/model/action';
+import { Item } from '../components/action-plan/action-plan.component';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString()
@@ -143,3 +145,24 @@ export function getValueOfForm(form: FormGroup, keys: string[]) {
   }
   return currentControl.value;
 }
+
+export function actionListToItemList(actionList: Action[]): Item[] {
+  return actionList.map((action) => {
+    return { id: action.id,
+      item: action.action,
+      isChecked: action.isChecked } as Item;
+  });
+}
+
+export function itemListToActionList(itemList: Item[], keyResultId: number): Action[] {
+  return itemList.map((item: Item, index) => {
+    return {
+      id: item.id,
+      action: item.item,
+      priority: index,
+      keyResultId: keyResultId,
+      isChecked: false
+    } as Action;
+  });
+}
+

@@ -40,15 +40,19 @@
             formControlName="unit"
             [matAutocomplete]="auto"
           />
-          <mat-autocomplete #auto="matAutocomplete">
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (opened)="setUnits()"
+            [displayWith]="displayFn"
+          >
             <mat-option (click)="createNew()" *ngIf="(this.filteredUnitOptions | async)?.length === 0">Create new</mat-option>
 
-            <mat-option *ngFor="let unit of this.filteredUnitOptions | async" [value]="unit.id">
+            <mat-option *ngFor="let unit of this.filteredUnitOptions | async" [value]="unit">
               {{unit.unitName}}
             </mat-option>
 
           </mat-autocomplete>
-          <app-error [controlPath]="['metric', 'unit']"></app-error>
+          <app-error [controlPath]="['metric', 'unit']" [name]="'Unit'"></app-error>
 
         </div>
       </div>

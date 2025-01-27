@@ -54,11 +54,6 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   constructor(private parentF: FormGroupDirective, private unitService: UnitService) {
     this.childForm = this.parentF.form;
-
-    this.unitService.getUnits()
-      .subscribe((units) => {
-        this.unitOptions = units;
-      });
   }
 
   switchKeyResultType(newType: string) {
@@ -142,6 +137,10 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   protected readonly getFullNameOfUser = getFullNameOfUser;
 
+  displayFn(unit: IUnit): string {
+    return unit?.unitName || '';
+  }
+
   ngAfterContentInit(): void {
     const formGroupMetric = this.keyResultForm.get('metric');
     this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: formGroupMetric?.get('stretchGoal')?.value });
@@ -166,13 +165,25 @@ export class KeyResultTypeComponent implements AfterContentInit {
     this.unitOptions.push(newUnit);
     this.keyResultForm.get('metric')
       ?.get('unit')
-      ?.updateValueAndValidity();
+      ?.setValue(newUnit);
   }
 
   private _filter(value: string): IUnit[] {
-    const filterValue = value.toLowerCase();
+    console.log(value === '');
+    const filterValue = value.toString()
+      .toLowerCase();
     return this.unitOptions.filter((option) => option.unitName.toLowerCase()
       .includes(filterValue));
+  }
+
+  setUnits() {
+    this.unitService.getUnits()
+      .subscribe((units) => {
+        this.unitOptions = units;
+        this.keyResultForm.get('metric')
+          ?.get('unit')
+          ?.updateValueAndValidity();
+      });
   }
 }
 

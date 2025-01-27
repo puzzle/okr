@@ -4,11 +4,11 @@ import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { filter, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { actionListToItemList, formInputCheck } from '../../shared/common';
 import { ActionService } from '../../services/action.service';
-import { FormControlsOf, Item } from '../action-plan/action-plan.component';
+import { Item } from '../action-plan/action-plan.component';
 
 @Component({
   selector: 'app-key-result-form',

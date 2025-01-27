@@ -55,6 +55,9 @@ export class CheckInFormComponent implements OnInit {
 
   deletedItems: Observable<any> = this.getFormControlArray().valueChanges.pipe(trackDeletedItems());
 
+  actinPlanAddItemSubject = new Subject<Item | undefined>();
+
+
   protected readonly formInputCheck = formInputCheck;
 
   constructor(
@@ -156,7 +159,7 @@ export class CheckInFormComponent implements OnInit {
   }
 
   openActionEdit() {
-    this.addNewItem();
+    this.actinPlanAddItemSubject.next(undefined);
     this.isAddingAction = true;
   }
 

@@ -7,7 +7,7 @@ import { IUnit, Unit } from '../../shared/types/enums/unit';
 import { formInputCheck } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { map, Observable, startWith, Subject, tap } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { UnitService } from '../../services/unit.service';
 
 export enum KeyResultMetricField {
   BASELINE,
@@ -46,19 +46,19 @@ export class KeyResultTypeComponent implements AfterContentInit {
   constructor(private parentF: FormGroupDirective) {
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  unitOptions: IUnit[] = [
-    { unitName: 'Percent' },
-    { unitName: 'Number' },
-    { unitName: 'Currency' },
-    { unitName: 'Custom' }
-  ];
+  unitOptions: IUnit[] = [];
 
   filteredUnitOptions = new Observable<IUnit[]>();
 
   unitSearchTerm = '';
 
-  constructor(private parentF: FormGroupDirective, private translate: TranslateService) {
+  constructor(private parentF: FormGroupDirective, private unitService: UnitService) {
     this.childForm = this.parentF.form;
+
+    this.unitService.getUnits()
+      .subscribe((units) => {
+        this.unitOptions = units;
+      });
   }
 
   switchKeyResultType(newType: string) {

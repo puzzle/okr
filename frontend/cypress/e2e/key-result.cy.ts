@@ -1,8 +1,8 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
-import { Unit } from '../../src/app/shared/types/enums/unit';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
+import { UNIT_CHF, UNIT_PERCENT } from '../../src/app/shared/test-data';
 
 describe('okr key-result', () => {
   let overviewPage = new CyOverviewPage();
@@ -23,25 +23,25 @@ describe('okr key-result', () => {
       .fillKeyResultDescription('This is my description');
 
     keyResultDialog.withMetricValues(
-      Unit.PERCENT, '999999999999999999999999999999', '7', undefined
+      UNIT_PERCENT, '999999999999999999999999999999', '7', undefined
     );
     keyResultDialog.checkOnDialog(() => cy.contains('Baseline darf maximal 20 Zeichen lang sein.'));
 
     keyResultDialog.withMetricValues(
-      Unit.PERCENT, '0', '7', undefined
+      UNIT_PERCENT, '0', '7', undefined
     );
     cy.getByTestId('stretch-goal')
       .should('have.value', '10');
 
     keyResultDialog.withMetricValues(
-      Unit.PERCENT, '0', undefined, '100'
+      UNIT_PERCENT, '0', undefined, '100'
     );
     cy.getByTestId('target-goal')
       .should('have.value', '70');
 
     keyResultDialog
       .withMetricValues(
-        Unit.PERCENT, '21', undefined, '52'
+        UNIT_PERCENT, '21', undefined, '52'
       )
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
@@ -93,7 +93,7 @@ describe('okr key-result', () => {
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult with a new one')
       .withMetricValues(
-        Unit.PERCENT, '21', undefined, '52'
+        UNIT_PERCENT, '21', undefined, '52'
       )
       .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description when creating and then open a new')
@@ -177,7 +177,7 @@ describe('okr key-result', () => {
       .addKeyResult()
       .fillKeyResultTitle('We want not to change metric keyresult title')
       .withMetricValues(
-        Unit.PERCENT, '0', undefined, '10'
+        UNIT_PERCENT, '0', undefined, '10'
       )
       .checkForDialogTextMetric()
       .fillKeyResultDescription('This is my description')
@@ -194,7 +194,7 @@ describe('okr key-result', () => {
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '10'))
       .withMetricValues(
-        Unit.PERCENT, '0', '70', undefined
+        UNIT_PERCENT, '0', '70', undefined
       )
       .run(cy.getByTestId('ordinal-tab')
         .click())
@@ -207,7 +207,7 @@ describe('okr key-result', () => {
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '100'))
       .withMetricValues(
-        Unit.PERCENT, '5', '8.5', undefined
+        UNIT_PERCENT, '5', '8.5', undefined
       )
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '10'))
@@ -251,7 +251,7 @@ describe('okr key-result', () => {
     KeyResultDialog.do()
       .fillKeyResultTitle('This is my new title for the new metric keyresult')
       .withMetricValues(
-        Unit.PERCENT, '21', undefined, '56'
+        UNIT_PERCENT, '21', undefined, '56'
       )
       .fillKeyResultDescription('This is my new description')
       .submit();
@@ -331,7 +331,7 @@ describe('okr key-result', () => {
     KeyResultDialog.do()
       .fillKeyResultTitle('My title')
       .withMetricValues(
-        Unit.CHF, 'abc', undefined, '123'
+        UNIT_CHF, 'abc', undefined, '123'
       );
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -339,7 +339,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        Unit.PERCENT, '45', undefined, '52'
+        UNIT_PERCENT, '45', undefined, '52'
       );
     cy.getByTestId('submit')
       .should('not.be.disabled');
@@ -351,7 +351,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        Unit.PERCENT, '45', undefined, 'abc'
+        UNIT_PERCENT, '45', undefined, 'abc'
       );
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -359,7 +359,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        Unit.PERCENT, '45', undefined, '83'
+        UNIT_PERCENT, '45', undefined, '83'
       );
     cy.getByTestId('submit')
       .should('not.be.disabled');

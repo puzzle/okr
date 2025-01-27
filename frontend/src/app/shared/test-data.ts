@@ -24,6 +24,7 @@ export const teamFormObject = {
   name: 'newTeamName'
 };
 
+
 export const marketingTeamWriteable: Team = {
   id: 1,
   version: 2,
@@ -442,6 +443,22 @@ export const users: User[] = [
   }
 ];
 
+export const UNIT_PERCENT: Unit = { id: 1,
+  unitName: 'PERCENT',
+  owner: users[0] };
+export const UNIT_CHF: Unit = { id: 2,
+  unitName: 'CHF',
+  owner: users[0] };
+export const UNIT_EUR: Unit = { id: 3,
+  unitName: 'EUR',
+  owner: users[0] };
+export const UNIT_FTE: Unit = { id: 4,
+  unitName: 'FTE',
+  owner: users[0] };
+export const UNIT_NUMBER: Unit = { id: 5,
+  unitName: 'NUMBER',
+  owner: users[0] };
+
 export const keyResult: KeyResultOrdinal = {
   id: 101,
   version: 1,
@@ -557,7 +574,7 @@ export const keyResultMetric: KeyResultMetric = {
   description: 'Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.',
   baseline: 30,
   stretchGoal: 100,
-  unit: Unit.PERCENT,
+  unit: UNIT_PERCENT,
   owner: users[3],
   keyResultType: 'metric',
   objective: {
@@ -594,7 +611,7 @@ export const keyResultActions: KeyResultMetric = {
   description: 'Puzzle ITC hat schöne Büros, wo es alles hat.',
   baseline: 10,
   stretchGoal: 30,
-  unit: Unit.PERCENT,
+  unit: UNIT_PERCENT,
   owner: users[3],
   keyResultType: 'metric',
   objective: {

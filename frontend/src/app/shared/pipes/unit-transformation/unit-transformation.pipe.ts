@@ -6,7 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false
 })
 export class UnitTransformationPipe implements PipeTransform {
-  transform(value: number, label: string): string {
+  transform(value: number, unit: Unit): string {
+    const label = unit.unitName;
     return this.transformValue(value) + this.transformLabel(label);
   }
 
@@ -20,18 +21,21 @@ export class UnitTransformationPipe implements PipeTransform {
   }
 
   transformLabel(label: string): string {
-    switch (label) {
-      case Unit.PERCENT:
-        return '%';
-      case Unit.FTE:
-        return ' ' + Unit.FTE;
-      case Unit.CHF:
-        return ' ' + Unit.CHF;
-      case Unit.EUR:
-        return ' ' + Unit.EUR;
-      case Unit.NUMBER:
-      default:
-        return '';
-    }
+    /*
+     * switch (label) {
+     *   case Unit.PERCENT:
+     *     return '%';
+     *   case Unit.FTE:
+     *     return ' ' + Unit.FTE;
+     *   case Unit.CHF:
+     *     return ' ' + Unit.CHF;
+     *   case Unit.EUR:
+     *     return ' ' + Unit.EUR;
+     *   case Unit.NUMBER:
+     *   default:
+     *     return '';
+     * }
+     */
+    return label;
   }
 }

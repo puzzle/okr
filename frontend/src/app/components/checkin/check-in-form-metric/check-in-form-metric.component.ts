@@ -27,7 +27,7 @@ export class CheckInFormMetricComponent {
   constructor(private translate: TranslateService) {}
 
   generateUnitLabel(): string {
-    switch (this.keyResult.unit) {
+    switch (this.keyResult.unit.unitName) {
       case 'PERCENT':
         return '%';
       case 'CHF':

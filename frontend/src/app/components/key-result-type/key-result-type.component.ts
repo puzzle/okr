@@ -3,7 +3,7 @@ import { KeyResult } from '../../shared/types/model/key-result';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { IUnit, Unit } from '../../shared/types/enums/unit';
+import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { map, Observable, startWith, Subject, tap } from 'rxjs';
@@ -39,16 +39,14 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   @Input() users: Observable<User[]> = new Subject();
 
-  protected readonly Unit = Unit;
-
   protected readonly formInputCheck = formInputCheck;
 
   constructor(private parentF: FormGroupDirective) {
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  unitOptions: IUnit[] = [];
+  unitOptions: Unit[] = [];
 
-  filteredUnitOptions = new Observable<IUnit[]>();
+  filteredUnitOptions = new Observable<Unit[]>();
 
   unitSearchTerm = '';
 
@@ -137,7 +135,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   protected readonly getFullNameOfUser = getFullNameOfUser;
 
-  displayFn(unit: IUnit): string {
+  displayFn(unit: Unit): string {
     return unit?.unitName || '';
   }
 
@@ -168,7 +166,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
       ?.setValue(newUnit);
   }
 
-  private _filter(value: string): IUnit[] {
+  private _filter(value: string): Unit[] {
     console.log(value === '');
     const filterValue = value.toString()
       .toLowerCase();

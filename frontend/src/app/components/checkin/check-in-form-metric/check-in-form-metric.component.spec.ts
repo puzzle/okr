@@ -1,14 +1,21 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CheckInFormMetricComponent } from './check-in-form-metric.component';
-import { checkInMetric, keyResultMetric } from '../../../shared/test-data';
+import {
+  checkInMetric,
+  keyResultMetric,
+  UNIT_CHF,
+  UNIT_EUR,
+  UNIT_FTE,
+  UNIT_NUMBER,
+  UNIT_PERCENT
+} from '../../../shared/test-data';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { Unit } from '../../../shared/types/enums/unit';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
@@ -53,7 +60,7 @@ describe('CheckInFormComponent', () => {
   it('should format percent correctly', waitForAsync(async() => {
     component.keyResult = {
       ...keyResultMetric,
-      unit: Unit.PERCENT
+      unit: UNIT_PERCENT
     };
     expect(component.generateUnitLabel())
       .toEqual('%');
@@ -62,7 +69,7 @@ describe('CheckInFormComponent', () => {
   it('should format chf correctly', waitForAsync(async() => {
     component.keyResult = {
       ...keyResultMetric,
-      unit: Unit.CHF
+      unit: UNIT_CHF
     };
     expect(component.generateUnitLabel())
       .toEqual('CHF');
@@ -71,7 +78,7 @@ describe('CheckInFormComponent', () => {
   it('should format eur correctly', waitForAsync(async() => {
     component.keyResult = {
       ...keyResultMetric,
-      unit: Unit.EUR
+      unit: UNIT_EUR
     };
     expect(component.generateUnitLabel())
       .toEqual('EUR');
@@ -80,7 +87,7 @@ describe('CheckInFormComponent', () => {
   it('should format fte correctly', waitForAsync(async() => {
     component.keyResult = {
       ...keyResultMetric,
-      unit: Unit.FTE
+      unit: UNIT_FTE
     };
     expect(component.generateUnitLabel())
       .toEqual('FTE');
@@ -89,7 +96,7 @@ describe('CheckInFormComponent', () => {
   it('should format number correctly', waitForAsync(async() => {
     component.keyResult = {
       ...keyResultMetric,
-      unit: Unit.NUMBER
+      unit: UNIT_NUMBER
     };
     expect(component.generateUnitLabel())
       .toEqual('');

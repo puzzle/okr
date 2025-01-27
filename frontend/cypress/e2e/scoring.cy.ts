@@ -1,8 +1,8 @@
 import * as users from '../fixtures/users.json';
 import { getPercentageMetric, getPercentageOrdinal } from 'cypress/support/helper/scoringSupport';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
-import { Unit } from '../../src/app/shared/types/enums/unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
+import { UNIT_PERCENT } from '../../src/app/shared/test-data';
 
 describe('okr scoring', () => {
   let overviewPage = new CyOverviewPage();
@@ -120,7 +120,7 @@ function setupMetricKr(
     .addKeyResult()
     .fillKeyResultTitle(name)
     .withMetricValues(
-      Unit.PERCENT, baseline.toString(), undefined, stretchGoal.toString()
+      UNIT_PERCENT, baseline.toString(), undefined, stretchGoal.toString()
     )
     .submit();
   KeyResultDetailPage.do()

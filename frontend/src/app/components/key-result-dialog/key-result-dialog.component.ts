@@ -46,6 +46,10 @@ export class KeyResultDialogComponent implements OnInit {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
+  saveActionPoints() {
+
+  }
+
   saveKeyResult(openNewDialog = false) {
     this.deletedItems.subscribe((e: any[]) => e.forEach((elem: any) => this.actionService.deleteAction(elem.id)
       .subscribe()));

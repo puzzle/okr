@@ -11,7 +11,7 @@ jobs:
 
       - name: Install cdxgen
         working-directory: frontend
-        run: npm install -g @cyclonedx/cdxgen@11.1.2
+        run: npm install -g @cyclonedx/cdxgen@8.6.0
 
       - name: 'Generate SBOM for maven dependencies'
         working-directory: backend

@@ -12,7 +12,7 @@ import { State } from '../../shared/types/enums/state';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
-  selector: 'app-objective-column',
+  selector: 'app-objective',
   templateUrl: './objective.component.html',
   styleUrls: ['./objective.component.scss'],
   standalone: false
@@ -40,6 +40,7 @@ export class ObjectiveComponent {
 
   @Input() set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
+    console.log(objective);
   }
 
   getStateTooltip(stateString: string): string {

@@ -8,6 +8,7 @@ import { formInputCheck } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { map, Observable, startWith, Subject, tap } from 'rxjs';
 import { UnitService } from '../../services/unit.service';
+import { DialogService } from '../../services/dialog.service';
 
 export enum KeyResultMetricField {
   BASELINE,
@@ -50,7 +51,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   unitSearchTerm = '';
 
-  constructor(private parentF: FormGroupDirective, private unitService: UnitService) {
+  constructor(private parentF: FormGroupDirective, private unitService: UnitService, private dialogService: DialogService) {
     this.childForm = this.parentF.form;
   }
 
@@ -164,6 +165,18 @@ export class KeyResultTypeComponent implements AfterContentInit {
     this.keyResultForm.get('metric')
       ?.get('unit')
       ?.setValue(newUnit);
+
+    this.dialogService
+      .openConfirmDialog('CONFIRMATION.UNIT_CREATE')
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.unitService.createUnit(newUnit)
+            .subscribe((unit: Unit) => this.keyResultForm.get('metric')
+              ?.get('unit')
+              ?.setValue(unit));
+        }
+      });
   }
 
   private filter(value: string): Unit[] {

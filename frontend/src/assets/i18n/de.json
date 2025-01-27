@@ -30,6 +30,10 @@
       "TITLE": "Check-in im Draft-Status",
       "TEXT": "Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?"
     },
+    "UNIT_CREATE": {
+      "TITLE": "Erstellen bestätigen",
+      "TEXT": "Möchtest du wirklich eine neue Einheit erstellen?"
+    },
     "REOPEN": {
       "TITLE": "Objective wiedereröffnen",
       "TEXT": "Soll dieses Objective wiedereröffnet werden?"

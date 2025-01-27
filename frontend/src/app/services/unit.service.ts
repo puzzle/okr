@@ -13,4 +13,8 @@ export class UnitService {
   getUnits() {
     return this.httpClient.get<Unit[]>(this.API_URL);
   }
+
+  createUnit(unit: Unit) {
+    return this.httpClient.post<Unit>(this.API_URL, unit);
+  }
 }

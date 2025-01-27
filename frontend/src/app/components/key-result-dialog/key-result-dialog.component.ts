@@ -11,6 +11,7 @@ import { DialogService } from '../../services/dialog.service';
 import { getKeyResultForm } from '../../shared/constant-library';
 import { UserService } from '../../services/user.service';
 import { KeyResultDto } from '../../shared/types/DTOs/key-result-dto';
+import { itemListToActionList } from '../../shared/common';
 
 
 @Component({
@@ -48,15 +49,19 @@ export class KeyResultDialogComponent implements OnInit {
     this.keyResultForm.controls['metric'].enable();
     this.keyResultForm.controls['ordinal'].enable();
     let keyResult: KeyResultDto = this.keyResultForm.value;
-
+    keyResult.actionList = itemListToActionList(this.keyResultForm.getRawValue().actionList, this.data.keyResult.id);
     if (this.isMetricKeyResult()) {
-      keyResult = keyResult as KeyResultMetricDto;
+      keyResult = { ...keyResult,
+        ...this.keyResultForm.get('metric')?.value } as KeyResultMetricDto;
     } else {
-      keyResult = keyResult as KeyResultOrdinalDto;
+      keyResult = { ...keyResult,
+        ...this.keyResultForm.get('ordinal')?.value } as KeyResultOrdinalDto;
     }
     keyResult.objective = this.data.objective;
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
+
+    this.saveActionPoints();
 
     this.keyResultService.saveKeyResult(keyResult)
       .subscribe((returnValue) => {

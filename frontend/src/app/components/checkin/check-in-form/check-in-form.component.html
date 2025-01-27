@@ -9,10 +9,10 @@
       </div>
 
       <div *ngIf="!isAddingAction; else actionPlanComponent">
-        <div *ngIf="getActions().length > 0" class="okr-form-row okr-form-label-input-container">
+        <div *ngIf="getItems().length > 0" class="okr-form-row okr-form-label-input-container">
           <label class="okr-form-label okr-form-col">Action Plan:</label>
           <div class="col">
-            <span *ngFor="let action of getActions(); let i = index" class="okr-form-row">
+            <span *ngFor="let action of getItems(); let i = index" class="okr-form-row">
               <mat-checkbox
                 #checkbox
                 (change)="changeIsChecked($event, i)"
@@ -21,7 +21,7 @@
               >
               </mat-checkbox>
               <div class="col bg-display-element break-word okr-form-label d-flex align-items-center" [ngClass]="{ 'text-decoration-line-through': checkbox.checked }">
-                {{ action.action }}
+                {{ action.item }}
               </div>
             </span>
           </div>
@@ -49,7 +49,7 @@
 
       <ng-template #actionPlanComponent>
         <div formArrayName="actionList">
-          <app-action-plan></app-action-plan>
+          <app-action-plan [onDelete]="actionPlanOnDelete"></app-action-plan>
         </div>
         <button
           mat-flat-button

@@ -17,6 +17,7 @@ import { Zone } from '../../../shared/types/enums/zone';
 import { numberValidator } from '../../../shared/constant-library';
 
 import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
@@ -47,6 +48,8 @@ export class CheckInFormComponent implements OnInit {
 
   checkInTypes: string[] = ['metricValue',
     'ordinalZone'];
+
+  actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
 
   protected readonly formInputCheck = formInputCheck;
 
@@ -111,8 +114,7 @@ export class CheckInFormComponent implements OnInit {
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
 
-    const actionList: Action[] = this.getActions();
-
+    const actionList: Action[] = itemListToActionList(this.getItems(), this.keyResult.id);
     const baseCheckIn: any = {
       id: this.checkIn.id,
       version: this.checkIn.version,
@@ -146,17 +148,16 @@ export class CheckInFormComponent implements OnInit {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  getActions(): Action[] {
-    return itemListToActionList(this.dialogForm.getRawValue().actionList, this.keyResult.id);
+  getItems(): Item[] {
+    return this.dialogForm.getRawValue().actionList;
   }
 
   changeIsChecked(event: any, index: number) {
-    const actions = this.dialogForm.value.actionList!;
-    actions[index] = {
-      ...actions[index],
-      isChecked: event.checked
-    };
+    const actions = this.dialogForm.getRawValue().actionList as Item[];
+    actions[index].isChecked = event.checked;
     this.dialogForm.patchValue({ actionList: actions });
+    console.log(actions);
+    this.dialogForm.updateValueAndValidity();
   }
 
   getDialogTitle(): string {
@@ -164,6 +165,7 @@ export class CheckInFormComponent implements OnInit {
   }
 
   openActionEdit() {
+    this.addNewItem();
     this.isAddingAction = true;
   }
 
@@ -171,11 +173,11 @@ export class CheckInFormComponent implements OnInit {
     this.isAddingAction = false;
   }
 
-  addNewItem(item: Item) {
+  addNewItem(item?: Item) {
     const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item.item),
-      id: new FormControl<number | undefined>(item.id),
-      isChecked: new FormControl<boolean>(item.isChecked)
+      item: new FormControl<string>(item?.item || ''),
+      id: new FormControl<number | undefined>(item?.id || undefined),
+      isChecked: new FormControl<boolean>(item?.isChecked || false)
     } as FormControlsOf<Item>);
     (this.dialogForm.get('actionList') as FormArray)?.push(newFormGroup);
   }

@@ -161,7 +161,7 @@ export function itemListToActionList(itemList: Item[], keyResultId: number | nul
       action: item.item,
       priority: index,
       keyResultId: keyResultId,
-      isChecked: false
+      isChecked: item.isChecked
     } as Action;
   });
 }

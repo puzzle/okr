@@ -68,6 +68,8 @@ export class KeyResultDialogComponent implements OnInit {
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
 
+    this.saveActionPoints();
+
     this.keyResultService.saveKeyResult(keyResult)
       .subscribe((returnValue) => {
         this.dialogRef.close({

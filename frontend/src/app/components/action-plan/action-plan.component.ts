@@ -12,7 +12,7 @@ import {
   FormGroup,
   FormGroupDirective
 } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export type FormControlsOf<T> = {
   [P in keyof T]: AbstractControl<T[P]>;
@@ -40,7 +40,10 @@ export class ActionPlanComponent implements AfterContentInit {
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
 
+  @Input() addItemSubject = new Subject<Item | undefined>();
+
   constructor(public dialogService: DialogService, private parentF: FormGroupDirective, private formArrayNameF: FormArrayName) {
+    this.addItemSubject.subscribe((item) => this.addNewItem(item));
   }
 
   changeItemPosition(currentIndex: number, newIndex: number) {
@@ -61,12 +64,11 @@ export class ActionPlanComponent implements AfterContentInit {
   }
 
   removeAction(index: number) {
-    const itemGroup = this.getFormControlArray()
-      .at(index) as FormGroup;
-    const itemValue = itemGroup.get('item')?.value;
-    const itemId = itemGroup.get('id')?.value;
+    const item = this.getFormControlArray()
+      .at(index)
+      .getRawValue() as Item;
 
-    if (itemValue !== '' || itemId) {
+    if (item.item !== '' || item.id) {
       this.dialogService
         .openConfirmDialog('CONFIRMATION.DELETE.ACTION')
         .afterClosed()
@@ -74,9 +76,10 @@ export class ActionPlanComponent implements AfterContentInit {
           if (result) {
             this.getFormControlArray()
               .removeAt(index);
-
-            this.onDelete(itemId)
-              .subscribe();
+            if (item.id) {
+              this.onDelete(item.id)
+                .subscribe();
+            }
           }
         });
     } else {
@@ -85,11 +88,11 @@ export class ActionPlanComponent implements AfterContentInit {
     }
   }
 
-  addNewItem() {
+  addNewItem(item?: Item) {
     const newFormGroup = new FormGroup({
-      item: new FormControl<string>(''),
-      id: new FormControl<number | undefined>(undefined),
-      isChecked: new FormControl<boolean>(false)
+      item: new FormControl<string>(item?.item || ''),
+      id: new FormControl<number | undefined>(item?.id || undefined),
+      isChecked: new FormControl<boolean>(item?.isChecked || false)
     } as FormControlsOf<Item>);
     this.getFormControlArray()
       ?.push(newFormGroup);

@@ -17,7 +17,7 @@ import { Zone } from '../../../shared/types/enums/zone';
 import { numberValidator } from '../../../shared/constant-library';
 
 import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 @Component({
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
@@ -51,6 +51,9 @@ export class CheckInFormComponent implements OnInit {
 
   actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
 
+  actinPlanAddItemSubject = new Subject<Item | undefined>();
+
+
   protected readonly formInputCheck = formInputCheck;
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
@@ -77,7 +80,7 @@ export class CheckInFormComponent implements OnInit {
   setDefaultValues() {
     actionListToItemList(this.keyResult.actionList)
       .forEach((e) => {
-        this.addNewItem(e);
+        this.actinPlanAddItemSubject.next(e);
       });
     this.checkIn = this.data.checkIn;
 
@@ -165,7 +168,7 @@ export class CheckInFormComponent implements OnInit {
   }
 
   openActionEdit() {
-    this.addNewItem();
+    this.actinPlanAddItemSubject.next(undefined);
     this.isAddingAction = true;
   }
 

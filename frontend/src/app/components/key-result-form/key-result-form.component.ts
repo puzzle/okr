@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { filter, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { actionListToItemList, formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { ActionService } from '../../services/action.service';
-import { FormControlsOf, Item } from '../action-plan/action-plan.component';
+import { Item } from '../action-plan/action-plan.component';
 
 @Component({
   selector: 'app-key-result-form',
@@ -22,6 +22,8 @@ export class KeyResultFormComponent implements OnInit {
   filteredUsers$: Observable<User[]> = of([]);
 
   actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
+
+  actinPlanAddItemSubject = new Subject<Item | undefined>();
 
   protected readonly formInputCheck = formInputCheck;
 
@@ -49,12 +51,10 @@ export class KeyResultFormComponent implements OnInit {
 
       actionListToItemList(this.keyResult.actionList)
         .forEach((e) => {
-          this.addNewItem(e);
+          this.actinPlanAddItemSubject.next(e);
         });
     } else {
-      this.addNewItem();
-      this.addNewItem();
-      this.addNewItem();
+      this.actinPlanAddItemSubject.next(undefined);
     }
   }
 
@@ -82,14 +82,5 @@ export class KeyResultFormComponent implements OnInit {
 
   getFullNameOfLoggedInUser() {
     return getFullNameOfUser(this.userService.getCurrentUser());
-  }
-
-  addNewItem(item?: Item) {
-    const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item?.item || ''),
-      id: new FormControl<number | undefined>(item?.id || undefined),
-      isChecked: new FormControl<boolean>(item?.isChecked || false)
-    } as FormControlsOf<Item>);
-    (this.keyResultForm.get('actionList') as FormArray)?.push(newFormGroup);
   }
 }

@@ -12,7 +12,7 @@ import {
   FormGroup,
   FormGroupDirective
 } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 export type FormControlsOf<T> = {
   [P in keyof T]: AbstractControl<T[P]>;
@@ -40,10 +40,9 @@ export class ActionPlanComponent implements AfterContentInit {
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
 
-  @Input() addItemSubject = new Subject<Item | undefined>();
+  @Input() addItemSubject: ReplaySubject<Item | undefined> = new ReplaySubject<Item | undefined>();
 
   constructor(public dialogService: DialogService, private parentF: FormGroupDirective, private formArrayNameF: FormArrayName) {
-    this.addItemSubject.subscribe((item) => this.addNewItem(item));
   }
 
   changeItemPosition(currentIndex: number, newIndex: number) {
@@ -114,5 +113,6 @@ export class ActionPlanComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     this.form = this.parentF.form;
+    this.addItemSubject.subscribe((item) => this.addNewItem(item));
   }
 }

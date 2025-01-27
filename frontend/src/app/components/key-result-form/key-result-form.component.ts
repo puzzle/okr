@@ -4,7 +4,7 @@ import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { filter, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
+import { filter, map, Observable, of, ReplaySubject, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { actionListToItemList, formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { ActionService } from '../../services/action.service';
@@ -23,7 +23,7 @@ export class KeyResultFormComponent implements OnInit {
 
   actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
 
-  actinPlanAddItemSubject = new Subject<Item | undefined>();
+  actinPlanAddItemSubject = new ReplaySubject<Item | undefined>();
 
   protected readonly formInputCheck = formInputCheck;
 

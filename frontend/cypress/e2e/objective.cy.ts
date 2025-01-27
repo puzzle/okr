@@ -54,7 +54,7 @@ describe('okr objective', () => {
       cy.contains(comment);
     });
 
-    it.only('should reopen successful objective', () => {
+    it('should reopen successful objective', () => {
       overviewPage.addObjective()
         .fillObjectiveTitle('This objective will be reopened after')
         .submit();

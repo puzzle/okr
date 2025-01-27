@@ -17,7 +17,7 @@ import { Zone } from '../../../shared/types/enums/zone';
 import { numberValidator } from '../../../shared/constant-library';
 
 import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
-import { Observable, Subject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 @Component({
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
@@ -51,7 +51,7 @@ export class CheckInFormComponent implements OnInit {
 
   actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
 
-  actinPlanAddItemSubject = new Subject<Item | undefined>();
+  actionPlanAddItemSubject = new ReplaySubject<Item | undefined>();
 
 
   protected readonly formInputCheck = formInputCheck;
@@ -80,7 +80,7 @@ export class CheckInFormComponent implements OnInit {
   setDefaultValues() {
     actionListToItemList(this.keyResult.actionList)
       .forEach((e) => {
-        this.actinPlanAddItemSubject.next(e);
+        this.addNewItem(e);
       });
     this.checkIn = this.data.checkIn;
 
@@ -117,7 +117,7 @@ export class CheckInFormComponent implements OnInit {
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
 
-    const actionList: Action[] = itemListToActionList(this.getItems(), this.keyResult.id);
+    const actionList: Action[] = itemListToActionList(this.dialogForm.getRawValue().actionList, this.keyResult.id);
     const baseCheckIn: any = {
       id: this.checkIn.id,
       version: this.checkIn.version,
@@ -151,15 +151,10 @@ export class CheckInFormComponent implements OnInit {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  getItems(): Item[] {
-    return this.dialogForm.getRawValue().actionList;
-  }
-
   changeIsChecked(event: any, index: number) {
     const actions = this.dialogForm.getRawValue().actionList as Item[];
     actions[index].isChecked = event.checked;
     this.dialogForm.patchValue({ actionList: actions });
-    console.log(actions);
     this.dialogForm.updateValueAndValidity();
   }
 
@@ -168,12 +163,16 @@ export class CheckInFormComponent implements OnInit {
   }
 
   openActionEdit() {
-    this.actinPlanAddItemSubject.next(undefined);
+    this.actionPlanAddItemSubject.next(undefined);
     this.isAddingAction = true;
   }
 
   closeActionEdit() {
     this.isAddingAction = false;
+  }
+
+  getFormControlArray() {
+    return this.dialogForm?.get('actionList') as FormArray<FormGroup<FormControlsOf<Item>>>;
   }
 
   addNewItem(item?: Item) {
@@ -182,7 +181,8 @@ export class CheckInFormComponent implements OnInit {
       id: new FormControl<number | undefined>(item?.id || undefined),
       isChecked: new FormControl<boolean>(item?.isChecked || false)
     } as FormControlsOf<Item>);
-    (this.dialogForm.get('actionList') as FormArray)?.push(newFormGroup);
+    this.getFormControlArray()
+      ?.push(newFormGroup);
   }
 
   setValidators(type: string) {

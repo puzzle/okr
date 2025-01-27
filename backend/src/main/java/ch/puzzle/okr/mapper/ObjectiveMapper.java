@@ -25,6 +25,7 @@ public class ObjectiveMapper {
                                 objective.getTeam().getId(),
                                 objective.getQuarter().getId(),
                                 objective.getQuarter().getLabel(),
+                                objective.getQuarter().isBacklogQuarter(),
                                 objective.getDescription(),
                                 objective.getState(),
                                 objective.getCreatedOn(),

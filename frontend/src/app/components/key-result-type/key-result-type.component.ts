@@ -155,10 +155,10 @@ export class KeyResultTypeComponent implements AfterContentInit {
         return;
       }
       this.unitSearchTerm = value;
-    }), map((value) => this._filter(value || '')));
+    }), map((value) => this.filter(value || '')));
   }
 
-  createNew() {
+  createNewUnit() {
     const newUnit = { unitName: this.unitSearchTerm };
     this.unitOptions.push(newUnit);
     this.keyResultForm.get('metric')
@@ -166,8 +166,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
       ?.setValue(newUnit);
   }
 
-  private _filter(value: string): Unit[] {
-    console.log(value === '');
+  private filter(value: string): Unit[] {
     const filterValue = value.toString()
       .toLowerCase();
     return this.unitOptions.filter((option) => option.unitName.toLowerCase()
@@ -182,6 +181,17 @@ export class KeyResultTypeComponent implements AfterContentInit {
           ?.get('unit')
           ?.updateValueAndValidity();
       });
+  }
+
+  canCreate(options: Unit[]) {
+    const rawValue = this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.getRawValue();
+    const value = rawValue?.unitName || rawValue;
+    const doesSearchAlreadyExist = this.unitOptions.some((option) => option.unitName.toLowerCase()
+      .trim() === value.toLowerCase()
+      .trim());
+    return options.length === 0 && !doesSearchAlreadyExist;
   }
 }
 

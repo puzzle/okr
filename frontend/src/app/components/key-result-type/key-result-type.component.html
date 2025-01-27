@@ -45,7 +45,7 @@
             (opened)="setUnits()"
             [displayWith]="displayFn"
           >
-            <mat-option (click)="createNew()" *ngIf="(this.filteredUnitOptions | async)?.length === 0">Create new</mat-option>
+            <mat-option (click)="createNewUnit()" *ngIf="canCreate((this.filteredUnitOptions | async)!)">Create new</mat-option>
 
             <mat-option *ngFor="let unit of this.filteredUnitOptions | async" [value]="unit">
               {{unit.unitName}}

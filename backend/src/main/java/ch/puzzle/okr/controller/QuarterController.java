@@ -24,15 +24,15 @@ public class QuarterController {
 
     private final QuarterBusinessService quarterBusinessService;
 
-    public QuarterController(QuarterBusinessService quarterBusinessService) {
+    public QuarterController(QuarterBusinessService quarterBusinessService, QuarterMapper quarterMapper) {
         this.quarterBusinessService = quarterBusinessService;
-        this.quarterMapper = new QuarterMapper();
+        this.quarterMapper = quarterMapper;
     }
 
     @Operation(summary = "Get quarters", description = "Get a List of quarters depending on current date")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned a List of quarters", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Quarter.class)) }) })
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<QuarterDto>> getCurrentQuarters() {
         return ResponseEntity
                 .status(HttpStatus.OK)

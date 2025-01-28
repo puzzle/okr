@@ -21,7 +21,6 @@ import { numberValidator } from '../../../shared/constant-library';
 
 import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
 import { Observable } from 'rxjs';
-
 @Component({
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
@@ -56,7 +55,6 @@ export class CheckInFormComponent implements OnInit {
   deletedItems: Observable<any> = this.getFormControlArray().valueChanges.pipe(trackDeletedItems());
 
   actionPlanAddItemSubject = new ReplaySubject<Item | undefined>();
-
 
   protected readonly formInputCheck = formInputCheck;
 

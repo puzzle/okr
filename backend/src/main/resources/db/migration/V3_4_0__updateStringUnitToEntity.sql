@@ -3,19 +3,20 @@ CREATE  TABLE unit
     id            BIGINT                NOT NULL,
     version       INTEGER               NOT NULL,
     unit_name      TEXT                  NOT NULL,
+    is_default      boolean                  NOT NULL,
     created_by_id     BIGINT,
     PRIMARY KEY (id),
     UNIQUE (unit_name)
 );
 
 CREATE SEQUENCE sequence_unit START 1;
-insert into unit (id, version, unit_name, created_by_id)
-values (nextval('sequence_unit'), 0, 'PERCENT', 1),
-       (nextval('sequence_unit'), 0, 'NUMBER', 1),
-       (nextval('sequence_unit'), 0, 'CHF', 1),
-       (nextval('sequence_unit'), 0, 'EUR', 1),
-       (nextval('sequence_unit'), 0, 'FTE', 1),
-       (nextval('sequence_unit'), 0, 'UNKNOWN', 1);
+insert into unit (id, version, unit_name, created_by_id, is_default)
+values (nextval('sequence_unit'), 0, 'PERCENT', 1, true),
+       (nextval('sequence_unit'), 0, 'NUMBER', 1, true),
+       (nextval('sequence_unit'), 0, 'CHF', 1, true),
+       (nextval('sequence_unit'), 0, 'EUR', 1, true),
+       (nextval('sequence_unit'), 0, 'FTE', 1, true),
+       (nextval('sequence_unit'), 0, 'UNKNOWN', 1, false);
 
 
 DO

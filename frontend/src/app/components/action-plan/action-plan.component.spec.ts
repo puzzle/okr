@@ -10,29 +10,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { FormArray, FormArrayName, FormGroup, FormGroupDirective } from '@angular/forms';
+import { item2, item3, items, minItem } from '../../shared/test-data';
 
 const actionServiceMock = {
   deleteAction: jest.fn()
-};
-
-const minItem: Item = { item: '',
-  isChecked: false,
-  id: undefined };
-const item1: Item = { item: 'item1',
-  isChecked: false,
-  id: 1 };
-const item2: Item = { item: 'item2',
-  isChecked: false,
-  id: 2 };
-const item3: Item = { item: 'item3',
-  isChecked: false,
-  id: 3 };
-const items: Item[] = [item1,
-  item2,
-  item3];
-
-const formArrayNameMock = {
-  name: jest.fn()
 };
 
 describe('ActionPlanComponent', () => {

@@ -147,7 +147,7 @@ export function getValueOfForm(form: FormGroup, keys: string[]) {
 }
 
 export function actionListToItemList(actionList: Action[]): Item[] {
-  return actionList.map((action) => {
+  return (actionList || []).map((action) => {
     return { id: action.id,
       item: action.action,
       isChecked: action.isChecked } as Item;

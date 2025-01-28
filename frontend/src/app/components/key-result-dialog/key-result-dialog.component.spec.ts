@@ -300,9 +300,8 @@ describe('KeyResultDialogComponent', () => {
     }));
 
     it('should display error message of required', waitForAsync(async() => {
-      component.keyResultForm.setValue({
+      component.keyResultForm.patchValue({
         owner: testUser,
-        actionList: [],
         title: null,
         description: 'f',
         keyResultType: 'metric',
@@ -333,9 +332,8 @@ describe('KeyResultDialogComponent', () => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
       spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
-      component.keyResultForm.setValue({
+      component.keyResultForm.patchValue({
         owner: testUser,
-        actionList: [],
         title: 'Neuer Titel',
         description: 'Description',
         keyResultType: 'metric',

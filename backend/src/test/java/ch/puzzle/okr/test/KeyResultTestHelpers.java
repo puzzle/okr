@@ -44,7 +44,8 @@ public class KeyResultTestHelpers {
     public static final String OBJECTIVE_STATE_ONGOING = "ONGOING";
     public static final String JSON_PATH_ID = "$.id";
     public static final String JSON_PATH_TITLE = "$.title";
-    public static final String JSON_PATH_UNIT = "$.unit";
+    public static final String JSON_PATH_UNIT_ID = "$.unit.id";
+    public static final String JSON_PATH_UNIT_NAME = "$.unit.unitName";
     public static final String JSON_PATH_BASELINE = "$.baseline";
     public static final String JSON_PATH_OBJECTIVE_ID = "$.objective.id";
     public static final String JSON_PATH_DESCRIPTION = "$.description";
@@ -116,7 +117,19 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"FTE",
+               "unit": {
+                "id": 1,
+                "unitName": "FTE",
+                "owner": {
+                  "id": 1000,
+                  "firstName": "Jaya",
+                  "lastName": "Norris",
+                  "email": "test@test.com",
+                    "userTeamList": [],
+                    "isOkrChampion": false
+                },
+                "isDefault": true
+              },
                "actionList":[]
             }
             """;
@@ -209,7 +222,19 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"PERCENT",
+              "unit": {
+                "id": 1,
+                "unitName": "PERCENT",
+                "owner": {
+                  "id": 1000,
+                  "firstName": "Jaya",
+                  "lastName": "Norris",
+                  "email": "test@test.com",
+                    "userTeamList": [],
+                    "isOkrChampion": false
+                },
+                "isDefault": true
+              },
                "actionList":[]
             }
             """;
@@ -221,7 +246,19 @@ public class KeyResultTestHelpers {
                 "description":"",
                 "baseline":2.0,
                 "stretchGoal":5.0,
-                "unit":"NUMBER",
+                "unit": {
+                "id": 1,
+                "unitName": "NUMBER",
+                "owner": {
+                  "id": 1000,
+                  "firstName": "Jaya",
+                  "lastName": "Norris",
+                  "email": "test@test.com",
+                    "userTeamList": [],
+                    "isOkrChampion": false
+                },
+                "isDefault": true
+              },
                 "ownerId":5,
                 "ownerFirstname":"",
                 "ownerLastname":"",

@@ -91,7 +91,8 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_KEY_RESULT_TYPE, Is.is(KEY_RESULT_TYPE_METRIC)))
                 .andExpect(jsonPath(JSON_PATH_BASELINE, Is.is(BASELINE_VALUE)))
                 .andExpect(jsonPath(JSON_PATH_STRETCH_GOAL, Is.is(STRETCH_GOAL_VALUE)))
-                .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT_DTO)))
+                .andExpect(jsonPath(JSON_PATH_UNIT_ID, Is.is(KEY_RESULT_UNIT_DTO.id())))
+                .andExpect(jsonPath(JSON_PATH_UNIT_NAME, Is.is(KEY_RESULT_UNIT_DTO.unitName())))
                 .andExpect(jsonPath(JSON_PATH_OWNER_FIRST_NAME, Is.is(FIRST_NAME)))
                 .andExpect(jsonPath(JSON_PATH_OBJECTIVE_STATE, Is.is(OBJECTIVE_STATE_ONGOING)))
                 .andExpect(jsonPath(JSON_PATH_ID_LAST_CHECK_IN_VALUE, Is.is(4.0)))
@@ -200,7 +201,8 @@ class KeyResultControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
-                .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT_DTO)))
+                .andExpect(jsonPath(JSON_PATH_UNIT_ID, Is.is(KEY_RESULT_UNIT_DTO.id())))
+                .andExpect(jsonPath(JSON_PATH_UNIT_NAME, Is.is(KEY_RESULT_UNIT_DTO.unitName())))
                 .andExpect(jsonPath(JSON_PATH_DESCRIPTION, Is.is(DESCRIPTION)))
                 .andExpect(jsonPath(JSON_PATH_KEY_RESULT_TYPE, Is.is(KEY_RESULT_TYPE_METRIC)))
                 .andExpect(jsonPath(JSON_PATH_BASELINE, Is.is(BASELINE_VALUE)))
@@ -392,7 +394,8 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_OBJECTIVE_ID, Is.is(OBJECTIVE_ID)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_ID, Is.is(LAST_CHECK_IN_ID)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)))
-                .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT_DTO)))
+                .andExpect(jsonPath(JSON_PATH_UNIT_ID, Is.is(KEY_RESULT_UNIT_DTO.id())))
+                .andExpect(jsonPath(JSON_PATH_UNIT_NAME, Is.is(KEY_RESULT_UNIT_DTO.unitName())))
                 .andReturn();
 
         verify(actionMapper, times(1)).toActions(anyList(), any());
@@ -423,7 +426,8 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_OBJECTIVE_ID, Is.is(OBJECTIVE_ID)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_ID, Is.is(LAST_CHECK_IN_ID)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)))
-                .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT_DTO)))
+                .andExpect(jsonPath(JSON_PATH_UNIT_ID, Is.is(KEY_RESULT_UNIT_DTO.id())))
+                .andExpect(jsonPath(JSON_PATH_UNIT_NAME, Is.is(KEY_RESULT_UNIT_DTO.unitName())))
                 .andReturn();
 
         verify(actionMapper, times(1)).toActions(anyList(), any());

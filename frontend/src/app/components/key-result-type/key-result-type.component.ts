@@ -161,7 +161,8 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   createNewUnit() {
-    const newUnit = { unitName: this.unitSearchTerm };
+    const newUnit = { unitName: this.unitSearchTerm,
+      isDefault: false } as Unit;
     this.unitOptions.push(newUnit);
     this.keyResultForm.get('metric')
       ?.get('unit')

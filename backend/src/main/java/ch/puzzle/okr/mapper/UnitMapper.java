@@ -14,10 +14,10 @@ public class UnitMapper {
     }
 
     public UnitDto toDto(Unit unit) {
-        return new UnitDto(unit.getId(), unit.getUnitName(), userMapper.toDto(unit.getCreatedBy()));
+        return new UnitDto(unit.getId(), unit.getUnitName(), userMapper.toDto(unit.getCreatedBy()), unit.isDefault());
     }
 
     public Unit toUnit(UnitDto objectiveDto) {
-        return Unit.Builder.builder().id(objectiveDto.id()).unitName(objectiveDto.unitName()).build();
+        return Unit.Builder.builder().id(objectiveDto.id()).unitName(objectiveDto.unitName()).isDefault(objectiveDto.isDefault()).build();
     }
 }

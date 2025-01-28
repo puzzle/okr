@@ -9,6 +9,7 @@ import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { map, Observable, startWith, Subject, tap } from 'rxjs';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
+import { ManageUnitsDialogComponent } from '../manage-units-dialog/manage-units-dialog.component';
 
 export enum KeyResultMetricField {
   BASELINE,
@@ -205,6 +206,10 @@ export class KeyResultTypeComponent implements AfterContentInit {
       .trim() === value.toLowerCase()
       .trim());
     return options.length === 0 && !doesSearchAlreadyExist;
+  }
+
+  openManageUnitsDialog() {
+    this.dialogService.open(ManageUnitsDialogComponent);
   }
 }
 

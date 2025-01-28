@@ -46,7 +46,6 @@
             [displayWith]="displayFn"
           >
             <mat-option (click)="createNewUnit()" *ngIf="canCreate((this.filteredUnitOptions | async)!)">Create new</mat-option>
-
             <mat-option *ngFor="let unit of this.filteredUnitOptions | async" [value]="unit">
               {{unit.unitName}}
             </mat-option>
@@ -82,6 +81,14 @@
     </div>
   </div>
 </div>
+
+<button
+  (click)="openManageUnitsDialog()"
+  mat-icon-button
+  [attr.data-testId]="'manage-units'"
+>
+  Einheiten Verwalten
+</button>
 
 <ng-container *ngIf="isMetric(); else ordinalBlock">
   <div class="okr-form-row" formGroupName="metric">

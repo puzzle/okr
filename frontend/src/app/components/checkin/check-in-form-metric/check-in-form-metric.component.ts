@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { KeyResultMetric } from '../../../shared/types/model/key-result-metric';
 import { CheckInMin } from '../../../shared/types/model/check-in-min';
 import { formInputCheck } from '../../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 
 @Component({
@@ -24,7 +23,7 @@ export class CheckInFormMetricComponent {
 
   protected readonly formInputCheck = formInputCheck;
 
-  constructor(private translate: TranslateService) {}
+  constructor() {}
 
   generateUnitLabel(): string {
     switch (this.keyResult.unit.unitName) {

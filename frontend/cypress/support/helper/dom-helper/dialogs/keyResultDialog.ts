@@ -19,8 +19,10 @@ export default class KeyResultDialog extends Dialog {
   ) {
     cy.getByTestId('metric-tab')
       .click();
-    cy.getByTestId('unit')
-      .select(unit.unitName);
+
+    this.fillInputByTestId('unit', unit.unitName);
+    cy.realPress('ArrowDown')
+      .realPress('Enter');
 
     if (baseline !== undefined) {
       this.fillInputByTestId('baseline', baseline);

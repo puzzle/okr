@@ -15,10 +15,10 @@ describe('okr login', () => {
   it('should login and logout', () => {
     cy.logout();
     cy.origin(Cypress.env('LOGIN_URL'), () => {
-      cy.url()
-        .should('include', Cypress.env('LOGIN_URL'));
       cy.get('#kc-page-title')
         .contains('Sign in to your account');
+      cy.url()
+        .should('include', Cypress.env('LOGIN_URL'));
     });
   });
 

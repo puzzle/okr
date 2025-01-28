@@ -1,5 +1,8 @@
 <div class="okr-form-row okr-form-label-input-container">
-  <label for="action-list" class="okr-form-label">Action Plan (optional)</label>
+  <label for="action-list" class="okr-form-label">
+    <ng-content select="top-title">Action Plan (optional)</ng-content>
+
+  </label>
   <div
     cdkDropList
     *ngIf="this.getFormControlArray()"

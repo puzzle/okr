@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,7 +31,7 @@ class QuarterValidationServiceTest {
     void shouldThrowExceptionWhenStartEndDateQuarterIsNullShouldDoNothingWhenQuarterLabelIsBacklog() {
         // arrange
         Quarter quarter = mock(Quarter.class);
-        when(quarter.getLabel()).thenReturn(BACK_LOG_QUARTER_LABEL);
+        when(quarter.getLabel()).thenReturn(BACKLOG_QUARTER_LABEL);
 
         // act
         QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(quarter);

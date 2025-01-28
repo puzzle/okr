@@ -1,6 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -60,7 +60,7 @@ class QuarterControllerIT {
     static Quarter backlogQuarter = Quarter.Builder
             .builder()
             .withId(BACK_LOG_QUARTER_ID)
-            .withLabel(BACK_LOG_QUARTER_LABEL)
+            .withLabel(BACKLOG_QUARTER_LABEL)
             .withStartDate(null)
             .withEndDate(null)
             .build();
@@ -103,7 +103,7 @@ class QuarterControllerIT {
                 .andExpect(jsonPath("$[1].endDate", Is.is(LocalDate.of(2023, 3, 31).toString())))
                 .andExpect(jsonPath("$[1].isBacklogQuarter", Is.is(false)))
                 .andExpect(jsonPath("$[2].id", Is.is((int) BACK_LOG_QUARTER_ID)))
-                .andExpect(jsonPath("$[2].label", Is.is(BACK_LOG_QUARTER_LABEL)))
+                .andExpect(jsonPath("$[2].label", Is.is(BACKLOG_QUARTER_LABEL)))
                 .andExpect(jsonPath("$[2].isBacklogQuarter", Is.is(true)));
     }
 

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.models;
 
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -61,7 +61,7 @@ public class Quarter {
     }
 
     public boolean isBacklogQuarter() {
-        return this.label.equals(BACK_LOG_QUARTER_LABEL) && this.startDate == null && this.endDate == null;
+        return this.label.equals(BACKLOG_QUARTER_LABEL) && this.startDate == null && this.endDate == null;
     }
 
     @Override

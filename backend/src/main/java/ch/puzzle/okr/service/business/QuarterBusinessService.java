@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
@@ -48,7 +48,7 @@ public class QuarterBusinessService {
 
     public List<Quarter> getQuarters() {
         List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
-        Quarter backlog = quarterPersistenceService.findByLabel(BACK_LOG_QUARTER_LABEL);
+        Quarter backlog = quarterPersistenceService.findByLabel(BACKLOG_QUARTER_LABEL);
         mostCurrentQuarterList.add(0, backlog);
         return mostCurrentQuarterList;
     }

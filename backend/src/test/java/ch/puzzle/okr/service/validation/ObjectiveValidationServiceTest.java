@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -542,7 +542,7 @@ class ObjectiveValidationServiceTest {
         Quarter backlogQuarter = Quarter.Builder
                 .builder()
                 .withId(BACK_LOG_QUARTER_ID)
-                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .withLabel(BACKLOG_QUARTER_LABEL)
                 .withStartDate(null)
                 .withEndDate(null)
                 .build();
@@ -573,7 +573,7 @@ class ObjectiveValidationServiceTest {
         Quarter backlogQuarter = Quarter.Builder
                 .builder()
                 .withId(BACK_LOG_QUARTER_ID)
-                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .withLabel(BACKLOG_QUARTER_LABEL)
                 .withStartDate(null)
                 .withEndDate(null)
                 .build();
@@ -606,7 +606,7 @@ class ObjectiveValidationServiceTest {
         Quarter backlogQuarter = Quarter.Builder
                 .builder()
                 .withId(BACK_LOG_QUARTER_ID)
-                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .withLabel(BACKLOG_QUARTER_LABEL)
                 .withStartDate(null)
                 .withEndDate(null)
                 .build();

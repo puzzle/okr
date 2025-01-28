@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
@@ -31,7 +31,7 @@ public class QuarterValidationService
     }
 
     public static void throwExceptionWhenStartEndDateQuarterIsNull(Quarter model) {
-        if (!model.getLabel().equals(BACK_LOG_QUARTER_LABEL)) {
+        if (!model.getLabel().equals(BACKLOG_QUARTER_LABEL)) {
             if (model.getStartDate() == null) {
                 throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                      ErrorKey.ATTRIBUTE_NULL,

@@ -2,7 +2,7 @@
   <label for="action-list" class="okr-form-label">Action Plan (optional)</label>
   <div
     cdkDropList
-    *ngIf="this.form"
+    *ngIf="this.getFormControlArray()"
     (keydown.enter)="preventAddingNewItems($event)"
     class="okr-form-col d-flex flex-column gap-2"
     (cdkDropListDropped)="drop($event)"

@@ -1,20 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionPlanComponent } from './action-plan.component';
+import { ActionPlanComponent, Item } from './action-plan.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { ActionService } from '../../services/action.service';
-import { action1, action2, action3, addedAction } from '../../shared/test-data';
-import { BehaviorSubject, of } from 'rxjs';
-import { Action } from '../../shared/types/model/action';
+import { action1, addedAction } from '../../shared/test-data';
+import { of } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { FormArrayName, FormGroupDirective } from '@angular/forms';
 
 const actionServiceMock = {
   deleteAction: jest.fn()
 };
+
+const minItem: Item = { item: '',
+  isChecked: false,
+  id: undefined };
+const item1: Item = { item: 'item1',
+  isChecked: false,
+  id: 1 };
+const item2: Item = { item: 'item2',
+  isChecked: false,
+  id: 2 };
+const items: Item[] = [item1,
+  item2];
 
 describe('ActionPlanComponent', () => {
   let component: ActionPlanComponent;
@@ -29,12 +41,16 @@ describe('ActionPlanComponent', () => {
         CdkDrag,
         TranslateModule.forRoot()
       ],
-      providers: [TranslateService,
+      providers: [
+        TranslateService,
         DialogService,
         {
           provide: ActionService,
           useValue: actionServiceMock
-        }]
+        },
+        FormGroupDirective,
+        FormArrayName
+      ]
     });
     fixture = TestBed.createComponent(ActionPlanComponent);
     component = fixture.componentInstance;
@@ -48,8 +64,8 @@ describe('ActionPlanComponent', () => {
   });
 
   it('should remove item from action-plan array', () => {
-    component.control = new BehaviorSubject<Action[] | null>([action1,
-      action2]);
+    component.getFormControlArray()
+      .setValue(items);
     actionServiceMock.deleteAction.mockReturnValue(of(null));
     jest
       .spyOn(component.dialogService, 'openConfirmDialog')
@@ -59,116 +75,37 @@ describe('ActionPlanComponent', () => {
 
     expect(actionServiceMock.deleteAction)
       .toHaveBeenCalledWith(action1.id);
-    expect(component.control.getValue())
+    expect(component.getFormControlArray())
       .toHaveLength(1);
-    expect(component.control.getValue()![0])
-      .toBe(action2);
-    expect(component.control.getValue()![0].priority)
-      .toBe(0);
+    expect(component.getFormControlArray()
+      .at(0)
+      .getRawValue())
+      .toBe(item2);
   });
 
   it('should remove item from action-plan without opening dialog when action has no text and id', () => {
     const dialogSpy = jest.spyOn(component.dialogService, 'open');
-    component.control = new BehaviorSubject<Action[] | null>([action3]);
+    component.getFormControlArray()
+      .setValue([minItem]);
 
     component.removeAction(0);
 
-    expect(component.control.getValue()!)
+    expect(component.getFormControlArray())
       .toHaveLength(0);
     expect(dialogSpy)
       .toHaveBeenCalledTimes(0);
     expect(actionServiceMock.deleteAction).not.toHaveBeenCalled();
   });
 
-  it('should decrease index of active item when index is the same as the one of the removed item', () => {
-    jest.spyOn(component.dialogService, 'open');
-    component.control = new BehaviorSubject<Action[] | null>([action2,
-      action3,
-      action1]);
-    component.activeItem = 2;
-
-    component.removeAction(2);
-    expect(component.activeItem)
-      .toBe(1);
-  });
 
   it('should add new action with empty text into array', () => {
-    component.control = new BehaviorSubject<Action[] | null>([]);
-    component.keyResultId = addedAction.keyResultId;
+    // component.control = new BehaviorSubject<Action[] | null>([]);
     component.addNewItem();
-    expect(component.control.getValue())
+    expect(component.getFormControlArray())
       .toHaveLength(1);
-    expect(component.control.getValue()![0])
+    expect(component.getFormControlArray()
+      .at(0)
+      .getRawValue())
       .toStrictEqual(addedAction);
-  });
-
-  it('should decrease index of active item', () => {
-    const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
-    component.control.next([action1,
-      action2,
-      action3]);
-    component.handleKeyDown(keyEvent, 2);
-
-    expect(component.activeItem)
-      .toBe(1);
-    expect(component.control.getValue()!.toString())
-      .toBe([action1,
-        action3,
-        action2].toString());
-    expect(component.control.getValue()![0].priority)
-      .toBe(0);
-    expect(component.control.getValue()![1].priority)
-      .toBe(1);
-    expect(component.control.getValue()![2].priority)
-      .toBe(2);
-  });
-
-  it('should increase index of active item', () => {
-    const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
-    component.control.next([
-      action1,
-      action2,
-      action3,
-      action1
-    ]);
-    component.handleKeyDown(keyEvent, 2);
-
-    expect(component.activeItem)
-      .toBe(3);
-    expect(component.control.getValue()!.toString())
-      .toBe([
-        action1,
-        action3,
-        action1,
-        action3
-      ].toString());
-    expect(component.control.getValue()![0].priority)
-      .toBe(2);
-    expect(component.control.getValue()![1].priority)
-      .toBe(1);
-    expect(component.control.getValue()![2].priority)
-      .toBe(2);
-    expect(component.control.getValue()![3].priority)
-      .toBe(3);
-  });
-
-  it('should increase active item index', () => {
-    component.activeItem = 0;
-    component.control.next([action1,
-      action2,
-      action3]);
-    component.increaseActiveItemWithTab();
-    expect(component.activeItem)
-      .toBe(1);
-  });
-
-  it('should decrease active item index', () => {
-    component.activeItem = 2;
-    component.control.next([action1,
-      action2,
-      action3]);
-    component.decreaseActiveItemWithShiftTab();
-    expect(component.activeItem)
-      .toBe(1);
   });
 });

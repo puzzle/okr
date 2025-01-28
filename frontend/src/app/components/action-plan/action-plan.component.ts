@@ -108,11 +108,12 @@ export class ActionPlanComponent implements AfterContentInit {
   protected readonly trackByFn = trackByFn;
 
   getFormControlArray() {
-    return this.form?.get(`${this.formArrayNameF.name}`) as FormArray<FormGroup<FormControlsOf<Item>>>;
+    // console.log(this.form?.get(`${this.formArrayNameF.name}`) as FormArray<FormGroup<FormControlsOf<Item>>>)
+    return this.formArrayNameF.control as FormArray<FormGroup<FormControlsOf<Item>>>;
   }
 
   ngAfterContentInit(): void {
-    this.form = this.parentF.form;
+    // this.form = this.parentF.form;
     this.addItemSubject.subscribe((item) => this.addNewItem(item));
   }
 }

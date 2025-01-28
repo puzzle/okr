@@ -1,6 +1,5 @@
 import { AfterContentInit, Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Action } from '../../shared/types/model/action';
 import { trackByFn } from '../../shared/common';
 import { DialogService } from '../../services/dialog.service';
 import {
@@ -34,6 +33,8 @@ export interface Item {
 export class ActionPlanComponent implements AfterContentInit {
   @Input() onDelete?: (index: number) => Observable<any>;
 
+  @Input() movable = true;
+
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
 
@@ -43,6 +44,9 @@ export class ActionPlanComponent implements AfterContentInit {
   }
 
   changeItemPosition(currentIndex: number, newIndex: number) {
+    if (!this.movable) {
+      return;
+    }
     const value = this.getFormControlArray().value as Item[];
     moveItemInArray(value, currentIndex, newIndex);
     this.getFormControlArray()
@@ -50,7 +54,7 @@ export class ActionPlanComponent implements AfterContentInit {
     this.focusItem(newIndex);
   }
 
-  drop(event: CdkDragDrop<Action[] | null>) {
+  drop(event: CdkDragDrop<null>) {
     this.changeItemPosition(event.previousIndex, event.currentIndex);
   }
 

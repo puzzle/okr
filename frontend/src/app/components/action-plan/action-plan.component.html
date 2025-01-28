@@ -14,7 +14,7 @@
       [formGroupName]="i"
       cdkDrag
     >
-      <div class="drag-drop-dots">
+      <div class="drag-drop-dots" *ngIf="movable">
         <img
           cdkDragHandle
           class="icons"

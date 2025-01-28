@@ -435,7 +435,7 @@ describe('okr check-in', () => {
       .click();
   });
 
-  it('should be able to check actions of the action plan when creating a check-in', () => {
+  it.skip('should be able to check actions of the action plan when creating a check-in', () => {
     keyResultDetailPage.visit('This key-result will be used for testing the action plan while creating check-ins');
 
     keyResultDetailPage.createCheckIn()

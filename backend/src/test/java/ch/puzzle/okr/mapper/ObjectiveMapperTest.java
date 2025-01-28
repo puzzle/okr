@@ -27,7 +27,6 @@ class ObjectiveMapperTest {
     private static final long TEAM_ID = 23L;
     private static final long QUARTER_ID = 10L;
     private static final String QUARTER_LABEL = "GJ 2024 Q1";
-    private static final boolean IS_BACKLOG_QUARTER = false;
     private static final long ID = 0L;
     private static final int VERSION = 1;
     private static final String TITLE = "objective title";
@@ -90,7 +89,6 @@ class ObjectiveMapperTest {
         assertEquals(expected.getTitle(), actual.title());
         assertEquals(expected.getTeam().getId(), actual.teamId());
         assertEquals(expected.getQuarter().getId(), actual.quarterId());
-        assertEquals(expected.getQuarter().getLabel(), actual.quarterLabel());
         assertEquals(expected.getDescription(), actual.description());
         assertEquals(expected.getState(), actual.state());
         assertEquals(expected.getCreatedOn(), actual.createdOn());
@@ -110,8 +108,6 @@ class ObjectiveMapperTest {
                 TITLE, //
                 TEAM_ID, //
                 QUARTER_ID, //
-                QUARTER_LABEL, //
-                IS_BACKLOG_QUARTER, //
                 DESCRIPTION, //
                 STATE, //
                 CREATE_DATE_TIME, //
@@ -138,7 +134,6 @@ class ObjectiveMapperTest {
         assertEquals(expected.title(), actual.getTitle());
         assertEquals(expected.teamId(), actual.getTeam().getId());
         assertEquals(expected.quarterId(), actual.getQuarter().getId());
-        assertEquals(expected.quarterLabel(), actual.getQuarter().getLabel());
         assertEquals(expected.description(), actual.getDescription());
         assertEquals(expected.state(), actual.getState());
         assertEquals(expected.createdOn(), actual.getCreatedOn());

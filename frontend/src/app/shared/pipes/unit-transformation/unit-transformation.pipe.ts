@@ -21,21 +21,18 @@ export class UnitTransformationPipe implements PipeTransform {
   }
 
   transformLabel(label: string): string {
-    /*
-     * switch (label) {
-     *   case Unit.PERCENT:
-     *     return '%';
-     *   case Unit.FTE:
-     *     return ' ' + Unit.FTE;
-     *   case Unit.CHF:
-     *     return ' ' + Unit.CHF;
-     *   case Unit.EUR:
-     *     return ' ' + Unit.EUR;
-     *   case Unit.NUMBER:
-     *   default:
-     *     return '';
-     * }
-     */
-    return label;
+    switch (label) {
+      case 'PERCENT':
+        return '%';
+      case 'FTE':
+        return ' ' + 'FTE';
+      case 'CHF':
+        return ' CHF';
+      case 'EUR':
+        return ' EUR';
+      case 'NUMBER':
+      default:
+        return '';
+    }
   }
 }

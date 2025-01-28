@@ -13,6 +13,7 @@
       *ngFor="let item of getFormControlArray().controls!; index as i; trackBy: trackByFn"
       [formGroupName]="i"
       cdkDrag
+      [cdkDragDisabled]="!movable"
     >
       <div class="drag-drop-dots" *ngIf="movable">
         <img

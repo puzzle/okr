@@ -8,7 +8,7 @@ import {
   FormArray,
   FormArrayName,
   FormControl,
-  FormGroup
+  FormGroup, Validators
 } from '@angular/forms';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -33,7 +33,7 @@ export interface Item {
 export class ActionPlanComponent implements AfterContentInit {
   @Input() onDelete?: (index: number) => Observable<any>;
 
-  @Input() movable = true;
+  @Input() movable = false;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
@@ -90,7 +90,8 @@ export class ActionPlanComponent implements AfterContentInit {
 
   addNewItem(item?: Item) {
     const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item?.item || ''),
+      item: new FormControl<string>(item?.item || '', [Validators.minLength(2),
+        Validators.required]),
       id: new FormControl<number | undefined>(item?.id || undefined),
       isChecked: new FormControl<boolean>(item?.isChecked || false)
     } as FormControlsOf<Item>);

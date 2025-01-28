@@ -9,8 +9,7 @@ import {
   FormArray,
   FormArrayName,
   FormControl,
-  FormGroup,
-  FormGroupDirective
+  FormGroup
 } from '@angular/forms';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -33,16 +32,14 @@ export interface Item {
     useExisting: FormArrayName }]
 })
 export class ActionPlanComponent implements AfterContentInit {
-  form?: FormGroup;
-
-  @Input() onDelete: (index: number) => Observable<any> = () => new Observable();
+  @Input() onDelete?: (index: number) => Observable<any>;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
 
   @Input() addItemSubject: ReplaySubject<Item | undefined> = new ReplaySubject<Item | undefined>();
 
-  constructor(public dialogService: DialogService, private parentF: FormGroupDirective, private formArrayNameF: FormArrayName) {
+  constructor(public dialogService: DialogService, private formArrayNameF: FormArrayName) {
   }
 
   changeItemPosition(currentIndex: number, newIndex: number) {
@@ -67,7 +64,7 @@ export class ActionPlanComponent implements AfterContentInit {
       .at(index)
       .getRawValue() as Item;
 
-    if (item.item !== '' || item.id) {
+    if ((item.item !== '' || item.id) && this.onDelete) {
       this.dialogService
         .openConfirmDialog('CONFIRMATION.DELETE.ACTION')
         .afterClosed()
@@ -75,7 +72,7 @@ export class ActionPlanComponent implements AfterContentInit {
           if (result) {
             this.getFormControlArray()
               .removeAt(index);
-            if (item.id) {
+            if (item.id && this.onDelete) {
               this.onDelete(item.id)
                 .subscribe();
             }
@@ -108,12 +105,10 @@ export class ActionPlanComponent implements AfterContentInit {
   protected readonly trackByFn = trackByFn;
 
   getFormControlArray() {
-    // console.log(this.form?.get(`${this.formArrayNameF.name}`) as FormArray<FormGroup<FormControlsOf<Item>>>)
     return this.formArrayNameF.control as FormArray<FormGroup<FormControlsOf<Item>>>;
   }
 
   ngAfterContentInit(): void {
-    // this.form = this.parentF.form;
     this.addItemSubject.subscribe((item) => this.addNewItem(item));
   }
 }

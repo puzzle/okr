@@ -43,7 +43,7 @@ public class OverviewBusinessService {
     }
 
     private void setBacklogQuarters(List<Overview> overviews) {
-        for(Overview overview: overviews) {
+        for (Overview overview : overviews) {
             Quarter overviewQuarter = quarterBusinessService.getQuarterById(overview.getQuarterId());
             overview.setBacklogQuarter(overviewQuarter.isBacklogQuarter());
         }

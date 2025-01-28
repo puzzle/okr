@@ -1,13 +1,11 @@
 <app-dialog-template-core [title]="'Einheiten verwalten'">
   <ng-container content>
-    <p>Einheiten (Standard)</p>
+    <p>Einheiten (Standard):</p>
     <div class="d-flex gap-2 flex-column">
       <ng-container *ngFor="let unit of allUnits | async; let i = index">
-
         <span *ngIf="unit.isDefault" class="bg-display-element w-100">
-          {{ unit.unitName }}
+          {{ unit.unitName }} {{ getFormatedUnitSymbol(unit) }}
         </span>
-
       </ng-container>
     </div>
 

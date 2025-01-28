@@ -5,6 +5,7 @@ import { forkJoin, map, Observable, ReplaySubject } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { FormControlsOf, Item } from '../action-plan/action-plan.component';
 import { MatDialogRef } from '@angular/material/dialog';
+import { UnitTransformationPipe } from '../../shared/pipes/unit-transformation/unit-transformation.pipe';
 
 @Component({
   selector: 'app-manage-units-dialog',
@@ -21,7 +22,7 @@ export class ManageUnitsDialogComponent implements OnInit {
     unitFormArray: new FormArray<FormGroup<FormControlsOf<Item>>>([])
   });
 
-  constructor(private unitService: UnitService, private dialogRef: MatDialogRef<ManageUnitsDialogComponent>) {
+  constructor(private unitService: UnitService, private dialogRef: MatDialogRef<ManageUnitsDialogComponent>, private unitPipe: UnitTransformationPipe) {
   }
 
   submit() {
@@ -57,5 +58,13 @@ export class ManageUnitsDialogComponent implements OnInit {
           isChecked: false } as Item;
       })))
       .subscribe((units) => units.forEach((unit) => this.actinPlanAddItemSubject.next(unit)));
+  }
+
+  getFormatedUnitSymbol(unit: Unit) {
+    const s = this.unitPipe.transformLabel(unit.unitName);
+    if (s.trim() === unit.unitName || s.trim() === '') {
+      return '';
+    }
+    return `(${s})`;
   }
 }

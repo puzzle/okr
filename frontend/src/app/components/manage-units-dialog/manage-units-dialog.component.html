@@ -8,7 +8,7 @@
 
     <div [formGroup]="fg">
       <span formArrayName="unitFormArray">
-        <app-action-plan></app-action-plan>
+        <app-action-plan [movable]="false" [addItemSubject]="actinPlanAddItemSubject"></app-action-plan>
       </span>
     </div>
 

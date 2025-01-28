@@ -16,6 +16,10 @@ export class UnitService {
     return this.httpClient.get<Unit[]>(this.API_URL);
   }
 
+  getAllFromUser() {
+    return this.httpClient.get<Unit[]>(this.API_URL + '/user');
+  }
+
   createUnit(unit: Unit) {
     return this.httpClient.post<Unit>(this.API_URL, unit);
   }

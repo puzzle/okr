@@ -39,6 +39,9 @@ public class Unit {
     @ManyToOne(cascade = CascadeType.MERGE)
     private User createdBy;
 
+    @Column(nullable = false)
+    private boolean isDefault;
+
     public Long getId() {
         return id;
     }
@@ -57,6 +60,14 @@ public class Unit {
 
     public String getUnitName() {
         return unitName;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 
     public void setUnitName(String unitName) {
@@ -79,6 +90,7 @@ public class Unit {
         setVersion(builder.version);
         setUnitName(builder.unitName);
         setCreatedBy(builder.createdBy);
+        setDefault(builder.isDefault);
     }
 
     public static final class Builder {
@@ -89,6 +101,7 @@ public class Unit {
         String unitName;
         private @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
         User createdBy;
+        private boolean isDefault;
 
         private Builder() {
         }
@@ -99,6 +112,11 @@ public class Unit {
 
         public Builder id(Long val) {
             id = val;
+            return this;
+        }
+
+        public Builder isDefault(boolean val) {
+            isDefault = val;
             return this;
         }
 

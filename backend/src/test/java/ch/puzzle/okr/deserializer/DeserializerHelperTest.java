@@ -172,7 +172,7 @@ class DeserializerHelperTest {
         assertEquals("BESCHREIBUNG", keyResultMetricDto.description());
         assertEquals(1.0, keyResultMetricDto.baseline());
         assertEquals(5.0, keyResultMetricDto.stretchGoal());
-        assertEquals(TestHelper.NUMBER_UNIT.getUnitName(), keyResultMetricDto.unit());
+        assertEquals(TestHelper.NUMBER_UNIT.getUnitName(), keyResultMetricDto.unit().unitName());
 
         KeyResultUserDto owner = keyResultMetricDto.owner();
         assertOwner(owner);

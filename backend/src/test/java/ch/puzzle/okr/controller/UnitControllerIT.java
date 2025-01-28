@@ -82,7 +82,7 @@ class UnitControllerIT {
     @Test
     @Order(3)
     void shouldReturnNewUnitWithCurrentUserAsOwner() throws Exception {
-        UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
+        UnitDto unitDTO = new UnitDto(null, "TestUnit", null, false);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
 
         mvc
@@ -103,7 +103,7 @@ class UnitControllerIT {
     @Test
     @Order(4)
     void shouldReturn401ForInvalidUserWhenCreatingUnit() throws Exception {
-        UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
+        UnitDto unitDTO = new UnitDto(null, "TestUnit", null, false);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(post(URL_BASE)
@@ -116,7 +116,7 @@ class UnitControllerIT {
     @Test
     @Order(5)
     void shouldReturn200ForUserWhenUpdatingUnit() throws Exception {
-        UnitDto unitDTO = new UnitDto(100L, "UPDATED_UNIT", null);
+        UnitDto unitDTO = new UnitDto(100L, "UPDATED_UNIT", null, false);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(put(URL_BASE + "/100")
@@ -131,7 +131,7 @@ class UnitControllerIT {
     @Test
     @Order(6)
     void shouldReturn403ForWrongUserWhenUpdatingUnit() throws Exception {
-        UnitDto unitDTO = new UnitDto(100L, "UPDATED_UNIT", null);
+        UnitDto unitDTO = new UnitDto(100L, "UPDATED_UNIT", null, false);
         String unitJson = objectMapper.writeValueAsString(unitDTO);
         mvc
                 .perform(put(URL_BASE + "/100")
@@ -183,7 +183,7 @@ class UnitControllerIT {
             TenantContext.setCurrentTenant("pitc");
             when(unitMapper.toDto(any(Unit.class))).thenAnswer(invocation -> {
                 Unit unit = invocation.getArgument(0);
-                return new UnitDto(unit.getId(), unit.getUnitName(), glUserDto());
+                return new UnitDto(unit.getId(), unit.getUnitName(), glUserDto(), false);
             });
 
             when(unitMapper.toUnit(any(UnitDto.class))).thenAnswer(invocation -> {
@@ -221,7 +221,7 @@ class UnitControllerIT {
 
         @Test
         void shouldReturnNewUnitWithCurrentUserAsOwner() throws Exception {
-            UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
+            UnitDto unitDTO = new UnitDto(null, "TestUnit", null, false);
             String unitJson = objectMapper.writeValueAsString(unitDTO);
             when(unitAuthorizationService.createUnit(any(Unit.class))).thenReturn(FTE_UNIT);
 
@@ -237,7 +237,7 @@ class UnitControllerIT {
 
         @Test
         void shouldReturn401ForInvalidUserWhenCreatingUnit() throws Exception {
-            UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
+            UnitDto unitDTO = new UnitDto(null, "TestUnit", null, false);
             String unitJson = objectMapper.writeValueAsString(unitDTO);
             when(unitAuthorizationService.createUnit(any(Unit.class)))
                     .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
@@ -251,7 +251,7 @@ class UnitControllerIT {
 
         @Test
         void shouldReturn200ForUserWhenUpdatingUnit() throws Exception {
-            UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
+            UnitDto unitDTO = new UnitDto(null, "TestUnit", null, false);
             String unitJson = objectMapper.writeValueAsString(unitDTO);
             when(unitAuthorizationService.updateUnit(any(), any(Unit.class))).thenReturn(FTE_UNIT);
 
@@ -267,7 +267,7 @@ class UnitControllerIT {
 
         @Test
         void shouldReturn403ForWrongUserWhenUpdatingUnit() throws Exception {
-            UnitDto unitDTO = new UnitDto(null, "TestUnit", null);
+            UnitDto unitDTO = new UnitDto(null, "TestUnit", null, false);
             String unitJson = objectMapper.writeValueAsString(unitDTO);
             when(unitAuthorizationService.updateUnit(any(), any(Unit.class)))
                     .thenThrow(new ResponseStatusException(HttpStatus.FORBIDDEN));

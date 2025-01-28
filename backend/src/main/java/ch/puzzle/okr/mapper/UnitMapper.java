@@ -18,6 +18,11 @@ public class UnitMapper {
     }
 
     public Unit toUnit(UnitDto objectiveDto) {
-        return Unit.Builder.builder().id(objectiveDto.id()).unitName(objectiveDto.unitName()).isDefault(objectiveDto.isDefault()).build();
+        return Unit.Builder
+                .builder()
+                .id(objectiveDto.id())
+                .unitName(objectiveDto.unitName())
+                .isDefault(objectiveDto.isDefault())
+                .build();
     }
 }

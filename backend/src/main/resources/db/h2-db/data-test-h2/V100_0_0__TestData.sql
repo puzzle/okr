@@ -45,15 +45,15 @@ CREATE ALIAS NEXT_QUARTER_END_DATE FOR 'ch.puzzle.okr.util.quarter.generate.h2.Q
 
 call INIT_QUARTER_DATA();
 
-insert into unit (id, version, unit_name, created_by_id)
-values (1, 0, 'PERCENT', 1),
-       (2, 0, 'NUMBER', 1),
-       (3, 0, 'CHF', 1),
-       (4, 0, 'EUR', 1),
-       (5, 0, 'FTE', 1),
-       (6, 0, 'UNKNOWN', 1),
-       (100, 0, 'TO_BE_UPDATED', 61),
-       (101, 0, 'TO_BE_DELETED', 61);
+insert into unit (id, version, unit_name, created_by_id, is_default)
+values (1, 0, 'PERCENT', 1, true),
+       (2, 0, 'NUMBER', 1,true),
+       (3, 0, 'CHF', 1, true),
+       (4, 0, 'EUR', 1, true),
+       (5, 0, 'FTE', 1, true),
+       (6, 0, 'UNKNOWN', 1, false),
+       (100, 0, 'TO_BE_UPDATED', 61, false),
+       (101, 0, 'TO_BE_DELETED', 61, false);
 
 
 insert into quarter (id, label, start_date, end_date)

@@ -175,7 +175,6 @@ public class TestHelper {
     }
 
     public static final Unit NUMBER_UNIT = Unit.Builder.builder().unitName("NUMBER").build();
-    public static final Unit METRIC_UNIT = Unit.Builder.builder().unitName("METRIC").build();
     public static final Unit FTE_UNIT = Unit.Builder.builder().unitName("FTE").build();
     public static final Unit CHF_UNIT = Unit.Builder.builder().unitName("CHF").build();
     public static final Unit EUR_UNIT = Unit.Builder.builder().unitName("EUR").build();

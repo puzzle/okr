@@ -18,6 +18,7 @@ CREATE  TABLE unit
     version       INTEGER               NOT NULL,
     unit_name      TEXT                  NOT NULL,
     created_by_id     BIGINT,
+    is_default     boolean               NOT NULL,
     PRIMARY KEY (id),
     UNIQUE (unit_name)
 );

@@ -11,6 +11,7 @@ import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.ActionMapper;
+import ch.puzzle.okr.mapper.UnitMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -46,6 +47,9 @@ class KeyResultMapperTest {
     @Mock
     UnitBusinessService unitBusinessService;
 
+    @Mock
+    UnitMapper unitMapper;
+
     @BeforeEach
     void setup() {
         KeyResultMetricMapper keyResultMetricMapper = new KeyResultMetricMapper( //
@@ -53,7 +57,8 @@ class KeyResultMapperTest {
                                                                                 objectiveBusinessService, //
                                                                                 checkInBusinessService, //
                                                                                 actionMapper,
-                                                                                unitBusinessService);
+                                                                                unitBusinessService,
+                                                                                unitMapper);
 
         KeyResultOrdinalMapper keyResultOrdinalMapper = new KeyResultOrdinalMapper( //
                                                                                    userBusinessService, //

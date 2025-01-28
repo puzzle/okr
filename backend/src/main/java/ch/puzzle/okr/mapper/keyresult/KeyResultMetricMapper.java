@@ -64,7 +64,7 @@ public class KeyResultMetricMapper {
                                       keyResult.getDescription(), //
                                       keyResult.getBaseline(), //
                                       keyResult.getStretchGoal(), //
-                                       unitMapper.toDto(keyResult.getUnit()), //
+                                      unitMapper.toDto(keyResult.getUnit()), //
                                       ownerDto,
                                       objectiveDto, //
                                       lastCheckInDto, //

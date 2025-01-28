@@ -117,6 +117,68 @@ export const quarterList: Quarter[] = [quarter1,
   quarter2,
   quarterBacklog];
 
+export const testUser: User = {
+  id: 1,
+  firstName: 'Bob',
+  lastName: 'Baumeister',
+  isOkrChampion: false,
+  userTeamList: [{
+    id: 1,
+    team: team1,
+    isTeamAdmin: false
+  }],
+  email: 'bob.baumeister@puzzle.ch'
+};
+
+export const users: User[] = [
+  testUser,
+  {
+    id: 2,
+    firstName: 'Paco',
+    lastName: 'Egiman',
+    isOkrChampion: true,
+    userTeamList: [],
+    email: 'peggimann@puzzle.ch'
+  },
+  {
+    id: 3,
+    firstName: 'Robin',
+    lastName: 'Papier',
+    isOkrChampion: false,
+    userTeamList: [],
+    email: 'robin.papier@puzzle.ch'
+  },
+  {
+    id: 4,
+    firstName: 'Key Result',
+    lastName: 'Owner',
+    isOkrChampion: false,
+    userTeamList: [],
+    email: 'keyresult.owner@puzzle.ch'
+  }
+];
+
+export const UNIT_PERCENT: Unit = { id: 1,
+  unitName: 'PERCENT',
+  owner: users[0],
+  isDefault: true };
+export const UNIT_CHF: Unit = { id: 2,
+  unitName: 'CHF',
+  owner: users[0],
+  isDefault: true };
+export const UNIT_EUR: Unit = { id: 3,
+  unitName: 'EUR',
+  owner: users[0],
+  isDefault: true };
+export const UNIT_FTE: Unit = { id: 4,
+  unitName: 'FTE',
+  owner: users[0],
+  isDefault: true };
+export const UNIT_NUMBER: Unit = { id: 5,
+  unitName: 'NUMBER',
+  owner: users[0],
+  isDefault: true };
+
 export const checkInMetric: CheckInMetricMin = {
   id: 815,
   version: 1,
@@ -155,7 +217,7 @@ export const keyResultMetricMin: KeyResultMetricMin = {
   version: 1,
   title: 'Achieve 20% Increase in Daily Active Users',
   keyResultType: 'metric',
-  unit: '%',
+  unit: UNIT_PERCENT,
   baseline: 10.0,
   stretchGoal: 25.0,
   lastCheckIn: checkInMetric,
@@ -167,7 +229,7 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
   version: 1,
   title: 'Achieve 20% Increase in Daily Active Users',
   keyResultType: 'metric',
-  unit: '%',
+  unit: UNIT_PERCENT,
   baseline: 25.0,
   stretchGoal: 75.0,
   lastCheckIn: {
@@ -190,7 +252,7 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
   version: 1,
   title: 'Achieve 20% Increase in Daily Active Users',
   keyResultType: 'metric',
-  unit: '%',
+  unit: UNIT_PERCENT,
   baseline: 50.0,
   stretchGoal: 0.0,
   lastCheckIn: {
@@ -335,7 +397,7 @@ export const keyResultMetricWithIdEight: KeyResultMetricMin = {
   id: 8,
   version: 1,
   title: 'KeyResult Title',
-  unit: 'CHF',
+  unit: UNIT_CHF,
   baseline: 5.0,
   stretchGoal: 15.0,
   lastCheckIn: checkInMetric,
@@ -401,63 +463,6 @@ export const secondCheckIn: CheckInMetricMin = {
   isWriteable: true,
   createdBy: 'Bob Baumeister'
 };
-
-export const testUser: User = {
-  id: 1,
-  firstName: 'Bob',
-  lastName: 'Baumeister',
-  isOkrChampion: false,
-  userTeamList: [{
-    id: 1,
-    team: team1,
-    isTeamAdmin: false
-  }],
-  email: 'bob.baumeister@puzzle.ch'
-};
-
-export const users: User[] = [
-  testUser,
-  {
-    id: 2,
-    firstName: 'Paco',
-    lastName: 'Egiman',
-    isOkrChampion: true,
-    userTeamList: [],
-    email: 'peggimann@puzzle.ch'
-  },
-  {
-    id: 3,
-    firstName: 'Robin',
-    lastName: 'Papier',
-    isOkrChampion: false,
-    userTeamList: [],
-    email: 'robin.papier@puzzle.ch'
-  },
-  {
-    id: 4,
-    firstName: 'Key Result',
-    lastName: 'Owner',
-    isOkrChampion: false,
-    userTeamList: [],
-    email: 'keyresult.owner@puzzle.ch'
-  }
-];
-
-export const UNIT_PERCENT: Unit = { id: 1,
-  unitName: 'PERCENT',
-  owner: users[0] };
-export const UNIT_CHF: Unit = { id: 2,
-  unitName: 'CHF',
-  owner: users[0] };
-export const UNIT_EUR: Unit = { id: 3,
-  unitName: 'EUR',
-  owner: users[0] };
-export const UNIT_FTE: Unit = { id: 4,
-  unitName: 'FTE',
-  owner: users[0] };
-export const UNIT_NUMBER: Unit = { id: 5,
-  unitName: 'NUMBER',
-  owner: users[0] };
 
 export const keyResult: KeyResultOrdinal = {
   id: 101,

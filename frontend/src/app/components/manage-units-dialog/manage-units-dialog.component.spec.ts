@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ManageUnitsDialogComponent } from './manage-units-dialog.component';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 describe('ManageUnitsDialogComponent', () => {
   let component: ManageUnitsDialogComponent;
@@ -8,7 +12,14 @@ describe('ManageUnitsDialogComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [ManageUnitsDialogComponent]
+      declarations: [ManageUnitsDialogComponent],
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        TranslateService,
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
       .compileComponents();
 

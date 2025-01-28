@@ -17,6 +17,8 @@ import ch.puzzle.okr.service.validation.OverviewValidationService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -114,6 +116,7 @@ class OverviewBusinessServiceTest {
     void shouldReturnListOfOverviewsUsingGetFilteredOverview() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "Objective", authorizationUser))
                 .thenReturn(createOverviews());
+        when(quarterBusinessService.getQuarterById(any())).thenReturn(new Quarter());
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "Objective",
                 authorizationUser);
@@ -135,6 +138,7 @@ class OverviewBusinessServiceTest {
                 .thenReturn(createOverviews());
         when(quarterBusinessService.getCurrentQuarter())
                 .thenReturn(Quarter.Builder.builder().withId(QUARTER_ID).withLabel("GJ 22/23-Q2").build());
+        when(quarterBusinessService.getQuarterById(any())).thenReturn(new Quarter());
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(null, teamIds, "", authorizationUser);
 
@@ -200,6 +204,7 @@ class OverviewBusinessServiceTest {
         AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))
                 .thenReturn(createOverviews(user));
+        when(quarterBusinessService.getQuarterById(any())).thenReturn(new Quarter());
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, null, user);
 

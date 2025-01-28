@@ -9,7 +9,7 @@
     id="action-list"
   >
     <div
-      class="action-point-item"
+      class="container-fluid action-point-item"
       *ngFor="let item of getFormControlArray().controls!; index as i; trackBy: trackByFn"
       [formGroupName]="i"
       cdkDrag
@@ -23,27 +23,37 @@
           alt="Drag indicator"
         />
       </div>
-      <input
-        #listItem
-        (keydown.arrowUp)="changeItemPosition(i, i - 1)"
-        (keydown.arrowDown)="changeItemPosition(i, i + 1)"
-        class="action-input"
-        formControlName="item"
-        [attr.data-testId]="'action-input'"
-      />
-      <button
-        (keydown.enter)="removeAction(i)"
-        (click)="removeAction(i)"
-        class="btn btn-link"
-        *ngIf="onDelete"
-
-      ><img
-
-          class="icons bin-icon cursor-pointer focus-outline"
-          src="assets/icons/delete-icon.svg"
-          alt="Delete bin"
+      <span class="row">
+        <input
+          #listItem
+          (keydown.arrowUp)="changeItemPosition(i, i - 1)"
+          (keydown.arrowDown)="changeItemPosition(i, i + 1)"
+          class="action-input col"
+          formControlName="item"
+          [attr.data-testId]="'action-input'"
         />
-      </button>
+
+        <button
+          (keydown.enter)="removeAction(i)"
+          (click)="removeAction(i)"
+          class="btn btn-link col-auto"
+          *ngIf="onDelete"
+
+        ><img
+
+            class="icons bin-icon cursor-pointer focus-outline"
+            src="assets/icons/delete-icon.svg"
+            alt="Delete bin"
+          />
+        </button>
+      </span>
+
+      <app-error
+        [controlPath]="['actionList.'+i, 'item']"
+        [name]="'Element'"
+        class="col-12"
+      ></app-error>
+
     </div>
   </div>
 
@@ -63,7 +73,9 @@
           class="add-cross-button"
           id="add-action-icon"
         />
-        Weitere Action hinzufügen
+        <ng-content select="add-text">Weitere Action hinzufügen</ng-content>
+
+        <ng-content/>
       </span>
     </button>
   </div>

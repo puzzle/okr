@@ -16,6 +16,18 @@ const actionServiceMock = {
   deleteAction: jest.fn()
 };
 
+const minItem: Item = { item: '',
+  isChecked: false,
+  id: undefined };
+const item1: Item = { item: 'item1',
+  isChecked: false,
+  id: 1 };
+const item2: Item = { item: 'item2',
+  isChecked: false,
+  id: 2 };
+const items: Item[] = [item1,
+  item2];
+
 describe('ActionPlanComponent', () => {
   let component: ActionPlanComponent;
   let fixture: ComponentFixture<ActionPlanComponent>;

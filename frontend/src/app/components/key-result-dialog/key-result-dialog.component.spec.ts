@@ -241,9 +241,8 @@ describe('KeyResultDialogComponent', () => {
     });
 
     it('should be able to set title', waitForAsync(async() => {
-      component.keyResultForm.setValue({
+      component.keyResultForm.patchValue({
         owner: null,
-        actionList: [],
         title: 'Title',
         description: null,
         keyResultType: 'metric',
@@ -272,9 +271,8 @@ describe('KeyResultDialogComponent', () => {
     }));
 
     it('should display error message of too short input', waitForAsync(async() => {
-      component.keyResultForm.setValue({
+      component.keyResultForm.patchValue({
         owner: testUser,
-        actionList: [],
         title: 'T',
         description: 'f',
         keyResultType: 'metric',

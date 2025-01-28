@@ -54,12 +54,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       return;
     }
 
-    let messageKey = successMessageObj.key;
-    const isBacklogQuarter = response.body?.isBacklogQuarter;
-    if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
-      messageKey += '_BACKLOG';
-    }
-    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + messageKey);
+    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.key);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 

@@ -207,8 +207,6 @@ describe('ObjectiveDialogComponent', () => {
             id: 5,
             version: 1,
             quarterId: 2,
-            quarterLabel: 'GJ 22/23-Q2',
-            isBacklogQuarter: false,
             state: State[state as keyof typeof State],
             teamId: 2,
             title: title,

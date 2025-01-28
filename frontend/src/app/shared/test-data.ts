@@ -347,8 +347,6 @@ export const objective: Objective = {
   description: 'description',
   teamId: 2,
   quarterId: 2,
-  quarterLabel: 'GJ 22/23-Q2',
-  isBacklogQuarter: false,
   state: State.ONGOING,
   isWriteable: true
 };
@@ -360,8 +358,6 @@ export const objectiveWriteableFalse: Objective = {
   description: 'descriptionWriteableFalse',
   teamId: 2,
   quarterId: 2,
-  quarterLabel: 'GJ 22/23-Q2',
-  isBacklogQuarter: false,
   state: State.NOTSUCCESSFUL,
   isWriteable: false
 };

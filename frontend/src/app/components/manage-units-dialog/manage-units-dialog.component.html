@@ -1,4 +1,4 @@
-<app-dialog-template-core [title]="'Enheiten verwalten'">
+<app-dialog-template-core [title]="'Einheiten verwalten'">
   <ng-container content>
     <ng-container *ngFor="let unit of allUnits | async; let i = index" class="row mb-3">
       <div *ngIf="unit.isDefault">
@@ -18,9 +18,10 @@
       <button
         [attr.data-testId]="'submit'"
         type="submit"
-        (click)="saveUnits()"
+        (click)="submit()"
         color="primary"
         mat-flat-button
+        [disabled]="fg.invalid"
       >
         Speichern
       </button>

@@ -5,8 +5,7 @@ CREATE  TABLE unit
     unit_name      TEXT                  NOT NULL,
     is_default      boolean                  NOT NULL,
     created_by_id     BIGINT,
-    PRIMARY KEY (id),
-    UNIQUE (unit_name)
+    PRIMARY KEY (id)
 );
 
 CREATE SEQUENCE sequence_unit START 1;

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UnitService } from '../../services/unit.service';
 import { Unit } from '../../shared/types/enums/unit';
-import { map, Observable, ReplaySubject } from 'rxjs';
+import { forkJoin, map, Observable, ReplaySubject } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { FormControlsOf, Item } from '../action-plan/action-plan.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-manage-units-dialog',
@@ -20,17 +21,31 @@ export class ManageUnitsDialogComponent implements OnInit {
     unitFormArray: new FormArray<FormGroup<FormControlsOf<Item>>>([])
   });
 
-  constructor(private unitService: UnitService) {
+  constructor(private unitService: UnitService, private dialogRef: MatDialogRef<ManageUnitsDialogComponent>) {
   }
 
-  saveUnits() {
-    /*
-     * this.unitService.checkForNewUnit(this.unitSearchTerm)
-     *     .subscribe((result:Unit)=> this.unitService.createUnit(result)
-     *         .subscribe((unit)=>  this.keyResultForm.get('metric')
-     *             ?.get('unit')
-     *             ?.setValue(unit)));
-     */
+  submit() {
+    const items = this.fg.get('unitFormArray')?.value as Item[];
+    const units = items.map((i) => {
+      return { id: i.id,
+        unitName: i.item } as Unit;
+    });
+
+    forkJoin(this.getNewUnits(units)
+      .concat(this.getUpdatableUnits(units)))
+      .subscribe((complete) => {
+        this.dialogRef.close();
+      });
+  }
+
+  getUpdatableUnits(units: Unit[]) {
+    return units.filter((u) => u.id)
+      .map((u) => this.unitService.updateUnit(u));
+  }
+
+  getNewUnits(units: Unit[]) {
+    return units.filter((u) => !u.id)
+      .map((u) => this.unitService.createUnit(u));
   }
 
   ngOnInit(): void {

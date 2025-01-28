@@ -33,6 +33,8 @@ public class Unit {
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @Size(max = 4096, min = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Column(nullable = false)
     private String unitName;
 
     @CreatedBy

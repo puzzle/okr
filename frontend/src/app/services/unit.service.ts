@@ -24,6 +24,10 @@ export class UnitService {
     return this.httpClient.post<Unit>(this.API_URL, unit);
   }
 
+  updateUnit(unit: Unit) {
+    return this.httpClient.put<Unit>(this.API_URL + '/' + unit.id, unit);
+  }
+
   checkForNewUnit(unitName: string): Observable<Unit> {
     const newUnit = { unitName: unitName,
       isDefault: false } as Unit;

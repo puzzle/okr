@@ -74,7 +74,7 @@ public class OverviewMapper {
         return new OverviewObjectiveDto(overview.getOverviewId().getObjectiveId(),
                                         overview.getObjectiveTitle(),
                                         overview.getObjectiveState(),
-                                        new OverviewQuarterDto(overview.getQuarterId(), overview.getQuarterLabel()),
+                                        new OverviewQuarterDto(overview.getQuarterId(), overview.getQuarterLabel(), overview.isBacklogQuarter()),
                                         keyResults);
     }
 

@@ -1,4 +1,4 @@
 package ch.puzzle.okr.dto.overview;
 
-public record OverviewQuarterDto(Long id, String label) {
+public record OverviewQuarterDto(Long id, String label, boolean isBacklogQuarter) {
 }

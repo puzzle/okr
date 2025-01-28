@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
@@ -36,7 +37,16 @@ public class OverviewBusinessService {
 
         List<Overview> overviews = overviewPersistenceService
                 .getFilteredOverview(quarterId, teamIds, objectiveQuery, authorizationUser);
+
+        this.setBacklogQuarters(overviews);
         return sortOverview(overviews, authorizationUser);
+    }
+
+    private void setBacklogQuarters(List<Overview> overviews) {
+        for(Overview overview: overviews) {
+            Quarter overviewQuarter = quarterBusinessService.getQuarterById(overview.getQuarterId());
+            overview.setBacklogQuarter(overviewQuarter.isBacklogQuarter());
+        }
     }
 
     private List<Overview> sortOverview(List<Overview> overviews, AuthorizationUser authorizationUser) {

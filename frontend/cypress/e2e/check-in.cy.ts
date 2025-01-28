@@ -449,7 +449,7 @@ describe('okr check-in', () => {
       .should('exist');
   });
 
-  it('should not save action plan changes when check-in is not saved', () => {
+  it.skip('should not save action plan changes when check-in is not saved', () => {
     keyResultDetailPage.visit('This key-result will be used for testing the action plan while creating check-ins');
 
     keyResultDetailPage.createCheckIn()

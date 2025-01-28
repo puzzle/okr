@@ -20,9 +20,10 @@
                 (change)="changeIsChecked($event, i)"
                 formGroupName="id"
                 class="col-auto"
+                #checkbox
               >
               </mat-checkbox>
-              <div class="col bg-display-element break-word okr-form-label d-flex align-items-center" [ngClass]="{ 'text-decoration-line-through': action.getRawValue().isChecked }">
+              <div class="col bg-display-element break-word okr-form-label d-flex align-items-center" [ngClass]="{ 'text-decoration-line-through': checkbox.checked }">
                 {{ action.getRawValue().item }}
               </div>
             </span>

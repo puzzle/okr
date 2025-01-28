@@ -35,7 +35,7 @@ describe('CheckInFormOrdinalComponent', () => {
     component = fixture.componentInstance;
     component.keyResult = keyResultOrdinalMin as unknown as KeyResultOrdinal;
     component.dialogForm = new FormGroup({
-      value: new FormControl<string>('', [Validators.required]),
+      ordinalZone: new FormControl<string>('', [Validators.required]),
       confidence: new FormControl<number>(5, [Validators.required,
         Validators.min(1),
         Validators.max(10)])
@@ -50,35 +50,35 @@ describe('CheckInFormOrdinalComponent', () => {
   });
 
   it('should set zone of check-in to fail if value is empty', waitForAsync(async() => {
-    expect(component.dialogForm.controls['value'].value)
+    expect(component.dialogForm.controls['ordinalZone'].value)
       .toBe('');
   }));
 
   it('should be able to set zone to fail', waitForAsync(async() => {
     const radioButtons = await loader.getAllHarnesses(MatRadioButtonHarness);
     await radioButtons[0].check();
-    expect(component.dialogForm.controls['value'].value)
+    expect(component.dialogForm.controls['ordinalZone'].value)
       .toBe(Zone.FAIL);
   }));
 
   it('should be able to set zone to commit', waitForAsync(async() => {
     const radioButtons = await loader.getAllHarnesses(MatRadioButtonHarness);
     await radioButtons[1].check();
-    expect(component.dialogForm.controls['value'].value)
+    expect(component.dialogForm.controls['ordinalZone'].value)
       .toBe(Zone.COMMIT);
   }));
 
   it('should be able to set zone to target', waitForAsync(async() => {
     const radioButtons = await loader.getAllHarnesses(MatRadioButtonHarness);
     await radioButtons[2].check();
-    expect(component.dialogForm.controls['value'].value)
+    expect(component.dialogForm.controls['ordinalZone'].value)
       .toBe(Zone.TARGET);
   }));
 
   it('should be able to set zone to stretch', waitForAsync(async() => {
     const radioButtons = await loader.getAllHarnesses(MatRadioButtonHarness);
     await radioButtons[3].check();
-    expect(component.dialogForm.controls['value'].value)
+    expect(component.dialogForm.controls['ordinalZone'].value)
       .toBe(Zone.STRETCH);
   }));
 
@@ -86,7 +86,7 @@ describe('CheckInFormOrdinalComponent', () => {
     const radioButtons = await loader.getAllHarnesses(MatRadioButtonHarness);
     await radioButtons[3].check();
     await radioButtons[1].check();
-    expect(component.dialogForm.controls['value'].value)
+    expect(component.dialogForm.controls['ordinalZone'].value)
       .toBe(Zone.COMMIT);
   }));
 });

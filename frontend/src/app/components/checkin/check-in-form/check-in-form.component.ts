@@ -10,10 +10,11 @@ import { Action } from '../../../shared/types/model/action';
 import { ActionService } from '../../../services/action.service';
 import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
 import { TranslateService } from '@ngx-translate/core';
-import { CheckIn } from '../../../shared/types/model/check-in';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
 import { BehaviorSubject } from 'rxjs';
+import { Zone } from '../../../shared/types/enums/zone';
+import { numberValidator } from '../../../shared/constant-library';
 
 @Component({
   selector: 'app-check-in-form',
@@ -34,7 +35,9 @@ export class CheckInFormComponent implements OnInit {
   isAddingAction = false;
 
   dialogForm = new FormGroup({
-    value: new FormControl<string>('', [Validators.required]),
+    metricValue: new FormControl<number | undefined>(undefined, [Validators.required,
+      numberValidator()]),
+    ordinalZone: new FormControl<Zone>(Zone.FAIL, [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required,
       Validators.min(0),
       Validators.max(10)]),
@@ -42,6 +45,9 @@ export class CheckInFormComponent implements OnInit {
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
     actionList: new FormControl<Action[]>([])
   });
+
+  checkInTypes: string[] = ['metricValue',
+    'ordinalZone'];
 
   protected readonly formInputCheck = formInputCheck;
 
@@ -57,6 +63,7 @@ export class CheckInFormComponent implements OnInit {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
     this.setDefaultValues();
+    this.setValidators(this.keyResult.keyResultType);
   }
 
   ngOnInit() {
@@ -65,19 +72,13 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.patchValue({ actionList: actionList });
   }
 
-  getErrorMessage(error: string, field: string, maxLength: number): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error)
-      .format(maxLength);
-  }
-
   setDefaultValues() {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
-    if (this.data.checkIn != null) {
-      this.checkIn = this.data.checkIn;
-      this.dialogForm.controls.value.setValue(this.getCheckInValue());
-      this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-      this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
-      this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
+    this.checkIn = this.data.checkIn;
+
+    if (this.checkIn != null) {
+      this.dialogForm.patchValue({ ...this.checkIn });
+      this.setValueOrZone();
       return;
     }
 
@@ -95,6 +96,12 @@ export class CheckInFormComponent implements OnInit {
     this.checkIn = { confidence: 5 } as CheckInMin;
   }
 
+  setValueOrZone() {
+    this.keyResult.keyResultType === 'metric'
+      ? this.dialogForm.controls.metricValue.setValue((this.checkIn as CheckInMetricMin).value)
+      : this.dialogForm.controls.ordinalZone.setValue((this.checkIn as CheckInOrdinalMin).zone);
+  }
+
   calculateTarget(keyResult: KeyResultMetric): number {
     return keyResult.stretchGoal - (keyResult.stretchGoal - keyResult.baseline) * 0.3;
   }
@@ -104,7 +111,6 @@ export class CheckInFormComponent implements OnInit {
 
     const actionList: Action[] = this.actionList$.value as Action[];
     this.dialogForm.patchValue({ actionList: actionList });
-
     const baseCheckIn: any = {
       id: this.checkIn.id,
       version: this.checkIn.version,
@@ -113,26 +119,21 @@ export class CheckInFormComponent implements OnInit {
       changeInfo: this.dialogForm.controls.changeInfo.value,
       initiatives: this.dialogForm.controls.initiatives.value
     };
-    const checkIn: CheckIn = {
-      ...baseCheckIn,
-      [this.keyResult.keyResultType === 'ordinal' ? 'zone' : 'value']: this.dialogForm.controls.value.value
-    };
 
-    this.checkInService.saveCheckIn(checkIn)
+    if (this.keyResult.keyResultType === 'metric') {
+      baseCheckIn.value = this.dialogForm.controls.metricValue.value;
+    }
+    if (this.keyResult.keyResultType === 'ordinal') {
+      baseCheckIn.zone = this.dialogForm.controls.ordinalZone.value;
+    }
+
+    this.checkInService.saveCheckIn(baseCheckIn)
       .subscribe(() => {
         this.actionService.updateActions(this.dialogForm.value.actionList!)
           .subscribe(() => {
             this.dialogRef.close();
           });
       });
-  }
-
-  getCheckInValue(): string {
-    if ((this.checkIn as CheckInMetricMin).value != null) {
-      return (this.checkIn as CheckInMetricMin).value!.toString();
-    } else {
-      return (this.checkIn as CheckInOrdinalMin).zone!;
-    }
   }
 
   getKeyResultMetric(): KeyResultMetric {
@@ -177,5 +178,12 @@ export class CheckInFormComponent implements OnInit {
     this.actionList$.next(actionList);
     this.dialogForm.patchValue({ actionList: actionList });
     this.isAddingAction = false;
+  }
+
+  setValidators(type: string) {
+    this.checkInTypes.map((e) => this.dialogForm.get(e))
+      .forEach((e) => e?.disable({ emitEvent: false }));
+    this.dialogForm.get(this.checkInTypes.filter((formName) => formName.includes(type)))
+      ?.enable({ emitEvent: false });
   }
 }

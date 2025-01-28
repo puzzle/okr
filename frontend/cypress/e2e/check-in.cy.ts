@@ -44,6 +44,28 @@ describe('okr check-in', () => {
     cy.contains('- A new action on the action-plan');
   });
 
+  it('should show an error message when new check-in value is not numeric', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This key-result will have errors')
+      .withMetricValues(Unit.NUMBER, '21', '51')
+      .submit();
+
+    const detailPage = keyResultDetailPage
+      .visit('Very important keyresult')
+      .createCheckIn()
+      .fillMetricCheckInValue('asdf');
+    cy.contains('Neuer Wert muss eine Zahl sein.');
+
+    detailPage.fillMetricCheckInValue('21. 2');
+    cy.contains('Neuer Wert muss eine Zahl sein.');
+
+    detailPage.fillMetricCheckInValue('123');
+    cy.contains('Neuer Wert muss eine Zahl sein.')
+      .should('not.exist');
+  });
+
+
   it('should create check-in metric and assert correct owner', () => {
     overviewPage
       .addKeyResult()

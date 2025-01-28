@@ -8,19 +8,16 @@
             <input
               class="dialog-form-field pe-0"
               [attr.data-testId]="'check-in-metric-value'"
-              [ngClass]="formInputCheck(dialogForm, 'value')"
-              formControlName="value"
+              [ngClass]="formInputCheck(dialogForm, 'metricValue')"
+              formControlName="metricValue"
               id="value"
-              metricCheckIn
             />
           </div>
 
           <span class="okr-form-label col-auto h-fit ps-0">{{ generateUnitLabel() }}</span>
         </form>
       </div>
-      <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'value')">
-        <span>{{ getErrorMessage("MUST_BE_NUMBER", "Neuer Wert") }}</span>
-      </mat-error>
+      <app-error [controlPath]="['metricValue']" [name]="'Neuer Wert'"></app-error>
     </div>
   </div>
 

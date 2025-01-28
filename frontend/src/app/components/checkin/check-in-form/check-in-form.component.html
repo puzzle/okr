@@ -68,9 +68,7 @@
             id="change-info"
             formControlName="changeInfo"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'changeInfo')">
-            <span>{{ getErrorMessage("MAX_VALUE", "Kommentar / Veränderung", 4096) }}</span>
-          </mat-error>
+          <app-error [controlPath]="['changeInfo']" [name]="'Kommentar/ Veränderung'"></app-error>
         </div>
       </div>
 
@@ -97,9 +95,7 @@
             formControlName="initiatives"
             id="initiatives"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'initiatives')">
-            <span>{{ getErrorMessage("MAX_VALUE", "Massnahmen", 4096) }}</span>
-          </mat-error>
+          <app-error [controlPath]="['initiatives']" [name]="'Massnahmen'"></app-error>
         </div>
       </div>
 

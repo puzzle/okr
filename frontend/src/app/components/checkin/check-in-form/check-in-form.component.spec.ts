@@ -29,9 +29,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { DialogTemplateCoreComponent } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
+import {
+  DialogTemplateCoreComponent
+} from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { Action } from '../../../shared/types/model/action';
+import { Zone } from '../../../shared/types/enums/zone';
 
 const dialogMock = {
   close: jest.fn()
@@ -72,14 +75,22 @@ describe('CheckInFormComponent', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: MAT_DIALOG_DATA,
-          useValue: { keyResult: {} } },
-        { provide: MatDialogRef,
-          useValue: dialogMock },
-        { provide: CheckInService,
-          useValue: checkInServiceMock },
-        { provide: ActionService,
-          useValue: actionServiceMock }
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { keyResult: {} }
+        },
+        {
+          provide: MatDialogRef,
+          useValue: dialogMock
+        },
+        {
+          provide: CheckInService,
+          useValue: checkInServiceMock
+        },
+        {
+          provide: ActionService,
+          useValue: actionServiceMock
+        }
       ],
       declarations: [CheckInFormComponent,
         DialogTemplateCoreComponent,
@@ -98,7 +109,7 @@ describe('CheckInFormComponent', () => {
   it('should save check-in correctly if key-result is metric', waitForAsync(async() => {
     component.checkIn = checkInMetric;
     component.keyResult = keyResultMetric;
-    component.dialogForm.controls['value'].setValue(checkInMetric?.value!.toString());
+    component.dialogForm.controls['metricValue'].setValue(checkInMetric?.value);
     component.dialogForm.controls['confidence'].setValue(checkInMetric.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInMetric.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInMetric.initiatives);
@@ -113,9 +124,9 @@ describe('CheckInFormComponent', () => {
         id: checkInMetric.id,
         version: checkInMetric.version,
         confidence: checkInMetric.confidence,
-        value: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
+        value: checkInMetric.value,
         keyResultId: keyResultMetric.id
       });
     expect(actionServiceMock.updateActions)
@@ -125,7 +136,7 @@ describe('CheckInFormComponent', () => {
   it('should save check-in correctly if key-result is ordinal', waitForAsync(async() => {
     component.checkIn = checkInOrdinal;
     component.keyResult = keyResultOrdinal;
-    component.dialogForm.controls['value'].setValue(checkInOrdinal?.zone!.toString());
+    component.dialogForm.controls['ordinalZone'].setValue(checkInOrdinal?.zone as Zone);
     component.dialogForm.controls['confidence'].setValue(checkInOrdinal.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInOrdinal.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInOrdinal.initiatives);
@@ -156,7 +167,6 @@ describe('CheckInFormComponent', () => {
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: checkInMetric.confidence,
-        value: checkInMetric.value!.toString(),
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
         actionList: undefined
@@ -170,7 +180,6 @@ describe('CheckInFormComponent', () => {
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: keyResultOrdinal.lastCheckIn!.confidence,
-        value: '',
         changeInfo: '',
         initiatives: '',
         actionList: []
@@ -184,7 +193,6 @@ describe('CheckInFormComponent', () => {
     expect(component.dialogForm.value)
       .toStrictEqual({
         confidence: keyResultActions.lastCheckIn!.confidence,
-        value: '',
         changeInfo: '',
         initiatives: '',
         actionList: [action1,

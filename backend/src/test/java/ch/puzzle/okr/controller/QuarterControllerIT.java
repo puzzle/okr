@@ -43,7 +43,8 @@ class QuarterControllerIT {
             .withEndDate(LocalDate.of(2022, 12, 31))
             .build();
 
-    static QuarterDto quarter1Dto = new QuarterDto(quarter1.getId(), quarter1.getLabel(), quarter1.getStartDate(), quarter1.getEndDate(), quarter1.isBacklogQuarter());
+    static QuarterDto quarter1Dto = new QuarterDto(quarter1
+            .getId(), quarter1.getLabel(), quarter1.getStartDate(), quarter1.getEndDate(), quarter1.isBacklogQuarter());
 
     static Quarter quarter2 = Quarter.Builder
             .builder()
@@ -53,7 +54,8 @@ class QuarterControllerIT {
             .withEndDate(LocalDate.of(2023, 3, 31))
             .build();
 
-    static QuarterDto quarter2Dto = new QuarterDto(quarter2.getId(), quarter2.getLabel(), quarter2.getStartDate(), quarter2.getEndDate(), quarter2.isBacklogQuarter());
+    static QuarterDto quarter2Dto = new QuarterDto(quarter2
+            .getId(), quarter2.getLabel(), quarter2.getStartDate(), quarter2.getEndDate(), quarter2.isBacklogQuarter());
 
     static Quarter backlogQuarter = Quarter.Builder
             .builder()
@@ -63,7 +65,11 @@ class QuarterControllerIT {
             .withEndDate(null)
             .build();
 
-    static QuarterDto backlogQuarterDto = new QuarterDto(backlogQuarter.getId(), backlogQuarter.getLabel(), backlogQuarter.getStartDate(), backlogQuarter.getEndDate(), backlogQuarter.isBacklogQuarter());
+    static QuarterDto backlogQuarterDto = new QuarterDto(backlogQuarter.getId(),
+                                                         backlogQuarter.getLabel(),
+                                                         backlogQuarter.getStartDate(),
+                                                         backlogQuarter.getEndDate(),
+                                                         backlogQuarter.isBacklogQuarter());
 
     static List<Quarter> quarterList = Arrays.asList(quarter1, quarter2, backlogQuarter);
 

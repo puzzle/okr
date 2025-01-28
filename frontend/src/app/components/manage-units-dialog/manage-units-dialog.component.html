@@ -1,14 +1,23 @@
 <app-dialog-template-core [title]="'Einheiten verwalten'">
   <ng-container content>
-    <ng-container *ngFor="let unit of allUnits | async; let i = index" class="row mb-3">
-      <div *ngIf="unit.isDefault">
-        unit: {{ unit.unitName }}
-      </div>
-    </ng-container>
+    <p>Einheiten (Standard)</p>
+    <div class="d-flex gap-2 flex-column">
+      <ng-container *ngFor="let unit of allUnits | async; let i = index">
+
+        <span *ngIf="unit.isDefault" class="bg-display-element w-100">
+          {{ unit.unitName }}
+        </span>
+
+      </ng-container>
+    </div>
+
 
     <div [formGroup]="fg">
       <span formArrayName="unitFormArray">
-        <app-action-plan [movable]="false" [addItemSubject]="actinPlanAddItemSubject"></app-action-plan>
+        <app-action-plan [movable]="false" [addItemSubject]="actinPlanAddItemSubject">
+          <top-title>Eigene Einheiten:</top-title>
+          <add-text>Eigene Einheit hinzufügen</add-text>
+        </app-action-plan>
       </span>
     </div>
 

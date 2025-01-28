@@ -161,24 +161,14 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   createNewUnit() {
-    const newUnit = { unitName: this.unitSearchTerm,
-      isDefault: false } as Unit;
-    this.unitOptions.push(newUnit);
-    this.keyResultForm.get('metric')
-      ?.get('unit')
-      ?.setValue(newUnit);
-
-    this.dialogService
-      .openConfirmDialog('CONFIRMATION.UNIT_CREATE')
-      .afterClosed()
-      .subscribe((result) => {
-        if (result) {
-          this.unitService.createUnit(newUnit)
-            .subscribe((unit: Unit) => this.keyResultForm.get('metric')
-              ?.get('unit')
-              ?.setValue(unit));
-        }
-      });
+    this.unitService.checkForNewUnit(this.unitSearchTerm)
+      .subscribe((result: Unit) => this.unitService.createUnit(result)
+        .subscribe((unit) => {
+          this.unitOptions.push(unit);
+          this.keyResultForm.get('metric')
+            ?.get('unit')
+            ?.setValue(unit);
+        }));
   }
 
   private filter(value: string): Unit[] {
@@ -202,7 +192,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
     const rawValue = this.keyResultForm.get('metric')
       ?.get('unit')
       ?.getRawValue();
-    const value = rawValue?.unitName || rawValue;
+    const value = rawValue?.unitName || rawValue || '';
     const doesSearchAlreadyExist = this.unitOptions.some((option) => option.unitName.toLowerCase()
       .trim() === value.toLowerCase()
       .trim());

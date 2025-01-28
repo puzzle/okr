@@ -8,16 +8,15 @@ import { CheckInMin } from '../../../shared/types/model/check-in-min';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../shared/types/model/action';
 import { ActionService } from '../../../services/action.service';
-import { actionListToItemList, formInputCheck, hasFormFieldErrors, itemListToActionList } from '../../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
+import { actionListToItemList, formInputCheck, itemListToActionList } from '../../../shared/common';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
-import { BehaviorSubject } from 'rxjs';
 import { Zone } from '../../../shared/types/enums/zone';
 import { numberValidator } from '../../../shared/constant-library';
 
 import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
 import { Observable, ReplaySubject } from 'rxjs';
+
 @Component({
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
@@ -53,17 +52,13 @@ export class CheckInFormComponent implements OnInit {
 
   actionPlanAddItemSubject = new ReplaySubject<Item | undefined>();
 
-
   protected readonly formInputCheck = formInputCheck;
-
-  protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private checkInService: CheckInService,
-    private actionService: ActionService,
-    private translate: TranslateService
+    private actionService: ActionService
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
@@ -79,7 +74,7 @@ export class CheckInFormComponent implements OnInit {
 
   setDefaultValues() {
     actionListToItemList(this.keyResult.actionList)
-      .forEach((e) => {
+      .forEach((e: Item) => {
         this.addNewItem(e);
       });
     this.checkIn = this.data.checkIn;

@@ -40,7 +40,6 @@ export class ObjectiveComponent {
 
   @Input() set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
-    console.log(objective);
   }
 
   getStateTooltip(stateString: string): string {

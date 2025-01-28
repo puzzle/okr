@@ -61,7 +61,7 @@ public class Quarter {
     }
 
     public boolean isBacklogQuarter() {
-        return Objects.equals(this.label, BACK_LOG_QUARTER_LABEL) && this.startDate == null && this.endDate == null;
+        return this.label.equals(BACK_LOG_QUARTER_LABEL) && this.startDate == null && this.endDate == null;
     }
 
     @Override

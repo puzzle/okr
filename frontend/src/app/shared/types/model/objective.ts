@@ -9,8 +9,6 @@ export interface Objective {
   state: State;
   teamId: number;
   quarterId: number;
-  quarterLabel: string;
-  isBacklogQuarter: boolean;
   createdOn?: Date;
   modifiedOn?: Date;
   createdBy?: User;

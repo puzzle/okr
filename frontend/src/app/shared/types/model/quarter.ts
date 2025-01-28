@@ -9,8 +9,6 @@ export class Quarter {
     this.isBacklogQuarter = isBacklogQuarter;
   }
 
-  readonly isBacklogQuarter: boolean;
-
   readonly id: number;
 
   readonly label: string;
@@ -18,6 +16,8 @@ export class Quarter {
   readonly startDate: Date | null;
 
   readonly endDate: Date | null;
+
+  readonly isBacklogQuarter: boolean;
 
   fullLabel(): string {
     return this.isCurrent() ? this.label + ' Aktuell' : this.label;

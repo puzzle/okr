@@ -1,9 +1,15 @@
 <app-dialog-template-core [title]="'Enheiten verwalten'">
   <ng-container content>
-    <div *ngFor="let unit of allUnits | async; let i = index" class="row mb-3">
+    <ng-container *ngFor="let unit of allUnits | async; let i = index" class="row mb-3">
       <div *ngIf="unit.isDefault">
         unit: {{ unit.unitName }}
       </div>
+    </ng-container>
+
+    <div [formGroup]="fg">
+      <span formArrayName="unitFormArray">
+        <app-action-plan></app-action-plan>
+      </span>
     </div>
 
   </ng-container>

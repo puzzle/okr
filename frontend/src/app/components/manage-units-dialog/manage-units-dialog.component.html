@@ -1,6 +1,11 @@
 <app-dialog-template-core [title]="'Enheiten verwalten'">
   <ng-container content>
-    <!--        <app-key-result-form [keyResultForm]="keyResultForm" [keyResult]="data.keyResult"></app-key-result-form>-->
+    <div *ngFor="let unit of allUnits | async; let i = index" class="row mb-3">
+      <div *ngIf="unit.isDefault">
+        unit: {{ unit.unitName }}
+      </div>
+    </div>
+
   </ng-container>
   <ng-container actions>
     <div class="col-auto">

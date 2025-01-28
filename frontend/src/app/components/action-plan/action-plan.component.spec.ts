@@ -25,8 +25,16 @@ const item1: Item = { item: 'item1',
 const item2: Item = { item: 'item2',
   isChecked: false,
   id: 2 };
+const item3: Item = { item: 'item3',
+  isChecked: false,
+  id: 3 };
 const items: Item[] = [item1,
-  item2];
+  item2,
+  item3];
+
+const formArrayNameMock = {
+  name: jest.fn()
+};
 
 describe('ActionPlanComponent', () => {
   let component: ActionPlanComponent;

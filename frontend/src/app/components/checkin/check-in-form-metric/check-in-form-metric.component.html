@@ -6,7 +6,7 @@
         <form [formGroup]="dialogForm" class="okr-form-row align-items-center">
           <div class="col">
             <input
-              class="dialog-form-field pe-0"
+              class="dialog-form-field pe-0 text-end"
               [attr.data-testId]="'check-in-metric-value'"
               [ngClass]="formInputCheck(dialogForm, 'metricValue')"
               formControlName="metricValue"
@@ -14,7 +14,7 @@
             />
           </div>
 
-          <span class="okr-form-label col-auto h-fit ps-0">{{ generateUnitLabel() }}</span>
+          <div class="okr-form-label col-auto h-fit ps-0">{{ generateUnitLabel() }}</div>
         </form>
       </div>
       <app-error [controlPath]="['metricValue']" [name]="'Neuer Wert'"></app-error>
@@ -23,9 +23,11 @@
 
   <div class="col">
     <div *ngIf="getCheckInMetric() as metricCheckIn" class="okr-form-row okr-form-label-input-container">
-      <label class="okr-form-label okr-form-col">Letzter Wert</label>
-      <div class="okr-form-col text-black">
-        <div class="dialog-data-show dialog-form-field py-2">{{ metricCheckIn.value }}{{ generateUnitLabel() }}</div>
+      <div *ngIf="metricCheckIn.value != null">
+        <label class="okr-form-label okr-form-col">Letzter Wert</label>
+        <div class="okr-form-col text-black text-end">
+          <div class="dialog-data-show latest-value-background">{{ metricCheckIn.value }} {{ generateUnitLabel() }}</div>
+        </div>
       </div>
     </div>
   </div>

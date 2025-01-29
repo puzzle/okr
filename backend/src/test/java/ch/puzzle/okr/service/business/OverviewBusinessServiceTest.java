@@ -13,13 +13,10 @@ import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
 import ch.puzzle.okr.service.validation.OverviewValidationService;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.sql.ast.tree.expression.Over;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

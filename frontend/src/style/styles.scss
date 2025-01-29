@@ -90,7 +90,7 @@ body.okr {
 }
 
 .key-result-attribute-show {
-  background-color: variables.$key-result-attribute-bg;
+  background-color: variables.$key-result-attribute-bg !important;
   padding: 0.25em 0.75rem;
   border-radius: 2px;
 }

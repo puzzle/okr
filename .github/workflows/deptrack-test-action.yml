@@ -1,0 +1,7 @@
+on: push
+
+jobs:
+  generate-and-push-sbom:
+    uses: './.github/workflows/deptrack-push-action.yml'
+    with:
+      project-name: okr-staging

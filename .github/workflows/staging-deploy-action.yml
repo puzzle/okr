@@ -208,45 +208,9 @@ jobs:
           curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=$COMMITPREFIX Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
 
   generate-and-push-sbom:
-    runs-on: ubuntu-latest
-    needs: [upload-to-quay]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Install cdxgen
-        working-directory: frontend
-        run: npm install -g @cyclonedx/cdxgen@11.1.2
-
-      - name: 'Store semver version from POM'
-        run: echo "VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_ENV
-
-      - name: 'Generate SBOM for maven dependencies'
-        working-directory: backend
-        run: mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
-
-      - name: 'Generate SBOM for npm dependencies'
-        working-directory: frontend
-        run: cdxgen -o ../sbom-npm.json -t npm .
-
-      - name: 'Merge frontend and backend SBOMs'
-        run: |
-          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --hierarchical --name OKR --version ${{ env.VERSION }} --input-files data/backend/target/bom.xml data/sbom-npm.json --output-file data/sbom.xml
-
-      - name: 'Validate SBOM'
-        run: docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli validate --input-format xml --input-version v1_6 --input-file data/sbom.xml --fail-on-errors
-
-      - name: 'Push merged SBOM to dependency track'
-        env:
-          PROJECT_NAME: okr-staging
-        run: |
-          curl --verbose -s --location --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
-          --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \
-          --header "Content-Type: multipart/form-data" \
-          --form "autoCreate=true" \
-          --form "projectName=${PROJECT_NAME:-$GITHUB_REPOSITORY}" \
-          --form "projectVersion=latest" \
-          --form "bom=@sbom.xml"
+    uses: './.github/workflows/deptrack-push-action.yml'
+    with:
+      project-name: okr-staging
 
   sonarqube:
     runs-on: ubuntu-latest

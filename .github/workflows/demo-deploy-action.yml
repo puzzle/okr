@@ -178,7 +178,10 @@ jobs:
 
       - name: Install cdxgen
         working-directory: frontend
-        run: npm install -g @cyclonedx/cdxgen@8.6.0
+        run: npm install -g @cyclonedx/cdxgen@11.1.2
+
+      - name: 'Store semver version from POM'
+        run: echo "VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_ENV
 
       - name: 'Generate SBOM for maven dependencies'
         working-directory: backend
@@ -186,11 +189,14 @@ jobs:
 
       - name: 'Generate SBOM for npm dependencies'
         working-directory: frontend
-        run: cdxgen -o ../sbom-npm.xml -t npm .
+        run: cdxgen -o ../sbom-npm.json -t npm .
 
       - name: 'Merge frontend and backend SBOMs'
         run: |
-          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --input-files data/backend/target/bom.xml data/sbom-npm.xml --output-file data/sbom.xml
+          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --hierarchical --name OKR --version ${{ env.VERSION }} --input-files data/backend/target/bom.xml data/sbom-npm.json --output-file data/sbom.xml
+
+      - name: 'Validate SBOM'
+        run: docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli validate --input-format xml --input-version v1_6 --input-file data/sbom.xml --fail-on-errors
 
       - name: 'Push merged SBOM to dependency track'
         env:

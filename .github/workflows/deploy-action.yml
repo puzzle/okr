@@ -184,6 +184,7 @@ jobs:
 
   generate-and-push-sbom:
     uses: './.github/workflows/deptrack-push-action.yml'
+    secrets: inherit
     with:
       project-name: okr-production
 

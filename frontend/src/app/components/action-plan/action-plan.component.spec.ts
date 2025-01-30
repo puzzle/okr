@@ -97,7 +97,10 @@ describe('ActionPlanComponent', () => {
       .toHaveLength(1);
     expect(component.getFormControlArray()
       .getRawValue())
-      .toStrictEqual([minItem]);
+      .toStrictEqual([expect.objectContaining({
+        item: '',
+        isChecked: false
+      })]);
   });
 
   function setFormControlArrayValue(items: Item[]) {

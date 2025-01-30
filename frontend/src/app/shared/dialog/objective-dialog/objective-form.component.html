@@ -105,11 +105,22 @@
       </button>
       <span [ngClass]="data.objective.objectiveId ? 'pe-2': 'pe-2 ps-2'">
         <button
-          mat-button
-          *ngIf="allowedToSaveBacklog()"
+          mat-stroked-button
+          *ngIf="allowedToSaveBacklog() && !data.objective.objectiveId"
           [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
           color="primary"
-          [ngClass]="data.objective.objectiveId ? 'mat-mdc-unelevated-button': 'mat-mdc-outlined-button'"
+          type="submit"
+          (click)="onSubmit('ONGOING')"
+          [attr.data-testId]="'save'"
+        >
+          Speichern
+        </button>
+
+        <button
+          mat-flat-button
+          *ngIf="allowedToSaveBacklog() && data.objective.objectiveId"
+          [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
+          color="primary"
           type="submit"
           (click)="onSubmit('ONGOING')"
           [attr.data-testId]="'save'"

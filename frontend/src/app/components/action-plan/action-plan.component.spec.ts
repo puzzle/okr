@@ -91,7 +91,7 @@ describe('ActionPlanComponent', () => {
   });
 
 
-  it.skip('should add new action with empty text into array', () => {
+  it('should add new action with empty text into array', () => {
     component.addNewItem();
     expect(component.getFormControlArray())
       .toHaveLength(1);

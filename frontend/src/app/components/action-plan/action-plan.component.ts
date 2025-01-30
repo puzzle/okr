@@ -8,7 +8,7 @@ import {
   FormArray,
   FormArrayName,
   FormControl,
-  FormGroup, Validators
+  FormGroup
 } from '@angular/forms';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -90,8 +90,7 @@ export class ActionPlanComponent implements AfterContentInit {
 
   addNewItem(item?: Item) {
     const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item?.item || '', [Validators.minLength(2),
-        Validators.required]),
+      item: new FormControl<string>(item?.item || ''),
       id: new FormControl<number | undefined>(item?.id || undefined),
       isChecked: new FormControl<boolean>(item?.isChecked || false)
     } as FormControlsOf<Item>);

@@ -325,7 +325,7 @@ describe('ErrorInterceptor', () => {
       ok: true,
       body: {
         objectiveTitle: 'Das ist der Titel',
-        isBacklogQuarter: true
+        quarterId: 999
       }
     };
 

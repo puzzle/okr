@@ -1,58 +1,59 @@
-<div class="okr-form-row okr-form-label-input-container">
+<div class="w-100">
   <label for="action-list" class="okr-form-label">
     <ng-content select="top-title">Action Plan (optional)</ng-content>
-
   </label>
   <div
     cdkDropList
     *ngIf="this.getFormControlArray()"
     (keydown.enter)="preventAddingNewItems($event)"
-    class="okr-form-col d-flex flex-column gap-2"
+    class="container-fluid d-flex flex-column gap-2 gx-0"
     (cdkDropListDropped)="drop($event)"
     id="action-list"
   >
     <div
-      class="container-fluid action-point-item"
+      class="container-fluid"
       *ngFor="let item of getFormControlArray().controls!; index as i; trackBy: trackByFn"
       [formGroupName]="i"
       cdkDrag
       [cdkDragDisabled]="!movable"
     >
-      <div class="drag-drop-dots" *ngIf="movable">
-        <img
+      <div class="row">
+
+        <span
+          id="drag-drop-dots"
           cdkDragHandle
-          class="icons"
-          src="assets/icons/drag_indicator.svg"
-          alt="Drag indicator"
-        />
-      </div>
-      <span class="row">
-        <input
-          #listItem
-          (keydown.arrowUp)="changeItemPosition(i, i - 1)"
-          (keydown.arrowDown)="changeItemPosition(i, i + 1)"
-          class="action-input col"
-          formControlName="item"
-          [attr.data-testId]="'action-input'"
-        />
-
-        <button
-          (keydown.enter)="removeAction(i)"
-          (click)="removeAction(i)"
-          class="btn btn-link col-auto"
-          *ngIf="onDelete"
-
-        ><img
-
-            class="icons bin-icon cursor-pointer focus-outline"
-            src="assets/icons/delete-icon.svg"
-            alt="Delete bin"
+          *ngIf="movable"
+        >
+          <img src="assets/icons/drag_indicator.svg" alt="Drag indicator"/>
+        </span>
+        <span class="row">
+          <input
+            #listItem
+            (keydown.arrowUp)="changeItemPosition(i, i - 1)"
+            (keydown.arrowDown)="changeItemPosition(i, i + 1)"
+            class="action-input col"
+            formControlName="item"
+            [attr.data-testId]="'action-input'"
           />
-        </button>
-      </span>
+
+          <button
+            (keydown.enter)="removeAction(i)"
+            (click)="removeAction(i)"
+            class="btn btn-link col-auto"
+            *ngIf="onDelete"
+
+          ><img
+
+              class="icons bin-icon cursor-pointer focus-outline"
+              src="assets/icons/delete-icon.svg"
+              alt="Delete bin"
+            />
+          </button>
+        </span>
+      </div>
 
       <app-error
-        [controlPath]="['actionList.'+i, 'item']"
+        [controlPath]="['actionList.' + i, 'item']"
         [name]="'Element'"
         class="col-12"
       ></app-error>

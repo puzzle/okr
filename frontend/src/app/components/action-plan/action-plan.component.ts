@@ -33,7 +33,7 @@ export interface Item {
 export class ActionPlanComponent implements AfterContentInit {
   @Input() onDelete?: (index: number) => Observable<any>;
 
-  @Input() movable = false;
+  @Input() movable = true;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;

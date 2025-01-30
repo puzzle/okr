@@ -18,6 +18,29 @@ import { Unit } from '../../shared/types/enums/unit';
 import { testUser, UNIT_CHF, UNIT_NUMBER } from '../../shared/test-data';
 import { of } from 'rxjs';
 
+const units: Unit[] = [
+  { id: 1,
+    unitName: 'Kilogram',
+    owner: testUser,
+    isDefault: false },
+  { id: 1,
+    unitName: 'Kilogram',
+    owner: testUser,
+    isDefault: false },
+  { id: undefined,
+    unitName: 'Meter',
+    owner: testUser,
+    isDefault: false },
+  { id: undefined,
+    unitName: 'Meter',
+    owner: testUser,
+    isDefault: false },
+  { id: undefined,
+    unitName: 'Meter',
+    owner: testUser,
+    isDefault: false }
+];
+
 describe('ManageUnitsDialogComponent', () => {
   let component: ManageUnitsDialogComponent;
   let fixture: ComponentFixture<ManageUnitsDialogComponent>;
@@ -112,31 +135,6 @@ describe('ManageUnitsDialogComponent', () => {
   });
 
   it('should filter and return only units with an id', () => {
-    // Arrange
-    const units: Unit[] = [
-      { id: 1,
-        unitName: 'Kilogram',
-        owner: testUser,
-        isDefault: false },
-      { id: 1,
-        unitName: 'Kilogram',
-        owner: testUser,
-        isDefault: false },
-      { id: undefined,
-        unitName: 'Meter',
-        owner: testUser,
-        isDefault: false },
-      { id: undefined,
-        unitName: 'Meter',
-        owner: testUser,
-        isDefault: false },
-      { id: undefined,
-        unitName: 'Meter',
-        owner: testUser,
-        isDefault: false }
-    ];
-
-    // Act
     const result = component.getUpdatableUnits(units);
 
     // Assert
@@ -145,30 +143,6 @@ describe('ManageUnitsDialogComponent', () => {
   });
 
   it('should filter and return only units without an id', () => {
-    // Arrange
-    const units: Unit[] = [
-      { id: 1,
-        unitName: 'Kilogram',
-        owner: testUser,
-        isDefault: false },
-      { id: 1,
-        unitName: 'Kilogram',
-        owner: testUser,
-        isDefault: false },
-      { id: undefined,
-        unitName: 'Meter',
-        owner: testUser,
-        isDefault: false },
-      { id: undefined,
-        unitName: 'Meter',
-        owner: testUser,
-        isDefault: false },
-      { id: undefined,
-        unitName: 'Meter',
-        owner: testUser,
-        isDefault: false }
-    ];
-    // Act
     const result = component.getNewUnits(units);
 
     // Assert
@@ -194,11 +168,14 @@ describe('ManageUnitsDialogComponent', () => {
         item: 'Meter',
         isChecked: false }
     ];
-
+    (component.fg.get('unitFormArray') as FormArray)?.clear();
     mockItems.forEach((item) => addNewItem(item));
 
     const updateUnitSpy = jest.spyOn(unitServiceMock, 'updateUnit');
+    updateUnitSpy.mockReset();
     const createUnitSpy = jest.spyOn(unitServiceMock, 'createUnit');
+    createUnitSpy.mockReset();
+
     const closeSpy = jest.spyOn(dialogRefMock, 'close');
 
     unitServiceMock.updateUnit.mockReturnValue(of({}));

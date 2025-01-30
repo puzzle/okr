@@ -138,7 +138,8 @@ function ownerValidator(): ValidatorFn {
 function unitValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const unit = control.value as Unit;
-    if (unit?.unitName && unit.unitName.length > 3) {
+    console.log(unit);
+    if (unit?.unitName && unit.unitName.length > 1) {
       return null;
     }
     return { invalid_unit: { value: control.value } };

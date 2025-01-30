@@ -35,6 +35,10 @@ export class ErrorComponent {
 
   buildErrorMessage(key: string, value: any): string {
     const displayName = this.name || this.controlPath[this.controlPath.length - 1];
+    console.log(this.translate.instant('DIALOG_ERRORS.' + key.toUpperCase(), {
+      fieldName: displayName,
+      ...value
+    }));
     return this.translate.instant('DIALOG_ERRORS.' + key.toUpperCase(), { fieldName: displayName,
       ...value });
   }

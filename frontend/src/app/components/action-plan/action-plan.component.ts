@@ -39,7 +39,7 @@ export class ActionPlanComponent implements OnDestroy {
 
   @Input() movable = true;
 
-  @Input() movable = false;
+  @Input() movable = true;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;

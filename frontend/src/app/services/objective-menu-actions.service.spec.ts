@@ -79,4 +79,32 @@ describe('ObjectiveMenuActionsService', () => {
         .toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('get correct release action', () => {
+    it('should call releaseFromBacklogAction for an objective in the backlog quarter', () => {
+      const objectiveMin = { quarter: { isBacklogQuarter: true } } as ObjectiveMin;
+      const spy = jest.spyOn(service.actions, 'releaseFromBacklogAction');
+
+      // @ts-expect-error
+      service.getReleaseAction(objectiveMin);
+
+      expect(spy)
+        .toHaveBeenCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith(objectiveMin);
+    });
+
+    it('should call releaseFromQuarterAction for an objective in a non-backlog quarter', () => {
+      const objectiveMin = { quarter: { isBacklogQuarter: false } } as ObjectiveMin;
+      const spy = jest.spyOn(service.actions, 'releaseFromQuarterAction');
+
+      // @ts-expect-error
+      service.getReleaseAction(objectiveMin);
+
+      expect(spy)
+        .toHaveBeenCalledTimes(1);
+      expect(spy)
+        .toHaveBeenCalledWith();
+    });
+  });
 });

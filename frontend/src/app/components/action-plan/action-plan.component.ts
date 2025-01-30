@@ -122,4 +122,6 @@ export class ActionPlanComponent implements OnDestroy {
       isChecked: new FormControl<boolean>(item?.isChecked || false)
     } as FormControlsOf<Item>);
   }
+
+  protected readonly identity = identity;
 }

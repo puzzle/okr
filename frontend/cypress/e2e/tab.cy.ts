@@ -214,7 +214,7 @@ describe('tabbing workflows', () => {
       overviewPage
         .addOngoingKeyResult()
         .fillKeyResultTitle('A metric Keyresult for tabbing tests')
-        .withMetricValues(UNIT_CHF, '10', '100')
+        .withMetricValues(UNIT_CHF.unitName, '10', '100')
         .submit();
       KeyResultDetailPage.do()
         .visit('A metric Keyresult for tabbing tests');

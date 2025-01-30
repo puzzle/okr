@@ -23,7 +23,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('Very important keyresult')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '51'
+        UNIT_PERCENT.unitName, '21', undefined, '51'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -48,7 +48,7 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This key-result will have errors')
-      .withMetricValues(UNIT_NUMBER, '21', '51')
+      .withMetricValues(UNIT_NUMBER.unitName, '21', '51')
       .submit();
 
     const detailPage = keyResultDetailPage
@@ -71,7 +71,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('This keyresult is for the owner')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '51'
+        UNIT_PERCENT.unitName, '21', undefined, '51'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -121,7 +121,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('Very important keyresult')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '51'
+        UNIT_PERCENT.unitName, '21', undefined, '51'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -145,7 +145,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('This will not be good')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '52'
+        UNIT_PERCENT.unitName, '21', undefined, '52'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -191,7 +191,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('This will give a checkin list')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '52'
+        UNIT_PERCENT.unitName, '21', undefined, '52'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -230,7 +230,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('Here we edit a metric checkin')
       .withMetricValues(
-        UNIT_CHF, '10', undefined, '300'
+        UNIT_CHF.unitName, '10', undefined, '300'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -267,7 +267,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('A new KeyResult for checking checkin list')
       .withMetricValues(
-        UNIT_EUR, '10', undefined, '300'
+        UNIT_EUR.unitName, '10', undefined, '300'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -291,7 +291,7 @@ describe('okr check-in', () => {
       .addKeyResult()
       .fillKeyResultTitle('There is another kr with fte')
       .withMetricValues(
-        UNIT_FTE, '10', undefined, '300'
+        UNIT_FTE.unitName, '10', undefined, '300'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -351,7 +351,7 @@ describe('okr check-in', () => {
       .addKeyResult(undefined, 'draft objective title')
       .fillKeyResultTitle('I am a metric keyresult for testing')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '52'
+        UNIT_PERCENT.unitName, '21', undefined, '52'
       )
       .fillKeyResultDescription('This is my description')
       .submit();
@@ -376,7 +376,7 @@ describe('okr check-in', () => {
       .addKeyResult(undefined, objectiveName)
       .fillKeyResultTitle('I am a keyresult metric')
       .withMetricValues(
-        UNIT_PERCENT, '45', undefined, '60'
+        UNIT_PERCENT.unitName, '45', undefined, '60'
       )
       .fillKeyResultDescription('Description')
       .submit();
@@ -402,7 +402,7 @@ describe('okr check-in', () => {
     overviewPage.addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
       .fillKeyResultTitle(keyResultTitle)
       .withMetricValues(
-        UNIT_NUMBER, '1', undefined, '5'
+        UNIT_NUMBER.unitName, '1', undefined, '5'
       )
       .addActionPlanElement('First action')
       .addActionPlanElement('Second action')

@@ -120,7 +120,7 @@ function setupMetricKr(
     .addKeyResult()
     .fillKeyResultTitle(name)
     .withMetricValues(
-      UNIT_PERCENT, baseline.toString(), undefined, stretchGoal.toString()
+      UNIT_PERCENT.unitName, baseline.toString(), undefined, stretchGoal.toString()
     )
     .submit();
   KeyResultDetailPage.do()

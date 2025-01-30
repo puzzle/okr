@@ -31,8 +31,9 @@ export class UnitTransformationPipe implements PipeTransform {
       case 'EUR':
         return ' EUR';
       case 'NUMBER':
-      default:
         return '';
+      default:
+        return ' ' + label;
     }
   }
 }

@@ -36,7 +36,7 @@ class UnitPersistenceServiceIT {
 
         // assert
         assertNotNull(createdUnit.getId());
-        assertUser("Mocked", "User", "gl@gl.com", createdUnit.getCreatedBy());
+        assertUser("Mocked user first name for test", "Mocked user last name for test", "gl@gl.com", createdUnit.getCreatedBy());
         unitPersistenceService.deleteById(createdUnit.getId());
     }
 

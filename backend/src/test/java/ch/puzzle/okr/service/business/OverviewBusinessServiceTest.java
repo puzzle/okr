@@ -47,7 +47,11 @@ class OverviewBusinessServiceTest {
         return createOverviews(authorizationUser);
     }
 
-    private static Quarter normalQuarter = Quarter.Builder.builder().withId(QUARTER_ID).withLabel("GJ 22/23-Q2").build();
+    private static Quarter normalQuarter = Quarter.Builder
+            .builder()
+            .withId(QUARTER_ID)
+            .withLabel("GJ 22/23-Q2")
+            .build();
 
     private static List<Overview> createOverviews(AuthorizationUser authorizationUser) {
         long index = 1L;

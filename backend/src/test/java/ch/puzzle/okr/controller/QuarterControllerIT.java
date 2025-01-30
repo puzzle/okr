@@ -2,7 +2,6 @@ package ch.puzzle.okr.controller;
 
 import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 

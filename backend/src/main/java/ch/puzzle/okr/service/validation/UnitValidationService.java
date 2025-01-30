@@ -5,11 +5,10 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.repository.UnitRepository;
 import ch.puzzle.okr.service.persistence.UnitPersistenceService;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UnitValidationService extends ValidationBase<Unit, Long, UnitRepository, UnitPersistenceService> {
@@ -40,7 +39,10 @@ public class UnitValidationService extends ValidationBase<Unit, Long, UnitReposi
         if (this.getPersistenceService().existsUnitByUnitName(model.getUnitName())) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_MUST_BE_UNIQUE,
-                                                 List.of("unitname",model.getUnitName(), this.getPersistenceService().getModelName()));
+                                                 List
+                                                         .of("unitname",
+                                                             model.getUnitName(),
+                                                             this.getPersistenceService().getModelName()));
         }
     }
 }

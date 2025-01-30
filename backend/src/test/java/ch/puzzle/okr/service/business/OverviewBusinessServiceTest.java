@@ -47,6 +47,8 @@ class OverviewBusinessServiceTest {
         return createOverviews(authorizationUser);
     }
 
+    private static Quarter normalQuarter = Quarter.Builder.builder().withId(QUARTER_ID).withLabel("GJ 22/23-Q2").build();
+
     private static List<Overview> createOverviews(AuthorizationUser authorizationUser) {
         long index = 1L;
         List<Overview> overviews = new ArrayList<>(List
@@ -137,8 +139,9 @@ class OverviewBusinessServiceTest {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser))
                 .thenReturn(createOverviews());
         when(quarterBusinessService.getCurrentQuarter())
-                .thenReturn(Quarter.Builder.builder().withId(QUARTER_ID).withLabel("GJ 22/23-Q2").build());
-        when(quarterBusinessService.getQuarterById(any())).thenReturn(Quarter.Builder.builder().withId(QUARTER_ID).withLabel("GJ 22/23-Q2").build());
+                .thenReturn(normalQuarter);
+        when(quarterBusinessService.getQuarterById(any()))
+                .thenReturn(normalQuarter);
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(null, teamIds, "", authorizationUser);
 

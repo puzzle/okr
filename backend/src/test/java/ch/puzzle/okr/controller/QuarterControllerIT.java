@@ -86,7 +86,7 @@ class QuarterControllerIT {
     @Test
     void shouldGetAllQuarters() throws Exception {
         BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(quarterList);
-        BDDMockito.given(quarterMapper.toDtos(any())).willReturn(quarterDtoList);
+        BDDMockito.given(quarterMapper.toDtos(quarterList)).willReturn(quarterDtoList);
 
         mvc
                 .perform(get("/api/v2/quarters").contentType(MediaType.APPLICATION_JSON))

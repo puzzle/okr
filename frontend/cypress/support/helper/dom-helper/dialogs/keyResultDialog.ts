@@ -1,5 +1,4 @@
 import Dialog from './dialog';
-import { Unit } from '../../../../../src/app/shared/types/enums/unit';
 import ConfirmDialog from './confirmDialog';
 import Chainable = Cypress.Chainable;
 
@@ -15,12 +14,16 @@ export default class KeyResultDialog extends Dialog {
   }
 
   withMetricValues(
-    unit: Unit, baseline?: string, targetGoal?: string, stretchGoal?: string
+    unit: string, baseline?: string, targetGoal?: string, stretchGoal?: string
   ) {
     cy.getByTestId('metric-tab')
       .click();
 
-    this.fillInputByTestId('unit', unit.unitName);
+    cy.getByTestId('unit')
+      .click()
+      .clear()
+      .type(unit);
+
     cy.realPress('ArrowDown')
       .realPress('Enter');
 
@@ -33,6 +36,12 @@ export default class KeyResultDialog extends Dialog {
     if (stretchGoal !== undefined) {
       this.fillInputByTestId('stretch-goal', stretchGoal);
     }
+    return this;
+  }
+
+  editMetricValue(newValue: string, indexOfInputField: number) {
+    this.openEditMetricValues();
+    this.editUnitWithIndex(newValue, indexOfInputField);
     return this;
   }
 
@@ -99,6 +108,38 @@ export default class KeyResultDialog extends Dialog {
     cy.contains('Speichern');
     cy.contains('Speichern & Neu');
     cy.contains('Abbrechen');
+  }
+
+  private openEditMetricValues() {
+    cy.getByTestId('manage-units', 'Einheiten Verwalten')
+      .click();
+
+    cy.contains('Einheiten verwalten');
+    cy.contains('Einheiten (Standard):');
+    cy.contains('PERCENT (%)');
+    cy.contains('NUMBER');
+    cy.contains('CHF');
+    cy.contains('EUR');
+    cy.contains('FTE');
+    cy.contains('Eigene Einheiten');
+    cy.contains('Eigene Einheit hinzufügen');
+  }
+
+  private editUnitWithIndex(newValue: string, index: number) {
+    cy.get('app-dialog-template-core')
+      .filter('[ng-reflect-title="Einheiten verwalten"]')
+      .within(() => {
+        const input = cy.getByTestId('action-input')
+          .eq(index)
+          .click();
+
+        input
+          .clear()
+          .type(newValue);
+
+        cy.getByTestId('submit')
+          .click();
+      });
   }
 
   override submit() {

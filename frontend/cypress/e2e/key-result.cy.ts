@@ -2,18 +2,17 @@ import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
-import { UNIT_CHF, UNIT_PERCENT } from '../../src/app/shared/test-data';
+
+let overviewPage = new CyOverviewPage();
+let keyResultDetailPage = new KeyResultDetailPage();
+
+beforeEach(() => {
+  overviewPage = new CyOverviewPage();
+  keyResultDetailPage = new KeyResultDetailPage();
+  cy.loginAsUser(users.gl);
+});
 
 describe('okr key-result', () => {
-  let overviewPage = new CyOverviewPage();
-  let keyResultDetailPage = new KeyResultDetailPage();
-
-  beforeEach(() => {
-    overviewPage = new CyOverviewPage();
-    keyResultDetailPage = new KeyResultDetailPage();
-    cy.loginAsUser(users.gl);
-  });
-
   it('should create new metric key-result', () => {
     const keyResultDialog = overviewPage
       .addKeyResult()
@@ -23,25 +22,25 @@ describe('okr key-result', () => {
       .fillKeyResultDescription('This is my description');
 
     keyResultDialog.withMetricValues(
-      UNIT_PERCENT, '999999999999999999999999999999', '7', undefined
+      'PERCENT', '999999999999999999999999999999', '7', undefined
     );
     keyResultDialog.checkOnDialog(() => cy.contains('Baseline darf maximal 20 Zeichen lang sein.'));
 
     keyResultDialog.withMetricValues(
-      UNIT_PERCENT, '0', '7', undefined
+      'PERCENT', '0', '7', undefined
     );
     cy.getByTestId('stretch-goal')
       .should('have.value', '10');
 
     keyResultDialog.withMetricValues(
-      UNIT_PERCENT, '0', undefined, '100'
+      'PERCENT', '0', undefined, '100'
     );
     cy.getByTestId('target-goal')
       .should('have.value', '70');
 
     keyResultDialog
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '52'
+        'PERCENT', '21', undefined, '52'
       )
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
@@ -93,7 +92,7 @@ describe('okr key-result', () => {
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult with a new one')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '52'
+        'PERCENT', '21', undefined, '52'
       )
       .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description when creating and then open a new')
@@ -177,7 +176,7 @@ describe('okr key-result', () => {
       .addKeyResult()
       .fillKeyResultTitle('We want not to change metric keyresult title')
       .withMetricValues(
-        UNIT_PERCENT, '0', undefined, '10'
+        'PERCENT', '0', undefined, '10'
       )
       .checkForDialogTextMetric()
       .fillKeyResultDescription('This is my description')
@@ -194,7 +193,7 @@ describe('okr key-result', () => {
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '10'))
       .withMetricValues(
-        UNIT_PERCENT, '0', '70', undefined
+        'PERCENT', '0', '70', undefined
       )
       .run(cy.getByTestId('ordinal-tab')
         .click())
@@ -207,7 +206,7 @@ describe('okr key-result', () => {
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '100'))
       .withMetricValues(
-        UNIT_PERCENT, '5', '8.5', undefined
+        'PERCENT', '5', '8.5', undefined
       )
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '10'))
@@ -251,7 +250,7 @@ describe('okr key-result', () => {
     KeyResultDialog.do()
       .fillKeyResultTitle('This is my new title for the new metric keyresult')
       .withMetricValues(
-        UNIT_PERCENT, '21', undefined, '56'
+        'PERCENT', '21', undefined, '56'
       )
       .fillKeyResultDescription('This is my new description')
       .submit();
@@ -331,7 +330,7 @@ describe('okr key-result', () => {
     KeyResultDialog.do()
       .fillKeyResultTitle('My title')
       .withMetricValues(
-        UNIT_CHF, 'abc', undefined, '123'
+        'CHF', 'abc', undefined, '123'
       );
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -339,7 +338,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        UNIT_PERCENT, '45', undefined, '52'
+        'PERCENT', '45', undefined, '52'
       );
     cy.getByTestId('submit')
       .should('not.be.disabled');
@@ -351,7 +350,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        UNIT_PERCENT, '45', undefined, 'abc'
+        'PERCENT', '45', undefined, 'abc'
       );
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -359,7 +358,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        UNIT_PERCENT, '45', undefined, '83'
+        'PERCENT', '45', undefined, '83'
       );
     cy.getByTestId('submit')
       .should('not.be.disabled');
@@ -468,3 +467,37 @@ describe('okr key-result', () => {
       .run(cy.buttonShouldBePrimary('submit'));
   });
 });
+
+describe('metric key-result edit units', () => {
+  it('should be able to add a custom unit and save it', () => {
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This key-result has a new value!')
+      .editMetricValue('Bitcoins', 0)
+      .withMetricValues(
+        'Bitcoins', '0', '7', '10'
+      )
+      .submit();
+
+    // Should does not work yet, once the value is displayed on the detail view of the key-result correctly this will work
+    overviewPage.getKeyResultByName('This key-result has a new value!')
+      .click()
+      .should('contain', 'Bitcoins');
+  });
+
+  it('should be able to edit a custom unit and save it', () => {
+    overviewPage
+      .getKeyResultByName('This key-result has a new value!')
+      .click();
+
+    keyResultDetailPage
+      .editKeyResult()
+      .editMetricValue('Dogecoin', 1)
+      .submit();
+  });
+
+  it('should not save the custom unit when the save button is not clicked', () => {
+
+  });
+});
+

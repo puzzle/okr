@@ -25,7 +25,7 @@ export class ManageUnitsDialogComponent implements OnInit {
   constructor(private unitService: UnitService, private dialogRef: MatDialogRef<ManageUnitsDialogComponent>, private unitPipe: UnitTransformationPipe) {
   }
 
-  private getChangedItems() {
+  getChangedItems() {
     const itemControls = (this.fg.get('unitFormArray') as FormArray)?.controls as FormGroup<FormControlsOf<Item>>[];
     return itemControls.filter((c) => c.dirty)
       .map((c) => c.getRawValue() as Item);

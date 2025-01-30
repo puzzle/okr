@@ -171,6 +171,9 @@ describe('ManageUnitsDialogComponent', () => {
     (component.fg.get('unitFormArray') as FormArray)?.clear();
     mockItems.forEach((item) => addNewItem(item));
 
+    jest.spyOn(component, 'getChangedItems')
+      .mockReturnValue(mockItems);
+
     const updateUnitSpy = jest.spyOn(unitServiceMock, 'updateUnit');
     updateUnitSpy.mockReset();
     const createUnitSpy = jest.spyOn(unitServiceMock, 'createUnit');

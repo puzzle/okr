@@ -397,7 +397,7 @@ describe('okr check-in', () => {
       .contains('10%');
   });
 
-  it.skip('should be able to add actions to the action plan when creating a check-in', () => {
+  it('should be able to add actions to the action plan when creating a check-in', () => {
     const keyResultTitle = 'This key-result will be used for testing the action plan while creating check-ins';
     overviewPage.addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
       .fillKeyResultTitle(keyResultTitle)

@@ -315,7 +315,7 @@ describe('KeyResultTypeComponent', () => {
 
     it('should use default values', () => {
       expect(getValueOfForm(component.keyResultForm, ['metric',
-        'unit']))
+        'unit']).unitName)
         .toEqual('NUMBER');
 
       expect(getValueOfForm(component.keyResultForm, ['metric',

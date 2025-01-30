@@ -26,7 +26,7 @@ export class UnitTransformationPipe implements PipeTransform {
         return '%';
       case 'FTE':
         return ' FTE';
-      case ' CHF':
+      case 'CHF':
         return ' CHF';
       case 'EUR':
         return ' EUR';

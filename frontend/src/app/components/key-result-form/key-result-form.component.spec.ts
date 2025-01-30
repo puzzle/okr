@@ -170,7 +170,7 @@ describe('KeyResultFormComponent', () => {
         .toEqual(25);
 
       expect(getValueOfForm(component.keyResultForm, ['metric',
-        'unit']))
+        'unit']).unitName)
         .toEqual('CHF');
     });
 

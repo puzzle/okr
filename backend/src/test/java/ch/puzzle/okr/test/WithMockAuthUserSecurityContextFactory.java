@@ -15,8 +15,8 @@ public class WithMockAuthUserSecurityContextFactory implements WithSecurityConte
         User user = User.Builder
                 .builder()
                 .withEmail(annotation.email())
-                .withFirstName("Mocked")
-                .withLastName("User")
+                .withFirstName("Mocked user first name for test")
+                .withLastName("mocked user last name for test")
                 .build();
         context.setAuthentication(new JwtAuthenticationToken(TestHelper.mockJwtToken(user), List.of()));
         return context;

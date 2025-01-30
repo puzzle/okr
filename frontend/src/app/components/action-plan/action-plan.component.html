@@ -12,7 +12,7 @@
   >
     <div
       class="container-fluid"
-      *ngFor="let item of getFormControlArray().controls!; index as i; trackBy: trackByFn"
+      *ngFor="let item of getFormControlArray().controls!; index as i; trackBy: identity"
       [formGroupName]="i"
       cdkDrag
       [cdkDragDisabled]="!movable"

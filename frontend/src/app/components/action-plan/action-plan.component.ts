@@ -1,6 +1,12 @@
-import { AfterContentInit, Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterContentInit, ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { trackByFn } from '../../shared/common';
 import { DialogService } from '../../services/dialog.service';
 import {
   AbstractControl,
@@ -10,7 +16,7 @@ import {
   FormControl,
   FormGroup
 } from '@angular/forms';
-import { Observable, ReplaySubject } from 'rxjs';
+import { identity, Observable, ReplaySubject } from 'rxjs';
 
 export type FormControlsOf<T> = {
   [P in keyof T]: AbstractControl<T[P]>;
@@ -40,7 +46,7 @@ export class ActionPlanComponent implements AfterContentInit {
 
   @Input() addItemSubject: ReplaySubject<Item | undefined> = new ReplaySubject<Item | undefined>();
 
-  constructor(public dialogService: DialogService, private formArrayNameF: FormArrayName) {
+  constructor(public dialogService: DialogService, private formArrayNameF: FormArrayName, private cdRef: ChangeDetectorRef) {
   }
 
   changeItemPosition(currentIndex: number, newIndex: number) {
@@ -76,6 +82,13 @@ export class ActionPlanComponent implements AfterContentInit {
           if (result) {
             this.getFormControlArray()
               .removeAt(index);
+            const rawValue = this.getFormControlArray()
+              .getRawValue() as Item[];
+            this.getFormControlArray()
+              .clear();
+            this.cdRef.detectChanges();
+            rawValue.forEach((t) => this.addNewItem(t));
+            this.cdRef.detectChanges();
             if (item.id && this.onDelete) {
               this.onDelete(item.id)
                 .subscribe();
@@ -106,8 +119,6 @@ export class ActionPlanComponent implements AfterContentInit {
     event.preventDefault();
   }
 
-  protected readonly trackByFn = trackByFn;
-
   getFormControlArray() {
     return this.formArrayNameF.control as FormArray<FormGroup<FormControlsOf<Item>>>;
   }
@@ -115,4 +126,6 @@ export class ActionPlanComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     this.addItemSubject.subscribe((item) => this.addNewItem(item));
   }
+
+  protected readonly identity = identity;
 }

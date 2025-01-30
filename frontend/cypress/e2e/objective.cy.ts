@@ -249,7 +249,7 @@ describe('okr objective', () => {
       cy.contains('Move to another quarter on edit');
     });
 
-    it.skip('should have primary button on all objective dialogs', () => {
+    it('should have primary button on all objective dialogs', () => {
       overviewPage
         .addObjective()
         .fillObjectiveTitle('A objective for testing purposes')

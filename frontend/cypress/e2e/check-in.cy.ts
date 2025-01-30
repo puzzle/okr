@@ -48,7 +48,7 @@ describe('okr check-in', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This key-result will have errors')
-      .withMetricValues(Unit.NUMBER, '21', '51')
+      .withMetricValues(UNIT_NUMBER, '21', '51')
       .submit();
 
     const detailPage = keyResultDetailPage

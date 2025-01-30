@@ -40,7 +40,6 @@ class UnitPersistenceServiceIT {
         unitPersistenceService.deleteById(createdUnit.getId());
     }
 
-
     //
     private void assertUser(String firstName, String lastName, String email, User currentUser) {
         assertEquals(firstName, currentUser.getFirstName());

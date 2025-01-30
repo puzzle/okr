@@ -422,6 +422,7 @@ describe('okr check-in', () => {
       .fillMetricCheckInValue('3')
       .submit();
     cy.contains('Fourth action');
+    cy.wait(1000);
 
     keyResultDetailPage.editKeyResult();
     cy.getByTestId('action-input')

@@ -1,11 +1,12 @@
 export class Quarter {
   constructor(
-    id: number, label: string, startDate: Date | null, endDate: Date | null
+    id: number, label: string, startDate: Date | null, endDate: Date | null, isBacklogQuarter: boolean
   ) {
     this.id = id;
     this.label = label;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.isBacklogQuarter = isBacklogQuarter;
   }
 
   readonly id: number;
@@ -15,6 +16,8 @@ export class Quarter {
   readonly startDate: Date | null;
 
   readonly endDate: Date | null;
+
+  readonly isBacklogQuarter: boolean;
 
   fullLabel(): string {
     return this.isCurrent() ? this.label + ' Aktuell' : this.label;

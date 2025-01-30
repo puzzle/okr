@@ -24,7 +24,6 @@ public class ObjectiveMapper {
                                 objective.getTitle(),
                                 objective.getTeam().getId(),
                                 objective.getQuarter().getId(),
-                                objective.getQuarter().getLabel(),
                                 objective.getDescription(),
                                 objective.getState(),
                                 objective.getCreatedOn(),

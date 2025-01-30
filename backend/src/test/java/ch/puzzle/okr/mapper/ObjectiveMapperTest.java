@@ -89,7 +89,6 @@ class ObjectiveMapperTest {
         assertEquals(expected.getTitle(), actual.title());
         assertEquals(expected.getTeam().getId(), actual.teamId());
         assertEquals(expected.getQuarter().getId(), actual.quarterId());
-        assertEquals(expected.getQuarter().getLabel(), actual.quarterLabel());
         assertEquals(expected.getDescription(), actual.description());
         assertEquals(expected.getState(), actual.state());
         assertEquals(expected.getCreatedOn(), actual.createdOn());
@@ -109,7 +108,6 @@ class ObjectiveMapperTest {
                 TITLE, //
                 TEAM_ID, //
                 QUARTER_ID, //
-                QUARTER_LABEL, //
                 DESCRIPTION, //
                 STATE, //
                 CREATE_DATE_TIME, //
@@ -136,7 +134,6 @@ class ObjectiveMapperTest {
         assertEquals(expected.title(), actual.getTitle());
         assertEquals(expected.teamId(), actual.getTeam().getId());
         assertEquals(expected.quarterId(), actual.getQuarter().getId());
-        assertEquals(expected.quarterLabel(), actual.getQuarter().getLabel());
         assertEquals(expected.description(), actual.getDescription());
         assertEquals(expected.state(), actual.getState());
         assertEquals(expected.createdOn(), actual.getCreatedOn());

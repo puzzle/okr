@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import static ch.puzzle.okr.Constants.BACK_LOG_QUARTER_LABEL;
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
 import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -95,14 +95,14 @@ class QuarterBusinessServiceTest {
         Quarter backlogQuarter = Quarter.Builder
                 .builder()
                 .withId(BACK_LOG_QUARTER_ID)
-                .withLabel(BACK_LOG_QUARTER_LABEL)
+                .withLabel(BACKLOG_QUARTER_LABEL)
                 .build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
-        when(quarterPersistenceService.findByLabel(BACK_LOG_QUARTER_LABEL)).thenReturn(backlogQuarter);
+        when(quarterPersistenceService.findByLabel(BACKLOG_QUARTER_LABEL)).thenReturn(backlogQuarter);
 
         quarterList = quarterBusinessService.getQuarters();
         assertEquals(3, quarterList.size());
-        assertEquals(BACK_LOG_QUARTER_LABEL, quarterList.get(0).getLabel());
+        assertEquals(BACKLOG_QUARTER_LABEL, quarterList.get(0).getLabel());
         assertNull(quarterList.get(0).getStartDate());
         assertNull(quarterList.get(0).getEndDate());
     }

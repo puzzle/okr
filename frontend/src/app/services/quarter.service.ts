@@ -13,7 +13,7 @@ export class QuarterService {
     return this.http
       .get<Quarter[]>('/api/v2/quarters')
       .pipe(map((quarters) => quarters.map((quarter) => new Quarter(
-        quarter.id, quarter.label, quarter.startDate, quarter.endDate
+        quarter.id, quarter.label, quarter.startDate, quarter.endDate, quarter.isBacklogQuarter
       ))));
   }
 

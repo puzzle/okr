@@ -4,8 +4,7 @@ import static ch.puzzle.okr.test.OverviewTestHelper.QUARTER_ID;
 import static ch.puzzle.okr.test.OverviewTestHelper.teamIds;
 import static ch.puzzle.okr.test.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.models.Quarter;
@@ -14,6 +13,7 @@ import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
 import ch.puzzle.okr.service.validation.OverviewValidationService;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,12 @@ class OverviewBusinessServiceTest {
         return createOverviews(authorizationUser);
     }
 
+    private static Quarter normalQuarter = Quarter.Builder
+            .builder()
+            .withId(QUARTER_ID)
+            .withLabel("GJ 22/23-Q2")
+            .build();
+
     private static List<Overview> createOverviews(AuthorizationUser authorizationUser) {
         long index = 1L;
         List<Overview> overviews = new ArrayList<>(List
@@ -56,6 +62,7 @@ class OverviewBusinessServiceTest {
                         .withObjectiveTitle("Another Team Objective A")
                         .withTeamName("team-111")
                         .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 21, 18, 33))
+                        .withQuarterId(5L)
                         .build(),
                     Overview.Builder
                             .builder()
@@ -67,6 +74,7 @@ class OverviewBusinessServiceTest {
                             .withObjectiveTitle("Another Team Objective B")
                             .withTeamName("team-222")
                             .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 1, 8, 53))
+                            .withQuarterId(1L)
                             .build()));
 
         for (Long teamId : authorizationUser.extractTeamIds()) {
@@ -114,6 +122,7 @@ class OverviewBusinessServiceTest {
     void shouldReturnListOfOverviewsUsingGetFilteredOverview() {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "Objective", authorizationUser))
                 .thenReturn(createOverviews());
+        when(quarterBusinessService.getQuarterById(any())).thenReturn(new Quarter());
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "Objective",
                 authorizationUser);
@@ -134,7 +143,9 @@ class OverviewBusinessServiceTest {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, "", authorizationUser))
                 .thenReturn(createOverviews());
         when(quarterBusinessService.getCurrentQuarter())
-                .thenReturn(Quarter.Builder.builder().withId(QUARTER_ID).withLabel("GJ 22/23-Q2").build());
+                .thenReturn(normalQuarter);
+        when(quarterBusinessService.getQuarterById(any()))
+                .thenReturn(normalQuarter);
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(null, teamIds, "", authorizationUser);
 
@@ -196,10 +207,10 @@ class OverviewBusinessServiceTest {
     @DisplayName("Should return sorted list with teams that include the user first on getFilteredOverview()")
     @Test
     void shouldReturnSortedListWithUserTeamsFirstUsingGetFilteredOverview() {
-        Long firstLevelTeamId = 5L;
         AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))
                 .thenReturn(createOverviews(user));
+        when(quarterBusinessService.getQuarterById(any())).thenReturn(new Quarter());
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, null, user);
 
@@ -214,5 +225,20 @@ class OverviewBusinessServiceTest {
 
     private List<OverviewId> getOverviewIds(List<Overview> overviews) {
         return overviews.stream().map(Overview::getOverviewId).toList();
+    }
+
+    @Test
+    void shouldSetQuarterAsBacklogQuarter() {
+        when(overviewPersistenceService.getFilteredOverview(5L, teamIds, "", authorizationUser))
+                .thenReturn(createOverviews().subList(0,2));
+        when(quarterBusinessService.getQuarterById(5L))
+                .thenReturn(Quarter.Builder.builder().withId(5L).withLabel("Backlog").withStartDate(null).withEndDate(null).build());
+        when(quarterBusinessService.getQuarterById(1L))
+                .thenReturn(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").withStartDate(LocalDate.now()).withEndDate(LocalDate.of(3000, 10, 23)).build());
+
+        List<Overview> overviewList = overviewBusinessService.getFilteredOverview(5L, teamIds, "", authorizationUser);
+
+        assertTrue(overviewList.getFirst().isBacklogQuarter());
+        assertFalse(overviewList.getLast().isBacklogQuarter());
     }
 }

@@ -12,7 +12,7 @@ import { State } from '../../shared/types/enums/state';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
-  selector: 'app-objective-column',
+  selector: 'app-objective',
   templateUrl: './objective.component.html',
   styleUrls: ['./objective.component.scss'],
   standalone: false

@@ -72,7 +72,7 @@ describe('KeyResultDialogComponent', () => {
     id: 2,
     state: State.ONGOING,
     quarter: new Quarter(
-      1, 'GJ 22/23-Q2', new Date(), new Date()
+      1, 'GJ 22/23-Q2', new Date(), new Date(), false
     )
   };
 

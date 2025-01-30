@@ -25,14 +25,14 @@
   </section>
 
   <div class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2" [attr.data-testId]="'objective-container'">
-    <app-objective-column
+    <app-objective
       *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
       [attr.data-testId]="'objective'"
       [isWritable]="OVEntity.isWriteable"
       [objective]="objective"
       class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
       id="objective-column"
-    ></app-objective-column>
+    ></app-objective>
     <div *ngFor="let placeholder of [].constructor(2)" class="col-xs-12 col-md-6 col-xl-4 column-width h-0"></div>
   </div>
 </div>

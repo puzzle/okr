@@ -80,7 +80,7 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"isWriteable":true}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"isWriteable":true}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder
             .builder()
@@ -116,7 +116,6 @@ class ObjectiveControllerIT {
                                                                        OBJECTIVE_TITLE_1,
                                                                        1L,
                                                                        1L,
-                                                                       "GJ 22/23-Q2",
                                                                        DESCRIPTION,
                                                                        State.DRAFT,
                                                                        LocalDateTime.MAX,
@@ -127,7 +126,6 @@ class ObjectiveControllerIT {
                                                                        OBJECTIVE_TITLE_2,
                                                                        1L,
                                                                        1L,
-                                                                       "GJ 22/23-Q2",
                                                                        DESCRIPTION,
                                                                        State.DRAFT,
                                                                        LocalDateTime.MIN,
@@ -187,7 +185,6 @@ class ObjectiveControllerIT {
                                                       "Program Faster",
                                                       1L,
                                                       1L,
-                                                      "GJ 22/23-Q2",
                                                       "Just be faster",
                                                       State.DRAFT,
                                                       null,
@@ -231,7 +228,6 @@ class ObjectiveControllerIT {
                                                       TITLE,
                                                       1L,
                                                       1L,
-                                                      "GJ 22/23-Q2",
                                                       UPDATED_DESCRIPTION,
                                                       State.NOTSUCCESSFUL,
                                                       LocalDateTime.MIN,
@@ -267,7 +263,6 @@ class ObjectiveControllerIT {
                                                          TITLE,
                                                          1L,
                                                          1L,
-                                                         "GJ 22/23-Q2",
                                                          UPDATED_DESCRIPTION,
                                                          State.SUCCESSFUL,
                                                          LocalDateTime.MAX,

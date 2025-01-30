@@ -1,5 +1,7 @@
 package ch.puzzle.okr.models;
 
+import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -56,6 +58,10 @@ public class Quarter {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public boolean isBacklogQuarter() {
+        return Objects.equals(this.label, BACKLOG_QUARTER_LABEL) && this.startDate == null && this.endDate == null;
     }
 
     @Override

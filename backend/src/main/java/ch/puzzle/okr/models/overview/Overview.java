@@ -36,6 +36,9 @@ public class Overview implements WriteableInterface {
     @Transient
     private boolean writeable;
 
+    @Transient
+    private boolean backlogQuarter;
+
     public Overview() {
     }
 
@@ -147,9 +150,17 @@ public class Overview implements WriteableInterface {
         return writeable;
     }
 
+    public boolean isBacklogQuarter() {
+        return backlogQuarter;
+    }
+
     @Override
     public void setWriteable(boolean writeable) {
         this.writeable = writeable;
+    }
+
+    public void setBacklogQuarter(boolean backlogQuarter) {
+        this.backlogQuarter = backlogQuarter;
     }
 
     @Override

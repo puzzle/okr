@@ -21,16 +21,16 @@ const overviewService = {
 
 const quarters = [
   new Quarter(
-    999, 'Backlog', null, null
+    999, 'Backlog', null, null, true
   ),
   new Quarter(
-    2, '23.02.2025', new Date(), new Date()
+    2, '23.02.2025', new Date(), new Date(), false
   ),
   new Quarter(
-    5, '23.02.2025', new Date(), new Date()
+    5, '23.02.2025', new Date(), new Date(), false
   ),
   new Quarter(
-    7, '23.02.2025', new Date(), new Date()
+    7, '23.02.2025', new Date(), new Date(), false
   )
 ];
 

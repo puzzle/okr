@@ -7,7 +7,6 @@ import { ObjectiveMenuAfterActions } from '../components/objective/objective-men
 import { ObjectiveService } from './objective.service';
 import { RefreshDataService } from './refresh-data.service';
 import { ObjectiveMenuActions } from '../components/objective/objective-menu-actions';
-import { GJ_REGEX_PATTERN } from '../shared/constant-library';
 import { CompletedService } from './completed.service';
 
 export type ObjectiveMenuAction = () => MatDialogRef<any>;
@@ -77,16 +76,12 @@ export class ObjectiveMenuActionsService {
   }
 
   private getReleaseAction(objective: ObjectiveMin): ObjectiveMenuEntry {
-    return this.isInBacklogQuarter(objective)
+    return objective.quarter.isBacklogQuarter
       ? this.actions.releaseFromBacklogAction(objective)
       : this.actions.releaseFromQuarterAction();
   }
 
   private isObjectiveComplete(objective: ObjectiveMin): boolean {
     return objective.state == State.SUCCESSFUL || objective.state == State.NOTSUCCESSFUL;
-  }
-
-  private isInBacklogQuarter(objective: ObjectiveMin) {
-    return !GJ_REGEX_PATTERN.test(objective.quarter.label);
   }
 }

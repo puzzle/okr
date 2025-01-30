@@ -24,6 +24,7 @@ WIP         - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives
             - Erweiterung #1198: Dev Datenbank so angepasst, dass die Testuser jetzt Teams zugeordnet sind
             - Erweiterung #1136: Angular Pipes zu einer Pipe vereint und diese noch vereinfacht
             - Erweiterung #1169: Deploy Workflows aufgeräumt
+            - Erweiterung #1334: Model-Attribute isBacklogQuarter für eine eindeutige Identifizierung des Backlog-Quarters implementiert
 
             - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der Actionplan übernommen
             - Fehlerbehebung #1298: SCSS-Warnungen behoben
@@ -31,12 +32,14 @@ WIP         - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives
             - Fehlerbehebung #1220: Sonar code smells und risks behoben
             - Fehlerbehebung #1223: Deprecated Mockito Annotationen ersetzt
             - Fehlerbehebung #1270: Tests failen nun nicht mehr, wenn ein neues Quarter beginnt
+            - Fehlerbehebung #1347: SBOM wir nun wieder erfolgreich auf Dependency-Track gepusht
             - Fehlerbehebung #1171: Einhaltung von naming conventions im gesamten Tool sichergestellt
             - Fehlerbehebung #1256: Style von Objective duplizieren Dialog verbessert
             - Fehlerbehebung #1227: Schriftgrössen- und Stärken im gesamten Tool berichtigt
             - Fehlerbehebung #1237: Styling von Filter im Mobile Header verbessert
             - Fehlerbehebung #1225: Korrektes Laden der Schriftart sichergestellt
             - Fehlerbehebung #1211: Korrekte Hilfeseite URLs für die Umgebungen gesetzt
+            - Fehlerbehebung #1338: Unverwendetes version.ts inklusive dazugehöriger Command gelöscht
 
             - Wartung: Updates diverser Dependencies
 

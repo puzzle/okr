@@ -4,8 +4,7 @@ import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   DRAWER_ROUTES,
-  ERROR_MESSAGE_KEY_PREFIX,
-  GJ_REGEX_PATTERN, MessageEntry, MessageStatusCode,
+  ERROR_MESSAGE_KEY_PREFIX, MessageEntry, MessageStatusCode,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP
 } from '../shared/constant-library';
@@ -55,12 +54,11 @@ export class ErrorInterceptor implements HttpInterceptor {
       return;
     }
 
-    let messageKey = successMessageObj.key;
-    const isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
-    if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
-      messageKey += '_BACKLOG';
+    if (successMessageObj.key == 'OBJECTIVE.POST' && response.body.quarterId == 999) {
+      successMessageObj.key += '_BACKLOG';
     }
-    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + messageKey);
+
+    const message: string = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.key);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 

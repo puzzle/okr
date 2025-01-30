@@ -86,6 +86,7 @@
     "ATTRIBUTE_SIZE_BETWEEN": "Das Attribut {0} auf dem Objekt {1} muss folgende Länge haben: {2}-{3}.",
     "ATTRIBUTE_SET_FORBIDDEN": "Das Attribut {0} darf nicht während des Erstellens gesetzt sein.",
     "ATTRIBUTE_NOT_SET": "Das Attribut {0} ist nicht gesetzt.",
+    "ATTRIBUTE_MUST_BE_UNIQUE": "Das Attribut '{0}' mit dem Wert '{1}' auf dem Model {2} existiert bereits.",
     "ATTRIBUTE_CANNOT_CHANGE": "Das Attribut {0} auf dem Objekt {1} kann nicht geändert werden.",
     "ATTRIBUTE_MIN_VALUE": "Das Attribut {0} auf dem Objekt {1} muss mindestens einen Wert von {2} haben.",
     "ATTRIBUTE_MAX_VALUE": "Das Attribut {0} auf dem Objekt {1} darf maximal einen Wert von {2} haben.",

@@ -25,15 +25,26 @@ export class ManageUnitsDialogComponent implements OnInit {
   constructor(private unitService: UnitService, private dialogRef: MatDialogRef<ManageUnitsDialogComponent>, private unitPipe: UnitTransformationPipe) {
   }
 
+  private getChangedItems() {
+    const itemControls = (this.fg.get('unitFormArray') as FormArray)?.controls as FormGroup<FormControlsOf<Item>>[];
+    return itemControls.filter((c) => c.dirty)
+      .map((c) => c.getRawValue() as Item);
+  }
+
   submit() {
-    const items = this.fg.get('unitFormArray')?.value as Item[];
+    const items = this.getChangedItems();
+
     const units = items.map((i) => {
       return { id: i.id,
         unitName: i.item } as Unit;
     });
-
-    forkJoin(this.getNewUnits(units)
-      .concat(this.getUpdatableUnits(units)))
+    const allObservables = this.getNewUnits(units)
+      .concat(this.getUpdatableUnits(units));
+    if (allObservables.length === 0) {
+      this.dialogRef.close();
+      return;
+    }
+    forkJoin(allObservables)
       .subscribe((complete) => {
         this.dialogRef.close();
       });

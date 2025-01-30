@@ -13,4 +13,7 @@ public interface UnitRepository extends CrudRepository<Unit, Long> {
 
     List<Unit> findAllByCreatedById(Long userId);
 
+    boolean existsUnitByUnitName(String unitName);
+
+    boolean existsUnitByUnitNameAndIdNot(String unitName, Long id);
 }

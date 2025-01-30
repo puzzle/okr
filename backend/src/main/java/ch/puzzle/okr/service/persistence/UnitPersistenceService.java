@@ -31,6 +31,14 @@ public class UnitPersistenceService extends PersistenceBase<Unit, Long, UnitRepo
                                                                   List.of(Constants.UNIT, "unit name", unitName)));
     }
 
+    public boolean existsUnitByUnitName(String unitName) {
+        return getRepository().existsUnitByUnitName(unitName);
+    }
+
+    public boolean existsUnitByUnitNameAndIdNot(String unitName, Long id) {
+        return getRepository().existsUnitByUnitNameAndIdNot(unitName, id);
+    }
+
     public List<Unit> findUnitsByUser(Long userId) {
         return getRepository().findAllByCreatedById(userId);
     }

@@ -74,7 +74,6 @@ body.okr {
   }
 }
 
-// TODO: Find a better way to override the Angular Material default font once Angular 19 is installed. https://material.angular.io/guide/theming
 * {
   font-family: Roboto, sans-serif;
   font-variation-settings: 'wght' 400;
@@ -90,7 +89,7 @@ body.okr {
 }
 
 .key-result-attribute-show {
-  background-color: variables.$key-result-attribute-bg !important;
+  background-color: variables.$key-result-attribute-bg;
   padding: 0.25em 0.75rem;
   border-radius: 2px;
 }

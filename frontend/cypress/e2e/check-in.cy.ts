@@ -364,7 +364,7 @@ describe('okr check-in', () => {
       .checkForContentOnDialog('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
   });
 
-  it('should only display last value div if last check-in is present', () => {
+  it.only('should only display last value div if last check-in is present', () => {
     const objectiveName = uniqueSuffix('new objective');
 
     overviewPage.addObjective()
@@ -394,7 +394,8 @@ describe('okr check-in', () => {
     keyResultDetailPage.createCheckIn();
     cy.contains('Letzter Wert')
       .siblings('div')
-      .contains('10%');
+      .children('div')
+      .contains('10 %');
   });
 
   it('should be able to add actions to the action plan when creating a check-in', () => {

@@ -48,6 +48,7 @@
             <mat-option
               [attr.data-testId]="'create-new-unit-button'"
               (click)="createNewUnit()"
+              (keydown.enter)="createNewUnit()"
               *ngIf="canCreate((this.filteredUnitOptions | async)!)"
             >Create new</mat-option>
             <mat-option
@@ -62,7 +63,24 @@
           <app-error [controlPath]="['metric', 'unit']" [name]="'Einheit'"></app-error>
         </div>
       </div>
+      <button
+        (click)="openManageUnitsDialog()"
+        mat-button
+        color="primary"
+        class="col-auto"
+        id="unit-management-button"
+        [attr.data-testId]="'manage-units'"
+      >
+        <img
+          ngSrc="assets/icons/settings.svg"
+          alt="Settings icons"
+          width="20"
+          height="20"
+        />
+        Einheiten Verwalten
+      </button>
     </div>
+
   </ng-container>
 
 
@@ -89,21 +107,7 @@
   </div>
 </div>
 
-<button
-  (click)="openManageUnitsDialog()"
-  mat-button
-  color="primary"
-  id="unit-management-button"
-  [attr.data-testId]="'manage-units'"
->
-  <img
-    ngSrc="assets/icons/settings.svg"
-    alt="Settings icons"
-    width="20"
-    height="20"
-  />
-  Einheiten Verwalten
-</button>
+
 
 <ng-container *ngIf="isMetric(); else ordinalBlock">
   <div class="okr-form-row" formGroupName="metric">

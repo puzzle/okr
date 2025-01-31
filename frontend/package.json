@@ -8,7 +8,7 @@
     "build:staging": "ng build --configuration staging",
     "watch": "ng build --watch --configuration development",
     "watch:prod": "ng build --watch",
-    "test": "jest --silent",
+    "test": "jest --silent --runInBand",
     "prestart": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'hook copied'",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",

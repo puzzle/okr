@@ -3,8 +3,7 @@ import { KeyResultMetricMin } from './types/model/key-result-metric-min';
 import { State } from './types/enums/state';
 import { Action } from './types/model/action';
 import { filter, map, Observable, pairwise, shareReplay } from 'rxjs';
-import { FormControlsOf, Item } from '../components/action-plan/action-plan.component';
-import { filter, map, Observable, pairwise, shareReplay } from 'rxjs';
+import { Item } from '../components/action-plan/action-plan.component';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString()

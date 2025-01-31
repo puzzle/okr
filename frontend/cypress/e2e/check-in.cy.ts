@@ -423,8 +423,8 @@ describe('okr check-in', () => {
       .fillCheckInCommentary('Add a fourth action to the action plan')
       .fillMetricCheckInValue('3')
       .submit();
-    cy.contains('Fourth action');
     cy.wait('@addAction');
+    cy.contains('Aktuell: 3');
 
     keyResultDetailPage.editKeyResult();
     cy.getByTestId('action-input')

@@ -99,7 +99,7 @@ export function getKeyResultForm(): FormGroup {
     actionList: new FormArray<FormGroup<FormControlsOf<Item>>>([]),
     keyResultType: new FormControl('metric'),
     metric: new FormGroup({
-      unit: new FormControl<Unit>({ unitName: 'NUMBER' } as Unit, [Validators.required,
+      unit: new FormControl<Unit>({ unitName: 'ZAHL' } as Unit, [Validators.required,
         unitValidator()]),
       baseline: new FormControl(0, [Validators.required,
         numberValidator(),

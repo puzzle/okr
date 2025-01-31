@@ -56,7 +56,7 @@
               [value]="unit"
               class="text-capitalize"
             >
-              {{(unit.unitName.toLowerCase())}}
+              {{this.displayFn(unit)}}
             </mat-option>
 
           </mat-autocomplete>

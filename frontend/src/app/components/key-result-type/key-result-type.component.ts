@@ -163,6 +163,12 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   createNewUnit() {
+    this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.setValue({ unitName: this.unitSearchTerm });
+    this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.updateValueAndValidity();
     this.unitService.checkForNewUnit(this.unitSearchTerm)
       .subscribe((result: Unit) => this.unitService.createUnit(result)
         .subscribe((unit) => {
@@ -170,6 +176,9 @@ export class KeyResultTypeComponent implements AfterContentInit {
           this.keyResultForm.get('metric')
             ?.get('unit')
             ?.setValue(unit);
+          this.keyResultForm.get('metric')
+            ?.get('unit')
+            ?.updateValueAndValidity();
         }));
   }
 

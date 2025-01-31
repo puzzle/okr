@@ -47,8 +47,7 @@
           >
             <mat-option
               [attr.data-testId]="'create-new-unit-button'"
-              (click)="createNewUnit()"
-              (keydown.enter)="createNewUnit()"
+              (onSelectionChange)= "createNewUnit()"
               *ngIf="canCreate((this.filteredUnitOptions | async)!)"
             >Create new</mat-option>
             <mat-option

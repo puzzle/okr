@@ -27,8 +27,7 @@ public class UnitController {
     @Operation(summary = "Get Units by User", description = "Retrieves a list of units associated with the currently authenticated user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved user's units", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = UnitDto.class)) }),
-    })
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = UnitDto.class)) }), })
     @GetMapping("/user")
     public List<UnitDto> getUnitsByUser() {
         return unitAuthorizationService.getUnitsOfUser().stream().map(unitMapper::toDto).toList();
@@ -37,8 +36,7 @@ public class UnitController {
     @Operation(summary = "Get All Units", description = "Retrieves a list of all available units.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved all units", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = UnitDto.class)) }),
-    })
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = UnitDto.class)) }), })
     @GetMapping
     public List<UnitDto> getAllUnits() {
         return unitAuthorizationService.getAllUnits().stream().map(unitMapper::toDto).toList();

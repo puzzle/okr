@@ -43,9 +43,6 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   protected readonly formInputCheck = formInputCheck;
 
-  constructor(private parentF: FormGroupDirective) {
-  protected readonly hasFormFieldErrors = hasFormFieldErrors;
-
   unitOptions: Unit[] = [];
 
   filteredUnitOptions = new Observable<Unit[]>();

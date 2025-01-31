@@ -1,11 +1,9 @@
-import {
-  AfterContentInit, ChangeDetectorRef,
+import { ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   QueryList,
-  ViewChildren
-} from '@angular/core';
+  ViewChildren } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DialogService } from '../../services/dialog.service';
 import {
@@ -13,10 +11,10 @@ import {
   ControlContainer,
   FormArray,
   FormArrayName,
-  FormControl,
-  FormGroup, Validators
+  FormGroup
 } from '@angular/forms';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { initFormGroupFromItem } from '../../shared/common';
 
 export type FormControlsOf<T> = {
   [P in keyof T]: AbstractControl<T[P]>;
@@ -36,15 +34,13 @@ export interface Item {
   viewProviders: [{ provide: ControlContainer,
     useExisting: FormArrayName }]
 })
-export class ActionPlanComponent implements AfterContentInit {
+export class ActionPlanComponent {
   @Input() onDelete?: (index: number) => Observable<any>;
 
   @Input() movable = true;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
-
-  @Input() addItemSubject: ReplaySubject<Item | undefined> = new ReplaySubject<Item | undefined>();
 
   constructor(public dialogService: DialogService, private formArrayNameF: FormArrayName, private cdRef: ChangeDetectorRef) {
   }
@@ -96,13 +92,8 @@ export class ActionPlanComponent implements AfterContentInit {
   }
 
   addNewItem(item?: Item) {
-    const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
-      id: new FormControl<number | undefined>(item?.id || undefined),
-      isChecked: new FormControl<boolean>(item?.isChecked || false)
-    } as FormControlsOf<Item>);
     this.getFormControlArray()
-      ?.push(newFormGroup);
+      ?.push(initFormGroupFromItem(item));
   }
 
   /*
@@ -115,9 +106,5 @@ export class ActionPlanComponent implements AfterContentInit {
 
   getFormControlArray() {
     return this.formArrayNameF.control as FormArray<FormGroup<FormControlsOf<Item>>>;
-  }
-
-  ngAfterContentInit(): void {
-    this.addItemSubject.subscribe((item) => this.addNewItem(item));
   }
 }

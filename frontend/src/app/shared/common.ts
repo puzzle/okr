@@ -1,8 +1,8 @@
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/key-result-metric-min';
 import { State } from './types/enums/state';
 import { Action } from './types/model/action';
-import { Item } from '../components/action-plan/action-plan.component';
+import { FormControlsOf, Item } from '../components/action-plan/action-plan.component';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString()
@@ -164,5 +164,13 @@ export function itemListToActionList(itemList: Item[], keyResultId: number | nul
       isChecked: item.isChecked
     } as Action;
   });
+}
+
+export function initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
+  return new FormGroup({
+    item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
+    id: new FormControl<number | undefined>(item?.id || undefined),
+    isChecked: new FormControl<boolean>(item?.isChecked || false)
+  } as FormControlsOf<Item>);
 }
 

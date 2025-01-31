@@ -17,8 +17,7 @@
               formGroupName="{{i}}"
             >
               <mat-checkbox
-                (change)="changeIsChecked($event, i)"
-                formGroupName="id"
+                formControlName="isChecked"
                 class="col-auto"
                 #checkbox
               >

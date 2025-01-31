@@ -8,7 +8,12 @@ import { CheckInMin } from '../../../shared/types/model/check-in-min';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../shared/types/model/action';
 import { ActionService } from '../../../services/action.service';
-import { actionListToItemList, formInputCheck, itemListToActionList } from '../../../shared/common';
+import {
+  actionListToItemList,
+  formInputCheck,
+  initFormGroupFromItem,
+  itemListToActionList
+} from '../../../shared/common';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
 import { Zone } from '../../../shared/types/enums/zone';
@@ -146,19 +151,12 @@ export class CheckInFormComponent implements OnInit {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  changeIsChecked(event: any, index: number) {
-    const actions = this.dialogForm.getRawValue().actionList as Item[];
-    actions[index].isChecked = event.checked;
-    this.dialogForm.patchValue({ actionList: actions });
-    this.dialogForm.updateValueAndValidity();
-  }
-
   getDialogTitle(): string {
     return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
   }
 
   openActionEdit() {
-    this.actionPlanAddItemSubject.next(undefined);
+    this.addNewItem();
     this.isAddingAction = true;
   }
 
@@ -171,13 +169,8 @@ export class CheckInFormComponent implements OnInit {
   }
 
   addNewItem(item?: Item) {
-    const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item?.item || ''),
-      id: new FormControl<number | undefined>(item?.id || undefined),
-      isChecked: new FormControl<boolean>(item?.isChecked || false)
-    } as FormControlsOf<Item>);
     this.getFormControlArray()
-      ?.push(newFormGroup);
+      ?.push(initFormGroupFromItem(item));
   }
 
   setValidators(type: string) {

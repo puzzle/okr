@@ -4,7 +4,7 @@ import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms'
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
-import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
+import { formInputCheck } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Observable, Subject } from 'rxjs';
 
@@ -41,8 +41,6 @@ export class KeyResultTypeComponent implements AfterContentInit {
   protected readonly Unit = Unit;
 
   protected readonly formInputCheck = formInputCheck;
-
-  protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(private parentF: FormGroupDirective) {
     this.childForm = this.parentF.form;

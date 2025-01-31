@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { Action } from '../../shared/types/model/action';
-import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
+import { actionListToItemList, formInputCheck } from '../../shared/common';
+import { ActionService } from '../../services/action.service';
+import { FormControlsOf, Item } from '../action-plan/action-plan.component';
 
 @Component({
   selector: 'app-key-result-form',
@@ -16,17 +16,12 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })
-export class KeyResultFormComponent implements OnInit {
+export class KeyResultFormComponent implements OnInit, AfterContentInit {
   users$ = new Observable<User[]>();
 
   filteredUsers$: Observable<User[]> = of([]);
 
-  actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
-
   protected readonly formInputCheck = formInputCheck;
-
-  protected readonly hasFormFieldErrors = hasFormFieldErrors;
-
 
   @Input()
   keyResultForm!: FormGroup;
@@ -34,8 +29,7 @@ export class KeyResultFormComponent implements OnInit {
   @Input()
   keyResult?: KeyResult;
 
-  constructor(public userService: UserService,
-    private translate: TranslateService) {
+  constructor(public userService: UserService, public actionService: ActionService) {
   }
 
   ngOnInit(): void {
@@ -47,34 +41,9 @@ export class KeyResultFormComponent implements OnInit {
       this.isMetricKeyResult()
         ? this.setMetricValuesInForm(this.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.keyResult as KeyResultOrdinal);
-
-      this.actionList$ = new BehaviorSubject<Action[] | null>(this.keyResult.actionList);
     }
-    if (!this.keyResult) {
-      this.actionList$ = new BehaviorSubject<Action[] | null>([{ id: null,
-        version: 1,
-        action: '',
-        priority: 0,
-        keyResultId: undefined,
-        isChecked: false },
-      { id: null,
-        version: 1,
-        action: '',
-        priority: 1,
-        keyResultId: undefined,
-        isChecked: false },
-      { id: null,
-        version: 1,
-        action: '',
-        priority: 2,
-        keyResultId: undefined,
-        isChecked: false }]);
-    }
-
-    this.actionList$.subscribe((value) => {
-      this.keyResultForm.patchValue({ actionList: value });
-    });
   }
+
 
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
@@ -99,5 +68,31 @@ export class KeyResultFormComponent implements OnInit {
 
   getFullNameOfLoggedInUser() {
     return getFullNameOfUser(this.userService.getCurrentUser());
+  }
+
+  addNewItem(item?: Item) {
+    (this.keyResultForm.get('actionList') as FormArray)
+      ?.push(this.initFormGroupFromItem(item));
+  }
+
+  ngAfterContentInit(): void {
+    if (this.keyResult) {
+      actionListToItemList(this.keyResult.actionList)
+        .forEach((e) => {
+          this.addNewItem(e);
+        });
+    } else {
+      this.addNewItem();
+      this.addNewItem();
+      this.addNewItem();
+    }
+  }
+
+  initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
+    return new FormGroup({
+      item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
+      id: new FormControl<number | undefined>(item?.id || undefined),
+      isChecked: new FormControl<boolean>(item?.isChecked || false)
+    } as FormControlsOf<Item>);
   }
 }

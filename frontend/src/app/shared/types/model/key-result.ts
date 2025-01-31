@@ -14,7 +14,7 @@ export interface KeyResult {
   objective: KeyResultObjective;
   createdOn: Date;
   modifiedOn: Date;
-  actionList: Action[] | null;
+  actionList: Action[];
   lastCheckIn: CheckIn | null;
   isWriteable: boolean;
 }

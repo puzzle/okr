@@ -416,11 +416,15 @@ describe('okr check-in', () => {
     cy.getByTestId('cancel')
       .click();
 
+    cy.intercept('PUT', '**/action')
+      .as('addAction');
     keyResultDetailPage.createCheckIn()
       .addActionToActionPlan('Fourth action')
       .fillCheckInCommentary('Add a fourth action to the action plan')
       .fillMetricCheckInValue('3')
       .submit();
+    cy.wait('@addAction');
+    cy.contains('Aktuell: 3');
 
     keyResultDetailPage.editKeyResult();
     cy.getByTestId('action-input')

@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CheckInFormComponent } from './check-in-form.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
-  action1,
   action2,
   checkInMetric,
   checkInOrdinal,
@@ -19,7 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CheckInService } from '../../../services/check-in.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
@@ -33,7 +32,7 @@ import {
   DialogTemplateCoreComponent
 } from '../../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { Action } from '../../../shared/types/model/action';
+import { Item } from '../../action-plan/action-plan.component';
 import { Zone } from '../../../shared/types/enums/zone';
 
 const dialogMock = {
@@ -113,7 +112,6 @@ describe('CheckInFormComponent', () => {
     component.dialogForm.controls['confidence'].setValue(checkInMetric.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInMetric.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInMetric.initiatives);
-    component.actionList$ = new BehaviorSubject<Action[] | null>([] as Action[]);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInMetric));
     actionServiceMock.updateActions.mockReturnValue(of(action2));
@@ -140,7 +138,6 @@ describe('CheckInFormComponent', () => {
     component.dialogForm.controls['confidence'].setValue(checkInOrdinal.confidence);
     component.dialogForm.controls['changeInfo'].setValue(checkInOrdinal.changeInfo);
     component.dialogForm.controls['initiatives'].setValue(checkInOrdinal.initiatives);
-    component.actionList$ = new BehaviorSubject<Action[] | null>([] as Action[]);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInOrdinal));
     actionServiceMock.updateActions.mockReturnValue(of(action2));
@@ -169,7 +166,7 @@ describe('CheckInFormComponent', () => {
         confidence: checkInMetric.confidence,
         changeInfo: checkInMetric.changeInfo,
         initiatives: checkInMetric.initiatives,
-        actionList: undefined
+        actionList: []
       });
   }));
 
@@ -191,13 +188,14 @@ describe('CheckInFormComponent', () => {
     component.ngOnInit();
     component.setDefaultValues();
     expect(component.dialogForm.value)
-      .toStrictEqual({
+      .toStrictEqual(expect.objectContaining({
         confidence: keyResultActions.lastCheckIn!.confidence,
         changeInfo: '',
-        initiatives: '',
-        actionList: [action1,
-          action2]
-      });
+        initiatives: ''
+      }));
+    expect(component.dialogForm.getRawValue().actionList?.map((action: Item) => action.item))
+      .toStrictEqual(['Drucker kaufen',
+        'Blätter kaufen']);
   }));
 
   it('should call action-service when saving check-in', waitForAsync(async() => {

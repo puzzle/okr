@@ -443,3 +443,7 @@ table.okr-table {
 .okr-form-label-input-container {
   @extend .py-1;
 }
+
+.cdk-drag-dragging app-error {
+  display: none;
+}

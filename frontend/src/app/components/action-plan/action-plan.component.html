@@ -1,47 +1,58 @@
-<div class="okr-form-row okr-form-label-input-container">
-  <label for="action-list" class="okr-form-label">Action Plan (optional)</label>
+<div class="w-100">
+  <label for="action-list" class="okr-form-label">
+    <ng-content select="top-title">Action Plan (optional)</ng-content>
+  </label>
   <div
     cdkDropList
-    *ngIf="control?.getValue()"
-    [cdkDropListData]="control | async"
+    *ngIf="this.getFormControlArray()"
     (keydown.enter)="preventAddingNewItems($event)"
-    class="okr-form-col d-flex flex-column gap-2"
+    class="container-fluid d-flex flex-column gap-2 gx-0"
     (cdkDropListDropped)="drop($event)"
     id="action-list"
   >
     <div
-      class="action-point-item"
-      *ngFor="let action of (control | async)!; index as i; trackBy: trackByFn"
+      class="row gx-0"
+      *ngFor="let item of getFormControlArray().controls!; index as i;"
+      [formGroupName]="i"
       cdkDrag
+      [cdkDragDisabled]="!movable"
     >
-      <div class="drag-drop-dots">
-        <img
-          cdkDragHandle
-          class="icons"
-          src="../../../assets/icons/drag_indicator.svg"
-          alt="Drag indicator"
-        />
-      </div>
+      <span
+        id="drag-drop-dots"
+        class="col-auto px-1 d-flex align-items-center justify-content-center bg-icon"
+        cdkDragHandle
+        *ngIf="movable"
+      >
+        <img src="assets/icons/drag_indicator.svg" alt="Drag indicator"/>
+      </span>
       <input
         #listItem
-        (keydown.arrowDown)="handleKeyDown($event, i)"
-        (keydown.arrowUp)="handleKeyDown($event, i)"
-        (focusin)="activeItem = i"
-        (input)="updateActionTexts(control.value!)"
-        class="action-input"
-        [value]="action.action"
+        (keydown.arrowUp)="changeItemPosition(i, i - 1)"
+        (keydown.arrowDown)="changeItemPosition(i, i + 1)"
+        class="dialog-form-field col"
+        formControlName="item"
         [attr.data-testId]="'action-input'"
       />
-      <img
-        tabindex="0"
-        (keydown.tab)="increaseActiveItemWithTab()"
-        (keydown.shift.tab)="decreaseActiveItemWithShiftTab()"
+
+      <button
         (keydown.enter)="removeAction(i)"
-        class="icons bin-icon cursor-pointer focus-outline"
-        src="../../../assets/icons/delete-icon.svg"
-        alt="Delete bin"
         (click)="removeAction(i)"
-      />
+        class="btn btn-link col-auto"
+        *ngIf="canDelete"
+      ><img
+
+          class="icons bin-icon cursor-pointer focus-outline"
+          src="assets/icons/delete-icon.svg"
+          alt="Delete bin"
+        />
+      </button>
+
+      <app-error
+        [controlPath]="['actionList.' + i, 'item']"
+        [name]="'Element'"
+        class="col-12"
+      ></app-error>
+
     </div>
   </div>
 
@@ -52,16 +63,16 @@
       class="fw-bold col-auto"
       id="add-action-button"
       [attr.data-testId]="'add-action-plan-line'"
-      (click)="addNewAction()"
+      (click)="addNewItem()"
     >
       <span class="d-flex align-items-center add-text">
         <img
-          src="../../../assets/icons/new-icon.svg"
+          src="assets/icons/new-icon.svg"
           alt="Add action icon"
           class="add-cross-button"
           id="add-action-icon"
         />
-        Weitere Action hinzufügen
+        <ng-content select="add-text">Weitere Action hinzufügen</ng-content>
       </span>
     </button>
   </div>

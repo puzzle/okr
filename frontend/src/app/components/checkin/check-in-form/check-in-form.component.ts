@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { KeyResultMetric } from '../../../shared/types/model/key-result-metric';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../../shared/types/model/key-result';
 import { KeyResultOrdinal } from '../../../shared/types/model/key-result-ordinal';
@@ -8,13 +8,19 @@ import { CheckInMin } from '../../../shared/types/model/check-in-min';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../shared/types/model/action';
 import { ActionService } from '../../../services/action.service';
-import { formInputCheck, hasFormFieldErrors } from '../../../shared/common';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  actionListToItemList,
+  formInputCheck,
+  itemListToActionList,
+  trackDeletedItems
+} from '../../../shared/common';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
-import { BehaviorSubject } from 'rxjs';
 import { Zone } from '../../../shared/types/enums/zone';
 import { numberValidator } from '../../../shared/constant-library';
+
+import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-check-in-form',
@@ -30,8 +36,6 @@ export class CheckInFormComponent implements OnInit {
 
   currentDate: Date;
 
-  actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
-
   isAddingAction = false;
 
   dialogForm = new FormGroup({
@@ -43,22 +47,21 @@ export class CheckInFormComponent implements OnInit {
       Validators.max(10)]),
     changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
-    actionList: new FormControl<Action[]>([])
+    actionList: new FormArray<FormGroup<FormControlsOf<Item>>>([])
   });
 
   checkInTypes: string[] = ['metricValue',
     'ordinalZone'];
 
-  protected readonly formInputCheck = formInputCheck;
+  deletedItems: Observable<any> = this.getFormControlArray().valueChanges.pipe(trackDeletedItems());
 
-  protected readonly hasFormFieldErrors = hasFormFieldErrors;
+  protected readonly formInputCheck = formInputCheck;
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private checkInService: CheckInService,
-    private actionService: ActionService,
-    private translate: TranslateService
+    private actionService: ActionService
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
@@ -68,12 +71,16 @@ export class CheckInFormComponent implements OnInit {
 
   ngOnInit() {
     const actionList = this.keyResult.actionList;
-    this.actionList$.next(actionList);
-    this.dialogForm.patchValue({ actionList: actionList });
+    const items = actionListToItemList(actionList);
+    this.dialogForm.patchValue({ actionList: items });
+    this.deletedItems.subscribe();
   }
 
   setDefaultValues() {
-    this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
+    actionListToItemList(this.keyResult.actionList)
+      .forEach((e: Item) => {
+        this.addNewItem(e);
+      });
     this.checkIn = this.data.checkIn;
 
     if (this.checkIn != null) {
@@ -108,9 +115,9 @@ export class CheckInFormComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-
-    const actionList: Action[] = this.actionList$.value as Action[];
-    this.dialogForm.patchValue({ actionList: actionList });
+    this.deletedItems.subscribe((e: any[]) => e.forEach((elem: any) => this.actionService.deleteAction(elem.id)
+      .subscribe()));
+    const actionList: Action[] = itemListToActionList(this.dialogForm.getRawValue().actionList, this.keyResult.id);
     const baseCheckIn: any = {
       id: this.checkIn.id,
       version: this.checkIn.version,
@@ -129,7 +136,7 @@ export class CheckInFormComponent implements OnInit {
 
     this.checkInService.saveCheckIn(baseCheckIn)
       .subscribe(() => {
-        this.actionService.updateActions(this.dialogForm.value.actionList!)
+        this.actionService.updateActions(actionList)
           .subscribe(() => {
             this.dialogRef.close();
           });
@@ -144,40 +151,26 @@ export class CheckInFormComponent implements OnInit {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  getActions(): Action[] {
-    return this.dialogForm.controls['actionList'].value || [];
-  }
-
-  changeIsChecked(event: any, index: number) {
-    const actions = this.dialogForm.value.actionList!;
-    actions[index] = {
-      ...actions[index],
-      isChecked: event.checked
-    };
-    this.dialogForm.patchValue({ actionList: actions });
-  }
-
   getDialogTitle(): string {
     return this.checkIn.id ? 'Check-in bearbeiten' : 'Check-in erfassen';
   }
 
   openActionEdit() {
-    const actionList: Action[] = this.actionList$.value as Action[];
-    actionList.push({
-      action: '',
-      priority: actionList.length,
-      keyResultId: this.keyResult.id
-    } as Action);
-    this.actionList$.next(actionList);
+    this.addNewItem();
     this.isAddingAction = true;
   }
 
   closeActionEdit() {
-    let actionList: Action[] = this.actionList$.value as Action[];
-    actionList = actionList.filter((action) => action.action.trim() != '');
-    this.actionList$.next(actionList);
-    this.dialogForm.patchValue({ actionList: actionList });
     this.isAddingAction = false;
+  }
+
+  getFormControlArray() {
+    return this.dialogForm?.get('actionList') as FormArray<FormGroup<FormControlsOf<Item>>>;
+  }
+
+  addNewItem(item?: Item) {
+    this.getFormControlArray()
+      ?.push(this.initFormGroupFromItem(item));
   }
 
   setValidators(type: string) {
@@ -185,5 +178,13 @@ export class CheckInFormComponent implements OnInit {
       .forEach((e) => e?.disable({ emitEvent: false }));
     this.dialogForm.get(this.checkInTypes.filter((formName) => formName.includes(type)))
       ?.enable({ emitEvent: false });
+  }
+
+  initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
+    return new FormGroup({
+      item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
+      id: new FormControl<number | undefined>(item?.id || undefined),
+      isChecked: new FormControl<boolean>(item?.isChecked || false)
+    } as FormControlsOf<Item>);
   }
 }

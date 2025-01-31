@@ -18,6 +18,7 @@ import { CheckInOrdinalMin } from './types/model/check-in-ordinal-min';
 import { CheckInMetricMin } from './types/model/check-in-metric-min';
 import { Completed } from './types/model/completed';
 import { Objective } from './types/model/objective';
+import { Item } from '../components/action-plan/action-plan.component';
 
 export const teamFormObject = {
   name: 'newTeamName'
@@ -473,7 +474,7 @@ export const keyResult: KeyResultOrdinal = {
   } as CheckInOrdinal,
   createdOn: new Date(),
   modifiedOn: new Date(),
-  actionList: null,
+  actionList: [],
   isWriteable: true
 };
 
@@ -620,3 +621,21 @@ export const keyResultActions: KeyResultMetric = {
     action2],
   isWriteable: true
 };
+
+
+export const minItem: Item = { item: '',
+  isChecked: false,
+  id: undefined };
+export const item1: Item = { item: 'item1',
+  isChecked: false,
+  id: 1 };
+export const item2: Item = { item: 'item2',
+  isChecked: false,
+  id: 2 };
+export const item3: Item = { item: 'item3',
+  isChecked: false,
+  id: 3 };
+export const items: Item[] = [item1,
+  item2,
+  item3];
+

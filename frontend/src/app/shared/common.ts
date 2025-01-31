@@ -1,6 +1,9 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/key-result-metric-min';
 import { State } from './types/enums/state';
+import { Action } from './types/model/action';
+import { Item } from '../components/action-plan/action-plan.component';
+import { filter, map, Observable, pairwise, shareReplay } from 'rxjs';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString()
@@ -142,4 +145,36 @@ export function getValueOfForm(form: FormGroup, keys: string[]) {
     currentControl = currentControl.get(key) as FormGroup;
   }
   return currentControl.value;
+}
+
+export function actionListToItemList(actionList: Action[]): Item[] {
+  return (actionList || []).map((action) => {
+    return { id: action.id,
+      item: action.action,
+      isChecked: action.isChecked } as Item;
+  });
+}
+
+export function itemListToActionList(itemList: Item[], keyResultId: number | null): Action[] {
+  return itemList.filter((e) => e.item.trim() !== '')
+    .map((item: Item, index) => {
+      return {
+        id: item.id,
+        action: item.item,
+        priority: index,
+        keyResultId: keyResultId,
+        isChecked: item.isChecked
+      } as Action;
+    });
+}
+
+
+export function trackDeletedItems<T>() {
+  return (source: Observable<T[]>): Observable<T[]> => {
+    return source.pipe(
+      pairwise(), filter(([prev,
+        curr]) => prev.length > curr.length), map(([prev,
+        curr]) => prev.filter((prevItem: any) => !curr.some((currentItem: any) => prevItem.id === currentItem?.id))), map((items: any[]) => items.filter((item) => item.id != null)), shareReplay()
+    );
+  };
 }

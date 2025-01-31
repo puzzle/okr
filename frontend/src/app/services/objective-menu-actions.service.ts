@@ -9,13 +9,13 @@ import { RefreshDataService } from './refresh-data.service';
 import { ObjectiveMenuActions } from '../components/objective/objective-menu-actions';
 import { CompletedService } from './completed.service';
 
-export type ObjectiveMenuAction = () => MatDialogRef<any>;
-export type ObjectiveMenuAfterAction = (objective: ObjectiveMin, dialogResult: any) => any;
+export type MenuAction = () => MatDialogRef<any>;
+export type MenuAfterAction<T> = (objective: T, dialogResult: any) => any;
 
 export interface ObjectiveMenuEntry {
   displayName: string;
-  action: ObjectiveMenuAction;
-  afterAction: ObjectiveMenuAfterAction;
+  action: MenuAction;
+  afterAction: MenuAfterAction<ObjectiveMin>;
 }
 
 @Injectable({

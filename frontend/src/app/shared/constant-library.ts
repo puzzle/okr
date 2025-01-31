@@ -1,9 +1,18 @@
 import { HttpType } from './types/enums/http-type';
 import { ToasterType } from './types/enums/toaster-type';
 import { HttpStatusCode } from '@angular/common/http';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { Unit } from './types/enums/unit';
 import { getFullNameOfUser, User } from './types/model/user';
+import { FormControlsOf, Item } from '../components/action-plan/action-plan.component';
 
 type MessageKeyMap = Record<string, MessageEntry>;
 
@@ -87,7 +96,7 @@ export function getKeyResultForm(): FormGroup {
     owner: new FormControl<User>({} as User, [Validators.required,
       Validators.nullValidator,
       ownerValidator()]),
-    actionList: new FormControl([]),
+    actionList: new FormArray<FormGroup<FormControlsOf<Item>>>([]),
     keyResultType: new FormControl('metric'),
     metric: new FormGroup({
       unit: new FormControl<Unit>(Unit.NUMBER, [Validators.required]),

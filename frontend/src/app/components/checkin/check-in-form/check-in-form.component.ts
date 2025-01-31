@@ -157,7 +157,7 @@ export class CheckInFormComponent implements OnInit {
   }
 
   openActionEdit() {
-    this.actionPlanAddItemSubject.next(undefined);
+    this.addNewItem();
     this.isAddingAction = true;
   }
 

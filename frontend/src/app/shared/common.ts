@@ -3,6 +3,7 @@ import { KeyResultMetricMin } from './types/model/key-result-metric-min';
 import { State } from './types/enums/state';
 import { Action } from './types/model/action';
 import { FormControlsOf, Item } from '../components/action-plan/action-plan.component';
+import { filter, map, Observable, pairwise, shareReplay } from 'rxjs';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString()
@@ -175,3 +176,13 @@ export function initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Ite
   } as FormControlsOf<Item>);
 }
 
+
+export function trackDeletedItems<T>() {
+  return (source: Observable<T[]>): Observable<T[]> => {
+    return source.pipe(
+      pairwise(), filter(([prev,
+        curr]) => prev.length > curr.length), map(([prev,
+        curr]) => prev.filter((prevItem: any) => !curr.some((currentItem: any) => prevItem.id === currentItem?.id))), map((items: any[]) => items.filter((item) => item.id != null)), shareReplay()
+    );
+  };
+}

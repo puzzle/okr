@@ -12,7 +12,8 @@ import {
   actionListToItemList,
   formInputCheck,
   initFormGroupFromItem,
-  itemListToActionList
+  itemListToActionList,
+  trackDeletedItems
 } from '../../../shared/common';
 import { CheckInMetricMin } from '../../../shared/types/model/check-in-metric-min';
 import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-min';
@@ -20,7 +21,7 @@ import { Zone } from '../../../shared/types/enums/zone';
 import { numberValidator } from '../../../shared/constant-library';
 
 import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-check-in-form',
@@ -53,9 +54,9 @@ export class CheckInFormComponent implements OnInit {
   checkInTypes: string[] = ['metricValue',
     'ordinalZone'];
 
-  actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
+  deletedItems: Observable<any> = this.getFormControlArray().valueChanges.pipe(trackDeletedItems());
 
-  actionPlanAddItemSubject = new ReplaySubject<Item | undefined>();
+  actionPlanOnDelete = (index: number): Observable<any> => new Observable();
 
   protected readonly formInputCheck = formInputCheck;
 
@@ -75,6 +76,7 @@ export class CheckInFormComponent implements OnInit {
     const actionList = this.keyResult.actionList;
     const items = actionListToItemList(actionList);
     this.dialogForm.patchValue({ actionList: items });
+    this.deletedItems.subscribe();
   }
 
   setDefaultValues() {
@@ -116,7 +118,8 @@ export class CheckInFormComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-
+    this.deletedItems.subscribe((e: any[]) => e.forEach((elem: any) => this.actionService.deleteAction(elem.id)
+      .subscribe()));
     const actionList: Action[] = itemListToActionList(this.dialogForm.getRawValue().actionList, this.keyResult.id);
     const baseCheckIn: any = {
       id: this.checkIn.id,

@@ -93,9 +93,9 @@ export class ActionPlanComponent implements OnDestroy {
     }
   }
 
-  addNewItem(item?: Item) {
+  addNewItem(item?: Item, options: { emitEvent?: boolean } = {}) {
     this.getFormControlArray()
-      ?.push(initFormGroupFromItem(item));
+      ?.push(initFormGroupFromItem(item), options);
   }
 
   /*
@@ -115,7 +115,7 @@ export class ActionPlanComponent implements OnDestroy {
       .getRawValue()
       .filter((e) => e.item.trim() !== '');
     this.getFormControlArray()
-      .clear();
-    validItems.forEach((item) => this.addNewItem(item));
+      .clear({ emitEvent: false });
+    validItems.forEach((item) => this.addNewItem(item, { emitEvent: false }));
   }
 }

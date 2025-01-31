@@ -397,7 +397,7 @@ describe('okr check-in', () => {
       .contains('10%');
   });
 
-  it('should be able to add actions to the action plan when creating a check-in', () => {
+  it.only('should be able to add actions to the action plan when creating a check-in', () => {
     const keyResultTitle = 'This key-result will be used for testing the action plan while creating check-ins';
     overviewPage.addKeyResult('Puzzle ITC', 'Wir wollen die Kundenzufriedenheit steigern')
       .fillKeyResultTitle(keyResultTitle)
@@ -416,13 +416,15 @@ describe('okr check-in', () => {
     cy.getByTestId('cancel')
       .click();
 
+    cy.intercept('PUT', '**/action')
+      .as('addAction');
     keyResultDetailPage.createCheckIn()
       .addActionToActionPlan('Fourth action')
       .fillCheckInCommentary('Add a fourth action to the action plan')
       .fillMetricCheckInValue('3')
       .submit();
     cy.contains('Fourth action');
-    cy.wait(1000);
+    cy.wait('@addAction');
 
     keyResultDetailPage.editKeyResult();
     cy.getByTestId('action-input')

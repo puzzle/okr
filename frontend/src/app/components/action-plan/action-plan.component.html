@@ -29,7 +29,7 @@
         #listItem
         (keydown.arrowUp)="changeItemPosition(i, i - 1)"
         (keydown.arrowDown)="changeItemPosition(i, i + 1)"
-        class="action-input col"
+        class="dialog-form-field col"
         formControlName="item"
         [attr.data-testId]="'action-input'"
       />
@@ -74,8 +74,6 @@
           id="add-action-icon"
         />
         <ng-content select="add-text">Weitere Action hinzufügen</ng-content>
-
-        <ng-content></ng-content>
       </span>
     </button>
   </div>

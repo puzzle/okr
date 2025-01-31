@@ -16,7 +16,7 @@ Install:
 
 Formatting:
 
-- Check code formatting: `npm run formatt:all`
+- Check code formatting: `npm run format:all`
 - Format the code: `npm run format`
 
 Test and Run:

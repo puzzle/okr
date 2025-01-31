@@ -23,7 +23,7 @@ export class KeyResultFormComponent implements OnInit {
 
   actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
 
-  actinPlanAddItemSubject = new ReplaySubject<Item | undefined>();
+  actionPlanAddItemSubject = new ReplaySubject<Item | undefined>();
 
   protected readonly formInputCheck = formInputCheck;
 
@@ -51,10 +51,12 @@ export class KeyResultFormComponent implements OnInit {
 
       actionListToItemList(this.keyResult.actionList)
         .forEach((e) => {
-          this.actinPlanAddItemSubject.next(e);
+          this.actionPlanAddItemSubject.next(e);
         });
     } else {
-      this.actinPlanAddItemSubject.next(undefined);
+      this.actionPlanAddItemSubject.next(undefined);
+      this.actionPlanAddItemSubject.next(undefined);
+      this.actionPlanAddItemSubject.next(undefined);
     }
   }
 

@@ -1,9 +1,11 @@
-import { ChangeDetectorRef,
+import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
+  Input, OnDestroy,
   QueryList,
-  ViewChildren } from '@angular/core';
+  ViewChildren
+} from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DialogService } from '../../services/dialog.service';
 import {
@@ -34,7 +36,7 @@ export interface Item {
   viewProviders: [{ provide: ControlContainer,
     useExisting: FormArrayName }]
 })
-export class ActionPlanComponent {
+export class ActionPlanComponent implements OnDestroy {
   @Input() onDelete?: (index: number) => Observable<any>;
 
   @Input() movable = true;
@@ -106,5 +108,14 @@ export class ActionPlanComponent {
 
   getFormControlArray() {
     return this.formArrayNameF.control as FormArray<FormGroup<FormControlsOf<Item>>>;
+  }
+
+  ngOnDestroy(): void {
+    const validItems = this.getFormControlArray()
+      .getRawValue()
+      .filter((e) => e.item.trim() !== '');
+    this.getFormControlArray()
+      .clear();
+    validItems.forEach((item) => this.addNewItem(item));
   }
 }

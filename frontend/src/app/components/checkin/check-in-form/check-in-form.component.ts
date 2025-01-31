@@ -54,7 +54,7 @@ export class CheckInFormComponent implements OnInit {
 
   deletedItems: Observable<any> = this.getFormControlArray().valueChanges.pipe(trackDeletedItems());
 
-  actionPlanAddItemSubject = new ReplaySubject<Item | undefined>();
+  actionPlanOnDelete = (index: number): Observable<any> => new Observable();
 
   protected readonly formInputCheck = formInputCheck;
 

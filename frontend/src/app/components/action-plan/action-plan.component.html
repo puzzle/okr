@@ -11,46 +11,42 @@
     id="action-list"
   >
     <div
-      class="container-fluid"
+      class="row gx-0"
       *ngFor="let item of getFormControlArray().controls!; index as i;"
       [formGroupName]="i"
       cdkDrag
       [cdkDragDisabled]="!movable"
     >
-      <div class="row">
+      <span
+        id="drag-drop-dots"
+        class="col-auto px-1 d-flex align-items-center justify-content-center bg-icon"
+        cdkDragHandle
+        *ngIf="movable"
+      >
+        <img src="assets/icons/drag_indicator.svg" alt="Drag indicator"/>
+      </span>
+      <input
+        #listItem
+        (keydown.arrowUp)="changeItemPosition(i, i - 1)"
+        (keydown.arrowDown)="changeItemPosition(i, i + 1)"
+        class="action-input col"
+        formControlName="item"
+        [attr.data-testId]="'action-input'"
+      />
 
-        <span
-          id="drag-drop-dots"
-          cdkDragHandle
-          *ngIf="movable"
-        >
-          <img src="assets/icons/drag_indicator.svg" alt="Drag indicator"/>
-        </span>
-        <span class="row">
-          <input
-            #listItem
-            (keydown.arrowUp)="changeItemPosition(i, i - 1)"
-            (keydown.arrowDown)="changeItemPosition(i, i + 1)"
-            class="action-input col"
-            formControlName="item"
-            [attr.data-testId]="'action-input'"
-          />
+      <button
+        (keydown.enter)="removeAction(i)"
+        (click)="removeAction(i)"
+        class="btn btn-link col-auto"
+        *ngIf="onDelete"
 
-          <button
-            (keydown.enter)="removeAction(i)"
-            (click)="removeAction(i)"
-            class="btn btn-link col-auto"
-            *ngIf="onDelete"
+      ><img
 
-          ><img
-
-              class="icons bin-icon cursor-pointer focus-outline"
-              src="assets/icons/delete-icon.svg"
-              alt="Delete bin"
-            />
-          </button>
-        </span>
-      </div>
+          class="icons bin-icon cursor-pointer focus-outline"
+          src="assets/icons/delete-icon.svg"
+          alt="Delete bin"
+        />
+      </button>
 
       <app-error
         [controlPath]="['actionList.' + i, 'item']"

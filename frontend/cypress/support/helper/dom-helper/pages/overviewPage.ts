@@ -90,6 +90,11 @@ export default class CyOverviewPage extends Page {
       .first();
   }
 
+  getFirstKeyResult() {
+    return cy.get('.key-result')
+      .first();
+  }
+
   getObjectiveByNameAndState(objectiveName: string, state: string) {
     this.getObjectivesByNameAndState(objectiveName, state)
       .last()

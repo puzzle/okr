@@ -1,6 +1,7 @@
 import Dialog from './dialog';
 import ConfirmDialog from './confirmDialog';
 import Chainable = Cypress.Chainable;
+import UnitDialog from './unitDialog';
 
 export default class KeyResultDialog extends Dialog {
   fillKeyResultTitle(title: string) {
@@ -21,7 +22,10 @@ export default class KeyResultDialog extends Dialog {
 
     cy.getByTestId('unit')
       .click()
-      .clear()
+      .as('unitInput')
+      .clear();
+
+    cy.get('@unitInput')
       .type(unit);
 
     cy.realPress('ArrowDown')
@@ -36,12 +40,6 @@ export default class KeyResultDialog extends Dialog {
     if (stretchGoal !== undefined) {
       this.fillInputByTestId('stretch-goal', stretchGoal);
     }
-    return this;
-  }
-
-  editMetricValue(newValue: string, indexOfInputField: number) {
-    this.openEditMetricValues();
-    this.editUnitWithIndex(newValue, indexOfInputField);
     return this;
   }
 
@@ -110,49 +108,38 @@ export default class KeyResultDialog extends Dialog {
     cy.contains('Abbrechen');
   }
 
-  private openEditMetricValues() {
+  editUnits() {
     cy.getByTestId('manage-units', 'Einheiten Verwalten')
       .click();
 
-    cy.contains('Einheiten verwalten');
-    cy.contains('Einheiten (Standard):');
-    cy.contains('PERCENT (%)');
-    cy.contains('NUMBER');
-    cy.contains('CHF');
-    cy.contains('EUR');
-    cy.contains('FTE');
-    cy.contains('Eigene Einheiten');
-    cy.contains('Eigene Einheit hinzufügen');
+    return new UnitDialog();
   }
 
-  private editUnitWithIndex(newValue: string, index: number) {
-    cy.get('app-dialog-template-core')
-      .filter('[ng-reflect-title="Einheiten verwalten"]')
+  override submit() {
+    this.getPage()
       .within(() => {
-        const input = cy.getByTestId('action-input')
-          .eq(index)
-          .click();
-
-        input
-          .clear()
-          .type(newValue);
-
         cy.getByTestId('submit')
           .click();
       });
   }
 
-  override submit() {
-    cy.getByTestId('submit')
-      .click();
+  saveAndNew() {
+    this.getPage()
+      .within(() => {
+        cy.getByTestId('save-and-new')
+          .click();
+      });
   }
 
-  saveAndNew() {
-    cy.getByTestId('save-and-new')
-      .click();
+  override cancel() {
+    this.getPage()
+      .within(() => {
+        cy.getByTestId('cancel')
+          .click();
+      });
   }
 
   getPage(): Chainable {
-    return cy.get('app-key-result-form');
+    return cy.get('app-key-result-dialog');
   }
 }

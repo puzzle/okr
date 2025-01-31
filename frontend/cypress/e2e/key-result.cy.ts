@@ -3,6 +3,8 @@ import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
 import { UNIT_CHF, UNIT_PERCENT } from '../../src/app/shared/test-data';
+import { uniqueSuffix } from '../support/helper/utils';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('okr key-result', () => {
   let overviewPage = new CyOverviewPage();
@@ -466,5 +468,101 @@ describe('okr key-result', () => {
       .visit('A key-result for testing purposes')
       .editKeyResult()
       .run(cy.buttonShouldBePrimary('submit'));
+  });
+});
+
+describe.only('metric key-result edit units', () => {
+  let overviewPage = new CyOverviewPage();
+  let keyResultDetailPage = new KeyResultDetailPage();
+
+  beforeEach(() => {
+    overviewPage = new CyOverviewPage();
+    keyResultDetailPage = new KeyResultDetailPage();
+    cy.loginAsUser(users.gl);
+  });
+
+  it('should be able to add a custom unit and save it', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This key-result has a new value!')
+      .editUnits()
+      .checkForDialogText()
+      .createUnit(newCurrencyName)
+      .submit()
+      .withMetricValues(
+        newCurrencyName, '0', '7', '10'
+      )
+      .submit();
+
+    overviewPage.getKeyResultByName('This key-result has a new value!')
+      .click();
+    cy.contains(newCurrencyName);
+  });
+
+  it('should be able to edit a custom unit and save it', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .getFirstKeyResult()
+      .click();
+
+    keyResultDetailPage
+      .editKeyResult()
+      .editUnits()
+      .renameFirstUnit(newCurrencyName)
+      .submit()
+      .withMetricValues(
+        newCurrencyName, '0', '7', '10'
+      )
+      .submit();
+
+    cy.contains('Aktuell:');
+    cy.contains(newCurrencyName);
+  });
+
+  it('should not save the custom unit when the save button is not clicked', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .getFirstKeyResult()
+      .click();
+
+    keyResultDetailPage
+      .editKeyResult()
+      .editUnits()
+      .renameFirstUnit(newCurrencyName)
+      .cancel()
+      .editUnits();
+
+    cy.getByTestId('action-input')
+      .first()
+      .should('not.have.value', newCurrencyName);
+  });
+
+  it('should be able to add a custom unit and save it', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This key-result has a new value!')
+      .run(cy.getByTestId('unit')
+        .clear())
+      .run(cy.getByTestId('unit')
+        .type(newCurrencyName))
+      .run(cy.getByTestId('create-new-unit-button')
+        .click());
+
+    ConfirmDialog.do()
+      .checkForContentOnDialog('Erstellen bestätigen')
+      .submit();
+
+    KeyResultDialog.do()
+      .editUnits();
+
+    cy.getByTestId('action-input')
+      .last()
+      .should('have.value', newCurrencyName);
   });
 });

@@ -8,7 +8,7 @@ import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { actionListToItemList, formInputCheck } from '../../shared/common';
 import { ActionService } from '../../services/action.service';
-import { Item } from '../action-plan/action-plan.component';
+import { FormControlsOf, Item } from '../action-plan/action-plan.component';
 
 @Component({
   selector: 'app-key-result-form',

@@ -8,11 +8,11 @@
     "MAX": "Maximum"
   },
   "UNIT": {
-    "PERCENT": "%",
-    "CHF": " CHF",
+    "PERCENT": "Prozent",
+    "CHF": "CHF",
     "EUR": "EUR",
-    "FTE": " FTE",
-    "NUMBER": " Zahl"
+    "FTE": "FTE",
+    "NUMBER": "Zahl"
   },
   "KEY_RESULT_DESCRIPTION": {
     "BASIC_VALUE": "Startwert",

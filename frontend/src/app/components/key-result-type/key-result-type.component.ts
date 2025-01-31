@@ -10,7 +10,6 @@ import { map, Observable, startWith, Subject, tap } from 'rxjs';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { ManageUnitsDialogComponent } from '../manage-units-dialog/manage-units-dialog.component';
-import { TranslateService } from '@ngx-translate/core';
 
 export enum KeyResultMetricField {
   BASELINE,
@@ -53,9 +52,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   unitSearchTerm = '';
 
-  constructor(
-    private parentF: FormGroupDirective, private unitService: UnitService, private dialogService: DialogService, private readonly translate: TranslateService
-  ) {
+  constructor(private parentF: FormGroupDirective, private unitService: UnitService, private dialogService: DialogService) {
     this.childForm = this.parentF.form;
   }
 

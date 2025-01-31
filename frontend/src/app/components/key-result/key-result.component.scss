@@ -15,3 +15,9 @@
     cursor: pointer;
   }
 }
+
+.bg-white-box {
+  background-color: variables.$key-result-attribute-bg;
+  padding: 0.25em 0.75rem;
+  border-radius: 2px;
+}

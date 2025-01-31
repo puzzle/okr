@@ -1,9 +1,11 @@
-import { ChangeDetectorRef,
+import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input, OnDestroy,
   QueryList,
-  ViewChildren } from '@angular/core';
+  ViewChildren
+} from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DialogService } from '../../services/dialog.service';
 import {

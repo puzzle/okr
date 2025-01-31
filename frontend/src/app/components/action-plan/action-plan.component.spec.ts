@@ -10,7 +10,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../services/dialog.service';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { FormArray, FormArrayName, FormGroup, FormGroupDirective } from '@angular/forms';
-import { item2, item3, items, minItem } from '../../shared/test-data';
+import { item1, item2, item3, items, minItem } from '../../shared/test-data';
 
 const actionServiceMock = {
   deleteAction: jest.fn()
@@ -58,23 +58,24 @@ describe('ActionPlanComponent', () => {
 
   it('should remove item from action-plan array', () => {
     setFormControlArrayValue(items);
-    actionServiceMock.deleteAction.mockReturnValue(of(null));
-    jest
-      .spyOn(component.dialogService, 'openConfirmDialog')
-      .mockReturnValue({ afterClosed: () => of(true) } as MatDialogRef<ConfirmDialogComponent>);
+    const dialogSpy = jest
+      .spyOn(component.dialogService, 'openConfirmDialog');
+
+    dialogSpy.mockReturnValue({ afterClosed: () => of(true) } as MatDialogRef<ConfirmDialogComponent>);
+
+    expect(component.getFormControlArray())
+      .toHaveLength(3);
 
     component.removeAction(0);
 
-    /*
-     * expect(actionServiceMock.deleteAction)
-     *   .toHaveBeenCalledWith(item1.id);
-     */
     expect(component.getFormControlArray())
       .toHaveLength(2);
     expect(component.getFormControlArray()
       .getRawValue())
       .toStrictEqual([item2,
         item3]);
+    expect(dialogSpy)
+      .toHaveBeenCalled();
   });
 
   it('should remove item from action-plan without opening dialog when action has no text and id', () => {
@@ -101,6 +102,32 @@ describe('ActionPlanComponent', () => {
         item: '',
         isChecked: false
       })]);
+  });
+
+  it('should be able to change order of actions', () => {
+    setFormControlArrayValue(items);
+
+    expect(component.getFormControlArray()
+      .getRawValue())
+      .toStrictEqual([item1,
+        item2,
+        item3]);
+
+    component.changeItemPosition(0, 1);
+
+    expect(component.getFormControlArray()
+      .getRawValue())
+      .toStrictEqual([item2,
+        item1,
+        item3]);
+
+    component.changeItemPosition(2, 1);
+
+    expect(component.getFormControlArray()
+      .getRawValue())
+      .toStrictEqual([item2,
+        item3,
+        item1]);
   });
 
   function setFormControlArrayValue(items: Item[]) {

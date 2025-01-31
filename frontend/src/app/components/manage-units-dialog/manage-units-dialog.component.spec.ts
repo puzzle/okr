@@ -119,19 +119,13 @@ describe('ManageUnitsDialogComponent', () => {
       UNIT_CHF] as Unit[];
     unitServiceMock.getAllFromUser.mockReturnValue(of(mockUnits));
 
-    const subjectNextSpy = jest.spyOn(component.actinPlanAddItemSubject, 'next');
 
     // Act
     component.ngOnInit();
 
     // Assert
-    expect(subjectNextSpy)
-      .toHaveBeenCalledTimes(mockUnits.length);
-    mockUnits.forEach((unit, i) => {
-      expect(subjectNextSpy)
-        .toHaveBeenNthCalledWith(i + 1, expect.objectContaining({ id: unit.id,
-          item: unit.unitName }));
-    });
+    expect((component.fg.get('unitFormArray') as FormArray)?.length)
+      .toBe(2);
   });
 
   it('should filter and return only units with an id', () => {

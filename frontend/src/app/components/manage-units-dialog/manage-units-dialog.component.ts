@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UnitService } from '../../services/unit.service';
 import { Unit } from '../../shared/types/enums/unit';
-import { forkJoin, map, Observable, ReplaySubject } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
-import { FormControlsOf, Item } from '../action-plan/action-plan.component';
+import { FormControlsOf, initFormGroupFromItem, Item } from '../action-plan/action-plan.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UnitTransformationPipe } from '../../shared/pipes/unit-transformation/unit-transformation.pipe';
 
@@ -15,8 +15,6 @@ import { UnitTransformationPipe } from '../../shared/pipes/unit-transformation/u
 })
 export class ManageUnitsDialogComponent implements OnInit {
   allUnits = new Observable<Unit[]>();
-
-  actinPlanAddItemSubject = new ReplaySubject<Item | undefined>();
 
   fg: FormGroup = new FormGroup({
     unitFormArray: new FormArray<FormGroup<FormControlsOf<Item>>>([])
@@ -68,7 +66,7 @@ export class ManageUnitsDialogComponent implements OnInit {
           item: u.unitName,
           isChecked: false } as Item;
       })))
-      .subscribe((units) => units.forEach((unit) => this.actinPlanAddItemSubject.next(unit)));
+      .subscribe((items) => items.forEach((item) => (this.fg.get('unitFormArray') as FormArray).push(initFormGroupFromItem(item))));
   }
 
   getFormatedUnitSymbol(unit: Unit) {

@@ -8,11 +8,11 @@
     "MAX": "Maximum"
   },
   "UNIT": {
-    "PERCENT": "%",
-    "CHF": " CHF",
+    "PERCENT": "Prozent",
+    "CHF": "CHF",
     "EUR": "EUR",
-    "FTE": " FTE",
-    "NUMBER": " Zahl"
+    "FTE": "FTE",
+    "NUMBER": "Zahl"
   },
   "KEY_RESULT_DESCRIPTION": {
     "BASIC_VALUE": "Startwert",
@@ -29,6 +29,10 @@
     "DRAFT_CREATE": {
       "TITLE": "Check-in im Draft-Status",
       "TEXT": "Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?"
+    },
+    "UNIT_CREATE": {
+      "TITLE": "Erstellen bestätigen",
+      "TEXT": "Möchtest du wirklich eine neue Einheit erstellen?"
     },
     "REOPEN": {
       "TITLE": "Objective wiedereröffnen",
@@ -82,6 +86,7 @@
     "ATTRIBUTE_SIZE_BETWEEN": "Das Attribut {0} auf dem Objekt {1} muss folgende Länge haben: {2}-{3}.",
     "ATTRIBUTE_SET_FORBIDDEN": "Das Attribut {0} darf nicht während des Erstellens gesetzt sein.",
     "ATTRIBUTE_NOT_SET": "Das Attribut {0} ist nicht gesetzt.",
+    "ATTRIBUTE_MUST_BE_UNIQUE": "Das Attribut '{0}' mit dem Wert '{1}' auf dem Model {2} existiert bereits.",
     "ATTRIBUTE_CANNOT_CHANGE": "Das Attribut {0} auf dem Objekt {1} kann nicht geändert werden.",
     "ATTRIBUTE_MIN_VALUE": "Das Attribut {0} auf dem Objekt {1} muss mindestens einen Wert von {2} haben.",
     "ATTRIBUTE_MAX_VALUE": "Das Attribut {0} auf dem Objekt {1} darf maximal einen Wert von {2} haben.",
@@ -131,7 +136,8 @@
     "MUST_SELECT": " muss ausgewählt sein.",
     "MAX_VALUE": " darf maximal eine Länge von {0} Zeichen haben.",
     "SIZE_BETWEEN": " muss folgende Länge haben: {0}-{1} Zeichen.",
-    "INVALID_USER": "Owner muss ausgewählt sein"
+    "INVALID_USER": "Owner muss ausgewählt sein",
+    "INVALID_UNIT": "{{fieldName}} ist nicht gültig."
   },
   "USER_ROLE": {
     "TEAM_ADMIN": "Team-Admin",

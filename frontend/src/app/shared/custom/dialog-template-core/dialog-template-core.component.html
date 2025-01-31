@@ -17,7 +17,7 @@
 
 <mat-divider class="mx-4"></mat-divider>
 
-<mat-dialog-content>
+<mat-dialog-content class="text-black">
   <ng-container *ngIf="isValueReady(observable | async); else spinner">
     <div class="container-fluid">
       <ng-content select="[content]"></ng-content>

@@ -1,8 +1,10 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
-import { Unit } from '../../src/app/shared/types/enums/unit';
 import KeyResultDialog from '../support/helper/dom-helper/dialogs/keyResultDialog';
+import { UNIT_CHF, UNIT_PERCENT } from '../../src/app/shared/test-data';
+import { uniqueSuffix } from '../support/helper/utils';
+import ConfirmDialog from '../support/helper/dom-helper/dialogs/confirmDialog';
 
 describe('okr key-result', () => {
   let overviewPage = new CyOverviewPage();
@@ -23,25 +25,25 @@ describe('okr key-result', () => {
       .fillKeyResultDescription('This is my description');
 
     keyResultDialog.withMetricValues(
-      Unit.PERCENT, '999999999999999999999999999999', '7', undefined
+      UNIT_PERCENT.unitName, '999999999999999999999999999999', '7', undefined
     );
     keyResultDialog.checkOnDialog(() => cy.contains('Baseline darf maximal 20 Zeichen lang sein.'));
 
     keyResultDialog.withMetricValues(
-      Unit.PERCENT, '0', '7', undefined
+      UNIT_PERCENT.unitName, '0', '7', undefined
     );
     cy.getByTestId('stretch-goal')
       .should('have.value', '10');
 
     keyResultDialog.withMetricValues(
-      Unit.PERCENT, '0', undefined, '100'
+      UNIT_PERCENT.unitName, '0', undefined, '100'
     );
     cy.getByTestId('target-goal')
       .should('have.value', '70');
 
     keyResultDialog
       .withMetricValues(
-        Unit.PERCENT, '21', undefined, '52'
+        UNIT_PERCENT.unitName, '21', undefined, '52'
       )
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
@@ -93,7 +95,7 @@ describe('okr key-result', () => {
       .checkForDialogTextMetric()
       .fillKeyResultTitle('I am a metric keyresult with a new one')
       .withMetricValues(
-        Unit.PERCENT, '21', undefined, '52'
+        UNIT_PERCENT.unitName, '21', undefined, '52'
       )
       .fillOwner('Bob Baumeister')
       .fillKeyResultDescription('This is my description when creating and then open a new')
@@ -177,7 +179,7 @@ describe('okr key-result', () => {
       .addKeyResult()
       .fillKeyResultTitle('We want not to change metric keyresult title')
       .withMetricValues(
-        Unit.PERCENT, '0', undefined, '10'
+        UNIT_PERCENT.unitName, '0', undefined, '10'
       )
       .checkForDialogTextMetric()
       .fillKeyResultDescription('This is my description')
@@ -194,7 +196,7 @@ describe('okr key-result', () => {
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '10'))
       .withMetricValues(
-        Unit.PERCENT, '0', '70', undefined
+        UNIT_PERCENT.unitName, '0', '70', undefined
       )
       .run(cy.getByTestId('ordinal-tab')
         .click())
@@ -207,7 +209,7 @@ describe('okr key-result', () => {
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '100'))
       .withMetricValues(
-        Unit.PERCENT, '5', '8.5', undefined
+        UNIT_PERCENT.unitName, '5', '8.5', undefined
       )
       .checkOnDialog(() => cy.getByTestId('stretch-goal')
         .should('have.value', '10'))
@@ -251,7 +253,7 @@ describe('okr key-result', () => {
     KeyResultDialog.do()
       .fillKeyResultTitle('This is my new title for the new metric keyresult')
       .withMetricValues(
-        Unit.PERCENT, '21', undefined, '56'
+        UNIT_PERCENT.unitName, '21', undefined, '56'
       )
       .fillKeyResultDescription('This is my new description')
       .submit();
@@ -331,7 +333,7 @@ describe('okr key-result', () => {
     KeyResultDialog.do()
       .fillKeyResultTitle('My title')
       .withMetricValues(
-        Unit.CHF, 'abc', undefined, '123'
+        UNIT_CHF.unitName, 'abc', undefined, '123'
       );
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -339,7 +341,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        Unit.PERCENT, '45', undefined, '52'
+        UNIT_PERCENT.unitName, '45', undefined, '52'
       );
     cy.getByTestId('submit')
       .should('not.be.disabled');
@@ -351,7 +353,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        Unit.PERCENT, '45', undefined, 'abc'
+        UNIT_PERCENT.unitName, '45', undefined, 'abc'
       );
     cy.getByTestId('submit')
       .should('be.disabled');
@@ -359,7 +361,7 @@ describe('okr key-result', () => {
 
     KeyResultDialog.do()
       .withMetricValues(
-        Unit.PERCENT, '45', undefined, '83'
+        UNIT_PERCENT.unitName, '45', undefined, '83'
       );
     cy.getByTestId('submit')
       .should('not.be.disabled');
@@ -466,5 +468,101 @@ describe('okr key-result', () => {
       .visit('A key-result for testing purposes')
       .editKeyResult()
       .run(cy.buttonShouldBePrimary('submit'));
+  });
+});
+
+describe('metric key-result edit units', () => {
+  let overviewPage = new CyOverviewPage();
+  let keyResultDetailPage = new KeyResultDetailPage();
+
+  beforeEach(() => {
+    overviewPage = new CyOverviewPage();
+    keyResultDetailPage = new KeyResultDetailPage();
+    cy.loginAsUser(users.gl);
+  });
+
+  it('should be able to add a custom unit and save it', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This key-result has a new value!')
+      .editUnits()
+      .checkForDialogText()
+      .createUnit(newCurrencyName)
+      .submit()
+      .withMetricValues(
+        newCurrencyName, '0', '7', '10'
+      )
+      .submit();
+
+    overviewPage.getKeyResultByName('This key-result has a new value!')
+      .click();
+    cy.contains(newCurrencyName);
+  });
+
+  it('should be able to edit a custom unit and save it', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .getFirstKeyResult()
+      .click();
+
+    keyResultDetailPage
+      .editKeyResult()
+      .editUnits()
+      .renameFirstUnit(newCurrencyName)
+      .submit()
+      .withMetricValues(
+        newCurrencyName, '0', '7', '10'
+      )
+      .submit();
+
+    cy.contains('Aktuell:');
+    cy.contains(newCurrencyName);
+  });
+
+  it('should not save the custom unit when the save button is not clicked', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .getFirstKeyResult()
+      .click();
+
+    keyResultDetailPage
+      .editKeyResult()
+      .editUnits()
+      .renameFirstUnit(newCurrencyName)
+      .cancel()
+      .editUnits();
+
+    cy.getByTestId('action-input')
+      .first()
+      .should('not.have.value', newCurrencyName);
+  });
+
+  it('should be able to add a custom unit and save it', () => {
+    const newCurrencyName = uniqueSuffix('Bitcoins');
+
+    overviewPage
+      .addKeyResult()
+      .fillKeyResultTitle('This key-result has a new value!')
+      .run(cy.getByTestId('unit')
+        .clear())
+      .run(cy.getByTestId('unit')
+        .type(newCurrencyName))
+      .run(cy.getByTestId('create-new-unit-button')
+        .click());
+
+    ConfirmDialog.do()
+      .checkForContentOnDialog('Erstellen bestätigen')
+      .submit();
+
+    KeyResultDialog.do()
+      .editUnits();
+
+    cy.getByTestId('action-input')
+      .last()
+      .should('have.value', newCurrencyName);
   });
 });

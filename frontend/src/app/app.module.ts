@@ -67,6 +67,8 @@ import { CheckInFormComponent } from './components/checkin/check-in-form/check-i
 import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { CustomizationService } from './services/customization.service';
+import { ManageUnitsDialogComponent } from './components/manage-units-dialog/manage-units-dialog.component';
+import { UnitTransformationPipe } from './shared/pipes/unit-transformation/unit-transformation.pipe';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async() => {
@@ -121,7 +123,8 @@ export const MY_FORMATS = {
     CheckInHistoryDialogComponent,
     CheckInFormMetricComponent,
     CheckInFormOrdinalComponent,
-    CheckInFormComponent
+    CheckInFormComponent,
+    ManageUnitsDialogComponent
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -189,6 +192,7 @@ export const MY_FORMATS = {
       useClass: CustomRouter
     },
     TranslateService,
+    UnitTransformationPipe,
     provideHttpClient(withInterceptorsFromDi())
   ]
 })

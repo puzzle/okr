@@ -21,18 +21,15 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
-    private final ActionBusinessService actionBusinessService;
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
                                     ObjectiveValidationService validator,
                                     ObjectivePersistenceService objectivePersistenceService,
-                                    CompletedBusinessService completedBusinessService,
-                                    ActionBusinessService actionBusinessService) {
+                                    CompletedBusinessService completedBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
-        this.actionBusinessService = actionBusinessService;
     }
 
     private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {

@@ -10,13 +10,11 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
@@ -137,6 +135,7 @@ class UserPersistenceServiceIT {
 
     // uses data from V100_0_0__TestData.sql
     @DisplayName("Should return user on findByEmail() when email is found")
+    @WithAnonymousUser
     @Test
     void findByEmailShouldReturnUserIfEmailIsFound() {
         Optional<User> user = userPersistenceService.findByEmail("gl@gl.com");
@@ -160,6 +159,7 @@ class UserPersistenceServiceIT {
 
     // uses data from V100_0_0__TestData.sql
     @DisplayName("Should return all okr champions on findAllOkrChampions()")
+    @WithAnonymousUser
     @Test
     void findAllOkrChampionsShouldReturnAllOkrChampions() {
         // act

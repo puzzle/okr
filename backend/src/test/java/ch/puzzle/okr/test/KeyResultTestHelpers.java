@@ -3,11 +3,11 @@ package ch.puzzle.okr.test;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
+import ch.puzzle.okr.dto.UnitDto;
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -36,12 +36,16 @@ public class KeyResultTestHelpers {
     public static final String FIRST_NAME = "Johnny";
     public static final String LAST_NAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
-    public static final Unit KEY_RESULT_UNIT = Unit.FTE;
+    public static final UnitDto KEY_RESULT_UNIT_DTO = new UnitDto(TestHelper.FTE_UNIT.getId(),
+                                                                  TestHelper.FTE_UNIT.getUnitName(),
+                                                                  TestHelper.glUserDto(),
+                                                                  TestHelper.FTE_UNIT.isDefault());
     public static final String KEY_RESULT_CREATED_ON = "-999999999-01-01T00:00:00";
     public static final String OBJECTIVE_STATE_ONGOING = "ONGOING";
     public static final String JSON_PATH_ID = "$.id";
     public static final String JSON_PATH_TITLE = "$.title";
-    public static final String JSON_PATH_UNIT = "$.unit";
+    public static final String JSON_PATH_UNIT_ID = "$.unit.id";
+    public static final String JSON_PATH_UNIT_NAME = "$.unit.unitName";
     public static final String JSON_PATH_BASELINE = "$.baseline";
     public static final String JSON_PATH_OBJECTIVE_ID = "$.objective.id";
     public static final String JSON_PATH_DESCRIPTION = "$.description";
@@ -113,7 +117,19 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"FTE",
+               "unit": {
+                "id": 1,
+                "unitName": "FTE",
+                "owner": {
+                  "id": 1000,
+                  "firstName": "Jaya",
+                  "lastName": "Norris",
+                  "email": "test@test.com",
+                    "userTeamList": [],
+                    "isOkrChampion": false
+                },
+                "isDefault": true
+              },
                "actionList":[]
             }
             """;
@@ -206,7 +222,19 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"PERCENT",
+              "unit": {
+                "id": 1,
+                "unitName": "PERCENT",
+                "owner": {
+                  "id": 1000,
+                  "firstName": "Jaya",
+                  "lastName": "Norris",
+                  "email": "test@test.com",
+                    "userTeamList": [],
+                    "isOkrChampion": false
+                },
+                "isDefault": true
+              },
                "actionList":[]
             }
             """;
@@ -218,7 +246,19 @@ public class KeyResultTestHelpers {
                 "description":"",
                 "baseline":2.0,
                 "stretchGoal":5.0,
-                "unit":"NUMBER",
+                "unit": {
+                "id": 1,
+                "unitName": "NUMBER",
+                "owner": {
+                  "id": 1000,
+                  "firstName": "Jaya",
+                  "lastName": "Norris",
+                  "email": "test@test.com",
+                    "userTeamList": [],
+                    "isOkrChampion": false
+                },
+                "isDefault": true
+              },
                 "ownerId":5,
                 "ownerFirstname":"",
                 "ownerLastname":"",
@@ -277,7 +317,19 @@ public class KeyResultTestHelpers {
               "description": "BESCHREIBUNG",
               "baseline": 1.0,
               "stretchGoal": 5.0,
-              "unit": "NUMBER",
+              "unit": {
+                "id": 1,
+                "unitName": "NUMBER",
+                "owner": {
+                  "id": 1000,
+                  "firstName": "Jaya",
+                  "lastName": "Norris",
+                  "email": "test@test.com",
+                    "userTeamList": [],
+                    "isOkrChampion": false
+                },
+                "isDefault": true
+              },
               "owner": {
                 "id": 1000,
                 "firstName": "Jaya",
@@ -333,7 +385,7 @@ public class KeyResultTestHelpers {
                                                                                        DESCRIPTION,
                                                                                        1.0,
                                                                                        5.0,
-                                                                                       KEY_RESULT_UNIT,
+                                                                                       KEY_RESULT_UNIT_DTO,
                                                                                        keyResultUserDto,
                                                                                        keyResultObjectiveDto,
                                                                                        keyResultLastCheckInDto,
@@ -388,4 +440,5 @@ public class KeyResultTestHelpers {
 
     private KeyResultTestHelpers() {
     }
+
 }

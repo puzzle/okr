@@ -99,7 +99,8 @@ export function getKeyResultForm(): FormGroup {
     actionList: new FormArray<FormGroup<FormControlsOf<Item>>>([]),
     keyResultType: new FormControl('metric'),
     metric: new FormGroup({
-      unit: new FormControl<Unit>(Unit.NUMBER, [Validators.required]),
+      unit: new FormControl<Unit>({ unitName: 'ZAHL' } as Unit, [Validators.required,
+        unitValidator()]),
       baseline: new FormControl(0, [Validators.required,
         numberValidator(),
         Validators.maxLength(20)]),
@@ -131,6 +132,16 @@ function ownerValidator(): ValidatorFn {
       return null;
     }
     return { invalid_user: { value: control.value } };
+  };
+}
+
+function unitValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const unit = control.value;
+    if (unit?.unitName && unit.unitName.length > 1) {
+      return null;
+    }
+    return { invalid_unit: { value: control.value } };
   };
 }
 

@@ -1,7 +1,7 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
-import { Unit } from '../../src/app/shared/types/enums/unit';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
+import { UNIT_CHF } from '../../src/app/shared/test-data';
 
 describe('tabbing workflows', () => {
   let overviewPage = new CyOverviewPage();
@@ -214,7 +214,7 @@ describe('tabbing workflows', () => {
       overviewPage
         .addOngoingKeyResult()
         .fillKeyResultTitle('A metric Keyresult for tabbing tests')
-        .withMetricValues(Unit.CHF, '10', '100')
+        .withMetricValues(UNIT_CHF.unitName, '10', '100')
         .submit();
       KeyResultDetailPage.do()
         .visit('A metric Keyresult for tabbing tests');

@@ -1,7 +1,9 @@
 package ch.puzzle.okr.test;
 
 import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -44,6 +46,44 @@ public class TestHelper {
         return user;
     }
 
+    public static User glUser() {
+        return glUser(61L);
+    }
+
+    public static User bbtUser() {
+        return User.Builder
+                .builder()
+                .withId(71L)
+                .withFirstName("Ashleigh")
+                .withLastName("Russell")
+                .withEmail("bbt@bbt.com")
+                .build();
+    }
+
+    public static User glUser(Long id) {
+        return User.Builder
+                .builder()
+                .withId(id)
+                .withFirstName("Jaya")
+                .withLastName("Norris")
+                .withEmail("gl@gl.com")
+                .build();
+    }
+
+    public static User invalidUser() {
+        return User.Builder
+                .builder()
+                .withId(-1L)
+                .withFirstName("Invalid")
+                .withLastName("User")
+                .withEmail("invalid@user.ch")
+                .build();
+    }
+
+    public static UserDto glUserDto() {
+        return new UserDto(61L, 1, "Jaya", "Norris", "gl@gl.com", List.of(), false);
+    }
+
     public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
         var user = defaultUser(userId);
         var adminUserTeams = adminTeams
@@ -65,6 +105,10 @@ public class TestHelper {
 
     public static UserTeam defaultUserTeam(Long id, User user) {
         return UserTeam.Builder.builder().withId(id).withTeam(defaultTeam(1L)).withUser(user).build();
+    }
+
+    public static AuthorizationUser okrChampionAuthorizationUser() {
+        return mockAuthorizationUser(1L, FIRST_NAME, LAST_NAME, EMAIL, true);
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
@@ -90,8 +134,12 @@ public class TestHelper {
         return new AuthorizationUser(user);
     }
 
-    public static Jwt defaultJwtToken() {
-        return mockJwtToken(FIRST_NAME, LAST_NAME, EMAIL);
+    public static Jwt bbtJwtToken() {
+        return mockJwtToken(bbtUser());
+    }
+
+    public static Jwt glJwtToken() {
+        return mockJwtToken(glUser());
     }
 
     public static Jwt mockJwtToken(User user) {
@@ -125,4 +173,10 @@ public class TestHelper {
     public static JsonNode getJsonNode(String json) throws IOException {
         return new ObjectMapper().readTree(json);
     }
+
+    public static final Unit NUMBER_UNIT = Unit.Builder.builder().unitName("NUMBER").build();
+    public static final Unit FTE_UNIT = Unit.Builder.builder().unitName("FTE").build();
+    public static final Unit CHF_UNIT = Unit.Builder.builder().unitName("CHF").build();
+    public static final Unit EUR_UNIT = Unit.Builder.builder().unitName("EUR").build();
+    public static final Unit PERCENT_UNIT = Unit.Builder.builder().unitName("PERCENT").build();
 }

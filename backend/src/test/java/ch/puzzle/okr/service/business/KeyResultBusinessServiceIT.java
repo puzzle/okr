@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
 import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,15 +53,20 @@ class KeyResultBusinessServiceIT {
     @Autowired
     private ActionBusinessService actionBusinessService;
 
+    @Autowired
+    private UnitBusinessService unitBusinessService;
+
+    private Unit UNIT;
+
     @Mock
     private AuthorizationService authorizationService;
 
-    private static KeyResult createKeyResultMetric(Long id) {
+    private KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder
                 .builder()
                 .withBaseline(3.0)
                 .withStretchGoal(5.0)
-                .withUnit(Unit.FTE)
+                .withUnit(this.UNIT)
                 .withId(id)
                 .withTitle("Title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
@@ -139,6 +145,7 @@ class KeyResultBusinessServiceIT {
     @BeforeEach
     void setUp() {
         TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+        this.UNIT = unitBusinessService.findUnitByName(FTE_UNIT.getUnitName());
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
     }
 

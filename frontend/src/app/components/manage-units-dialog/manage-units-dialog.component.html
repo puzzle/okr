@@ -1,0 +1,43 @@
+<app-dialog-template-core [title]="'Einheiten verwalten'">
+  <ng-container content>
+    <h3>Einheiten (Standard):</h3>
+    <div class="d-flex gap-2 flex-column">
+      <ng-container *ngFor="let unit of allUnits | async; let i = index">
+        <h3 *ngIf="unit.isDefault" class="bg-display-element w-100 p-2">
+          {{ unit.unitName }} {{ getFormatedUnitSymbol(unit) }}
+        </h3>
+      </ng-container>
+    </div>
+
+
+    <div [formGroup]="fg">
+      <span formArrayName="unitFormArray">
+        <app-action-plan [movable]="false" [canDelete]="false">
+          <top-title>Eigene Einheiten:</top-title>
+          <add-text>Eigene Einheit hinzufügen</add-text>
+        </app-action-plan>
+      </span>
+    </div>
+
+  </ng-container>
+  <ng-container actions>
+    <div class="col-auto">
+      <button
+        [attr.data-testId]="'submit'"
+        type="submit"
+        (click)="submit()"
+        color="primary"
+        mat-flat-button
+        [disabled]="fg.invalid"
+      >
+        Speichern
+      </button>
+      <button
+        mat-button
+        mat-dialog-close
+        color="primary"
+        [attr.data-testId]="'cancel'"
+      >Abbrechen</button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>

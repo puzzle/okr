@@ -1,14 +1,14 @@
 import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { actionListToItemList, formInputCheck } from '../../shared/common';
 import { ActionService } from '../../services/action.service';
-import { FormControlsOf, Item } from '../action-plan/action-plan.component';
+import { actionListToItemList, formInputCheck } from '../../shared/common';
+import { initFormGroupFromItem, Item } from '../action-plan/action-plan.component';
 
 @Component({
   selector: 'app-key-result-form',
@@ -72,7 +72,7 @@ export class KeyResultFormComponent implements OnInit, AfterContentInit {
 
   addNewItem(item?: Item) {
     (this.keyResultForm.get('actionList') as FormArray)
-      ?.push(this.initFormGroupFromItem(item));
+      ?.push(initFormGroupFromItem(item));
   }
 
   ngAfterContentInit(): void {
@@ -86,13 +86,5 @@ export class KeyResultFormComponent implements OnInit, AfterContentInit {
       this.addNewItem();
       this.addNewItem();
     }
-  }
-
-  initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
-    return new FormGroup({
-      item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
-      id: new FormControl<number | undefined>(item?.id || undefined),
-      isChecked: new FormControl<boolean>(item?.isChecked || false)
-    } as FormControlsOf<Item>);
   }
 }

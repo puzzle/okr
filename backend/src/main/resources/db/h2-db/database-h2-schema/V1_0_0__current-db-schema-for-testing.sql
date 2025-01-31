@@ -8,6 +8,19 @@ create sequence if not exists sequence_alignment;
 create sequence if not exists sequence_completed;
 create sequence if not exists sequence_organisation;
 create sequence if not exists sequence_action;
+CREATE SEQUENCE if not exists sequence_unit;
+
+
+
+CREATE  TABLE unit
+(
+    id            BIGINT                NOT NULL,
+    version       INTEGER               NOT NULL,
+    unit_name      TEXT                  NOT NULL,
+    created_by_id     BIGINT,
+    is_default     boolean               NOT NULL,
+    PRIMARY KEY (id)
+);
 
 create table if not exists person
 (
@@ -90,7 +103,7 @@ create table if not exists key_result
     owner_id        bigint    not null,
     key_result_type varchar(255),
     created_on      timestamp not null,
-    unit            varchar(30),
+    unit_id         bigint,
     commit_zone     varchar(1024),
     target_zone     varchar(1024),
     stretch_zone    varchar(1024),
@@ -100,7 +113,9 @@ create table if not exists key_result
     constraint fkrvcqyntd3p3kj8i7n0kuwbmqk
         foreign key (objective_id) references objective,
     constraint fkrk74v7vu0tugx9tbpeiotgw9b
-        foreign key (owner_id) references person
+        foreign key (owner_id) references person,
+    constraint fk_key_result_unit
+        foreign key (unit_id) references unit
 );
 
 create index if not exists idx_key_result_owner_person
@@ -172,7 +187,7 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
        KR.TITLE            AS "KEY_RESULT_TITLE",
        KR.KEY_RESULT_TYPE  AS "KEY_RESULT_TYPE",
-       KR.UNIT,
+       U.unit_name as "UNIT",
        KR.BASELINE,
        KR.STRETCH_GOAL,
        KR.COMMIT_ZONE,
@@ -188,6 +203,7 @@ FROM (SELECT T.ID AS TEAM_ID, T.VERSION AS TEAM_VERSION, T.NAME, Q.ID AS QUARTER
            QUARTER Q) TQ
          LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUARTER_ID = O.QUARTER_ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
+         LEFT JOIN unit U ON U.ID = KR.unit_id
          LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                               FROM CHECK_IN CC
                                                                               WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID);

@@ -3,7 +3,7 @@ import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import KeyResultDetailPage from '../support/helper/dom-helper/pages/keyResultDetailPage';
 import ObjectiveDialog from '../support/helper/dom-helper/dialogs/objectiveDialog';
 import { uniqueSuffix } from '../support/helper/utils';
-import { Unit } from '../../src/app/shared/types/enums/unit';
+import { UNIT_CHF } from '../../src/app/shared/test-data';
 
 let overviewPage = new CyOverviewPage();
 
@@ -112,7 +112,7 @@ describe('functionality of duplicating objectives and their belonging key-result
       .addKeyResult('LoremIpsum', objectiveTitle)
       .fillKeyResultTitle('A metric keyResult with lots of values')
       .withMetricValues(
-        Unit.CHF, '1', undefined, '5'
+        UNIT_CHF.unitName, '1', undefined, '5'
       )
       .fillKeyResultDescription('Its very sunny today.')
       .addActionPlanElement('Action')

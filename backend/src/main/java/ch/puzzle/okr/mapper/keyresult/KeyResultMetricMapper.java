@@ -2,6 +2,7 @@ package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.ActionMapper;
+import ch.puzzle.okr.mapper.UnitMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -9,6 +10,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.business.UnitBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -20,14 +22,19 @@ public class KeyResultMetricMapper {
     private final ObjectiveBusinessService objectiveBusinessService;
     private final CheckInBusinessService checkInBusinessService;
     private final ActionMapper actionMapper;
+    private final UnitBusinessService unitBusinessService;
+    private final UnitMapper unitMapper;
 
     public KeyResultMetricMapper(UserBusinessService userBusinessService,
                                  ObjectiveBusinessService objectiveBusinessService,
-                                 CheckInBusinessService checkInBusinessService, ActionMapper actionMapper) {
+                                 CheckInBusinessService checkInBusinessService, ActionMapper actionMapper,
+                                 UnitBusinessService unitBusinessService, UnitMapper unitMapper) {
         this.userBusinessService = userBusinessService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionMapper = actionMapper;
+        this.unitBusinessService = unitBusinessService;
+        this.unitMapper = unitMapper;
     }
 
     public KeyResultDto toDto(KeyResultMetric keyResult, List<Action> actionList) {
@@ -57,7 +64,7 @@ public class KeyResultMetricMapper {
                                       keyResult.getDescription(), //
                                       keyResult.getBaseline(), //
                                       keyResult.getStretchGoal(), //
-                                      keyResult.getUnit(), //
+                                      unitMapper.toDto(keyResult.getUnit()), //
                                       ownerDto,
                                       objectiveDto, //
                                       lastCheckInDto, //
@@ -72,7 +79,7 @@ public class KeyResultMetricMapper {
                 .builder() //
                 .withBaseline(keyResultMetricDto.baseline()) //
                 .withStretchGoal(keyResultMetricDto.stretchGoal()) //
-                .withUnit(keyResultMetricDto.unit()) //
+                .withUnit(unitBusinessService.findUnitByName(keyResultMetricDto.unit().unitName()))
                 .withId(keyResultMetricDto.id()) //
                 .withVersion(keyResultMetricDto.version()) //
                 .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id())) //

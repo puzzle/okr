@@ -14,6 +14,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
+import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -64,7 +65,7 @@ class KeyResultValidationServiceTest {
             .builder()
             .withBaseline(4.0)
             .withStretchGoal(7.0)
-            .withUnit(Unit.NUMBER)
+            .withUnit(TestHelper.NUMBER_UNIT)
             .withId(5L)
             .withTitle("Keyresult Metric")
             .withObjective(objective)
@@ -82,7 +83,7 @@ class KeyResultValidationServiceTest {
             .builder()
             .withBaseline(4.0)
             .withStretchGoal(7.0)
-            .withUnit(Unit.FTE)
+            .withUnit(TestHelper.FTE_UNIT)
             .withId(null)
             .withTitle("Keyresult Metric")
             .withObjective(objective)
@@ -194,7 +195,7 @@ class KeyResultValidationServiceTest {
                 .builder() //
                 .withBaseline(3.0) //
                 .withStretchGoal(5.0) //
-                .withUnit(Unit.EUR) //
+                .withUnit(TestHelper.EUR_UNIT) //
                 .withId(null) //
                 .withTitle(title) //
                 .withOwner(user) //
@@ -244,7 +245,7 @@ class KeyResultValidationServiceTest {
                 .builder()
                 .withBaseline(4.0)
                 .withStretchGoal(7.0)
-                .withUnit(Unit.EUR)
+                .withUnit(TestHelper.EUR_UNIT)
                 .withId(id)
                 .withTitle("Keyresult Metric")
                 .withObjective(objective)
@@ -315,7 +316,7 @@ class KeyResultValidationServiceTest {
                 .builder() //
                 .withBaseline(3.0) //
                 .withStretchGoal(5.0) //
-                .withUnit(Unit.FTE) //
+                .withUnit(TestHelper.FTE_UNIT) //
                 .withId(id) //
                 .withTitle(title) //
                 .withOwner(user) //

@@ -15,6 +15,9 @@ import { getValueOfForm } from '../../shared/common';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ErrorComponent } from '../../shared/custom/error/error.component';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;
@@ -34,9 +37,14 @@ describe('KeyResultTypeComponent', () => {
           }),
           ReactiveFormsModule
         ],
-        providers: [FormGroupDirective,
+        providers: [
+          FormGroupDirective,
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           { provide: FormGroupDirective,
-            useValue: formGroupDirective }]
+            useValue: formGroupDirective }
+        ]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
@@ -110,9 +118,14 @@ describe('KeyResultTypeComponent', () => {
           MatAutocompleteModule,
           ReactiveFormsModule
         ],
-        providers: [FormGroupDirective,
+        providers: [
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          FormGroupDirective,
           { provide: FormGroupDirective,
-            useValue: formGroupDirective }]
+            useValue: formGroupDirective }
+        ]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
@@ -163,9 +176,14 @@ describe('KeyResultTypeComponent', () => {
           ReactiveFormsModule,
           MatFormFieldModule
         ],
-        providers: [FormGroupDirective,
+        providers: [
+          FormGroupDirective,
+          provideRouter([]),
+          provideHttpClient(),
+          provideHttpClientTesting(),
           { provide: FormGroupDirective,
-            useValue: formGroupDirective }]
+            useValue: formGroupDirective }
+        ]
       });
       fixture = TestBed.createComponent(KeyResultTypeComponent);
       component = fixture.componentInstance;
@@ -297,8 +315,8 @@ describe('KeyResultTypeComponent', () => {
 
     it('should use default values', () => {
       expect(getValueOfForm(component.keyResultForm, ['metric',
-        'unit']))
-        .toEqual('NUMBER');
+        'unit']).unitName)
+        .toEqual('ZAHL');
 
       expect(getValueOfForm(component.keyResultForm, ['metric',
         'baseline']))

@@ -1,7 +1,8 @@
-export enum Unit {
-  PERCENT = 'PERCENT',
-  CHF = 'CHF',
-  EUR = 'EUR',
-  FTE = 'FTE',
-  NUMBER = 'NUMBER'
+import { User } from '../model/user';
+
+export interface Unit {
+  id?: number;
+  unitName: string;
+  owner?: User;
+  isDefault: boolean;
 }

@@ -5,11 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.models.Action;
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.validation.ActionValidationService;
+import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class ActionBusinessServiceTest {
             .builder()
             .withBaseline(10D)
             .withStretchGoal(50D)
-            .withUnit(Unit.CHF)
+            .withUnit(TestHelper.CHF_UNIT)
             .withId(8L)
             .withTitle("Keyresult Metric")
             .build();

@@ -1,13 +1,12 @@
 package ch.puzzle.okr.service.business;
 
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -483,7 +482,7 @@ class KeyResultBusinessServiceTest {
                 .withTitle("Metric KeyResult")
                 .withDescription("Description of metric key result")
                 .withOwner(User.Builder.builder().build())
-                .withUnit(Unit.NUMBER)
+                .withUnit(NUMBER_UNIT)
                 .withBaseline(10.0)
                 .withStretchGoal(50.0)
                 .build();

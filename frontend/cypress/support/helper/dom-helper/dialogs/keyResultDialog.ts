@@ -1,7 +1,7 @@
 import Dialog from './dialog';
-import { Unit } from '../../../../../src/app/shared/types/enums/unit';
 import ConfirmDialog from './confirmDialog';
 import Chainable = Cypress.Chainable;
+import UnitDialog from './unitDialog';
 
 export default class KeyResultDialog extends Dialog {
   fillKeyResultTitle(title: string) {
@@ -15,12 +15,21 @@ export default class KeyResultDialog extends Dialog {
   }
 
   withMetricValues(
-    unit: Unit, baseline?: string, targetGoal?: string, stretchGoal?: string
+    unit: string, baseline?: string, targetGoal?: string, stretchGoal?: string
   ) {
     cy.getByTestId('metric-tab')
       .click();
+
     cy.getByTestId('unit')
-      .select(unit);
+      .click()
+      .as('unitInput')
+      .clear();
+
+    cy.get('@unitInput')
+      .type(unit);
+
+    cy.realPress('ArrowDown')
+      .realPress('Enter');
 
     if (baseline !== undefined) {
       this.fillInputByTestId('baseline', baseline);
@@ -99,17 +108,38 @@ export default class KeyResultDialog extends Dialog {
     cy.contains('Abbrechen');
   }
 
-  override submit() {
-    cy.getByTestId('submit')
+  editUnits() {
+    cy.getByTestId('manage-units', 'Einheiten Verwalten')
       .click();
+
+    return new UnitDialog();
+  }
+
+  override submit() {
+    this.getPage()
+      .within(() => {
+        cy.getByTestId('submit')
+          .click();
+      });
   }
 
   saveAndNew() {
-    cy.getByTestId('save-and-new')
-      .click();
+    this.getPage()
+      .within(() => {
+        cy.getByTestId('save-and-new')
+          .click();
+      });
+  }
+
+  override cancel() {
+    this.getPage()
+      .within(() => {
+        cy.getByTestId('cancel')
+          .click();
+      });
   }
 
   getPage(): Chainable {
-    return cy.get('app-key-result-form');
+    return cy.get('app-key-result-dialog');
   }
 }

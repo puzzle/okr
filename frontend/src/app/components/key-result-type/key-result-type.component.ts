@@ -6,7 +6,10 @@ import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { Unit } from '../../shared/types/enums/unit';
 import { formInputCheck } from '../../shared/common';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
-import { Observable, Subject } from 'rxjs';
+import { map, Observable, startWith, Subject, tap } from 'rxjs';
+import { UnitService } from '../../services/unit.service';
+import { DialogService } from '../../services/dialog.service';
+import { ManageUnitsDialogComponent } from '../manage-units-dialog/manage-units-dialog.component';
 
 export enum KeyResultMetricField {
   BASELINE,
@@ -38,11 +41,15 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   @Input() users: Observable<User[]> = new Subject();
 
-  protected readonly Unit = Unit;
-
   protected readonly formInputCheck = formInputCheck;
 
-  constructor(private parentF: FormGroupDirective) {
+  unitOptions: Unit[] = [];
+
+  filteredUnitOptions = new Observable<Unit[]>();
+
+  unitSearchTerm = '';
+
+  constructor(private parentF: FormGroupDirective, private unitService: UnitService, private dialogService: DialogService) {
     this.childForm = this.parentF.form;
   }
 
@@ -127,6 +134,15 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   protected readonly getFullNameOfUser = getFullNameOfUser;
 
+
+  displayFn(unit: Unit): string {
+    const capitalize = (s: string) => s.charAt(0)
+      .toUpperCase() + s.slice(1)
+      .toLowerCase();
+    const s = unit?.unitName || '';
+    return s.length > 3 ? capitalize(s) : s;
+  }
+
   ngAfterContentInit(): void {
     const formGroupMetric = this.keyResultForm.get('metric');
     this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: formGroupMetric?.get('stretchGoal')?.value });
@@ -137,6 +153,65 @@ export class KeyResultTypeComponent implements AfterContentInit {
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
     formGroupMetric?.get('stretchGoal')?.valueChanges
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
+
+    this.filteredUnitOptions = formGroupMetric!.get('unit')!.valueChanges.pipe(startWith(''), tap((value) => {
+      if (typeof value !== 'string') {
+        return;
+      }
+      this.unitSearchTerm = value;
+    }), map((value) => this.filter(value || '')));
+  }
+
+  createNewUnit() {
+    this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.setValue({ unitName: this.unitSearchTerm });
+    this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.updateValueAndValidity();
+    this.unitService.checkForNewUnit(this.unitSearchTerm)
+      .subscribe((result: Unit) => this.unitService.createUnit(result)
+        .subscribe((unit) => {
+          this.unitOptions.push(unit);
+          this.keyResultForm.get('metric')
+            ?.get('unit')
+            ?.setValue(unit);
+          this.keyResultForm.get('metric')
+            ?.get('unit')
+            ?.updateValueAndValidity();
+        }));
+  }
+
+  private filter(value: string): Unit[] {
+    const filterValue = value.toString()
+      .toLowerCase();
+    return this.unitOptions.filter((option) => option.unitName.toLowerCase()
+      .includes(filterValue));
+  }
+
+  setUnits() {
+    this.unitService.getUnits()
+      .subscribe((units) => {
+        this.unitOptions = units;
+        this.keyResultForm.get('metric')
+          ?.get('unit')
+          ?.updateValueAndValidity();
+      });
+  }
+
+  canCreate(options: Unit[]) {
+    const rawValue = this.keyResultForm.get('metric')
+      ?.get('unit')
+      ?.getRawValue();
+    const value = rawValue?.unitName || rawValue || '';
+    const doesSearchAlreadyExist = this.unitOptions.some((option) => option.unitName.toLowerCase()
+      .trim() === value.toLowerCase()
+      .trim());
+    return options.length === 0 && !doesSearchAlreadyExist;
+  }
+
+  openManageUnitsDialog() {
+    this.dialogService.open(ManageUnitsDialogComponent);
   }
 }
 

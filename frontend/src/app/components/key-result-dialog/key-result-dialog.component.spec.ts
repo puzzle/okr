@@ -599,8 +599,8 @@ describe('KeyResultDialogComponent', () => {
     it('should use values from input', () => {
       // Default value
       expect(getValueOfForm(component.keyResultForm, ['metric',
-        'unit']))
-        .toEqual('NUMBER');
+        'unit']).unitName)
+        .toEqual('ZAHL');
 
       expect(getValueOfForm(component.keyResultForm, ['metric',
         'baseline']))

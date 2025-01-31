@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { testUser, users } from '../../shared/test-data';
+import { testUser, UNIT_CHF, users } from '../../shared/test-data';
 import { State } from '../../shared/types/enums/state';
 import { Observable, of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -154,7 +154,7 @@ describe('KeyResultFormComponent', () => {
         lastCheckIn: null,
         actionList: [],
         stretchGoal: 25,
-        unit: 'CHF',
+        unit: UNIT_CHF,
         createdOn: new Date(),
         modifiedOn: new Date(),
         isWriteable: true
@@ -170,7 +170,7 @@ describe('KeyResultFormComponent', () => {
         .toEqual(25);
 
       expect(getValueOfForm(component.keyResultForm, ['metric',
-        'unit']))
+        'unit']).unitName)
         .toEqual('CHF');
     });
 

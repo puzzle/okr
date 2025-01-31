@@ -3,6 +3,7 @@ package ch.puzzle.okr.mapper.keyresult.helper;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static ch.puzzle.okr.mapper.keyresult.helper.TestDataConstants.*;
+import static ch.puzzle.okr.test.KeyResultTestHelpers.KEY_RESULT_UNIT_DTO;
 
 import ch.puzzle.okr.dto.keyresult.*;
 
@@ -70,17 +71,17 @@ public class TestDataDtoHelper {
                                                                                         KEY_RESULT_DESCRIPTION, //
                                                                                         KEY_RESULT_BASELINE, //
                                                                                         KEY_RESULT_STRETCH_GOAL, //
-                                                                                        KEY_RESULT_UNIT, //
+                                                                                        KEY_RESULT_UNIT_DTO, //
                                                                                         ownerDto, //
                                                                                         objectiveDto, //
                                                                                         lastCheckInMetricDto, //
                                                                                         CHECK_IN_CREATED_ON, //
                                                                                         CHECK_IN_MODIFIED_ON, //
                                                                                         CHECK_IN_IS_WRITABLE, //
-                                                                                        null // actionList; ony used for
-                                                                                             // keyResultMetric + action
-                                                                                             // -> dto BUT NOT FOR dto
-                                                                                             // -> keyResultMetric
+                                                                                        null// actionList; ony used for
+    // keyResultMetric + action
+    // -> dto BUT NOT FOR dto
+    // -> keyResultMetric
     );
 
     private static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto( //

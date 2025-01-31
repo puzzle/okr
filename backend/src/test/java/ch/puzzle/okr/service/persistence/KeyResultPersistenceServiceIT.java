@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
@@ -13,6 +14,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.service.business.UnitBusinessService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDateTime;
@@ -29,12 +31,17 @@ class KeyResultPersistenceServiceIT {
     @Autowired
     private KeyResultPersistenceService keyResultPersistenceService;
 
-    private static KeyResult createKeyResultMetric(Long id) {
+    @Autowired
+    private UnitBusinessService unitBusinessService;
+
+    private Unit UNIT;
+
+    private KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder
                 .builder()
                 .withBaseline(3.0)
                 .withStretchGoal(5.0)
-                .withUnit(Unit.FTE)
+                .withUnit(this.UNIT)
                 .withId(id)
                 .withTitle("Title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
@@ -44,11 +51,11 @@ class KeyResultPersistenceServiceIT {
                 .build();
     }
 
-    private static KeyResult createKeyResultOrdinal(Long id) {
+    private KeyResult createKeyResultOrdinal(Long id) {
         return createKeyResultOrdinal(id, 1);
     }
 
-    private static KeyResult createKeyResultOrdinal(Long id, int version) {
+    private KeyResult createKeyResultOrdinal(Long id, int version) {
         return KeyResultOrdinal.Builder
                 .builder()
                 .withCommitZone("Hamster")
@@ -72,6 +79,7 @@ class KeyResultPersistenceServiceIT {
     @BeforeEach
     void setUp() {
         TenantContext.setCurrentTenant(TestHelper.SCHEMA_PITC);
+        this.UNIT = unitBusinessService.findUnitByName(FTE_UNIT.getUnitName());
     }
 
     @AfterEach

@@ -134,15 +134,13 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   protected readonly getFullNameOfUser = getFullNameOfUser;
 
-  capitalize(s: string) {
-    return s.charAt(0)
-      .toUpperCase() + s.slice(1)
-      .toLowerCase();
-  }
 
   displayFn(unit: Unit): string {
+    const capitalize = (s: string) => s.charAt(0)
+      .toUpperCase() + s.slice(1)
+      .toLowerCase();
     const s = unit?.unitName || '';
-    return s.length > 3 ? this.capitalize(s) : s;
+    return s.length > 3 ? capitalize(s) : s;
   }
 
   ngAfterContentInit(): void {

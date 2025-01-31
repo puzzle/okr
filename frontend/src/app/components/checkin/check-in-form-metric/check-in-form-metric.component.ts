@@ -27,16 +27,12 @@ export class CheckInFormMetricComponent {
 
   generateUnitLabel(): string {
     switch (this.keyResult.unit.unitName) {
-      case 'PERCENT':
+      case 'PROZENT':
         return '%';
-      case 'CHF':
-        return 'CHF';
-      case 'EUR':
-        return 'EUR';
-      case 'FTE':
-        return 'FTE';
-      default:
+      case 'ZAHL':
         return '';
+      default:
+        return this.keyResult.unit.unitName;
     }
   }
 

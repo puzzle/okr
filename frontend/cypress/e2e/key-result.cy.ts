@@ -471,7 +471,7 @@ describe('okr key-result', () => {
   });
 });
 
-describe.only('metric key-result edit units', () => {
+describe('metric key-result edit units', () => {
   let overviewPage = new CyOverviewPage();
   let keyResultDetailPage = new KeyResultDetailPage();
 

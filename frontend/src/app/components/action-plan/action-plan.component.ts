@@ -15,7 +15,6 @@ import {
   FormArrayName,
   FormGroup
 } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { initFormGroupFromItem } from '../../shared/common';
 
 export type FormControlsOf<T> = {
@@ -37,7 +36,7 @@ export interface Item {
     useExisting: FormArrayName }]
 })
 export class ActionPlanComponent implements OnDestroy {
-  @Input() onDelete?: (index: number) => Observable<any>;
+  @Input() canDelete?: boolean = true;
 
   @Input() movable = true;
 
@@ -72,7 +71,7 @@ export class ActionPlanComponent implements OnDestroy {
       .at(index)
       .getRawValue() as Item;
 
-    if ((item.item !== '' || item.id) && this.onDelete) {
+    if ((item.item !== '' || item.id) && this.canDelete) {
       this.dialogService
         .openConfirmDialog('CONFIRMATION.DELETE.ACTION')
         .afterClosed()
@@ -81,10 +80,6 @@ export class ActionPlanComponent implements OnDestroy {
             this.getFormControlArray()
               .removeAt(index);
             this.cdRef.detectChanges();
-            if (item.id && this.onDelete) {
-              this.onDelete(item.id)
-                .subscribe();
-            }
           }
         });
     } else {

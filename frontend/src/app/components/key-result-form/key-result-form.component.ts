@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { filter, map, Observable, of, ReplaySubject, startWith, switchMap } from 'rxjs';
+import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { actionListToItemList, formInputCheck, hasFormFieldErrors } from '../../shared/common';
+import { actionListToItemList, formInputCheck, initFormGroupFromItem } from '../../shared/common';
 import { ActionService } from '../../services/action.service';
 import { Item } from '../action-plan/action-plan.component';
 
@@ -16,19 +16,12 @@ import { Item } from '../action-plan/action-plan.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })
-export class KeyResultFormComponent implements OnInit {
+export class KeyResultFormComponent implements OnInit, AfterContentInit {
   users$ = new Observable<User[]>();
 
   filteredUsers$: Observable<User[]> = of([]);
 
-  actionPlanOnDelete = (index: number): Observable<any> => this.actionService.deleteAction(index);
-
-  actionPlanAddItemSubject = new ReplaySubject<Item | undefined>();
-
   protected readonly formInputCheck = formInputCheck;
-
-  protected readonly hasFormFieldErrors = hasFormFieldErrors;
-
 
   @Input()
   keyResultForm!: FormGroup;
@@ -48,15 +41,6 @@ export class KeyResultFormComponent implements OnInit {
       this.isMetricKeyResult()
         ? this.setMetricValuesInForm(this.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.keyResult as KeyResultOrdinal);
-
-      actionListToItemList(this.keyResult.actionList)
-        .forEach((e) => {
-          this.actionPlanAddItemSubject.next(e);
-        });
-    } else {
-      this.actionPlanAddItemSubject.next(undefined);
-      this.actionPlanAddItemSubject.next(undefined);
-      this.actionPlanAddItemSubject.next(undefined);
     }
   }
 
@@ -84,5 +68,23 @@ export class KeyResultFormComponent implements OnInit {
 
   getFullNameOfLoggedInUser() {
     return getFullNameOfUser(this.userService.getCurrentUser());
+  }
+
+  addNewItem(item?: Item) {
+    (this.keyResultForm.get('actionList') as FormArray)
+      ?.push(initFormGroupFromItem(item));
+  }
+
+  ngAfterContentInit(): void {
+    if (this.keyResult) {
+      actionListToItemList(this.keyResult.actionList)
+        .forEach((e) => {
+          this.addNewItem(e);
+        });
+    } else {
+      this.addNewItem();
+      this.addNewItem();
+      this.addNewItem();
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/objective';
 import { KeyResult } from '../../shared/types/model/key-result';
@@ -11,7 +11,9 @@ import { DialogService } from '../../services/dialog.service';
 import { getKeyResultForm } from '../../shared/constant-library';
 import { UserService } from '../../services/user.service';
 import { KeyResultDto } from '../../shared/types/DTOs/key-result-dto';
-import { itemListToActionList } from '../../shared/common';
+import { itemListToActionList, trackDeletedItems } from '../../shared/common';
+import { Observable } from 'rxjs';
+import { ActionService } from '../../services/action.service';
 
 
 @Component({
@@ -33,15 +35,20 @@ export class KeyResultDialogComponent implements OnInit {
     private keyResultService: KeyResultService,
     public dialogService: DialogService,
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
-    private userService: UserService
+    private userService: UserService,
+    private actionService: ActionService
   ) {
   }
+
+  deletedItems: Observable<any> = (this.keyResultForm.get('actionList') as FormArray).valueChanges.pipe(trackDeletedItems());
 
   isMetricKeyResult() {
     return this.keyResultForm.controls['keyResultType'].value === 'metric';
   }
 
   saveKeyResult(openNewDialog = false) {
+    this.deletedItems.subscribe((e: any[]) => e.forEach((elem: any) => this.actionService.deleteAction(elem.id)
+      .subscribe()));
     this.keyResultForm.controls['metric'].enable();
     this.keyResultForm.controls['ordinal'].enable();
     let keyResult: KeyResultDto = this.keyResultForm.value;
@@ -103,5 +110,6 @@ export class KeyResultDialogComponent implements OnInit {
     this.keyResultForm.get('keyResultType')?.valueChanges.subscribe((value) => {
       this.setValidators(value);
     });
+    this.deletedItems.subscribe();
   }
 }

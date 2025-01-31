@@ -38,8 +38,7 @@
         (keydown.enter)="removeAction(i)"
         (click)="removeAction(i)"
         class="btn btn-link col-auto"
-        *ngIf="onDelete"
-
+        *ngIf="canDelete"
       ><img
 
           class="icons bin-icon cursor-pointer focus-outline"

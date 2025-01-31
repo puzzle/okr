@@ -11,7 +11,6 @@ import { ActionService } from '../../../services/action.service';
 import {
   actionListToItemList,
   formInputCheck,
-  initFormGroupFromItem,
   itemListToActionList,
   trackDeletedItems
 } from '../../../shared/common';
@@ -171,7 +170,7 @@ export class CheckInFormComponent implements OnInit {
 
   addNewItem(item?: Item) {
     this.getFormControlArray()
-      ?.push(initFormGroupFromItem(item));
+      ?.push(this.initFormGroupFromItem(item));
   }
 
   setValidators(type: string) {
@@ -179,5 +178,13 @@ export class CheckInFormComponent implements OnInit {
       .forEach((e) => e?.disable({ emitEvent: false }));
     this.dialogForm.get(this.checkInTypes.filter((formName) => formName.includes(type)))
       ?.enable({ emitEvent: false });
+  }
+
+  initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
+    return new FormGroup({
+      item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
+      id: new FormControl<number | undefined>(item?.id || undefined),
+      isChecked: new FormControl<boolean>(item?.isChecked || false)
+    } as FormControlsOf<Item>);
   }
 }

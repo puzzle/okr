@@ -12,10 +12,9 @@ import {
   AbstractControl,
   ControlContainer,
   FormArray,
-  FormArrayName,
-  FormGroup
+  FormArrayName, FormControl,
+  FormGroup, Validators
 } from '@angular/forms';
-import { initFormGroupFromItem } from '../../shared/common';
 
 export type FormControlsOf<T> = {
   [P in keyof T]: AbstractControl<T[P]>;
@@ -90,7 +89,7 @@ export class ActionPlanComponent implements OnDestroy {
 
   addNewItem(item?: Item, options: { emitEvent?: boolean } = {}) {
     this.getFormControlArray()
-      ?.push(initFormGroupFromItem(item), options);
+      ?.push(this.initFormGroupFromItem(item), options);
   }
 
   /*
@@ -112,5 +111,13 @@ export class ActionPlanComponent implements OnDestroy {
     this.getFormControlArray()
       .clear({ emitEvent: false });
     validItems.forEach((item) => this.addNewItem(item, { emitEvent: false }));
+  }
+
+  initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
+    return new FormGroup({
+      item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
+      id: new FormControl<number | undefined>(item?.id || undefined),
+      isChecked: new FormControl<boolean>(item?.isChecked || false)
+    } as FormControlsOf<Item>);
   }
 }

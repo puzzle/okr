@@ -155,15 +155,16 @@ export function actionListToItemList(actionList: Action[]): Item[] {
 }
 
 export function itemListToActionList(itemList: Item[], keyResultId: number | null): Action[] {
-  return itemList.map((item: Item, index) => {
-    return {
-      id: item.id,
-      action: item.item,
-      priority: index,
-      keyResultId: keyResultId,
-      isChecked: item.isChecked
-    } as Action;
-  });
+  return itemList.filter((e) => e.item.trim() !== '')
+    .map((item: Item, index) => {
+      return {
+        id: item.id,
+        action: item.item,
+        priority: index,
+        keyResultId: keyResultId,
+        isChecked: item.isChecked
+      } as Action;
+    });
 }
 
 export function initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {

@@ -47,7 +47,7 @@
           >
             <mat-option (click)="createNewUnit()" *ngIf="canCreate((this.filteredUnitOptions | async)!)">Create new</mat-option>
             <mat-option *ngFor="let unit of this.filteredUnitOptions | async" [value]="unit">
-              {{("UNIT."+unit.unitName.toUpperCase()) | translate}}
+              {{(unit.unitName.toUpperCase())}}
             </mat-option>
 
           </mat-autocomplete>

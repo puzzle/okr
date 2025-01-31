@@ -46,8 +46,12 @@
             [displayWith]="displayFn"
           >
             <mat-option (click)="createNewUnit()" *ngIf="canCreate((this.filteredUnitOptions | async)!)">Create new</mat-option>
-            <mat-option *ngFor="let unit of this.filteredUnitOptions | async" [value]="unit">
-              {{(unit.unitName.toUpperCase())}}
+            <mat-option
+              *ngFor="let unit of this.filteredUnitOptions | async"
+              [value]="unit"
+              class="text-capitalize"
+            >
+              {{(unit.unitName.toLowerCase())}}
             </mat-option>
 
           </mat-autocomplete>

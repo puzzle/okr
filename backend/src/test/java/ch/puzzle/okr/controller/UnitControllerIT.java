@@ -54,7 +54,7 @@ class UnitControllerIT {
     @Order(1)
     void shouldReturnAllUnits() throws Exception {
         List<String> unitNames = List
-                .of("PERCENT", "NUMBER", "CHF", "EUR", "FTE", "UNKNOWN", "TO_BE_UPDATED", "TO_BE_DELETED");
+                .of("PROZENT", "ZAHL", "CHF", "EUR", "FTE", "UNKNOWN", "TO_BE_UPDATED", "TO_BE_DELETED");
         mvc
                 .perform(get(URL_BASE)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())

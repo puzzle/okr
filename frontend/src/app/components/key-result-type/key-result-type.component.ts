@@ -138,7 +138,10 @@ export class KeyResultTypeComponent implements AfterContentInit {
   protected readonly getFullNameOfUser = getFullNameOfUser;
 
   displayFn(unit: Unit): string {
-    return unit?.unitName || '';
+    const s = unit?.unitName || '';
+    return s.charAt(0)
+      .toUpperCase() + s.slice(1)
+      .toLowerCase();
   }
 
   ngAfterContentInit(): void {

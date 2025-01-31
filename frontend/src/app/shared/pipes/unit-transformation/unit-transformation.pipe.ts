@@ -22,15 +22,9 @@ export class UnitTransformationPipe implements PipeTransform {
 
   transformLabel(label: string): string {
     switch (label) {
-      case 'PERCENT':
+      case 'PROZENT':
         return '%';
-      case 'FTE':
-        return ' FTE';
-      case 'CHF':
-        return ' CHF';
-      case 'EUR':
-        return ' EUR';
-      case 'NUMBER':
+      case 'ZAHL':
         return '';
       default:
         return ' ' + label;

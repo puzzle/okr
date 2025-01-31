@@ -159,7 +159,7 @@ export const users: User[] = [
 ];
 
 export const UNIT_PERCENT: Unit = { id: 1,
-  unitName: 'PERCENT',
+  unitName: 'PROZENT',
   owner: users[0],
   isDefault: true };
 export const UNIT_CHF: Unit = { id: 2,
@@ -175,7 +175,7 @@ export const UNIT_FTE: Unit = { id: 4,
   owner: users[0],
   isDefault: true };
 export const UNIT_NUMBER: Unit = { id: 5,
-  unitName: 'NUMBER',
+  unitName: 'ZAHL',
   owner: users[0],
   isDefault: true };
 

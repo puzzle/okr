@@ -28,7 +28,7 @@ public class UnitController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved user's units", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = UnitDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content) })
+    })
     @GetMapping("/user")
     public List<UnitDto> getUnitsByUser() {
         return unitAuthorizationService.getUnitsOfUser().stream().map(unitMapper::toDto).toList();
@@ -38,7 +38,7 @@ public class UnitController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved all units", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = UnitDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content) })
+    })
     @GetMapping
     public List<UnitDto> getAllUnits() {
         return unitAuthorizationService.getAllUnits().stream().map(unitMapper::toDto).toList();

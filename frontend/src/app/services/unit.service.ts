@@ -31,27 +31,10 @@ export class UnitService {
   checkForNewUnit(unitName: string): Observable<Unit> {
     const newUnit = { unitName: unitName,
       isDefault: false } as Unit;
-    /*
-     * this.unitOptions.push(newUnit);
-     * this.keyResultForm.get('metric')
-     *     ?.get('unit')
-     *     ?.setValue(newUnit);
-     */
 
     return this.dialogService
       .openConfirmDialog('CONFIRMATION.UNIT_CREATE')
       .afterClosed()
       .pipe(filter((result) => result), map(() => newUnit));
-    /*
-     * .subscribe((result) => {
-     *   if (result) {
-     *      return this.createUnit(newUnit)
-     *         // .subscribe((unit: Unit) => this.keyResultForm.get('metric')
-     *         //     ?.get('unit')
-     *         //     ?.setValue(unit));
-     *   }
-     *   return undefined;
-     * });
-     */
   }
 }

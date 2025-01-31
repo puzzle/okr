@@ -49,12 +49,4 @@ describe('UnitTransformationPipe', () => {
     expect(pipe.transform(380.987, UNIT_NUMBER))
       .toBe('380.99');
   });
-
-  /*
-   * it('should return with no format if unit is not known', () => {
-   *   const pipe = new UnitTransformationPipe();
-   *   expect(pipe.transform(134, 'Some Unit'))
-   *     .toBe('134');
-   * });
-   */
 });

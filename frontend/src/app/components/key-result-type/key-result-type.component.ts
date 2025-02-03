@@ -193,9 +193,23 @@ export class KeyResultTypeComponent implements AfterContentInit {
     this.unitService.getUnits()
       .subscribe((units) => {
         this.unitOptions = units;
-        this.keyResultForm.get('metric')
-          ?.get('unit')
-          ?.updateValueAndValidity();
+        const currentValue = this.keyResultForm.get('metric')
+          ?.get('unit')?.value;
+        if (currentValue.id) {
+          const find = this.unitOptions.find((unit) => unit.id === currentValue.id);
+          if (find) {
+            this.keyResultForm.get('metric')
+              ?.get('unit')
+              ?.setValue(find);
+          } else {
+            this.keyResultForm.get('metric')
+              ?.get('unit')
+              ?.reset();
+          }
+          this.keyResultForm.get('metric')
+            ?.get('unit')
+            ?.updateValueAndValidity();
+        }
       });
   }
 
@@ -211,7 +225,11 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   openManageUnitsDialog() {
-    this.dialogService.open(ManageUnitsDialogComponent);
+    this.dialogService.open(ManageUnitsDialogComponent)
+      .afterClosed()
+      .subscribe(() => {
+        this.setUnits();
+      });
   }
 }
 

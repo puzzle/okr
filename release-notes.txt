@@ -4,7 +4,10 @@ Release Notes Puzzle OKR
 
 Version     Neuerungen
 -----------------------------------------------------------------------------
-WIP         - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Detailansicht des Objectives angezeigt
+
+WIP         - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
+            - Erweiterung #1015: Unitwerte auf KeyResult Metric werden automatisch vervollständigt
+            - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Detailansicht des Objectives angezeigt
             - Erweiterung #925: In der Check-in history wird nun angezeigt, wer das Check-in erfasst hat
             - Erweiterung #888: Beim Check-in erstellen können nun neue Actions zum Actionplan hinzugefügt werden
             - Erweiterung #1128: Löschen eines Objectives ist nun auch über das Drei-Punkte-Menü möglich

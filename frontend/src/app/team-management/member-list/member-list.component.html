@@ -74,8 +74,15 @@
           mat-menu-item
           [attr.data-testId]="'teamDeleteButton'"
         >
-          <app-puzzle-icon icon="delete-icon.svg" alt="Delete Team"></app-puzzle-icon>
-          <span class="font-size-14">Team löschen</span>
+          <span class="d-flex align-items-center gap-2">
+            <app-puzzle-icon
+              icon="delete-icon.svg"
+              alt="Delete Team"
+              class="d-inline-flex"
+            ></app-puzzle-icon>
+            <span class="font-size-14">Team löschen</span>
+          </span>
+
         </button>
       </mat-menu>
     </div>

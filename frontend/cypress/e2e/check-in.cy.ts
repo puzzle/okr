@@ -394,7 +394,8 @@ describe('okr check-in', () => {
     keyResultDetailPage.createCheckIn();
     cy.contains('Letzter Wert')
       .siblings('div')
-      .contains('10%');
+      .children('div')
+      .contains('10 %');
   });
 
   it('should be able to add actions to the action plan when creating a check-in', () => {

@@ -43,6 +43,7 @@ WIP         - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
             - Fehlerbehebung #1225: Korrektes Laden der Schriftart sichergestellt
             - Fehlerbehebung #1211: Korrekte Hilfeseite URLs für die Umgebungen gesetzt
             - Fehlerbehebung #1338: Unverwendetes version.ts inklusive dazugehöriger Command gelöscht
+            - Fehlerbehebung #1320: Diverse visuelle Ungereimtheiten bereinigt
 
             - Wartung: Updates diverser Dependencies
 

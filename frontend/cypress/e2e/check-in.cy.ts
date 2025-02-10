@@ -364,7 +364,7 @@ describe('okr check-in', () => {
       .checkForContentOnDialog('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
   });
 
-  it.only('should only display last value div if last check-in is present', () => {
+  it('should only display last value div if last check-in is present', () => {
     const objectiveName = uniqueSuffix('new objective');
 
     overviewPage.addObjective()

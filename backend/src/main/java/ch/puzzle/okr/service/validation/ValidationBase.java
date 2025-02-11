@@ -15,6 +15,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -27,7 +29,7 @@ import org.springframework.http.HttpStatus;
  * @param <P>
  *            the Persistence Service of this repository and entity
  */
-public abstract class ValidationBase<T, I, R, P extends PersistenceBase<T, I, R>> {
+public abstract class ValidationBase<T, I, R extends CrudRepository<T, I>, P extends PersistenceBase<T, I, R>> {
     private final Validator validator;
     private final P persistenceService;
 

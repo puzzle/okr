@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
+
+import ch.puzzle.okr.models.Deletable;
+import ch.puzzle.okr.service.persistence.customCrud.DeleteMethod;
+import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -23,19 +27,25 @@ import org.springframework.http.HttpStatus;
  * @param <R>
  *            the Repository of the entity
  */
-public abstract class PersistenceBase<T, I, R> {
+public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceBase.class);
 
-    private final CrudRepository<T, I> repository;
+    private final R repository;
+    private final DeleteMethod deleteMethod;
 
-    protected PersistenceBase(CrudRepository<T, I> repository) {
+    protected PersistenceBase(R repository, DeleteMethod deleteMethod) {
         this.repository = repository;
+        this.deleteMethod = deleteMethod;
     }
 
-    @SuppressWarnings(value = "unchecked casts")
+    protected PersistenceBase(R repository) {
+        this.repository = repository;
+        this.deleteMethod = new HardDelete();
+    }
+
     public R getRepository() {
-        return (R) repository;
+        return  repository;
     }
 
     public T findById(I id) throws OkrResponseStatusException {
@@ -69,7 +79,7 @@ public abstract class PersistenceBase<T, I, R> {
     }
 
     public void deleteById(I id) {
-        repository.deleteById(id);
+        deleteMethod.deleteById(id, getRepository());
     }
 
     public abstract String getModelName();

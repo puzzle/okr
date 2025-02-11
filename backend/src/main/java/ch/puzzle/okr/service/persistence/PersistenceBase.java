@@ -1,16 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import java.util.List;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.StreamSupport;
-
-import ch.puzzle.okr.models.Deletable;
 import ch.puzzle.okr.service.persistence.customCrud.DeleteMethod;
 import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import org.slf4j.Logger;
@@ -18,6 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.StreamSupport;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * @param <T>
@@ -32,16 +31,17 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
     private static final Logger logger = LoggerFactory.getLogger(PersistenceBase.class);
 
     private final R repository;
-    private final DeleteMethod deleteMethod;
+    private final DeleteMethod<T, I, R> deleteMethod;
 
-    protected PersistenceBase(R repository, DeleteMethod deleteMethod) {
+    protected PersistenceBase(R repository, DeleteMethod<T, I, R> deleteMethod) {
         this.repository = repository;
         this.deleteMethod = deleteMethod;
+        deleteMethod.setRepo(repository);
     }
 
     protected PersistenceBase(R repository) {
         this.repository = repository;
-        this.deleteMethod = new HardDelete();
+        this.deleteMethod = new HardDelete<>();
     }
 
     public R getRepository() {
@@ -79,7 +79,13 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
     }
 
     public void deleteById(I id) {
-        deleteMethod.deleteById(id, getRepository());
+        deleteMethod.setRepo(repository);
+        deleteMethod.deleteById(id);
+    }
+
+    public void deleteById(I id, DeleteMethod<T, I, R> localDeleteMethod) {
+        localDeleteMethod.setRepo(repository);
+        localDeleteMethod.deleteById(id);
     }
 
     public abstract String getModelName();

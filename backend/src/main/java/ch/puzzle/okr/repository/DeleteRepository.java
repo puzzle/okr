@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 @NoRepositoryBean
-public interface DeleteRepository<E extends Deletable, T> extends CrudRepository<E, T> {
+public interface DeleteRepository<E extends Deletable, I> extends CrudRepository<E, I> {
 //    @Query("select #{#entityName} e set e.isDeleted = true where e.id = :id")
 //    List<E> isDeleted(boolean isDeleted);
 
@@ -19,5 +19,5 @@ public interface DeleteRepository<E extends Deletable, T> extends CrudRepository
 
     @Modifying
     @Query("update #{#entityName} e set e.isDeleted = true where e.id = :id")
-    void markAsDeleted(@Param("id") T id);
+    void markAsDeleted(@Param("id") I id);
 }

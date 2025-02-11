@@ -9,4 +9,9 @@ public class SoftDelete <T extends Deletable, I, R extends DeleteRepository<T, I
     public void deleteById(I id) {
         repo.markAsDeleted(id);
     }
+
+    @Override
+    public Iterable<T>  findAll() {
+        return this.repo.findAllVisible();
+    }
 }

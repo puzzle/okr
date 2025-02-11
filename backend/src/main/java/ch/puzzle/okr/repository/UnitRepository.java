@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UnitRepository extends DeleteRepository<Unit, Long> {
 
-    Optional<Unit> findUnitByUnitName(String name);
+    Optional<Unit> findUnitByUnitNameAndIsDeletedFalse(String name);
 
-    List<Unit> findAllByCreatedById(Long userId);
+    List<Unit> findAllByCreatedByIdAndIsDeletedFalse(Long userId);
 
-    boolean existsUnitByUnitName(String unitName);
+    boolean existsUnitByUnitNameAndIsDeletedFalse(String unitName);
 
-    boolean existsUnitByUnitNameAndIdNot(String unitName, Long id);
+    boolean existsUnitByUnitNameAndIdNotAndIsDeletedFalse(String unitName, Long id);
 }

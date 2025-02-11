@@ -22,7 +22,7 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
     }
 
     public List<KeyResult> getKeyResultsByObjective(Long objectiveId) {
-        return getRepository().findByObjectiveId(objectiveId);
+        return getRepository().findByObjectiveIdAndIsDeletedFalse(objectiveId);
     }
 
     @Transactional

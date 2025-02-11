@@ -7,8 +7,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 @NoRepositoryBean
 public interface DeleteRepository<E extends Deletable, T> extends CrudRepository<E, T> {
+//    @Query("select #{#entityName} e set e.isDeleted = true where e.id = :id")
+//    List<E> isDeleted(boolean isDeleted);
+
+    @Query("select e from #{#entityName} e where e.isDeleted = false ")
+    List<E> findAllVisible();
 
     @Modifying
     @Query("update #{#entityName} e set e.isDeleted = true where e.id = :id")

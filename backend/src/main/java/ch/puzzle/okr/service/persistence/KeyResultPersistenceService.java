@@ -4,6 +4,7 @@ import static ch.puzzle.okr.Constants.KEY_RESULT;
 
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long, KeyResultRepository> {
 
     protected KeyResultPersistenceService(KeyResultRepository repository) {
-        super(repository);
+        super(repository, new SoftDelete<>());
     }
 
     @Override

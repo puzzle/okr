@@ -6,12 +6,14 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+
+import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserPersistenceService extends PersistenceBase<User, Long, UserRepository> {
     protected UserPersistenceService(UserRepository repository) {
-        super(repository);
+        super(repository, new SoftDelete<>());
     }
 
     @Override

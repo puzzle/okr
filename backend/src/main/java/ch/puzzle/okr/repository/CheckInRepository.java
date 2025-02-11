@@ -4,7 +4,7 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
-public interface CheckInRepository extends CrudRepository<CheckIn, Long> {
+public interface CheckInRepository extends DeleteRepository<CheckIn, Long> {
     List<CheckIn> findCheckInsByKeyResultIdOrderByCreatedOnDesc(Long keyResultId);
 
     CheckIn findFirstByKeyResultIdOrderByCreatedOnDesc(Long keyResultId);

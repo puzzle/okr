@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ObjectiveRepository extends CrudRepository<Objective, Long> {
+public interface ObjectiveRepository extends DeleteRepository<Objective, Long> {
 
     Integer countByTeamAndQuarter(Team team, Quarter quarter);
 

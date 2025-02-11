@@ -89,4 +89,9 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
             throw noResultException;
         }
     }
+
+    @Override
+    public void deleteById(Long id) {
+        this.getRepository().markAsDeleted(id);
+    }
 }

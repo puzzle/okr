@@ -8,6 +8,8 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.repository.UnitRepository;
 import java.util.List;
+
+import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class UnitPersistenceService extends PersistenceBase<Unit, Long, UnitRepository> {
 
     protected UnitPersistenceService(UnitRepository repository) {
-        super(repository);
+        super(repository, new SoftDelete<>());
     }
 
     @Override

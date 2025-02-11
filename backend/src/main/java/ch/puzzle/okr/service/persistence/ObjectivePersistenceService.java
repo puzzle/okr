@@ -30,7 +30,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
 
     protected ObjectivePersistenceService(ObjectiveRepository repository, EntityManager entityManager,
                                           AuthorizationCriteria<Objective> authorizationCriteria) {
-        super(repository, new SoftDelete(repository));
+        super(repository, new SoftDelete<>());
         this.entityManager = entityManager;
         this.authorizationCriteria = authorizationCriteria;
     }

@@ -70,7 +70,6 @@ public class Objective extends Deletable implements WriteableInterface {
         setModifiedBy(builder.modifiedBy);
     }
 
-
     public Long getId() {
         return id;
     }

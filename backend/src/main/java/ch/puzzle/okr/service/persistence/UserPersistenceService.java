@@ -4,10 +4,9 @@ import static ch.puzzle.okr.Constants.USER;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import java.util.List;
 import java.util.Optional;
-
-import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import org.springframework.stereotype.Service;
 
 @Service

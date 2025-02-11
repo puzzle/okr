@@ -53,7 +53,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
      * @return number of Objectives of team in quarter
      */
     public Integer countByTeamAndQuarter(Team team, Quarter quarter) {
-        return getRepository().countByTeamAndQuarter(team, quarter);
+        return getRepository().countByTeamAndQuarterAndIsDeletedFalse(team, quarter);
     }
 
     public Objective findObjectiveById(Long objectiveId, AuthorizationUser authorizationUser,
@@ -62,7 +62,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
     }
 
     public List<Objective> findObjectiveByTeamId(Long teamId) {
-        return getRepository().findObjectivesByTeamId(teamId);
+        return getRepository().findObjectivesByTeamIdAndIsDeletedFalse(teamId);
     }
 
     public Objective findObjectiveByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser,

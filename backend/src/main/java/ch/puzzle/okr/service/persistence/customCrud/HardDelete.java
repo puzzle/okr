@@ -1,7 +1,8 @@
 package ch.puzzle.okr.service.persistence.customCrud;
 
-import ch.puzzle.okr.models.Deletable;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 
 public class HardDelete<T, I, R extends CrudRepository<T, I>> extends DeleteMethod<T, I, R>{
@@ -9,5 +10,10 @@ public class HardDelete<T, I, R extends CrudRepository<T, I>> extends DeleteMeth
     @Override
     public void deleteById(I id) {
         this.repo.deleteById(id);
+    }
+
+    @Override
+    public Iterable<T> findAll() {
+        return this.repo.findAll();
     }
 }

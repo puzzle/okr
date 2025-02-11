@@ -3,7 +3,6 @@ package ch.puzzle.okr.models;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
-
 @MappedSuperclass
 public abstract class Deletable {
     @Column(name = "is_deleted", nullable = false)

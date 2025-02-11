@@ -4,9 +4,8 @@ import static ch.puzzle.okr.Constants.TEAM;
 
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
-import java.util.List;
-
 import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -19,6 +19,8 @@ CREATE  TABLE unit
     unit_name      TEXT                  NOT NULL,
     created_by_id     BIGINT,
     is_default     boolean               NOT NULL,
+    is_deleted     boolean  default false NOT NULL,
+
     PRIMARY KEY (id)
 );
 
@@ -30,6 +32,7 @@ create table if not exists person
     first_name varchar(50)  not null,
     last_name  varchar(50)  not null,
     okr_champion BOOLEAN DEFAULT FALSE,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint uk_person_email
         unique (email)
@@ -53,6 +56,7 @@ create table if not exists team
     id      bigint       not null,
     version int          not null,
     name    varchar(250) not null,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id)
 );
 
@@ -71,6 +75,7 @@ create table if not exists objective
     state          text         not null,
     modified_by_id bigint,
     created_on     timestamp    not null,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint fk_objective_created_by_person
         foreign key (created_by_id) references person,
@@ -107,6 +112,7 @@ create table if not exists key_result
     commit_zone     varchar(1024),
     target_zone     varchar(1024),
     stretch_zone    varchar(1024),
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint fk4ba6rgbr8mrkc8vvyqd5il4v9
         foreign key (created_by_id) references person,
@@ -139,6 +145,7 @@ create table if not exists check_in
     confidence    integer,
     check_in_type varchar(255),
     zone          text,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint fk_check_in_key_result
         foreign key (key_result_id) references key_result
@@ -165,6 +172,7 @@ create table action
     action_point        varchar(4096) not null,
     priority      integer       not null,
     checked    boolean       not null,
+    is_deleted     boolean  default false NOT NULL,
     key_result_id bigint        not null
         constraint fk_completed_key_result
             references key_result

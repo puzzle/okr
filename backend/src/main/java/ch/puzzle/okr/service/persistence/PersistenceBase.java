@@ -1,22 +1,21 @@
 package ch.puzzle.okr.service.persistence;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.service.persistence.customCrud.DeleteMethod;
 import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
-
-import java.util.List;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.StreamSupport;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * @param <T>
@@ -45,7 +44,7 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
     }
 
     public R getRepository() {
-        return  repository;
+        return repository;
     }
 
     public T findById(I id) throws OkrResponseStatusException {

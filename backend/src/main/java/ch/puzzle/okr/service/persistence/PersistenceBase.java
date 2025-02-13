@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @param <T>
@@ -76,11 +77,12 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
         return iteratorToList(this.deleteMethod.findAll());
     }
 
+    @Transactional
     public void deleteById(I id) {
-        deleteMethod.setRepo(repository);
-        deleteMethod.deleteById(id);
+        deleteById(id, deleteMethod);
     }
 
+    @Transactional
     public void deleteById(I id, DeleteMethod<T, I, R> localDeleteMethod) {
         localDeleteMethod.setRepo(repository);
         localDeleteMethod.deleteById(id);

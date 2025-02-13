@@ -1,19 +1,20 @@
 package ch.puzzle.okr.service.persistence;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.WithMockAuthUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class UnitPersistenceServiceIT {
-
+    @MockitoSpyBean private UnitRepository unitRepository;
     @Autowired
     private UnitPersistenceService unitPersistenceService;
 
@@ -31,6 +32,25 @@ class UnitPersistenceServiceIT {
         assertNotNull(createdUnit.getId());
         assertUser("Jaya", "Norris", "gl@gl.com", createdUnit.getCreatedBy());
         unitPersistenceService.deleteById(createdUnit.getId());
+    }
+
+
+    @DisplayName("Should mark unit as deleted on deleteById() per default")
+    @Test
+    @WithMockAuthUser
+    void deleteByIdShouldMarkUserAsDeletedPerDefaultWhenUserExists() {
+        // arrange
+        Unit unit = Unit.Builder.builder().unitName("Muster").build();
+        unit = unitPersistenceService.save(unit);
+        long unitId = unit.getId();
+
+        // act
+        unitPersistenceService.deleteById(unit.getId());
+
+        // assert
+        assertTrue(unitPersistenceService.findById(unitId).isDeleted());
+
+        Mockito.verify(unitRepository, Mockito.times(1)).markAsDeleted(unitId);
     }
 
     //

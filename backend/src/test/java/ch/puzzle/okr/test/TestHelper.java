@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -102,6 +103,21 @@ public class TestHelper {
     public static Team defaultTeam(Long id) {
         return Team.Builder.builder().withId(id).withName("Test Team").build();
     }
+
+    public static Team defaultTeamWithFiveUsers(Long teamId) {
+        var team = defaultTeam(teamId);
+        List<UserTeam> userTeamList = IntStream.rangeClosed(1, 5).mapToObj(i -> defaultUser(i + 1L))
+                .map(user -> UserTeam.Builder.builder().withId(user.getId()).withTeam(team).withUser(user).build()).toList();
+        return teamWithUsers(teamId, userTeamList);
+    }
+
+
+    public static Team teamWithUsers(Long teamId, List<UserTeam> userTeamList) {
+        var team = defaultTeam(teamId);
+        team.setUserTeamList(userTeamList);
+        return team;
+    }
+
 
     public static UserTeam defaultUserTeam(Long id, User user) {
         return UserTeam.Builder.builder().withId(id).withTeam(defaultTeam(1L)).withUser(user).build();

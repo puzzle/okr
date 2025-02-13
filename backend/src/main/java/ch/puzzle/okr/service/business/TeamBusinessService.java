@@ -75,22 +75,9 @@ public class TeamBusinessService {
         objectiveBusinessService
                 .getEntitiesByTeamId(id)
                 .forEach(objective -> objectiveBusinessService.deleteEntityById(objective.getId()));
-        deleteUserTeamList(id);
+//        deleteUserTeamList(id);
         cacheService.emptyAuthorizationUsersCache();
         teamPersistenceService.deleteById(id);
-    }
-
-    private void deleteUserTeamList(Long id) {
-        Team team = teamPersistenceService.findById(id);
-        // remove userTeam from each user, otherwise they are still in the session and
-        // are not deleted
-        team.getUserTeamList().forEach(userTeam -> {
-            User user = userTeam.getUser();
-            user.getUserTeamList().remove(userTeam);
-        });
-        userTeamPersistenceService.deleteAll(team.getUserTeamList());
-        team.setUserTeamList(List.of());
-        cacheService.emptyAuthorizationUsersCache();
     }
 
     public List<Team> getAllTeams(AuthorizationUser authorizationUser) {

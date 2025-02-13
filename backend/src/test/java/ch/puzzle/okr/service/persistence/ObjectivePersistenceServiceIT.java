@@ -15,6 +15,7 @@ import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
@@ -26,8 +27,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 // tests are using data from V100_0_0__TestData.sql
 @SpringIntegrationTest
@@ -60,6 +63,8 @@ class ObjectivePersistenceServiceIT {
     private static final long CURRENT_QUARTER_ID = 2L;
 
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
+@MockitoSpyBean
+private ObjectiveRepository objectiveRepository;
 
     @Autowired
     private ObjectivePersistenceService objectivePersistenceService;
@@ -278,6 +283,23 @@ class ObjectivePersistenceServiceIT {
     @Test
     void shouldReturnObjectiveOnGetModelName() {
         assertEquals(OBJECTIVE, objectivePersistenceService.getModelName());
+    }
+
+    @DisplayName("Should mark as deleted on deleteById() per default")
+    @Test
+    void shouldMarkAsDeletedOnMethodCall() {
+        //arrange
+        var entity = Objective.Builder.builder().withTitle("title").build();
+        var newEntity = objectivePersistenceService.save(entity);
+
+        long entityId = newEntity.getId();
+
+        // act
+        objectivePersistenceService.deleteById(entityId);
+
+        // assert
+        assertTrue(objectivePersistenceService.findById(entityId).isDeleted());
+        Mockito.verify(objectiveRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 
     private void assertResponseStatusException(HttpStatus expectedStatus, List<ErrorDto> expectedErrors,

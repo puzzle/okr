@@ -1,10 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.*;
-
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -14,20 +9,31 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.business.UnitBusinessService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringIntegrationTest
 class KeyResultPersistenceServiceIT {
     KeyResult createdKeyResult;
+    @MockitoSpyBean private KeyResultRepository keyResultRepository;
+
     @Autowired
     private KeyResultPersistenceService keyResultPersistenceService;
 
@@ -282,6 +288,24 @@ class KeyResultPersistenceServiceIT {
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @DisplayName("Should mark as deleted on deleteById() per default")
+    @Test
+    void shouldDeleteCheckInById() {
+        KeyResult keyResult = createKeyResultMetric(null);
+
+        var newEntity = keyResultPersistenceService.save(keyResult);
+
+        long entityId = newEntity.getId();
+
+        // act
+        keyResultPersistenceService.deleteById(entityId);
+
+        // assert
+        assertTrue(keyResultPersistenceService.findById(entityId).isDeleted());
+
+        Mockito.verify(keyResultRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 
     @DisplayName("Should throw exception on deleteById() when id does not exist")

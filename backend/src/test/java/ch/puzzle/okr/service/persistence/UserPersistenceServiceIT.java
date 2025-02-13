@@ -5,9 +5,11 @@ import static ch.puzzle.okr.util.CollectionUtils.iterableToList;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +54,7 @@ class UserPersistenceServiceIT {
                 .builder() //
                 .withFirstName("Hans") //
                 .withLastName("Muster") //
-                .withEmail("muster@puzzle.ch") //
+                .withEmail("muster1@puzzle.ch") //
                 .withUserTeamList(List.of())
                 .build();
 
@@ -61,7 +63,7 @@ class UserPersistenceServiceIT {
 
         // assert
         assertNotNull(createdUser.getId());
-        assertUser("Hans", "Muster", "muster@puzzle.ch", createdUser);
+        assertUser("Hans", "Muster", "muster1@puzzle.ch", createdUser);
     }
 
     @DisplayName("Should save user with null value for user team list on save()")
@@ -72,7 +74,7 @@ class UserPersistenceServiceIT {
                 .builder() //
                 .withFirstName("Hans") //
                 .withLastName("Muster") //
-                .withEmail("muster@puzzle.ch") //
+                .withEmail("muster2@puzzle.ch") //
                 .withUserTeamList(null)
                 .build();
 
@@ -81,7 +83,7 @@ class UserPersistenceServiceIT {
 
         // assert
         assertNotNull(createdUser.getId());
-        assertUser("Hans", "Muster", "muster@puzzle.ch", createdUser);
+        assertUser("Hans", "Muster", "muster2@puzzle.ch", createdUser);
     }
 
     @DisplayName("Should save all users in the input list on saveAll()")
@@ -128,7 +130,7 @@ class UserPersistenceServiceIT {
                 .withId(null) //
                 .withFirstName("firstname") //
                 .withLastName("lastname") //
-                .withEmail("lastname@puzzle.ch") //
+                .withEmail("lastname1@puzzle.ch") //
                 .build();
 
         // act
@@ -136,7 +138,7 @@ class UserPersistenceServiceIT {
 
         // assert
         assertNotNull(createdUser.getId());
-        assertUser("firstname", "lastname", "lastname@puzzle.ch", createdUser);
+        assertUser("firstname", "lastname", "lastname1@puzzle.ch", createdUser);
     }
 
     // uses data from V100_0_0__TestData.sql
@@ -193,20 +195,20 @@ class UserPersistenceServiceIT {
         assertEquals(email, currentUser.getEmail());
     }
 
-    @DisplayName("Should mark user as deleted on deleteById() per default")
+    @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
-    void deleteByIdShouldMarkUserAsDeletedPerDefaultWhenUserExists() {
-        // arrange
-        User user = createUser();
-        Long userId = user.getId();
+    void shouldMarkAsDeletedOnMethodCall() {
+        //arrange
+        var newEntity = createUser();
+
+        long entityId = newEntity.getId();
 
         // act
-        userPersistenceService.deleteById(user.getId());
+        userPersistenceService.deleteById(entityId);
 
         // assert
-        assertTrue(userPersistenceService.findById(userId).isDeleted());
-
-        Mockito.verify(userRepository, Mockito.times(1)).markAsDeleted(userId);
+        assertTrue(userPersistenceService.findById(entityId).isDeleted());
+        Mockito.verify(userRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 
     private User createUser() {
@@ -226,7 +228,7 @@ class UserPersistenceServiceIT {
     @Test
     void deleteByIdShouldThrowExceptionWhenIdIsNull() {
         InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, //
-                                                                    () -> userPersistenceService.deleteById(null));
+                                                                    () -> userPersistenceService.deleteById(null, new HardDelete<>()));
 
         assertEquals("The given id must not be null", exception.getMessage());
     }

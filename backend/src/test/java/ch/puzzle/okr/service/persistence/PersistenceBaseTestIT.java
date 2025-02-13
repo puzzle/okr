@@ -12,6 +12,7 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -154,7 +155,7 @@ class PersistenceBaseTestIT {
         assertNotNull(persistenceBase.findById(createdUserId));
 
         // act
-        persistenceBase.deleteById(createdUserId);
+        persistenceBase.deleteById(createdUserId, new HardDelete<>());
 
         // assert
         assertEntityNotFound(createdUserId);

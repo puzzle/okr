@@ -8,6 +8,7 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -103,21 +104,6 @@ public class TestHelper {
     public static Team defaultTeam(Long id) {
         return Team.Builder.builder().withId(id).withName("Test Team").build();
     }
-
-    public static Team defaultTeamWithFiveUsers(Long teamId) {
-        var team = defaultTeam(teamId);
-        List<UserTeam> userTeamList = IntStream.rangeClosed(1, 5).mapToObj(i -> defaultUser(i + 1L))
-                .map(user -> UserTeam.Builder.builder().withId(user.getId()).withTeam(team).withUser(user).build()).toList();
-        return teamWithUsers(teamId, userTeamList);
-    }
-
-
-    public static Team teamWithUsers(Long teamId, List<UserTeam> userTeamList) {
-        var team = defaultTeam(teamId);
-        team.setUserTeamList(userTeamList);
-        return team;
-    }
-
 
     public static UserTeam defaultUserTeam(Long id, User user) {
         return UserTeam.Builder.builder().withId(id).withTeam(defaultTeam(1L)).withUser(user).build();

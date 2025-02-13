@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
 import static ch.puzzle.okr.exception.OkrResponseStatusException.of;
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -12,12 +12,15 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
@@ -289,7 +292,14 @@ private ObjectiveRepository objectiveRepository;
     @Test
     void shouldMarkAsDeletedOnMethodCall() {
         //arrange
-        var entity = Objective.Builder.builder().withTitle("title").build();
+        var entity = Objective.Builder.builder().withTitle("title")
+                .withCreatedBy(glUser())
+                .withQuarter(Quarter.Builder.builder().withId(2L).build())
+                .withTeam(defaultTeam(4L))
+                .withCreatedOn(LocalDateTime.now())
+                .withModifiedOn(LocalDateTime.now())
+                .withState(State.SUCCESSFUL)
+                .build();
         var newEntity = objectivePersistenceService.save(entity);
 
         long entityId = newEntity.getId();

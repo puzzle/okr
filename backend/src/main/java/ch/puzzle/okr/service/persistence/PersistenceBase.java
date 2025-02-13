@@ -74,6 +74,7 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
     }
 
     public List<T> findAll() {
+//        TODO use instance of instead of method on deleteMethod
         return iteratorToList(this.deleteMethod.findAll());
     }
 

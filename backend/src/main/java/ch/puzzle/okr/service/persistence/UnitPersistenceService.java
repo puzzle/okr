@@ -26,21 +26,21 @@ public class UnitPersistenceService extends PersistenceBase<Unit, Long, UnitRepo
 
     public Unit findUnitByUnitName(String unitName) {
         return getRepository()
-                .findUnitByUnitNameAndIsDeletedFalse(unitName)
+                .findUnitByUnitName(unitName)
                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.NOT_FOUND,
                                                                   ErrorKey.MODEL_NOT_FOUND_BY_PROPERTY,
                                                                   List.of(Constants.UNIT, "unit name", unitName)));
     }
 
     public boolean existsUnitByUnitName(String unitName) {
-        return getRepository().existsUnitByUnitNameAndIsDeletedFalse(unitName);
+        return getRepository().existsUnitByUnitName(unitName);
     }
 
     public boolean existsUnitByUnitNameAndIdNot(String unitName, Long id) {
-        return getRepository().existsUnitByUnitNameAndIdNotAndIsDeletedFalse(unitName, id);
+        return getRepository().existsUnitByUnitNameAndIdNot(unitName, id);
     }
 
     public List<Unit> findUnitsByUser(Long userId) {
-        return getRepository().findAllByCreatedByIdAndIsDeletedFalse(userId);
+        return getRepository().findAllByCreatedById(userId);
     }
 }

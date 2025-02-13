@@ -8,22 +8,33 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Unit;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.ActionRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
+
+import ch.puzzle.okr.test.WithMockAuthUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.web.server.ResponseStatusException;
 
 @SpringIntegrationTest
 class ActionPersistenceServiceIT {
     private static final String UPDATED_ACTION = "Updated Action";
     Action createdAction;
+
+    @MockitoSpyBean
+    private ActionRepository actionRepository;
+
     @Autowired
     private ActionPersistenceService actionPersistenceService;
 
@@ -144,18 +155,20 @@ class ActionPersistenceServiceIT {
         assertEquals(8L, action.getKeyResult().getId());
     }
 
-    @DisplayName("Should delete action on delete()")
+    @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
-    void shouldDeleteActionById() {
-        Action action = createAction(null);
+    void shouldMarkAsDeletedOnMethodCall() {
+        //arrange
+        var entity = createAction(null);
+        var newEntity = actionPersistenceService.save(entity);
 
-        createdAction = actionPersistenceService.save(action);
+        long entityId = newEntity.getId();
 
-        List<Action> actions = actionPersistenceService.findAll();
-        assertEquals(12, actions.size());
+        // act
+        actionPersistenceService.deleteById(entityId);
 
-        actionPersistenceService.deleteById(createdAction.getId());
-        actions = actionPersistenceService.findAll();
-        assertEquals(11, actions.size());
+        // assert
+        assertTrue(actionPersistenceService.findById(entityId).isDeleted());
+        Mockito.verify(actionRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 }

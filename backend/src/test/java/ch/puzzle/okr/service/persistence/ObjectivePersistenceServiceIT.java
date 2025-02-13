@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
 import static ch.puzzle.okr.exception.OkrResponseStatusException.of;
-import static ch.puzzle.okr.test.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.test.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -12,11 +12,15 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
@@ -26,8 +30,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 // tests are using data from V100_0_0__TestData.sql
 @SpringIntegrationTest
@@ -60,6 +66,8 @@ class ObjectivePersistenceServiceIT {
     private static final long CURRENT_QUARTER_ID = 2L;
 
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
+@MockitoSpyBean
+private ObjectiveRepository objectiveRepository;
 
     @Autowired
     private ObjectivePersistenceService objectivePersistenceService;
@@ -278,6 +286,30 @@ class ObjectivePersistenceServiceIT {
     @Test
     void shouldReturnObjectiveOnGetModelName() {
         assertEquals(OBJECTIVE, objectivePersistenceService.getModelName());
+    }
+
+    @DisplayName("Should mark as deleted on deleteById() per default")
+    @Test
+    void shouldMarkAsDeletedOnMethodCall() {
+        //arrange
+        var entity = Objective.Builder.builder().withTitle("title")
+                .withCreatedBy(glUser())
+                .withQuarter(Quarter.Builder.builder().withId(2L).build())
+                .withTeam(defaultTeam(4L))
+                .withCreatedOn(LocalDateTime.now())
+                .withModifiedOn(LocalDateTime.now())
+                .withState(State.SUCCESSFUL)
+                .build();
+        var newEntity = objectivePersistenceService.save(entity);
+
+        long entityId = newEntity.getId();
+
+        // act
+        objectivePersistenceService.deleteById(entityId);
+
+        // assert
+        assertTrue(objectivePersistenceService.findById(entityId).isDeleted());
+        Mockito.verify(objectiveRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 
     private void assertResponseStatusException(HttpStatus expectedStatus, List<ErrorDto> expectedErrors,

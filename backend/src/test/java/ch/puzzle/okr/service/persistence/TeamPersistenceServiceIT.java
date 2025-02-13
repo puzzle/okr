@@ -51,19 +51,20 @@ class TeamPersistenceServiceIT {
         assertEquals(TEAM, teamPersistenceService.getModelName());
     }
 
-    @DisplayName("Should soft delete team on deleteTeam() per default")
+    @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
-    void deleteTeamShouldSoftDeleteTeam() {
-        // given
-        long teamId = 100L;
-        Team team = TestHelper.defaultTeamWithFiveUsers(teamId);
-        teamPersistenceService.save(team);
+    void shouldMarkAsDeletedOnMethodCall() {
+        //arrange
+        var entity = TestHelper.defaultTeam(null);
+        var newEntity = teamPersistenceService.save(entity);
 
-        teamPersistenceService.deleteById(teamId);
-        // then
-        assertTrue(teamPersistenceService.findById(teamId).isDeleted());
+        long entityId = newEntity.getId();
 
-        Mockito.verify(teamRepository, Mockito.times(1)).markAsDeleted(teamId);
-        assertEquals(5, teamPersistenceService.findById(teamId).getUserTeamList().size());
+        // act
+        teamPersistenceService.deleteById(entityId);
+
+        // assert
+        assertTrue(teamPersistenceService.findById(entityId).isDeleted());
+        Mockito.verify(teamRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 }

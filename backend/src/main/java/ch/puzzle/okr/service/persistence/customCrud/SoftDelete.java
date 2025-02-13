@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence.customCrud;
 
+import ch.puzzle.okr.OkrApplication;
 import ch.puzzle.okr.models.Deletable;
 import ch.puzzle.okr.repository.DeleteRepository;
 
@@ -11,6 +12,6 @@ public class SoftDelete<T extends Deletable, I, R extends DeleteRepository<T, I>
 
     @Override
     public Iterable<T> findAll() {
-        return repo.findAllVisible();
+        return repo.findAll(OkrApplication.isNotMarkedAsDeleted());
     }
 }

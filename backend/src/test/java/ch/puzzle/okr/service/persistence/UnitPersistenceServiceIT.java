@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -34,23 +35,23 @@ class UnitPersistenceServiceIT {
         unitPersistenceService.deleteById(createdUnit.getId());
     }
 
-
-    @DisplayName("Should mark unit as deleted on deleteById() per default")
+    @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
     @WithMockAuthUser
-    void deleteByIdShouldMarkUserAsDeletedPerDefaultWhenUserExists() {
-        // arrange
-        Unit unit = Unit.Builder.builder().unitName("Muster").build();
-        unit = unitPersistenceService.save(unit);
-        long unitId = unit.getId();
+    void shouldMarkAsDeletedOnMethodCall() {
+        //arrange
+        var entity = Unit.Builder.builder().unitName("Muster").build();
+        var newEntity = unitPersistenceService.save(entity);
+
+        long entityId = newEntity.getId();
 
         // act
-        unitPersistenceService.deleteById(unit.getId());
+        unitPersistenceService.deleteById(entityId);
 
         // assert
-        assertTrue(unitPersistenceService.findById(unitId).isDeleted());
+        assertTrue(unitPersistenceService.findById(entityId).isDeleted());
 
-        Mockito.verify(unitRepository, Mockito.times(1)).markAsDeleted(unitId);
+        Mockito.verify(unitRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 
     //

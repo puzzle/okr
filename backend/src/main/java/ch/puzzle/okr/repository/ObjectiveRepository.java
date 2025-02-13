@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ObjectiveRepository extends DeleteRepository<Objective, Long> {
 
-    Integer countByTeamAndQuarterAndIsDeletedFalse(Team team, Quarter quarter);
+    Integer countByTeamAndQuarter(Team team, Quarter quarter);
 
-    List<Objective> findObjectivesByTeamIdAndIsDeletedFalse(Long id);
+    List<Objective> findObjectivesByTeamId(Long id);
 }

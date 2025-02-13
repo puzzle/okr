@@ -21,6 +21,6 @@ public class ActionPersistenceService extends PersistenceBase<Action, Long, Acti
     }
 
     public List<Action> getActionsByKeyResultIdOrderByPriorityAsc(Long keyResultId) {
-        return getRepository().getActionsByKeyResultIdAndIsDeletedFalseOrderByPriorityAsc(keyResultId);
+        return getRepository().getActionsByKeyResultIdOrderByPriorityAsc(keyResultId);
     }
 }

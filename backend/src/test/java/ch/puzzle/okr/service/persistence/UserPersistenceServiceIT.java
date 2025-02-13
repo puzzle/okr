@@ -7,19 +7,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
 
     private User createdUser;
+
+    @MockitoSpyBean
+    private UserRepository userRepository;
 
     @Autowired
     private UserPersistenceService userPersistenceService;
@@ -187,9 +193,9 @@ class UserPersistenceServiceIT {
         assertEquals(email, currentUser.getEmail());
     }
 
-    @DisplayName("Should delete user on deleteById() when user exists")
+    @DisplayName("Should mark user as deleted on deleteById() per default")
     @Test
-    void deleteByIdShouldDeleteUserWhenUserExists() {
+    void deleteByIdShouldMarkUserAsDeletedPerDefaultWhenUserExists() {
         // arrange
         User user = createUser();
         Long userId = user.getId();
@@ -198,10 +204,9 @@ class UserPersistenceServiceIT {
         userPersistenceService.deleteById(user.getId());
 
         // assert
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> userPersistenceService.findById(userId));
+        assertTrue(userPersistenceService.findById(userId).isDeleted());
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        Mockito.verify(userRepository, Mockito.times(1)).markAsDeleted(userId);
     }
 
     private User createUser() {

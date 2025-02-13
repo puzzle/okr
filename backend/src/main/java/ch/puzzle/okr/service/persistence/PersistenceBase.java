@@ -34,13 +34,12 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
 
     protected PersistenceBase(R repository, DeleteMethod<T, I, R> deleteMethod) {
         this.repository = repository;
-        this.deleteMethod = deleteMethod;
         deleteMethod.setRepo(repository);
+        this.deleteMethod = deleteMethod;
     }
 
     protected PersistenceBase(R repository) {
-        this.repository = repository;
-        this.deleteMethod = new HardDelete<>();
+        this(repository, new HardDelete<>());
     }
 
     public R getRepository() {

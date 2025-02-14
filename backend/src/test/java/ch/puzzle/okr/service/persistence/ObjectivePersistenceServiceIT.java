@@ -19,7 +19,6 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -66,8 +65,8 @@ class ObjectivePersistenceServiceIT {
     private static final long CURRENT_QUARTER_ID = 2L;
 
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
-@MockitoSpyBean
-private ObjectiveRepository objectiveRepository;
+    @MockitoSpyBean
+    private ObjectiveRepository objectiveRepository;
 
     @Autowired
     private ObjectivePersistenceService objectivePersistenceService;
@@ -291,8 +290,10 @@ private ObjectiveRepository objectiveRepository;
     @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
     void shouldMarkAsDeletedOnMethodCall() {
-        //arrange
-        var entity = Objective.Builder.builder().withTitle("title")
+        // arrange
+        var entity = Objective.Builder
+                .builder()
+                .withTitle("title")
                 .withCreatedBy(glUser())
                 .withQuarter(Quarter.Builder.builder().withId(2L).build())
                 .withTeam(defaultTeam(4L))

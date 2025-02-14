@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 @Documented
 @Inherited
 @SpringBootTest
+// @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @ContextConfiguration(initializers = TestContextInitializer.class)
 @ActiveProfiles(value = "integration-test")
 public @interface SpringIntegrationTest {

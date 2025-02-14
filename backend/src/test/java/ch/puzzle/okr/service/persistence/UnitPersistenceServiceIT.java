@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Objective;
+import static org.junit.jupiter.api.Assertions.*;
+
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -11,11 +12,10 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringIntegrationTest
 class UnitPersistenceServiceIT {
-    @MockitoSpyBean private UnitRepository unitRepository;
+    @MockitoSpyBean
+    private UnitRepository unitRepository;
     @Autowired
     private UnitPersistenceService unitPersistenceService;
 
@@ -39,7 +39,7 @@ class UnitPersistenceServiceIT {
     @Test
     @WithMockAuthUser
     void shouldMarkAsDeletedOnMethodCall() {
-        //arrange
+        // arrange
         var entity = Unit.Builder.builder().unitName("Muster").build();
         var newEntity = unitPersistenceService.save(entity);
 

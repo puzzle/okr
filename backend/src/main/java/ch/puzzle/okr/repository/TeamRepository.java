@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface TeamRepository extends DeleteRepository<Team, Long> {
 
-    List<Team> findTeamsByName(String name);
+    List<Team> findTeamsByNameAndIsDeletedFalse(String name);
 }

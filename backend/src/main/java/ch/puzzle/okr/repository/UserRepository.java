@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends DeleteRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmailAndIsDeletedFalse(String email);
 
-    List<User> findByOkrChampion(boolean isOkrChampion);
+    List<User> findByOkrChampionAndIsDeletedFalse(boolean isOkrChampion);
 }

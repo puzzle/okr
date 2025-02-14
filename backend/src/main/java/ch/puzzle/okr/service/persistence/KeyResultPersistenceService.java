@@ -22,13 +22,14 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
     }
 
     public List<KeyResult> getKeyResultsByObjective(Long objectiveId) {
-        return getRepository().findByObjectiveId(objectiveId);
+        return getRepository().findByObjectiveIdAndIsDeletedFalse(objectiveId);
     }
 
     @Transactional
     public KeyResult recreateEntity(Long id, KeyResult keyResult) {
         // delete entity in order to prevent duplicates in case of changed keyResultType
         deleteById(id);
+        // deleteById(id, new HardDelete<>());
 
         // reset id of key result, so it gets saved as a new entity
         keyResult.resetId();

@@ -1,10 +1,15 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.Constants.TEAM;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,12 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-
-import java.util.List;
-
-import static ch.puzzle.okr.Constants.TEAM;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringIntegrationTest
 class TeamPersistenceServiceIT {
@@ -54,7 +53,7 @@ class TeamPersistenceServiceIT {
     @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
     void shouldMarkAsDeletedOnMethodCall() {
-        //arrange
+        // arrange
         var entity = TestHelper.defaultTeam(null);
         var newEntity = teamPersistenceService.save(entity);
 

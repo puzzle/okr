@@ -7,13 +7,9 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ch.puzzle.okr.mapper.keyresult.helper.TestDataHelper;
-import ch.puzzle.okr.models.Action;
-import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
-import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.CheckInRepository;
@@ -98,7 +94,7 @@ class CheckInPersistenceServiceIT {
     @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
     void shouldMarkAsDeletedOnMethodCall() {
-        //arrange
+        // arrange
         CheckInOrdinal checkInOrdinal = (CheckInOrdinal) CheckInOrdinal.Builder
                 .builder() //
                 .withKeyResult(KeyResultOrdinal.Builder.builder().withId(8L).build()) //

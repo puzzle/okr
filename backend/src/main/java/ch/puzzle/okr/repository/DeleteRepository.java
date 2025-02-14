@@ -2,7 +2,6 @@ package ch.puzzle.okr.repository;
 
 import ch.puzzle.okr.models.Deletable;
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

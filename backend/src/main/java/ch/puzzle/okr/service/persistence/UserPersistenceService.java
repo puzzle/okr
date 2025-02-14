@@ -21,12 +21,12 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
     }
 
     public synchronized User getOrCreateUser(User user) {
-        Optional<User> savedUser = getRepository().findByEmail(user.getEmail());
+        Optional<User> savedUser = getRepository().findByEmailAndIsDeletedFalse(user.getEmail());
         return savedUser.orElseGet(() -> getRepository().save(user));
     }
 
     public Optional<User> findByEmail(String email) {
-        return getRepository().findByEmail(email);
+        return getRepository().findByEmailAndIsDeletedFalse(email);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
     }
 
     public List<User> findAllOkrChampions() {
-        return getRepository().findByOkrChampion(true);
+        return getRepository().findByOkrChampionAndIsDeletedFalse(true);
     }
 
     public Iterable<User> saveAll(List<User> userList) {

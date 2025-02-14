@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.persistence;
 
 import static ch.puzzle.okr.Constants.OBJECTIVE;
 
-import ch.puzzle.okr.OkrApplication;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;

@@ -4,8 +4,6 @@ import static ch.puzzle.okr.Constants.USER;
 import static ch.puzzle.okr.util.CollectionUtils.iterableToList;
 import static org.junit.jupiter.api.Assertions.*;
 
-import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.UserRepository;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
@@ -198,7 +195,7 @@ class UserPersistenceServiceIT {
     @DisplayName("Should mark as deleted on deleteById() per default")
     @Test
     void shouldMarkAsDeletedOnMethodCall() {
-        //arrange
+        // arrange
         var newEntity = createUser();
 
         long entityId = newEntity.getId();
@@ -228,7 +225,8 @@ class UserPersistenceServiceIT {
     @Test
     void deleteByIdShouldThrowExceptionWhenIdIsNull() {
         InvalidDataAccessApiUsageException exception = assertThrows(InvalidDataAccessApiUsageException.class, //
-                                                                    () -> userPersistenceService.deleteById(null, new HardDelete<>()));
+                                                                    () -> userPersistenceService
+                                                                            .deleteById(null, new HardDelete<>()));
 
         assertEquals("The given id must not be null", exception.getMessage());
     }

@@ -1,5 +1,10 @@
 package ch.puzzle.okr.service.persistence;
 
+import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.*;
+
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -11,8 +16,11 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.business.UnitBusinessService;
+import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,18 +29,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static ch.puzzle.okr.test.TestHelper.FTE_UNIT;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.*;
-
 @SpringIntegrationTest
 class KeyResultPersistenceServiceIT {
     KeyResult createdKeyResult;
-    @MockitoSpyBean private KeyResultRepository keyResultRepository;
+    @MockitoSpyBean
+    private KeyResultRepository keyResultRepository;
 
     @Autowired
     private KeyResultPersistenceService keyResultPersistenceService;
@@ -277,7 +278,7 @@ class KeyResultPersistenceServiceIT {
     void deleteKeyResultByIdShouldDeleteExistingKeyResult() {
         KeyResult keyResult = createKeyResultMetric(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
-        keyResultPersistenceService.deleteById(createdKeyResult.getId());
+        keyResultPersistenceService.deleteById(createdKeyResult.getId(), new HardDelete<>());
 
         Long keyResultId = createdKeyResult.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,

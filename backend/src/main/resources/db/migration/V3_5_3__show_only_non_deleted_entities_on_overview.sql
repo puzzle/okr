@@ -1,11 +1,4 @@
-DO
-$$
-    BEGIN
-        IF EXISTS(SELECT *
-                  FROM information_schema.columns
-                  WHERE table_name = 'key_result'
-                    and column_name = 'unit')
-        THEN
+
             DROP VIEW IF EXISTS OVERVIEW;
             CREATE VIEW OVERVIEW AS
             SELECT tq.team_id          AS "team_id",
@@ -33,18 +26,16 @@ $$
                    c.created_on        AS "check_in_created_on"
             FROM (select t.id as team_id, t.version as team_version, t.name, q.id as quater_id, q.label
                   from team t,
-                       quarter q where t.is_deleted = false) tq
-                     LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUATER_ID = O.QUARTER_ID AND O.is_deleted = false
-                     LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID AND KR.is_deleted = false
-                     LEFT JOIN unit U ON U.ID = KR.unit_id and U.is_deleted = false
+                       quarter q) tq
+                     LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUATER_ID = O.QUARTER_ID
+                     LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
+                     LEFT JOIN unit U ON U.ID = KR.unit_id
                      LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                                           FROM CHECK_IN CC
-                                                                                          WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID and CC.is_deleted = false);
+                                                                                          WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID AND  CC.is_deleted = false)
+            WHERE KR.is_deleted = false;
+--             AND u.is_deleted = false
+--               AND c.is_deleted = false;
 
 
-
-
-        END IF;
-    END
-$$;
 

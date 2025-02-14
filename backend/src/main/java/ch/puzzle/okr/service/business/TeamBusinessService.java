@@ -75,7 +75,7 @@ public class TeamBusinessService {
         objectiveBusinessService
                 .getEntitiesByTeamId(id)
                 .forEach(objective -> objectiveBusinessService.deleteEntityById(objective.getId()));
-//        deleteUserTeamList(id);
+        deleteUserTeamList(id);
         cacheService.emptyAuthorizationUsersCache();
         teamPersistenceService.deleteById(id);
     }

@@ -32,8 +32,8 @@
                      LEFT JOIN unit U ON U.ID = KR.unit_id
                      LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                                           FROM CHECK_IN CC
-                                                                                          WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID AND  CC.is_deleted = false)
-            WHERE KR.is_deleted = false;
+                                                                                          WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID AND  CC.is_deleted is not true)
+            WHERE KR.is_deleted is not true;
 --             AND u.is_deleted = false
 --               AND c.is_deleted = false;
 

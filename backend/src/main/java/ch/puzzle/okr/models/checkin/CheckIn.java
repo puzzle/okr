@@ -1,5 +1,6 @@
 package ch.puzzle.okr.models.checkin;
 
+import ch.puzzle.okr.models.Deletable;
 import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
@@ -15,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "check_in_type")
-public abstract class CheckIn implements WriteableInterface {
+public abstract class CheckIn extends Deletable implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_check_in")
     @SequenceGenerator(name = "sequence_check_in", allocationSize = 1)

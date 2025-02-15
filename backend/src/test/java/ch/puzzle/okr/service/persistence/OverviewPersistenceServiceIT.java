@@ -17,6 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 @SpringIntegrationTest
 class OverviewPersistenceServiceIT {
     private static final List<OverviewId> expectedOverviewIds = List
@@ -63,7 +64,7 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService
                 .getFilteredOverview(2L, List.of(5L, 6L, 8L), "", authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(5, 18)).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(getOverviewIds(overviews)).hasSameElementsAs(expectedOverviewIds.subList(5, 18));
     }
 
     @DisplayName("Should return correct overview on getFilteredOverview() when team ids are not set")
@@ -71,7 +72,7 @@ class OverviewPersistenceServiceIT {
     void getFilteredOverviewShouldReturnOverviewsWhenTeamIdsEmpty() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(), "", authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(0, 18)).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(getOverviewIds(overviews)).hasSameElementsAs(expectedOverviewIds.subList(0, 18));
     }
 
     @DisplayName("Should return correct overview on getFilteredOverview() when query is set")
@@ -80,7 +81,7 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService
                 .getFilteredOverview(2L, List.of(5L, 6L, 8L), "kundenzufriedenheit", authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(5, 8)).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(getOverviewIds(overviews)).hasSameElementsAs(expectedOverviewIds.subList(5, 8));
     }
 
     @DisplayName("Should return correct overview on getFilteredOverview() when quarter has no objectives")
@@ -89,7 +90,7 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService
                 .getFilteredOverview(3L, List.of(5L, 6L, 8L), null, authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(17, 20)).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(getOverviewIds(overviews)).hasSameElementsAs(expectedOverviewIds.subList(17, 20));
     }
 
     @DisplayName("Should return empty overview on getFilteredOverview() when query is set and no objectives are present")

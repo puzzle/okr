@@ -216,7 +216,7 @@ FROM (SELECT T.ID AS TEAM_ID, T.VERSION AS TEAM_VERSION, T.NAME, Q.ID AS QUARTER
                                                                               FROM CHECK_IN CC
                                                                               WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID and CC.is_deleted is not true )
 
-WHERE KR.is_deleted is not true
+WHERE KR.is_deleted is not true and O.is_deleted is not true
 ;
 
 

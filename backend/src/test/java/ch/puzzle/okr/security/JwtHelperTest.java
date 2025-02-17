@@ -97,6 +97,7 @@ class JwtHelperTest {
                                                                   "jwkSetUri",
                                                                   "issuerUrl", //
                                                                   "clientId",
+                                                                  null,
                                                                   null) //
                         ));
 
@@ -140,6 +141,7 @@ class JwtHelperTest {
                                                                   "jwkSetUri",
                                                                   "issuerUrl", //
                                                                   "clientId",
+                                                                  null,
                                                                   null) //
                         ));
 

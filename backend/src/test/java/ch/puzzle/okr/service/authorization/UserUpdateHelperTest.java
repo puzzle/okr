@@ -55,6 +55,7 @@ class UserUpdateHelperTest {
                                                                                                null,
                                                                                                null,
                                                                                                null,
+                                                                                               null,
                                                                                                null);
 
         // act
@@ -72,6 +73,7 @@ class UserUpdateHelperTest {
         TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(null, //
                                                                                                new String[]{
                                                                                                        "yes@champions.ch" },
+                                                                                               null,
                                                                                                null,
                                                                                                null,
                                                                                                null,

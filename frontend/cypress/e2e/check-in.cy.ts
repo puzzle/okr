@@ -491,14 +491,12 @@ describe('okr check-in', () => {
 
     keyResultDetailPage.createCheckIn()
       .checkActionOfActionPlan(2)
-    // .fillCheckInCommentary('This should not appear anywhere!')
       .fillMetricCheckInValue('5')
       .submit();
     isChecked('Neuer Garten', false);
 
     keyResultDetailPage.createCheckIn()
       .checkActionOfActionPlan(2)
-    // .fillCheckInCommentary('This should not appear anywhere!')
       .fillMetricCheckInValue('5')
       .submit();
 

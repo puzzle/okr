@@ -647,15 +647,19 @@ export const keyResultActions: KeyResultMetric = {
 
 export const minItem: Item = { item: '',
   isChecked: false,
+  version: 1,
   id: undefined };
 export const item1: Item = { item: 'item1',
   isChecked: false,
+  version: 1,
   id: 1 };
 export const item2: Item = { item: 'item2',
   isChecked: false,
+  version: 1,
   id: 2 };
 export const item3: Item = { item: 'item3',
   isChecked: false,
+  version: 1,
   id: 3 };
 export const items: Item[] = [item1,
   item2,

@@ -6,6 +6,7 @@ Version     Neuerungen
 -----------------------------------------------------------------------------
 
 WIP         - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
+            - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
             - Erweiterung #1015: Unitwerte auf KeyResult Metric werden automatisch vervollständigt
             - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Detailansicht des Objectives angezeigt
             - Erweiterung #925: In der Check-in history wird nun angezeigt, wer das Check-in erfasst hat
@@ -29,6 +30,7 @@ WIP         - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
             - Erweiterung #1169: Deploy Workflows aufgeräumt
             - Erweiterung #1334: Model-Attribute isBacklogQuarter für eine eindeutige Identifizierung des Backlog-Quarters implementiert
 
+            - Fehlerbehebung #1409: Beim erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone Wert als standard ausgewählt
             - Fehlerbehebung #1410: Eine Action kann nun wieder über den Check-in Dialog als abgeschlossen markiert werden.
             - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der Actionplan übernommen
             - Fehlerbehebung #1298: SCSS-Warnungen behoben

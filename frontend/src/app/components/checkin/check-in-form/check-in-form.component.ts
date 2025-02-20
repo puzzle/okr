@@ -19,7 +19,7 @@ import { CheckInOrdinalMin } from '../../../shared/types/model/check-in-ordinal-
 import { Zone } from '../../../shared/types/enums/zone';
 import { numberValidator } from '../../../shared/constant-library';
 
-import { FormControlsOf, Item } from '../../action-plan/action-plan.component';
+import { FormControlsOf, initFormGroupFromItem, Item } from '../../action-plan/action-plan.component';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'app-check-in-form',
@@ -169,7 +169,7 @@ export class CheckInFormComponent implements OnInit {
 
   addNewItem(item?: Item) {
     this.getFormControlArray()
-      ?.push(this.initFormGroupFromItem(item));
+      ?.push(initFormGroupFromItem(item));
   }
 
   setValidators(type: string) {
@@ -177,13 +177,5 @@ export class CheckInFormComponent implements OnInit {
       .forEach((e) => e?.disable({ emitEvent: false }));
     this.dialogForm.get(this.checkInTypes.filter((formName) => formName.includes(type)))
       ?.enable({ emitEvent: false });
-  }
-
-  initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
-    return new FormGroup({
-      item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
-      id: new FormControl<number | undefined>(item?.id || undefined),
-      isChecked: new FormControl<boolean>(item?.isChecked || false)
-    } as FormControlsOf<Item>);
   }
 }

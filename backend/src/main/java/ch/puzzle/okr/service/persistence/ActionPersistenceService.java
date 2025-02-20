@@ -4,6 +4,7 @@ import static ch.puzzle.okr.Constants.ACTION;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.repository.ActionRepository;
+import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class ActionPersistenceService extends PersistenceBase<Action, Long, ActionRepository> {
 
     protected ActionPersistenceService(ActionRepository repository) {
-        super(repository);
+        super(repository, new SoftDelete<>());
     }
 
     @Override
@@ -20,6 +21,6 @@ public class ActionPersistenceService extends PersistenceBase<Action, Long, Acti
     }
 
     public List<Action> getActionsByKeyResultIdOrderByPriorityAsc(Long keyResultId) {
-        return getRepository().getActionsByKeyResultIdOrderByPriorityAsc(keyResultId);
+        return getRepository().getActionsByKeyResultIdAndIsDeletedFalseOrderByPriorityAsc(keyResultId);
     }
 }

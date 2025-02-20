@@ -19,6 +19,8 @@ CREATE  TABLE unit
     unit_name      TEXT                  NOT NULL,
     created_by_id     BIGINT,
     is_default     boolean               NOT NULL,
+    is_deleted     boolean  default false NOT NULL,
+
     PRIMARY KEY (id)
 );
 
@@ -30,6 +32,7 @@ create table if not exists person
     first_name varchar(50)  not null,
     last_name  varchar(50)  not null,
     okr_champion BOOLEAN DEFAULT FALSE,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint uk_person_email
         unique (email)
@@ -53,6 +56,7 @@ create table if not exists team
     id      bigint       not null,
     version int          not null,
     name    varchar(250) not null,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id)
 );
 
@@ -71,6 +75,7 @@ create table if not exists objective
     state          text         not null,
     modified_by_id bigint,
     created_on     timestamp    not null,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint fk_objective_created_by_person
         foreign key (created_by_id) references person,
@@ -107,6 +112,7 @@ create table if not exists key_result
     commit_zone     varchar(1024),
     target_zone     varchar(1024),
     stretch_zone    varchar(1024),
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint fk4ba6rgbr8mrkc8vvyqd5il4v9
         foreign key (created_by_id) references person,
@@ -139,6 +145,7 @@ create table if not exists check_in
     confidence    integer,
     check_in_type varchar(255),
     zone          text,
+    is_deleted     boolean  default false NOT NULL,
     primary key (id),
     constraint fk_check_in_key_result
         foreign key (key_result_id) references key_result
@@ -165,6 +172,7 @@ create table action
     action_point        varchar(4096) not null,
     priority      integer       not null,
     checked    boolean       not null,
+    is_deleted     boolean  default false NOT NULL,
     key_result_id bigint        not null
         constraint fk_completed_key_result
             references key_result
@@ -200,13 +208,19 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        C.CREATED_ON        AS "CHECK_IN_CREATED_ON"
 FROM (SELECT T.ID AS TEAM_ID, T.VERSION AS TEAM_VERSION, T.NAME, Q.ID AS QUARTER_ID, Q.LABEL
       FROM TEAM T,
-           QUARTER Q) TQ
+           QUARTER Q where T.is_deleted is not true) TQ
          LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUARTER_ID = O.QUARTER_ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
          LEFT JOIN unit U ON U.ID = KR.unit_id
          LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                               FROM CHECK_IN CC
-                                                                              WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID);
+                                                                              WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID and CC.is_deleted is not true )
+
+WHERE KR.is_deleted is not true
+  and O.is_deleted is not true
+;
+
+
 create table if not exists alignment
 (
     id                   bigint       not null,
@@ -237,7 +251,10 @@ SELECT O.ID                AS "OBJECTIVE_ID",
 FROM OBJECTIVE O
          LEFT JOIN TEAM T ON O.TEAM_ID = T.ID
          LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
-         LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID;
+         LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
+WHERE T.is_deleted is not true
+  and KR.is_deleted is not true
+  and O.is_deleted is not true;
 
 create table if not exists organisation
 (

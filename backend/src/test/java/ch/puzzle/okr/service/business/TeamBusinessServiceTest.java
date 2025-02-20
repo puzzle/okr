@@ -194,6 +194,7 @@ class TeamBusinessServiceTest {
         verify(teamPersistenceService, times(1)).deleteById(team.getId());
         verify(objectiveBusinessService, times(objectiveList.size())).deleteEntityById(anyLong());
         verify(cacheService, times(2)).emptyAuthorizationUsersCache();
+        assertEquals(0, team.getUserTeamList().size());
     }
 
     @DisplayName("Should add user to teams on addUsersToTeam()")

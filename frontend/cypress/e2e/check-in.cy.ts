@@ -483,6 +483,29 @@ describe('okr check-in', () => {
       .should('not.exist');
   });
 
+  it('should ensure version of actions work properly', () => {
+    FilterHelper.do()
+      .toggleOption('/BBT');
+    keyResultDetailPage.visit('Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten');
+    isChecked('Neuer Garten', true);
+
+    keyResultDetailPage.createCheckIn()
+      .checkActionOfActionPlan(2)
+    // .fillCheckInCommentary('This should not appear anywhere!')
+      .fillMetricCheckInValue('5')
+      .submit();
+    isChecked('Neuer Garten', false);
+
+    keyResultDetailPage.createCheckIn()
+      .checkActionOfActionPlan(2)
+    // .fillCheckInCommentary('This should not appear anywhere!')
+      .fillMetricCheckInValue('5')
+      .submit();
+
+
+    isChecked('Neuer Garten', true);
+  });
+
   it('should have a primary button on every check-in dialog', () => {
     keyResultDetailPage.visit('Very important keyresult')
       .createCheckIn()

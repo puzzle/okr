@@ -55,7 +55,7 @@
     "@eslint/js": "^9.17.0",
     "@html-eslint/eslint-plugin": "^0.35.0",
     "@html-eslint/parser": "^0.35.0",
-    "@stylistic/eslint-plugin": "^3.0.0",
+    "@stylistic/eslint-plugin": "^4.0.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
     "@types/uuid": "^10.0.0",

@@ -151,7 +151,8 @@ export function actionListToItemList(actionList: Action[]): Item[] {
   return (actionList || []).map((action) => {
     return { id: action.id,
       item: action.action,
-      isChecked: action.isChecked } as Item;
+      isChecked: action.isChecked,
+      version: action.version || 1 } as Item;
   });
 }
 
@@ -163,7 +164,8 @@ export function itemListToActionList(itemList: Item[], keyResultId: number | nul
         action: item.item,
         priority: index,
         keyResultId: keyResultId,
-        isChecked: item.isChecked
+        isChecked: item.isChecked,
+        version: item.version
       } as Action;
     });
 }

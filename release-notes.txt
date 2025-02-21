@@ -29,6 +29,7 @@ WIP         - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
             - Erweiterung #1169: Deploy Workflows aufgeräumt
             - Erweiterung #1334: Model-Attribute isBacklogQuarter für eine eindeutige Identifizierung des Backlog-Quarters implementiert
 
+            - Fehlerbehebung #1410: Eine Action kann nun wieder über den Check-in Dialog als abgeschlossen markiert werden.
             - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der Actionplan übernommen
             - Fehlerbehebung #1298: SCSS-Warnungen behoben
             - Fehlerbehebung #1236: Flaky E2E-Tests gefixt

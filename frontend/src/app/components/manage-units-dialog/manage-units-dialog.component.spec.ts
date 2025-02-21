@@ -9,8 +9,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { UnitTransformationPipe } from '../../shared/pipes/unit-transformation/unit-transformation.pipe';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { ErrorComponent } from '../../shared/custom/error/error.component';
-import { ActionPlanComponent, FormControlsOf, Item } from '../action-plan/action-plan.component';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActionPlanComponent, initFormGroupFromItem, Item } from '../action-plan/action-plan.component';
+import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { UnitService } from '../../services/unit.service';
@@ -148,22 +148,31 @@ describe('ManageUnitsDialogComponent', () => {
     const mockItems: Item[] = [
       { id: 1,
         item: 'Kilogram',
+        version: 1,
         isChecked: false },
       { id: 1,
         item: 'Kilogram',
+        version: 1,
+
         isChecked: false },
       { id: undefined,
         item: 'Meter',
+        version: 1,
+
         isChecked: false },
       { id: undefined,
         item: 'Meter',
+        version: 1,
+
         isChecked: false },
       { id: undefined,
         item: 'Meter',
+        version: 1,
+
         isChecked: false }
     ];
     (component.fg.get('unitFormArray') as FormArray)?.clear();
-    mockItems.forEach((item) => addNewItem(item));
+    mockItems.forEach((item) => initFormGroupFromItem(item));
 
     jest.spyOn(component, 'getChangedItems')
       .mockReturnValue(mockItems);
@@ -219,14 +228,6 @@ describe('ManageUnitsDialogComponent', () => {
         .toHaveBeenCalledWith('Kilogram');
     });
   });
-  function addNewItem(item?: Item) {
-    const newFormGroup = new FormGroup({
-      item: new FormControl<string>(item?.item || ''),
-      id: new FormControl<number | undefined>(item?.id || undefined),
-      isChecked: new FormControl<boolean>(item?.isChecked || false)
-    } as FormControlsOf<Item>);
-    (component.fg.get('unitFormArray') as FormArray)?.push(newFormGroup);
-  }
 });
 
 

@@ -24,13 +24,15 @@ export interface Item {
   id: number | undefined;
   item: string;
   isChecked: boolean;
+  version: number;
 }
 
 export function initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Item>> {
   return new FormGroup({
     item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
     id: new FormControl<number | undefined>(item?.id || undefined),
-    isChecked: new FormControl<boolean>(item?.isChecked || false)
+    isChecked: new FormControl<boolean>(item?.isChecked || false),
+    version: new FormControl<number>(item?.version || 1)
   } as FormControlsOf<Item>);
 }
 

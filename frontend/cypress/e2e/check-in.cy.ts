@@ -162,7 +162,7 @@ describe('okr check-in', () => {
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
   });
 
-  it.only('should create check-in ordinal and ensure zone is set as default', () => {
+  it('should create check-in ordinal and ensure zone is set as default', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('A new ordinal keyresult for our company')

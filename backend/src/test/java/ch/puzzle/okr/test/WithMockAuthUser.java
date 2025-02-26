@@ -8,4 +8,5 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 @WithSecurityContext(factory = WithMockAuthUserSecurityContextFactory.class)
 public @interface WithMockAuthUser {
     String email() default "gl@gl.com";
+    String tenant() default "pitc";
 }

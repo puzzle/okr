@@ -162,7 +162,7 @@ describe('okr check-in', () => {
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
   });
 
-  it('should create check-in ordinal', () => {
+  it('should create check-in ordinal and ensure zone is set as default', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('A new ordinal keyresult for our company')
@@ -184,6 +184,10 @@ describe('okr check-in', () => {
     cy.contains('There is a new car');
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
     cy.contains('- A new action on the action-plan');
+
+    keyResultDetailPage.createCheckIn()
+      .isZoneSelected('commit')
+      .cancel();
   });
 
   it('should generate check-in list', () => {

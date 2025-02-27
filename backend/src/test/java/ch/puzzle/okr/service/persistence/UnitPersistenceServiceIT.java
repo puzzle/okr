@@ -19,11 +19,6 @@ class UnitPersistenceServiceIT {
     @Autowired
     private UnitPersistenceService unitPersistenceService;
 
-    @BeforeEach
-    void setUp() {
-        TenantContext.setCurrentTenant("pitc");
-    }
-
     @DisplayName("Should save user on save() with empty user team list")
     @Test
     @WithMockAuthUser

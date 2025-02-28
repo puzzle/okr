@@ -5,6 +5,8 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
+WIP         - Wartung: Updates diverser Dependencies
+
 3.1.0       - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
             - Erweiterung #1015: Unitwerte auf KeyResult Metric werden automatisch vervollständigt
             - Erweiterung #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Detailansicht des Objectives angezeigt

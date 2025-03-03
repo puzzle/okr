@@ -32,7 +32,7 @@ export function initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Ite
     item: new FormControl<string>(item?.item || '', [Validators.minLength(2)]),
     id: new FormControl<number | undefined>(item?.id || undefined),
     isChecked: new FormControl<boolean>(item?.isChecked || false),
-    version: new FormControl<number>(item?.version || 1)
+    version: new FormControl<number>(item?.version ?? 0)
   } as FormControlsOf<Item>);
 }
 

@@ -7,6 +7,8 @@ truncate table objective cascade;
 truncate table person cascade;
 truncate table quarter cascade;
 truncate table team cascade;
+truncate table person_team cascade;
+truncate table unit cascade;
 
 -- fill quarter with dummy labels. correct labels are updated via callback sql scripts
 insert into quarter (id, label)

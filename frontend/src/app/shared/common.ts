@@ -152,7 +152,7 @@ export function actionListToItemList(actionList: Action[]): Item[] {
     return { id: action.id,
       item: action.action,
       isChecked: action.isChecked,
-      version: action.version || 1 } as Item;
+      version: action.version ?? 0 } as Item;
   });
 }
 

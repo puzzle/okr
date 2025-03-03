@@ -38,6 +38,16 @@ values (4, '/BBT', 1),
        (7, 'Mobility', 1),
        (8, 'we are cube.³', 1);
 
+insert into unit (id, version, unit_name, created_by_id, is_default)
+values (1, 0, 'PROZENT', 1, true),
+       (2, 0, 'ZAHL', 1,true),
+       (3, 0, 'CHF', 1, true),
+       (4, 0, 'EUR', 1, true),
+       (5, 0, 'FTE', 1, true),
+       (6, 0, 'UNKNOWN', 1, false),
+       (100, 0, 'TO_BE_UPDATED', 61, false),
+       (101, 0, 'TO_BE_DELETED', 61, false);
+
 insert into person_team (id, version, person_id, team_id, team_admin)
         -- peggimann@puzzle.ch
 VALUES (1, 1, 1, 4, TRUE),
@@ -96,36 +106,36 @@ values (1, 1, 5, 'Not successful because there were many events this month'),
        (4, 1, 10, 'Objective could be completed fast and easy');
 
 insert into key_result (id, baseline, description, modified_on, stretch_goal, title, created_by_id, objective_id,
-                        owner_id, unit, key_result_type, created_on, commit_zone, target_zone, stretch_zone, version)
-values (3, 0, '', '2023-07-25 08:14:31.964115', 25, 'Steigern der URS um 25%', 1, 3, 1, 'PERCENT', 'metric',
+                        owner_id, unit_id, key_result_type, created_on, commit_zone, target_zone, stretch_zone, version)
+values (3, 0, '', '2023-07-25 08:14:31.964115', 25, 'Steigern der URS um 25%', 1, 3, 1, 1, 'metric',
         '2023-07-25 08:14:31.964115', null, null, null, 1),
        (4, 100, '', '2023-07-25 08:15:18.244565', 67, 'Antwortzeit für Supportanfragen um 33% verkürzen.', 1, 3, 1,
-        'PERCENT', 'metric', '2023-07-25 08:15:18.244565', null, null, null, 1),
+        1, 'metric', '2023-07-25 08:15:18.244565', null, null, null, 1),
        (5, null, '', '2023-07-25 08:16:24.466383', 1,
-        'Kundenzufriedenheitsumfrage soll mindestens einmal pro 2 Wochen durchgeführt werden. ', 11, 4, 1, 'NUMBER',
+        'Kundenzufriedenheitsumfrage soll mindestens einmal pro 2 Wochen durchgeführt werden. ', 11, 4, 1, 2,
         'metric', '2023-07-25 08:16:24.466383', null, null, null, 1),
        (6, null, '', '2023-07-25 08:18:44.087674', 1,
-        'New structure that rewards funny guys and innovation before the end of Q1. ', 11, 4, 1, 'NUMBER', 'metric',
+        'New structure that rewards funny guys and innovation before the end of Q1. ', 11, 4, 1, 2, 'metric',
         '2023-07-25 08:18:44.087674', null, null, null, 1),
        (7, null, '', '2023-07-25 08:19:13.569300', 4,
-        'Monthly town halls between our people and leadership teams over the next four months.', 21, 4, 1, 'NUMBER',
+        'Monthly town halls between our people and leadership teams over the next four months.', 21, 4, 1, 2,
         'metric', '2023-07-25 08:18:44.087674', null, null, null, 1),
        (8, null, '', '2023-07-25 08:19:44.351252', 80,
-        'High employee satisfaction scores (80%+) throughout the year.', 11, 5, 1, 'PERCENT', 'metric',
+        'High employee satisfaction scores (80%+) throughout the year.', 11, 5, 1, 1, 'metric',
         '2023-07-25 08:18:44.087674', null, null, null, 1),
        (10, null, '', '2023-07-25 08:23:02.273028', 60,
-        'Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten', 21, 5, 1, 'NUMBER', 'metric',
+        'Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten', 21, 5, 1, 2, 'metric',
         '2023-07-25 08:18:44.087674', null, null, null, 1),
        (11, null, '', '2023-07-25 08:24:10.972984', 2,
         'Mindestens 2 Komplimente für eine angenehme Arbeitslautstärke soll dem Team zugesprochen werden.', 21, 6, 1,
-        'NUMBER', 'metric', '2023-07-25 08:18:44.087674', null, null, null, 1),
+        2, 'metric', '2023-07-25 08:18:44.087674', null, null, null, 1),
        (12, 0, '', '2023-07-25 08:28:45.110759', 80,
-        'Wir wollen bereits nach Q1 rund 80% des Redesigns vom OKR-Tool abgeschlossen haben. ', 1, 6, 1, 'PERCENT',
+        'Wir wollen bereits nach Q1 rund 80% des Redesigns vom OKR-Tool abgeschlossen haben. ', 1, 6, 1, 1,
         'metric', '2023-07-25 08:18:44.087674', null, null, null, 1),
        (13, null, '', '2023-07-25 08:29:57.709926', 15, 'Jedes Woche wird ein Kuchen vom BBT für Puzzle Organisiert',
-        21, 8, 1, 'NUMBER', 'metric', '2023-07-25 08:18:44.087674', null, null, null, 1),
+        21, 8, 1, 2, 'metric', '2023-07-25 08:18:44.087674', null, null, null, 1),
        (14, 0, '', '2023-07-25 08:31:39.249943', 20, 'Das BBT hilft den Membern 20% mehr beim Töggelen', 1, 8, 1,
-        'PERCENT', 'metric', '2023-07-25 08:18:44.087674', null, null, null, 1);
+        1, 'metric', '2023-07-25 08:18:44.087674', null, null, null, 1);
 
 insert into check_in (id, change_info, created_on, initiatives, modified_on, value_metric, created_by_id, key_result_id,
                       confidence, check_in_type, zone, version)

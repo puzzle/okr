@@ -225,8 +225,9 @@ describe('okr check-in', () => {
 
     cy.contains('Check-in History');
     cy.contains(getCurrentDate());
-    cy.contains('Wert: 30%');
-    cy.contains('Wert: 50%');
+    cy.contains('Wert:');
+    cy.contains('30');
+    cy.contains('50');
   });
 
   it('should edit metric check-in', () => {

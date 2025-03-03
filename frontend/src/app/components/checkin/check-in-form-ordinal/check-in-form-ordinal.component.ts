@@ -13,21 +13,8 @@ export class CheckInFormOrdinalComponent {
   @Input()
   keyResult!: KeyResultOrdinal;
 
-  /*
-   * @Input()
-   * checkIn!: CheckInOrdinalMin;
-   */
-
   @Input()
   dialogForm!: FormGroup;
 
   protected readonly Zone = Zone;
-
-  getCurrentZone(): Zone {
-    if (this.keyResult.lastCheckIn?.zone) {
-      return Zone[this.keyResult.lastCheckIn.zone as keyof typeof Zone];
-    } else {
-      return Zone.FAIL;
-    }
-  }
 }

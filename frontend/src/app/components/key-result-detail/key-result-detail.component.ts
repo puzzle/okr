@@ -138,8 +138,7 @@ export class KeyResultDetailComponent implements OnInit, OnDestroy {
   openCheckInForm() {
     const dialogRef = this.dialogService.open(CheckInFormComponent, {
       data: {
-        keyResult: this.keyResult$.getValue(),
-        checkIn: this.keyResult$.getValue().lastCheckIn
+        keyResult: this.keyResult$.getValue()
       }
     });
     dialogRef.afterClosed()

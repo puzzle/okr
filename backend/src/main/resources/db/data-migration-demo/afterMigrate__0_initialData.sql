@@ -20,7 +20,7 @@ values (1, '1'), -- last past quarter
        (8, '8'), -- future quarter
        (999, 'Backlog');
 
-insert into person (id, email, firstName, lastName, version, is_okr_champion)
+insert into person (id, email, first_name, last_name, version, okr_champion)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, TRUE),
        (2, 'leimgruber@puzzle.ch', 'Philipp', 'Leimgruber', 1, TRUE),
        (3, 'brantschen@puzzle.ch', 'Jean-Claude', 'Brantschen', 1, TRUE),
@@ -38,7 +38,7 @@ values (4, '/BBT', 1),
        (7, 'Mobility', 1),
        (8, 'we are cube.³', 1);
 
-insert into person_team (id, version, person_id, team_id, is_team_admin)
+insert into person_team (id, version, person_id, team_id, team_admin)
         -- peggimann@puzzle.ch
 VALUES (1, 1, 1, 4, TRUE),
        (2, 1, 1, 5, FALSE),

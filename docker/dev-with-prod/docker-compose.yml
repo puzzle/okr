@@ -3,6 +3,7 @@ include:
 services:
   spring:
     tty: true
+    user: "${UID:-1000}:${GID:-1000}"
     container_name: spring
     build:
       context: .
@@ -19,6 +20,7 @@ services:
 
   maven:
     tty: true
+    user: "${UID:-1000}:${GID:-1000}"
     container_name: maven
     restart: on-failure
     image: maven:3.9.9-amazoncorretto-21
@@ -34,12 +36,16 @@ services:
   maven-init:
     tty: true
     container_name: maven-init
+    user: "${UID:-1000}:${GID:-1000}"
     image: maven:3.9.9-amazoncorretto-21
-    command: mvn -B clean package -P build-for-docker,debug,no-formatter
+    command: mvn -Duser.home=/var/maven -B clean package -P build-for-docker,debug,no-formatter
     working_dir: /app-root/
     volumes:
       - ../../../okr:/app-root
-      - ~/.m2/repository:/root/.m2/repository
+      - ~/.m2:/var/maven/.m2
+#      - ~/.m2/repository:~/.m2/repository
+    environment:
+        MAVEN_CONFIG: /var/maven/.m2
     depends_on:
       angular:
         condition: service_healthy
@@ -47,6 +53,7 @@ services:
   angular:
     container_name: angular
     image: node:22
+    user: "${UID:-1000}:${GID:-1000}"
     tty: true
     restart: on-failure
     volumes:

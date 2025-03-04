@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.repository.UnitRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.WithMockAuthUser;
 import org.junit.jupiter.api.DisplayName;

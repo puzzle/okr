@@ -26,7 +26,7 @@ SELECT tq.team_id          AS "team_id",
        c.created_on        AS "check_in_created_on"
 FROM (select t.id as team_id, t.version as team_version, t.name, q.id as quater_id, q.label
       from team t,
-           quarter q T.is_deleted) tq
+           quarter Q where T.is_deleted is not true) tq
          LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUATER_ID = O.QUARTER_ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
          LEFT JOIN unit U ON U.ID = KR.unit_id

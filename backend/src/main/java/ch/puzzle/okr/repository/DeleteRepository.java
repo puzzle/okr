@@ -11,8 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 @NoRepositoryBean
 public interface DeleteRepository<E extends Deletable, I> extends CrudRepository<E, I>, JpaSpecificationExecutor<E> {
-    // @Query("select #{#entityName} e set e.isDeleted = true where e.id = :id")
-    // List<E> isDeleted(boolean isDeleted);
 
     @Query("select e from #{#entityName} e where e.isDeleted = false ")
     List<E> findAllVisible();

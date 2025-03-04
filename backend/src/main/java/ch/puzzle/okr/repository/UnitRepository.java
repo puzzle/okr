@@ -13,6 +13,4 @@ public interface UnitRepository extends DeleteRepository<Unit, Long> {
     List<Unit> findAllByCreatedByIdAndIsDeletedFalse(Long userId);
 
     boolean existsUnitByUnitNameAndIsDeletedFalse(String unitName);
-
-    boolean existsUnitByUnitNameAndIsDeletedFalseAndIdNot(String unitName, Long id);
 }

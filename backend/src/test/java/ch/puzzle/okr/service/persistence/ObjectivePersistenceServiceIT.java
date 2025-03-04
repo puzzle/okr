@@ -1,13 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import static ch.puzzle.okr.exception.OkrResponseStatusException.of;
-import static ch.puzzle.okr.test.TestHelper.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
@@ -19,9 +11,6 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +22,18 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static ch.puzzle.okr.exception.OkrResponseStatusException.of;
+import static ch.puzzle.okr.test.TestHelper.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 // tests are using data from V100_0_0__TestData.sql
 @SpringIntegrationTest
@@ -231,32 +232,6 @@ class ObjectivePersistenceServiceIT {
 
         // assert
         assertTrue(objectives.isEmpty());
-    }
-
-    @DisplayName("Should return correct number of objectives for current quarter on findObjectiveByTeamId()")
-    @Test
-    void shouldReturnNumberOfObjectivesForCurrentQuarterOnCountByTeamAndQuarter() {
-        // arrange: there are 3 objectives for the current quarter (id 2) for team with
-        // id 6
-        var team = Team.Builder.builder().withId(ID_OF_TEAM_6).build();
-        var quarter = Quarter.Builder.builder().withId(CURRENT_QUARTER_ID).build();
-
-        // act
-        var count = objectivePersistenceService.countByTeamAndQuarter(team, quarter);
-
-        // assert
-        assertEquals(3, count);
-    }
-
-    @DisplayName("Should return zero on findObjectiveByTeamId() when team or quarter is not valid or null")
-    @ParameterizedTest
-    @MethodSource("invalidTeamsAndQuarters")
-    void countByTeamAndQuarterShouldReturnZeroWhenTeamOrQuarterIsNotValidOrNull(Team team, Quarter quarter) {
-        // act
-        var count = objectivePersistenceService.countByTeamAndQuarter(team, quarter);
-
-        // assert
-        assertEquals(0, count);
     }
 
     private static Stream<Arguments> invalidTeamsAndQuarters() {

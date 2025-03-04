@@ -40,22 +40,6 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
         return OBJECTIVE;
     }
 
-    /**
-     * Get the number of Objectives of a Team in a Quarter. The underling sql looks
-     * like "select count(*) from objective where teamId = team.id and quarterId =
-     * quarter.id."
-     *
-     * @param team
-     *            Team
-     * @param quarter
-     *            Quarter
-     *
-     * @return number of Objectives of team in quarter
-     */
-    public Integer countByTeamAndQuarter(Team team, Quarter quarter) {
-        return getRepository().countByTeamAndQuarterAndIsDeletedFalse(team, quarter);
-    }
-
     public Objective findObjectiveById(Long objectiveId, AuthorizationUser authorizationUser,
                                        OkrResponseStatusException noResultException) {
         return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID, noResultException);

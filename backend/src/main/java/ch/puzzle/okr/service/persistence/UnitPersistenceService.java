@@ -36,10 +36,6 @@ public class UnitPersistenceService extends PersistenceBase<Unit, Long, UnitRepo
         return getRepository().existsUnitByUnitNameAndIsDeletedFalse(unitName);
     }
 
-    public boolean existsUnitByUnitNameAndIdNot(String unitName, Long id) {
-        return getRepository().existsUnitByUnitNameAndIsDeletedFalseAndIdNot(unitName, id);
-    }
-
     public List<Unit> findUnitsByUser(Long userId) {
         return getRepository().findAllByCreatedByIdAndIsDeletedFalse(userId);
     }

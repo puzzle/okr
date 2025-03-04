@@ -39,7 +39,6 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
 
     protected PersistenceBase(R repository, DeleteMethod<T, I, R> deleteMethod) {
         this.repository = repository;
-        deleteMethod.setRepo(repository);
         this.deleteMethod = deleteMethod;
     }
 
@@ -76,7 +75,7 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
     public List<T> findAll() {
         // TODO use instance of instead of method on deleteMethod
 
-        return iteratorToList(this.deleteMethod.findAll());
+        return iteratorToList(this.deleteMethod.findAll(repository));
     }
 
     @Transactional
@@ -86,8 +85,7 @@ public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
 
     @Transactional
     public void deleteById(I id, DeleteMethod<T, I, R> localDeleteMethod) {
-        localDeleteMethod.setRepo(repository);
-        localDeleteMethod.deleteById(id);
+        localDeleteMethod.deleteById(id, repository);
     }
 
     public abstract String getModelName();

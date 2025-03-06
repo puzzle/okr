@@ -5,6 +5,11 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
+
+WIP         - Erweiterung #1451 Daten für die Demo-Instanz verbessert
+
+            - Wartung: Updates diverser Dependencies
+
 3.2.0        - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
 
              - Wartung: Updates diverser Dependencies

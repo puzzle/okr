@@ -32,3 +32,5 @@ backend/backend.iml
 /toolchains.xml
 /backend/src/main/resources/db/okr_schema.sql
 **/sonar/
+/scripts/delete_ex_members/existing_people_time.txt
+/scripts/delete_ex_members/ex_members.txt

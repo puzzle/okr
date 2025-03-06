@@ -6,6 +6,7 @@ Version     Neuerungen
 -----------------------------------------------------------------------------
 
 3.2.0        - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
+
              - Wartung: Updates diverser Dependencies
 
 3.1.0       - Erweiterung #1293: KeyResult Metric unterstützen eigene Units

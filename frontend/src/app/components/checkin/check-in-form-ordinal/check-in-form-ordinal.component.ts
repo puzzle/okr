@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { KeyResultOrdinal } from '../../../shared/types/model/key-result-ordinal';
 import { Zone } from '../../../shared/types/enums/zone';
-import { CheckInMin } from '../../../shared/types/model/check-in-min';
 
 @Component({
   selector: 'app-check-in-form-ordinal',
@@ -13,9 +12,6 @@ import { CheckInMin } from '../../../shared/types/model/check-in-min';
 export class CheckInFormOrdinalComponent {
   @Input()
   keyResult!: KeyResultOrdinal;
-
-  @Input()
-  checkIn!: CheckInMin;
 
   @Input()
   dialogForm!: FormGroup;

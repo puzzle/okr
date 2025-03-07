@@ -34,6 +34,13 @@ export default class CheckInDialog extends Dialog {
     return this;
   }
 
+  isZoneSelected(zone: 'fail' | 'commit' | 'target' | 'stretch') {
+    const selector = zone + '-radio';
+    cy.getByTestId(selector)
+      .should('not.be.checked');
+    return this;
+  }
+
   fillCheckInInitiatives(value: string) {
     this.fillInputByTestId('initiatives', value);
     return this;

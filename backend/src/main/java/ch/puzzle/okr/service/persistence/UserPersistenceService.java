@@ -4,6 +4,7 @@ import static ch.puzzle.okr.Constants.USER;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserPersistenceService extends PersistenceBase<User, Long, UserRepository> {
     protected UserPersistenceService(UserRepository repository) {
-        super(repository);
+        super(repository, new SoftDelete<>());
     }
 
     @Override
@@ -20,12 +21,12 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
     }
 
     public synchronized User getOrCreateUser(User user) {
-        Optional<User> savedUser = getRepository().findByEmail(user.getEmail());
+        Optional<User> savedUser = getRepository().findByEmailAndIsDeletedFalse(user.getEmail());
         return savedUser.orElseGet(() -> getRepository().save(user));
     }
 
     public Optional<User> findByEmail(String email) {
-        return getRepository().findByEmail(email);
+        return getRepository().findByEmailAndIsDeletedFalse(email);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
     }
 
     public List<User> findAllOkrChampions() {
-        return getRepository().findByOkrChampion(true);
+        return getRepository().findByOkrChampionAndIsDeletedFalse(true);
     }
 
     public Iterable<User> saveAll(List<User> userList) {

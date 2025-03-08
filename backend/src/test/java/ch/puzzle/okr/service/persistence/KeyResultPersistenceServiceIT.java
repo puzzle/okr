@@ -14,7 +14,9 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.business.UnitBusinessService;
+import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDateTime;
@@ -23,11 +25,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @SpringIntegrationTest
 class KeyResultPersistenceServiceIT {
     KeyResult createdKeyResult;
+    @MockitoSpyBean
+    private KeyResultRepository keyResultRepository;
+
     @Autowired
     private KeyResultPersistenceService keyResultPersistenceService;
 
@@ -147,6 +154,7 @@ class KeyResultPersistenceServiceIT {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
+    // testing
     @DisplayName("Should only update entity on recreateEntity() when no type change was done")
     @Test
     void recreateEntityShouldUpdateKeyResultNoTypeChange() {
@@ -164,16 +172,9 @@ class KeyResultPersistenceServiceIT {
         assertEquals(createdKeyResult.getObjective().getId(), recreatedKeyResult.getObjective().getId());
 
         // Should delete the old KeyResult
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> keyResultPersistenceService.findById(keyResultId));
+        KeyResult byId = keyResultPersistenceService.findById(keyResultId);
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEY_RESULT, keyResultId)));
-
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-
-        // delete re-created key result in tearDown()
+        assertTrue(byId.isDeleted());
         createdKeyResult = recreatedKeyResult;
     }
 
@@ -206,16 +207,9 @@ class KeyResultPersistenceServiceIT {
 
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                                                            () -> keyResultPersistenceService.findById(keyResultId));
+        KeyResult byId = keyResultPersistenceService.findById(keyResultId);
+        assertTrue(byId.isDeleted());
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of(MODEL_NOT_FOUND, List.of(KEY_RESULT, keyResultId)));
-
-        assertEquals(NOT_FOUND, exception.getStatusCode());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-
-        // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
     }
 
@@ -271,7 +265,7 @@ class KeyResultPersistenceServiceIT {
     void deleteKeyResultByIdShouldDeleteExistingKeyResult() {
         KeyResult keyResult = createKeyResultMetric(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
-        keyResultPersistenceService.deleteById(createdKeyResult.getId());
+        keyResultPersistenceService.deleteById(createdKeyResult.getId(), new HardDelete<>());
 
         Long keyResultId = createdKeyResult.getId();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -282,6 +276,26 @@ class KeyResultPersistenceServiceIT {
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @DisplayName("Should mark as deleted on deleteById() per default")
+    @Test
+    void shouldDeleteCheckInById() {
+        KeyResult keyResult = createKeyResultMetric(null);
+
+        var newEntity = keyResultPersistenceService.save(keyResult);
+
+        long entityId = newEntity.getId();
+
+        // act
+        keyResultPersistenceService.deleteById(entityId);
+
+        // assert
+        assertTrue(keyResultPersistenceService.findById(entityId).isDeleted());
+
+        Mockito.verify(keyResultRepository, Mockito.times(1)).markAsDeleted(entityId);
+        keyResultPersistenceService.deleteById(entityId, new HardDelete<>());
+
     }
 
     @DisplayName("Should throw exception on deleteById() when id does not exist")

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-public class Action implements WriteableInterface {
+public class Action extends Deletable implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_action")
     @SequenceGenerator(name = "sequence_action", allocationSize = 1)

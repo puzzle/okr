@@ -23,6 +23,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.util.quarter.EvaluationViewTestHelper.*;
+
 @WebMvcTest(EvaluationViewController.class)
 @WithMockUser(value = "spring")
 class EvaluationViewControllerIT {
@@ -42,18 +44,7 @@ class EvaluationViewControllerIT {
         // Dummy objects to simulate the internal workflow
         List<EvaluationView> evaluationViews = generateEvaluationViews(evaluationViewIds);
         // Create a dummy EvaluationDto with sample data
-        EvaluationDto evaluationDto = new EvaluationDto(10, // objectiveAmount
-                                                        5,  // completedObjectivesAmount
-                                                        3,  // successfullyCompletedObjectivesAmount
-                                                        20, // keyResultAmount
-                                                        7,  // keyResultsOrdinalAmount
-                                                        13, // keyResultsMetricAmount
-                                                        8,  // keyResultsInTargetOrStretchAmount
-                                                        2,  // keyResultsInFailAmount
-                                                        4,  // keyResultsInCommitAmount
-                                                        6,  // keyResultsInTargetAmount
-                                                        9   // keyResultsInStretchAmount
-        );
+        EvaluationDto evaluationDto = generateRandomEvaluationDto();
 
         // Define mock behavior
         BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(evaluationViewIds);
@@ -124,35 +115,6 @@ class EvaluationViewControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
-    private List<EvaluationViewId> getEvaluationViewIds(List<Long> teamIds, Long quarterId) {
-        return teamIds.stream().map(teamId -> new EvaluationViewId(teamId, quarterId)).toList();
-    }
-
-    private List<EvaluationView> generateEvaluationViews(List<EvaluationViewId> evaluationViewIds) {
-        return evaluationViewIds
-                .stream()
-                .map(evaluationViewId -> EvaluationView.Builder
-                        .builder()
-                        .withEvaluationViewId(evaluationViewId)
-                        .withObjectiveAmount(randomInt())
-                        .withCompletedObjectivesAmount(randomInt())
-                        .withSuccessfullyCompletedObjectivesAmount(randomInt())
-                        .withKeyResultAmount(randomInt())
-                        .withKeyResultsOrdinalAmount(randomInt())
-                        .withKeyResultsMetricAmount(randomInt())
-                        .withKeyResultsInTargetOrStretchAmount(randomInt())
-                        .withKeyResultsInFailAmount(randomInt())
-                        .withKeyResultsInCommitAmount(randomInt())
-                        .withKeyResultsInTargetAmount(randomInt())
-                        .withKeyResultsInStretchAmount(randomInt())
-                        .build())
-                .toList();
-    }
-
-    private int randomInt() {
-        return (int) (Math.random() * 101);
-    }
-
     private void validateResponse(ResultActions response, EvaluationDto dto) throws Exception {
         response
                 .andExpect(MockMvcResultMatchers.jsonPath("$.objectiveAmount").value(dto.objectiveAmount()))
@@ -169,7 +131,7 @@ class EvaluationViewControllerIT {
                 .andExpect(MockMvcResultMatchers
                                    .jsonPath("$.keyResultsMetricAmount")
                                    .value(dto.keyResultsMetricAmount()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.keyResultsInTargetOrStretchAmount").value(8))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.keyResultsInTargetOrStretchAmount").value(dto.keyResultsInTargetOrStretchAmount()))
                 .andExpect(MockMvcResultMatchers
                                    .jsonPath("$.keyResultsInFailAmount")
                                    .value(dto.keyResultsInFailAmount()))

@@ -40,11 +40,11 @@ public class EvaluationViewTestHelper {
         return createEvaluationView(evaluationViewId, generateEvaluationViewData());
     }
 
-    public static EvaluationDto generateRandomEvaluationDto() {
-        return generateRandomEvaluationDto(generateEvaluationViewData());
+    public static EvaluationDto generateEvaluationDto() {
+        return generateEvaluationDto(generateEvaluationViewData());
     }
 
-    public static EvaluationDto generateRandomEvaluationDto(List<Integer> data) {
+    public static EvaluationDto generateEvaluationDto(List<Integer> data) {
         return new EvaluationDto(data.get(0),
                                  data.get(1),
                                  data.get(2),

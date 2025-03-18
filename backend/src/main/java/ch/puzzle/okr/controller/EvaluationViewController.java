@@ -35,7 +35,8 @@ public class EvaluationViewController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned the statistics data for the requested teams and quarter", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = EvaluationDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "The quarter or one of the teams were not found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "The quarter or one of the teams were not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Not Authorized", content = @Content) })
     @GetMapping("")
     public ResponseEntity<EvaluationDto> getOverview(@RequestParam(name = "team") List<Long> teamIds,
                                                          @RequestParam(name = "quarter") Long quarterId) {

@@ -23,10 +23,9 @@ public class EvaluationViewValidationService extends
         this.teamValidationService = teamValidationService;
     }
 
-    public void validateOnGet(List<Long> teamIds, Long quarterId) {
-
-        teamIds.forEach(teamValidationService::validateOnGet);
-        quarterValidationService.validateOnGet(quarterId);
+    public void validateOnGet(List<EvaluationViewId> ids) {
+        ids.forEach(id -> teamValidationService.validateOnGet(id.getTeamId()));
+        quarterValidationService.validateOnGet(ids.getLast().getQuarterId());
     }
 
     @Override

@@ -16,10 +16,8 @@ public class EvaluationViewPersistenceService
         super(repository);
     }
 
-    public List<EvaluationView> findByTeamIdsAndQuarterId(List<Long> teamIds, Long quarterId)
-            throws OkrResponseStatusException {
-        List<EvaluationViewId> list = teamIds.stream().map(teamId -> new EvaluationViewId(teamId, quarterId)).toList();
-        return iteratorToList(getRepository().findAllById(list));
+    public List<EvaluationView> findByTeamIdsAndQuarterId(List<EvaluationViewId> ids) {
+        return iteratorToList(getRepository().findAllById(ids));
     }
 
     @Override

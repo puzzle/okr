@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.evaluation.EvaluationView;
+import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
 import ch.puzzle.okr.service.validation.EvaluationViewValidationService;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class EvaluationViewBusinessService {
         this.evaluationViewValidationService = evaluationViewValidationService;
     }
 
-    public List<EvaluationView> findByTeamIdsAndQuarterId(List<Long> teamIds, Long quarterId) {
-        evaluationViewValidationService.validateOnGet(teamIds, quarterId);
-        return evaluationViewPersistenceService.findByTeamIdsAndQuarterId(teamIds, quarterId);
+    public List<EvaluationView> findByIds(List<EvaluationViewId> ids) {
+        evaluationViewValidationService.validateOnGet(ids);
+        return evaluationViewPersistenceService.findByTeamIdsAndQuarterId(ids);
     }
 }

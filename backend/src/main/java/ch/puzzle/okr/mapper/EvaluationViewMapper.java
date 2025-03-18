@@ -10,7 +10,19 @@ import java.util.List;
 @Component
 public class EvaluationViewMapper {
     public EvaluationDto toDto(List<EvaluationView> evaluationViews) {
-        return new EvaluationDto(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+//        TODO: loop only once?
+        return new EvaluationDto(evaluationViews.stream().mapToInt(EvaluationView::getObjectiveAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getCompletedObjectivesAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getSuccessfullyCompletedObjectivesAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsOrdinalAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsMetricAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInTargetOrStretchAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInFailAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInCommitAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInTargetAmount).sum(),
+                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInStretchAmount).sum()
+           );
     }
 
     public List<EvaluationViewId> fromDto(List<Long> teamIds, Long quarterId) {

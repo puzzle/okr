@@ -40,29 +40,29 @@ WITH team_quarters AS (
          SELECT
              team_id,
              quarter_id,
-             COUNT(*) AS amount_key_results,
-             COUNT(*) FILTER (WHERE key_result_type = 'ordinal') AS amount_key_results_ordinal,
-             COUNT(*) FILTER (WHERE key_result_type = 'metric') AS amount_key_results_metric,
+             COUNT(*) AS key_result_amount,
+             COUNT(*) FILTER (WHERE key_result_type = 'ordinal') AS key_results_ordinal_amount,
+             COUNT(*) FILTER (WHERE key_result_type = 'metric') AS key_results_metric_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone IN ('TARGET', 'STRETCH'))
                      OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0)>= 0.7)
-                 ) AS amount_key_results_in_target_or_stretch,
+                 ) AS key_results_in_target_or_stretch_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'FAIL')
                      OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) < 0.3)
-                 ) AS amount_key_results_in_fail,
+                 ) AS key_results_in_fail_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'COMMIT')
                      OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) BETWEEN 0.3 AND 0.7)
-                 ) AS amount_key_results_in_commit,
+                 ) AS key_results_in_commit_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'TARGET')
                      OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) BETWEEN 0.7 AND 1)
-                 ) AS amount_key_results_in_target,
+                 ) AS key_results_in_target_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'STRETCH')
                      OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) >= 1)
-                 ) AS amount_key_results_in_stretch
+                 ) AS key_results_in_stretch_amount
          FROM kr_latest_check_in
          GROUP BY team_id, quarter_id
      )
@@ -74,14 +74,14 @@ SELECT
     o.objective_amount,
     o.completed_objectives_amount ,
     o.successfully_completed_objectives_amount,
-    kr.amount_key_results,
-    kr.amount_key_results_ordinal,
-    kr.amount_key_results_metric,
-    kr.amount_key_results_in_target_or_stretch,
-    kr.amount_key_results_in_fail,
-    kr.amount_key_results_in_commit,
-    kr.amount_key_results_in_target,
-    kr.amount_key_results_in_stretch
+    kr.key_result_amount,
+    kr.key_results_ordinal_amount,
+    kr.key_results_metric_amount,
+    kr.key_results_in_target_or_stretch_amount,
+    kr.key_results_in_fail_amount,
+    kr.key_results_in_commit_amount,
+    kr.key_results_in_target_amount,
+    kr.key_results_in_stretch_amount
 FROM team_quarters tq
          LEFT JOIN objectives o
                    ON tq.team_id = o.team_id

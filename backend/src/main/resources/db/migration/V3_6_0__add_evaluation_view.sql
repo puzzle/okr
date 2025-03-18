@@ -23,6 +23,7 @@ WITH team_quarters AS (
          SELECT DISTINCT ON (kr.id)
              kr.id as key_result_id,
              ci.value_metric,
+             COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) as progress,
              ci.zone,
              kr.key_result_type,
              kr.stretch_goal,
@@ -31,8 +32,8 @@ WITH team_quarters AS (
              sub_o.quarter_id
          FROM key_result kr
                   LEFT JOIN CHECK_IN ci ON KR.ID = ci.KEY_RESULT_ID AND ci.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
-                                                                                       FROM CHECK_IN CC
-                                                                                       WHERE CC.KEY_RESULT_ID = ci.KEY_RESULT_ID)
+                                                                                          FROM CHECK_IN CC
+                                                                                          WHERE CC.KEY_RESULT_ID = ci.KEY_RESULT_ID)
                   INNER JOIN objective sub_o ON kr.objective_id = sub_o.id
          ORDER BY kr.id, ci.modified_on DESC
      ),
@@ -45,23 +46,23 @@ WITH team_quarters AS (
              COUNT(*) FILTER (WHERE key_result_type = 'metric') AS key_results_metric_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone IN ('TARGET', 'STRETCH'))
-                     OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0)>= 0.7)
+                     OR (key_result_type = 'metric' AND progress >= 0.7)
                  ) AS key_results_in_target_or_stretch_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'FAIL')
-                     OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) < 0.3)
+                     OR (key_result_type = 'metric' AND progress > 0 AND progress < 0.3)
                  ) AS key_results_in_fail_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'COMMIT')
-                     OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) BETWEEN 0.3 AND 0.7)
+                     OR (key_result_type = 'metric' AND progress >= 0.3 AND progress < 0.7)
                  ) AS key_results_in_commit_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'TARGET')
-                     OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) BETWEEN 0.7 AND 1)
+                     OR (key_result_type = 'metric' AND progress >= 0.7 AND progress < 1)
                  ) AS key_results_in_target_amount,
              COUNT(*) FILTER (
                  WHERE (key_result_type = 'ordinal' AND zone = 'STRETCH')
-                     OR (key_result_type = 'metric' AND COALESCE(((value_metric - baseline) / NULLIF(stretch_goal - baseline, 0)),0) >= 1)
+                     OR (key_result_type = 'metric' AND progress >= 1)
                  ) AS key_results_in_stretch_amount
          FROM kr_latest_check_in
          GROUP BY team_id, quarter_id

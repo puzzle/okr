@@ -1,10 +1,9 @@
 package ch.puzzle.okr.models.evaluation;
 
-import ch.puzzle.okr.models.overview.OverviewId;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Embeddable
@@ -57,5 +56,18 @@ public class EvaluationViewId implements Serializable {
         public EvaluationViewId build() {
             return new EvaluationViewId(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof EvaluationViewId that)) {
+            return false;
+        }
+        return Objects.equals(getTeamId(), that.getTeamId()) && Objects.equals(getQuarterId(), that.getQuarterId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTeamId(), getQuarterId());
     }
 }

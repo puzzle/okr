@@ -24,6 +24,21 @@ public class EvaluationView {
     private int keyResultsInTargetAmount;
     private int keyResultsInStretchAmount;
 
+    private EvaluationView(Builder builder) {
+        evaluationViewId = builder.evaluationViewId;
+        objectiveAmount = builder.objectiveAmount;
+        completedObjectivesAmount = builder.completedObjectivesAmount;
+        successfullyCompletedObjectivesAmount = builder.successfullyCompletedObjectivesAmount;
+        keyResultAmount = builder.keyResultAmount;
+        keyResultsOrdinalAmount = builder.keyResultsOrdinalAmount;
+        keyResultsMetricAmount = builder.keyResultsMetricAmount;
+        keyResultsInTargetOrStretchAmount = builder.keyResultsInTargetOrStretchAmount;
+        keyResultsInFailAmount = builder.keyResultsInFailAmount;
+        keyResultsInCommitAmount = builder.keyResultsInCommitAmount;
+        keyResultsInTargetAmount = builder.keyResultsInTargetAmount;
+        keyResultsInStretchAmount = builder.keyResultsInStretchAmount;
+    }
+
     public EvaluationViewId getEvaluationViewId() {
         return evaluationViewId;
     }
@@ -70,5 +85,92 @@ public class EvaluationView {
 
     public int getKeyResultsInStretchAmount() {
         return keyResultsInStretchAmount;
+    }
+
+
+    public static final class Builder {
+        private EvaluationViewId evaluationViewId;
+        private int objectiveAmount;
+        private int completedObjectivesAmount;
+        private int successfullyCompletedObjectivesAmount;
+        private int keyResultAmount;
+        private int keyResultsOrdinalAmount;
+        private int keyResultsMetricAmount;
+        private int keyResultsInTargetOrStretchAmount;
+        private int keyResultsInFailAmount;
+        private int keyResultsInCommitAmount;
+        private int keyResultsInTargetAmount;
+        private int keyResultsInStretchAmount;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withEvaluationViewId(EvaluationViewId val) {
+            evaluationViewId = val;
+            return this;
+        }
+
+        public Builder withObjectiveAmount(int val) {
+            objectiveAmount = val;
+            return this;
+        }
+
+        public Builder withCompletedObjectivesAmount(int val) {
+            completedObjectivesAmount = val;
+            return this;
+        }
+
+        public Builder withSuccessfullyCompletedObjectivesAmount(int val) {
+            successfullyCompletedObjectivesAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultAmount(int val) {
+            keyResultAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultsOrdinalAmount(int val) {
+            keyResultsOrdinalAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultsMetricAmount(int val) {
+            keyResultsMetricAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultsInTargetOrStretchAmount(int val) {
+            keyResultsInTargetOrStretchAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultsInFailAmount(int val) {
+            keyResultsInFailAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultsInCommitAmount(int val) {
+            keyResultsInCommitAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultsInTargetAmount(int val) {
+            keyResultsInTargetAmount = val;
+            return this;
+        }
+
+        public Builder withKeyResultsInStretchAmount(int val) {
+            keyResultsInStretchAmount = val;
+            return this;
+        }
+
+        public EvaluationView build() {
+            return new EvaluationView(this);
+        }
     }
 }

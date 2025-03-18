@@ -39,6 +39,9 @@ public class EvaluationView {
         keyResultsInStretchAmount = builder.keyResultsInStretchAmount;
     }
 
+    public EvaluationView() {
+    }
+
     public EvaluationViewId getEvaluationViewId() {
         return evaluationViewId;
     }

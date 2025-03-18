@@ -44,7 +44,7 @@ class EvaluationViewControllerIT {
         // Dummy objects to simulate the internal workflow
         List<EvaluationView> evaluationViews = generateEvaluationViews(evaluationViewIds);
         // Create a dummy EvaluationDto with sample data
-        EvaluationDto evaluationDto = generateRandomEvaluationDto();
+        EvaluationDto evaluationDto = generateEvaluationDto();
 
         // Define mock behavior
         BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(evaluationViewIds);

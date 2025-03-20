@@ -28,6 +28,8 @@ import { ErrorComponent } from './custom/error/error.component';
 import { TeamFilterComponent } from './filter/team-filter/team-filter.component';
 import { QuarterFilterComponent } from './filter/quarter-filter/quarter-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { ApplicationBannerComponent } from './custom/application-banner/application-banner.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { MatChipsModule } from '@angular/material/chips';
     DialogTemplateCoreComponent,
     ErrorComponent,
     QuarterFilterComponent,
-    TeamFilterComponent
+    TeamFilterComponent,
+    ApplicationBannerComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +69,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatDividerModule,
     MatTooltip,
     MatChipsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule
   ],
   exports: [
     ObjectiveFormComponent,
@@ -80,7 +84,8 @@ import { MatChipsModule } from '@angular/material/chips';
     DialogTemplateCoreComponent,
     ErrorComponent,
     QuarterFilterComponent,
-    TeamFilterComponent
+    TeamFilterComponent,
+    ApplicationBannerComponent
   ]
 })
 export class SharedModule {}

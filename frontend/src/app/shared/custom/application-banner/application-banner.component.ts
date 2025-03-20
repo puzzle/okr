@@ -7,9 +7,8 @@ import {
   OnDestroy,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/constant-library';
+import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../constant-library';
+import { RefreshDataService } from '../../../services/refresh-data.service';
 
 @Component({
   selector: 'app-application-banner',
@@ -20,10 +19,6 @@ import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../shared/co
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('okrBanner') okrBanner!: ElementRef;
-
-  quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
-  panelOpenState = false;
 
   resizeObserver: ResizeObserver;
 

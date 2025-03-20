@@ -9,7 +9,7 @@ import { AppRoutingModule } from '../../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { authGuard } from '../../guards/auth.guard';
-import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
+import { ApplicationBannerComponent } from '../../shared/custom/application-banner/application-banner.component';
 import { ApplicationTopBarComponent } from '../application-top-bar/application-top-bar.component';
 import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';

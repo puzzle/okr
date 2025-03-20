@@ -1,9 +1,13 @@
 package ch.puzzle.okr.mapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
-import ch.puzzle.okr.util.quarter.EvaluationViewTestHelper;
+import ch.puzzle.okr.test.EvaluationViewTestHelper;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -11,31 +15,32 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @ExtendWith(MockitoExtension.class)
 class EvaluationViewMapperTest {
-    @InjectMocks private EvaluationViewMapper mapper;
+    @InjectMocks
+    private EvaluationViewMapper mapper;
 
     private static Stream<Arguments> fromDtoArgs() {
-        return Stream.of(
-                // Original test case: three team IDs
-                Arguments.of(List.of(1L, 2L, 3L),
-                             3L,
-                             List.of(new EvaluationViewId(1L, 3L),
-                                     new EvaluationViewId(2L, 3L),
-                                     new EvaluationViewId(3L, 3L))),
-                // Test case: empty list of team IDs should produce an empty list of EvaluationViewIds
-                Arguments.of(List.of(), 3L, List.of()),
-                // Test case: a single team id
-                Arguments.of(List.of(7L), 5L, List.of(new EvaluationViewId(7L, 5L))),
-                // Test case: two team ids with a different quarter id
-                Arguments.of(List.of(10L, 20L),
-                             2L,
-                             List.of(new EvaluationViewId(10L, 2L), new EvaluationViewId(20L, 2L))));
+        return Stream
+                .of(
+                    // Original test case: three team IDs
+                    Arguments
+                            .of(List.of(1L, 2L, 3L),
+                                3L,
+                                List
+                                        .of(new EvaluationViewId(1L, 3L),
+                                            new EvaluationViewId(2L, 3L),
+                                            new EvaluationViewId(3L, 3L))),
+                    // Test case: empty list of team IDs should produce an empty list of
+                    // EvaluationViewIds
+                    Arguments.of(List.of(), 3L, List.of()),
+                    // Test case: a single team id
+                    Arguments.of(List.of(7L), 5L, List.of(new EvaluationViewId(7L, 5L))),
+                    // Test case: two team ids with a different quarter id
+                    Arguments
+                            .of(List.of(10L, 20L),
+                                2L,
+                                List.of(new EvaluationViewId(10L, 2L), new EvaluationViewId(20L, 2L))));
     }
 
     private static Stream<Arguments> toDtoArge() {
@@ -54,11 +59,11 @@ class EvaluationViewMapperTest {
 
         List<Integer> evaluationDtoData123 = List.of(2, 9, 16, 23, 30, 37, 44, 51, 58, 65, 72);
         EvaluationDto evaluationDto123 = EvaluationViewTestHelper.generateEvaluationDto(evaluationDtoData123);
-        return Stream.of(Arguments.of(evaluationDto1, List.of(evaluationView1)),
-                         Arguments.of(evaluationDto12, List.of(evaluationView1, evaluationView2)),
-                         Arguments.of(evaluationDto123, List.of(evaluationView1, evaluationView2, evaluationView3)));
+        return Stream
+                .of(Arguments.of(evaluationDto1, List.of(evaluationView1)),
+                    Arguments.of(evaluationDto12, List.of(evaluationView1, evaluationView2)),
+                    Arguments.of(evaluationDto123, List.of(evaluationView1, evaluationView2, evaluationView3)));
     }
-
 
     @ParameterizedTest
     @MethodSource("fromDtoArgs")
@@ -75,4 +80,3 @@ class EvaluationViewMapperTest {
         assertEquals(dto, result);
     }
 }
-

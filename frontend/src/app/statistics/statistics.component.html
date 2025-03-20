@@ -1,3 +1,17 @@
-<p>statistics works!</p>
-<app-quarter-filter></app-quarter-filter>
-<app-team-filter></app-team-filter>
+<app-application-banner>
+  <content>
+    Zurück zur Übersicht
+    <div>
+      Auswertung
+    </div>
+  </content>
+</app-application-banner>
+
+<div
+  id="overview"
+  class="page-container px-sm-4 d-flex"
+  [ngStyle]="{ 'padding-top.px': overviewPadding | async }"
+>
+  <app-quarter-filter></app-quarter-filter>
+  <app-team-filter></app-team-filter>
+</div>

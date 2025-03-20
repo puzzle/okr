@@ -446,3 +446,13 @@ table.okr-table {
 .cdk-drag-dragging app-error {
   display: none;
 }
+
+.page-container {
+  overflow-x: hidden;
+  background: var(--okr-overview-background-color);
+  transition: 0.5s;
+}
+
+.bottom-shadow-space {
+  padding-bottom: 4rem;
+}

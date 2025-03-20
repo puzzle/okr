@@ -25,6 +25,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { UnitTransformationPipe } from './pipes/unit-transformation/unit-transformation.pipe';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ErrorComponent } from './custom/error/error.component';
+import { TeamFilterComponent } from './filter/team-filter/team-filter.component';
+import { QuarterFilterComponent } from './filter/quarter-filter/quarter-filter.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import { ErrorComponent } from './custom/error/error.component';
     SidePanelComponent,
     SpinnerComponent,
     DialogTemplateCoreComponent,
-    ErrorComponent
+    ErrorComponent,
+    QuarterFilterComponent,
+    TeamFilterComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +64,9 @@ import { ErrorComponent } from './custom/error/error.component';
     RouterOutlet,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatTooltip
+    MatTooltip,
+    MatChipsModule,
+    MatSelectModule
   ],
   exports: [
     ObjectiveFormComponent,
@@ -71,8 +78,9 @@ import { ErrorComponent } from './custom/error/error.component';
     SidePanelComponent,
     SpinnerComponent,
     DialogTemplateCoreComponent,
-    ErrorComponent
-
+    ErrorComponent,
+    QuarterFilterComponent,
+    TeamFilterComponent
   ]
 })
 export class SharedModule {}

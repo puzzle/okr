@@ -46,8 +46,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './components/application-banner/application-banner.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { QuarterFilterComponent } from './components/quarter-filter/quarter-filter.component';
-import { TeamFilterComponent } from './components/team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
 import { KeyResultTypeComponent } from './components/key-result-type/key-result-type.component';
@@ -113,8 +111,10 @@ export const MY_FORMATS = {
     KeyResultDetailComponent,
     ObjectiveDetailComponent,
     ApplicationBannerComponent,
-    QuarterFilterComponent,
-    TeamFilterComponent,
+    /*
+     * QuarterFilterComponent,
+     * TeamFilterComponent,
+     */
     KeyResultTypeComponent,
     ObjectiveFilterComponent,
     ActionPlanComponent,

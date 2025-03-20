@@ -14,4 +14,7 @@
 >
   <app-quarter-filter></app-quarter-filter>
   <app-team-filter></app-team-filter>
+  <div *ngIf="statistics| async as statistics; " class="d-flex flex-column w-100">
+    {{statistics |json}}
+  </div>
 </div>

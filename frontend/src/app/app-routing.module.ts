@@ -50,6 +50,8 @@ const routes: Routes = [
     redirectTo: 'details/objective' },
   { path: 'keyresult',
     redirectTo: 'details/keyresult' },
+  { path: 'statistics',
+    loadChildren: () => import('./statistics/statistics.module').then((m) => m.StatisticsModule) },
   { path: '**',
     redirectTo: '',
     pathMatch: 'full' }

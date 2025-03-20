@@ -1,10 +1,13 @@
 package ch.puzzle.okr.controller;
 
+import static ch.puzzle.okr.test.EvaluationViewTestHelper.*;
+
 import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.mapper.EvaluationViewMapper;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -21,19 +24,18 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
-import static ch.puzzle.okr.util.quarter.EvaluationViewTestHelper.*;
-
 @WebMvcTest(EvaluationViewController.class)
 @WithMockUser(value = "spring")
 class EvaluationViewControllerIT {
 
-    @Autowired private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-    @MockitoBean private EvaluationViewMapper evaluationViewMapper;
+    @MockitoBean
+    private EvaluationViewMapper evaluationViewMapper;
 
-    @MockitoBean private EvaluationViewBusinessService evaluationViewBusinessService;
+    @MockitoBean
+    private EvaluationViewBusinessService evaluationViewBusinessService;
 
     @DisplayName("Should return evaluation data for valid team and quarter parameters")
     @Test
@@ -54,10 +56,10 @@ class EvaluationViewControllerIT {
         // Perform GET request and assert the JSON response
         ResultActions resultActions = mvc
                 .perform(MockMvcRequestBuilders
-                                 .get("/api/v2/evaluation")
-                                 .param("team", teamIds.stream().map(Object::toString).toArray(String[]::new))
-                                 .param("quarter", quarterId.toString())
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .get("/api/v2/evaluation")
+                        .param("team", teamIds.stream().map(Object::toString).toArray(String[]::new))
+                        .param("quarter", quarterId.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         validateResponse(resultActions, evaluationDto);
     }
@@ -86,10 +88,10 @@ class EvaluationViewControllerIT {
 
         mvc
                 .perform(MockMvcRequestBuilders
-                                 .get("/api/v2/evaluation")
-                                 .param("team", "999")
-                                 .param("quarter", "888")
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .get("/api/v2/evaluation")
+                        .param("team", "999")
+                        .param("quarter", "888")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -108,10 +110,10 @@ class EvaluationViewControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
         mvc
                 .perform(MockMvcRequestBuilders
-                                 .get("/api/v2/evaluation")
-                                 .param("team", "1")
-                                 .param("quarter", "1")
-                                 .contentType(MediaType.APPLICATION_JSON))
+                        .get("/api/v2/evaluation")
+                        .param("team", "1")
+                        .param("quarter", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
@@ -119,30 +121,32 @@ class EvaluationViewControllerIT {
         response
                 .andExpect(MockMvcResultMatchers.jsonPath("$.objectiveAmount").value(dto.objectiveAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.completedObjectivesAmount")
-                                   .value(dto.completedObjectivesAmount()))
+                        .jsonPath("$.completedObjectivesAmount")
+                        .value(dto.completedObjectivesAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.successfullyCompletedObjectivesAmount")
-                                   .value(dto.successfullyCompletedObjectivesAmount()))
+                        .jsonPath("$.successfullyCompletedObjectivesAmount")
+                        .value(dto.successfullyCompletedObjectivesAmount()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.keyResultAmount").value(dto.keyResultAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.keyResultsOrdinalAmount")
-                                   .value(dto.keyResultsOrdinalAmount()))
+                        .jsonPath("$.keyResultsOrdinalAmount")
+                        .value(dto.keyResultsOrdinalAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.keyResultsMetricAmount")
-                                   .value(dto.keyResultsMetricAmount()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.keyResultsInTargetOrStretchAmount").value(dto.keyResultsInTargetOrStretchAmount()))
+                        .jsonPath("$.keyResultsMetricAmount")
+                        .value(dto.keyResultsMetricAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.keyResultsInFailAmount")
-                                   .value(dto.keyResultsInFailAmount()))
+                        .jsonPath("$.keyResultsInTargetOrStretchAmount")
+                        .value(dto.keyResultsInTargetOrStretchAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.keyResultsInCommitAmount")
-                                   .value(dto.keyResultsInCommitAmount()))
+                        .jsonPath("$.keyResultsInFailAmount")
+                        .value(dto.keyResultsInFailAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.keyResultsInTargetAmount")
-                                   .value(dto.keyResultsInTargetAmount()))
+                        .jsonPath("$.keyResultsInCommitAmount")
+                        .value(dto.keyResultsInCommitAmount()))
                 .andExpect(MockMvcResultMatchers
-                                   .jsonPath("$.keyResultsInStretchAmount")
-                                   .value(dto.keyResultsInStretchAmount()));
+                        .jsonPath("$.keyResultsInTargetAmount")
+                        .value(dto.keyResultsInTargetAmount()))
+                .andExpect(MockMvcResultMatchers
+                        .jsonPath("$.keyResultsInStretchAmount")
+                        .value(dto.keyResultsInStretchAmount()));
     }
 }

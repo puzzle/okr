@@ -1,9 +1,8 @@
-package ch.puzzle.okr.util.quarter;
+package ch.puzzle.okr.test;
 
 import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
-
 import java.util.List;
 
 public class EvaluationViewTestHelper {
@@ -59,17 +58,18 @@ public class EvaluationViewTestHelper {
     }
 
     public static List<Integer> generateEvaluationViewData() {
-        return List.of(randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt(),
-                       randomInt());
+        return List
+                .of(randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt(),
+                    randomInt());
     }
 
     private static int randomInt() {

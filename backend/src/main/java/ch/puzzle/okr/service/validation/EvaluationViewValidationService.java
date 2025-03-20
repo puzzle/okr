@@ -4,13 +4,13 @@ import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class EvaluationViewValidationService extends
-                                             ValidationBase<EvaluationView, EvaluationViewId, EvaluationViewRepository, EvaluationViewPersistenceService> {
+public class EvaluationViewValidationService
+        extends
+            ValidationBase<EvaluationView, EvaluationViewId, EvaluationViewRepository, EvaluationViewPersistenceService> {
 
     private final QuarterValidationService quarterValidationService;
     private final TeamValidationService teamValidationService;

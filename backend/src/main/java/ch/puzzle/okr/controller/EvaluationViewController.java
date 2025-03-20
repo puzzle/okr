@@ -1,7 +1,6 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.EvaluationDto;
-import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.mapper.EvaluationViewMapper;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,14 +8,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v2/evaluation")
@@ -39,10 +37,11 @@ public class EvaluationViewController {
             @ApiResponse(responseCode = "401", description = "Not Authorized", content = @Content) })
     @GetMapping("")
     public ResponseEntity<EvaluationDto> getOverview(@RequestParam(name = "team") List<Long> teamIds,
-                                                         @RequestParam(name = "quarter") Long quarterId) {
+                                                     @RequestParam(name = "quarter") Long quarterId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(evaluationViewMapper
-                              .toDto(evaluationViewBusinessService.findByIds(evaluationViewMapper.fromDto(teamIds, quarterId))));
+                        .toDto(evaluationViewBusinessService
+                                .findByIds(evaluationViewMapper.fromDto(teamIds, quarterId))));
     }
 }

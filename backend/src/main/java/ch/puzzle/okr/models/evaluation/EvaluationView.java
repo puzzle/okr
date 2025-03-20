@@ -2,9 +2,8 @@ package ch.puzzle.okr.models.evaluation;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import org.hibernate.annotations.Immutable;
-
 import java.util.Objects;
+import org.hibernate.annotations.Immutable;
 
 @Entity
 @Immutable
@@ -91,7 +90,6 @@ public class EvaluationView {
     public int getKeyResultsInStretchAmount() {
         return keyResultsInStretchAmount;
     }
-
 
     public static final class Builder {
         private EvaluationViewId evaluationViewId;
@@ -184,33 +182,34 @@ public class EvaluationView {
         if (!(o instanceof EvaluationView that)) {
             return false;
         }
-        return getObjectiveAmount() == that.getObjectiveAmount() &&
-               getCompletedObjectivesAmount() == that.getCompletedObjectivesAmount() &&
-               getSuccessfullyCompletedObjectivesAmount() == that.getSuccessfullyCompletedObjectivesAmount() &&
-               getKeyResultAmount() == that.getKeyResultAmount() &&
-               getKeyResultsOrdinalAmount() == that.getKeyResultsOrdinalAmount() &&
-               getKeyResultsMetricAmount() == that.getKeyResultsMetricAmount() &&
-               getKeyResultsInTargetOrStretchAmount() == that.getKeyResultsInTargetOrStretchAmount() &&
-               getKeyResultsInFailAmount() == that.getKeyResultsInFailAmount() &&
-               getKeyResultsInCommitAmount() == that.getKeyResultsInCommitAmount() &&
-               getKeyResultsInTargetAmount() == that.getKeyResultsInTargetAmount() &&
-               getKeyResultsInStretchAmount() == that.getKeyResultsInStretchAmount() &&
-               Objects.equals(getEvaluationViewId(), that.getEvaluationViewId());
+        return getObjectiveAmount() == that.getObjectiveAmount()
+               && getCompletedObjectivesAmount() == that.getCompletedObjectivesAmount()
+               && getSuccessfullyCompletedObjectivesAmount() == that.getSuccessfullyCompletedObjectivesAmount()
+               && getKeyResultAmount() == that.getKeyResultAmount()
+               && getKeyResultsOrdinalAmount() == that.getKeyResultsOrdinalAmount()
+               && getKeyResultsMetricAmount() == that.getKeyResultsMetricAmount()
+               && getKeyResultsInTargetOrStretchAmount() == that.getKeyResultsInTargetOrStretchAmount()
+               && getKeyResultsInFailAmount() == that.getKeyResultsInFailAmount()
+               && getKeyResultsInCommitAmount() == that.getKeyResultsInCommitAmount()
+               && getKeyResultsInTargetAmount() == that.getKeyResultsInTargetAmount()
+               && getKeyResultsInStretchAmount() == that.getKeyResultsInStretchAmount()
+               && Objects.equals(getEvaluationViewId(), that.getEvaluationViewId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEvaluationViewId(),
-                            getObjectiveAmount(),
-                            getCompletedObjectivesAmount(),
-                            getSuccessfullyCompletedObjectivesAmount(),
-                            getKeyResultAmount(),
-                            getKeyResultsOrdinalAmount(),
-                            getKeyResultsMetricAmount(),
-                            getKeyResultsInTargetOrStretchAmount(),
-                            getKeyResultsInFailAmount(),
-                            getKeyResultsInCommitAmount(),
-                            getKeyResultsInTargetAmount(),
-                            getKeyResultsInStretchAmount());
+        return Objects
+                .hash(getEvaluationViewId(),
+                      getObjectiveAmount(),
+                      getCompletedObjectivesAmount(),
+                      getSuccessfullyCompletedObjectivesAmount(),
+                      getKeyResultAmount(),
+                      getKeyResultsOrdinalAmount(),
+                      getKeyResultsMetricAmount(),
+                      getKeyResultsInTargetOrStretchAmount(),
+                      getKeyResultsInFailAmount(),
+                      getKeyResultsInCommitAmount(),
+                      getKeyResultsInTargetAmount(),
+                      getKeyResultsInStretchAmount());
     }
 }

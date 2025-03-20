@@ -1,15 +1,13 @@
 package ch.puzzle.okr.models.evaluation;
 
 import jakarta.persistence.Embeddable;
-
 import java.io.Serializable;
 import java.util.Objects;
 
-
 @Embeddable
 public class EvaluationViewId implements Serializable {
-    private Long  teamId;
-    private Long  quarterId;
+    private Long teamId;
+    private Long quarterId;
 
     public EvaluationViewId(Long teamId, Long quarterId) {
         this.teamId = teamId;

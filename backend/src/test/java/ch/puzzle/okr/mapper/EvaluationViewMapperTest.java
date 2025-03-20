@@ -22,21 +22,15 @@ class EvaluationViewMapperTest {
 
     private static Stream<Arguments> fromDtoArgs() {
         return Stream
-                .of(
-                    // Original test case: three team IDs
-                    Arguments
-                            .of(List.of(1L, 2L, 3L),
-                                3L,
-                                List
-                                        .of(new EvaluationViewId(1L, 3L),
-                                            new EvaluationViewId(2L, 3L),
-                                            new EvaluationViewId(3L, 3L))),
-                    // Test case: empty list of team IDs should produce an empty list of
-                    // EvaluationViewIds
+                .of(Arguments
+                        .of(List.of(1L, 2L, 3L),
+                            3L,
+                            List
+                                    .of(new EvaluationViewId(1L, 3L),
+                                        new EvaluationViewId(2L, 3L),
+                                        new EvaluationViewId(3L, 3L))),
                     Arguments.of(List.of(), 3L, List.of()),
-                    // Test case: a single team id
                     Arguments.of(List.of(7L), 5L, List.of(new EvaluationViewId(7L, 5L))),
-                    // Test case: two team ids with a different quarter id
                     Arguments
                             .of(List.of(10L, 20L),
                                 2L,

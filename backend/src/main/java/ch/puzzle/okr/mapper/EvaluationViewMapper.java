@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class EvaluationViewMapper {
     public EvaluationDto toDto(List<EvaluationView> evaluationViews) {
-        // TODO: loop only once?
         return new EvaluationDto(evaluationViews.stream().mapToInt(EvaluationView::getObjectiveAmount).sum(),
                                  evaluationViews.stream().mapToInt(EvaluationView::getCompletedObjectivesAmount).sum(),
                                  evaluationViews

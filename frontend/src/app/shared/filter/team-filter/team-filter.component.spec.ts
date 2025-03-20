@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
-import { ApplicationBannerComponent } from '../../../components/application-banner/application-banner.component';
+import { ApplicationBannerComponent } from '../../custom/application-banner/application-banner.component';
 
 const teamServiceMock = {
   getAllTeams: jest.fn()

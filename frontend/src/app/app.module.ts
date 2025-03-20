@@ -43,7 +43,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { ConfidenceComponent } from './components/confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDividerModule } from '@angular/material/divider';
-import { ApplicationBannerComponent } from './components/application-banner/application-banner.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatChipsModule } from '@angular/material/chips';
@@ -67,6 +66,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { CustomizationService } from './services/customization.service';
 import { ManageUnitsDialogComponent } from './components/manage-units-dialog/manage-units-dialog.component';
 import { UnitTransformationPipe } from './shared/pipes/unit-transformation/unit-transformation.pipe';
+import { OverviewBannerComponent } from './components/overview-banner/overview-banner.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async() => {
@@ -110,11 +110,6 @@ export const MY_FORMATS = {
     ConfidenceComponent,
     KeyResultDetailComponent,
     ObjectiveDetailComponent,
-    ApplicationBannerComponent,
-    /*
-     * QuarterFilterComponent,
-     * TeamFilterComponent,
-     */
     KeyResultTypeComponent,
     ObjectiveFilterComponent,
     ActionPlanComponent,
@@ -124,7 +119,8 @@ export const MY_FORMATS = {
     CheckInFormMetricComponent,
     CheckInFormOrdinalComponent,
     CheckInFormComponent,
-    ManageUnitsDialogComponent
+    ManageUnitsDialogComponent,
+    OverviewBannerComponent
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -172,17 +168,26 @@ export const MY_FORMATS = {
     CdkDragHandle,
     SharedModule
   ],
+  exports: [ObjectiveFilterComponent],
   providers: [
-    { provide: MAT_DATE_FORMATS,
-      useValue: MY_FORMATS },
-    { provide: HTTP_INTERCEPTORS,
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: MY_FORMATS
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: OAuthInterceptor,
-      multi: true },
-    { provide: HTTP_INTERCEPTORS,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true },
-    { provide: OAuthStorage,
-      useFactory: storageFactory },
+      multi: true
+    },
+    {
+      provide: OAuthStorage,
+      useFactory: storageFactory
+    },
     provideAppInitializer(() => {
       const initializerFn = initOauthFactory(inject(ConfigService), inject(OAuthService));
       return initializerFn();

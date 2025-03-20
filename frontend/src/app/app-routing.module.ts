@@ -50,8 +50,12 @@ const routes: Routes = [
     redirectTo: 'details/objective' },
   { path: 'keyresult',
     redirectTo: 'details/keyresult' },
-  { path: 'statistics',
-    loadChildren: () => import('./statistics/statistics.module').then((m) => m.StatisticsModule) },
+  {
+    path: 'statistics',
+    loadChildren: () => import('./statistics/statistics.module').then((m) => m.StatisticsModule),
+    canActivate: [authGuard],
+    resolve: { user: currentUserResolver }
+  },
   { path: '**',
     redirectTo: '',
     pathMatch: 'full' }

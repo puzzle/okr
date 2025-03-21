@@ -8,6 +8,7 @@ import { StatisticsCardComponent } from './statistics-card/statistics-card.compo
 import { StatisticsBarComponent } from './statistics-bar/statistics-bar.component';
 import { StatisticsInformationComponent } from './statistics-information/statistics-information.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     CommonModule,
     StatisticsRoutingModule,
     SharedModule,
-    MatProgressBar
+    MatProgressBar,
+    MatButton
   ]
 })
 export class StatisticsModule { }

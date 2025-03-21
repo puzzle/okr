@@ -1,92 +1,109 @@
 <app-application-page [elements$]="statistics" (reloadPage)="loadOverviewWithParams()">
-  <app-application-banner app-banner>-->
-    Zurück zur Übersicht
-    <div>
-      Auswertung
+  <app-application-banner app-banner>
+    <div class="d-flex flex-column ms-5">
+      <button
+        routerLink="/"
+        class="px-2 dialog-detail-button"
+        color="primary"
+        disableRipple="true"
+        mat-button
+        queryParamsHandling="preserve"
+        [attr.data-testId]="'show-all-checkins'"
+      >Zurück zur Übersicht
+      </button>
+      <h1> Auswertung </h1>
     </div>
   </app-application-banner>
-  <div class="d-flex">
-    <app-quarter-filter></app-quarter-filter>
-    <app-team-filter></app-team-filter>
-  </div>
-  <div *ngIf="statistics| async as statistics; " class="d-flex flex-column container-fluid">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 row-gap-2">
-      <app-statistics-card [title]="'Objectives und Key Results'">
-        <app-statistics-information [topContent]="'Objectives'"> {{ statistics.objectiveAmount }}
-        </app-statistics-information>
-        <app-statistics-information [topContent]="'KeyResults'">{{ statistics.keyResultAmount }}
-        </app-statistics-information>
-        <app-statistics-information [topContent]="'KR\'s/Objective'">
-          {{ statistics.keyResultAmount / statistics.objectiveAmount | number : '1.0-1' }}
-        </app-statistics-information>
-      </app-statistics-card>
+  <div class="container-fluid ms-1">
+    <div class="d-flex gap-2 my-3 align-items-end">
+      <div class="d-flex flex-column">
+        Quartal
+        <app-quarter-filter></app-quarter-filter>
+      </div>
+      <app-team-filter></app-team-filter>
+    </div>
 
-      <app-statistics-card [title]="'Anzahl abgeschlossener Objectives'" [barProgress]="statistics.completedObjectivesAmount / statistics.objectiveAmount">
-        <app-statistics-information [bottomContent]="statistics.completedObjectivesAmount+'/'+statistics.objectiveAmount">
-          {{ statistics.completedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1' }}
-        </app-statistics-information>
-      </app-statistics-card>
 
-      <app-statistics-card [title]="'Anzahl erreichter Objectives'" [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount">
-        <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
-          {{ statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1' }}
-        </app-statistics-information>
-      </app-statistics-card>
+    <div *ngIf="statistics| async as statistics; " class="d-flex flex-column ">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 row-gap-2">
+        <app-statistics-card [title]="'Objectives und Key Results'">
+          <app-statistics-information [topContent]="'Objectives'"> {{ statistics.objectiveAmount }}
+          </app-statistics-information>
+          <app-statistics-information [topContent]="'KeyResults'">{{ statistics.keyResultAmount }}
+          </app-statistics-information>
+          <app-statistics-information [topContent]="'KR\'s/Objective'">
+            {{ statistics.keyResultAmount / statistics.objectiveAmount | number : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
 
-      <app-statistics-card [title]="'Key Results mit min. Target Zone'" [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount">
-        <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
-          {{ statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount  | percent : '1.0-1' }}
-        </app-statistics-information>
-      </app-statistics-card>
+        <app-statistics-card [title]="'Anzahl abgeschlossener Objectives'" [barProgress]="statistics.completedObjectivesAmount / statistics.objectiveAmount">
+          <app-statistics-information [bottomContent]="statistics.completedObjectivesAmount+'/'+statistics.objectiveAmount">
+            {{ statistics.completedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
 
-      <app-statistics-card
-        *ngIf="krRelation(statistics.keyResultsMetricAmount, statistics.keyResultsOrdinalAmount) as relation"
-        [title]="'Verhältnis metrische vs. ordinale Key Results'"
-        [barProgress]="relation.metric"
-        [barColorPreset]="'relation'"
-      >
-        <app-statistics-information [topContent]="'metrisch'" [bottomContent]="relation.metric | percent : '1.0-1'">
-          {{ statistics.keyResultsMetricAmount }}
-        </app-statistics-information>
-        <app-statistics-information [topContent]="'ordinal'" [bottomContent]="relation.ordinal | percent : '1.0-1'">
-          {{ statistics.keyResultsOrdinalAmount }}
-        </app-statistics-information>
-      </app-statistics-card>
+        <app-statistics-card [title]="'Anzahl erreichter Objectives'" [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount">
+          <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
+            {{ statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
 
-      <app-statistics-card [title]="'Verteilung der Zonen in den Key Results'" *ngIf="krProgressRelation(statistics) as relation">
-        <app-statistics-information
-          [topContent]="statistics.keyResultsInFailAmount"
-          [bottomContent]="'Fail'"
-          [chartColor]="'red'"
-          [chartValue]="relation.fail"
+        <app-statistics-card [title]="'Key Results mit min. Target Zone'" [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount">
+          <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
+            {{ statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount  | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
+
+        <app-statistics-card
+          *ngIf="krRelation(statistics.keyResultsMetricAmount, statistics.keyResultsOrdinalAmount) as relation"
+          [title]="'Verhältnis metrische vs. ordinale Key Results'"
+          [barProgress]="relation.metric"
+          [barColorPreset]="'relation'"
         >
-          {{ relation.fail | percent : '1.0-1' }}
-        </app-statistics-information>
-        <app-statistics-information
-          [topContent]="statistics.keyResultsInCommitAmount"
-          [bottomContent]="'Commit'"
-          [chartColor]="'yellow'"
-          [chartValue]="relation.commit"
-        >
-          {{ relation.commit | percent : '1.0-1' }}
-        </app-statistics-information>
-        <app-statistics-information
-          [topContent]="statistics.keyResultsInTargetAmount"
-          [bottomContent]="'Target'"
-          [chartColor]="'green'"
-          [chartValue]="relation.target"
-        >
-          {{ relation.target | percent : '1.0-1' }}
-        </app-statistics-information>
-        <app-statistics-information
-          [topContent]="statistics.keyResultsInStretchAmount"
-          [bottomContent]="'Stretch'"
-          [chartColor]="'darkblue'"
-          [chartValue]="relation.stretch"
-        >
-          {{ relation.stretch | percent : '1.0-1' }}
-        </app-statistics-information>
-      </app-statistics-card>
+          <app-statistics-information [topContent]="'metrisch'" [bottomContent]="relation.metric | percent : '1.0-1'">
+            {{ statistics.keyResultsMetricAmount }}
+          </app-statistics-information>
+          <app-statistics-information [topContent]="'ordinal'" [bottomContent]="relation.ordinal | percent : '1.0-1'">
+            {{ statistics.keyResultsOrdinalAmount }}
+          </app-statistics-information>
+        </app-statistics-card>
+
+        <app-statistics-card [title]="'Verteilung der Zonen in den Key Results'" *ngIf="krProgressRelation(statistics) as relation">
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInFailAmount"
+            [bottomContent]="'Fail'"
+            [chartColor]="'red'"
+            [chartValue]="relation.fail"
+          >
+            {{ relation.fail | percent : '1.0-1' }}
+          </app-statistics-information>
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInCommitAmount"
+            [bottomContent]="'Commit'"
+            [chartColor]="'yellow'"
+            [chartValue]="relation.commit"
+          >
+            {{ relation.commit | percent : '1.0-1' }}
+          </app-statistics-information>
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInTargetAmount"
+            [bottomContent]="'Target'"
+            [chartColor]="'green'"
+            [chartValue]="relation.target"
+          >
+            {{ relation.target | percent : '1.0-1' }}
+          </app-statistics-information>
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInStretchAmount"
+            [bottomContent]="'Stretch'"
+            [chartColor]="'darkblue'"
+            [chartValue]="relation.stretch"
+          >
+            {{ relation.stretch | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
+      </div>
     </div>
   </div>
+
 </app-application-page>

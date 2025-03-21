@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { catchError, combineLatest, EMPTY, Observable, Subject, take } from 'rxjs';
+import { Component } from '@angular/core';
+import { catchError, combineLatest, EMPTY, Observable, take } from 'rxjs';
 import { RefreshDataService } from '../services/refresh-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { getValueFromQuery, trackByFn } from '../shared/common';
+import { getValueFromQuery } from '../shared/common';
 import { EvaluationService } from '../services/evaluation.service';
 import { Statistics } from '../shared/types/model/statistics';
 
@@ -13,13 +13,9 @@ import { Statistics } from '../shared/types/model/statistics';
   styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent {
-  overviewPadding = new Subject<number>();
-
   statistics = new Observable<Statistics>();
 
-  constructor(
-    private refreshDataService: RefreshDataService, private changeDetector: ChangeDetectorRef, private activatedRoute: ActivatedRoute, private evaluationService: EvaluationService
-  ) {
+  constructor(private refreshDataService: RefreshDataService, private activatedRoute: ActivatedRoute, private evaluationService: EvaluationService) {
     this.refreshDataService.reloadOverviewSubject
     // .pipe(takeUntilDestroyed())
       .subscribe(() => this.loadOverviewWithParams());
@@ -34,11 +30,6 @@ export class StatisticsComponent {
             this.loadOverviewWithParams();
           });
       });
-
-    this.refreshDataService.okrBannerHeightSubject.subscribe((e) => {
-      this.overviewPadding.next(e);
-      this.changeDetector.detectChanges();
-    });
   }
 
   loadOverviewWithParams() {
@@ -54,7 +45,6 @@ export class StatisticsComponent {
     this.statistics = this.evaluationService
       .getStatistics(quarterId, teamIds)
       .pipe(catchError(() => {
-        // this.loadOverview(quarterId, teamIds);
         return EMPTY;
       }));
   }
@@ -68,7 +58,7 @@ export class StatisticsComponent {
     }
     return {
       metric: metrics / all,
-      ordinal: metrics / all
+      ordinal: ordinals / all
     };
   }
 
@@ -90,6 +80,4 @@ export class StatisticsComponent {
       stretch: s.keyResultsInStretchAmount / all
     };
   }
-
-  protected readonly trackByFn = trackByFn;
 }

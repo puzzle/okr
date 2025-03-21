@@ -25,6 +25,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { UnitTransformationPipe } from './pipes/unit-transformation/unit-transformation.pipe';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ErrorComponent } from './custom/error/error.component';
+import { TeamFilterComponent } from './filter/team-filter/team-filter.component';
+import { QuarterFilterComponent } from './filter/quarter-filter/quarter-filter.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { ApplicationBannerComponent } from './custom/application-banner/application-banner.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ApplicationPageComponent } from './application-page/application-page.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +43,11 @@ import { ErrorComponent } from './custom/error/error.component';
     SidePanelComponent,
     SpinnerComponent,
     DialogTemplateCoreComponent,
-    ErrorComponent
+    ErrorComponent,
+    QuarterFilterComponent,
+    TeamFilterComponent,
+    ApplicationBannerComponent,
+    ApplicationPageComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +69,10 @@ import { ErrorComponent } from './custom/error/error.component';
     RouterOutlet,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatTooltip
+    MatTooltip,
+    MatChipsModule,
+    MatSelectModule,
+    MatExpansionModule
   ],
   exports: [
     ObjectiveFormComponent,
@@ -71,8 +84,11 @@ import { ErrorComponent } from './custom/error/error.component';
     SidePanelComponent,
     SpinnerComponent,
     DialogTemplateCoreComponent,
-    ErrorComponent
-
+    ErrorComponent,
+    QuarterFilterComponent,
+    TeamFilterComponent,
+    ApplicationBannerComponent,
+    ApplicationPageComponent
   ]
 })
 export class SharedModule {}

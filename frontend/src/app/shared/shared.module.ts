@@ -30,6 +30,7 @@ import { QuarterFilterComponent } from './filter/quarter-filter/quarter-filter.c
 import { MatChipsModule } from '@angular/material/chips';
 import { ApplicationBannerComponent } from './custom/application-banner/application-banner.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ApplicationPageComponent } from './application-page/application-page.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ErrorComponent,
     QuarterFilterComponent,
     TeamFilterComponent,
-    ApplicationBannerComponent
+    ApplicationBannerComponent,
+    ApplicationPageComponent
   ],
   imports: [
     CommonModule,
@@ -85,7 +87,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ErrorComponent,
     QuarterFilterComponent,
     TeamFilterComponent,
-    ApplicationBannerComponent
+    ApplicationBannerComponent,
+    ApplicationPageComponent
   ]
 })
 export class SharedModule {}

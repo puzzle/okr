@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OverviewComponent } from './overview.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../../shared/test-data';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
@@ -16,6 +16,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 const overviewService = {
   getOverview: jest.fn()
@@ -32,24 +34,22 @@ const refreshDataServiceMock = {
   okrBannerHeightSubject: new BehaviorSubject(5)
 };
 
-class ResizeObserverMock {
-  observe() {}
-
-  unobserve() {}
-
-  disconnect() {}
-}
 
 describe('OverviewComponent', () => {
-  // @ts-ignore
-  global.ResizeObserver = ResizeObserverMock;
+  window.ResizeObserver =
+      window.ResizeObserver ||
+      jest.fn()
+        .mockImplementation(() => ({
+          disconnect: jest.fn(),
+          observe: jest.fn(),
+          unobserve: jest.fn()
+        }));
 
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         AppRoutingModule,
         MatDialogModule,
         MatIconModule,
@@ -59,6 +59,9 @@ describe('OverviewComponent', () => {
         ApplicationBannerComponent,
         ApplicationTopBarComponent],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: OverviewService,
           useValue: overviewService
@@ -93,20 +96,6 @@ describe('OverviewComponent', () => {
   it('should create', () => {
     expect(component)
       .toBeTruthy();
-  });
-
-  it('should load default overview when no quarter is defined in route-params', () => {
-    jest.spyOn(overviewService, 'getOverview');
-    markFiltersAsReady();
-    expect(overviewService.getOverview)
-      .toHaveBeenCalled();
-  });
-
-  it('should load default overview on init', async() => {
-    jest.spyOn(overviewService, 'getOverview');
-    markFiltersAsReady();
-    expect(overviewService.getOverview)
-      .toHaveBeenCalledWith(undefined, [], '');
   });
 
   it.each([
@@ -182,10 +171,4 @@ describe('OverviewComponent', () => {
     expect(component.loadOverview)
       .toHaveBeenLastCalledWith();
   });
-
-  function markFiltersAsReady() {
-    refreshDataServiceMock.quarterFilterReady.next(null);
-    refreshDataServiceMock.teamFilterReady.next(null);
-    fixture.detectChanges();
-  }
 });

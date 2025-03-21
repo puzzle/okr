@@ -1,0 +1,8 @@
+<div class="statistic-card">
+  <h2>
+    {{ title }}
+  </h2>
+
+  <ng-content></ng-content>
+  <app-statistics-bar *ngIf="barProgress != undefined" [progress]="barProgress"></app-statistics-bar>
+</div>

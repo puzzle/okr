@@ -9,12 +9,30 @@
 
 <div
   id="overview"
-  class="page-container px-sm-4 d-flex"
+  class="page-container px-sm-4 d-flex flex-column"
   [ngStyle]="{ 'padding-top.px': overviewPadding | async }"
 >
-  <app-quarter-filter></app-quarter-filter>
-  <app-team-filter></app-team-filter>
-  <div *ngIf="statistics| async as statistics; " class="d-flex flex-column w-100">
-    {{statistics |json}}
+  <div class="d-flex">
+    <app-quarter-filter></app-quarter-filter>
+    <app-team-filter></app-team-filter>
+  </div>
+  <div *ngIf="statistics| async as statistics; " class="d-flex flex-column container-fluid">
+    <div class="row row-cols-3">
+      <app-statistics-card [title]="'Objecitve keyresults'" [barProgress]="50">
+        <app-statistics-information
+          [content]="'50%'"
+          [bottomContent]="'5'"
+          [topContent]="'7'"
+        >
+        </app-statistics-information>
+      </app-statistics-card>
+      <app-statistics-card></app-statistics-card>
+      <app-statistics-card></app-statistics-card>
+
+      <app-statistics-card></app-statistics-card>
+      <app-statistics-card></app-statistics-card>
+      <app-statistics-card></app-statistics-card>
+    </div>
+
   </div>
 </div>

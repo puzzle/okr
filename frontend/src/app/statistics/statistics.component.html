@@ -58,16 +58,36 @@
       </app-statistics-card>
 
       <app-statistics-card [title]="'Verteilung der Zonen in den Key Results'" *ngIf="krProgressRelation(statistics) as relation">
-        <app-statistics-information [topContent]="statistics.keyResultsInFailAmount" [bottomContent]="'Fail'">
+        <app-statistics-information
+          [topContent]="statistics.keyResultsInFailAmount"
+          [bottomContent]="'Fail'"
+          [chartColor]="'red'"
+          [chartValue]="relation.fail"
+        >
           {{relation.fail | percent : '1.0-1'}}
         </app-statistics-information>
-        <app-statistics-information [topContent]="statistics.keyResultsInCommitAmount" [bottomContent]="'Commit'">
+        <app-statistics-information
+          [topContent]="statistics.keyResultsInCommitAmount"
+          [bottomContent]="'Commit'"
+          [chartColor]="'yellow'"
+          [chartValue]="relation.commit"
+        >
           {{relation.commit | percent : '1.0-1'}}
         </app-statistics-information>
-        <app-statistics-information [topContent]="statistics.keyResultsInTargetAmount" [bottomContent]="'Target'">
+        <app-statistics-information
+          [topContent]="statistics.keyResultsInTargetAmount"
+          [bottomContent]="'Target'"
+          [chartColor]="'green'"
+          [chartValue]="relation.target"
+        >
           {{relation.target | percent : '1.0-1'}}
         </app-statistics-information>
-        <app-statistics-information [topContent]="statistics.keyResultsInStretchAmount" [bottomContent]="'Stretch'">
+        <app-statistics-information
+          [topContent]="statistics.keyResultsInStretchAmount"
+          [bottomContent]="'Stretch'"
+          [chartColor]="'darkblue'"
+          [chartValue]="relation.stretch"
+        >
           {{relation.stretch | percent : '1.0-1'}}
         </app-statistics-information>
       </app-statistics-card>

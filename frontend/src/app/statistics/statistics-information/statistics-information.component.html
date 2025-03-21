@@ -1,7 +1,7 @@
 <div class="d-flex  justify-content-center">
   <div class="row row-cols-auto d-flex justify-content-center flex-column align-items-center">
     <div class="chart-wrapper d-flex flex-column justify-content-end">
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center col-auto">
         <span class="small-text">{{ topContent }}</span>
       </div>
       <div
@@ -11,8 +11,10 @@
       ></div>
     </div>
 
-    <div class="py-2 px-3 bg-white h2">
-      <ng-content></ng-content>
+    <div class="w-100 ">
+      <div class="bg-white h2 w-100 d-flex justify-content-center fw-bold p-2">
+        <ng-content></ng-content>
+      </div>
     </div>
     <span class="small-text">{{bottomContent}}</span>
   </div>

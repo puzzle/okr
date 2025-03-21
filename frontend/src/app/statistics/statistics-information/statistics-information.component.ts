@@ -7,13 +7,11 @@ import { Component, Input } from '@angular/core';
   styleUrl: './statistics-information.component.scss'
 })
 export class StatisticsInformationComponent {
-  @Input() content = '';
+  @Input() bottomContent: any = '';
 
-  @Input() bottomContent = '';
+  @Input() topContent: number | string = '';
 
-  @Input() topContent = '';
+  @Input() chartValue: number | string = '';
 
-  @Input() chartValue = '';
-
-  @Input() chartColor = '';
+  @Input() chartColor: number | string = '';
 }

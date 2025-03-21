@@ -17,7 +17,7 @@
     <app-team-filter></app-team-filter>
   </div>
   <div *ngIf="statistics| async as statistics; " class="d-flex flex-column container-fluid">
-    <div class="row row-cols-3">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3">
       <app-statistics-card [title]="'Objectives und Key Results'">
         <app-statistics-information [topContent]="'Objectives'"> {{statistics.objectiveAmount}}</app-statistics-information>
         <app-statistics-information [topContent]="'KeyResults'">{{statistics.keyResultAmount}}</app-statistics-information>

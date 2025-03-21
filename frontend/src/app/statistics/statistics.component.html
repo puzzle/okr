@@ -17,7 +17,7 @@
     <app-team-filter></app-team-filter>
   </div>
   <div *ngIf="statistics| async as statistics; " class="d-flex flex-column container-fluid">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 row-gap-2">
       <app-statistics-card [title]="'Objectives und Key Results'">
         <app-statistics-information [topContent]="'Objectives'"> {{statistics.objectiveAmount}}</app-statistics-information>
         <app-statistics-information [topContent]="'KeyResults'">{{statistics.keyResultAmount}}</app-statistics-information>
@@ -26,19 +26,19 @@
         </app-statistics-information>
       </app-statistics-card>
 
-      <app-statistics-card [title]="'Anzahl abgeschlossener Objectives'" [barProgress]="statistics.completedObjectivesAmount / statistics.objectiveAmount *100">
+      <app-statistics-card [title]="'Anzahl abgeschlossener Objectives'" [barProgress]="statistics.completedObjectivesAmount / statistics.objectiveAmount">
         <app-statistics-information [bottomContent]="statistics.completedObjectivesAmount+'/'+statistics.objectiveAmount">
           {{statistics.completedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1'}}
         </app-statistics-information>
       </app-statistics-card>
 
-      <app-statistics-card [title]="'Anzahl erreichter Objectives'" [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount *100">
+      <app-statistics-card [title]="'Anzahl erreichter Objectives'" [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount">
         <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
           {{statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1'}}
         </app-statistics-information>
       </app-statistics-card>
 
-      <app-statistics-card [title]="'Key Results mit min. Target Zone'" [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount *100">
+      <app-statistics-card [title]="'Key Results mit min. Target Zone'" [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount">
         <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
           {{statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount  | percent : '1.0-1'}}
         </app-statistics-information>
@@ -48,6 +48,7 @@
         *ngIf="krRelation(statistics.keyResultsMetricAmount, statistics.keyResultsOrdinalAmount) as relation"
         [title]="'Verhältnis metrische vs. ordinale Key Results'"
         [barProgress]="relation.metric"
+        [barColorPreset]="'relation'"
       >
         <app-statistics-information [topContent]="'metrisch'" [bottomContent]="relation.metric | percent : '1.0-1'">
           {{statistics.keyResultsMetricAmount}}

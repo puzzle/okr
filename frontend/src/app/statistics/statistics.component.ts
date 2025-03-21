@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { catchError, combineLatest, EMPTY, Observable, Subject, take } from 'rxjs';
 import { RefreshDataService } from '../services/refresh-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { getValueFromQuery } from '../shared/common';
+import { getValueFromQuery, trackByFn } from '../shared/common';
 import { EvaluationService } from '../services/evaluation.service';
 import { Statistics } from '../shared/types/model/statistics';
 
@@ -90,4 +90,6 @@ export class StatisticsComponent {
       stretch: s.keyResultsInStretchAmount / all
     };
   }
+
+  protected readonly trackByFn = trackByFn;
 }

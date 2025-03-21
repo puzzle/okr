@@ -72,17 +72,17 @@ SELECT
     tq.team_name,
     tq.quarter_id,
     tq.quarter_label,
-    o.objective_amount,
-    o.completed_objectives_amount ,
-    o.successfully_completed_objectives_amount,
-    kr.key_result_amount,
-    kr.key_results_ordinal_amount,
-    kr.key_results_metric_amount,
-    kr.key_results_in_target_or_stretch_amount,
-    kr.key_results_in_fail_amount,
-    kr.key_results_in_commit_amount,
-    kr.key_results_in_target_amount,
-    kr.key_results_in_stretch_amount
+    COALESCE(o.objective_amount, 0) AS objective_amount,
+    COALESCE(o.completed_objectives_amount , 0) as completed_objectives_amount,
+    COALESCE(o.successfully_completed_objectives_amount, 0) as successfully_completed_objectives_amount,
+    COALESCE(kr.key_result_amount, 0) as key_result_amount,
+    COALESCE(kr.key_results_ordinal_amount, 0) as key_results_ordinal_amount,
+    COALESCE(kr.key_results_metric_amount, 0) as key_results_metric_amount,
+    COALESCE(kr.key_results_in_target_or_stretch_amount, 0) as key_results_in_target_or_stretch_amount,
+    COALESCE(kr.key_results_in_fail_amount, 0) as key_results_in_fail_amount,
+    COALESCE(kr.key_results_in_commit_amount, 0) as key_results_in_commit_amount,
+    COALESCE(kr.key_results_in_target_amount, 0) as key_results_in_target_amount,
+    COALESCE(kr.key_results_in_stretch_amount, 0) as key_results_in_stretch_amount
 FROM team_quarters tq
          LEFT JOIN objectives o
                    ON tq.team_id = o.team_id

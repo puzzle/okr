@@ -9,7 +9,10 @@ import { Component, Input } from '@angular/core';
 export class StatisticsBarComponent {
   @Input() progress = 0;
 
-  @Input() primaryColor = '#000000';
+  @Input() colorPreset?: string;
 
-  @Input() secondaryColor = '#000000';
+  getBarClass() {
+    const base = 'progress-bar-color';
+    return base + (this.colorPreset ?? '__progress');
+  }
 }

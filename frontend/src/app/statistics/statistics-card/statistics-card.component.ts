@@ -10,4 +10,6 @@ export class StatisticsCardComponent {
   @Input() title = '';
 
   @Input() barProgress?: number;
+
+  @Input() barColorPreset?: string;
 }

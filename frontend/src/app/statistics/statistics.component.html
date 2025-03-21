@@ -18,21 +18,59 @@
   </div>
   <div *ngIf="statistics| async as statistics; " class="d-flex flex-column container-fluid">
     <div class="row row-cols-3">
-      <app-statistics-card [title]="'Objecitve keyresults'" [barProgress]="50">
-        <app-statistics-information
-          [content]="'50%'"
-          [bottomContent]="'5'"
-          [topContent]="'7'"
-        >
+      <app-statistics-card [title]="'Objectives und Key Results'">
+        <app-statistics-information [topContent]="'Objectives'"> {{statistics.objectiveAmount}}</app-statistics-information>
+        <app-statistics-information [topContent]="'KeyResults'">{{statistics.keyResultAmount}}</app-statistics-information>
+        <app-statistics-information [topContent]="'KR\'s/Objective'">
+          {{ statistics.keyResultAmount / statistics.objectiveAmount | number : '1.0-1'}}
         </app-statistics-information>
       </app-statistics-card>
-      <app-statistics-card></app-statistics-card>
-      <app-statistics-card></app-statistics-card>
 
-      <app-statistics-card></app-statistics-card>
-      <app-statistics-card></app-statistics-card>
-      <app-statistics-card></app-statistics-card>
+      <app-statistics-card [title]="'Anzahl abgeschlossener Objectives'" [barProgress]="statistics.completedObjectivesAmount / statistics.objectiveAmount *100">
+        <app-statistics-information [bottomContent]="statistics.completedObjectivesAmount+'/'+statistics.objectiveAmount">
+          {{statistics.completedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1'}}
+        </app-statistics-information>
+      </app-statistics-card>
+
+      <app-statistics-card [title]="'Anzahl erreichter Objectives'" [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount *100">
+        <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
+          {{statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1'}}
+        </app-statistics-information>
+      </app-statistics-card>
+
+      <app-statistics-card [title]="'Key Results mit min. Target Zone'" [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount *100">
+        <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
+          {{statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount  | percent : '1.0-1'}}
+        </app-statistics-information>
+      </app-statistics-card>
+
+      <app-statistics-card
+        *ngIf="krRelation(statistics.keyResultsMetricAmount, statistics.keyResultsOrdinalAmount) as relation"
+        [title]="'Verhältnis metrische vs. ordinale Key Results'"
+        [barProgress]="relation.metric"
+      >
+        <app-statistics-information [topContent]="'metrisch'" [bottomContent]="relation.metric | percent : '1.0-1'">
+          {{statistics.keyResultsMetricAmount}}
+        </app-statistics-information>
+        <app-statistics-information [topContent]="'ordinal'" [bottomContent]="relation.ordinal | percent : '1.0-1'">
+          {{statistics.keyResultsOrdinalAmount}}
+        </app-statistics-information>
+      </app-statistics-card>
+
+      <app-statistics-card [title]="'Verteilung der Zonen in den Key Results'" *ngIf="krProgressRelation(statistics) as relation">
+        <app-statistics-information [topContent]="statistics.keyResultsInFailAmount" [bottomContent]="'Fail'">
+          {{relation.fail | percent : '1.0-1'}}
+        </app-statistics-information>
+        <app-statistics-information [topContent]="statistics.keyResultsInCommitAmount" [bottomContent]="'Commit'">
+          {{relation.commit | percent : '1.0-1'}}
+        </app-statistics-information>
+        <app-statistics-information [topContent]="statistics.keyResultsInTargetAmount" [bottomContent]="'Target'">
+          {{relation.target | percent : '1.0-1'}}
+        </app-statistics-information>
+        <app-statistics-information [topContent]="statistics.keyResultsInStretchAmount" [bottomContent]="'Stretch'">
+          {{relation.stretch | percent : '1.0-1'}}
+        </app-statistics-information>
+      </app-statistics-card>
     </div>
-
   </div>
 </div>

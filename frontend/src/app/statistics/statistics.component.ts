@@ -58,4 +58,36 @@ export class StatisticsComponent {
         return EMPTY;
       }));
   }
+
+  krRelation(metrics: number, ordinals: number): { metric: number;
+    ordinal: number; } {
+    const all = metrics + ordinals;
+    if (all === 0) {
+      return { metric: 0,
+        ordinal: 0 };
+    }
+    return {
+      metric: metrics / all,
+      ordinal: metrics / all
+    };
+  }
+
+  krProgressRelation(s: Statistics): { fail: number;
+    commit: number;
+    target: number;
+    stretch: number; } {
+    const all = s.keyResultsInFailAmount + s.keyResultsInCommitAmount + s.keyResultsInTargetAmount + s.keyResultsInStretchAmount;
+    if (all === 0) {
+      return { fail: 0,
+        commit: 0,
+        target: 0,
+        stretch: 0 };
+    }
+    return {
+      fail: s.keyResultsInFailAmount / all,
+      commit: s.keyResultsInCommitAmount / all,
+      target: s.keyResultsInTargetAmount / all,
+      stretch: s.keyResultsInStretchAmount / all
+    };
+  }
 }

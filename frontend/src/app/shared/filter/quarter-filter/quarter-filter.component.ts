@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { QuarterService } from '../../../services/quarter.service';
 import { Quarter } from '../../types/model/quarter';
 import { BehaviorSubject, forkJoin } from 'rxjs';
@@ -14,6 +14,8 @@ import { getValueFromQuery } from '../../common';
 })
 export class QuarterFilterComponent implements OnInit {
   quarters: BehaviorSubject<Quarter[]> = new BehaviorSubject<Quarter[]>([]);
+
+  @Input() showBacklog = true;
 
   @Output() quarterLabel$ = new EventEmitter<string>();
 

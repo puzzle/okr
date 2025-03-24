@@ -31,6 +31,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ApplicationBannerComponent } from './custom/application-banner/application-banner.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ApplicationPageComponent } from './application-page/application-page.component';
+import { PuzzleIconComponent } from './custom/puzzle-icon/puzzle-icon.component';
+import { PuzzleIconButtonComponent } from './custom/puzzle-icon-button/puzzle-icon-button.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { ApplicationPageComponent } from './application-page/application-page.co
     QuarterFilterComponent,
     TeamFilterComponent,
     ApplicationBannerComponent,
-    ApplicationPageComponent
+    ApplicationPageComponent,
+    PuzzleIconComponent,
+    PuzzleIconButtonComponent
   ],
   imports: [
     CommonModule,
@@ -88,7 +92,9 @@ import { ApplicationPageComponent } from './application-page/application-page.co
     QuarterFilterComponent,
     TeamFilterComponent,
     ApplicationBannerComponent,
-    ApplicationPageComponent
+    ApplicationPageComponent,
+    PuzzleIconComponent,
+    PuzzleIconButtonComponent
   ]
 })
 export class SharedModule {}

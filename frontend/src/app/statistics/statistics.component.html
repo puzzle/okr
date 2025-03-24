@@ -25,13 +25,15 @@
 
 
     <div *ngIf="statistics| async as statistics; " class="d-flex flex-column ">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 row-gap-2">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3  g-4">
         <app-statistics-card [title]="'Objectives und Key Results'">
           <app-statistics-information [topContent]="'Objectives'"> {{ statistics.objectiveAmount }}
           </app-statistics-information>
           <app-statistics-information [topContent]="'KeyResults'">{{ statistics.keyResultAmount }}
           </app-statistics-information>
           <app-statistics-information [topContent]="'KR\'s/Objective'">
+            <app-puzzle-icon [icon]="'average_icon.svg'" [alt]="'Average Icon'">
+            </app-puzzle-icon>
             {{ krObjectiveRelation(statistics) | number : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
@@ -44,6 +46,12 @@
 
         <app-statistics-card [title]="'Anzahl erreichter Objectives'" [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount">
           <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
+            <app-puzzle-icon
+              [icon]="'successful-icon.svg'"
+              [alt]="'Successful Icon'"
+              [size]="20"
+              class="me-2"
+            >  </app-puzzle-icon>
             {{ statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount || 0 | percent : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
@@ -72,7 +80,7 @@
           <app-statistics-information
             [topContent]="statistics.keyResultsInFailAmount"
             [bottomContent]="'Fail'"
-            [chartColor]="'red'"
+            [chartColor]="'#AF3333'"
             [chartValue]="relation.fail"
             [chartSizeMultiplier]=" relation.multiplier"
           >
@@ -81,7 +89,7 @@
           <app-statistics-information
             [topContent]="statistics.keyResultsInCommitAmount"
             [bottomContent]="'Commit'"
-            [chartColor]="'yellow'"
+            [chartColor]="'#FFCF24'"
             [chartValue]="relation.commit"
             [chartSizeMultiplier]=" relation.multiplier"
           >
@@ -90,7 +98,7 @@
           <app-statistics-information
             [topContent]="statistics.keyResultsInTargetAmount"
             [bottomContent]="'Target'"
-            [chartColor]="'green'"
+            [chartColor]="'#247D29'"
             [chartValue]="relation.target"
             [chartSizeMultiplier]=" relation.multiplier"
           >
@@ -99,7 +107,7 @@
           <app-statistics-information
             [topContent]="statistics.keyResultsInStretchAmount"
             [bottomContent]="'Stretch'"
-            [chartColor]="'darkblue'"
+            [chartColor]="'#1C518A'"
             [chartValue]="relation.stretch"
             [chartSizeMultiplier]=" relation.multiplier"
           >

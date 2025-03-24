@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
 import { Team } from '../../types/model/team';
 import { TeamService } from '../../../services/team.service';
@@ -18,6 +18,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
+
+  @Input() minTeams = 0;
 
   activeTeams: number[] = [];
 
@@ -99,6 +101,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     if (this.areAllTeamsShown()) {
       this.activeTeams = [id];
     } else if (this.activeTeams.includes(id)) {
+      if (this.activeTeams.length == this.minTeams) {
+        return;
+      }
       this.activeTeams = this.activeTeams.filter((teamId) => teamId !== id);
     } else {
       this.activeTeams.push(id);
@@ -115,6 +120,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   }
 
   toggleAll() {
+    if (this.areAllTeamsShown() && this.minTeams > 0) {
+      return;
+    }
     this.activeTeams = this.areAllTeamsShown() ? [] : this.getAllTeamIds();
     this.changeTeamFilterParams();
   }

@@ -49,6 +49,10 @@ export class StatisticsComponent {
       }));
   }
 
+  krObjectiveRelation(s: Statistics): number {
+    return s.keyResultAmount / s.objectiveAmount || 0;
+  }
+
   krRelation(metrics: number, ordinals: number): { metric: number;
     ordinal: number; } {
     const all = metrics + ordinals;

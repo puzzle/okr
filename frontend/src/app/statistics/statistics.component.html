@@ -20,7 +20,7 @@
         Quartal
         <app-quarter-filter></app-quarter-filter>
       </div>
-      <app-team-filter></app-team-filter>
+      <app-team-filter [minTeams]="1"></app-team-filter>
     </div>
 
 
@@ -32,25 +32,25 @@
           <app-statistics-information [topContent]="'KeyResults'">{{ statistics.keyResultAmount }}
           </app-statistics-information>
           <app-statistics-information [topContent]="'KR\'s/Objective'">
-            {{ statistics.keyResultAmount / statistics.objectiveAmount | number : '1.0-1' }}
+            {{ krObjectiveRelation(statistics) | number : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
 
         <app-statistics-card [title]="'Anzahl abgeschlossener Objectives'" [barProgress]="statistics.completedObjectivesAmount / statistics.objectiveAmount">
           <app-statistics-information [bottomContent]="statistics.completedObjectivesAmount+'/'+statistics.objectiveAmount">
-            {{ statistics.completedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1' }}
+            {{ statistics.completedObjectivesAmount / statistics.objectiveAmount || 0  | percent : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
 
         <app-statistics-card [title]="'Anzahl erreichter Objectives'" [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount">
           <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
-            {{ statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount  | percent : '1.0-1' }}
+            {{ statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount || 0 | percent : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
 
         <app-statistics-card [title]="'Key Results mit min. Target Zone'" [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount">
           <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
-            {{ statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount  | percent : '1.0-1' }}
+            {{ statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount || 0 | percent : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
 

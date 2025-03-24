@@ -56,32 +56,31 @@ export class StatisticsComponent {
   krRelation(metrics: number, ordinals: number): { metric: number;
     ordinal: number; } {
     const all = metrics + ordinals;
-    if (all === 0) {
-      return { metric: 0,
-        ordinal: 0 };
-    }
     return {
-      metric: metrics / all,
-      ordinal: ordinals / all
+      metric: metrics / all || 0,
+      ordinal: ordinals / all || 0
     };
   }
 
   krProgressRelation(s: Statistics): { fail: number;
     commit: number;
     target: number;
-    stretch: number; } {
+    stretch: number;
+    multiplier: number; } {
     const all = s.keyResultsInFailAmount + s.keyResultsInCommitAmount + s.keyResultsInTargetAmount + s.keyResultsInStretchAmount;
-    if (all === 0) {
-      return { fail: 0,
-        commit: 0,
-        target: 0,
-        stretch: 0 };
-    }
-    return {
-      fail: s.keyResultsInFailAmount / all,
-      commit: s.keyResultsInCommitAmount / all,
-      target: s.keyResultsInTargetAmount / all,
-      stretch: s.keyResultsInStretchAmount / all
-    };
+
+    const r =
+        {
+          fail: s.keyResultsInFailAmount / all || 0,
+          commit: s.keyResultsInCommitAmount / all || 0,
+          target: s.keyResultsInTargetAmount / all || 0,
+          stretch: s.keyResultsInStretchAmount / all || 0
+        };
+    const max = Math.max(
+      r.fail, r.commit, r.target, r.stretch
+    );
+    const multiplier = 1 / max;
+    return { ...r,
+      multiplier: multiplier };
   }
 }

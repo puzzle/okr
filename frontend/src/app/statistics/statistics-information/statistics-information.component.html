@@ -1,16 +1,8 @@
 <div class="d-flex  justify-content-center">
   <div class="row row-cols-auto d-flex justify-content-center flex-column align-items-center">
-    <div class="chart-wrapper d-flex flex-column justify-content-end">
-      <!--        <span class="small-text">{{ topContent }}</span>-->
-
-      <div class="d-flex justify-content-center col-auto">
-        <span class="small-text">{{ topContent }}</span>
-      </div>
-      <div
-        *ngIf="(chartColor ?? false) && (chartValue ?? false)"
-        class="w-100"
-        [style]="{ backgroundColor: chartColor, height: chartValue| percent}"
-      ></div>
+    <span class="small-text">{{ topContent }}</span>
+    <div class="w-100">
+      <div *ngIf="chartColor && chartValue" [style]="{ backgroundColor: chartColor, height: chartHeight}"></div>
     </div>
 
     <div class="w-100 ">

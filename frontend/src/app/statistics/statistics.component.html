@@ -74,6 +74,7 @@
             [bottomContent]="'Fail'"
             [chartColor]="'red'"
             [chartValue]="relation.fail"
+            [chartSizeMultiplier]=" relation.multiplier"
           >
             {{ relation.fail | percent : '1.0-1' }}
           </app-statistics-information>
@@ -82,6 +83,7 @@
             [bottomContent]="'Commit'"
             [chartColor]="'yellow'"
             [chartValue]="relation.commit"
+            [chartSizeMultiplier]=" relation.multiplier"
           >
             {{ relation.commit | percent : '1.0-1' }}
           </app-statistics-information>
@@ -90,6 +92,7 @@
             [bottomContent]="'Target'"
             [chartColor]="'green'"
             [chartValue]="relation.target"
+            [chartSizeMultiplier]=" relation.multiplier"
           >
             {{ relation.target | percent : '1.0-1' }}
           </app-statistics-information>
@@ -98,6 +101,7 @@
             [bottomContent]="'Stretch'"
             [chartColor]="'darkblue'"
             [chartValue]="relation.stretch"
+            [chartSizeMultiplier]=" relation.multiplier"
           >
             {{ relation.stretch | percent : '1.0-1' }}
           </app-statistics-information>

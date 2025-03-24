@@ -1,7 +1,6 @@
-.chart-wrapper {
-  //max-height: 50px;
-  height: 50px;
-  width: 100%;
+:host {
+  display: flex;
+  align-items: end;
 }
 
 .small-text {

@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
+import { RouterTestingHarness } from '@angular/router/testing';
 
 const refreshDataServiceMock = {
   teamFilterReady: new Subject<any>(),
@@ -56,5 +57,60 @@ describe('ApplicationPageComponent', () => {
     refreshDataServiceMock.reloadOverviewSubject.next(true);
     expect(component.reloadPage.next)
       .toHaveBeenCalled();
+  });
+
+  it.each([
+    [
+      '?quarter=7',
+      7,
+      [],
+      ''
+    ],
+    [
+      '?teams=1,2',
+      undefined,
+      [1,
+        2],
+      ''
+    ],
+    [
+      '?objectiveQuery=a%20a',
+      undefined,
+      [],
+      'a a'
+    ],
+    [
+      '?teams=1,2&objectiveQuery=a%20a',
+      undefined,
+      [1,
+        2],
+      'a a'
+    ],
+    [
+      '?teams=1,2&quarter=7',
+      7,
+      [1,
+        2],
+      ''
+    ],
+    [
+      '?quarter=7&objectiveQuery=a%20a',
+      7,
+      [],
+      'a a'
+    ]
+  ])('should call service method with correct params overview based on query-params', async(
+    query: string, quarterParam?: number, teamsParam?: number[], objectiveParam?: string
+  ) => {
+    const routerHarness = await RouterTestingHarness.create();
+    await routerHarness.navigateByUrl('/' + query);
+    routerHarness.detectChanges();
+    const filterPageChange = component.getFilterPageChange();
+    expect(filterPageChange.quarterId)
+      .toEqual(quarterParam);
+    expect(filterPageChange.objectiveQueryString)
+      .toEqual(objectiveParam);
+    expect(filterPageChange.teamIds)
+      .toEqual(teamsParam);
   });
 });

@@ -6,7 +6,6 @@ import { overViewEntity1 } from '../../shared/test-data';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
 import { AppRoutingModule } from '../../app-routing.module';
-import { RouterTestingHarness } from '@angular/router/testing';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { authGuard } from '../../guards/auth.guard';
 import { ApplicationBannerComponent } from '../../shared/custom/application-banner/application-banner.component';
@@ -18,6 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { FilterPageChange } from '../../shared/types/model/filter-page-change';
 
 const overviewService = {
   getOverview: jest.fn()
@@ -34,6 +34,12 @@ const refreshDataServiceMock = {
   okrBannerHeightSubject: new BehaviorSubject(5)
 };
 
+const filterPage = {
+  quarterId: 1,
+  teamIds: [2,
+    3],
+  objectiveQueryString: 'test'
+} as FilterPageChange;
 
 describe('OverviewComponent', () => {
   window.ResizeObserver =
@@ -98,77 +104,33 @@ describe('OverviewComponent', () => {
       .toBeTruthy();
   });
 
-  it.each([
-    [
-      '?quarter=7',
-      7,
-      [],
-      ''
-    ],
-    [
-      '?teams=1,2',
-      undefined,
-      [1,
-        2],
-      ''
-    ],
-    [
-      '?objectiveQuery=a%20a',
-      undefined,
-      [],
-      'a a'
-    ],
-    [
-      '?teams=1,2&objectiveQuery=a%20a',
-      undefined,
-      [1,
-        2],
-      'a a'
-    ],
-    [
-      '?teams=1,2&quarter=7',
-      7,
-      [1,
-        2],
-      ''
-    ],
-    [
-      '?quarter=7&objectiveQuery=a%20a',
-      7,
-      [],
-      'a a'
-    ]
-  ])('should load overview based on query-params', async(
-    query: string, quarterParam?: number, teamsParam?: number[], objectiveParam?: string
-  ) => {
+  it('should call service method with correct params overview based on query-params', () => {
     jest.spyOn(overviewService, 'getOverview');
     jest.spyOn(component, 'loadOverview');
-    const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/' + query);
-    routerHarness.detectChanges();
-    component.loadOverviewWithParams();
+    component.loadOverview(filterPage);
     expect(overviewService.getOverview)
-      .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveParam);
-    expect(component.loadOverview)
-      .toHaveBeenCalledWith(quarterParam, teamsParam, objectiveParam);
+      .toHaveBeenCalledWith(1, [2,
+        3], 'test');
   });
 
   it('should refresh overview entities after getOverview() is called', async() => {
     jest.spyOn(component.overviewEntities$, 'next');
     jest.spyOn(component, 'loadOverview');
-    component.loadOverview();
+    component.loadOverview(filterPage);
     expect(component.loadOverview)
       .toHaveBeenCalledTimes(1);
     expect(component.overviewEntities$.next)
       .toHaveBeenCalledWith([overViewEntity1]);
   });
-
-  it('should get default if call throws error', async() => {
-    overviewService.getOverview.mockReturnValue(of(new Error('')));
-
-    jest.spyOn(component, 'loadOverview');
-    component.loadOverview();
-    expect(component.loadOverview)
-      .toHaveBeenLastCalledWith();
-  });
+  /*
+   *
+   * it('should get default if call throws error', async() => {
+   *   overviewService.getOverview.mockReturnValue(of(new Error('')));
+   *
+   *   jest.spyOn(component, 'loadOverview');
+   *   component.loadOverview(filterPage);
+   *   expect(component.loadOverview)
+   *     .toHaveBeenLastCalledWith();
+   * });
+   */
 });

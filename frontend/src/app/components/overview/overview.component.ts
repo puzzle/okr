@@ -23,7 +23,7 @@ export class OverviewComponent {
     this.overviewService
       .getOverview(filter.quarterId, filter.teamIds, filter.objectiveQueryString)
       .pipe(catchError(() => {
-        this.loadOverview(filter);
+        this.loadOverview({} as FilterPageChange);
         return EMPTY;
       }))
       .subscribe((overviews) => {

@@ -1,9 +1,11 @@
 import * as users from '../fixtures/users.json';
 import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import FilterHelper from '../support/helper/dom-helper/filterHelper';
+import StatisticsPage from '../support/helper/dom-helper/pages/statisticsPage';
 
 describe('StatisticsPage', () => {
   let overviewPage = new CyOverviewPage();
+  const statisticsPage = new StatisticsPage();
 
   beforeEach(() => {
     overviewPage = new CyOverviewPage();
@@ -25,15 +27,31 @@ describe('StatisticsPage', () => {
         overviewPage.visitQuarter(quarterID);
       }
 
-      cy.location()
-        .should((l) => {
+      cy.location('search')
+        .then((overviewQuery) => {
           overviewPage.elements.statistics()
             .click();
-          cy.location()
-            .should((statisticsL) => {
-              expect(statisticsL.search).to.eq(l.search);
+          cy.location('search')
+            .then((statisticsQuery) => {
+              expect(statisticsQuery).to.eq(overviewQuery);
             });
         });
     });
+  });
+
+  it('Should display the statistics', () => {
+    CyOverviewPage.do()
+      .elements.statistics()
+      .click();
+    statisticsPage.validateKrsObjectives(5, 11, 2.2);
+    statisticsPage.validateFinishedObjectives(0, '0/5', 0);
+    statisticsPage.validateSuccessfulObjectives(0, '0/5', 0);
+    statisticsPage.validateKrsMinTarget(27.3, '3/11', 27);
+    statisticsPage.validateKrTypeRelation(
+      9, '81.8%', 2, '18.2%', 81
+    );
+    statisticsPage.validateKrRelation(
+      1, '9.1%', 7, '63.6%', 2, '18.2', 1, '9.1'
+    );
   });
 });

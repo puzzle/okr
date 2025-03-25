@@ -12,7 +12,7 @@ export class StatisticsBarComponent {
   @Input() colorPreset?: string;
 
   getBarClass() {
-    const base = 'progress-bar-color';
-    return base + (this.colorPreset ?? '__progress');
+    const base = 'progress-bar-color__';
+    return base + (this.colorPreset ?? 'progress');
   }
 }

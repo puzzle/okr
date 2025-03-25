@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { catchError, combineLatest, EMPTY, Observable, take } from 'rxjs';
-import { RefreshDataService } from '../services/refresh-data.service';
-import { ActivatedRoute } from '@angular/router';
-import { getValueFromQuery } from '../shared/common';
+import { catchError, EMPTY, Observable } from 'rxjs';
 import { EvaluationService } from '../services/evaluation.service';
 import { Statistics } from '../shared/types/model/statistics';
+import { FilterPageChange } from '../shared/types/model/filter-page-change';
 
 @Component({
   selector: 'app-statistics',
@@ -15,35 +13,12 @@ import { Statistics } from '../shared/types/model/statistics';
 export class StatisticsComponent {
   statistics = new Observable<Statistics>();
 
-  constructor(private refreshDataService: RefreshDataService, private activatedRoute: ActivatedRoute, private evaluationService: EvaluationService) {
-    this.refreshDataService.reloadOverviewSubject
-    // .pipe(takeUntilDestroyed())
-      .subscribe(() => this.loadOverviewWithParams());
-
-    combineLatest([refreshDataService.teamFilterReady.asObservable(),
-      refreshDataService.quarterFilterReady.asObservable()])
-      .pipe(take(1))
-      .subscribe(() => {
-        this.activatedRoute.queryParams
-        // .pipe(takeUntilDestroyed())
-          .subscribe(() => {
-            this.loadOverviewWithParams();
-          });
-      });
+  constructor(private evaluationService: EvaluationService) {
   }
 
-  loadOverviewWithParams() {
-    const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
-    const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
-
-    const teamIds = getValueFromQuery(teamQuery);
-    const quarterId = getValueFromQuery(quarterQuery)[0];
-    this.loadOverview(quarterId, teamIds);
-  }
-
-  loadOverview(quarterId: number, teamIds: number[]) {
+  loadOverview(filterpage: FilterPageChange) {
     this.statistics = this.evaluationService
-      .getStatistics(quarterId, teamIds)
+      .getStatistics(filterpage.quarterId, filterpage.teamIds)
       .pipe(catchError(() => {
         return EMPTY;
       }));

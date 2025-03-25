@@ -1,4 +1,4 @@
-<app-application-page [elements$]="overviewEntities$" (reloadPage)="loadOverviewWithParams()">
+<app-application-page [elements$]="overviewEntities$" (reloadPage)="loadOverview($event)">
   <app-overview-banner app-banner id="banner-component"></app-overview-banner>
   <app-team *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn" [overviewEntity]="overviewEntity">
   </app-team>

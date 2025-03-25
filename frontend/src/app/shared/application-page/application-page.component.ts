@@ -3,7 +3,8 @@ import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject, tak
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../../services/config.service';
-import { isMobileDevice } from '../common';
+import { getQueryString, getValueFromQuery, isMobileDevice } from '../common';
+import { FilterPageChange } from '../types/model/filter-page-change';
 
 @Component({
   selector: 'app-application-page',
@@ -20,7 +21,7 @@ export class ApplicationPageComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new ReplaySubject<boolean>(1);
 
-  @Output() reloadPage = new EventEmitter();
+  @Output() reloadPage = new EventEmitter<FilterPageChange>();
 
 
   constructor(
@@ -31,7 +32,7 @@ export class ApplicationPageComponent implements OnInit, OnDestroy {
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.reloadPage.next(true));
+      .subscribe(() => this.reloadPage.next(this.getFilterPageChange()));
 
     combineLatest([refreshDataService.teamFilterReady.asObservable(),
       refreshDataService.quarterFilterReady.asObservable()])
@@ -39,9 +40,22 @@ export class ApplicationPageComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$))
           .subscribe(() => {
-            this.reloadPage.next(true);
+            this.reloadPage.next(this.getFilterPageChange());
           });
       });
+  }
+
+  getFilterPageChange(): FilterPageChange {
+    const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
+    const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
+    const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
+
+    const teamIds = getValueFromQuery(teamQuery);
+    const quarterId = getValueFromQuery(quarterQuery)[0];
+    const objectiveQueryString = getQueryString(objectiveQuery);
+    return { quarterId,
+      teamIds,
+      objectiveQueryString };
   }
 
 

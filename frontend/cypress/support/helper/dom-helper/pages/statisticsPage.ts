@@ -37,154 +37,84 @@ export default class StatisticsPage extends Page {
   }
 
   validateKrsObjectives(objective: number, keyResult: number, relation: number) {
-    cy.contains('Objectives')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', objective);
-    cy.contains('KeyResults')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', keyResult);
-    cy.contains('KR\'s/Objective')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', relation);
+    this.verifyStatisticsField('objectives-key-results', objective, 'Objectives');
+    this.verifyStatisticsField('objectives-key-results', keyResult, 'KeyResults');
+    this.verifyStatisticsField('objectives-key-results', relation, 'KR\'s/Objective');
   }
 
   validateFinishedObjectives(value: number, relation: string, barProgress: number) {
-    cy.contains('Anzahl abgeschlossener Objectives')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', value);
-    cy.contains('Anzahl abgeschlossener Objectives')
-      .parent()
-      .should('include.text', relation);
-    cy.contains('Anzahl abgeschlossener Objectives')
-      .parent()
-      .find('mat-progress-bar')
-      .invoke('attr', 'ng-reflect-value')
-      .should('match', new RegExp(`^${barProgress}`));
+    this.verifyStatisticsField('completed-objectives', value);
+    this.verifyStatisticsFieldSubTitle('completed-objectives', relation);
+    this.verifyStatisticsCardBar('completed-objectives', barProgress);
   }
 
   validateSuccessfulObjectives(value: number, relation: string, barProgress: number) {
-    cy.contains('Anzahl erreichter Objectives')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', value);
-    cy.contains('Anzahl erreichter Objectives')
-      .parent()
-      .should('include.text', relation);
-    cy.contains('Anzahl erreichter Objectives')
-      .parent()
-      .find('mat-progress-bar')
-      .invoke('attr', 'ng-reflect-value')
-      .should('match', new RegExp(`^${barProgress}`));
+    this.verifyStatisticsField('successfully-completed-objectives', value);
+    this.verifyStatisticsFieldSubTitle('successfully-completed-objectives', relation);
+    this.verifyStatisticsCardBar('successfully-completed-objectives', barProgress);
   }
 
   validateKrsMinTarget(value: number, relation: string, barProgress: number) {
-    cy.contains('Key Results mit min. Target Zone')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', value);
-    cy.contains('Key Results mit min. Target Zone')
-      .parent()
-      .should('include.text', relation);
-    cy.contains('Key Results mit min. Target Zone')
-      .parent()
-      .find('mat-progress-bar')
-      .invoke('attr', 'ng-reflect-value')
-      .should('match', new RegExp(`^${barProgress}`));
+    this.verifyStatisticsField('kr-min-target', value);
+    this.verifyStatisticsFieldSubTitle('kr-min-target', relation);
+    this.verifyStatisticsCardBar('kr-min-target', barProgress);
   }
 
   validateKrTypeRelation(
     valueMetric: number, percentageMetric: string, valueOrdinal: number, percentageOrdinal: string, barProgress: number
   ) {
-    cy.contains('Verhältnis metrische vs. ordinale Key Results')
-      .parent()
-      .contains('metrisch')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', valueMetric);
-    cy.contains('Verhältnis metrische vs. ordinale Key Results')
-      .parent()
-      .contains('metrisch')
-      .parent()
-      .should('include.text', percentageMetric);
-
-    cy.contains('Verhältnis metrische vs. ordinale Key Results')
-      .parent()
-      .contains('ordinal')
-      .parent()
-      .should('include.text', percentageOrdinal);
-    cy.contains('Verhältnis metrische vs. ordinale Key Results')
-      .parent()
-      .contains('ordinal')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', valueOrdinal);
-
-    cy.contains('Verhältnis metrische vs. ordinale Key Results')
-      .parent()
-      .find('mat-progress-bar')
-      .invoke('attr', 'ng-reflect-value')
-      .should('match', new RegExp(`^${barProgress}`));
+    this.verifyStatisticsField('kr-type-relation', valueMetric, 'metrisch');
+    this.verifyStatisticsField('kr-type-relation', valueOrdinal, 'ordinal');
+    this.verifyStatisticsFieldSubTitle('kr-type-relation', percentageMetric);
+    this.verifyStatisticsFieldSubTitle('kr-type-relation', percentageOrdinal);
+    this.verifyStatisticsCardBar('kr-type-relation', barProgress);
   }
 
   validateKrRelation(
     failAmount: number, percentageFail: string, commitAmount: number, percentageCommit: string, targetAmount: number, percentageTarget: string, stretchAmount: number, percentageStretch: string
   ) {
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Fail')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', percentageFail);
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Fail')
-      .parent()
-      .should('include.text', failAmount);
+    this.verifyStatisticsField('kr-progress-relation', percentageFail);
+    this.verifyStatisticsField('kr-progress-relation', percentageCommit);
+    this.verifyStatisticsField('kr-progress-relation', percentageTarget);
+    this.verifyStatisticsField('kr-progress-relation', percentageStretch);
 
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Commit')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', percentageCommit);
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Commit')
-      .parent()
-      .should('include.text', commitAmount);
-
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Target')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', percentageTarget);
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Target')
-      .parent()
-      .should('include.text', targetAmount);
-
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Stretch')
-      .parent()
-      .find(this.contentClass)
-      .should('include.text', percentageStretch);
-    cy.contains('Verteilung der Zonen in den Key Results')
-      .parent()
-      .contains('Stretch')
-      .parent()
-      .should('include.text', stretchAmount);
+    this.verifyStatisticsFieldSubTitle('kr-progress-relation', failAmount);
+    this.verifyStatisticsFieldSubTitle('kr-progress-relation', commitAmount);
+    this.verifyStatisticsFieldSubTitle('kr-progress-relation', targetAmount);
+    this.verifyStatisticsFieldSubTitle('kr-progress-relation', stretchAmount);
   }
 
   protected doVisit(arg?: any): void {
     this.elements.statistics()
       .click();
+  }
+
+  private getStatisticsCard(id: string, title?: string): Cypress.Chainable {
+    cy.getByTestId(id)
+      .as('statistics-card');
+    const statistics = cy.get('@statistics-card');
+    if (title) {
+      return statistics.contains('app-statistics-information', title);
+    }
+    return statistics;
+  }
+
+  private verifyStatisticsField(id: string, content: any, title?: string): void {
+    this.getStatisticsCard(id, title)
+      .find(this.contentClass)
+      .should('include.text', content);
+  }
+
+  private verifyStatisticsFieldSubTitle(id: string, content: any, title?: string): void {
+    this.getStatisticsCard(id, title)
+      .should('include.text', content);
+  }
+
+  private verifyStatisticsCardBar(id: string, barProgress: any): void {
+    this.getStatisticsCard(id)
+      .find('mat-progress-bar')
+      .invoke('attr', 'ng-reflect-value')
+      .should('match', new RegExp(`^${barProgress}`));
   }
 }
 /*

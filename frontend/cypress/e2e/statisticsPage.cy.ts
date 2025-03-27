@@ -13,7 +13,7 @@ describe('StatisticsPage', () => {
   [[['Alle'],
     'GJ ForTests']].forEach(([teams,
     quarterID]: (string | string[])[]) => {
-    it('Should route to statistics with the same param', () => {
+    it('Should route to statistics with the same parameters', () => {
       if (Array.isArray(teams)) {
         Array.from(teams)
           .forEach((team) => {
@@ -88,12 +88,24 @@ describe('StatisticsPage', () => {
     );
   });
 
-  it('Should display statistics filtered by teams', () => {
+  it('Should display statistics for user with least privileges', () => {
     cy.logout();
     cy.loginAsUser(users.member);
     FilterHelper.do()
       .toggleOption('Alle');
     statisticsPage.visit();
     statisticsPage.validatePage();
+  });
+
+  it('Should banner if now data available', () => {
+    statisticsPage.visit();
+    FilterHelper.do()
+      .toggleOption('Alle');
+
+    MatSelectHelper.do()
+      .selectFromDropdown('app-quarter-filter', 'GJ ForTests');
+
+    cy.getByTestId('no-data-banner')
+      .should('exist');
   });
 });

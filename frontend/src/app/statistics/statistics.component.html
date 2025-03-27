@@ -24,7 +24,14 @@
     </div>
 
 
-    <div *ngIf="statistics| async as statistics; " class="d-flex flex-column ">
+    <div *ngIf="statistics| async as statistics;" class="d-flex flex-column ">
+      <div
+        class="alert alert-warning bg-warning-subtle"
+        *ngIf="statistics.objectiveAmount ==0 && statistics.keyResultAmount ==0"
+        [attr.data-testId]="'no-data-banner'"
+      >
+        Für diese Filter Kombination sind keine Objectives bzw. KeyResults vorhanden.
+      </div>
       <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3  g-4">
         <app-statistics-card [title]="'Objectives und Key Results'" [attr.data-testId]="'objectives-key-results'">
           <app-statistics-information [topContent]="'Objectives'"> {{ statistics.objectiveAmount }}

@@ -40,7 +40,7 @@ public class EvaluationViewController {
     public ResponseEntity<EvaluationDto> getEvaluation(@RequestParam(name = "team")
     @Parameter(description = "List of Team ids the statistics are requested for") List<Long> teamIds,
                                                        @RequestParam(name = "quarter")
-                                                     @Parameter(description = "Quarter id the statistics are requested for ") Long quarterId) {
+                                                       @Parameter(description = "Quarter id the statistics are requested for ") Long quarterId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(evaluationViewMapper

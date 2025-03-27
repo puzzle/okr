@@ -1,15 +1,12 @@
 import * as users from '../fixtures/users.json';
-import CyOverviewPage from '../support/helper/dom-helper/pages/overviewPage';
 import FilterHelper from '../support/helper/dom-helper/filterHelper';
 import StatisticsPage from '../support/helper/dom-helper/pages/statisticsPage';
 import MatSelectHelper from '../support/helper/dom-helper/MatSelectHelper';
 
 describe('StatisticsPage', () => {
-  let overviewPage = new CyOverviewPage();
   const statisticsPage = new StatisticsPage();
 
   beforeEach(() => {
-    overviewPage = new CyOverviewPage();
     cy.loginAsUser(users.gl);
   });
 
@@ -70,5 +67,33 @@ describe('StatisticsPage', () => {
     statisticsPage.validateKrRelation(
       0, '0%', 0, '0%', 0, '0', 0, '0'
     );
+  });
+
+  it('Should display statistics filtered by teams', () => {
+    statisticsPage.visit();
+    FilterHelper.do()
+      .toggleOption('Alle')
+      .toggleOption('we are cube.³')
+      .toggleOption('/BBT');
+
+    statisticsPage.validateKrsObjectives(2, 5, 2.5);
+    statisticsPage.validateFinishedObjectives(0.0, '0/2', 0);
+    statisticsPage.validateSuccessfulObjectives(0, '0/2', 0);
+    statisticsPage.validateKrsMinTarget(60, '3/5', 60);
+    statisticsPage.validateKrTypeRelation(
+      5, '100%', 0, '0%', 100
+    );
+    statisticsPage.validateKrRelation(
+      1, '20%', 1, '20%', 1, '20%', 2, '40%'
+    );
+  });
+
+  it('Should display statistics filtered by teams', () => {
+    cy.logout();
+    cy.loginAsUser(users.member);
+    FilterHelper.do()
+      .toggleOption('Alle');
+    statisticsPage.visit();
+    statisticsPage.validatePage();
   });
 });

@@ -9,6 +9,6 @@
     id="statistics-progress-bar"
     *ngIf="barProgress != undefined"
     [colorPreset]="barColorPreset"
-    [progress]="barProgress *100"
+    [progress]="barProgress *100 || 0"
   ></app-statistics-bar>
 </div>

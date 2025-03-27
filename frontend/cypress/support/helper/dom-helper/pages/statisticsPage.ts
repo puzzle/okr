@@ -5,6 +5,7 @@ export default class StatisticsPage extends Page {
 
   elements = {
     logo: () => cy.getByTestId('logo'),
+    statistics: () => cy.getByTestId('statistics'),
     objectiveAmount: () => cy.getByTestId('objective-amount')
   };
 
@@ -14,11 +15,25 @@ export default class StatisticsPage extends Page {
   }
 
   getURL(): string {
-    return '/details/keyresult';
+    return '/statistics';
   }
 
+
   validatePage(): void {
-    // Does not need to be implemented this comment is for making linter happy
+    cy.contains('Auswertung')
+      .should('exist');
+    cy.contains('Objectives und Key Results')
+      .should('exist');
+    cy.contains('Anzahl abgeschlossener Objectives')
+      .should('exist');
+    cy.contains('Anzahl erreichter Objectives')
+      .should('exist');
+    cy.contains('Key Results mit min. Target Zone')
+      .should('exist');
+    cy.contains('Verhältnis metrische vs. ordinale Key Results')
+      .should('exist');
+    cy.contains('Verteilung der Zonen in den Key Results')
+      .should('exist');
   }
 
   validateKrsObjectives(objective: number, keyResult: number, relation: number) {
@@ -168,7 +183,8 @@ export default class StatisticsPage extends Page {
   }
 
   protected doVisit(arg?: any): void {
-    // Does not need to be implemented this comment is for making linter happy
+    this.elements.statistics()
+      .click();
   }
 }
 /*

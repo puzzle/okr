@@ -35,19 +35,17 @@ public class EvaluationViewMapper {
             keyResultsInStretchSum += view.getKeyResultsInStretchAmount();
         }
 
-        return new EvaluationDto(
-                objectiveSum,
-                completedObjectivesSum,
-                successfullyCompletedObjectivesSum,
-                keyResultSum,
-                keyResultsOrdinalSum,
-                keyResultsMetricSum,
-                keyResultsInTargetOrStretchSum,
-                keyResultsInFailSum,
-                keyResultsInCommitSum,
-                keyResultsInTargetSum,
-                keyResultsInStretchSum
-        );
+        return new EvaluationDto(objectiveSum,
+                                 completedObjectivesSum,
+                                 successfullyCompletedObjectivesSum,
+                                 keyResultSum,
+                                 keyResultsOrdinalSum,
+                                 keyResultsMetricSum,
+                                 keyResultsInTargetOrStretchSum,
+                                 keyResultsInFailSum,
+                                 keyResultsInCommitSum,
+                                 keyResultsInTargetSum,
+                                 keyResultsInStretchSum);
     }
 
     public List<EvaluationViewId> fromDto(List<Long> teamIds, Long quarterId) {

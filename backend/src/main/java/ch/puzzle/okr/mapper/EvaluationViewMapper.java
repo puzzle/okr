@@ -9,23 +9,45 @@ import org.springframework.stereotype.Component;
 @Component
 public class EvaluationViewMapper {
     public EvaluationDto toDto(List<EvaluationView> evaluationViews) {
-        return new EvaluationDto(evaluationViews.stream().mapToInt(EvaluationView::getObjectiveAmount).sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getCompletedObjectivesAmount).sum(),
-                                 evaluationViews
-                                         .stream()
-                                         .mapToInt(EvaluationView::getSuccessfullyCompletedObjectivesAmount)
-                                         .sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultAmount).sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsOrdinalAmount).sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsMetricAmount).sum(),
-                                 evaluationViews
-                                         .stream()
-                                         .mapToInt(EvaluationView::getKeyResultsInTargetOrStretchAmount)
-                                         .sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInFailAmount).sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInCommitAmount).sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInTargetAmount).sum(),
-                                 evaluationViews.stream().mapToInt(EvaluationView::getKeyResultsInStretchAmount).sum());
+        int objectiveSum = 0;
+        int completedObjectivesSum = 0;
+        int successfullyCompletedObjectivesSum = 0;
+        int keyResultSum = 0;
+        int keyResultsOrdinalSum = 0;
+        int keyResultsMetricSum = 0;
+        int keyResultsInTargetOrStretchSum = 0;
+        int keyResultsInFailSum = 0;
+        int keyResultsInCommitSum = 0;
+        int keyResultsInTargetSum = 0;
+        int keyResultsInStretchSum = 0;
+
+        for (EvaluationView view : evaluationViews) {
+            objectiveSum += view.getObjectiveAmount();
+            completedObjectivesSum += view.getCompletedObjectivesAmount();
+            successfullyCompletedObjectivesSum += view.getSuccessfullyCompletedObjectivesAmount();
+            keyResultSum += view.getKeyResultAmount();
+            keyResultsOrdinalSum += view.getKeyResultsOrdinalAmount();
+            keyResultsMetricSum += view.getKeyResultsMetricAmount();
+            keyResultsInTargetOrStretchSum += view.getKeyResultsInTargetOrStretchAmount();
+            keyResultsInFailSum += view.getKeyResultsInFailAmount();
+            keyResultsInCommitSum += view.getKeyResultsInCommitAmount();
+            keyResultsInTargetSum += view.getKeyResultsInTargetAmount();
+            keyResultsInStretchSum += view.getKeyResultsInStretchAmount();
+        }
+
+        return new EvaluationDto(
+                objectiveSum,
+                completedObjectivesSum,
+                successfullyCompletedObjectivesSum,
+                keyResultSum,
+                keyResultsOrdinalSum,
+                keyResultsMetricSum,
+                keyResultsInTargetOrStretchSum,
+                keyResultsInFailSum,
+                keyResultsInCommitSum,
+                keyResultsInTargetSum,
+                keyResultsInStretchSum
+        );
     }
 
     public List<EvaluationViewId> fromDto(List<Long> teamIds, Long quarterId) {

@@ -3,10 +3,12 @@ package ch.puzzle.okr.multitenancy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -70,49 +72,60 @@ class FlywayMultitenantMigrationInitializerTest {
         }
     }
 
-    private final TenantConfigProviderInterface providerInterfaceMock = new TenantConfigProviderInterface() {
+    private final TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(NOT_USED,
+                                                                                                         new String[]{
+                                                                                                                 NOT_USED },
+                                                                                                         NOT_USED,
+                                                                                                         NOT_USED,
+                                                                                                         NOT_USED,
+                                                                                                         new TenantConfigProvider.DataSourceConfig(NOT_USED,
+                                                                                                                                                   URL,
+                                                                                                                                                   NAME,
+                                                                                                                                                   PASSWORD,
+                                                                                                                                                   SCHEMA), // flyway
+                                                                                                                                                            // user
+                                                                                                                                                            // config
+                                                                                                         null // app
+                                                                                                              // user
+                                                                                                              // config;
+                                                                                                              // not
+                                                                                                              // used in
+                                                                                                              // this
+                                                                                                              // test
+    );
 
-        private final TenantConfigProvider.DataSourceConfig dataSourceConfig = new TenantConfigProvider.DataSourceConfig(NOT_USED,
-                                                                                                                         URL,
-                                                                                                                         NAME,
-                                                                                                                         PASSWORD,
-                                                                                                                         SCHEMA);
+    private TenantConfigProviderInterface mockTenantConfigProviderInterface(List<TenantConfigProvider.TenantConfig> tenantConfigs,
+                                                                            TenantConfigProvider.TenantConfig tenantConfigById) {
 
-        private final TenantConfigProvider.TenantConfig tenantConfig = new TenantConfigProvider.TenantConfig(NOT_USED,
-                                                                                                             new String[]{
-                                                                                                                     NOT_USED },
-                                                                                                             NOT_USED,
-                                                                                                             NOT_USED,
-                                                                                                             NOT_USED,
-                                                                                                             dataSourceConfig);
+        return new TenantConfigProviderInterface() {
+            @Override
+            public List<TenantConfigProvider.TenantConfig> getTenantConfigs() {
+                return tenantConfigs;
+            }
 
-        @Override
-        public List<TenantConfigProvider.TenantConfig> getTenantConfigs() {
-            return List.of(tenantConfig);
-        }
+            @Override
+            public Optional<TenantConfigProvider.TenantConfig> getTenantConfigById(String tenantId) {
+                return Optional.ofNullable(tenantConfigById);
+            }
 
-        @Override
-        public Optional<TenantConfigProvider.TenantConfig> getTenantConfigById(String tenantId) {
-            return Optional.of(tenantConfig);
-        }
+            @Override
+            public Optional<String> getJwkSetUri(String tenantId) {
+                return Optional.empty();
+            }
+        };
+    }
 
-        @Override
-        public Optional<String> getJwkSetUri(String tenantId) {
-            return Optional.empty();
-        }
-    };
-
-    @DisplayName("Flyway.configure() should return FluentConfiguration which we can assert")
+    @DisplayName("flywayConfigure() should return FluentConfiguration which we can assert")
     @Test
     void flywayConfigureShouldReturnFluentConfigurationWhichWeCanAssert() {
         try (MockedStatic<Flyway> mockedStatic = Mockito.mockStatic(Flyway.class)) {
             // arrange
-            FluentConfigurationSpy fluentConfiguration = new FluentConfigurationSpy();
+            var fluentConfiguration = new FluentConfigurationSpy();
             mockedStatic.when(Flyway::configure).thenReturn(fluentConfiguration);
 
-            FlywayMultitenantMigrationInitializer migrationInitializer = new FlywayMultitenantMigrationInitializer(providerInterfaceMock,
-                                                                                                                   new String[]{
-                                                                                                                           SCRIPT_LOCATION });
+            // returns for getTenantConfigs() and getTenantConfigById() tenantConfig
+            var migrationInitializer = new FlywayMultitenantMigrationInitializer(mockTenantConfigProviderInterface(List
+                    .of(tenantConfig), tenantConfig), new String[]{ SCRIPT_LOCATION });
 
             // act
             migrationInitializer.migrateFlyway();
@@ -121,6 +134,29 @@ class FlywayMultitenantMigrationInitializerTest {
             String expected = "dataSource(url,name,password) locations(script_location) baselineOnMigrate(true) schemas(schema)";
             String actual = fluentConfiguration.getLog();
             assertEquals(expected, actual);
+        }
+    }
+
+    @DisplayName("flywayConfigure() should throw exception when TenantConfigById is not found")
+    @Test
+    void flywayConfigureShouldThrowExceptionWhenTenantConfigByIdIsNotFound() {
+        try (MockedStatic<Flyway> mockedStatic = Mockito.mockStatic(Flyway.class)) {
+            // arrange
+            var fluentConfiguration = new FluentConfigurationSpy();
+            mockedStatic.when(Flyway::configure).thenReturn(fluentConfiguration);
+
+            // returns for getTenantConfigs() tenantConfig and for getTenantConfigById()
+            // empty Optional
+            var migrationInitializer = new FlywayMultitenantMigrationInitializer(mockTenantConfigProviderInterface(List
+                    .of(tenantConfig), null), //
+                                                                                 new String[]{ SCRIPT_LOCATION });
+
+            // act + assert
+            var entityNotFoundException = Assertions
+                    .assertThrows(EntityNotFoundException.class, //
+                                  migrationInitializer::migrateFlyway);
+
+            assertEquals("Cannot find tenant for configuring flyway migration", entityNotFoundException.getMessage());
         }
     }
 

@@ -12,7 +12,7 @@ import java.util.Objects;
 @Entity
 // table cannot be named "user" since it is a reserved keyword of Postgres
 @Table(name = "person")
-public class User {
+public class User extends Deletable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
     @SequenceGenerator(name = "sequence_person", allocationSize = 1)

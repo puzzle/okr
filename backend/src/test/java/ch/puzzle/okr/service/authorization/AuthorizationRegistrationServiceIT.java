@@ -151,7 +151,7 @@ class AuthorizationRegistrationServiceIT {
                 .builder() //
                 .withFirstName("Richard") //
                 .withLastName("Eberhard") //
-                .withEmail("richard.eberhard@puzzle.ch") //
+                .withEmail("richard.eberhard1@puzzle.ch") //
                 .build();
         userPersistenceService.save(user);
 
@@ -161,7 +161,7 @@ class AuthorizationRegistrationServiceIT {
                 .builder() //
                 .withFirstName(firstNameFromToken) //
                 .withLastName(lastNameFromToken) //
-                .withEmail("richard.eberhard@puzzle.ch") //
+                .withEmail("richard.eberhard1@puzzle.ch") //
                 .build();
 
         // act

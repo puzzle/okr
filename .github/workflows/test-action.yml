@@ -10,21 +10,22 @@ on:
           - Major
           - Minor
           - Patch
+          - Release from Commit
       commit_hash:
         description: 'The hash of thee commit that should be deployed, defaults to the latest commit on main'
         required: false
         type: string
 
 jobs:
-  create-image_tag:
+  set-commit:
     runs-on: ubuntu-24.04
     permissions:
       packages: write
       id-token: write
       contents: write
       attestations: write
-    #    outputs:
-    #      imageVersion: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+      outputs:
+        SHORT_HASH: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
@@ -62,5 +63,10 @@ jobs:
       - name: Accessing the environment variable
         run: |
           echo "${{ env.SHORT_COMMIT_HASH }}"
-          
+
+  update-semver:
+    needs: set-commit
+    runs-on: ubuntu-latest
+    steps:
+
 

@@ -2,6 +2,18 @@ name: 'Show Variables'
 
 on:
   workflow_dispatch:
+    inputs:
+      deployment_type:
+        type: choice
+        description: Select type of deployment
+        options:
+          - Major
+          - Minor
+          - Patch
+      commit_hash:
+        description: 'The hash of thee commit that should be deployed, defaults to the latest commit on main'
+        required: false
+        type: string
 
 jobs:
   display-variables:
@@ -16,4 +28,7 @@ jobs:
         echo "IMAGE_TAG : $vars.ENV_CONTEXT_VAR"
         echo "IMAGE_TAG : $IMAGE_TAG"
         echo "QUAY_URL : $QUAY_URL"
+        echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
+        echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
+
     

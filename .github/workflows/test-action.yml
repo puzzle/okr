@@ -25,6 +25,7 @@ jobs:
       contents: write
       attestations: write
     outputs:
+      SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
       NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
       COMMIT_HASH: "${{ env.COMMIT_HASH }}"
     env:
@@ -66,17 +67,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
+      - name: Create git tag
+        run: |
+          git tag ${{ needs.update-version.outputs.SEMVER_VERSION }}
+      - name: Push git tag
+        run: git push origin ${{ needs.update-version.outputs.SEMVER_VERSION }}
+
+#      - name: Create Release
+#        id: create_release
+#        uses: actions/create-release@latest
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+#        with:
+#          tag_name: ${{ needs.update-version.outputs.SEMVER_VERSION }}
+#          release_name: Release ${{ needs.update-version.outputs.SEMVER_VERSION }}
+#          body: |
+#            Changes in this Release
+#            - First Change
+#            - Second Change
+#          draft: true
+#          prerelease: false
+
+      - name: Create release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ needs.update-version.outputs.NEW_IMAGE_TAG }}
-          release_name: Release ${{ needs.update-version.outputs.NEW_IMAGE_TAG }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: true
-          prerelease: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "${{ needs.update-version.outputs.SEMVER_VERSION }}" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${{ needs.update-version.outputs.SEMVER_VERSION }}" \
+              --generate-notes

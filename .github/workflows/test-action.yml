@@ -36,7 +36,7 @@ jobs:
           echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
           echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
 
-      - name: Assert semver version matches version in pom
+      - name: Stores the commit hash as environment variable
         run: |
           if [ -z "$commit_hash" ]; then
             echo "Commit is not set, default to last commit of branch \"${{ env.BRANCH_NAME }}\""
@@ -59,6 +59,8 @@ jobs:
           
           echo "Commit is set to \"$commit_hash\""
           echo "SHORT_COMMIT_HASH=$(git rev-parse --short $commit_hash)" >> $GITHUB_ENV
-          echo "Value of env var: \"${{ env.SHORT_COMMIT_HASH }}\""
+      - name: Accessing the environment variable
+        run: |
+          echo "${{ env.SHORT_COMMIT_HASH }}"
           
 

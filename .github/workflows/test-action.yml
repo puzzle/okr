@@ -17,29 +17,27 @@ on:
         type: string
 
 jobs:
-  update-version:
+  debug:
     runs-on: ubuntu-24.04
-    permissions:
-      packages: write
-      id-token: write
-      contents: write
-      attestations: write
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Try to show GitHub Variables
+        run: |
+          echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
+          echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
+
+  find-commit:
+    runs-on: ubuntu-24.04
     outputs:
       SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
-      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+#      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
       COMMIT_HASH: "${{ env.COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Try to show GitHub Variables
-        run: |
-          echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
-          echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
-   
-
       - name: Stores the commit hash as environment variable
         run: |
           commit_hash=$(./scripts/get-commit.sh ${{ env.BRANCH_NAME }} ${{ github.event.inputs.commit_hash }})
@@ -50,13 +48,26 @@ jobs:
       - name: Accessing the environment variable
         run: |
           echo "${{ env.SHORT_COMMIT_HASH }}"
+      
+
+  update-version:
+    runs-on: ubuntu-24.04
+    needs: find-commit
+    if: github.event.inputs.deployment_type != 'Release from Commit'
+    outputs:
+      SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.find-commit.outputs.COMMIT_HASH }}
 
       - name: Update version
-#        if: "${{ github.event.inputs.deployment_type }}" != 'Release from Commit'
         run: ./scripts/update-mvn-version.sh "${{ github.event.inputs.deployment_type }}"
 
       - name: Commit and Push Changes
-#        if: "${{ github.event.inputs.deployment_type }}" != 'Release from Commit'
         shell: bash
         env:
           COMMITPREFIX: '[VU]'
@@ -73,30 +84,92 @@ jobs:
           }
           git push -f origin ${{ env.BRANCH_NAME }}
 
+     
+
+  read-version:
+    runs-on: ubuntu-24.04
+    needs: update-version
+    permissions:
+      packages: write
+      id-token: write
+      contents: write
+      attestations: write
+    outputs:
+      SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
+      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+      COMMIT_HASH: "${{ env.COMMIT_HASH }}"
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
       - name: read version
         run: echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_ENV
 
-  create-release:
+  build-docker-image:
+    needs: read-version
     runs-on: ubuntu-24.04
-    needs: update-version
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK ${{vars.JAVA_VERSION}}
+        uses: actions/setup-java@v4
         with:
-          ref: ${{ needs.update-version.outputs.COMMIT_HASH }}
+          java-version: ${{vars.JAVA_VERSION}}
+          distribution: 'adopt'
 
-      - name: Create git tag
-        run: |
-          git tag ${{ needs.update-version.outputs.SEMVER_VERSION }}
-      - name: Push git tag
-        run: git push origin ${{ needs.update-version.outputs.SEMVER_VERSION }}
+      - name: Set up node ${{vars.NODE_VERSION}}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{vars.NODE_VERSION}}
 
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
-        run: |
-          gh release create "${{ needs.update-version.outputs.SEMVER_VERSION }}" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="Release ${GITHUB_REPOSITORY#*/} ${{ needs.update-version.outputs.SEMVER_VERSION }}" \
-              --generate-notes
+      - name: Install Dependencies
+        run: cd ./frontend && npm ci
+
+      - name: Build frontend with Angular
+        run: cd ./frontend && npm run build
+
+      - name: Build backend with Maven
+        run: mvn -B clean package --file pom.xml -P build-for-docker
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build the docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          tags: ${{ needs.read-version.outputs.okr-docker-image}}
+          load: true
+          push: false
+          outputs: type=docker,dest=/tmp/okr-docker-image.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: okr-image
+          path: /tmp/okr-docker-image.tar
+
+#  create-release:
+#    runs-on: ubuntu-24.04
+#    needs: update-version
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#        with:
+#          ref: ${{ needs.update-version.outputs.COMMIT_HASH }}
+#
+#      - name: Create git tag
+#        run: |
+#          git tag ${{ needs.update-version.outputs.SEMVER_VERSION }}
+#      - name: Push git tag
+#        run: git push origin ${{ needs.update-version.outputs.SEMVER_VERSION }}
+#
+#      - name: Create release
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          tag: ${{ github.ref_name }}
+#        run: |
+#          gh release create "${{ needs.update-version.outputs.SEMVER_VERSION }}" \
+#              --repo="$GITHUB_REPOSITORY" \
+#              --title="Release ${GITHUB_REPOSITORY#*/} ${{ needs.update-version.outputs.SEMVER_VERSION }}" \
+#              --generate-notes

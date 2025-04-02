@@ -25,37 +25,37 @@ jobs:
       attestations: write
     #    outputs:
     #      imageVersion: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Try to show GitHub Variables
-      run: |
-        echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
-        echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
+      - name: Try to show GitHub Variables
+        run: |
+          echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
+          echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
 
-    - name: Assert semver version matches version in pom
-      run: |
-        if [ -z "$commit_hash" ]; then
-          echo "Commit is not set, default to last commit of branch \"$branch\""
-          commit_hash="$(git rev-parse @)"
-        fi
-        
-        if  git rev-parse --quiet --verify $commit_hash; then
-          commit_hash=$(git rev-parse --verify $commit_hash)
-          echo "Commit is valid"
-        else
-          echo "Commit \"$commit_hash\" is not valid"
-          exit 1
-        fi
-        
-        if [ "$(git merge-base $commit_hash $branch)" != "$commit_hash" ]; then
-          echo "Commit is not from branch \"$branch\""
-          exit 1
-        fi
-        
-        
-        echo "Commit is set to \"$commit_hash\""
-        echo "SHORT_COMMIT_HASH=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
-        echo "${{ env.SHORT_COMMIT_HASH }}"
+      - name: Assert semver version matches version in pom
+        run: |
+          if [ -z "$commit_hash" ]; then
+            echo "Commit is not set, default to last commit of branch \"$branch\""
+            commit_hash="$(git rev-parse @)"
+          fi
+          
+          if  git rev-parse --quiet --verify $commit_hash; then
+            commit_hash=$(git rev-parse --verify $commit_hash)
+            echo "Commit is valid"
+          else
+            echo "Commit \"$commit_hash\" is not valid"
+            exit 1
+          fi
+          
+          if [ "$(git merge-base $commit_hash $branch)" != "$commit_hash" ]; then
+            echo "Commit is not from branch \"$branch\""
+            exit 1
+          fi
+          
+          
+          echo "Commit is set to \"$commit_hash\""
+          echo "SHORT_COMMIT_HASH=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+          echo "${{ env.SHORT_COMMIT_HASH }}"
 

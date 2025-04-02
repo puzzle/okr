@@ -107,7 +107,12 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: read version
-        run: echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_ENV
+        run: |
+          echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_ENV
+      - name: Accessing the environment variable
+        run: |
+          echo "${{ env.SEMVER_VERSION }}"
+          
 
   build-docker-image:
     needs: read-version

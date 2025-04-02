@@ -14,7 +14,6 @@ on:
         description: 'The hash of thee commit that should be deployed, defaults to the latest commit on main'
         required: false
         type: string
-  push:
 
 jobs:
   create-image_tag:
@@ -24,7 +23,7 @@ jobs:
       id-token: write
       contents: write
       attestations: write
-    outputs:
+#    outputs:
 #      imageVersion: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
     steps:
       - name: Checkout

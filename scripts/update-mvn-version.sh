@@ -15,25 +15,25 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-if [ "$1" == "release" ]; then
+if [ "$1" == "Release from Commit" ]; then
     echo "Releasing from commit..."
     exit 0
 fi
 
 # Determine new version based on the argument
 case "$1" in
-    major)
+    Major)
         # Increment major version; reset minor and patch to 0.
         NEXT_MAJOR=$(get_version_property "nextMajorVersion")
         NEW_VERSION="${NEXT_MAJOR}.0.0"
         ;;
-    minor)
+    Minor)
         # Increment minor version; reset patch to 0.
         MAJOR=$(get_version_property "majorVersion")
         NEXT_MINOR=$(get_version_property "nextMinorVersion")
         NEW_VERSION="${MAJOR}.${NEXT_MINOR}.0"
         ;;
-    patch)
+    Patch)
         # Increment patch version while keeping major and minor intact.
         MAJOR=$(get_version_property "majorVersion")
         MINOR=$(get_version_property "minorVersion")

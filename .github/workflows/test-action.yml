@@ -17,7 +17,7 @@ on:
         type: string
 
 jobs:
-  set-commit:
+  update-version:
     runs-on: ubuntu-24.04
     permissions:
       packages: write
@@ -25,7 +25,7 @@ jobs:
       contents: write
       attestations: write
     outputs:
-      SHORT_HASH: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
@@ -36,10 +36,7 @@ jobs:
         run: |
           echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
           echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
-          
-      - name: Get current directory
-        run: |
-          echo "Current directory is $(pwd)"
+   
 
       - name: Stores the commit hash as environment variable
         run: |
@@ -51,9 +48,12 @@ jobs:
         run: |
           echo "${{ env.SHORT_COMMIT_HASH }}"
 
-#  update-semver:
-#    needs: set-commit
-#    runs-on: ubuntu-latest
-#    steps:
+      - name: Update version
+        run: ./scripts/update-mvn-version.sh "${{ github.event.inputs.deployment_type }}"
 
+      - name: read version
+        run: echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_ENV
+
+      - name: Build image tag
+        run: echo "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
 

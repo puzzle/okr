@@ -52,13 +52,29 @@ jobs:
           echo "${{ env.SHORT_COMMIT_HASH }}"
 
       - name: Update version
+#        if: "${{ github.event.inputs.deployment_type }}" != 'Release from Commit'
         run: ./scripts/update-mvn-version.sh "${{ github.event.inputs.deployment_type }}"
+
+      - name: Commit and Push Changes
+#        if: "${{ github.event.inputs.deployment_type }}" != 'Release from Commit'
+        shell: bash
+        env:
+          COMMITPREFIX: '[VU]'
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add . || {
+            echo "No files were changed, so we did not commit anything"
+            exit 1
+          }
+          git commit -m "$COMMITPREFIX Automated version update" || {
+            echo "No changes to commit, skipping push"
+            exit 0
+          }
+          git push -f origin ${{ env.BRANCH_NAME }}
 
       - name: read version
         run: echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_ENV
-
-      - name: Build image tag
-        run: echo "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
 
   create-release:
     runs-on: ubuntu-24.04

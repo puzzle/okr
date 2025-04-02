@@ -16,20 +16,46 @@ on:
         type: string
 
 jobs:
-  display-variables:
-    name: Show GitHub Variables
+  create-image_tag:
     runs-on: ubuntu-24.04
-    steps:
+    permissions:
+      packages: write
+      id-token: write
+      contents: write
+      attestations: write
+    #    outputs:
+    #      imageVersion: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
     - name: Try to show GitHub Variables
       run: |
-        echo "repository variable : ${{ vars.REPOSITORY_VAR }}"
-        echo "organization variable : ${{ vars.ORGANIZATION_VAR }}"
-        echo "overridden variable : ${{ vars.OVERRIDE_VAR }}"
-        echo "variable from shell environment : $env_var"
-        echo "IMAGE_TAG : $vars.ENV_CONTEXT_VAR"
-        echo "IMAGE_TAG : $IMAGE_TAG"
-        echo "QUAY_URL : $QUAY_URL"
         echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
         echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
 
-    
+    - name: Assert semver version matches version in pom
+      run: |
+        if [ -z "$commit_hash" ]; then
+          echo "Commit is not set, default to last commit of branch \"$branch\""
+          commit_hash="$(git rev-parse @)"
+        fi
+        
+        if  git rev-parse --quiet --verify $commit_hash; then
+          commit_hash=$(git rev-parse --verify $commit_hash)
+          echo "Commit is valid"
+        else
+          echo "Commit \"$commit_hash\" is not valid"
+          exit 1
+        fi
+        
+        if [ "$(git merge-base $commit_hash $branch)" != "$commit_hash" ]; then
+          echo "Commit is not from branch \"$branch\""
+          exit 1
+        fi
+        
+        
+        echo "Commit is set to \"$commit_hash\""
+        echo "SHORT_COMMIT_HASH=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+        echo "${{ env.SHORT_COMMIT_HASH }}"
+

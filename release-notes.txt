@@ -5,6 +5,8 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
+unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
+
 3.2.0        - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
 
              - Wartung: Updates diverser Dependencies

@@ -25,6 +25,8 @@ jobs:
       attestations: write
     #    outputs:
     #      imageVersion: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,7 +39,7 @@ jobs:
       - name: Assert semver version matches version in pom
         run: |
           if [ -z "$commit_hash" ]; then
-            echo "Commit is not set, default to last commit of branch \"$branch\""
+            echo "Commit is not set, default to last commit of branch \"${{ env.BRANCH_NAME }}\""
             commit_hash="$(git rev-parse @)"
           fi
           
@@ -49,8 +51,8 @@ jobs:
             exit 1
           fi
           
-          if [ "$(git merge-base $commit_hash $branch)" != "$commit_hash" ]; then
-            echo "Commit is not from branch \"$branch\""
+          if [ "$(git merge-base $commit_hash ${{ env.BRANCH_NAME }})" != "$commit_hash" ]; then
+            echo "Commit is not from branch \"${{ env.BRANCH_NAME }}\""
             exit 1
           fi
           
@@ -58,4 +60,5 @@ jobs:
           echo "Commit is set to \"$commit_hash\""
           echo "SHORT_COMMIT_HASH=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
           echo "${{ env.SHORT_COMMIT_HASH }}"
+          
 

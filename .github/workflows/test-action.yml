@@ -58,7 +58,7 @@ jobs:
           
           
           echo "Commit is set to \"$commit_hash\""
-          echo "SHORT_COMMIT_HASH=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
-          echo "${{ env.SHORT_COMMIT_HASH }}"
+          echo "SHORT_COMMIT_HASH=$(git rev-parse --short $commit_hash)" >> $GITHUB_ENV
+          echo "Value of env var: \"${{ env.SHORT_COMMIT_HASH }}\""
           
 

@@ -58,11 +58,16 @@ jobs:
       SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    permissions:
+      packages: write
+      id-token: write
+      contents: write
+      attestations: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.find-commit.outputs.COMMIT_HASH }}
+          ref: ${{env.BRANCH_NAME}}
 
       - name: Update version
         run: ./scripts/update-mvn-version.sh "${{ github.event.inputs.deployment_type }}"

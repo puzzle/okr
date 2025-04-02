@@ -66,27 +66,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update-version.outputs.COMMIT_HASH }}
 
       - name: Create git tag
         run: |
           git tag ${{ needs.update-version.outputs.SEMVER_VERSION }}
       - name: Push git tag
         run: git push origin ${{ needs.update-version.outputs.SEMVER_VERSION }}
-
-#      - name: Create Release
-#        id: create_release
-#        uses: actions/create-release@latest
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-#        with:
-#          tag_name: ${{ needs.update-version.outputs.SEMVER_VERSION }}
-#          release_name: Release ${{ needs.update-version.outputs.SEMVER_VERSION }}
-#          body: |
-#            Changes in this Release
-#            - First Change
-#            - Second Change
-#          draft: true
-#          prerelease: false
 
       - name: Create release
         env:
@@ -95,5 +82,5 @@ jobs:
         run: |
           gh release create "${{ needs.update-version.outputs.SEMVER_VERSION }}" \
               --repo="$GITHUB_REPOSITORY" \
-              --title="${GITHUB_REPOSITORY#*/} ${{ needs.update-version.outputs.SEMVER_VERSION }}" \
+              --title="Release ${GITHUB_REPOSITORY#*/} ${{ needs.update-version.outputs.SEMVER_VERSION }}" \
               --generate-notes

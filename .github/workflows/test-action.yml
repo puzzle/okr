@@ -26,6 +26,7 @@ jobs:
       attestations: write
     outputs:
       NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+      COMMIT_HASH: "${{ env.COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
@@ -42,6 +43,7 @@ jobs:
         run: |
           commit_hash=$(./scripts/get-commit.sh ${{ env.BRANCH_NAME }} ${{ github.event.inputs.commit_hash }})
           echo "Commit is set to \"$commit_hash\""
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
           echo "SHORT_COMMIT_HASH=$(git rev-parse --short $commit_hash)" >> $GITHUB_ENV
 
       - name: Accessing the environment variable
@@ -57,3 +59,24 @@ jobs:
       - name: Build image tag
         run: echo "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
 
+  create-release:
+    runs-on: ubuntu-24.04
+    needs: update-version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ needs.update-version.outputs.NEW_IMAGE_TAG }}
+          release_name: Release ${{ needs.update-version.outputs.NEW_IMAGE_TAG }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: true
+          prerelease: false

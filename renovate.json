@@ -3,7 +3,6 @@
   "extends": [
     "config:recommended",
     ":rebaseStalePrs",
-    ":automergePatch",
     "group:monorepos"
   ],
   "schedule" : [

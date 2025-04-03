@@ -101,14 +101,14 @@ jobs:
       attestations: write
     outputs:
       SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
-      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
-      COMMIT_HASH: "${{ env.COMMIT_HASH }}"
+#      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
+#      COMMIT_HASH: "${{ env.COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: read version
         run: |
-          echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_ENV
+          echo "SEMVER_VERSION=1.0" >> $GITHUB_ENV
       - name: Accessing the environment variable
         run: |
           echo "${{ env.SEMVER_VERSION }}"

@@ -105,20 +105,23 @@ jobs:
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
-#      -
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{env.BRANCH_NAME}}
       - name: read version
-        run: |
-          echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//') >> $GITHUB_ENV
-      - name: Accessing the environment variable
-        run: |
-          echo "${{ env.SEMVER_VERSION }}-${{ needs.find-commit.outputs.SHORT_COMMIT_HASH }}" 
-          
+        run: echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+
 
   build-docker-image:
     needs: read-version
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - name: Accessing the environment variable
+        run: |
+          echo "${{ needs.read-version.outputs.NEW_IMAGE_TAG }}" 
+
 
       - name: Set up JDK ${{vars.JAVA_VERSION}}
         uses: actions/setup-java@v4

@@ -16,6 +16,18 @@ on:
         required: false
         type: string
 
+      deployment:
+        type: choice
+        required: true
+        description: On which environment should the deployment be done?
+        options:
+          - 'No deployment (only build)'
+          - PROD
+          - STAGING
+          - DEMO
+        default: 'No deployment (only build)'
+
+
 jobs:
   debug:
     runs-on: ubuntu-24.04
@@ -110,7 +122,8 @@ jobs:
         with:
           ref: ${{env.BRANCH_NAME}}
       - name: read version
-        run: echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        run: |
+          echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
 
 
   build-docker-image:
@@ -151,7 +164,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          tags: ${{ needs.read-version.outputs.okr-docker-image}}
+          tags: ${{ needs.read-version.outputs.NEW_IMAGE_TAG}}
           load: true
           push: false
           outputs: type=docker,dest=/tmp/okr-docker-image.tar

@@ -105,10 +105,10 @@ jobs:
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
-#      - mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//'
+#      -
       - name: read version
         run: |
-          echo "SEMVER_VERSION=1.0" >> $GITHUB_ENV
+          echo "SEMVER_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//') >> $GITHUB_ENV
       - name: Accessing the environment variable
         run: |
           echo "${{ env.SEMVER_VERSION }}-${{ needs.find-commit.outputs.SHORT_COMMIT_HASH }}" 

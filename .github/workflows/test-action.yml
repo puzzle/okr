@@ -30,9 +30,8 @@ jobs:
   find-commit:
     runs-on: ubuntu-24.04
     outputs:
-      SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
-#      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
       COMMIT_HASH: "${{ env.COMMIT_HASH }}"
+      SHORT_COMMIT_HASH: "${{ env.SHORT_COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
@@ -55,7 +54,8 @@ jobs:
     needs: find-commit
     if: github.event.inputs.deployment_type != 'Release from Commit'
     outputs:
-      SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
+      COMMIT_HASH: "${{ needs.find-commit.outputs.COMMIT_HASH }}".
+      SHORT_COMMIT_HASH: "${{ needs.find-commit.outputs.SHORT_COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     permissions:
@@ -100,9 +100,10 @@ jobs:
       contents: write
       attestations: write
     outputs:
+      COMMIT_HASH: "${{ needs.update-version.outputs.COMMIT_HASH }}"
+      SHORT_COMMIT_HASH: "${{ needs.update-version.outputs.SHORT_COMMIT_HASH }}"
       SEMVER_VERSION: "${{ env.SEMVER_VERSION }}"
-#      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ env.SHORT_COMMIT_HASH }}"
-#      COMMIT_HASH: "${{ env.COMMIT_HASH }}"
+      NEW_IMAGE_TAG: "${{ env.SEMVER_VERSION }}-${{ needs.read-version.outputs.NEW_IMAGE_TAG }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
@@ -111,7 +112,7 @@ jobs:
           echo "SEMVER_VERSION=1.0" >> $GITHUB_ENV
       - name: Accessing the environment variable
         run: |
-          echo "${{ env.SEMVER_VERSION }}"
+          echo "${{ env.SEMVER_VERSION }}-${{ needs.update-version.outputs.SHORT_COMMIT_HASH }}" 
           
 
   build-docker-image:

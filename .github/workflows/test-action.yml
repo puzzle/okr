@@ -17,7 +17,7 @@ on:
         required: false
         type: string
 
-      deployment:
+      deployment_environment:
         type: choice
         required: true
         description: On which environment should the deployment be done?
@@ -39,6 +39,8 @@ jobs:
         run: |
           echo "deployment_type is ${{ github.event.inputs.deployment_type }}" / ${{ inputs.deployment_type }}
           echo "commit_hash is ${{ github.event.inputs.commit_hash }}" / ${{ inputs.commit_hash }}
+          echo "deployment env is ${{ github.event.inputs.deployment_environment }}" / ${{ inputs.deployment_environment }}
+          
 
   get-e2e-files:
     runs-on: ubuntu-24.04
@@ -280,7 +282,7 @@ jobs:
   deploy-release:
     runs-on: ubuntu-latest
     if: github.event.inputs.deployment != 'No deployment (only build)'
-    environment: ${{ github.event.inputs.deployment_type }}
+    environment: ${{ github.event.inputs.deployment_environment }}
     needs:
       - upload-to-quay
       - read-version
@@ -293,13 +295,18 @@ jobs:
 #      IMAGE_NAME: registry.puzzle.ch/puzzle/okr:3.1.5-SNAPSHOT-DEMO
       IMAGE_NAME: ${{needs.read-version.outputs.NEW_IMAGE_TAG}}
     steps:
+      - name: show vars
+        run: |
+            echo "env": ${{ github.event.inputs.deployment_environment }}" / ${{ inputs.deployment_environment }}"
+            echo "foler: ${{ vars.INFRA_OVERLAY_FOLDER }}"
+
       - name: Checkout repository
         run: |
           git clone https://oauth2:${{ secrets.GITLAB_ACCESS_TOKEN }}@${{vars.PUZZLE_GITLAB_FQDN}}:${{vars.OKR_INFRA_REPOSITORY_PATH}}
           cd okr-infra
           git checkout ${{env.BRANCH_NAME}}
 
-      - uses: imranismail/setup-kustomize@v1
+      - uses: imranismail/setup-kustomize@v2
         with:
           kustomize-version: 4.0.0
 

@@ -21,6 +21,7 @@ import { numberValidator } from '../../../shared/constant-library';
 
 import { FormControlsOf, initFormGroupFromItem, Item } from '../../action-plan/action-plan.component';
 import { Observable } from 'rxjs';
+import { CheckInMetric } from '../../../shared/types/model/check-in-metric';
 @Component({
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
@@ -93,7 +94,8 @@ export class CheckInFormComponent implements OnInit {
       this.checkIn = {
         ...(this.keyResult as KeyResultMetric | KeyResultOrdinal).lastCheckIn,
         id: undefined
-      } as CheckInMin;
+      } as CheckInMetric | CheckInOrdinalMin;
+      this.setValueOrZone();
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       return;
     }

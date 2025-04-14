@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import ch.puzzle.okr.service.persistence.customCrud.DeleteMethod;
+import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @param <T>
@@ -23,19 +26,24 @@ import org.springframework.http.HttpStatus;
  * @param <R>
  *            the Repository of the entity
  */
-public abstract class PersistenceBase<T, I, R> {
+public abstract class PersistenceBase<T, I, R extends CrudRepository<T, I>> {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceBase.class);
 
-    private final CrudRepository<T, I> repository;
+    private final R repository;
+    private final DeleteMethod<T, I, R> deleteMethod;
 
-    protected PersistenceBase(CrudRepository<T, I> repository) {
-        this.repository = repository;
+    protected PersistenceBase(R repository) {
+        this(repository, new HardDelete<>());
     }
 
-    @SuppressWarnings(value = "unchecked casts")
+    protected PersistenceBase(R repository, DeleteMethod<T, I, R> deleteMethod) {
+        this.repository = repository;
+        this.deleteMethod = deleteMethod;
+    }
+
     public R getRepository() {
-        return (R) repository;
+        return repository;
     }
 
     public T findById(I id) throws OkrResponseStatusException {
@@ -65,11 +73,19 @@ public abstract class PersistenceBase<T, I, R> {
     }
 
     public List<T> findAll() {
-        return iteratorToList(repository.findAll());
+        // TODO use instance of instead of method on deleteMethod
+
+        return iteratorToList(this.deleteMethod.findAll(repository));
     }
 
+    @Transactional
     public void deleteById(I id) {
-        repository.deleteById(id);
+        deleteById(id, deleteMethod);
+    }
+
+    @Transactional
+    public void deleteById(I id, DeleteMethod<T, I, R> localDeleteMethod) {
+        localDeleteMethod.deleteById(id, repository);
     }
 
     public abstract String getModelName();

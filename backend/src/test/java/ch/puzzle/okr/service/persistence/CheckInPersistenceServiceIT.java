@@ -1,13 +1,18 @@
 package ch.puzzle.okr.service.persistence;
 
 import static ch.puzzle.okr.Constants.CHECK_IN;
+import static ch.puzzle.okr.mapper.keyresult.helper.TestDataConstants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckInOrdinal;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.multitenancy.TenantContext;
+import ch.puzzle.okr.repository.CheckInRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
@@ -16,7 +21,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @SpringIntegrationTest
 class CheckInPersistenceServiceIT {
@@ -25,6 +32,9 @@ class CheckInPersistenceServiceIT {
 
     @Autowired
     private CheckInPersistenceService checkInPersistenceService;
+
+    @MockitoSpyBean
+    private CheckInRepository checkInRepository;
 
     @BeforeEach
     void setUp() {
@@ -79,5 +89,32 @@ class CheckInPersistenceServiceIT {
     @Test
     void shouldReturnCheckIn() {
         assertEquals(CHECK_IN, checkInPersistenceService.getModelName());
+    }
+
+    @DisplayName("Should mark as deleted on deleteById() per default")
+    @Test
+    void shouldMarkAsDeletedOnMethodCall() {
+        // arrange
+        CheckInOrdinal checkInOrdinal = (CheckInOrdinal) CheckInOrdinal.Builder
+                .builder() //
+                .withKeyResult(KeyResultOrdinal.Builder.builder().withId(8L).build()) //
+                .withCreatedBy(User.Builder.builder().withId(11L).build()) //
+                .withVersion(CHECK_IN_VERSION) //
+                .withZone(CHECK_IN_ORDINAL_ZONE) //
+                .withConfidence(CHECK_IN_CONFIDENCE) //
+                .withCreatedOn(CHECK_IN_CREATED_ON) //
+                .withChangeInfo(CHECK_IN_CHANGE_INFO) //
+                .withInitiatives(CHECK_IN_INITIATIVES) //
+                .build();
+        var newEntity = checkInPersistenceService.save(checkInOrdinal);
+
+        long entityId = newEntity.getId();
+
+        // act
+        checkInPersistenceService.deleteById(entityId);
+
+        // assert
+        assertTrue(checkInPersistenceService.findById(entityId).isDeleted());
+        Mockito.verify(checkInRepository, Mockito.times(1)).markAsDeleted(entityId);
     }
 }

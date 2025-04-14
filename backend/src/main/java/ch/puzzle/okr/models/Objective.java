@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(indexes = { @Index(name = "idx_objective_title", columnList = "title") })
-public class Objective implements WriteableInterface {
+public class Objective extends Deletable implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
     @SequenceGenerator(name = "sequence_objective", allocationSize = 1)

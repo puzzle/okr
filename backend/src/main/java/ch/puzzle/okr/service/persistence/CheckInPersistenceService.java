@@ -4,6 +4,7 @@ import static ch.puzzle.okr.Constants.CHECK_IN;
 
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.repository.CheckInRepository;
+import ch.puzzle.okr.service.persistence.customCrud.SoftDelete;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long, CheckInRepository> {
 
     protected CheckInPersistenceService(CheckInRepository repository) {
-        super(repository);
+        super(repository, new SoftDelete<>());
     }
 
     @Override
@@ -20,10 +21,10 @@ public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long, Ch
     }
 
     public List<CheckIn> getCheckInsByKeyResultIdOrderByCheckInDateDesc(Long keyResultId) {
-        return getRepository().findCheckInsByKeyResultIdOrderByCreatedOnDesc(keyResultId);
+        return getRepository().findCheckInsByKeyResultIdAndIsDeletedFalseOrderByCreatedOnDesc(keyResultId);
     }
 
     public CheckIn getLastCheckInOfKeyResult(Long keyResultId) {
-        return getRepository().findFirstByKeyResultIdOrderByCreatedOnDesc(keyResultId);
+        return getRepository().findFirstByKeyResultIdAndIsDeletedFalseOrderByCreatedOnDesc(keyResultId);
     }
 }

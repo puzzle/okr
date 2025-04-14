@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "key_result_type")
-public abstract class KeyResult implements WriteableInterface {
+public abstract class KeyResult extends Deletable implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
     @SequenceGenerator(name = "sequence_key_result", allocationSize = 1)

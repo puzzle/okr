@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
 import static ch.puzzle.okr.test.TestHelper.getAllErrorKeys;
+import static ch.puzzle.okr.test.TestHelper.userWithCustomName;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -12,6 +13,7 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.persistence.customCrud.HardDelete;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +37,7 @@ class PersistenceBaseTestIT {
 
     private static final long NON_EXISTING_USER_ID = 321L;
     private static final long USER_PACO_ID = 1L;
-    private static final User USER_WITHOUT_CONSTRAINTS = createUserWithUniqueName("Hans");
+    private static final User USER_WITHOUT_CONSTRAINTS = userWithCustomName("Hans", "Muster");
 
     @Autowired
     private PersistenceBase<User, Long, UserRepository> persistenceBase;
@@ -94,11 +96,11 @@ class PersistenceBaseTestIT {
     @DisplayName("Should add new entity on save()")
     @Test
     void saveShouldAddNewEntity() throws ResponseStatusException {
-        User uniqueUser = createUserWithUniqueName("Fritz");
+        User uniqueUser = userWithCustomName("Fritz", "Muster");
         createdUser = persistenceBase.save(uniqueUser);
 
         assertNotNull(createdUser);
-        assertUser("Fritz", "Muster", "hans.muster@puzzle.ch", createdUser);
+        assertUser("Fritz", "Muster", "Fritz.Muster@puzzle.ch", createdUser);
     }
 
     @DisplayName("Should throw exception on save() in the case of optimistic locking failure")
@@ -127,7 +129,7 @@ class PersistenceBaseTestIT {
     @Test
     void saveExistingEntityWithDifferentDataShouldUpdateExistingEntity() throws ResponseStatusException {
         // arrange
-        User uniqueUser = createUserWithUniqueName("Ueli");
+        User uniqueUser = userWithCustomName("Ueli", "Muster");
         createdUser = persistenceBase.save(uniqueUser);
         var createdUserId = createdUser.getId();
         var foundUser = persistenceBase.findById(createdUserId);
@@ -154,7 +156,7 @@ class PersistenceBaseTestIT {
         assertNotNull(persistenceBase.findById(createdUserId));
 
         // act
-        persistenceBase.deleteById(createdUserId);
+        persistenceBase.deleteById(createdUserId, new HardDelete<>());
 
         // assert
         assertEntityNotFound(createdUserId);
@@ -176,14 +178,5 @@ class PersistenceBaseTestIT {
         var exception = assertThrows(ResponseStatusException.class, () -> persistenceBase.findById(entityId));
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertErrorKey("MODEL_WITH_ID_NOT_FOUND", exception);
-    }
-
-    private static User createUserWithUniqueName(String name) {
-        return User.Builder
-                .builder()
-                .withFirstName(name)
-                .withLastName("Muster")
-                .withEmail("hans.muster@puzzle.ch")
-                .build();
     }
 }

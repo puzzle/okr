@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Unit {
+public class Unit extends Deletable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_unit")
     @SequenceGenerator(name = "sequence_unit", allocationSize = 1)

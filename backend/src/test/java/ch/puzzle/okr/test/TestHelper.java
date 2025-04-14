@@ -40,6 +40,15 @@ public class TestHelper {
                 .build();
     }
 
+    public static User userWithCustomName(String firstName, String lastName) {
+        return User.Builder
+                .builder()
+                .withFirstName(firstName)
+                .withLastName(lastName)
+                .withEmail(firstName + "." + lastName + "@puzzle.ch")
+                .build();
+    }
+
     public static User defaultOkrChampion(Long id) {
         var user = defaultUser(id);
         user.setOkrChampion(true);

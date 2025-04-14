@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Team implements WriteableInterface {
+public class Team extends Deletable implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_team")
     @SequenceGenerator(name = "sequence_team", allocationSize = 1)

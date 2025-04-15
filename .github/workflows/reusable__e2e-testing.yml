@@ -1,0 +1,151 @@
+# .github/workflows/reusable-e2e-run-tests.yml
+name: 'Reusable - Run E2E Tests (Matrix)'
+
+on:
+  workflow_call:
+    inputs:
+      FULL_IMAGE_TAG:
+        type: string
+        description: 'The full Docker image tag being tested.'
+        required: true
+      COMMIT_HASH: # Needed for checkout to find test files & potentially test config
+        type: string
+        description: 'The commit hash associated with the build (for checkout).'
+        required: true
+      IMAGE_ARTIFACT_NAME:
+        type: string
+        description: 'Name of the docker image artifact to download.'
+        required: true
+      NODE_VERSION: # Needed for Cypress runner
+        type: string
+        description: 'Node.js version for Cypress.'
+        required: true
+      # Add other inputs needed specifically for E2E setup if they vary
+
+    # No specific outputs defined, success/failure is determined by job status.
+    # Secrets might be needed if Cypress or test setup requires authentication.
+
+jobs:
+  # Job to discover the E2E test files in the target repository
+  get-e2e-files:
+    runs-on: ubuntu-latest
+    outputs:
+      file_list: ${{ steps.generate-file-list.outputs.file_list }}
+    permissions:
+      contents: read # Needed to checkout code
+    steps:
+      - name: Checkout Target Repo Code (to find test files)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
+
+      - name: Install jq (JSON processor)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Generate list of E2E test files
+        id: generate-file-list
+        # Assumes test files are directly under frontend/cypress/e2e/
+        # Add error handling: If directory doesn't exist or is empty, output empty JSON array '[]'
+        run: |
+          E2E_DIR="frontend/cypress/e2e"
+          if [ -d "$E2E_DIR" ] && [ "$(ls -A $E2E_DIR)" ]; then
+            FILES=$(ls $E2E_DIR | jq -R . | jq -s . | jq -c)
+            echo "Found test files: $FILES"
+          else
+            echo "No test files found in $E2E_DIR or directory does not exist."
+            FILES="[]"
+          fi
+          echo "file_list=$FILES" >> $GITHUB_OUTPUT
+
+  # Job to run tests in parallel based on the discovered files
+  run-tests:
+    needs: get-e2e-files
+    # Only run the strategy if test files were found
+    if: needs.get-e2e-files.outputs.file_list != '[]'
+    runs-on: ubuntu-latest # Or ubuntu-24.04
+    permissions:
+      contents: read # Needed if checkout is required below
+    strategy:
+      fail-fast: false # Continue running other tests even if one fails
+      matrix:
+        # Create a matrix job for each file found by the previous job
+        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
+
+    steps:
+      # Checkout might still be needed if Cypress config/plugins are used from repo root
+      # If Cypress setup is fully contained in frontend/, this might be optional here.
+      - name: Checkout Target Repo Code (for Cypress config/plugins)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.IMAGE_ARTIFACT_NAME }}
+          path: /tmp
+
+      - name: Load image into Docker
+        run: docker load --input /tmp/okr-docker-image.tar
+
+      # --- E2E Test Execution Steps (Adjust as needed) ---
+      - name: Set up Docker Compose / Start Services (if needed)
+        run: |
+          echo "Starting prerequisite services..."
+          # Example: Ensure docker-compose is available
+          # cd docker && docker compose up -d keycloak-pitc
+
+      - name: Run Application Container
+        run: |
+          echo "Starting application container: ${{ inputs.FULL_IMAGE_TAG }}"
+          # Example: Adjust network, env vars, container name as needed
+          # docker run --network=host -d --name=app_under_test_${{ matrix.file }} -e SPRING_PROFILES_ACTIVE=integration-test ${{ inputs.FULL_IMAGE_TAG }}
+          sleep 30 # Replace with proper health check / wait-on script
+
+      - name: Set up node for Cypress
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.NODE_VERSION }}
+
+      - name: Install Cypress dependencies (if needed)
+        working-directory: frontend # Or wherever cypress runs from
+        run: npm ci # Assuming cypress is a dev dependency
+
+      - name: Cypress run specific e2e test file
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: frontend # Or adjust path
+          install: false # Assuming deps installed above or previously
+          # Example wait-on - ADJUST URLs/Ports
+          # wait-on: 'http://localhost:8080/actuator/health'
+          # wait-on-timeout: 180
+          browser: chrome
+          headed: false
+          # Example config - ADJUST baseUrl
+          # config: baseUrl=http://localhost:8080
+          # Run the specific file from the matrix
+          spec: cypress/e2e/${{ matrix.file }}
+
+      - uses: actions/upload-artifact@v4
+        # Upload artifacts on failure, include matrix file name for clarity
+        if: failure()
+        with:
+          name: cypress-screenshots-${{ inputs.COMMIT_HASH }}-${{ matrix.file }}
+          path: frontend/cypress/screenshots # Adjust path if needed
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos-${{ inputs.COMMIT_HASH }}-${{ matrix.file }}
+          path: frontend/cypress/videos # Adjust path if needed
+          retention-days: 7
+
+      # --- Cleanup Steps ---
+      - name: Cleanup Docker Containers/Networks
+        if: always()
+        run: |
+          echo "Stopping containers..."
+          # Example: Adjust container name if it includes matrix variable
+          # docker stop app_under_test_${{ matrix.file }} || true
+          # Example: cd docker && docker compose down || true

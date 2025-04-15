@@ -1,0 +1,194 @@
+# .github/workflows/reusable-deploy-release.yml
+name: 'Reusable - Deploy and Release'
+
+on:
+  workflow_call:
+    inputs:
+      FULL_IMAGE_TAG:
+        type: string
+        description: 'The full Docker image tag to deploy (e.g., myrepo/myapp:1.2.3-abcdef).'
+        required: true
+      SEMVER_VERSION:
+        type: string
+        description: "The semantic version (e.g., 1.2.3) used for tagging/release."
+        required: true
+      COMMIT_HASH:
+        type: string
+        description: 'The full commit hash that was built, used for tagging.'
+        required: true
+      deployment_environment:
+        type: string
+        required: true
+        description: 'Target environment (e.g., PROD, STAGING, DEMO, or "No deployment (only build)")'
+      deployment_type: # Needed to decide if release/tag is appropriate
+        type: string
+        description: 'Deployment type (Major, Minor, Patch, Release from Commit)'
+        required: true
+      # Infrastructure related inputs
+      INFRA_OVERLAY_FOLDER:
+        type: string
+        required: false # Required only if deploying
+        description: 'Kustomize overlay folder name in the infra repo.'
+      OKR_INFRA_REPOSITORY_PATH: # e.g., your-org/okr-infra
+        type: string
+        required: false # Required only if deploying
+        description: 'Path to the infrastructure Git repository.'
+      PUZZLE_GITLAB_FQDN: # e.g., gitlab.com or internal hostname
+        type: string
+        required: false # Required only if deploying via GitLab repo
+        description: 'FQDN of the GitLab instance hosting the infra repo.'
+      # Input to get artifact name
+      IMAGE_ARTIFACT_NAME:
+        type: string
+        required: true
+        description: 'Name of the docker image artifact from the build workflow.'
+
+
+    secrets:
+      QUAY_REGISTRY:
+        required: true
+      QUAY_USERNAME:
+        required: true
+      QUAY_TOKEN:
+        required: true
+      # Optional secret, only needed if deploying via Git push to GitLab
+      GITLAB_ACCESS_TOKEN:
+        required: false
+      # Required for creating tags/releases on GitHub
+      GH_TOKEN:
+        required: true
+
+    # No outputs defined.
+
+jobs:
+  upload-to-quay:
+    runs-on: ubuntu-latest
+    # This job now assumes the image exists as an artifact from a previous workflow
+    steps:
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.IMAGE_ARTIFACT_NAME }}
+          path: /tmp
+
+      - name: Load image into Docker
+        run: docker load --input /tmp/okr-docker-image.tar
+
+      - name: Show images before push
+        run: docker image ls -a
+
+      - name: Log in to Quay registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.QUAY_REGISTRY }}
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_TOKEN }}
+
+      - name: Push image to Quay
+        run: |
+          echo "Pushing image: ${{ inputs.FULL_IMAGE_TAG }}"
+          docker push ${{ inputs.FULL_IMAGE_TAG }}
+
+  deploy-release:
+    runs-on: ubuntu-latest
+    # Only run if a deployment environment is specified
+    if: inputs.deployment_environment != 'No deployment (only build)'
+    environment: ${{ inputs.deployment_environment }} # Environment context
+    needs: upload-to-quay # Ensure image is pushed before deploying
+    steps:
+      - name: Show Deployment Vars
+        run: |
+          echo "Deploying to environment: ${{ inputs.deployment_environment }}"
+          echo "Infra overlay folder: ${{ inputs.INFRA_OVERLAY_FOLDER }}"
+          echo "Image to deploy: ${{ inputs.FULL_IMAGE_TAG }}"
+
+      # Deployment steps require infrastructure inputs/secrets
+      - name: Checkout Infrastructure Repository
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.OKR_INFRA_REPOSITORY_PATH }}
+          # Assuming GitLab token is for HTTPS access
+          token: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+          ref: 'main' # Or configure via input if needed
+          path: 'okr-infra'
+
+      - name: Set up Kustomize
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        uses: imranismail/setup-kustomize@v2
+        with:
+          kustomize-version: 'v4.0.0' # Or desired version
+
+      - name: Update Kustomization
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        run: |
+          cd okr-infra/deployments/overlays/${{ inputs.INFRA_OVERLAY_FOLDER }}
+          echo "Current directory: $(pwd)"
+          echo "Running: kustomize edit set image ${{ inputs.FULL_IMAGE_TAG }}"
+          kustomize edit set image ${{ inputs.FULL_IMAGE_TAG }}
+          echo "Kustomization file after update:"
+          cat kustomization.yaml || echo "kustomization.yaml not found or readable"
+
+      - name: Commit and push Infrastructure Changes
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        env:
+          COMMITER_EMAIL: "actions@github.com"
+          COMMITTER_NAME: "GitHub Actions"
+        run: |
+          cd okr-infra
+          git config user.email "${{ env.COMMITER_EMAIL }}"
+          git config user.name "${{ env.COMMITTER_NAME }}"
+          git add deployments/overlays/${{ inputs.INFRA_OVERLAY_FOLDER }}/kustomization.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit in infrastructure repository."
+            exit 0
+          fi
+          git commit -m "Update image tag for ${{ inputs.INFRA_OVERLAY_FOLDER }} to ${{ inputs.FULL_IMAGE_TAG }}"
+          echo "Pushing infrastructure changes..."
+          # git pull --rebase origin main # Consider rebase if concurrent changes are common
+          git push origin main # Push to the branch checked out
+
+      # Add other deployment methods here if needed (e.g., helm upgrade, kubectl apply, etc.)
+
+  create-release:
+    runs-on: ubuntu-latest
+    # Only run if deployed AND it was a version-bumping deployment type
+    if: >
+      inputs.deployment_environment != 'No deployment (only build)' &&
+      inputs.deployment_type != 'Release from Commit'
+    needs: deploy-release # Run after deployment attempt
+    permissions:
+      contents: write # Permission to create tags and releases
+    steps:
+      - name: Checkout Target Repo Code (needed for tag context)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.COMMIT_HASH }} # Use the specific commit hash
+          fetch-depth: 0 # Needed for tag/release notes generation
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Create Git Tag
+        env:
+          TAG_NAME: ${{ inputs.SEMVER_VERSION }} # Use the semantic version part
+        run: |
+          echo "Creating git tag: ${{ env.TAG_NAME }}"
+          # Use -f to force tag update if retrying failed release, otherwise omit -f
+          git tag -f ${{ env.TAG_NAME }} ${{ inputs.COMMIT_HASH }}
+          echo "Pushing git tag: ${{ env.TAG_NAME }}"
+          # Use --force to update remote tag if needed, otherwise omit --force
+          git push --force origin refs/tags/${{ env.TAG_NAME }}
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          TAG_NAME: ${{ inputs.SEMVER_VERSION }}
+        run: |
+          echo "Creating GitHub release for tag: ${{ env.TAG_NAME }}"
+          # Use --latest if this should be marked as the latest release
+          # Use --prerelease if it's not a stable release
+          gh release create "${{ env.TAG_NAME }}" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="Release ${{ env.TAG_NAME }}" \
+              --notes "Release based on commit ${{ inputs.COMMIT_HASH }}. Deployed to ${{ inputs.deployment_environment }}." \
+              --target "${{ inputs.COMMIT_HASH }}"
+              # --generate-notes # Alternative: auto-generate notes

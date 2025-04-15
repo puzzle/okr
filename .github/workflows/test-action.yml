@@ -60,19 +60,18 @@ jobs:
   # --- Replaced find-commit, update-version, read-version ---
   versioning:
     # Using the reusable workflow
-    uses: ./.github/workflows/reusable-versioning.yml
+    uses: ./.github/workflows/reusable__generate-version.yml
     # Define necessary permissions for the reusable workflow's jobs (like push)
     permissions:
-      contents: write # Allows the reusable workflow's update-version job to push
+      packages: write
+      id-token: write
+      contents: write
+      attestations: write
     with:
       # Pass the combined strategy or hash input
       version_strategy_or_hash: ${{ github.event.inputs.deployment_type == 'Release from Commit' && github.event.inputs.commit_hash || github.event.inputs.deployment_type }}
-      # Pass the required variable
-      docker_repository_url: ${{ vars.DOCKER_REPOSITORY_URL }}
     secrets:
-      # Pass the required secret
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # --- End of replaced jobs ---
 
 
   build-docker-image:

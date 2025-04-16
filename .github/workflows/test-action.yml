@@ -129,7 +129,7 @@ jobs:
 
   e2e:
     needs: [build-docker-image, versioning]
-    uses: ./.github/workflows/reusable__reusable__e2e-testing.yml
+    uses: ./.github/workflows/reusable__e2e-testing.yml
     with:
       DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.FULL_IMAGE_TAG }}
 

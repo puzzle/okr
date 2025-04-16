@@ -6,7 +6,7 @@ DO
 $$
     BEGIN
         -- Check the session user (the user Flyway connects as)
-        IF session_user = 'pitc' THEN
+        IF session_user like '%pitc' THEN
             -- Condition met: User IS 'pitc'
             RAISE NOTICE 'User validation successful (User is pitc). Proceeding with pitc-specific operations...';
 

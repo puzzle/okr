@@ -1,8 +1,8 @@
 DO
 $$
     BEGIN
-        IF session_user = 'acme' THEN
-            RAISE NOTICE 'User validation successful (User is pitc). Proceeding with pitc-specific operations...';
+        IF session_user like '%acme' THEN
+            RAISE NOTICE 'User validation successful (User is acme). Proceeding with acme-specific operations...';
 
             INSERT INTO okr_acme.person VALUES (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, true);
             INSERT INTO okr_acme.person VALUES (3, 'brantschen@puzzle.ch', 'Jean-Claude', 'Brantschen', 1, true);

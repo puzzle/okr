@@ -62,11 +62,11 @@ jobs:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.IMAGE_ARTIFACT_NAME }}
+          name: ${{ env.IMAGE_FILE_NAME }}
           path: /tmp
 
       - name: Load image into Docker
-        run: docker load --input /tmp/${{ env.IMAGE_ARTIFACT_NAME }}
+        run: docker load --input /tmp/${{ env.IMAGE_FILE_NAME }}
 
       # --- E2E Test Execution Steps (Adjust as needed) ---
       - name: Set up Docker Compose / Start Services (if needed)
@@ -76,7 +76,7 @@ jobs:
         run: |
           docker run --network=host \
           -e SPRING_PROFILES_ACTIVE=integration-test \
-          ${{ needs.read-version.outputs.okr-docker-image}} &
+          ${{inputs.DOCKER_IMAGE_TAG }} &
 
       - name: Set up node for Cypress
         uses: actions/setup-node@v4

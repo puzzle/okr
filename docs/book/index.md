@@ -1,11 +1,9 @@
 ---
-name: Getting Started
+name: Puzzle OKR Tool
 ---
 
 ## Getting Started
 
-This is created with :t[hyperbook].
+## And more
 
-## Bookmarks
-
-::bookmarks
+## And so on...

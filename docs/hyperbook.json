@@ -1,0 +1,11 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "description": "Puzzle OKR Tool",
+  "license": "AGPL-3.0",
+  "author": {
+    "name": "Puzzle GmbH",
+    "url": "https://puzzle.ch"
+  },
+  "language": "en"
+}

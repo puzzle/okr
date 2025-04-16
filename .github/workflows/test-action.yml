@@ -125,6 +125,8 @@ jobs:
         with:
           name: okr-image
           path: /tmp/okr-docker-image.tar
+      - name: print imagetags
+        run: echo ${{ needs.versioning.outputs.FULL_IMAGE_TAG }}
 
 
   e2e:

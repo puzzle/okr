@@ -29,11 +29,15 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Generate list of E2E test files
+        env:
+          E2E_DIR: frontend/cypress/e2e
+
         id: generate-file-list
         # Assumes test files are directly under frontend/cypress/e2e/
         # Add error handling: If directory doesn't exist or is empty, output empty JSON array '[]'
         run: |
-          E2E_DIR="frontend/cypress/e2e"
+          echo "${{inputs.DOCKER_IMAGE_TAG }}"
+          echo "${{inputs.COMMIT_HASH }}"
           if [ -d "$E2E_DIR" ] && [ "$(ls -A $E2E_DIR)" ]; then
             FILES=$(ls $E2E_DIR | jq -R . | jq -s . | jq -c)
             echo "Found test files: $FILES"

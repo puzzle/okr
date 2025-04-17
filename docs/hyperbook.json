@@ -4,10 +4,14 @@
   "description": " Open source OKR application ",
   "license": "AGPL-3.0",
   "qrcode": false,
+  "importExport": false,
   "logo": "/logo.svg",
   "author": {
     "name": "Puzzle GmbH",
     "url": "https://puzzle.ch"
+  },
+  "repo": {
+    "url": "https://github.com/puzzle/okr"
   },
   "colors": {
     "brand": "#1b2d53",

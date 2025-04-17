@@ -8,7 +8,7 @@ $$
         -- Check the session user (the user Flyway connects as)
         IF session_user like '%pitc' THEN
             -- Condition met: User IS 'pitc'
-            RAISE NOTICE 'User validation successful (User is pitc). Proceeding with pitc-specific operations...';
+            RAISE NOTICE 'User validation successful (User ends with  "pitc"). Proceeding with pitc-specific operations...';
 
 
             INSERT INTO okr_pitc.person VALUES (1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 1, false);
@@ -5146,10 +5146,8 @@ Arbeitsstand Analyse: https://codimd.puzzle.ch/ZdHODTltQUSQPiu7AwR9EA', '2024-04
 
         ELSE
 
-            RAISE NOTICE 'User validation successful (User is pitc). Proceeding with pitc-specific operations...';
-
-            RAISE NOTICE 'Skipping pitc-specific operations. Script section requires database user "pitc", but current user is %.', session_user;
-            -- The block simply finishes without executing the restricted commands.
+            RAISE NOTICE 'User validation NOT successful!';
+            RAISE NOTICE 'Skipping pitc-specific operations. Script section requires database user to end with "pitc", but current user is %.', session_user;
         END IF;
     END
 $$;

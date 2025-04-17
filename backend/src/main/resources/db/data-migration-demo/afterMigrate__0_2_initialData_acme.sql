@@ -2,7 +2,7 @@ DO
 $$
     BEGIN
         IF session_user like '%acme' THEN
-            RAISE NOTICE 'User validation successful (User is acme). Proceeding with acme-specific operations...';
+            RAISE NOTICE 'User validation successful (User ends with "acme"). Proceeding with acme-specific operations...';
 
             INSERT INTO okr_acme.person VALUES (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 1, true);
             INSERT INTO okr_acme.person VALUES (3, 'brantschen@puzzle.ch', 'Jean-Claude', 'Brantschen', 1, true);
@@ -287,9 +287,10 @@ $$
             INSERT INTO okr_acme.unit VALUES (6, 0, 'UNBEKANNT', false, 1);
 
 
-            RAISE NOTICE 'Executed pitc-specific tasks.';
+            RAISE NOTICE 'Executed acme-specific tasks.';
         ELSE
-            RAISE NOTICE 'Skipping pitc-specific operations. Script section requires database user "pitc", but current user is %.', session_user;
+            RAISE NOTICE 'User validation NOT successful!';
+            RAISE NOTICE 'Skipping pitc-specific operations. Script section requires database user to end with "acme", but current user is %.', session_user;
         END IF;
     END
 $$;

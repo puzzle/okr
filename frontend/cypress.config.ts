@@ -10,5 +10,11 @@ export default defineConfig({
   },
   env: {
     LOGIN_URL: 'http://localhost:8544'
-  }
+  },
+  retries: {
+    // Configure retry attempts for `cypress run`
+    runMode: 2,
+    // Configure retry attempts for `cypress open`
+    openMode: 0,
+  },
 });

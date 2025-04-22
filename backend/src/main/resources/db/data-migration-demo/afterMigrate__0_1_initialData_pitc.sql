@@ -57,48 +57,6 @@ $$
             VALUES (1122, 'test', '2024-07-02 11:46:42.259678', 'test', 1, 999, 24, 'DRAFT', NULL,
                     '2024-07-02 11:46:42.260734', 0);
             INSERT INTO okr_pitc.objective
-            VALUES (65, 'Die absolute Verrechenbarkeit von /zh ist in jedem Monat auf über 70.0%',
-                    '2023-06-26 10:53:50.28674', 'Wir erreichen eine hohe absolute Verrechenbarkeit', 1, 7, 23,
-                    'ONGOING', NULL, '2023-06-26 10:53:50.28674', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (68, '', '2023-06-27 08:24:19.508338', 'Wir machen Puzzleness sichtbarer', 1, 7, 25, 'ONGOING', NULL,
-                    '2023-06-27 08:24:19.508338', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (69, '', '2023-06-27 08:30:05.2284', 'Wir tragen technische Inhalte nach Aussen', 1, 7, 25,
-                    'ONGOING', NULL, '2023-06-27 08:30:05.2284', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (42, '', '2024-05-29 05:34:41.579936',
-                    'Wir arbeiten gerne bei Puzzle und schaffen ein positives internes Bild', 1, 7, 14, 'SUCCESSFUL',
-                    16, '2023-06-14 09:11:09.406672', 2);
-            INSERT INTO okr_pitc.objective
-            VALUES (58, '', '2023-06-20 14:21:27.063055', 'Wir verzeichnen eine gesunde Wirtschaftlichkeit', 1, 7, 21,
-                    'ONGOING', NULL, '2023-06-20 14:21:27.063055', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (60, '', '2023-06-20 13:36:22.441286',
-                    'Wir fördern die Zufriedenheit im Team und verbessern die Kommunikationswahrnehmung', 1, 7, 21,
-                    'ONGOING', NULL, '2023-06-20 13:36:22.441286', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (56, '', '2023-06-20 12:47:46.393088', 'Wir erreichen eine gesunde Wirtschaftlichkeit', 1, 7, 20,
-                    'ONGOING', NULL, '2023-06-20 12:47:46.393088', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (44, '', '2024-05-29 05:35:38.61899',
-                    'Die Marktopportunitäten sind etabliert und erreichen einen sichtbaren Fortschritt', 1, 7, 14,
-                    'NOTSUCCESSFUL', 16, '2023-06-14 10:42:03.621643', 2);
-            INSERT INTO okr_pitc.objective
-            VALUES (39, '', '2023-06-09 09:28:58.865895', 'Wir erreichen eine gesunde Wirtschaftlichkeit', 1, 7, 15,
-                    'ONGOING', NULL, '2023-06-09 09:28:58.865895', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (40, '', '2023-06-14 14:48:22.609337',
-                    'Wir fördern die Happiness unserer Member und steigern die Identifikation mit /mobility', 1, 7, 15,
-                    'ONGOING', NULL, '2023-06-14 14:48:22.609337', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (54, '', '2023-06-20 12:33:17.632481', 'Wir steigern die Wirtschaftlichkeit von WAC', 1, 7, 24,
-                    'ONGOING', NULL, '2023-06-20 12:33:17.632481', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (66, '', '2023-06-26 07:47:59.28265',
-                    'Wir optimieren unseren Newsletter, damit noch mehr Menschen von Puzzle erfahren', 1, 7, 25,
-                    'ONGOING', NULL, '2023-06-26 07:47:59.28265', 1);
-            INSERT INTO okr_pitc.objective
             VALUES (1118, 'Wir bleiben finanziell auf einem guten Level', '2024-06-25 15:15:28.096103', 'Nöötli 💸', 1,
                     6, 21, 'ONGOING', 40, '2024-06-18 13:13:13.63553', 4);
             INSERT INTO okr_pitc.objective
@@ -150,50 +108,6 @@ $$
             VALUES (1130, '', '2024-07-05 09:53:29.956073', 'Tests
 ', 1, 5, 24, 'DRAFT', NULL, '2024-07-05 09:53:29.957079', 0);
             INSERT INTO okr_pitc.objective
-            VALUES (51,
-                    'Zwei Leute, die ihr Pensum anpsasen. Mind. eine neue Person, die startet. Mehr Diversity im Team. Mehrere direkt betroffene Kunden.',
-                    '2023-06-20 12:24:44.61702', 'Embrace Change im Team', 1, 7, 23, 'ONGOING', NULL,
-                    '2023-06-20 12:24:44.61702', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (59, 'Bewusstsein was wir machen', '2023-06-25 09:22:27.334997',
-                    'Wir definieren und kommunizieren unser Dienstleistungs- und Auftragsportfolio', 1, 7, 20,
-                    'ONGOING', NULL, '2023-06-25 09:22:27.334997', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (72, '', '2023-07-27 07:39:38.193792', 'Wir steigern die Kundenzufriedenheit', 1, 7, 26, 'ONGOING',
-                    NULL, '2023-07-27 07:39:38.193792', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (57, '', '2023-06-20 14:08:48.956072',
-                    'Wir pushen New Tech und machen uns auf dem Markt weiter bemerkbar', 1, 7, 21, 'ONGOING', NULL,
-                    '2023-06-20 14:08:48.956072', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (70, '', '2023-07-27 06:23:08.507453', 'Wir tragen zum wirtschaftlichen Erfolg von Puzzle bei ', 1,
-                    7, 26, 'ONGOING', NULL, '2023-07-27 06:23:08.507453', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (43, '', '2024-05-29 05:35:10.63066',
-                    'Wir erreichen einen Quartalsgewinn und sind weiter verrechenbar gewachsen', 1, 7, 14, 'SUCCESSFUL',
-                    16, '2023-06-20 14:04:58.817841', 2);
-            INSERT INTO okr_pitc.objective
-            VALUES (47, '', '2023-06-20 10:55:46.475554', 'Wir werden Data Analytics / ML / MLOps Angebote verkaufen.',
-                    1, 7, 15, 'ONGOING', NULL, '2023-06-20 10:55:46.475554', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (61,
-                    'Das Büro, die Grundlage der Zusammenarbeit ist eingerichtet. Kürzliche Abgänge müssen kompensiert, Neueinstellungen integriert werden. /racoon wurde mit devtre fusioniert. Die technische Ausrichtung ist unklar. Die Auftragslage ändert sich, neue Aufträge kommen dazu. Die Divisionrentabilität wird eingeführt… Unter all diesen Gesichtspunkten ist es immanent wichtig, dass Team “neu” aufzustellen, damit es nicht verläddert.',
-                    '2023-06-25 09:25:50.371312',
-                    'Wir formen und stabiliseren das Team devtre und fördern die Selbstorganisation', 1, 7, 20,
-                    'ONGOING', NULL, '2023-06-25 09:25:50.371312', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (53, '', '2023-06-20 13:15:13.236034',
-                    'Wir arbeiten gerne bei Puzzle und schaffen ein positives internes Bild', 1, 7, 24, 'ONGOING', NULL,
-                    '2023-06-20 13:15:13.236034', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (49,
-                    'Im Q1 werden für mehrere Devs im Team (Andres, David, Yelan) neue Projekte oder spannende Mandate fällig. Der Salesfokus liegt entsprechend im Dev-Bereich.',
-                    '2023-06-20 12:23:16.695538', 'Spannende nächste Etappe für Devs', 1, 7, 23, 'ONGOING', NULL,
-                    '2023-06-20 12:23:16.695538', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (55, '', '2023-06-20 12:34:11.120224', 'Harder, Better, Faster, Stronger', 1, 7, 24, 'ONGOING', NULL,
-                    '2023-06-20 12:34:11.120224', 1);
-            INSERT INTO okr_pitc.objective
             VALUES (1059, 'Strategie 2024', '2024-03-21 12:42:49.144084',
                     'Wir bringen Hitobito durch ein Techboard Review aufs nächste Level', 1, 999, 26, 'DRAFT', 41,
                     '2024-03-15 09:43:41.686021', 2);
@@ -242,106 +156,192 @@ $$
                     'Platform Engineering goes brrr 🚀', 1, 6, 21, 'ONGOING', 40, '2024-06-14 13:16:40.662286', 5);
             INSERT INTO okr_pitc.objective
             VALUES (1077, '', '2024-06-14 08:12:00.689109',
-                    'Unsere Website ist bereit für das Go-Live am 1. Juli 2024. ', 1, 7, 25, 'SUCCESSFUL', 26,
+                    'Unsere Website ist bereit für das Go-Live am 1. Juli 2024. ', 1, 4, 25, 'SUCCESSFUL', 26,
                     '2024-03-19 11:52:41.575107', 3);
             INSERT INTO okr_pitc.objective
-            VALUES (1076, '', '2024-06-14 05:14:04.031166', 'Wir erzielen Erfolge in den Marktopprtunitäten.', 1, 7, 14,
+            VALUES (1076, '', '2024-06-14 05:14:04.031166', 'Wir erzielen Erfolge in den Marktopprtunitäten.', 1, 4, 14,
                     'NOTSUCCESSFUL', 16, '2024-03-19 11:22:46.963368', 4);
             INSERT INTO okr_pitc.objective
-            VALUES (1083, '', '2024-06-26 19:32:58.124949', 'Unsere Rentabilität bleibt hoch 📈', 1, 7, 21, 'SUCCESSFUL',
+            VALUES (1083, '', '2024-06-26 19:32:58.124949', 'Unsere Rentabilität bleibt hoch 📈', 1, 4, 21, 'SUCCESSFUL',
                     40, '2024-03-19 13:12:57.95764', 8);
             INSERT INTO okr_pitc.objective
-            VALUES (1056, 'Jahresstrategie 2024', '2024-07-24 06:09:12.064469', 'Wir erhöhen die Rentabilität', 1, 7,
+            VALUES (1056, 'Jahresstrategie 2024', '2024-07-24 06:09:12.064469', 'Wir erhöhen die Rentabilität', 1, 4,
                     26, 'NOTSUCCESSFUL', 1002, '2024-03-15 08:43:59.822526', 10);
-            INSERT INTO okr_pitc.objective
-            VALUES (1082, '', '2024-06-17 15:30:27.282231',
-                    'We Are Cube ist im Spotlight - Wir erhöhen unsere Präsenz am Markt', 1, 7, 24, 'SUCCESSFUL', 36,
-                    '2024-03-19 13:07:26.109211', 4);
             INSERT INTO okr_pitc.objective
             VALUES (1072,
                     'Wir wollen in anderen Projekten präsent sein und beraten/helfen um Security-Themen im Bewusstsein zu halten. Ebenso wollen wir über Newspost oder Techkafis sowie Trainings Security bei ganz Puzzle als Thema hochhalten.',
-                    '2024-06-18 08:31:18.477839', '/security unterstützt den Rest von Puzzle', 1, 7, 18,
+                    '2024-06-18 08:31:18.477839', '/security unterstützt den Rest von Puzzle', 1, 4, 18,
                     'NOTSUCCESSFUL', 27, '2024-03-19 08:44:09.365113', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (1058, '', '2024-06-07 11:39:03.580716',
+                    'Wir verankern unser Umweltengagement mittels Zertifizierung ISO 14001 nachhaltig  ', 1, 4, 26,
+                    'SUCCESSFUL', 41, '2024-03-15 09:22:25.329866', 3);
+            INSERT INTO okr_pitc.objective
+            VALUES (1050, '', '2024-06-13 06:34:31.759701',
+                    'Wir haben mit den zusätzlichen Members volle Auftragsbücher für den Sommer.', 1, 4, 14,
+                    'SUCCESSFUL', 16, '2024-03-04 15:12:46.099519', 7);
+            INSERT INTO okr_pitc.objective
+            VALUES (1080, 'Wir schärfen unser Portfolio und verbreite(r)n das Know-How.', '2024-08-16 13:02:03.02441',
+                    '/mid journey continues 🚀', 1, 4, 21, 'SUCCESSFUL', 1002, '2024-03-19 12:04:33.346437', 9);
+            INSERT INTO okr_pitc.objective
+            VALUES (1078, '', '2024-06-14 07:51:33.731057', 'Wir optimieren unsere Sponsoring- und Eventauftritte.', 1,
+                    4, 25, 'SUCCESSFUL', 26, '2024-03-19 11:52:50.589197', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (1081, 'Wir arbeiten daran, dass wir effizienter werden in unserem Daily Business.',
+                    '2024-06-14 13:05:44.70548', 'Wir werden effizienter ⚙️', 1, 4, 21, 'SUCCESSFUL', 31,
+                    '2024-03-19 13:04:25.07092', 4);
+            INSERT INTO okr_pitc.objective
+            VALUES (1057, '', '2024-06-13 06:25:19.98919', 'Wir erhöhen die Kundenzufriedenheit', 1, 4, 26,
+                    'SUCCESSFUL', 41, '2024-03-15 08:44:18.216665', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (1090, '', '2024-06-11 12:51:33.163952',
+                    'Durch Kosteneinsparungen und Wachstum verbessern wir die Wirtschaftlichkeit.', 1, 6, 14, 'ONGOING',
+                    16, '2024-06-04 08:16:36.494054', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (65, 'Die absolute Verrechenbarkeit von /zh ist in jedem Monat auf über 70.0%',
+                    '2023-06-26 10:53:50.28674', 'Wir erreichen eine hohe absolute Verrechenbarkeit', 1, 4, 23,
+                    'ONGOING', NULL, '2023-06-26 10:53:50.28674', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (68, '', '2023-06-27 08:24:19.508338', 'Wir machen Puzzleness sichtbarer', 1, 4, 25, 'ONGOING', NULL,
+                    '2023-06-27 08:24:19.508338', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (69, '', '2023-06-27 08:30:05.2284', 'Wir tragen technische Inhalte nach Aussen', 1, 4, 25,
+                    'ONGOING', NULL, '2023-06-27 08:30:05.2284', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (42, '', '2024-05-29 05:34:41.579936',
+                    'Wir arbeiten gerne bei Puzzle und schaffen ein positives internes Bild', 1, 4, 14, 'SUCCESSFUL',
+                    16, '2023-06-14 09:11:09.406672', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (58, '', '2023-06-20 14:21:27.063055', 'Wir verzeichnen eine gesunde Wirtschaftlichkeit', 1, 4, 21,
+                    'ONGOING', NULL, '2023-06-20 14:21:27.063055', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (60, '', '2023-06-20 13:36:22.441286',
+                    'Wir fördern die Zufriedenheit im Team und verbessern die Kommunikationswahrnehmung', 1, 4, 21,
+                    'ONGOING', NULL, '2023-06-20 13:36:22.441286', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (56, '', '2023-06-20 12:47:46.393088', 'Wir erreichen eine gesunde Wirtschaftlichkeit', 1, 4, 20,
+                    'ONGOING', NULL, '2023-06-20 12:47:46.393088', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (44, '', '2024-05-29 05:35:38.61899',
+                    'Die Marktopportunitäten sind etabliert und erreichen einen sichtbaren Fortschritt', 1, 4, 14,
+                    'NOTSUCCESSFUL', 16, '2023-06-14 10:42:03.621643', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (39, '', '2023-06-09 09:28:58.865895', 'Wir erreichen eine gesunde Wirtschaftlichkeit', 1, 4, 15,
+                    'ONGOING', NULL, '2023-06-09 09:28:58.865895', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (40, '', '2023-06-14 14:48:22.609337',
+                    'Wir fördern die Happiness unserer Member und steigern die Identifikation mit /mobility', 1, 4, 15,
+                    'ONGOING', NULL, '2023-06-14 14:48:22.609337', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (54, '', '2023-06-20 12:33:17.632481', 'Wir steigern die Wirtschaftlichkeit von WAC', 1, 4, 24,
+                    'ONGOING', NULL, '2023-06-20 12:33:17.632481', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (66, '', '2023-06-26 07:47:59.28265',
+                    'Wir optimieren unseren Newsletter, damit noch mehr Menschen von Puzzle erfahren', 1, 4, 25,
+                    'ONGOING', NULL, '2023-06-26 07:47:59.28265', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (51,
+                    'Zwei Leute, die ihr Pensum anpsasen. Mind. eine neue Person, die startet. Mehr Diversity im Team. Mehrere direkt betroffene Kunden.',
+                    '2023-06-20 12:24:44.61702', 'Embrace Change im Team', 1, 4, 23, 'ONGOING', NULL,
+                    '2023-06-20 12:24:44.61702', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (59, 'Bewusstsein was wir machen', '2023-06-25 09:22:27.334997',
+                    'Wir definieren und kommunizieren unser Dienstleistungs- und Auftragsportfolio', 1, 4, 20,
+                    'ONGOING', NULL, '2023-06-25 09:22:27.334997', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (72, '', '2023-07-27 07:39:38.193792', 'Wir steigern die Kundenzufriedenheit', 1, 4, 26, 'ONGOING',
+                    NULL, '2023-07-27 07:39:38.193792', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (57, '', '2023-06-20 14:08:48.956072',
+                    'Wir pushen New Tech und machen uns auf dem Markt weiter bemerkbar', 1, 4, 21, 'ONGOING', NULL,
+                    '2023-06-20 14:08:48.956072', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (70, '', '2023-07-27 06:23:08.507453', 'Wir tragen zum wirtschaftlichen Erfolg von Puzzle bei ', 1,
+                    4, 26, 'ONGOING', NULL, '2023-07-27 06:23:08.507453', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (43, '', '2024-05-29 05:35:10.63066',
+                    'Wir erreichen einen Quartalsgewinn und sind weiter verrechenbar gewachsen', 1, 4, 14, 'SUCCESSFUL',
+                    16, '2023-06-20 14:04:58.817841', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (47, '', '2023-06-20 10:55:46.475554', 'Wir werden Data Analytics / ML / MLOps Angebote verkaufen.',
+                    1, 4, 15, 'ONGOING', NULL, '2023-06-20 10:55:46.475554', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (61,
+                    'Das Büro, die Grundlage der Zusammenarbeit ist eingerichtet. Kürzliche Abgänge müssen kompensiert, Neueinstellungen integriert werden. /racoon wurde mit devtre fusioniert. Die technische Ausrichtung ist unklar. Die Auftragslage ändert sich, neue Aufträge kommen dazu. Die Divisionrentabilität wird eingeführt… Unter all diesen Gesichtspunkten ist es immanent wichtig, dass Team “neu” aufzustellen, damit es nicht verläddert.',
+                    '2023-06-25 09:25:50.371312',
+                    'Wir formen und stabiliseren das Team devtre und fördern die Selbstorganisation', 1, 4, 20,
+                    'ONGOING', NULL, '2023-06-25 09:25:50.371312', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (53, '', '2023-06-20 13:15:13.236034',
+                    'Wir arbeiten gerne bei Puzzle und schaffen ein positives internes Bild', 1, 4, 24, 'ONGOING', NULL,
+                    '2023-06-20 13:15:13.236034', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (49,
+                    'Im Q1 werden für mehrere Devs im Team (Andres, David, Yelan) neue Projekte oder spannende Mandate fällig. Der Salesfokus liegt entsprechend im Dev-Bereich.',
+                    '2023-06-20 12:23:16.695538', 'Spannende nächste Etappe für Devs', 1, 4, 23, 'ONGOING', NULL,
+                    '2023-06-20 12:23:16.695538', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (55, '', '2023-06-20 12:34:11.120224', 'Harder, Better, Faster, Stronger', 1, 4, 24, 'ONGOING', NULL,
+                    '2023-06-20 12:34:11.120224', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (1071,
+                    'Wir arbeiten strukturiert und geben Infos weiter, indem wir Infos in Gitlab erfassen. Was wir tun, richten wir an unserer Strategie und den Zielen aus, die wir uns gesetzt haben. Insbesondere wollen wir Puzzle für eine etwaige ISO27k1 Zertifizierung vorbereiten.',
+                    '2024-06-18 08:32:00.523519',
+                    'Unsere Tätigkeiten folgen der Strategie und bereiten uns auf ISO 27k1 vor', 1, 4, 18, 'SUCCESSFUL',
+                    27, '2024-03-19 08:36:14.682794', 1);
+            INSERT INTO okr_pitc.objective
+            VALUES (1051, '', '2024-06-13 06:33:24.611386',
+                    'Wir bringen Nachhaltigkeit, Marketing und Strategie aufs nächste Level.', 1, 4, 14, 'SUCCESSFUL',
+                    16, '2024-03-04 15:12:57.723467', 4);
             INSERT INTO okr_pitc.objective
             VALUES (1074, '', '2024-06-17 22:36:34.016086', 'Teamanliegen adressiert, Teamentwicklung angestossen', 1,
                     7, 23, 'NOTSUCCESSFUL', 33, '2024-03-19 10:09:48.989542', 4);
+            INSERT INTO okr_pitc.objective
+            VALUES (1073,
+                    'Wir wollen so aufgestellt sein, dass auch bei Ferienabwesenheiten u.ä. die Tätigkeiten von /security weiterlaufen können.',
+                    '2024-06-18 08:31:48.364712', 'Wir entwickeln /security weiter', 1, 4, 18, 'SUCCESSFUL', 27,
+                    '2024-03-19 09:12:45.581936', 3);
+            INSERT INTO okr_pitc.objective
+            VALUES (1053, '', '2024-06-13 13:03:31.500959',
+                    'Wir haben die /mobility Strategie kommuniziert, deren Umsetzung geplant und das Controlling aufgesetzt.',
+                    1, 4, 15, 'SUCCESSFUL', 5, '2024-03-07 14:39:32.865826', 2);
+            INSERT INTO okr_pitc.objective
+            VALUES (1063, 'Themen: Inhalte, Marketing, Sales, Sponsoring, Events', '2024-08-05 21:14:10.641943',
+                    'Wir schärfen «Digitale Lösungen» sowie unsere Events- und Sponsoring-Aktivitäten', 1, 7, 20,
+                    'NOTSUCCESSFUL', 1001, '2024-03-18 15:56:23.573056', 7);
+            INSERT INTO okr_pitc.objective
+            VALUES (1055, '', '2024-08-21 14:56:58.993085',
+                    'Wir sind in den Bereichen BBT, /mobility und Anzahl FTE gut organisiert und haben die Basis für einen erfolgreichen Start in das neue Geschäftsjahr gelegt. ',
+                    1, 7, 15, 'NOTSUCCESSFUL', 1002, '2024-03-07 14:43:59.102685', 8);
+            INSERT INTO okr_pitc.objective
+            VALUES (1064, 'Themen: Auslastung, Rentabilität', '2024-07-24 06:14:51.402763', 'Wir sind wirtschaftlich gesund aufgestellt
+', 1, 7, 20, 'NOTSUCCESSFUL', 1002, '2024-03-18 15:56:49.027715', 5);
             INSERT INTO okr_pitc.objective
             VALUES (1062, 'Themen: Team, Zusammenarbeit, Selbstorganisation, Bereichsstruktur',
                     '2024-08-12 06:42:48.511085',
                     'Wir haben uns in den Bereichen Selbstorganisation und Arbeit im Team weiterentwickelt', 1, 7, 20,
                     'SUCCESSFUL', 1002, '2024-03-18 15:53:39.625582', 7);
             INSERT INTO okr_pitc.objective
-            VALUES (1058, '', '2024-06-07 11:39:03.580716',
-                    'Wir verankern unser Umweltengagement mittels Zertifizierung ISO 14001 nachhaltig  ', 1, 7, 26,
-                    'SUCCESSFUL', 41, '2024-03-15 09:22:25.329866', 3);
-            INSERT INTO okr_pitc.objective
-            VALUES (1050, '', '2024-06-13 06:34:31.759701',
-                    'Wir haben mit den zusätzlichen Members volle Auftragsbücher für den Sommer.', 1, 7, 14,
-                    'SUCCESSFUL', 16, '2024-03-04 15:12:46.099519', 7);
-            INSERT INTO okr_pitc.objective
-            VALUES (1080, 'Wir schärfen unser Portfolio und verbreite(r)n das Know-How.', '2024-08-16 13:02:03.02441',
-                    '/mid journey continues 🚀', 1, 7, 21, 'SUCCESSFUL', 1002, '2024-03-19 12:04:33.346437', 9);
-            INSERT INTO okr_pitc.objective
-            VALUES (1064, 'Themen: Auslastung, Rentabilität', '2024-07-24 06:14:51.402763', 'Wir sind wirtschaftlich gesund aufgestellt
-', 1, 7, 20, 'NOTSUCCESSFUL', 1002, '2024-03-18 15:56:49.027715', 5);
+            VALUES (1082, '', '2024-06-17 15:30:27.282231',
+                    'We Are Cube ist im Spotlight - Wir erhöhen unsere Präsenz am Markt', 1, 7, 24, 'SUCCESSFUL', 36,
+                    '2024-03-19 13:07:26.109211', 4);
             INSERT INTO okr_pitc.objective
             VALUES (1054, '', '2024-06-17 15:52:55.871115',
                     'Wir haben die strategische Stossrichtung "Technologieshift" ausgearbeitet und vorhandene Opportunitäten umgesetzt.',
                     1, 7, 15, 'NOTSUCCESSFUL', 20, '2024-03-07 14:40:45.156034', 7);
             INSERT INTO okr_pitc.objective
-            VALUES (1078, '', '2024-06-14 07:51:33.731057', 'Wir optimieren unsere Sponsoring- und Eventauftritte.', 1,
-                    7, 25, 'SUCCESSFUL', 26, '2024-03-19 11:52:50.589197', 2);
-            INSERT INTO okr_pitc.objective
-            VALUES (1084, '', '2024-06-17 15:32:42.47863', 'We Are Calibrating', 1, 7, 24, 'SUCCESSFUL', 36,
-                    '2024-03-19 13:14:17.045939', 2);
-            INSERT INTO okr_pitc.objective
             VALUES (1075, '', '2024-06-17 22:37:58.553863',
                     'Planung für den Q1 aufgefüllt und neue Members rekrutiert.', 1, 7, 23, 'NOTSUCCESSFUL', 33,
                     '2024-03-19 10:12:31.793629', 3);
             INSERT INTO okr_pitc.objective
-            VALUES (1081, 'Wir arbeiten daran, dass wir effizienter werden in unserem Daily Business.',
-                    '2024-06-14 13:05:44.70548', 'Wir werden effizienter ⚙️', 1, 7, 21, 'SUCCESSFUL', 31,
-                    '2024-03-19 13:04:25.07092', 4);
-            INSERT INTO okr_pitc.objective
-            VALUES (1071,
-                    'Wir arbeiten strukturiert und geben Infos weiter, indem wir Infos in Gitlab erfassen. Was wir tun, richten wir an unserer Strategie und den Zielen aus, die wir uns gesetzt haben. Insbesondere wollen wir Puzzle für eine etwaige ISO27k1 Zertifizierung vorbereiten.',
-                    '2024-06-18 08:32:00.523519',
-                    'Unsere Tätigkeiten folgen der Strategie und bereiten uns auf ISO 27k1 vor', 1, 7, 18, 'SUCCESSFUL',
-                    27, '2024-03-19 08:36:14.682794', 1);
-            INSERT INTO okr_pitc.objective
-            VALUES (1063, 'Themen: Inhalte, Marketing, Sales, Sponsoring, Events', '2024-08-05 21:14:10.641943',
-                    'Wir schärfen «Digitale Lösungen» sowie unsere Events- und Sponsoring-Aktivitäten', 1, 7, 20,
-                    'NOTSUCCESSFUL', 1001, '2024-03-18 15:56:23.573056', 7);
+            VALUES (1065, '', '2024-07-24 06:13:27.326914', 'Chole hole...', 1, 7, 23, 'SUCCESSFUL', 1002,
+                    '2024-03-19 06:37:37.276552', 8);
             INSERT INTO okr_pitc.objective
             VALUES (1079, '', '2024-06-17 15:29:57.731645', 'Wir steigern die Wirtschaftlichkeit von WAC', 1, 7, 24,
                     'NOTSUCCESSFUL', 36, '2024-03-19 11:57:49.718649', 6);
             INSERT INTO okr_pitc.objective
-            VALUES (1073,
-                    'Wir wollen so aufgestellt sein, dass auch bei Ferienabwesenheiten u.ä. die Tätigkeiten von /security weiterlaufen können.',
-                    '2024-06-18 08:31:48.364712', 'Wir entwickeln /security weiter', 1, 7, 18, 'SUCCESSFUL', 27,
-                    '2024-03-19 09:12:45.581936', 3);
-            INSERT INTO okr_pitc.objective
-            VALUES (1053, '', '2024-06-13 13:03:31.500959',
-                    'Wir haben die /mobility Strategie kommuniziert, deren Umsetzung geplant und das Controlling aufgesetzt.',
-                    1, 7, 15, 'SUCCESSFUL', 5, '2024-03-07 14:39:32.865826', 2);
-            INSERT INTO okr_pitc.objective
-            VALUES (1065, '', '2024-07-24 06:13:27.326914', 'Chole hole...', 1, 7, 23, 'SUCCESSFUL', 1002,
-                    '2024-03-19 06:37:37.276552', 8);
-            INSERT INTO okr_pitc.objective
-            VALUES (1057, '', '2024-06-13 06:25:19.98919', 'Wir erhöhen die Kundenzufriedenheit', 1, 7, 26,
-                    'SUCCESSFUL', 41, '2024-03-15 08:44:18.216665', 2);
-            INSERT INTO okr_pitc.objective
-            VALUES (1055, '', '2024-08-21 14:56:58.993085',
-                    'Wir sind in den Bereichen BBT, /mobility und Anzahl FTE gut organisiert und haben die Basis für einen erfolgreichen Start in das neue Geschäftsjahr gelegt. ',
-                    1, 7, 15, 'NOTSUCCESSFUL', 1002, '2024-03-07 14:43:59.102685', 8);
-            INSERT INTO okr_pitc.objective
-            VALUES (1051, '', '2024-06-13 06:33:24.611386',
-                    'Wir bringen Nachhaltigkeit, Marketing und Strategie aufs nächste Level.', 1, 7, 14, 'SUCCESSFUL',
-                    16, '2024-03-04 15:12:57.723467', 4);
-            INSERT INTO okr_pitc.objective
-            VALUES (1090, '', '2024-06-11 12:51:33.163952',
-                    'Durch Kosteneinsparungen und Wachstum verbessern wir die Wirtschaftlichkeit.', 1, 6, 14, 'ONGOING',
-                    16, '2024-06-04 08:16:36.494054', 2);
+            VALUES (1084, '', '2024-06-17 15:32:42.47863', 'We Are Calibrating', 1, 7, 24, 'SUCCESSFUL', 36,
+                    '2024-03-19 13:14:17.045939', 2);
 
 
             --
@@ -585,6 +585,13 @@ Jahresziel 2025 -> Rentabilität', 1, 1099, 1, 'ordinal', '2024-06-17 06:46:02.0
 - Sales (Yup)
 - GL Coach (Dänu)', 1, NULL);
             INSERT INTO okr_pitc.key_result
+            VALUES (1348, NULL, '', '2024-06-27 07:37:38.154735', NULL,
+                    'In der Divisionsrentabilität haben wir die Zielwerte für Divisions definiert und eingeführt.', 1,
+                    1090, 1, 'ordinal', '2024-06-04 09:09:17.565579',
+                    'Die Jahreszielwerte sind definiert und eingeführt.',
+                    'Die Quartalszielwerte sind definiert und eingeführt.',
+                    'Die Quartalszielwerte werden von 70% der Divisions erreicht.', 4, NULL);
+            INSERT INTO okr_pitc.key_result
             VALUES (1192, NULL,
                     'Ziel ist es, Awareness hoch zu halten, und den Devs potenziell wichtiges Wissen zu vermitteln. Das Stretch Goal würde das dann auch gegen aussen präsentieren, um für Puzzle Werbung zu machen.',
                     '2024-03-19 13:15:54.102868', NULL,
@@ -694,6 +701,17 @@ Vorhandene Lücken sind erkannt und es ist geklärt wer den Lead übernimmt dies
                     'Actionplan überarbeitet und mindestens 5 neue konkrete Massnahmen eruiert und mit SUM Buddy abgesprochen',
                     'Actionplan mit Inputs Sum Buddy überarbeitet und vom LST Team abgenommen',
                     'Feedback von LST Team eingearbeitet und erste Massnahmen umgesetzt', 0, NULL);
+            INSERT INTO okr_pitc.key_result
+            VALUES (1186, NULL, '', NULL, NULL, 'Wir haben ein Bedrohungsmodell für Puzzle definiert.', 1, 1071, 1,
+                    'ordinal', '2024-03-19 12:03:01.575285', 'Threat Model ist ad-hoc definiert.',
+                    'Threat Model nach STRIDE definiert und in relevante Prozesse eingebettet.',
+                    'Individuelle Models für ein oder mehrere Projekte zusammen mit den Devs entwickelt.', 0, NULL);
+            INSERT INTO okr_pitc.key_result
+            VALUES (1128, NULL, '', '2024-03-19 10:35:44.31777', NULL,
+                    'Wir haben zusätzliche verrechenbare Members gewonnen.', 1, 1050, 1, 'ordinal',
+                    '2024-03-07 09:55:24.832574', 'Wir schreiben fünf neue Stellen aus.',
+                    'Wir schreiben fünf neue Stellen aus und schliessen zwei Arbeitsverträge ab.',
+                    'Wir schreiben fünf neue Stellen aus und schliessen vier Arbeitsverträge ab.', 3, NULL);
             INSERT INTO okr_pitc.key_result
             VALUES (1254, NULL,
                     'Die Marktanalyse für die Digitalen Lösungen sind abgeschlossen und die Schlussforgerungen liegen vor. Wir führen einen Workshop durch, um Angebot und Schwerpunkte zum Thema Digitale Lösungen zu definieren. Ein Vermarktungsplan und eine Go-To-Market Strategie ist erarbeitet und hilft uns bei der weiteren Marktbearbeitung.',
@@ -815,13 +833,6 @@ Die PO-Rolle ist besetzt.', 'Pro Flavour ist ein fertiger modularer Blueprint er
                     'Es wurden alle Massnahmen aus dem Action-Plan umgesetzt',
                     'Es wurde mindestens ein neuer Lead generiert', 5, NULL);
             INSERT INTO okr_pitc.key_result
-            VALUES (1348, NULL, '', '2024-06-27 07:37:38.154735', NULL,
-                    'In der Divisionsrentabilität haben wir die Zielwerte für Divisions definiert und eingeführt.', 1,
-                    1090, 1, 'ordinal', '2024-06-04 09:09:17.565579',
-                    'Die Jahreszielwerte sind definiert und eingeführt.',
-                    'Die Quartalszielwerte sind definiert und eingeführt.',
-                    'Die Quartalszielwerte werden von 70% der Divisions erreicht.', 4, NULL);
-            INSERT INTO okr_pitc.key_result
             VALUES (1278, NULL, 'Kleine Bubble, die wir beeinflussen können', '2024-06-18 12:50:23.599892', NULL,
                     'Unsere Wir vertiefen und etablieren die drei Fokusthemen “Ziele”, “Verantwortung” und “Beteiligung an Entscheiden”',
                     1, 1102, 1, 'ordinal', '2024-06-17 10:20:09.572591', 'Die 3 Fokusthemen wurden im Quartalsworkshop weiterentwickelt:
@@ -938,6 +949,18 @@ Zielliste für Inhalt erfasst. ',
                     'Wir haben zwei Zusagen für ein Sponsoringpackage. ',
                     'Wir haben drei Zusagen für ein Sponsoringpackage.', 2, NULL);
             INSERT INTO okr_pitc.key_result
+            VALUES (1268, NULL,
+                    'Wir halten das monatliche Wartungsbduget von 63.5h (gemessen wird März, April und Mai 24)  ',
+                    '2024-06-18 12:25:27.269657', NULL, 'wir halten uns an das monatliche Wartungsbudget', 1, 1099, 1,
+                    'ordinal', '2024-06-17 06:46:02.080958', '1 Monat < 63.5 h ', ' 3 Monate < 63.5 h ',
+                    '3 Monate < 60h ', 1, NULL);
+            INSERT INTO okr_pitc.key_result
+            VALUES (1228, NULL,
+                    'Wir suchen gezielt einen Software Engineer, den wir in Acrvis aufbauen können. Die Stufe muss mindestens Professional sein. Der Beschäftigungsgrad muss mindestens 80% sein.',
+                    '2024-04-16 14:57:00.027618', NULL,
+                    'Wir stellen eine zusätzlichen, geeignete Software entwickelndes Member an', 1, 1064, 1, 'ordinal',
+                    '2024-03-19 13:27:12.483246', 'Ausschreiben', 'Gespräche führen', 'Eine Anstellungung', 2, NULL);
+            INSERT INTO okr_pitc.key_result
             VALUES (1261, NULL,
                     'Die strategischen Massnahmen 3 ("konsequentes Auftrags-  & Change-Management anwenden") und 4 ("Den effektiven Aufwand Stunden für Pauschalaufträge reduzieren" werden umgesezt. Dass nicht alle Support und Wartungsaufträge neu geführt werden können, wird im Konzept berücksichtigt.',
                     '2024-07-18 09:37:41.94327', NULL,
@@ -1051,29 +1074,6 @@ Für /mobility haben wir ein Konzept wie wir Members für Beratungseinsätze kur
                     '2024-06-17 12:03:21.24326', 'Es ist definiert, was mit Team-Aktivitäten gemeint ist?
 Es ist definiert, welches die Ziele und Inhalte der Aktivitäten (sachlich, sozial, etc.)
 ', 'Eine erste Team-Aktivität hat stattgefunden.', 'Die Team-Aktivitäten fürs GJ 24/25 sind geplant', 3, NULL);
-            INSERT INTO okr_pitc.key_result
-            VALUES (1186, NULL, '', NULL, NULL, 'Wir haben ein Bedrohungsmodell für Puzzle definiert.', 1, 1071, 1,
-                    'ordinal', '2024-03-19 12:03:01.575285', 'Threat Model ist ad-hoc definiert.',
-                    'Threat Model nach STRIDE definiert und in relevante Prozesse eingebettet.',
-                    'Individuelle Models für ein oder mehrere Projekte zusammen mit den Devs entwickelt.', 0, NULL);
-            INSERT INTO okr_pitc.key_result
-            VALUES (1128, NULL, '', '2024-03-19 10:35:44.31777', NULL,
-                    'Wir haben zusätzliche verrechenbare Members gewonnen.', 1, 1050, 1, 'ordinal',
-                    '2024-03-07 09:55:24.832574', 'Wir schreiben fünf neue Stellen aus.',
-                    'Wir schreiben fünf neue Stellen aus und schliessen zwei Arbeitsverträge ab.',
-                    'Wir schreiben fünf neue Stellen aus und schliessen vier Arbeitsverträge ab.', 3, NULL);
-            INSERT INTO okr_pitc.key_result
-            VALUES (1268, NULL,
-                    'Wir halten das monatliche Wartungsbduget von 63.5h (gemessen wird März, April und Mai 24)  ',
-                    '2024-06-18 12:25:27.269657', NULL, 'wir halten uns an das monatliche Wartungsbudget', 1, 1099, 1,
-                    'ordinal', '2024-06-17 06:46:02.080958', '1 Monat < 63.5 h ', ' 3 Monate < 63.5 h ',
-                    '3 Monate < 60h ', 1, NULL);
-            INSERT INTO okr_pitc.key_result
-            VALUES (1228, NULL,
-                    'Wir suchen gezielt einen Software Engineer, den wir in Acrvis aufbauen können. Die Stufe muss mindestens Professional sein. Der Beschäftigungsgrad muss mindestens 80% sein.',
-                    '2024-04-16 14:57:00.027618', NULL,
-                    'Wir stellen eine zusätzlichen, geeignete Software entwickelndes Member an', 1, 1064, 1, 'ordinal',
-                    '2024-03-19 13:27:12.483246', 'Ausschreiben', 'Gespräche führen', 'Eine Anstellungung', 2, NULL);
             INSERT INTO okr_pitc.key_result
             VALUES (49, 0, 'Commit (0.3): Pro Technologie ist ein Blogpost vorhanden welcher unsere Expertise zeigt; Target (0.7): Commit + Wir haben pro Technologie mindestens 3 Members mit Wissen und mindestens ein Kunde mit Interesse. Stretch (1.0) Wir haben in jeder Technologie bereits Dienstleistungsumsätze generiert. Stichdatum 15.9.
 ', '2023-06-14 10:49:06.237495', 1, 'New Tech: Puzzle ist für die gewählten Technologien am Markt bekannt ', 1, 44, 1,
@@ -3693,6 +3693,9 @@ Wie wir arbeiten -> "Arbeit im Team" und Dienstleistungsangebot -> "Ambitionen" 
                     'Recruitingbemühungen im Sys Engineering werden aufgrund aktueller Nachfrage etwas reduziert, jedoch nicht eingestellt.',
                     '2023-09-13 22:00:00', -50, 1, 77, 5, 'metric', NULL, 1);
             INSERT INTO okr_pitc.check_in
+            VALUES (2240, 'noch keine Resultate', '2024-07-09 08:55:40.911738', '', '2024-07-09 08:55:40.911741', NULL,
+                    1, 1346, 5, 'ordinal', 'FAIL', 0);
+            INSERT INTO okr_pitc.check_in
             VALUES (347,
                     '4 Zusammenhaltsfördernde Aktivitäten sind durchgeführt und werden bis am 22.9. im Bandits of the Latin Sea Team ausgewertet.',
                     '2023-09-15 09:43:20.349614', '', '2023-09-14 22:00:00', 0.7, 1, 57, 5, 'metric', NULL, 1);
@@ -3825,6 +3828,9 @@ Wie wir arbeiten -> "Arbeit im Team" und Dienstleistungsangebot -> "Ambitionen" 
             VALUES (219,
                     'Bestätigung des weiteren Vorgehens von beiden Kunden erhalten. Gute Lösung gefunden, jedoch werden die reduzierten Pensen zumindest in den nächsten Monaten noch nicht kompensiert werden können.',
                     '2023-08-24 13:08:42.224997', '', '2023-08-23 22:00:00', 0.6, 1, 80, 5, 'metric', NULL, 1);
+            INSERT INTO okr_pitc.check_in
+            VALUES (2063, 'wir sind noch nicht weiter', '2024-06-07 11:36:39.168141', '', '2024-06-07 11:36:39.168146',
+                    NULL, 1, 1150, 2, 'ordinal', 'FAIL', 1);
             INSERT INTO okr_pitc.check_in
             VALUES (1973,
                     'Das Ziel hat sich nun etwas geändert und haben ein Kostendacherhöhung erhalten. Diverse Massnahmen sind eingeleitet',
@@ -3980,12 +3986,6 @@ BAFU UX mit Oli ', '2024-06-10 08:08:45.727191', 96098, 1, 1191, 2, 'metric', NU
             VALUES (2194, 'Diese Woche werden alle Meta-Tags für das Go-Live der Website überprüft.',
                     '2024-07-01 04:26:25.028758', '', '2024-07-01 04:26:25.028762', NULL, 1, 1281, 5, 'ordinal', 'FAIL',
                     0);
-            INSERT INTO okr_pitc.check_in
-            VALUES (2063, 'wir sind noch nicht weiter', '2024-06-07 11:36:39.168141', '', '2024-06-07 11:36:39.168146',
-                    NULL, 1, 1150, 2, 'ordinal', 'FAIL', 1);
-            INSERT INTO okr_pitc.check_in
-            VALUES (2240, 'noch keine Resultate', '2024-07-09 08:55:40.911738', '', '2024-07-09 08:55:40.911741', NULL,
-                    1, 1346, 5, 'ordinal', 'FAIL', 0);
             INSERT INTO okr_pitc.check_in
             VALUES (1823,
                     'Schulungstermin am 13. Mai für sje & jh. Anschliessend Teameinführung und Start mit bestehendem & freigegebenem Content',
@@ -4150,6 +4150,9 @@ BAFU UX mit Oli ', '2024-06-10 08:08:45.727191', 96098, 1, 1191, 2, 'metric', NU
             INSERT INTO okr_pitc.check_in
             VALUES (2075, 'keine Veränderung', '2024-06-10 08:11:56.873024', '', '2024-06-10 08:11:56.873029', NULL, 1,
                     1215, 10, 'ordinal', 'TARGET', 0);
+            INSERT INTO okr_pitc.check_in
+            VALUES (1669, 'noch nicht gestartet ', '2024-04-11 13:35:21.874421', '', '2024-04-11 13:35:21.874425', NULL,
+                    1, 1153, 3, 'ordinal', 'FAIL', 0);
             INSERT INTO okr_pitc.check_in
             VALUES (1788,
                     'Es wurden diverse Massnahmen getroffen inklusive Kostendacherhöhung sowie ext. Unterstützung aufs Projekt nehmen',
@@ -4480,9 +4483,6 @@ Wir tendieren zu Ersterem. Iwan im Vorstellungs-Prozess bei der Mobi.', '2024-05
             INSERT INTO okr_pitc.check_in
             VALUES (2084, '', '2024-06-10 13:42:52.962147', '', '2024-06-11 13:48:40.370942', 947829, 1, 1230, 2,
                     'metric', NULL, 2);
-            INSERT INTO okr_pitc.check_in
-            VALUES (1669, 'noch nicht gestartet ', '2024-04-11 13:35:21.874421', '', '2024-04-11 13:35:21.874425', NULL,
-                    1, 1153, 3, 'ordinal', 'FAIL', 0);
             INSERT INTO okr_pitc.check_in
             VALUES (1668, 'Erste Analyse gemacht und Ideen sind generiert', '2024-04-11 13:34:56.955409',
                     'wegen Daily Business und ISO 14001 ist meien Zuversicht sehr klein für dieses Quartal',
@@ -5135,18 +5135,26 @@ Arbeitsstand Analyse: https://codimd.puzzle.ch/ZdHODTltQUSQPiu7AwR9EA', '2024-04
             INSERT INTO okr_pitc.completed VALUES (1110, 1083, NULL, 0);
 
 
-            INSERT INTO okr_pitc.unit
-            VALUES (1, 0, 'PROZENT', true, 1);
-            INSERT INTO okr_pitc.unit
-            VALUES (2, 0, 'ZAHL', true, 1);
-            INSERT INTO okr_pitc.unit
-            VALUES (3, 0, 'CHF', true, 1);
-            INSERT INTO okr_pitc.unit
-            VALUES (4, 0, 'EUR', true, 1);
-            INSERT INTO okr_pitc.unit
-            VALUES (5, 0, 'FTE', true, 1);
-            INSERT INTO okr_pitc.unit
-            VALUES (6, 0, 'UNBEKANNT', false, 1);
+            --
+-- Data for Name: flyway_schema_history; Type: TABLE DATA; Schema: okr_pitc; Owner: -
+--
+
+            --
+-- Data for Name: person_team; Type: TABLE DATA; Schema: okr_pitc; Owner: -
+--
+
+
+--
+-- Data for Name: unit; Type: TABLE DATA; Schema: okr_pitc; Owner: -
+--
+
+            INSERT INTO okr_pitc.unit VALUES (1, 0, 'PROZENT', true, 1);
+            INSERT INTO okr_pitc.unit VALUES (2, 0, 'ZAHL', true, 1);
+            INSERT INTO okr_pitc.unit VALUES (3, 0, 'CHF', true, 1);
+            INSERT INTO okr_pitc.unit VALUES (4, 0, 'EUR', true, 1);
+            INSERT INTO okr_pitc.unit VALUES (5, 0, 'FTE', true, 1);
+            INSERT INTO okr_pitc.unit VALUES (6, 0, 'UNBEKANNT', false, 1);
+
 
             RAISE NOTICE 'Finished successfully!';
             RAISE NOTICE 'Executed pitc-specific tasks.';

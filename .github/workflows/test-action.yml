@@ -133,7 +133,7 @@ jobs:
     needs: [build-docker-image, versioning]
     uses: ./.github/workflows/reusable__e2e-testing.yml
     with:
-      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.FULL_IMAGE_TAG }}
+      DOCKER_IMAGE_TAG: "just a tag"
 
 
 

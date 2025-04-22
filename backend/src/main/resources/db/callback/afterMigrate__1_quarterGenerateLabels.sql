@@ -38,8 +38,8 @@ WHERE id NOT BETWEEN 1 AND 8
   AND id != 999;
 
 -- "empty" label and start/end date of quarter table
-UPDATE quarter SET start_date = null;
-UPDATE quarter SET end_date = null;
+UPDATE quarter SET start_date = null where true;
+UPDATE quarter SET end_date = null where true;
 UPDATE quarter q SET label = 'label-' || q.id WHERE id < 999;
 
 -- utility functions

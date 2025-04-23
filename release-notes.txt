@@ -7,6 +7,8 @@ Version     Neuerungen
 
 unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
 
+            - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
+
 3.2.0        - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
 
              - Wartung: Updates diverser Dependencies

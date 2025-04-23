@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WithMockAuthUserSecurityContextFactory implements WithSecurityContextFactory<WithMockAuthUser> {
-    private UserPersistenceService userPersistenceService;
+    private final UserPersistenceService userPersistenceService;
 
     public WithMockAuthUserSecurityContextFactory(UserPersistenceService userPersistenceService) {
         this.userPersistenceService = userPersistenceService;
@@ -28,7 +28,9 @@ public class WithMockAuthUserSecurityContextFactory implements WithSecurityConte
                 .withFirstName("mocked user first name for test")
                 .withLastName("mocked user last name for test")
                 .build();
-        TenantContext.setCurrentTenant(annotation.tenatn());
+
+        TenantContext.setCurrentTenant(annotation.tenant());
+
         Optional<User> byEmail = this.userPersistenceService.findByEmail(annotation.email());
         byEmail.ifPresentOrElse((u) -> {
             user.setFirstName(u.getFirstName());

@@ -8,7 +8,8 @@ import CompleteDialog from '../dialogs/completeDialog';
 export default class CyOverviewPage extends Page {
   elements = {
     logo: () => cy.getByTestId('logo'),
-    teamManagement: () => cy.getByTestId('team-management')
+    teamManagement: () => cy.getByTestId('team-management'),
+    statistics: () => cy.getByTestId('statistics')
   };
 
   visitGJForTests() {
@@ -27,7 +28,7 @@ export default class CyOverviewPage extends Page {
     this.visitQuarter(3);
   }
 
-  private visitQuarter(quarter: number) {
+  visitQuarter(quarter: number) {
     cy.visit(`/?quarter=${quarter}`);
   }
 

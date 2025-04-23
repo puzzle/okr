@@ -1,0 +1,19 @@
+<div id="okr-banner" #okrBanner>
+  <div class="d-flex flex-row">
+    <div class="w-100 h-100 m-0 d-flex" slot="content">
+      <section class="d-none d-md-flex">
+        <ng-content></ng-content>
+
+
+      </section>
+
+      <section class="m-0 d-sm-flex d-md-none w-100">
+        <ng-content select="content-slim"></ng-content>
+
+      </section>
+    </div>
+    <div class="d-flex justify-content-end d-none d-md-flex">
+      <app-okr-tangram [attr.data-testId]="'okr-logo'"></app-okr-tangram>
+    </div>
+  </div>
+</div>

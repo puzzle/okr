@@ -35,7 +35,7 @@ WITH team_quarters AS (
                                                                                           FROM CHECK_IN CC
                                                                                           WHERE CC.KEY_RESULT_ID = ci.KEY_RESULT_ID)
                   INNER JOIN objective sub_o ON kr.objective_id = sub_o.id
-         ORDER BY kr.id, ci.modified_on DESC
+         ORDER BY kr.id
      ),
      key_result_counts AS (
          SELECT

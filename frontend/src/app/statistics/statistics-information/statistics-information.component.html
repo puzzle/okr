@@ -1,0 +1,15 @@
+<div class="d-flex  justify-content-center">
+  <div class="row row-cols-auto d-flex justify-content-center flex-column align-items-center gap-1 ">
+    <span class="small-text">{{ topContent }}&#8192;</span>
+    <div class="w-100">
+      <div *ngIf="chartColor && chartValue" [style]="{ backgroundColor: chartColor, height: chartHeight}"></div>
+    </div>
+
+    <div class="w-100 ">
+      <div class="bg-white h2 w-100 d-flex justify-content-center fw-bold p-2">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <span class="small-text">{{bottomContent}}</span>
+  </div>
+</div>

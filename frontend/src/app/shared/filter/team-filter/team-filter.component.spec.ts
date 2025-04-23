@@ -4,15 +4,15 @@ import { TeamFilterComponent } from './team-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { MatChipsModule } from '@angular/material/chips';
-import { TeamService } from '../../services/team.service';
-import { RefreshDataService } from '../../services/refresh-data.service';
+import { TeamService } from '../../../services/team.service';
+import { RefreshDataService } from '../../../services/refresh-data.service';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { team1, team2, team3, teamList, testUser } from '../../shared/test-data';
+import { team1, team2, team3, teamList, testUser } from '../../test-data';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { UserService } from '../../services/user.service';
-import { extractTeamsFromUser } from '../../shared/types/model/user';
-import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
+import { UserService } from '../../../services/user.service';
+import { extractTeamsFromUser } from '../../types/model/user';
+import { ApplicationBannerComponent } from '../../custom/application-banner/application-banner.component';
 
 const teamServiceMock = {
   getAllTeams: jest.fn()

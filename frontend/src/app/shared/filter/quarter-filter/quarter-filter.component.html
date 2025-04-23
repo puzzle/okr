@@ -9,8 +9,11 @@
     [attr.data-testId]="'quarter-filter'"
     ngDefaultControl
   >
-    <mat-option *ngFor="let quarter of quarters | async" [value]="quarter.id">
-      {{ quarter.fullLabel() }}
-    </mat-option>
+    <ng-container *ngFor="let quarter of quarters | async">
+      <mat-option *ngIf="quarter.isBacklogQuarter && showBacklog || !quarter.isBacklogQuarter" [value]="quarter.id">
+        {{ quarter.fullLabel() }}
+      </mat-option>
+    </ng-container>
+
   </mat-select>
 </mat-form-field>

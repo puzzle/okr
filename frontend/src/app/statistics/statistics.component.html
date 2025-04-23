@@ -1,0 +1,145 @@
+<app-application-page [elements$]="statistics" (reloadPage)="loadOverview($event)">
+  <app-application-banner app-banner>
+    <div class="d-flex flex-column ms-5">
+      <button
+        routerLink="/"
+        class="px-2 dialog-detail-button"
+        color="primary"
+        disableRipple="true"
+        mat-button
+        queryParamsHandling="preserve"
+        [attr.data-testId]="'show-all-checkins'"
+      >Zurück zur Übersicht
+      </button>
+      <h1> Auswertung </h1>
+    </div>
+  </app-application-banner>
+  <div class="container-fluid ms-1">
+    <div class="d-flex gap-2 my-3 align-items-end">
+      <div class="d-flex flex-column">
+        Quartal
+        <app-quarter-filter [showBacklog]="false"></app-quarter-filter>
+      </div>
+      <app-team-filter [minTeams]="1"></app-team-filter>
+    </div>
+
+
+    <div *ngIf="statistics| async as statistics;" class="d-flex flex-column ">
+      <div
+        class="alert alert-warning bg-warning-subtle"
+        *ngIf="statistics.objectiveAmount ==0 && statistics.keyResultAmount ==0"
+        [attr.data-testId]="'no-data-banner'"
+      >
+        Für diese Filter Kombination sind keine Objectives bzw. KeyResults vorhanden.
+      </div>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3  g-4">
+        <app-statistics-card [title]="'Objectives und Key Results'" [attr.data-testId]="'objectives-key-results'">
+          <app-statistics-information [topContent]="'Objectives'"> {{ statistics.objectiveAmount }}
+          </app-statistics-information>
+          <app-statistics-information [topContent]="'KeyResults'">{{ statistics.keyResultAmount }}
+          </app-statistics-information>
+          <app-statistics-information [topContent]="'KR\'s/Objective'">
+            <app-puzzle-icon [icon]="'average_icon.svg'" [alt]="'Average Icon'">
+            </app-puzzle-icon>
+            {{ krObjectiveRelation(statistics) | number : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
+
+        <app-statistics-card
+          [attr.data-testId]="'completed-objectives'"
+          [title]="'Anzahl abgeschlossener Objectives'"
+          [barProgress]="statistics.completedObjectivesAmount / statistics.objectiveAmount"
+        >
+          <app-statistics-information [bottomContent]="statistics.completedObjectivesAmount+'/'+statistics.objectiveAmount">
+            {{ statistics.completedObjectivesAmount / statistics.objectiveAmount || 0  | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
+
+        <app-statistics-card
+          [attr.data-testId]="'successfully-completed-objectives'"
+          [title]="'Anzahl erreichter Objectives'"
+          [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount"
+        >
+          <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
+            <app-puzzle-icon
+              [icon]="'successful-icon.svg'"
+              [alt]="'Successful Icon'"
+              [size]="20"
+              class="me-2"
+            >  </app-puzzle-icon>
+            {{ statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount || 0 | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
+
+        <app-statistics-card
+          [attr.data-testId]="'kr-min-target'"
+          [title]="'Key Results mit min. Target Zone'"
+          [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount"
+        >
+          <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
+            {{ statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount || 0 | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
+
+        <app-statistics-card
+          [attr.data-testId]="'kr-type-relation'"
+          *ngIf="krRelation(statistics.keyResultsMetricAmount, statistics.keyResultsOrdinalAmount) as relation"
+          [title]="'Verhältnis metrische vs. ordinale Key Results'"
+          [barProgress]="relation.metric"
+          [barColorPreset]="'relation'"
+        >
+          <app-statistics-information [topContent]="'metrisch'" [bottomContent]="relation.metric | percent : '1.0-1'">
+            {{ statistics.keyResultsMetricAmount }}
+          </app-statistics-information>
+          <app-statistics-information [topContent]="'ordinal'" [bottomContent]="relation.ordinal | percent : '1.0-1'">
+            {{ statistics.keyResultsOrdinalAmount }}
+          </app-statistics-information>
+        </app-statistics-card>
+
+        <app-statistics-card
+          [attr.data-testId]="'kr-progress-relation'"
+          [title]="'Verteilung der Zonen in den Key Results'"
+          *ngIf="krProgressRelation(statistics) as relation"
+        >
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInFailAmount"
+            [bottomContent]="'Fail'"
+            [chartColor]="'#AF3333'"
+            [chartValue]="relation.fail"
+            [chartSizeMultiplier]=" relation.multiplier"
+          >
+            {{ relation.fail | percent : '1.0-1' }}
+          </app-statistics-information>
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInCommitAmount"
+            [bottomContent]="'Commit'"
+            [chartColor]="'#FFCF24'"
+            [chartValue]="relation.commit"
+            [chartSizeMultiplier]=" relation.multiplier"
+          >
+            {{ relation.commit | percent : '1.0-1' }}
+          </app-statistics-information>
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInTargetAmount"
+            [bottomContent]="'Target'"
+            [chartColor]="'#247D29'"
+            [chartValue]="relation.target"
+            [chartSizeMultiplier]=" relation.multiplier"
+          >
+            {{ relation.target | percent : '1.0-1' }}
+          </app-statistics-information>
+          <app-statistics-information
+            [topContent]="statistics.keyResultsInStretchAmount"
+            [bottomContent]="'Stretch'"
+            [chartColor]="'#1C518A'"
+            [chartValue]="relation.stretch"
+            [chartSizeMultiplier]=" relation.multiplier"
+          >
+            {{ relation.stretch | percent : '1.0-1' }}
+          </app-statistics-information>
+        </app-statistics-card>
+      </div>
+    </div>
+  </div>
+
+</app-application-page>

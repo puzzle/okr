@@ -7,6 +7,8 @@ Version     Neuerungen
 
 unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
 
+            - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
+
 3.2.0        - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
 
              - Wartung: Updates diverser Dependencies
@@ -35,7 +37,6 @@ unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und tei
             - Erweiterung #1169: Deploy Workflows aufgeräumt
             - Erweiterung #1334: Model-Attribute isBacklogQuarter für eine eindeutige Identifizierung des Backlog-Quarters implementiert
 
-            - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
             - Fehlerbehebung #1410: Eine Action kann nun wieder über den Check-in Dialog als abgeschlossen markiert werden.
             - Fehlerbehebung #1255: Wenn ein Objective dupliziert wird, wird nun auch der Actionplan übernommen
             - Fehlerbehebung #1298: SCSS-Warnungen behoben

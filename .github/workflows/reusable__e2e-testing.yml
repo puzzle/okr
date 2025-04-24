@@ -68,11 +68,11 @@ jobs:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.IMAGE_FILE_NAME }}
-          path: /tmp
+          name: okr-docker-image.tar
+          path: ${{ runner.temp }}
 
       - name: Load image into Docker
-        run: docker load --input /tmp/${{ env.IMAGE_FILE_NAME }}
+        run: docker load --input ${{ runner.temp }}/okr-docker-image.tar
 
       # --- E2E Test Execution Steps (Adjust as needed) ---
       - name: Set up Docker Compose / Start Services (if needed)

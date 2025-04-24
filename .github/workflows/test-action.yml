@@ -102,13 +102,14 @@ jobs:
           tags: ${{ needs.versioning.outputs.IMAGE_TAG }}
           load: true
           push: false
-          outputs: type=docker,dest=/tmp/okr-docker-image.tar
+          outputs: type=docker,dest=${{ runner.temp }}/okr-docker-image.tar
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: okr-image
-          path: /tmp/okr-docker-image.tar
+          path: ${{ runner.temp }}/okr-docker-image.tar
+
       - name: print imagetags
         run: echo ${{ needs.versioning.outputs.IMAGE_TAG }}
       - run: echo "${{ github.run_id }}"

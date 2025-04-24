@@ -127,6 +127,8 @@ jobs:
           path: /tmp/okr-docker-image.tar
       - name: print imagetags
         run: echo ${{ needs.versioning.outputs.IMAGE_TAG }}
+      - run: echo "${{ github.run_id }}"
+
 
 
   e2e:

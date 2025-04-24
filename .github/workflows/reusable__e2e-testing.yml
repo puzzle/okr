@@ -38,6 +38,7 @@ jobs:
         run: |
           echo "${{inputs.DOCKER_IMAGE_TAG }}"
           echo "${{ github.run_id }}"
+          echo "$(ls -la /tmp/)"
           if [ -d "$E2E_DIR" ] && [ "$(ls -A $E2E_DIR)" ]; then
             FILES=$(ls $E2E_DIR | jq -R . | jq -s . | jq -c)
             echo "Found test files: $FILES"

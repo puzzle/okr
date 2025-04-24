@@ -115,7 +115,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           # Use output from the 'versioning' job
-          tags: ${{ needs.versioning.outputs.FULL_IMAGE_TAG }}
+          tags: ${{ needs.versioning.outputs.IMAGE_TAG }}
           load: true
           push: false
           outputs: type=docker,dest=/tmp/okr-docker-image.tar
@@ -126,14 +126,14 @@ jobs:
           name: okr-image
           path: /tmp/okr-docker-image.tar
       - name: print imagetags
-        run: echo ${{ needs.versioning.outputs.FULL_IMAGE_TAG }}
+        run: echo ${{ needs.versioning.outputs.IMAGE_TAG }}
 
 
   e2e:
     needs: [build-docker-image, versioning]
     uses: ./.github/workflows/reusable__e2e-testing.yml
     with:
-      DOCKER_IMAGE_TAG: "just a tag"
+      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
 
 
 

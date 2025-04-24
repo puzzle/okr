@@ -21,7 +21,7 @@ on:
         value: ${{ jobs.read-version.outputs.SEMVER_VERSION }}
       IMAGE_TAG:
         description: "Tag suffix based on version and commit (e.g., 1.2.3-abcdef)."
-        value: ${{ jobs.versioning.outputs.IMAGE_TAG_SUFFIX }}
+        value: ${{ jobs.read-version.outputs.NEW_IMAGE_TAG }}
 
     secrets:
       GH_TOKEN:

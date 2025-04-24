@@ -37,7 +37,7 @@ jobs:
         # Add error handling: If directory doesn't exist or is empty, output empty JSON array '[]'
         run: |
           echo "${{inputs.DOCKER_IMAGE_TAG }}"
-          echo "${{inputs.COMMIT_HASH }}"
+          echo "${{ github.run_id }}"
           if [ -d "$E2E_DIR" ] && [ "$(ls -A $E2E_DIR)" ]; then
             FILES=$(ls $E2E_DIR | jq -R . | jq -s . | jq -c)
             echo "Found test files: $FILES"
@@ -60,6 +60,7 @@ jobs:
       IMAGE_FILE_NAME: okr-docker-image.tar
 
     steps:
+      - run: echo "${{ github.run_id }}"
       - name: Checkout Target Repo Code (for Cypress config/plugins)
         uses: actions/checkout@v4
 

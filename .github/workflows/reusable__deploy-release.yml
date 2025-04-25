@@ -20,10 +20,10 @@ on:
         type: string
         required: true
         description: 'Target environment (e.g., PROD, STAGING, DEMO, or "No deployment (only build)")'
-      deployment_type: # Needed to decide if release/tag is appropriate
-        type: string
-        description: 'Deployment type (Major, Minor, Patch, Release from Commit)'
-        required: true
+      create_release: # Needed to decide if release/tag is appropriate
+        type: boolean
+        required: false
+        default: false
       # Infrastructure related inputs
       INFRA_OVERLAY_FOLDER:
         type: string
@@ -37,28 +37,17 @@ on:
         type: string
         required: false # Required only if deploying via GitLab repo
         description: 'FQDN of the GitLab instance hosting the infra repo.'
-      # Input to get artifact name
-      IMAGE_ARTIFACT_NAME:
-        type: string
-        required: true
-        description: 'Name of the docker image artifact from the build workflow.'
 
 
     secrets:
-      QUAY_REGISTRY:
+      DOCKER_REGISTRY:
         required: true
-      QUAY_USERNAME:
+      DOCKER_USERNAME:
         required: true
-      QUAY_TOKEN:
+      DOCKER_REGISTRY_TOKEN:
         required: true
-      # Optional secret, only needed if deploying via Git push to GitLab
       GITLAB_ACCESS_TOKEN:
         required: false
-      # Required for creating tags/releases on GitHub
-      GH_TOKEN:
-        required: true
-
-    # No outputs defined.
 
 jobs:
   upload-to-quay:
@@ -68,7 +57,7 @@ jobs:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.IMAGE_ARTIFACT_NAME }}
+          name: okr-image
           path: /tmp
 
       - name: Load image into Docker
@@ -80,9 +69,9 @@ jobs:
       - name: Log in to Quay registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.QUAY_REGISTRY }}
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_TOKEN }}
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
 
       - name: Push image to Quay
         run: |
@@ -91,6 +80,8 @@ jobs:
 
   deploy-release:
     runs-on: ubuntu-latest
+    env:
+      GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
     # Only run if a deployment environment is specified
     if: inputs.deployment_environment != 'No deployment (only build)'
     environment: ${{ inputs.deployment_environment }} # Environment context
@@ -104,23 +95,23 @@ jobs:
 
       # Deployment steps require infrastructure inputs/secrets
       - name: Checkout Infrastructure Repository
-        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
         uses: actions/checkout@v4
         with:
           repository: ${{ inputs.OKR_INFRA_REPOSITORY_PATH }}
           # Assuming GitLab token is for HTTPS access
-          token: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+          token: ${{ env.GITLAB_ACCESS_TOKEN }}
           ref: 'main' # Or configure via input if needed
           path: 'okr-infra'
 
       - name: Set up Kustomize
-        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
         uses: imranismail/setup-kustomize@v2
         with:
           kustomize-version: 'v4.0.0' # Or desired version
 
       - name: Update Kustomization
-        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
         run: |
           cd okr-infra/deployments/overlays/${{ inputs.INFRA_OVERLAY_FOLDER }}
           echo "Current directory: $(pwd)"
@@ -130,7 +121,7 @@ jobs:
           cat kustomization.yaml || echo "kustomization.yaml not found or readable"
 
       - name: Commit and push Infrastructure Changes
-        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && secrets.GITLAB_ACCESS_TOKEN != ''
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
         env:
           COMMITER_EMAIL: "actions@github.com"
           COMMITTER_NAME: "GitHub Actions"
@@ -155,33 +146,25 @@ jobs:
     # Only run if deployed AND it was a version-bumping deployment type
     if: >
       inputs.deployment_environment != 'No deployment (only build)' &&
-      inputs.deployment_type != 'Release from Commit'
+      inputs.create_release == 'true'
     needs: deploy-release # Run after deployment attempt
     permissions:
       contents: write # Permission to create tags and releases
+    env:
+      TAG_NAME: ${{ inputs.SEMVER_VERSION }}
     steps:
       - name: Checkout Target Repo Code (needed for tag context)
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.COMMIT_HASH }} # Use the specific commit hash
-          fetch-depth: 0 # Needed for tag/release notes generation
-          token: ${{ secrets.GH_TOKEN }}
 
       - name: Create Git Tag
-        env:
-          TAG_NAME: ${{ inputs.SEMVER_VERSION }} # Use the semantic version part
+        # Use the semantic version part
         run: |
-          echo "Creating git tag: ${{ env.TAG_NAME }}"
-          # Use -f to force tag update if retrying failed release, otherwise omit -f
           git tag -f ${{ env.TAG_NAME }} ${{ inputs.COMMIT_HASH }}
-          echo "Pushing git tag: ${{ env.TAG_NAME }}"
-          # Use --force to update remote tag if needed, otherwise omit --force
           git push --force origin refs/tags/${{ env.TAG_NAME }}
 
       - name: Create GitHub Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          TAG_NAME: ${{ inputs.SEMVER_VERSION }}
         run: |
           echo "Creating GitHub release for tag: ${{ env.TAG_NAME }}"
           # Use --latest if this should be marked as the latest release
@@ -191,4 +174,4 @@ jobs:
               --title="Release ${{ env.TAG_NAME }}" \
               --notes "Release based on commit ${{ inputs.COMMIT_HASH }}. Deployed to ${{ inputs.deployment_environment }}." \
               --target "${{ inputs.COMMIT_HASH }}"
-              # --generate-notes # Alternative: auto-generate notes
+              --generate-notes # Alternative: auto-generate notes

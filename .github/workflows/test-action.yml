@@ -85,18 +85,18 @@ jobs:
       COMMIT_HASH: ${{needs.versioning.outputs.SHORT_COMMIT_HASH }}
       FULL_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
       INFRA_OVERLAY_FOLDER: deployments/overlays
-      OKR_INFRA_REPOSITORY_PATH: okr-infra # Kept as original
+      OKR_INFRA_REPOSITORY_PATH: ${{ vars.OKR_INFRA_REPOSITORY_PATH }}
       PUZZLE_GITLAB_FQDN: ${{vars.PUZZLE_GITLAB_FQDN}}
       deployment_environment: ${{ inputs.deployment_environment }}
       SEMVER_VERSION: ${{ needs.versioning.outputs.SEMVER_VERSION }}
       create_release: true
     secrets:
       GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
-      DOCKER_REGISTRY: ${{ secrets.QUAY_REGISTRY }}
-      DOCKER_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      DOCKER_REGISTRY_TOKEN: ${{ secrets.QUAY_TOKEN }}
-#        DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
-#        DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
-#        DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+#      DOCKER_REGISTRY: ${{ secrets.QUAY_REGISTRY }}
+#      DOCKER_USERNAME: ${{ secrets.QUAY_USERNAME }}
+#      DOCKER_REGISTRY_TOKEN: ${{ secrets.QUAY_TOKEN }}
+      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+      DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
 
 

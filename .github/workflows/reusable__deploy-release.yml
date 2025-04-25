@@ -82,7 +82,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
-    # Only run if a deployment environment is specified
+      GITLAB_FOLDER_PATH: okr-infra/deployments/overlays/${{ inputs.INFRA_OVERLAY_FOLDER }}
+      INFRASTRUCTURE_BRANCH: main
+      COMMITER_EMAIL: "actions@github.com"
+      COMMITTER_NAME: "GitHub Actions"
+      KUSTOMIZE_VERSION: 'v4.0.0' # Or desired version
+
     if: inputs.deployment_environment != 'No deployment (only build)'
     environment: ${{ inputs.deployment_environment }} # Environment context
     needs: upload-to-quay # Ensure image is pushed before deploying
@@ -94,37 +99,26 @@ jobs:
           echo "Image to deploy: ${{ inputs.FULL_IMAGE_TAG }}"
 
       # Deployment steps require infrastructure inputs/secrets
-      - name: Checkout Infrastructure Repository
-        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ inputs.OKR_INFRA_REPOSITORY_PATH }}
-          # Assuming GitLab token is for HTTPS access
-          token: ${{ env.GITLAB_ACCESS_TOKEN }}
-          ref: 'main' # Or configure via input if needed
-          path: 'okr-infra'
+      - name: Checkout repository
+        run: |
+          git clone https://oauth2:${{ env.GITLAB_ACCESS_TOKEN }}@${{inputs.PUZZLE_GITLAB_FQDN}}:${{inputs.OKR_INFRA_REPOSITORY_PATH}}
+          cd okr-infra
+          git checkout ${{env.BRANCH_NAME}}
 
       - name: Set up Kustomize
         if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
         uses: imranismail/setup-kustomize@v2
         with:
-          kustomize-version: 'v4.0.0' # Or desired version
+          kustomize-version: ${{ env.KUSTOMIZE_VERSION}} # Or desired version
 
       - name: Update Kustomization
         if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
         run: |
-          cd okr-infra/deployments/overlays/${{ inputs.INFRA_OVERLAY_FOLDER }}
-          echo "Current directory: $(pwd)"
-          echo "Running: kustomize edit set image ${{ inputs.FULL_IMAGE_TAG }}"
+          cd ${{ env.GITLAB_FOLDER_PATH}}
           kustomize edit set image ${{ inputs.FULL_IMAGE_TAG }}
-          echo "Kustomization file after update:"
-          cat kustomization.yaml || echo "kustomization.yaml not found or readable"
 
       - name: Commit and push Infrastructure Changes
         if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
-        env:
-          COMMITER_EMAIL: "actions@github.com"
-          COMMITTER_NAME: "GitHub Actions"
         run: |
           cd okr-infra
           git config user.email "${{ env.COMMITER_EMAIL }}"
@@ -146,7 +140,7 @@ jobs:
     # Only run if deployed AND it was a version-bumping deployment type
     if: >
       inputs.deployment_environment != 'No deployment (only build)' &&
-      inputs.create_release == 'true'
+      inputs.create_release == true
     needs: deploy-release # Run after deployment attempt
     permissions:
       contents: write # Permission to create tags and releases

@@ -90,13 +90,14 @@ jobs:
       deployment_environment: ${{ inputs.deployment_environment }}
       SEMVER_VERSION: ${{ needs.versioning.outputs.SEMVER_VERSION }}
       create_release: true
+      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
     secrets:
       GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
 #      DOCKER_REGISTRY: ${{ secrets.QUAY_REGISTRY }}
 #      DOCKER_USERNAME: ${{ secrets.QUAY_USERNAME }}
 #      DOCKER_REGISTRY_TOKEN: ${{ secrets.QUAY_TOKEN }}
-      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
-      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+
       DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
 
 

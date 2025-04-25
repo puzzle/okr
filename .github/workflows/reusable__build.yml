@@ -12,22 +12,7 @@ on:
         type: string
         description: 'The full Docker image tag to build (e.g., myrepo/myapp:1.2.3-abcdef).'
         required: true
-      JAVA_VERSION:
-        type: string
-        description: 'Java version for build.'
-        required: true
-      NODE_VERSION:
-        type: string
-        description: 'Node.js version for build.'
-        required: true
 
-    outputs:
-      IMAGE_ARTIFACT_NAME:
-        description: "The name of the uploaded Docker image artifact."
-        # Construct a unique name based on the commit hash for consistency
-        value: okr-image-${{ inputs.COMMIT_HASH }}
-
-    # No secrets typically needed just for building
 
 jobs:
   build:
@@ -36,9 +21,6 @@ jobs:
     permissions:
       contents: read
       packages: read # If Maven/NPM downloads packages from GHCR
-    outputs:
-      # Expose the artifact name calculated in the workflow definition's outputs
-      IMAGE_ARTIFACT_NAME: ${{ steps.set_artifact_name.outputs.name }}
     steps:
       - name: Set artifact name # Make output accessible to subsequent steps
         id: set_artifact_name
@@ -49,16 +31,16 @@ jobs:
         with:
           ref: ${{ inputs.COMMIT_HASH }} # Checkout the exact commit
 
-      - name: Set up JDK ${{ inputs.JAVA_VERSION }}
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ inputs.JAVA_VERSION }}
+          java-version: ${{ vars.JAVA_VERSION }}
           distribution: 'temurin'
 
-      - name: Set up node ${{ inputs.NODE_VERSION }}
+      - name: Set up node ${{ vars.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ inputs.NODE_VERSION }}
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Install Frontend Dependencies
         run: cd ./frontend && npm ci
@@ -86,6 +68,6 @@ jobs:
       - name: Upload artifact (Docker image tarball)
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.set_artifact_name.outputs.name }} # Use consistent name
+          name: okr-image
           path: /tmp/okr-docker-image.tar
           retention-days: 1 # Keep artifact only briefly needed for next steps

@@ -61,59 +61,10 @@ jobs:
   build-docker-image:
     # Update dependency: now needs 'versioning' instead of 'read-version'
     needs: [versioning]
-    runs-on: ubuntu-24.04
-    env: # Define BRANCH_NAME if needed within this job's steps
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          # Checkout the branch head. Assumes 'versioning' pushed updates if needed.
-          ref: ${{ env.BRANCH_NAME }}
-
-      - name: Set up JDK ${{vars.JAVA_VERSION}}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{vars.JAVA_VERSION}}
-          distribution: 'adopt'
-
-      - name: Set up node ${{vars.NODE_VERSION}}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{vars.NODE_VERSION}}
-
-      - name: Install Dependencies
-        run: cd ./frontend && npm ci
-
-      - name: Build frontend with Angular
-        run: cd ./frontend && npm run build
-
-      - name: Build backend with Maven
-        run: mvn -B clean package --file pom.xml -P build-for-docker
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build the docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/Dockerfile
-          # Use output from the 'versioning' job
-          tags: ${{ needs.versioning.outputs.IMAGE_TAG }}
-          load: true
-          push: false
-          outputs: type=docker,dest=${{ runner.temp }}/okr-docker-image.tar
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: okr-image
-          path: ${{ runner.temp }}/okr-docker-image.tar
-
-      - name: print imagetags
-        run: echo ${{ needs.versioning.outputs.IMAGE_TAG }}
-      - run: echo "${{ github.run_id }}"
-      - run: echo "$(ls -la /tmp/)"
+    uses: ./.github/workflows/reusable__build.yml
+    with:
+      COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
+      FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}} # Use the output from the versioning job.
 
 
 

@@ -93,6 +93,13 @@ jobs:
           docker image ls -a
           echo "Image pushed: ${{ inputs.FULL_IMAGE_TAG }}"
           echo "Image digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}"
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
+        id: attest
+        with:
+          subject-name: ${{ inputs.FULL_IMAGE_TAG }}
+          subject-digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}"
+          push-to-registry: true
           
 
   deploy-release:

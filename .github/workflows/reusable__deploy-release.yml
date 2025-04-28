@@ -97,13 +97,13 @@ jobs:
           docker image ls -a
           echo "Image pushed: ${{ inputs.FULL_IMAGE_TAG }}"
           echo "Image digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}"
-      - name: Attest
-        uses: actions/attest-build-provenance@v2
-        id: attest
-        with:
-          subject-name: harbor.puzzle.ch/pitc-mobility-public/okr
-          subject-digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}
-          push-to-registry: true
+#      - name: Attest
+#        uses: actions/attest-build-provenance@v2
+#        id: attest
+#        with:
+#          subject-name: harbor.puzzle.ch/pitc-mobility-public/okr
+#          subject-digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}
+#          push-to-registry: true
           
 
   deploy-release:

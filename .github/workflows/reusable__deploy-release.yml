@@ -155,15 +155,19 @@ jobs:
     env:
       TAG_NAME: ${{ inputs.SEMVER_VERSION }}
     steps:
+      - name: Parse full commit hash
+        id: parse_commit_hash
+        run: echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
+
       - name: Checkout Target Repo Code (needed for tag context)
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.COMMIT_HASH }} # Use the specific commit hash
+          ref: ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }} # Use the specific commit hash
 
       - name: Create Git Tag
         # Use the semantic version part
         run: |
-          git tag -f ${{ env.TAG_NAME }} ${{ inputs.COMMIT_HASH }}
+          git tag -f ${{ env.TAG_NAME }} ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}
           git push --force origin refs/tags/${{ env.TAG_NAME }}
 
       - name: Create GitHub Release
@@ -174,6 +178,6 @@ jobs:
           gh release create "${{ env.TAG_NAME }}" \
               --repo="$GITHUB_REPOSITORY" \
               --title="Release ${{ env.TAG_NAME }}" \
-              --notes "Release based on commit ${{ inputs.COMMIT_HASH }}. Deployed to ${{ inputs.deployment_environment }}." \
-              --target "${{ inputs.COMMIT_HASH }}"
+              --notes "Release based on commit ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}. Deployed to ${{ inputs.deployment_environment }}." \
+              --target "${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}"
               --generate-notes # Alternative: auto-generate notes

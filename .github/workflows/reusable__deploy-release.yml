@@ -131,7 +131,7 @@ jobs:
           cd okr-infra
           git config user.email "${{ env.COMMITER_EMAIL }}"
           git config user.name "${{ env.COMMITTER_NAME }}"
-          git add ${{ env.GITLAB_FOLDER_PATH }}
+          git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit in infrastructure repository."
             exit 0

@@ -102,7 +102,7 @@ jobs:
         id: attest
         with:
           subject-name: ${{ inputs.FULL_IMAGE_TAG }}
-          subject-digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}"
+          subject-digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}
           push-to-registry: true
           
 

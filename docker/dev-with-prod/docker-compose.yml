@@ -2,6 +2,7 @@ include:
   - ../docker-compose.yml
 services:
   spring:
+    user: "${UID:-1000}:${GID:-1000}"
     tty: true
     container_name: spring
     build:
@@ -23,10 +24,11 @@ services:
     restart: on-failure
     image: maven:3.9.9-amazoncorretto-21
     command: mvn fizzed-watcher:run
+    user: "${UID:-1000}:${GID:-1000}"
     working_dir: /app-root/
     volumes:
       - ../../../okr:/app-root
-      - ~/.m2/repository:/root/.m2/repository
+      - mvn_cache:/root/.m2/repository
     depends_on:
       maven-init:
         condition: service_completed_successfully
@@ -35,11 +37,12 @@ services:
     tty: true
     container_name: maven-init
     image: maven:3.9.9-amazoncorretto-21
+#    user: "${UID:-1000}:${GID:-1000}"
     command: mvn -B clean package -P build-for-docker,debug,no-formatter
     working_dir: /app-root/
     volumes:
       - ../../../okr:/app-root
-      - ~/.m2/repository:/root/.m2/repository
+#      - mvn_cache:/
     depends_on:
       angular:
         condition: service_healthy
@@ -48,6 +51,7 @@ services:
     container_name: angular
     image: node:22
     tty: true
+    user: "${UID:-1000}:${GID:-1000}"
     restart: on-failure
     volumes:
       - ../../../okr:/opt
@@ -59,3 +63,7 @@ services:
       start_period: 30s
       timeout: 10s
 
+volumes:
+  node_modules:
+  angular_cache:
+  mvn_cache:

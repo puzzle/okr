@@ -84,6 +84,7 @@ jobs:
   deploy-release:
     needs:
 #      - e2e
+      - build-docker-image
       - versioning
     uses: ./.github/workflows/reusable__deploy-release.yml
     with:

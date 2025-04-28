@@ -1,13 +1,14 @@
 on:
   workflow_call:
     inputs:
-      project-name:
+      ENVIRONMENT_NAME:
         type: string
         required: true
 
 jobs:
   generate-and-push-sbom:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT_NAME }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -36,7 +37,7 @@ jobs:
 
       - name: 'Push merged SBOM to dependency track'
         env:
-          PROJECT_NAME: ${{ inputs.project-name }}
+          PROJECT_NAME: ${{ vars.DEPENDENCY_TRACK_PROJECT_NAME }}
         run: |
           curl --verbose -s --location --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
           --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \

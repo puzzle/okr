@@ -10,12 +10,8 @@ on:
 
 
 jobs:
-
-  # --- Replaced find-commit, update-version, read-version ---
   versioning:
-    # Using the reusable workflow
     uses: ./.github/workflows/reusable__generate-version.yml
-    # Define necessary permissions for the reusable workflow's jobs (like push)
     permissions:
       packages: write
       id-token: write
@@ -35,20 +31,15 @@ jobs:
       COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
       FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}} # Use the output from the versioning job.
 
-
-
-    e2e:
-      needs: [build-docker-image, versioning]
-      uses: ./.github/workflows/reusable__e2e-testing.yml
-      with:
-        DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
-
-
+  e2e:
+    needs: [build-docker-image, versioning]
+    uses: ./.github/workflows/reusable__e2e-testing.yml
+    with:
+      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
 
   deploy-release:
     needs:
-      #      - e2e
-      - build-docker-image
+      - e2e
       - versioning
     uses: ./.github/workflows/reusable__deploy-release.yml
     with:
@@ -68,10 +59,10 @@ jobs:
 
 
   generate-and-push-sbom:
-    uses: 'reusable__deptrack-push-action.yml'
+    uses: ./.github/workflows/reusable__deptrack-push-action.yml
     secrets: inherit
     with:
-      project-name: okr-staging
+      ENVIRONMENT_NAME: STAGING
 
   update-sonarqube:
     uses: './.github/workflows/reusable__sonarqube.yml'

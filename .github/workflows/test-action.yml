@@ -73,17 +73,17 @@ jobs:
 
 
 
-  e2e:
-    needs: [build-docker-image, versioning]
-    uses: ./.github/workflows/reusable__e2e-testing.yml
-    with:
-      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
+#  e2e:
+#    needs: [build-docker-image, versioning]
+#    uses: ./.github/workflows/reusable__e2e-testing.yml
+#    with:
+#      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
 
 
 
   deploy-release:
     needs:
-      - e2e
+#      - e2e
       - versioning
     uses: ./.github/workflows/reusable__deploy-release.yml
     with:

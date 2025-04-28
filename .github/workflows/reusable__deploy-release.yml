@@ -54,7 +54,11 @@ on:
 jobs:
   upload-to-quay:
     runs-on: ubuntu-latest
-    # This job now assumes the image exists as an artifact from a previous workflow
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+      attestations: write
     steps:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4

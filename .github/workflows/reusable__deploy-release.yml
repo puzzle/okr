@@ -82,9 +82,18 @@ jobs:
           password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
 
       - name: Push image to Quay
+        id: push-image
         run: |
           echo "Pushing image: ${{ inputs.FULL_IMAGE_TAG }}"
           docker push ${{ inputs.FULL_IMAGE_TAG }}
+          echo "IMAGE_DIGEST=$(docker images --no-trunc --quiet ${{ inputs.FULL_IMAGE_TAG }}"" >> $GITHUB_OUTPUT
+
+      - name: Show images after push
+        run: |
+          docker image ls -a
+          echo "Image pushed: ${{ inputs.FULL_IMAGE_TAG }}"
+          echo "Image digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}"
+          
 
   deploy-release:
     runs-on: ubuntu-latest
@@ -164,6 +173,7 @@ jobs:
       - name: Parse full commit hash
         id: parse_commit_hash
         run: |
+          git pull
           echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
 
       - name: Create Git Tag

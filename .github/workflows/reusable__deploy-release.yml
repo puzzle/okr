@@ -156,16 +156,15 @@ jobs:
       TAG_NAME: ${{ inputs.SEMVER_VERSION }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Parse full commit hash
-        id: parse_commit_hash
-        run: |
-          cd okr-infra
-          echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
-
       - name: Checkout Target Repo Code (needed for tag context)
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }} # Use the specific commit hash
+          ref: main # Use the specific commit hash
+
+      - name: Parse full commit hash
+        id: parse_commit_hash
+        run: |
+          echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
 
       - name: Create Git Tag
         # Use the semantic version part
@@ -183,4 +182,4 @@ jobs:
               --title="Release ${{ env.TAG_NAME }}" \
               --notes "Release based on commit ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}. Deployed to ${{ inputs.deployment_environment }}." \
               --target "${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}" \
-              --generate-notes 
+              --generate-notes

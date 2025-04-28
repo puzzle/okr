@@ -27,6 +27,11 @@ on:
           - STAGING
           - DEMO
         default: 'No deployment (only build)'
+      create_release:
+        type: boolean
+        required: false
+        default: false
+        description: 'Should a release be created?'
 
 
 jobs:
@@ -89,7 +94,7 @@ jobs:
       PUZZLE_GITLAB_FQDN: ${{vars.PUZZLE_GITLAB_FQDN}}
       deployment_environment: ${{ inputs.deployment_environment }}
       SEMVER_VERSION: ${{ needs.versioning.outputs.SEMVER_VERSION }}
-      create_release: true
+      create_release: ${{ inputs.create_release }}
       DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
       DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
     secrets:

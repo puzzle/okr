@@ -1,4 +1,4 @@
-name: 'Staging-Deploy'
+name: 'Auto Deploy Main'
 
 on:
   pull_request:
@@ -37,11 +37,11 @@ jobs:
 
 
 
-  #  e2e:
-  #    needs: [build-docker-image, versioning]
-  #    uses: ./.github/workflows/reusable__e2e-testing.yml
-  #    with:
-  #      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
+    e2e:
+      needs: [build-docker-image, versioning]
+      uses: ./.github/workflows/reusable__e2e-testing.yml
+      with:
+        DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
 
 
 
@@ -64,38 +64,18 @@ jobs:
       DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
     secrets:
       GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
-
       DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
 
 
   generate-and-push-sbom:
-    uses: './.github/workflows/deptrack-push-action.yml'
+    uses: 'reusable__deptrack-push-action.yml'
     secrets: inherit
     with:
       project-name: okr-staging
 
-  sonarqube:
-    runs-on: ubuntu-latest
-    needs: [upload-to-quay]
-    steps:
-      - uses: actions/checkout@v4
+  update-sonarqube:
+    uses: './.github/workflows/reusable__sonarqube.yml'
+    secrets: inherit
+    with:
+      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
 
-      - name: Set up JDK ${{ vars.JAVA_VERSION }}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ vars.JAVA_VERSION }}
-          distribution: 'temurin'
-
-      - name: Set up node ${{ vars.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ vars.NODE_VERSION }}
-
-      - name: Install frontend dependencies
-        run: cd frontend && npm ci
-
-      - name: Generate frontend test coverage
-        run: cd frontend && npm run test -- --coverage
-
-      - name: Build and analyze
-        run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.host.url=${{vars.SONAR_HOST_URL}}

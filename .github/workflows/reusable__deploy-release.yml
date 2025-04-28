@@ -131,12 +131,12 @@ jobs:
           cd okr-infra
           git config user.email "${{ env.COMMITER_EMAIL }}"
           git config user.name "${{ env.COMMITTER_NAME }}"
-          git add deployments/overlays/${{ inputs.INFRA_OVERLAY_FOLDER }}/kustomization.yaml
+          git add ${{ env.GITLAB_FOLDER_PATH }}
           if git diff --staged --quiet; then
             echo "No changes to commit in infrastructure repository."
             exit 0
           fi
-          git commit -m "Update image tag for ${{ inputs.INFRA_OVERLAY_FOLDER }} to ${{ inputs.FULL_IMAGE_TAG }}"
+          git commit -m "Update image tag for ${{ vars.INFRA_OVERLAY_FOLDER }} to ${{ inputs.FULL_IMAGE_TAG }}"
           echo "Pushing infrastructure changes..."
           # git pull --rebase origin main # Consider rebase if concurrent changes are common
           git push origin main # Push to the branch checked out

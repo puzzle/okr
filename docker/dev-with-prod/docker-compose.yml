@@ -15,37 +15,40 @@ services:
         - ../../../okr/backend/target:/app-root/backend
     network_mode: "host"
     depends_on:
-      maven-init:
-        condition: service_completed_successfully
+      compiler:
+        condition: service_healthy
 
-  maven:
+  compiler:
     tty: true
-    container_name: maven
+    container_name: compiler
     restart: on-failure
     image: maven:3.9.9-amazoncorretto-21
     command: mvn package fizzed-watcher:run
-    user: "${UID:-1000}:${GID:-1000}"
+#    user: "${UID:-1000}:${GID:-1000}"
     working_dir: /app-root/
     volumes:
       - ../../../okr:/app-root
       - mvn_cache:/root/.m2/repository
-    depends_on:
-      maven-init:
-        condition: service_completed_successfully
+    healthcheck:
+      test: bash -c "[ -f ./backend/target/backend-*.jar ]"
+      interval: 10s
+      retries: 999
+      start_period: 30s
+      timeout: 10s
 
-  maven-init:
-    tty: true
-    container_name: maven-init
-    image: maven:3.9.9-amazoncorretto-21
-#    user: "${UID:-1000}:${GID:-1000}"
-    command: mvn -B clean package -P build-for-docker,debug,no-formatter
-    working_dir: /app-root/
-    volumes:
-      - ../../../okr:/app-root
-#      - mvn_cache:/
-    depends_on:
-      angular:
-        condition: service_healthy
+#  maven-init:
+#    tty: true
+#    container_name: maven-init
+#    image: maven:3.9.9-amazoncorretto-21
+##    user: "${UID:-1000}:${GID:-1000}"
+#    command: mvn -B clean package -P build-for-docker,debug,no-formatter
+#    working_dir: /app-root/
+#    volumes:
+#      - ../../../okr:/app-root
+##      - mvn_cache:/
+#    depends_on:
+#      angular:
+#        condition: service_healthy
 
   angular:
     container_name: angular

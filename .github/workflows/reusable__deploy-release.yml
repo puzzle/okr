@@ -101,7 +101,7 @@ jobs:
         uses: actions/attest-build-provenance@v2
         id: attest
         with:
-          subject-name: ${{ inputs.FULL_IMAGE_TAG }}
+          subject-name: harbor.puzzle.ch/pitc-mobility-public/okr
           subject-digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}
           push-to-registry: true
           

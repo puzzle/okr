@@ -86,7 +86,7 @@ jobs:
         run: |
           echo "Pushing image: ${{ inputs.FULL_IMAGE_TAG }}"
           docker push ${{ inputs.FULL_IMAGE_TAG }}
-          echo "IMAGE_DIGEST=$(docker images --no-trunc --quiet ${{ inputs.FULL_IMAGE_TAG }}"" >> $GITHUB_OUTPUT
+          echo "IMAGE_DIGEST=$(docker images --no-trunc --quiet ${{ inputs.FULL_IMAGE_TAG }})" >> $GITHUB_OUTPUT
 
       - name: Show images after push
         run: |

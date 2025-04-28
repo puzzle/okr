@@ -158,7 +158,9 @@ jobs:
     steps:
       - name: Parse full commit hash
         id: parse_commit_hash
-        run: echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
+        run: |
+          cd okr-infra
+          echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
 
       - name: Checkout Target Repo Code (needed for tag context)
         uses: actions/checkout@v4
@@ -180,5 +182,5 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="Release ${{ env.TAG_NAME }}" \
               --notes "Release based on commit ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}. Deployed to ${{ inputs.deployment_environment }}." \
-              --target "${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}"
-              --generate-notes # Alternative: auto-generate notes
+              --target "${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}" \
+              --generate-notes 

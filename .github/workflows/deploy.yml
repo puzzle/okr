@@ -59,23 +59,18 @@ jobs:
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
   build-docker-image:
-    needs: [versioning]
+    needs: [ versioning ]
     uses: ./.github/workflows/reusable__build.yml
     with:
       COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
       FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}}
 
-
-
   e2e:
-    needs: [build-docker-image, versioning]
+    needs: [ build-docker-image, versioning ]
     uses: ./.github/workflows/reusable__e2e-testing.yml
     with:
       DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
-
-
 
   deploy-release:
     needs:
@@ -99,6 +94,7 @@ jobs:
 
   generate-and-push-sbom:
     uses: ./.github/workflows/reusable__deptrack-push-action.yml
+    needs: [ deploy-release ]
     if: ${{ inputs.deployment_environment != 'No deployment (only build)' }}
     secrets: inherit
     with:

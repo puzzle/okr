@@ -48,69 +48,9 @@ jobs:
           fi
           echo "file_list=$FILES" >> $GITHUB_OUTPUT
 
-#  # Job to run tests in parallel based on the discovered files
-#  e2e-docker:
-#    needs: get-e2e-files
-#    if: needs.get-e2e-files.outputs.file_list != '[]' && inputs.DOCKER_IMAGE_TAG != ''
-#    runs-on: ubuntu-latest # Or ubuntu-24.04
-#    strategy:
-#      fail-fast: false # Continue running other tests even if one fails
-#      matrix:
-#        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
-#    env:
-#      IMAGE_FILE_NAME: okr-docker-image.tar
-#
-#    steps:
-#      - run: echo "${{ github.run_id }}"
-#      - name: Checkout Target Repo Code (for Cypress config/plugins)
-#        uses: actions/checkout@v4
-#
-#      - name: Download Docker image artifact
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: okr-image
-#          path: ${{ runner.temp }}
-#
-#      - name: Load image into Docker
-#        run: docker load --input ${{ runner.temp }}/okr-docker-image.tar
-#
-#      # --- E2E Test Execution Steps (Adjust as needed) ---
-#      - name: Set up Docker Compose / Start Services (if needed)
-#        run: cd docker && docker compose up -d keycloak-pitc
-#
-#      - name: Run Application Container
-#        run: |
-#          docker run --network=host \
-#          -e SPRING_PROFILES_ACTIVE=integration-test \
-#          ${{inputs.DOCKER_IMAGE_TAG }} &
-#
-#      - name: Set up node for Cypress
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: ${{vars.NODE_VERSION}}
-#
-#      - name: Cypress run e2e tests
-#        uses: cypress-io/github-action@v6
-#        with:
-#          build: npm i -D cypress
-#          working-directory: frontend
-#          install: false
-#          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544'
-#          wait-on-timeout: 120
-#          browser: chrome
-#          headed: false
-#          config: baseUrl=http://pitc.okr.localhost:8080
-#          spec: cypress/e2e/${{ matrix.file }}
-#
-#      - uses: actions/upload-artifact@v4
-#        if: always()
-#        with:
-#          name: cypress-screenshots for ${{ matrix.file }}
-#          path: frontend/cypress/screenshots
 
   e2e:
     needs: get-e2e-files
-#    if: needs.get-e2e-files.outputs.file_list != '[]' && inputs.COMMIT_HASH != ''
     runs-on: ubuntu-latest # Or ubuntu-24.04
     strategy:
       fail-fast: false # Continue running other tests even if one fails

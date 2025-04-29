@@ -97,6 +97,13 @@ jobs:
         with:
           node-version: ${{vars.NODE_VERSION}}
 
+      - name: Start frontend
+        if: inputs.COMMIT_HASH != ''
+        run: |
+            cd frontend
+            npm ci
+            npm run start &
+
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:

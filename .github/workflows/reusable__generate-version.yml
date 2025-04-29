@@ -45,7 +45,20 @@ jobs:
     steps:
       - name: Validate only one property is set
         run: |
-          [[ $(( ${RELEASE_TYPE:++1} + ${COMMIT_HASH:++1} )) -eq 1 ]] || { echo "Error: Exactly one of RELEASE_TYPE or COMMIT_HASH must be set." >&2; exit 1; }
+          if [[ -n "${{ inputs.RELEASE_TYPE}}" ]]; then
+            if [[ -n "${{ inputs.COMMIT_HASH}}" ]]; then
+              echo "Error: VAR1 ('$VAR1') must be empty when VAR2 ('$VAR2') is set." >&2
+              exit 1
+            fi
+          fi
+          if [[ -n "${{ inputs.COMMIT_HASH}}" ]]; then
+            if [[ -n "${{ inputs.RELEASE_TYPE}}" ]]; then
+              echo "Error: VAR1 ('${{inputs.RELEASE_TYPE}}') must be empty when VAR2 ('${{inputs.COMMIT_HASH}}') is set." >&2
+              exit 1
+            fi
+          fi
+
+        
                
       - name: Checkout
         uses: actions/checkout@v4

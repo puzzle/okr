@@ -1,3 +1,4 @@
+name: 'Generate and push SBOM to Dependency Track'
 on:
   workflow_call:
     inputs:

@@ -19,7 +19,7 @@ jobs:
       contents: write
       attestations: write
     with:
-      version_strategy_or_hash: "Patch"
+      version_strategy_or_hash: "patch"
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,12 +60,16 @@ jobs:
 
 
   generate-and-push-sbom:
+    needs:
+      - deploy-release
     uses: ./.github/workflows/reusable__deptrack-push-action.yml
     secrets: inherit
     with:
       ENVIRONMENT_NAME: STAGING
 
   update-sonarqube:
+    needs:
+      - deploy-release
     uses: './.github/workflows/reusable__sonarqube.yml'
     secrets: inherit
     with:

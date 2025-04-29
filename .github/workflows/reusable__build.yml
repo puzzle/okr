@@ -16,20 +16,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Or ubuntu-24.04 if specific features needed
-    # Permissions needed to read code/packages during build
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
-      packages: read # If Maven/NPM downloads packages from GHCR
+      packages: read
     steps:
-      - name: Set artifact name # Make output accessible to subsequent steps
+      - name: Set artifact name
         id: set_artifact_name
         run: echo "name=okr-image-${{ inputs.COMMIT_HASH }}" >> $GITHUB_OUTPUT
 
       - name: Checkout Target Repo Code at Specific Commit
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.COMMIT_HASH }} # Checkout the exact commit
+          ref: ${{ inputs.COMMIT_HASH }}
 
       - name: Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v4

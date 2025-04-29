@@ -114,11 +114,11 @@ jobs:
       INFRASTRUCTURE_BRANCH: main
       COMMITER_EMAIL: "actions@github.com"
       COMMITTER_NAME: "GitHub Actions"
-      KUSTOMIZE_VERSION: 'v4.0.0' # Or desired version
+      KUSTOMIZE_VERSION: 'v4.0.0'
 
     if: inputs.deployment_environment != 'No deployment (only build)'
-    environment: ${{ inputs.deployment_environment }} # Environment context
-    needs: upload-to-quay # Ensure image is pushed before deploying
+    environment: ${{ inputs.deployment_environment }}
+    needs: upload-to-quay
     steps:
       - name: Show Deployment Vars
         run: |
@@ -126,7 +126,6 @@ jobs:
           echo "Infra overlay folder: ${{ inputs.INFRA_OVERLAY_FOLDER }}"
           echo "Image to deploy: ${{ inputs.FULL_IMAGE_TAG }}"
 
-      # Deployment steps require infrastructure inputs/secrets
       - name: Checkout repository
         run: |
           git clone https://oauth2:${{ env.GITLAB_ACCESS_TOKEN }}@${{inputs.PUZZLE_GITLAB_FQDN}}/${{inputs.OKR_INFRA_REPOSITORY_PATH}}.git okr-infra
@@ -161,17 +160,15 @@ jobs:
           # git pull --rebase origin main # Consider rebase if concurrent changes are common
           git push origin main # Push to the branch checked out
 
-      # Add other deployment methods here if needed (e.g., helm upgrade, kubectl apply, etc.)
 
   create-release:
     runs-on: ubuntu-latest
-    # Only run if deployed AND it was a version-bumping deployment type
     if: >
       inputs.deployment_environment != 'No deployment (only build)' &&
       inputs.create_release == true
-    needs: deploy-release # Run after deployment attempt
+    needs: deploy-release
     permissions:
-      contents: write # Permission to create tags and releases
+      contents: write
     env:
       TAG_NAME: ${{ inputs.SEMVER_VERSION }}
       GH_TOKEN: ${{ github.token }}
@@ -179,7 +176,7 @@ jobs:
       - name: Checkout Target Repo Code (needed for tag context)
         uses: actions/checkout@v4
         with:
-          ref: main # Use the specific commit hash
+          ref: main
 
       - name: Parse full commit hash
         id: parse_commit_hash
@@ -188,7 +185,6 @@ jobs:
           echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
 
       - name: Create Git Tag
-        # Use the semantic version part
         run: |
           git tag -f ${{ env.TAG_NAME }} ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}
           git push --force origin refs/tags/${{ env.TAG_NAME }}

@@ -38,19 +38,16 @@ jobs:
   debug:
     runs-on: ubuntu-24.04
     env:
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }} # Kept for consistency if needed elsewhere, though not used in this job
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
-      - name: Try to show GitHub Variables # Renamed step for clarity based on original name
+      - name: Try to show GitHub Variables
         run: |
           echo "deployment_type input is ${{ github.event.inputs.deployment_type }}" # Use input directly
           echo "commit_hash input is ${{ github.event.inputs.commit_hash }}" # Use input directly
           echo "deployment env input is ${{ github.event.inputs.deployment_environment }}" # Use input directly
 
-  # --- Replaced find-commit, update-version, read-version ---
   versioning:
-    # Using the reusable workflow
     uses: ./.github/workflows/reusable__generate-version.yml
-    # Define necessary permissions for the reusable workflow's jobs (like push)
     permissions:
       packages: write
       id-token: write
@@ -64,12 +61,11 @@ jobs:
 
 
   build-docker-image:
-    # Update dependency: now needs 'versioning' instead of 'read-version'
     needs: [versioning]
     uses: ./.github/workflows/reusable__build.yml
     with:
       COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
-      FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}} # Use the output from the versioning job.
+      FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}}
 
 
 
@@ -84,7 +80,6 @@ jobs:
   deploy-release:
     needs:
       - e2e
-#      - build-docker-image
       - versioning
     uses: ./.github/workflows/reusable__deploy-release.yml
     with:

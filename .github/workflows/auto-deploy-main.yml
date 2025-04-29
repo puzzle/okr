@@ -9,6 +9,13 @@ on:
   workflow_dispatch:
   push:
 
+env:
+  RELEASE_TYPE: Patch
+  INFRA_OVERLAY_FOLDER: deployments/overlays
+  deployment_environment: "STAGING"
+  CREATE_RELEASE: false
+
+
 
 jobs:
   versioning:
@@ -19,13 +26,12 @@ jobs:
       contents: write
       attestations: write
     with:
-      RELEASE_TYPE: Patch
+      RELEASE_TYPE: ${{env.RELEASE_TYPE}}
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
   build-docker-image:
-    # Update dependency: now needs 'versioning' instead of 'read-version'
     needs: [versioning]
     uses: ./.github/workflows/reusable__build.yml
     with:
@@ -46,12 +52,12 @@ jobs:
     with:
       COMMIT_HASH: ${{needs.versioning.outputs.SHORT_COMMIT_HASH }}
       FULL_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
-      INFRA_OVERLAY_FOLDER: deployments/overlays
+      INFRA_OVERLAY_FOLDER: ${{env.INFRA_OVERLAY_FOLDER}}
       OKR_INFRA_REPOSITORY_PATH: ${{ vars.OKR_INFRA_REPOSITORY_PATH }}
       PUZZLE_GITLAB_FQDN: ${{vars.PUZZLE_GITLAB_FQDN}}
-      deployment_environment: "STAGING"
+      deployment_environment: ${{env.deployment_environment}}
       SEMVER_VERSION: ${{ needs.versioning.outputs.SEMVER_VERSION }}
-      create_release: false
+      create_release: ${{ env.CREATE_RELEASE}}
       DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
       DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
     secrets:
@@ -65,7 +71,7 @@ jobs:
     uses: ./.github/workflows/reusable__deptrack-push-action.yml
     secrets: inherit
     with:
-      ENVIRONMENT_NAME: STAGING
+      ENVIRONMENT_NAME: ${{env.deployment_environment}}
 
   update-sonarqube:
     needs:

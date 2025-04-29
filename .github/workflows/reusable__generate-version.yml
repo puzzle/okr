@@ -14,9 +14,6 @@ on:
         type: string
 
     outputs:
-#      COMMIT_HASH:
-#        description: "The full commit hash determined."
-#        value: ${{ jobs.versioning.outputs.COMMIT_HASH }}
       SHORT_COMMIT_HASH:
         description: "The short commit hash determined."
         value: ${{ jobs.find-commit.outputs.SHORT_COMMIT_HASH }}
@@ -36,9 +33,7 @@ jobs:
 
   find-commit:
     runs-on: ubuntu-24.04
-    #    needs: verify-input
     outputs:
-#      COMMIT_HASH: "${{ env.COMMIT_HASH }}"
       SHORT_COMMIT_HASH: "${{ env.SHORT_COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -93,7 +88,6 @@ jobs:
         shell: bash
         env:
           COMMITPREFIX: '[VU]'
-#          use github action to set git config
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"

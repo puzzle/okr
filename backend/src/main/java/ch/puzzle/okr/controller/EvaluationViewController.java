@@ -30,7 +30,7 @@ public class EvaluationViewController {
         this.evaluationViewBusinessService = evaluationViewBusinessService;
     }
 
-    @Operation(summary = "Get statistics data for multiple teams in a specific quarter", description = "Get a List of teams with their objectives")
+    @Operation(summary = "Get statistics data for multiple teams in a specific quarter", description = "Get the statistics data for multiple teams in a specific quarter")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned the statistics data for the requested teams and quarter", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = EvaluationDto.class)) }),

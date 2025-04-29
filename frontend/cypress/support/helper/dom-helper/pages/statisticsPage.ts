@@ -117,7 +117,3 @@ export default class StatisticsPage extends Page {
       .should('match', new RegExp(`^${barProgress}`));
   }
 }
-/*
- * Test ids: per card
- * Test ids: per card
- */

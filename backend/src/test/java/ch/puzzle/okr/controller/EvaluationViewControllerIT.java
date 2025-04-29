@@ -72,6 +72,31 @@ class EvaluationViewControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @DisplayName("Should return 400 Bad Request if parameter quarter is missing")
+    @Test
+    void shouldReturnBadRequestWhenParameterQuarterIsMissing() throws Exception {
+        List<Long> teamIds = List.of(1L, 2L);
+
+        mvc
+                .perform(MockMvcRequestBuilders
+                        .get("/api/v2/evaluation")
+                        .param("team", teamIds.stream().map(Object::toString).toArray(String[]::new))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @DisplayName("Should return 400 Bad Request if parameter team is missing")
+    @Test
+    void shouldReturnBadRequestWhenParameterTeamIsMissing() throws Exception {
+
+        mvc
+                .perform(MockMvcRequestBuilders
+                        .get("/api/v2/evaluation")
+                        .param("quarter", "")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
     @DisplayName("Should return 404 Not Found when provided ids are not found")
     @Test
     void shouldReturnNotFoundForNonExistentIds() throws Exception {

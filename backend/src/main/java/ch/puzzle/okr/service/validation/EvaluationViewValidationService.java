@@ -1,10 +1,12 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +26,9 @@ public class EvaluationViewValidationService
     }
 
     public void validateOnGet(List<EvaluationViewId> ids) {
+        if (ids.isEmpty()) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "Es muss mindestens 1 Team angewählt werden");
+        }
         ids.forEach(id -> teamValidationService.validateOnGet(id.getTeamId()));
         quarterValidationService.validateOnGet(ids.getLast().getQuarterId());
     }

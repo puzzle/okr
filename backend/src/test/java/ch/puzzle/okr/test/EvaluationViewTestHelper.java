@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import java.util.List;
+import java.util.Random;
 
 public class EvaluationViewTestHelper {
     private EvaluationViewTestHelper() {
@@ -58,18 +59,7 @@ public class EvaluationViewTestHelper {
     }
 
     public static List<Integer> generateEvaluationViewData() {
-        return List
-                .of(randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt(),
-                    randomInt());
+        return new Random().ints(11, 0, 101).boxed().toList();
     }
 
     private static int randomInt() {

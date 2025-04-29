@@ -23,7 +23,7 @@ class EvaluationViewValidationServiceTest {
 
     @DisplayName("Should call proper methods to validate on get")
     @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNull() {
+    void shouldCallProperMethodsToValidateOnGet() {
         List<EvaluationViewId> ids = List.of(new EvaluationViewId(1L, 1L), new EvaluationViewId(2L, 1L));
         evaluationViewValidationService.validateOnGet(ids);
         verify(teamValidationService, times(2)).validateOnGet(any());

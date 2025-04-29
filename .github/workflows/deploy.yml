@@ -57,8 +57,8 @@ jobs:
       contents: write
       attestations: write
     with:
-      # Pass the combined strategy or hash input
-      version_strategy_or_hash: ${{ github.event.inputs.deployment_type == 'Release from Commit' && github.event.inputs.commit_hash || github.event.inputs.deployment_type }}
+      RELEASE_TYPE: ${{ github.event.inputs.deployment_type == 'Release from Commit' && '' || github.event.inputs.deployment_type }}
+      COMMIT_HASH: ${{ github.event.inputs.deployment_type != 'Release from Commit' &&  github.event.inputs.deployment_type || '' }}
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -73,18 +73,18 @@ jobs:
 
 
 
-#  e2e:
-#    needs: [build-docker-image, versioning]
-#    uses: ./.github/workflows/reusable__e2e-testing.yml
-#    with:
-#      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
+  e2e:
+    needs: [build-docker-image, versioning]
+    uses: ./.github/workflows/reusable__e2e-testing.yml
+    with:
+      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
 
 
 
   deploy-release:
     needs:
-#      - e2e
-      - build-docker-image
+      - e2e
+#      - build-docker-image
       - versioning
     uses: ./.github/workflows/reusable__deploy-release.yml
     with:
@@ -108,4 +108,3 @@ jobs:
     secrets: inherit
     with:
       ENVIRONMENT_NAME: ${{ inputs.deployment_environment}}
-

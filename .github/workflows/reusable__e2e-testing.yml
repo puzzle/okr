@@ -88,6 +88,16 @@ jobs:
           -e SPRING_PROFILES_ACTIVE=integration-test \
           ${{inputs.DOCKER_IMAGE_TAG }} &
           
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ vars.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: Install backend dependencies
+        if: inputs.COMMIT_HASH != ''
+        run: cd ./backend && mvn package
+
       - name: Run application from local code
         if: inputs.COMMIT_HASH != ''
         run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=integration-test &
@@ -106,6 +116,8 @@ jobs:
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
+        env:
+          PORT: ${{ inputs.COMMIT_HASH != '' && '4200' || '8080'}}
         with:
           build: npm i -D cypress
           working-directory: frontend
@@ -114,7 +126,7 @@ jobs:
           wait-on-timeout: 120
           browser: chrome
           headed: false
-          config: baseUrl=http://pitc.okr.localhost:8080
+          config: baseUrl=http://pitc.okr.localhost:${{env.PORT}}
           spec: cypress/e2e/${{ matrix.file }}
 
       - uses: actions/upload-artifact@v4

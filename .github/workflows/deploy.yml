@@ -1,0 +1,101 @@
+name: 'Deploy'
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_type:
+        type: choice
+        description: Select type of deployment
+        options:
+          - Release from Commit
+          - Major
+          - Minor
+          - Patch
+        default: 'Release from Commit'
+      commit_hash:
+        description: 'The hash of thee commit that should be deployed, defaults to the latest commit on main'
+        required: false
+        type: string
+
+      deployment_environment:
+        type: choice
+        required: true
+        description: On which environment should the deployment be done?
+        options:
+          - 'No deployment (only build)'
+          - PROD
+          - STAGING
+          - DEMO
+        default: 'No deployment (only build)'
+      create_release:
+        type: boolean
+        required: false
+        default: false
+        description: 'Should a release be created?'
+
+
+jobs:
+  debug:
+    runs-on: ubuntu-24.04
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Try to show GitHub Variables
+        run: |
+          echo "deployment_type input is ${{ github.event.inputs.deployment_type }}" # Use input directly
+          echo "commit_hash input is ${{ github.event.inputs.commit_hash }}" # Use input directly
+          echo "deployment env input is ${{ github.event.inputs.deployment_environment }}" # Use input directly
+
+  versioning:
+    uses: ./.github/workflows/reusable__generate-version.yml
+    permissions:
+      packages: write
+      id-token: write
+      contents: write
+      attestations: write
+    with:
+      RELEASE_TYPE: ${{ (github.event.inputs.deployment_type != 'Release from Commit' && inputs.deployment_type) || ''   }}
+      COMMIT_HASH: ${{ (github.event.inputs.deployment_type == 'Release from Commit' &&  inputs.commit_hash) || '' }}
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-docker-image:
+    needs: [ versioning ]
+    uses: ./.github/workflows/reusable__build.yml
+    with:
+      COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
+      FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}}
+
+  e2e:
+    needs: [ build-docker-image, versioning ]
+    uses: ./.github/workflows/reusable__e2e-testing.yml
+    with:
+      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
+
+  deploy-release:
+    needs:
+      - e2e
+      - versioning
+    uses: ./.github/workflows/reusable__deploy-release.yml
+    with:
+      COMMIT_HASH: ${{needs.versioning.outputs.SHORT_COMMIT_HASH }}
+      FULL_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
+      INFRA_OVERLAY_FOLDER: deployments/overlays
+      OKR_INFRA_REPOSITORY_PATH: ${{ vars.OKR_INFRA_REPOSITORY_PATH }}
+      PUZZLE_GITLAB_FQDN: ${{vars.PUZZLE_GITLAB_FQDN}}
+      deployment_environment: ${{ inputs.deployment_environment }}
+      SEMVER_VERSION: ${{ needs.versioning.outputs.SEMVER_VERSION }}
+      create_release: ${{ inputs.create_release }}
+      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+    secrets:
+      GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+      DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+
+  generate-and-push-sbom:
+    uses: ./.github/workflows/reusable__deptrack-push-action.yml
+    needs: [ deploy-release ]
+    if: ${{ inputs.deployment_environment != 'No deployment (only build)' }}
+    secrets: inherit
+    with:
+      ENVIRONMENT_NAME: ${{ inputs.deployment_environment}}

@@ -59,6 +59,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Stores the commit hash as environment variable
         run: |
+          echo "BRANCH_NAME=${{ env.BRANCH_NAME }}"
+          echo "COMMIT_HASH=${{ inputs.COMMIT_HASH }}"
           commit_hash=$(./scripts/get-commit.sh ${{ env.BRANCH_NAME }} ${{ inputs.COMMIT_HASH }})
           echo "Commit is set to \"$commit_hash\""
           echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV

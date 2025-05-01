@@ -16,7 +16,7 @@
   </app-application-banner>
   <div class="container-fluid ms-1">
     <div class="d-flex gap-2 my-3 align-items-end">
-      <div class="d-flex flex-column">
+      <div class="d-flex flex-column gap-2">
         Quartal
         <app-quarter-filter [showBacklog]="false"></app-quarter-filter>
       </div>
@@ -39,8 +39,6 @@
           <app-statistics-information [topContent]="'KeyResults'">{{ statistics.keyResultAmount }}
           </app-statistics-information>
           <app-statistics-information [topContent]="'KR\'s/Objective'">
-            <app-puzzle-icon [icon]="'average_icon.svg'" [alt]="'Average Icon'">
-            </app-puzzle-icon>
             {{ krObjectiveRelation(statistics) | number : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
@@ -61,12 +59,6 @@
           [barProgress]="statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount"
         >
           <app-statistics-information [bottomContent]="statistics.successfullyCompletedObjectivesAmount+'/'+statistics.objectiveAmount">
-            <app-puzzle-icon
-              [icon]="'successful-icon.svg'"
-              [alt]="'Successful Icon'"
-              [size]="20"
-              class="me-2"
-            >  </app-puzzle-icon>
             {{ statistics.successfullyCompletedObjectivesAmount / statistics.objectiveAmount || 0 | percent : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>

@@ -54,8 +54,8 @@ jobs:
       contents: write
       attestations: write
     with:
-      RELEASE_TYPE: ${{ (github.event.inputs.deployment_type != 'Release from Commit' && github.event.inputs.deployment_type) || ''   }}
-      COMMIT_HASH: ${{ (github.event.inputs.deployment_type == 'Release from Commit' &&  github.event.inputs.deployment_type) || '' }}
+      RELEASE_TYPE: ${{ (github.event.inputs.deployment_type != 'Release from Commit' && inputs.deployment_type) || ''   }}
+      COMMIT_HASH: ${{ (github.event.inputs.deployment_type == 'Release from Commit' &&  inputs.commit_hash) || '' }}
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

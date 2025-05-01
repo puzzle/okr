@@ -110,6 +110,7 @@ jobs:
   read-version:
     runs-on: ubuntu-24.04
     needs: [ update-version, find-commit ]
+    if: ${{ always() }}
     permissions:
       packages: write
       id-token: write

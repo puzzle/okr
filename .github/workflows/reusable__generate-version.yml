@@ -57,6 +57,8 @@ jobs:
                
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{env.BRANCH_NAME}}
       - name: Stores the commit hash as environment variable
         run: |
           echo "BRANCH_NAME=${{ env.BRANCH_NAME }}"

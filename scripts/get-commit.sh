@@ -22,6 +22,8 @@ fi
 
 # Normalize the commit hash
 commit_hash=$(git rev-parse --verify "$commit_hash")
+echo "Normalized commit hash: $commit_hash"
+echo "Branch: $branch"
 
 # Check if the commit belongs to the specified branch
 if [ "$(git merge-base "$commit_hash" "$branch")" != "$commit_hash" ]; then

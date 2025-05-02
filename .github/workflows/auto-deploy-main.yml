@@ -6,10 +6,6 @@ on:
       - closed
     branches: [ main ]
 
-  workflow_dispatch:
-  push:
-
-
 jobs:
   versioning:
     uses: ./.github/workflows/reusable__generate-version.yml
@@ -25,7 +21,6 @@ jobs:
 
 
   build-docker-image:
-    # Update dependency: now needs 'versioning' instead of 'read-version'
     needs: [versioning]
     uses: ./.github/workflows/reusable__build.yml
     with:

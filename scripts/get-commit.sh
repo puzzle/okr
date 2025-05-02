@@ -23,11 +23,5 @@ fi
 # Normalize the commit hash
 commit_hash=$(git rev-parse --verify "$commit_hash")
 
-# Check if the commit belongs to the specified branch
-#if [ "$(git merge-base $commit_hash $branch)" != "$commit_hash" ]; then
-#    echo "Commit is not from branch \"$branch\"" >&2
-#    exit 1
-#fi
-
 # Output the commit hash so that it can be captured
 echo "$commit_hash"

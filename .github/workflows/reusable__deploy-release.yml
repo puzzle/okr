@@ -97,6 +97,7 @@ jobs:
           docker image ls -a
           echo "Image pushed: ${{ inputs.FULL_IMAGE_TAG }}"
           echo "Image digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}"
+#     Readd after harbor update to 2.5
 #      - name: Attest
 #        uses: actions/attest-build-provenance@v2
 #        id: attest
@@ -114,7 +115,6 @@ jobs:
       INFRASTRUCTURE_BRANCH: main
       COMMITER_EMAIL: "actions@github.com"
       COMMITTER_NAME: "GitHub Actions"
-      KUSTOMIZE_VERSION: 'v4.0.0'
 
     if: inputs.deployment_environment != 'No deployment (only build)'
     environment: ${{ inputs.deployment_environment }}
@@ -135,8 +135,6 @@ jobs:
       - name: Set up Kustomize
         if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
         uses: imranismail/setup-kustomize@v2
-#        with:
-#          kustomize-version: ${{ env.KUSTOMIZE_VERSION}} # Or desired version
 
       - name: Update Kustomization
         if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''

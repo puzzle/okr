@@ -7,8 +7,7 @@ import { FilterPageChange } from '../shared/types/model/filter-page-change';
 @Component({
   selector: 'app-statistics',
   standalone: false,
-  templateUrl: './statistics.component.html',
-  styleUrl: './statistics.component.scss'
+  templateUrl: './statistics.component.html'
 })
 export class StatisticsComponent {
   statistics = new Observable<Statistics>();

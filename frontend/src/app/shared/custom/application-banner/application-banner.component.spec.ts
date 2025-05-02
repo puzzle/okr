@@ -66,7 +66,6 @@ describe('ApplicationBannerComponent', () => {
         TeamFilterComponent,
         QuarterFilterComponent,
         ObjectiveFilterComponent
-        // OkrTangramComponent
       ],
       providers: [
         { provide: RefreshDataService,

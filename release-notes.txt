@@ -5,9 +5,11 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
-unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
+unreleased   - Erweiterung #1257: Es wurde eine Auswertungsansicht implementiert
 
-            - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
+             - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
+
+             - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
 
 3.2.0        - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
 

@@ -2,7 +2,7 @@ import { PageObjectMapperBase } from './pageObjectMapperBase';
 
 export default class MatSelectHelper extends PageObjectMapperBase {
   validatePage(): void {
-    // Does not need to be implemented this comment is for making linter happy
+    // Does not need to be implemented this comment is for making the linter happy
   }
 
   selectFromDropdown(selectId: string, option: string): void {

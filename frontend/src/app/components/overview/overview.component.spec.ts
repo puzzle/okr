@@ -122,15 +122,4 @@ describe('OverviewComponent', () => {
     expect(component.overviewEntities$.next)
       .toHaveBeenCalledWith([overViewEntity1]);
   });
-  /*
-   *
-   * it('should get default if call throws error', async() => {
-   *   overviewService.getOverview.mockReturnValue(of(new Error('')));
-   *
-   *   jest.spyOn(component, 'loadOverview');
-   *   component.loadOverview(filterPage);
-   *   expect(component.loadOverview)
-   *     .toHaveBeenLastCalledWith();
-   * });
-   */
 });

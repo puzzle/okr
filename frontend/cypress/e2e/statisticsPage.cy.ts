@@ -97,7 +97,7 @@ describe('StatisticsPage', () => {
     statisticsPage.validatePage();
   });
 
-  it('Should banner if now data available', () => {
+  it('Should display banner if no data is available', () => {
     statisticsPage.visit();
     FilterHelper.do()
       .toggleOption('Alle');

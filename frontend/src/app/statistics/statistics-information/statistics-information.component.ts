@@ -13,7 +13,7 @@ export class StatisticsInformationComponent {
 
   @Input() chartValue = 0;
 
-  @Input() chartColor: number | string = '';
+  @Input() chartColor = '';
 
   @Input() chartSizeMultiplier = 1;
 

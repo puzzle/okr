@@ -21,8 +21,16 @@
         "patch"
       ],
       "automerge": true
+    },
+    {
+      "matchDatasources": [ "maven" ],
+      "matchPackagePrefixes": [
+        "ch.puzzle.okr"
+      ],
+      "matchDepTypes": [ "parent" ],
+      "enabled": false
     }
   ],
   "automergeType": "pr",
-  "timezone": "Europe/Zurich"
+  "timezone": "Europe/Zurich",
 }

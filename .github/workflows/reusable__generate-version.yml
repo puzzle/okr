@@ -1,0 +1,134 @@
+# .github/workflows/reusable-versioning.yml
+name: 'Reusable - Generate Version'
+
+on:
+  workflow_call:
+    inputs:
+      RELEASE_TYPE:
+        description: 'Major, Minor, Patch'
+        required: false
+        type: string
+      COMMIT_HASH:
+        description: 'The commit hash to be used for the release'
+        required: false
+        type: string
+
+    outputs:
+      SHORT_COMMIT_HASH:
+        description: "The short commit hash determined."
+        value: ${{ jobs.find-commit.outputs.SHORT_COMMIT_HASH }}
+      SEMVER_VERSION:
+        description: "The calculated semantic version (e.g., 1.2.3)."
+        value: ${{ jobs.read-version.outputs.SEMVER_VERSION }}
+      IMAGE_TAG:
+        description: "Tag suffix based on version and commit (e.g., 1.2.3-abcdef)."
+        value: ${{ jobs.read-version.outputs.NEW_IMAGE_TAG }}
+
+    secrets:
+      GH_TOKEN:
+        description: 'GitHub token with contents:write permission to push version updates.'
+        required: true
+
+jobs:
+
+  find-commit:
+    runs-on: ubuntu-24.04
+    outputs:
+      SHORT_COMMIT_HASH: "${{ env.SHORT_COMMIT_HASH }}"
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Validate only one property is set
+        run: |
+          if [[ -n "${{ inputs.RELEASE_TYPE}}" ]]; then
+            if [[ -n "${{ inputs.COMMIT_HASH}}" ]]; then
+              echo "Error: VAR1 ('$VAR1') must be empty when VAR2 ('$VAR2') is set." >&2
+              exit 1
+            fi
+          fi
+          if [[ -n "${{ inputs.COMMIT_HASH}}" ]]; then
+            if [[ -n "${{ inputs.RELEASE_TYPE}}" ]]; then
+              echo "Error: VAR1 ('${{inputs.RELEASE_TYPE}}') must be empty when VAR2 ('${{inputs.COMMIT_HASH}}') is set." >&2
+              exit 1
+            fi
+          fi
+
+        
+               
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{env.BRANCH_NAME}}
+      - name: Stores the commit hash as environment variable
+        run: |
+          echo "BRANCH_NAME=${{ env.BRANCH_NAME }}"
+          echo "COMMIT_HASH=${{ inputs.COMMIT_HASH }}"
+          commit_hash=$(./scripts/get-commit.sh ${{ env.BRANCH_NAME }} ${{ inputs.COMMIT_HASH }})
+          echo "Commit is set to \"$commit_hash\""
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
+          echo "SHORT_COMMIT_HASH=$(git rev-parse --short $commit_hash)" >> $GITHUB_ENV
+
+      - name: Accessing the environment variable
+        run: |
+          echo "${{ env.SHORT_COMMIT_HASH }}"
+  
+
+  update-version:
+    runs-on: ubuntu-24.04
+    needs: find-commit
+    if: inputs.RELEASE_TYPE != ''
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{env.BRANCH_NAME}}
+
+      - name: Update version
+        run: ./scripts/update-mvn-version.sh "${{ inputs.RELEASE_TYPE }}"
+
+      - name: Commit and Push Changes
+        shell: bash
+        env:
+          COMMITPREFIX: '[VU]'
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add . || {
+            echo "No files were changed, so we did not commit anything"
+            exit 1
+          }
+          git commit -m "$COMMITPREFIX Automated version update" || {
+            echo "No changes to commit, skipping push"
+            exit 0
+          }
+          git push -f origin ${{ env.BRANCH_NAME }}
+  
+  
+
+  read-version:
+    runs-on: ubuntu-24.04
+    needs: [ update-version, find-commit ]
+    if: ${{ always() }}
+    permissions:
+      packages: write
+      id-token: write
+      contents: write
+      attestations: write
+    outputs:
+      SEMVER_VERSION: ${{ steps.read_version_step.outputs.SEMVER_VERSION }}
+      NEW_IMAGE_TAG: "${{vars.DOCKER_REPOSITORY_URL}}:${{ steps.read_version_step.outputs.SEMVER_VERSION }}-${{ needs.find-commit.outputs.SHORT_COMMIT_HASH }}"
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{env.BRANCH_NAME}}
+
+      - name: read version
+        id: read_version_step
+        run: |
+          VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          echo "SEMVER_VERSION=$VERSION" >> $GITHUB_OUTPUT

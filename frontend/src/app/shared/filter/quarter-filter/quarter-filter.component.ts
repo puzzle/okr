@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { QuarterService } from '../../services/quarter.service';
-import { Quarter } from '../../shared/types/model/quarter';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { QuarterService } from '../../../services/quarter.service';
+import { Quarter } from '../../types/model/quarter';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { getValueFromQuery } from '../../shared/common';
+import { RefreshDataService } from '../../../services/refresh-data.service';
+import { getValueFromQuery } from '../../common';
 
 @Component({
   selector: 'app-quarter-filter',
@@ -14,6 +14,8 @@ import { getValueFromQuery } from '../../shared/common';
 })
 export class QuarterFilterComponent implements OnInit {
   quarters: BehaviorSubject<Quarter[]> = new BehaviorSubject<Quarter[]>([]);
+
+  @Input() showBacklog = true;
 
   @Output() quarterLabel$ = new EventEmitter<string>();
 

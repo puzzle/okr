@@ -15,6 +15,16 @@
     </a>
     <div class="d-flex align-items-center me-md-5 me-1">
       <button
+        routerLink="statistics"
+        [attr.data-testId]="'statistics'"
+        class="top-bar-entry btn visible-by-default"
+        queryParamsHandling="preserve"
+      >
+        <app-puzzle-icon [icon]="'statistics-icon.svg'" [alt]="'Statistics Icon'">
+        </app-puzzle-icon>
+        <span class="d-none d-md-flex ms-2">Auswertung</span>
+      </button>
+      <button
         routerLink="team-management"
         [attr.data-testId]="'team-management'"
         class="top-bar-entry btn visible-by-default"

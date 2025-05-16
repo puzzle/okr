@@ -9,9 +9,9 @@ import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.*;
 import org.hibernate.cfg.MappingSettings;
-import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.hikaricp.internal.HikariCPConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,13 +96,13 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
 
     private ConnectionProvider initConnectionProvider(Properties hibernateProperties) {
         Map<String, Object> configProperties = convertPropertiesToMap(hibernateProperties);
-        DriverManagerConnectionProviderImpl connectionProvider = getDriverManagerConnectionProviderImpl();
+        HikariCPConnectionProvider connectionProvider = getDriverManagerConnectionProviderImpl();
         connectionProvider.configure(configProperties);
         return connectionProvider;
     }
 
-    protected DriverManagerConnectionProviderImpl getDriverManagerConnectionProviderImpl() {
-        return new DriverManagerConnectionProviderImpl();
+    protected HikariCPConnectionProvider getDriverManagerConnectionProviderImpl() {
+        return new HikariCPConnectionProvider();
     }
 
     private Map<String, Object> convertPropertiesToMap(Properties properties) {

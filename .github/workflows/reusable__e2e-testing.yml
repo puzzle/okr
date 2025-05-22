@@ -1,0 +1,133 @@
+# .github/workflows/reusable-e2e-run-tests.yml
+name: 'Reusable - Run E2E Tests (Matrix)'
+
+on:
+  workflow_call:
+    inputs:
+      DOCKER_IMAGE_TAG:
+        type: string
+        description: 'The full Docker image tag being tested, if not set app starts local'
+        required: false
+      COMMIT_HASH:
+        type: string
+        description: 'The commit hash from which to check out the repository'
+        required: false
+
+jobs:
+  get-e2e-files:
+    runs-on: ubuntu-latest
+    outputs:
+      file_list: ${{ steps.generate-file-list.outputs.file_list }}
+    steps:
+      - name: Checkout Target Repo Code (to find test files)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
+
+      - name: Install jq (JSON processor)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Generate list of E2E test files
+        env:
+          E2E_DIR: frontend/cypress/e2e
+
+        id: generate-file-list
+        run: |
+          echo "${{inputs.DOCKER_IMAGE_TAG }}"
+          echo "${{ github.run_id }}"
+          echo "$(ls -la /tmp/)"
+          if [ -d "$E2E_DIR" ] && [ "$(ls -A $E2E_DIR)" ]; then
+            FILES=$(ls $E2E_DIR | jq -R . | jq -s . | jq -c)
+            echo "Found test files: $FILES"
+          else
+            echo "No test files found in $E2E_DIR or directory does not exist."
+            FILES="[]"
+          fi
+          echo "file_list=$FILES" >> $GITHUB_OUTPUT
+
+
+  e2e:
+    needs: get-e2e-files
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
+    env:
+      IMAGE_FILE_NAME: okr-docker-image.tar
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      COMMIT_REF: ${{ inputs.COMMIT_HASH || (github.head_ref || github.ref_name) }}
+
+    steps:
+      - name: Checkout Target Repo Code (for Cypress config/plugins)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.COMMIT_REF }}
+
+      - name: Set up Docker Compose / Start Services (if needed)
+        run: cd docker && docker compose up -d keycloak-pitc
+
+      - name: Download Docker image artifact
+        if: inputs.DOCKER_IMAGE_TAG != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: okr-image
+          path: ${{ runner.temp }}
+
+      - name: Load image into Docker
+        if: inputs.DOCKER_IMAGE_TAG != ''
+        run: docker load --input ${{ runner.temp }}/okr-docker-image.tar
+
+      - name: Run Application Container from image
+        if: inputs.DOCKER_IMAGE_TAG != ''
+        run: |
+          docker run --network=host \
+          -e SPRING_PROFILES_ACTIVE=integration-test \
+          ${{inputs.DOCKER_IMAGE_TAG }} &
+          
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ vars.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: Install backend dependencies
+        if: inputs.COMMIT_HASH != ''
+        run: cd ./backend && mvn package -DskipTests
+
+      - name: Run application from local code
+        if: inputs.COMMIT_HASH != ''
+        run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=integration-test &
+
+      - name: Set up node for Cypress
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{vars.NODE_VERSION}}
+
+      - name: Start frontend
+        if: inputs.COMMIT_HASH != ''
+        run: |
+            cd frontend
+            npm ci
+            npm run start &
+
+      - name: Cypress run e2e tests
+        uses: cypress-io/github-action@v6
+        env:
+          PORT: ${{ inputs.COMMIT_HASH != '' && '4200' || '8080'}}
+        with:
+          build: npm i -D cypress
+          working-directory: frontend
+          install: false
+          wait-on: 'http://pitc.okr.localhost:8080/config, http://localhost:8544'
+          wait-on-timeout: 120
+          browser: chrome
+          headed: false
+          config: baseUrl=http://pitc.okr.localhost:${{env.PORT}}
+          spec: cypress/e2e/${{ matrix.file }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-screenshots for ${{ matrix.file }}
+          path: frontend/cypress/screenshots

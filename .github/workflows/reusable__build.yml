@@ -1,0 +1,72 @@
+# .github/workflows/reusable-build.yml
+name: 'Reusable - Build Application and Docker Image'
+
+on:
+  workflow_call:
+    inputs:
+      COMMIT_HASH:
+        type: string
+        description: 'The full commit hash to check out and build.'
+        required: true
+      FULL_IMAGE_TAG:
+        type: string
+        description: 'The full Docker image tag to build (e.g., myrepo/myapp:1.2.3-abcdef).'
+        required: true
+
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Set artifact name
+        id: set_artifact_name
+        run: echo "name=okr-image-${{ inputs.COMMIT_HASH }}" >> $GITHUB_OUTPUT
+
+      - name: Checkout Target Repo Code at Specific Commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
+
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ vars.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: Set up node ${{ vars.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Install Frontend Dependencies
+        run: cd ./frontend && npm ci
+
+      - name: Build frontend with Angular
+        run: cd ./frontend && npm run build
+
+      - name: Build backend with Maven
+        run: mvn -B clean package --file pom.xml -P build-for-docker
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build the docker image
+        id: build_image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          tags: ${{ inputs.FULL_IMAGE_TAG }}
+          load: false # Don't load into daemon, just save as tar
+          push: false # Do not push
+          outputs: type=docker,dest=/tmp/okr-docker-image.tar # Save as tarball
+
+      - name: Upload artifact (Docker image tarball)
+        uses: actions/upload-artifact@v4
+        with:
+          name: okr-image
+          path: /tmp/okr-docker-image.tar
+          retention-days: 1 # Keep artifact only briefly needed for next steps

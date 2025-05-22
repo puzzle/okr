@@ -1,0 +1,19 @@
+<ng-content select="[app-banner]"></ng-content>
+<div
+  id="overview"
+  class="page-container px-sm-4"
+  [ngStyle]="{ 'padding-top.px': overviewPadding | async }"
+>
+  <!--  <ng-content select="content"></ng-content>-->
+  <ng-content></ng-content>
+  <div *ngIf="(elements$ | async)?.length === 0" class="d-flex align-items-center flex-column pt-5 gap-5">
+    <p id="no-team-text">Kein Team ausgewählt</p>
+    <img
+      src="{{ backgroundLogoSrc$ | async }}"
+      alt="Greyed out company logo"
+      width="242"
+      class="puzzle-logo"
+    />
+  </div>
+</div>
+<router-outlet></router-outlet>

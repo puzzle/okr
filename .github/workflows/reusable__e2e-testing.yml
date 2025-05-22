@@ -10,7 +10,7 @@ on:
         required: false
       COMMIT_HASH:
         type: string
-        description: 'The commit hash'
+        description: 'The commit hash from which to check out the repository'
         required: false
 
 jobs:

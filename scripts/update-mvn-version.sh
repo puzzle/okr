@@ -11,7 +11,7 @@ get_version_property() {
 
 # Usage: ./update_version.sh {major|minor|patch|release}
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 {major|minor|patch|release}"
+    echo "Usage: $0 {Major|Minor|Patch}"
     exit 1
 fi
 
@@ -41,7 +41,7 @@ case "$1" in
         NEW_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}"
         ;;
     *)
-        echo "Invalid parameter: $1. Please use major, minor, patch, or release."
+        echo "Invalid parameter: $1. Please use Major, Minor or Patch"
         exit 1
         ;;
 esac

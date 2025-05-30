@@ -6,6 +6,7 @@ Version     Neuerungen
 -----------------------------------------------------------------------------
 
 unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
+            - Erweiterung #1529: Healthcheck eingebaut
 
             - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
 

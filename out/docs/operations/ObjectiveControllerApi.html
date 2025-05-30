@@ -1,0 +1,160 @@
+<div class="main-content">
+  <h2><a name=""></a></h2>
+  <p>This is the  API</p>
+
+  <h2><a name="createObjective"></a>createObjective</h2>
+  <hr>
+  <p></p>
+  <p>Create a new Objective</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/objectives</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>POST</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="ObjectiveDto"><a href="">ObjectiveDto</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      
+      
+      <span class="param-in">Body: </span>
+      <span class="param-name">ObjectiveDto</span>
+      <span class="param-type">ObjectiveDto(ObjectiveDto)</span>
+      
+      <p class="param-description">The Objective as json to create a new Objective.</p>
+      </li>
+  </ul>
+  <h2><a name="deleteObjectiveById"></a>deleteObjectiveById</h2>
+  <hr>
+  <p></p>
+  <p>Delete Objective by ID</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/objectives/{id}</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>DELETE</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model=""><a href=""></a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID of an Objective to delete it.</p>
+      </li>
+  </ul>
+  <h2><a name="duplicateObjective"></a>duplicateObjective</h2>
+  <hr>
+  <p></p>
+  <p>Duplicate a given Objective</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/objectives/duplicate</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>POST</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="ObjectiveDto"><a href="">ObjectiveDto</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      
+      
+      <span class="param-in">Body: </span>
+      <span class="param-name">DuplicateObjectiveDto</span>
+      <span class="param-type">DuplicateObjectiveDto(DuplicateObjectiveDto)</span>
+      
+      <p class="param-description">The Objective which should be duplicated as JSON</p>
+      </li>
+  </ul>
+  <h2><a name="getKeyResultsFromObjective"></a>getKeyResultsFromObjective</h2>
+  <hr>
+  <p></p>
+  <p>Get all KeyResults from one Objective by ObjectiveId.</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/objectives/{id}/keyResults</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>GET</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="object"><a href="">Object</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID for getting all KeyResults of an Objective</p>
+      </li>
+  </ul>
+  <h2><a name="getObjective"></a>getObjective</h2>
+  <hr>
+  <p></p>
+  <p>Get an Objective by ID</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/objectives/{id}</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>GET</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="ObjectiveDto"><a href="">ObjectiveDto</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID for getting an Objective.</p>
+      </li>
+  </ul>
+  <h2><a name="updateObjective"></a>updateObjective</h2>
+  <hr>
+  <p></p>
+  <p>Update Objective by ID</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/objectives/{id}</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>PUT</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="ObjectiveDto"><a href="">ObjectiveDto</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID for updating an Objective.</p>
+      </li>
+      <li class="parameter">
+      
+      
+      
+      
+      <span class="param-in">Body: </span>
+      <span class="param-name">ObjectiveDto</span>
+      <span class="param-type">ObjectiveDto(ObjectiveDto)</span>
+      
+      <p class="param-description">The objective as json to update an existing Objective.</p>
+      </li>
+  </ul>
+</div>

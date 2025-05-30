@@ -32,8 +32,6 @@ import { TeamManagementMobileFilterComponent } from './team-management-mobile-fi
 import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
 import { OkrChampionPipe } from './okr-champion.pipe';
-import { PuzzleIconComponent } from '../shared/custom/puzzle-icon/puzzle-icon.component';
-import { PuzzleIconButtonComponent } from '../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
 import { ShowEditRoleComponent } from './show-edit-role/show-edit-role.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditOkrChampionComponent } from './edit-okr-champion/edit-okr-champion.component';
@@ -61,8 +59,6 @@ import { MatChip } from '@angular/material/chips';
     TeamManagementMobileFilterComponent,
     MemberListTableComponent,
     MemberListMobileComponent,
-    PuzzleIconComponent,
-    PuzzleIconButtonComponent,
     ShowEditRoleComponent,
     EditOkrChampionComponent,
     NewUserComponent,

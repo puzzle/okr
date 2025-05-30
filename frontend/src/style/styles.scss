@@ -446,3 +446,18 @@ table.okr-table {
 .cdk-drag-dragging app-error {
   display: none;
 }
+
+.page-container {
+  overflow-x: hidden;
+  background: var(--okr-overview-background-color);
+  transition: 0.5s;
+}
+
+.bottom-shadow-space {
+  padding-bottom: 4rem;
+}
+
+#statistics-progress-bar .mat-mdc-progress-bar {
+  --mdc-linear-progress-track-height: 10px;
+  --mdc-linear-progress-active-indicator-height: 10px;
+}

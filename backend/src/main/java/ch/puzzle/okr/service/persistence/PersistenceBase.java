@@ -74,7 +74,7 @@ public abstract class PersistenceBase<T, I, R> {
 
     public abstract String getModelName();
 
-    private List<T> iteratorToList(Iterable<T> iterable) {
+    protected List<T> iteratorToList(Iterable<T> iterable) {
         return StreamSupport
                 .stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED), false)
                 .toList();

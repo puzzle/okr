@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+
+@include mat.progress-bar-overrides(
+  (
+    active-indicator-color: orange,
+    track-color: red,
+  )
+);
+
+.progress-bar-color__progress {
+  --mdc-linear-progress-active-indicator-color: #03419f;
+  --mdc-linear-progress-track-color: #d9d9d9;
+}
+
+.progress-bar-color__relation {
+  --mdc-linear-progress-active-indicator-color: #3e9dd8;
+  --mdc-linear-progress-track-color: #5d6974;
+}

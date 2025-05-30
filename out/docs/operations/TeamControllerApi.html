@@ -1,0 +1,217 @@
+<div class="main-content">
+  <h2><a name=""></a></h2>
+  <p>This is the  API</p>
+
+  <h2><a name="addUsersToTeam"></a>addUsersToTeam</h2>
+  <hr>
+  <p></p>
+  <p>Add users to a team</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/teams/{id}/addusers</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>PUT</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model=""><a href=""></a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID of an Team to add to users to it.</p>
+      </li>
+      <li class="parameter">
+      
+      
+      
+      
+      <span class="param-in">Body: </span>
+      <span class="param-name">UserDto</span>
+      <span class="param-type">List(UserDto)</span>
+      
+      <p class="param-description"></p>
+      </li>
+  </ul>
+  <h2><a name="createTeam"></a>createTeam</h2>
+  <hr>
+  <p></p>
+  <p>Create a new Team</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/teams</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>POST</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="TeamDto"><a href="">TeamDto</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      
+      
+      <span class="param-in">Body: </span>
+      <span class="param-name">TeamDto</span>
+      <span class="param-type">TeamDto(TeamDto)</span>
+      
+      <p class="param-description">The Team as json to create a new Team.</p>
+      </li>
+  </ul>
+  <h2><a name="deleteTeamById"></a>deleteTeamById</h2>
+  <hr>
+  <p></p>
+  <p>Delete Team by ID</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/teams/{id}</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>DELETE</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model=""><a href=""></a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID of an Team to delete it.</p>
+      </li>
+  </ul>
+  <h2><a name="getAllTeams"></a>getAllTeams</h2>
+  <hr>
+  <p></p>
+  <p>Get all Teams from db</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/teams</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>GET</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="TeamDto"><a href="">TeamDto</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+  </ul>
+  <h2><a name="removeUserFromTeam"></a>removeUserFromTeam</h2>
+  <hr>
+  <p></p>
+  <p>Remove User with given UserID from Team</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/teams/{id}/user/{userId}/removeuser</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>PUT</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model=""><a href=""></a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID of an team to remove the user from it.</p>
+      </li>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">userId</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The User ID to remove from the team.</p>
+      </li>
+  </ul>
+  <h2><a name="updateOrAddTeamMembership"></a>updateOrAddTeamMembership</h2>
+  <hr>
+  <p></p>
+  <p>If user is already member of this team, isAdmin is set. otherwise new team membership is added with isAdmin true or false</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/teams/{id}/user/{userId}/updateaddteammembership/{isAdmin}</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>PUT</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model=""><a href=""></a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID of an team to update or add membership</p>
+      </li>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">userId</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The User ID to update or add membership</p>
+      </li>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">isAdmin</span>
+      <span class="param-type">Boolean</span>
+      
+      <p class="param-description">The parameter if user should be admin or not</p>
+      </li>
+  </ul>
+  <h2><a name="updateTeam"></a>updateTeam</h2>
+  <hr>
+  <p></p>
+  <p>Update a Team by ID.</p>
+  <h3 class="section">URL</h3>
+  <code>http://localhost:8080/api/v2/teams/{id}</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>PUT</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="TeamDto"><a href="">TeamDto</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+      <li class="parameter">
+      
+      
+      <span class="param-in">Path: </span>
+      
+      
+      <span class="param-name">id</span>
+      <span class="param-type">Long</span>
+      
+      <p class="param-description">The ID for updating a Team.</p>
+      </li>
+      <li class="parameter">
+      
+      
+      
+      
+      <span class="param-in">Body: </span>
+      <span class="param-name">TeamDto</span>
+      <span class="param-type">TeamDto(TeamDto)</span>
+      
+      <p class="param-description"></p>
+      </li>
+  </ul>
+</div>

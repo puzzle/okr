@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="okr" schema="okr_pitc" type="PostgreSQL - 17.4 (Debian 17.4-1.pgdg120+2)">
+   <sequences>
+      <sequence increment="1" name="sequence_action" startValue="1"/>
+      <sequence increment="1" name="sequence_alignment" startValue="1"/>
+      <sequence increment="1" name="sequence_check_in" startValue="1"/>
+      <sequence increment="1" name="sequence_completed" startValue="1"/>
+      <sequence increment="1" name="sequence_key_result" startValue="1"/>
+      <sequence increment="1" name="sequence_objective" startValue="1"/>
+      <sequence increment="1" name="sequence_organisation" startValue="1"/>
+      <sequence increment="1" name="sequence_person" startValue="1"/>
+      <sequence increment="1" name="sequence_person_team" startValue="1"/>
+      <sequence increment="1" name="sequence_quarter" startValue="1"/>
+      <sequence increment="1" name="sequence_team" startValue="1"/>
+      <sequence increment="1" name="sequence_unit" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="action" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="action_point" nullable="false" remarks="" size="4096" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="priority" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="checked" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="key_result_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_action_key_result" implied="false" onDeleteCascade="false" schema="okr_pitc" table="key_result"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="action_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_action_key_result" unique="false">
+            <column ascending="true" name="key_result_id"/>
+         </index>
+      </table>
+      <table name="alignment" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="aligned_objective_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_alignment_aligned_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="objective"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="alignment_type" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="target_key_result_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_alignment_target_key_result" implied="false" onDeleteCascade="false" schema="okr_pitc" table="key_result"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="target_objective_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_alignment_target_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="objective"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="alignment_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_alignment_aligned_objective" unique="false">
+            <column ascending="true" name="aligned_objective_id"/>
+         </index>
+         <index name="idx_alignment_target_key_result" unique="false">
+            <column ascending="true" name="target_key_result_id"/>
+         </index>
+         <index name="idx_alignment_target_objective" unique="false">
+            <column ascending="true" name="target_objective_id"/>
+         </index>
+      </table>
+      <table name="alignment_selection" numRows="0" remarks="" schema="okr_pitc" type="VIEW" viewSql=" SELECT o.id AS objective_id,&#10;    o.title AS objective_title,&#10;    t.id AS team_id,&#10;    t.name AS team_name,&#10;    q.id AS quarter_id,&#10;    q.label AS quarter_label,&#10;    COALESCE(kr.id, ('-1'::integer)::bigint) AS key_result_id,&#10;    kr.title AS key_result_title&#10;   FROM (((okr_acme.objective o&#10;     LEFT JOIN okr_acme.team t ON ((o.team_id = t.id)))&#10;     LEFT JOIN okr_acme.quarter q ON ((o.quarter_id = q.id)))&#10;     LEFT JOIN okr_acme.key_result kr ON ((o.id = kr.objective_id))); SELECT o.id AS objective_id,&#10;    o.title AS objective_title,&#10;    t.id AS team_id,&#10;    t.name AS team_name,&#10;    q.id AS quarter_id,&#10;    q.label AS quarter_label,&#10;    COALESCE(kr.id, ('-1'::integer)::bigint) AS key_result_id,&#10;    kr.title AS key_result_title&#10;   FROM (((okr_pitc.objective o&#10;     LEFT JOIN okr_pitc.team t ON ((o.team_id = t.id)))&#10;     LEFT JOIN okr_pitc.quarter q ON ((o.quarter_id = q.id)))&#10;     LEFT JOIN okr_pitc.key_result kr ON ((o.id = kr.objective_id)));">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="objective_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="objective_title" nullable="true" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="team_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="team_name" nullable="true" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="quarter_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="quarter_label" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="key_result_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="key_result_title" nullable="true" remarks="" size="250" type="varchar" typeCode="12"/>
+      </table>
+      <table name="check_in" numRows="32" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="change_info" nullable="true" remarks="" size="4096" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="created_on" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="initiatives" nullable="true" remarks="" size="4096" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="modified_on" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="5" name="value_metric" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="created_by_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="key_result_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_check_in_key_result" implied="false" onDeleteCascade="false" schema="okr_pitc" table="key_result"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="confidence" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="check_in_type" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="zone" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="check_in_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_check_in_key_result" unique="false">
+            <column ascending="true" name="key_result_id"/>
+         </index>
+      </table>
+      <table name="completed" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="objective_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_completed_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="objective"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="comment" nullable="true" remarks="" size="4096" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="completed_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_completed_objective" unique="false">
+            <column ascending="true" name="objective_id"/>
+         </index>
+      </table>
+      <table name="flyway_schema_history" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="installed_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="version" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="description" nullable="false" remarks="" size="200" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="type" nullable="false" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="script" nullable="false" remarks="" size="1000" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="checksum" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="installed_by" nullable="false" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="7" name="installed_on" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="execution_time" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="success" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="installed_rank" sequenceNumberInPK="1"/>
+         <index name="flyway_schema_history_pk" unique="true">
+            <column ascending="true" name="installed_rank"/>
+         </index>
+         <index name="flyway_schema_history_s_idx" unique="false">
+            <column ascending="true" name="success"/>
+         </index>
+      </table>
+      <table name="key_result" numRows="33" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child column="key_result_id" foreignKey="fk_action_key_result" implied="false" onDeleteCascade="false" schema="okr_pitc" table="action"/>
+            <child column="target_key_result_id" foreignKey="fk_alignment_target_key_result" implied="false" onDeleteCascade="false" schema="okr_pitc" table="alignment"/>
+            <child column="key_result_id" foreignKey="fk_check_in_key_result" implied="false" onDeleteCascade="false" schema="okr_pitc" table="check_in"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="1" name="baseline" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="description" nullable="true" remarks="" size="4096" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="modified_on" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="4" name="stretch_goal" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="title" nullable="true" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="created_by_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_key_result_created_by_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="person"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="objective_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_key_result_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="objective"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="owner_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_key_result_owner_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="person"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="key_result_type" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="created_on" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="commit_zone" nullable="true" remarks="" size="400" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="target_zone" nullable="true" remarks="" size="400" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="stretch_zone" nullable="true" remarks="" size="400" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="unit_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="key_result_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_key_result_created_by_person" unique="false">
+            <column ascending="true" name="created_by_id"/>
+         </index>
+         <index name="idx_key_result_objective" unique="false">
+            <column ascending="true" name="objective_id"/>
+         </index>
+         <index name="idx_key_result_owner_person" unique="false">
+            <column ascending="true" name="owner_id"/>
+         </index>
+      </table>
+      <table name="objective" numRows="7" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child column="aligned_objective_id" foreignKey="fk_alignment_aligned_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="alignment"/>
+            <child column="target_objective_id" foreignKey="fk_alignment_target_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="alignment"/>
+            <child column="objective_id" foreignKey="fk_completed_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="completed"/>
+            <child column="objective_id" foreignKey="fk_key_result_objective" implied="false" onDeleteCascade="false" schema="okr_pitc" table="key_result"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="description" nullable="true" remarks="" size="4096" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="modified_on" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="title" nullable="false" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="created_by_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_objective_created_by_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="person"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="quarter_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_objective_quarter" implied="false" onDeleteCascade="false" schema="okr_pitc" table="quarter"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="team_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_objective_team" implied="false" onDeleteCascade="false" schema="okr_pitc" table="team"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="state" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="modified_by_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="created_on" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="objective_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_objective_created_by_person" unique="false">
+            <column ascending="true" name="created_by_id"/>
+         </index>
+         <index name="idx_objective_quarter" unique="false">
+            <column ascending="true" name="quarter_id"/>
+         </index>
+         <index name="idx_objective_team" unique="false">
+            <column ascending="true" name="team_id"/>
+         </index>
+         <index name="idx_objective_title" unique="false">
+            <column ascending="true" name="title"/>
+         </index>
+      </table>
+      <table name="overview" numRows="0" remarks="" schema="okr_pitc" type="VIEW" viewSql=" SELECT tq.team_id,&#10;    tq.team_version,&#10;    tq.name AS team_name,&#10;    tq.quater_id AS quarter_id,&#10;    tq.label AS quarter_label,&#10;    COALESCE(o.id, ('-1'::integer)::bigint) AS objective_id,&#10;    o.title AS objective_title,&#10;    o.state AS objective_state,&#10;    o.created_on AS objective_created_on,&#10;    COALESCE(kr.id, ('-1'::integer)::bigint) AS key_result_id,&#10;    kr.title AS key_result_title,&#10;    kr.key_result_type,&#10;    u.unit_name AS unit,&#10;    kr.baseline,&#10;    kr.stretch_goal,&#10;    kr.commit_zone,&#10;    kr.target_zone,&#10;    kr.stretch_zone,&#10;    COALESCE(c.id, ('-1'::integer)::bigint) AS check_in_id,&#10;    c.value_metric AS check_in_value,&#10;    c.zone AS check_in_zone,&#10;    c.confidence,&#10;    c.created_on AS check_in_created_on&#10;   FROM ((((( SELECT t.id AS team_id,&#10;            t.version AS team_version,&#10;            t.name,&#10;            q.id AS quater_id,&#10;            q.label&#10;           FROM okr_acme.team t,&#10;            okr_acme.quarter q) tq&#10;     LEFT JOIN okr_acme.objective o ON (((tq.team_id = o.team_id) AND (tq.quater_id = o.quarter_id))))&#10;     LEFT JOIN okr_acme.key_result kr ON ((o.id = kr.objective_id)))&#10;     LEFT JOIN okr_acme.unit u ON ((u.id = kr.unit_id)))&#10;     LEFT JOIN okr_acme.check_in c ON (((kr.id = c.key_result_id) AND (c.modified_on = ( SELECT max(cc.modified_on) AS max&#10;           FROM okr_acme.check_in cc&#10;          WHERE (cc.key_result_id = c.key_result_id)))))); SELECT tq.team_id,&#10;    tq.team_version,&#10;    tq.name AS team_name,&#10;    tq.quater_id AS quarter_id,&#10;    tq.label AS quarter_label,&#10;    COALESCE(o.id, ('-1'::integer)::bigint) AS objective_id,&#10;    o.title AS objective_title,&#10;    o.state AS objective_state,&#10;    o.created_on AS objective_created_on,&#10;    COALESCE(kr.id, ('-1'::integer)::bigint) AS key_result_id,&#10;    kr.title AS key_result_title,&#10;    kr.key_result_type,&#10;    u.unit_name AS unit,&#10;    kr.baseline,&#10;    kr.stretch_goal,&#10;    kr.commit_zone,&#10;    kr.target_zone,&#10;    kr.stretch_zone,&#10;    COALESCE(c.id, ('-1'::integer)::bigint) AS check_in_id,&#10;    c.value_metric AS check_in_value,&#10;    c.zone AS check_in_zone,&#10;    c.confidence,&#10;    c.created_on AS check_in_created_on&#10;   FROM ((((( SELECT t.id AS team_id,&#10;            t.version AS team_version,&#10;            t.name,&#10;            q.id AS quater_id,&#10;            q.label&#10;           FROM okr_pitc.team t,&#10;            okr_pitc.quarter q) tq&#10;     LEFT JOIN okr_pitc.objective o ON (((tq.team_id = o.team_id) AND (tq.quater_id = o.quarter_id))))&#10;     LEFT JOIN okr_pitc.key_result kr ON ((o.id = kr.objective_id)))&#10;     LEFT JOIN okr_pitc.unit u ON ((u.id = kr.unit_id)))&#10;     LEFT JOIN okr_pitc.check_in c ON (((kr.id = c.key_result_id) AND (c.modified_on = ( SELECT max(cc.modified_on) AS max&#10;           FROM okr_pitc.check_in cc&#10;          WHERE (cc.key_result_id = c.key_result_id))))));">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="team_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="team_version" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="team_name" nullable="true" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="quarter_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="quarter_label" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="objective_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="objective_title" nullable="true" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="objective_state" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="objective_created_on" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="key_result_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="key_result_title" nullable="true" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="key_result_type" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="unit" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="13" name="baseline" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="14" name="stretch_goal" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="commit_zone" nullable="true" remarks="" size="400" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="target_zone" nullable="true" remarks="" size="400" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="stretch_zone" nullable="true" remarks="" size="400" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="check_in_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="19" name="check_in_value" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="check_in_zone" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="confidence" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="22" name="check_in_created_on" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+      </table>
+      <table name="person" numRows="6" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child column="created_by_id" foreignKey="fk_key_result_created_by_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="key_result"/>
+            <child column="owner_id" foreignKey="fk_key_result_owner_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="key_result"/>
+            <child column="created_by_id" foreignKey="fk_objective_created_by_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="objective"/>
+            <child column="person_id" foreignKey="fk_person_team_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="person_team"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="email" nullable="false" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="first_name" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="last_name" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="5" name="okr_champion" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="person_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="uk_person_email" unique="true">
+            <column ascending="true" name="email"/>
+         </index>
+      </table>
+      <table name="person_team" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="false" digits="0" id="0" name="team_admin" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="person_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_person_team_person" implied="false" onDeleteCascade="false" schema="okr_pitc" table="person"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="team_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="fk_person_team_team" implied="false" onDeleteCascade="false" schema="okr_pitc" table="team"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="person_team_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="quarter" numRows="9" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child column="quarter_id" foreignKey="fk_objective_quarter" implied="false" onDeleteCascade="false" schema="okr_pitc" table="objective"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="label" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="start_date" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="end_date" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="quarter_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="uk_quarter_label" unique="true">
+            <column ascending="true" name="label"/>
+         </index>
+      </table>
+      <table name="team" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child column="team_id" foreignKey="fk_objective_team" implied="false" onDeleteCascade="false" schema="okr_pitc" table="objective"/>
+            <child column="team_id" foreignKey="fk_person_team_team" implied="false" onDeleteCascade="false" schema="okr_pitc" table="person_team"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="false" remarks="" size="250" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="team_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="unit" remarks="" schema="okr_pitc" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="unit_name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="is_default" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="created_by_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="unit_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+</database>

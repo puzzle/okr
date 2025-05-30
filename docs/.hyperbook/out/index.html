@@ -1,0 +1,169 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1,, interactive-widget=resizes-content"><title>Puzzle OKR Tool - OKR Tool</title><meta property="og:title" value="Puzzle OKR Tool - OKR Tool"><meta name="description" content=" Open source OKR application "><meta property="og:description" content=" Open source OKR application "><meta name="keywords"><link rel="stylesheet" href="/__hyperbook_assets/normalize.css?version=0.51.0"><style>
+html,
+body {
+  overflow: hidden;
+  margin: 0;
+  height: 100dvh;
+  width: 100dvw;
+}
+
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+:root {
+  --color-brand: #1b2d53;
+  --color-brand-dark: #ffffff;
+  --color-brand-text: white;
+}
+body {
+  overscroll-behavior-x: none;
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: hyperbook-body;
+  font-weight: normal;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
+</style><noscript id="dark-mode-toggle-stylesheets"><link rel="stylesheet" href="/__hyperbook_assets/light.css?version=0.51.0" media="(prefers-color-scheme: light)"><link rel="stylesheet" href="/__hyperbook_assets/dark.css?version=0.51.0" media="(prefers-color-scheme: dark)"></noscript><script src="/__hyperbook_assets/dark-mode-toggle-stylesheets-loader.js?version=0.51.0"></script><script type="module" src="/__hyperbook_assets/dark-mode-toggle.mjs?version=0.51.0"></script><script src="/__hyperbook_assets/i18n.js?version=0.51.0"></script><script src="/__hyperbook_assets/dexie.min.js?version=0.51.0"></script><script src="/__hyperbook_assets/dexie-export-import.js?version=0.51.0"></script><script src="/__hyperbook_assets/store.js?version=0.51.0"></script><script>
+window.Prism = window.Prism || {};
+window.Prism.manual = true;</script><script src="/__hyperbook_assets/prism/prism.js?version=0.51.0"></script><link rel="stylesheet" href="/__hyperbook_assets/prism/prism.css?version=0.51.0"><link rel="stylesheet" href="/__hyperbook_assets/prism/prism-theme-github-dark.css?version=0.51.0" media="(prefers-color-scheme: dark)"><link rel="stylesheet" href="/__hyperbook_assets/prism/prism-theme-github-light.css?version=0.51.0" media="(prefers-color-scheme: light)"><link rel="stylesheet" href="/__hyperbook_assets/math/katex.min.css?version=0.51.0"><link rel="stylesheet" href="/__hyperbook_assets/shell.css?version=0.51.0"><link rel="stylesheet" href="/__hyperbook_assets/content.css?version=0.51.0"><link rel="stylesheet" href="/__hyperbook_assets/code.css?version=0.51.0"><script>
+HYPERBOOK_ASSETS = "/__hyperbook_assets/"
+</script><script type="module" src="/__hyperbook_assets/side-drawer.js?version=0.51.0" async></script><script src="/__hyperbook_assets/qrcode.js?version=0.51.0" async></script></head><body><div class="main-grid"><header><div class="mobile-nav"><button aria-label="Nav Toggle" class="toggle" onclick="hyperbook.navToggle()"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div></button><side-drawer id="nav-drawer"><div class="nav-drawer-content"><nav><ul><li><a class="page active" href="/">Puzzle OKR Tool</a></li></ul><div data-id="_nav:/organisation" class="section"><div class="collapsible name empty  "><span class="label">Organisation</span></div><div class="collapsible-content links"><ul class="pages"><li><a class="page" href="/organisation/stakeholders">Stakeholders</a></li><li><a class="page" href="/organisation/contact">Contakt</a></li></ul></div></div><div data-id="_nav:/guidelines" class="section"><div class="collapsible name empty  "><span class="label">Guidelines</span></div><div class="collapsible-content links"><ul class="pages"><li><a class="page" href="/guidelines/frontend">Frontend</a></li><li><a class="page" href="/guidelines/backend">Backend</a></li></ul></div></div><div data-id="_nav:/architecture" class="section"><div class="collapsible name empty  "><span class="label">Architecture</span></div><div class="collapsible-content links"><ul class="pages"><li><a class="page" href="/architecture/overview">Overview</a></li><li><a class="page" href="/architecture/frontend">Frontend</a></li><li><a class="page" href="/architecture/backend">Backend</a></li><li><a class="page" href="/architecture/database">Database</a></li><li><a class="page" href="/architecture/decisions">Architecture Decisions</a></li></ul></div></div></nav><a class="author" href="https://hyperbook.openpatch.org">Powered by <b>Hyperbook</b></a></div></side-drawer></div><a class="branding" href="/"><div class="logo"><img alt="logo" src="/logo.svg"></div><div class="name">OKR Tool</div></a><dark-mode-toggle id="dark-mode-toggle" appearence="switch" title="Toggle between Dark and Light Mode" permanent></dark-mode-toggle></header><div class="sidebar"><nav><ul><li><a class="page active" href="/">Puzzle OKR Tool</a></li></ul><div data-id="_nav:/organisation" class="section"><div class="collapsible name empty  "><span class="label">Organisation</span></div><div class="collapsible-content links"><ul class="pages"><li><a class="page" href="/organisation/stakeholders">Stakeholders</a></li><li><a class="page" href="/organisation/contact">Contakt</a></li></ul></div></div><div data-id="_nav:/guidelines" class="section"><div class="collapsible name empty  "><span class="label">Guidelines</span></div><div class="collapsible-content links"><ul class="pages"><li><a class="page" href="/guidelines/frontend">Frontend</a></li><li><a class="page" href="/guidelines/backend">Backend</a></li></ul></div></div><div data-id="_nav:/architecture" class="section"><div class="collapsible name empty  "><span class="label">Architecture</span></div><div class="collapsible-content links"><ul class="pages"><li><a class="page" href="/architecture/overview">Overview</a></li><li><a class="page" href="/architecture/frontend">Frontend</a></li><li><a class="page" href="/architecture/backend">Backend</a></li><li><a class="page" href="/architecture/database">Database</a></li><li><a class="page" href="/architecture/decisions">Architecture Decisions</a></li></ul></div></div></nav><a class="author" href="https://hyperbook.openpatch.org">Powered by <b>Hyperbook</b></a></div><main><article>
+<div class="hyperbook-markdown"><button id="toc-toggle" onclick="hyperbook.tocToggle()" title="Table of Contents"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div></button>
+  <side-drawer id="toc-drawer" right>
+    <div class="toc-drawer-content">
+      <nav class="toc">
+        <ul>
+          <li class="level-1"><a href="#about">About</a></li>
+          <li class="level-1"><a href="#release-notes">Release Notes</a></li>
+          <li class="level-2"><a href="#unreleased">Unreleased</a></li>
+          <li class="level-3"><a href="#features">Features</a></li>
+          <li class="level-3"><a href="#chores">Chores</a></li>
+          <li class="level-2"><a href="#320">3.2.0</a></li>
+          <li class="level-3"><a href="#fixes">Fixes</a></li>
+          <li class="level-3"><a href="#chores">Chores</a></li>
+          <li class="level-2"><a href="#310">3.1.0</a></li>
+          <li class="level-3"><a href="#features">Features</a></li>
+          <li class="level-3"><a href="#fixes">Fixes</a></li>
+          <li class="level-3"><a href="#chores">Chores</a></li>
+          <li class="level-2"><a href="#30">3.0</a></li>
+          <li class="level-3"><a href="#features">Features</a></li>
+          <li class="level-3"><a href="#fixes">Fixes</a></li>
+          <li class="level-3"><a href="#chores">Chores</a></li>
+        </ul>
+      </nav>
+    </div>
+  </side-drawer>
+  <h1 id="about"><a href="#about" class="heading"><span>About</span></a></h1>
+  <p>This is an open source application for managing OKRs, developed by the team of apprentices at Puzzle ITC.</p>
+  <h1 id="release-notes"><a href="#release-notes" class="heading"><span>Release Notes</span></a></h1>
+  <h2 id="unreleased"><a href="#unreleased" class="heading"><span>Unreleased</span></a></h2>
+  <h3 id="features"><a href="#features" class="heading"><span>Features</span></a></h3>
+  <ul>
+    <li>Feature #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt</li>
+  </ul>
+  <h3 id="chores"><a href="#chores" class="heading"><span>Chores</span></a></h3>
+  <ul>
+    <li>Chore: Updates diverser Dependencies</li>
+  </ul>
+  <h2 id="320"><a href="#320" class="heading"><span>3.2.0</span></a></h2>
+  <h3 id="fixes"><a href="#fixes" class="heading"><span>Fixes</span></a></h3>
+  <ul>
+    <li>Fix #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.</li>
+  </ul>
+  <h3 id="chores"><a href="#chores" class="heading"><span>Chores</span></a></h3>
+  <ul>
+    <li>Chore: Updates diverser Dependencies</li>
+  </ul>
+  <h2 id="310"><a href="#310" class="heading"><span>3.1.0</span></a></h2>
+  <h3 id="features"><a href="#features" class="heading"><span>Features</span></a></h3>
+  <ul>
+    <li>Feature #1293: KeyResult Metric unterstützen eigene Units</li>
+    <li>Feature #1015: Unitwerte auf KeyResult Metric werden automatisch vervollständigt</li>
+    <li>Feature #863: Kommentar der beim Abschliessen eines Objectives erfasst wurde, wird von nun an in der Detailansicht des Objectives angezeigt</li>
+    <li>Feature #925: In der Check-in history wird nun angezeigt, wer das Check-in erfasst hat</li>
+    <li>Feature #888: Beim Check-in erstellen können nun neue Actions zum Actionplan hinzugefügt werden</li>
+    <li>Feature #1128: Löschen eines Objectives ist nun auch über das Drei-Punkte-Menü möglich</li>
+    <li>Feature #614: Beim Duplizieren kann ausgewählt werden, welche Key Results dupliziert werden sollen</li>
+    <li>Feature #1204: Die Demo- und Stagingumgebung sind nun visuell voneinander unterscheidbar und haben konfigurierbare Styles</li>
+    <li>Feature #937: Feld das den Wert eines ordinalen Check-ins festhält von "value" auf "zone" umbenannt</li>
+    <li>Feature #1224: Roboto Flex als Schriftart gesetzt</li>
+    <li>Feature #623: Den Header auf der mobilen Ansicht schöner gestaltet und erweitert</li>
+    <li>Feature #710: Die URL auf die Hilfeseite pro Umgebung individuell konfigurierbar gemacht</li>
+    <li>Feature #931: Das Löschen von eingeladenen Members ist nun möglich</li>
+    <li>Feature #1070: Update von Angular auf V19</li>
+    <li>Feature #1135: Neuen Formatter für Front- und Backend implementiert</li>
+    <li>Feature #987: Workflow auf Github erstellt, der die Demo-Pods zurücksetzt</li>
+    <li>Feature #923: E2E-Tests schöner geschrieben und ihre Laufzeit auf der pipeline verkürzt</li>
+    <li>Feature #1009: Deserializer aufgeräumt</li>
+    <li>Feature #1183: Pipeline implementiert, die automatisch auf SonarQube pusht</li>
+    <li>Feature #1198: Dev Datenbank so angepasst, dass die Testuser jetzt Teams zugeordnet sind</li>
+    <li>Feature #1136: Angular Pipes zu einer Pipe vereint und diese noch vereinfacht</li>
+    <li>Feature #1169: Deploy Workflows aufgeräumt</li>
+    <li>Feature #1334: Model-Attribute isBacklogQuarter für eine eindeutige Identifizierung des Backlog-Quarters implementiert</li>
+  </ul>
+  <h3 id="fixes"><a href="#fixes" class="heading"><span>Fixes</span></a></h3>
+  <ul>
+    <li>Fix #1410: Eine Action kann nun wieder über den Check-in Dialog als abgeschlossen markiert werden.</li>
+    <li>Fix #1255: Wenn ein Objective dupliziert wird, wird nun auch der Actionplan übernommen</li>
+    <li>Fix #1298: SCSS-Warnungen behoben</li>
+    <li>Fix #1236: Flaky E2E-Tests gefixt</li>
+    <li>Fix #1220: Sonar code smells und risks behoben</li>
+    <li>Fix #1223: Deprecated Mockito Annotationen ersetzt</li>
+    <li>Fix #1270: Tests failen nun nicht mehr, wenn ein neues Quarter beginnt</li>
+    <li>Fix #1347: SBOM wir nun wieder erfolgreich auf Dependency-Track gepusht</li>
+    <li>Fix #1171: Einhaltung von naming conventions im gesamten Tool sichergestellt</li>
+    <li>Fix #1256: Style von Objective duplizieren Dialog verbessert</li>
+    <li>Fix #1227: Schriftgrössen- und Stärken im gesamten Tool berichtigt</li>
+    <li>Fix #1237: Styling von Filter im Mobile Header verbessert</li>
+    <li>Fix #1225: Korrektes Laden der Schriftart sichergestellt</li>
+    <li>Fix #1211: Korrekte Hilfeseite URLs für die Umgebungen gesetzt</li>
+    <li>Fix #1338: Unverwendetes version.ts inklusive dazugehöriger Command gelöscht</li>
+    <li>Fix #1320: Diverse visuelle Ungereimtheiten bereinigt</li>
+  </ul>
+  <h3 id="chores"><a href="#chores" class="heading"><span>Chores</span></a></h3>
+  <ul>
+    <li>Chore: Updates diverser Dependencies</li>
+  </ul>
+  <h2 id="30"><a href="#30" class="heading"><span>3.0</span></a></h2>
+  <h3 id="features"><a href="#features" class="heading"><span>Features</span></a></h3>
+  <ul>
+    <li>Feature #1022: Multitenancy-Branch in den Main-Branch gemerged</li>
+    <li>Feature #1014: Schriftart und Abstände in der gesamten Applikation korrigiert</li>
+    <li>Feature #1115: Das Deployment auf die Demoinstanz erfolgt nun nicht mehr bei jedem Merge, sondern nur noch beim manuellen Anstossen des Workflows</li>
+    <li>Feature #1091: Tenant ACME von Staging-Umgebung entfernt</li>
+    <li>Feature #883: Dokumentiert wie man die Cypress-Tests lokal startet</li>
+    <li>Feature #1092: Node-Version in Staging-Deploy-Action wird nun über eine env Variable gesetzt</li>
+    <li>Feature #958: Die Quarters in der Testdatenbank wurden aufgeräumt, sodass wir nun nur noch vier Quarters brauchen</li>
+  </ul>
+  <h3 id="fixes"><a href="#fixes" class="heading"><span>Fixes</span></a></h3>
+  <ul>
+    <li>Fix #1167: Staging-Deploy-Pipeline gefixt</li>
+    <li>Fix #1150: Die Löschung eines Objectives führt nun nicht mehr zu einer ungewollten Fehlermeldung</li>
+    <li>Fix #1143: Das aktuelle Quarter im Quarterfilter ist nun wieder als solches gekennzeichnet</li>
+    <li>Fix #1141: Korrekte Java-Version im Dockerfile gesetzt</li>
+    <li>Fix #1140: Limit für maximale SCSS-Grösse erhöht</li>
+    <li>Fix #949: Es wurde ein Authentifizierungsproblem behoben, durch das die Seite nach dem Aus- und wieder Einloggen zuerst nicht angezeigt wurde</li>
+  </ul>
+  <h3 id="chores"><a href="#chores" class="heading"><span>Chores</span></a></h3>
+  <ul>
+    <li>Chore: Updates diverser Dependencies</li>
+  </ul><button id="qrcode-open" onclick="hyperbook.qrcodeOpen()" title="QR Code"><div class="qrcode-icon"></div></button>
+  <dialog id="qrcode-dialog">
+    <div class="container">
+      <div class="name">Puzzle OKR Tool</div>
+      <div class="make-qrcode"></div>
+      <div class="url">
+        <div data-href="/"></div>
+      </div>
+    </div><button class="close" onclick="hyperbook.qrcodeClose()"><div class="close-icon"></div></button>
+  </dialog>
+</div>
+</article><div class="jump-container"><a class="jump next" href="/organisation/stakeholders">Stakeholders</a></div><div class="meta"><a class="edit-github" href="[object Object]/book/index.md">✎ GitHub</a><a href="#" onclick="hyperbookReset()"><span class="reset-icon" title="Reset Hyperbook"></span></a><span class="copyright">AGPL-3.0 by <a href="https://puzzle.ch">Puzzle GmbH</a></span></div></main></div><script src="/__hyperbook_assets/client.js?version=0.51.0" defer></script></body></html>

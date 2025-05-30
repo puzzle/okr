@@ -1,7 +1,7 @@
 name: 'Auto Deploy Main'
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - closed
     branches: [ main ]
@@ -24,7 +24,7 @@ jobs:
     needs: [versioning]
     uses: ./.github/workflows/reusable__build.yml
     with:
-      COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
+      COMMIT_HASH: ${{ github.ref_name }}
       FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}} # Use the output from the versioning job.
 
   e2e:

@@ -38,7 +38,7 @@ jobs:
   debug:
     runs-on: ubuntu-24.04
     env:
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      BRANCH_NAME: ${{ github.ref_name }}
     steps:
       - name: Try to show GitHub Variables
         run: |
@@ -63,7 +63,7 @@ jobs:
     needs: [ versioning ]
     uses: ./.github/workflows/reusable__build.yml
     with:
-      COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
+      COMMIT_HASH: ${{ github.ref_name }}
       FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}}
 
   e2e:

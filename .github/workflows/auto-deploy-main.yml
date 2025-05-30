@@ -1,0 +1,72 @@
+name: 'Auto Deploy Main'
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches: [ main ]
+
+jobs:
+  versioning:
+    uses: ./.github/workflows/reusable__generate-version.yml
+    permissions:
+      packages: write
+      id-token: write
+      contents: write
+      attestations: write
+    with:
+      RELEASE_TYPE: Patch
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  build-docker-image:
+    needs: [versioning]
+    uses: ./.github/workflows/reusable__build.yml
+    with:
+      COMMIT_HASH: ${{ github.head_ref || github.ref_name }}
+      FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}} # Use the output from the versioning job.
+
+  e2e:
+    needs: [build-docker-image, versioning]
+    uses: ./.github/workflows/reusable__e2e-testing.yml
+    with:
+      DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
+
+  deploy-release:
+    needs:
+      - e2e
+      - versioning
+    uses: ./.github/workflows/reusable__deploy-release.yml
+    with:
+      COMMIT_HASH: ${{needs.versioning.outputs.SHORT_COMMIT_HASH }}
+      FULL_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
+      INFRA_OVERLAY_FOLDER: deployments/overlays
+      OKR_INFRA_REPOSITORY_PATH: ${{ vars.OKR_INFRA_REPOSITORY_PATH }}
+      PUZZLE_GITLAB_FQDN: ${{vars.PUZZLE_GITLAB_FQDN}}
+      deployment_environment: "STAGING"
+      SEMVER_VERSION: ${{ needs.versioning.outputs.SEMVER_VERSION }}
+      create_release: false
+      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+    secrets:
+      GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+      DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+
+
+  generate-and-push-sbom:
+    needs:
+      - deploy-release
+    uses: ./.github/workflows/reusable__deptrack-push-action.yml
+    secrets: inherit
+    with:
+      ENVIRONMENT_NAME: STAGING
+
+  update-sonarqube:
+    needs:
+      - deploy-release
+    uses: './.github/workflows/reusable__sonarqube.yml'
+    secrets: inherit
+    with:
+      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+

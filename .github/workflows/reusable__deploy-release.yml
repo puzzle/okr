@@ -1,0 +1,200 @@
+# .github/workflows/reusable-deploy-release.yml
+name: 'Reusable - Deploy and Release'
+
+on:
+  workflow_call:
+    inputs:
+      FULL_IMAGE_TAG:
+        type: string
+        description: 'The full Docker image tag to deploy (e.g., myrepo/myapp:1.2.3-abcdef).'
+        required: true
+      SEMVER_VERSION:
+        type: string
+        description: "The semantic version (e.g., 1.2.3) used for tagging/release."
+        required: true
+      COMMIT_HASH:
+        type: string
+        description: 'The full commit hash that was built, used for tagging.'
+        required: true
+      deployment_environment:
+        type: string
+        required: true
+        description: 'Target environment (e.g., PROD, STAGING, DEMO, or "No deployment (only build)")'
+      create_release: # Needed to decide if release/tag is appropriate
+        type: boolean
+        required: false
+        default: false
+      # Infrastructure related inputs
+      INFRA_OVERLAY_FOLDER:
+        type: string
+        required: false # Required only if deploying
+        description: 'Kustomize overlay folder name in the infra repo.'
+      OKR_INFRA_REPOSITORY_PATH: # e.g., your-org/okr-infra
+        type: string
+        required: false # Required only if deploying
+        description: 'Path to the infrastructure Git repository.'
+      PUZZLE_GITLAB_FQDN: # e.g., gitlab.com or internal hostname
+        type: string
+        required: false # Required only if deploying via GitLab repo
+        description: 'FQDN of the GitLab instance hosting the infra repo.'
+      DOCKER_REGISTRY:
+        type: string
+        required: true
+      DOCKER_USERNAME:
+        type: string
+        required: true
+
+
+    secrets:
+      DOCKER_REGISTRY_TOKEN:
+        required: true
+      GITLAB_ACCESS_TOKEN:
+        required: false
+
+jobs:
+  upload-to-quay:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+      attestations: write
+    steps:
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: okr-image
+          path: /tmp
+
+      - name: Load image into Docker
+        run: docker load --input /tmp/okr-docker-image.tar
+
+      - name: Show images before push
+        run: |
+          docker image ls -a
+          echo "Image to push: ${{ inputs.FULL_IMAGE_TAG }}"
+          echo "registry: ${{ inputs.DOCKER_REGISTRY }}"
+          echo "username: ${{ inputs.DOCKER_USERNAME }}"
+          echo "password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}"
+
+
+      - name: Log in to Quay registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.DOCKER_REGISTRY }}
+          username: ${{ inputs.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+
+      - name: Push image to Quay
+        id: push-image
+        run: |
+          echo "Pushing image: ${{ inputs.FULL_IMAGE_TAG }}"
+          docker push ${{ inputs.FULL_IMAGE_TAG }}
+          echo "IMAGE_DIGEST=$(docker images --no-trunc --quiet ${{ inputs.FULL_IMAGE_TAG }})" >> $GITHUB_OUTPUT
+
+      - name: Show images after push
+        run: |
+          docker image ls -a
+          echo "Image pushed: ${{ inputs.FULL_IMAGE_TAG }}"
+          echo "Image digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}"
+#     Readd after harbor update to 2.5
+#      - name: Attest
+#        uses: actions/attest-build-provenance@v2
+#        id: attest
+#        with:
+#          subject-name: harbor.puzzle.ch/pitc-mobility-public/okr
+#          subject-digest: ${{ steps.push-image.outputs.IMAGE_DIGEST }}
+#          push-to-registry: true
+          
+
+  deploy-release:
+    runs-on: ubuntu-latest
+    env:
+      GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+      GITLAB_FOLDER_PATH: okr-infra/${{ inputs.INFRA_OVERLAY_FOLDER }}/${{vars.INFRA_OVERLAY_FOLDER}}
+      INFRASTRUCTURE_BRANCH: main
+      COMMITER_EMAIL: "actions@github.com"
+      COMMITTER_NAME: "GitHub Actions"
+
+    if: inputs.deployment_environment != 'No deployment (only build)'
+    environment: ${{ inputs.deployment_environment }}
+    needs: upload-to-quay
+    steps:
+      - name: Show Deployment Vars
+        run: |
+          echo "Deploying to environment: ${{ inputs.deployment_environment }}"
+          echo "Infra overlay folder: ${{ inputs.INFRA_OVERLAY_FOLDER }}"
+          echo "Image to deploy: ${{ inputs.FULL_IMAGE_TAG }}"
+
+      - name: Checkout repository
+        run: |
+          git clone https://oauth2:${{ env.GITLAB_ACCESS_TOKEN }}@${{inputs.PUZZLE_GITLAB_FQDN}}/${{inputs.OKR_INFRA_REPOSITORY_PATH}}.git okr-infra
+          cd okr-infra
+          git checkout ${{env.INFRASTRUCTURE_BRANCH}}
+
+      - name: Set up Kustomize
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
+        uses: imranismail/setup-kustomize@v2
+
+      - name: Update Kustomization
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
+        run: |
+          cd ${{ env.GITLAB_FOLDER_PATH}}
+          kustomize edit set image ${{ inputs.FULL_IMAGE_TAG }}
+
+      - name: Commit and push Infrastructure Changes
+        if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
+        run: |
+          cd okr-infra
+          git config user.email "${{ env.COMMITER_EMAIL }}"
+          git config user.name "${{ env.COMMITTER_NAME }}"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit in infrastructure repository."
+            exit 0
+          fi
+          git commit -m "Update image tag for ${{ vars.INFRA_OVERLAY_FOLDER }} to ${{ inputs.FULL_IMAGE_TAG }}"
+          echo "Pushing infrastructure changes..."
+          # git pull --rebase origin main # Consider rebase if concurrent changes are common
+          git push origin main # Push to the branch checked out
+
+
+  create-release:
+    runs-on: ubuntu-latest
+    if: >
+      inputs.deployment_environment != 'No deployment (only build)' &&
+      inputs.create_release == true
+    needs: deploy-release
+    permissions:
+      contents: write
+    env:
+      TAG_NAME: ${{ inputs.SEMVER_VERSION }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout Target Repo Code (needed for tag context)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Parse full commit hash
+        id: parse_commit_hash
+        run: |
+          git pull
+          echo "FULL_COMMIT_HASH=$(git rev-parse ${{ inputs.COMMIT_HASH }})" >> $GITHUB_OUTPUT
+
+      - name: Create Git Tag
+        run: |
+          git tag -f ${{ env.TAG_NAME }} ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}
+          git push --force origin refs/tags/${{ env.TAG_NAME }}
+
+      - name: Create GitHub Release
+        run: |
+          echo "Creating GitHub release for tag: ${{ env.TAG_NAME }}"
+          # Use --latest if this should be marked as the latest release
+          # Use --prerelease if it's not a stable release
+          gh release create "${{ env.TAG_NAME }}" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="Release ${{ env.TAG_NAME }}" \
+              --notes "Release based on commit ${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}. Deployed to ${{ inputs.deployment_environment }}." \
+              --target "${{ steps.parse_commit_hash.outputs.FULL_COMMIT_HASH }}" \
+              --generate-notes

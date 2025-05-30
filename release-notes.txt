@@ -5,15 +5,16 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
-unreleased   - Erweiterung #1257: Es wurde eine Auswertungsansicht implementiert
+unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
+            - Erweiterung #1529: Healthcheck eingebaut
+            - Erweiterung #1257: Es wurde eine Auswertungsansicht implementiert
+            - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
 
-             - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
+            - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
 
-             - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
+3.2.0       - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
 
-3.2.0        - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
-
-             - Wartung: Updates diverser Dependencies
+            - Wartung: Updates diverser Dependencies
 
 3.1.0       - Erweiterung #1293: KeyResult Metric unterstützen eigene Units
             - Erweiterung #1015: Unitwerte auf KeyResult Metric werden automatisch vervollständigt

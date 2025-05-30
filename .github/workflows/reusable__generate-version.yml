@@ -36,7 +36,7 @@ jobs:
     outputs:
       SHORT_COMMIT_HASH: "${{ env.SHORT_COMMIT_HASH }}"
     env:
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      BRANCH_NAME: ${{ github.ref_name }}
     steps:
       - name: Validate only one property is set
         run: |
@@ -78,7 +78,7 @@ jobs:
     needs: find-commit
     if: inputs.RELEASE_TYPE != ''
     env:
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      BRANCH_NAME: ${{ github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -120,7 +120,7 @@ jobs:
       SEMVER_VERSION: ${{ steps.read_version_step.outputs.SEMVER_VERSION }}
       NEW_IMAGE_TAG: "${{vars.DOCKER_REPOSITORY_URL}}:${{ steps.read_version_step.outputs.SEMVER_VERSION }}-${{ needs.find-commit.outputs.SHORT_COMMIT_HASH }}"
     env:
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      BRANCH_NAME: ${{ github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -55,7 +55,7 @@ jobs:
         file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
     env:
       IMAGE_FILE_NAME: okr-docker-image.tar
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      BRANCH_NAME: ${{ github.ref_name }}
       COMMIT_REF: ${{ inputs.COMMIT_HASH || (github.head_ref || github.ref_name) }}
 
     steps:

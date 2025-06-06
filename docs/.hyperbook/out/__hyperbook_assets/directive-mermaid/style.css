@@ -1,7 +1,0 @@
-.directive-mermaid {
-  visibility: hidden;
-}
-
-.directive-mermaid[data-processed] {
-  visibility: visible;
-}

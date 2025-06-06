@@ -1,5 +1,0 @@
-date=2025-04-23 11:02:37+0000
-os=Linux 6.6.85
-schemaspy-version=7.0.2
-schemaspy-revision=v7.0.2
-renderer=Graphviz dot 2.43.0 

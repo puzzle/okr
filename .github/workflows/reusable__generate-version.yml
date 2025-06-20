@@ -59,6 +59,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{env.BRANCH_NAME}}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+
       - name: Stores the commit hash as environment variable
         run: |
           echo "BRANCH_NAME=${{ env.BRANCH_NAME }}"
@@ -94,7 +96,7 @@ jobs:
           COMMITPREFIX: '[VU]'
         run: |
           git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.name "GitHub Actions[bot]"
           git add . || {
             echo "No files were changed, so we did not commit anything"
             exit 1

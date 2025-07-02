@@ -17,8 +17,7 @@ jobs:
     with:
       RELEASE_TYPE: Patch
     secrets:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      DEPLOY_TOKEN_CLASSIC: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
 
   build-docker-image:
     needs: [versioning]

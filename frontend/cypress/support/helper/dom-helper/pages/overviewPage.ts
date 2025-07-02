@@ -159,7 +159,7 @@ export default class CyOverviewPage extends Page {
 
   getKeyResultByName(keyResultName: string) {
     this.getKeyResultsByName(keyResultName)
-      .last()
+      .first()
       .as('keyResult')
       .scrollIntoView();
     return cy.get('@keyResult');

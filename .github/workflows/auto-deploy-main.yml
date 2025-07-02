@@ -23,7 +23,7 @@ jobs:
     needs: [versioning]
     uses: ./.github/workflows/reusable__build.yml
     with:
-      COMMIT_HASH: ${{ github.ref_name }}
+      COMMIT_HASH: ${{ github.ref_name || github.base_ref }}
       FULL_IMAGE_TAG: ${{needs.versioning.outputs.IMAGE_TAG}} # Use the output from the versioning job.
 
   e2e:

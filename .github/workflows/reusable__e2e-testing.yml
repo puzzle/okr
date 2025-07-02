@@ -55,14 +55,15 @@ jobs:
         file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
     env:
       IMAGE_FILE_NAME: okr-docker-image.tar
-      BRANCH_NAME: ${{ github.ref_name }}
-      COMMIT_REF: ${{ inputs.COMMIT_HASH || (github.ref_name || github.head_ref) }}
+      BRANCH_NAME: ${{ github.ref_name || github.base_ref }}
+      COMMIT_REF: ${{ inputs.COMMIT_HASH || (github.ref_name || github.base_ref	) }}
 
     steps:
-      - debug:
+      - name: debug
         run: |
           echo "Running E2E tests for file: ${{ inputs.COMMIT_HASH }}"
           echo "Using Docker image tag: ${{ github.head_ref }}"
+          echo "Using Docker image tag: ${{ github.base_ref }}"
           echo "Using commit ref: ${{ github.ref_name }}"
           echo "Using commit ref: ${{ github.ref }}"
 

@@ -36,7 +36,7 @@ jobs:
     outputs:
       SHORT_COMMIT_HASH: "${{ env.SHORT_COMMIT_HASH }}"
     env:
-      BRANCH_NAME: ${{ github.ref_name }}
+      BRANCH_NAME: ${{ github.ref_name || github.base_ref }}
       token: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
     steps:
       - name: Validate only one property is set

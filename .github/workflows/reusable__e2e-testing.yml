@@ -59,7 +59,7 @@ jobs:
       COMMIT_REF: ${{ inputs.COMMIT_HASH || (github.ref_name || github.head_ref) }}
 
     steps:
-      - debug:
+      - name: debug
         run: |
           echo "Running E2E tests for file: ${{ inputs.COMMIT_HASH }}"
           echo "Using Docker image tag: ${{ github.head_ref }}"

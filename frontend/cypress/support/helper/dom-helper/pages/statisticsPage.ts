@@ -113,7 +113,7 @@ export default class StatisticsPage extends Page {
   private verifyStatisticsCardBar(id: string, barProgress: any): void {
     this.getStatisticsCard(id)
       .find('mat-progress-bar')
-      .invoke('attr', 'ng-reflect-value')
+      .should('have.attr', 'aria-valuenow')
       .should('match', new RegExp(`^${barProgress}`));
   }
 }

@@ -25,9 +25,9 @@ on:
         value: ${{ jobs.read-version.outputs.NEW_IMAGE_TAG }}
 
     secrets:
-      GH_TOKEN:
-        description: 'GitHub token with contents:write permission to push version updates.'
+      DEPLOY_TOKEN_CLASSIC:
         required: true
+
 
 jobs:
 
@@ -37,6 +37,7 @@ jobs:
       SHORT_COMMIT_HASH: "${{ env.SHORT_COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.ref_name }}
+      token: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
     steps:
       - name: Validate only one property is set
         run: |
@@ -59,7 +60,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{env.BRANCH_NAME}}
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          token: ${{ secrets.DEPLOY_TOKEN_CLASSIC}}
 
       - name: Stores the commit hash as environment variable
         run: |
@@ -81,13 +82,13 @@ jobs:
     if: inputs.RELEASE_TYPE != ''
     env:
       BRANCH_NAME: ${{ github.ref_name }}
+      token: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: ${{env.BRANCH_NAME}}
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
-
+          token: ${{ secrets.DEPLOY_TOKEN_CLASSIC}}
       - name: Update version
         run: ./scripts/update-mvn-version.sh "${{ inputs.RELEASE_TYPE }}"
 
@@ -95,6 +96,7 @@ jobs:
         shell: bash
         env:
           COMMITPREFIX: '[VU]'
+          token: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions[bot]"
@@ -124,11 +126,13 @@ jobs:
       NEW_IMAGE_TAG: "${{vars.DOCKER_REPOSITORY_URL}}:${{ steps.read_version_step.outputs.SEMVER_VERSION }}-${{ needs.find-commit.outputs.SHORT_COMMIT_HASH }}"
     env:
       BRANCH_NAME: ${{ github.ref_name }}
+      token: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: ${{env.BRANCH_NAME}}
+          token: ${{ secrets.DEPLOY_TOKEN_CLASSIC}}
 
       - name: read version
         id: read_version_step

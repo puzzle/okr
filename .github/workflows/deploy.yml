@@ -39,6 +39,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       BRANCH_NAME: ${{ github.ref_name }}
+      token: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
     steps:
       - name: Try to show GitHub Variables
         run: |
@@ -48,16 +49,11 @@ jobs:
 
   versioning:
     uses: ./.github/workflows/reusable__generate-version.yml
-    permissions:
-      packages: write
-      id-token: write
-      contents: write
-      attestations: write
     with:
       RELEASE_TYPE: ${{ (github.event.inputs.deployment_type != 'Release from Commit' && inputs.deployment_type) || ''   }}
       COMMIT_HASH: ${{ (github.event.inputs.deployment_type == 'Release from Commit' &&  inputs.commit_hash) || '' }}
     secrets:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DEPLOY_TOKEN_CLASSIC: ${{ secrets.DEPLOY_TOKEN_CLASSIC }}
 
   build-docker-image:
     needs: [ versioning ]

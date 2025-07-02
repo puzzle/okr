@@ -31,7 +31,6 @@ jobs:
     uses: ./.github/workflows/reusable__e2e-testing.yml
     with:
       DOCKER_IMAGE_TAG: ${{ needs.versioning.outputs.IMAGE_TAG }}
-      COMMIT_HASH: ${{ needs.versioning.outputs.SHORT_COMMIT_HASH }}
 
   deploy-release:
     needs:

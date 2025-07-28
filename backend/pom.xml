@@ -6,11 +6,11 @@
     <parent>
         <groupId>ch.puzzle.okr</groupId>
         <artifactId>parent</artifactId>
-        <version>3.2.76</version>
+        <version>3.2.77</version>
     </parent>
 
     <artifactId>backend</artifactId>
-    <version>3.2.76</version>
+    <version>3.2.77</version>
     <name>backend</name>
     <description>Puzzle OKR Tool</description>
 

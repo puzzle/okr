@@ -111,8 +111,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
 
   calculatePercentageMetric() {
     if (this.keyResult.lastCheckIn !== null) {
-      const keyResultMetric: KeyResultMetricMin = this.castToMetric();
-      const percentage = calculateCurrentPercentage(keyResultMetric);
+      const percentage = Math.round(calculateCurrentPercentage(this.castToMetric()));
       this.labelPercentage = of(percentage);
       if (percentage < 30) {
         this.stretched = false;

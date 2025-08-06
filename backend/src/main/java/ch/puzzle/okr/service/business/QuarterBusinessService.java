@@ -136,7 +136,8 @@ public class QuarterBusinessService {
                 // Set to the start month of the next Quarter
                 YearMonth nextQuarterYearMonth = endCurrentQuarterYearMonth.plusMonths(1);
                 logger.info("Generated quarters on first day of month for tenant {}", schema);
-                String label = createQuarterLabel(nextQuarterYearMonth, quarters.get(nextQuarterYearMonth.getMonthValue()));
+                String label = createQuarterLabel(nextQuarterYearMonth,
+                                                  quarters.get(nextQuarterYearMonth.getMonthValue()));
                 generateQuarter(nextQuarterYearMonth.atDay(1), label, schema);
             }
         }

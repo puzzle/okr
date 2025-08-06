@@ -97,12 +97,10 @@ public class QuarterBusinessService {
         quarterPersistenceService.save(quarter);
     }
 
-    private boolean isInFirstMonthOfQuarter(int monthOfYear) {
-        // The first months of a quarter are 1, 4, 7, 10.
-        // In a modulo-3 calculation, these numbers all have a remainder of 1.
-        // (1 % 3 = 1, 4 % 3 = 1, 7 % 3 = 1, 10 % 3 = 1)
-        // All other months result in a remainder of 2 or 0.
-        return monthOfYear % 3 == 1;
+    private boolean isInFirstMonthOfQuarter(int currentQuarter, int endCurrentQuarter) {
+        // If we are still in the same quarter in 2 months,
+        // we are in the first month of the current quarter.
+        return Math.abs(endCurrentQuarter - currentQuarter) == 0;
     }
 
     public YearMonth getCurrentYearMonth() {
@@ -123,21 +121,21 @@ public class QuarterBusinessService {
     @Scheduled(cron = "0 1 0 1 * ?") // Cron expression for 00:01:00 on the first day of every month
     public void scheduledGenerationQuarters() {
         Map<Integer, Integer> quarters = generateQuarters();
-        YearMonth currentYearMonth = getCurrentYearMonth().minusMonths(1);
+        YearMonth currentYearMonth = getCurrentYearMonth();
+        YearMonth endCurrentQuarterYearMonth = currentYearMonth.plusMonths(2);
 
         int currentQuarter = quarters.get(currentYearMonth.getMonthValue());
+        int nextQuarter = quarters.get(endCurrentQuarterYearMonth.getMonthValue());
 
         String initialTenant = TenantContext.getCurrentTenant();
-        System.out.println("initialTenant = " + initialTenant);
 
         Set<String> tenantSchemas = this.tenantConfigProvider.getAllTenantIds();
         // If we are in the first month of a quarter, generate the next quarter
-        System.out.println("tenantSchemas = " + tenantSchemas);
-        if (isInFirstMonthOfQuarter(currentQuarter)) {
+        if (isInFirstMonthOfQuarter(currentQuarter, nextQuarter)) {
             for (String schema : tenantSchemas) {
                 // Set to the start month of the next Quarter
-                YearMonth nextQuarterYearMonth = currentYearMonth.plusMonths(3);
-                logger.info("Generated quarters on last day of month for tenant {}", schema);
+                YearMonth nextQuarterYearMonth = endCurrentQuarterYearMonth.plusMonths(1);
+                logger.info("Generated quarters on first day of month for tenant {}", schema);
                 String label = createQuarterLabel(nextQuarterYearMonth, quarters.get(nextQuarterYearMonth.getMonthValue()));
                 generateQuarter(nextQuarterYearMonth.atDay(1), label, schema);
             }

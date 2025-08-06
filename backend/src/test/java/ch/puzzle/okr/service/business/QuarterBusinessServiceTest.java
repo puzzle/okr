@@ -108,7 +108,7 @@ class QuarterBusinessServiceTest {
     }
 
     @ParameterizedTest(name = "Should not generate a new quarter on scheduledGenerationQuarters() when it is not the last month of the quarter such as {0}")
-    @ValueSource(ints = { 1, 2, 4, 5, 7, 8, 10, 11 })
+    @ValueSource(ints = { 2, 3, 5, 6, 8, 9, 11, 12 })
     void shouldNotGenerateQuarterIfNotLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
@@ -117,8 +117,8 @@ class QuarterBusinessServiceTest {
         verify(quarterPersistenceService, never()).save(any());
     }
 
-    @ParameterizedTest(name = "Should generate new quarter on scheduledGenerationQuarters() when it is the last month of the quarter such as {0}")
-    @ValueSource(ints = { 3, 6, 9, 12 })
+    @ParameterizedTest(name = "Should generate new quarter on scheduledGenerationQuarters() when it is the first month of the quarter such as {0}")
+    @ValueSource(ints = { 1, 4, 7, 10 })
     void shouldGenerateQuarterIfLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
         Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
@@ -130,12 +130,12 @@ class QuarterBusinessServiceTest {
 
     private static Stream<Arguments> generateQuarterParams() {
         return Stream
-                .of(Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 3), "GJ 30/31-Q1"),
-                    Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 9), "GJ 30/31-Q3"),
-                    Arguments.of(5, "GJ xx/yy-Qzz", YearMonth.of(2030, 4), "GJ 30/31-Q2"),
-                    Arguments.of(1, "GJ xx-Qzz", YearMonth.of(2030, 9), "GJ 31-Q1"),
-                    Arguments.of(1, "GJ xxxx-Qzz", YearMonth.of(2030, 6), "GJ 2030-Q4"),
-                    Arguments.of(2, "xx-yy-xxxx-yyyy-Qzz", YearMonth.of(2030, 1), "30-31-2030-2031-Q2"));
+                .of(Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 4), "GJ 30/31-Q1"),
+                    Arguments.of(7, "GJ xx/yy-Qzz", YearMonth.of(2030, 10), "GJ 30/31-Q3"),
+                    Arguments.of(5, "GJ xx/yy-Qzz", YearMonth.of(2030, 5), "GJ 30/31-Q2"),
+                    Arguments.of(1, "GJ xx-Qzz", YearMonth.of(2030, 10), "GJ 31-Q1"),
+                    Arguments.of(1, "GJ xxxx-Qzz", YearMonth.of(2030, 7), "GJ 2030-Q4"),
+                    Arguments.of(2, "xx-yy-xxxx-yyyy-Qzz", YearMonth.of(2030, 2), "30-31-2030-2031-Q2"));
     }
 
     @ParameterizedTest(name = "Should generate quarters correctly on scheduledGenerationQuarters() with quarter start {0}, format {1}, current month of year {2} and label {3}")
@@ -147,10 +147,10 @@ class QuarterBusinessServiceTest {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", quarterStart);
         ReflectionTestUtils.setField(quarterBusinessService, "quarterFormat", quarterFormat);
 
-        int monthsToNextQuarterStart = 4;
+        int monthsToNextQuarterStart = 3;
         LocalDate expectedStart = currentYearMonth.plusMonths(monthsToNextQuarterStart).atDay(1);
 
-        int monthsToNextQuarterEnd = 6;
+        int monthsToNextQuarterEnd = 5;
         LocalDate expectedEnd = currentYearMonth.plusMonths(monthsToNextQuarterEnd).atEndOfMonth();
 
         Quarter expectedQuarter = Quarter.Builder

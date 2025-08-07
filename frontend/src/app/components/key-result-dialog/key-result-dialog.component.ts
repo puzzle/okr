@@ -47,15 +47,20 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   saveKeyResult(openNewDialog = false) {
+    const roundToTwoDecimals = (num: number) => parseFloat(num.toFixed(2));
     this.deletedItems.subscribe((e: any[]) => e.forEach((elem: any) => this.actionService.deleteAction(elem.id)
       .subscribe()));
     this.keyResultForm.controls['metric'].enable();
     this.keyResultForm.controls['ordinal'].enable();
     let keyResult: KeyResultDto = this.keyResultForm.value;
+    const values = this.keyResultForm.get('metric')?.value;
+    const num: number = (values.stretchGoal - values.baseline) * 0.3 + values.baseline;
     keyResult.actionList = itemListToActionList(this.keyResultForm.getRawValue().actionList, this.data.keyResult?.id || null);
+    const commit = { commitGoal: roundToTwoDecimals(num) };
     if (this.isMetricKeyResult()) {
       keyResult = { ...keyResult,
-        ...this.keyResultForm.get('metric')?.value } as KeyResultMetricDto;
+        ...this.keyResultForm.get('metric')?.value,
+        ...commit } as KeyResultMetricDto;
     } else {
       keyResult = { ...keyResult,
         ...this.keyResultForm.get('ordinal')?.value } as KeyResultOrdinalDto;

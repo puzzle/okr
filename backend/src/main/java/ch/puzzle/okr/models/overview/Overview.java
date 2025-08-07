@@ -23,8 +23,9 @@ public class Overview implements WriteableInterface {
     private String keyResultTitle;
     private String keyResultType;
     private Double baseline;
+    private Double commitGoal;
+    private Double targetGoal;
     private Double stretchGoal;
-    private String unit;
     private String commitZone;
     private String targetZone;
     private String stretchZone;
@@ -54,8 +55,9 @@ public class Overview implements WriteableInterface {
         keyResultTitle = builder.keyResultTitle;
         keyResultType = builder.keyResultType;
         baseline = builder.baseline;
+        commitGoal = builder.commitGoal;
+        targetGoal = builder.targetGoal;
         stretchGoal = builder.stretchGoal;
-        unit = builder.unit;
         commitZone = builder.commitZone;
         targetZone = builder.targetZone;
         stretchZone = builder.stretchZone;
@@ -113,10 +115,6 @@ public class Overview implements WriteableInterface {
         return stretchGoal;
     }
 
-    public String getUnit() {
-        return unit;
-    }
-
     public String getCommitZone() {
         return commitZone;
     }
@@ -145,6 +143,14 @@ public class Overview implements WriteableInterface {
         return checkInCreatedOn;
     }
 
+    public Double getCommitGoal() {
+        return commitGoal;
+    }
+
+    public Double getTargetGoal() {
+        return targetGoal;
+    }
+
     @Override
     public boolean isWriteable() {
         return writeable;
@@ -165,15 +171,15 @@ public class Overview implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Overview{" + "overviewId=" + overviewId + ", teamVersion='" + teamVersion + ", teamName='" + teamName
-               + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
+        return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", teamVersion="
+               + teamVersion + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
-               + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit
-               + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
-               + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\''
-               + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\''
-               + '}';
+               + keyResultType + '\'' + ", baseline=" + baseline + ", commitGoal=" + commitGoal + ", targetGoal="
+               + targetGoal + ", stretchGoal=" + stretchGoal + ", commitZone='" + commitZone + '\'' + ", targetZone='"
+               + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue
+               + ", checkInZone='" + checkInZone + '\'' + ", confidence=" + confidence + ", checkInCreatedOn="
+               + checkInCreatedOn + ", writeable=" + writeable + ", backlogQuarter=" + backlogQuarter + '}';
     }
 
     public static final class Builder {
@@ -188,8 +194,9 @@ public class Overview implements WriteableInterface {
         private String keyResultTitle;
         private String keyResultType;
         private Double baseline;
+        private Double commitGoal;
+        private Double targetGoal;
         private Double stretchGoal;
-        private String unit;
         private String commitZone;
         private String targetZone;
         private String stretchZone;
@@ -260,13 +267,18 @@ public class Overview implements WriteableInterface {
             return this;
         }
 
-        public Builder withStretchGoal(Double stretchGoal) {
-            this.stretchGoal = stretchGoal;
+        public Builder withCommitGoal(Double commitGoal) {
+            this.commitGoal = commitGoal;
             return this;
         }
 
-        public Builder withUnit(String unit) {
-            this.unit = unit;
+        public Builder withTargetGoal(Double targetGoal) {
+            this.targetGoal = targetGoal;
+            return this;
+        }
+
+        public Builder withStretchGoal(Double stretchGoal) {
+            this.stretchGoal = stretchGoal;
             return this;
         }
 

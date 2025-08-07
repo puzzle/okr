@@ -14,6 +14,10 @@ public class KeyResultMetric extends KeyResult {
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Double baseline;
 
+    private Double commitGoal;
+
+    private Double targetGoal;
+
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Double stretchGoal;
 
@@ -31,6 +35,22 @@ public class KeyResultMetric extends KeyResult {
 
     public Double getStretchGoal() {
         return stretchGoal;
+    }
+
+    public Double getCommitGoal() {
+        return commitGoal;
+    }
+
+    public void setCommitGoal(Double commitGoal) {
+        this.commitGoal = commitGoal;
+    }
+
+    public Double getTargetGoal() {
+        return targetGoal;
+    }
+
+    public void setTargetGoal(Double targetGoal) {
+        this.targetGoal = targetGoal;
     }
 
     public void setStretchGoal(Double stretchGoal) {
@@ -54,6 +74,8 @@ public class KeyResultMetric extends KeyResult {
         if (o instanceof KeyResultMetric keyResultMetric) {
             return super.equals(o) && Objects.equals(baseline, keyResultMetric.baseline)
                    && Objects.equals(stretchGoal, keyResultMetric.stretchGoal)
+                   && Objects.equals(commitGoal, keyResultMetric.commitGoal)
+                   && Objects.equals(targetGoal, keyResultMetric.targetGoal)
                    && Objects.equals(unit, keyResultMetric.unit);
         }
         return false;
@@ -61,24 +83,28 @@ public class KeyResultMetric extends KeyResult {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), baseline, stretchGoal, unit);
+        return Objects.hash(super.hashCode(), baseline, commitGoal, targetGoal, stretchGoal, unit);
     }
 
     @Override
     public String toString() {
-        return super.toString() + "KeyResultMetric{" + "baseline=" + baseline + ", stretchGoal=" + stretchGoal
-               + ", unit='" + unit + '\'' + '}';
+        return "KeyResultMetric{" + "baseline=" + baseline + ", commitGoal=" + commitGoal + ", targetGoal=" + targetGoal
+               + ", stretchGoal=" + stretchGoal + ", unit=" + unit + '}';
     }
 
     private KeyResultMetric(Builder builder) {
         super(builder);
         setBaseline(builder.baseline);
+        setCommitGoal(builder.commitGoal);
+        setTargetGoal(builder.targetGoal);
         setStretchGoal(builder.stretchGoal);
         setUnit(builder.unit);
     }
 
     public static class Builder extends KeyResult.Builder<Builder> {
         private Double baseline;
+        private Double commitGoal;
+        private Double targetGoal;
         private Double stretchGoal;
         private Unit unit;
 
@@ -102,6 +128,16 @@ public class KeyResultMetric extends KeyResult {
 
         public Builder withUnit(Unit unit) {
             this.unit = unit;
+            return this;
+        }
+
+        public Builder withCommitGoal(Double commitGoal) {
+            this.commitGoal = commitGoal;
+            return this;
+        }
+
+        public Builder withTargetGoal(Double targetGoal) {
+            this.targetGoal = targetGoal;
             return this;
         }
 

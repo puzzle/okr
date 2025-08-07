@@ -21,7 +21,7 @@ services:
     tty: true
     container_name: maven
     restart: on-failure
-    image: maven:3.9.9-amazoncorretto-21
+    image: maven:3.9.11-amazoncorretto-21
     command: mvn fizzed-watcher:run
     working_dir: /app-root/
     volumes:
@@ -34,7 +34,7 @@ services:
   maven-init:
     tty: true
     container_name: maven-init
-    image: maven:3.9.9-amazoncorretto-21
+    image: maven:3.9.11-amazoncorretto-21
     command: mvn -B clean package -P build-for-docker,debug,no-formatter
     working_dir: /app-root/
     volumes:

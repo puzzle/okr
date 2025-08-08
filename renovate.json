@@ -39,7 +39,7 @@
       "extends": [
         "group:monorepos"
       ],
-      "updateTypes": ["minor", "patch"]
+      "updateTypes": ["major","minor", "patch"]
     },
     {
       "matchDatasources": [ "maven" ],

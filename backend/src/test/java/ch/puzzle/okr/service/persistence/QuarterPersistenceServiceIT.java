@@ -138,15 +138,30 @@ class QuarterPersistenceServiceIT {
         assertEquals(QUARTER, quarterPersistenceService.getModelName());
     }
 
-    @ParameterizedTest(name = "Should generate quarter with Cron-Job when current month is the last month of the current quarter (Month: {0}, Quarter: {1})")
-    @CsvSource(value = { "1,1,0", "2,1,0", "3,1,1", "4,1,0", "5,1,0", "6,2,1", "7,1,0", "8,1,0", "9,3,1", "10,3,0",
-            "11,1,0", "12,4,1" })
-    void shouldGenerateQuarterWithCronJob(int month, int quarterIndex, int amountOfInvocations) {
+    @ParameterizedTest(name = "Should generate quarter with Cron-Job when current month is the first month of the current quarter (Month: {0}, Quarter: {1})")
+    @CsvSource(value = { "1,4,1,1", "2,4,0,1", "3,4,0,1", "4,1,1,4", "5,1,0,4", "6,1,0,4", "7,2,1,7", "8,2,0,7",
+            "9,2,0,7", "10,3,1,10", "11,3,0,10", "12,3,0,10" })
+    void shouldGenerateQuarterWithCronJob(int month, int quarterIndex, int amountOfInvocations,
+                                          int currentQuarterStart) {
         int startQuarter = 7;
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", startQuarter);
         int nextYear = Year.now().atMonth(startQuarter).plusMonths(month + 12 - 1).getYear();
         int nextYearShort = nextYear % 1000;
-        String expectedLabel = "GJ " + nextYearShort + "/" + (nextYearShort + 1) + "-Q" + quarterIndex;
+        String expectedLabel;
+        if (quarterIndex == 4) {
+            expectedLabel = "GJ " + (nextYearShort - 1) + "/" + nextYearShort + "-Q" + quarterIndex;
+        } else {
+            expectedLabel = "GJ " + nextYearShort + "/" + (nextYearShort + 1) + "-Q" + quarterIndex;
+        }
+
+        LocalDate start = LocalDate.of(nextYear, currentQuarterStart, 1);
+        LocalDate end = start.plusMonths(3).minusDays(1);
+
+        Quarter currentQuarter = new Quarter();
+        currentQuarter.setStartDate(start);
+        currentQuarter.setEndDate(end);
+
+        Mockito.when(quarterBusinessService.getCurrentQuarter()).thenReturn(currentQuarter);
 
         Mockito.doReturn(YearMonth.of(nextYear, month)).when(quarterBusinessService).getCurrentYearMonth();
         Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();

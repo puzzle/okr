@@ -170,9 +170,10 @@ class QuarterPersistenceServiceIT {
     }
 
     @ParameterizedTest(name = "Should generate quarter with Cron-Job when current month is the first month of the current quarter (Month: {0}, Quarter: {1})")
-    @CsvSource(value = { "1,4,1,1", "2,4,0,1", "3,4,0,1", "4,1,1,4", "5,1,0,4", "6,1,0,4", "7,2,1,7", "8,2,0,7", "9,2,0,7", "10,3,1,10",
-            "11,3,0,10", "12,3,0,10" })
-    void shouldGenerateQuarterWithCronJob2(int month, int quarterIndex, int amountOfInvocations, int currentQuarterStart) {
+    @CsvSource(value = { "1,4,1,1", "2,4,0,1", "3,4,0,1", "4,1,1,4", "5,1,0,4", "6,1,0,4", "7,2,1,7", "8,2,0,7",
+            "9,2,0,7", "10,3,1,10", "11,3,0,10", "12,3,0,10" })
+    void shouldGenerateQuarterWithCronJob2(int month, int quarterIndex, int amountOfInvocations,
+                                           int currentQuarterStart) {
         int startQuarter = 7;
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", startQuarter);
         int nextYear = Year.now().atMonth(startQuarter).plusMonths(month + 12 - 1).getYear();
@@ -184,7 +185,7 @@ class QuarterPersistenceServiceIT {
             expectedLabel = "GJ " + nextYearShort + "/" + (nextYearShort + 1) + "-Q" + quarterIndex;
         }
 
-        LocalDate start = LocalDate.of(nextYear,currentQuarterStart,1);
+        LocalDate start = LocalDate.of(nextYear, currentQuarterStart, 1);
         LocalDate end = start.plusMonths(3).minusDays(1);
 
         Quarter currentQuarter = new Quarter();

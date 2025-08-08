@@ -116,7 +116,7 @@ class QuarterBusinessServiceTest {
         verify(quarterPersistenceService, never()).save(any());
     }
 
-    @ParameterizedTest(name = "Should generate new quarter even if the current one does not exist on scheduledGenerationQuarters() when it is the first month of the quarter such as {0}")
+    @ParameterizedTest(name = "Should generate both new quarter if the current one does not exist on scheduledGenerationQuarters() when it is the first month of the quarter such as {0}")
     @ValueSource(ints = { 1, 4, 7, 10 })
     void shouldGenerateBothQuartersIfLastMonthOfQuarterAndCurrentQuarterDoesNotExist(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);

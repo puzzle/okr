@@ -12,7 +12,6 @@ import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDate;
-import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Stream;
@@ -136,7 +135,7 @@ class QuarterBusinessServiceTest {
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
 
-        LocalDate currentQuarterStart = LocalDate.of(2030,month,1);
+        LocalDate currentQuarterStart = LocalDate.of(2030, month, 1);
         LocalDate currentQuarterEnd = currentQuarterStart.plusMonths(3).minusDays(1);
 
         Quarter currentQuarter = new Quarter();

@@ -142,7 +142,7 @@ class QuarterPersistenceServiceIT {
     @CsvSource(value = { "1,4,1,1", "2,4,0,1", "3,4,0,1", "4,1,1,4", "5,1,0,4", "6,1,0,4", "7,2,1,7", "8,2,0,7",
             "9,2,0,7", "10,3,1,10", "11,3,0,10", "12,3,0,10" })
     void shouldGenerateQuarterWithCronJob(int month, int quarterIndex, int amountOfInvocations,
-                                           int currentQuarterStart) {
+                                          int currentQuarterStart) {
         int startQuarter = 7;
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", startQuarter);
         int nextYear = Year.now().atMonth(startQuarter).plusMonths(month + 12 - 1).getYear();

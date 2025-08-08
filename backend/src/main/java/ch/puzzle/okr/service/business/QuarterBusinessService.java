@@ -82,7 +82,7 @@ public class QuarterBusinessService {
         return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
-    private Quarter generateQuarter(LocalDate start, String label, String schema) {
+    private Quarter generateQuarter(LocalDate start, String label) {
 
         YearMonth yearMonth = YearMonth.from(start);
         Quarter quarter = Quarter.Builder
@@ -92,12 +92,11 @@ public class QuarterBusinessService {
                 .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
                 .build();
         validator.validateOnGeneration(quarter);
-        quarterPersistenceService.save(quarter);
-        return quarter;
+        return quarterPersistenceService.save(quarter);
     }
 
     public YearMonth getCurrentYearMonth() {
-        return YearMonth.now().minusMonths(1);
+        return YearMonth.now();
     }
 
     Map<Integer, Integer> generateQuarters() {
@@ -111,34 +110,37 @@ public class QuarterBusinessService {
         return quarters;
     }
 
-    private Quarter getOrCreateCurrentQuarter(String schema) {
+    private Quarter getOrCreateCurrentQuarter() {
         Quarter current = getCurrentQuarter();
         if (current == null) {
-            current = createQuarter(getCurrentYearMonth(), schema);
+            current = createQuarter(getCurrentYearMonth());
         }
         return current;
     }
 
-    private Quarter createQuarter(YearMonth creationDate, String schema) {
-        logger.info("Generated quarters on first day of month for tenant {}", schema);
+    private Quarter createQuarter(YearMonth creationDate) {
         String label = createQuarterLabel(creationDate, generateQuarters().get(creationDate.getMonthValue()));
-        return generateQuarter(creationDate.atDay(1), label, schema);
+        return generateQuarter(creationDate.atDay(1), label);
     }
 
     @Scheduled(cron = "0 1 0 1 * ?") // Runs at 00:01 on the 1st of each month
     public void scheduledGenerationQuarters() {
+        logger.warn("Start scheduling generation quarters");
         String initialTenant = TenantContext.getCurrentTenant();
 
         for (String schema : tenantConfigProvider.getAllTenantIds()) {
+            logger.warn("Start generating quarters on first day of month for tenant {}", schema);
             TenantContext.setCurrentTenant(schema);
 
-            Quarter currentQuarter = getOrCreateCurrentQuarter(schema);
+            Quarter currentQuarter = getOrCreateCurrentQuarter();
             if (getCurrentYearMonth().equals(YearMonth.from(currentQuarter.getStartDate()))) {
                 YearMonth nextQuarter = YearMonth.from(currentQuarter.getEndDate()).plusMonths(1);
-                createQuarter(nextQuarter, schema);
+                createQuarter(nextQuarter);
             }
+            logger.warn("Successfully generated quarters on first day of month for tenant {}", schema);
         }
 
         TenantContext.setCurrentTenant(initialTenant);
+        logger.warn("End scheduling generation quarters");
     }
 }

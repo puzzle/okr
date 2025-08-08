@@ -12,6 +12,7 @@ import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Stream;
@@ -107,24 +108,44 @@ class QuarterBusinessServiceTest {
         assertNull(quarterList.get(0).getEndDate());
     }
 
-    @ParameterizedTest(name = "Should not generate a new quarter on scheduledGenerationQuarters() when it is not the last month of the quarter such as {0}")
+    @ParameterizedTest(name = "Should not generate a new quarter on scheduledGenerationQuarters() when it is not the first month of the quarter such as {0}")
     @ValueSource(ints = { 2, 3, 5, 6, 8, 9, 11, 12 })
     void shouldNotGenerateQuarterIfNotLastMonthOfQuarter(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
 
-        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, never()).save(any());
     }
 
-    @ParameterizedTest(name = "Should generate new quarter on scheduledGenerationQuarters() when it is the first month of the quarter such as {0}")
+    @ParameterizedTest(name = "Should generate new quarter even if the current one does not exist on scheduledGenerationQuarters() when it is the first month of the quarter such as {0}")
     @ValueSource(ints = { 1, 4, 7, 10 })
-    void shouldGenerateQuarterIfLastMonthOfQuarter(int month) {
+    void shouldGenerateBothQuartersIfLastMonthOfQuarterAndCurrentQuarterDoesNotExist(int month) {
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
         Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
         quarterBusinessService.scheduledGenerationQuarters();
+        verify(quarterPersistenceService, times(2)).save(any());
+    }
+
+    @ParameterizedTest(name = "Should generate new quarter on scheduledGenerationQuarters() when it is the first month of the quarter such as {0}")
+    @ValueSource(ints = { 1, 4, 7, 10 })
+    void shouldGenerateQuarterIfFirstMonthOfQuarter(int month) {
+        ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", 7);
+        Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
+
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
+
+        LocalDate currentQuarterStart = LocalDate.of(2030,month,1);
+        LocalDate currentQuarterEnd = currentQuarterStart.plusMonths(3).minusDays(1);
+
+        Quarter currentQuarter = new Quarter();
+        currentQuarter.setStartDate(currentQuarterStart);
+        currentQuarter.setEndDate(currentQuarterEnd);
+
+        Mockito.when(quarterBusinessService.getCurrentQuarter()).thenReturn(currentQuarter);
+        quarterBusinessService.scheduledGenerationQuarters();
+
         verify(quarterPersistenceService, times(1)).save(any());
     }
 
@@ -207,7 +228,6 @@ class QuarterBusinessServiceTest {
     @DisplayName("Should return null on scheduledGenerationQuarters() when no quarters need to be generated")
     @Test
     void shouldReturnNullWhenNoQuarterGenerationNeeded() {
-        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 4));
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, times(0)).save(any());
     }

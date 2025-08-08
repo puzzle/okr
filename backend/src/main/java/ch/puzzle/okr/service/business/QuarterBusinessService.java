@@ -12,7 +12,6 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,8 +82,7 @@ public class QuarterBusinessService {
         return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
-    private void generateQuarter(LocalDate start, String label, String schema) {
-        TenantContext.setCurrentTenant(schema);
+    private Quarter generateQuarter(LocalDate start, String label, String schema) {
 
         YearMonth yearMonth = YearMonth.from(start);
         Quarter quarter = Quarter.Builder
@@ -95,16 +93,11 @@ public class QuarterBusinessService {
                 .build();
         validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
-    }
-
-    private boolean isInFirstMonthOfQuarter(int currentQuarter, int endCurrentQuarter) {
-        // If we are still in the same quarter in 2 months,
-        // we are in the first month of the current quarter.
-        return Math.abs(endCurrentQuarter - currentQuarter) == 0;
+        return quarter;
     }
 
     public YearMonth getCurrentYearMonth() {
-        return YearMonth.now();
+        return YearMonth.now().minusMonths(1);
     }
 
     Map<Integer, Integer> generateQuarters() {
@@ -118,27 +111,31 @@ public class QuarterBusinessService {
         return quarters;
     }
 
-    @Scheduled(cron = "0 1 0 1 * ?") // Cron expression for 00:01:00 on the first day of every month
+    private Quarter getOrCreateCurrentQuarter(String schema) {
+        Quarter current = getCurrentQuarter();
+        if (current == null) {
+            current = createQuarter(getCurrentYearMonth(), schema);
+        }
+        return current;
+    }
+
+    private Quarter createQuarter(YearMonth creationDate, String schema) {
+        logger.info("Generated quarters on first day of month for tenant {}", schema);
+        String label = createQuarterLabel(creationDate, generateQuarters().get(creationDate.getMonthValue()));
+        return generateQuarter(creationDate.atDay(1), label, schema);
+    }
+
+    @Scheduled(cron = "0 1 0 1 * ?") // Runs at 00:01 on the 1st of each month
     public void scheduledGenerationQuarters() {
-        Map<Integer, Integer> quarters = generateQuarters();
-        YearMonth currentYearMonth = getCurrentYearMonth();
-        YearMonth endCurrentQuarterYearMonth = currentYearMonth.plusMonths(2);
-
-        int currentQuarter = quarters.get(currentYearMonth.getMonthValue());
-        int nextQuarter = quarters.get(endCurrentQuarterYearMonth.getMonthValue());
-
         String initialTenant = TenantContext.getCurrentTenant();
 
-        Set<String> tenantSchemas = this.tenantConfigProvider.getAllTenantIds();
-        // If we are in the first month of a quarter, generate the next quarter
-        if (isInFirstMonthOfQuarter(currentQuarter, nextQuarter)) {
-            for (String schema : tenantSchemas) {
-                // Set to the start month of the next Quarter
-                YearMonth nextQuarterYearMonth = endCurrentQuarterYearMonth.plusMonths(1);
-                logger.info("Generated quarters on first day of month for tenant {}", schema);
-                String label = createQuarterLabel(nextQuarterYearMonth,
-                                                  quarters.get(nextQuarterYearMonth.getMonthValue()));
-                generateQuarter(nextQuarterYearMonth.atDay(1), label, schema);
+        for (String schema : tenantConfigProvider.getAllTenantIds()) {
+            TenantContext.setCurrentTenant(schema);
+
+            Quarter currentQuarter = getOrCreateCurrentQuarter(schema);
+            if (getCurrentYearMonth().equals(YearMonth.from(currentQuarter.getStartDate()))) {
+                YearMonth nextQuarter = YearMonth.from(currentQuarter.getEndDate()).plusMonths(1);
+                createQuarter(nextQuarter, schema);
             }
         }
 

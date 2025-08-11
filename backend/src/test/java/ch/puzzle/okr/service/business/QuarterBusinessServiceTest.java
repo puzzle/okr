@@ -123,6 +123,15 @@ class QuarterBusinessServiceTest {
         Mockito.doReturn(Set.of(TestHelper.SCHEMA_PITC)).when(tenantConfigProvider).getAllTenantIds();
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, month));
+
+        LocalDate currentQuarterStart = LocalDate.of(2030, month, 1);
+        LocalDate currentQuarterEnd = currentQuarterStart.plusMonths(3).minusDays(1);
+
+        Quarter currentQuarter = new Quarter();
+        currentQuarter.setStartDate(currentQuarterStart);
+        currentQuarter.setEndDate(currentQuarterEnd);
+
+        Mockito.when(quarterPersistenceService.save(currentQuarter)).thenReturn(currentQuarter);
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, times(2)).save(any());
     }
@@ -181,7 +190,15 @@ class QuarterBusinessServiceTest {
                 .withEndDate(expectedEnd)
                 .build();
 
+        LocalDate currentQuarterStart = LocalDate.of(currentYearMonth.getYear(), currentYearMonth.getMonth(), 1);
+        LocalDate currentQuarterEnd = currentQuarterStart.plusMonths(3).minusDays(1);
+
+        Quarter currentQuarter = new Quarter();
+        currentQuarter.setStartDate(currentQuarterStart);
+        currentQuarter.setEndDate(currentQuarterEnd);
+
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(currentYearMonth);
+        Mockito.when(quarterPersistenceService.getCurrentQuarter()).thenReturn(currentQuarter);
 
         quarterBusinessService.scheduledGenerationQuarters();
 

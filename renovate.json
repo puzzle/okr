@@ -16,7 +16,7 @@
     {
       "groupName": "All Angular packages",
       "matchPackageNames": ["^@angular", "^@angular-eslint"],
-      "updateTypes": ["major", "minor", "patch"]
+      "matchUpdateTypes": ["major", "minor", "patch"]
     },
     {
       "groupName": "All devDependencies (minor and patch)",
@@ -32,22 +32,13 @@
     {
       "groupName": "All ESLint packages",
       "matchPackageNames": ["eslint", "typescript-eslint"],
-      "updateTypes": ["major", "minor", "patch"]
-    },
-    {
-      "groupName": "All Monorepo dependencies",
-      "extends": [
-        "group:monorepos"
-      ],
-      "updateTypes": ["major","minor", "patch"]
+      "matchUpdateTypes": ["major", "minor", "patch"]
     },
     {
       "matchDatasources": [ "maven" ],
-      "matchPackagePrefixes": [
-        "ch.puzzle.okr"
-      ],
       "matchDepTypes": [ "parent" ],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": ["ch.puzzle.okr{/,}**"]
     }
   ]
 }

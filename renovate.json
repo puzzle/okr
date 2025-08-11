@@ -20,8 +20,13 @@
     },
     {
       "groupName": "All devDependencies (minor and patch)",
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true
     },
     {
@@ -33,7 +38,7 @@
       "matchDatasources": [ "maven" ],
       "matchDepTypes": [ "parent" ],
       "enabled": false,
-      "matchPackageNames": ["ch.puzzle.okr"]
+      "matchPackageNames": ["ch.puzzle.okr{/,}**"]
     }
   ]
 }

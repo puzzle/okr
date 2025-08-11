@@ -20,13 +20,8 @@
     },
     {
       "groupName": "All devDependencies (minor and patch)",
-      "matchDepTypes": [
-        "devDependencies"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
     {

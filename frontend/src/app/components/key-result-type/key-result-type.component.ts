@@ -144,7 +144,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   setFormControlValueToZero(formGroupMetric: any, form_control: string) {
-    if (!formGroupMetric.get(form_control).value) {
+    if (formGroupMetric.get(form_control) && !formGroupMetric.get(form_control).value) {
       formGroupMetric.get(form_control)
         .setValue(0, { emitEvent: false });
     }

@@ -63,8 +63,8 @@ public class KeyResultMetricMapper {
                                       keyResult.getTitle(), //
                                       keyResult.getDescription(), //
                                       keyResult.getBaseline(), //
-                                      keyResult.getCommitGoal(),
-                                      keyResult.getTargetGoal(),
+                                      keyResult.getWordingCommitValue(),
+                                      keyResult.getWordingTargetValue(),
                                       keyResult.getStretchGoal(), //
                                       unitMapper.toDto(keyResult.getUnit()), //
                                       ownerDto,
@@ -81,8 +81,8 @@ public class KeyResultMetricMapper {
                 .builder() //
                 .withBaseline(keyResultMetricDto.baseline()) //
                 .withStretchGoal(keyResultMetricDto.stretchGoal()) //
-                .withCommitGoal(keyResultMetricDto.commitGoal()) //
-                .withTargetGoal(keyResultMetricDto.targetGoal()) //
+                .withWordingCommitValue(keyResultMetricDto.wordingCommitValue()) //
+                .withWordingTargetValue(keyResultMetricDto.wordingTargetValue()) //
                 .withUnit(unitBusinessService.findUnitByName(keyResultMetricDto.unit().unitName()))
                 .withId(keyResultMetricDto.id()) //
                 .withVersion(keyResultMetricDto.version()) //

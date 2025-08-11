@@ -104,8 +104,8 @@ public class OverviewMapper {
                                               overview.getKeyResultTitle(),
                                               overview.getKeyResultType(),
                                               overview.getBaseline(),
-                                              overview.getCommitGoal(),
-                                              overview.getTargetGoal(),
+                                              overview.getWordingCommitValue(),
+                                              overview.getWordingTargetValue(),
                                               overview.getStretchGoal(),
                                               lastCheckIn);
     }

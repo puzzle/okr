@@ -23,8 +23,8 @@ public class Overview implements WriteableInterface {
     private String keyResultTitle;
     private String keyResultType;
     private Double baseline;
-    private Double commitGoal;
-    private Double targetGoal;
+    private Double wordingCommitValue;
+    private Double wordingTargetValue;
     private Double stretchGoal;
     private String commitZone;
     private String targetZone;
@@ -55,8 +55,8 @@ public class Overview implements WriteableInterface {
         keyResultTitle = builder.keyResultTitle;
         keyResultType = builder.keyResultType;
         baseline = builder.baseline;
-        commitGoal = builder.commitGoal;
-        targetGoal = builder.targetGoal;
+        wordingCommitValue = builder.wordingCommitValue;
+        wordingTargetValue = builder.wordingTargetValue;
         stretchGoal = builder.stretchGoal;
         commitZone = builder.commitZone;
         targetZone = builder.targetZone;
@@ -143,12 +143,12 @@ public class Overview implements WriteableInterface {
         return checkInCreatedOn;
     }
 
-    public Double getCommitGoal() {
-        return commitGoal;
+    public Double getWordingCommitValue() {
+        return wordingCommitValue;
     }
 
-    public Double getTargetGoal() {
-        return targetGoal;
+    public Double getWordingTargetValue() {
+        return wordingTargetValue;
     }
 
     @Override
@@ -175,11 +175,12 @@ public class Overview implements WriteableInterface {
                + teamVersion + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
-               + keyResultType + '\'' + ", baseline=" + baseline + ", commitGoal=" + commitGoal + ", targetGoal="
-               + targetGoal + ", stretchGoal=" + stretchGoal + ", commitZone='" + commitZone + '\'' + ", targetZone='"
-               + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue
-               + ", checkInZone='" + checkInZone + '\'' + ", confidence=" + confidence + ", checkInCreatedOn="
-               + checkInCreatedOn + ", writeable=" + writeable + ", backlogQuarter=" + backlogQuarter + '}';
+               + keyResultType + '\'' + ", baseline=" + baseline + ", wordingCommitValue=" + wordingCommitValue
+               + ", wordingTargetValue=" + wordingTargetValue + ", stretchGoal=" + stretchGoal + ", commitZone='"
+               + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='" + stretchZone + '\''
+               + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\'' + ", confidence="
+               + confidence + ", checkInCreatedOn=" + checkInCreatedOn + ", writeable=" + writeable
+               + ", backlogQuarter=" + backlogQuarter + '}';
     }
 
     public static final class Builder {
@@ -194,8 +195,8 @@ public class Overview implements WriteableInterface {
         private String keyResultTitle;
         private String keyResultType;
         private Double baseline;
-        private Double commitGoal;
-        private Double targetGoal;
+        private Double wordingCommitValue;
+        private Double wordingTargetValue;
         private Double stretchGoal;
         private String commitZone;
         private String targetZone;
@@ -267,13 +268,13 @@ public class Overview implements WriteableInterface {
             return this;
         }
 
-        public Builder withCommitGoal(Double commitGoal) {
-            this.commitGoal = commitGoal;
+        public Builder withWordingCommitValue(Double wordingCommitValue) {
+            this.wordingCommitValue = wordingCommitValue;
             return this;
         }
 
-        public Builder withTargetGoal(Double targetGoal) {
-            this.targetGoal = targetGoal;
+        public Builder withWordingTargetValue(Double wordingTargetValue) {
+            this.wordingTargetValue = wordingTargetValue;
             return this;
         }
 

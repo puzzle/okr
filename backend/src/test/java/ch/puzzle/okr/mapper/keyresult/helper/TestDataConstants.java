@@ -38,6 +38,8 @@ public class TestDataConstants {
     public static final String KEY_RESULT_TITLE = "keyresult title";
     public static final String KEY_RESULT_DESCRIPTION = "keyresult description";
     public static final double KEY_RESULT_BASELINE = 55D;
+    public static final double KEY_RESULT_COMMIT_GOAL = 62.5D;
+    public static final double KEY_RESULT_TARGET_GOAL = 72.5D;
     public static final double KEY_RESULT_STRETCH_GOAL = 80D;
     public static final Unit KEY_RESULT_UNIT = TestHelper.NUMBER_UNIT;
 

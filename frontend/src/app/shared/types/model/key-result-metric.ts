@@ -5,6 +5,8 @@ import { Unit } from '../enums/unit';
 export interface KeyResultMetric extends KeyResult {
   lastCheckIn: CheckInMetric | null;
   baseline: number;
+  wordingCommitValue: number;
+  wordingTargetValue: number;
   stretchGoal: number;
   unit: Unit;
 }

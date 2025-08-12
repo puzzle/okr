@@ -29,7 +29,7 @@ describe('TeamsPipe', () => {
       'team3'], 2))
       .toEqual('team1, team2, + 1 Weitere');
     expect(translateMock.instant)
-      .toBeCalledWith('TEAM_MANAGEMENT.WEITERE', { overflow: 1 });
+      .toHaveBeenCalledWith('TEAM_MANAGEMENT.WEITERE', { overflow: 1 });
   });
 
   it('should join all of teams if maxEntries is defined and matched', () => {

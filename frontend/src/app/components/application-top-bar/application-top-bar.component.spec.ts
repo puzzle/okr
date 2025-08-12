@@ -106,7 +106,7 @@ describe('ApplicationTopBarComponent', () => {
       .then((items) => {
         items[0].click();
         expect(oAuthMock.logOut)
-          .toBeCalledTimes(1);
+          .toHaveBeenCalledTimes(1);
       });
   });
 });

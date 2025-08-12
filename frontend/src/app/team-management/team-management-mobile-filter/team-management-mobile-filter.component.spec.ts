@@ -105,16 +105,16 @@ describe('TeamManagementMobileFilterComponent', () => {
   it('should navigate to team ', () => {
     component.navigate(team1);
     expect(routerMock.navigateByUrl)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
     expect(routerMock.navigateByUrl)
-      .toBeCalledWith(getRouteToTeam(team1.id));
+      .toHaveBeenCalledWith(getRouteToTeam(team1.id));
   });
 
   it('should navigate to all teams ', () => {
     component.navigate(component.ALL_TEAMS);
     expect(routerMock.navigateByUrl)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
     expect(routerMock.navigateByUrl)
-      .toBeCalledWith(getRouteToAllTeams());
+      .toHaveBeenCalledWith(getRouteToAllTeams());
   });
 });

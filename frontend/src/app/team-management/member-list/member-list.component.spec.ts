@@ -233,17 +233,17 @@ describe('MemberListComponent', () => {
     tick();
 
     expect(teamServiceMock.deleteTeam)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
     expect(teamServiceMock.deleteTeam)
-      .toBeCalledWith(team.id);
+      .toHaveBeenCalledWith(team.id);
     expect(routerMock.navigateByUrl)
-      .toBeCalledWith('team-management');
+      .toHaveBeenCalledWith('team-management');
     expect(routerMock.navigateByUrl)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
     expect(userServiceMock.reloadUsers)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
     expect(userServiceMock.reloadCurrentUser)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
   }));
 
   it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
@@ -257,7 +257,7 @@ describe('MemberListComponent', () => {
     tick();
 
     expect(teamServiceMock.deleteTeam)
-      .toBeCalledTimes(0);
+      .toHaveBeenCalledTimes(0);
   }));
 
   it('addMemberToTeam should open dialog', () => {
@@ -269,7 +269,7 @@ describe('MemberListComponent', () => {
     component.addMemberToTeam();
 
     expect(dialogService.open)
-      .toBeCalledWith(AddMemberToTeamDialogComponent, expect.objectContaining({
+      .toHaveBeenCalledWith(AddMemberToTeamDialogComponent, expect.objectContaining({
         data: {
           team: team1,
           currentUsersOfTeam: component.dataSource.filteredData
@@ -299,7 +299,7 @@ describe('MemberListComponent', () => {
     component.editTeam();
 
     expect(dialogService.open)
-      .toBeCalledWith(AddEditTeamDialogComponent, expect.objectContaining({
+      .toHaveBeenCalledWith(AddEditTeamDialogComponent, expect.objectContaining({
         data: {
           team: team1
         }

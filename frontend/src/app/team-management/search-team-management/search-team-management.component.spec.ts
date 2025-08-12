@@ -6,7 +6,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FilteredTeam, FilteredUser, SearchTeamManagementComponent } from './search-team-management.component';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +17,7 @@ import { Team } from '../../shared/types/model/team';
 import { User } from '../../shared/types/model/user';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import Spy = jasmine.Spy;
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const teams: Team[] = [
   {
@@ -109,8 +109,13 @@ describe('SearchTeamManagementComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         MatIconModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         }),
         SharedModule
       ],

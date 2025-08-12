@@ -16,9 +16,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 describe('CheckInFormComponent', () => {
   let component: CheckInFormMetricComponent;
@@ -33,8 +34,13 @@ describe('CheckInFormComponent', () => {
         MatInputModule,
         MatRadioModule,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         })
       ],
       declarations: [CheckInFormMetricComponent]

@@ -21,7 +21,6 @@ import { State } from '../../types/enums/state';
 import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
 import { ActivatedRoute, provideRouter } from '@angular/router';
@@ -30,6 +29,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { Team } from '../../types/model/team';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const objectiveService = {
   getFullObjective: jest.fn(),
@@ -115,8 +115,13 @@ describe('ObjectiveDialogComponent', () => {
           MatInputModule,
           NoopAnimationsModule,
           MatCheckboxModule,
-          TranslateTestingModule.withTranslations({
-            de: de
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useValue: {
+                getTranslation: () => of(de)
+              }
+            }
           }),
           MatDividerModule
         ],
@@ -438,8 +443,13 @@ describe('ObjectiveDialogComponent', () => {
           MatInputModule,
           NoopAnimationsModule,
           MatCheckboxModule,
-          TranslateTestingModule.withTranslations({
-            de: de
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useValue: {
+                getTranslation: () => of(de)
+              }
+            }
           }),
           MatDividerModule
         ],

@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // @ts-ignore
@@ -13,6 +12,8 @@ import { Routes } from '@angular/router';
 import { OverviewComponent } from './components/overview/overview.component';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { CommonModule } from '@angular/common';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 const oAuthServiceMock = {};
 
@@ -35,8 +36,13 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule.withRoutes(routes),
         HttpClientTestingModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         }),
         OAuthModule.forRoot(),
         MatSidenavModule,

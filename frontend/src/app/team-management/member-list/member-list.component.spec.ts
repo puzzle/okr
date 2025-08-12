@@ -12,7 +12,6 @@ import { UserRole } from '../../shared/types/enums/user-role';
 import { TeamService } from '../../services/team.service';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListTableComponent } from './member-list-table/member-list-table.component';
@@ -55,8 +54,7 @@ describe('MemberListComponent', () => {
       declarations: [MemberListComponent,
         MemberListTableComponent,
         MemberListMobileComponent],
-      imports: [TranslateTestingModule,
-        BrowserAnimationsModule],
+      imports: [BrowserAnimationsModule],
       providers: [
         provideRouter([]),
         provideHttpClient(),

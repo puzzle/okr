@@ -4,7 +4,6 @@ import * as de from '../../../assets/i18n/de.json';
 import { KeyResultMetricField, KeyResultTypeComponent, MetricValue } from './key-result-type.component';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { keyResultMetric, keyResultOrdinal, users } from '../../shared/test-data';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 import { By } from '@angular/platform-browser';
 import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -18,6 +17,7 @@ import { ErrorComponent } from '../../shared/custom/error/error.component';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 describe('KeyResultTypeComponent', () => {
   let component: KeyResultTypeComponent;
@@ -32,8 +32,13 @@ describe('KeyResultTypeComponent', () => {
         imports: [
           MatAutocompleteModule,
           MatFormFieldModule,
-          TranslateTestingModule.withTranslations({
-            de: de
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useValue: {
+                getTranslation: () => of(de)
+              }
+            }
           }),
           ReactiveFormsModule
         ],
@@ -111,8 +116,13 @@ describe('KeyResultTypeComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeyResultTypeComponent],
         imports: [
-          TranslateTestingModule.withTranslations({
-            de: de
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useValue: {
+                getTranslation: () => of(de)
+              }
+            }
           }),
           MatFormFieldModule,
           MatAutocompleteModule,
@@ -170,8 +180,13 @@ describe('KeyResultTypeComponent', () => {
           ErrorComponent],
         imports: [
           MatAutocompleteModule,
-          TranslateTestingModule.withTranslations({
-            de: de
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useValue: {
+                getTranslation: () => of(de)
+              }
+            }
           }),
           ReactiveFormsModule,
           MatFormFieldModule

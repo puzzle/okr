@@ -145,7 +145,7 @@ export const MY_FORMATS = {
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
     TranslateModule.forRoot({
-      defaultLanguage: 'de',
+      fallbackLang: 'de',
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,

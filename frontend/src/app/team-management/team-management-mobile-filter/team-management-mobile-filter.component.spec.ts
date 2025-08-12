@@ -10,7 +10,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 import * as de from '../../../assets/i18n/de.json';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +17,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { getRouteToAllTeams, getRouteToTeam } from '../../shared/route-utils';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 describe('TeamManagementMobileFilterComponent', () => {
   let component: TeamManagementMobileFilterComponent;
@@ -47,8 +47,13 @@ describe('TeamManagementMobileFilterComponent', () => {
         MatSelectModule,
         FormsModule,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         }),
         MatAutocompleteModule,
         MatIconModule,

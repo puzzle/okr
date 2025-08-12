@@ -22,7 +22,6 @@ import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
 // @ts-ignore
 import * as de from '../../../../assets/i18n/de.json';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 import { ConfidenceComponent } from '../../confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { provideRouter } from '@angular/router';
@@ -34,6 +33,7 @@ import {
 import { MatDividerModule } from '@angular/material/divider';
 import { Item } from '../../action-plan/action-plan.component';
 import { Zone } from '../../../shared/types/enums/zone';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const dialogMock = {
   close: jest.fn()
@@ -65,8 +65,13 @@ describe('CheckInFormComponent', () => {
         MatSliderModule,
         FormsModule,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         }),
         MatDividerModule
       ],

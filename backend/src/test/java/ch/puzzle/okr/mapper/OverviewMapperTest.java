@@ -179,7 +179,6 @@ class OverviewMapperTest {
                         .withKeyResultType(KEY_RESULT_TYPE_METRIC)
                         .withBaseline(20.0)
                         .withStretchGoal(37.0)
-                        .withUnit("TCHF")
                         .withCheckInValue(27.5)
                         .build(),
                     Overview.Builder

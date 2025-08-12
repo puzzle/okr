@@ -51,11 +51,8 @@ export class KeyResultDialogComponent implements OnInit {
       .subscribe()));
     this.keyResultForm.controls['metric'].enable();
     this.keyResultForm.controls['ordinal'].enable();
-
     let keyResult: KeyResultDto = this.keyResultForm.value;
-
     keyResult.actionList = itemListToActionList(this.keyResultForm.getRawValue().actionList, this.data.keyResult?.id || null);
-
     if (this.isMetricKeyResult()) {
       keyResult = { ...keyResult,
         ...this.keyResultForm.get('metric')?.value } as KeyResultMetricDto;
@@ -63,8 +60,6 @@ export class KeyResultDialogComponent implements OnInit {
       keyResult = { ...keyResult,
         ...this.keyResultForm.get('ordinal')?.value } as KeyResultOrdinalDto;
     }
-
-    console.log(this.keyResultForm.get('metric')?.value);
     keyResult.objective = this.data.objective;
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;

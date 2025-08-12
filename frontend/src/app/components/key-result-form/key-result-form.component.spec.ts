@@ -79,7 +79,6 @@ describe('KeyResultFormComponent', () => {
           ReactiveFormsModule,
           MatAutocompleteModule,
           MatIconModule,
-          TranslateModule.forRoot(),
           DragDropModule,
           TranslateModule.forRoot({
             loader: {

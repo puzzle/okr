@@ -18,7 +18,7 @@ import { KeyResultObjective } from '../../shared/types/model/key-result-objectiv
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyResultTypeComponent } from '../key-result-type/key-result-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 import { KeyResultFormComponent } from '../key-result-form/key-result-form.component';
@@ -28,7 +28,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { Quarter } from '../../shared/types/model/quarter';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { getValueOfForm } from '../../shared/common';
@@ -185,8 +184,13 @@ describe('KeyResultDialogComponent', () => {
           TranslateModule.forRoot(),
           DragDropModule,
           MatDividerModule,
-          TranslateTestingModule.withTranslations({
-            de: de
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useValue: {
+                getTranslation: () => of(de)
+              }
+            }
           })
         ],
         providers: [

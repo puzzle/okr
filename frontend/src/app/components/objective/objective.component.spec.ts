@@ -18,10 +18,11 @@ import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ReactiveFormsModule } from '@angular/forms';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 import { ObjectiveService } from '../../services/objective.service';
 import { CompletedService } from '../../services/completed.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 const objectiveServiceMock = {
   getFullObjective: jest.fn()
@@ -53,8 +54,13 @@ describe('ObjectiveColumnComponent', () => {
         MatIconModule,
         MatTooltipModule,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         })
       ],
       providers: [{ provide: ObjectiveService,

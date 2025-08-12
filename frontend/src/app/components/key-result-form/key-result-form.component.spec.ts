@@ -17,13 +17,12 @@ import { User } from '../../shared/types/model/user';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyResultTypeComponent } from '../key-result-type/key-result-type.component';
 import { ActionPlanComponent } from '../action-plan/action-plan.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 import { KeyResultFormComponent } from './key-result-form.component';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { provideRouter } from '@angular/router';
@@ -82,8 +81,13 @@ describe('KeyResultFormComponent', () => {
           MatIconModule,
           TranslateModule.forRoot(),
           DragDropModule,
-          TranslateTestingModule.withTranslations({
-            de: de
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useValue: {
+                getTranslation: () => of(de)
+              }
+            }
           })
         ],
         providers: [

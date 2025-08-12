@@ -9,7 +9,6 @@ import { KeyResultComponent } from '../key-result/key-result.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 // @ts-ignore
 import * as de from '../../../assets/i18n/de.json';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -20,6 +19,7 @@ import { DialogService } from '../../services/dialog.service';
 import { ConfigService } from '../../services/config.service';
 import { of } from 'rxjs';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const dialogService = {
   open: jest.fn()
@@ -56,8 +56,13 @@ describe('TeamComponent', () => {
         MatMenuModule,
         MatDialogModule,
         MatTooltipModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         }),
         MatIcon
       ],
@@ -133,8 +138,13 @@ describe('TeamComponent undefined values in config service', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [MatMenuModule,
-        TranslateTestingModule.withTranslations({
-          de: de
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: {
+              getTranslation: () => of(de)
+            }
+          }
         })],
       declarations: [TeamComponent],
       providers: [{

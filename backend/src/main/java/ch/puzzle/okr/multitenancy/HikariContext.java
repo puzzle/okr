@@ -1,6 +1,6 @@
 package ch.puzzle.okr.multitenancy;
 
-import ch.puzzle.okr.exception.HibernateContextException;
+import ch.puzzle.okr.exception.HikariContextException;
 import java.util.Properties;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -22,13 +22,13 @@ public class HikariContext {
         }
     }
 
-    private static DbConfig cachedHibernateConfig;
+    private static DbConfig cachedHikariConfig;
 
     public static void setHikariConfig(DbConfig dbConfig) {
         if (dbConfig == null || !dbConfig.isValid()) {
-            throw new HibernateContextException("Invalid hikari configuration " + dbConfig);
+            throw new HikariContextException("Invalid hikari configuration " + dbConfig);
         }
-        cachedHibernateConfig = dbConfig;
+        cachedHikariConfig = dbConfig;
     }
 
     public static void extractAndSetHikariConfig(ConfigurableEnvironment environment) {
@@ -43,14 +43,14 @@ public class HikariContext {
 
     // for testing
     public static void resetHikariConfig() {
-        cachedHibernateConfig = null;
+        cachedHikariConfig = null;
     }
 
     public static Properties getHikariConfig() {
-        if (cachedHibernateConfig == null) {
-            throw new HibernateContextException("No cached hibernate configuration found");
+        if (cachedHikariConfig == null) {
+            throw new HikariContextException("No cached hikari configuration found");
         }
-        return getConfigAsProperties(cachedHibernateConfig);
+        return getConfigAsProperties(cachedHikariConfig);
     }
 
     private static Properties getConfigAsProperties(DbConfig dbConfig) {

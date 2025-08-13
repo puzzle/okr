@@ -157,6 +157,8 @@ describe('KeyResultFormComponent', () => {
         lastCheckIn: null,
         actionList: [],
         stretchGoal: 25,
+        wordingCommitValue: 9.6,
+        wordingTargetValue: 18.4,
         unit: UNIT_CHF,
         createdOn: new Date(),
         modifiedOn: new Date(),

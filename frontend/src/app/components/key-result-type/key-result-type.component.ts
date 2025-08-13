@@ -117,18 +117,15 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
     switch (field) {
       case KeyResultMetricField.BASELINE: {
-        return { baseline: roundToTwoDecimals((values.wordingTargetValue - values.stretchGoal * 0.7) / 0.3),
-          wordingCommitValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.3 + values.baseline) };
+        return { baseline: roundToTwoDecimals((values.wordingTargetValue - values.stretchGoal * 0.7) / 0.3) };
       }
 
       case KeyResultMetricField.WORDING_TARGET_VALUE: {
-        return { wordingTargetValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.7 + values.baseline),
-          wordingCommitValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.3 + values.baseline) };
+        return { wordingTargetValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.7 + values.baseline) };
       }
 
       case KeyResultMetricField.STRETCH_GOAL: {
-        return { stretchGoal: roundToTwoDecimals((values.wordingTargetValue - values.baseline) / 0.7 + values.baseline),
-          wordingCommitValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.3 + values.baseline) };
+        return { stretchGoal: roundToTwoDecimals((values.wordingTargetValue - values.baseline) / 0.7 + values.baseline) };
       }
 
       case KeyResultMetricField.NONE: {

@@ -220,6 +220,8 @@ export const keyResultMetricMin: KeyResultMetricMin = {
   unit: UNIT_PERCENT,
   baseline: 10.0,
   stretchGoal: 25.0,
+  wordingCommitValue: 10,
+  wordingTargetValue: 20,
   lastCheckIn: checkInMetric,
   type: 'keyResult'
 } as KeyResultMetricMin;
@@ -232,6 +234,8 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
   unit: UNIT_PERCENT,
   baseline: 25.0,
   stretchGoal: 75.0,
+  wordingCommitValue: 10,
+  wordingTargetValue: 20,
   lastCheckIn: {
     id: 800,
     version: 1,
@@ -255,6 +259,8 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
   unit: UNIT_PERCENT,
   baseline: 50.0,
   stretchGoal: 0.0,
+  wordingCommitValue: 10,
+  wordingTargetValue: 20,
   lastCheckIn: {
     id: 800,
     version: 1,
@@ -579,6 +585,8 @@ export const keyResultMetric: KeyResultMetric = {
   description: 'Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.',
   baseline: 30,
   stretchGoal: 100,
+  wordingCommitValue: 10,
+  wordingTargetValue: 20,
   unit: UNIT_PERCENT,
   owner: users[3],
   keyResultType: 'metric',
@@ -616,6 +624,8 @@ export const keyResultActions: KeyResultMetric = {
   description: 'Puzzle ITC hat schöne Büros, wo es alles hat.',
   baseline: 10,
   stretchGoal: 30,
+  wordingCommitValue: 10,
+  wordingTargetValue: 20,
   unit: UNIT_PERCENT,
   owner: users[3],
   keyResultType: 'metric',

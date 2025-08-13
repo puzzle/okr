@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'; Object;
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { KeyResult } from '../shared/types/model/key-result';
 import { map, Observable } from 'rxjs';

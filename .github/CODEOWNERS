@@ -3,3 +3,4 @@
 /frontend/package-lock.json @puzzle/renovate-assignee
 /frontend/package.json @puzzle/renovate-assignee
 /backend/pom.xml @puzzle/renovate-assignee
+/pom.xml @puzzle/renovate-assignee

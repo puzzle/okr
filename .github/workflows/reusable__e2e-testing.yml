@@ -20,7 +20,7 @@ jobs:
       file_list: ${{ steps.generate-file-list.outputs.file_list }}
     steps:
       - name: Checkout Target Repo Code (to find test files)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ inputs.COMMIT_HASH }}
 
@@ -68,7 +68,7 @@ jobs:
           echo "Using commit ref: ${{ github.ref }}"
 
       - name: Checkout Target Repo Code (for Cypress config/plugins)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ env.COMMIT_REF }}
 

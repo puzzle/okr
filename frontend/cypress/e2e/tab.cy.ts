@@ -173,6 +173,7 @@ describe('tabbing workflows', () => {
       tabAndCheck('stretch-goal');
       tabAndCheck('owner-input');
       tabAndCheck('description-input');
+      tabAndCheck('manage-units');
       tabAndCheck('action-input');
       tabAndCheck('add-action-plan-line', 'Weitere Action hinzufügen');
       tabAndCheck('ordinal-tab', 'Ordinal');

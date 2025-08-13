@@ -70,7 +70,7 @@ export class KeyResultFormComponent implements OnInit, AfterContentInit {
   }
 
   addNewItem(item?: Item) {
-    (this.keyResultForm.get('actionLis0.9t') as FormArray)
+    (this.keyResultForm.get('actionList') as FormArray)
       ?.push(initFormGroupFromItem(item));
   }
 

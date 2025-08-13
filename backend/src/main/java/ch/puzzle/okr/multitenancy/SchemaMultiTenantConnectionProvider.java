@@ -84,17 +84,23 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     }
 
     protected Properties getCombinedProperties(String tenantIdentifier) {
-        Properties hibernateProperties = getPropertiesForTenantIdentifier(tenantIdentifier, getHibernateProperties(), "hibernate");
-        Properties hikariProperties = getPropertiesForTenantIdentifier(tenantIdentifier, getHikariProperties(), "hikari");
+        Properties hibernateProperties = getPropertiesForTenantIdentifier(tenantIdentifier,
+                                                                          getHibernateProperties(),
+                                                                          "hibernate");
+        Properties hikariProperties = getPropertiesForTenantIdentifier(tenantIdentifier,
+                                                                       getHikariProperties(),
+                                                                       "hikari");
         Properties combinedProperties = new Properties();
         combinedProperties.putAll(hibernateProperties);
         combinedProperties.putAll(hikariProperties);
         return combinedProperties;
     }
 
-    protected Properties getPropertiesForTenantIdentifier(String tenantIdentifier,  Properties properties, String propertiesName) {
+    protected Properties getPropertiesForTenantIdentifier(String tenantIdentifier, Properties properties,
+                                                          String propertiesName) {
         if (properties == null || properties.isEmpty()) {
-            throw new ConnectionProviderException(MessageFormat.format("Cannot load {0} properties from application.properties)", propertiesName));
+            throw new ConnectionProviderException(MessageFormat
+                    .format("Cannot load {0} properties from application.properties)", propertiesName));
         }
         if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
             properties.put(MappingSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));

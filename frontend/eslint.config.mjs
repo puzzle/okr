@@ -77,8 +77,7 @@ export default tsEslint.config(
       'no-undef': 'error',
       curly: 'error',
       'prefer-rest-params': 'error',
-      // This rule is now managed by @stylistic/ts-space-before-function-paren
-      'space-before-function-paren': 'off',
+      'space-before-function-paren': ['error', 'never'],
 
       //Typescript eslint rules
       '@typescript-eslint/ban-ts-comment': 'error',

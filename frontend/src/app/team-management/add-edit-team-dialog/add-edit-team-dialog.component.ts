@@ -34,8 +34,8 @@ export class AddEditTeamDialogComponent implements OnInit {
     public data:
       | {
         team: Team;
-      }
-      | undefined,
+      } |
+      undefined,
     private translate: TranslateService
   ) {
   }

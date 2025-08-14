@@ -21,7 +21,7 @@ export default tsEslint.config(
     },
   },
   {
-    ignores: ['cypress/downloads/**/*'],
+    ignores: ['cypress/downloads/**/*', 'dist/**/*'],
   },
   {
     files: ['src/**/*.ts', 'cypress/**/*.ts'],
@@ -71,7 +71,7 @@ export default tsEslint.config(
       },
     },
     rules: {
-      ...stylistic.configs['all-flat'].rules,
+      ...stylistic.configs.all.rules,
       //eslint rules
       'unused-imports/no-unused-imports': 'error',
       'no-undef': 'error',

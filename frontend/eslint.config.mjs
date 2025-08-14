@@ -21,7 +21,7 @@ export default tsEslint.config(
     },
   },
   {
-    ignores: ['cypress/downloads/**/*'],
+    ignores: ['cypress/downloads/**/*', 'dist/**/*'],
   },
   {
     files: ['src/**/*.ts', 'cypress/**/*.ts'],
@@ -71,13 +71,14 @@ export default tsEslint.config(
       },
     },
     rules: {
-      ...stylistic.configs['all-flat'].rules,
+      ...stylistic.configs.all.rules,
       //eslint rules
       'unused-imports/no-unused-imports': 'error',
       'no-undef': 'error',
       curly: 'error',
       'prefer-rest-params': 'error',
-      'space-before-function-paren': ['error', 'never'],
+      // This rule is now managed by @stylistic/ts-space-before-function-paren
+      'space-before-function-paren': 'off',
 
       //Typescript eslint rules
       '@typescript-eslint/ban-ts-comment': 'error',

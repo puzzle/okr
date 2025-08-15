@@ -12,7 +12,6 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,8 +82,7 @@ public class QuarterBusinessService {
         return startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
     }
 
-    private void generateQuarter(LocalDate start, String label, String schema) {
-        TenantContext.setCurrentTenant(schema);
+    private Quarter generateQuarter(LocalDate start, String label) {
 
         YearMonth yearMonth = YearMonth.from(start);
         Quarter quarter = Quarter.Builder
@@ -94,14 +92,7 @@ public class QuarterBusinessService {
                 .withEndDate(yearMonth.plusMonths(2).atEndOfMonth())
                 .build();
         validator.validateOnGeneration(quarter);
-        quarterPersistenceService.save(quarter);
-    }
-
-    private boolean isInLastMonthOfQuarter(int currentQuarter, int nextQuarter) {
-        // If the quarter 4 months in the future and the current are exactly 2 apart,
-        // we are in the final month of the current quarter. This works for all 4 cases:
-        // 1 -> 3 | 2 -> 4 | 3 -> 1 | 4 -> 2
-        return Math.abs(nextQuarter - currentQuarter) == 2;
+        return quarterPersistenceService.save(quarter);
     }
 
     public YearMonth getCurrentYearMonth() {
@@ -119,27 +110,42 @@ public class QuarterBusinessService {
         return quarters;
     }
 
-    @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
+    private Quarter getOrCreateCurrentQuarter() {
+        Quarter current = getCurrentQuarter();
+        if (current == null) {
+            current = createQuarter(getCurrentYearMonth());
+        }
+        return current;
+    }
+
+    private Quarter createQuarter(YearMonth creationDate) {
+        String label = createQuarterLabel(creationDate, generateQuarters().get(creationDate.getMonthValue()));
+        return generateQuarter(creationDate.atDay(1), label);
+    }
+
+    private boolean isFirstMonthOfQuarter(Quarter currentQuarter) {
+        YearMonth firstMonth = YearMonth.from(currentQuarter.getStartDate());
+        return getCurrentYearMonth().equals(firstMonth);
+    }
+
+    @Scheduled(cron = "0 1 0 1 * ?") // Runs at 00:01 on the 1st of each month
     public void scheduledGenerationQuarters() {
-        Map<Integer, Integer> quarters = generateQuarters();
-        YearMonth currentYearMonth = getCurrentYearMonth();
-        YearMonth nextQuarterYearMonth = currentYearMonth.plusMonths(4);
-
-        int currentQuarter = quarters.get(currentYearMonth.getMonthValue());
-        int nextQuarter = quarters.get(nextQuarterYearMonth.getMonthValue());
-
+        logger.warn("Start scheduled generation of quarters");
         String initialTenant = TenantContext.getCurrentTenant();
 
-        Set<String> tenantSchemas = this.tenantConfigProvider.getAllTenantIds();
-        // If we are in the last month of a quarter, generate the next quarter
-        if (isInLastMonthOfQuarter(currentQuarter, nextQuarter)) {
-            for (String schema : tenantSchemas) {
-                logger.info("Generated quarters on last day of month for tenant {}", schema);
-                String label = createQuarterLabel(nextQuarterYearMonth, nextQuarter);
-                generateQuarter(nextQuarterYearMonth.atDay(1), label, schema);
+        for (String schema : tenantConfigProvider.getAllTenantIds()) {
+            logger.warn("Start generating quarters on first day of month for tenant {}", schema);
+            TenantContext.setCurrentTenant(schema);
+
+            Quarter currentQuarter = getOrCreateCurrentQuarter();
+            if (isFirstMonthOfQuarter(currentQuarter)) {
+                YearMonth nextQuarter = YearMonth.from(currentQuarter.getEndDate()).plusMonths(1);
+                createQuarter(nextQuarter);
             }
+            logger.warn("Successfully generated quarters on first day of month for tenant {}", schema);
         }
 
         TenantContext.setCurrentTenant(initialTenant);
+        logger.warn("End scheduled generation of quarters");
     }
 }

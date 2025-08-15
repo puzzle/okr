@@ -25,14 +25,14 @@ public class HikariContext {
     private static DbConfig cachedHikariConfig;
 
     public static void setHikariConfig(DbConfig dbConfig) {
-        if (dbConfig == null || !dbConfig.isValid()) {
-            throw new HikariContextException("Invalid hikari configuration " + dbConfig);
-        }
         cachedHikariConfig = dbConfig;
     }
 
     public static void extractAndSetHikariConfig(ConfigurableEnvironment environment) {
         DbConfig dbConfig = extractHikariConfig(environment);
+        if (!dbConfig.isValid()) {
+            throw new HikariContextException("Invalid hikari configuration " + dbConfig);
+        }
         HikariContext.setHikariConfig(dbConfig);
     }
 
@@ -41,13 +41,9 @@ public class HikariContext {
         return new DbConfig(maximumPoolSize);
     }
 
-    // for testing
-    public static void resetHikariConfig() {
-        cachedHikariConfig = null;
-    }
-
     public static Properties getHikariConfig() {
-        if (cachedHikariConfig == null) {
+        // Assert non null due to prevent null pointer in method getConfigAsProperties()
+        if (cachedHikariConfig == null || !cachedHikariConfig.isValid()) {
             throw new HikariContextException("No cached hikari configuration found");
         }
         return getConfigAsProperties(cachedHikariConfig);

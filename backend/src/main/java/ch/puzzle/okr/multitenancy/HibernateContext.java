@@ -32,14 +32,14 @@ public class HibernateContext {
     private static DbConfig cachedHibernateConfig;
 
     public static void setHibernateConfig(DbConfig dbConfig) {
-        if (dbConfig == null || !dbConfig.isValid()) {
-            throw new HibernateContextException("Invalid hibernate configuration " + dbConfig);
-        }
         cachedHibernateConfig = dbConfig;
     }
 
     public static void extractAndSetHibernateConfig(ConfigurableEnvironment environment) {
         DbConfig dbConfig = extractHibernateConfig(environment);
+        if (!dbConfig.isValid()) {
+            throw new HibernateContextException("Invalid hikari configuration " + dbConfig);
+        }
         HibernateContext.setHibernateConfig(dbConfig);
     }
 
@@ -51,13 +51,9 @@ public class HibernateContext {
         return new DbConfig(url, username, password, multiTenancy);
     }
 
-    // for testing
-    public static void resetHibernateConfig() {
-        cachedHibernateConfig = null;
-    }
-
     public static Properties getHibernateConfig() {
-        if (cachedHibernateConfig == null) {
+        // Assert non null due to prevent null pointer in method getConfigAsProperties()
+        if (cachedHibernateConfig == null || !cachedHibernateConfig.isValid()) {
             throw new HibernateContextException("No cached hibernate configuration found");
         }
         return getConfigAsProperties(cachedHibernateConfig);

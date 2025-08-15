@@ -7,59 +7,16 @@ import static org.mockito.Mockito.when;
 
 import ch.puzzle.okr.exception.HibernateContextException;
 import java.util.Properties;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 class HibernateContextTest {
 
     @BeforeEach
     void setUp() {
-        resetHibernateConfig();
-    }
-
-    @DisplayName("setHibernateConfig() should throw exception if db config is null")
-    @Test
-    void setHibernateConfigShouldThrowExceptionIfDbConfigIsNull() {
-        // arrange
-        DbConfig dbConfig = null;
-
-        // act + assert
-        HibernateContextException exception = assertThrows(HibernateContextException.class,
-                                                           () -> setHibernateConfig(dbConfig));
-        assertEquals("Invalid hibernate configuration null", exception.getMessage());
-    }
-
-    @ParameterizedTest(name = "setHibernateConfig() should throw exception if db config has null or empty values")
-    @MethodSource("invalidDbConfig")
-    void setHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username,
-                                                                              String password, String tenant) {
-
-        // arrange
-        DbConfig dbConfig = new DbConfig(url, username, password, tenant);
-
-        // act + assert
-        HibernateContextException exception = assertThrows(HibernateContextException.class,
-                                                           () -> setHibernateConfig(dbConfig));
-        assertTrue(exception.getMessage().startsWith("Invalid hibernate configuration"));
-    }
-
-    private static Stream<Arguments> invalidDbConfig() {
-        return Stream
-                .of( //
-                    Arguments.of(null, "username", "password", "multiTenancy"), //
-                    Arguments.of("", "username", "password", "multiTenancy"), //
-                    Arguments.of("url", null, "password", "multiTenancy"), //
-                    Arguments.of("url", "", "password", "multiTenancy"), //
-                    Arguments.of("url", "username", null, "multiTenancy"), //
-                    Arguments.of("url", "username", "", "multiTenancy"), //
-                    Arguments.of("url", "username", "password", null), //
-                    Arguments.of("url", "username", "password", ""));
+        HibernateContext.setHibernateConfig(null);
     }
 
     @DisplayName("extractAndSetHibernateConfig() should extract hibernate properties from environment and set it")
@@ -86,8 +43,6 @@ class HibernateContextTest {
     @DisplayName("getHibernateConfig() should throw exception if setHibernateConfig() is not called before with valid configuration")
     @Test
     void getHibernateConfigShouldThrowExceptionIfSetHibernateConfigIsNotCalledBeforeWithValidConfiguration() {
-        // arrange
-
         // act + assert
         HibernateContextException exception = assertThrows(HibernateContextException.class,
                                                            HibernateContext::getHibernateConfig);

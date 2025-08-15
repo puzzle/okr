@@ -38,7 +38,7 @@ public class HibernateContext {
     public static void extractAndSetHibernateConfig(ConfigurableEnvironment environment) {
         DbConfig dbConfig = extractHibernateConfig(environment);
         if (!dbConfig.isValid()) {
-            throw new HibernateContextException("Invalid hikari configuration " + dbConfig);
+            throw new HibernateContextException("Invalid hibernate configuration" + dbConfig);
         }
         HibernateContext.setHibernateConfig(dbConfig);
     }

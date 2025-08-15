@@ -9,12 +9,27 @@ import java.util.Properties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 public class HikariContextTest {
     @BeforeEach
     void setUp() {
         HikariContext.setHikariConfig(null);
+    }
+
+    @ParameterizedTest(name = "extractAndSetHikariConfig() should throw an exception if dbConfig has null or empty values")
+    @NullAndEmptySource
+    void extractAndSetHikariConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String maxPoolSize) {
+        // arrange
+        ConfigurableEnvironment environment = mock(ConfigurableEnvironment.class);
+        when(environment.getProperty(HIKARI_MAXIMUM_POOL_SIZE)).thenReturn(maxPoolSize);
+
+        // act + assert
+        HikariContextException exception = assertThrows(HikariContextException.class,
+                () -> extractAndSetHikariConfig(environment));
+        assertTrue(exception.getMessage().startsWith("Invalid hikari configuration"));
     }
 
     @DisplayName("extractAndSetHikariConfig() should extract hikari properties from environment and set it")

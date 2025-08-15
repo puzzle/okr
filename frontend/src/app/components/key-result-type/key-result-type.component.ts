@@ -114,7 +114,6 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   calculateValueForField(values: MetricValue, field: KeyResultMetricField) {
     const roundToTwoDecimals = (num: number) => parseFloat(num.toFixed(2));
-    const calculatedField: any = {};
 
     switch (field) {
       case KeyResultMetricField.BASELINE: {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -12,15 +12,21 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: false
 })
 export class TeamManagementMobileFilterComponent {
+  private readonly teamService = inject(TeamService);
+
+  private readonly router = inject(Router);
+
+  private readonly route = inject(ActivatedRoute);
+
   readonly ALL_TEAMS = 'alle';
 
   teams: Team[] = [];
 
   selectedTeam: Team | undefined | 'alle';
 
-  constructor(private readonly teamService: TeamService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute) {
+  constructor() {
+    const teamService = this.teamService;
+
     combineLatest([teamService.getAllTeams(),
       this.route.paramMap])
       .pipe(takeUntilDestroyed())

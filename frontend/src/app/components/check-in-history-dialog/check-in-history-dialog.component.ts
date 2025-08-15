@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CheckInMin } from '../../shared/types/model/check-in-min';
 import { CheckInService } from '../../services/check-in.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -18,6 +18,16 @@ import { CheckInOrdinalMin } from '../../shared/types/model/check-in-ordinal-min
   standalone: false
 })
 export class CheckInHistoryDialogComponent implements OnInit {
+  data = inject(MAT_DIALOG_DATA);
+
+  private checkInService = inject(CheckInService);
+
+  private dialogService = inject(DialogService);
+
+  dialogRef = inject<MatDialogRef<CheckInHistoryDialogComponent>>(MatDialogRef);
+
+  private refreshDataService = inject(RefreshDataService);
+
   keyResult!: KeyResult;
 
   isComplete!: boolean;
@@ -25,14 +35,6 @@ export class CheckInHistoryDialogComponent implements OnInit {
   checkInHistory$: Observable<CheckInMin[]> = of([]);
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private checkInService: CheckInService,
-    private dialogService: DialogService,
-    public dialogRef: MatDialogRef<CheckInHistoryDialogComponent>,
-    private refreshDataService: RefreshDataService
-  ) {}
 
   ngOnInit(): void {
     this.keyResult = this.data.keyResult;

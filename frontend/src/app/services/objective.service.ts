@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Objective } from '../shared/types/model/objective';
 import { Observable } from 'rxjs';
@@ -8,8 +8,8 @@ import { KeyResultDto } from '../shared/types/DTOs/key-result-dto';
   providedIn: 'root'
 })
 export class ObjectiveService {
-  constructor(private httpClient: HttpClient) {
-  }
+  private httpClient = inject(HttpClient);
+
 
   getFullObjective(id: number) {
     return this.httpClient.get<Objective>('/api/v2/objectives/' + id);

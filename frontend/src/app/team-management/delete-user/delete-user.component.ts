@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Location } from '@angular/common';
@@ -14,6 +14,12 @@ import { UserOkrData } from '../../shared/types/model/user-okr-data';
   standalone: false
 })
 export class DeleteUserComponent implements OnInit, OnDestroy {
+  private readonly userService = inject(UserService);
+
+  private readonly dialogService = inject(DialogService);
+
+  private readonly location = inject(Location);
+
   @Input({ required: true }) user!: User;
 
   @Input({ required: true }) currentTeams$!: Observable<UserTeam[]>;
@@ -25,10 +31,6 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   userIsMemberOfTeams: boolean | undefined;
 
   unsubscribe$ = new Subject<void>();
-
-  constructor(private readonly userService: UserService,
-    private readonly dialogService: DialogService,
-    private readonly location: Location) {}
 
   ngOnInit() {
     this.loadOkrUser();

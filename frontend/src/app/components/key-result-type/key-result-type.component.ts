@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input } from '@angular/core';
+import { AfterContentInit, Component, Input, inject } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
@@ -33,6 +33,12 @@ export interface MetricValue {
     useExisting: FormGroupDirective }]
 })
 export class KeyResultTypeComponent implements AfterContentInit {
+  private parentF = inject(FormGroupDirective);
+
+  private unitService = inject(UnitService);
+
+  private dialogService = inject(DialogService);
+
   childForm: FormGroup;
 
   @Input() keyResultForm!: FormGroup;
@@ -49,7 +55,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   unitSearchTerm = '';
 
-  constructor(private parentF: FormGroupDirective, private unitService: UnitService, private dialogService: DialogService) {
+  constructor() {
     this.childForm = this.parentF.form;
   }
 

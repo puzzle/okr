@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ToasterType } from '../shared/types/enums/toaster-type';
 
@@ -6,7 +6,8 @@ import { ToasterType } from '../shared/types/enums/toaster-type';
   providedIn: 'root'
 })
 export class ToasterService {
-  constructor(private toastr: ToastrService) {}
+  private toastr = inject(ToastrService);
+
 
   showSuccess(msg: string) {
     this.toastr.success(msg, 'Erfolgreich!');

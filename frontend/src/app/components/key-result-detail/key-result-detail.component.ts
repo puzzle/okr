@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { KeyResultService } from '../../services/key-result.service';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
@@ -26,6 +26,16 @@ import { KeyResultOrdinalMin } from '../../shared/types/model/key-result-ordinal
   standalone: false
 })
 export class KeyResultDetailComponent implements OnInit, OnDestroy {
+  private keyResultService = inject(KeyResultService);
+
+  private refreshDataService = inject(RefreshDataService);
+
+  private dialogService = inject(DialogService);
+
+  private router = inject(Router);
+
+  private route = inject(ActivatedRoute);
+
   @Input() keyResultId!: number;
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
@@ -35,14 +45,6 @@ export class KeyResultDetailComponent implements OnInit, OnDestroy {
   isComplete = false;
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
-
-  constructor(
-    private keyResultService: KeyResultService,
-    private refreshDataService: RefreshDataService,
-    private dialogService: DialogService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     this.keyResultId = this.getIdFromParams();

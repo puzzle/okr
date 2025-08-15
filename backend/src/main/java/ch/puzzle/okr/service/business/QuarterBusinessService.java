@@ -123,9 +123,14 @@ public class QuarterBusinessService {
         return generateQuarter(creationDate.atDay(1), label);
     }
 
+    private boolean isFirstMonthOfQuarter(Quarter currentQuarter) {
+        YearMonth firstMonth = YearMonth.from(currentQuarter.getStartDate());
+        return getCurrentYearMonth().equals(firstMonth);
+    }
+
     @Scheduled(cron = "0 1 0 1 * ?") // Runs at 00:01 on the 1st of each month
     public void scheduledGenerationQuarters() {
-        logger.warn("Start scheduling generation quarters");
+        logger.warn("Start scheduled generation of quarters");
         String initialTenant = TenantContext.getCurrentTenant();
 
         for (String schema : tenantConfigProvider.getAllTenantIds()) {
@@ -133,7 +138,7 @@ public class QuarterBusinessService {
             TenantContext.setCurrentTenant(schema);
 
             Quarter currentQuarter = getOrCreateCurrentQuarter();
-            if (getCurrentYearMonth().equals(YearMonth.from(currentQuarter.getStartDate()))) {
+            if (isFirstMonthOfQuarter(currentQuarter)) {
                 YearMonth nextQuarter = YearMonth.from(currentQuarter.getEndDate()).plusMonths(1);
                 createQuarter(nextQuarter);
             }
@@ -141,6 +146,6 @@ public class QuarterBusinessService {
         }
 
         TenantContext.setCurrentTenant(initialTenant);
-        logger.warn("End scheduling generation quarters");
+        logger.warn("End scheduled generation of quarters");
     }
 }

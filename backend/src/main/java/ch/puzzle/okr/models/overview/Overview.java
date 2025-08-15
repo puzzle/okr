@@ -23,8 +23,8 @@ public class Overview implements WriteableInterface {
     private String keyResultTitle;
     private String keyResultType;
     private Double baseline;
-    private Double wordingCommitValue;
-    private Double wordingTargetValue;
+    private Double commitValue;
+    private Double targetValue;
     private Double stretchGoal;
     private String commitZone;
     private String targetZone;
@@ -55,8 +55,8 @@ public class Overview implements WriteableInterface {
         keyResultTitle = builder.keyResultTitle;
         keyResultType = builder.keyResultType;
         baseline = builder.baseline;
-        wordingCommitValue = builder.wordingCommitValue;
-        wordingTargetValue = builder.wordingTargetValue;
+        commitValue = builder.commitValue;
+        targetValue = builder.targetValue;
         stretchGoal = builder.stretchGoal;
         commitZone = builder.commitZone;
         targetZone = builder.targetZone;
@@ -143,12 +143,12 @@ public class Overview implements WriteableInterface {
         return checkInCreatedOn;
     }
 
-    public Double getWordingCommitValue() {
-        return wordingCommitValue;
+    public Double getCommitValue() {
+        return commitValue;
     }
 
-    public Double getWordingTargetValue() {
-        return wordingTargetValue;
+    public Double getTargetValue() {
+        return targetValue;
     }
 
     @Override
@@ -175,8 +175,8 @@ public class Overview implements WriteableInterface {
                + teamVersion + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
-               + keyResultType + '\'' + ", baseline=" + baseline + ", wordingCommitValue=" + wordingCommitValue
-               + ", wordingTargetValue=" + wordingTargetValue + ", stretchGoal=" + stretchGoal + ", commitZone='"
+               + keyResultType + '\'' + ", baseline=" + baseline + ", commitValue=" + commitValue
+               + ", targetValue=" + targetValue + ", stretchGoal=" + stretchGoal + ", commitZone='"
                + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='" + stretchZone + '\''
                + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\'' + ", confidence="
                + confidence + ", checkInCreatedOn=" + checkInCreatedOn + ", writeable=" + writeable
@@ -195,8 +195,8 @@ public class Overview implements WriteableInterface {
         private String keyResultTitle;
         private String keyResultType;
         private Double baseline;
-        private Double wordingCommitValue;
-        private Double wordingTargetValue;
+        private Double commitValue;
+        private Double targetValue;
         private Double stretchGoal;
         private String commitZone;
         private String targetZone;
@@ -268,13 +268,13 @@ public class Overview implements WriteableInterface {
             return this;
         }
 
-        public Builder withWordingCommitValue(Double wordingCommitValue) {
-            this.wordingCommitValue = wordingCommitValue;
+        public Builder withCommitValue(Double commitValue) {
+            this.commitValue = commitValue;
             return this;
         }
 
-        public Builder withWordingTargetValue(Double wordingTargetValue) {
-            this.wordingTargetValue = wordingTargetValue;
+        public Builder withTargetValue(Double targetValue) {
+            this.targetValue = targetValue;
             return this;
         }
 

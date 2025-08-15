@@ -115,7 +115,7 @@ values (4, 1, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture tha
         1, 2, 6, 'ONGOING', null, '2023-07-25 08:39:28.175703');
 
 INSERT INTO key_result (id, version, baseline, description, modified_on, stretch_goal, title, created_by_id,
-                        objective_id, owner_id, key_result_type, created_on, unit_id, commit_zone, target_zone, stretch_zone, wording_commit_value, wording_target_value)
+                        objective_id, owner_id, key_result_type, created_on, unit_id, commit_zone, target_zone, stretch_zone, commit_value, target_value)
 VALUES  (10,1, 465, '', '2023-07-25 08:23:02.273028', 60, 'Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten', 1, 5, 1, 'metric', '2023-07-25 08:23:02.273028', 1, null, null, null, 321, 186),
         (8,1, 213425, '', '2023-07-25 08:19:44.351252', 80, 'High employee satisfaction scores (80%+) throughout the year.', 1, 4, 1, 'metric', '2023-07-25 08:19:44.351252', 1, null, null, null, 149303.5, 71550.5),
         (7,1, 84, '', '2023-07-25 08:19:13.569300', 4, 'Monthly town halls between our people and leadership teams over the next four months.', 1, 4, 1, 'metric', '2023-07-25 08:19:13.569300', 1, null, null, null, 60.0, 28.0),

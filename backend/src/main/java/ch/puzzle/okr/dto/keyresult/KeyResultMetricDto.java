@@ -8,7 +8,7 @@ import java.util.List;
 
 @JsonDeserialize(as = KeyResultMetricDto.class)
 public record KeyResultMetricDto(Long id, int version, String keyResultType, String title, String description,
-        Double baseline, Double wordingCommitValue, Double wordingTargetValue, Double stretchGoal, UnitDto unit,
+        Double baseline, Double commitValue, Double targetValue, Double stretchGoal, UnitDto unit,
         KeyResultUserDto owner, KeyResultObjectiveDto objective, KeyResultLastCheckInMetricDto lastCheckIn,
         LocalDateTime createdOn, LocalDateTime modifiedOn, boolean isWriteable,
         List<ActionDto> actionList) implements KeyResultDto {

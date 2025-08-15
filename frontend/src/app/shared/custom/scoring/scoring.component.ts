@@ -114,18 +114,18 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       const keyResult = this.keyResult as KeyResultMetricMin;
       const lastCheckIn = keyResult.lastCheckIn?.value!;
 
-      if (lastCheckIn < keyResult.wordingCommitValue) {
+      if (lastCheckIn < keyResult.commitValue) {
         this.stretched = false;
-        this.failPercent = (lastCheckIn - keyResult.baseline) / (keyResult.wordingCommitValue - keyResult.baseline) * 100;
-      } else if (lastCheckIn < keyResult.wordingTargetValue) {
+        this.failPercent = (lastCheckIn - keyResult.baseline) / (keyResult.commitValue - keyResult.baseline) * 100;
+      } else if (lastCheckIn < keyResult.targetValue) {
         this.stretched = false;
         this.failPercent = 100;
-        this.commitPercent = (lastCheckIn - keyResult.wordingCommitValue) / (keyResult.wordingTargetValue - keyResult.wordingCommitValue) * 100;
+        this.commitPercent = (lastCheckIn - keyResult.commitValue) / (keyResult.targetValue - keyResult.commitValue) * 100;
       } else if (lastCheckIn < keyResult.stretchGoal) {
         this.stretched = false;
         this.failPercent = 100;
         this.commitPercent = 100;
-        this.targetPercent = (lastCheckIn - keyResult.wordingTargetValue) / (keyResult.stretchGoal - keyResult.wordingTargetValue) * 100;
+        this.targetPercent = (lastCheckIn - keyResult.targetValue) / (keyResult.stretchGoal - keyResult.targetValue) * 100;
       } else if (lastCheckIn >= keyResult.stretchGoal) {
         this.stretched = true;
       }

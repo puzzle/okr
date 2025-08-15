@@ -14,9 +14,9 @@ public class KeyResultMetric extends KeyResult {
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Double baseline;
 
-    private Double wordingCommitValue;
+    private Double commitValue;
 
-    private Double wordingTargetValue;
+    private Double targetValue;
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Double stretchGoal;
@@ -37,20 +37,20 @@ public class KeyResultMetric extends KeyResult {
         return stretchGoal;
     }
 
-    public Double getWordingCommitValue() {
-        return wordingCommitValue;
+    public Double getCommitValue() {
+        return commitValue;
     }
 
-    public void setWordingCommitValue(Double wordingCommitValue) {
-        this.wordingCommitValue = wordingCommitValue;
+    public void setCommitValue(Double commitValue) {
+        this.commitValue = commitValue;
     }
 
-    public Double getWordingTargetValue() {
-        return wordingTargetValue;
+    public Double getTargetValue() {
+        return targetValue;
     }
 
-    public void setWordingTargetValue(Double wordingTargetValue) {
-        this.wordingTargetValue = wordingTargetValue;
+    public void setTargetValue(Double targetValue) {
+        this.targetValue = targetValue;
     }
 
     public void setStretchGoal(Double stretchGoal) {
@@ -74,8 +74,8 @@ public class KeyResultMetric extends KeyResult {
         if (o instanceof KeyResultMetric keyResultMetric) {
             return super.equals(o) && Objects.equals(baseline, keyResultMetric.baseline)
                    && Objects.equals(stretchGoal, keyResultMetric.stretchGoal)
-                   && Objects.equals(wordingCommitValue, keyResultMetric.wordingCommitValue)
-                   && Objects.equals(wordingTargetValue, keyResultMetric.wordingTargetValue)
+                   && Objects.equals(commitValue, keyResultMetric.commitValue)
+                   && Objects.equals(targetValue, keyResultMetric.targetValue)
                    && Objects.equals(unit, keyResultMetric.unit);
         }
         return false;
@@ -83,28 +83,28 @@ public class KeyResultMetric extends KeyResult {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), baseline, wordingCommitValue, wordingTargetValue, stretchGoal, unit);
+        return Objects.hash(super.hashCode(), baseline, commitValue, targetValue, stretchGoal, unit);
     }
 
     @Override
     public String toString() {
-        return "KeyResultMetric{" + "baseline=" + baseline + ", wordingCommitValue=" + wordingCommitValue
-               + ", wordingTargetValue=" + wordingTargetValue + ", stretchGoal=" + stretchGoal + ", unit=" + unit + '}';
+        return "KeyResultMetric{" + "baseline=" + baseline + ", commitValue=" + commitValue
+               + ", targetValue=" + targetValue + ", stretchGoal=" + stretchGoal + ", unit=" + unit + '}';
     }
 
     private KeyResultMetric(Builder builder) {
         super(builder);
         setBaseline(builder.baseline);
-        setWordingCommitValue(builder.wordingCommitValue);
-        setWordingTargetValue(builder.wordingTargetValue);
+        setCommitValue(builder.commitValue);
+        setTargetValue(builder.targetValue);
         setStretchGoal(builder.stretchGoal);
         setUnit(builder.unit);
     }
 
     public static class Builder extends KeyResult.Builder<Builder> {
         private Double baseline;
-        private Double wordingCommitValue;
-        private Double wordingTargetValue;
+        private Double commitValue;
+        private Double targetValue;
         private Double stretchGoal;
         private Unit unit;
 
@@ -131,13 +131,13 @@ public class KeyResultMetric extends KeyResult {
             return this;
         }
 
-        public Builder withWordingCommitValue(Double wordingCommitValue) {
-            this.wordingCommitValue = wordingCommitValue;
+        public Builder withCommitValue(Double commitValue) {
+            this.commitValue = commitValue;
             return this;
         }
 
-        public Builder withWordingTargetValue(Double wordingTargetValue) {
-            this.wordingTargetValue = wordingTargetValue;
+        public Builder withTargetValue(Double targetValue) {
+            this.targetValue = targetValue;
             return this;
         }
 

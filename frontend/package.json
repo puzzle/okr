@@ -39,7 +39,7 @@
     "@angular/router": "^19.0.3",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
-    "angular-oauth2-oidc": "^19.0.0",
+    "angular-oauth2-oidc": "^20.0.0",
     "bootstrap": "^5.3.3",
     "ngx-toastr": "^19.0.0",
     "rxjs": "^7.8.1",

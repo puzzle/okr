@@ -26,19 +26,21 @@ class HibernateContextTest {
     private static Stream<Arguments> invalidDbConfig() {
         return Stream
                 .of( //
-                        Arguments.of(null, "username", "password", "multiTenancy"), //
-                        Arguments.of("", "username", "password", "multiTenancy"), //
-                        Arguments.of("url", null, "password", "multiTenancy"), //
-                        Arguments.of("url", "", "password", "multiTenancy"), //
-                        Arguments.of("url", "username", null, "multiTenancy"), //
-                        Arguments.of("url", "username", "", "multiTenancy"), //
-                        Arguments.of("url", "username", "password", null), //
-                        Arguments.of("url", "username", "password", ""));
+                    Arguments.of(null, "username", "password", "multiTenancy"), //
+                    Arguments.of("", "username", "password", "multiTenancy"), //
+                    Arguments.of("url", null, "password", "multiTenancy"), //
+                    Arguments.of("url", "", "password", "multiTenancy"), //
+                    Arguments.of("url", "username", null, "multiTenancy"), //
+                    Arguments.of("url", "username", "", "multiTenancy"), //
+                    Arguments.of("url", "username", "password", null), //
+                    Arguments.of("url", "username", "password", ""));
     }
 
     @ParameterizedTest(name = "extractAndSetHibernateConfig() should throw an exception if dbConfig has null or empty values")
     @MethodSource("invalidDbConfig")
-    void extractAndSetHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username, String password, String multiTenancy) {
+    void extractAndSetHibernateConfigShouldThrowExceptionIfDbConfigHasNullOrEmptyValues(String url, String username,
+                                                                                        String password,
+                                                                                        String multiTenancy) {
         // arrange
         ConfigurableEnvironment environment = mock(ConfigurableEnvironment.class);
         when(environment.getProperty(HIBERNATE_CONNECTION_URL)).thenReturn(url);
@@ -48,7 +50,7 @@ class HibernateContextTest {
 
         // act + assert
         HibernateContextException exception = assertThrows(HibernateContextException.class,
-                () -> extractAndSetHibernateConfig(environment));
+                                                           () -> extractAndSetHibernateConfig(environment));
         assertTrue(exception.getMessage().startsWith("Invalid hibernate configuration"));
     }
 

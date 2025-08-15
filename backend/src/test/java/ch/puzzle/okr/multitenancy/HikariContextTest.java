@@ -28,7 +28,7 @@ public class HikariContextTest {
 
         // act + assert
         HikariContextException exception = assertThrows(HikariContextException.class,
-                () -> extractAndSetHikariConfig(environment));
+                                                        () -> extractAndSetHikariConfig(environment));
         assertTrue(exception.getMessage().startsWith("Invalid hikari configuration"));
     }
 

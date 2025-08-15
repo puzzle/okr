@@ -78,15 +78,29 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     private ConnectionProvider createConnectionProvider(String tenantIdentifier) {
         return Optional
                 .ofNullable(tenantIdentifier) //
-                .map(this::getHibernatePropertiesForTenantIdentifier) //
+                .map(this::getCombinedProperties) //
                 .map(this::initConnectionProvider) //
                 .orElse(null);
     }
 
-    protected Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
-        Properties properties = getHibernateProperties();
+    protected Properties getCombinedProperties(String tenantIdentifier) {
+        Properties hibernateProperties = getPropertiesForTenantIdentifier(tenantIdentifier,
+                                                                          getHibernateProperties(),
+                                                                          "hibernate");
+        Properties hikariProperties = getPropertiesForTenantIdentifier(tenantIdentifier,
+                                                                       getHikariProperties(),
+                                                                       "hikari");
+        Properties combinedProperties = new Properties();
+        combinedProperties.putAll(hibernateProperties);
+        combinedProperties.putAll(hikariProperties);
+        return combinedProperties;
+    }
+
+    protected Properties getPropertiesForTenantIdentifier(String tenantIdentifier, Properties properties,
+                                                          String propertiesName) {
         if (properties == null || properties.isEmpty()) {
-            throw new ConnectionProviderException("Cannot load hibernate properties from application.properties)");
+            throw new ConnectionProviderException(MessageFormat
+                    .format("Cannot load {0} properties from application.properties)", propertiesName));
         }
         if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
             properties.put(MappingSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
@@ -94,8 +108,8 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
         return properties;
     }
 
-    private ConnectionProvider initConnectionProvider(Properties hibernateProperties) {
-        Map<String, Object> configProperties = convertPropertiesToMap(hibernateProperties);
+    private ConnectionProvider initConnectionProvider(Properties properties) {
+        Map<String, Object> configProperties = convertPropertiesToMap(properties);
         HikariCPConnectionProvider connectionProvider = getDriverManagerConnectionProviderImpl();
         connectionProvider.configure(configProperties);
         return connectionProvider;
@@ -117,4 +131,9 @@ public class SchemaMultiTenantConnectionProvider extends AbstractMultiTenantConn
     protected Properties getHibernateProperties() {
         return HibernateContext.getHibernateConfig();
     }
+
+    protected Properties getHikariProperties() {
+        return HikariContext.getHikariConfig();
+    }
+
 }

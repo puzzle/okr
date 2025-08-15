@@ -133,11 +133,11 @@
           <input
             [attr.data-testId]="'target-goal'"
             class="dialog-form-field"
-            [ngClass]="formInputCheck(keyResultForm, 'targetGoal')"
-            formControlName="targetGoal"
+            [ngClass]="formInputCheck(keyResultForm, 'targetValue')"
+            formControlName="targetValue"
             id="target-goal"
           />
-          <app-error [controlPath]="['metric', 'targetGoal']" [name]="'Target Goal'"></app-error>
+          <app-error [controlPath]="['metric', 'targetValue']" [name]="'Target Goal'"></app-error>
 
         </div>
       </div>

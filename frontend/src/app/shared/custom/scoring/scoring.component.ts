@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { Zone } from '../../types/enums/zone';
 import { KeyResultMetricMin } from '../../types/model/key-result-metric-min';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { calculateCurrentPercentage } from '../../common';
 import { KeyResultOrdinalMin } from '../../types/model/key-result-ordinal-min';
 import { CheckInOrdinalMin } from '../../types/model/check-in-ordinal-min';
@@ -111,22 +111,22 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
 
   calculatePercentageMetric() {
     if (this.keyResult.lastCheckIn !== null) {
-      const keyResultMetric: KeyResultMetricMin = this.castToMetric();
-      const percentage = calculateCurrentPercentage(keyResultMetric);
-      this.labelPercentage = of(percentage);
-      if (percentage < 30) {
+      const keyResult = this.keyResult as KeyResultMetricMin;
+      const lastCheckIn = keyResult.lastCheckIn?.value!;
+
+      if (lastCheckIn < keyResult.commitValue) {
         this.stretched = false;
-        this.failPercent = 100 / 30 * percentage;
-      } else if (percentage < 70) {
+        this.failPercent = (lastCheckIn - keyResult.baseline) / (keyResult.commitValue - keyResult.baseline) * 100;
+      } else if (lastCheckIn < keyResult.targetValue) {
         this.stretched = false;
         this.failPercent = 100;
-        this.commitPercent = 100 / 40 * (percentage - 30);
-      } else if (percentage < 100) {
+        this.commitPercent = (lastCheckIn - keyResult.commitValue) / (keyResult.targetValue - keyResult.commitValue) * 100;
+      } else if (lastCheckIn < keyResult.stretchGoal) {
         this.stretched = false;
         this.failPercent = 100;
         this.commitPercent = 100;
-        this.targetPercent = 100 / 30 * (percentage - 70);
-      } else if (percentage >= 100) {
+        this.targetPercent = (lastCheckIn - keyResult.targetValue) / (keyResult.stretchGoal - keyResult.targetValue) * 100;
+      } else if (lastCheckIn >= keyResult.stretchGoal) {
         this.stretched = true;
       }
     }

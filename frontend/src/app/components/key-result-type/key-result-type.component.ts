@@ -13,14 +13,14 @@ import { ManageUnitsDialogComponent } from '../manage-units-dialog/manage-units-
 
 export enum KeyResultMetricField {
   BASELINE,
-  TARGET_GOAL,
+  TARGET_VALUE,
   STRETCH_GOAL,
   NONE
 }
 
 export interface MetricValue {
   baseline: number;
-  targetGoal: number;
+  targetValue: number;
   stretchGoal: number;
 }
 
@@ -91,7 +91,8 @@ export class KeyResultTypeComponent implements AfterContentInit {
     formGroupValue = { ...formGroupValue,
       ...fieldValue };
     return { baseline: +formGroupValue.baseline,
-      targetGoal: +formGroupValue.targetGoal,
+      targetValue: +formGroupValue.targetValue,
+      commitValue: +formGroupValue.commitValue,
       stretchGoal: +formGroupValue.stretchGoal } as MetricValue;
   }
 
@@ -99,11 +100,12 @@ export class KeyResultTypeComponent implements AfterContentInit {
     switch (changed) {
       case KeyResultMetricField.STRETCH_GOAL:
       case KeyResultMetricField.BASELINE: {
-        return this.calculateValueForField(values, KeyResultMetricField.TARGET_GOAL);
+        return this.calculateValueForField(values, KeyResultMetricField.TARGET_VALUE);
       }
-      case KeyResultMetricField.TARGET_GOAL: {
+      case KeyResultMetricField.TARGET_VALUE: {
         return this.calculateValueForField(values, KeyResultMetricField.STRETCH_GOAL);
       }
+
       case KeyResultMetricField.NONE: {
         return {};
       }
@@ -115,15 +117,20 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
     switch (field) {
       case KeyResultMetricField.BASELINE: {
-        return { baseline: roundToTwoDecimals((values.targetGoal - values.stretchGoal * 0.7) / 0.3) };
+        const baseline = roundToTwoDecimals((values.targetValue - values.stretchGoal * 0.7) / 0.3);
+        return { baseline: baseline,
+          commitValue: roundToTwoDecimals((values.stretchGoal - baseline) * 0.3 + baseline) };
       }
 
-      case KeyResultMetricField.TARGET_GOAL: {
-        return { targetGoal: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.7 + values.baseline) };
+      case KeyResultMetricField.TARGET_VALUE: {
+        return { targetValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.7 + values.baseline),
+          commitValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.3 + values.baseline) };
       }
 
       case KeyResultMetricField.STRETCH_GOAL: {
-        return { stretchGoal: roundToTwoDecimals((values.targetGoal - values.baseline) / 0.7 + values.baseline) };
+        const stretchGoal = roundToTwoDecimals((values.targetValue - values.baseline) / 0.7 + values.baseline);
+        return { stretchGoal: stretchGoal,
+          commitValue: roundToTwoDecimals((stretchGoal - values.baseline) * 0.3 + values.baseline) };
       }
 
       case KeyResultMetricField.NONE: {
@@ -149,8 +156,8 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
     formGroupMetric?.get('baseline')?.valueChanges
       .subscribe((value: any) => this.updateMetricValue(KeyResultMetricField.BASELINE, { baseline: value }));
-    formGroupMetric?.get('targetGoal')?.valueChanges
-      .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_GOAL, { targetGoal: value }));
+    formGroupMetric?.get('targetValue')?.valueChanges
+      .subscribe((value) => this.updateMetricValue(KeyResultMetricField.TARGET_VALUE, { targetValue: value }));
     formGroupMetric?.get('stretchGoal')?.valueChanges
       .subscribe((value) => this.updateMetricValue(KeyResultMetricField.STRETCH_GOAL, { stretchGoal: value }));
 

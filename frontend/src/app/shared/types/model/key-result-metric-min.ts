@@ -4,6 +4,8 @@ import { Unit } from '../enums/unit';
 
 export interface KeyResultMetricMin extends KeyResultMin {
   baseline: number;
+  commitValue: number;
+  targetValue: number;
   stretchGoal: number;
   unit: Unit;
   lastCheckIn: CheckInMetricMin | null;

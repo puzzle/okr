@@ -103,8 +103,9 @@ public class OverviewMapper {
         return new OverviewKeyResultMetricDto(overview.getOverviewId().getKeyResultId(),
                                               overview.getKeyResultTitle(),
                                               overview.getKeyResultType(),
-                                              overview.getUnit(),
                                               overview.getBaseline(),
+                                              overview.getCommitValue(),
+                                              overview.getTargetValue(),
                                               overview.getStretchGoal(),
                                               lastCheckIn);
     }

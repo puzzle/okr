@@ -114,11 +114,13 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   calculateValueForField(values: MetricValue, field: KeyResultMetricField) {
     const roundToTwoDecimals = (num: number) => parseFloat(num.toFixed(2));
+    const calculatedField: any = {};
 
     switch (field) {
       case KeyResultMetricField.BASELINE: {
-        return { baseline: roundToTwoDecimals((values.targetValue - values.stretchGoal * 0.7) / 0.3),
-          commitValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.3 + values.baseline) };
+        const baseline = roundToTwoDecimals((values.targetValue - values.stretchGoal * 0.7) / 0.3);
+        return { baseline: baseline,
+          commitValue: roundToTwoDecimals((values.stretchGoal - baseline) * 0.3 + baseline) };
       }
 
       case KeyResultMetricField.TARGET_VALUE: {
@@ -127,8 +129,9 @@ export class KeyResultTypeComponent implements AfterContentInit {
       }
 
       case KeyResultMetricField.STRETCH_GOAL: {
-        return { stretchGoal: roundToTwoDecimals((values.targetValue - values.baseline) / 0.7 + values.baseline),
-          commitValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.3 + values.baseline) };
+        const stretchGoal = roundToTwoDecimals((values.targetValue - values.baseline) / 0.7 + values.baseline);
+        return { stretchGoal: stretchGoal,
+          commitValue: roundToTwoDecimals((stretchGoal - values.baseline) * 0.3 + values.baseline) };
       }
 
       case KeyResultMetricField.NONE: {

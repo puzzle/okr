@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { DialogService } from '../../services/dialog.service';
@@ -10,9 +10,9 @@ import { DialogService } from '../../services/dialog.service';
   standalone: false
 })
 export class TeamManagementBannerComponent {
-  private dialogRef!: MatDialogRef<AddEditTeamDialogComponent> | undefined;
+  private dialogService = inject(DialogService);
 
-  public constructor(private dialogService: DialogService) {}
+  private dialogRef!: MatDialogRef<AddEditTeamDialogComponent> | undefined;
 
   createTeam(): void {
     if (!this.dialogRef) {

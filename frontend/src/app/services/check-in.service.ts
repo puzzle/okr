@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CheckIn } from '../shared/types/model/check-in';
@@ -8,7 +8,8 @@ import { CheckInMin } from '../shared/types/model/check-in-min';
   providedIn: 'root'
 })
 export class CheckInService {
-  constructor(private httpclient: HttpClient) {}
+  private httpclient = inject(HttpClient);
+
 
   getAllCheckInOfKeyResult(keyResultId: number): Observable<CheckInMin[]> {
     return this.httpclient.get<CheckInMin[]>(`/api/v2/keyresults/${keyResultId}/checkins`);

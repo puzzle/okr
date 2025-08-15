@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Team } from '../../shared/types/model/team';
 import { TeamService } from '../../services/team.service';
 import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
@@ -11,6 +11,8 @@ import { UserTeam } from '../../shared/types/model/user-team';
   standalone: false
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
+  private readonly teamService = inject(TeamService);
+
   @Output()
   addUserTeam = new EventEmitter<UserTeam>();
 
@@ -25,8 +27,6 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
   allAdminTeams$: Observable<Team[]> | undefined;
 
   private readonly unsubscribe$ = new Subject<void>();
-
-  constructor(private readonly teamService: TeamService) {}
 
   ngOnInit() {
     this.allAdminTeams$ = this.teamService.getAllTeams()

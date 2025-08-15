@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
 import { User } from '../../shared/types/model/user';
 import { UserService } from '../../services/user.service';
 import { TeamService } from '../../services/team.service';
@@ -10,18 +10,19 @@ import { TeamService } from '../../services/team.service';
   standalone: false
 })
 export class EditOkrChampionComponent {
+  private readonly userService = inject(UserService);
+
+  private readonly teamService = inject(TeamService);
+
+  private readonly cd = inject(ChangeDetectorRef);
+
+  private elementRef = inject(ElementRef);
+
   @Input({ required: true }) user!: User;
 
   @Output() public okrChampionChange = new EventEmitter<boolean>();
 
   edit = false;
-
-  constructor(
-    private readonly userService: UserService,
-    private readonly teamService: TeamService,
-    private readonly cd: ChangeDetectorRef,
-    private elementRef: ElementRef
-  ) {}
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent) {

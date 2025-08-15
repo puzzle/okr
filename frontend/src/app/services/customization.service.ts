@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { CustomizationConfig, CustomStyles } from '../shared/types/model/client-config';
 import { ConfigService } from './config.service';
@@ -7,10 +7,13 @@ import { ConfigService } from './config.service';
   providedIn: 'root'
 })
 export class CustomizationService {
+  private document = inject<Document>(DOCUMENT);
+
   private currentConfig?: CustomizationConfig;
 
-  constructor(configService: ConfigService,
-    @Inject(DOCUMENT) private document: Document) {
+  constructor() {
+    const configService = inject(ConfigService);
+
     configService.config$.subscribe((config) => {
       this.updateCustomizations(config);
     });

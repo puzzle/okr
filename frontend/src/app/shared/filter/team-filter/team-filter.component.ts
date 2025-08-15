@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
 import { Team } from '../../types/model/team';
 import { TeamService } from '../../../services/team.service';
@@ -17,6 +17,18 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   standalone: false
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
+  private teamService = inject(TeamService);
+
+  private route = inject(ActivatedRoute);
+
+  private router = inject(Router);
+
+  private refreshDataService = inject(RefreshDataService);
+
+  private userService = inject(UserService);
+
+  private breakpointObserver = inject(BreakpointObserver);
+
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
 
   @Input() minTeams = 0;
@@ -33,14 +45,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   isMobile = false;
 
-  constructor(
-    private teamService: TeamService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private refreshDataService: RefreshDataService,
-    private userService: UserService,
-    private breakpointObserver: BreakpointObserver
-  ) {
+  constructor() {
     this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this.refreshTeamData();

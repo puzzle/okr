@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/quarter';
 import { TeamService } from '../../../services/team.service';
@@ -23,6 +23,28 @@ import { KeyResultDto } from '../../types/DTOs/key-result-dto';
   standalone: false
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+
+  private teamService = inject(TeamService);
+
+  private quarterService = inject(QuarterService);
+
+  private objectiveService = inject(ObjectiveService);
+
+  dialogRef = inject<MatDialogRef<ObjectiveFormComponent>>(MatDialogRef);
+
+  private dialogService = inject(DialogService);
+
+  data = inject<{
+    action: string;
+    objective: {
+      objectiveId?: number;
+      teamId?: number;
+    };
+  }>(MAT_DIALOG_DATA);
+
+  private translate = inject(TranslateService);
+
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required,
       Validators.minLength(2),
@@ -64,25 +86,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   private unsubscribe$ = new Subject<void>();
-
-  constructor(
-    private route: ActivatedRoute,
-    private teamService: TeamService,
-    private quarterService: QuarterService,
-    private objectiveService: ObjectiveService,
-    public dialogRef: MatDialogRef<ObjectiveFormComponent>,
-    private dialogService: DialogService,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      action: string;
-      objective: {
-        objectiveId?: number;
-        teamId?: number;
-      };
-    },
-    private translate: TranslateService
-  ) {
-  }
 
   onSubmit(submitType: any): void {
     const value = this.objectiveForm.getRawValue();

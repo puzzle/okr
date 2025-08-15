@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { Objective } from '../../shared/types/model/objective';
 import { ObjectiveService } from '../../services/objective.service';
 import { BehaviorSubject, catchError, EMPTY, Observable } from 'rxjs';
@@ -20,20 +20,25 @@ import { State } from '../../shared/types/enums/state';
   standalone: false
 })
 export class ObjectiveDetailComponent implements OnInit {
+  private objectiveService = inject(ObjectiveService);
+
+  private completedService = inject(CompletedService);
+
+  private dialogService = inject(DialogService);
+
+  private refreshDataService = inject(RefreshDataService);
+
+  private router = inject(Router);
+
+  private route = inject(ActivatedRoute);
+
   objectiveId!: number;
 
   completed = new Observable<Completed>();
 
   objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
-  constructor(
-    private objectiveService: ObjectiveService,
-    private completedService: CompletedService,
-    private dialogService: DialogService,
-    private refreshDataService: RefreshDataService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor() {
     this.objective$
       .pipe(takeUntilDestroyed())
       .subscribe((objective) => {

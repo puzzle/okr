@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { EvaluationService } from '../services/evaluation.service';
 import { Statistics } from '../shared/types/model/statistics';
@@ -10,10 +10,9 @@ import { FilterPageChange } from '../shared/types/model/filter-page-change';
   templateUrl: './statistics.component.html'
 })
 export class StatisticsComponent {
-  statistics = new Observable<Statistics>();
+  private evaluationService = inject(EvaluationService);
 
-  constructor(private evaluationService: EvaluationService) {
-  }
+  statistics = new Observable<Statistics>();
 
   loadOverview(filterpage: FilterPageChange) {
     this.statistics = this.evaluationService

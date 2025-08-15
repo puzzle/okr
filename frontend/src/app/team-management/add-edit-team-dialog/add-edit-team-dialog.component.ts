@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -15,6 +15,18 @@ import { Router } from '@angular/router';
   standalone: false
 })
 export class AddEditTeamDialogComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<AddEditTeamDialogComponent>>(MatDialogRef);
+
+  private teamService = inject(TeamService);
+
+  private userService = inject(UserService);
+
+  private router = inject(Router);
+
+  data = inject(MAT_DIALOG_DATA);
+
+  private translate = inject(TranslateService);
+
   teamForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required,
       Validators.minLength(2),
@@ -24,21 +36,6 @@ export class AddEditTeamDialogComponent implements OnInit {
   protected readonly formInputCheck = formInputCheck;
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
-
-  constructor(
-    public dialogRef: MatDialogRef<AddEditTeamDialogComponent>,
-    private teamService: TeamService,
-    private userService: UserService,
-    private router: Router,
-    @Inject(MAT_DIALOG_DATA)
-    public data:
-      | {
-        team: Team;
-      } |
-      undefined,
-    private translate: TranslateService
-  ) {
-  }
 
   ngOnInit(): void {
     if (this.data) {

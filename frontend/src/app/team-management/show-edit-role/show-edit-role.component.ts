@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -9,16 +9,18 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false
 })
 export class ShowEditRoleComponent {
+  private readonly translate = inject(TranslateService);
+
+  private readonly elementRef = inject(ElementRef);
+
+  private readonly cd = inject(ChangeDetectorRef);
+
   @Input({ required: true }) userTeam!: UserTeam;
 
   @Output()
   private readonly save = new EventEmitter<boolean>();
 
   edit = false;
-
-  constructor(private readonly translate: TranslateService,
-    private readonly elementRef: ElementRef,
-    private readonly cd: ChangeDetectorRef) {}
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent) {

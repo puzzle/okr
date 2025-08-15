@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { OverviewEntity } from '../../shared/types/model/overview-entity';
 import { catchError, EMPTY, Subject } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
@@ -13,11 +13,11 @@ import { FilterPageChange } from '../../shared/types/model/filter-page-change';
   standalone: false
 })
 export class OverviewComponent {
+  private overviewService = inject(OverviewService);
+
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
 
   protected readonly trackByFn = trackByFn;
-
-  constructor(private overviewService: OverviewService) {}
 
   loadOverview(filter: FilterPageChange) {
     this.overviewService

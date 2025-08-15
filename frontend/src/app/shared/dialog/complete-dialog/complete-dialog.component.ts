@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { formInputCheck, hasFormFieldErrors } from '../../common';
@@ -11,6 +11,14 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false
 })
 export class CompleteDialogComponent {
+  dialogRef = inject<MatDialogRef<CompleteDialogComponent>>(MatDialogRef);
+
+  data = inject<{
+    objectiveTitle: string;
+  }>(MAT_DIALOG_DATA);
+
+  private translate = inject(TranslateService);
+
   completeForm = new FormGroup({
     isSuccessful: new FormControl<boolean | null>(null, [Validators.required]),
     comment: new FormControl<string | null>(null, [Validators.maxLength(4096)])
@@ -19,11 +27,6 @@ export class CompleteDialogComponent {
   protected readonly formInputCheck = formInputCheck;
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
-
-  constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { objectiveTitle: string },
-    private translate: TranslateService) {
-  }
 
   switchSuccessState(input: string) {
     this.removeStandardHover();

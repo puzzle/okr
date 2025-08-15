@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Objective } from '../../shared/types/model/objective';
@@ -22,23 +22,25 @@ import { ActionService } from '../../services/action.service';
   standalone: false
 })
 export class KeyResultDialogComponent implements OnInit {
+  data = inject<{
+    objective: Objective;
+    keyResult: KeyResult;
+  }>(MAT_DIALOG_DATA);
+
+  private keyResultService = inject(KeyResultService);
+
+  dialogService = inject(DialogService);
+
+  dialogRef = inject<MatDialogRef<KeyResultDialogComponent>>(MatDialogRef);
+
+  private userService = inject(UserService);
+
+  private actionService = inject(ActionService);
+
   keyResultForm: FormGroup = getKeyResultForm();
 
   keyResultTypes: string[] = ['metric',
     'ordinal'];
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {
-      objective: Objective;
-      keyResult: KeyResult;
-    },
-    private keyResultService: KeyResultService,
-    public dialogService: DialogService,
-    public dialogRef: MatDialogRef<KeyResultDialogComponent>,
-    private userService: UserService,
-    private actionService: ActionService
-  ) {
-  }
 
   deletedItems: Observable<any> = (this.keyResultForm.get('actionList') as FormArray).valueChanges.pipe(trackDeletedItems());
 

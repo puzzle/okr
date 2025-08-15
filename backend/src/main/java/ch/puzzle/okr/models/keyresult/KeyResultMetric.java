@@ -88,8 +88,8 @@ public class KeyResultMetric extends KeyResult {
 
     @Override
     public String toString() {
-        return "KeyResultMetric{" + "baseline=" + baseline + ", commitValue=" + commitValue
-               + ", targetValue=" + targetValue + ", stretchGoal=" + stretchGoal + ", unit=" + unit + '}';
+        return "KeyResultMetric{" + "baseline=" + baseline + ", commitValue=" + commitValue + ", targetValue="
+               + targetValue + ", stretchGoal=" + stretchGoal + ", unit=" + unit + '}';
     }
 
     private KeyResultMetric(Builder builder) {

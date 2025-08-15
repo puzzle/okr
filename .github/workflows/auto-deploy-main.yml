@@ -1,11 +1,10 @@
 name: 'Auto Deploy Main'
 
-# TODO: Enable me in ticket #1587- Connection pooling
-#on:
-#  pull_request_target:
-#    types:
-#      - closed
-#    branches: [ main ]
+on:
+  pull_request_target:
+    types:
+      - closed
+    branches: [ main ]
 
 jobs:
   versioning:

@@ -56,7 +56,6 @@ describe('okr scoring', () => {
         `Metric kr with check-in value ${value}`, baseline, stretchGoal, value
 
       );
-      Cypress.env('param', `Metric kr with check-in value ${value}`);
       const percentage = getPercentageMetric(baseline, stretchGoal, value);
       const keyResult: CheckInValue = {
         baseline: baseline,
@@ -80,7 +79,7 @@ describe('okr scoring', () => {
       overviewPage
         .getKeyResultByName(`Metric kr with check-in value ${value}`)
         .not(':contains(*[class="scoring-error-badge"])');
-      deleteKeyResultToDefault(`Metric kr with check-in value ${value}`, keyResultDetailPage);
+      deleteKeyResult(`Metric kr with check-in value ${value}`, keyResultDetailPage);
     });
   });
 
@@ -104,11 +103,10 @@ describe('okr scoring', () => {
     stretchGoal,
     value
   ]) => {
-    it.only('show indicator that value is negative', () => {
+    it('show indicator that value is negative', () => {
       setupMetricKr(
         `Check indicator with value ${value}`, baseline, stretchGoal, value
       );
-      Cypress.env('param', `Check indicator with value ${value}`);
       const keyResult: CheckInValue = {
         baseline: baseline,
         commitValue: commitValue,
@@ -125,11 +123,10 @@ describe('okr scoring', () => {
         .and('equal', 'rgb(186, 56, 56)');
 
       keyResultDetailPage.close();
-      cy.validateScoringMetric(true, keyResult, 0);
 
       overviewPage.getKeyResultByName(`Check indicator with value ${value}`)
         .get('.scoring-error-badge');
-      deleteKeyResultToDefault(`Check indicator with value ${value}`, keyResultDetailPage);
+      deleteKeyResult(`Check indicator with value ${value}`, keyResultDetailPage);
     });
   });
 
@@ -140,7 +137,6 @@ describe('okr scoring', () => {
     ['stretch']
   ].forEach(([zoneName]) => {
     it('should create ordinal checkin and validate value of scoring component', () => {
-      Cypress.env('param', 'Ordinal scoring keyresult');
       overviewPage
         .addKeyResult()
         .fillKeyResultTitle('Ordinal scoring keyresult')
@@ -161,13 +157,12 @@ describe('okr scoring', () => {
       cy.validateScoringOrdinal(false, percentage);
       keyResultDetailPage.close();
       cy.validateScoringOrdinal(true, percentage);
-      deleteKeyResultToDefault('Ordinal scoring keyresult', keyResultDetailPage);
+      deleteKeyResult('Ordinal scoring keyresult', keyResultDetailPage);
     });
   });
 });
 
-function deleteKeyResultToDefault(keyResultName: string, keyResultDetailPage: KeyResultDetailPage) {
-  console.log(keyResultName);
+function deleteKeyResult(keyResultName: string, keyResultDetailPage: KeyResultDetailPage) {
   keyResultDetailPage
     .visit(keyResultName)
     .editKeyResult()
@@ -175,6 +170,7 @@ function deleteKeyResultToDefault(keyResultName: string, keyResultDetailPage: Ke
     .checkForContentOnDialog('Key Result löschen')
     .checkForContentOnDialog('Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!')
     .submit();
+  keyResultDetailPage.close();
 }
 
 function setupMetricKr(

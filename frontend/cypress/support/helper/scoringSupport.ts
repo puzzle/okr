@@ -6,9 +6,16 @@ interface ScoringValue {
   targetPercent: number;
 }
 
-export function validateScoring(isOverview: boolean, percentage: number) {
-  const rgbCode = colorFromPercentage(percentage);
-  const scoringValue = scoringValueFromPercentage(percentage);
+export interface CheckInValue {
+  baseline: number;
+  commitValue: number;
+  targetValue: number;
+  stretchGoal: number;
+  lastCheckIn: number;
+}
+export function validateScoringMetric(isOverview: boolean, keyResult: CheckInValue, percentage: number) {
+  const rgbCode = colorFromPercentageMetric(keyResult);
+  const scoringValue = scoringValueFromPercentageMetric(keyResult, percentage);
 
   if (percentage >= 100) {
     cy.getZone('stretch', isOverview)
@@ -16,6 +23,29 @@ export function validateScoring(isOverview: boolean, percentage: number) {
       .should('include', 'star-filled-icon.svg');
   }
 
+  validateScoring(
+    isOverview, rgbCode, scoringValue, percentage
+  );
+}
+
+export function validateScoringOrdinal(isOverview: boolean, percentage: number) {
+  const rgbCode = colorFromPercentageOrdinal(percentage);
+  const scoringValue = scoringValueFromPercentageOrdinal(percentage);
+
+  if (percentage >= 100) {
+    cy.getZone('stretch', isOverview)
+      .should('have.attr', 'src')
+      .should('include', 'star-filled-icon.svg');
+  }
+
+  validateScoring(
+    isOverview, rgbCode, scoringValue, percentage
+  );
+}
+
+export function validateScoring(
+  isOverview: boolean, rgbCode: string, scoringValue: ScoringValue, percentage: number
+) {
   validateScoringWidth('fail', scoringValue.failPercent, isOverview);
   validateScoringWidth('commit', scoringValue.commitPercent, isOverview);
   validateScoringWidth('target', scoringValue.targetPercent, isOverview);
@@ -85,7 +115,7 @@ function checkVisibilityOfScoringComponent(isOverview: boolean, displayProperty:
     .should('equal', displayProperty);
 }
 
-function colorFromPercentage(percentage: number) {
+function colorFromPercentageOrdinal(percentage: number) {
   switch (true) {
     case percentage >= 100:
       return 'rgba(0, 0, 0, 0)';
@@ -98,7 +128,7 @@ function colorFromPercentage(percentage: number) {
   }
 }
 
-function scoringValueFromPercentage(percentage: number): ScoringValue {
+function scoringValueFromPercentageOrdinal(percentage: number): ScoringValue {
   switch (true) {
     case percentage >= 100:
       return {
@@ -124,5 +154,45 @@ function scoringValueFromPercentage(percentage: number): ScoringValue {
         commitPercent: -1,
         targetPercent: -1
       };
+  }
+}
+
+function colorFromPercentageMetric(keyResult: CheckInValue) {
+  if (keyResult.lastCheckIn < keyResult.commitValue) {
+    return 'rgb(186, 56, 56)';
+  } else if (keyResult.lastCheckIn < keyResult.targetValue) {
+    return 'rgb(255, 214, 0)';
+  } else if (keyResult.lastCheckIn < keyResult.stretchGoal) {
+    return 'rgb(30, 138, 41)';
+  } else if (keyResult.lastCheckIn >= keyResult.stretchGoal) {
+    return 'rgba(0, 0, 0, 0)';
+  }
+}
+
+function scoringValueFromPercentageMetric(keyResult: CheckInValue, percentage: number): ScoringValue {
+  if (keyResult.lastCheckIn < keyResult.commitValue) {
+    return {
+      failPercent: percentage * (100 / 30),
+      commitPercent: -1,
+      targetPercent: -1
+    };
+  } else if (keyResult.lastCheckIn < keyResult.targetValue) {
+    return {
+      failPercent: 100,
+      commitPercent: (percentage - 30) * (100 / 40),
+      targetPercent: -1
+    };
+  } else if (keyResult.lastCheckIn < keyResult.stretchGoal) {
+    return {
+      failPercent: 100,
+      commitPercent: 100,
+      targetPercent: (percentage - 70) * (100 / 30)
+    };
+  } else if (keyResult.lastCheckIn >= keyResult.stretchGoal) {
+    return {
+      failPercent: 0,
+      commitPercent: 0,
+      targetPercent: 0
+    };
   }
 }

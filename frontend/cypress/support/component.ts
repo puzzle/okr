@@ -1,5 +1,6 @@
 import './commands';
 import { keyCodeDefinitions } from 'cypress-real-events/keyCodeDefinitions';
+import { CheckInValue } from './helper/scoringSupport';
 
 declare global {
   export namespace Cypress {
@@ -15,7 +16,8 @@ declare global {
       tabForwardUntil(selector: string, limit?: number): void;
       tabBackwardUntil(selector: string, limit?: number): void;
       getZone(zone: string, onOverview: boolean): Chainable;
-      validateScoring(isOverview: boolean, percentage: number): Chainable;
+      validateScoringMetric(isOverview: boolean, keyResult: CheckInValue, percentage: number): Chainable;
+      validateScoringOrdinal(isOverview: boolean, percentage: number): Chainable;
     }
   }
 }

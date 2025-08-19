@@ -1,4 +1,4 @@
-import { validateScoring } from './helper/scoringSupport';
+import { CheckInValue, validateScoringMetric, validateScoringOrdinal } from './helper/scoringSupport';
 import { keyCodeDefinitions } from 'cypress-real-events/keyCodeDefinitions';
 import { pressUntilContains, doUntilSelector } from './helper/utils';
 import Chainable = Cypress.Chainable;
@@ -71,8 +71,12 @@ Cypress.Commands.add('getZone', (zone: string, onOverview: boolean) => {
   return (onOverview ? cy.focused() : cy.getByTestId('side-panel')).findByTestId(zone);
 });
 
-Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number) => {
-  validateScoring(isOverview, percentage);
+Cypress.Commands.add('validateScoringMetric', (isOverview: boolean, keyResult: CheckInValue, percentage: number) => {
+  validateScoringMetric(isOverview, keyResult, percentage);
+});
+
+Cypress.Commands.add('validateScoringOrdinal', (isOverview: boolean, percentage: number) => {
+  validateScoringOrdinal(isOverview, percentage);
 });
 
 Cypress.Commands.add('buttonShouldBePrimary', (buttonId: string) => {

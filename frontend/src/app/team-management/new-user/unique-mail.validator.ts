@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, ValidationErrors, Validator } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class UniqueEmailValidator implements Validator {
+  private readonly userService = inject(UserService);
+
   private existingUserMails: string[] = []; // mails exsiting already in backend
 
   private addedMails: string[] = []; // mails added in form
 
-  constructor(private readonly userService: UserService) {
+  constructor() {
     this.userService
       .getUsers()
       .pipe(takeUntilDestroyed())

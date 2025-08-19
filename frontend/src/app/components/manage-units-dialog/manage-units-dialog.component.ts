@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UnitService } from '../../services/unit.service';
 import { Unit } from '../../shared/types/enums/unit';
 import { forkJoin, map, Observable } from 'rxjs';
@@ -14,14 +14,17 @@ import { UnitTransformationPipe } from '../../shared/pipes/unit-transformation/u
   standalone: false
 })
 export class ManageUnitsDialogComponent implements OnInit {
+  private unitService = inject(UnitService);
+
+  private dialogRef = inject<MatDialogRef<ManageUnitsDialogComponent>>(MatDialogRef);
+
+  private unitPipe = inject(UnitTransformationPipe);
+
   allUnits = new Observable<Unit[]>();
 
   fg: FormGroup = new FormGroup({
     unitFormArray: new FormArray<FormGroup<FormControlsOf<Item>>>([])
   });
-
-  constructor(private unitService: UnitService, private dialogRef: MatDialogRef<ManageUnitsDialogComponent>, private unitPipe: UnitTransformationPipe) {
-  }
 
   getChangedItems() {
     const itemControls = (this.fg.get('unitFormArray') as FormArray)?.controls as FormGroup<FormControlsOf<Item>>[];

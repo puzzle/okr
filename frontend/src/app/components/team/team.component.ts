@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction, inject } from '@angular/core';
 import { OverviewEntity } from '../../shared/types/model/overview-entity';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
@@ -18,14 +18,18 @@ import { BehaviorSubject, first } from 'rxjs';
   standalone: false
 })
 export class TeamComponent {
+  private dialogService = inject(DialogService);
+
+  private refreshDataService = inject(RefreshDataService);
+
+  private configService = inject(ConfigService);
+
   @Input({ required: true })
   public overviewEntity!: OverviewEntity;
 
   addIconSrc = new BehaviorSubject<string>('assets/icons/new-icon.svg');
 
-  constructor(private dialogService: DialogService,
-    private refreshDataService: RefreshDataService,
-    private configService: ConfigService) {
+  constructor() {
     this.configService.config$.pipe(first())
       .subscribe((config: ClientConfig) => {
         const configuredIconSrc = config.customStyles['okr-add-objective-icon'];

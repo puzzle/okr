@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Quarter } from '../shared/types/model/quarter';
 import { map, Observable } from 'rxjs';
@@ -7,7 +7,8 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class QuarterService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
 
   getAllQuarters(): Observable<Quarter[]> {
     return this.http

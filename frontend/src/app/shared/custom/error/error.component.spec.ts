@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ErrorComponent } from './error.component';
 import { TranslateService } from '@ngx-translate/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Injector } from '@angular/core';
 
 describe('ErrorComponent', () => {
   let component: ErrorComponent;
@@ -23,7 +24,14 @@ describe('ErrorComponent', () => {
     translateService = TestBed.inject(TranslateService);
     formGroupDirective = TestBed.inject(FormGroupDirective);
     translateServiceMock.instant.mockReturnValue('Translated error');
-    component = new ErrorComponent(translateService, formGroupDirective);
+    component = Injector.create({
+      providers: [{ provide: ErrorComponent },
+        { provide: TranslateService,
+          useValue: translateService },
+        { provide: FormGroupDirective,
+          useValue: formGroupDirective }]
+    })
+      .get(ErrorComponent);
   });
 
   it('should return no error messages if form field is clean or untouched or has no errors', () => {

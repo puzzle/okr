@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { filter, map, merge, mergeMap, Observable, of, take, timeout } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -7,7 +7,8 @@ import { OAuthService } from 'angular-oauth2-oidc';
   providedIn: 'root'
 })
 export class OAuthInterceptor implements HttpInterceptor {
-  constructor(private oAuthService: OAuthService) {}
+  private oAuthService = inject(OAuthService);
+
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.match(/^(\/)?api/)) {

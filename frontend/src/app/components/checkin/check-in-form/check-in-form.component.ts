@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { KeyResultMetric } from '../../../shared/types/model/key-result-metric';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -30,6 +30,14 @@ import { CheckInMetric } from '../../../shared/types/model/check-in-metric';
   standalone: false
 })
 export class CheckInFormComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<CheckInFormComponent>>(MatDialogRef);
+
+  data = inject(MAT_DIALOG_DATA);
+
+  private checkInService = inject(CheckInService);
+
+  private actionService = inject(ActionService);
+
   keyResult: KeyResult;
 
   checkIn!: CheckInMin;
@@ -57,14 +65,9 @@ export class CheckInFormComponent implements OnInit {
 
   protected readonly formInputCheck = formInputCheck;
 
-  constructor(
-    public dialogRef: MatDialogRef<CheckInFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private checkInService: CheckInService,
-    private actionService: ActionService
-  ) {
+  constructor() {
     this.currentDate = new Date();
-    this.keyResult = data.keyResult;
+    this.keyResult = this.data.keyResult;
     this.setDefaultValues();
     this.setValidators(this.keyResult.keyResultType);
   }

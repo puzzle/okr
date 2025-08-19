@@ -1,4 +1,6 @@
 import { TeamsPipe } from './teams.pipe';
+import { Injector } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 describe('TeamsPipe', () => {
   let pipe: TeamsPipe;
@@ -7,7 +9,10 @@ describe('TeamsPipe', () => {
   };
 
   beforeEach(() => {
-    pipe = new TeamsPipe(translateMock);
+    pipe = Injector.create({ providers: [{ provide: TeamsPipe },
+      { provide: TranslateService,
+        useValue: translateMock }] })
+      .get(TeamsPipe);
   });
 
   it('should return an empty string if teams array is empty', () => {

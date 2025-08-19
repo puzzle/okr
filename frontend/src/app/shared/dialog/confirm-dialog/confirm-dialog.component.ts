@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogData } from '../../../services/dialog.service';
 import { ButtonState } from '../../types/enums/button-state';
@@ -10,6 +10,10 @@ import { ButtonState } from '../../types/enums/button-state';
   standalone: false
 })
 export class ConfirmDialogComponent implements OnInit {
+  data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
+
+  dialogRef = inject<MatDialogRef<ConfirmDialogComponent>>(MatDialogRef);
+
   dialogTitle = '';
 
   dialogText = '';
@@ -19,9 +23,6 @@ export class ConfirmDialogComponent implements OnInit {
   noButtonState?: ButtonState;
 
   closeButtonState?: ButtonState;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
 
   ngOnInit() {
     this.dialogTitle = this.data.title;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DialogService } from './dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ObjectiveMin } from '../shared/types/model/objective-min';
@@ -26,12 +26,12 @@ export class ObjectiveMenuActionsService {
 
   actions: ObjectiveMenuActions;
 
-  constructor(
-    dialogService: DialogService,
-    objectiveService: ObjectiveService,
-    completedService: CompletedService,
-    refreshDataService: RefreshDataService
-  ) {
+  constructor() {
+    const dialogService = inject(DialogService);
+    const objectiveService = inject(ObjectiveService);
+    const completedService = inject(CompletedService);
+    const refreshDataService = inject(RefreshDataService);
+
     this.afterActions = new ObjectiveMenuAfterActions(objectiveService, completedService, refreshDataService);
     this.actions = new ObjectiveMenuActions(dialogService, refreshDataService, this.afterActions);
   }

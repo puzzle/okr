@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ConfigService } from '../../../services/config.service';
 import { map, Observable } from 'rxjs';
 
@@ -10,9 +10,11 @@ import { map, Observable } from 'rxjs';
 export class OkrTangramComponent {
   private readonly DEFAULT_TRIANGLE_SRC = 'assets/images/empty.svg';
 
+  private readonly configService = inject(ConfigService);
+
   trianglesSrc$ = new Observable<string>();
 
-  constructor(private readonly configService: ConfigService) {
+  constructor() {
     this.trianglesSrc$ = this.configService.config$.pipe(map((config) => config.triangles || this.DEFAULT_TRIANGLE_SRC));
   }
 }

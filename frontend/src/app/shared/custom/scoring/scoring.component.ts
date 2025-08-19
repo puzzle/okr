@@ -1,15 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { Zone } from '../../types/enums/zone';
 import { KeyResultMetricMin } from '../../types/model/key-result-metric-min';
 import { Observable } from 'rxjs';
@@ -25,6 +14,8 @@ import { CheckInOrdinalMin } from '../../types/model/check-in-ordinal-min';
   standalone: false
 })
 export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
+  private changeDetectionRef = inject(ChangeDetectorRef);
+
   @Input() keyResult!: KeyResultOrdinalMin | KeyResultMetricMin;
 
   @Input() isDetail!: boolean;
@@ -50,7 +41,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('target')
   private targetElement: ElementRef<HTMLSpanElement> | undefined = undefined;
 
-  constructor(private changeDetectionRef: ChangeDetectorRef) {
+  constructor() {
     this.labelPercentage = new Observable<number>();
   }
 

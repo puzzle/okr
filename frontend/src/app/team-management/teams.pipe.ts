@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class TeamsPipe implements PipeTransform {
   private readonly SEPARATOR = ', ';
 
-  constructor(private readonly translate: TranslateService) {}
+  private readonly translate = inject(TranslateService);
 
   transform(teams: string[], maxEntries: number | undefined): string {
     if (!teams?.length) {

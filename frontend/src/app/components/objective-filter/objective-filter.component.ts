@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getQueryString, optionalReplaceWithNulls, sanitize } from '../../shared/common';
 import { debounceTime, map, Subject } from 'rxjs';
@@ -11,12 +11,15 @@ import { debounceTime, map, Subject } from 'rxjs';
   standalone: false
 })
 export class ObjectiveFilterComponent implements OnInit {
+  private router = inject(Router);
+
+  private route = inject(ActivatedRoute);
+
   refresh = new Subject<void>();
 
   query = '';
 
-  constructor(private router: Router,
-    private route: ActivatedRoute) {
+  constructor() {
     this.refresh.pipe(debounceTime(300))
       .subscribe(() => this.updateUrl());
   }

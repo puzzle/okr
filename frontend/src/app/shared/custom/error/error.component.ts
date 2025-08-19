@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -10,6 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
     useExisting: FormGroupDirective }]
 })
 export class ErrorComponent {
+  private translate = inject(TranslateService);
+
+  private parentF = inject(FormGroupDirective);
+
   @Input() form?: FormGroup;
 
   @Input() controlPath: string[] = [];
@@ -17,10 +21,6 @@ export class ErrorComponent {
   @Input() name?: string;
 
   @Input() maxErrors: number = Number.POSITIVE_INFINITY;
-
-
-  constructor(private translate: TranslateService, private parentF: FormGroupDirective) {
-  }
 
   getErrorMessages(): string[] {
     const formField = this.getFormControl();

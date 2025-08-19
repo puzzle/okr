@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
@@ -14,6 +14,16 @@ import { getFullNameOfUser } from '../../shared/types/model/user';
   standalone: false
 })
 export class ApplicationTopBarComponent implements OnInit, OnDestroy {
+  private oAuthService = inject(OAuthService);
+
+  private userService = inject(UserService);
+
+  private configService = inject(ConfigService);
+
+  private router = inject(Router);
+
+  private readonly cd = inject(ChangeDetectorRef);
+
   userFullName = '';
 
   menuIsOpen = false;
@@ -23,14 +33,6 @@ export class ApplicationTopBarComponent implements OnInit, OnDestroy {
   helpSiteUrl = new BehaviorSubject<string>('https://en.wikipedia.org/wiki/Objectives_and_key_results');
 
   private subscription?: Subscription;
-
-  constructor(
-    private oAuthService: OAuthService,
-    private userService: UserService,
-    private configService: ConfigService,
-    private router: Router,
-    private readonly cd: ChangeDetectorRef
-  ) {}
 
   ngOnInit(): void {
     this.subscription = this.configService.config$.subscribe({

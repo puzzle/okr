@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
@@ -17,6 +17,20 @@ import { DialogService } from '../../services/dialog.service';
   standalone: false
 })
 export class MemberDetailComponent implements OnInit, OnDestroy {
+  private readonly userService = inject(UserService);
+
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly translateService = inject(TranslateService);
+
+  private readonly teamService = inject(TeamService);
+
+  private readonly cd = inject(ChangeDetectorRef);
+
+  private readonly router = inject(Router);
+
+  private readonly dialogService = inject(DialogService);
+
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
   user: User | undefined;
@@ -36,16 +50,6 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     'delete'];
 
   readonly getFullNameFromUser = getFullNameOfUser;
-
-  constructor(
-    private readonly userService: UserService,
-    private readonly route: ActivatedRoute,
-    private readonly translateService: TranslateService,
-    private readonly teamService: TeamService,
-    private readonly cd: ChangeDetectorRef,
-    private readonly router: Router,
-    private readonly dialogService: DialogService
-  ) {}
 
   ngOnInit(): void {
     this.route.paramMap

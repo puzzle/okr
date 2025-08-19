@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { KeyResult } from '../shared/types/model/key-result';
 import { map, Observable } from 'rxjs';
@@ -8,7 +8,8 @@ import { KeyResultDto } from '../shared/types/DTOs/key-result-dto';
   providedIn: 'root'
 })
 export class KeyResultService {
-  constructor(private httpClient: HttpClient) {}
+  private httpClient = inject(HttpClient);
+
 
   getFullKeyResult(keyResultId: number): Observable<KeyResult> {
     return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyResultId)

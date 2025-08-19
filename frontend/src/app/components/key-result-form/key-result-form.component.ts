@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { KeyResult } from '../../shared/types/model/key-result';
@@ -8,6 +8,7 @@ import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { actionListToItemList, formInputCheck } from '../../shared/common';
 import { initFormGroupFromItem, Item } from '../action-plan/action-plan.component';
+import { ActionService } from '../../services/action.service';
 
 @Component({
   selector: 'app-key-result-form',
@@ -16,6 +17,10 @@ import { initFormGroupFromItem, Item } from '../action-plan/action-plan.componen
   standalone: false
 })
 export class KeyResultFormComponent implements OnInit, AfterContentInit {
+  userService = inject(UserService);
+
+  actionService = inject(ActionService);
+
   users$ = new Observable<User[]>();
 
   filteredUsers$: Observable<User[]> = of([]);
@@ -27,9 +32,6 @@ export class KeyResultFormComponent implements OnInit, AfterContentInit {
 
   @Input()
   keyResult?: KeyResult;
-
-  constructor(public userService: UserService) {
-  }
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();

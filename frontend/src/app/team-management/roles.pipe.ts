@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { UserRole } from '../shared/types/enums/user-role';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -7,7 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false
 })
 export class RolesPipe implements PipeTransform {
-  constructor(private translate: TranslateService) {}
+  private translate = inject(TranslateService);
+
 
   transform(roles: UserRole[]): string {
     if (!roles?.length) {

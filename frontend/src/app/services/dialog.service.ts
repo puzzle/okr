@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
@@ -17,6 +17,10 @@ export interface ConfirmDialogData {
   providedIn: 'root'
 })
 export class DialogService {
+  private readonly dialog = inject(MatDialog);
+
+  private readonly translationService = inject(TranslateService);
+
   DIALOG_PANEL_CLASS_DEFAULT = 'okr-dialog-panel-default';
 
   DIALOG_PANEL_CLASS_SMALL = 'okr-dialog-panel-small';
@@ -26,9 +30,6 @@ export class DialogService {
     restoreFocus: true,
     autoFocus: 'first-tabbable'
   };
-
-  constructor(private readonly dialog: MatDialog,
-    private readonly translationService: TranslateService) {}
 
   open<T, D = any, R = any>(component: ComponentType<T>, config?: MatDialogConfig<D>): MatDialogRef<T, R> {
     return this.dialog.open(component, {

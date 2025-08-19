@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
@@ -15,9 +15,12 @@ import { ToasterType } from '../shared/types/enums/toaster-type';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router,
-    private toasterService: ToasterService,
-    private translate: TranslateService) {}
+  private router = inject(Router);
+
+  private toasterService = inject(ToasterService);
+
+  private translate = inject(TranslateService);
+
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)

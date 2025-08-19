@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { TeamService } from '../../services/team.service';
@@ -26,6 +26,14 @@ export interface FilteredTeam extends Team {
   standalone: false
 })
 export class SearchTeamManagementComponent {
+  private readonly userService = inject(UserService);
+
+  private readonly teamService = inject(TeamService);
+
+  private readonly router = inject(Router);
+
+  private readonly activatedRoute = inject(ActivatedRoute);
+
   static MAX_SUGGESTIONS = 3;
 
   search = new FormControl('');
@@ -40,14 +48,9 @@ export class SearchTeamManagementComponent {
 
   private users: User[] = [];
 
-  constructor(
-    private readonly userService: UserService,
-    private readonly teamService: TeamService,
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
-  ) {
-    combineLatest([teamService.getAllTeams(),
-      userService.getUsers()])
+  constructor() {
+    combineLatest([this.teamService.getAllTeams(),
+      this.userService.getUsers()])
       .pipe(takeUntilDestroyed())
       .subscribe(([teams,
         users]) => {

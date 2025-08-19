@@ -1,11 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input, OnDestroy,
-  QueryList,
-  ViewChildren
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, QueryList, ViewChildren, inject } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DialogService } from '../../services/dialog.service';
 import {
@@ -45,15 +38,18 @@ export function initFormGroupFromItem(item?: Item): FormGroup<FormControlsOf<Ite
     useExisting: FormArrayName }]
 })
 export class ActionPlanComponent implements OnDestroy {
+  dialogService = inject(DialogService);
+
+  private formArrayNameF = inject(FormArrayName);
+
+  private cdRef = inject(ChangeDetectorRef);
+
   @Input() canDelete?: boolean = true;
 
   @Input() movable = true;
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
-
-  constructor(public dialogService: DialogService, private formArrayNameF: FormArrayName, private cdRef: ChangeDetectorRef) {
-  }
 
   changeItemPosition(currentIndex: number, newIndex: number) {
     if (!this.movable) {

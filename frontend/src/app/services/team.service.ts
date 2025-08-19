@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Team } from '../shared/types/model/team';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
@@ -9,7 +9,8 @@ import { UserTeam } from '../shared/types/model/user-team';
   providedIn: 'root'
 })
 export class TeamService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
 
   private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
@@ -19,6 +19,18 @@ import { DialogService } from '../../services/dialog.service';
   standalone: false
 })
 export class MemberListComponent implements OnDestroy, AfterViewInit {
+  private readonly userService = inject(UserService);
+
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly cd = inject(ChangeDetectorRef);
+
+  private readonly teamService = inject(TeamService);
+
+  private readonly router = inject(Router);
+
+  private readonly dialogService = inject(DialogService);
+
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
 
   selectedTeam$: BehaviorSubject<Team | undefined> = new BehaviorSubject<Team | undefined>(undefined);
@@ -26,15 +38,6 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
 
   private unsubscribe$ = new Subject<void>();
-
-  public constructor(
-    private readonly userService: UserService,
-    private readonly route: ActivatedRoute,
-    private readonly cd: ChangeDetectorRef,
-    private readonly teamService: TeamService,
-    private readonly router: Router,
-    private readonly dialogService: DialogService
-  ) {}
 
   public ngAfterViewInit() {
     this.userService

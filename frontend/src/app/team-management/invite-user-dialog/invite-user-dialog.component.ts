@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NewUser } from '../../shared/types/model/new-user';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
@@ -13,16 +13,19 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: false
 })
 export class InviteUserDialogComponent {
+  private readonly userService = inject(UserService);
+
+  private readonly dialogRef = inject(DialogRef);
+
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+
+  private readonly uniqueMailValidator = inject(UniqueEmailValidator);
+
   form: FormArray<FormGroup<NewUserForm<FormControl>>>;
 
   triedToSubmit = false;
 
-  constructor(
-    private readonly userService: UserService,
-    private readonly dialogRef: DialogRef,
-    private readonly formBuilder: NonNullableFormBuilder,
-    private readonly uniqueMailValidator: UniqueEmailValidator
-  ) {
+  constructor() {
     this.form = this.formBuilder.array([this.createUserFormGroup()]);
     this.form.valueChanges
       .pipe(takeUntilDestroyed())

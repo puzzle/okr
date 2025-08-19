@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../shared/types/model/user';
@@ -9,6 +9,8 @@ import { UserOkrData } from '../shared/types/model/user-okr-data';
   providedIn: 'root'
 })
 export class UserService {
+  private httpClient = inject(HttpClient);
+
   private readonly API_URL = 'api/v1/users';
 
   private _currentUser: User | undefined;
@@ -16,8 +18,6 @@ export class UserService {
   private users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
 
   private usersLoaded = false;
-
-  constructor(private httpClient: HttpClient) {}
 
   public getOrInitCurrentUser(): Observable<User> {
     if (this._currentUser) {

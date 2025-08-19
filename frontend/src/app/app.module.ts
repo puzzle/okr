@@ -193,5 +193,5 @@ export const MY_FORMATS = {
   ]
 })
 export class AppModule {
-  constructor(private readonly customizationService: CustomizationService) {}
+  private readonly customizationService = inject(CustomizationService);
 }

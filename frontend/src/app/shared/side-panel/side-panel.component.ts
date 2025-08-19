@@ -1,12 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  ViewChild
-} from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
 
@@ -18,6 +10,12 @@ import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
   standalone: false
 })
 export class SidePanelComponent implements AfterContentInit, OnDestroy {
+  private router = inject(Router);
+
+  private cd = inject(ChangeDetectorRef);
+
+  private route = inject(ActivatedRoute);
+
   leaveKeys = ['Escape'];
 
   right = '-100%';
@@ -33,10 +31,6 @@ export class SidePanelComponent implements AfterContentInit, OnDestroy {
     overlayX: 'end',
     overlayY: 'top'
   }];
-
-  constructor(private router: Router,
-    private cd: ChangeDetectorRef,
-    private route: ActivatedRoute) {}
 
   ngAfterContentInit(): void {
     document.body.classList.add('disable-scrolling');

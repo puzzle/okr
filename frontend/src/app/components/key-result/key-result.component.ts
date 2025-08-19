@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { KeyResultMin } from '../../shared/types/model/key-result-min';
 import { Router } from '@angular/router';
 import { DATE_FORMAT } from '../../shared/constant-library';
@@ -13,11 +13,11 @@ import { KeyResultOrdinalMin } from '../../shared/types/model/key-result-ordinal
   standalone: false
 })
 export class KeyResultComponent {
+  private router = inject(Router);
+
   @Input() keyResult!: KeyResultMin;
 
   protected readonly DATE_FORMAT = DATE_FORMAT;
-
-  constructor(private router: Router) {}
 
   openDrawer() {
     this.router.navigate(['details/keyresult',

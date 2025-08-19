@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/team';
@@ -11,14 +11,16 @@ import { ActivatedRoute } from '@angular/router';
   standalone: false
 })
 export class TeamListComponent implements OnInit, OnDestroy {
+  private readonly route = inject(ActivatedRoute);
+
   public teams$: Observable<Team[]>;
 
   public selectedTeamId: number | undefined;
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private readonly teamService: TeamService,
-    private readonly route: ActivatedRoute) {
+  constructor() {
+    const teamService = inject(TeamService);
     this.teams$ = teamService.getAllTeams();
   }
 

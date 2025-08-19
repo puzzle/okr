@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay } from 'rxjs';
 import { ClientConfig } from '../shared/types/model/client-config';
@@ -7,9 +7,11 @@ import { ClientConfig } from '../shared/types/model/client-config';
   providedIn: 'root'
 })
 export class ConfigService {
+  private httpClient = inject(HttpClient);
+
   public config$: Observable<ClientConfig>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor() {
     this.config$ = this.httpClient.get<ClientConfig>('/config')
       .pipe(shareReplay());
   }

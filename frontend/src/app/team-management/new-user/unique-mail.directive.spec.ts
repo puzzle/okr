@@ -3,6 +3,8 @@ import { users } from '../../shared/test-data';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { AbstractControl } from '@angular/forms';
+import { Injector } from '@angular/core';
+import { UserService } from '../../services/user.service';
 
 describe('UniqueMailDirective', () => {
   const userServiceMock = {
@@ -15,7 +17,12 @@ describe('UniqueMailDirective', () => {
 
   it('should create an instance', () => {
     TestBed.runInInjectionContext(() => {
-      const directive = new UniqueEmailValidator(userServiceMock);
+      const directive = Injector.create({
+        providers: [{ provide: UniqueEmailValidator },
+          { provide: UserService,
+            useValue: userServiceMock }]
+      })
+        .get(UniqueEmailValidator);
       expect(directive)
         .toBeTruthy();
     });
@@ -23,8 +30,12 @@ describe('UniqueMailDirective', () => {
 
   it('should return validationError if user exists, otherwise null', () => {
     TestBed.runInInjectionContext(() => {
-      const directive = new UniqueEmailValidator(userServiceMock);
-
+      const directive = Injector.create({
+        providers: [{ provide: UniqueEmailValidator },
+          { provide: UserService,
+            useValue: userServiceMock }]
+      })
+        .get(UniqueEmailValidator);
       let control = { value: users[0].email } as AbstractControl;
       expect(directive.validate(control))
         .toStrictEqual({ notUniqueMail: { value: users[0].email } });

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import { ObjectiveMin } from '../../shared/types/model/objective-min';
 import { Router } from '@angular/router';
 import { distinct, map, ReplaySubject, take } from 'rxjs';
@@ -18,6 +18,16 @@ import { MatMenuTrigger } from '@angular/material/menu';
   standalone: false
 })
 export class ObjectiveComponent {
+  private readonly dialogService = inject(DialogService);
+
+  private readonly router = inject(Router);
+
+  private readonly refreshDataService = inject(RefreshDataService);
+
+  private readonly translate = inject(TranslateService);
+
+  private readonly objectiveMenuActionsService = inject(ObjectiveMenuActionsService);
+
   @Input() isWritable!: boolean;
 
   public objective$ = new ReplaySubject<ObjectiveMin>();
@@ -29,14 +39,6 @@ export class ObjectiveComponent {
   protected readonly trackByFn = trackByFn;
 
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger | undefined;
-
-  constructor(
-    private readonly dialogService: DialogService,
-    private readonly router: Router,
-    private readonly refreshDataService: RefreshDataService,
-    private readonly translate: TranslateService,
-    private readonly objectiveMenuActionsService: ObjectiveMenuActionsService
-  ) {}
 
   @Input() set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);

@@ -2,6 +2,8 @@ import { CustomizationService } from './customization.service';
 import { BehaviorSubject } from 'rxjs';
 import { ClientConfig } from '../shared/types/model/client-config';
 import { ConfigService } from './config.service';
+import { Injector } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 class CallRecorder {
   private calls: Record<string, any[]> = {};
@@ -77,7 +79,14 @@ describe('CustomizationService', () => {
         };
       }
     } as unknown as Document;
-    service = new CustomizationService(configServiceMock, documentMock);
+    service = Injector.create({
+      providers: [{ provide: CustomizationService },
+        { provide: ConfigService,
+          useValue: configServiceMock },
+        { provide: DOCUMENT,
+          useValue: documentMock }]
+    })
+      .get(CustomizationService);
   });
 
   it('should call correct apis when config is ready', () => {

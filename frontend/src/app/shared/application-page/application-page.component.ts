@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy, inject } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,6 +13,14 @@ import { FilterPageChange } from '../types/model/filter-page-change';
   styleUrl: './application-page.component.scss'
 })
 export class ApplicationPageComponent implements OnInit, OnDestroy {
+  private refreshDataService = inject(RefreshDataService);
+
+  private activatedRoute = inject(ActivatedRoute);
+
+  private changeDetector = inject(ChangeDetectorRef);
+
+  private configService = inject(ConfigService);
+
   @Input() elements$?: Observable<any>;
 
   overviewPadding = new Subject<number>();
@@ -24,18 +32,13 @@ export class ApplicationPageComponent implements OnInit, OnDestroy {
   @Output() reloadPage = new EventEmitter<FilterPageChange>();
 
 
-  constructor(
-    private refreshDataService: RefreshDataService,
-    private activatedRoute: ActivatedRoute,
-    private changeDetector: ChangeDetectorRef,
-    private configService: ConfigService
-  ) {
+  constructor() {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.reloadPage.next(this.getFilterPageChange()));
 
-    combineLatest([refreshDataService.teamFilterReady.asObservable(),
-      refreshDataService.quarterFilterReady.asObservable()])
+    combineLatest([this.refreshDataService.teamFilterReady.asObservable(),
+      this.refreshDataService.quarterFilterReady.asObservable()])
       .pipe(take(1))
       .subscribe(() => {
         this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$))

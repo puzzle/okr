@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Unit } from '../shared/types/enums/unit';
 import { DialogService } from './dialog.service';
@@ -10,7 +10,9 @@ import { filter, map, Observable } from 'rxjs';
 export class UnitService {
   private readonly API_URL = '/api/v2/units';
 
-  constructor(private httpClient: HttpClient, private dialogService: DialogService) { }
+  private httpClient = inject(HttpClient);
+
+  private dialogService = inject(DialogService);
 
   getUnits() {
     return this.httpClient.get<Unit[]>(this.API_URL);

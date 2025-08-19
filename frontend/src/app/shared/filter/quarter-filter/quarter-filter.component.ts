@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { QuarterService } from '../../../services/quarter.service';
 import { Quarter } from '../../types/model/quarter';
 import { BehaviorSubject, forkJoin } from 'rxjs';
@@ -13,6 +13,14 @@ import { getValueFromQuery } from '../../common';
   standalone: false
 })
 export class QuarterFilterComponent implements OnInit {
+  private quarterService = inject(QuarterService);
+
+  private router = inject(Router);
+
+  private route = inject(ActivatedRoute);
+
+  private refreshDataService = inject(RefreshDataService);
+
   quarters: BehaviorSubject<Quarter[]> = new BehaviorSubject<Quarter[]>([]);
 
   @Input() showBacklog = true;
@@ -20,13 +28,6 @@ export class QuarterFilterComponent implements OnInit {
   @Output() quarterLabel$ = new EventEmitter<string>();
 
   currentQuarterId = -1;
-
-  constructor(
-    private quarterService: QuarterService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private refreshDataService: RefreshDataService
-  ) {}
 
   ngOnInit() {
     const allQuarters$ = this.quarterService.getAllQuarters();

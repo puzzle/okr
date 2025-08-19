@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { User } from '../../../shared/types/model/user';
@@ -17,6 +17,12 @@ import { DialogService } from '../../../services/dialog.service';
   standalone: false
 })
 export class MemberListTableComponent implements OnInit, OnDestroy {
+  private readonly teamService = inject(TeamService);
+
+  private readonly userService = inject(UserService);
+
+  private readonly dialogService = inject(DialogService);
+
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
 
   @Input({ required: true }) selectedTeam$!: BehaviorSubject<undefined | Team>;
@@ -36,11 +42,6 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   displayedColumns: string[] = this.allColumns;
-
-  constructor(private readonly teamService: TeamService,
-    private readonly userService: UserService,
-    private readonly dialogService: DialogService) {
-  }
 
   ngOnInit() {
     this.selectedTeam$.pipe(takeUntil(this.unsubscribe$))

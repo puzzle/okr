@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Completed } from '../shared/types/model/completed';
@@ -7,7 +7,8 @@ import { Completed } from '../shared/types/model/completed';
   providedIn: 'root'
 })
 export class CompletedService {
-  constructor(private httpClient: HttpClient) {}
+  private httpClient = inject(HttpClient);
+
 
   createCompleted(completed: Completed): Observable<Completed> {
     return this.httpClient.post<Completed>('/api/v2/completed', completed);

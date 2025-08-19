@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Statistics } from '../shared/types/model/statistics';
 import { Observable } from 'rxjs';
@@ -8,8 +8,8 @@ import { optionalValue } from '../shared/common';
   providedIn: 'root'
 })
 export class EvaluationService {
-  constructor(private readonly http: HttpClient) {
-  }
+  private readonly http = inject(HttpClient);
+
 
   getStatistics(quarterId: number, teamIds: number[]): Observable<Statistics> {
     const params = optionalValue({

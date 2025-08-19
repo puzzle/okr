@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  HostListener,
-  OnDestroy,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy, ViewChild, inject } from '@angular/core';
 import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../../constant-library';
 import { RefreshDataService } from '../../../services/refresh-data.service';
 
@@ -18,6 +10,8 @@ import { RefreshDataService } from '../../../services/refresh-data.service';
   standalone: false
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
+  private refreshDataService = inject(RefreshDataService);
+
   @ViewChild('okrBanner') okrBanner!: ElementRef;
 
   resizeObserver: ResizeObserver;
@@ -26,7 +20,7 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
 
   lastScrollPosition = 0;
 
-  constructor(private refreshDataService: RefreshDataService) {
+  constructor() {
     this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
       const newBannerHeight = entries[0].contentRect.height;
       if (newBannerHeight != this.bannerHeight) {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { optionalValue } from '../shared/common';
@@ -9,7 +9,8 @@ import { OverviewEntity } from '../shared/types/model/overview-entity';
   providedIn: 'root'
 })
 export class OverviewService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
 
   getOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string): Observable<OverviewEntity[]> {
     const params = optionalValue({

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/team';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -21,6 +21,14 @@ export interface AddMemberToTeamDialogComponentData {
   standalone: false
 })
 export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
+  private readonly userService = inject(UserService);
+
+  private readonly teamService = inject(TeamService);
+
+  dialogRef = inject<MatDialogRef<AddMemberToTeamDialogComponent>>(MatDialogRef);
+
+  data = inject<AddMemberToTeamDialogComponentData>(MAT_DIALOG_DATA);
+
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
   selectedUsers$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
@@ -36,13 +44,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
 
   private readonly unsubscribe$ = new Subject<void>();
 
-  public constructor(
-    private readonly userService: UserService,
-    private readonly teamService: TeamService,
-    public dialogRef: MatDialogRef<AddMemberToTeamDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: AddMemberToTeamDialogComponentData
-  ) {
+  public constructor() {
     this.selectedUsers$.subscribe((users) => this.dataSource = new MatTableDataSource<User>(users));
   }
 

@@ -81,6 +81,8 @@ export class KeyResultTypeComponent implements AfterContentInit {
   updateMetricValue(changed: KeyResultMetricField, value: any) {
     const formGroupMetric = this.keyResultForm.get('metric');
     formGroupMetric?.updateValueAndValidity();
+    const formGroupValue = this.getMetricValue(formGroupMetric?.value, value);
+    const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed, formGroupMetric);
 
     const hasUndefinedValue = Object.values(value)
       .some((v) => v === undefined);
@@ -88,8 +90,7 @@ export class KeyResultTypeComponent implements AfterContentInit {
       return;
     }
 
-    const formGroupValue = this.getMetricValue(formGroupMetric?.value, value);
-    const newMetricValue = this.calculateValueAfterChanged(formGroupValue, changed);
+
     formGroupMetric?.patchValue(newMetricValue, { emitEvent: false });
   }
 
@@ -102,14 +103,14 @@ export class KeyResultTypeComponent implements AfterContentInit {
       stretchGoal: +formGroupValue.stretchGoal } as MetricValue;
   }
 
-  calculateValueAfterChanged(values: MetricValue, changed: KeyResultMetricField) {
+  calculateValueAfterChanged(values: MetricValue, changed: KeyResultMetricField, formGroupMetric: any) {
     switch (changed) {
       case KeyResultMetricField.STRETCH_GOAL:
       case KeyResultMetricField.BASELINE: {
-        return this.calculateValueForField(values, KeyResultMetricField.TARGET_VALUE);
+        return this.calculateValueForField(values, KeyResultMetricField.TARGET_VALUE, formGroupMetric);
       }
       case KeyResultMetricField.TARGET_VALUE: {
-        return this.calculateValueForField(values, KeyResultMetricField.STRETCH_GOAL);
+        return this.calculateValueForField(values, KeyResultMetricField.STRETCH_GOAL, formGroupMetric);
       }
 
       case KeyResultMetricField.NONE: {
@@ -118,22 +119,25 @@ export class KeyResultTypeComponent implements AfterContentInit {
     }
   }
 
-  calculateValueForField(values: MetricValue, field: KeyResultMetricField) {
+  calculateValueForField(values: MetricValue, field: KeyResultMetricField, formGroupMetric: any) {
     const roundToTwoDecimals = (num: number) => parseFloat(num.toFixed(2));
 
     switch (field) {
       case KeyResultMetricField.BASELINE: {
+        this.setFormControlValueToZero(formGroupMetric, 'baseline');
         const baseline = roundToTwoDecimals((values.targetValue - values.stretchGoal * 0.7) / 0.3);
         return { baseline: baseline,
           commitValue: roundToTwoDecimals((values.stretchGoal - baseline) * 0.3 + baseline) };
       }
 
       case KeyResultMetricField.TARGET_VALUE: {
+        this.setFormControlValueToZero(formGroupMetric, 'targetGoal');
         return { targetValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.7 + values.baseline),
           commitValue: roundToTwoDecimals((values.stretchGoal - values.baseline) * 0.3 + values.baseline) };
       }
 
       case KeyResultMetricField.STRETCH_GOAL: {
+        this.setFormControlValueToZero(formGroupMetric, 'stretchGoal');
         const stretchGoal = roundToTwoDecimals((values.targetValue - values.baseline) / 0.7 + values.baseline);
         return { stretchGoal: stretchGoal,
           commitValue: roundToTwoDecimals((stretchGoal - values.baseline) * 0.3 + values.baseline) };
@@ -142,6 +146,13 @@ export class KeyResultTypeComponent implements AfterContentInit {
       case KeyResultMetricField.NONE: {
         return {};
       }
+    }
+  }
+
+  setFormControlValueToZero(formGroupMetric: any, formControl: string) {
+    if (formGroupMetric.get(formControl) && !formGroupMetric.get(formControl).value) {
+      formGroupMetric.get(formControl)
+        .setValue(0, { emitEvent: false });
     }
   }
 

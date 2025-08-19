@@ -28,7 +28,7 @@ public class KeyResultTestHelpers {
     public static final Number OBJECTIVE_ID = 1;
     public static final Number LAST_CHECK_IN_ID = 1;
     public static final Double BASELINE_VALUE = 1.0;
-    public static final Double STRETCH_GOAL_VALUE = 5.0;
+    public static final Double STRETCH_GOAL_VALUE = 10.0;
     public static final String TARGET_ZONE = "Ein Baum";
     public static final String STRETCH_ZONE = "Ein Wald";
     public static final String QUARTER_LABEL = "GJ 22/23-Q4";
@@ -384,7 +384,9 @@ public class KeyResultTestHelpers {
                                                                                        TITLE,
                                                                                        DESCRIPTION,
                                                                                        1.0,
-                                                                                       5.0,
+                                                                                       3.0,
+                                                                                       7.0,
+                                                                                       10.0,
                                                                                        KEY_RESULT_UNIT_DTO,
                                                                                        keyResultUserDto,
                                                                                        keyResultObjectiveDto,

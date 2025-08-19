@@ -64,8 +64,10 @@ class KeyResultBusinessServiceIT {
     private KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder
                 .builder()
-                .withBaseline(3.0)
-                .withStretchGoal(5.0)
+                .withBaseline(0.0)
+                .withStretchGoal(10.0)
+                .withTargetValue(7.0)
+                .withCommitValue(3.0)
                 .withUnit(this.UNIT)
                 .withId(id)
                 .withTitle("Title")

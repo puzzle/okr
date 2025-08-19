@@ -6,7 +6,6 @@ import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
 import { KeyResultOrdinal } from '../../shared/types/model/key-result-ordinal';
 import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { ActionService } from '../../services/action.service';
 import { actionListToItemList, formInputCheck } from '../../shared/common';
 import { initFormGroupFromItem, Item } from '../action-plan/action-plan.component';
 
@@ -29,7 +28,7 @@ export class KeyResultFormComponent implements OnInit, AfterContentInit {
   @Input()
   keyResult?: KeyResult;
 
-  constructor(public userService: UserService, public actionService: ActionService) {
+  constructor(public userService: UserService) {
   }
 
   ngOnInit(): void {

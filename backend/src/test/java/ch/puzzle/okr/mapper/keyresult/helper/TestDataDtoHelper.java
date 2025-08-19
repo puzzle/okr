@@ -69,7 +69,9 @@ public class TestDataDtoHelper {
                                                                                         KEY_RESULT_TYPE_METRIC, //
                                                                                         KEY_RESULT_TITLE, //
                                                                                         KEY_RESULT_DESCRIPTION, //
-                                                                                        KEY_RESULT_BASELINE, //
+                                                                                        KEY_RESULT_BASELINE,
+                                                                                        KEY_RESULT_COMMIT_GOAL,
+                                                                                        KEY_RESULT_TARGET_GOAL, //
                                                                                         KEY_RESULT_STRETCH_GOAL, //
                                                                                         KEY_RESULT_UNIT_DTO, //
                                                                                         ownerDto, //

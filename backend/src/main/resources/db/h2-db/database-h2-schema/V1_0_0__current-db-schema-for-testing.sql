@@ -107,6 +107,8 @@ create table if not exists key_result
     commit_zone     varchar(1024),
     target_zone     varchar(1024),
     stretch_zone    varchar(1024),
+    commit_value DOUBLE PRECISION,
+    target_value DOUBLE PRECISION,
     primary key (id),
     constraint fk4ba6rgbr8mrkc8vvyqd5il4v9
         foreign key (created_by_id) references person,
@@ -187,7 +189,8 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
        KR.TITLE            AS "KEY_RESULT_TITLE",
        KR.KEY_RESULT_TYPE  AS "KEY_RESULT_TYPE",
-       U.unit_name as "UNIT",
+       KR.COMMIT_VALUE,
+       KR.TARGET_VALUE,
        KR.BASELINE,
        KR.STRETCH_GOAL,
        KR.COMMIT_ZONE,
@@ -203,7 +206,6 @@ FROM (SELECT T.ID AS TEAM_ID, T.VERSION AS TEAM_VERSION, T.NAME, Q.ID AS QUARTER
            QUARTER Q) TQ
          LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUARTER_ID = O.QUARTER_ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
-         LEFT JOIN unit U ON U.ID = KR.unit_id
          LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                               FROM CHECK_IN CC
                                                                               WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID);

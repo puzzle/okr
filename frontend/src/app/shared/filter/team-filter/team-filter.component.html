@@ -13,8 +13,7 @@
     [attr.data-testId]="'team-filter-chip'"
     [matTooltip]="team.name"
     matTooltipPosition="above"
-    class="ico
-    n-button focus-outline mt-1 me-1"
+    class="icon-button focus-outline mt-1 me-1"
   >
     <mat-chip [highlighted]="activeTeams.includes(team.id)" color="primary">
       <p class="d-sm-none d-block text-truncate chip-team-name">{{ getTeamName(team.id) }}</p>

@@ -38,7 +38,7 @@ export default class StatisticsPage extends Page {
 
   validateKrsObjectives(objective: number, keyResult: number, relation: number) {
     this.verifyStatisticsField('objectives-key-results', objective, 'Objectives');
-    this.verifyStatisticsField('objectives-key-results', keyResult, 'KeyResults');
+    this.verifyStatisticsField('objectives-key-results', keyResult, 'Key Results');
     this.verifyStatisticsField('objectives-key-results', relation, 'KR\'s/Objective');
   }
 

@@ -30,7 +30,7 @@
         *ngIf="statistics.objectiveAmount ==0 && statistics.keyResultAmount ==0"
         [attr.data-testId]="'no-data-banner'"
       >
-        Für diese Team(s) sind im ausgewählten Zeitraum keine Key Results oder Objectives vorhanden
+        Für dieses Team ist im ausgewählten Zeitraum kein Objective vorhanden.
       </div>
       <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3  g-4">
         <app-statistics-card [title]="'Objectives und Key Results'" [attr.data-testId]="'objectives-key-results'">
@@ -90,7 +90,7 @@
 
         <app-statistics-card
           [attr.data-testId]="'kr-progress-relation'"
-          [title]="'Verteilung der Zonen in den Key Results'"
+          [title]="'Verteilung in den Key Results'"
           *ngIf="krProgressRelation(statistics) as relation"
         >
           <app-statistics-information

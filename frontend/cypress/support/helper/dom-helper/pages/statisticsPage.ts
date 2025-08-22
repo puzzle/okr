@@ -32,7 +32,7 @@ export default class StatisticsPage extends Page {
       .should('exist');
     cy.contains('Verhältnis metrische vs. ordinale Key Results')
       .should('exist');
-    cy.contains('Verteilung der Zonen in den Key Results')
+    cy.contains('Verteilung in den Key Results')
       .should('exist');
   }
 

@@ -28,7 +28,7 @@ export default class StatisticsPage extends Page {
       .should('exist');
     cy.contains('Anzahl erreichter Objectives')
       .should('exist');
-    cy.contains('Key Results mit min. Target Zone')
+    cy.contains('Key Results mit min. Target Zone erreicht')
       .should('exist');
     cy.contains('Verhältnis metrische vs. ordinale Key Results')
       .should('exist');

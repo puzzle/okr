@@ -105,19 +105,29 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       const keyResult = this.keyResult as KeyResultMetricMin;
       const lastCheckIn = keyResult.lastCheckIn?.value!;
 
-      if (lastCheckIn < keyResult.commitValue) {
+      // Decide comparison direction based on goal orientation
+      const increasing = keyResult.baseline < keyResult.stretchGoal;
+      const cmp = (a: number, b: number) => (increasing ? a < b : a > b);
+
+      if (cmp(lastCheckIn, keyResult.commitValue)) {
         this.stretched = false;
-        this.failPercent = (lastCheckIn - keyResult.baseline) / (keyResult.commitValue - keyResult.baseline) * 100;
-      } else if (lastCheckIn < keyResult.targetValue) {
+        this.failPercent =
+          (lastCheckIn - keyResult.baseline) /
+          (keyResult.commitValue - keyResult.baseline) * 100;
+      } else if (cmp(lastCheckIn, keyResult.targetValue)) {
         this.stretched = false;
         this.failPercent = 100;
-        this.commitPercent = (lastCheckIn - keyResult.commitValue) / (keyResult.targetValue - keyResult.commitValue) * 100;
-      } else if (lastCheckIn < keyResult.stretchGoal) {
+        this.commitPercent =
+          (lastCheckIn - keyResult.commitValue) /
+          (keyResult.targetValue - keyResult.commitValue) * 100;
+      } else if (cmp(lastCheckIn, keyResult.stretchGoal)) {
         this.stretched = false;
         this.failPercent = 100;
         this.commitPercent = 100;
-        this.targetPercent = (lastCheckIn - keyResult.targetValue) / (keyResult.stretchGoal - keyResult.targetValue) * 100;
-      } else if (lastCheckIn >= keyResult.stretchGoal) {
+        this.targetPercent =
+          (lastCheckIn - keyResult.targetValue) /
+          (keyResult.stretchGoal - keyResult.targetValue) * 100;
+      } else {
         this.stretched = true;
       }
     }

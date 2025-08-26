@@ -105,6 +105,21 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       const keyResult = this.keyResult as KeyResultMetricMin;
       const lastCheckIn = keyResult.lastCheckIn?.value!;
 
+      if (keyResult.baseline === keyResult.stretchGoal) {
+        if (lastCheckIn >= keyResult.baseline) {
+          this.stretched = true;
+          this.failPercent = 100;
+          this.commitPercent = 100;
+          this.targetPercent = 100;
+        } else {
+          this.stretched = false;
+          this.failPercent = 0;
+          this.commitPercent = 0;
+          this.targetPercent = 0;
+        }
+        return;
+      }
+
       // Decide comparison direction based on goal orientation
       const increasing = keyResult.baseline < keyResult.stretchGoal;
       const cmp = (a: number, b: number) => (increasing ? a < b : a > b);

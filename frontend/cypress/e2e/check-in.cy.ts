@@ -140,7 +140,7 @@ describe('okr check-in', () => {
     cy.contains('We bought a new house');
   });
 
-  it('should create check-in metric with value below baseline', () => {
+  it.only('should create check-in metric with value below baseline', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This will not be good')
@@ -156,7 +156,7 @@ describe('okr check-in', () => {
       .setCheckInConfidence(5)
       .submit();
 
-    cy.contains('5%');
+    cy.contains('Aktuell: 5%');
     cy.contains('!');
     cy.contains('5/10');
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');

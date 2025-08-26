@@ -140,7 +140,7 @@ describe('okr check-in', () => {
     cy.contains('We bought a new house');
   });
 
-  it.only('should create check-in metric with value below baseline', () => {
+  it('should create check-in metric with value below baseline', () => {
     overviewPage
       .addKeyResult()
       .fillKeyResultTitle('This will not be good')

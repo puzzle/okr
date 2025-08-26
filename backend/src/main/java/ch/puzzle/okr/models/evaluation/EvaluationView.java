@@ -1,109 +1,114 @@
 package ch.puzzle.okr.models.evaluation;
 
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import java.util.Objects;
+import jakarta.persistence.Id;
 import org.hibernate.annotations.Immutable;
+
+import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Immutable
 public class EvaluationView {
-    @EmbeddedId
-    private EvaluationViewId evaluationViewId;
 
-    private int objectiveAmount;
-    private int completedObjectivesAmount;
-    private int successfullyCompletedObjectivesAmount;
+    @Id
+    private Long keyResultId;
 
-    private int keyResultAmount;
-    private int keyResultsOrdinalAmount;
-    private int keyResultsMetricAmount;
-    private int keyResultsInTargetOrStretchAmount;
+    private Long objectiveId;
+    private Long teamId;
+    private Long quarterId;
 
-    private int keyResultsInFailAmount;
-    private int keyResultsInCommitAmount;
-    private int keyResultsInTargetAmount;
-    private int keyResultsInStretchAmount;
+    private String keyResultType;
+    private Double baseline;
+    private Double commitValue;
+    private Double targetValue;
+    private Double stretchGoal;
 
-    private EvaluationView(Builder builder) {
-        evaluationViewId = builder.evaluationViewId;
-        objectiveAmount = builder.objectiveAmount;
-        completedObjectivesAmount = builder.completedObjectivesAmount;
-        successfullyCompletedObjectivesAmount = builder.successfullyCompletedObjectivesAmount;
-        keyResultAmount = builder.keyResultAmount;
-        keyResultsOrdinalAmount = builder.keyResultsOrdinalAmount;
-        keyResultsMetricAmount = builder.keyResultsMetricAmount;
-        keyResultsInTargetOrStretchAmount = builder.keyResultsInTargetOrStretchAmount;
-        keyResultsInFailAmount = builder.keyResultsInFailAmount;
-        keyResultsInCommitAmount = builder.keyResultsInCommitAmount;
-        keyResultsInTargetAmount = builder.keyResultsInTargetAmount;
-        keyResultsInStretchAmount = builder.keyResultsInStretchAmount;
-    }
+    private Double valueMetric;
+    private String zone;
+    private Instant latestCheckInDate;
 
     public EvaluationView() {
     }
 
-    public EvaluationViewId getEvaluationViewId() {
-        return evaluationViewId;
+    private EvaluationView(Builder builder) {
+        this.keyResultId = builder.keyResultId;
+        this.objectiveId = builder.objectiveId;
+        this.teamId = builder.teamId;
+        this.quarterId = builder.quarterId;
+        this.keyResultType = builder.keyResultType;
+        this.baseline = builder.baseline;
+        this.commitValue = builder.commitValue;
+        this.targetValue = builder.targetValue;
+        this.stretchGoal = builder.stretchGoal;
+        this.valueMetric = builder.valueMetric;
+        this.zone = builder.zone;
+        this.latestCheckInDate = builder.latestCheckInDate;
     }
 
-    public int getObjectiveAmount() {
-        return objectiveAmount;
+    public Long getKeyResultId() {
+        return keyResultId;
     }
 
-    public int getCompletedObjectivesAmount() {
-        return completedObjectivesAmount;
+    public Long getObjectiveId() {
+        return objectiveId;
     }
 
-    public int getSuccessfullyCompletedObjectivesAmount() {
-        return successfullyCompletedObjectivesAmount;
+    public Long getTeamId() {
+        return teamId;
     }
 
-    public int getKeyResultAmount() {
-        return keyResultAmount;
+    public Long getQuarterId() {
+        return quarterId;
     }
 
-    public int getKeyResultsOrdinalAmount() {
-        return keyResultsOrdinalAmount;
+    public String getKeyResultType() {
+        return keyResultType;
     }
 
-    public int getKeyResultsMetricAmount() {
-        return keyResultsMetricAmount;
+    public Double getBaseline() {
+        return baseline;
     }
 
-    public int getKeyResultsInTargetOrStretchAmount() {
-        return keyResultsInTargetOrStretchAmount;
+    public Double getCommitValue() {
+        return commitValue;
     }
 
-    public int getKeyResultsInFailAmount() {
-        return keyResultsInFailAmount;
+    public Double getTargetValue() {
+        return targetValue;
     }
 
-    public int getKeyResultsInCommitAmount() {
-        return keyResultsInCommitAmount;
+    public Double getStretchGoal() {
+        return stretchGoal;
     }
 
-    public int getKeyResultsInTargetAmount() {
-        return keyResultsInTargetAmount;
+    public Double getValueMetric() {
+        return valueMetric;
     }
 
-    public int getKeyResultsInStretchAmount() {
-        return keyResultsInStretchAmount;
+    public String getZone() {
+        return zone;
+    }
+
+    public Instant getLatestCheckInDate() {
+        return latestCheckInDate;
     }
 
     public static final class Builder {
-        private EvaluationViewId evaluationViewId;
-        private int objectiveAmount;
-        private int completedObjectivesAmount;
-        private int successfullyCompletedObjectivesAmount;
-        private int keyResultAmount;
-        private int keyResultsOrdinalAmount;
-        private int keyResultsMetricAmount;
-        private int keyResultsInTargetOrStretchAmount;
-        private int keyResultsInFailAmount;
-        private int keyResultsInCommitAmount;
-        private int keyResultsInTargetAmount;
-        private int keyResultsInStretchAmount;
+        private Long keyResultId;
+        private Long objectiveId;
+        private Long teamId;
+        private Long quarterId;
+
+        private String keyResultType;
+        private Double baseline;
+        private Double commitValue;
+        private Double targetValue;
+        private Double stretchGoal;
+
+        private Double valueMetric;
+        private String zone;
+        private Instant latestCheckInDate;
 
         private Builder() {
         }
@@ -112,63 +117,63 @@ public class EvaluationView {
             return new Builder();
         }
 
-        public Builder withEvaluationViewId(EvaluationViewId val) {
-            evaluationViewId = val;
+        public Builder withKeyResultId(Long val) {
+            this.keyResultId = val;
             return this;
         }
 
-        public Builder withObjectiveAmount(int val) {
-            objectiveAmount = val;
+        public Builder withObjectiveId(Long val) {
+            this.objectiveId = val;
             return this;
         }
 
-        public Builder withCompletedObjectivesAmount(int val) {
-            completedObjectivesAmount = val;
+        public Builder withTeamId(Long val) {
+            this.teamId = val;
             return this;
         }
 
-        public Builder withSuccessfullyCompletedObjectivesAmount(int val) {
-            successfullyCompletedObjectivesAmount = val;
+        public Builder withQuarterId(Long val) {
+            this.quarterId = val;
             return this;
         }
 
-        public Builder withKeyResultAmount(int val) {
-            keyResultAmount = val;
+        public Builder withKeyResultType(String val) {
+            this.keyResultType = val;
             return this;
         }
 
-        public Builder withKeyResultsOrdinalAmount(int val) {
-            keyResultsOrdinalAmount = val;
+        public Builder withBaseline(Double val) {
+            this.baseline = val;
             return this;
         }
 
-        public Builder withKeyResultsMetricAmount(int val) {
-            keyResultsMetricAmount = val;
+        public Builder withCommitValue(Double val) {
+            this.commitValue = val;
             return this;
         }
 
-        public Builder withKeyResultsInTargetOrStretchAmount(int val) {
-            keyResultsInTargetOrStretchAmount = val;
+        public Builder withTargetValue(Double val) {
+            this.targetValue = val;
             return this;
         }
 
-        public Builder withKeyResultsInFailAmount(int val) {
-            keyResultsInFailAmount = val;
+        public Builder withStretchGoal(Double val) {
+            this.stretchGoal = val;
             return this;
         }
 
-        public Builder withKeyResultsInCommitAmount(int val) {
-            keyResultsInCommitAmount = val;
+        public Builder withValueMetric(Double val) {
+            this.valueMetric = val;
             return this;
         }
 
-        public Builder withKeyResultsInTargetAmount(int val) {
-            keyResultsInTargetAmount = val;
+        public Builder withZone(String val) {
+            this.zone = val;
             return this;
         }
 
-        public Builder withKeyResultsInStretchAmount(int val) {
-            keyResultsInStretchAmount = val;
+        public Builder withLatestCheckInDate(Instant val) {
+            this.latestCheckInDate = val;
             return this;
         }
 
@@ -182,34 +187,35 @@ public class EvaluationView {
         if (!(o instanceof EvaluationView that)) {
             return false;
         }
-        return getObjectiveAmount() == that.getObjectiveAmount()
-               && getCompletedObjectivesAmount() == that.getCompletedObjectivesAmount()
-               && getSuccessfullyCompletedObjectivesAmount() == that.getSuccessfullyCompletedObjectivesAmount()
-               && getKeyResultAmount() == that.getKeyResultAmount()
-               && getKeyResultsOrdinalAmount() == that.getKeyResultsOrdinalAmount()
-               && getKeyResultsMetricAmount() == that.getKeyResultsMetricAmount()
-               && getKeyResultsInTargetOrStretchAmount() == that.getKeyResultsInTargetOrStretchAmount()
-               && getKeyResultsInFailAmount() == that.getKeyResultsInFailAmount()
-               && getKeyResultsInCommitAmount() == that.getKeyResultsInCommitAmount()
-               && getKeyResultsInTargetAmount() == that.getKeyResultsInTargetAmount()
-               && getKeyResultsInStretchAmount() == that.getKeyResultsInStretchAmount()
-               && Objects.equals(getEvaluationViewId(), that.getEvaluationViewId());
+        return Objects.equals(getKeyResultId(), that.getKeyResultId())
+               && Objects.equals(getObjectiveId(), that.getObjectiveId())
+               && Objects.equals(getTeamId(), that.getTeamId())
+               && Objects.equals(getQuarterId(), that.getQuarterId())
+               && Objects.equals(getKeyResultType(), that.getKeyResultType())
+               && Objects.equals(getBaseline(), that.getBaseline())
+               && Objects.equals(getCommitValue(), that.getCommitValue())
+               && Objects.equals(getTargetValue(), that.getTargetValue())
+               && Objects.equals(getStretchGoal(), that.getStretchGoal())
+               && Objects.equals(getValueMetric(), that.getValueMetric())
+               && Objects.equals(getZone(), that.getZone())
+               && Objects.equals(getLatestCheckInDate(), that.getLatestCheckInDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(getEvaluationViewId(),
-                      getObjectiveAmount(),
-                      getCompletedObjectivesAmount(),
-                      getSuccessfullyCompletedObjectivesAmount(),
-                      getKeyResultAmount(),
-                      getKeyResultsOrdinalAmount(),
-                      getKeyResultsMetricAmount(),
-                      getKeyResultsInTargetOrStretchAmount(),
-                      getKeyResultsInFailAmount(),
-                      getKeyResultsInCommitAmount(),
-                      getKeyResultsInTargetAmount(),
-                      getKeyResultsInStretchAmount());
+        return Objects.hash(
+                getKeyResultId(),
+                getObjectiveId(),
+                getTeamId(),
+                getQuarterId(),
+                getKeyResultType(),
+                getBaseline(),
+                getCommitValue(),
+                getTargetValue(),
+                getStretchGoal(),
+                getValueMetric(),
+                getZone(),
+                getLatestCheckInDate()
+        );
     }
 }

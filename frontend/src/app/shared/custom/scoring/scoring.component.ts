@@ -122,7 +122,9 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Decide comparison direction based on goal orientation
       const increasing = keyResult.baseline < keyResult.stretchGoal;
-      const cmp = (a: number, b: number) => (increasing ? a < b : a > b);
+      const cmp = (a: number, b: number) => {
+        return increasing ? a < b : a > b;
+      };
 
       if (cmp(lastCheckIn, keyResult.commitValue)) {
         this.stretched = false;

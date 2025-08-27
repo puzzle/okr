@@ -3,6 +3,8 @@ package ch.puzzle.okr.mapper;
 import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import java.util.List;
+
+import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
 import org.springframework.stereotype.Component;
 
@@ -29,5 +31,9 @@ public class EvaluationViewMapper {
                 evaluationService.calculateKeyResultsInTargetSum(views),
                 evaluationService.calculateKeyResultsInStretchSum(views)
         );
+    }
+
+    public List<EvaluationViewId> fromDto(List<Long> teamIds, Long quarterId) {
+        return teamIds.stream().map(teamId -> new EvaluationViewId(teamId, quarterId)).toList();
     }
 }

@@ -38,21 +38,14 @@ public class EvaluationViewController {
             @ApiResponse(responseCode = "404", description = "The quarter or one of the teams were not found", content = @Content),
             @ApiResponse(responseCode = "401", description = "Not Authorized", content = @Content) })
     @GetMapping("")
-    public ResponseEntity<EvaluationDto> getEvaluation(
-            @RequestParam(name = "team") List<Long> teamIds,
-            @RequestParam(name = "quarter") Long quarterId) {
-
-        List<EvaluationViewId> ids = teamIds.stream()
-                                            .map(teamId -> EvaluationViewId.Builder.builder()
-                                                                                   .withTeamId(teamId)
-                                                                                   .withQuarterId(quarterId)
-                                                                                   .build())
-                                            .toList();
-
-        EvaluationDto dto = evaluationViewMapper.toDto(
-                evaluationViewBusinessService.findByIds(ids)
-        );
-
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<EvaluationDto> getEvaluation(@RequestParam(name = "team")
+                                                       @Parameter(description = "List of Team ids the statistics are requested for") List<Long> teamIds,
+                                                       @RequestParam(name = "quarter")
+                                                       @Parameter(description = "Quarter id the statistics are requested for ") Long quarterId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(evaluationViewMapper
+                              .toDto(evaluationViewBusinessService
+                                             .findByIds(evaluationViewMapper.fromDto(teamIds, quarterId))));
     }
 }

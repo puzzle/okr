@@ -158,41 +158,56 @@ function scoringValueFromPercentageOrdinal(percentage: number): ScoringValue {
 }
 
 function colorFromPercentageMetric(keyResult: CheckInValue) {
-  if (keyResult.lastCheckIn < keyResult.commitValue) {
+  const compare = createComparator(keyResult);
+
+  if (compare(keyResult.lastCheckIn, keyResult.commitValue)) {
     return 'rgb(186, 56, 56)';
-  } else if (keyResult.lastCheckIn < keyResult.targetValue) {
+  } else if (compare(keyResult.lastCheckIn, keyResult.targetValue)) {
     return 'rgb(255, 214, 0)';
-  } else if (keyResult.lastCheckIn < keyResult.stretchGoal) {
+  } else if (compare(keyResult.lastCheckIn, keyResult.stretchGoal)) {
     return 'rgb(30, 138, 41)';
-  } else if (keyResult.lastCheckIn >= keyResult.stretchGoal) {
+  } else {
     return 'rgba(0, 0, 0, 0)';
   }
 }
 
-function scoringValueFromPercentageMetric(keyResult: CheckInValue, percentage: number): ScoringValue {
-  if (keyResult.lastCheckIn < keyResult.commitValue) {
+function scoringValueFromPercentageMetric(keyResult: CheckInValue,
+  percentage: number): ScoringValue {
+  const compare = createComparator(keyResult);
+
+  if (compare(keyResult.lastCheckIn, keyResult.commitValue)) {
     return {
       failPercent: percentage * (100 / 30),
       commitPercent: -1,
       targetPercent: -1
     };
-  } else if (keyResult.lastCheckIn < keyResult.targetValue) {
+  } else if (compare(keyResult.lastCheckIn, keyResult.targetValue)) {
     return {
       failPercent: 100,
       commitPercent: (percentage - 30) * (100 / 40),
       targetPercent: -1
     };
-  } else if (keyResult.lastCheckIn < keyResult.stretchGoal) {
+  } else if (compare(keyResult.lastCheckIn, keyResult.stretchGoal)) {
     return {
       failPercent: 100,
       commitPercent: 100,
       targetPercent: (percentage - 70) * (100 / 30)
     };
-  } else if (keyResult.lastCheckIn >= keyResult.stretchGoal) {
+  } else {
     return {
       failPercent: 0,
       commitPercent: 0,
       targetPercent: 0
     };
   }
+}
+
+function createComparator(keyResult: CheckInValue) {
+  const increasing = keyResult.baseline <= keyResult.stretchGoal;
+  return (a: number, b: number) => {
+    if (increasing) {
+      return a < b;
+    }
+    return a > b;
+  };
 }

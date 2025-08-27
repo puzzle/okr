@@ -156,7 +156,7 @@ describe('okr check-in', () => {
       .setCheckInConfidence(5)
       .submit();
 
-    cy.contains('5%');
+    cy.contains('Aktuell: 5%');
     cy.contains('!');
     cy.contains('5/10');
     cy.contains('Letztes Check-in (' + getCurrentDate() + ')');

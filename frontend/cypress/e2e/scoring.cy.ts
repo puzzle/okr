@@ -49,6 +49,13 @@ describe('okr scoring', () => {
       -70,
       -100,
       -70
+    ],
+    [
+      0,
+      -30,
+      -70,
+      -100,
+      -29.9
     ]
   ].forEach(([
     baseline,

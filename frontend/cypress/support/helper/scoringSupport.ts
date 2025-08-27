@@ -204,5 +204,10 @@ function scoringValueFromPercentageMetric(keyResult: CheckInValue,
 
 function createComparator(keyResult: CheckInValue) {
   const increasing = keyResult.baseline <= keyResult.stretchGoal;
-  return (a: number, b: number) => increasing ? a < b : a > b;
+  return (a: number, b: number) => {
+    if (increasing) {
+      return a < b;
+    }
+    return a > b;
+  };
 }

@@ -18,6 +18,7 @@ public class EvaluationView {
     private Long teamId;
     private Long quarterId;
 
+    private String objectiveState;
     private String keyResultType;
     private Double baseline;
     private Double commitValue;
@@ -36,6 +37,7 @@ public class EvaluationView {
         this.objectiveId = builder.objectiveId;
         this.teamId = builder.teamId;
         this.quarterId = builder.quarterId;
+        this.objectiveState = builder.objectiveState;
         this.keyResultType = builder.keyResultType;
         this.baseline = builder.baseline;
         this.commitValue = builder.commitValue;
@@ -60,6 +62,10 @@ public class EvaluationView {
 
     public Long getQuarterId() {
         return quarterId;
+    }
+
+    public String getObjectiveState() {
+        return objectiveState;
     }
 
     public String getKeyResultType() {
@@ -100,6 +106,7 @@ public class EvaluationView {
         private Long teamId;
         private Long quarterId;
 
+        private String objectiveState;
         private String keyResultType;
         private Double baseline;
         private Double commitValue;
@@ -134,6 +141,11 @@ public class EvaluationView {
 
         public Builder withQuarterId(Long val) {
             this.quarterId = val;
+            return this;
+        }
+
+        public Builder withObjectiveState(String val) {
+            this.objectiveState = val;
             return this;
         }
 
@@ -191,6 +203,7 @@ public class EvaluationView {
                && Objects.equals(getObjectiveId(), that.getObjectiveId())
                && Objects.equals(getTeamId(), that.getTeamId())
                && Objects.equals(getQuarterId(), that.getQuarterId())
+               && Objects.equals(getObjectiveState(), that.getObjectiveState())
                && Objects.equals(getKeyResultType(), that.getKeyResultType())
                && Objects.equals(getBaseline(), that.getBaseline())
                && Objects.equals(getCommitValue(), that.getCommitValue())
@@ -208,6 +221,7 @@ public class EvaluationView {
                 getObjectiveId(),
                 getTeamId(),
                 getQuarterId(),
+                getObjectiveState(),
                 getKeyResultType(),
                 getBaseline(),
                 getCommitValue(),

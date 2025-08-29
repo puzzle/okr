@@ -1,11 +1,10 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.dto.EvaluationDto;
-import ch.puzzle.okr.mapper.EvaluationViewMapper;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
@@ -31,19 +30,11 @@ public class EvaluationViewBusinessService {
     }
 
     public int calculateCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views.stream()
-                          .filter(v -> v.getZone() != null)
-                          .map(EvaluationView::getObjectiveId)
-                          .distinct()
-                          .count();
+        return (int) views.stream().filter(Predicate.not(v -> "ONGOING".equals(v.getObjectiveState()))).count();
     }
 
     public int calculateSuccessfullyCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views.stream()
-                          .map(EvaluationView::getObjectiveId)
-                          .distinct()
-                          .filter(id -> isObjectiveSuccessful(id, views))
-                          .count();
+        return (int) views.stream().filter(v -> "SUCCESSFUL".equals(v.getObjectiveState())).count();
     }
 
     public int calculateKeyResultSum(List<EvaluationView> views) {
@@ -80,13 +71,6 @@ public class EvaluationViewBusinessService {
 
     public int calculateKeyResultsInStretchSum(List<EvaluationView> views) {
         return (int) views.stream().filter(this::isKeyResultInStretch).count();
-    }
-
-    private boolean isObjectiveSuccessful(Long objectiveId, List<EvaluationView> views) {
-        List<EvaluationView> relatedKRs = views.stream()
-                                               .filter(v -> v.getObjectiveId().equals(objectiveId))
-                                               .toList();
-        return relatedKRs.stream().allMatch(this::isKeyResultInTargetOrStretch);
     }
 
     private boolean isKeyResultInTargetOrStretch(EvaluationView v) {

@@ -5,6 +5,7 @@ SELECT
     o.id              AS objective_id,
     o.team_id,
     o.quarter_id,
+    o.state           AS objective_state,
     kr.id             AS key_result_id,
     kr.key_result_type,
     kr.baseline,

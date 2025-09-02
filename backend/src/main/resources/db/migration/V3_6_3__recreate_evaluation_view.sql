@@ -2,6 +2,7 @@ DROP VIEW IF EXISTS EVALUATION_VIEW;
 
 CREATE VIEW EVALUATION_VIEW AS
 SELECT
+    row_number() OVER () AS row_id,
     o.id              AS objective_id,
     o.team_id,
     o.quarter_id,

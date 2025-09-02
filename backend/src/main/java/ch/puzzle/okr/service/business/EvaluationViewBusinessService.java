@@ -6,23 +6,20 @@ import ch.puzzle.okr.repository.EvaluationViewRepository;
 import java.util.List;
 import java.util.function.Predicate;
 
+import ch.puzzle.okr.util.TeamQuarterFilter;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EvaluationViewBusinessService {
 
-    private final EvaluationViewRepository repository;
+    private final EvaluationViewRepository evaluationViewRepository;
 
-    public EvaluationViewBusinessService(EvaluationViewRepository repository) {
-        this.repository = repository;
+    public EvaluationViewBusinessService(EvaluationViewRepository evaluationViewRepository) {
+        this.evaluationViewRepository = evaluationViewRepository;
     }
 
-    public List<EvaluationView> findByIds(List<EvaluationViewId> ids) {
-        return ids.stream()
-                  .flatMap(id -> repository
-                          .findByTeamIdAndQuarterId(id.getTeamId(), id.getQuarterId())
-                          .stream())
-                  .toList();
+    public List<EvaluationView> findByFilter(TeamQuarterFilter filter) {
+        return evaluationViewRepository.findByTeamIdInAndQuarterId(filter.teamIds(), filter.quarterId());
     }
 
     public int calculateObjectiveSum(List<EvaluationView> views) {

@@ -12,8 +12,9 @@ import java.util.Objects;
 public class EvaluationView {
 
     @Id
-    private Long keyResultId;
+    private Long rowId;
 
+    private Long keyResultId;
     private Long objectiveId;
     private Long teamId;
     private Long quarterId;
@@ -33,6 +34,7 @@ public class EvaluationView {
     }
 
     private EvaluationView(Builder builder) {
+        this.rowId = builder.rowId;
         this.keyResultId = builder.keyResultId;
         this.objectiveId = builder.objectiveId;
         this.teamId = builder.teamId;
@@ -46,6 +48,10 @@ public class EvaluationView {
         this.valueMetric = builder.valueMetric;
         this.zone = builder.zone;
         this.latestCheckInDate = builder.latestCheckInDate;
+    }
+
+    public Long getRowId() {
+        return rowId;
     }
 
     public Long getKeyResultId() {
@@ -101,6 +107,7 @@ public class EvaluationView {
     }
 
     public static final class Builder {
+        private Long rowId;
         private Long keyResultId;
         private Long objectiveId;
         private Long teamId;
@@ -122,6 +129,11 @@ public class EvaluationView {
 
         public static Builder builder() {
             return new Builder();
+        }
+
+        public Builder withRowId(Long val) {
+            this.rowId = val;
+            return this;
         }
 
         public Builder withKeyResultId(Long val) {
@@ -199,24 +211,26 @@ public class EvaluationView {
         if (!(o instanceof EvaluationView that)) {
             return false;
         }
-        return Objects.equals(getKeyResultId(), that.getKeyResultId())
-               && Objects.equals(getObjectiveId(), that.getObjectiveId())
-               && Objects.equals(getTeamId(), that.getTeamId())
-               && Objects.equals(getQuarterId(), that.getQuarterId())
-               && Objects.equals(getObjectiveState(), that.getObjectiveState())
-               && Objects.equals(getKeyResultType(), that.getKeyResultType())
-               && Objects.equals(getBaseline(), that.getBaseline())
-               && Objects.equals(getCommitValue(), that.getCommitValue())
-               && Objects.equals(getTargetValue(), that.getTargetValue())
-               && Objects.equals(getStretchGoal(), that.getStretchGoal())
-               && Objects.equals(getValueMetric(), that.getValueMetric())
-               && Objects.equals(getZone(), that.getZone())
-               && Objects.equals(getLatestCheckInDate(), that.getLatestCheckInDate());
+        return Objects.equals(getRowId(), that.getRowId())
+                && Objects.equals(getKeyResultId(), that.getKeyResultId())
+                && Objects.equals(getObjectiveId(), that.getObjectiveId())
+                && Objects.equals(getTeamId(), that.getTeamId())
+                && Objects.equals(getQuarterId(), that.getQuarterId())
+                && Objects.equals(getObjectiveState(), that.getObjectiveState())
+                && Objects.equals(getKeyResultType(), that.getKeyResultType())
+                && Objects.equals(getBaseline(), that.getBaseline())
+                && Objects.equals(getCommitValue(), that.getCommitValue())
+                && Objects.equals(getTargetValue(), that.getTargetValue())
+                && Objects.equals(getStretchGoal(), that.getStretchGoal())
+                && Objects.equals(getValueMetric(), that.getValueMetric())
+                && Objects.equals(getZone(), that.getZone())
+                && Objects.equals(getLatestCheckInDate(), that.getLatestCheckInDate());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
+                getRowId(),
                 getKeyResultId(),
                 getObjectiveId(),
                 getTeamId(),

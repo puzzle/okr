@@ -6,6 +6,7 @@ import java.util.List;
 
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
+import ch.puzzle.okr.util.TeamQuarterFilter;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -33,7 +34,7 @@ public class EvaluationViewMapper {
         );
     }
 
-    public List<EvaluationViewId> fromDto(List<Long> teamIds, Long quarterId) {
-        return teamIds.stream().map(teamId -> new EvaluationViewId(teamId, quarterId)).toList();
+    public TeamQuarterFilter fromDto(List<Long> teamIds, Long quarterId) {
+        return new TeamQuarterFilter(teamIds, quarterId);
     }
 }

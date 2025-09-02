@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface EvaluationViewRepository extends CrudRepository<EvaluationView, EvaluationViewId> {
 
-    List<EvaluationView> findByTeamIdAndQuarterId(Long teamId, Long quarterId);
+    List<EvaluationView> findByTeamIdInAndQuarterId(List<Long> teamIds, Long quarterId);
 }

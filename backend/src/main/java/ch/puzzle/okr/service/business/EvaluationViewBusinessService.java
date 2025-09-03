@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import ch.puzzle.okr.util.TeamQuarterFilter;
@@ -27,15 +28,28 @@ public class EvaluationViewBusinessService {
     }
 
     public int calculateCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(Predicate.not(v -> "ONGOING".equals(v.getObjectiveState()))).count();
+        return (int) views.stream().
+                filter(Predicate.not(v -> "ONGOING".equals(v.getObjectiveState())))
+                .map(EvaluationView::getObjectiveId)
+                .distinct()
+                .count();
     }
 
     public int calculateSuccessfullyCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(v -> "SUCCESSFUL".equals(v.getObjectiveState())).count();
+        return (int) views.stream()
+                .filter(v -> "SUCCESSFUL".equals(v.getObjectiveState()))
+                .map(EvaluationView::getObjectiveId)
+                .distinct()
+                .count();
     }
 
+
     public int calculateKeyResultSum(List<EvaluationView> views) {
-        return views.size();
+        return (int) views.stream()
+                .map(EvaluationView::getKeyResultId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .count();
     }
 
     public int calculateKeyResultsOrdinalSum(List<EvaluationView> views) {

@@ -17,8 +17,8 @@ SELECT
     ci.zone,
     ci.modified_on    AS latest_check_in_date
 FROM objective o
-         INNER JOIN key_result kr
-                    ON kr.objective_id = o.id
+         LEFT JOIN key_result kr
+                   ON kr.objective_id = o.id
          LEFT JOIN LATERAL (
     SELECT ci2.*
     FROM check_in ci2

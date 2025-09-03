@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
+import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
 import ch.puzzle.okr.util.TeamQuarterFilter;
 import java.util.List;
 import java.util.Objects;
@@ -11,14 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EvaluationViewBusinessService {
 
-    private final EvaluationViewRepository evaluationViewRepository;
+    private final EvaluationViewPersistenceService evaluationViewPersistenceService;
 
-    public EvaluationViewBusinessService(EvaluationViewRepository evaluationViewRepository) {
-        this.evaluationViewRepository = evaluationViewRepository;
+    public EvaluationViewBusinessService(EvaluationViewPersistenceService evaluationViewPersistenceService) {
+        this.evaluationViewPersistenceService = evaluationViewPersistenceService;
     }
 
     public List<EvaluationView> findByIds(TeamQuarterFilter filter) {
-        return evaluationViewRepository.findByTeamIdInAndQuarterId(filter.teamIds(), filter.quarterId());
+        return evaluationViewPersistenceService.findByIds(filter);
     }
 
     public int calculateObjectiveSum(List<EvaluationView> views) {

@@ -17,7 +17,7 @@ public class EvaluationViewBusinessService {
         this.evaluationViewRepository = evaluationViewRepository;
     }
 
-    public List<EvaluationView> findByFilter(TeamQuarterFilter filter) {
+    public List<EvaluationView> findByIds(TeamQuarterFilter filter) {
         return evaluationViewRepository.findByTeamIdInAndQuarterId(filter.teamIds(), filter.quarterId());
     }
 

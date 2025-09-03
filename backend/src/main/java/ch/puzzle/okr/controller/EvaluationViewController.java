@@ -45,6 +45,6 @@ public class EvaluationViewController {
                 .status(HttpStatus.OK)
                 .body(evaluationViewMapper
                         .toDto(evaluationViewBusinessService
-                                .findByFilter(evaluationViewMapper.fromDto(teamIds, quarterId))));
+                                .findByIds(evaluationViewMapper.fromDto(teamIds, quarterId))));
     }
 }

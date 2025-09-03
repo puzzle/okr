@@ -4,10 +4,11 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
 import ch.puzzle.okr.service.validation.EvaluationViewValidationService;
 import java.util.List;
+
+import ch.puzzle.okr.util.TeamQuarterFilter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +28,11 @@ class EvaluationViewBusinessServiceTest {
     @DisplayName("Should validate method calls on get by ids")
     @Test
     void shouldGetAction() {
-        List<EvaluationViewId> ids = List.of(new EvaluationViewId(1L, 1L), new EvaluationViewId(2L, 1L));
+
+        List<Long> teamIds = List.of(1L, 2L);
+        Long quarterId = 1L;
+
+        TeamQuarterFilter ids = new TeamQuarterFilter(teamIds, quarterId);
         evaluationViewBusinessService.findByIds(ids);
         verify(evaluationViewPersistenceService, times(1)).findByIds(anyList());
         verify(evaluationViewValidationService, times(1)).validateOnGet(anyList());

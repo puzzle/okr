@@ -2,7 +2,6 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.mapper.EvaluationViewMapper;
-import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,13 +38,13 @@ public class EvaluationViewController {
             @ApiResponse(responseCode = "401", description = "Not Authorized", content = @Content) })
     @GetMapping("")
     public ResponseEntity<EvaluationDto> getEvaluation(@RequestParam(name = "team")
-                                                       @Parameter(description = "List of Team ids the statistics are requested for") List<Long> teamIds,
+    @Parameter(description = "List of Team ids the statistics are requested for") List<Long> teamIds,
                                                        @RequestParam(name = "quarter")
                                                        @Parameter(description = "Quarter id the statistics are requested for ") Long quarterId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(evaluationViewMapper
-                              .toDto(evaluationViewBusinessService
-                                             .findByFilter(evaluationViewMapper.fromDto(teamIds, quarterId))));
+                        .toDto(evaluationViewBusinessService
+                                .findByFilter(evaluationViewMapper.fromDto(teamIds, quarterId))));
     }
 }

@@ -1,13 +1,11 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.evaluation.EvaluationView;
-import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
+import ch.puzzle.okr.util.TeamQuarterFilter;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
-
-import ch.puzzle.okr.util.TeamQuarterFilter;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,40 +26,33 @@ public class EvaluationViewBusinessService {
     }
 
     public int calculateCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views.stream().
-                filter(Predicate.not(v -> "ONGOING".equals(v.getObjectiveState())))
+        return (int) views
+                .stream()
+                .filter(Predicate.not(v -> "ONGOING".equals(v.getObjectiveState())))
                 .map(EvaluationView::getObjectiveId)
                 .distinct()
                 .count();
     }
 
     public int calculateSuccessfullyCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views.stream()
+        return (int) views
+                .stream()
                 .filter(v -> "SUCCESSFUL".equals(v.getObjectiveState()))
                 .map(EvaluationView::getObjectiveId)
                 .distinct()
                 .count();
     }
 
-
     public int calculateKeyResultSum(List<EvaluationView> views) {
-        return (int) views.stream()
-                .map(EvaluationView::getKeyResultId)
-                .filter(Objects::nonNull)
-                .distinct()
-                .count();
+        return (int) views.stream().map(EvaluationView::getKeyResultId).filter(Objects::nonNull).distinct().count();
     }
 
     public int calculateKeyResultsOrdinalSum(List<EvaluationView> views) {
-        return (int) views.stream()
-                          .filter(v -> "ordinal".equalsIgnoreCase(v.getKeyResultType()))
-                          .count();
+        return (int) views.stream().filter(v -> "ordinal".equalsIgnoreCase(v.getKeyResultType())).count();
     }
 
     public int calculateKeyResultsMetricSum(List<EvaluationView> views) {
-        return (int) views.stream()
-                          .filter(v -> "metric".equalsIgnoreCase(v.getKeyResultType()))
-                          .count();
+        return (int) views.stream().filter(v -> "metric".equalsIgnoreCase(v.getKeyResultType())).count();
     }
 
     public int calculateKeyResultsInTargetOrStretchSum(List<EvaluationView> views) {

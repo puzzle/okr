@@ -2,10 +2,9 @@ package ch.puzzle.okr.models.evaluation;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import org.hibernate.annotations.Immutable;
-
 import java.time.Instant;
 import java.util.Objects;
+import org.hibernate.annotations.Immutable;
 
 @Entity
 @Immutable
@@ -211,39 +210,35 @@ public class EvaluationView {
         if (!(o instanceof EvaluationView that)) {
             return false;
         }
-        return Objects.equals(getRowId(), that.getRowId())
-                && Objects.equals(getKeyResultId(), that.getKeyResultId())
-                && Objects.equals(getObjectiveId(), that.getObjectiveId())
-                && Objects.equals(getTeamId(), that.getTeamId())
-                && Objects.equals(getQuarterId(), that.getQuarterId())
-                && Objects.equals(getObjectiveState(), that.getObjectiveState())
-                && Objects.equals(getKeyResultType(), that.getKeyResultType())
-                && Objects.equals(getBaseline(), that.getBaseline())
-                && Objects.equals(getCommitValue(), that.getCommitValue())
-                && Objects.equals(getTargetValue(), that.getTargetValue())
-                && Objects.equals(getStretchGoal(), that.getStretchGoal())
-                && Objects.equals(getValueMetric(), that.getValueMetric())
-                && Objects.equals(getZone(), that.getZone())
-                && Objects.equals(getLatestCheckInDate(), that.getLatestCheckInDate());
+        return Objects.equals(getRowId(), that.getRowId()) && Objects.equals(getKeyResultId(), that.getKeyResultId())
+               && Objects.equals(getObjectiveId(), that.getObjectiveId())
+               && Objects.equals(getTeamId(), that.getTeamId()) && Objects.equals(getQuarterId(), that.getQuarterId())
+               && Objects.equals(getObjectiveState(), that.getObjectiveState())
+               && Objects.equals(getKeyResultType(), that.getKeyResultType())
+               && Objects.equals(getBaseline(), that.getBaseline())
+               && Objects.equals(getCommitValue(), that.getCommitValue())
+               && Objects.equals(getTargetValue(), that.getTargetValue())
+               && Objects.equals(getStretchGoal(), that.getStretchGoal())
+               && Objects.equals(getValueMetric(), that.getValueMetric()) && Objects.equals(getZone(), that.getZone())
+               && Objects.equals(getLatestCheckInDate(), that.getLatestCheckInDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                getRowId(),
-                getKeyResultId(),
-                getObjectiveId(),
-                getTeamId(),
-                getQuarterId(),
-                getObjectiveState(),
-                getKeyResultType(),
-                getBaseline(),
-                getCommitValue(),
-                getTargetValue(),
-                getStretchGoal(),
-                getValueMetric(),
-                getZone(),
-                getLatestCheckInDate()
-        );
+        return Objects
+                .hash(getRowId(),
+                      getKeyResultId(),
+                      getObjectiveId(),
+                      getTeamId(),
+                      getQuarterId(),
+                      getObjectiveState(),
+                      getKeyResultType(),
+                      getBaseline(),
+                      getCommitValue(),
+                      getTargetValue(),
+                      getStretchGoal(),
+                      getValueMetric(),
+                      getZone(),
+                      getLatestCheckInDate());
     }
 }

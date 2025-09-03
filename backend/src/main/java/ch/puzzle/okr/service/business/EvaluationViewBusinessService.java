@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
+import ch.puzzle.okr.service.validation.EvaluationViewValidationService;
 import ch.puzzle.okr.util.TeamQuarterFilter;
 import java.util.List;
 import java.util.Objects;
@@ -13,12 +14,15 @@ import org.springframework.stereotype.Service;
 public class EvaluationViewBusinessService {
 
     private final EvaluationViewPersistenceService evaluationViewPersistenceService;
+    private final EvaluationViewValidationService evaluationViewValidationService;
 
-    public EvaluationViewBusinessService(EvaluationViewPersistenceService evaluationViewPersistenceService) {
+    public EvaluationViewBusinessService(EvaluationViewPersistenceService evaluationViewPersistenceService, EvaluationViewValidationService evaluationViewValidationService) {
         this.evaluationViewPersistenceService = evaluationViewPersistenceService;
+        this.evaluationViewValidationService = evaluationViewValidationService;
     }
 
     public List<EvaluationView> findByIds(TeamQuarterFilter filter) {
+        evaluationViewValidationService.validateOnGet(filter);
         return evaluationViewPersistenceService.findByIds(filter);
     }
 

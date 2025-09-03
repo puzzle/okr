@@ -25,7 +25,7 @@ class EvaluationViewBusinessServiceTest {
     @InjectMocks
     private EvaluationViewBusinessService evaluationViewBusinessService;
 
-    @DisplayName("Should validate method calls on get by ids")
+    @DisplayName("Should validate method call on findByIds")
     @Test
     void shouldGetAction() {
 
@@ -33,8 +33,9 @@ class EvaluationViewBusinessServiceTest {
         Long quarterId = 1L;
 
         TeamQuarterFilter ids = new TeamQuarterFilter(teamIds, quarterId);
+
         evaluationViewBusinessService.findByIds(ids);
-        verify(evaluationViewPersistenceService, times(1)).findByIds(anyList());
-        verify(evaluationViewValidationService, times(1)).validateOnGet(anyList());
+        verify(evaluationViewPersistenceService, times(1)).findByIds(ids);
+        verify(evaluationViewValidationService, times(1)).validateOnGet(ids);
     }
 }

@@ -7,10 +7,13 @@ import ch.puzzle.okr.util.TeamQuarterFilter;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class EvaluationViewTestHelper {
     private EvaluationViewTestHelper() {
     }
+
+    private static final AtomicLong rowIdCounter = new AtomicLong(1);
 
     public static List<EvaluationViewId> getEvaluationViewIds(List<Long> teamIds, Long quarterId) {
         return teamIds.stream().map(teamId -> new EvaluationViewId(teamId, quarterId)).toList();
@@ -25,7 +28,7 @@ public class EvaluationViewTestHelper {
     public static EvaluationView createEvaluationView(Long quarterId, Long teamId) {
         return EvaluationView.Builder
                 .builder()
-                .withRowId(1L)
+                .withRowId(rowIdCounter.getAndIncrement())
                 .withTeamId(teamId)
                 .withQuarterId(quarterId)
                 .build();

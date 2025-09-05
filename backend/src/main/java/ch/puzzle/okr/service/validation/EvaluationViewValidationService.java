@@ -6,6 +6,8 @@ import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
 import java.util.List;
+
+import ch.puzzle.okr.util.TeamQuarterFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +27,12 @@ public class EvaluationViewValidationService
         this.teamValidationService = teamValidationService;
     }
 
-    public void validateOnGet(List<EvaluationViewId> ids) {
-        if (ids.isEmpty()) {
+    public void validateOnGet(TeamQuarterFilter filter) {
+        if (filter.quarterId() == null || filter.teamIds().isEmpty()) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "Es muss mindestens 1 Team angewählt werden");
         }
-        ids.forEach(id -> teamValidationService.validateOnGet(id.getTeamId()));
-        quarterValidationService.validateOnGet(ids.getLast().getQuarterId());
+        filter.teamIds().forEach(teamValidationService::validateOnGet);
+        quarterValidationService.validateOnGet(filter.quarterId());
     }
 
     @Override

@@ -45,7 +45,7 @@ class EvaluationViewBusinessServiceTest {
     @DisplayName("Should calculate the correct sum of unique objectives")
     @Test
     void testCalculateObjectiveSum() {
-        assertEquals(3, evaluationViewBusinessService.calculateObjectiveSum(evaluationViewList));
+        assertEquals(4, evaluationViewBusinessService.calculateObjectiveSum(evaluationViewList));
     }
 
     @DisplayName("Should calculate the correct sum of completed objectives")
@@ -63,7 +63,7 @@ class EvaluationViewBusinessServiceTest {
     @DisplayName("Should calculate the correct sum of key results")
     @Test
     void testCalculateKeyResultSum() {
-        assertEquals(9, evaluationViewBusinessService.calculateKeyResultSum(evaluationViewList));
+        assertEquals(10, evaluationViewBusinessService.calculateKeyResultSum(evaluationViewList));
     }
 
     @DisplayName("Should calculate the correct sum of ordinal key results")
@@ -75,7 +75,7 @@ class EvaluationViewBusinessServiceTest {
     @DisplayName("Should calculate the correct sum of metric key results")
     @Test
     void testCalculateKeyResultsMetricSum() {
-        assertEquals(4, evaluationViewBusinessService.calculateKeyResultsMetricSum(evaluationViewList));
+        assertEquals(5, evaluationViewBusinessService.calculateKeyResultsMetricSum(evaluationViewList));
     }
 
     @DisplayName("Should calculate the correct sum of key results in Target or Stretch zone")

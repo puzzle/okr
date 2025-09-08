@@ -30,13 +30,13 @@
         *ngIf="statistics.objectiveAmount ==0 && statistics.keyResultAmount ==0"
         [attr.data-testId]="'no-data-banner'"
       >
-        Für diese Filterkombination sind keine Objectives bzw. KeyResults vorhanden.
+        Für dieses Team ist im ausgewählten Zeitraum kein Objective vorhanden.
       </div>
       <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3  g-4">
         <app-statistics-card [title]="'Objectives und Key Results'" [attr.data-testId]="'objectives-key-results'">
           <app-statistics-information [topContent]="'Objectives'"> {{ statistics.objectiveAmount }}
           </app-statistics-information>
-          <app-statistics-information [topContent]="'KeyResults'">{{ statistics.keyResultAmount }}
+          <app-statistics-information [topContent]="'Key Results'">{{ statistics.keyResultAmount }}
           </app-statistics-information>
           <app-statistics-information [topContent]="'KR\'s/Objective'">
             {{ krObjectiveRelation(statistics) | number : '1.0-1' }}
@@ -65,7 +65,8 @@
 
         <app-statistics-card
           [attr.data-testId]="'kr-min-target'"
-          [title]="'Key Results mit min. Target Zone'"
+          [title]="'Key Results mit min. Target Zone erreicht'"
+          [subtitle]="'Alle Key Results berücksichtigt'"
           [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount"
         >
           <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
@@ -80,17 +81,18 @@
           [barProgress]="relation.metric"
           [barColorPreset]="'relation'"
         >
-          <app-statistics-information [topContent]="'metrisch'" [bottomContent]="relation.metric | percent : '1.0-1'">
+          <app-statistics-information [topContent]="'Metrisch'" [bottomContent]="relation.metric | percent : '1.0-1'">
             {{ statistics.keyResultsMetricAmount }}
           </app-statistics-information>
-          <app-statistics-information [topContent]="'ordinal'" [bottomContent]="relation.ordinal | percent : '1.0-1'">
+          <app-statistics-information [topContent]="'Ordinal'" [bottomContent]="relation.ordinal | percent : '1.0-1'">
             {{ statistics.keyResultsOrdinalAmount }}
           </app-statistics-information>
         </app-statistics-card>
 
         <app-statistics-card
           [attr.data-testId]="'kr-progress-relation'"
-          [title]="'Verteilung der Zonen in den Key Results'"
+          [title]="'Verteilung der Key Results'"
+          [subtitle]="'Nur eingecheckte Key Results berücksichtigt'"
           *ngIf="krProgressRelation(statistics) as relation"
         >
           <app-statistics-information

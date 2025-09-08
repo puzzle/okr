@@ -5,3 +5,13 @@
   border: #5d6974 1px solid;
   border-radius: 4px;
 }
+
+.statistic-card h3 {
+  margin: 0;
+  padding: 0;
+  line-height: 0 !important;
+}
+
+.statistic-card h3:empty {
+  display: none;
+}

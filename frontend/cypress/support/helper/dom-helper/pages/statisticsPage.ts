@@ -28,17 +28,17 @@ export default class StatisticsPage extends Page {
       .should('exist');
     cy.contains('Anzahl erreichter Objectives')
       .should('exist');
-    cy.contains('Key Results mit min. Target Zone')
+    cy.contains('Key Results mit min. Target Zone erreicht')
       .should('exist');
     cy.contains('Verhältnis metrische vs. ordinale Key Results')
       .should('exist');
-    cy.contains('Verteilung der Zonen in den Key Results')
+    cy.contains('Verteilung der Key Results')
       .should('exist');
   }
 
   validateKrsObjectives(objective: number, keyResult: number, relation: number) {
     this.verifyStatisticsField('objectives-key-results', objective, 'Objectives');
-    this.verifyStatisticsField('objectives-key-results', keyResult, 'KeyResults');
+    this.verifyStatisticsField('objectives-key-results', keyResult, 'Key Results');
     this.verifyStatisticsField('objectives-key-results', relation, 'KR\'s/Objective');
   }
 
@@ -63,8 +63,8 @@ export default class StatisticsPage extends Page {
   validateKrTypeRelation(
     valueMetric: number, percentageMetric: string, valueOrdinal: number, percentageOrdinal: string, barProgress: number
   ) {
-    this.verifyStatisticsField('kr-type-relation', valueMetric, 'metrisch');
-    this.verifyStatisticsField('kr-type-relation', valueOrdinal, 'ordinal');
+    this.verifyStatisticsField('kr-type-relation', valueMetric, 'Metrisch');
+    this.verifyStatisticsField('kr-type-relation', valueOrdinal, 'Ordinal');
     this.verifyStatisticsFieldSubTitle('kr-type-relation', percentageMetric);
     this.verifyStatisticsFieldSubTitle('kr-type-relation', percentageOrdinal);
     this.verifyStatisticsCardBar('kr-type-relation', barProgress);

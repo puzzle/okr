@@ -9,6 +9,8 @@ import { Component, Input } from '@angular/core';
 export class StatisticsCardComponent {
   @Input() title = '';
 
+  @Input() subtitle = '';
+
   @Input() barProgress?: number;
 
   @Input() barColorPreset?: string;

@@ -8,6 +8,7 @@ import ch.puzzle.okr.service.validation.EvaluationViewValidationService;
 import ch.puzzle.okr.util.TeamQuarterFilter;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import org.springframework.stereotype.Service;
 
@@ -87,8 +88,9 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.TARGET || zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            double progress = calculateProgressRatio(v);
-            return progress >= 0.7;
+            return calculateProgressRatio(v)
+                    .map(progress -> progress >= 0.7)
+                    .orElse(false);
         }
         return false;
     }
@@ -98,8 +100,9 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.FAIL;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            double progress = calculateProgressRatio(v);
-            return progress < 0.3;
+            return calculateProgressRatio(v)
+                    .map(progress -> progress < 0.3)
+                    .orElse(false);
         }
         return false;
     }
@@ -109,8 +112,9 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.COMMIT;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            double progress = calculateProgressRatio(v);
-            return progress >= 0.3 && progress < 0.7;
+            return calculateProgressRatio(v)
+                    .map(progress -> progress >= 0.3 && progress < 0.7)
+                    .orElse(false);
         }
         return false;
     }
@@ -120,8 +124,9 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.TARGET;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            double progress = calculateProgressRatio(v);
-            return progress >= 0.7 && progress < 1.0;
+            return calculateProgressRatio(v)
+                    .map(progress -> progress >= 0.7 && progress < 1.0)
+                    .orElse(false);
         }
         return false;
     }
@@ -131,20 +136,21 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            double progress = calculateProgressRatio(v);
-            return progress >= 1.0;
+            return calculateProgressRatio(v)
+                    .map(progress -> progress >= 1.0)
+                    .orElse(false);
         }
         return false;
     }
 
-    private Double calculateProgressRatio(EvaluationView v) {
+    private Optional<Double> calculateProgressRatio(EvaluationView v) {
         if (v.getBaseline() == null || v.getStretchGoal() == null || v.getValueMetric() == null) {
-            return 0D;
+            return Optional.empty();
         }
         double denominator = v.getStretchGoal() - v.getBaseline();
         if (denominator == 0) {
-            return 0D;
+            return Optional.empty();
         }
-        return (v.getValueMetric() - v.getBaseline()) / denominator;
+        return Optional.of((v.getValueMetric() - v.getBaseline()) / denominator);
     }
 }

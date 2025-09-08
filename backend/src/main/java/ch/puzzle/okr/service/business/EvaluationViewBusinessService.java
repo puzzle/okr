@@ -28,12 +28,12 @@ public class EvaluationViewBusinessService {
         return evaluationViewPersistenceService.findByIds(filter);
     }
 
-    public int calculateObjectiveSum(List<EvaluationView> views) {
-        return (int) views.stream().map(EvaluationView::getObjectiveId).distinct().count();
+    public long calculateObjectiveSum(List<EvaluationView> views) {
+        return views.stream().map(EvaluationView::getObjectiveId).distinct().count();
     }
 
-    public int calculateCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views
+    public long calculateCompletedObjectivesSum(List<EvaluationView> views) {
+        return views
                 .stream()
                 .filter(Predicate.not(v -> State.ONGOING.equals(v.getObjectiveState())))
                 .map(EvaluationView::getObjectiveId)
@@ -41,8 +41,8 @@ public class EvaluationViewBusinessService {
                 .count();
     }
 
-    public int calculateSuccessfullyCompletedObjectivesSum(List<EvaluationView> views) {
-        return (int) views
+    public long calculateSuccessfullyCompletedObjectivesSum(List<EvaluationView> views) {
+        return views
                 .stream()
                 .filter(v -> State.SUCCESSFUL.equals(v.getObjectiveState()))
                 .map(EvaluationView::getObjectiveId)
@@ -50,36 +50,36 @@ public class EvaluationViewBusinessService {
                 .count();
     }
 
-    public int calculateKeyResultSum(List<EvaluationView> views) {
-        return (int) views.stream().map(EvaluationView::getKeyResultId).filter(Objects::nonNull).distinct().count();
+    public long calculateKeyResultSum(List<EvaluationView> views) {
+        return views.stream().map(EvaluationView::getKeyResultId).filter(Objects::nonNull).distinct().count();
     }
 
-    public int calculateKeyResultsOrdinalSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(v -> "ordinal".equalsIgnoreCase(v.getKeyResultType())).count();
+    public long calculateKeyResultsOrdinalSum(List<EvaluationView> views) {
+        return views.stream().filter(v -> "ordinal".equalsIgnoreCase(v.getKeyResultType())).count();
     }
 
-    public int calculateKeyResultsMetricSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(v -> "metric".equalsIgnoreCase(v.getKeyResultType())).count();
+    public long calculateKeyResultsMetricSum(List<EvaluationView> views) {
+        return views.stream().filter(v -> "metric".equalsIgnoreCase(v.getKeyResultType())).count();
     }
 
-    public int calculateKeyResultsInTargetOrStretchSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(this::isKeyResultInTargetOrStretch).count();
+    public long calculateKeyResultsInTargetOrStretchSum(List<EvaluationView> views) {
+        return views.stream().filter(this::isKeyResultInTargetOrStretch).count();
     }
 
-    public int calculateKeyResultsInFailSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(this::isKeyResultInFail).count();
+    public long calculateKeyResultsInFailSum(List<EvaluationView> views) {
+        return views.stream().filter(this::isKeyResultInFail).count();
     }
 
-    public int calculateKeyResultsInCommitSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(this::isKeyResultInCommit).count();
+    public long calculateKeyResultsInCommitSum(List<EvaluationView> views) {
+        return views.stream().filter(this::isKeyResultInCommit).count();
     }
 
-    public int calculateKeyResultsInTargetSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(this::isKeyResultInTarget).count();
+    public long calculateKeyResultsInTargetSum(List<EvaluationView> views) {
+        return views.stream().filter(this::isKeyResultInTarget).count();
     }
 
-    public int calculateKeyResultsInStretchSum(List<EvaluationView> views) {
-        return (int) views.stream().filter(this::isKeyResultInStretch).count();
+    public long calculateKeyResultsInStretchSum(List<EvaluationView> views) {
+        return views.stream().filter(this::isKeyResultInStretch).count();
     }
 
     private boolean isKeyResultInTargetOrStretch(EvaluationView v) {

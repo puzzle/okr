@@ -32,17 +32,17 @@ class EvaluationViewMapperTest {
     void toDto_shouldMapValuesFromBusinessService() {
         var views = Collections.singletonList(new EvaluationView());
 
-        when(businessService.calculateObjectiveSum(views)).thenReturn(1);
-        when(businessService.calculateCompletedObjectivesSum(views)).thenReturn(2);
-        when(businessService.calculateSuccessfullyCompletedObjectivesSum(views)).thenReturn(3);
-        when(businessService.calculateKeyResultSum(views)).thenReturn(4);
-        when(businessService.calculateKeyResultsOrdinalSum(views)).thenReturn(5);
-        when(businessService.calculateKeyResultsMetricSum(views)).thenReturn(6);
-        when(businessService.calculateKeyResultsInTargetOrStretchSum(views)).thenReturn(7);
-        when(businessService.calculateKeyResultsInFailSum(views)).thenReturn(8);
-        when(businessService.calculateKeyResultsInCommitSum(views)).thenReturn(9);
-        when(businessService.calculateKeyResultsInTargetSum(views)).thenReturn(10);
-        when(businessService.calculateKeyResultsInStretchSum(views)).thenReturn(11);
+        when(businessService.calculateObjectiveSum(views)).thenReturn(1L);
+        when(businessService.calculateCompletedObjectivesSum(views)).thenReturn(2L);
+        when(businessService.calculateSuccessfullyCompletedObjectivesSum(views)).thenReturn(3L);
+        when(businessService.calculateKeyResultSum(views)).thenReturn(4L);
+        when(businessService.calculateKeyResultsOrdinalSum(views)).thenReturn(5L);
+        when(businessService.calculateKeyResultsMetricSum(views)).thenReturn(6L);
+        when(businessService.calculateKeyResultsInTargetOrStretchSum(views)).thenReturn(7L);
+        when(businessService.calculateKeyResultsInFailSum(views)).thenReturn(8L);
+        when(businessService.calculateKeyResultsInCommitSum(views)).thenReturn(9L);
+        when(businessService.calculateKeyResultsInTargetSum(views)).thenReturn(10L);
+        when(businessService.calculateKeyResultsInStretchSum(views)).thenReturn(11L);
 
         EvaluationDto dto = mapper.toDto(views);
 

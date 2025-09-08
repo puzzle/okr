@@ -66,6 +66,7 @@
         <app-statistics-card
           [attr.data-testId]="'kr-min-target'"
           [title]="'Key Results mit min. Target Zone erreicht'"
+          [subtitle]="'Alle Key Results berücksichtigt'"
           [barProgress]="statistics.keyResultsInTargetOrStretchAmount / statistics.keyResultAmount"
         >
           <app-statistics-information [bottomContent]="statistics.keyResultsInTargetOrStretchAmount+'/'+statistics.keyResultAmount">
@@ -91,6 +92,7 @@
         <app-statistics-card
           [attr.data-testId]="'kr-progress-relation'"
           [title]="'Verteilung der Key Results'"
+          [subtitle]="'Nur eingecheckte Key Results berücksichtigt'"
           *ngIf="krProgressRelation(statistics) as relation"
         >
           <app-statistics-information

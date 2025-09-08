@@ -87,8 +87,8 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.TARGET || zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            Double progress = calculateProgress(v);
-            return progress != null && progress >= 0.7;
+            double progress = calculateProgressRatio(v);
+            return progress >= 0.7;
         }
         return false;
     }
@@ -98,8 +98,8 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.FAIL;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            Double progress = calculateProgress(v);
-            return progress != null && progress < 0.3;
+            double progress = calculateProgressRatio(v);
+            return progress < 0.3;
         }
         return false;
     }
@@ -109,8 +109,8 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.COMMIT;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            Double progress = calculateProgress(v);
-            return progress != null && progress >= 0.3 && progress < 0.7;
+            double progress = calculateProgressRatio(v);
+            return progress >= 0.3 && progress < 0.7;
         }
         return false;
     }
@@ -120,8 +120,8 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.TARGET;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            Double progress = calculateProgress(v);
-            return progress != null && progress >= 0.7 && progress < 1.0;
+            double progress = calculateProgressRatio(v);
+            return progress >= 0.7 && progress < 1.0;
         }
         return false;
     }
@@ -131,19 +131,19 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            Double progress = calculateProgress(v);
-            return progress != null && progress >= 1.0;
+            double progress = calculateProgressRatio(v);
+            return progress >= 1.0;
         }
         return false;
     }
 
-    private Double calculateProgress(EvaluationView v) {
+    private Double calculateProgressRatio(EvaluationView v) {
         if (v.getBaseline() == null || v.getStretchGoal() == null || v.getValueMetric() == null) {
-            return null;
+            return 0D;
         }
         double denominator = v.getStretchGoal() - v.getBaseline();
         if (denominator == 0) {
-            return null;
+            return 0D;
         }
         return (v.getValueMetric() - v.getBaseline()) / denominator;
     }

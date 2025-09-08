@@ -2,19 +2,19 @@ package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
-import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
-import java.util.List;
 
 import ch.puzzle.okr.util.TeamQuarterFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.sql.RowId;
+
 @Service
 public class EvaluationViewValidationService
         extends
-            ValidationBase<EvaluationView, EvaluationViewId, EvaluationViewRepository, EvaluationViewPersistenceService> {
+            ValidationBase<EvaluationView, RowId, EvaluationViewRepository, EvaluationViewPersistenceService> {
 
     private final QuarterValidationService quarterValidationService;
     private final TeamValidationService teamValidationService;
@@ -41,7 +41,7 @@ public class EvaluationViewValidationService
     }
 
     @Override
-    public void validateOnUpdate(EvaluationViewId evaluationViewId, EvaluationView model) {
+    public void validateOnUpdate(RowId id, EvaluationView model) {
         throw new UnsupportedOperationException("EvaluationView is for get Operations only.");
     }
 }

@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.validation;
 
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import java.util.List;
 
 import ch.puzzle.okr.util.TeamQuarterFilter;

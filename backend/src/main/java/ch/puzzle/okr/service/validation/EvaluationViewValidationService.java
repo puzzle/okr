@@ -27,7 +27,8 @@ public class EvaluationViewValidationService
 
     public void validateOnGet(TeamQuarterFilter filter) {
         if (filter.quarterId() == null || filter.teamIds().isEmpty()) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "Es muss mindestens 1 Team und 1 Quartal ausgewählt sein");
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 "Es muss mindestens 1 Team und 1 Quartal ausgewählt sein");
         }
         filter.teamIds().forEach(teamValidationService::validateOnGet);
         quarterValidationService.validateOnGet(filter.quarterId());

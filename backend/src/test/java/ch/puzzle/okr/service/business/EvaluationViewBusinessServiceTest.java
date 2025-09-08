@@ -141,6 +141,5 @@ class EvaluationViewBusinessServiceTest {
                 createEvaluationView(7L, 7L, 3L, State.ONGOING, "ordinal", null, null, null, null, null, Zone.COMMIT),
                 createEvaluationView(8L, 8L, 3L, State.ONGOING, "ordinal", null, null, null, null, null, Zone.STRETCH),
                 createEvaluationView(9L, 9L, 3L, State.ONGOING, null, null, null, null, null, null, null),
-                createEvaluationView(10L, 10L, 4L, State.ONGOING, "metric", null, null, null, null, 10D, null)
-            );
+                createEvaluationView(10L, 10L, 4L, State.ONGOING, "metric", null, null, null, null, 10D, null));
 }

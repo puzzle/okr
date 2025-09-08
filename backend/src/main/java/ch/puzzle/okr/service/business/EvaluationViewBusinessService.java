@@ -88,9 +88,7 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.TARGET || zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            return calculateProgressRatio(v)
-                    .map(progress -> progress >= 0.7)
-                    .orElse(false);
+            return calculateProgressRatio(v).map(progress -> progress >= 0.7).orElse(false);
         }
         return false;
     }
@@ -100,9 +98,7 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.FAIL;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            return calculateProgressRatio(v)
-                    .map(progress -> progress < 0.3)
-                    .orElse(false);
+            return calculateProgressRatio(v).map(progress -> progress < 0.3).orElse(false);
         }
         return false;
     }
@@ -112,9 +108,7 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.COMMIT;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            return calculateProgressRatio(v)
-                    .map(progress -> progress >= 0.3 && progress < 0.7)
-                    .orElse(false);
+            return calculateProgressRatio(v).map(progress -> progress >= 0.3 && progress < 0.7).orElse(false);
         }
         return false;
     }
@@ -124,9 +118,7 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.TARGET;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            return calculateProgressRatio(v)
-                    .map(progress -> progress >= 0.7 && progress < 1.0)
-                    .orElse(false);
+            return calculateProgressRatio(v).map(progress -> progress >= 0.7 && progress < 1.0).orElse(false);
         }
         return false;
     }
@@ -136,9 +128,7 @@ public class EvaluationViewBusinessService {
             Zone zone = v.getZone();
             return zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
-            return calculateProgressRatio(v)
-                    .map(progress -> progress >= 1.0)
-                    .orElse(false);
+            return calculateProgressRatio(v).map(progress -> progress >= 1.0).orElse(false);
         }
         return false;
     }

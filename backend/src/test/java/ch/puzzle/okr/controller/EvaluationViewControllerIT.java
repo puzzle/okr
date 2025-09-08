@@ -5,8 +5,8 @@ import static ch.puzzle.okr.test.EvaluationViewTestHelper.*;
 import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.mapper.EvaluationViewMapper;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
-import ch.puzzle.okr.models.evaluation.EvaluationViewId;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
+import ch.puzzle.okr.util.TeamQuarterFilter;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,15 +42,15 @@ class EvaluationViewControllerIT {
     void shouldReturnEvaluationData() throws Exception {
         List<Long> teamIds = List.of(1L, 2L);
         Long quarterId = 3L;
-        List<EvaluationViewId> evaluationViewIds = getEvaluationViewIds(teamIds, quarterId);
-        // Dummy objects to simulate the internal workflow
-        List<EvaluationView> evaluationViews = generateEvaluationViews(evaluationViewIds);
+        TeamQuarterFilter teamQuarterFilter = new TeamQuarterFilter(teamIds, quarterId);
+        // Dummy object to simulate the internal workflow
+        List<EvaluationView> evaluationViews = generateEvaluationViews(teamQuarterFilter);
         // Create a dummy EvaluationDto with sample data
         EvaluationDto evaluationDto = generateEvaluationDto();
 
         // Define mock behavior
-        BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(evaluationViewIds);
-        BDDMockito.given(evaluationViewBusinessService.findByIds(evaluationViewIds)).willReturn(evaluationViews);
+        BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(teamQuarterFilter);
+        BDDMockito.given(evaluationViewBusinessService.findByIds(teamQuarterFilter)).willReturn(evaluationViews);
         BDDMockito.given(evaluationViewMapper.toDto(evaluationViews)).willReturn(evaluationDto);
 
         // Perform GET request and assert the JSON response
@@ -103,12 +103,12 @@ class EvaluationViewControllerIT {
         List<Long> teamIds = List.of(999L);
         Long quarterId = 888L;
 
-        List<EvaluationViewId> evaluationViewIds = getEvaluationViewIds(teamIds, quarterId);
+        TeamQuarterFilter teamQuarterFilter = new TeamQuarterFilter(teamIds, quarterId);
 
-        BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(evaluationViewIds);
+        BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(teamQuarterFilter);
         // Simulate not found by throwing an exception
         BDDMockito
-                .given(evaluationViewBusinessService.findByIds(evaluationViewIds))
+                .given(evaluationViewBusinessService.findByIds(teamQuarterFilter))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mvc
@@ -127,11 +127,11 @@ class EvaluationViewControllerIT {
         List<Long> teamIds = List.of(999L);
         Long quarterId = 888L;
 
-        List<EvaluationViewId> evaluationViewIds = getEvaluationViewIds(teamIds, quarterId);
+        TeamQuarterFilter teamQuarterFilter = new TeamQuarterFilter(teamIds, quarterId);
 
-        BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(evaluationViewIds);
+        BDDMockito.given(evaluationViewMapper.fromDto(teamIds, quarterId)).willReturn(teamQuarterFilter);
         BDDMockito
-                .given(evaluationViewBusinessService.findByIds(evaluationViewIds))
+                .given(evaluationViewBusinessService.findByIds(teamQuarterFilter))
                 .willThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
         mvc
                 .perform(MockMvcRequestBuilders

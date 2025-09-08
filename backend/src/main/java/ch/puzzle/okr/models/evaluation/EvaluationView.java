@@ -1,6 +1,10 @@
 package ch.puzzle.okr.models.evaluation;
 
+import ch.puzzle.okr.models.State;
+import ch.puzzle.okr.models.checkin.Zone;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import java.time.Instant;
 import java.util.Objects;
@@ -18,7 +22,8 @@ public class EvaluationView {
     private Long teamId;
     private Long quarterId;
 
-    private String objectiveState;
+    @Enumerated(EnumType.STRING)
+    private State objectiveState;
     private String keyResultType;
     private Double baseline;
     private Double commitValue;
@@ -26,7 +31,8 @@ public class EvaluationView {
     private Double stretchGoal;
 
     private Double valueMetric;
-    private String zone;
+    @Enumerated(EnumType.STRING)
+    private Zone zone;
     private Instant latestCheckInDate;
 
     public EvaluationView() {
@@ -69,7 +75,7 @@ public class EvaluationView {
         return quarterId;
     }
 
-    public String getObjectiveState() {
+    public State getObjectiveState() {
         return objectiveState;
     }
 
@@ -97,7 +103,7 @@ public class EvaluationView {
         return valueMetric;
     }
 
-    public String getZone() {
+    public Zone getZone() {
         return zone;
     }
 
@@ -112,7 +118,8 @@ public class EvaluationView {
         private Long teamId;
         private Long quarterId;
 
-        private String objectiveState;
+        @Enumerated(EnumType.STRING)
+        private State objectiveState;
         private String keyResultType;
         private Double baseline;
         private Double commitValue;
@@ -120,7 +127,8 @@ public class EvaluationView {
         private Double stretchGoal;
 
         private Double valueMetric;
-        private String zone;
+        @Enumerated(EnumType.STRING)
+        private Zone zone;
         private Instant latestCheckInDate;
 
         private Builder() {
@@ -155,7 +163,7 @@ public class EvaluationView {
             return this;
         }
 
-        public Builder withObjectiveState(String val) {
+        public Builder withObjectiveState(State val) {
             this.objectiveState = val;
             return this;
         }
@@ -190,7 +198,7 @@ public class EvaluationView {
             return this;
         }
 
-        public Builder withZone(String val) {
+        public Builder withZone(Zone val) {
             this.zone = val;
             return this;
         }

@@ -14,7 +14,10 @@ SELECT
     kr.target_value,
     kr.stretch_goal,
     ci.value_metric,
-    ci.zone,
+    CASE
+        WHEN kr.key_result_type = 'ORDINAL' THEN NULLIF(ci.zone, '')
+        ELSE NULL
+        END              AS zone,
     ci.modified_on    AS latest_check_in_date
 FROM objective o
          LEFT JOIN key_result kr

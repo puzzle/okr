@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.State;
+import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
@@ -33,7 +35,7 @@ public class EvaluationViewBusinessService {
     public int calculateCompletedObjectivesSum(List<EvaluationView> views) {
         return (int) views
                 .stream()
-                .filter(Predicate.not(v -> "ONGOING".equals(v.getObjectiveState())))
+                .filter(Predicate.not(v -> State.ONGOING.equals(v.getObjectiveState())))
                 .map(EvaluationView::getObjectiveId)
                 .distinct()
                 .count();
@@ -42,7 +44,7 @@ public class EvaluationViewBusinessService {
     public int calculateSuccessfullyCompletedObjectivesSum(List<EvaluationView> views) {
         return (int) views
                 .stream()
-                .filter(v -> "SUCCESSFUL".equals(v.getObjectiveState()))
+                .filter(v -> State.SUCCESSFUL.equals(v.getObjectiveState()))
                 .map(EvaluationView::getObjectiveId)
                 .distinct()
                 .count();
@@ -82,7 +84,8 @@ public class EvaluationViewBusinessService {
 
     private boolean isKeyResultInTargetOrStretch(EvaluationView v) {
         if ("ordinal".equalsIgnoreCase(v.getKeyResultType())) {
-            return "TARGET".equalsIgnoreCase(v.getZone()) || "STRETCH".equalsIgnoreCase(v.getZone());
+            Zone zone = v.getZone();
+            return zone == Zone.TARGET || zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
             Double progress = calculateProgress(v);
             return progress != null && progress >= 0.7;
@@ -92,7 +95,8 @@ public class EvaluationViewBusinessService {
 
     private boolean isKeyResultInFail(EvaluationView v) {
         if ("ordinal".equalsIgnoreCase(v.getKeyResultType())) {
-            return "FAIL".equalsIgnoreCase(v.getZone());
+            Zone zone = v.getZone();
+            return zone == Zone.FAIL;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
             Double progress = calculateProgress(v);
             return progress != null && progress < 0.3;
@@ -102,7 +106,8 @@ public class EvaluationViewBusinessService {
 
     private boolean isKeyResultInCommit(EvaluationView v) {
         if ("ordinal".equalsIgnoreCase(v.getKeyResultType())) {
-            return "COMMIT".equalsIgnoreCase(v.getZone());
+            Zone zone = v.getZone();
+            return zone == Zone.COMMIT;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
             Double progress = calculateProgress(v);
             return progress != null && progress >= 0.3 && progress < 0.7;
@@ -112,7 +117,8 @@ public class EvaluationViewBusinessService {
 
     private boolean isKeyResultInTarget(EvaluationView v) {
         if ("ordinal".equalsIgnoreCase(v.getKeyResultType())) {
-            return "TARGET".equalsIgnoreCase(v.getZone());
+            Zone zone = v.getZone();
+            return zone == Zone.TARGET;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
             Double progress = calculateProgress(v);
             return progress != null && progress >= 0.7 && progress < 1.0;
@@ -122,7 +128,8 @@ public class EvaluationViewBusinessService {
 
     private boolean isKeyResultInStretch(EvaluationView v) {
         if ("ordinal".equalsIgnoreCase(v.getKeyResultType())) {
-            return "STRETCH".equalsIgnoreCase(v.getZone());
+            Zone zone = v.getZone();
+            return zone == Zone.STRETCH;
         } else if ("metric".equalsIgnoreCase(v.getKeyResultType())) {
             Double progress = calculateProgress(v);
             return progress != null && progress >= 1.0;

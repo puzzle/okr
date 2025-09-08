@@ -1,20 +1,18 @@
 package ch.puzzle.okr.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.okr.dto.EvaluationDto;
-import ch.puzzle.okr.mapper.EvaluationViewMapper;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EvaluationViewMapperTest {

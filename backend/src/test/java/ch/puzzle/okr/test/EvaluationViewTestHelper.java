@@ -3,7 +3,6 @@ package ch.puzzle.okr.test;
 import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.util.TeamQuarterFilter;
-
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -15,9 +14,7 @@ public class EvaluationViewTestHelper {
     private static final AtomicLong rowIdCounter = new AtomicLong(1);
 
     public static List<EvaluationView> generateEvaluationViews(TeamQuarterFilter filter) {
-        return filter.teamIds().stream()
-                .map(teamId -> createEvaluationView(filter.quarterId(), teamId))
-                .toList();
+        return filter.teamIds().stream().map(teamId -> createEvaluationView(filter.quarterId(), teamId)).toList();
     }
 
     public static EvaluationView createEvaluationView(Long quarterId, Long teamId) {
@@ -28,7 +25,6 @@ public class EvaluationViewTestHelper {
                 .withQuarterId(quarterId)
                 .build();
     }
-
 
     public static EvaluationDto generateEvaluationDto() {
         return generateEvaluationDto(generateEvaluationViewData());

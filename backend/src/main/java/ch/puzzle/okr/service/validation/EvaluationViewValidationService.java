@@ -4,12 +4,10 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.repository.EvaluationViewRepository;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
-
 import ch.puzzle.okr.util.TeamQuarterFilter;
+import java.sql.RowId;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.sql.RowId;
 
 @Service
 public class EvaluationViewValidationService

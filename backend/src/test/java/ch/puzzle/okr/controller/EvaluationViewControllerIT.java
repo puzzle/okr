@@ -6,9 +6,8 @@ import ch.puzzle.okr.dto.EvaluationDto;
 import ch.puzzle.okr.mapper.EvaluationViewMapper;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.service.business.EvaluationViewBusinessService;
-import java.util.List;
-
 import ch.puzzle.okr.util.TeamQuarterFilter;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;

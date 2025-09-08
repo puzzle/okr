@@ -8,7 +8,6 @@ import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.util.TeamQuarterFilter;
 import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,12 +42,12 @@ class EvaluationViewPersistenceServiceIT {
 
         List<Long> expectedObjectiveIds = List.of(3L, 4L);
 
-        List<Long> actualObjectiveIds = evaluationViews.stream()
+        List<Long> actualObjectiveIds = evaluationViews
+                .stream()
                 .map(EvaluationView::getObjectiveId)
                 .distinct()
                 .toList();
 
-        assertThat(actualObjectiveIds)
-                .containsExactlyInAnyOrderElementsOf(expectedObjectiveIds);
+        assertThat(actualObjectiveIds).containsExactlyInAnyOrderElementsOf(expectedObjectiveIds);
     }
 }

@@ -9,11 +9,9 @@ import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.evaluation.EvaluationView;
 import ch.puzzle.okr.service.persistence.EvaluationViewPersistenceService;
 import ch.puzzle.okr.service.validation.EvaluationViewValidationService;
-
+import ch.puzzle.okr.util.TeamQuarterFilter;
 import java.time.Instant;
 import java.util.List;
-
-import ch.puzzle.okr.util.TeamQuarterFilter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -110,9 +108,12 @@ class EvaluationViewBusinessServiceTest {
         assertEquals(2, evaluationViewBusinessService.calculateKeyResultsInStretchSum(evaluationViewList));
     }
 
-
-    private static EvaluationView createNewEvaluationView(Long rowId, Long keyResultId, Long objectiveId, State objectiveSate, String keyResultType, Double baseline, Double commitValue, Double targetValue, Double stretchGoal, Double valueMetric, Zone zone ) {
-        return EvaluationView.Builder.builder()
+    private static EvaluationView createNewEvaluationView(Long rowId, Long keyResultId, Long objectiveId,
+                                                          State objectiveSate, String keyResultType, Double baseline,
+                                                          Double commitValue, Double targetValue, Double stretchGoal,
+                                                          Double valueMetric, Zone zone) {
+        return EvaluationView.Builder
+                .builder()
                 .withRowId(rowId)
                 .withKeyResultId(keyResultId)
                 .withObjectiveId(objectiveId)
@@ -130,15 +131,44 @@ class EvaluationViewBusinessServiceTest {
                 .build();
     }
 
-    private static final List<EvaluationView> evaluationViewList = List.of(
-            createNewEvaluationView(1L, 1L, 1L, State.ONGOING, "metric", 0D, 3D, 7D, 10D, 1D, null),
-            createNewEvaluationView(2L, 2L, 1L, State.ONGOING, "ordinal", null, null, null, null, null, Zone.TARGET),
-            createNewEvaluationView(3L, 3L, 1L, State.NOTSUCCESSFUL, "metric", 0D, 3D, 7D, 10D, 3D, null),
-            createNewEvaluationView(4L, 4L, 2L, State.SUCCESSFUL, "metric", 0D, 3D, 7D, 10D, 7D, null),
-            createNewEvaluationView(5L, 5L, 2L, State.SUCCESSFUL, "metric", 0D, 3D, 7D, 10D, 10D, null),
-            createNewEvaluationView(6L, 6L, 3L, State.ONGOING, "ordinal", null, null, null, null, null, Zone.FAIL),
-            createNewEvaluationView(7L, 7L, 3L, State.ONGOING, "ordinal", null, null, null, null, null, Zone.COMMIT),
-            createNewEvaluationView(8L, 8L, 3L, State.ONGOING, "ordinal", null, null, null, null, null, Zone.STRETCH),
-            createNewEvaluationView(9L, 9L, 3L, State.ONGOING, null, null, null, null, null, null, null)
-    );
+    private static final List<EvaluationView> evaluationViewList = List
+            .of(createNewEvaluationView(1L, 1L, 1L, State.ONGOING, "metric", 0D, 3D, 7D, 10D, 1D, null),
+                createNewEvaluationView(2L,
+                                        2L,
+                                        1L,
+                                        State.ONGOING,
+                                        "ordinal",
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        Zone.TARGET),
+                createNewEvaluationView(3L, 3L, 1L, State.NOTSUCCESSFUL, "metric", 0D, 3D, 7D, 10D, 3D, null),
+                createNewEvaluationView(4L, 4L, 2L, State.SUCCESSFUL, "metric", 0D, 3D, 7D, 10D, 7D, null),
+                createNewEvaluationView(5L, 5L, 2L, State.SUCCESSFUL, "metric", 0D, 3D, 7D, 10D, 10D, null),
+                createNewEvaluationView(6L, 6L, 3L, State.ONGOING, "ordinal", null, null, null, null, null, Zone.FAIL),
+                createNewEvaluationView(7L,
+                                        7L,
+                                        3L,
+                                        State.ONGOING,
+                                        "ordinal",
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        Zone.COMMIT),
+                createNewEvaluationView(8L,
+                                        8L,
+                                        3L,
+                                        State.ONGOING,
+                                        "ordinal",
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        Zone.STRETCH),
+                createNewEvaluationView(9L, 9L, 3L, State.ONGOING, null, null, null, null, null, null, null));
 }

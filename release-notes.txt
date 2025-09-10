@@ -5,6 +5,7 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
+3.3.1       - Fehlerbehebung: Fehlendes Connection Pooling auf Demo-Stage konfiguriert
 
 3.3.0       - Erweiterung #1257: Es wurde eine Auswertungsansicht implementiert
             - Erweiterung #1529: Healthcheck eingebaut

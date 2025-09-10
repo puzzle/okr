@@ -5,12 +5,25 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
-unreleased  - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
-            - Erweiterung #1529: Healthcheck eingebaut
-            - Erweiterung #1257: Es wurde eine Auswertungsansicht implementiert
-            - Erweiterung #1481: Dependency-Updates werden neu gruppiert und teilweise automatisch gemergt
 
+3.3.0       - Erweiterung #1257: Es wurde eine Auswertungsansicht implementiert
+            - Erweiterung #1529: Healthcheck eingebaut
+
+            - Fehlerbehebung #1409: Letztes Check-In bei ordinalen Key Results wird nun angezeigt
             - Fehlerbehebung #1409: Beim Erstellen eines ordinalen Check-Ins wird nun wieder der letzte Zone-Wert als Standard ausgewählt
+            - Fehlerbehebung #1403: Inkonsistenter Schatten angepasst
+            - Fehlerbehebung #1402: Platz zwischen den Action-Plan Button angepasst
+            - Fehlerbehebung #1661: Kleine Werte werden nun konsistent und richtig für Key Results berechnet
+            - Fehlerbehebung #1647: Hintergrundfarbe des Te
+            - Fehlerbehebung #1571: Auto-Completion beim Erstellen eines metrischen Key Results hat nicht korrekt funktioniert
+            - Fehlerbehebung #1556: Generierung eines neuen Quartals wurde nicht korrekt getriggert
+            - Fehlerbehebung #1570: Key Result hat die falsche Farbe nach einem Check-In
+            - Fehlerbehebung #1587: Connection Pooling wurde angepasst um weniger offene Connections zu verbrauchen
+
+            - Wartung: Repository den neuen Puzzle Guidelines angepasst
+            - Wartung: Renovate Config angepasst und auf neusten Stand gebracht
+            - Wartung: Updates diverser Dependencies
+            - Wartung: Workflows für GH Actions wartbarer gemacht
 
 3.2.0       - Fehlerbehebung #1432: Eine Action kann nun wieder als abgeschlossen markiert werden.
 

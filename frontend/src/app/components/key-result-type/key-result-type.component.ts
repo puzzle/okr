@@ -105,7 +105,9 @@ export class KeyResultTypeComponent implements AfterContentInit {
 
   calculateValueAfterChanged(values: MetricValue, changed: KeyResultMetricField, formGroupMetric: any) {
     switch (changed) {
-      case KeyResultMetricField.STRETCH_GOAL:
+      case KeyResultMetricField.STRETCH_GOAL: {
+        return this.calculateValueForField(values, KeyResultMetricField.BASELINE, formGroupMetric);
+      }
       case KeyResultMetricField.BASELINE: {
         return this.calculateValueForField(values, KeyResultMetricField.TARGET_VALUE, formGroupMetric);
       }

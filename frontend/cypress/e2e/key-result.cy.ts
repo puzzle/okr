@@ -43,7 +43,7 @@ describe('okr key-result', () => {
 
     keyResultDialog
       .withMetricValues(
-        UNIT_PERCENT.unitName, '-210', undefined, '52'
+        UNIT_PERCENT.unitName, undefined, undefined, '52'
       )
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');
@@ -51,7 +51,7 @@ describe('okr key-result', () => {
     cy.contains('I am a metric keyresult');
     cy.contains('Metrisch');
     cy.contains('Bob Baumeister');
-    cy.contains('-210%');
+    cy.contains('-98%');
     cy.contains('52%');
     cy.contains('Stretch');
     cy.contains('Confidence');

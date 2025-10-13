@@ -39,11 +39,11 @@ describe('okr key-result', () => {
       UNIT_PERCENT.unitName, '0', undefined, '100'
     );
     cy.getByTestId('target-goal')
-      .should('have.value', '70');
+      .should('have.value', '7');
 
     keyResultDialog
       .withMetricValues(
-        UNIT_PERCENT.unitName, '21', undefined, '52'
+        UNIT_PERCENT.unitName, '-210', undefined, '52'
       )
       .submit();
     keyResultDetailPage.visit('I am a metric keyresult');

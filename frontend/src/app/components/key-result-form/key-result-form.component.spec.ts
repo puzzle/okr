@@ -165,7 +165,6 @@ describe('KeyResultFormComponent', () => {
         isWriteable: true
       };
       component.setMetricValuesInForm(fullKeyResultMetric);
-
       expect(getValueOfForm(component.keyResultForm, ['metric',
         'baseline']))
         .toEqual(3);

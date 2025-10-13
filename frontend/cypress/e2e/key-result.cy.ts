@@ -51,7 +51,7 @@ describe('okr key-result', () => {
     cy.contains('I am a metric keyresult');
     cy.contains('Metrisch');
     cy.contains('Bob Baumeister');
-    cy.contains('21%');
+    cy.contains('-210%');
     cy.contains('52%');
     cy.contains('Stretch');
     cy.contains('Confidence');

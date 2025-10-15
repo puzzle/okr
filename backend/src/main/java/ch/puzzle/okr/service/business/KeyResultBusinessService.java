@@ -169,6 +169,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
                 .withUnit(((KeyResultMetric) keyResult).getUnit()) //
                 .withBaseline(((KeyResultMetric) keyResult).getBaseline()) //
                 .withStretchGoal(((KeyResultMetric) keyResult).getStretchGoal()) //
+                .withCommitValue(((KeyResultMetric) keyResult).getCommitValue()) //
+                .withTargetValue(((KeyResultMetric) keyResult).getTargetValue()) //
                 .build();
     }
 

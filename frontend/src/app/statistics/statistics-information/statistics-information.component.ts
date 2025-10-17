@@ -20,6 +20,7 @@ export class StatisticsInformationComponent {
   @Input() maxHeightInPx = 50;
 
   get chartHeight(): string {
+    // Chart value is already a percentage. We can expect it to never be higher than 1.
     const heightInPx = this.chartValue * this.maxHeightInPx;
     return heightInPx + 'px';
   }

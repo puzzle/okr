@@ -20,8 +20,7 @@ export class StatisticsInformationComponent {
   @Input() maxHeightInPx = 50;
 
   get chartHeight(): string {
-    const percentage = this.chartValue / this.maxHeightInPx * 100;
-    const heightInPx = percentage * this.maxHeightInPx;
+    const heightInPx = this.chartValue * this.maxHeightInPx;
     return heightInPx + 'px';
   }
 }

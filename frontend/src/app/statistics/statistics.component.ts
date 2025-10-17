@@ -14,9 +14,12 @@ export class StatisticsComponent {
 
   statistics = new Observable<Statistics>();
 
-  loadOverview(filterpage: FilterPageChange) {
+  activeFilter: FilterPageChange | undefined;
+
+  loadOverview(filterPage: FilterPageChange) {
+    this.activeFilter = filterPage;
     this.statistics = this.evaluationService
-      .getStatistics(filterpage.quarterId, filterpage.teamIds)
+      .getStatistics(filterPage.quarterId, filterPage.teamIds)
       .pipe(catchError(() => {
         return EMPTY;
       }));

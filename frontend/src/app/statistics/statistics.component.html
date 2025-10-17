@@ -20,18 +20,21 @@
         Quartal
         <app-quarter-filter [showBacklog]="false"></app-quarter-filter>
       </div>
-      <app-team-filter [minTeams]="1"></app-team-filter>
+      <app-team-filter></app-team-filter>
     </div>
 
 
-    <div *ngIf="statistics| async as statistics;" class="d-flex flex-column ">
+    @if (activeFilter?.teamIds?.length != 0) {
+    @if (statistics | async; as statistics) {
+    <div class="d-flex flex-column ">
+      @if (statistics.objectiveAmount == 0 && statistics.keyResultAmount == 0) {
       <div
         class="alert alert-warning bg-warning-subtle"
-        *ngIf="statistics.objectiveAmount ==0 && statistics.keyResultAmount ==0"
         [attr.data-testId]="'no-data-banner'"
       >
         Für dieses Team ist im ausgewählten Zeitraum kein Objective vorhanden.
       </div>
+      }
       <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3  g-4">
         <app-statistics-card [title]="'Objectives und Key Results'" [attr.data-testId]="'objectives-key-results'">
           <app-statistics-information [topContent]="'Objectives'"> {{ statistics.objectiveAmount }}
@@ -74,9 +77,9 @@
           </app-statistics-information>
         </app-statistics-card>
 
+        @if (krRelation(statistics.keyResultsMetricAmount, statistics.keyResultsOrdinalAmount); as relation) {
         <app-statistics-card
           [attr.data-testId]="'kr-type-relation'"
-          *ngIf="krRelation(statistics.keyResultsMetricAmount, statistics.keyResultsOrdinalAmount) as relation"
           [title]="'Verhältnis metrische vs. ordinale Key Results'"
           [barProgress]="relation.metric"
           [barColorPreset]="'relation'"
@@ -88,12 +91,13 @@
             {{ statistics.keyResultsOrdinalAmount }}
           </app-statistics-information>
         </app-statistics-card>
+        }
 
+        @if (krProgressRelation(statistics); as relation) {
         <app-statistics-card
           [attr.data-testId]="'kr-progress-relation'"
           [title]="'Verteilung der Key Results'"
           [subtitle]="'Nur eingecheckte Key Results berücksichtigt'"
-          *ngIf="krProgressRelation(statistics) as relation"
         >
           <app-statistics-information
             [topContent]="statistics.keyResultsInFailAmount"
@@ -132,8 +136,11 @@
             {{ relation.stretch | percent : '1.0-1' }}
           </app-statistics-information>
         </app-statistics-card>
+        }
       </div>
     </div>
+    }
+    }
   </div>
 
 </app-application-page>

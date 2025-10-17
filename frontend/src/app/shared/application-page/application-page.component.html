@@ -6,7 +6,8 @@
 >
   <!--  <ng-content select="content"></ng-content>-->
   <ng-content></ng-content>
-  <div *ngIf="(elements$ | async)?.length === 0" class="d-flex align-items-center flex-column pt-5 gap-5">
+  @if ((elements$ | async)?.length === 0 || getFilterPageChange().teamIds.length === 0) {
+  <div class="d-flex align-items-center flex-column pt-5 gap-5">
     <p id="no-team-text">Kein Team ausgewählt</p>
     <img
       src="{{ backgroundLogoSrc$ | async }}"
@@ -15,5 +16,6 @@
       class="puzzle-logo"
     />
   </div>
+  }
 </div>
 <router-outlet></router-outlet>

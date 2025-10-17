@@ -15,22 +15,18 @@ public class EvaluationViewValidationService
             ValidationBase<EvaluationView, RowId, EvaluationViewRepository, EvaluationViewPersistenceService> {
 
     private final QuarterValidationService quarterValidationService;
-    private final TeamValidationService teamValidationService;
 
     EvaluationViewValidationService(EvaluationViewPersistenceService persistenceService,
-                                    QuarterValidationService quarterValidationService,
-                                    TeamValidationService teamValidationService) {
+                                    QuarterValidationService quarterValidationService) {
         super(persistenceService);
         this.quarterValidationService = quarterValidationService;
-        this.teamValidationService = teamValidationService;
     }
 
     public void validateOnGet(TeamQuarterFilter filter) {
-        if (filter.quarterId() == null || filter.teamIds().isEmpty()) {
+        if (filter.quarterId() == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 "Es muss mindestens 1 Team und 1 Quartal ausgewählt sein");
+                                                 "Es muss mindestens 1 Quartal ausgewählt sein");
         }
-        filter.teamIds().forEach(teamValidationService::validateOnGet);
         quarterValidationService.validateOnGet(filter.quarterId());
     }
 

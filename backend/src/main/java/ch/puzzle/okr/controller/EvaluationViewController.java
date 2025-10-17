@@ -37,7 +37,7 @@ public class EvaluationViewController {
             @ApiResponse(responseCode = "404", description = "The quarter or one of the teams were not found", content = @Content),
             @ApiResponse(responseCode = "401", description = "Not Authorized", content = @Content) })
     @GetMapping("")
-    public ResponseEntity<EvaluationDto> getEvaluation(@RequestParam(name = "team")
+    public ResponseEntity<EvaluationDto> getEvaluation(@RequestParam(name = "team", required = false)
     @Parameter(description = "List of Team ids the statistics are requested for") List<Long> teamIds,
                                                        @RequestParam(name = "quarter")
                                                        @Parameter(description = "Quarter id the statistics are requested for ") Long quarterId) {

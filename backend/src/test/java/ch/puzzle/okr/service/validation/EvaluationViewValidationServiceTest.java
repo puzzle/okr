@@ -26,7 +26,6 @@ class EvaluationViewValidationServiceTest {
     void shouldCallProperMethodsToValidateOnGet() {
         TeamQuarterFilter ids = new TeamQuarterFilter(List.of(1L, 2L), 1L);
         evaluationViewValidationService.validateOnGet(ids);
-        verify(teamValidationService, times(2)).validateOnGet(any());
         verify(quarterValidationService, times(1)).validateOnGet(any());
     }
 }

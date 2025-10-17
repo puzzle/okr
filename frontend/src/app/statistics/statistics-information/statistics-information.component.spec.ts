@@ -33,21 +33,18 @@ describe('StatisticsInformationComponent', () => {
       [0,
         50,
         '0px'],
-      [10,
+      [0.5,
         50,
-        '1000px'], // 10 * 100 = 1000px
+        '25px'], // 0.5 * 50 = 25px
       [1,
         50,
-        '100px'], // 1 * 100 = 100px
-      [25,
+        '50px'], // 1 * 50 = 50px
+      [0.75,
         50,
-        '2500px'], // 25 * 100 = 2500px
-      [10,
-        100,
-        '1000px'], // 10 * 100 = 1000px (maxHeightInPx doesn't affect the result)
-      [5,
+        '37.5px'], // 0.75 * 50 = 37.5px
+      [0.5,
         20,
-        '500px'] // 5 * 100 = 500px
+        '10px'] // 0.5 * 20 = 10px
     ])('with chartValue %i and maxHeightInPx %i, should return %s', (chartValue, maxHeightInPx, expectedHeight) => {
       component.chartValue = chartValue;
       component.maxHeightInPx = maxHeightInPx;

@@ -1,4 +1,4 @@
-UPDATE okr_pitc.key_result
+UPDATE key_result
 SET
     target_value = ROUND((baseline + (stretch_goal - baseline) * 0.7)::numeric, 2),
     commit_value = ROUND((baseline + (stretch_goal - baseline) * 0.3)::numeric, 2)

@@ -1,17 +1,21 @@
 <app-application-page [elements$]="statistics" (reloadPage)="loadOverview($event)">
   <app-application-banner app-banner>
-    <div class="d-flex flex-column ms-5">
-      <button
-        routerLink="/"
-        class="px-2 dialog-detail-button"
-        color="primary"
-        disableRipple="true"
-        mat-button
-        queryParamsHandling="preserve"
-        [attr.data-testId]="'show-all-checkins'"
-      >Zurück zur Übersicht
-      </button>
-      <h1> Auswertung </h1>
+    <div class="container-fluid">
+      <div class="row first-line">
+        <div class="col-12">
+          <a
+            [attr.data-testId]="'routerLink-to-overview'"
+            routerLink="/"
+            queryParamsHandling="preserve"
+          >Zurück zur OKR Übersicht</a
+          >
+        </div>
+      </div>
+      <div class="row second-line">
+        <div>
+          <h1>Auswertung</h1>
+        </div>
+      </div>
     </div>
   </app-application-banner>
   <div class="container-fluid ms-1">

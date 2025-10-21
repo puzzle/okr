@@ -7,7 +7,8 @@ import { FilterPageChange } from '../shared/types/model/filter-page-change';
 @Component({
   selector: 'app-statistics',
   standalone: false,
-  templateUrl: './statistics.component.html'
+  templateUrl: './statistics.component.html',
+  styleUrl: './statistics.component.scss',
 })
 export class StatisticsComponent {
   private evaluationService = inject(EvaluationService);

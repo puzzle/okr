@@ -1,0 +1,23 @@
+.first-line {
+  padding-top: 2rem;
+
+  > div:first-child {
+    padding-left: 2rem;
+  }
+}
+
+.second-line {
+  > div {
+    display: flex;
+    align-items: flex-end;
+    padding-top: 1.275rem;
+  }
+
+  div:first-child {
+    padding-left: 2rem;
+  }
+
+  h1 {
+    margin: 0;
+  }
+}

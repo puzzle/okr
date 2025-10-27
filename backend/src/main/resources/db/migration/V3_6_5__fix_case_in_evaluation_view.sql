@@ -15,7 +15,7 @@ SELECT
     kr.stretch_goal,
     ci.value_metric,
     CASE
-        WHEN kr.key_result_type = 'ORDINAL' THEN NULLIF(ci.zone, '')
+        WHEN UPPER(kr.key_result_type) = 'ORDINAL' THEN NULLIF(ci.zone, '')
         ELSE NULL
         END              AS zone,
     ci.modified_on    AS latest_check_in_date

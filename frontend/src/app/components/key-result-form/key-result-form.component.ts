@@ -52,7 +52,9 @@ export class KeyResultFormComponent implements OnInit, AfterContentInit {
 
   setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
     this.keyResultForm.get('metric')
-      ?.patchValue({ ...keyResultMetric });
+      ?.markAllAsDirty();
+    this.keyResultForm.get('metric')
+      ?.patchValue({ ...keyResultMetric }, { emitEvent: false });
   }
 
   setOrdinalValuesInForm(keyResultOrdinal: KeyResultOrdinal) {

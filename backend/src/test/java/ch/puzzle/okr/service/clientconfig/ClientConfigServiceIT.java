@@ -38,9 +38,13 @@ class ClientConfigServiceIT {
 
     private static Stream<Arguments> tenantConfigs() {
         return Stream
-                .of(Arguments.of("pitc.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "pitc_okr_staging"),
+                .of(Arguments
+                        .of("pitc.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "pitc_okr_development"),
                     Arguments
-                            .of("acme.okr.puzzle.ch", "prod", "http://localhost:8544/realms/pitc", "acme_okr_staging"));
+                            .of("acme.okr.puzzle.ch",
+                                "prod",
+                                "http://localhost:8544/realms/pitc",
+                                "acme_okr_development"));
     }
 
     @DisplayName("Should throw exception on getConfigBasedOnActiveEnv() when subDomain is invalid")

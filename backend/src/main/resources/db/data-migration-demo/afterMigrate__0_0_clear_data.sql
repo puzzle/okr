@@ -1,23 +1,30 @@
-truncate table okr_acme.alignment cascade;
-truncate table okr_acme.action cascade;
-truncate table okr_acme.check_in cascade;
-truncate table okr_acme.key_result cascade;
-truncate table okr_acme.completed cascade;
-truncate table okr_acme.objective cascade;
-truncate table okr_acme.person cascade;
-truncate table okr_acme.quarter cascade;
-truncate table okr_acme.team cascade;
-truncate table okr_acme.person_team cascade;
-truncate table okr_acme.unit cascade;
+DO $$
+BEGIN
+    IF '${tenant}' = 'pitc' THEN
+        truncate table okr_pitc.alignment cascade;
+        truncate table okr_pitc.action cascade;
+        truncate table okr_pitc.check_in cascade;
+        truncate table okr_pitc.key_result cascade;
+        truncate table okr_pitc.completed cascade;
+        truncate table okr_pitc.objective cascade;
+        truncate table okr_pitc.person cascade;
+        truncate table okr_pitc.quarter cascade;
+        truncate table okr_pitc.team cascade;
+        truncate table okr_pitc.person_team cascade;
+        truncate table okr_pitc.unit cascade;
+    ELSIF '${tenant}' = 'acme' THEN
+        truncate table okr_acme.alignment cascade;
+        truncate table okr_acme.action cascade;
+        truncate table okr_acme.check_in cascade;
+        truncate table okr_acme.key_result cascade;
+        truncate table okr_acme.completed cascade;
+        truncate table okr_acme.objective cascade;
+        truncate table okr_acme.person cascade;
+        truncate table okr_acme.quarter cascade;
+        truncate table okr_acme.team cascade;
+        truncate table okr_acme.person_team cascade;
+        truncate table okr_acme.unit cascade;
+    END IF;
+END $$;
 
-truncate table okr_pitc.alignment cascade;
-truncate table okr_pitc.action cascade;
-truncate table okr_pitc.check_in cascade;
-truncate table okr_pitc.key_result cascade;
-truncate table okr_pitc.completed cascade;
-truncate table okr_pitc.objective cascade;
-truncate table okr_pitc.person cascade;
-truncate table okr_pitc.quarter cascade;
-truncate table okr_pitc.team cascade;
-truncate table okr_pitc.person_team cascade;
-truncate table okr_pitc.unit cascade;
+

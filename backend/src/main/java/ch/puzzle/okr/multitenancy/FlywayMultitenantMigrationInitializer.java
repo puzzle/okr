@@ -1,6 +1,7 @@
 package ch.puzzle.okr.multitenancy;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Map;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ public class FlywayMultitenantMigrationInitializer {
                     .configure() //
                     .dataSource(dataSourceConfig.url(), dataSourceConfig.name(), dataSourceConfig.password()) //
                     .locations(scriptLocations) //
+                    .placeholders(Map.of("tenant", tenantConfig.tenantId()))
                     .baselineOnMigrate(Boolean.TRUE) //
                     .schemas(dataSourceConfig.schema()) //
                     .load();

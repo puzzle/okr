@@ -29,7 +29,7 @@ public class FlywayMultitenantMigrationInitializer {
                     .configure() //
                     .dataSource(dataSourceConfig.url(), dataSourceConfig.name(), dataSourceConfig.password()) //
                     .locations(scriptLocations) //
-                    .placeholders(Map.of("tenant", tenantConfig.tenantId()))
+                    .placeholders(Map.of("tenant", tenantConfig.tenantId())) //
                     .baselineOnMigrate(Boolean.TRUE) //
                     .schemas(dataSourceConfig.schema()) //
                     .load();

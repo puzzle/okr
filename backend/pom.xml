@@ -74,7 +74,7 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-hikaricp</artifactId>
-            <version>6.6.26.Final</version>
+            <version>6.6.40.Final</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

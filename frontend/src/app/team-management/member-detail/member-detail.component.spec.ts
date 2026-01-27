@@ -20,6 +20,7 @@ import { DialogService } from '../../services/dialog.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
+import { MatMenuModule } from "@angular/material/menu";
 
 describe('MemberDetailComponent', () => {
   let component: MemberDetailComponent;
@@ -63,6 +64,7 @@ describe('MemberDetailComponent', () => {
         TranslateModule.forRoot(),
         BrowserModule,
         SharedModule,
+        MatMenuModule,
         MatTableModule,
         MatIconModule,
         CommonModule

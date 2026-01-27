@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import {BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap} from 'rxjs';
+import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/team';

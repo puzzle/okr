@@ -194,7 +194,7 @@ export default class CyOverviewPage extends Page {
       .wait(100);
 
     cy.get('@option')
-      .should('have.class', 'objective-menu-option')
+      .should('have.class', 'three-dot-menu-option')
       .click();
   }
 

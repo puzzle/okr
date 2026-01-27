@@ -71,7 +71,7 @@
   </div>
   <mat-menu
     #objectiveMenu="matMenu"
-    [class]="'objective-three-dot-menu'"
+    [class]="'three-dot-menu'"
     class="pt-2 pb-2"
     xPosition="before"
     yPosition="below"
@@ -80,7 +80,7 @@
       (click)="redirect(menuEntry, objective)"
       *ngFor="let menuEntry of menuEntries | async"
       [attr.data-testId]="'objective-menu'"
-      class="objective-menu-option"
+      class="three-dot-menu-option"
       mat-menu-item
     >
       {{ menuEntry.displayName }}

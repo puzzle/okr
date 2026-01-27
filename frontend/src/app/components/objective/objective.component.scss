@@ -21,21 +21,6 @@
   }
 }
 
-.three-dot-menu {
-  color: variables.$pz-dark-blue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 36px;
-  height: 36px;
-  margin-right: 3px;
-
-  &:hover {
-    border-radius: 1rem;
-    background-color: #f5f7fa;
-  }
-}
-
 .icon {
   width: 1.25rem;
   height: 1.25rem;

@@ -3,17 +3,9 @@
     *ngIf="hasOkrUserRoleOkrChampion()"
     (click)="deleteUserWithChecks()"
     [attr.data-testId]="'delete-user'"
-    class="mdc-button px-0 pe-2"
-    color="primary"
-    mat-button
+    class="three-dot-menu-option"
+    mat-menu-item
   >
-    <span class="d-flex align-items-center add-text">
-      <img
-        alt="Delete user button"
-        class="add-cross-button"
-        src="/assets/icons/delete-blue-icon.svg"
-      />
-      {{ getFullNameFromUser(user) }} l&ouml;schen
-    </span>
+    Member löschen
   </button>
 </ng-container>

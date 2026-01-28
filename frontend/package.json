@@ -51,7 +51,7 @@
     "@angular-eslint/eslint-plugin-template": "^20.1.1",
     "@angular/cli": "~20.3.0",
     "@angular/compiler-cli": "^20.1.7",
-    "@cypress/schematic": "^4.0.0",
+    "@cypress/schematic": "^5.0.0",
     "@cypress/skip-test": "^2.6.1",
     "@eslint/js": "^9.17.0",
     "@html-eslint/eslint-plugin": "^0.52.0",

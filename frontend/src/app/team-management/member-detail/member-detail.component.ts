@@ -144,4 +144,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         this.teamService.reloadTeams();
       });
   }
+
+  hasOkrUserRoleOkrChampion() {
+    return this.userService.getCurrentUser().isOkrChampion;
+  }
 }

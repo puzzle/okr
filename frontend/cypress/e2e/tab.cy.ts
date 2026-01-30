@@ -337,6 +337,7 @@ describe('tabbing workflows', () => {
       cy.focused()
         .closest('mat-checkbox')
         .should('have.attr', 'data-testId', 'edit-okr-champion-checkbox');
+      tabAndCheck('three-dot-menu');
 
       // Field to edit role of assigned team
       cy.tabForward();

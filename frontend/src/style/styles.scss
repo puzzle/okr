@@ -222,11 +222,26 @@ input {
   padding: 0 1.62rem 0 1.62rem !important;
 }
 
-.objective-three-dot-menu {
+.three-dot-menu {
   border-radius: 0.5rem !important;
 
   .mat-mdc-menu-content {
     padding: 0 !important;
+  }
+}
+
+.three-dot-menu-icon {
+  color: variables.$pz-dark-blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  margin-right: 3px;
+
+  &:hover {
+    border-radius: 1rem;
+    background-color: #f5f7fa;
   }
 }
 

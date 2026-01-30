@@ -23,14 +23,14 @@
         <button
           #menuButton
           *ngIf="isWritable"
-          class="icon-button three-dot-menu focus-outline"
+          class="icon-button three-dot-menu-icon focus-outline"
           [matMenuTriggerFor]="objectiveMenu"
           (click)="$event.stopPropagation()"
           (keydown.enter)="$event.stopPropagation()"
           [attr.data-testId]="'three-dot-menu'"
         >
           <img
-            src="../assets/icons/three-dot-menu-icon.svg"
+            src="/assets/icons/three-dot-menu-icon.svg"
             alt="menu icon"
             class="text-white menu-scale"
           />
@@ -71,7 +71,7 @@
   </div>
   <mat-menu
     #objectiveMenu="matMenu"
-    [class]="'objective-three-dot-menu'"
+    [class]="'three-dot-menu'"
     class="pt-2 pb-2"
     xPosition="before"
     yPosition="below"
@@ -80,7 +80,7 @@
       (click)="redirect(menuEntry, objective)"
       *ngFor="let menuEntry of menuEntries | async"
       [attr.data-testId]="'objective-menu'"
-      class="objective-menu-option"
+      class="three-dot-menu-option"
       mat-menu-item
     >
       {{ menuEntry.displayName }}

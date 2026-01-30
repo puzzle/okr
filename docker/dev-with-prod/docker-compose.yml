@@ -46,7 +46,7 @@ services:
 
   angular:
     container_name: angular
-    image: node:22
+    image: node:24
     tty: true
     restart: on-failure
     volumes:

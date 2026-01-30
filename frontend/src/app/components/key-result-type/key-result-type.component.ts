@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, inject } from '@angular/core';
+import { AfterContentInit, Component, inject, Input } from '@angular/core';
 import { KeyResult } from '../../shared/types/model/key-result';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { KeyResultMetric } from '../../shared/types/model/key-result-metric';
@@ -104,20 +104,38 @@ export class KeyResultTypeComponent implements AfterContentInit {
   }
 
   calculateValueAfterChanged(values: MetricValue, changed: KeyResultMetricField, formGroupMetric: any) {
-    switch (changed) {
-      case KeyResultMetricField.STRETCH_GOAL:
-      case KeyResultMetricField.BASELINE: {
-        return this.calculateValueForField(values, KeyResultMetricField.TARGET_VALUE, formGroupMetric);
-      }
-      case KeyResultMetricField.TARGET_VALUE: {
-        return this.calculateValueForField(values, KeyResultMetricField.STRETCH_GOAL, formGroupMetric);
-      }
+    const metricFormGroup = this.keyResultForm.get('metric')!;
+    const baselineDirty = metricFormGroup.get('baseline')?.dirty;
+    const targetDirty = metricFormGroup.get('targetValue')?.dirty;
+    const stretchDirty = metricFormGroup.get('stretchGoal')?.dirty;
 
-      case KeyResultMetricField.NONE: {
-        return {};
+    const calc = (field: KeyResultMetricField) => this.calculateValueForField(values, field, formGroupMetric);
+
+    if (baselineDirty && targetDirty && stretchDirty) {
+      switch (changed) {
+        case KeyResultMetricField.STRETCH_GOAL:
+          return calc(KeyResultMetricField.BASELINE);
+        case KeyResultMetricField.BASELINE:
+          return calc(KeyResultMetricField.STRETCH_GOAL);
+        case KeyResultMetricField.TARGET_VALUE:
+          return calc(KeyResultMetricField.STRETCH_GOAL);
+        default:
+          return {};
       }
     }
+
+    if (baselineDirty && stretchDirty && !targetDirty) {
+      return calc(KeyResultMetricField.TARGET_VALUE);
+    }
+    if (stretchDirty && targetDirty && !baselineDirty) {
+      return calc(KeyResultMetricField.BASELINE);
+    }
+    if (targetDirty && baselineDirty && !stretchDirty) {
+      return calc(KeyResultMetricField.STRETCH_GOAL);
+    }
+    return values;
   }
+
 
   calculateValueForField(values: MetricValue, field: KeyResultMetricField, formGroupMetric: any) {
     const roundToTwoDecimals = (num: number) => parseFloat(num.toFixed(2));

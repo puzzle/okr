@@ -65,7 +65,7 @@ jobs:
           outputs: type=docker,dest=/tmp/okr-docker-image.tar # Save as tarball
 
       - name: Upload artifact (Docker image tarball)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: okr-image
           path: /tmp/okr-docker-image.tar

@@ -172,7 +172,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout Target Repo Code (needed for tag context)
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 

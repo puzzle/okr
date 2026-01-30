@@ -26,7 +26,7 @@ jobs:
         run: echo "name=okr-image-${{ inputs.COMMIT_HASH }}" >> $GITHUB_OUTPUT
 
       - name: Checkout Target Repo Code at Specific Commit
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ inputs.COMMIT_HASH }}
 

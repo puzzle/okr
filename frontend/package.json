@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.1.6",
-    "@angular-eslint/eslint-plugin-template": "^20.1.1",
+    "@angular-eslint/eslint-plugin-template": "^21.0.0",
     "@angular/cli": "~20.3.0",
     "@angular/compiler-cli": "^20.1.7",
     "@cypress/schematic": "^5.0.0",
@@ -59,7 +59,7 @@
     "@stylistic/eslint-plugin": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "angular-eslint": "20.7.0",
+    "angular-eslint": "21.2.0",
     "browserslist": "^4.24.3",
     "cypress": "^15.0.0",
     "cypress-real-events": "^1.15.0",

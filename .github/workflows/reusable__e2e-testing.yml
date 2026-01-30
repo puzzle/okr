@@ -108,7 +108,7 @@ jobs:
         run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=integration-test &
 
       - name: Set up node for Cypress
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{vars.NODE_VERSION}}
 

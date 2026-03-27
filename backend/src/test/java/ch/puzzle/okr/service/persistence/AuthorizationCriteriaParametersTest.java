@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import jakarta.persistence.*;
+
 import java.util.*;
 import java.util.stream.Stream;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,10 +91,10 @@ class AuthorizationCriteriaParametersTest {
     private static Stream<Arguments> provideListAndString() {
         return Stream
                 .of( //
-                    Arguments.of(List.of(), null), //
-                    Arguments.of(List.of(), ""), //
-                    Arguments.of(null, null), //
-                    Arguments.of(null, ""));
+                        Arguments.of(List.of(), null), //
+                        Arguments.of(List.of(), ""), //
+                        Arguments.of(null, null), //
+                        Arguments.of(null, ""));
     }
 
     @DisplayName("Should be successful on setParameters() when team ids and objective query are not empty")
@@ -247,7 +249,17 @@ class AuthorizationCriteriaParametersTest {
         }
 
         @Override
+        public Stream<Objective> getResultStream() {
+            return TypedQuery.super.getResultStream();
+        }
+
+        @Override
         public Objective getSingleResult() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Objective getSingleResultOrNull() {
             throw new NotImplementedException();
         }
 
@@ -343,6 +355,36 @@ class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setLockMode(LockModeType lockModeType) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public TypedQuery<Objective> setCacheRetrieveMode(CacheRetrieveMode cacheRetrieveMode) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public TypedQuery<Objective> setCacheStoreMode(CacheStoreMode cacheStoreMode) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public CacheRetrieveMode getCacheRetrieveMode() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public CacheStoreMode getCacheStoreMode() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public TypedQuery<Objective> setTimeout(Integer integer) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Integer getTimeout() {
             throw new NotImplementedException();
         }
 

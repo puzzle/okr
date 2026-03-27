@@ -7,10 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import jakarta.persistence.*;
-
 import java.util.*;
 import java.util.stream.Stream;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -91,10 +89,10 @@ class AuthorizationCriteriaParametersTest {
     private static Stream<Arguments> provideListAndString() {
         return Stream
                 .of( //
-                        Arguments.of(List.of(), null), //
-                        Arguments.of(List.of(), ""), //
-                        Arguments.of(null, null), //
-                        Arguments.of(null, ""));
+                    Arguments.of(List.of(), null), //
+                    Arguments.of(List.of(), ""), //
+                    Arguments.of(null, null), //
+                    Arguments.of(null, ""));
     }
 
     @DisplayName("Should be successful on setParameters() when team ids and objective query are not empty")

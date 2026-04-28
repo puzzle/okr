@@ -1,5 +1,7 @@
 <app-application-page [elements$]="overviewEntities$" (reloadPage)="loadOverview($event)">
   <app-overview-banner app-banner id="banner-component"></app-overview-banner>
-  <app-team *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn" [overviewEntity]="overviewEntity">
+  @for (overviewEntity of overviewEntities$ | async; track trackByFn($index, overviewEntity)) {
+  <app-team [overviewEntity]="overviewEntity">
   </app-team>
+  }
 </app-application-page>

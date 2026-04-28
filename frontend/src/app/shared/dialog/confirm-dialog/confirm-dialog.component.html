@@ -7,8 +7,8 @@
 
   <ng-container actions>
     <div class="col-auto">
+      @if (isYesButtonVisible()) {
       <button
-        *ngIf="isYesButtonVisible()"
         [disabled]="isYesButtonDisabled()"
         [attr.data-testId]="'confirm-yes'"
         type="submit"
@@ -18,9 +18,10 @@
       >
         Ja
       </button>
+      }
 
+      @if (isNoButtonVisible()) {
       <button
-        *ngIf="isNoButtonVisible()"
         [disabled]="isNoButtonDisabled()"
         mat-button
         mat-dialog-close
@@ -29,8 +30,9 @@
       >
         Nein
       </button>
+      }
+      @if (isCloseButtonVisible()) {
       <button
-        *ngIf="isCloseButtonVisible()"
         [disabled]="isCloseButtonDisabled()"
         mat-button
         mat-dialog-close
@@ -39,6 +41,7 @@
       >
         Schliessen
       </button>
+      }
     </div>
   </ng-container>
 </app-dialog-template-core>

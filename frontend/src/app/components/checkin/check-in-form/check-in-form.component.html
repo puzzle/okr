@@ -7,12 +7,14 @@
           <p class="dialog-data-show">{{ keyResult.title }}</p>
         </span>
       </div>
-      <div *ngIf="!isAddingAction; else actionPlanComponent" formArrayName="actionList">
-        <div *ngIf="getFormControlArray().controls" class="okr-form-row okr-form-label-input-container">
+      @if (!isAddingAction) {
+      <div formArrayName="actionList">
+        @if (getFormControlArray().controls) {
+        <div class="okr-form-row okr-form-label-input-container">
           <label class="okr-form-label okr-form-col">Action Plan:</label>
           <div class="col">
+            @for (action of getFormControlArray().controls; track action; let i = $index) {
             <span
-              *ngFor="let action of getFormControlArray().controls; let i = index"
               class="okr-form-row"
               formGroupName="{{i}}"
             >
@@ -26,9 +28,10 @@
                 {{ action.getRawValue().item }}
               </div>
             </span>
+            }
           </div>
         </div>
-
+        }
         <button
           mat-button
           color="primary"
@@ -47,24 +50,24 @@
           </span>
         </button>
       </div>
+      } @else {
+      <div formArrayName="actionList">
+        <app-action-plan></app-action-plan>
+      </div>
+      <button
+        class="mt-2"
+        mat-flat-button
+        color="primary"
+        [disabled]="getFormControlArray().invalid"
+        (click)="closeActionEdit()"
+        [attr.data-testId]="'save-new-actions'"
+      >Speichern</button>
+      }
 
-      <ng-template #actionPlanComponent>
-        <div formArrayName="actionList">
-          <app-action-plan></app-action-plan>
-        </div>
-        <button
-          class="mt-2"
-          mat-flat-button
-          color="primary"
-          [disabled]="getFormControlArray().invalid"
-          (click)="closeActionEdit()"
-          [attr.data-testId]="'save-new-actions'"
-        >Speichern</button>
-      </ng-template>
 
       <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col" for="change-info">Kommentar/ Veränderung seit letztem Check-in (optional):</label
-        >
+          >
         <div class="okr-form-input">
           <textarea
             [attr.data-testId]="'changeInfo'"
@@ -77,17 +80,19 @@
         </div>
       </div>
 
+      @if (keyResult.keyResultType === 'metric') {
       <app-check-in-form-metric
-        *ngIf="keyResult.keyResultType === 'metric'"
         [checkIn]="checkIn"
         [dialogForm]="dialogForm"
         [keyResult]="getKeyResultMetric()"
       ></app-check-in-form-metric>
+      }
+      @if (keyResult.keyResultType === 'ordinal') {
       <app-check-in-form-ordinal
-        *ngIf="keyResult.keyResultType === 'ordinal'"
         [dialogForm]="dialogForm"
         [keyResult]="getKeyResultOrdinal()"
       ></app-check-in-form-ordinal>
+      }
 
       <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col" for="initiatives">Massnahmen (optional):</label>
@@ -106,9 +111,11 @@
       <div class="okr-form-row okr-form-label-input-container">
         <label class="okr-form-label okr-form-col confidence-label">
           Confidence um Target Zone
-          <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
+          @if (keyResult.keyResultType === 'metric' && getKeyResultMetric(); as kr) {
+          <span>
             ({{ calculateTarget(kr) | unitTransformation: kr.unit }})
           </span>
+          }
           zu erreichen:
         </label>
         <app-confidence [checkIn]="checkIn" [isEdit]="true"></app-confidence>
@@ -126,8 +133,12 @@
         mat-flat-button
         type="submit"
       >
-        <span *ngIf="checkIn.id">Speichern</span>
-        <span *ngIf="!checkIn.id">Check-in speichern</span>
+        @if (checkIn.id) {
+        <span>Speichern</span>
+        }
+        @if (!checkIn.id) {
+        <span>Check-in speichern</span>
+        }
       </button>
       <button
         [attr.data-testId]="'cancel'"

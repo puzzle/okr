@@ -38,8 +38,8 @@
         <span class="d-none d-md-flex">Teamverwaltung </span>
       </button>
 
+      @if (helpSiteUrl | async; as helpSiteUrl) {
       <button
-        *ngIf="helpSiteUrl | async as helpSiteUrl"
         id="help-button"
         class="top-bar-entry btn"
         [attr.data-testId]="'help-button'"
@@ -52,6 +52,7 @@
         ></mat-icon>
         <span class="d-none d-md-flex"> Hilfe </span>
       </button>
+      }
 
       <button
         (menuClosed)="menuIsOpen = false"
@@ -67,8 +68,12 @@
           id="top-bar-user"
         ></mat-icon>
         <span [attr.data-testId]="'username'" class="fw-normal fs-6 d-none d-md-flex">{{ userFullName }}</span>
-        <mat-icon *ngIf="!menuIsOpen">expand_more</mat-icon>
-        <mat-icon *ngIf="menuIsOpen">expand_less</mat-icon>
+        @if (!menuIsOpen) {
+        <mat-icon>expand_more</mat-icon>
+        }
+        @if (menuIsOpen) {
+        <mat-icon>expand_less</mat-icon>
+        }
       </button>
     </div>
 

@@ -1,6 +1,6 @@
 <ng-container>
+  @if (hasOkrUserRoleOkrChampion()) {
   <button
-    *ngIf="hasOkrUserRoleOkrChampion()"
     (click)="deleteUserWithChecks()"
     [attr.data-testId]="'delete-user'"
     class="three-dot-menu-option"
@@ -8,4 +8,5 @@
   >
     Member löschen
   </button>
+  }
 </ng-container>

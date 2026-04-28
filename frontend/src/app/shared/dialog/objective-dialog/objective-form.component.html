@@ -11,9 +11,11 @@
             formControlName="title"
             id="title"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'title')">
+          @if (hasFormFieldErrors(objectiveForm, 'title')) {
+          <mat-error>
             <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
           </mat-error>
+          }
         </div>
       </div>
 
@@ -26,9 +28,11 @@
             class="big-dialog-form-field"
             [ngClass]="formInputCheck(objectiveForm, 'description')"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'description')">
+          @if (hasFormFieldErrors(objectiveForm, 'description')) {
+          <mat-error>
             <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
           </mat-error>
+          }
         </div>
       </div>
 
@@ -43,35 +47,40 @@
                 id="quarter"
                 [attr.data-testId]="'quarterSelect'"
               >
-                <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
-                  <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
-                    {{ quarter.fullLabel() }}
-                  </option>
-                </ng-container>
+                @for (quarter of quarters$ | async; track quarter; let i = $index) {
+                @if (allowedOption(quarter)) {
+                <option [value]="quarter.id">
+                  {{ quarter.fullLabel() }}
+                </option>
+                }
+                }
               </select>
             </div>
           </div>
         </div>
         <div class="col align-self-end">
           <div class="okr-form-row">
+            @if (!data.objective.objectiveId) {
             <mat-checkbox
               [attr.data-testId]="'keyResult-checkbox'"
               class="col-auto mx-n2"
               color="primary"
               formControlName="createKeyResults"
-              *ngIf="!data.objective.objectiveId"
             >
               <p class="col d-flex">Key Results im Anschluss erfassen</p>
             </mat-checkbox>
+            }
           </div>
         </div>
-        <div *ngIf="data.action === 'duplicate' && (keyResults$ | async)?.length" class="mt-2 col align-self-end w-100">
+        @if (data.action === 'duplicate' && (keyResults$ | async)?.length) {
+        <div class="mt-2 col align-self-end w-100">
           <div class="okr-form-row okr-form-label-input-container">
             <label class="okr-form-label okr-form-col">Key Results:</label>
             <div class="d-flex flex-column okr-form-input ps-0">
-              <ng-container *ngIf="keyResults$ | async as keyResults" formArrayName="keyResults">
+              @if (keyResults$ | async; as keyResults) {
+              <ng-container formArrayName="keyResults">
+                @for (keyResult of keyResults; track keyResult; let i = $index) {
                 <mat-checkbox
-                  *ngFor="let keyResult of keyResults; let i = index"
                   [formControlName]="i"
                   [checked]="true"
                   [matTooltip]="keyResult.title"
@@ -82,18 +91,21 @@
                     {{ keyResult.title }}
                   </span>
                 </mat-checkbox>
+                }
               </ng-container>
+              }
             </div>
           </div>
         </div>
+        }
       </div>
     </form>
   </ng-container>
 
   <ng-container actions>
     <div class="col-auto">
+      @if (!data.objective.objectiveId) {
       <button
-        *ngIf="!data.objective.objectiveId"
         [disabled]="objectiveForm.invalid"
         color="primary"
         mat-flat-button
@@ -103,10 +115,11 @@
       >
         Als Draft speichern
       </button>
+      }
       <span [ngClass]="data.objective.objectiveId ? 'pe-2': 'pe-2 ps-2'">
+        @if (allowedToSaveBacklog() && !data.objective.objectiveId) {
         <button
           mat-stroked-button
-          *ngIf="allowedToSaveBacklog() && !data.objective.objectiveId"
           [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
           color="primary"
           type="submit"
@@ -115,10 +128,11 @@
         >
           Speichern
         </button>
+        }
 
+        @if (allowedToSaveBacklog() && data.objective.objectiveId) {
         <button
           mat-flat-button
-          *ngIf="allowedToSaveBacklog() && data.objective.objectiveId"
           [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
           color="primary"
           type="submit"
@@ -127,6 +141,7 @@
         >
           Speichern
         </button>
+        }
       </span>
       <button
         color="primary"
@@ -137,7 +152,8 @@
       </button>
     </div>
 
-    <div class="col-auto" *ngIf="data.objective.objectiveId && data.action !== 'duplicate'">
+    @if (data.objective.objectiveId && data.action !== 'duplicate') {
+    <div class="col-auto">
       <button
         color="primary"
         type="button"
@@ -148,5 +164,6 @@
         Objective Löschen
       </button>
     </div>
+    }
   </ng-container>
 </app-dialog-template-core>

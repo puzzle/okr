@@ -4,12 +4,11 @@
       <p>Alle</p>
     </mat-chip>
   </button>
+  @for (
+  team of (teams$ | async)?.slice(0, showMoreTeams || !isMobile ? (teams$ | async)?.length : 6); track trackByFn($index,
+  team)) {
   <button
     (click)="toggleSelection(team.id)"
-    *ngFor="
-      let team of (teams$ | async)?.slice(0, showMoreTeams || !isMobile ? (teams$ | async)?.length : 6);
-      trackBy: trackByFn
-    "
     [attr.data-testId]="'team-filter-chip'"
     [matTooltip]="team.name"
     matTooltipPosition="above"
@@ -20,12 +19,14 @@
       <p class="d-none d-sm-block">{{ team.name }}</p>
     </mat-chip>
   </button>
+  }
+  @if ((teams$ | async)!.length > 6) {
   <button
-    *ngIf="(teams$ | async)!.length > 6"
     (click)="showMoreTeams = !showMoreTeams"
     id="toggle-show-more-teams"
     class="icon-button focus-outline mt-1 ms-1 d-block d-md-none"
   >
     <a class="primary-a-tag">{{ showMoreTeams ? "Weniger" : "Mehr" }}</a>
   </button>
+  }
 </mat-chip-listbox>

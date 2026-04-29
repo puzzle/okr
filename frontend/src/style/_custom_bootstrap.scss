@@ -1,12 +1,12 @@
 @use 'variables';
-@use 'bootstrap' with (
+
+@use 'bootstrap/scss/bootstrap' with (
   $theme-colors: (
     'pz-dark-blue': variables.$pz-dark-blue,
     'eggshell': variables.$eggshell,
     'display-element': variables.$display-element,
     'keyResult-attribute': variables.$key-result-attribute-bg,
     'error': variables.$error,
-  )
+  ),
+  $enable-negative-margins: true
 );
-
-$enable-negative-margins: true;

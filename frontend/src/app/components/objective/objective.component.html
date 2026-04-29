@@ -38,7 +38,7 @@
       }
     </section>
     <section class="d-flex px-3 gap-3 flex-column">
-      @for (keyResult of objective.keyResults; track trackByFn($index, keyResult)) {
+      @for (keyResult of objective.keyResults; track keyResult.id) {
       <app-key-result
         class="border-0 p-0"
         (click)="$event.stopPropagation()"

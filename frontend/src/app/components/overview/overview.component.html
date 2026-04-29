@@ -1,7 +1,6 @@
 <app-application-page [elements$]="overviewEntities$" (reloadPage)="loadOverview($event)">
   <app-overview-banner app-banner id="banner-component"></app-overview-banner>
-  @for (overviewEntity of overviewEntities$ | async; track trackByFn($index, overviewEntity)) {
-  <app-team [overviewEntity]="overviewEntity">
-  </app-team>
+  @for (overviewEntity of overviewEntities$ | async; track $index) {
+  <app-team [overviewEntity]="overviewEntity"></app-team>
   }
 </app-application-page>

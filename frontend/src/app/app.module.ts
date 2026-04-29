@@ -38,7 +38,7 @@ import { ConfidenceComponent } from './components/confidence/confidence.componen
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { OVERLAY_DEFAULT_CONFIG, OverlayModule } from '@angular/cdk/overlay';
 import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
 import { KeyResultTypeComponent } from './components/key-result-type/key-result-type.component';
@@ -183,6 +183,8 @@ export const MY_FORMATS = {
       const initializerFn = initOauthFactory(inject(ConfigService), inject(OAuthService));
       return initializerFn();
     }),
+    { provide: OVERLAY_DEFAULT_CONFIG,
+      useValue: { usePopover: false } },
     {
       provide: Router,
       useClass: CustomRouter

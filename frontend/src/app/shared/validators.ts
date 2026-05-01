@@ -3,15 +3,15 @@ import { Directive, Input } from '@angular/core';
 import { NUMBER_REGEX, PERCENT_REGEX } from './regex-library';
 
 @Directive({
-  selector: '[unitValueValidator]',
+  selector: '[appUnitValueValidator]',
   providers: [{
     provide: NG_VALIDATORS,
-    useExisting: UnitValueValidator,
+    useExisting: AppUnitValueValidator,
     multi: true
   }]
 })
-export class UnitValueValidator implements Validator {
-  @Input('unitValueValidator') unit: string | null = '';
+export class AppUnitValueValidator implements Validator {
+  @Input('appUnitValueValidator') unit: string | null = '';
 
   validate(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value;

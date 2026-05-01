@@ -2,11 +2,13 @@
   <ng-container content>
     <h3>Einheiten (Standard):</h3>
     <div class="d-flex gap-2 flex-column">
-      <ng-container *ngFor="let unit of allUnits | async; let i = index">
-        <h3 *ngIf="unit.isDefault" class="bg-display-element w-100 p-2">
-          {{ unit.unitName }} {{ getFormatedUnitSymbol(unit) }}
-        </h3>
-      </ng-container>
+      @for (unit of allUnits | async; track unit; let i = $index) {
+      @if (unit.isDefault) {
+      <h3 class="bg-display-element w-100 p-2">
+        {{ unit.unitName }} {{ getFormatedUnitSymbol(unit) }}
+      </h3>
+      }
+      }
     </div>
 
 

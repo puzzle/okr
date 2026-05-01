@@ -21,13 +21,16 @@
           (optionSelected)="selectUser($event.option.value)"
           [displayWith]="getDisplayValue"
         >
-          <mat-option *ngFor="let user of usersForSelection$ | async" [value]="user">
+          @for (user of usersForSelection$ | async; track user) {
+          <mat-option [value]="user">
             {{ getDisplayValue(user) }}
           </mat-option>
+          }
         </mat-autocomplete>
       </mat-form-field>
     </form>
-    <div *ngIf="dataSource">
+    @if (dataSource) {
+    <div>
       <table
         mat-table
         [dataSource]="dataSource"
@@ -52,6 +55,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
+    }
   </ng-container>
   <ng-container actions>
     <div class="col-auto">

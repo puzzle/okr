@@ -148,11 +148,11 @@ describe('MemberListTableComponent', () => {
     tick();
 
     expect(teamServiceMock.removeUserFromTeam)
-      .toBeCalledTimes(0);
+      .toHaveBeenCalledTimes(0);
     expect(userServiceMock.reloadUsers)
-      .toBeCalledTimes(0);
+      .toHaveBeenCalledTimes(0);
     expect(userServiceMock.reloadCurrentUser)
-      .toBeCalledTimes(0);
+      .toHaveBeenCalledTimes(0);
   }));
 
   it('saveUserTeamRole should call updateOrAddTeamMembership and reload users', fakeAsync(() => {
@@ -186,9 +186,9 @@ describe('MemberListTableComponent', () => {
         testUser.userTeamList[0]]
     } as any;
     expect(() => component.getSingleUserTeam(ut))
-      .toThrowError('it should have exactly one UserTeam at this point');
+      .toThrow('it should have exactly one UserTeam at this point');
     ut.userTeamList = [];
     expect(() => component.getSingleUserTeam(ut))
-      .toThrowError('it should have exactly one UserTeam at this point');
+      .toThrow('it should have exactly one UserTeam at this point');
   });
 });

@@ -2,29 +2,30 @@
   <label for="action-list" class="okr-form-label">
     <ng-content select="top-title">Action Plan (optional)</ng-content>
   </label>
+  @if (this.getFormControlArray()) {
   <div
     cdkDropList
-    *ngIf="this.getFormControlArray()"
     (keydown.enter)="preventAddingNewItems($event)"
     class="container-fluid d-flex flex-column gap-2 gx-0"
     (cdkDropListDropped)="drop($event)"
     id="action-list"
   >
+    @for (item of getFormControlArray().controls!; track item; let i = $index) {
     <div
       class="row gx-0"
-      *ngFor="let item of getFormControlArray().controls!; index as i;"
       [formGroupName]="i"
       cdkDrag
       [cdkDragDisabled]="!movable"
     >
+      @if (movable) {
       <span
         id="drag-drop-dots"
         class="col-auto px-1 d-flex align-items-center justify-content-center bg-icon"
         cdkDragHandle
-        *ngIf="movable"
       >
         <img src="assets/icons/drag_indicator.svg" alt="Drag indicator"/>
       </span>
+      }
       <input
         #listItem
         (keydown.arrowUp)="changeItemPosition(i, i - 1)"
@@ -33,28 +34,27 @@
         formControlName="item"
         [attr.data-testId]="'action-input'"
       />
-
+      @if (canDelete) {
       <button
         (keydown.enter)="removeAction(i)"
         (click)="removeAction(i)"
         class="btn btn-link col-auto"
-        *ngIf="canDelete"
       ><img
-
           class="icons bin-icon cursor-pointer focus-outline"
           src="assets/icons/delete-icon.svg"
           alt="Delete bin"
         />
       </button>
-
+      }
       <app-error
         [controlPath]="['actionList.' + i, 'item']"
         [name]="'Element'"
         class="col-12"
       ></app-error>
-
     </div>
+    }
   </div>
+  }
 
   <div class="okr-form-row mx-0 mt-2">
     <button

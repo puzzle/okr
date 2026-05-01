@@ -50,9 +50,11 @@
             [ngClass]="formInputCheck(completeForm, 'comment')"
             id="comment"
           ></textarea>
-          <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
+          @if (hasFormFieldErrors(completeForm, 'comment')) {
+          <mat-error>
             <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
           </mat-error>
+          }
         </div>
       </div>
     </form>

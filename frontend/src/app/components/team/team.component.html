@@ -1,11 +1,12 @@
-<div *ngIf="overviewEntity as OVEntity" class="justify-content-between pt-3">
+@if (overviewEntity; as OVEntity) {
+<div class="justify-content-between pt-3">
   <section class="team-header">
     <div class="d-flex align-items-center gap-2 flex-row">
       <h1 class="team-title">{{ OVEntity.team.name }}</h1>
     </div>
+    @if (OVEntity.isWriteable) {
     <button
       (click)="createObjective()"
-      *ngIf="OVEntity.isWriteable"
       id="add-objective"
       [attr.data-testId]="'add-objective'"
       class="px-0 mt-1 mb-3 pe-2 h-50 fw-bold align-new-icon"
@@ -22,17 +23,21 @@
         Objective hinzufügen
       </span>
     </button>
+    }
   </section>
-
   <div class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2" [attr.data-testId]="'objective-container'">
+    @for (objective of OVEntity.objectives; track trackByObjectiveId($index, objective)) {
     <app-objective
-      *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
       [attr.data-testId]="'objective'"
       [isWritable]="OVEntity.isWriteable"
       [objective]="objective"
       class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
       id="objective-column"
     ></app-objective>
-    <div *ngFor="let placeholder of [].constructor(2)" class="col-xs-12 col-md-6 col-xl-4 column-width h-0"></div>
+    }
+    @for (placeholder of [].constructor(2); track placeholder) {
+    <div class="col-xs-12 col-md-6 col-xl-4 column-width h-0"></div>
+    }
   </div>
 </div>
+}

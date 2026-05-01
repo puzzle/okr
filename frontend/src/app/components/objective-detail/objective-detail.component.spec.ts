@@ -71,7 +71,7 @@ describe('ObjectiveDetailComponent', () => {
   it('should throw an exception, if id is undefined', () => {
     activatedRouteMock.snapshot.paramMap.get = () => undefined;
     expect(() => component.ngOnInit())
-      .toThrowError('objective id is undefined');
+      .toThrow('objective id is undefined');
   });
 
   it('get data from backend', () => {

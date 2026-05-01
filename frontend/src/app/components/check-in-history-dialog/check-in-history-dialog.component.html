@@ -1,69 +1,76 @@
 <app-dialog-template-core [observable]="checkInHistory$" [title]="'Check-in History'">
   <ng-container content>
-    <ng-container *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory">
-      <div *ngFor="let checkIn of checkInHistory; index as i" class="bg-display-element p-1 okr-form-row">
-        <div class="col okr-form-label">
-          <div class="okr-form-row py-1">
-            <span class="fw-bold col-6 d-flex align-items-end">
-              {{ checkIn.createdOn | date: DATE_FORMAT }}
-            </span>
-            <span class="col-5 d-flex align-items-end">
+    @if ((checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async); as checkInHistory) {
+    @for (checkIn of checkInHistory; track checkIn; let i = $index) {
+    <div class="bg-display-element p-1 okr-form-row">
+      <div class="col okr-form-label">
+        <div class="okr-form-row py-1">
+          <span class="fw-bold col-6 d-flex align-items-end">
+            {{ checkIn.createdOn | date: DATE_FORMAT }}
+          </span>
+          <span class="col-5 d-flex align-items-end">
+            <img
+              ngSrc="assets/icons/person-icon.svg"
+              alt="author icon"
+              class="mb-1 me-1"
+              width="12"
+              height="12"
+            />
+            {{ checkIn.createdBy }}
+          </span>
+          <div class="col-1 d-flex p-0 justify-content-end">
+            @if (!isComplete && checkIn.isWriteable) {
+            <button
+              mat-icon-button
+              (click)="openCheckInDialogForm(checkIn)"
+              class="h-75 w-auto"
+              [attr.data-testId]="'edit-check-in'"
+            >
               <img
-                ngSrc="assets/icons/person-icon.svg"
-                alt="author icon"
-                class="mb-1 me-1"
-                width="12"
-                height="12"
+                ngSrc="assets/icons/edit.svg"
+                alt="edit check-in"
+                class="h-75"
+                fill
               />
-              {{ checkIn.createdBy }}
-            </span>
-            <div class="col-1 d-flex p-0 justify-content-end">
-              <button
-                mat-icon-button
-                (click)="openCheckInDialogForm(checkIn)"
-                *ngIf="!isComplete && checkIn.isWriteable"
-                class="h-75 w-auto"
-                [attr.data-testId]="'edit-check-in'"
-              >
-                <img
-                  ngSrc="assets/icons/edit.svg"
-                  alt="edit check-in"
-                  class="h-75"
-                  fill
-                />
-              </button>
-            </div>
-          </div>
-          <div class="okr-form-row">
-            <span class="d-flex col-6 justify-content-start">
-              <h4 class="fst-italic me-1">Wert:</h4>
-              <ng-container *ngIf="keyResult.keyResultType === 'metric' && getCheckInMetric(checkIn) as metricCheckIn">
-                {{ metricCheckIn.value! | unitTransformation: getMetricKeyResult().unit }}
-              </ng-container>
-              <ng-container *ngIf="keyResult.keyResultType === 'ordinal' && getCheckInOrdinal(checkIn) as ordinalCheckIn">
-                {{ ordinalCheckIn.zone! }}
-              </ng-container>
-            </span>
-            <span class="d-flex col-6 justify-content-start">
-              <h4 class="fst-italic me-1">Confidence:</h4>
-              {{ checkIn.confidence }} / 10
-            </span>
-          </div>
-          <div class="okr-form-row justify-content-between mb-1" *ngIf="checkIn.initiatives !== ''">
-            <span class="d-flex justify-content-start">
-              <h4 class="fst-italic me-1">Veränderungen:</h4>
-              {{ checkIn.changeInfo }}
-            </span>
-          </div>
-          <div class="okr-form-row justify-content-between mb-1" *ngIf="checkIn.initiatives !== ''">
-            <span class="d-flex justify-content-start">
-              <h4 class="fst-italic me-3">Massnahmen:</h4>
-              {{ checkIn.initiatives }}
-            </span>
+            </button>
+            }
           </div>
         </div>
+        <div class="okr-form-row">
+          <span class="d-flex col-6 justify-content-start">
+            <h4 class="fst-italic me-1">Wert:</h4>
+            @if (keyResult.keyResultType === 'metric' && getCheckInMetric(checkIn); as metricCheckIn) {
+            {{ metricCheckIn.value! | unitTransformation: getMetricKeyResult().unit }}
+            }
+            @if (keyResult.keyResultType === 'ordinal' && getCheckInOrdinal(checkIn); as ordinalCheckIn) {
+            {{ ordinalCheckIn.zone! }}
+            }
+          </span>
+          <span class="d-flex col-6 justify-content-start">
+            <h4 class="fst-italic me-1">Confidence:</h4>
+            {{ checkIn.confidence }} / 10
+          </span>
+        </div>
+        @if (checkIn.initiatives !== '') {
+        <div class="okr-form-row justify-content-between mb-1">
+          <span class="d-flex justify-content-start">
+            <h4 class="fst-italic me-1">Veränderungen:</h4>
+            {{ checkIn.changeInfo }}
+          </span>
+        </div>
+        }
+        @if (checkIn.initiatives !== '') {
+        <div class="okr-form-row justify-content-between mb-1">
+          <span class="d-flex justify-content-start">
+            <h4 class="fst-italic me-3">Massnahmen:</h4>
+            {{ checkIn.initiatives }}
+          </span>
+        </div>
+        }
       </div>
-    </ng-container>
+    </div>
+    }
+    }
   </ng-container>
 
   <ng-container actions>

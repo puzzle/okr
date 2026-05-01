@@ -69,7 +69,7 @@ describe('KeyResultDetailComponent', () => {
   it('should throw error when id is undefined', () => {
     activatedRouteMock.snapshot.paramMap.get.mockReturnValue(undefined);
     expect(() => component.ngOnInit())
-      .toThrowError('keyresult id is undefined');
+      .toThrow('keyresult id is undefined');
   });
 
   it('should display edit key-result button if writeable is true', async() => {

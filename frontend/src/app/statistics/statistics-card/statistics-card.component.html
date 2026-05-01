@@ -5,11 +5,12 @@
     <ng-content></ng-content>
   </div>
 
+  @if (barProgress != undefined) {
   <app-statistics-bar
     class="w-50"
     id="statistics-progress-bar"
-    *ngIf="barProgress != undefined"
     [colorPreset]="barColorPreset"
     [progress]="barProgress *100 || 0"
   ></app-statistics-bar>
+  }
 </div>

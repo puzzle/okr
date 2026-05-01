@@ -59,8 +59,8 @@ describe('TeamManagementBannerComponent', () => {
     component.createTeam();
     tick();
     expect(dialogServiceMock.open)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
     expect(dialogServiceMock.open)
-      .toBeCalledWith(AddEditTeamDialogComponent);
+      .toHaveBeenCalledWith(AddEditTeamDialogComponent);
   }));
 });

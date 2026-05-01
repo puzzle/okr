@@ -3,7 +3,7 @@
 @use 'fonts/Roboto';
 @use 'fonts/MaterialIcons';
 @use 'custom_bootstrap';
-@use 'bootstrap';
+@use 'bootstrap/scss/bootstrap' as bootstrap;
 
 html,
 body.okr {

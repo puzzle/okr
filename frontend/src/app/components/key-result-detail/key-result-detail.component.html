@@ -109,7 +109,7 @@
           <h3 class="mb-1">Beschrieb</h3>
           <p class="linebreak">{{ keyResult.description || "-" }}</p>
         </div>
-        @if (keyResult.actionList?.length !== 0) {
+        @if (keyResult.actionList.length !== 0) {
         <div class="mb-2-rem">
           <h3 class="mb-1">Action Plan</h3>
           @for (action of keyResult.actionList; track action) {

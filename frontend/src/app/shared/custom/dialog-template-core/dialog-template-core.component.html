@@ -18,14 +18,13 @@
 <mat-divider class="mx-4"></mat-divider>
 
 <mat-dialog-content class="text-black">
-  <ng-container *ngIf="isValueReady(observable | async); else spinner">
-    <div class="container-fluid">
-      <ng-content select="[content]"></ng-content>
-    </div>
-  </ng-container>
-  <ng-template #spinner>
-    <app-spinner [text]="title + ' wird geladen...'"></app-spinner>
-  </ng-template>
+  @if (isValueReady(observable | async)) {
+  <div class="container-fluid">
+    <ng-content select="[content]"></ng-content>
+  </div>
+  } @else {
+  <app-spinner [text]="title + ' wird geladen...'"></app-spinner>
+  }
 </mat-dialog-content>
 
 <mat-divider></mat-divider>

@@ -12,9 +12,11 @@
             formControlName="name"
             id="name"
           />
-          <mat-error *ngIf="hasFormFieldErrors(teamForm, 'name')">
+          @if (hasFormFieldErrors(teamForm, 'name')) {
+          <mat-error>
             <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
           </mat-error>
+          }
         </div>
       </div>
     </form>

@@ -3,69 +3,77 @@
   [cdkTrapFocus]="true"
   [cdkTrapFocusAutoCapture]="true"
 >
-  <ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
-    <div *ngIf="objective" class="d-flex flex-column">
-      <section class="w-100 d-flex justify-content-between align-items-center mb-3">
-        <h2 class="title" [attr.data-testId]="'objective-title'">{{ objective.title }}</h2>
+  @if ((objective$ | async)?.id && (objective$ | async); as objective) {
+  @if (objective) {
+  <div class="d-flex flex-column">
+    <section class="w-100 d-flex justify-content-between align-items-center mb-3">
+      <h2 class="title" [attr.data-testId]="'objective-title'">{{ objective.title }}</h2>
+      <button
+        class="d-flex align-items-center justify-content-center"
+        mat-icon-button
+        (click)="backToOverview()"
+        [attr.data-testId]="'close-drawer'"
+      >
+        <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
+      </button>
+    </section>
+    <section class="me-3">
+      <h3 class="mb-1">Beschrieb</h3>
+      @if (objective.description === '') {
+      <div class="linebreak mb-3">
+        <p>-</p>
+      </div>
+      }
+      @if (objective.description !== '') {
+      <div
+        [attr.data-testId]="'description'"
+        class="linebreak mb-2-rem"
+      >
+        <p>{{ objective.description }}</p>
+      </div>
+      }
+      @if (objective.state !== State.SUCCESSFUL && objective.state !== State.NOTSUCCESSFUL) {
+      <div class="d-flex align-items-center flex-row justify-content-start">
+        @if (objective.isWriteable) {
         <button
-          class="d-flex align-items-center justify-content-center"
-          mat-icon-button
-          (click)="backToOverview()"
-          [attr.data-testId]="'close-drawer'"
+          mat-flat-button
+          (click)="openAddKeyResultDialog()"
+          [attr.data-testId]="'add-key-result-objective-detail'"
+          mat-button
+          color="primary"
+          disableRipple="true"
+          cdkInitialFocus
         >
-          <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
+          Key Result hinzufügen
         </button>
-      </section>
-
-      <section class="me-3">
-        <h3 class="mb-1">Beschrieb</h3>
-        <div class="linebreak mb-3" *ngIf="objective.description === ''">
-          <p>-</p>
-        </div>
-        <div
-          *ngIf="objective.description !== ''"
-          [attr.data-testId]="'description'"
-          class="linebreak mb-2-rem"
+        }
+        @if (objective.isWriteable) {
+        <button
+          (click)="openEditObjectiveDialog()"
+          class="ms-2"
+          [attr.data-testId]="'edit-objective'"
+          color="primary"
+          mat-button
         >
-          <p>{{ objective.description }}</p>
+          Objective bearbeiten
+        </button>
+        }
+      </div>
+      } @else {
+      @if ((completed | async)?.comment && (completed | async); as completed) {
+      <div>
+        <h3 [attr.data-testId]="'completed-comment'" class="mb-1">Abschlusskommentar</h3>
+        <div class="linebreak">
+          <p>{{ completed.comment }}</p>
         </div>
-        <div *ngIf="objective.state !== State.SUCCESSFUL && objective.state !== State.NOTSUCCESSFUL; else isCompleted" class="d-flex align-items-center flex-row justify-content-start">
-          <button
-            *ngIf="objective.isWriteable"
-            mat-flat-button
-            (click)="openAddKeyResultDialog()"
-            [attr.data-testId]="'add-key-result-objective-detail'"
-            mat-button
-            color="primary"
-            disableRipple="true"
-            cdkInitialFocus
-          >
-            Key Result hinzufügen
-          </button>
-          <button
-            (click)="openEditObjectiveDialog()"
-            *ngIf="objective.isWriteable"
-            class="ms-2"
-            [attr.data-testId]="'edit-objective'"
-            color="primary"
-            mat-button
-          >
-            Objective bearbeiten
-          </button>
-        </div>
-        <ng-template #isCompleted>
-          <div *ngIf="(completed | async)?.comment && (completed | async) as completed">
-            <h3 [attr.data-testId]="'completed-comment'" class="mb-1">Abschlusskommentar</h3>
-            <div class="linebreak">
-              <p>{{ completed.comment }}</p>
-            </div>
-          </div>
-        </ng-template>
-      </section>
-    </div>
-  </ng-container>
+      </div>
+      }
+      }
+    </section>
+  </div>
+  }
+  } @else {
+  <app-spinner text="Objective wird geladen..."></app-spinner>
+  }
 
-  <ng-template #spinner>
-    <app-spinner text="Objective wird geladen..."></app-spinner>
-  </ng-template>
 </div>

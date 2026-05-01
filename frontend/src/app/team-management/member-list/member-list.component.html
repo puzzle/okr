@@ -2,24 +2,29 @@
   <div id="member-header">
     <div class="team-title">
       <div class="d-flex px-3">
-        <h2 *ngIf="selectedTeam$.value">{{ selectedTeam$.value!.name }}</h2>
+        @if (selectedTeam$.value) {
+        <h2>{{ selectedTeam$.value!.name }}</h2>
+        }
+        @if (selectedTeam$.value?.isWriteable) {
         <app-puzzle-icon-button
-          *ngIf="selectedTeam$.value?.isWriteable"
           (click)="editTeam()"
           [attr.data-testId]="'edit-team-button'"
           icon="edit.svg"
           alt="Edit Team Icon"
         >
         </app-puzzle-icon-button>
-        <h2 *ngIf="!selectedTeam$.value">Alle Teams</h2>
+        }
+        @if (!selectedTeam$.value) {
+        <h2>Alle Teams</h2>
+        }
       </div>
       <div class="d-none d-md-flex flex-grow-1">
         <p>Members: {{ dataSource.data.length }}</p>
       </div>
     </div>
     <div class="action-button d-none d-md-flex">
+      @if (showAddMemberToTeam()) {
       <button
-        *ngIf="showAddMemberToTeam()"
         (click)="addMemberToTeam()"
         [attr.data-testId]="'add-team-member'"
         class="align-new-icon mdc-button px-0 pe-2"
@@ -35,8 +40,9 @@
           Member hinzufügen
         </span>
       </button>
+      }
+      @if (showInviteMember()) {
       <button
-        *ngIf="showInviteMember()"
         (click)="inviteMember()"
         [attr.data-testId]="'invite-member'"
         class="align-new-icon"
@@ -52,8 +58,10 @@
           Member registrieren
         </span>
       </button>
+      }
     </div>
-    <div class="menu mx-2" *ngIf="selectedTeam$.value?.isWriteable">
+    @if (selectedTeam$.value?.isWriteable) {
+    <div class="menu mx-2">
       <app-puzzle-icon-button
         icon="three-dot-menu-icon.svg"
         alt="Menu Icon"
@@ -82,10 +90,10 @@
             ></app-puzzle-icon>
             <span class="font-size-14">Team löschen</span>
           </span>
-
         </button>
       </mat-menu>
     </div>
+    }
   </div>
   <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
 

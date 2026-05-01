@@ -22,13 +22,17 @@
   </div>
 
   <div class="col">
-    <div *ngIf="getCheckInMetric() as metricCheckIn" class="okr-form-row okr-form-label-input-container">
-      <div *ngIf="metricCheckIn.value != null">
+    @if (getCheckInMetric(); as metricCheckIn) {
+    <div class="okr-form-row okr-form-label-input-container">
+      @if (metricCheckIn.value != null) {
+      <div>
         <label class="okr-form-label okr-form-col">Letzter Wert</label>
         <div class="okr-form-col text-black text-end">
           <div class="dialog-data-show latest-value-background">{{ metricCheckIn.value }} {{ generateUnitLabel() }}</div>
         </div>
       </div>
+      }
     </div>
+    }
   </div>
 </div>

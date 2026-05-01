@@ -21,14 +21,17 @@
         <mat-expansion-panel-header class="d-flex justify-content-center gap-2 mx-3" [attr.data-testId]="'expansion-panel-header'">
           <mat-panel-title>
             <div class="w-100 d-flex justify-content-between expansion-panel-title">
-              <span *ngIf="!panelOpenState; else openedPanel">{{
+              @if (!panelOpenState) {
+              <span>{{
                 (quarterLabel$ | async) || quarterLabel$.getValue()
                 }}</span>
-              <span *ngIf="!panelOpenState">Filter</span>
-            </div>
-            <ng-template #openedPanel>
+              } @else {
               <p class="mb-2">Filter</p>
-            </ng-template>
+              }
+              @if (!panelOpenState) {
+              <span>Filter</span>
+              }
+            </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="d-flex gap-2 flex-column filter-container">

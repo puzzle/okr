@@ -20,16 +20,24 @@
       [attr.data-testId]="'teamManagementSearchResult'"
       [autoActiveFirstOption]="true"
     >
-      <mat-optgroup [label]="'TEAM_MANAGEMENT.USERS' | translate" *ngIf="(filteredUsers$ | async)?.length">
-        <mat-option *ngFor="let user of filteredUsers$ | async" (onSelectionChange)="selectUser(user)">
+      @if ((filteredUsers$ | async)?.length) {
+      <mat-optgroup [label]="'TEAM_MANAGEMENT.USERS' | translate">
+        @for (user of filteredUsers$ | async; track user) {
+        <mat-option (onSelectionChange)="selectUser(user)">
           <span [innerHtml]="user.htmlValue"></span>
         </mat-option>
+        }
       </mat-optgroup>
-      <mat-optgroup [label]="'TEAM_MANAGEMENT.TEAMS' | translate" *ngIf="(filteredTeams$ | async)?.length">
-        <mat-option *ngFor="let team of filteredTeams$ | async" (onSelectionChange)="selectTeam(team)">
+      }
+      @if ((filteredTeams$ | async)?.length) {
+      <mat-optgroup [label]="'TEAM_MANAGEMENT.TEAMS' | translate">
+        @for (team of filteredTeams$ | async; track team) {
+        <mat-option (onSelectionChange)="selectTeam(team)">
           <span [innerHtml]="team.htmlValue"></span>
         </mat-option>
+        }
       </mat-optgroup>
+      }
     </mat-autocomplete>
   </mat-form-field>
   <button class="bg-pz-dark-blue d-flex justify-content-center align-items-center icon-button px-3 focus-outline" type="submit">

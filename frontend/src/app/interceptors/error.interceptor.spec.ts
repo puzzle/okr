@@ -67,11 +67,11 @@ describe('ErrorInterceptor', () => {
 
     interceptor.handleErrorToaster(requestMock);
     expect(translator.instant)
-      .toBeCalledWith(ERROR_PREFIX + key);
+      .toHaveBeenCalledWith(ERROR_PREFIX + key);
     expect(String.prototype.format)
-      .toBeCalledWith(params);
+      .toHaveBeenCalledWith(params);
     expect(toaster.showError)
-      .toBeCalledTimes(1);
+      .toHaveBeenCalledTimes(1);
   });
 
   it.each([[
@@ -115,11 +115,11 @@ describe('ErrorInterceptor', () => {
 
     interceptor.handleSuccessToaster(requestMock, method);
     expect(interceptor.getSuccessMessageKey)
-      .toBeCalledWith(url, code, method);
+      .toHaveBeenCalledWith(url, code, method);
     expect(translator.instant)
-      .toBeCalledWith(SUCCESS_PREFIX + key);
+      .toHaveBeenCalledWith(SUCCESS_PREFIX + key);
     expect(toaster.showCustomToaster)
-      .toBeCalledWith(message, toasterType);
+      .toHaveBeenCalledWith(message, toasterType);
   });
 
   it.each([[
@@ -152,12 +152,12 @@ describe('ErrorInterceptor', () => {
 
     interceptor.handleSuccessToaster(requestMock, method);
     expect(interceptor.getSuccessMessageKey)
-      .toBeCalledWith(url, code, method);
+      .toHaveBeenCalledWith(url, code, method);
 
     expect(translator.instant)
-      .toBeCalledTimes(0);
+      .toHaveBeenCalledTimes(0);
     expect(toaster.showCustomToaster)
-      .toBeCalledTimes(0);
+      .toHaveBeenCalledTimes(0);
   });
 
   it.each([
@@ -331,8 +331,8 @@ describe('ErrorInterceptor', () => {
 
     interceptor.handleSuccessToaster(mockHttpResponse, HttpType.POST);
     expect(translator.instant)
-      .toBeCalledWith('SUCCESS.OBJECTIVE.POST_BACKLOG');
+      .toHaveBeenCalledWith('SUCCESS.OBJECTIVE.POST_BACKLOG');
     expect(toaster.showCustomToaster)
-      .toBeCalledWith('Das Objective wurde als Draft im Backlog gespeichert.', undefined);
+      .toHaveBeenCalledWith('Das Objective wurde als Draft im Backlog gespeichert.', undefined);
   });
 });

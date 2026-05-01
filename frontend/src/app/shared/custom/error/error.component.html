@@ -1,2 +1,4 @@
-<mat-error *ngFor="let error of getErrorMessages()">{{ error }}</mat-error>
+@for (error of getErrorMessages(); track error) {
+<mat-error>{{ error }}</mat-error>
+}
 

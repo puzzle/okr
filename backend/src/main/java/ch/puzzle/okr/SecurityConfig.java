@@ -51,7 +51,7 @@ public class SecurityConfig {
     private String connectSrc;
 
     @Bean
-    @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
+    @Order(1) // Must be First order! Otherwise, unauthorized Requests are sent to Controllers
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, @Value("${connect.src}") String connectSrc)
             throws Exception {
 

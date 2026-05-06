@@ -1,6 +1,12 @@
 name: 'Backend tests'
 
-on: [push]
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   backend-tests:
     runs-on: ubuntu-24.04

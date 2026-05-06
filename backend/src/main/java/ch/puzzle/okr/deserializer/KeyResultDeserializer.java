@@ -3,10 +3,11 @@ package ch.puzzle.okr.deserializer;
 import static ch.puzzle.okr.Constants.*;
 
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
+import org.springframework.stereotype.Component;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.*;
-import java.io.IOException;
 
+@Component
 public class KeyResultDeserializer extends ValueDeserializer<KeyResultDto> implements MetricOrdinalDeserializer {
 
     private final DeserializerHelper deserializerHelper;

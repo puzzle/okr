@@ -11,9 +11,6 @@ import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.test.CheckInTestHelpers;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
 import ch.puzzle.okr.test.TestHelper;
-import tools.jackson.core.JsonParser;
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.ObjectMapper;
 import java.util.Map;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +18,9 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,9 +38,7 @@ class DeserializerHelperTest {
     void setUp() {
         // Build the mapper and explicitly disable the feature so it matches
         // your Spring Boot application.properties behavior
-        objectMapper = JsonMapper.builder()
-                .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
-                .build();
+        objectMapper = JsonMapper.builder().disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES).build();
     }
 
     @DisplayName("deserialize() should return CheckInMetricDto for metric json")

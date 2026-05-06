@@ -4,9 +4,9 @@ import static ch.puzzle.okr.Constants.*;
 
 import ch.puzzle.okr.dto.checkin.*;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
+import org.springframework.stereotype.Component;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.*;
-import org.springframework.stereotype.Component;
 
 @Component
 public class CheckInDeserializer extends ValueDeserializer<CheckInDto> implements MetricOrdinalDeserializer {

@@ -16,7 +16,6 @@ import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UnitAuthorizationService;
 import ch.puzzle.okr.service.persistence.UnitPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
-import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import org.hamcrest.Matchers;
@@ -31,6 +30,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
+import tools.jackson.databind.ObjectMapper;
 
 @AutoConfigureMockMvc
 @SpringIntegrationTest

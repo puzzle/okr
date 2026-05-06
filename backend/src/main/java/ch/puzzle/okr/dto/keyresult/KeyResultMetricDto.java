@@ -2,9 +2,9 @@ package ch.puzzle.okr.dto.keyresult;
 
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.dto.UnitDto;
-import tools.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDateTime;
 import java.util.List;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(as = KeyResultMetricDto.class)
 public record KeyResultMetricDto(Long id, int version, String keyResultType, String title, String description,

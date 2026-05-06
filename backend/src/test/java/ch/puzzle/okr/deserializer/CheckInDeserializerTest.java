@@ -13,8 +13,6 @@ import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.test.*;
-import tools.jackson.core.JsonParser;
-import tools.jackson.databind.*;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +21,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.*;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInDeserializerTest {

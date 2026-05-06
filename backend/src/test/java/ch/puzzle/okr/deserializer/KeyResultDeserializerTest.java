@@ -9,8 +9,6 @@ import static org.mockito.Mockito.times;
 import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
 import ch.puzzle.okr.test.TestHelper;
-import tools.jackson.core.JsonParser;
-import tools.jackson.databind.*;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +19,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultDeserializerTest {

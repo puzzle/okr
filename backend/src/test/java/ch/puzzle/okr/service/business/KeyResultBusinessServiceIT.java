@@ -31,8 +31,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.server.ResponseStatusException;
 
 @SpringIntegrationTest
@@ -58,7 +58,7 @@ class KeyResultBusinessServiceIT {
 
     private Unit UNIT;
 
-    @Mock
+    @MockitoBean
     private AuthorizationService authorizationService;
 
     private KeyResult createKeyResultMetric(Long id) {

@@ -36,6 +36,8 @@ class DeserializerHelperTest {
 
     @BeforeEach
     void setUp() {
+        // Build the mapper and explicitly disable the feature so it matches
+        // your Spring Boot application.properties behavior
         objectMapper = JsonMapper.builder().disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES).build();
     }
 

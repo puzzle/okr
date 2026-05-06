@@ -7,9 +7,6 @@ import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,6 +16,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.security.oauth2.jwt.Jwt;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 public class TestHelper {
     private TestHelper() {
@@ -164,10 +163,6 @@ public class TestHelper {
 
     public static List<String> getAllErrorKeys(List<ErrorDto> errors) {
         return errors.stream().map(ErrorDto::errorKey).toList();
-    }
-
-    public static JsonParser createJsonParser(String json) throws IOException {
-        return new ObjectMapper().getFactory().createParser(json);
     }
 
     public static JsonNode getJsonNode(String json) throws IOException {

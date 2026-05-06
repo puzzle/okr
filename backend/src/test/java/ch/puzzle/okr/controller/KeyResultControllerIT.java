@@ -10,7 +10,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.puzzle.okr.JacksonConfig;
+import ch.puzzle.okr.deserializer.CheckInDeserializer;
 import ch.puzzle.okr.deserializer.DeserializerHelper;
+import ch.puzzle.okr.deserializer.KeyResultDeserializer;
 import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
@@ -34,7 +37,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,7 +51,7 @@ import org.springframework.web.server.ResponseStatusException;
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(KeyResultController.class)
-@Import(DeserializerHelper.class)
+@Import({ JacksonConfig.class, CheckInDeserializer.class, KeyResultDeserializer.class, DeserializerHelper.class })
 class KeyResultControllerIT {
 
     @MockitoBean

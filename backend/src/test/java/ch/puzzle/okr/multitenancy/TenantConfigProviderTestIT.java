@@ -12,9 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mock;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.core.env.Environment;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringIntegrationTest
 @SpringBootConfiguration
@@ -33,7 +33,7 @@ class TenantConfigProviderTestIT {
 
     private final String[] tenantIds = { "pitc", "acme" };
 
-    @Mock
+    @MockitoBean
     private Environment env;
 
     @BeforeEach

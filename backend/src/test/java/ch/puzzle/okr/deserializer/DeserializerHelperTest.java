@@ -11,8 +11,6 @@ import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.test.CheckInTestHelpers;
 import ch.puzzle.okr.test.KeyResultTestHelpers;
 import ch.puzzle.okr.test.TestHelper;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +18,10 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @ExtendWith(MockitoExtension.class)
 class DeserializerHelperTest {
@@ -34,15 +36,17 @@ class DeserializerHelperTest {
 
     @BeforeEach
     void setUp() {
-        objectMapper = new ObjectMapper();
+        // Build the mapper and explicitly disable the feature so it matches
+        // your Spring Boot application.properties behavior
+        objectMapper = JsonMapper.builder().disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES).build();
     }
 
     @DisplayName("deserialize() should return CheckInMetricDto for metric json")
     @Test
-    void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
+    void deserializeShouldReturnCheckInMetricDtoForMetricJson() {
         // arrange
         when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_METRIC);
-        JsonParser jsonParser = objectMapper.getFactory().createParser(CheckInTestHelpers.CHECK_IN_METRIC_JSON);
+        JsonParser jsonParser = objectMapper.createParser(CheckInTestHelpers.CHECK_IN_METRIC_JSON);
 
         // act
         CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, CHECK_IN_MAP, deserializer);
@@ -54,11 +58,11 @@ class DeserializerHelperTest {
 
     @DisplayName("deserialize() should return CheckInOrdinalDto for ordinal json")
     @Test
-    void deserializeShouldReturnCheckInOrdinalDtoForOrdinalJson() throws Exception {
+    void deserializeShouldReturnCheckInOrdinalDtoForOrdinalJson() {
         // arrange
         when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_ORDINAL);
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(CheckInTestHelpers.CHECK_IN_ORDINAL_JSON);
+        JsonParser jsonParser = objectMapper.createParser(CheckInTestHelpers.CHECK_IN_ORDINAL_JSON);
 
         // act
         CheckInDto checkInDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, CHECK_IN_MAP, deserializer);
@@ -70,11 +74,11 @@ class DeserializerHelperTest {
 
     @DisplayName("deserialize() should return KeyResultMetricDto for metric json")
     @Test
-    void deserializeShouldReturnKeyResultMetricDtoForMetricJson() throws Exception {
+    void deserializeShouldReturnKeyResultMetricDtoForMetricJson() {
 
         when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_METRIC);
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(KeyResultTestHelpers.KEY_RESULT_METRIC_JSON);
+        JsonParser jsonParser = objectMapper.createParser(KeyResultTestHelpers.KEY_RESULT_METRIC_JSON);
 
         // act
         KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, KEY_RESULT_MAP,
@@ -87,12 +91,12 @@ class DeserializerHelperTest {
 
     @DisplayName("deserialize() should return KeyResultOrdinalDto for ordinal json")
     @Test
-    void deserializeShouldReturnKeyResultOrdinalDtoForOrdinalJson() throws Exception {
+    void deserializeShouldReturnKeyResultOrdinalDtoForOrdinalJson() {
         // arrange
 
         when(deserializer.getKeyResultType(any())).thenReturn(KEY_RESULT_TYPE_ORDINAL);
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(KeyResultTestHelpers.KEY_RESULT_ORDINAL_JSON);
+        JsonParser jsonParser = objectMapper.createParser(KeyResultTestHelpers.KEY_RESULT_ORDINAL_JSON);
 
         // act
         KeyResultDto keyResultDto = deserializerHelper.deserializeMetricOrdinal(jsonParser, KEY_RESULT_MAP,
@@ -105,7 +109,7 @@ class DeserializerHelperTest {
 
     @DisplayName("CheckIn deserialize() should throw ResponseStatusException if json has no KeyResult id")
     @Test
-    void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() throws Exception {
+    void deserializeShouldThrowResponseStatusExceptionIfJsonHasNoKeyResultId() {
 
         // arrange
         String jsonMetric = """
@@ -118,7 +122,7 @@ class DeserializerHelperTest {
 
         when(deserializer.getKeyResultType(any())).thenReturn(null);
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.createParser(jsonMetric);
 
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -143,7 +147,7 @@ class DeserializerHelperTest {
                 """;
         when(deserializer.getKeyResultType(any())).thenReturn(null);
 
-        JsonParser jsonParser = objectMapper.getFactory().createParser(jsonMetric);
+        JsonParser jsonParser = objectMapper.createParser(jsonMetric);
         Map<String, Class<? extends CheckInDto>> CHECK_IN_MAP = Map.of("", CheckInOrdinalDto.class);
         // act + assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,

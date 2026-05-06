@@ -247,7 +247,17 @@ class AuthorizationCriteriaParametersTest {
         }
 
         @Override
+        public Stream<Objective> getResultStream() {
+            return TypedQuery.super.getResultStream();
+        }
+
+        @Override
         public Objective getSingleResult() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Objective getSingleResultOrNull() {
             throw new NotImplementedException();
         }
 
@@ -343,6 +353,36 @@ class AuthorizationCriteriaParametersTest {
 
         @Override
         public TypedQuery<Objective> setLockMode(LockModeType lockModeType) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public TypedQuery<Objective> setCacheRetrieveMode(CacheRetrieveMode cacheRetrieveMode) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public TypedQuery<Objective> setCacheStoreMode(CacheStoreMode cacheStoreMode) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public CacheRetrieveMode getCacheRetrieveMode() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public CacheStoreMode getCacheStoreMode() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public TypedQuery<Objective> setTimeout(Integer integer) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Integer getTimeout() {
             throw new NotImplementedException();
         }
 

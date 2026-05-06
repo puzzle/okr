@@ -1,0 +1,30 @@
+package ch.puzzle.okr;
+
+import ch.puzzle.okr.deserializer.CheckInDeserializer;
+import ch.puzzle.okr.deserializer.KeyResultDeserializer;
+import ch.puzzle.okr.dto.checkin.CheckInDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.module.SimpleModule;
+
+/**
+ * Programmatically registers custom Jackson deserializers. This ensures Spring
+ * injects required dependencies (like DeserializerHelper) into the
+ * deserializers before handing them over to the ObjectMapper. An example of a
+ * custom deserializer can be found in {@link CheckInDeserializer}.
+ */
+@Configuration
+public class JacksonConfig {
+
+    @Bean
+    public SimpleModule okrKeyResultAndCheckInModule(CheckInDeserializer checkInDeserializer,
+                                                     KeyResultDeserializer keyResultDeserializer) {
+        SimpleModule module = new SimpleModule("OkrKeyResultAndCheckInModule");
+
+        module.addDeserializer(CheckInDto.class, checkInDeserializer);
+        module.addDeserializer(KeyResultDto.class, keyResultDeserializer);
+
+        return module;
+    }
+}

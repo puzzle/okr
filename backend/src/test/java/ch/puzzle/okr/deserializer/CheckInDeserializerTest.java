@@ -13,8 +13,6 @@ import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.test.*;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.*;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +21,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.*;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInDeserializerTest {
@@ -35,6 +35,13 @@ class CheckInDeserializerTest {
     @Mock
     DeserializationContext deserializationContext;
 
+    private ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        objectMapper = new ObjectMapper();
+    }
+
     @DisplayName("deserialize() should call helper with correct params for metric json")
     @Test
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
@@ -42,7 +49,7 @@ class CheckInDeserializerTest {
         when(deserializerHelper.deserializeMetricOrdinal(any(), any(), any())) //
                 .thenReturn(null);
 
-        JsonParser jsonParser = TestHelper.createJsonParser(CHECK_IN_METRIC_JSON);
+        JsonParser jsonParser = objectMapper.createParser(CHECK_IN_METRIC_JSON);
 
         // act
         checkInDeserializer.deserialize(jsonParser, deserializationContext);

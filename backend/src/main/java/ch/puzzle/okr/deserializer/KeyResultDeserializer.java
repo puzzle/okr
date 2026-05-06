@@ -3,11 +3,11 @@ package ch.puzzle.okr.deserializer;
 import static ch.puzzle.okr.Constants.*;
 
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.*;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.*;
 import java.io.IOException;
 
-public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> implements MetricOrdinalDeserializer {
+public class KeyResultDeserializer extends ValueDeserializer<KeyResultDto> implements MetricOrdinalDeserializer {
 
     private final DeserializerHelper deserializerHelper;
 
@@ -16,9 +16,7 @@ public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> implem
     }
 
     @Override
-    public KeyResultDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-            throws IOException {
-
+    public KeyResultDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
         return deserializerHelper.deserializeMetricOrdinal(jsonParser, KEY_RESULT_MAP, this);
     }
 

@@ -7,9 +7,9 @@ import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -166,8 +166,8 @@ public class TestHelper {
         return errors.stream().map(ErrorDto::errorKey).toList();
     }
 
-    public static JsonParser createJsonParser(String json) throws IOException {
-        return new ObjectMapper().getFactory().createParser(json);
+    public static JsonParser createJsonParser(String json) {
+        return new ObjectMapper().createParser(json);
     }
 
     public static JsonNode getJsonNode(String json) throws IOException {

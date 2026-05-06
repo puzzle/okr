@@ -1,7 +1,7 @@
 package ch.puzzle.okr.dto.checkin;
 
 import ch.puzzle.okr.models.checkin.Zone;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(as = CheckInOrdinalDto.class)

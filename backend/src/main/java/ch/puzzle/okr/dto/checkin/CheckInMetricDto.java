@@ -1,6 +1,6 @@
 package ch.puzzle.okr.dto.checkin;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(as = CheckInMetricDto.class)

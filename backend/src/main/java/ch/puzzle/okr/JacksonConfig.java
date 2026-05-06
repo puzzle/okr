@@ -8,6 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.module.SimpleModule;
 
+/**
+ * Programmatically registers custom Jackson deserializers.
+ * This ensures Spring injects required dependencies (like DeserializerHelper)
+ * into the deserializers before handing them over to the ObjectMapper.
+ * An example of a custom deserializer can be found in {@link CheckInDeserializer}.
+ */
 @Configuration
 public class JacksonConfig {
 

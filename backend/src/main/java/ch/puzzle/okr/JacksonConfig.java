@@ -18,9 +18,9 @@ import tools.jackson.databind.module.SimpleModule;
 public class JacksonConfig {
 
     @Bean
-    public SimpleModule typeModule(CheckInDeserializer checkInDeserializer,
+    public SimpleModule okrKeyResultAndCheckInModule(CheckInDeserializer checkInDeserializer,
                                    KeyResultDeserializer keyResultDeserializer) {
-        SimpleModule module = new SimpleModule("TypeModule");
+        SimpleModule module = new SimpleModule("OkrKeyResultAndCheckInModule");
 
         module.addDeserializer(CheckInDto.class, checkInDeserializer);
         module.addDeserializer(KeyResultDto.class, keyResultDeserializer);

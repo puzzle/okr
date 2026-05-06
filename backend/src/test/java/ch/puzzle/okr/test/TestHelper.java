@@ -166,10 +166,6 @@ public class TestHelper {
         return errors.stream().map(ErrorDto::errorKey).toList();
     }
 
-    public static JsonParser createJsonParser(String json) {
-        return new ObjectMapper().createParser(json);
-    }
-
     public static JsonNode getJsonNode(String json) throws IOException {
         return new ObjectMapper().readTree(json);
     }

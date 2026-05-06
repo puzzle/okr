@@ -35,6 +35,13 @@ class CheckInDeserializerTest {
     @Mock
     DeserializationContext deserializationContext;
 
+    private ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        objectMapper = new ObjectMapper();
+    }
+
     @DisplayName("deserialize() should call helper with correct params for metric json")
     @Test
     void deserializeShouldReturnCheckInMetricDtoForMetricJson() throws Exception {
@@ -42,7 +49,7 @@ class CheckInDeserializerTest {
         when(deserializerHelper.deserializeMetricOrdinal(any(), any(), any())) //
                 .thenReturn(null);
 
-        JsonParser jsonParser = TestHelper.createJsonParser(CHECK_IN_METRIC_JSON);
+        JsonParser jsonParser = objectMapper.createParser(CHECK_IN_METRIC_JSON);
 
         // act
         checkInDeserializer.deserialize(jsonParser, deserializationContext);

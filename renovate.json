@@ -1,7 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    ":rebaseStalePrs",
+    ":semanticCommitTypeAll(chore)"
   ],
   "schedule" : [
     "* 1-5 * * 1-5"

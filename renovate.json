@@ -32,9 +32,11 @@
     },
     {
       "matchDatasources": [ "maven" ],
-      "matchPackagePrefixes": [ "ch.puzzle.okr" ],
       "matchDepTypes": [ "parent" ],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": [
+        "ch.puzzle.okr{/,}**"
+      ]
     }
   ]
 }

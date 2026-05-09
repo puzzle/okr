@@ -134,7 +134,7 @@ jobs:
 
       - name: Set up Kustomize
         if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''
-        uses: imranismail/setup-kustomize@v2
+        uses: imranismail/setup-kustomize@v3
 
       - name: Update Kustomization
         if: inputs.OKR_INFRA_REPOSITORY_PATH != '' && env.GITLAB_ACCESS_TOKEN != ''

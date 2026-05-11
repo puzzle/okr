@@ -47,12 +47,12 @@ export class StatisticsComponent {
     const all = s.keyResultsInFailAmount + s.keyResultsInCommitAmount + s.keyResultsInTargetAmount + s.keyResultsInStretchAmount;
 
     const r =
-        {
-          fail: s.keyResultsInFailAmount / all || 0,
-          commit: s.keyResultsInCommitAmount / all || 0,
-          target: s.keyResultsInTargetAmount / all || 0,
-          stretch: s.keyResultsInStretchAmount / all || 0
-        };
+      {
+        fail: s.keyResultsInFailAmount / all || 0,
+        commit: s.keyResultsInCommitAmount / all || 0,
+        target: s.keyResultsInTargetAmount / all || 0,
+        stretch: s.keyResultsInStretchAmount / all || 0
+      };
     const max = Math.max(
       r.fail, r.commit, r.target, r.stretch
     );

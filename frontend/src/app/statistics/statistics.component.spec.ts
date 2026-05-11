@@ -21,13 +21,13 @@ const evaluationServiceStub = {
 
 describe('StatisticsComponent', () => {
   window.ResizeObserver =
-      window.ResizeObserver ||
-      jest.fn()
-        .mockImplementation(() => ({
-          disconnect: jest.fn(),
-          observe: jest.fn(),
-          unobserve: jest.fn()
-        }));
+    window.ResizeObserver ||
+    jest.fn()
+      .mockImplementation(() => ({
+        disconnect: jest.fn(),
+        observe: jest.fn(),
+        unobserve: jest.fn()
+      }));
   let component: StatisticsComponent;
   let fixture: ComponentFixture<StatisticsComponent>;
   let activatedRouteStub: any;

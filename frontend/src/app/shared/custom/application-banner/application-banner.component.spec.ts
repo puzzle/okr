@@ -36,13 +36,13 @@ const configServiceMock = {
 
 describe('ApplicationBannerComponent', () => {
   window.ResizeObserver =
-      window.ResizeObserver ||
-      jest.fn()
-        .mockImplementation(() => ({
-          disconnect: jest.fn(),
-          observe: jest.fn(),
-          unobserve: jest.fn()
-        }));
+    window.ResizeObserver ||
+    jest.fn()
+      .mockImplementation(() => ({
+        disconnect: jest.fn(),
+        observe: jest.fn(),
+        unobserve: jest.fn()
+      }));
   let component: ApplicationBannerComponent;
   let fixture: ComponentFixture<ApplicationBannerComponent>;
 

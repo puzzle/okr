@@ -20,7 +20,7 @@ export default tsEslint.config(
     },
   },
   {
-    ignores: ['cypress/downloads/**/*', 'dist/**/*'],
+    ignores: ['cypress/downloads/**/*', 'dist/**/*', '.angular/**/*'],
   },
   {
     files: ['src/**/*.ts', 'cypress/**/*.ts'],

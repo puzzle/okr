@@ -1,6 +1,5 @@
 import eslint from '@eslint/js'
 import tsEslint from 'typescript-eslint'
-import unusedImports from 'eslint-plugin-unused-imports'
 import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
@@ -73,7 +72,6 @@ export default tsEslint.config(
     rules: {
       ...stylistic.configs.all.rules,
       //eslint rules
-      'unused-imports/no-unused-imports': 'error',
       'no-undef': 'error',
       curly: 'error',
       'prefer-rest-params': 'error',
@@ -88,10 +86,14 @@ export default tsEslint.config(
         },
       ],
 
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
           args: 'none',
+          enableAutofixRemoval: {
+            imports: true,
+          },
         },
       ],
       '@typescript-eslint/no-explicit-any': 'off',
@@ -219,7 +221,6 @@ export default tsEslint.config(
   },
   {
     plugins: {
-      'unused-imports': unusedImports,
       '@stylistic': stylistic,
       '@html-eslint': html,
       'check-file': checkFile,

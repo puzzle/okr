@@ -5,6 +5,20 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
+3.4.0       - Erweiterung #1303: Delete Button für User hinzugefügt
+            - Erweiterung #1677: Styling des Headers angepasst
+
+            - Fehlerbehebung #1486: OKR_Demo_DB wird nun wieder korrekt zurückgesetzt
+            - Fehlerbehebung #1675: "All Teams" Button funktioniert nun wie erwartet
+            - Fehlerbehebung #1679: Key Results eines duplizierten Objectives können nun wieder bearbeitet werden
+            - Fehlerbehebung #1680: Korrekte View in einer neuen Migration wiederhergestellt
+            - Fehlerbehebung #1682: Falsche Schriftart korrigiert
+
+            - Wartung: #1738: Upgrade von Angular auf V21
+            - Wartung: #1741 Upgrade von Spring Boot auf 4.0.6
+            - Wartung #1748: Renovate Config migriert
+            - Wartung: Updates diverser Dependencies (inklusive u.a. Node.js V24 #1723 , Postgres V18 #1724)
+
 3.3.1       - Fehlerbehebung: Fehlendes Connection Pooling auf Demo-Stage konfiguriert
 
 3.3.0       - Erweiterung #1257: Es wurde eine Auswertungsansicht implementiert

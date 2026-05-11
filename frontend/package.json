@@ -57,7 +57,7 @@
     "@eslint/js": "^10.0.0",
     "@html-eslint/eslint-plugin": "^0.60.0",
     "@html-eslint/parser": "^0.60.0",
-    "@stylistic/eslint-plugin": "^5.0.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "angular-eslint": "21.3.1",

@@ -74,7 +74,7 @@
     "prettier": "^3.4.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "8.59.2",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "jest": {
     "preset": "jest-preset-angular",

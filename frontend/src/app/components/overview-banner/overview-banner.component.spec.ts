@@ -20,13 +20,13 @@ describe('OverviewBannerComponent', () => {
   let component: OverviewBannerComponent;
   let fixture: ComponentFixture<OverviewBannerComponent>;
   window.ResizeObserver =
-      window.ResizeObserver ||
-      jest.fn()
-        .mockImplementation(() => ({
-          disconnect: jest.fn(),
-          observe: jest.fn(),
-          unobserve: jest.fn()
-        }));
+    window.ResizeObserver ||
+    jest.fn()
+      .mockImplementation(() => ({
+        disconnect: jest.fn(),
+        observe: jest.fn(),
+        unobserve: jest.fn()
+      }));
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({

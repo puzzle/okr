@@ -43,13 +43,13 @@ const filterPage = {
 
 describe('OverviewComponent', () => {
   window.ResizeObserver =
-      window.ResizeObserver ||
-      jest.fn()
-        .mockImplementation(() => ({
-          disconnect: jest.fn(),
-          observe: jest.fn(),
-          unobserve: jest.fn()
-        }));
+    window.ResizeObserver ||
+    jest.fn()
+      .mockImplementation(() => ({
+        disconnect: jest.fn(),
+        observe: jest.fn(),
+        unobserve: jest.fn()
+      }));
 
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;

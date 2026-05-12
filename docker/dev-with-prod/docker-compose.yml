@@ -53,7 +53,7 @@ services:
       - ../../../okr:/opt
     command: [ "/bin/bash", "-c", "cd /opt/frontend && rm -rf dist && npm ci && npm run watch:prod" ]
     healthcheck:
-      test: bash -c "[ -f /opt/frontend/dist/frontend/index.html ]"
+      test: bash -c "[ -f /opt/frontend/dist/frontend/browser/index.html ]"
       interval: 10s
       retries: 999
       start_period: 30s

@@ -104,7 +104,7 @@
                                 <outputDirectory>${basedir}/target/classes/static</outputDirectory>
                                 <resources>
                                     <resource>
-                                        <directory>../frontend/dist/frontend</directory>
+                                        <directory>../frontend/dist/frontend/browser</directory>
                                         <filtering>true</filtering>
                                     </resource>
                                 </resources>

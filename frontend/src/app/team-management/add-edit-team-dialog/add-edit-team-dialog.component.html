@@ -1,39 +1,46 @@
 <app-dialog-template-core [title]="getDialogTitle()">
   <ng-container content>
     <form [formGroup]="teamForm">
-      <div class="okr-form-row okr-form-label-input-container">
-        <label class="okr-form-label okr-form-col" for="name">Teamname</label>
-        <div class="okr-form-input">
-          <input
-            matInput
-            [attr.data-testId]="'add-team-name'"
-            class="dialog-form-field"
-            [ngClass]="formInputCheck(teamForm, 'name')"
-            formControlName="name"
-            id="name"
-          />
-          @if (hasFormFieldErrors(teamForm, 'name')) {
-          <mat-error>
-            <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
-          </mat-error>
-          }
+      <div class="okr-form-row">
+
+        <div class="okr-form-group okr-form-label-input-container">
+          <label class="okr-form-label okr-form-col" for="name">Teamname</label>
+          <div class="okr-form-input">
+            <input
+              matInput
+              [attr.data-testId]="'add-team-name'"
+              class="dialog-form-field"
+              [ngClass]="formInputCheck(teamForm, 'name')"
+              formControlName="name"
+              id="name"
+            />
+            @if (hasFormFieldErrors(teamForm, 'name')) {
+            <mat-error>
+              <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
+            </mat-error>
+            }
+          </div>
         </div>
-        <label class="okr-form-label okr-form-col" for="description">TBD</label>
-        <div class="okr-form-input">
-          <input
-            matInput
-            [attr.data-testId]="'add-team-description'"
-            class="dialog-form-field"
-            [ngClass]="formInputCheck(teamForm, 'description')"
-            formControlName="description"
-            id="description"
-          />
-          @if (hasFormFieldErrors(teamForm, 'description')) {
-          <mat-error>
-            <span>{{ getErrorMessage("MAX_VALUE", "TBD", null, 250) }}</span>
-          </mat-error>
-          }
+
+        <div class="okr-form-group okr-form-label-input-container">
+          <label class="okr-form-label okr-form-col" for="description">Beschreibung</label>
+          <div class="okr-form-input">
+            <input
+              matInput
+              [attr.data-testId]="'add-team-description'"
+              class="dialog-form-field"
+              [ngClass]="formInputCheck(teamForm, 'description')"
+              formControlName="description"
+              id="description"
+            />
+            @if (hasFormFieldErrors(teamForm, 'description')) {
+            <mat-error>
+              <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 250, null) }}</span>
+            </mat-error>
+            }
+          </div>
         </div>
+
       </div>
     </form>
   </ng-container>

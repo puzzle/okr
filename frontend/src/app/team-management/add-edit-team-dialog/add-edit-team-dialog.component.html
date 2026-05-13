@@ -18,6 +18,22 @@
           </mat-error>
           }
         </div>
+        <label class="okr-form-label okr-form-col" for="description">TBD</label>
+        <div class="okr-form-input">
+          <input
+            matInput
+            [attr.data-testId]="'add-team-description'"
+            class="dialog-form-field"
+            [ngClass]="formInputCheck(teamForm, 'description')"
+            formControlName="description"
+            id="description"
+          />
+          @if (hasFormFieldErrors(teamForm, 'description')) {
+          <mat-error>
+            <span>{{ getErrorMessage("MAX_VALUE", "TBD", null, 250) }}</span>
+          </mat-error>
+          }
+        </div>
       </div>
     </form>
   </ng-container>

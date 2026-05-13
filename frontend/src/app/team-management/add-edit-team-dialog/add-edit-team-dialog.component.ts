@@ -30,7 +30,8 @@ export class AddEditTeamDialogComponent implements OnInit {
   teamForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(250)])
+      Validators.maxLength(250)]),
+    description: new FormControl<string>('', [Validators.maxLength(250)])
   });
 
   protected readonly formInputCheck = formInputCheck;
@@ -40,7 +41,8 @@ export class AddEditTeamDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data) {
       this.teamForm.setValue({
-        name: this.data.team.name
+        name: this.data.team.name,
+        description: this.data.team.description
       });
     }
   }

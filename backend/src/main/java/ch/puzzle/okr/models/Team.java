@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 @Entity
 public class Team implements WriteableInterface {
     @Id

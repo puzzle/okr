@@ -16,6 +16,7 @@ public class TeamMapperTest {
     private static final long ID = 0L;
     private static final int VERSION = 1;
     private static final String NAME = "my team name";
+    private static final String DESCRIPTION = "my team description that is quite long";
     public static final boolean IS_WRITEABLE = true;
 
     @InjectMocks
@@ -30,6 +31,7 @@ public class TeamMapperTest {
                 .withId(ID) //
                 .withVersion(VERSION) //
                 .withName(NAME) //
+                .withDescription(DESCRIPTION)
                 .build();
         team.setWriteable(IS_WRITEABLE);
 
@@ -45,6 +47,7 @@ public class TeamMapperTest {
         assertEquals(expected.getId(), actual.id());
         assertEquals(expected.getVersion(), actual.version());
         assertEquals(expected.getName(), actual.name());
+        assertEquals(expected.getDescription(), actual.description());
         assertEquals(expected.isWriteable(), actual.isWriteable());
     }
 
@@ -52,7 +55,7 @@ public class TeamMapperTest {
     @Test
     void shouldMapDtoToTeam() {
         // arrange
-        TeamDto teamDto = new TeamDto(ID, VERSION, NAME, IS_WRITEABLE);
+        TeamDto teamDto = new TeamDto(ID, VERSION, NAME, DESCRIPTION, IS_WRITEABLE);
 
         // act
         Team team = teamMapper.toTeam(teamDto);
@@ -66,6 +69,7 @@ public class TeamMapperTest {
         assertEquals(expected.id(), actual.getId());
         assertEquals(expected.version(), actual.getVersion());
         assertEquals(expected.name(), actual.getName());
+        assertEquals(expected.description(), actual.getDescription());
         assertFalse(actual.isWriteable());
     }
 

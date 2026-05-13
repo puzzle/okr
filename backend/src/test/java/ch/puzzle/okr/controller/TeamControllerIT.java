@@ -40,25 +40,26 @@ class TeamControllerIT {
     private static final String BASE_URL = "/api/v2/teams";
     private static final String URL_TEAM_1 = "/api/v2/teams/1";
     public static final String PUZZLE = "Puzzle";
+    public static final String PUZZLE_ITC = "Puzzle ITC";
     public static final String SUB_URL_USER_5 = "/user/5";
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, false);
-    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", false);
+    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, PUZZLE_ITC,false);
+    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", "Objectives and Key Results", false);
 
     private static final String CREATE_NEW_TEAM = """
             {
-            "id": null, "name": "OKR-Team", "organisations": []
+            "id": null, "name": "OKR-Team", "description": "OKR-Team description" ,"organisations": []
             }
             """;
     private static final String CREATE_NEW_TEAM_WITH_NULL_VALUES = """
             {
-            "id": null, "name": null, "organisations": null
+            "id": null, "name": null, "description": null, "organisations": null
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"version":4,"name":"OKR","isWriteable":false}""";
+            {"id":7,"version":4,"name":"OKR","description":"Objectives and Key Results","isWriteable":false}""";
 
     private static final String UPDATE_TEAM = """
             {
@@ -151,7 +152,7 @@ class TeamControllerIT {
     @DisplayName("Should return updated team after updating an existing team")
     @Test
     void shouldReturnUpdatedTeamAfterUpdatingTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", false);
+        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", "Objectives and Key Results Team", false);
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
         BDDMockito.given(teamMapper.toDto(any())).willReturn(teamDto);

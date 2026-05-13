@@ -86,20 +86,19 @@ public class Team implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Team{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", version=" + getVersion() +
-                ", userTeamList=" + getUserTeamList() +
-                ", writeable=" + isWriteable() +
-                '}';
+        return "Team{" + "id=" + getId() + ", name='" + getName() + '\'' + ", description='" + getDescription() + '\''
+               + ", version=" + getVersion() + ", userTeamList=" + getUserTeamList() + ", writeable=" + isWriteable()
+               + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Team team)) return false;
-        return getVersion() == team.getVersion() && isWriteable() == team.isWriteable() && Objects.equals(getId(), team.getId()) && Objects.equals(getName(), team.getName()) && Objects.equals(getDescription(), team.getDescription()) && Objects.equals(getUserTeamList(), team.getUserTeamList());
+        if (!(o instanceof Team team))
+            return false;
+        return getVersion() == team.getVersion() && isWriteable() == team.isWriteable()
+               && Objects.equals(getId(), team.getId()) && Objects.equals(getName(), team.getName())
+               && Objects.equals(getDescription(), team.getDescription())
+               && Objects.equals(getUserTeamList(), team.getUserTeamList());
     }
 
     @Override

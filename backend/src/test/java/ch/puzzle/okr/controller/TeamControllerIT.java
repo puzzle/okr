@@ -45,7 +45,7 @@ class TeamControllerIT {
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, PUZZLE_ITC,false);
+    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, PUZZLE_ITC, false);
     static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", "Objectives and Key Results", false);
 
     private static final String CREATE_NEW_TEAM = """

@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
 import { ApplicationBannerComponent } from '../../custom/application-banner/application-banner.component';
+import { Team } from '../../types/model/team';
 
 const teamServiceMock = {
   getAllTeams: jest.fn()
@@ -309,22 +310,26 @@ describe('TeamFilterComponent', () => {
   });
 
   it('should filter teams by toggled priority and then by name', async() => {
-    const teams = [
+    const teams: Team[] = [
       { id: 1,
         version: 0,
         name: 'Team D',
+        description: 'Team Delta',
         isWriteable: true },
       { id: 2,
         version: 0,
         name: 'Team C',
+        description: 'Team Charlie',
         isWriteable: true },
       { id: 3,
         version: 0,
         name: 'Team B',
+        description: 'Team Bravo',
         isWriteable: true },
       { id: 4,
         version: 0,
         name: 'Team A',
+        description: 'Team Alpha',
         isWriteable: true }
     ];
 
@@ -339,18 +344,22 @@ describe('TeamFilterComponent', () => {
         { id: 4,
           version: 0,
           name: 'Team A',
+          description: 'Team Alpha',
           isWriteable: true },
         { id: 3,
           version: 0,
           name: 'Team B',
+          description: 'Team Bravo',
           isWriteable: true },
         { id: 2,
           version: 0,
           name: 'Team C',
+          description: 'Team Charlie',
           isWriteable: true },
         { id: 1,
           version: 0,
           name: 'Team D',
+          description: 'Team Delta',
           isWriteable: true }
       ]);
   });

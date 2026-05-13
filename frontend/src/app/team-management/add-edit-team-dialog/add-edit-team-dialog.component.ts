@@ -56,7 +56,13 @@ export class AddEditTeamDialogComponent implements OnInit {
   }
 
   private createNewTeam() {
-    const newTeam: Team = this.teamForm.value as Team;
+    const formValue = this.teamForm.value;
+
+    const newTeam: Team = {
+      ...formValue,
+      description: formValue.description?.trim() || null
+    } as Team;
+
     this.teamService.createTeam(newTeam)
       .subscribe((result) => {
         this.userService.reloadUsers();
@@ -69,11 +75,15 @@ export class AddEditTeamDialogComponent implements OnInit {
 
   private updateTeam() {
     if (this.data) {
+      const formValue = this.teamForm.value;
+
       const updatedTeam: Team = {
-        ...this.teamForm.value,
+        ...formValue,
+        description: formValue.description?.trim() || null,
         id: this.data.team.id,
         version: this.data.team.version
       } as Team;
+
       this.teamService.updateTeam(updatedTeam)
         .subscribe((result) => {
           this.dialogRef.close(result);

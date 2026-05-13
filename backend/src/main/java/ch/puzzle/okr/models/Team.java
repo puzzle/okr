@@ -1,13 +1,13 @@
 package ch.puzzle.okr.models;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
-
-import static org.apache.commons.lang3.StringUtils.trim;
 
 @Entity
 public class Team implements WriteableInterface {

@@ -99,8 +99,7 @@ public class Team implements WriteableInterface {
             return false;
         return getVersion() == team.getVersion() && isWriteable() == team.isWriteable()
                && Objects.equals(getId(), team.getId()) && Objects.equals(getName(), team.getName())
-               && Objects.equals(getDescription(), team.getDescription())
-               && Objects.equals(getUserTeamList(), team.getUserTeamList());
+               && Objects.equals(getDescription(), team.getDescription());
     }
 
     @Override

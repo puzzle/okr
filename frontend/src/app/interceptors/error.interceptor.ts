@@ -34,6 +34,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.handleErrorToaster(response);
         }
         this.handleDrawerError(request);
+        console.log(response);
         return throwError(() => new Error(response));
       }));
   }

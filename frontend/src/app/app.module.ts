@@ -62,13 +62,34 @@ import { ManageUnitsDialogComponent } from './components/manage-units-dialog/man
 import { UnitTransformationPipe } from './shared/pipes/unit-transformation/unit-transformation.pipe';
 import { OverviewBannerComponent } from './components/overview-banner/overview-banner.component';
 
+
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async() => {
     const config = await firstValueFrom(configService.config$);
+    console.log('httpInit');
+    const params1 = [
+      'scope',
+      'code',
+      'state',
+      'session_state',
+      'iss'
+    ];
+    const params = new URLSearchParams(window.location.search);
+    if (params1.some((param) => params.has(param))) {
+      params1.forEach((param) => {
+        if (params.has(param)) {
+          params.delete(param);
+        }
+      });
+    }
+    console.log('asdf');
+    console.log(environment.oauth.redirectUri + params.toString());
     oauthService.configure({
       ...environment.oauth,
       issuer: config.issuer,
-      clientId: config.clientId
+      clientId: config.clientId,
+      redirectUri: environment.oauth.redirectUri + params.toString()
+      // requireHttps: false
     });
   };
 }
@@ -179,7 +200,7 @@ export const MY_FORMATS = {
       provide: OAuthStorage,
       useFactory: storageFactory
     },
-    provideAppInitializer(() => {
+    provideAppInitializer(async() => {
       const initializerFn = initOauthFactory(inject(ConfigService), inject(OAuthService));
       return initializerFn();
     }),

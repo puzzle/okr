@@ -3,7 +3,7 @@ package ch.puzzle.okr.mapper;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.okr.dto.TeamDto;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

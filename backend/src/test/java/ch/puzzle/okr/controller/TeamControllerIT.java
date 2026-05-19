@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
 import java.util.Arrays;
 import java.util.Collections;

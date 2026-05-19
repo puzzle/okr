@@ -12,6 +12,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDate;

@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;

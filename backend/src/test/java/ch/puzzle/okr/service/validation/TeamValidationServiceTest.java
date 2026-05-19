@@ -7,7 +7,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.test.TestHelper;
 import java.util.List;

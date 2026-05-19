@@ -5,7 +5,7 @@ import static ch.puzzle.okr.Constants.OBJECTIVE;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import jakarta.persistence.EntityManager;

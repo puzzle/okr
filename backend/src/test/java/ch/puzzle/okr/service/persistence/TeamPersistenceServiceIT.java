@@ -3,7 +3,7 @@ package ch.puzzle.okr.service.persistence;
 import static ch.puzzle.okr.Constants.TEAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import java.util.List;

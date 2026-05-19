@@ -4,7 +4,7 @@ import static ch.puzzle.okr.Constants.TEAM;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import java.util.List;

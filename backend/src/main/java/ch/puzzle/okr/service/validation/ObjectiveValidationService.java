@@ -7,7 +7,7 @@ import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.State;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import java.util.List;

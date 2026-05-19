@@ -8,6 +8,7 @@ import FilterHelper from '../support/helper/dom-helper/filterHelper';
 
 describe('okr team-management', () => {
   const teamName = uniqueSuffix('New Team');
+  const teamDescription = 'Our newest team';
   const nameEsha = users.bl.name;
 
   describe('routing to overview', () => {
@@ -65,9 +66,24 @@ describe('okr team-management', () => {
 
       teamManagementPage.addTeam()
         .fillName(teamName)
+        .fillDescription(teamDescription)
         .submit();
       cy.wait('@addTeam');
       cy.contains(teamName);
+    });
+
+    it('should not be able to create team with title or description longer than 250 chars', () => {
+      const char = 'a';
+
+      teamManagementPage.addTeam()
+        .fillName(char.repeat(251))
+        .fillDescription(char.repeat(251));
+
+      cy.contains('Teamname muss folgende Länge haben: 2-250 Zeichen.');
+      cy.contains('Beschreibung darf maximal eine Länge von 250 Zeichen haben.');
+
+      cy.getByTestId('save')
+        .should('be.disabled');
     });
 
     it('should not be able to remove last admin from team', () => {
@@ -126,7 +142,7 @@ describe('okr team-management', () => {
       cy.get('app-team-list .mat-mdc-list-item')
         .contains('LoremIpsum')
         .click();
-      editTeamNameAndTest('IpsumLorem');
+      editTeamNameWithDescriptionAndTest('IpsumLorem', 'Still IpsumLorem');
       cy.visit('team-management');
 
       cy.wait(['@getUsers',
@@ -140,7 +156,7 @@ describe('okr team-management', () => {
       cy.get('app-team-list .mat-mdc-list-item')
         .contains('IpsumLorem')
         .click();
-      editTeamNameAndTest('LoremIpsum');
+      editTeamNameWithDescriptionAndTest('LoremIpsum', 'Our competitors are jumping the shark target rich environment');
     });
 
     it('should delete team', () => {
@@ -415,9 +431,9 @@ describe('okr team-management', () => {
         .click();
       cy.getByTestId('teamMoreButton')
         .should('exist');
-      editTeamNameAndTest('/BBT_edit');
+      editTeamNameWithDescriptionAndTest('/BBT_edit', 'The edited Berufsbildungsteam!');
       // restore old name
-      editTeamNameAndTest('/BBT');
+      editTeamNameWithDescriptionAndTest('/BBT', 'The Berufsbildungsteam');
     });
 
     it('should add members to team "/BBT"', () => {
@@ -585,7 +601,7 @@ function checkRolesForEsha() {
     .and('contain', 'Team-Member');
 }
 
-function editTeamNameAndTest(teamName: string) {
+function editTeamNameWithDescriptionAndTest(teamName: string, description: string) {
   cy.intercept('PUT', '**/teams/*')
     .as('saveTeam');
   cy.getByTestId('edit-team-button')
@@ -593,12 +609,21 @@ function editTeamNameAndTest(teamName: string) {
   cy.getByTestId('add-team-name')
     .as('team-name')
     .click();
+  cy.getByTestId('add-team-description')
+    .as('team-description')
+    .click();
+
   cy.get('@team-name')
     .clear();
   cy.get('@team-name')
     .type(teamName);
+  cy.get('@team-description')
+    .clear();
+  cy.get('@team-description')
+    .type(description);
   cy.getByTestId('save')
     .click();
+
   cy.wait('@saveTeam');
   cy.contains(teamName);
 }

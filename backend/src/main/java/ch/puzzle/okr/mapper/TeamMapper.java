@@ -1,7 +1,7 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.TeamDto;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import org.springframework.stereotype.Component;
 
 @Component

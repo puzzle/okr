@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.OK;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.TeamMapper;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

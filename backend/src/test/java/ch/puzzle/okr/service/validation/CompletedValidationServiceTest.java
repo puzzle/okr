@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import java.time.LocalDateTime;
 import java.util.List;

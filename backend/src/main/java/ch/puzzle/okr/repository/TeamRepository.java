@@ -1,6 +1,6 @@
 package ch.puzzle.okr.repository;
 
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 

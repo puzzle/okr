@@ -122,4 +122,29 @@ describe('TeamManagementComponent', () => {
     expect(component.teamForm.controls.name.value)
       .toBe(marketingTeamWriteable.name);
   });
+
+  it('should trim description and set to null if empty or only whitespace', () => {
+    jest.spyOn(teamServiceMock, 'createTeam')
+      .mockReturnValue(of({}));
+
+    component.teamForm.setValue({ name: 'Whitespace Team',
+      description: '   ' });
+    component.saveTeam();
+
+    expect(teamServiceMock.createTeam)
+      .toHaveBeenCalledWith(expect.objectContaining({
+        name: 'Whitespace Team',
+        description: null
+      }));
+  });
+
+  it('should return correct dialog title based on data presence', () => {
+    component.data = null;
+    expect(component.getDialogTitle())
+      .toBe('Team erfassen');
+
+    component.data = { team: marketingTeamWriteable };
+    expect(component.getDialogTitle())
+      .toBe('Team bearbeiten');
+  });
 });

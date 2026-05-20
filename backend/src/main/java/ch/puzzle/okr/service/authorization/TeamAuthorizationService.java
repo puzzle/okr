@@ -48,6 +48,11 @@ public class TeamAuthorizationService {
         return teamBusinessService.archiveTeam(id, markedAsArchivedAT);
     }
 
+    public Team unarchiveTeam(Long id) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_UNARCHIVE, TEAM), id);
+        return teamBusinessService.unarchiveTeam(id);
+    }
+
     public void addUsersToTeam(long entityId, List<Long> userIdList) {
         checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
         teamBusinessService.addUsersToTeam(entityId, userIdList);

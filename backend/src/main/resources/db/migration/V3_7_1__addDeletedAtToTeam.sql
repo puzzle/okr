@@ -1,2 +1,3 @@
 ALTER TABLE team
-ADD COLUMN deleted_at TIMESTAMP DEFAULT NULL
+ADD COLUMN status text,
+ADD COLUMN marked_as_archived_at timestamp;

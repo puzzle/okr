@@ -151,7 +151,7 @@ public class TeamBusinessService {
     }
 
     public Team archiveTeam(Long id, LocalDateTime markedAsArchivedAt) {
-        validator.validateOnDelete(id);
+        validator.validateOnGet(id);
         Team entity = teamPersistenceService.findById(id);
 
         validator.validateOnArchive(entity, markedAsArchivedAt);
@@ -159,6 +159,19 @@ public class TeamBusinessService {
         entity.archiveTeam(markedAsArchivedAt);
         cacheService.emptyAuthorizationUsersCache();
 
+        return teamPersistenceService.save(entity);
+    }
+
+    public Team unarchiveTeam(Long id) {
+        validator.validateOnGet(id);
+        Team entity = teamPersistenceService.findById(id);
+
+        validator.validateOnUnarchive(entity);
+
+        entity.setStatus(TeamStatus.ACTIVE);
+        entity.setMarkedAsArchivedAt(null);
+
+        cacheService.emptyAuthorizationUsersCache();
         return teamPersistenceService.save(entity);
     }
 

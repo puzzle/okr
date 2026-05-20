@@ -102,6 +102,11 @@ public class Team implements WriteableInterface {
         this.markedAsArchivedAt = markedAsArchivedAt;
     }
 
+    public void archiveTeam(LocalDateTime markedAsArchivedAt) {
+        this.status = TeamStatus.ARCHIVED;
+        this.markedAsArchivedAt = markedAsArchivedAt;
+    }
+
     @Override
     public boolean isWriteable() {
         return writeable;

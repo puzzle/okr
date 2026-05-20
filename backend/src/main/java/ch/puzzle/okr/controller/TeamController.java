@@ -2,6 +2,7 @@ package ch.puzzle.okr.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import ch.puzzle.okr.dto.ArchiveTeamDto;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.TeamMapper;
@@ -13,6 +14,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,9 +78,9 @@ public class TeamController {
     public ResponseEntity<TeamDto> archiveTeam(
             @Parameter(description = "The ID of the team to archive.", required = true) @PathVariable long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The archive details including the effective end date.", required = true)
-            @RequestBody TeamDto teamDto) {
+            @RequestBody ArchiveTeamDto archiveDto) {
 
-        Team archivedTeam = teamAuthorizationService.archiveTeam(id, teamMapper.toTeam(teamDto));
+        Team archivedTeam = teamAuthorizationService.archiveTeam(id, teamMapper.toMarkedAsArchivedAt(archiveDto));
 
         return ResponseEntity.status(OK).body(teamMapper.toDto(archivedTeam));
     }

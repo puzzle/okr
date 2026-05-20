@@ -37,18 +37,19 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         throwExceptionWhenIdHasChanged(id, model.getId());
         doesEntityExist(model.getId());
         checkIfTeamWithNameAlreadyExists(model.getName(), model.getId());
+        throwExceptionIfTeamIsArchived(id);
         validate(model);
     }
 
     public void validateOnArchive(Team model, LocalDateTime markedAsArchivedAt) {
         throwExceptionWhenModelIsNull(model);
         validateValidDate(markedAsArchivedAt);
-        validateThatModelIsNotAlreadyArchived(model, TeamStatus.ARCHIVED, ErrorKey.TEAM_IS_ALREADY_ARCHIVED);
+        validateTeamStatusToNotEqual(model, TeamStatus.ARCHIVED, ErrorKey.TEAM_IS_ALREADY_ARCHIVED);
         validate(model);
     }
 
     public void validateOnUnarchive(Team model) {
-        validateThatModelIsNotAlreadyArchived(model, TeamStatus.ACTIVE, ErrorKey.TEAM_IS_ALREADY_ACTIVE);
+        validateTeamStatusToNotEqual(model, TeamStatus.ACTIVE, ErrorKey.TEAM_IS_ALREADY_ACTIVE);
         validate(model);
     }
 
@@ -60,7 +61,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         }
     }
 
-    public void validateThatModelIsNotAlreadyArchived(Team model, TeamStatus statusToCheck, ErrorKey errorKey) {
+    private void validateTeamStatusToNotEqual(Team model, TeamStatus statusToCheck, ErrorKey errorKey) {
         if (model.getStatus() == statusToCheck) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  errorKey,
@@ -79,6 +80,18 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ALREADY_EXISTS_SAME_NAME,
                                                  List.of(TEAM, name));
+        }
+    }
+
+    private void throwExceptionIfTeamIsArchived(Long id) {
+        Team existingTeam = this.getPersistenceService().findById(id);
+
+        if (existingTeam.getStatus() == TeamStatus.ARCHIVED) {
+            throw new OkrResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    ErrorKey.TEAM_IS_ARCHIVED,
+                    List.of(TEAM)
+            );
         }
     }
 }

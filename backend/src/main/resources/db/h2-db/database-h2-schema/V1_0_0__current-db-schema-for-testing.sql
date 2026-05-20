@@ -50,9 +50,10 @@ create table if not exists quarter
 
 create table if not exists team
 (
-    id      bigint       not null,
-    version int          not null,
-    name    varchar(250) not null,
+    id              bigint       not null,
+    version         int          not null,
+    name            varchar(250) not null,
+    description     varchar(250),
     primary key (id)
 );
 

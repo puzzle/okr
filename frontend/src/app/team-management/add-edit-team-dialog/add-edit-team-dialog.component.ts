@@ -30,7 +30,8 @@ export class AddEditTeamDialogComponent implements OnInit {
   teamForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(250)])
+      Validators.maxLength(250)]),
+    description: new FormControl<string>('', [Validators.maxLength(250)])
   });
 
   protected readonly formInputCheck = formInputCheck;
@@ -40,7 +41,8 @@ export class AddEditTeamDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data) {
       this.teamForm.setValue({
-        name: this.data.team.name
+        name: this.data.team.name,
+        description: this.data.team.description
       });
     }
   }
@@ -54,7 +56,13 @@ export class AddEditTeamDialogComponent implements OnInit {
   }
 
   private createNewTeam() {
-    const newTeam: Team = this.teamForm.value as Team;
+    const formValue = this.teamForm.value;
+
+    const newTeam: Team = {
+      ...formValue,
+      description: formValue.description?.trim() || null
+    } as Team;
+
     this.teamService.createTeam(newTeam)
       .subscribe((result) => {
         this.userService.reloadUsers();
@@ -67,11 +75,15 @@ export class AddEditTeamDialogComponent implements OnInit {
 
   private updateTeam() {
     if (this.data) {
+      const formValue = this.teamForm.value;
+
       const updatedTeam: Team = {
-        ...this.teamForm.value,
+        ...formValue,
+        description: formValue.description?.trim() || null,
         id: this.data.team.id,
         version: this.data.team.version
       } as Team;
+
       this.teamService.updateTeam(updatedTeam)
         .subscribe((result) => {
           this.dialogRef.close(result);

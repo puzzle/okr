@@ -13,6 +13,11 @@ export default class TeamDialog extends Dialog {
     return this;
   }
 
+  fillDescription(description: string) {
+    this.fillInputByTestId('add-team-description', description);
+    return this;
+  }
+
   override submit() {
     cy.getByTestId('save')
       .click();

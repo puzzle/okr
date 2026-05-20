@@ -142,4 +142,13 @@ describe('okr team', () => {
       .submit();
     cy.wait('@deleteTeam');
   });
+
+  it('should display team description or full name on hover', () => {
+    const filterHelper = FilterHelper.do()
+      .getOption('Puzzle ITC');
+
+    filterHelper.realHover();
+
+    cy.contains('Represents the company itself');
+  });
 });

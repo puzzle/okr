@@ -21,7 +21,8 @@ import { Objective } from './types/model/objective';
 import { Item } from '../components/action-plan/action-plan.component';
 
 export const teamFormObject = {
-  name: 'newTeamName'
+  name: 'newTeamName',
+  description: 'New Team Description'
 };
 
 
@@ -29,6 +30,7 @@ export const marketingTeamWriteable: Team = {
   id: 1,
   version: 2,
   name: 'Marketing Team',
+  description: 'The writeable Marketing Team',
   isWriteable: true
 };
 
@@ -36,6 +38,7 @@ export const marketingTeamNotWriteable: Team = {
   id: 1,
   version: 3,
   name: 'Marketing Team',
+  description: 'The not writeable Marketing Team',
   isWriteable: false
 };
 
@@ -43,6 +46,7 @@ export const team1: Team = {
   id: 1,
   version: 2,
   name: 'Team1',
+  description: 'The not writeable Team1',
   isWriteable: false
 };
 
@@ -50,6 +54,7 @@ export const team2: Team = {
   id: 2,
   version: 3,
   name: 'Team2',
+  description: 'The not writeable Team2',
   isWriteable: false
 };
 
@@ -57,6 +62,7 @@ export const team3: Team = {
   id: 3,
   version: 4,
   name: 'Team3',
+  description: 'The not writeable Team3',
   isWriteable: false
 };
 

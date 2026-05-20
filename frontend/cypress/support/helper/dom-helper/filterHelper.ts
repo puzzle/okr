@@ -33,7 +33,7 @@ export default class FilterHelper extends PageObjectMapperBase {
     return this;
   }
 
-  private getOption(text: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  public getOption(text: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.contains('mat-chip:visible', text);
   }
 }

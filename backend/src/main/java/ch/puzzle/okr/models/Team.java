@@ -1,5 +1,7 @@
 package ch.puzzle.okr.models;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +21,9 @@ public class Team implements WriteableInterface {
     @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String name;
 
+    @Size(max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    private String description;
+
     @Version
     private int version;
 
@@ -35,6 +40,7 @@ public class Team implements WriteableInterface {
         id = builder.id;
         version = builder.version;
         setName(builder.name);
+        setDescription(builder.description);
         setUserTeamList(builder.userTeamList);
     }
 
@@ -52,6 +58,14 @@ public class Team implements WriteableInterface {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = trim(description);
     }
 
     public List<UserTeam> getUserTeamList() {
@@ -74,29 +88,30 @@ public class Team implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Team{" + "id=" + id + ", version=" + version + ", name='" + name + ", writeable=" + writeable + '}';
+        return "Team{" + "id=" + getId() + ", name='" + getName() + '\'' + ", description='" + getDescription() + '\''
+               + ", version=" + getVersion() + ", userTeamList=" + getUserTeamList() + ", writeable=" + isWriteable()
+               + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
+        if (!(o instanceof Team team))
             return false;
-        Team team = (Team) o;
-        return Objects.equals(id, team.id) && Objects.equals(version, team.version) && Objects.equals(name, team.name)
-               && Objects.equals(writeable, team.writeable);
+        return getVersion() == team.getVersion() && isWriteable() == team.isWriteable()
+               && Objects.equals(getId(), team.getId()) && Objects.equals(getName(), team.getName())
+               && Objects.equals(getDescription(), team.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, name, writeable);
+        return Objects.hash(getId(), getName(), getDescription(), getVersion(), getUserTeamList(), isWriteable());
     }
 
     public static final class Builder {
         private Long id;
         private int version;
         private String name;
+        private String description;
 
         private List<UserTeam> userTeamList;
 
@@ -119,6 +134,11 @@ public class Team implements WriteableInterface {
 
         public Builder withName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder withDescription(String description) {
+            this.description = description;
             return this;
         }
 

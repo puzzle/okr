@@ -117,6 +117,7 @@ describe('DeleteUserComponent', () => {
         id: 1,
         version: 2,
         name: 'Lorem',
+        description: 'Lorem ipsum',
         isWriteable: true
       },
       isTeamAdmin: false
@@ -215,6 +216,7 @@ describe('DeleteUserComponent', () => {
         id: 1,
         version: 2,
         name: 'Lorem',
+        description: 'Lorem ipsum',
         isWriteable: true
       },
       isTeamAdmin: false

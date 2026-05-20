@@ -6,12 +6,15 @@ import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -145,6 +148,14 @@ public class TeamBusinessService {
         if (!hasAdmin) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.TRIED_TO_DELETE_LAST_ADMIN);
         }
+    }
+
+    public Team archiveTeam(Long id, Team entity) {
+        validator.validateOnArchive(id, entity);
+        entity.setStatus(TeamStatus.ARCHIVED);
+        cacheService.emptyAuthorizationUsersCache();
+
+        return teamPersistenceService.save(entity);
     }
 
     @Transactional

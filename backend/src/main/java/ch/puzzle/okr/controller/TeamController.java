@@ -64,6 +64,24 @@ public class TeamController {
         return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam));
     }
 
+    @Operation(summary = "Archive Team", description = "Marks a team as archived effective from the provided date.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Team successfully archived", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to archive the team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Team is already archived", content = @Content) })
+    @PutMapping("/{id}/archive")
+    public ResponseEntity<TeamDto> archiveTeam(
+            @Parameter(description = "The ID of the team to archive.", required = true) @PathVariable long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The archive details including the effective end date.", required = true)
+            @RequestBody TeamDto teamDto) {
+
+        Team archivedTeam = teamAuthorizationService.archiveTeam(id, teamMapper.toTeam(teamDto));
+
+        return ResponseEntity.status(OK).body(teamMapper.toDto(archivedTeam));
+    }
+
     @Operation(summary = "Delete Team by ID", description = "Delete Team by ID")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Team by ID"),
             @ApiResponse(responseCode = "401", description = "Not authorized to delete an Team", content = @Content),

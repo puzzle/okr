@@ -35,8 +35,7 @@ create table if not exists team
 (
     id   bigint       not null
         primary key,
-    name varchar(250) not null,
-    description varchar(250)
+    name varchar(250) not null
 );
 
 create table if not exists objective

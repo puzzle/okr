@@ -43,9 +43,9 @@ public class TeamAuthorizationService {
         teamBusinessService.deleteTeam(id);
     }
 
-    public Team archiveTeam(Long id, Team entity) {
+    public Team archiveTeam(Long id, LocalDateTime markedAsArchivedAT) {
         checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_ARCHIVE, TEAM), id);
-        return teamBusinessService.archiveTeam(id, entity);
+        return teamBusinessService.archiveTeam(id, markedAsArchivedAT);
     }
 
     public void addUsersToTeam(long entityId, List<Long> userIdList) {

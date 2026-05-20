@@ -5,6 +5,7 @@ import static ch.puzzle.okr.Constants.TEAM;
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.team.Team;
+import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 
@@ -39,13 +40,11 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         validate(model);
     }
 
-    public void validateOnArchive(Long id, Team model) {
+    public void validateOnArchive(Team model, LocalDateTime markedAsArchivedAt) {
         throwExceptionWhenModelIsNull(model);
-        throwExceptionWhenIdIsNull(id);
-        throwExceptionWhenIdHasChanged(id, model.getId());
-        throwExceptionWhenAnythingElseThanArchivedDateChanges(id, model);
-        validateValidDate(model.getMarkedAsArchivedAt());
-        doesEntityExist(model.getId());
+        validateValidDate(markedAsArchivedAt);
+        validateThatModelIsNotAlreadyArchived(model);
+        validate(model);
     }
 
     private void validateValidDate(LocalDateTime date) {
@@ -53,6 +52,14 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_NULL,
                                                  List.of("markedAsArchivedAt", TEAM));
+        }
+    }
+
+    public void validateThatModelIsNotAlreadyArchived(Team model) {
+        if (model.getStatus() == TeamStatus.ARCHIVED) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                 ErrorKey.TEAM_IS_ALREADY_ARCHIVED,
+                                                 List.of(model.getName()));
         }
     }
 
@@ -67,34 +74,6 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ALREADY_EXISTS_SAME_NAME,
                                                  List.of(TEAM, name));
-        }
-    }
-
-    private void throwExceptionWhenAnythingElseThanArchivedDateChanges(Long id, Team incomingModel) {
-        Team existingTeam = this.getPersistenceService().findById(id);
-
-        if (!Objects.equals(existingTeam.getName(), incomingModel.getName())) {
-            throw new OkrResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
-                    List.of(TEAM, "name")
-            );
-        }
-
-        if (!Objects.equals(existingTeam.getDescription(), incomingModel.getDescription())) {
-            throw new OkrResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
-                    List.of(TEAM, "description")
-            );
-        }
-
-        if (!Objects.equals(existingTeam.getVersion(), incomingModel.getVersion())) {
-            throw new OkrResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
-                    List.of(TEAM, "version")
-            );
         }
     }
 }

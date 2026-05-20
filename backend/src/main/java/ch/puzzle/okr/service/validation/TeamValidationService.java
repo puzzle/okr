@@ -43,7 +43,12 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
     public void validateOnArchive(Team model, LocalDateTime markedAsArchivedAt) {
         throwExceptionWhenModelIsNull(model);
         validateValidDate(markedAsArchivedAt);
-        validateThatModelIsNotAlreadyArchived(model);
+        validateThatModelIsNotAlreadyArchived(model, TeamStatus.ARCHIVED, ErrorKey.TEAM_IS_ALREADY_ARCHIVED);
+        validate(model);
+    }
+
+    public void validateOnUnarchive(Team model) {
+        validateThatModelIsNotAlreadyArchived(model, TeamStatus.ACTIVE, ErrorKey.TEAM_IS_ALREADY_ACTIVE);
         validate(model);
     }
 
@@ -55,10 +60,10 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         }
     }
 
-    public void validateThatModelIsNotAlreadyArchived(Team model) {
-        if (model.getStatus() == TeamStatus.ARCHIVED) {
+    public void validateThatModelIsNotAlreadyArchived(Team model, TeamStatus statusToCheck, ErrorKey errorKey) {
+        if (model.getStatus() == statusToCheck) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.TEAM_IS_ALREADY_ARCHIVED,
+                                                 errorKey,
                                                  List.of(model.getName()));
         }
     }

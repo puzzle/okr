@@ -5,9 +5,11 @@ import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWr
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,16 @@ public class TeamAuthorizationService {
     public void deleteEntity(Long id) {
         checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, TEAM), id);
         teamBusinessService.deleteTeam(id);
+    }
+
+    public Team archiveTeam(Long id, LocalDateTime markedAsArchivedAT) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_ARCHIVE, TEAM), id);
+        return teamBusinessService.archiveTeam(id, markedAsArchivedAT);
+    }
+
+    public Team unarchiveTeam(Long id) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_UNARCHIVE, TEAM), id);
+        return teamBusinessService.unarchiveTeam(id);
     }
 
     public void addUsersToTeam(long entityId, List<Long> userIdList) {

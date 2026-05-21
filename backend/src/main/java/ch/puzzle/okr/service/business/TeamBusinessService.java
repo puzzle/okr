@@ -2,16 +2,19 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -145,6 +148,31 @@ public class TeamBusinessService {
         if (!hasAdmin) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.TRIED_TO_DELETE_LAST_ADMIN);
         }
+    }
+
+    public Team archiveTeam(Long id, LocalDateTime markedAsArchivedAt) {
+        validator.validateOnGet(id);
+        Team entity = teamPersistenceService.findById(id);
+
+        validator.validateOnArchive(entity, markedAsArchivedAt);
+
+        entity.archiveTeam(markedAsArchivedAt);
+        cacheService.emptyAuthorizationUsersCache();
+
+        return teamPersistenceService.save(entity);
+    }
+
+    public Team unarchiveTeam(Long id) {
+        validator.validateOnGet(id);
+        Team entity = teamPersistenceService.findById(id);
+
+        validator.validateOnUnarchive(entity);
+
+        entity.setStatus(TeamStatus.ACTIVE);
+        entity.setMarkedAsArchivedAt(null);
+
+        cacheService.emptyAuthorizationUsersCache();
+        return teamPersistenceService.save(entity);
     }
 
     @Transactional

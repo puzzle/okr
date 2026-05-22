@@ -9,7 +9,7 @@ import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class TeamAuthorizationService {
         teamBusinessService.deleteTeam(id);
     }
 
-    public Team archiveTeam(Long id, LocalDateTime markedAsArchivedAT) {
+    public Team archiveTeam(Long id, LocalDate markedAsArchivedAT) {
         checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_ARCHIVE, TEAM), id);
         return teamBusinessService.archiveTeam(id, markedAsArchivedAT);
     }

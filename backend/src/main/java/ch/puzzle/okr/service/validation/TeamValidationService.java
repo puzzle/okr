@@ -9,7 +9,7 @@ import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         validate(model);
     }
 
-    public void validateOnArchive(Team model, LocalDateTime markedAsArchivedAt) {
+    public void validateOnArchive(Team model, LocalDate markedAsArchivedAt) {
         throwExceptionWhenModelIsNull(model);
         validateValidDate(markedAsArchivedAt);
         validateTeamStatusToNotEqual(model, TeamStatus.ARCHIVED, ErrorKey.TEAM_IS_ALREADY_ARCHIVED);
@@ -53,7 +53,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         validate(model);
     }
 
-    private void validateValidDate(LocalDateTime date) {
+    private void validateValidDate(LocalDate date) {
         if (date == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_NULL,

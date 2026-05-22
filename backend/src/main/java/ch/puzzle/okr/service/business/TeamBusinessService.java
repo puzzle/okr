@@ -14,7 +14,7 @@ import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -150,7 +150,7 @@ public class TeamBusinessService {
         }
     }
 
-    public Team archiveTeam(Long id, LocalDateTime markedAsArchivedAt) {
+    public Team archiveTeam(Long id, LocalDate markedAsArchivedAt) {
         validator.validateOnGet(id);
         Team entity = teamPersistenceService.findById(id);
 

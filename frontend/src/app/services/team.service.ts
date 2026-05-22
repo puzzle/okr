@@ -67,4 +67,18 @@ export class TeamService {
       .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`, {})
       .pipe(tap(() => this.reloadTeams()));
   }
+
+  archiveTeam(team: Team): Observable<void> {
+    const payload = {
+      markedAsArchivedAt: team.markedAsArchivedAt
+    };
+
+    return this.http.put<void>(`${this.API_URL}/${team.id}/archive`, payload)
+      .pipe(tap(() => this.reloadTeams()));
+  }
+
+  unarchiveTeam(id: number): Observable<void> {
+    return this.http.put<void>(`${this.API_URL}/${id}/unarchive`, null)
+      .pipe(tap(() => this.reloadTeams()));
+  }
 }

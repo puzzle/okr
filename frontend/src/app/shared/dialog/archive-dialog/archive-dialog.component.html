@@ -1,0 +1,43 @@
+<app-dialog-template-core [title]="'Team Archivieren'">
+
+  <ng-container content>
+    <div class="dialog-content mb-3">
+      <p class="mb-2">Ab wann soll das Team als Archiviert zählen?</p>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select [(ngModel)]="selectedQuarter" placeholder="Bitte wählen...">
+          @for (quarter of availableQuarters$ | async; track quarter.id) {
+          <mat-option [value]="quarter">
+            {{ quarter.fullLabel() }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <ng-container actions>
+    <div class="col-auto">
+      <button
+        [attr.data-testId]="'save-btn'"
+        type="button"
+        (click)="onSave()"
+        color="primary"
+        mat-flat-button
+        [disabled]="!selectedQuarter"
+      >
+        Speichern
+      </button>
+
+      <button
+        mat-button
+        mat-dialog-close
+        color="primary"
+        [attr.data-testId]="'cancel-btn'"
+      >
+        Abbrechen
+      </button>
+    </div>
+  </ng-container>
+
+</app-dialog-template-core>

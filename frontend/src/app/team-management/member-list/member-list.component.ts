@@ -126,6 +126,25 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       .subscribe();
   }
 
+  unarchiveTeam(selectedTeam: Team) {
+    const data = {
+      team: selectedTeam.name
+    };
+
+    this.dialogService
+      .openConfirmDialog('CONFIRMATION.UNARCHIVE.TEAM', data)
+      .afterClosed()
+      .pipe(filter((confirm) => confirm), mergeMap(() => {
+        selectedTeam.markedAsArchivedAt = null;
+
+        return this.teamService.unarchiveTeam(selectedTeam.id);
+      }))
+      .subscribe({
+        next: () => console.log(`Successfully unarchived team: ${selectedTeam.name}`),
+        error: (err) => console.error('Failed to unarchive team:', err)
+      });
+  }
+
   addMemberToTeam() {
     const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
       data: {

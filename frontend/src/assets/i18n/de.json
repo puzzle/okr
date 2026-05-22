@@ -67,6 +67,12 @@
         "TITLE": "Mitglied entfernen",
         "TEXT": "Möchtest du {{user}} wirklich aus dem Team '{{team}}' entfernen?"
       }
+    },
+    "UNARCHIVE": {
+      "TEAM": {
+        "TITLE": "Team unarchivieren",
+        "TEXT": "Soll das Team '{{team}}' unarchiviert werden?"
+      }
     }
   },
   "ERROR": {

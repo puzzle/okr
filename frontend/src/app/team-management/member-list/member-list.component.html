@@ -71,7 +71,7 @@
       <mat-menu #menu="matMenu">
         <button
           class="d-block d-md-none"
-          (click)="deleteTeam(selectedTeam$.value!)"
+          (click)="addMemberToTeam()"
           mat-menu-item
           [attr.data-testId]="'teamAddMemberButton'"
         >
@@ -91,6 +91,7 @@
             <span class="font-size-14">Team löschen</span>
           </span>
         </button>
+        @if (!selectedTeam$.value!.markedAsArchivedAt) {
         <button
           (click)="archiveTeam(selectedTeam$.value!)"
           mat-menu-item
@@ -105,6 +106,22 @@
             <span class="font-size-14">Team Archivieren</span>
           </span>
         </button>
+        } @else {
+        <button
+          (click)="unarchiveTeam(selectedTeam$.value!)"
+          mat-menu-item
+          [attr.data-testId]="'teamUnarchiveButton'"
+        >
+          <span class="d-flex align-items-center gap-2">
+            <app-puzzle-icon
+              icon="unarchive-icon.svg"
+              alt="Unarchive Team"
+              class="d-inline-flex"
+            ></app-puzzle-icon>
+            <span class="font-size-14">Team Un-archivieren</span>
+          </span>
+        </button>
+        }
       </mat-menu>
     </div>
     }

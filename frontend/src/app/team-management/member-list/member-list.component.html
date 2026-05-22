@@ -91,6 +91,20 @@
             <span class="font-size-14">Team löschen</span>
           </span>
         </button>
+        <button
+          (click)="archiveTeam(selectedTeam$.value!)"
+          mat-menu-item
+          [attr.data-testId]="'teamArchiveButton'"
+        >
+          <span class="d-flex align-items-center gap-2">
+            <app-puzzle-icon
+              icon="archive-icon.svg"
+              alt="Archive Team"
+              class="d-inline-flex"
+            ></app-puzzle-icon>
+            <span class="font-size-14">Team Archivieren</span>
+          </span>
+        </button>
       </mat-menu>
     </div>
     }

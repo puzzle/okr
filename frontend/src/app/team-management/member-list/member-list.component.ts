@@ -11,6 +11,9 @@ import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-tea
 import { MatTableDataSource } from '@angular/material/table';
 import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
 import { DialogService } from '../../services/dialog.service';
+import { Quarter } from '../../shared/types/model/quarter';
+import { MatDialog } from '@angular/material/dialog';
+import { ArchiveTeamDialogComponent } from '../../shared/dialog/archive-dialog/archive-dialog.component';
 
 @Component({
   selector: 'app-member-list',
@@ -30,6 +33,8 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   private readonly router = inject(Router);
 
   private readonly dialogService = inject(DialogService);
+
+  private readonly dialog = inject(MatDialog);
 
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
 
@@ -105,6 +110,33 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
         this.userService.reloadCurrentUser()
           .subscribe();
         this.router.navigateByUrl('team-management');
+      });
+  }
+
+  archiveTeam(selectedTeam: Team) {
+    const payload = {
+      markedAsArchivedAt: selectedTeam.markedAsArchivedAt
+    };
+
+    this.dialog
+      .open(ArchiveTeamDialogComponent, {
+        panelClass: 'okr-dialog-panel-small'
+      })
+      .afterClosed()
+      .subscribe((selectedQuarter: Quarter | undefined) => {
+        if (selectedQuarter) {
+          selectedTeam.markedAsArchivedAt = selectedQuarter.endDate;
+
+          this.teamService.archiveTeam(selectedTeam)
+            .subscribe({
+              next: () => {
+                console.log(`Successfully archived team: ${selectedTeam.name}`);
+              },
+              error: (err) => {
+                console.error('Failed to archive team:', err);
+              }
+            });
+        }
       });
   }
 

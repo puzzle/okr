@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +41,7 @@ public class Team implements WriteableInterface {
     @Enumerated(EnumType.STRING)
     private TeamStatus status = TeamStatus.ACTIVE;
 
-    private LocalDateTime markedAsArchivedAt;
+    private LocalDate markedAsArchivedAt;
 
     public Team() {
     }
@@ -94,15 +94,15 @@ public class Team implements WriteableInterface {
         this.status = status;
     }
 
-    public LocalDateTime getMarkedAsArchivedAt() {
+    public LocalDate getMarkedAsArchivedAt() {
         return markedAsArchivedAt;
     }
 
-    public void setMarkedAsArchivedAt(LocalDateTime markedAsArchivedAt) {
+    public void setMarkedAsArchivedAt(LocalDate markedAsArchivedAt) {
         this.markedAsArchivedAt = markedAsArchivedAt;
     }
 
-    public void archiveTeam(LocalDateTime markedAsArchivedAt) {
+    public void archiveTeam(LocalDate markedAsArchivedAt) {
         this.status = TeamStatus.ARCHIVED;
         this.markedAsArchivedAt = markedAsArchivedAt;
     }
@@ -151,7 +151,7 @@ public class Team implements WriteableInterface {
         private String name;
         private String description;
         private TeamStatus status;
-        private LocalDateTime markedAsArchivedAt;
+        private LocalDate markedAsArchivedAt;
 
         private List<UserTeam> userTeamList;
 
@@ -192,7 +192,7 @@ public class Team implements WriteableInterface {
             return this;
         }
 
-        public Builder withMarkedAsArchivedAt(LocalDateTime markedAsArchivedAt) {
+        public Builder withMarkedAsArchivedAt(LocalDate markedAsArchivedAt) {
             this.markedAsArchivedAt = markedAsArchivedAt;
             return this;
         }

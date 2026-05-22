@@ -5,7 +5,7 @@ import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.team.Team;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Component
 public class TeamMapper {
@@ -25,7 +25,7 @@ public class TeamMapper {
                 .build();
     }
 
-    public LocalDateTime toMarkedAsArchivedAt(ArchiveTeamDto archiveTeamDto) {
+    public LocalDate toMarkedAsArchivedAt(ArchiveTeamDto archiveTeamDto) {
         return archiveTeamDto.markedAsArchivedAt();
     }
 }

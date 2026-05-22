@@ -1,6 +1,6 @@
 package ch.puzzle.okr.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record ArchiveTeamDto(LocalDateTime markedAsArchivedAt) {
+public record ArchiveTeamDto(LocalDate markedAsArchivedAt) {
 }

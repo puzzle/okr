@@ -114,30 +114,16 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   }
 
   archiveTeam(selectedTeam: Team) {
-    const payload = {
-      markedAsArchivedAt: selectedTeam.markedAsArchivedAt
-    };
-
     this.dialog
       .open(ArchiveTeamDialogComponent, {
         panelClass: 'okr-dialog-panel-small'
       })
       .afterClosed()
-      .subscribe((selectedQuarter: Quarter | undefined) => {
-        if (selectedQuarter) {
-          selectedTeam.markedAsArchivedAt = selectedQuarter.endDate;
-
-          this.teamService.archiveTeam(selectedTeam)
-            .subscribe({
-              next: () => {
-                console.log(`Successfully archived team: ${selectedTeam.name}`);
-              },
-              error: (err) => {
-                console.error('Failed to archive team:', err);
-              }
-            });
-        }
-      });
+      .pipe(filter((selectedQuarter: Quarter | undefined) => !!selectedQuarter), mergeMap((selectedQuarter: Quarter) => {
+        selectedTeam.markedAsArchivedAt = selectedQuarter.endDate;
+        return this.teamService.archiveTeam(selectedTeam);
+      }))
+      .subscribe();
   }
 
   addMemberToTeam() {

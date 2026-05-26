@@ -4,6 +4,8 @@ import static ch.puzzle.okr.Constants.TEAM;
 
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.repository.TeamRepository;
+
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +23,9 @@ public class TeamPersistenceService extends PersistenceBase<Team, Long, TeamRepo
 
     public List<Team> findTeamsByName(String name) {
         return getRepository().findTeamsByName(name);
+    }
+
+    public List<Team> findActiveTeamsForQuarter(LocalDate quarterStartDate) {
+        return getRepository().findByMarkedAsArchivedAtIsNullOrMarkedAsArchivedAtGreaterThanEqual(quarterStartDate);
     }
 }

@@ -5,7 +5,7 @@
         @if (selectedTeam$.value) {
         <h2>{{ selectedTeam$.value!.name }}</h2>
         }
-        @if (selectedTeam$.value?.isWriteable) {
+        @if (showAddMemberToTeam()) {
         <app-puzzle-icon-button
           (click)="editTeam()"
           [attr.data-testId]="'edit-team-button'"
@@ -13,6 +13,16 @@
           alt="Edit Team Icon"
         >
         </app-puzzle-icon-button>
+        } @else if (greyOutAddMemberToTeam()) {
+        <span matTooltip="Bearbeiten nicht möglich, da das Team archiviert ist.">
+          <app-puzzle-icon-button
+            [disabled]="true"
+            [attr.data-testId]="'edit-team-button-disabled'"
+            icon="edit.svg"
+            alt="Edit Team Icon (Disabled)"
+          >
+          </app-puzzle-icon-button>
+        </span>
         }
         @if (!selectedTeam$.value) {
         <h2>Alle Teams</h2>

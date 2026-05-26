@@ -111,4 +111,12 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     }
     return userTableEntry.userTeamList[0];
   }
+
+  showThreeDotMenu() {
+    return this.selectedTeam$.value?.isWriteable && this.selectedTeam$.value?.markedAsArchivedAt == null;
+  }
+
+  greyOutThreeDotMenu() {
+    return this.selectedTeam$.value?.isWriteable && this.selectedTeam$.value?.markedAsArchivedAt != null;
+  }
 }

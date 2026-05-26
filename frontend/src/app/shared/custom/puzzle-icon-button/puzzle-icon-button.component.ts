@@ -16,6 +16,8 @@ export class PuzzleIconButtonComponent {
   @Input({ required: false })
   size = 24;
 
+  @Input() disabled = false;
+
   readonly padding = 4;
 
   imgSize = this.size - 2 * this.padding;

@@ -60,7 +60,7 @@
   <ng-container matColumnDef="menu">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
-      @if (selectedTeam$.value?.isWriteable) {
+      @if (showThreeDotMenu()) {
       <div class="menu">
         <app-puzzle-icon-button
           (click)="$event.stopPropagation()"
@@ -80,6 +80,18 @@
             <span class="font-size-14">Member entfernen</span>
           </button>
         </mat-menu>
+      </div>
+      } @else if (greyOutThreeDotMenu()) {
+      <div class="menu">
+        <span matTooltip="Aktion nicht möglich, da das Team archiviert ist.">
+          <app-puzzle-icon-button
+            [disabled]="true"
+            [attr.data-testId]="'member-list-more-disabled'"
+            icon="three-dot-menu-icon.svg"
+            alt="More Icon (Disabled)"
+          >
+          </app-puzzle-icon-button>
+        </span>
       </div>
       }
     </td>

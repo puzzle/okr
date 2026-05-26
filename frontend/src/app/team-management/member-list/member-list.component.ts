@@ -167,7 +167,13 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   }
 
   showAddMemberToTeam() {
-    return this.selectedTeam$.value?.isWriteable;
+    const team = this.selectedTeam$.value;
+    return team?.isWriteable && !team?.markedAsArchivedAt;
+  }
+
+  greyOutAddMemberToTeam() {
+    const team = this.selectedTeam$.value;
+    return team?.isWriteable && team?.markedAsArchivedAt != null;
   }
 
   editTeam(): void {

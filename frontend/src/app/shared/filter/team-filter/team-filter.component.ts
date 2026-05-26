@@ -67,21 +67,31 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    this.subscription = this.teamService
-      .getAllTeams()
+
+    this.route.queryParams
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((params) => {
+        const quarterId = params['quarter'] ? Number(params['quarter']) : undefined;
+        this.teamService.loadTeamsForQuarter(quarterId);
+      });
+
+    this.subscription = this.teamService.getAllTeams()
       .pipe(takeUntil(this.unsubscribe$), filter((teams) => teams.length > 0))
       .subscribe((teams: Team[]) => {
         this.teams$.next(teams);
+
         const teamQuery = this.route.snapshot.queryParams['teams'];
         const teamIds = getValueFromQuery(teamQuery);
         const knownTeams = this.getAllTeamIds()
           .filter((teamId) => teamIds?.includes(teamId));
+
         if (knownTeams.length == 0) {
           this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
-            .map((team) => team.id);
+            .map((t) => t.id);
         } else {
           this.activeTeams = knownTeams;
         }
+
         if (this.isMobile) {
           this.teams$.next(this.sortTeamsToggledPriority());
         }

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Team } from '../shared/types/model/team';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/types/model/user';
@@ -11,12 +11,18 @@ import { UserTeam } from '../shared/types/model/user-team';
 export class TeamService {
   private http = inject(HttpClient);
 
-
   private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
 
   private teamsLoaded = false;
 
   private readonly API_URL = '/api/v2/teams';
+
+  private activeQuarterId?: number;
+
+  loadTeamsForQuarter(quarterId?: number): void {
+    this.activeQuarterId = quarterId;
+    this.reloadTeams();
+  }
 
   getAllTeams(): Observable<Team[]> {
     if (!this.teamsLoaded) {
@@ -27,7 +33,12 @@ export class TeamService {
   }
 
   reloadTeams(): void {
-    this.http.get<Team[]>(this.API_URL)
+    let params = new HttpParams();
+    if (this.activeQuarterId) {
+      params = params.set('quarterId', this.activeQuarterId.toString());
+    }
+
+    this.http.get<Team[]>(this.API_URL, { params })
       .subscribe((teams) => {
         if (!this.teams) {
           this.teams = new BehaviorSubject<Team[]>(teams);

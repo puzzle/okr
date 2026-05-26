@@ -106,7 +106,7 @@
     "ILLEGAL_CHANGE_OBJECTIVE_QUARTER": "Element kann nicht in ein anderes Quartal verlegt werden.",
     "TRIED_TO_DELETE_LAST_ADMIN": "Der letzte Administrator eines Teams kann nicht entfernt werden",
     "TRIED_TO_REMOVE_LAST_OKR_CHAMPION": "Der letzte OKR Champion kann nicht entfernt werden",
-    "TEAM_IS_ARCHIVED": "Das Team \"{0}\" ist bereits archiviert und kann nicht bearbeitet werden.",
+    "TEAM_IS_ARCHIVED": "Das Team \"{0}\" ist archiviert und kann nicht bearbeitet werden.",
     "TEAM_IS_ALREADY_ARCHIVED": "Das Team \"{0}\" ist bereits archiviert.",
     "TEAM_IS_ALREADY_ACTIVE": "Das Team \"{0}\" ist bereits aktiv."
   },

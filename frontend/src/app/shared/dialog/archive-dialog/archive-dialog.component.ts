@@ -1,12 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 import { QuarterService } from '../../../services/quarter.service';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Quarter } from '../../types/model/quarter';
 import { SharedModule } from '../../shared.module';
 
@@ -17,21 +15,33 @@ import { SharedModule } from '../../shared.module';
   standalone: true,
   imports: [
     MatButtonModule,
-    MatSelectModule,
-    MatFormFieldModule,
     FormsModule,
     AsyncPipe,
     SharedModule
   ]
 })
-export class ArchiveTeamDialogComponent {
+export class ArchiveTeamDialogComponent implements OnInit {
   private readonly quarterService = inject(QuarterService);
 
   private readonly dialogRef = inject(MatDialogRef<ArchiveTeamDialogComponent>);
 
   selectedQuarter: Quarter | undefined;
 
-  availableQuarters$: Observable<Quarter[]> = this.quarterService.getAllQuarters();
+  availableQuarters$!: Observable<Quarter[]>;
+
+  ngOnInit(): void {
+    this.availableQuarters$ = this.quarterService.getAllQuarters();
+
+    this.quarterService.getCurrentQuarter()
+      .pipe(take(1))
+      .subscribe((quarter) => {
+        this.selectedQuarter = quarter;
+      });
+  }
+
+  compareById(q1: Quarter, q2: Quarter): boolean {
+    return q1 && q2 ? q1.id === q2.id : q1 === q2;
+  }
 
   onSave(): void {
     this.dialogRef.close(this.selectedQuarter);

@@ -1,18 +1,29 @@
 <app-dialog-template-core [title]="'Team Archivieren'">
-
   <ng-container content>
-    <div class="dialog-content mb-3">
-      <p class="mb-2">Ab wann soll das Team als Archiviert zählen?</p>
+    <div class="dialog-content">
+      <div class="col">
+        <div class="okr-form-row okr-form-label-input-container">
+          <label class="okr-form-label okr-form-col" for="archiveQuarter">
+            Ab wann soll das Team als Archiviert zählen?
+          </label>
 
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-select [(ngModel)]="selectedQuarter" placeholder="Bitte wählen...">
-          @for (quarter of availableQuarters$ | async; track quarter.id) {
-          <mat-option [value]="quarter">
-            {{ quarter.fullLabel() }}
-          </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+          <div class="okr-form-input pe-5">
+            <select
+              class="custom-select bg-white"
+              id="archiveQuarter"
+              [(ngModel)]="selectedQuarter"
+              [compareWith]="compareById"
+              [attr.data-testId]="'archiveQuarterSelect'"
+            >
+              @for (quarter of availableQuarters$ | async; track quarter.id) {
+              <option [ngValue]="quarter">
+                {{ quarter.fullLabel() }}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
   </ng-container>
 
@@ -39,5 +50,4 @@
       </button>
     </div>
   </ng-container>
-
 </app-dialog-template-core>

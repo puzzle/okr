@@ -31,12 +31,25 @@ public class TeamController {
         this.teamMapper = teamMapper;
     }
 
-    @Operation(summary = "Get Teams", description = "Get all Teams from db")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Teams", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
+    @Operation(summary = "Get Teams", description = "Get all Teams from the db. Optionally filter by quarter to exclude teams archived before the quarter started.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all requested Teams", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Quarter not found (if provided)", content = @Content) })
     @GetMapping
-    public List<TeamDto> getAllTeams() {
-        return teamAuthorizationService.getAllTeams().stream().map(teamMapper::toDto).toList();
+    public List<TeamDto> getAllTeams(
+            @Parameter(description = "Optional Quarter ID to filter out historically archived teams")
+            @RequestParam(required = false, name = "quarterId") Long quarterId) {
+
+        if (quarterId != null) {
+            return teamAuthorizationService.getAllTeamsByQuarter(quarterId).stream()
+                    .map(teamMapper::toDto)
+                    .toList();
+        }
+
+        return teamAuthorizationService.getAllTeams().stream()
+                .map(teamMapper::toDto)
+                .toList();
     }
 
     @Operation(summary = "Create Team", description = "Create a new Team")

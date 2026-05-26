@@ -80,6 +80,13 @@ public class TeamAuthorizationService {
         return allTeams;
     }
 
+    public List<Team> getAllTeamsByQuarter(Long quarterId) {
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
+        List<Team> allTeams = teamBusinessService.getAllTeamsByQuarter(authorizationUser, quarterId);
+        allTeams.forEach(team -> team.setWriteable(isUserWriteAllowed(team.getId())));
+        return allTeams;
+    }
+
     public void removeUserFromTeam(long entityId, long userId) {
         // user is allowed to remove own membership of any team
         if (userId != authorizationService.updateOrAddAuthorizationUser().user().getId()) {

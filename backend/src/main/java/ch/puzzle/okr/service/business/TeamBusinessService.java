@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
@@ -29,6 +30,8 @@ public class TeamBusinessService {
 
     private final ObjectiveBusinessService objectiveBusinessService;
 
+    private final QuarterBusinessService quarterBusinessService;
+
     private final UserPersistenceService userPersistenceService;
 
     private final UserTeamPersistenceService userTeamPersistenceService;
@@ -37,11 +40,12 @@ public class TeamBusinessService {
     private final CacheService cacheService;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
-                               ObjectiveBusinessService objectiveBusinessService, TeamValidationService validator,
+                               ObjectiveBusinessService objectiveBusinessService, QuarterBusinessService quarterBusinessService, TeamValidationService validator,
                                CacheService cacheService, UserPersistenceService userPersistenceService,
                                UserTeamPersistenceService userTeamPersistenceService) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
+        this.quarterBusinessService = quarterBusinessService;
         this.userPersistenceService = userPersistenceService;
         this.validator = validator;
         this.cacheService = cacheService;
@@ -98,6 +102,14 @@ public class TeamBusinessService {
 
     public List<Team> getAllTeams(AuthorizationUser authorizationUser) {
         List<Team> teams = teamPersistenceService.findAll();
+        List<Team> mutableTeams = new ArrayList<>(teams);
+        return sortTeams(mutableTeams, authorizationUser);
+    }
+
+    public List<Team> getAllTeamsByQuarter(AuthorizationUser authorizationUser, Long quarterId) {
+        Quarter quarter = quarterBusinessService.getQuarterById(quarterId);
+        List<Team> teams = teamPersistenceService.findActiveTeamsForQuarter(quarter.getStartDate());
+
         List<Team> mutableTeams = new ArrayList<>(teams);
         return sortTeams(mutableTeams, authorizationUser);
     }

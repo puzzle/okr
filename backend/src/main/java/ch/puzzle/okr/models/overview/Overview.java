@@ -3,6 +3,8 @@ package ch.puzzle.okr.models.overview;
 import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.WriteableInterface;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.Immutable;
 
@@ -14,6 +16,7 @@ public class Overview implements WriteableInterface {
     private OverviewId overviewId;
     private String teamName;
     private int teamVersion;
+    private LocalDate teamMarkedAsArchivedAt;
     private String objectiveTitle;
     @Enumerated(EnumType.STRING)
     private State objectiveState;
@@ -47,6 +50,7 @@ public class Overview implements WriteableInterface {
         overviewId = builder.overviewId;
         teamVersion = builder.teamVersion;
         teamName = builder.teamName;
+        teamMarkedAsArchivedAt = builder.teamMarkedAsArchivedAt;
         objectiveTitle = builder.objectiveTitle;
         objectiveState = builder.objectiveState;
         objectiveCreatedOn = builder.objectiveCreatedOn;
@@ -77,6 +81,10 @@ public class Overview implements WriteableInterface {
 
     public String getTeamName() {
         return teamName;
+    }
+
+    public LocalDate getteamMarkedAsArchivedAt() {
+        return teamMarkedAsArchivedAt;
     }
 
     public String getObjectiveTitle() {
@@ -172,7 +180,8 @@ public class Overview implements WriteableInterface {
     @Override
     public String toString() {
         return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", teamVersion="
-               + teamVersion + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
+               + teamVersion +  '\'' + ", teamMarkedAsArchivedAt="
+                + teamMarkedAsArchivedAt + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
                + keyResultType + '\'' + ", baseline=" + baseline + ", commitValue=" + commitValue + ", targetValue="
@@ -186,6 +195,7 @@ public class Overview implements WriteableInterface {
         private OverviewId overviewId;
         private int teamVersion;
         private String teamName;
+        private LocalDate teamMarkedAsArchivedAt;
         private String objectiveTitle;
         private State objectiveState;
         private LocalDateTime objectiveCreatedOn;
@@ -224,6 +234,11 @@ public class Overview implements WriteableInterface {
 
         public Builder withTeamName(String teamName) {
             this.teamName = teamName;
+            return this;
+        }
+
+        public Builder withteamMarkedAsArchivedAt(LocalDate teamMarkedAsArchivedAt) {
+            this.teamMarkedAsArchivedAt = teamMarkedAsArchivedAt;
             return this;
         }
 

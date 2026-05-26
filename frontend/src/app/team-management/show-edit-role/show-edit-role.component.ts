@@ -54,7 +54,11 @@ export class ShowEditRoleComponent {
     return this.translate.instant('USER_ROLE.TEAM_MEMBER');
   }
 
-  isEditable() {
-    return this.userTeam.team.isWriteable;
+  showEditMemberRole() {
+    return this.userTeam.team.isWriteable && this.userTeam.team.markedAsArchivedAt == null;
+  }
+
+  greyOutEditMemberRole() {
+    return this.userTeam.team.isWriteable && this.userTeam.team.markedAsArchivedAt != null;
   }
 }

@@ -10,5 +10,11 @@
     &:hover {
       background-color: #dbdee0;
     }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   }
 }

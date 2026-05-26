@@ -120,7 +120,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       })
       .afterClosed()
       .pipe(filter((selectedQuarter: Quarter | undefined) => !!selectedQuarter), mergeMap((selectedQuarter: Quarter) => {
-        selectedTeam.markedAsArchivedAt = selectedQuarter.endDate;
+        selectedTeam.markedAsArchivedAt = selectedQuarter.startDate;
         return this.teamService.archiveTeam(selectedTeam);
       }))
       .subscribe();

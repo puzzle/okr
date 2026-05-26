@@ -70,8 +70,8 @@
     },
     "UNARCHIVE": {
       "TEAM": {
-        "TITLE": "Team unarchivieren",
-        "TEXT": "Soll das Team '{{team}}' unarchiviert werden?"
+        "TITLE": "Team reaktivieren",
+        "TEXT": "Soll das Team '{{team}}' reaktiviert werden?"
       }
     }
   },

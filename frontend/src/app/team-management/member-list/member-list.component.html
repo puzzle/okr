@@ -2,29 +2,29 @@
   <div id="member-header">
     <div class="team-title">
       <div class="d-flex px-3">
-        @if (selectedTeam$.value) {
-        <h2>{{ selectedTeam$.value!.name }}</h2>
+        @if (selectedTeam()) {
+        <h2>{{ selectedTeam()!.name }}</h2>
         }
-        @if (showAddMemberToTeam()) {
-        <app-puzzle-icon-button
-          (click)="editTeam()"
-          [attr.data-testId]="'edit-team-button'"
-          icon="edit.svg"
-          alt="Edit Team Icon"
+        @if (isTeamWriteable()) {
+        <span
+          [matTooltip]="
+      isTeamArchived()
+        ? 'Bearbeiten nicht möglich, da das Team archiviert ist.'
+        : ''
+    "
+          [matTooltipDisabled]="!isTeamArchived()"
         >
-        </app-puzzle-icon-button>
-        } @else if (greyOutAddMemberToTeam()) {
-        <span matTooltip="Bearbeiten nicht möglich, da das Team archiviert ist.">
           <app-puzzle-icon-button
-            [disabled]="true"
-            [attr.data-testId]="'edit-team-button-disabled'"
+            (click)="!isTeamArchived() && editTeam()"
+            [disabled]="isTeamArchived()"
+            [attr.data-testId]="'edit-team-button'"
             icon="edit.svg"
-            alt="Edit Team Icon (Disabled)"
+            alt="Edit Team Icon"
           >
           </app-puzzle-icon-button>
         </span>
         }
-        @if (!selectedTeam$.value) {
+        @if (!selectedTeam()) {
         <h2>Alle Teams</h2>
         }
       </div>
@@ -33,28 +33,20 @@
       </div>
     </div>
     <div class="action-button d-none d-md-flex">
-      @if (showAddMemberToTeam()) {
-      <button
-        (click)="addMemberToTeam()"
-        [attr.data-testId]="'add-team-member'"
-        class="align-new-icon mdc-button px-0 pe-2"
-        color="primary"
-        mat-button
+      @if (isTeamWriteable()) {
+      <span
+        [matTooltip]="
+      isTeamArchived()
+        ? 'Hinzufügen nicht möglich, da das Team archiviert ist.'
+        : ''
+    "
+        [matTooltipDisabled]="!isTeamArchived()"
+        [style.display]="'inline-block'"
       >
-        <span class="d-flex align-items-center add-text">
-          <img
-            alt="Add member icon"
-            class="add-cross-button"
-            src="/assets/icons/new-icon.svg"
-          />
-          Member hinzufügen
-        </span>
-      </button>
-      } @else if (greyOutAddMemberToTeam()) {
-      <span matTooltip="Hinzufügen nicht möglich, da das Team archiviert ist." style="display: inline-block;">
         <button
-          disabled
-          [attr.data-testId]="'add-team-member-disabled'"
+          (click)="!isTeamArchived() && addMemberToTeam()"
+          [disabled]="isTeamArchived()"
+          [attr.data-testId]="'add-team-member'"
           class="align-new-icon mdc-button px-0 pe-2"
           color="primary"
           mat-button
@@ -63,8 +55,11 @@
             <img
               alt="Add member icon"
               class="add-cross-button"
-              src="/assets/icons/new-icon.svg"
-              style="filter: grayscale(100%); opacity: 0.5;"
+              [src]="
+            isTeamArchived()
+              ? '/assets/icons/new-icon-disabled.svg'
+              : '/assets/icons/new-icon.svg'
+          "
             />
             Member hinzufügen
           </span>
@@ -90,7 +85,7 @@
       </button>
       }
     </div>
-    @if (selectedTeam$.value?.isWriteable) {
+    @if (isTeamWriteable()) {
     <div class="menu mx-2">
       <app-puzzle-icon-button
         icon="three-dot-menu-icon.svg"
@@ -99,29 +94,32 @@
         [attr.data-testId]="'teamMoreButton'"
       ></app-puzzle-icon-button>
       <mat-menu #menu="matMenu">
-        @if (showAddMemberToTeam()) {
-        <button
+        @if (isTeamWriteable()) {
+        <span
           class="d-block d-md-none"
-          (click)="addMemberToTeam()"
-          mat-menu-item
-          [attr.data-testId]="'teamAddMemberButton'"
+          [matTooltip]="
+      isTeamArchived()
+        ? 'Hinzufügen nicht möglich, da das Team archiviert ist.'
+        : ''
+    "
+          [matTooltipDisabled]="!isTeamArchived()"
         >
-          <span>Member hinzufügen</span>
-        </button>
-        } @else if (greyOutAddMemberToTeam()) {
-        <span class="d-block d-md-none" matTooltip="Hinzufügen nicht möglich, da das Team archiviert ist.">
           <button
-            disabled
-            (click)="$event.stopPropagation()"
+            (click)="
+        isTeamArchived()
+          ? $event.stopPropagation()
+          : addMemberToTeam()
+      "
+            [disabled]="isTeamArchived()"
             mat-menu-item
-            [attr.data-testId]="'teamAddMemberButton-disabled'"
+            [attr.data-testId]="'teamAddMemberButton'"
           >
             <span>Member hinzufügen</span>
           </button>
         </span>
         }
         <button
-          (click)="deleteTeam(selectedTeam$.value!)"
+          (click)="deleteTeam(selectedTeam()!)"
           mat-menu-item
           [attr.data-testId]="'teamDeleteButton'"
         >
@@ -134,9 +132,9 @@
             <span class="font-size-14">Team löschen</span>
           </span>
         </button>
-        @if (!selectedTeam$.value!.markedAsArchivedAt) {
+        @if (!isTeamArchived()) {
         <button
-          (click)="archiveTeam(selectedTeam$.value!)"
+          (click)="archiveTeam(selectedTeam()!)"
           mat-menu-item
           [attr.data-testId]="'teamArchiveButton'"
         >
@@ -151,7 +149,7 @@
         </button>
         } @else {
         <button
-          (click)="unarchiveTeam(selectedTeam$.value!)"
+          (click)="unarchiveTeam(selectedTeam()!)"
           mat-menu-item
           [attr.data-testId]="'teamUnarchiveButton'"
         >
@@ -172,9 +170,9 @@
   <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
 
   <div class="d-none d-md-block">
-    <app-member-list-table [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-table>
+    <app-member-list-table [dataSource]="dataSource" [selectedTeam]="selectedTeam()"></app-member-list-table>
   </div>
   <div class="d-block d-md-none">
-    <app-member-list-mobile [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-mobile>
+    <app-member-list-mobile [dataSource]="dataSource" [selectedTeam]="selectedTeam()"></app-member-list-mobile>
   </div>
 </div>

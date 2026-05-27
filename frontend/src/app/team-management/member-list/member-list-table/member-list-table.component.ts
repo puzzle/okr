@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, inject, input, computed } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { User } from '../../../shared/types/model/user';
@@ -6,7 +6,7 @@ import { Team } from '../../../shared/types/model/team';
 import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/route-utils';
-import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
+import { filter, mergeMap, Subject } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/user-team';
 import { DialogService } from '../../../services/dialog.service';
 
@@ -16,7 +16,7 @@ import { DialogService } from '../../../services/dialog.service';
   styleUrl: './member-list-table.component.scss',
   standalone: false
 })
-export class MemberListTableComponent implements OnInit, OnDestroy {
+export class MemberListTableComponent {
   private readonly teamService = inject(TeamService);
 
   private readonly userService = inject(UserService);
@@ -25,7 +25,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
 
-  @Input({ required: true }) selectedTeam$!: BehaviorSubject<undefined | Team>;
+  selectedTeam = input<Team | undefined>();
 
   private allColumns = [
     'icon',
@@ -41,42 +41,29 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  displayedColumns: string[] = this.allColumns;
-
-  ngOnInit() {
-    this.selectedTeam$.pipe(takeUntil(this.unsubscribe$))
-      .subscribe((team) => {
-        team ? this.setColumnForTeam(team) : this.setColumnsForAllTeams();
-      });
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  private setColumnForTeam(team: Team) {
-    this.displayedColumns = [...this.teamColumns];
-    if (team.isWriteable) {
-      this.displayedColumns.push('menu');
+  displayedColumns = computed(() => {
+    const team = this.selectedTeam();
+    if (team) {
+      const cols = [...this.teamColumns];
+      if (team.isWriteable) {
+        cols.push('menu');
+      }
+      return cols;
     }
-  }
-
-  private setColumnsForAllTeams() {
-    this.displayedColumns = this.allColumns;
-  }
+    return this.allColumns;
+  });
 
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
     const i18nData = {
       user: `${entry.firstName} ${entry.lastName}`,
-      team: this.selectedTeam$.value?.name
+      team: this.selectedTeam()?.name
     };
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam$.value as Team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam() as Team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -85,7 +72,6 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   }
 
   saveUserTeamMembership(isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
-    // make a copy and set value only after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
     this.teamService.updateOrAddTeamMembership(userTableEntry.id, newUserTeam)
@@ -112,11 +98,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     return userTableEntry.userTeamList[0];
   }
 
-  showThreeDotMenu() {
-    return this.selectedTeam$.value?.isWriteable && this.selectedTeam$.value?.markedAsArchivedAt == null;
-  }
+  isTeamWriteable = computed(() => !!this.selectedTeam()?.isWriteable);
 
-  greyOutThreeDotMenu() {
-    return this.selectedTeam$.value?.isWriteable && this.selectedTeam$.value?.markedAsArchivedAt != null;
-  }
+  isTeamArchived = computed(() => !!this.selectedTeam()?.markedAsArchivedAt);
 }

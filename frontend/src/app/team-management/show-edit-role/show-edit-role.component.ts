@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Output, inject, input, computed } from '@angular/core';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -15,12 +15,16 @@ export class ShowEditRoleComponent {
 
   private readonly cd = inject(ChangeDetectorRef);
 
-  @Input({ required: true }) userTeam!: UserTeam;
+  userTeam = input.required<UserTeam>();
 
   @Output()
   private readonly save = new EventEmitter<boolean>();
 
   edit = false;
+
+  isTeamWriteable = computed(() => !!this.userTeam().team.isWriteable);
+
+  isTeamArchived = computed(() => !!this.userTeam().team.markedAsArchivedAt);
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent) {
@@ -30,10 +34,6 @@ export class ShowEditRoleComponent {
     this.edit = false;
   }
 
-  /*
-   * we set edit async, to ensure hostListener can detect outside-of-element clicks correctly
-   * otherwise element of event.target is already hidden
-   */
   setEditAsync($event: MouseEvent, edit: boolean) {
     $event.stopPropagation();
     setTimeout(() => {
@@ -48,17 +48,9 @@ export class ShowEditRoleComponent {
   }
 
   getRole(): string {
-    if (this.userTeam.isTeamAdmin) {
+    if (this.userTeam().isTeamAdmin) {
       return this.translate.instant('USER_ROLE.TEAM_ADMIN');
     }
     return this.translate.instant('USER_ROLE.TEAM_MEMBER');
-  }
-
-  showEditMemberRole() {
-    return this.userTeam.team.isWriteable && this.userTeam.team.markedAsArchivedAt == null;
-  }
-
-  greyOutEditMemberRole() {
-    return this.userTeam.team.isWriteable && this.userTeam.team.markedAsArchivedAt != null;
   }
 }

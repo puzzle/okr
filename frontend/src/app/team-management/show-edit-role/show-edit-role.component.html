@@ -2,32 +2,28 @@
   @if (!edit) {
   <span>{{ getRole() }}</span>
 
-  @if (showEditMemberRole()) {
-  <app-puzzle-icon-button
-    (click)="setEditAsync($event, true)"
-    [attr.data-testId]="'edit-role'"
-    icon="edit.svg"
-    alt="Edit Team Icon"
-  >
-  </app-puzzle-icon-button>
-  } @else if (greyOutEditMemberRole()) {
+  @if (isTeamWriteable()) {
   <span
-    matTooltip="Rolle kann nicht bearbeitet werden, da das Team archiviert ist."
+    [matTooltip]="isTeamArchived() ? 'Rolle kann nicht bearbeitet werden, da das Team archiviert ist.' : ''"
+    [matTooltipDisabled]="!isTeamArchived()"
     style="display: inline-block;"
-    (click)="$event.stopPropagation()"
   >
     <app-puzzle-icon-button
-      [disabled]="true"
-      [attr.data-testId]="'edit-role-disabled'"
+      (click)="isTeamArchived() ? $event.stopPropagation() : setEditAsync($event, true)"
+      [disabled]="isTeamArchived()"
+      [attr.data-testId]="isTeamArchived() ? 'edit-role-disabled' : 'edit-role'"
       icon="edit.svg"
-      alt="Edit Team Icon (Disabled)"
+      alt="Edit Team Icon"
     >
     </app-puzzle-icon-button>
   </span>
   }
-
   }
+
   @if (edit) {
-  <app-team-role-dropdown [isAdmin]="userTeam.isTeamAdmin" (isAdminChange)="saveIsAdmin($event)"></app-team-role-dropdown>
+  <app-team-role-dropdown
+    [isAdmin]="userTeam().isTeamAdmin"
+    (isAdminChange)="saveIsAdmin($event)">
+  </app-team-role-dropdown>
   }
 </div>

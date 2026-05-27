@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, inject, signal, computed } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { User } from '../../shared/types/model/user';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/user-table-entry';
 import { TeamService } from '../../services/team.service';
@@ -38,7 +38,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
 
-  selectedTeam$: BehaviorSubject<Team | undefined> = new BehaviorSubject<Team | undefined>(undefined);
+  selectedTeam = signal<Team | undefined>(undefined);
 
   private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
 
@@ -69,11 +69,11 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
   private setSelectedTeam(teams: Team[], teamIdParam: string | null) {
     if (!teamIdParam) {
-      this.selectedTeam$.next(undefined);
+      this.selectedTeam.set(undefined);
       return;
     }
     const team = teams.find((t) => t.id === parseInt(teamIdParam));
-    this.selectedTeam$.next(team);
+    this.selectedTeam.set(team);
     this.cd.markForCheck();
   }
 
@@ -148,7 +148,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   addMemberToTeam() {
     const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
       data: {
-        team: this.selectedTeam$.value,
+        team: this.selectedTeam(),
         currentUsersOfTeam: this.dataSource.data
       }
     });
@@ -162,22 +162,16 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       .subscribe();
   }
 
-  showInviteMember(): boolean {
-    return !this.selectedTeam$.value && this.userService.getCurrentUser().isOkrChampion;
-  }
+  showInviteMember = computed(() => !this.selectedTeam() && this.userService.getCurrentUser().isOkrChampion);
 
-  showAddMemberToTeam() {
-    const team = this.selectedTeam$.value;
-    return team?.isWriteable && !team?.markedAsArchivedAt;
-  }
+  isTeamWriteable = computed(() => !!this.selectedTeam()?.isWriteable);
 
-  greyOutAddMemberToTeam() {
-    const team = this.selectedTeam$.value;
-    return team?.isWriteable && team?.markedAsArchivedAt != null;
-  }
+  isTeamArchived = computed(() => !!this.selectedTeam()?.markedAsArchivedAt);
 
   editTeam(): void {
-    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent, { data: { team: this.selectedTeam$.value } });
+    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent, {
+      data: { team: this.selectedTeam() } // Read signal
+    });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());
   }

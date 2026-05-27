@@ -130,7 +130,13 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   isDeletable(userTeam: UserTeam): boolean {
-    return userTeam.team.isWriteable || this.selectedUserIsLoggedInUser;
+    const hasPermission = userTeam.team.isWriteable || this.selectedUserIsLoggedInUser;
+    return hasPermission && userTeam.team.markedAsArchivedAt == null;
+  }
+
+  greyOutDeletable(userTeam: UserTeam): boolean {
+    const hasPermission = userTeam.team.isWriteable || this.selectedUserIsLoggedInUser;
+    return hasPermission && userTeam.team.markedAsArchivedAt != null;
   }
 
   navigateBack() {

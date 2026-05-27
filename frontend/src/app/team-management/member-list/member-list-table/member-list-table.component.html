@@ -68,7 +68,7 @@
             (click)="!isTeamArchived() && $event.stopPropagation()"
             [matMenuTriggerFor]="userMenu"
             [disabled]="isTeamArchived()"
-            [attr.data-testId]="isTeamArchived() ? 'member-list-more-disabled' : 'member-list-more'"
+            [attr.data-testId]="'member-list-more'"
             icon="three-dot-menu-icon.svg"
             alt="More Icon"
           >

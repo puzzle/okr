@@ -43,13 +43,33 @@
       >
         <span class="d-flex align-items-center add-text">
           <img
-            alt="Add key-result button"
+            alt="Add member icon"
             class="add-cross-button"
             src="/assets/icons/new-icon.svg"
           />
           Member hinzufügen
         </span>
       </button>
+      } @else if (greyOutAddMemberToTeam()) {
+      <span matTooltip="Hinzufügen nicht möglich, da das Team archiviert ist." style="display: inline-block;">
+        <button
+          disabled
+          [attr.data-testId]="'add-team-member-disabled'"
+          class="align-new-icon mdc-button px-0 pe-2"
+          color="primary"
+          mat-button
+        >
+          <span class="d-flex align-items-center add-text">
+            <img
+              alt="Add member icon"
+              class="add-cross-button"
+              src="/assets/icons/new-icon.svg"
+              style="filter: grayscale(100%); opacity: 0.5;"
+            />
+            Member hinzufügen
+          </span>
+        </button>
+      </span>
       }
       @if (showInviteMember()) {
       <button
@@ -61,7 +81,7 @@
       >
         <span class="d-flex align-items-center add-text">
           <img
-            alt="Add key-result button"
+            alt="Register member button"
             class="add-cross-button"
             src="/assets/icons/new-icon.svg"
           />
@@ -79,6 +99,7 @@
         [attr.data-testId]="'teamMoreButton'"
       ></app-puzzle-icon-button>
       <mat-menu #menu="matMenu">
+        @if (showAddMemberToTeam()) {
         <button
           class="d-block d-md-none"
           (click)="addMemberToTeam()"
@@ -87,6 +108,18 @@
         >
           <span>Member hinzufügen</span>
         </button>
+        } @else if (greyOutAddMemberToTeam()) {
+        <span class="d-block d-md-none" matTooltip="Hinzufügen nicht möglich, da das Team archiviert ist.">
+          <button
+            disabled
+            (click)="$event.stopPropagation()"
+            mat-menu-item
+            [attr.data-testId]="'teamAddMemberButton-disabled'"
+          >
+            <span>Member hinzufügen</span>
+          </button>
+        </span>
+        }
         <button
           (click)="deleteTeam(selectedTeam$.value!)"
           mat-menu-item

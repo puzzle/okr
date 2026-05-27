@@ -72,6 +72,16 @@
               alt="Delete Member Icon"
             >
             </app-puzzle-icon-button>
+            } @else if (greyOutDeletable(element)) {
+            <span matTooltip="Entfernen nicht möglich, da das Team archiviert ist." style="display: inline-block;">
+              <app-puzzle-icon-button
+                [disabled]="true"
+                [attr.data-testId]="'delete-team-member-disabled'"
+                icon="delete-icon.svg"
+                alt="Delete Member Icon (Disabled)"
+              >
+              </app-puzzle-icon-button>
+            </span>
             }
           </td>
         </ng-container>

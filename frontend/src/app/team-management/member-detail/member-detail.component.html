@@ -73,7 +73,7 @@
               <app-puzzle-icon-button
                 (click)="!isTeamArchived(element) && removeUserFromTeam(element, userRef)"
                 [disabled]="isTeamArchived(element)"
-                [attr.data-testId]="isTeamArchived(element) ? 'delete-team-member-disabled' : 'delete-team-member'"
+                [attr.data-testId]="'delete-team-member'"
                 icon="delete-icon.svg"
                 alt="Delete Member Icon"
               >

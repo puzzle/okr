@@ -11,7 +11,7 @@
     <app-puzzle-icon-button
       (click)="isTeamArchived() ? $event.stopPropagation() : setEditAsync($event, true)"
       [disabled]="isTeamArchived()"
-      [attr.data-testId]="isTeamArchived() ? 'edit-role-disabled' : 'edit-role'"
+      [attr.data-testId]="'edit-role'"
       icon="edit.svg"
       alt="Edit Team Icon"
     >

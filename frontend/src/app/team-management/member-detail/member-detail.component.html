@@ -64,21 +64,18 @@
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            @if (isDeletable(element)) {
-            <app-puzzle-icon-button
-              (click)="removeUserFromTeam(element, userRef)"
-              [attr.data-testId]="'delete-team-member'"
-              icon="delete-icon.svg"
-              alt="Delete Member Icon"
+            @if (hasPermission(element)) {
+            <span
+              [matTooltip]="isTeamArchived(element) ? 'Entfernen nicht möglich, da das Team archiviert ist.' : ''"
+              [matTooltipDisabled]="!isTeamArchived(element)"
+              style="display: inline-block;"
             >
-            </app-puzzle-icon-button>
-            } @else if (greyOutDeletable(element)) {
-            <span matTooltip="Entfernen nicht möglich, da das Team archiviert ist." style="display: inline-block;">
               <app-puzzle-icon-button
-                [disabled]="true"
-                [attr.data-testId]="'delete-team-member-disabled'"
+                (click)="!isTeamArchived(element) && removeUserFromTeam(element, userRef)"
+                [disabled]="isTeamArchived(element)"
+                [attr.data-testId]="isTeamArchived(element) ? 'delete-team-member-disabled' : 'delete-team-member'"
                 icon="delete-icon.svg"
-                alt="Delete Member Icon (Disabled)"
+                alt="Delete Member Icon"
               >
               </app-puzzle-icon-button>
             </span>

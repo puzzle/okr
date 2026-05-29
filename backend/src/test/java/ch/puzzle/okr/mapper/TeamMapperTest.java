@@ -54,6 +54,8 @@ public class TeamMapperTest {
         assertEquals(expected.getName(), actual.name());
         assertEquals(expected.getDescription(), actual.description());
         assertEquals(expected.isWriteable(), actual.isWriteable());
+        assertEquals(expected.getMarkedAsArchivedAt(), actual.markedAsArchivedAt());
+        assertEquals(expected.getStatus(), actual.status());
     }
 
     @DisplayName("Should map dto to team when calling toTeam()")
@@ -76,6 +78,8 @@ public class TeamMapperTest {
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
         assertFalse(actual.isWriteable());
+        assertEquals(expected.markedAsArchivedAt(), actual.getMarkedAsArchivedAt());
+        assertEquals(expected.status(), actual.getStatus());
     }
 
 }

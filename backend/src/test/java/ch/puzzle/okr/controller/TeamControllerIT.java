@@ -60,7 +60,7 @@ class TeamControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"version":4,"name":"OKR","description":"Objectives and Key Results","isWriteable":false}""";
+            {"id":7,"version":4,"name":"OKR","description":"Objectives and Key Results","isWriteable":false,"markedAsArchivedAt":null,"status":"ACTIVE"}""";
 
     private static final String UPDATE_TEAM = """
             {
@@ -70,6 +70,12 @@ class TeamControllerIT {
 
     private static final String ADD_USERS = """
             [{"id":31,"version":1,"firstName":"Findus","lastName":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstName":"Paco","lastName":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
+            """;
+
+    private static final String ARCHIVE_TEAM_PAYLOAD = """
+            {
+            "endDate": "2026-05-29T23:59:59Z"
+            }
             """;
 
     @Autowired
@@ -88,7 +94,7 @@ class TeamControllerIT {
     @DisplayName("Should get all teams for the specified quarter")
     @Test
     void shouldGetAllTeams() throws Exception {
-        BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
+        BDDMockito.given(teamAuthorizationService.getAllTeamsByQuarter(1L)).willReturn(teamList);
 
         mvc
                 .perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
@@ -250,5 +256,100 @@ class TeamControllerIT {
                         .content(ADD_USERS)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @DisplayName("Should return archived team after successfully archiving")
+    @Test
+    void shouldSuccessfullyArchiveTeam() throws Exception {
+        TeamDto archivedDto = new TeamDto(1L, 1, "OKR-Team", "Objectives and Key Results", false, null, TeamStatus.ARCHIVED);
+        Team archivedTeam = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
+
+        BDDMockito.given(teamMapper.toMarkedAsArchivedAt(any())).willReturn(null); // Assuming mapping works
+        BDDMockito.given(teamAuthorizationService.archiveTeam(anyLong(), any())).willReturn(archivedTeam);
+        BDDMockito.given(teamMapper.toDto(any(Team.class))).willReturn(archivedDto);
+
+        mvc
+                .perform(put(URL_TEAM_1 + "/archive")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ARCHIVE_TEAM_PAYLOAD)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(archivedDto.id().intValue())))
+                .andExpect(jsonPath("$.name", Is.is(archivedDto.name())))
+                .andExpect(jsonPath("$.status", Is.is(TeamStatus.ARCHIVED.name())));
+    }
+
+    @DisplayName("Should return not found when attempting to archive a non-existent team")
+    @Test
+    void shouldReturnNotFoundWhenArchivingNonExistentTeam() throws Exception {
+        BDDMockito
+                .given(teamAuthorizationService.archiveTeam(anyLong(), any()))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found"));
+
+        mvc
+                .perform(put(URL_TEAM_1 + "/archive")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ARCHIVE_TEAM_PAYLOAD)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @DisplayName("Should return bad request when team is already archived")
+    @Test
+    void shouldReturnBadRequestWhenTeamAlreadyArchived() throws Exception {
+        BDDMockito
+                .given(teamAuthorizationService.archiveTeam(anyLong(), any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team is already archived"));
+
+        mvc
+                .perform(put(URL_TEAM_1 + "/archive")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ARCHIVE_TEAM_PAYLOAD)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @DisplayName("Should return active team after successfully un-archiving")
+    @Test
+    void shouldSuccessfullyUnarchiveTeam() throws Exception {
+        TeamDto unarchivedDto = new TeamDto(1L, 2, "OKR-Team", "Objectives and Key Results", false, null, TeamStatus.ACTIVE);
+        Team unarchivedTeam = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
+
+        BDDMockito.given(teamAuthorizationService.unarchiveTeam(anyLong())).willReturn(unarchivedTeam);
+        BDDMockito.given(teamMapper.toDto(any(Team.class))).willReturn(unarchivedDto);
+
+        mvc
+                .perform(put(URL_TEAM_1 + "/unarchive")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(unarchivedDto.id().intValue())))
+                .andExpect(jsonPath("$.name", Is.is(unarchivedDto.name())))
+                .andExpect(jsonPath("$.status", Is.is(TeamStatus.ACTIVE.name())));
+    }
+
+    @DisplayName("Should return not found when attempting to un-archive a non-existent team")
+    @Test
+    void shouldReturnNotFoundWhenUnarchivingNonExistentTeam() throws Exception {
+        BDDMockito
+                .given(teamAuthorizationService.unarchiveTeam(anyLong()))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found"));
+
+        mvc
+                .perform(put(URL_TEAM_1 + "/unarchive")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @DisplayName("Should return bad request when team is already active")
+    @Test
+    void shouldReturnBadRequestWhenTeamAlreadyActive() throws Exception {
+        BDDMockito
+                .given(teamAuthorizationService.unarchiveTeam(anyLong()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team is already active"));
+
+        mvc
+                .perform(put(URL_TEAM_1 + "/unarchive")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

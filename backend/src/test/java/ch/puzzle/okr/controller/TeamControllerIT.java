@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.team.Team;
+import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,8 +46,8 @@ class TeamControllerIT {
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, PUZZLE_ITC, false);
-    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", "Objectives and Key Results", false);
+    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, PUZZLE_ITC, false, null, TeamStatus.ACTIVE);
+    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", "Objectives and Key Results", false, null, TeamStatus.ACTIVE);
 
     private static final String CREATE_NEW_TEAM = """
             {
@@ -152,7 +153,7 @@ class TeamControllerIT {
     @DisplayName("Should return updated team after updating an existing team")
     @Test
     void shouldReturnUpdatedTeamAfterUpdatingTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", "Objectives and Key Results Team", false);
+        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", "Objectives and Key Results Team", false, null, TeamStatus.ACTIVE);
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
         BDDMockito.given(teamMapper.toDto(any())).willReturn(teamDto);

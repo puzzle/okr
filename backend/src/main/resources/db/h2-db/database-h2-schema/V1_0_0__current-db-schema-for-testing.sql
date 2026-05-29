@@ -50,10 +50,12 @@ create table if not exists quarter
 
 create table if not exists team
 (
-    id              bigint       not null,
-    version         int          not null,
-    name            varchar(250) not null,
-    description     varchar(250),
+    id                      bigint       not null,
+    version                 int          not null,
+    name                    varchar(250) not null,
+    description             varchar(250),
+    status                  text default 'ACTIVE',
+    marked_as_archived_at   timestamp default null,
     primary key (id)
 );
 

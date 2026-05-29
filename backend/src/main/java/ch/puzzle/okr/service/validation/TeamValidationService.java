@@ -43,7 +43,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
 
     public void validateOnArchive(Team model, LocalDate markedAsArchivedAt) {
         throwExceptionWhenModelIsNull(model);
-        validateValidDate(markedAsArchivedAt);
+        validateDate(markedAsArchivedAt);
         validateTeamStatusToNotEqual(model, TeamStatus.ARCHIVED, ErrorKey.TEAM_IS_ALREADY_ARCHIVED);
         validate(model);
     }
@@ -53,7 +53,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         validate(model);
     }
 
-    private void validateValidDate(LocalDate date) {
+    private void validateDate(LocalDate date) {
         if (date == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                                                  ErrorKey.ATTRIBUTE_NULL,

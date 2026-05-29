@@ -37,7 +37,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         throwExceptionWhenIdHasChanged(id, model.getId());
         doesEntityExist(model.getId());
         checkIfTeamWithNameAlreadyExists(model.getName(), model.getId());
-        throwExceptionIfTeamIsArchived(id, model);
+        throwExceptionIfTeamIsArchived(id);
         validate(model);
     }
 
@@ -83,14 +83,14 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         }
     }
 
-    private void throwExceptionIfTeamIsArchived(Long id, Team team) {
+    public void throwExceptionIfTeamIsArchived(Long id) {
         Team existingTeam = this.getPersistenceService().findById(id);
 
         if (existingTeam.getStatus() == TeamStatus.ARCHIVED) {
             throw new OkrResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     ErrorKey.TEAM_IS_ARCHIVED,
-                    List.of(team.getName())
+                    List.of(existingTeam.getName())
             );
         }
     }

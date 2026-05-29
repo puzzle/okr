@@ -105,7 +105,7 @@ public class TeamController {
             @ApiResponse(responseCode = "401", description = "Not authorized to un-archived the team", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID", content = @Content)})
     @PutMapping("/{id}/unarchive")
-    public ResponseEntity<TeamDto> reactivateTeam(
+    public ResponseEntity<TeamDto> unarchiveTeam(
             @Parameter(description = "The ID of the team to un-archived.", required = true) @PathVariable long id) {
 
         Team unarchivedTeam = teamAuthorizationService.unarchiveTeam(id);

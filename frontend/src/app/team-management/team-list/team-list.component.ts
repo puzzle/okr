@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { TeamService } from '../../services/team.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute } from '@angular/router';
 
@@ -21,7 +21,21 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   constructor() {
     const teamService = inject(TeamService);
-    this.teams$ = teamService.getAllTeams();
+    this.teams$ = teamService.getAllTeams()
+      .pipe(map((teams) => {
+        return [...teams].sort((a, b) => {
+          // --- RULE 1: Sort by Archived Status ---
+          const aIsArchived = !!a.markedAsArchivedAt;
+          const bIsArchived = !!b.markedAsArchivedAt;
+
+          if (aIsArchived !== bIsArchived) {
+            return aIsArchived ? 1 : -1;
+          }
+
+          // --- RULE 2: Sort Alphabetically ---
+          return a.name.localeCompare(b.name);
+        });
+      }));
   }
 
   public ngOnInit(): void {

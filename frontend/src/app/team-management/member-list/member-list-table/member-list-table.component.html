@@ -31,6 +31,8 @@
       @if (element.userTeamList.length) {
       <app-show-edit-role
         [userTeam]="getSingleUserTeam(element)"
+        [isWriteable]="isTeamWriteable()"
+        [isArchived]="isTeamArchived()"
         (save)="saveUserTeamMembership($event, element, getSingleUserTeam(element))"
       ></app-show-edit-role>
       }

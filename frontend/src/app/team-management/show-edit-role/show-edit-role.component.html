@@ -2,15 +2,15 @@
   @if (!edit) {
   <span>{{ getRole() }}</span>
 
-  @if (isTeamWriteable()) {
+  @if (isWriteable()) {
   <span
-    [matTooltip]="isTeamArchived() ? 'Rolle kann nicht bearbeitet werden, da das Team archiviert ist.' : ''"
-    [matTooltipDisabled]="!isTeamArchived()"
+    [matTooltip]="isArchived() ? 'Rolle kann nicht bearbeitet werden, da das Team archiviert ist.' : ''"
+    [matTooltipDisabled]="!isArchived()"
     style="display: inline-block;"
   >
     <app-puzzle-icon-button
-      (click)="isTeamArchived() ? $event.stopPropagation() : setEditAsync($event, true)"
-      [disabled]="isTeamArchived()"
+      (click)="isArchived() ? $event.stopPropagation() : setEditAsync($event, true)"
+      [disabled]="isArchived()"
       [attr.data-testId]="'edit-role'"
       icon="edit.svg"
       alt="Edit Team Icon"

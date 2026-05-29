@@ -121,6 +121,7 @@ public class TeamBusinessService {
 
     @Transactional
     public void addUsersToTeam(long teamId, List<Long> userIdList) {
+        validator.throwExceptionIfTeamIsArchived(teamId);
         Team team = teamPersistenceService.findById(teamId);
         for (Long userId : userIdList) {
             User user = userPersistenceService.findById(userId);
@@ -133,6 +134,7 @@ public class TeamBusinessService {
 
     @Transactional
     public void removeUserFromTeam(long teamId, long userId) {
+        validator.throwExceptionIfTeamIsArchived(teamId);
         User user = userPersistenceService.findById(userId);
         Team team = this.teamPersistenceService.findById(teamId);
 
@@ -189,6 +191,7 @@ public class TeamBusinessService {
 
     @Transactional
     public void updateOrAddTeamMembership(long teamId, long userId, boolean isAdmin) {
+        validator.throwExceptionIfTeamIsArchived(teamId);
         User user = userPersistenceService.findById(userId);
         List<UserTeam> userTeamList = user.getUserTeamList();
         for (UserTeam ut : userTeamList) {

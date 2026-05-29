@@ -83,7 +83,7 @@ public class Overview implements WriteableInterface {
         return teamName;
     }
 
-    public LocalDate getteamMarkedAsArchivedAt() {
+    public LocalDate getTeamMarkedAsArchivedAt() {
         return teamMarkedAsArchivedAt;
     }
 
@@ -237,7 +237,7 @@ public class Overview implements WriteableInterface {
             return this;
         }
 
-        public Builder withteamMarkedAsArchivedAt(LocalDate teamMarkedAsArchivedAt) {
+        public Builder withTeamMarkedAsArchivedAt(LocalDate teamMarkedAsArchivedAt) {
             this.teamMarkedAsArchivedAt = teamMarkedAsArchivedAt;
             return this;
         }

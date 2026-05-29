@@ -1,6 +1,6 @@
 ALTER TABLE team
     ADD COLUMN status TEXT default 'ACTIVE',
-    ADD COLUMN marked_as_archived_at TIMESTAMP;
+    ADD COLUMN marked_as_archived_at TIMESTAMP DEFAULT NULL;
 
 CREATE OR REPLACE FUNCTION prevent_archived_team_update()
     RETURNS TRIGGER AS $$

@@ -4,12 +4,15 @@ import static ch.puzzle.okr.Constants.TEAM;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.repository.TeamRepository;
+import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
@@ -18,8 +21,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeamValidationService extends ValidationBase<Team, Long, TeamRepository, TeamPersistenceService> {
 
-    public TeamValidationService(TeamPersistenceService teamPersistenceService) {
+    private final QuarterPersistenceService quarterPersistenceService;
+
+    public TeamValidationService(TeamPersistenceService teamPersistenceService, QuarterPersistenceService quarterPersistenceService) {
         super(teamPersistenceService);
+        this.quarterPersistenceService = quarterPersistenceService;
     }
 
     @Override
@@ -41,9 +47,9 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         validate(model);
     }
 
-    public void validateOnArchive(Team model, LocalDate markedAsArchivedAt) {
+    public void validateOnArchive(Team model, LocalDate markedAsArchivedAt, LocalDate firstQuarterStartDate, LocalDate lastQuarterEndDate) {
         throwExceptionWhenModelIsNull(model);
-        validateDate(markedAsArchivedAt);
+        validateDate(markedAsArchivedAt, firstQuarterStartDate, lastQuarterEndDate);
         validateTeamStatusToNotEqual(model, TeamStatus.ARCHIVED, ErrorKey.TEAM_IS_ALREADY_ARCHIVED);
         validate(model);
     }
@@ -53,11 +59,12 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         validate(model);
     }
 
-    private void validateDate(LocalDate date) {
-        if (date == null) {
+    private void validateDate(LocalDate date, LocalDate startDate, LocalDate endDate) {
+
+        if (date == null || date.isBefore(startDate) || date.isAfter(endDate)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 ErrorKey.ATTRIBUTE_NULL,
-                                                 List.of("markedAsArchivedAt", TEAM));
+                                                 ErrorKey.DATE_NOT_VALID,
+                                                 List.of("markedAsArchivedAt", TEAM, startDate, endDate));
         }
     }
 

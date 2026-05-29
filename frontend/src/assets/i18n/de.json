@@ -82,6 +82,7 @@
     "ALREADY_EXISTS_SAME_NAME": "{0} mit diesem Namen existiert bereits.",
     "CONVERT_TOKEN": "Benutzer kann nicht aus Token konvertiert werden.",
     "DATA_HAS_BEEN_UPDATED": "Die Daten des {0} wurden bereits von einem anderen Benutzer geändert oder gelöscht.",
+    "DATE_NOT_VALID": "Das Attribut {0} auf dem Objekt {1} darf nicht null und muss zwischen {2} und {3} liegen.",
     "MODEL_NULL": "Objekt {0} ist null.",
     "MODEL_WITH_ID_NOT_FOUND": "Objekt {0} mit der Id {1} konnte nicht gefunden werden.",
     "ATTRIBUTE_NULL": "Attribut {0} auf dem Objekt {1} ist nicht null.",

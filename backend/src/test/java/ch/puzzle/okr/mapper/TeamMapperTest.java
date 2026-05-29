@@ -4,11 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.team.Team;
+import ch.puzzle.okr.models.team.TeamStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
 
 @ExtendWith(MockitoExtension.class)
 public class TeamMapperTest {
@@ -18,6 +21,8 @@ public class TeamMapperTest {
     private static final String NAME = "my team name";
     private static final String DESCRIPTION = "my team description that is quite long";
     public static final boolean IS_WRITEABLE = true;
+    public static final LocalDate MARKED_AS_ARCHIVED_AT = null;
+    public static final TeamStatus STATUS = TeamStatus.ACTIVE;
 
     @InjectMocks
     private TeamMapper teamMapper;
@@ -55,7 +60,7 @@ public class TeamMapperTest {
     @Test
     void shouldMapDtoToTeam() {
         // arrange
-        TeamDto teamDto = new TeamDto(ID, VERSION, NAME, DESCRIPTION, IS_WRITEABLE);
+        TeamDto teamDto = new TeamDto(ID, VERSION, NAME, DESCRIPTION, IS_WRITEABLE, MARKED_AS_ARCHIVED_AT, STATUS);
 
         // act
         Team team = teamMapper.toTeam(teamDto);

@@ -108,10 +108,7 @@ public class TeamBusinessService {
 
     public List<Team> getAllTeamsByQuarter(AuthorizationUser authorizationUser, Long quarterId) {
         Quarter quarter = quarterBusinessService.getQuarterById(quarterId);
-        List<Team> teams = teamPersistenceService.findActiveTeamsForQuarter(quarter.getStartDate());
-
-        List<Team> mutableTeams = new ArrayList<>(teams);
-        return sortTeams(mutableTeams, authorizationUser);
+        return teamPersistenceService.findActiveTeamsForQuarter(quarter.getStartDate());
     }
 
     private List<Team> sortTeams(List<Team> teams, AuthorizationUser authorizationUser) {
@@ -168,7 +165,9 @@ public class TeamBusinessService {
         validator.validateOnGet(id);
         Team entity = teamPersistenceService.findById(id);
 
-        validator.validateOnArchive(entity, markedAsArchivedAt);
+        List<Quarter> quarters = quarterBusinessService.getFirstAndLastQuarterDates();
+
+        validator.validateOnArchive(entity, markedAsArchivedAt, quarters.get(0).getStartDate(), quarters.get(1).getEndDate());
 
         entity.archiveTeam(markedAsArchivedAt);
         cacheService.emptyAuthorizationUsersCache();

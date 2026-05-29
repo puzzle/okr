@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
+import static ch.puzzle.okr.service.validation.QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.multitenancy.TenantConfigProvider;
@@ -54,6 +55,12 @@ public class QuarterBusinessService {
 
     public Quarter getCurrentQuarter() {
         return quarterPersistenceService.getCurrentQuarter();
+    }
+
+    public List<Quarter> getFirstAndLastQuarterDates() {
+        List<Quarter> quarters = quarterPersistenceService.getFirstAndLastQuarterDates();
+        quarters.forEach(quarter -> throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+        return quarters;
     }
 
     private String shortenYear(int fullYear) {

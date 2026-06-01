@@ -10,6 +10,8 @@ import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
+
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -172,5 +174,81 @@ class TeamAuthorizationServiceTest {
                 .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(adminTeam), List.of())));
         teamAuthorizationService.addUsersToTeam(adminTeamId, usersList);
         verify(teamBusinessService, times(1)).addUsersToTeam(adminTeamId, usersList);
+    }
+
+    @DisplayName("Should successfully archive team when authorized as an okr-champion")
+    @Test
+    void shouldArchiveSuccessfullyWhenAuthorizedAsOkrChampion() {
+        LocalDate archiveDate = LocalDate.now();
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
+        when(teamBusinessService.archiveTeam(teamUnderTest.getId(), archiveDate)).thenReturn(teamUnderTest);
+
+        Team team = teamAuthorizationService.archiveTeam(teamUnderTest.getId(), archiveDate);
+
+        assertEquals(teamUnderTest, team);
+        verify(teamBusinessService, times(1)).archiveTeam(teamUnderTest.getId(), archiveDate);
+    }
+
+    @DisplayName("Should throw an exception when unauthorized user tries to archive a team")
+    @Test
+    void shouldThrowExceptionWhenUnauthorizedUserTriesToArchive() {
+        LocalDate archiveDate = LocalDate.now();
+        Long id = teamUnderTest.getId();
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamAuthorizationService.archiveTeam(id, archiveDate));
+
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
+        assertEquals("NOT_AUTHORIZED_TO_ARCHIVE", exception.getReason());
+        verify(teamBusinessService, never()).archiveTeam(anyLong(), any(LocalDate.class));
+    }
+
+    @DisplayName("Should successfully unarchive team when authorized as an okr-champion")
+    @Test
+    void shouldUnarchiveSuccessfullyWhenAuthorizedAsOkrChampion() {
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
+        when(teamBusinessService.unarchiveTeam(teamUnderTest.getId())).thenReturn(teamUnderTest);
+
+        Team team = teamAuthorizationService.unarchiveTeam(teamUnderTest.getId());
+
+        assertEquals(teamUnderTest, team);
+        verify(teamBusinessService, times(1)).unarchiveTeam(teamUnderTest.getId());
+    }
+
+    @DisplayName("Should throw an exception when unauthorized user tries to unarchive a team")
+    @Test
+    void shouldThrowExceptionWhenUnauthorizedUserTriesToUnarchive() {
+        Long id = teamUnderTest.getId();
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamAuthorizationService.unarchiveTeam(id));
+
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
+        assertEquals("NOT_AUTHORIZED_TO_UNARCHIVE", exception.getReason());
+        verify(teamBusinessService, never()).unarchiveTeam(anyLong());
+    }
+
+    @ParameterizedTest(name = "Should return all teams by quarter with writable={0}")
+    @ValueSource(booleans = { true, false })
+    void shouldReturnAllTeamsByQuarterWithWritableFlag(boolean isWriteable) {
+        Long quarterId = 42L;
+        List<Team> teamList = List.of(teamUnderTest, teamUnderTest);
+
+        if (isWriteable) {
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
+        } else {
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(defaultAuthorizationUser());
+        }
+
+        when(teamBusinessService.getAllTeamsByQuarter(eq(quarterId)))
+                .thenReturn(teamList);
+
+        List<Team> teams = teamAuthorizationService.getAllTeamsByQuarter(quarterId);
+
+        assertEquals(teamList, teams);
+        teams.forEach(team -> assertEquals(isWriteable, team.isWriteable()));
+        verify(teamBusinessService, times(1)).getAllTeamsByQuarter(eq(quarterId));
     }
 }

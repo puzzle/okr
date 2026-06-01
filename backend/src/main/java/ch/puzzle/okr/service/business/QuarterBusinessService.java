@@ -59,7 +59,7 @@ public class QuarterBusinessService {
 
     public List<Quarter> getFirstAndLastQuarterDates() {
         List<Quarter> quarters = quarterPersistenceService.getFirstAndLastQuarterDates();
-        quarters.forEach(quarter -> throwExceptionWhenStartEndDateQuarterIsNull(quarter));
+        quarters.forEach(QuarterValidationService::throwExceptionWhenStartEndDateQuarterIsNull);
         return quarters;
     }
 

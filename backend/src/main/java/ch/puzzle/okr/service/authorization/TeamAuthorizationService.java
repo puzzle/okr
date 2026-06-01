@@ -81,8 +81,7 @@ public class TeamAuthorizationService {
     }
 
     public List<Team> getAllTeamsByQuarter(Long quarterId) {
-        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
-        List<Team> allTeams = teamBusinessService.getAllTeamsByQuarter(authorizationUser, quarterId);
+        List<Team> allTeams = teamBusinessService.getAllTeamsByQuarter(quarterId);
         allTeams.forEach(team -> team.setWriteable(isUserWriteAllowed(team.getId())));
         return allTeams;
     }

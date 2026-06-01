@@ -62,11 +62,11 @@ values (2, CURRENT_QUARTER_LABEL(), CURRENT_QUARTER_START_DATE(), CURRENT_QUARTE
        (998, 'GJ ForTests', '2000-07-01', '2000-09-30'),
        (999, 'Backlog', null, null);
 
-insert into team (id, version, name, description)
-values (4, 1, '/BBT', 'The Berufsbildungsteam'),
-       (8, 1, 'we are cube.³', 'The UX department'),
-       (5, 1, 'Puzzle ITC', 'Represents the company itself'),
-       (6, 1, 'LoremIpsum', 'Our competitors are jumping the shark target rich environment');
+insert into team (id, version, name, description, status, marked_as_archived_at)
+values (4, 1, '/BBT', 'The Berufsbildungsteam', 'ACTIVE', null),
+       (8, 1, 'we are cube.³', 'The UX department', 'ACTIVE', null),
+       (5, 1, 'Puzzle ITC', 'Represents the company itself', 'ACTIVE', null),
+       (6, 1, 'LoremIpsum', 'Our competitors are jumping the shark target rich environment', 'ARCHIVED', '2023-07-25');
 
 -- map existing users to teams
 INSERT INTO person_team (id, version, person_id, team_id, team_admin)

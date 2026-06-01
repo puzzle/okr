@@ -2,6 +2,7 @@ package ch.puzzle.okr.mapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ch.puzzle.okr.dto.ArchiveTeamDto;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.team.TeamStatus;
@@ -80,6 +81,16 @@ public class TeamMapperTest {
         assertFalse(actual.isWriteable());
         assertEquals(expected.markedAsArchivedAt(), actual.getMarkedAsArchivedAt());
         assertEquals(expected.status(), actual.getStatus());
+    }
+
+    @DisplayName("Should map archiveDto to markedAsArchivedAt local date")
+    @Test
+    void shouldMapArchiveDtoToLocalDate() {
+        ArchiveTeamDto archiveTeamDto = new ArchiveTeamDto(MARKED_AS_ARCHIVED_AT);
+
+        LocalDate markedAsArchivedAt = teamMapper.toMarkedAsArchivedAt(archiveTeamDto);
+
+        assertEquals(MARKED_AS_ARCHIVED_AT, markedAsArchivedAt);
     }
 
 }

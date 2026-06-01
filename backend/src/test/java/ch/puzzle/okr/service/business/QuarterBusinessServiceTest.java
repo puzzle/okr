@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
+import static ch.puzzle.okr.service.validation.QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull;
 import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,10 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -246,5 +244,21 @@ class QuarterBusinessServiceTest {
     void shouldReturnNullWhenNoQuarterGenerationNeeded() {
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, times(0)).save(any());
+    }
+
+    @DisplayName("Should call correct persistence and validation services on getFirstAndLastQuarterDates()")
+    @Test
+    void getFirstAndLastQuarterDatesShouldCallCorrectMethods() {
+        Quarter firstQuarter = new Quarter();
+        Quarter lastQuarter = new Quarter();
+        when(quarterPersistenceService.getFirstAndLastQuarterDates()).thenReturn(List.of(firstQuarter, lastQuarter));
+
+        try (MockedStatic<QuarterValidationService> mockedStatic = mockStatic(QuarterValidationService.class)) {
+
+            quarterBusinessService.getFirstAndLastQuarterDates();
+
+            verify(quarterPersistenceService, times(1)).getFirstAndLastQuarterDates();
+            mockedStatic.verify(() -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(any()), times(2));
+        }
     }
 }

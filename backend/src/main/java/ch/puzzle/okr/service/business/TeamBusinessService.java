@@ -106,7 +106,7 @@ public class TeamBusinessService {
         return sortTeams(mutableTeams, authorizationUser);
     }
 
-    public List<Team> getAllTeamsByQuarter(AuthorizationUser authorizationUser, Long quarterId) {
+    public List<Team> getAllTeamsByQuarter(Long quarterId) {
         Quarter quarter = quarterBusinessService.getQuarterById(quarterId);
         return teamPersistenceService.findActiveTeamsForQuarter(quarter.getStartDate());
     }

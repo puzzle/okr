@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
 import static ch.puzzle.okr.Constants.BACKLOG_QUARTER_LABEL;
-import static ch.puzzle.okr.service.validation.QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull;
 import static ch.puzzle.okr.test.TestConstants.BACK_LOG_QUARTER_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -258,7 +257,9 @@ class QuarterBusinessServiceTest {
             quarterBusinessService.getFirstAndLastQuarterDates();
 
             verify(quarterPersistenceService, times(1)).getFirstAndLastQuarterDates();
-            mockedStatic.verify(() -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(any()), times(2));
+            mockedStatic
+                    .verify(() -> QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull(any()),
+                            times(2));
         }
     }
 }

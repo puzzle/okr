@@ -5,10 +5,9 @@ import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWr
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.business.TeamBusinessService;
-
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;

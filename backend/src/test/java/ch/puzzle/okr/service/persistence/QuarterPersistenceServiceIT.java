@@ -12,13 +12,12 @@ import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.util.quarter.check.QuarterRangeChecker;
+import ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Set;
-
-import ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

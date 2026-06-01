@@ -5,12 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
-public record TeamDto(Long id,
-                      int version,
-                      String name,
-                      String description,
-                      boolean isWriteable,
-                      LocalDate markedAsArchivedAt,
-                      @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-                      TeamStatus status) {
+public record TeamDto(Long id, int version, String name, String description, boolean isWriteable,
+        LocalDate markedAsArchivedAt, @JsonProperty(access = JsonProperty.Access.READ_ONLY) TeamStatus status) {
 }

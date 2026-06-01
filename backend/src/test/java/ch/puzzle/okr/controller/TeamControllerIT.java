@@ -159,7 +159,13 @@ class TeamControllerIT {
     @DisplayName("Should return updated team after updating an existing team")
     @Test
     void shouldReturnUpdatedTeamAfterUpdatingTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", "Objectives and Key Results Team", false, null, TeamStatus.ACTIVE);
+        TeamDto teamDto = new TeamDto(1L,
+                                      0,
+                                      "OKR-Team",
+                                      "Objectives and Key Results Team",
+                                      false,
+                                      null,
+                                      TeamStatus.ACTIVE);
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
         BDDMockito.given(teamMapper.toDto(any())).willReturn(teamDto);
@@ -261,7 +267,13 @@ class TeamControllerIT {
     @DisplayName("Should return archived team after successfully archiving")
     @Test
     void shouldSuccessfullyArchiveTeam() throws Exception {
-        TeamDto archivedDto = new TeamDto(1L, 1, "OKR-Team", "Objectives and Key Results", false, null, TeamStatus.ARCHIVED);
+        TeamDto archivedDto = new TeamDto(1L,
+                                          1,
+                                          "OKR-Team",
+                                          "Objectives and Key Results",
+                                          false,
+                                          null,
+                                          TeamStatus.ARCHIVED);
         Team archivedTeam = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
         BDDMockito.given(teamMapper.toMarkedAsArchivedAt(any())).willReturn(null); // Assuming mapping works
@@ -312,15 +324,20 @@ class TeamControllerIT {
     @DisplayName("Should return active team after successfully un-archiving")
     @Test
     void shouldSuccessfullyUnarchiveTeam() throws Exception {
-        TeamDto unarchivedDto = new TeamDto(1L, 2, "OKR-Team", "Objectives and Key Results", false, null, TeamStatus.ACTIVE);
+        TeamDto unarchivedDto = new TeamDto(1L,
+                                            2,
+                                            "OKR-Team",
+                                            "Objectives and Key Results",
+                                            false,
+                                            null,
+                                            TeamStatus.ACTIVE);
         Team unarchivedTeam = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
         BDDMockito.given(teamAuthorizationService.unarchiveTeam(anyLong())).willReturn(unarchivedTeam);
         BDDMockito.given(teamMapper.toDto(any(Team.class))).willReturn(unarchivedDto);
 
         mvc
-                .perform(put(URL_TEAM_1 + "/unarchive")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(put(URL_TEAM_1 + "/unarchive").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(unarchivedDto.id().intValue())))
                 .andExpect(jsonPath("$.name", Is.is(unarchivedDto.name())))
@@ -335,8 +352,7 @@ class TeamControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found"));
 
         mvc
-                .perform(put(URL_TEAM_1 + "/unarchive")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(put(URL_TEAM_1 + "/unarchive").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -348,8 +364,7 @@ class TeamControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team is already active"));
 
         mvc
-                .perform(put(URL_TEAM_1 + "/unarchive")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(put(URL_TEAM_1 + "/unarchive").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

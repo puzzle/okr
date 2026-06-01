@@ -7,10 +7,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.business.TeamBusinessService;
-
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -197,7 +196,7 @@ class TeamAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamAuthorizationService.archiveTeam(id, archiveDate));
+                                                         () -> teamAuthorizationService.archiveTeam(id, archiveDate));
 
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_ARCHIVE", exception.getReason());
@@ -223,7 +222,7 @@ class TeamAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamAuthorizationService.unarchiveTeam(id));
+                                                         () -> teamAuthorizationService.unarchiveTeam(id));
 
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_UNARCHIVE", exception.getReason());
@@ -242,8 +241,7 @@ class TeamAuthorizationServiceTest {
             when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(defaultAuthorizationUser());
         }
 
-        when(teamBusinessService.getAllTeamsByQuarter(eq(quarterId)))
-                .thenReturn(teamList);
+        when(teamBusinessService.getAllTeamsByQuarter(eq(quarterId))).thenReturn(teamList);
 
         List<Team> teams = teamAuthorizationService.getAllTeamsByQuarter(quarterId);
 

@@ -3,10 +3,10 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
@@ -14,7 +14,6 @@ import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,7 +39,8 @@ public class TeamBusinessService {
     private final CacheService cacheService;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
-                               ObjectiveBusinessService objectiveBusinessService, QuarterBusinessService quarterBusinessService, TeamValidationService validator,
+                               ObjectiveBusinessService objectiveBusinessService,
+                               QuarterBusinessService quarterBusinessService, TeamValidationService validator,
                                CacheService cacheService, UserPersistenceService userPersistenceService,
                                UserTeamPersistenceService userTeamPersistenceService) {
         this.teamPersistenceService = teamPersistenceService;
@@ -167,7 +167,11 @@ public class TeamBusinessService {
 
         List<Quarter> quarters = quarterBusinessService.getFirstAndLastQuarterDates();
 
-        validator.validateOnArchive(entity, markedAsArchivedAt, quarters.get(0).getStartDate(), quarters.get(1).getEndDate());
+        validator
+                .validateOnArchive(entity,
+                                   markedAsArchivedAt,
+                                   quarters.get(0).getStartDate(),
+                                   quarters.get(1).getEndDate());
 
         entity.archiveTeam(markedAsArchivedAt);
         cacheService.emptyAuthorizationUsersCache();

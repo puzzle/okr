@@ -4,15 +4,12 @@ import static ch.puzzle.okr.Constants.TEAM;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
-
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
@@ -23,7 +20,8 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
 
     private final QuarterPersistenceService quarterPersistenceService;
 
-    public TeamValidationService(TeamPersistenceService teamPersistenceService, QuarterPersistenceService quarterPersistenceService) {
+    public TeamValidationService(TeamPersistenceService teamPersistenceService,
+                                 QuarterPersistenceService quarterPersistenceService) {
         super(teamPersistenceService);
         this.quarterPersistenceService = quarterPersistenceService;
     }
@@ -47,7 +45,8 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         validate(model);
     }
 
-    public void validateOnArchive(Team model, LocalDate markedAsArchivedAt, LocalDate firstQuarterStartDate, LocalDate lastQuarterEndDate) {
+    public void validateOnArchive(Team model, LocalDate markedAsArchivedAt, LocalDate firstQuarterStartDate,
+                                  LocalDate lastQuarterEndDate) {
         throwExceptionWhenModelIsNull(model);
         validateDate(markedAsArchivedAt, firstQuarterStartDate, lastQuarterEndDate);
         validateTeamStatusToNotEqual(model, TeamStatus.ARCHIVED, ErrorKey.TEAM_IS_ALREADY_ARCHIVED);
@@ -70,9 +69,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
 
     private void validateTeamStatusToNotEqual(Team model, TeamStatus statusToCheck, ErrorKey errorKey) {
         if (model.getStatus() == statusToCheck) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                                                 errorKey,
-                                                 List.of(model.getName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, errorKey, List.of(model.getName()));
         }
     }
 
@@ -94,11 +91,9 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         Team existingTeam = this.getPersistenceService().findById(id);
 
         if (existingTeam.getStatus() == TeamStatus.ARCHIVED) {
-            throw new OkrResponseStatusException(
-                    HttpStatus.FORBIDDEN,
-                    ErrorKey.TEAM_IS_ARCHIVED,
-                    List.of(existingTeam.getName())
-            );
+            throw new OkrResponseStatusException(HttpStatus.FORBIDDEN,
+                                                 ErrorKey.TEAM_IS_ARCHIVED,
+                                                 List.of(existingTeam.getName()));
         }
     }
 }

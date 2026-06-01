@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
-import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
+import ch.puzzle.okr.models.team.Team;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

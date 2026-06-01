@@ -16,16 +16,15 @@ public class OverviewPersistenceService {
     private final QuarterPersistenceService quarterPersistenceService;
 
     private static final Logger logger = LoggerFactory.getLogger(OverviewPersistenceService.class);
-    private static final String SELECT_OVERVIEW =
-            "SELECT o FROM Overview o " +
-                    "WHERE o.quarterId=:quarterId " +
-                    "AND (o.teamMarkedAsArchivedAt IS NULL OR o.teamMarkedAsArchivedAt >= :quarterStartDate)";
+    private static final String SELECT_OVERVIEW = "SELECT o FROM Overview o " + "WHERE o.quarterId=:quarterId "
+                                                  + "AND (o.teamMarkedAsArchivedAt IS NULL OR o.teamMarkedAsArchivedAt >= :quarterStartDate)";
 
     private final EntityManager entityManager;
     private final AuthorizationCriteria<Overview> authorizationCriteria;
 
     public OverviewPersistenceService(EntityManager entityManager,
-                                      AuthorizationCriteria<Overview> authorizationCriteria, QuarterPersistenceService quarterPersistenceService) {
+                                      AuthorizationCriteria<Overview> authorizationCriteria,
+                                      QuarterPersistenceService quarterPersistenceService) {
         this.entityManager = entityManager;
         this.authorizationCriteria = authorizationCriteria;
         this.quarterPersistenceService = quarterPersistenceService;
@@ -36,7 +35,7 @@ public class OverviewPersistenceService {
         LocalDate quarterStartDate = quarterPersistenceService.findById(quarterId).getStartDate();
 
         String queryString = SELECT_OVERVIEW
-                + authorizationCriteria.appendOverview(teamIds, objectiveQuery, authorizationUser);
+                             + authorizationCriteria.appendOverview(teamIds, objectiveQuery, authorizationUser);
 
         logger.debug("select overview by quarterId={} and teamIds={}: {}", quarterId, teamIds, queryString);
         TypedQuery<Overview> typedQuery = entityManager.createQuery(queryString, Overview.class);

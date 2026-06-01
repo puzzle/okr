@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -121,16 +120,9 @@ public class Team implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Team{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", version=" + getVersion() +
-                ", userTeamList=" + getUserTeamList() +
-                ", writeable=" + isWriteable() +
-                ", status=" + getStatus() +
-                ", markedAsArchivedAt=" + getMarkedAsArchivedAt() +
-                '}';
+        return "Team{" + "id=" + getId() + ", name='" + getName() + '\'' + ", description='" + getDescription() + '\''
+               + ", version=" + getVersion() + ", userTeamList=" + getUserTeamList() + ", writeable=" + isWriteable()
+               + ", status=" + getStatus() + ", markedAsArchivedAt=" + getMarkedAsArchivedAt() + '}';
     }
 
     @Override
@@ -139,12 +131,22 @@ public class Team implements WriteableInterface {
             return false;
         return getVersion() == team.getVersion() && isWriteable() == team.isWriteable()
                && Objects.equals(getId(), team.getId()) && Objects.equals(getName(), team.getName())
-               && Objects.equals(getDescription(), team.getDescription()) && Objects.equals(getStatus(), team.getStatus()) && Objects.equals(getMarkedAsArchivedAt(), team.getMarkedAsArchivedAt());
+               && Objects.equals(getDescription(), team.getDescription())
+               && Objects.equals(getStatus(), team.getStatus())
+               && Objects.equals(getMarkedAsArchivedAt(), team.getMarkedAsArchivedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getVersion(), getUserTeamList(), isWriteable(), getStatus(), getMarkedAsArchivedAt());
+        return Objects
+                .hash(getId(),
+                      getName(),
+                      getDescription(),
+                      getVersion(),
+                      getUserTeamList(),
+                      isWriteable(),
+                      getStatus(),
+                      getMarkedAsArchivedAt());
     }
 
     public static final class Builder {

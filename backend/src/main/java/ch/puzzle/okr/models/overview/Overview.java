@@ -180,15 +180,15 @@ public class Overview implements WriteableInterface {
     @Override
     public String toString() {
         return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", teamVersion="
-               + teamVersion +  '\'' + ", teamMarkedAsArchivedAt="
-                + teamMarkedAsArchivedAt + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
-               + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
-               + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
-               + keyResultType + '\'' + ", baseline=" + baseline + ", commitValue=" + commitValue + ", targetValue="
-               + targetValue + ", stretchGoal=" + stretchGoal + ", commitZone='" + commitZone + '\'' + ", targetZone='"
-               + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue
-               + ", checkInZone='" + checkInZone + '\'' + ", confidence=" + confidence + ", checkInCreatedOn="
-               + checkInCreatedOn + ", writeable=" + writeable + ", backlogQuarter=" + backlogQuarter + '}';
+               + teamVersion + '\'' + ", teamMarkedAsArchivedAt=" + teamMarkedAsArchivedAt + '\'' + ", objectiveTitle='"
+               + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", objectiveCreatedOn="
+               + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='" + quarterLabel + '\''
+               + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='" + keyResultType + '\''
+               + ", baseline=" + baseline + ", commitValue=" + commitValue + ", targetValue=" + targetValue
+               + ", stretchGoal=" + stretchGoal + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone
+               + '\'' + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='"
+               + checkInZone + '\'' + ", confidence=" + confidence + ", checkInCreatedOn=" + checkInCreatedOn
+               + ", writeable=" + writeable + ", backlogQuarter=" + backlogQuarter + '}';
     }
 
     public static final class Builder {

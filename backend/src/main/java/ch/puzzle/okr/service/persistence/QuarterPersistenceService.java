@@ -33,6 +33,8 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, Qu
     }
 
     public List<Quarter> getFirstAndLastQuarterDates() {
-        return List.of(getRepository().findFirstByStartDateIsNotNullOrderByStartDateAsc(), getRepository().findFirstByStartDateIsNotNullOrderByStartDateDesc());
+        return List
+                .of(getRepository().findFirstByStartDateIsNotNullOrderByStartDateAsc(),
+                    getRepository().findFirstByStartDateIsNotNullOrderByStartDateDesc());
     }
 }

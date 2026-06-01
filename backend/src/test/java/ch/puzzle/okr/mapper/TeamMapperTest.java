@@ -6,13 +6,12 @@ import ch.puzzle.okr.dto.ArchiveTeamDto;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.models.team.TeamStatus;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
 
 @ExtendWith(MockitoExtension.class)
 public class TeamMapperTest {
@@ -23,7 +22,7 @@ public class TeamMapperTest {
     private static final String DESCRIPTION = "my team description that is quite long";
     public static final boolean IS_WRITEABLE = true;
     public static final LocalDate MARKED_AS_ARCHIVED_AT = null;
-    public static final TeamStatus STATUS = TeamStatus.ACTIVE;
+    public static final TeamStatus STATUS = null;
 
     @InjectMocks
     private TeamMapper teamMapper;

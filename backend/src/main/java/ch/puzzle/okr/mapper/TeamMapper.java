@@ -3,15 +3,20 @@ package ch.puzzle.okr.mapper;
 import ch.puzzle.okr.dto.ArchiveTeamDto;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.team.Team;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TeamMapper {
 
     public TeamDto toDto(Team team) {
-        return new TeamDto(team.getId(), team.getVersion(), team.getName(), team.getDescription(), team.isWriteable(), team.getMarkedAsArchivedAt(), team.getStatus());
+        return new TeamDto(team.getId(),
+                           team.getVersion(),
+                           team.getName(),
+                           team.getDescription(),
+                           team.isWriteable(),
+                           team.getMarkedAsArchivedAt(),
+                           team.getStatus());
     }
 
     public Team toTeam(TeamDto teamDto) {

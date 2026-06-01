@@ -3,14 +3,11 @@ package ch.puzzle.okr.service.persistence;
 import static ch.puzzle.okr.Constants.TEAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.mockito.Mockito.verify;
 
 import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
-
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,14 +43,12 @@ class TeamPersistenceServiceIT {
         assertEquals(TEAM, teamPersistenceService.getModelName());
     }
 
-
     @DisplayName("Should find active teams and exclude archived teams for passed quarter")
     @Test
     void shouldFindActiveTeamsForPassedQuarter() {
         List<Team> result = teamPersistenceService.findActiveTeamsForQuarter(LocalDate.of(2025, 2, 2));
 
         assertEquals(3, result.size());
-        assertThat(result).extracting(Team::getName)
-                .doesNotContain("LoremIpsum");
+        assertThat(result).extracting(Team::getName).doesNotContain("LoremIpsum");
     }
 }

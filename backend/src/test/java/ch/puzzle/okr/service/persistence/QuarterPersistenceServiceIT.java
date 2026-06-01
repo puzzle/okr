@@ -17,6 +17,8 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Set;
+
+import ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -178,5 +180,16 @@ class QuarterPersistenceServiceIT {
         assertEquals(amountOfInvocations, createdQuarters.size());
         assertEquals(4 + amountOfInvocations, quarterBusinessService.getQuarters().size());
         createdQuarters.forEach(quarter -> quarterPersistenceService.deleteById(quarter.getId()));
+    }
+
+    @Test
+    void shouldGetFirstAndLastQuarter() {
+        List<Quarter> result = quarterPersistenceService.getFirstAndLastQuarterDates();
+
+        Quarter firstQuarter = result.get(0);
+        Quarter lastQuarter = result.get(1);
+
+        assertEquals(LocalDate.of(2000, 7, 1), firstQuarter.getStartDate());
+        assertEquals(LocalDate.parse(QuarterFunction.nextQuarterEndDate()), lastQuarter.getEndDate());
     }
 }

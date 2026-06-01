@@ -34,6 +34,7 @@ class TeamValidationServiceTest {
     Team teamWithIdNull;
     Team teamWithoutName;
     Team teamWithoutNameWithId;
+    Team archivedTeam
 
     @BeforeEach
     void setUp() {
@@ -42,6 +43,7 @@ class TeamValidationServiceTest {
         teamWithIdNull = Team.Builder.builder().withId(null).withName("Team null").build();
         teamWithoutName = Team.Builder.builder().build();
         teamWithoutNameWithId = Team.Builder.builder().withId(1L).build();
+        archivedTeam = Team.Builder.builder().withId(3L).withName("Archived team").withMarkedAsArchivedAt(LocalDate.of(2025))
 
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         when(teamPersistenceService.getModelName()).thenReturn("Team");
@@ -206,5 +208,11 @@ class TeamValidationServiceTest {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @DisplayName("Should be throw exception on validateOnUpdate() when team is currently archived")
+    @Test
+    void validateOnUpdateShouldThrowWhenTeamIsArchived() {
+
     }
 }

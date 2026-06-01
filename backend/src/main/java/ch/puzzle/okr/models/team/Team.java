@@ -52,6 +52,8 @@ public class Team implements WriteableInterface {
         setName(builder.name);
         setDescription(builder.description);
         setUserTeamList(builder.userTeamList);
+        setStatus(builder.status);
+        setMarkedAsArchivedAt(builder.markedAsArchivedAt);
     }
 
     public Long getId() {

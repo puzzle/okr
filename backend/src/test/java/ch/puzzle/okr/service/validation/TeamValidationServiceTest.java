@@ -8,13 +8,21 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.team.Team;
+import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.test.TestHelper;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
@@ -26,6 +34,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class TeamValidationServiceTest {
+
     @MockitoBean
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
 
@@ -34,7 +43,7 @@ class TeamValidationServiceTest {
     Team teamWithIdNull;
     Team teamWithoutName;
     Team teamWithoutNameWithId;
-    Team archivedTeam
+    Team archivedTeam;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +52,7 @@ class TeamValidationServiceTest {
         teamWithIdNull = Team.Builder.builder().withId(null).withName("Team null").build();
         teamWithoutName = Team.Builder.builder().build();
         teamWithoutNameWithId = Team.Builder.builder().withId(1L).build();
-        archivedTeam = Team.Builder.builder().withId(3L).withName("Archived team").withMarkedAsArchivedAt(LocalDate.of(2025))
+        archivedTeam = Team.Builder.builder().withId(3L).withName("Archived team").withMarkedAsArchivedAt(LocalDate.of(2025, 1, 1)).withStatus(TeamStatus.ARCHIVED).build();
 
         when(teamPersistenceService.findById(1L)).thenReturn(team1);
         when(teamPersistenceService.getModelName()).thenReturn("Team");
@@ -210,9 +219,102 @@ class TeamValidationServiceTest {
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
-    @DisplayName("Should be throw exception on validateOnUpdate() when team is currently archived")
+    @DisplayName("Should throw exception on validateOnUpdate() when team is currently archived")
     @Test
     void validateOnUpdateShouldThrowWhenTeamIsArchived() {
+        when(teamPersistenceService.findById(archivedTeam.getId())).thenReturn(archivedTeam);
 
+        Long teamId = archivedTeam.getId();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUpdate(teamId, archivedTeam));
+
+        verify(teamPersistenceService, times(2)).findById(teamId);
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("TEAM_IS_ARCHIVED", List.of(archivedTeam.getName())));
+
+        assertEquals(HttpStatus.FORBIDDEN, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @DisplayName("Should be successful on validateOnArchive() when all inputs are valid")
+    @Test
+    void validateOnArchiveShouldBeSuccessfulWhenValid() {
+        LocalDate archiveDate = LocalDate.of(2026, 6, 1);
+        LocalDate start = LocalDate.of(2026, 1, 1);
+        LocalDate end = LocalDate.of(2026, 12, 31);
+
+        team1.setStatus(TeamStatus.ACTIVE);
+
+        assertDoesNotThrow(() -> validator.validateOnArchive(team1, archiveDate, start, end));
+    }
+
+    @DisplayName("Should throw exception on validateOnArchive() when date is outside range or null")
+    @ParameterizedTest(name = "Run {index}: archiveDate={0}")
+    @MethodSource("provideInvalidDates")
+    void validateOnArchiveShouldThrowExceptionWhenDateIsInvalid(LocalDate invalidArchiveDate) {
+        LocalDate start = LocalDate.of(2026, 1, 1);
+        LocalDate end = LocalDate.of(2026, 12, 31);
+
+        team1.setStatus(TeamStatus.ACTIVE);
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnArchive(team1, invalidArchiveDate, start, end));
+
+        List<ErrorDto> expectedErrors = List.of(
+                new ErrorDto("DATE_NOT_VALID", List.of("markedAsArchivedAt", "Team", start.toString(), end.toString()))
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+    }
+
+    private static Stream<Arguments> provideInvalidDates() {
+        return Stream.of(
+                org.junit.jupiter.params.provider.Arguments.of((LocalDate) null),
+                org.junit.jupiter.params.provider.Arguments.of(LocalDate.of(2025, 12, 31)),
+                org.junit.jupiter.params.provider.Arguments.of(LocalDate.of(2027, 1, 1))
+        );
+    }
+
+    @DisplayName("Should throw exception on validateOnArchive() when team is already archived")
+    @Test
+    void validateOnArchiveShouldThrowExceptionWhenTeamIsAlreadyArchived() {
+        LocalDate archiveDate = LocalDate.of(2026, 6, 1);
+        LocalDate start = LocalDate.of(2026, 1, 1);
+        LocalDate end = LocalDate.of(2026, 12, 31);
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnArchive(archivedTeam, archiveDate, start, end));
+
+        List<ErrorDto> expectedErrors = List.of(
+                new ErrorDto("TEAM_IS_ALREADY_ARCHIVED", List.of(archivedTeam.getName()))
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+    }
+
+    @DisplayName("Should be successful on validateOnUnarchive() when team is archived")
+    @Test
+    void validateOnUnarchiveShouldBeSuccessful() {
+        assertDoesNotThrow(() -> validator.validateOnUnarchive(archivedTeam));
+    }
+
+    @DisplayName("Should throw exception on validateOnUnarchive() when team is already active")
+    @Test
+    void validateOnUnarchiveShouldThrowExceptionWhenTeamIsAlreadyActive() {
+        team1.setStatus(TeamStatus.ACTIVE);
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUnarchive(team1));
+
+        List<ErrorDto> expectedErrors = List.of(
+                new ErrorDto("TEAM_IS_ALREADY_ACTIVE", List.of(team1.getName()))
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
     }
 }

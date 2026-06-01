@@ -14,6 +14,7 @@ import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
 import { ApplicationBannerComponent } from '../../custom/application-banner/application-banner.component';
 import { Team } from '../../types/model/team';
+import { TeamStatus } from '../../types/enums/team-status';
 
 const teamServiceMock = {
   getAllTeams: jest.fn()
@@ -315,22 +316,30 @@ describe('TeamFilterComponent', () => {
         version: 0,
         name: 'Team D',
         description: 'Team Delta',
-        isWriteable: true },
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE },
       { id: 2,
         version: 0,
         name: 'Team C',
         description: 'Team Charlie',
-        isWriteable: true },
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE },
       { id: 3,
         version: 0,
         name: 'Team B',
         description: 'Team Bravo',
-        isWriteable: true },
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE },
       { id: 4,
         version: 0,
         name: 'Team A',
         description: 'Team Alpha',
-        isWriteable: true }
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE }
     ];
 
     component.teams$ = new BehaviorSubject(teams);
@@ -345,22 +354,30 @@ describe('TeamFilterComponent', () => {
           version: 0,
           name: 'Team A',
           description: 'Team Alpha',
-          isWriteable: true },
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE },
         { id: 3,
           version: 0,
           name: 'Team B',
           description: 'Team Bravo',
-          isWriteable: true },
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE },
         { id: 2,
           version: 0,
           name: 'Team C',
           description: 'Team Charlie',
-          isWriteable: true },
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE },
         { id: 1,
           version: 0,
           name: 'Team D',
           description: 'Team Delta',
-          isWriteable: true }
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE }
       ]);
   });
 });

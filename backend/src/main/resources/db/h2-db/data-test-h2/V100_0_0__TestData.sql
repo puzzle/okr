@@ -59,6 +59,7 @@ values (1, 0, 'PROZENT', 1, true),
 insert into quarter (id, label, start_date, end_date)
 values (2, CURRENT_QUARTER_LABEL(), CURRENT_QUARTER_START_DATE(), CURRENT_QUARTER_END_DATE()),
        (3, NEXT_QUARTER_LABEL(), NEXT_QUARTER_START_DATE(), NEXT_QUARTER_END_DATE()),
+       (4, 'Q4 2023', '2024-10-01', '2024-12-31'),
        (998, 'GJ ForTests', '2000-07-01', '2000-09-30'),
        (999, 'Backlog', null, null);
 

@@ -3,14 +3,14 @@
     <div class="dialog-content">
       <div class="col">
         <div class="okr-form-row okr-form-label-input-container">
-          <label class="okr-form-label okr-form-col" for="archiveQuarter">
+          <label class="okr-form-label okr-form-col" for="archive-quarter">
             Letztes aktives Quartal
           </label>
 
           <div class="okr-form-input pe-5">
             <select
               class="custom-select bg-white"
-              id="archiveQuarter"
+              id="archive-quarter"
               [(ngModel)]="selectedQuarter"
               [compareWith]="compareById"
               [attr.data-testId]="'archiveQuarterSelect'"

@@ -16,8 +16,9 @@ import { of } from 'rxjs';
 import { Team } from '../../shared/types/model/team';
 import { User } from '../../shared/types/model/user';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import Spy = jasmine.Spy;
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TeamStatus } from '../../shared/types/enums/team-status';
+import Spy = jasmine.Spy;
 
 const teams: Team[] = [
   {
@@ -25,28 +26,36 @@ const teams: Team[] = [
     version: 1,
     name: 'ZZ the Puzzle Team - Keyword',
     description: 'Description of ZZ the Puzzle Team',
-    isWriteable: false
+    isWriteable: false,
+    markedAsArchivedAt: null,
+    status: TeamStatus.ACTIVE
   },
   {
     id: 2,
     version: 1,
     name: 'The Puzzle Team - Keyword',
     description: 'Description of The Puzzle Team',
-    isWriteable: false
+    isWriteable: false,
+    markedAsArchivedAt: null,
+    status: TeamStatus.ACTIVE
   },
   {
     id: 3,
     version: 1,
     name: 'Puzzle Team - No',
     description: 'Description of Puzzle Team',
-    isWriteable: false
+    isWriteable: false,
+    markedAsArchivedAt: null,
+    status: TeamStatus.ACTIVE
   },
   {
     id: 4,
     version: 1,
     name: 'Team Ruedi - Noname',
     description: 'Description of Team Ruedi',
-    isWriteable: false
+    isWriteable: false,
+    markedAsArchivedAt: null,
+    status: TeamStatus.ACTIVE
   }
 ];
 

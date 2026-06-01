@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confi
 import { DialogService } from '../../services/dialog.service';
 import { Location } from '@angular/common';
 import { ButtonState } from '../../shared/types/enums/button-state';
+import { TeamStatus } from '../../shared/types/enums/team-status';
 
 describe('DeleteUserComponent', () => {
   let component: DeleteUserComponent;
@@ -118,7 +119,9 @@ describe('DeleteUserComponent', () => {
         version: 2,
         name: 'Lorem',
         description: 'Lorem ipsum',
-        isWriteable: true
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE
       },
       isTeamAdmin: false
     }];
@@ -217,7 +220,9 @@ describe('DeleteUserComponent', () => {
         version: 2,
         name: 'Lorem',
         description: 'Lorem ipsum',
-        isWriteable: true
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE
       },
       isTeamAdmin: false
     }]);
